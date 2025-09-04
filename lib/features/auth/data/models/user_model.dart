@@ -19,11 +19,25 @@ class UserModel {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'AccessKey': AccessKey,
+    'CrossIdentity_Usuario': CrossIdentity_Usuario,
+  };
+
   UserEntity toEntity() {
     return UserEntity(
       name: name,
       AccessKey: AccessKey,
       CrossIdentity_Usuario: CrossIdentity_Usuario,
+    );
+  }
+
+  factory UserModel.fromEntity(UserEntity entity) {
+    return UserModel(
+      name: entity.name,
+      AccessKey: entity.AccessKey,
+      CrossIdentity_Usuario: entity.CrossIdentity_Usuario,
     );
   }
 }

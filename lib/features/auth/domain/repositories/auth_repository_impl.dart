@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
     final userModel = await _remoteDatasource.login(
       url: enterpriseModel.baseUrl!,
-      email: userName,
+      user: userName,
       password: password,
     );
 
