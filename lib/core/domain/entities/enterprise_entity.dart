@@ -6,12 +6,12 @@ import 'entities.dart';
 class EnterpriseEntity {
   final String id;
   final String name;
-  final List<SubEnterpriseEntity> cnpjs;
+  final List<SubEnterpriseEntity>? subEnterprises; //supabase
 
   const EnterpriseEntity({
     required this.id,
     required this.name,
-    required this.cnpjs,
+    required this.subEnterprises,
   });
 
   EnterpriseEntity copyWith({
@@ -22,12 +22,13 @@ class EnterpriseEntity {
     return EnterpriseEntity(
       id: id ?? this.id,
       name: name ?? this.name,
-      cnpjs: cnpjs ?? this.cnpjs,
+      subEnterprises: cnpjs ?? this.subEnterprises,
     );
   }
 
   @override
-  String toString() => 'EnterpriseEntity(id: $id, name: $name, cnpjs: $cnpjs)';
+  String toString() =>
+      'EnterpriseEntity(id: $id, name: $name, cnpjs: $subEnterprises)';
 
   @override
   bool operator ==(covariant EnterpriseEntity other) {
@@ -35,9 +36,9 @@ class EnterpriseEntity {
 
     return other.id == id &&
         other.name == name &&
-        listEquals(other.cnpjs, cnpjs);
+        listEquals(other.subEnterprises, subEnterprises);
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ cnpjs.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode ^ subEnterprises.hashCode;
 }
