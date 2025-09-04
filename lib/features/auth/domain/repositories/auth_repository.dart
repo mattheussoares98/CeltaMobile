@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import '../../../../core/domain/entities/entities.dart';
 
 abstract class AuthRepository {
   Future<void> login({

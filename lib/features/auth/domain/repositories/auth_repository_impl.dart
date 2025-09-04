@@ -1,7 +1,7 @@
 import '../../../../core/data/data_source/data_source.dart';
+import '../../../../core/domain/entities/entities.dart';
 import '../../data/data_source/data_source.dart';
 import '../../domain/repositories/auth_repository.dart';
-import '../entities/entities.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final IAuthRemoteDatasource _remoteDatasource;
