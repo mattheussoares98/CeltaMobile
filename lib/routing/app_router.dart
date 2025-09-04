@@ -1,32 +1,34 @@
-import 'package:flutter/material.dart';
+import 'package:celta_intelligence/features/splash/presentation/pages/splash_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/auth/presentation/controllers/controllers.dart';
+import '../features/auth/presentation/pages/pages.dart';
 import 'not_found_page.dart';
 
 part 'app_router.g.dart';
 
-enum AppRoute { auth, home }
+enum AppRoute { auth, home, splash }
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
-  // final authState = ref.watch(authStateChangeProvider);
+  final authState = ref.watch(authStateProvider);
 
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/splash',
     debugLogDiagnostics: false,
     redirect: (context, state) {
-      // final loggedIn = authState.value?.session?.user != null;
-      // final onAuthRoute = state.matchedLocation == '/auth';
+      final loggedIn = authState.value != null;
+      final onAuthRoute = state.matchedLocation == '/auth';
 
-      // if (!loggedIn && !onAuthRoute) {
-      //   return '/auth';
-      // }
+      if (!loggedIn && !onAuthRoute) {
+        return '/auth';
+      }
 
-      // if (loggedIn && onAuthRoute) {
-      //   return '/';
-      // }
+      if (loggedIn && onAuthRoute) {
+        return '/splash';
+      }
 
       return null;
     },
@@ -34,8 +36,14 @@ GoRouter goRouter(Ref ref) {
       GoRoute(
         path: '/auth',
         name: AppRoute.auth.name,
-        pageBuilder: (context, state) =>
-            const MaterialPage(fullscreenDialog: true, child: Scaffold()),
+        // pageBuilder: (context, state) =>
+        //     const MaterialPage(fullscreenDialog: true, child: AuthPage()),
+        builder: (context, state) => const AuthPage(),
+      ),
+      GoRoute(
+        path: '/splash',
+        name: AppRoute.splash.name,
+        builder: (context, state) => const SplashPage(),
       ),
       // GoRoute(
       //   path: '/',
