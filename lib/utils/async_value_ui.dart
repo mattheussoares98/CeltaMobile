@@ -14,6 +14,12 @@ extension AsyncValueUI on AsyncValue {
     }
   }
 
+  void doOnSuccess(AsyncValue<void>? previous, VoidCallback action) {
+    if (previous is AsyncLoading && !isLoading && !hasError) {
+      action();
+    }
+  }
+
   void showAlertDialogOnSuccess(
     BuildContext context, {
     required AsyncValue? previous,
@@ -21,11 +27,7 @@ extension AsyncValueUI on AsyncValue {
     required String message,
   }) {
     if (previous is AsyncLoading && !isLoading && !hasError) {
-      showAlertDialog(
-        context: context,
-        title: title,
-        content: message,
-      );
+      showAlertDialog(context: context, title: title, content: message);
     }
   }
 
