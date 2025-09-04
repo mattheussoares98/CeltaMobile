@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:xml2json/xml2json.dart';
-import 'package:http/http.dart' as http;
 
+import '../domain/contracts/contracts.dart';
 import '../domain/errors/errors.dart';
 import '../domain/repositories/repositories.dart';
 
 class SoapAdapter implements SoapRequest {
+  final HttpClient client;
+
+  SoapAdapter(this.client);
+
   @override
   Future<dynamic> post({
     required Map<String, dynamic> parameters,
@@ -41,9 +45,10 @@ class SoapAdapter implements SoapRequest {
         </soap12:Body>
       </soap12:Envelope>''';
 
-      final response = await http
-          .post(
-            Uri.parse('$url/ccs/$serviceASMX'),
+      final response = await client
+          .request(
+            url: '$url/ccs/$serviceASMX',
+            method: 'post',
             body: envelope,
             headers: soapHeaders,
           )
