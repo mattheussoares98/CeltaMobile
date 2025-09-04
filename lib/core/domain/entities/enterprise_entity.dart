@@ -7,22 +7,26 @@ class EnterpriseEntity {
   final String id;
   final String name;
   final List<SubEnterpriseEntity>? subEnterprises; //supabase
+  final String? baseUrl; //from supabase
 
   const EnterpriseEntity({
     required this.id,
     required this.name,
     required this.subEnterprises,
+    required this.baseUrl,
   });
 
   EnterpriseEntity copyWith({
     String? id,
     String? name,
     List<SubEnterpriseEntity>? cnpjs,
+    String? baseUrl,
   }) {
     return EnterpriseEntity(
       id: id ?? this.id,
       name: name ?? this.name,
       subEnterprises: cnpjs ?? this.subEnterprises,
+      baseUrl: baseUrl ?? this.baseUrl,
     );
   }
 

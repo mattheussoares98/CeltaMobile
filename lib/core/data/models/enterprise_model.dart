@@ -4,18 +4,21 @@ import 'models.dart';
 class EnterpriseModel {
   final String id;
   final String name;
-  final List<SubEnterpriseModel>? subEnterprises;
+  final List<SubEnterpriseModel>? subEnterprises; //from supabase
+  final String? baseUrl; //from supabase
 
   const EnterpriseModel({
     required this.id,
     required this.name,
     required this.subEnterprises,
+    required this.baseUrl,
   });
 
   factory EnterpriseModel.fromJson(Map<String, dynamic> map) {
     return EnterpriseModel(
       id: map['id'] as String,
       name: map['name'] as String,
+      baseUrl: map['baseUrl'] as String,
       subEnterprises: map['subEnterprises'] != null
           ? List<SubEnterpriseModel>.from(
               (map['subEnterprises'] as List<Map<String, dynamic>>)
@@ -30,6 +33,7 @@ class EnterpriseModel {
   EnterpriseEntity toEntity() => EnterpriseEntity(
     id: id,
     name: name,
+    baseUrl: baseUrl,
     subEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
   );
 }

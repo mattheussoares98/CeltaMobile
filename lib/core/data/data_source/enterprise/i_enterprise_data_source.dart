@@ -1,5 +1,5 @@
 import '../../models/models.dart';
 
-abstract class SupabaseEnterpriseDatasource {
+abstract class IEnterpriseDatasource {
   Future<EnterpriseModel?> getEnterprise(String name);
 }

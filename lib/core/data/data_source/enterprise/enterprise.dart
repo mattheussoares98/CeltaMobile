@@ -1,2 +1,2 @@
-export 'remote_supabase_enterprise_data_source.dart';
-export 'supabase_enterprise_data_source.dart';
+export 'enterprise_data_source_impl.dart';
+export 'i_enterprise_data_source.dart';
