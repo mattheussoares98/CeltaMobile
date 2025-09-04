@@ -1,4 +1,4 @@
-import '../../../data/models/models.dart';
+import '../../models/models.dart';
 
 abstract class SupabaseEnterpriseDatasource {
   Future<EnterpriseModel?> getEnterprise(String name);

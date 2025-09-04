@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../data/models/models.dart';
+import '../../models/models.dart';
 import 'enterprise.dart';
 
 class RemoteSupabaseEnterpriseDatasource
