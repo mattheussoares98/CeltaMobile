@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../localization/string_hardcoded.dart';
 import '../../../../utils/utils.dart';
@@ -39,27 +40,24 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Autenticação'.hardcoded)),
-      body: Padding(
-        padding: EdgeInsets.all(Sizes.p24),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CeltaImage(),
-              EnterpriseField(enterpriseController: enterpriseController),
-              gapH16,
-              EmailField(emailController: emailController),
-              gapH16,
-              PasswordField(passwordController: passwordController),
-              gapH32,
-              EnterButton(
-                isLoading: loginState.isLoading,
-                enterpriseController: enterpriseController,
-                emailController: emailController,
-                passwordController: passwordController,
-              ),
-            ],
-          ),
+      body: ResponsiveScrollableWidget(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CeltaImage(),
+            EnterpriseField(enterpriseController: enterpriseController),
+            gapH16,
+            EmailField(emailController: emailController),
+            gapH16,
+            PasswordField(passwordController: passwordController),
+            gapH32,
+            EnterButton(
+              isLoading: loginState.isLoading,
+              enterpriseController: enterpriseController,
+              emailController: emailController,
+              passwordController: passwordController,
+            ),
+          ],
         ),
       ),
     );
