@@ -17,3 +17,15 @@ IEnterpriseRepository enterpriseRepository(Ref ref) {
   final datasource = ref.watch(enterpriseDataSourceProvider);
   return EnterpriseRepositoryImpl(datasource);
 }
+
+@riverpod
+IAuthManagerDataSource authManagerDataSource(Ref ref) {
+  final supabase = ref.watch(supabaseClientProvider);
+  return AuthManagerDataSource(supabase);
+}
+
+@riverpod
+IAuthManagerRepository authManagerRepository(Ref ref) {
+  final datasource = ref.watch(authManagerDataSourceProvider);
+  return AuthManagerRepositoryImpl(datasource);
+}
