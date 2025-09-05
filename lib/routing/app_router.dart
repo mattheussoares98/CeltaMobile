@@ -5,11 +5,12 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/presentation/controllers/controllers.dart';
 import '../features/auth/presentation/pages/pages.dart';
+import '../features/enterprise_manager/presentation/pages/pages.dart';
 import 'not_found_page.dart';
 
 part 'app_router.g.dart';
 
-enum AppRoute { auth, home, splash }
+enum AppRoute { auth, enterpriseManager, home, splash }
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
@@ -39,6 +40,11 @@ GoRouter goRouter(Ref ref) {
         // pageBuilder: (context, state) =>
         //     const MaterialPage(fullscreenDialog: true, child: AuthPage()),
         builder: (context, state) => const AuthPage(),
+      ),
+      GoRoute(
+        path: '/enterprise-manager',
+        name: AppRoute.enterpriseManager.name,
+        builder: (context, state) => const EnterpriseManagerPage(),
       ),
       GoRoute(
         path: '/splash',
