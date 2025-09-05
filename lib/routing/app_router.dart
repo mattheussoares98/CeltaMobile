@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/features/splash/presentation/pages/splash_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
@@ -23,11 +24,13 @@ GoRouter goRouter(Ref ref) {
       final loggedIn = authState.value != null;
       final onAuthRoute = state.matchedLocation == '/auth';
 
-      if (!loggedIn && !onAuthRoute) {
+      if (!loggedIn && onAuthRoute) {
+        debugPrint("auth");
         return '/auth';
       }
 
       if (loggedIn && onAuthRoute) {
+        debugPrint("splash");
         return '/splash';
       }
 
@@ -37,15 +40,16 @@ GoRouter goRouter(Ref ref) {
       GoRoute(
         path: '/auth',
         name: AppRoute.auth.name,
-        // pageBuilder: (context, state) =>
-        //     const MaterialPage(fullscreenDialog: true, child: AuthPage()),
         builder: (context, state) => const AuthPage(),
+        routes: [
+          GoRoute(
+            path: 'enterpriseManager',
+            name: AppRoute.enterpriseManager.name,
+            builder: (context, state) => const EnterpriseManagerPage(),
+          ),
+        ],
       ),
-      GoRoute(
-        path: '/enterprise-manager',
-        name: AppRoute.enterpriseManager.name,
-        builder: (context, state) => const EnterpriseManagerPage(),
-      ),
+
       GoRoute(
         path: '/splash',
         name: AppRoute.splash.name,
