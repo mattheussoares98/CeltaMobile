@@ -1,3 +1,4 @@
+import '../../../../exceptions/exceptions.dart';
 import '../../../../localization/string_hardcoded.dart';
 import '../../../../core/data/data_source/data_source.dart';
 import '../../../../core/domain/entities/entities.dart';
@@ -28,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     if (enterpriseModel == null) {
       //TODO create tests and verify why is not in a try-catch
-      throw Exception('Empresa não encontrada'.hardcoded);
+      throw AppException('Empresa não encontrada'.hardcoded);
     }
 
     final userModel = await _remoteDatasource.login(
