@@ -3,11 +3,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
-part 'enterprises_management_controller.g.dart';
+part 'enterprise_manager_controller.g.dart';
 
 @riverpod
-class EnterprisesManagementController
-    extends _$EnterprisesManagementController {
+class EnterpriseManagerController extends _$EnterpriseManagerController {
   @override
   Future<List<EnterprisePermissionEntity>> build() {
     return ref

@@ -11,14 +11,14 @@ class EnterpriseManagerPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch the controller that fetches all the data
-    final permissionsAsync = ref.watch(enterprisesManagementControllerProvider);
+    final permissionsAsync = ref.watch(enterpriseManagerControllerProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text('Gerenciar Módulos'.hardcoded)),
       // Use your reusable widget to handle loading/error states
       body: AsyncValueWidget(
         value: permissionsAsync,
-        tryAgain: () => ref.invalidate(enterprisesManagementControllerProvider),
+        tryAgain: () => ref.invalidate(enterpriseManagerControllerProvider),
         data: (enterprises) {
           if (enterprises.isEmpty) {
             return Center(child: Text('Nenhuma empresa encontrada.'.hardcoded));
@@ -56,7 +56,7 @@ class EnterpriseManagerPage extends ConsumerWidget {
                         //       // Call the controller to update the permission
                         //       ref
                         //           .read(
-                        //             enterprisesManagementControllerProvider
+                        //             enterpriseManagerControllerProvider
                         //                 .notifier,
                         //           )
                         //           .updatePermission(
