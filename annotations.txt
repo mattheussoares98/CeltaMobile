@@ -1,0 +1,12 @@
+###### SUPABASE DATABASE ######
+# modules management
+In modules management, exists 2 tables to control if is enabled or not
+1- modules
+    buy quotation, inventory, sale request, etc
+2- module_permissions 
+    link the module and the entire enterprise, or a specific CNPJ. If the CNPJ is null, apply the permissions for all CNPJs. If has a specific CNPJ, apply the change for this specific CNPJ
+
+# Get all enterprises with CNPJs and modules enabled or not
+Execute the function get_all_enterprise_permissions. The user must be authenticated
+
+###### SUPABASE DATABASE ######
