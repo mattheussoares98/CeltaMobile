@@ -6,10 +6,10 @@ import '../../providers.dart';
 part 'enterprises_management_controller.g.dart';
 
 @riverpod
-class EnterpriseManagerController extends _$EnterpriseManagerController {
+class EnterprisesManagementController
+    extends _$EnterprisesManagementController {
   @override
   Future<List<EnterprisePermissionEntity>> build() {
-    // Fetch the initial data using the repository provider
     return ref
         .watch(enterpriseRepositoryProvider)
         .getAllEnterprisePermissions();
