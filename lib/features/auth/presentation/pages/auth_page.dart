@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../core/presentation/theme/app_decorations.dart';
 import '../../../../localization/string_hardcoded.dart';
 import '../../../../utils/utils.dart';
 import '../controllers/auth_state_notifier.dart';
@@ -17,19 +19,21 @@ class AuthPage extends ConsumerStatefulWidget {
 
 class _AuthPageState extends ConsumerState<AuthPage> {
   final enterpriseController = TextEditingController();
-  final userNameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     enterpriseController.dispose();
-    userNameController.dispose();
+    emailController.dispose();
     passwordController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () => ref.invalidate(authStateProvider));
@@ -46,18 +50,42 @@ class _AuthPageState extends ConsumerState<AuthPage> {
           children: [
             TextField(
               controller: enterpriseController,
-              decoration: InputDecoration(labelText: 'Empresa'.hardcoded),
+              decoration: AppDecorations.input(
+                context: context,
+                labelText: 'Empresa'.hardcoded,
+                prefixIcon: Icon(
+                  theme.platform == TargetPlatform.iOS
+                      ? CupertinoIcons.building_2_fill
+                      : Icons.business,
+                ),
+              ),
             ),
             gapH16,
             TextField(
-              controller: userNameController,
-              decoration: InputDecoration(labelText: 'Email'.hardcoded),
+              controller: emailController,
+              decoration: AppDecorations.input(
+                context: context,
+                labelText: 'Email'.hardcoded,
+                prefixIcon: Icon(
+                  theme.platform == TargetPlatform.iOS
+                      ? CupertinoIcons.mail_solid
+                      : Icons.email_outlined,
+                ),
+              ),
               keyboardType: TextInputType.emailAddress,
             ),
             gapH16,
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(labelText: 'Senha'.hardcoded),
+              decoration: AppDecorations.input(
+                context: context,
+                labelText: 'Senha'.hardcoded,
+                prefixIcon: Icon(
+                  theme.platform == TargetPlatform.iOS
+                      ? CupertinoIcons.lock_fill
+                      : Icons.lock_outline,
+                ),
+              ),
               obscureText: true,
             ),
             gapH32,
@@ -69,7 +97,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     .read(loginControllerProvider.notifier)
                     .login(
                       enterpriseName: enterpriseController.text,
-                      userName: userNameController.text,
+                      userName: emailController.text,
                       password: passwordController.text,
                     );
               },
