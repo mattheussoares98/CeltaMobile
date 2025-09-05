@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'data_source.dart';
+import 'repositories.dart';
 
 class ManagerAuthRepositoryImpl implements IManagerAuthRepository {
   final SupabaseClient supabase;
