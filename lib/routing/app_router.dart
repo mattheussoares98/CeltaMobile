@@ -6,7 +6,8 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/presentation/controllers/controllers.dart';
 import '../features/auth/presentation/pages/pages.dart';
-import '../features/enterprise_manager/presentation/pages/pages.dart';
+import '../features/enterprise_manager/presentation/pages/pages.dart'
+    hide AuthPage;
 import 'not_found_page.dart';
 
 part 'app_router.g.dart';
