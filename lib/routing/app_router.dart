@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../features/auth/presentation/controllers/controllers.dart';
 import '../features/auth/presentation/pages/pages.dart';
+import '../features/enterprise_manager/presentation/controllers/controllers.dart';
 import '../features/enterprise_manager/presentation/pages/pages.dart'
     as enterpriseManager;
 import 'not_found_page.dart';
@@ -46,6 +47,29 @@ GoRouter goRouter(Ref ref) {
           GoRoute(
             path: 'enterpriseManagerAuth',
             name: AppRoute.enterpriseManagerAuth.name,
+            redirect: (context, state) {
+              final authManagerState = ref.read(authManagerStateProvider);
+              final isLogged = authManagerState.valueOrNull != null;
+
+              final isGoingToAuth =
+                  state.matchedLocation == '/auth/enterpriseManagerAuth';
+
+              // If the manager is NOT logged in and trying to access a protected page...
+              if (!isLogged && !isGoingToAuth) {
+                // ...redirect to the manager login page.
+                debugPrint("enterpriseManagerAuth");
+                return 'enterpriseManagerAuth';
+              }
+              // If the manager IS logged in and tries to go to the login page...
+              if (isLogged && isGoingToAuth) {
+                // ...redirect them to the main dashboard.
+                debugPrint("enterpriseManager");
+                return 'enterpriseManager';
+              }
+              // Otherwise, allow access.
+              debugPrint("null");
+              return null;
+            },
             builder: (context, state) => const enterpriseManager.AuthPage(),
             routes: [
               GoRoute(
@@ -58,7 +82,6 @@ GoRouter goRouter(Ref ref) {
           ),
         ],
       ),
-
       GoRoute(
         path: '/splash',
         name: AppRoute.splash.name,
