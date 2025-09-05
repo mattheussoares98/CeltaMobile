@@ -8,16 +8,24 @@ import '../features/auth/presentation/controllers/controllers.dart';
 import '../features/auth/presentation/pages/pages.dart';
 import '../features/enterprise_manager/presentation/controllers/controllers.dart';
 import '../features/enterprise_manager/presentation/pages/pages.dart'
-    as enterpriseManager;
+    as enterprise_manager;
 import 'not_found_page.dart';
 
 part 'app_router.g.dart';
 
-enum AppRoute { auth, enterpriseManager, enterpriseManagerAuth, home, splash }
+enum AppRoute {
+  auth,
+  enterpriseManager,
+  enterpriseManagerDash,
+  enterpriseManagerAuth,
+  home,
+  splash,
+}
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
   final authState = ref.watch(authStateProvider);
+  final authManagerState = ref.watch(authManagerStateProvider);
 
   return GoRouter(
     initialLocation: '/splash',
@@ -45,38 +53,43 @@ GoRouter goRouter(Ref ref) {
         builder: (context, state) => const AuthPage(),
         routes: [
           GoRoute(
-            path: 'enterpriseManagerAuth',
-            name: AppRoute.enterpriseManagerAuth.name,
+            path: 'enterprise-manager',
+            name: AppRoute.enterpriseManager.name,
             redirect: (context, state) {
-              final authManagerState = ref.read(authManagerStateProvider);
               final isLogged = authManagerState.valueOrNull != null;
 
               final isGoingToAuth =
-                  state.matchedLocation == '/auth/enterpriseManagerAuth';
+                  state.matchedLocation == '/auth/enterprise-manager';
 
-              // If the manager is NOT logged in and trying to access a protected page...
               if (!isLogged && !isGoingToAuth) {
-                // ...redirect to the manager login page.
-                debugPrint("enterpriseManagerAuth");
-                return 'enterpriseManagerAuth';
+                debugPrint("auth");
+                // return state.namedLocation(AppRoute.enterpriseManagerAuth.name);
+                //works equal
+                return '/auth/enterprise-manager/auth';
               }
-              // If the manager IS logged in and tries to go to the login page...
+
               if (isLogged && isGoingToAuth) {
-                // ...redirect them to the main dashboard.
-                debugPrint("enterpriseManager");
-                return 'enterpriseManager';
+                debugPrint("dash");
+                //works equal
+                // return state.namedLocation(AppRoute.enterpriseManagerDash.name);
+                return '/auth/enterprise-manager/dashboard';
               }
-              // Otherwise, allow access.
+
               debugPrint("null");
               return null;
             },
-            builder: (context, state) => const enterpriseManager.AuthPage(),
             routes: [
               GoRoute(
-                path: 'enterpriseManager',
-                name: AppRoute.enterpriseManager.name,
+                path: 'auth', // Relative path -> /enterprise-manager/auth
+                name: AppRoute.enterpriseManagerAuth.name,
                 builder: (context, state) =>
-                    const enterpriseManager.EnterpriseManagerPage(),
+                    const enterprise_manager.AuthPage(),
+              ),
+              GoRoute(
+                path: 'dashboard',
+                name: AppRoute.enterpriseManagerDash.name,
+                builder: (context, state) =>
+                    const enterprise_manager.EnterpriseManagerPage(),
               ),
             ],
           ),
