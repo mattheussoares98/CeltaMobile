@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
-import '../../../../core/presentation/theme/app_decorations.dart';
 import '../../../../localization/string_hardcoded.dart';
 import '../../../../utils/utils.dart';
 import '../controllers/auth_state_notifier.dart';
 import '../controllers/login_controller.dart';
+import 'components/components.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});
@@ -32,8 +30,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () => ref.invalidate(authStateProvider));
@@ -48,59 +44,17 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: enterpriseController,
-              decoration: AppDecorations.input(
-                context: context,
-                labelText: 'Empresa'.hardcoded,
-                prefixIcon: Icon(
-                  theme.platform == TargetPlatform.iOS
-                      ? CupertinoIcons.building_2_fill
-                      : Icons.business,
-                ),
-              ),
-            ),
+            EnterpriseField(enterpriseController: enterpriseController),
             gapH16,
-            TextField(
-              controller: emailController,
-              decoration: AppDecorations.input(
-                context: context,
-                labelText: 'Email'.hardcoded,
-                prefixIcon: Icon(
-                  theme.platform == TargetPlatform.iOS
-                      ? CupertinoIcons.mail_solid
-                      : Icons.email_outlined,
-                ),
-              ),
-              keyboardType: TextInputType.emailAddress,
-            ),
+            EmailField(emailController: emailController),
             gapH16,
-            TextField(
-              controller: passwordController,
-              decoration: AppDecorations.input(
-                context: context,
-                labelText: 'Senha'.hardcoded,
-                prefixIcon: Icon(
-                  theme.platform == TargetPlatform.iOS
-                      ? CupertinoIcons.lock_fill
-                      : Icons.lock_outline,
-                ),
-              ),
-              obscureText: true,
-            ),
+            PasswordField(passwordController: passwordController),
             gapH32,
-            PrimaryButton(
-              text: 'Entrar'.hardcoded,
+            EnterButton(
               isLoading: loginState.isLoading,
-              onPressed: () {
-                ref
-                    .read(loginControllerProvider.notifier)
-                    .login(
-                      enterpriseName: enterpriseController.text,
-                      userName: emailController.text,
-                      password: passwordController.text,
-                    );
-              },
+              enterpriseController: enterpriseController,
+              emailController: emailController,
+              passwordController: passwordController,
             ),
           ],
         ),
