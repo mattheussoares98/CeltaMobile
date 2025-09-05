@@ -36,10 +36,6 @@ mixin ErrorHandling {
       return AsyncError('Este e-mail já está cadastrado.'.hardcoded, st);
     } else if (message.contains('unable to validate email address')) {
       return AsyncError('Formato de e-mail inválido.'.hardcoded, st);
-    } else if (message.contains(
-      'duplicate key value violates unique constraint "units_cpf_cnpj_key"',
-    )) {
-      return AsyncError('CPF/CNPJ já existe.'.hardcoded, st);
     } else if (message.contains('you can only request this after')) {
       return AsyncError(
         'Essa ação está bloqueada temporariamente. Tente novamente daqui a pouco.'
