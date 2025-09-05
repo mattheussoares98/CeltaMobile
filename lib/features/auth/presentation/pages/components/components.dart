@@ -1,3 +1,4 @@
+export './celta_image.dart';
 export './email_field.dart';
 export './enter_button.dart';
 export './enterprise_field.dart';

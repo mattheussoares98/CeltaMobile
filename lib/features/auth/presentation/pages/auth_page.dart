@@ -41,22 +41,25 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       appBar: AppBar(title: Text('Autenticação'.hardcoded)),
       body: Padding(
         padding: EdgeInsets.all(Sizes.p24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            EnterpriseField(enterpriseController: enterpriseController),
-            gapH16,
-            EmailField(emailController: emailController),
-            gapH16,
-            PasswordField(passwordController: passwordController),
-            gapH32,
-            EnterButton(
-              isLoading: loginState.isLoading,
-              enterpriseController: enterpriseController,
-              emailController: emailController,
-              passwordController: passwordController,
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CeltaImage(),
+              EnterpriseField(enterpriseController: enterpriseController),
+              gapH16,
+              EmailField(emailController: emailController),
+              gapH16,
+              PasswordField(passwordController: passwordController),
+              gapH32,
+              EnterButton(
+                isLoading: loginState.isLoading,
+                enterpriseController: enterpriseController,
+                emailController: emailController,
+                passwordController: passwordController,
+              ),
+            ],
+          ),
         ),
       ),
     );
