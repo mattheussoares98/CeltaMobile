@@ -54,6 +54,7 @@ class _EnterpriseManagerAuthPageState extends ConsumerState<AuthPage> {
               isLoading: authManagerState.isLoading,
             ),
             gapH32,
+            //TODO validate fields, change focus and submit on password submit
             EnterButton(
               emailController: emailController,
               passwordController: passwordController,

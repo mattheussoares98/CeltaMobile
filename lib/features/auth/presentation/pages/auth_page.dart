@@ -51,6 +51,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
             gapH16,
             PasswordField(passwordController: passwordController),
             gapH32,
+            //TODO validate fields, change focus and submit on password submit
             EnterButton(
               isLoading: loginState.isLoading,
               enterpriseController: enterpriseController,
