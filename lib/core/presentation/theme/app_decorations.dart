@@ -53,10 +53,7 @@ class AppDecorations {
 
       contentPadding:
           contentPadding ??
-          const EdgeInsets.symmetric(
-            vertical: Sizes.p16,
-            horizontal: Sizes.p12,
-          ),
+          const EdgeInsets.symmetric(vertical: Sizes.p8, horizontal: Sizes.p8),
 
       filled: true,
       fillColor: colorScheme.surfaceContainerHighest.withAlpha(125),

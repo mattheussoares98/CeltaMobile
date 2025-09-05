@@ -7,6 +7,7 @@ class AppTheme {
     // * Use this to toggle Material 3 (defaults to true since Flutter 3.16)
     useMaterial3: true,
     primarySwatch: Colors.grey,
+    // platform: TargetPlatform.iOS,
     textTheme: TextTheme(
       titleLarge: theme.textTheme.titleLarge!.copyWith(
         fontWeight: FontWeight.bold,
