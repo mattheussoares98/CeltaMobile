@@ -1,18 +1,18 @@
-import 'package:celta_intelligence/features/splash/presentation/pages/splash_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/splash/presentation/pages/splash_page.dart';
 import '../features/auth/presentation/controllers/controllers.dart';
 import '../features/auth/presentation/pages/pages.dart';
 import '../features/enterprise_manager/presentation/pages/pages.dart'
-    hide AuthPage;
+    as enterpriseManager;
 import 'not_found_page.dart';
 
 part 'app_router.g.dart';
 
-enum AppRoute { auth, enterpriseManager, home, splash }
+enum AppRoute { auth, enterpriseManager, enterpriseManagerAuth, home, splash }
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
@@ -44,9 +44,17 @@ GoRouter goRouter(Ref ref) {
         builder: (context, state) => const AuthPage(),
         routes: [
           GoRoute(
-            path: 'enterpriseManager',
-            name: AppRoute.enterpriseManager.name,
-            builder: (context, state) => const EnterpriseManagerPage(),
+            path: 'enterpriseManagerAuth',
+            name: AppRoute.enterpriseManagerAuth.name,
+            builder: (context, state) => const enterpriseManager.AuthPage(),
+            routes: [
+              GoRoute(
+                path: 'enterpriseManager',
+                name: AppRoute.enterpriseManager.name,
+                builder: (context, state) =>
+                    const enterpriseManager.EnterpriseManagerPage(),
+              ),
+            ],
           ),
         ],
       ),

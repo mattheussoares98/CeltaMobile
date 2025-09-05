@@ -6,14 +6,27 @@ import 'commom_widgets.dart';
 /// Scrollable widget that shows a responsive card with a given child widget.
 /// Useful for displaying forms and other widgets that need to be scrollable.
 class ResponsiveScrollableWidget extends StatelessWidget {
-  const ResponsiveScrollableWidget({super.key, required this.child});
+  final bool? centralize;
+  const ResponsiveScrollableWidget({
+    super.key,
+    required this.child,
+    this.centralize,
+  });
   final Widget child;
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return SingleChildScrollView(
-      child: ResponsiveCenter(
-        maxContentWidth: Breakpoint.tablet,
-        child: Padding(padding: const EdgeInsets.all(Sizes.p16), child: child),
+      child: SizedBox(
+        height: centralize == true ? mediaQuery.size.height : null,
+        width: centralize == true ? mediaQuery.size.width : null,
+        child: ResponsiveCenter(
+          maxContentWidth: Breakpoint.tablet,
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p16),
+            child: child,
+          ),
+        ),
       ),
     );
   }
