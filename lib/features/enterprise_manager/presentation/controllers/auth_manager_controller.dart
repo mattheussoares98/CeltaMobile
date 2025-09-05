@@ -16,6 +16,7 @@ class AuthManagerController extends _$AuthManagerController with ErrorHandling {
     try {
       final repository = ref.read(authManagerRepositoryProvider);
       await repository.login(email, password);
+      state = const AsyncValue.data(null);
     } catch (e, st) {
       state = getAsyncError(e, st);
     }
