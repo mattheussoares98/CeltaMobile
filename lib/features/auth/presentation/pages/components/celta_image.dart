@@ -13,8 +13,7 @@ class CeltaImage extends StatelessWidget {
         context.goNamed(AppRoute.enterpriseManagerAuth.name);
         debugPrint("tried");
       },
-      child: Container(
-        color: Colors.orange,
+      child: SizedBox(
         width: 300,
         child: Image.asset("lib/core/assets/images/logoCeltaTransparente.png"),
       ),

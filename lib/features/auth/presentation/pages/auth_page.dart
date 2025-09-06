@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
-import '../../../../localization/string_hardcoded.dart';
 import '../../../../utils/utils.dart';
 import '../controllers/auth_state_notifier.dart';
 import '../controllers/login_controller.dart';
@@ -18,15 +17,34 @@ class AuthPage extends ConsumerStatefulWidget {
 
 class _AuthPageState extends ConsumerState<AuthPage> {
   final enterpriseController = TextEditingController();
-  final emailController = TextEditingController();
+  final userController = TextEditingController();
   final passwordController = TextEditingController();
+  final userFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     super.dispose();
     enterpriseController.dispose();
-    emailController.dispose();
+    userController.dispose();
     passwordController.dispose();
+    userFocusNode.dispose();
+    passwordFocusNode.dispose();
+  }
+
+  void onSubmit() {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    ref
+        .read(loginControllerProvider.notifier)
+        .login(
+          enterpriseName: enterpriseController.text,
+          userName: userController.text,
+          password: passwordController.text,
+        );
   }
 
   @override
@@ -39,26 +57,39 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     final loginState = ref.watch(loginControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Autenticação'.hardcoded)),
       body: ResponsiveScrollableWidget(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CeltaImage(),
-            EnterpriseField(enterpriseController: enterpriseController),
-            gapH16,
-            EmailField(emailController: emailController),
-            gapH16,
-            PasswordField(passwordController: passwordController),
-            gapH32,
-            //TODO validate fields, change focus and submit on password submit
-            EnterButton(
-              isLoading: loginState.isLoading,
-              enterpriseController: enterpriseController,
-              emailController: emailController,
-              passwordController: passwordController,
-            ),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CeltaImage(),
+              EnterpriseField(
+                enterpriseController: enterpriseController,
+                userFocusNode: userFocusNode,
+              ),
+              gapH8,
+              UserField(
+                userController: userController,
+                userFocusNode: userFocusNode,
+                passwordFocusNode: passwordFocusNode,
+              ),
+              gapH8,
+              PasswordField(
+                passwordController: passwordController,
+                passwordFocusNode: passwordFocusNode,
+                onSubmit: onSubmit,
+              ),
+              gapH32,
+              EnterButton(
+                isLoading: loginState.isLoading,
+                enterpriseController: enterpriseController,
+                emailController: userController,
+                passwordController: passwordController,
+                onSubmit: onSubmit,
+              ),
+            ],
+          ),
         ),
       ),
     );
