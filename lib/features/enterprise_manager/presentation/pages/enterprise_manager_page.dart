@@ -1,4 +1,6 @@
+import 'package:celta_intelligence/features/enterprise_manager/providers.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,11 +12,30 @@ class EnterpriseManagerPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the controller that fetches all the data
     final permissionsAsync = ref.watch(enterpriseManagerControllerProvider);
+    final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Gerenciar Módulos'.hardcoded)),
+      appBar: AppBar(
+        title: Text('Gerenciar Módulos'.hardcoded),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showAlertDialog(
+                context: context,
+                title: "Logout".hardcoded,
+                content: "Tem certeza que deseja sair?".hardcoded,
+                onOkPressed: ref.read(authManagerRepositoryProvider).logout,
+              );
+            },
+            icon: Icon(
+              theme.platform == TargetPlatform.iOS
+                  ? CupertinoIcons.person_crop_circle_badge_xmark
+                  : Icons.logout,
+            ),
+          ),
+        ],
+      ),
       // Use your reusable widget to handle loading/error states
       body: AsyncValueWidget(
         value: permissionsAsync,
