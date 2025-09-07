@@ -13,7 +13,7 @@ class AuthManagerRepositoryImpl implements IAuthManagerRepository {
   }
 
   @override
-  Future<void> login(String email, String password) {
+  Future<AuthResponse> login(String email, String password) {
     return dataSource.login(email, password);
   }
 

@@ -8,11 +8,12 @@ class AuthManagerDataSource implements IAuthManagerDataSource {
 
   @override
   User? getCurrentUser() {
+    //TODO create tests
     return supabase.auth.currentUser;
   }
 
   @override
-  Future<void> login(String email, String password) {
+  Future<AuthResponse> login(String email, String password) {
     return supabase.auth.signInWithPassword(email: email, password: password);
   }
 

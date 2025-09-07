@@ -9,7 +9,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: kDebugMode ? 0 : 2), () {
+    Future.delayed(const Duration(seconds: kDebugMode ? 1 : 2), () {
       context.goNamed(AppRoute.auth.name);
     });
 

@@ -22,145 +22,86 @@ enum AppRoute {
   splash,
 }
 
+class _Bridge<T> extends ChangeNotifier {
+  T? _value;
+  T? get value => _value;
+  set value(T? v) {
+    if (!identical(v, _value)) {
+      _value = v;
+      notifyListeners();
+    }
+  }
+}
+
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
-  final authState = ref.watch(authStateProvider);
-  final authManagerState = ref.watch(authManagerStateProvider);
+  final authBridge = _Bridge<Object?>();
+  final mgrBridge = _Bridge<Object?>();
+
+  ref.listen<AsyncValue<Object?>>(authStateProvider, (prev, next) {
+    authBridge.value = next.valueOrNull;
+  }, fireImmediately: true);
+
+  ref.listen<AsyncValue<Object?>>(
+    authManagerStateProvider,
+    (prev, next) => mgrBridge.value = next.valueOrNull,
+    fireImmediately: true,
+  );
 
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: false,
-    redirect: (context, state) {
-      final loggedIn = authState.value != null;
-      final onAuthRoute = state.matchedLocation == '/auth';
-
-      if (!loggedIn && onAuthRoute) {
-        debugPrint("auth");
-        return '/auth';
-      }
-
-      if (loggedIn && onAuthRoute) {
-        debugPrint("splash");
-        return '/splash';
-      }
-
-      return null;
-    },
+    refreshListenable: Listenable.merge([authBridge, mgrBridge]),
     routes: [
       GoRoute(
         path: '/auth',
         name: AppRoute.auth.name,
         builder: (context, state) => const AuthPage(),
+      ),
+      GoRoute(
+        path: '/enterprise-manager',
+        name: AppRoute.enterpriseManager.name,
+
+        redirect: (context, state) {
+          final isLoggedInManager = mgrBridge.value != null;
+          final isAtManagerRoot =
+              state.matchedLocation == '/enterprise-manager';
+          final isAtManagerAuth =
+              state.matchedLocation == '/enterprise-manager/auth';
+
+          if (!isLoggedInManager && !isAtManagerAuth) {
+            return '/enterprise-manager/auth';
+          }
+
+          if (isLoggedInManager && (isAtManagerRoot || isAtManagerAuth)) {
+            return '/enterprise-manager/dashboard';
+          }
+
+          return null;
+        },
+
         routes: [
           GoRoute(
-            path: 'enterprise-manager',
-            name: AppRoute.enterpriseManager.name,
-            redirect: (context, state) {
-              final isLogged = authManagerState.valueOrNull != null;
-
-              final isGoingToAuth =
-                  state.matchedLocation == '/auth/enterprise-manager';
-
-              if (!isLogged && !isGoingToAuth) {
-                debugPrint("auth");
-                // return state.namedLocation(AppRoute.enterpriseManagerAuth.name);
-                //works equal
-                return '/auth/enterprise-manager/auth';
-              }
-
-              if (isLogged && isGoingToAuth) {
-                debugPrint("dash");
-                //works equal
-                // return state.namedLocation(AppRoute.enterpriseManagerDash.name);
-                return '/auth/enterprise-manager/dashboard';
-              }
-
-              debugPrint("null");
-              return null;
-            },
-            routes: [
-              GoRoute(
-                path: 'auth', // Relative path -> /enterprise-manager/auth
-                name: AppRoute.enterpriseManagerAuth.name,
-                builder: (context, state) =>
-                    const enterprise_manager.AuthPage(),
-              ),
-              GoRoute(
-                path: 'dashboard',
-                name: AppRoute.enterpriseManagerDash.name,
-                builder: (context, state) =>
-                    const enterprise_manager.EnterpriseManagerPage(),
-              ),
-            ],
+            path: 'auth',
+            name: AppRoute.enterpriseManagerAuth.name,
+            builder: (context, state) => const enterprise_manager.AuthPage(),
+          ),
+          GoRoute(
+            path: 'dashboard',
+            name: AppRoute.enterpriseManagerDash.name,
+            builder: (context, state) =>
+                const enterprise_manager.EnterpriseManagerPage(),
           ),
         ],
       ),
+
       GoRoute(
         path: '/splash',
         name: AppRoute.splash.name,
         builder: (context, state) => const SplashPage(),
       ),
-      // GoRoute(
-      //   path: '/',
-      //   name: AppRoute.home.name,
-      //   builder: (context, state) => const HomePage(), // Create this screen
-      //   routes: [
-      //     GoRoute(
-      //       path: 'company',
-      //       name: AppRoute.company.name,
-      //       builder: (context, state) => const CompanyPage(),
-      //       routes: [
-      //         GoRoute(
-      //           path: 'editUnit/:unitId',
-      //           name: AppRoute.editUnit.name,
-      //           builder: (context, state) {
-      //             final unitId = state.pathParameters['unitId']!;
-      //             return CreateOrEditUnitPage(unitId: unitId);
-      //           },
-      //         ),
-      //         GoRoute(
-      //           path: 'createUnit/:companyId',
-      //           name: AppRoute.createUnit.name,
-      //           builder: (context, state) {
-      //             final companyId = state.pathParameters['companyId']!;
-      //             return CreateOrEditUnitPage(companyId: companyId);
-      //           },
-      //         ),
-      //         GoRoute(
-      //           path: 'createCompany',
-      //           name: AppRoute.createCompany.name,
-      //           builder: (context, state) => CreateCompanyPage(),
-      //         ),
-      //       ],
-      //     ),
-      //     GoRoute(
-      //       path: 'invites',
-      //       name: AppRoute.invites.name,
-      //       builder: (context, state) => const InvitesPage(),
-      //     ),
-      //     GoRoute(
-      //       path: 'permissions',
-      //       name: AppRoute.permissions.name,
-      //       builder: (context, state) => const PermissionsPage(),
-      //       routes: [
-      //         GoRoute(
-      //           path: 'editPermissionGroup/:companyId/:groupId',
-      //           name: AppRoute.editPermissionGroup.name,
-      //           builder: (context, state) => EditPermissionGroupPage(
-      //             companyId: state.pathParameters['companyId']!,
-      //             groupId: state.pathParameters['groupId']!,
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //     GoRoute(
-      //       path: 'users',
-      //       name: AppRoute.users.name,
-      //       builder: (context, state) => const UsersPage(),
-      //     ),
-      //   ],
-      // ),
     ],
+
     errorBuilder: (context, state) => const NotFoundPage(),
   );
 }

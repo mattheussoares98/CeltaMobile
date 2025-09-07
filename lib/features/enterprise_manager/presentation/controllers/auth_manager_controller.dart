@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../exceptions/exceptions.dart';
 import '../../providers.dart';
@@ -10,15 +11,17 @@ class AuthManagerController extends _$AuthManagerController with ErrorHandling {
   @override
   FutureOr<void> build() {}
 
-  Future<void> login(String email, String password) async {
+  Future<AuthResponse?> login(String email, String password) async {
     state = const AsyncValue.loading();
 
     try {
       final repository = ref.read(authManagerRepositoryProvider);
-      await repository.login(email, password);
+      final authResponse = await repository.login(email, password);
       state = const AsyncValue.data(null);
+      return authResponse;
     } catch (e, st) {
       state = getAsyncError(e, st);
     }
+    return null;
   }
 }

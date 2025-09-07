@@ -10,7 +10,7 @@ class CeltaImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        context.goNamed(AppRoute.enterpriseManagerAuth.name);
+        context.pushNamed(AppRoute.enterpriseManager.name);
         debugPrint("tried");
       },
       child: SizedBox(

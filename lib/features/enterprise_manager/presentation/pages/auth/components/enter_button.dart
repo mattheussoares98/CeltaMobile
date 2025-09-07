@@ -1,8 +1,10 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../routing/routing.dart';
 import '../../../controllers/controllers.dart';
 
 class EnterButton extends ConsumerWidget {
@@ -21,10 +23,15 @@ class EnterButton extends ConsumerWidget {
     return PrimaryButton(
       text: 'Entrar'.hardcoded,
       isLoading: isLoading,
-      onPressed: () {
-        ref
+      onPressed: () async {
+        final authResponse = await ref
             .read(authManagerControllerProvider.notifier)
             .login(emailController.text, passwordController.text);
+
+        if (authResponse != null) {
+          context.pop();
+          context.pushNamed(AppRoute.enterpriseManager.name);
+        }
       },
     );
   }
