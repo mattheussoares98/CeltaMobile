@@ -8,6 +8,7 @@ import 'package:celta_intelligence/features/auth/data/data_source/data_source.da
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/data_source/data_source.dart';
+import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -191,5 +192,21 @@ class MockAuthManagerDataSource extends Mock implements IAuthManagerDataSource {
 
   void mockGetCurrentUser(User? user) {
     when(() => this.getCurrentUser()).thenAnswer((_) => user);
+  }
+}
+
+class MockAuthManagerRepository extends Mock implements IAuthManagerRepository {
+  MockAuthManagerRepository() {
+    when(() => this.logout()).thenAnswer((_) async => {});
+  }
+
+  When _mockLoginCall() => when(() => this.login(any(), any()));
+
+  void mockLogin(AuthResponse response) {
+    _mockLoginCall().thenAnswer((_) async => response);
+  }
+
+  void mockLoginError() {
+    _mockLoginCall().thenThrow(Exception());
   }
 }
