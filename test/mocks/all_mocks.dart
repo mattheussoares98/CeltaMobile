@@ -150,14 +150,7 @@ class MockEnterpriseDatasource extends Mock implements IEnterpriseDatasource {
 
 class MockAuthRepository extends Mock implements IAuthRepository {
   MockAuthRepository() {
-    when(
-      () => this.login(
-        enterpriseName: any(named: 'enterpriseName'),
-        userName: any(named: 'userName'),
-        password: any(named: 'password'),
-      ),
-    ).thenAnswer((_) async => {});
-
+    _mockLoginCall().thenAnswer((_) async => {});
     _mockLogoutCall().thenAnswer((_) async => {});
   }
 
@@ -173,4 +166,15 @@ class MockAuthRepository extends Mock implements IAuthRepository {
 
   When _mockLogoutCall() => when(() => this.logout());
   void mockLogoutError() => _mockLogoutCall().thenThrow(Exception());
+
+  When _mockLoginCall() => when(
+    () => this.login(
+      enterpriseName: any(named: 'enterpriseName'),
+      userName: any(named: 'userName'),
+      password: any(named: 'password'),
+    ),
+  );
+  void mockLoginError() {
+    _mockLoginCall().thenThrow(Exception());
+  }
 }

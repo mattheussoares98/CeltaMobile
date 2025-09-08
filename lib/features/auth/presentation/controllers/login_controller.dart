@@ -25,6 +25,8 @@ class LoginController extends _$LoginController with ErrorHandling {
         password: password,
         userName: userName,
       );
+
+      state = const AsyncValue.data(null);
     } catch (e, st) {
       state = getAsyncError(e, st);
     }
