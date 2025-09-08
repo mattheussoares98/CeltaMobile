@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -81,3 +82,5 @@ class SupabaseClientSpy extends Fake implements SupabaseClient {
     return _FakePostgrestFilterBuilder<T>(future);
   }
 }
+
+class MockBox extends Mock implements Box {}

@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../../core/domain/entities/entities.dart';
 
-class UserModel {
+class UserModel extends Equatable {
   final String? name;
   final String? AccessKey;
   final String? CrossIdentity_Usuario;
@@ -10,6 +12,9 @@ class UserModel {
     required this.AccessKey,
     required this.CrossIdentity_Usuario,
   });
+
+  @override
+  List<Object?> get props => [name, AccessKey, CrossIdentity_Usuario];
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(

@@ -10,7 +10,6 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
 
   AuthLocalDatasource(this.box);
 
-  //TODO create tests
   @override
   Future<void> clearUser() async {
     await box.delete(DatabaseKeys.user);
