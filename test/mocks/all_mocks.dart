@@ -1,6 +1,11 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/core/data/data_source/data_source.dart';
+import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/auth/data/data_source/data_source.dart';
+import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -107,5 +112,37 @@ class MockSoapAdapter extends Mock implements SoapRequest {
         url: any(named: 'url'),
       ),
     ).thenAnswer((_) async => value);
+  }
+}
+
+class MockAuthRemoteDataSource extends Mock implements IAuthRemoteDatasource {
+  void mockLogin(UserModel user) {
+    when(
+      () => this.login(
+        url: any(named: 'url'),
+        user: any(named: 'user'),
+        password: any(named: 'password'),
+      ),
+    ).thenAnswer((_) async => user);
+  }
+}
+
+class MockAuthLocalDatasource extends Mock implements IAuthLocalDatasource {
+  MockAuthLocalDatasource() {
+    when(() => this.clearUser()).thenAnswer((_) async => {});
+  }
+
+  void mockSaveUser(UserEntity user) {
+    when(() => this.saveUser(user)).thenAnswer((_) async => {});
+  }
+
+  void mockGetUser(UserEntity? user) {
+    when(() => this.getUser()).thenAnswer((_) async => user);
+  }
+}
+
+class MockEnterpriseDatasource extends Mock implements IEnterpriseDatasource {
+  void mockGetEnterprise(EnterpriseModel? enterprise) {
+    when(() => this.getEnterprise(any())).thenAnswer((_) async => enterprise);
   }
 }

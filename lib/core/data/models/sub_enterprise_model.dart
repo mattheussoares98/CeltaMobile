@@ -27,4 +27,12 @@ class SubEnterpriseModel extends Equatable {
 
   SubEnterpriseEntity toEntity() =>
       SubEnterpriseEntity(id: id, name: name, cnpj: cnpj);
+
+  factory SubEnterpriseModel.fromEntity(SubEnterpriseEntity entity) {
+    return SubEnterpriseModel(
+      id: entity.id,
+      name: entity.name,
+      cnpj: entity.cnpj,
+    );
+  }
 }

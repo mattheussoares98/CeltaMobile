@@ -48,4 +48,14 @@ class EnterpriseModel extends Equatable {
     baseUrl: baseUrl,
     subEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
   );
+
+  factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
+      EnterpriseModel(
+        id: entity.id,
+        name: entity.name,
+        baseUrl: entity.baseUrl,
+        subEnterprises: entity.subEnterprises
+            ?.map((e) => SubEnterpriseModel.fromEntity(e))
+            .toList(),
+      );
 }

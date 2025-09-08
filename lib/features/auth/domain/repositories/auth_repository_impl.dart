@@ -6,17 +6,15 @@ import '../../data/data_source/data_source.dart';
 import '../../domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final IAuthRemoteDatasource _remoteDatasource;
-  final IAuthLocalDatasource _localDatasource;
-  final IEnterpriseDatasource _enterpriseDatasource;
+  final IAuthRemoteDatasource authRemoteDatasource;
+  final IAuthLocalDatasource authLocalDatasource;
+  final IEnterpriseDatasource enterpriseDatasource;
 
   AuthRepositoryImpl({
-    required IAuthRemoteDatasource remoteDatasource,
-    required IAuthLocalDatasource localDatasource,
-    required IEnterpriseDatasource enterpriseDatasource,
-  }) : _remoteDatasource = remoteDatasource,
-       _localDatasource = localDatasource,
-       _enterpriseDatasource = enterpriseDatasource;
+    required this.authRemoteDatasource,
+    required this.authLocalDatasource,
+    required this.enterpriseDatasource,
+  });
 
   @override
   Future<void> login({
@@ -24,32 +22,29 @@ class AuthRepositoryImpl implements AuthRepository {
     required String userName,
     required String password,
   }) async {
-    final enterpriseModel = await _enterpriseDatasource.getEnterprise(
+    final enterpriseModel = await enterpriseDatasource.getEnterprise(
       enterpriseName,
     );
     if (enterpriseModel == null) {
-      //TODO create tests and verify why is not in a try-catch
       throw AppException('Empresa não encontrada'.hardcoded);
     }
 
-    final userModel = await _remoteDatasource.login(
+    final userModel = await authRemoteDatasource.login(
       url: enterpriseModel.baseUrl!,
       user: userName,
       password: password,
     );
 
-    await _localDatasource.saveUser(userModel.toEntity());
+    await authLocalDatasource.saveUser(userModel.toEntity());
   }
 
   @override
   Future<UserEntity?> getCurrentUser() async {
-    //TODO test
-    return await _localDatasource.getUser();
+    return await authLocalDatasource.getUser();
   }
 
   @override
   Future<void> logout() async {
-    //TODO test
-    await _localDatasource.clearUser();
+    await authLocalDatasource.clearUser();
   }
 }

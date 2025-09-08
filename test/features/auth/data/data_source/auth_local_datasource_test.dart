@@ -24,7 +24,7 @@ void main() {
   // void mockSuccess() {}
 
   void initEntities() {
-    userModel = ModelFactory.makeUserModel();
+    userModel = ModelFactory.makeUserEntity();
   }
 
   setUp(() {

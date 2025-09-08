@@ -26,8 +26,8 @@ AuthRepository authRepository(Ref ref) {
   final enterpriseDatasource = ref.watch(enterpriseDatasourceProvider);
 
   return AuthRepositoryImpl(
-    remoteDatasource: remoteDatasource,
-    localDatasource: localDatasource,
+    authRemoteDatasource: remoteDatasource,
+    authLocalDatasource: localDatasource,
     enterpriseDatasource: enterpriseDatasource,
   );
 }
