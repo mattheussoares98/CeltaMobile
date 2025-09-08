@@ -9,7 +9,6 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
 
   @override
   Future<List<EnterprisePermissionEntity>> getAllEnterprisePermissions() async {
-    //TODO create tests
     final enterprises = await enterpriseDataSource
         .getAllEnterprisePermissions();
 

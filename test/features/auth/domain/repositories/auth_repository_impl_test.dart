@@ -45,10 +45,10 @@ void main() {
   }
 
   void initEntities() {
-    enterpriseEntity = ModelFactory.makeEnterpriseEntity();
+    enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     userName = faker.internet.userName();
     password = faker.internet.password();
-    userEntity = ModelFactory.makeUserEntity();
+    userEntity = EntityFactory.makeUserEntity();
   }
 
   setUp(() {

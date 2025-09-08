@@ -1,5 +1,5 @@
 class ModulePermissionEntity {
-  final int id;
+  final String id;
   final String moduleKey;
   final String name;
   final bool isEnabled;

@@ -16,7 +16,7 @@ void main() {
 
   void initEntities() {
     enterpriseName = faker.company.name();
-    enterpriseEntity = ModelFactory.makeEnterpriseEntity(name: enterpriseName);
+    enterpriseEntity = EntityFactory.makeEnterpriseEntity(name: enterpriseName);
   }
 
   void initSut() {

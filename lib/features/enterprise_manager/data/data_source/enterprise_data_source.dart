@@ -9,7 +9,6 @@ class EnterpriseDataSource implements IEnterpriseDataSource {
   EnterpriseDataSource(this.supabase);
   @override
   Future<List<EnterprisePermissionModel>> getAllEnterprisePermissions() async {
-    //TODO create tests
     final response = await supabase.rpc('get_all_enterprise_permissions');
 
     if (response == null) {

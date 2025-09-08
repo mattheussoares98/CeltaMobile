@@ -1,18 +1,23 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/entities.dart';
 import 'models.dart';
 
-class EnterprisePermissionModel {
-  final int id;
+class EnterprisePermissionModel extends Equatable {
+  final String id;
   final String name;
   final String baseUrl;
   final List<SubEnterprisePermissionModel> subEnterprises;
 
-  EnterprisePermissionModel({
+  const EnterprisePermissionModel({
     required this.id,
     required this.name,
     required this.baseUrl,
     required this.subEnterprises,
   });
+
+  @override
+  List<Object?> get props => [id, name, baseUrl, subEnterprises];
 
   factory EnterprisePermissionModel.fromJson(Map<String, dynamic> json) {
     return EnterprisePermissionModel(
@@ -46,4 +51,11 @@ class EnterprisePermissionModel {
       subEnterprises: subEnterprises.map((e) => e.toEntity()).toList(),
     );
   }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'id': id,
+    'name': name,
+    'base_url': baseUrl,
+    'sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
+  };
 }

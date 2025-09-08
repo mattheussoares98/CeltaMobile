@@ -1,15 +1,20 @@
+import 'package:equatable/equatable.dart';
+
 import 'entities.dart';
 
-class EnterprisePermissionEntity {
-  final int id;
+class EnterprisePermissionEntity extends Equatable {
+  final String id;
   final String name;
   final String baseUrl;
   final List<SubEnterprisePermissionEntity> subEnterprises;
 
-  EnterprisePermissionEntity({
+  const EnterprisePermissionEntity({
     required this.id,
     required this.name,
     required this.baseUrl,
     required this.subEnterprises,
   });
+
+  @override
+  List<Object?> get props => [id, name, baseUrl, subEnterprises];
 }

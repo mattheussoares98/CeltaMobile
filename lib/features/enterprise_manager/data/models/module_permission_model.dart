@@ -1,17 +1,22 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/entities.dart';
 
-class ModulePermissionModel {
-  final int id;
+class ModulePermissionModel extends Equatable {
+  final String id;
   final String moduleKey;
   final String name;
   final bool isEnabled;
 
-  ModulePermissionModel({
+  const ModulePermissionModel({
     required this.id,
     required this.moduleKey,
     required this.name,
     required this.isEnabled,
   });
+
+  @override
+  List<Object?> get props => [id, moduleKey, name, isEnabled];
 
   factory ModulePermissionModel.fromJson(Map<String, dynamic> json) {
     return ModulePermissionModel(
@@ -39,4 +44,11 @@ class ModulePermissionModel {
       isEnabled: isEnabled,
     );
   }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'id': id,
+    'module_key': moduleKey,
+    'name': name,
+    'is_enabled': isEnabled,
+  };
 }
