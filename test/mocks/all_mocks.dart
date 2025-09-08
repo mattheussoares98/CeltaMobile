@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/core/domain/repositories/repositories.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -83,4 +84,28 @@ class SupabaseClientSpy extends Fake implements SupabaseClient {
   }
 }
 
-class MockBox extends Mock implements Box {}
+class MockBox extends Mock implements Box {
+  MockBox() {
+    when(() => this.delete(any())).thenAnswer((_) async => {});
+    when(() => this.put(any(), any())).thenAnswer((_) async => {});
+  }
+
+  void mockGet(String key, dynamic value) {
+    when(() => this.get(key)).thenReturn(value);
+  }
+}
+
+class MockSoapAdapter extends Mock implements SoapRequest {
+  void mockGet(dynamic value) {
+    when(
+      () => this.post(
+        parameters: any(named: 'parameters'),
+        typeOfResponse: any(named: 'typeOfResponse'),
+        typeOfResult: any(named: 'typeOfResult'),
+        soapAction: any(named: 'soapAction'),
+        serviceASMX: any(named: 'serviceASMX'),
+        url: any(named: 'url'),
+      ),
+    ).thenAnswer((_) async => value);
+  }
+}

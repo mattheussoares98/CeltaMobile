@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:xml2json/xml2json.dart';
 
-import '../../../../core/infraestructure/infrastructure.dart';
+import '../../../../core/domain/repositories/repositories.dart';
 import '../models/user_model.dart';
 import 'i_auth_remote_datasource.dart';
 
 class AuthRemoteDatasource implements IAuthRemoteDatasource {
-  final SoapAdapter soapAdapter;
+  final SoapRequest soapAdapter;
 
   AuthRemoteDatasource(this.soapAdapter);
 
@@ -18,7 +18,6 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
     required String user,
     required String password,
   }) async {
-    //TODO create tests and verify if need put inside a try catch
     final response = await soapAdapter.post(
       parameters: {"user": user, "password": password},
       typeOfResponse: "UserCanLoginJsonResponse",

@@ -36,8 +36,6 @@ void main() {
 
   group('clearUser', () {
     test('should call delete with correct key', () async {
-      when(() => mockBox.delete(any())).thenAnswer((_) async => {});
-
       await sut.clearUser();
 
       verify(() => mockBox.delete(DatabaseKeys.user)).called(1);
@@ -46,9 +44,7 @@ void main() {
 
   group('get user', () {
     test('should return the correct user', () async {
-      when(
-        () => mockBox.get(DatabaseKeys.user.name),
-      ).thenReturn(userModel.toJson());
+      mockBox.mockGet(DatabaseKeys.user.name, userModel.toJson());
 
       final result = await sut.getUser();
 
@@ -57,7 +53,7 @@ void main() {
     });
 
     test('should return null when the box does not have a value', () async {
-      when(() => mockBox.get(DatabaseKeys.user.name)).thenReturn(null);
+      mockBox.mockGet(DatabaseKeys.user.name, null);
 
       final result = await sut.getUser();
 
@@ -68,8 +64,6 @@ void main() {
 
   group("Save user", () {
     test("Should save the user correctly", () async {
-      when(() => mockBox.put(any(), any())).thenAnswer((_) async => {});
-
       await sut.saveUser(userModel.toEntity());
 
       verify(
