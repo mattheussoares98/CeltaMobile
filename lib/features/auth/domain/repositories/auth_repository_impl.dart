@@ -8,12 +8,12 @@ import 'i_auth_repository.dart';
 class AuthRepositoryImpl implements IAuthRepository {
   final IAuthRemoteDatasource authRemoteDatasource;
   final IAuthLocalDatasource authLocalDatasource;
-  final IEnterpriseDatasource enterpriseDatasource;
+  final ISupabaseEnterpriseDatasource supabaseEnterpriseDatasource;
 
   AuthRepositoryImpl({
     required this.authRemoteDatasource,
     required this.authLocalDatasource,
-    required this.enterpriseDatasource,
+    required this.supabaseEnterpriseDatasource,
   });
 
   @override
@@ -22,7 +22,7 @@ class AuthRepositoryImpl implements IAuthRepository {
     required String userName,
     required String password,
   }) async {
-    final enterpriseModel = await enterpriseDatasource.getEnterprise(
+    final enterpriseModel = await supabaseEnterpriseDatasource.getEnterprise(
       enterpriseName,
     );
     if (enterpriseModel == null) {

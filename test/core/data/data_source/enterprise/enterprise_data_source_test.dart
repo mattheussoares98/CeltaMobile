@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late EnterpriseDatasource sut;
+  late SupabaseEnterpriseDatasource sut;
 
   late SupabaseClientSpy supabaseClient;
 
@@ -20,7 +20,7 @@ void main() {
   }
 
   void initSut() {
-    sut = EnterpriseDatasource(supabaseClient);
+    sut = SupabaseEnterpriseDatasource(supabaseClient);
   }
 
   void initInjections() {

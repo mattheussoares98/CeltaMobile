@@ -4,10 +4,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../models/models.dart';
 import 'enterprise.dart';
 
-class EnterpriseDatasource implements IEnterpriseDatasource {
+class SupabaseEnterpriseDatasource implements ISupabaseEnterpriseDatasource {
   final SupabaseClient _supabase;
 
-  EnterpriseDatasource(this._supabase);
+  SupabaseEnterpriseDatasource(this._supabase);
 
   @override
   Future<EnterpriseModel?> getEnterprise(String name) async {

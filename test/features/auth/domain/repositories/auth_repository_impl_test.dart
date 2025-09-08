@@ -25,7 +25,7 @@ void main() {
     sut = AuthRepositoryImpl(
       authRemoteDatasource: authRemoteDataSource,
       authLocalDatasource: authLocalDataSource,
-      enterpriseDatasource: enterpriseDatasource,
+      supabaseEnterpriseDatasource: enterpriseDatasource,
     );
   }
 

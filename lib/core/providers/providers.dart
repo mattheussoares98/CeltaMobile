@@ -33,7 +33,7 @@ SoapAdapter soapAdapter(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
-IEnterpriseDatasource enterpriseDatasource(Ref ref) {
+ISupabaseEnterpriseDatasource supabaseEnterpriseDatasource(Ref ref) {
   final supabase = ref.watch(supabaseClientProvider);
-  return EnterpriseDatasource(supabase);
+  return SupabaseEnterpriseDatasource(supabase);
 }

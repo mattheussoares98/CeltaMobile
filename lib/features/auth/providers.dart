@@ -23,11 +23,11 @@ IAuthRemoteDatasource authRemoteDatasource(Ref ref) {
 IAuthRepository authRepository(Ref ref) {
   final remoteDatasource = ref.watch(authRemoteDatasourceProvider);
   final localDatasource = ref.watch(authLocalDatasourceProvider);
-  final enterpriseDatasource = ref.watch(enterpriseDatasourceProvider);
+  final enterpriseDatasource = ref.watch(supabaseEnterpriseDatasourceProvider);
 
   return AuthRepositoryImpl(
     authRemoteDatasource: remoteDatasource,
     authLocalDatasource: localDatasource,
-    enterpriseDatasource: enterpriseDatasource,
+    supabaseEnterpriseDatasource: enterpriseDatasource,
   );
 }
