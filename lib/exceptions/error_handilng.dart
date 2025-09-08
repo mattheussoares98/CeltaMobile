@@ -16,27 +16,32 @@ mixin ErrorHandling {
       message = error.toString();
     }
 
-    if (message.contains('timed out') || message.contains('failed host')) {
+    final lowerMessage = message.toLowerCase();
+
+    if (lowerMessage.contains('timed out') ||
+        lowerMessage.contains('failed host')) {
       return AsyncError(
         'Erro de conexão. Verifique a sua internet'.hardcoded,
         st,
       );
-    } else if (message.contains('invalid login credentials')) {
+    } else if (lowerMessage.contains('invalid login credentials')) {
       return AsyncError(
         'Credenciais de login inválidas. Por favor, verifique seu e-mail e senha.'
             .hardcoded,
         st,
       );
-    } else if (message.contains('password should be at least 6 characters')) {
+    } else if (lowerMessage.contains(
+      'password should be at least 6 characters',
+    )) {
       return AsyncError(
         'A senha deve ter pelo menos 6 caracteres.'.hardcoded,
         st,
       );
-    } else if (message.contains('user already registered')) {
+    } else if (lowerMessage.contains('user already registered')) {
       return AsyncError('Este e-mail já está cadastrado.'.hardcoded, st);
-    } else if (message.contains('unable to validate email address')) {
+    } else if (lowerMessage.contains('unable to validate email address')) {
       return AsyncError('Formato de e-mail inválido.'.hardcoded, st);
-    } else if (message.contains('you can only request this after')) {
+    } else if (lowerMessage.contains('you can only request this after')) {
       return AsyncError(
         'Essa ação está bloqueada temporariamente. Tente novamente daqui a pouco.'
             .hardcoded,
