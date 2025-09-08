@@ -6,6 +6,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/auth/data/data_source/data_source.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
+import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -145,4 +146,31 @@ class MockEnterpriseDatasource extends Mock implements IEnterpriseDatasource {
   void mockGetEnterprise(EnterpriseModel? enterprise) {
     when(() => this.getEnterprise(any())).thenAnswer((_) async => enterprise);
   }
+}
+
+class MockAuthRepository extends Mock implements IAuthRepository {
+  MockAuthRepository() {
+    when(
+      () => this.login(
+        enterpriseName: any(named: 'enterpriseName'),
+        userName: any(named: 'userName'),
+        password: any(named: 'password'),
+      ),
+    ).thenAnswer((_) async => {});
+
+    _mockLogoutCall().thenAnswer((_) async => {});
+  }
+
+  When _mockGetCurrentUserCall() => when(() => this.getCurrentUser());
+
+  void mockGetCurrentUser(UserEntity? user) {
+    _mockGetCurrentUserCall().thenAnswer((_) async => user);
+  }
+
+  void mockGetCurrentUserError() {
+    _mockGetCurrentUserCall().thenThrow(Exception());
+  }
+
+  When _mockLogoutCall() => when(() => this.logout());
+  void mockLogoutError() => _mockLogoutCall().thenThrow(Exception());
 }

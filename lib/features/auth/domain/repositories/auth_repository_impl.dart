@@ -3,9 +3,9 @@ import '../../../../localization/string_hardcoded.dart';
 import '../../../../core/data/data_source/data_source.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../data/data_source/data_source.dart';
-import '../../domain/repositories/auth_repository.dart';
+import 'i_auth_repository.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
+class AuthRepositoryImpl implements IAuthRepository {
   final IAuthRemoteDatasource authRemoteDatasource;
   final IAuthLocalDatasource authLocalDatasource;
   final IEnterpriseDatasource enterpriseDatasource;

@@ -38,7 +38,7 @@ GoRouter goRouter(Ref ref) {
   final authBridge = _Bridge<Object?>();
   final mgrBridge = _Bridge<Object?>();
 
-  ref.listen<AsyncValue<Object?>>(authStateProvider, (prev, next) {
+  ref.listen<AsyncValue<Object?>>(authStateControllerProvider, (prev, next) {
     authBridge.value = next.valueOrNull;
   }, fireImmediately: true);
 

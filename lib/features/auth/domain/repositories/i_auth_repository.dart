@@ -1,6 +1,6 @@
 import '../../../../core/domain/entities/entities.dart';
 
-abstract class AuthRepository {
+abstract class IAuthRepository {
   Future<void> login({
     required String enterpriseName,
     required String userName,

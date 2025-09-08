@@ -1,2 +1,2 @@
-export './auth_state_notifier.dart';
+export 'auth_state_controller.dart';
 export './login_controller.dart';

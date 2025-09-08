@@ -5,7 +5,7 @@ import '../../exceptions/exceptions.dart';
 import '../localization/string_hardcoded.dart';
 
 mixin ErrorHandling {
-  AsyncError getAsyncError(Object error, StackTrace st) {
+  AsyncError<T> getAsyncError<T>(Object error, StackTrace st) {
     late final String message;
 
     if (error is PostgrestException) {

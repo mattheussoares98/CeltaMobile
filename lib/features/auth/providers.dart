@@ -20,7 +20,7 @@ IAuthRemoteDatasource authRemoteDatasource(Ref ref) {
 }
 
 @riverpod
-AuthRepository authRepository(Ref ref) {
+IAuthRepository authRepository(Ref ref) {
   final remoteDatasource = ref.watch(authRemoteDatasourceProvider);
   final localDatasource = ref.watch(authLocalDatasourceProvider);
   final enterpriseDatasource = ref.watch(enterpriseDatasourceProvider);
