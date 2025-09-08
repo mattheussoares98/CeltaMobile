@@ -8,7 +8,6 @@ class AuthManagerDataSource implements IAuthManagerDataSource {
 
   @override
   User? getCurrentUser() {
-    //TODO create tests
     return supabase.auth.currentUser;
   }
 
