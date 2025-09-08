@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/core/constants/database_keys.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/auth/data/data_source/data_source.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,7 +12,7 @@ void main() {
 
   late MockBox mockBox;
 
-  late UserModel userModel;
+  late UserEntity userEntity;
 
   void initSut() {
     sut = AuthLocalDatasource(mockBox);
@@ -24,7 +25,7 @@ void main() {
   // void mockSuccess() {}
 
   void initEntities() {
-    userModel = ModelFactory.makeUserEntity();
+    userEntity = ModelFactory.makeUserEntity();
   }
 
   setUp(() {
@@ -44,11 +45,14 @@ void main() {
 
   group('get user', () {
     test('should return the correct user', () async {
-      mockBox.mockGet(DatabaseKeys.user.name, userModel.toJson());
+      mockBox.mockGet(
+        DatabaseKeys.user.name,
+        UserModel.fromEntity(userEntity).toJson(),
+      );
 
       final result = await sut.getUser();
 
-      expect(result, userModel.toEntity());
+      expect(result, userEntity);
       verify(() => mockBox.get(DatabaseKeys.user.name)).called(1);
     });
 
@@ -64,10 +68,13 @@ void main() {
 
   group("Save user", () {
     test("Should save the user correctly", () async {
-      await sut.saveUser(userModel.toEntity());
+      await sut.saveUser(userEntity);
 
       verify(
-        () => mockBox.put(DatabaseKeys.user, userModel.toJson()),
+        () => mockBox.put(
+          DatabaseKeys.user,
+          UserModel.fromEntity(userEntity).toJson(),
+        ),
       ).called(1);
     });
   });

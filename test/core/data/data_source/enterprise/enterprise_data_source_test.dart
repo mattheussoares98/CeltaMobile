@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/data/data_source/data_source.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,12 +11,12 @@ void main() {
 
   late SupabaseClientSpy supabaseClient;
 
-  late EnterpriseModel enterpriseModel;
+  late EnterpriseEntity enterpriseEntity;
   late String enterpriseName;
 
   void initEntities() {
     enterpriseName = faker.company.name();
-    enterpriseModel = ModelFactory.makeEnterpriseEntity(name: enterpriseName);
+    enterpriseEntity = ModelFactory.makeEnterpriseEntity(name: enterpriseName);
   }
 
   void initSut() {
@@ -27,7 +28,9 @@ void main() {
   }
 
   void mockSuccess() {
-    supabaseClient.mockResponse(enterpriseModel.toJson());
+    supabaseClient.mockResponse(
+      EnterpriseModel.fromEntity(enterpriseEntity).toJson(),
+    );
   }
 
   setUp(() {
@@ -43,7 +46,7 @@ void main() {
       () async {
         final result = await sut.getEnterprise(enterpriseName);
 
-        expect(result, enterpriseModel);
+        expect(result, EnterpriseModel.fromEntity(enterpriseEntity));
         expect(supabaseClient.rpcCallHistory.length, 1);
         expect(supabaseClient.lastRpcFunction, 'get_enterprise_by_name');
         expect(supabaseClient.lastRpcParams, {'p_name': enterpriseName});
