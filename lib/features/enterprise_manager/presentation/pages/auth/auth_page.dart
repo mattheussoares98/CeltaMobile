@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../routing/routing.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../../constants/constants.dart';
 import '../../controllers/controllers.dart';
@@ -19,12 +21,30 @@ class AuthPage extends ConsumerStatefulWidget {
 class _EnterpriseManagerAuthPageState extends ConsumerState<AuthPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordFocusNode = FocusNode();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> onSubmit() async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final authResponse = await ref
+        .read(authManagerControllerProvider.notifier)
+        .login(emailController.text, passwordController.text);
+
+    if (authResponse != null) {
+      context.pop();
+      context.pushNamed(AppRoute.enterpriseManager.name);
+    }
   }
 
   @override
@@ -41,26 +61,33 @@ class _EnterpriseManagerAuthPageState extends ConsumerState<AuthPage> {
       appBar: AppBar(title: Text('Login'.hardcoded)),
       body: ResponsiveScrollableWidget(
         centralize: true,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            EmailField(
-              emailController: emailController,
-              isLoading: authManagerState.isLoading,
-            ),
-            gapH16,
-            PasswordField(
-              passwordController: passwordController,
-              isLoading: authManagerState.isLoading,
-            ),
-            gapH32,
-            //TODO validate fields, change focus and submit on password submit
-            EnterButton(
-              emailController: emailController,
-              passwordController: passwordController,
-              isLoading: authManagerState.isLoading,
-            ),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              EmailField(
+                emailController: emailController,
+                passwordFocusNode: passwordFocusNode,
+                isLoading: authManagerState.isLoading,
+              ),
+              gapH16,
+              PasswordField(
+                passwordFocusNode: passwordFocusNode,
+                passwordController: passwordController,
+                isLoading: authManagerState.isLoading,
+                onSubmit: onSubmit,
+              ),
+              gapH32,
+              EnterButton(
+                emailController: emailController,
+                passwordController: passwordController,
+                isLoading: authManagerState.isLoading,
+                onSubmit: onSubmit,
+              ),
+            ],
+          ),
         ),
       ),
     );

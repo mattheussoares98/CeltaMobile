@@ -3,14 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/presentation/theme/theme.dart';
+import '../../../../../../core/validators/validators.dart';
 
 class EmailField extends StatelessWidget {
   final TextEditingController emailController;
   final bool isLoading;
+  final FocusNode passwordFocusNode;
   const EmailField({
     super.key,
     required this.emailController,
     required this.isLoading,
+    required this.passwordFocusNode,
   });
 
   @override
@@ -19,6 +22,7 @@ class EmailField extends StatelessWidget {
     return TextFormField(
       enabled: !isLoading,
       controller: emailController,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: AppDecorations.input(
         context: context,
         labelText: 'Email'.hardcoded,
@@ -28,6 +32,10 @@ class EmailField extends StatelessWidget {
               : Icons.email_outlined,
         ),
       ),
+      onFieldSubmitted: (_) {
+        passwordFocusNode.requestFocus();
+      },
+      validator: FormValidators.compose([EmailValidator()]),
       keyboardType: TextInputType.emailAddress,
     );
   }

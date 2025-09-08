@@ -7,6 +7,10 @@ class AppTheme {
     // * Use this to toggle Material 3 (defaults to true since Flutter 3.16)
     useMaterial3: true,
     primarySwatch: Colors.grey,
+    progressIndicatorTheme: ProgressIndicatorThemeData(
+      color: Colors.white,
+      strokeWidth: 2,
+    ),
     // platform: TargetPlatform.iOS,
     textTheme: TextTheme(
       titleLarge: theme.textTheme.titleLarge!.copyWith(
