@@ -44,7 +44,7 @@ void main() {
     test(
       'should call rpc with correct function name and return the correct values',
       () async {
-        final result = await sut.getEnterprise(enterpriseName);
+        final result = await sut.getEnterpriseByName(enterpriseName);
 
         expect(result, EnterpriseModel.fromEntity(enterpriseEntity));
         expect(supabaseClient.rpcCallHistory.length, 1);
@@ -55,12 +55,15 @@ void main() {
     test('should rethrow the correct error', () async {
       supabaseClient.mockFromError(Exception());
 
-      expect(sut.getEnterprise(enterpriseName), throwsA(isA<Exception>()));
+      expect(
+        sut.getEnterpriseByName(enterpriseName),
+        throwsA(isA<Exception>()),
+      );
     });
     test('should return null if there is no result', () async {
       supabaseClient.mockResponse(null);
 
-      expect(await sut.getEnterprise(enterpriseName), isNull);
+      expect(await sut.getEnterpriseByName(enterpriseName), isNull);
     });
   });
 }

@@ -147,7 +147,9 @@ class MockAuthLocalDatasource extends Mock implements IAuthLocalDatasource {
 class MockEnterpriseDatasource extends Mock
     implements ISupabaseEnterpriseDatasource {
   void mockGetEnterprise(EnterpriseModel? enterprise) {
-    when(() => this.getEnterprise(any())).thenAnswer((_) async => enterprise);
+    when(
+      () => this.getEnterpriseByName(any()),
+    ).thenAnswer((_) async => enterprise);
   }
 }
 

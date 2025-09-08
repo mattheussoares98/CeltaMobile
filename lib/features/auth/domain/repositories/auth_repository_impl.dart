@@ -22,9 +22,8 @@ class AuthRepositoryImpl implements IAuthRepository {
     required String userName,
     required String password,
   }) async {
-    final enterpriseModel = await supabaseEnterpriseDatasource.getEnterprise(
-      enterpriseName,
-    );
+    final enterpriseModel = await supabaseEnterpriseDatasource
+        .getEnterpriseByName(enterpriseName);
     if (enterpriseModel == null) {
       throw AppException('Empresa não encontrada'.hardcoded);
     }

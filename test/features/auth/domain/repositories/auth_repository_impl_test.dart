@@ -67,7 +67,7 @@ void main() {
       );
 
       verify(
-        () => enterpriseDatasource.getEnterprise(enterpriseEntity.name),
+        () => enterpriseDatasource.getEnterpriseByName(enterpriseEntity.name),
       ).called(1);
       verify(
         () => authRemoteDataSource.login(

@@ -10,7 +10,7 @@ class SupabaseEnterpriseDatasource implements ISupabaseEnterpriseDatasource {
   SupabaseEnterpriseDatasource(this._supabase);
 
   @override
-  Future<EnterpriseModel?> getEnterprise(String name) async {
+  Future<EnterpriseModel?> getEnterpriseByName(String name) async {
     try {
       final response = await _supabase.rpc(
         'get_enterprise_by_name',
