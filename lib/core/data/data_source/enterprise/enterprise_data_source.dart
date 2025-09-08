@@ -12,7 +12,6 @@ class EnterpriseDatasource implements IEnterpriseDatasource {
   @override
   Future<EnterpriseModel?> getEnterprise(String name) async {
     try {
-      //TODO create tests
       final response = await _supabase.rpc(
         'get_enterprise_by_name',
         params: {'p_name': name},
