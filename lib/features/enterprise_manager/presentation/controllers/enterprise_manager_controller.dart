@@ -9,7 +9,7 @@ part 'enterprise_manager_controller.g.dart';
 class EnterpriseManagerController extends _$EnterpriseManagerController {
   @override
   Future<List<EnterprisePermissionEntity>> build() {
-    //TODO put in try catch
+    //dont need to put in a try catch because the riverpor already treat this and return async error if throws
     return ref
         .watch(enterpriseRepositoryProvider)
         .getAllEnterprisePermissions();
