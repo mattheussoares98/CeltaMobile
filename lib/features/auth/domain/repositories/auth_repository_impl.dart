@@ -8,7 +8,8 @@ import 'i_auth_repository.dart';
 class AuthRepositoryImpl implements IAuthRepository {
   final IAuthRemoteDatasource authRemoteDatasource;
   final IAuthLocalDatasource authLocalDatasource;
-  final ISupabaseEnterpriseDatasource supabaseEnterpriseDatasource;
+  final ISupabaseEnterpriseDatasource
+  supabaseEnterpriseDatasource; //TODO create IEnterpriseRepository and ErpEnterpriseDataSource to replace here by this new repository
 
   AuthRepositoryImpl({
     required this.authRemoteDatasource,
