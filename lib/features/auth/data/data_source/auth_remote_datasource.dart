@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:xml2json/xml2json.dart';
 
-import '../../../../core/domain/repositories/repositories.dart';
+import '../../../../core/domain/contracts/contracts.dart';
 import '../models/user_model.dart';
 import 'i_auth_remote_datasource.dart';
 

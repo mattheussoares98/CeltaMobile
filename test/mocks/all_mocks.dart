@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:celta_intelligence/core/data/data_source/data_source.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/core/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/auth/data/data_source/data_source.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';

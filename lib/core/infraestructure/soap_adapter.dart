@@ -3,7 +3,6 @@ import 'package:xml2json/xml2json.dart';
 
 import '../domain/contracts/contracts.dart';
 import '../domain/errors/errors.dart';
-import '../domain/repositories/repositories.dart';
 
 class SoapAdapter implements SoapRequest {
   final HttpClient client;
