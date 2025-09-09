@@ -1,5 +1,10 @@
-import '../../data/models/models.dart';
+import '../entities/entities.dart';
 
 abstract class IEnterpriseRepository {
-  Future<SupabaseEnterpriseModel?> getEnterpriseByName(String name);
+  Future<EnterpriseEntity?> getSupabaseEnterpriseByName(String name);
+
+  Future<List<EnterpriseEntity>> getSoapEnterprises({
+    required String url,
+    required String crossIdentity,
+  });
 }

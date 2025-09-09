@@ -147,7 +147,7 @@ class MockAuthLocalDatasource extends Mock implements IAuthLocalDatasource {
 }
 
 class MockEnterpriseDatasource extends Mock
-    implements ISupabaseEnterpriseDatasource {
+    implements ISupabaseEnterpriseDataSource {
   void mockGetEnterprise(SupabaseEnterpriseModel? enterprise) {
     when(
       () => this.getEnterpriseByName(any()),
@@ -235,4 +235,25 @@ class SoapRequestSpy extends Mock implements SoapRequest {
       url: any(named: "url"),
     ),
   );
+}
+
+class SoapEnterpriseDataSourceSpy extends Mock
+    implements ISoapEnterpriseDataSource {
+  void mockGetEnterprises(List<SoapEnterpriseModel> response) {
+    when(
+      () => this.getEnterprises(
+        url: any(named: "url"),
+        crossIdentity: any(named: "crossIdentity"),
+      ),
+    ).thenAnswer((_) async => response);
+  }
+}
+
+class SupabaseEnterpriseDataSourceSpy extends Mock
+    implements ISupabaseEnterpriseDataSource {
+  void mockGetEnterpriseByName(SupabaseEnterpriseModel? response) {
+    when(
+      () => this.getEnterpriseByName(any()),
+    ).thenAnswer((_) async => response);
+  }
 }
