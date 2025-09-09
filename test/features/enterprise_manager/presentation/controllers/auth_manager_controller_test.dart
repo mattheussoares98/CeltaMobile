@@ -9,14 +9,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late MockAuthManagerRepository mockAuthManagerRepository;
+  late AuthManagerRepositorySpy mockAuthManagerRepository;
 
   late String email;
   late String password;
   late AuthResponse authResponse;
 
   setUp(() {
-    mockAuthManagerRepository = MockAuthManagerRepository();
+    mockAuthManagerRepository = AuthManagerRepositorySpy();
 
     password = faker.internet.password();
     email = faker.internet.email();

@@ -11,6 +11,7 @@ import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
+import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
 import 'package:faker/faker.dart';
 import 'package:hive/hive.dart';
@@ -202,8 +203,8 @@ class MockAuthManagerDataSource extends Mock implements IAuthManagerDataSource {
   }
 }
 
-class MockAuthManagerRepository extends Mock implements IAuthManagerRepository {
-  MockAuthManagerRepository() {
+class AuthManagerRepositorySpy extends Mock implements IAuthManagerRepository {
+  AuthManagerRepositorySpy() {
     when(() => this.logout()).thenAnswer((_) async => {});
   }
 
@@ -293,6 +294,37 @@ class EnterpriseManagerDataSourceSpy extends Mock
 
   void mockGetAllEnterprisesPermissions(
     List<EnterprisePermissionModel> response,
+  ) {
+    _mockGetAllEnterprisesPermissionsCall().thenAnswer((_) async => response);
+  }
+
+  void mockGetAllEnterprisesPermissionsError() {
+    _mockGetAllEnterprisesPermissionsCall().thenThrow(Exception());
+  }
+}
+
+class EnterpriseManagerRepositorySpy extends Mock
+    implements IEnterpriseManagerRepository {
+  EnterpriseManagerRepositorySpy() {
+    _mockCreateEnterpriseCall().thenAnswer((_) async => {});
+  }
+  void mockCreateEnterpriseError() {
+    _mockCreateEnterpriseCall().thenThrow(Exception());
+  }
+
+  When _mockCreateEnterpriseCall() => when(
+    () => this.createEnterprise(
+      enterpriseName: any(named: "enterpriseName"),
+      baseUrl: any(named: "baseUrl"),
+      userName: any(named: "userName"),
+      password: any(named: "password"),
+    ),
+  );
+  When _mockGetAllEnterprisesPermissionsCall() =>
+      when(() => this.getAllEnterprisePermissions());
+
+  void mockGetAllEnterprisesPermissions(
+    List<EnterprisePermissionEntity> response,
   ) {
     _mockGetAllEnterprisesPermissionsCall().thenAnswer((_) async => response);
   }
