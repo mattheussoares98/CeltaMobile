@@ -14,7 +14,7 @@ void main() {
 
   late MockAuthRemoteDataSource authRemoteDataSource;
   late MockAuthLocalDatasource authLocalDataSource;
-  late MockEnterpriseDatasource enterpriseDatasource;
+  late CoreEnterpriseRepositorySpy enterpriseRepository;
 
   late EnterpriseEntity enterpriseEntity;
   late String userName;
@@ -25,19 +25,19 @@ void main() {
     sut = AuthRepositoryImpl(
       soapLoginDataSource: authRemoteDataSource,
       authLocalDatasource: authLocalDataSource,
-      supabaseEnterpriseDatasource: enterpriseDatasource,
+      enterpriseRepository: enterpriseRepository,
     );
   }
 
   void initInjections() {
     authRemoteDataSource = MockAuthRemoteDataSource();
     authLocalDataSource = MockAuthLocalDatasource();
-    enterpriseDatasource = MockEnterpriseDatasource();
+    enterpriseRepository = CoreEnterpriseRepositorySpy();
   }
 
   void mockSuccess() {
-    enterpriseDatasource.mockGetEnterprise(
-      SupabaseEnterpriseModel.fromEntity(enterpriseEntity),
+    enterpriseRepository.mockGetSupabaseEnterpriseByName(
+      SupabaseEnterpriseModel.fromEntity(enterpriseEntity).toEntity(),
     );
     authRemoteDataSource.mockLogin(UserModel.fromEntity(userEntity));
     authLocalDataSource.mockSaveUser(userEntity);
@@ -67,7 +67,9 @@ void main() {
       );
 
       verify(
-        () => enterpriseDatasource.getEnterpriseByName(enterpriseEntity.name),
+        () => enterpriseRepository.getSupabaseEnterpriseByName(
+          enterpriseEntity.name,
+        ),
       ).called(1);
       verify(
         () => authRemoteDataSource.login(
@@ -78,13 +80,13 @@ void main() {
       ).called(1);
       verify(() => authLocalDataSource.saveUser(userEntity)).called(1);
 
-      verifyNoMoreInteractions(enterpriseDatasource);
+      verifyNoMoreInteractions(enterpriseRepository);
       verifyNoMoreInteractions(authLocalDataSource);
       verifyNoMoreInteractions(authRemoteDataSource);
     });
 
     test("Should throw an AppException on enterprise not found", () async {
-      enterpriseDatasource.mockGetEnterprise(null);
+      enterpriseRepository.mockGetSupabaseEnterpriseByName(null);
 
       final result = sut.login(
         enterpriseName: enterpriseEntity.name,

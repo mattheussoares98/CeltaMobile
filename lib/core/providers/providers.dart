@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../constants/database_keys.dart';
 import '../data/datasource/enterprise/enterprise.dart';
 import '../domain/contracts/contracts.dart';
+import '../domain/repositories/repositores.dart';
 import '../infraestructure/infrastructure.dart';
 
 part 'providers.g.dart';
@@ -32,8 +33,27 @@ SoapAdapter soapAdapter(Ref ref) {
   return SoapAdapter(client);
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 ISupabaseEnterpriseDataSource supabaseEnterpriseDatasource(Ref ref) {
   final supabase = ref.watch(supabaseClientProvider);
   return SupabaseEnterpriseDataSource(supabase);
+}
+
+@riverpod
+ISoapEnterpriseDataSource soapEnterpriseDatasource(Ref ref) {
+  final soapAdapter = ref.watch(soapAdapterProvider);
+  return SoapEnterpriseDataSource(soapAdapter: soapAdapter);
+}
+
+@riverpod
+IEnterpriseRepository enterpriseRepository(Ref ref) {
+  final supabaseEnterpriseDatasource = ref.watch(
+    supabaseEnterpriseDatasourceProvider,
+  );
+  final soapEnterpriseDatasource = ref.watch(soapEnterpriseDatasourceProvider);
+
+  return EnterpriseRepositoryImpl(
+    supabaseEnterpriseDatasource: supabaseEnterpriseDatasource,
+    soapEnterpriseDatasource: soapEnterpriseDatasource,
+  );
 }
