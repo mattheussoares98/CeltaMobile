@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../exceptions/exceptions.dart';
+import '../core/domain/errors/errors.dart';
 import '../localization/string_hardcoded.dart';
 
 mixin ErrorHandling {
@@ -11,6 +12,8 @@ mixin ErrorHandling {
     if (error is PostgrestException) {
       message = error.message;
     } else if (error is AppException) {
+      message = error.message;
+    } else if (error is BsError) {
       message = error.message;
     } else {
       message = error.toString();
