@@ -23,13 +23,18 @@ HttpClient httpClient(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
+http.Client client(Ref ref) {
+  return http.Client();
+}
+
+@Riverpod(keepAlive: true)
 SupabaseClient supabaseClient(Ref ref) {
   return Supabase.instance.client;
 }
 
 @Riverpod(keepAlive: true)
 SoapAdapter soapAdapter(Ref ref) {
-  final client = ref.watch(httpClientProvider);
+  final client = ref.watch(clientProvider);
   return SoapAdapter(client);
 }
 

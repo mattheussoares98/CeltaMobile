@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/entities.dart';
 
 class ModulePermissionModel extends Equatable {
-  final String id;
+  final int id;
   final String moduleKey;
   final String name;
   final bool isEnabled;

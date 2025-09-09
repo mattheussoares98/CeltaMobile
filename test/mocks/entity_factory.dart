@@ -44,7 +44,7 @@ class EntityFactory {
 
   static EnterprisePermissionEntity makeEnterprisePermissionEntity() =>
       EnterprisePermissionEntity(
-        id: faker.guid.guid(),
+        id: faker.randomGenerator.integer(100),
         name: faker.company.name(),
         baseUrl: faker.internet.httpsUrl(),
         subEnterprises: [
@@ -56,7 +56,7 @@ class EntityFactory {
 
   static SubEnterprisePermissionEntity makeSubEnterprisePermissionEntity() =>
       SubEnterprisePermissionEntity(
-        id: faker.guid.guid(),
+        id: faker.randomGenerator.integer(100),
         name: faker.company.name(),
         cnpjNumber: faker.randomGenerator.integer(14, min: 14).toString(),
         modules: [
@@ -68,7 +68,7 @@ class EntityFactory {
 
   static ModulePermissionEntity makeModulePermissionEntity() =>
       ModulePermissionEntity(
-        id: faker.guid.guid(),
+        id: faker.randomGenerator.integer(100),
         moduleKey: faker.guid.guid(),
         name: faker.lorem.word(),
         isEnabled: faker.randomGenerator.boolean(),

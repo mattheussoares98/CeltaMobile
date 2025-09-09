@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'entities.dart';
 
 class SubEnterprisePermissionEntity extends Equatable {
-  final String id;
+  final int id;
   final String name;
   final String cnpjNumber;
   final List<ModulePermissionEntity> modules;

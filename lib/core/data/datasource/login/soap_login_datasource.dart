@@ -37,11 +37,11 @@ class SoapLoginDataSource implements ISoapLoginDataSource {
     Map<String, dynamic> userUpdated = resultAsMap["Usuarios"][0];
     userUpdated["CrossIdentity_Usuario"] = toParker2["string"];
 
-    if (response is Map<String, dynamic>) {
+    if (json.decode(response) is Map<String, dynamic>) {
       return UserModel.fromJson(userUpdated);
     } else {
       throw Exception(
-        'Login failed: Unexpected response format from API'.hardcoded,
+        'Ocorreu um erro não esperado para efetuar o login'.hardcoded,
       );
     }
   }

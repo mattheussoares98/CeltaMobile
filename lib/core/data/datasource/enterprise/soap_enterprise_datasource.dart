@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_intelligence/core/data/models/soap_enterprise_model.dart';
 
 import '../../../domain/contracts/contracts.dart';
@@ -27,7 +29,7 @@ class SoapEnterpriseDataSource implements ISoapEnterpriseDataSource {
         typeOfResult: "GetEnterprisesJsonResult",
       );
 
-      return (response as List)
+      return (json.decode(response) as List)
           .map((e) => SoapEnterpriseModel.fromJson(e))
           .toList();
     } catch (e) {

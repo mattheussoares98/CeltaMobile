@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:xml2json/xml2json.dart';
 
-import '../domain/contracts/contracts.dart';
+import '../domain/contracts/contracts.dart' as contracts;
 import '../domain/errors/errors.dart';
 
-class SoapAdapter implements SoapRequest {
-  final HttpClient client;
+class SoapAdapter implements contracts.SoapRequest {
+  final Client client;
 
   SoapAdapter(this.client);
 
@@ -45,9 +46,8 @@ class SoapAdapter implements SoapRequest {
       </soap12:Envelope>''';
 
       final response = await client
-          .request(
-            url: '$url/ccs/$serviceASMX',
-            method: 'post',
+          .post(
+            Uri.parse('$url/ccs/$serviceASMX'),
             body: envelope,
             headers: soapHeaders,
           )

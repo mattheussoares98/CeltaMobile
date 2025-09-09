@@ -4,7 +4,7 @@ import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class SubEnterprisePermissionModel extends Equatable {
-  final String id;
+  final int id;
   final String name;
   final String cnpjNumber;
   final List<ModulePermissionModel> modules;

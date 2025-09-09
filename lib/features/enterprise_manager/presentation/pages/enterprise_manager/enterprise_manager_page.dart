@@ -1,48 +1,71 @@
-import 'package:celta_intelligence/features/enterprise_manager/providers.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../../commom_widgets/commom_widgets.dart';
-import '../controllers/controllers.dart';
+import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../controllers/controllers.dart';
+import 'components/components.dart';
 
-class EnterpriseManagerPage extends ConsumerWidget {
+class EnterpriseManagerPage extends ConsumerStatefulWidget {
   const EnterpriseManagerPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _EnterpriseManagerPageState();
+}
+
+class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
+  final enterpriseNameController = TextEditingController();
+  final urlController = TextEditingController();
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final urlFocusNode = FocusNode();
+  final userNameFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    enterpriseNameController.dispose();
+    urlController.dispose();
+    userNameController.dispose();
+    passwordController.dispose();
+    urlFocusNode.dispose();
+    userNameFocusNode.dispose();
+    passwordFocusNode.dispose();
+  }
+
+  Future<void> onSubmit() async {
+    await ref
+        .read(enterpriseManagerControllerProvider.notifier)
+        .createEnterprise(
+          baseUrl: urlController.text,
+          enterpriseName: enterpriseNameController.text,
+          password: passwordController.text,
+          userName: userNameController.text,
+        );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final permissionsAsync = ref.watch(enterpriseManagerControllerProvider);
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Gerenciar Módulos'.hardcoded),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showAlertDialog(
-                context: context,
-                title: "Sair".hardcoded,
-                cancelActionText: "Cancelar".hardcoded,
-                defaultActionText: "Sair".hardcoded,
-                content: "Tem certeza que deseja sair?".hardcoded,
-                onOkPressed: () {
-                  ref.read(authManagerRepositoryProvider).logout();
-                  context.pop();
-                },
-              );
-            },
-            icon: Icon(
-              theme.platform == TargetPlatform.iOS
-                  ? CupertinoIcons.person_crop_circle_badge_xmark
-                  : Icons.logout,
-            ),
-          ),
-        ],
+        actions: [LogoutButton()],
       ),
-      // Use your reusable widget to handle loading/error states
+      floatingActionButton: CreateEnterpriseFlottingButton(
+        enterpriseNameController: enterpriseNameController,
+        urlController: urlController,
+        userNameController: userNameController,
+        passwordController: passwordController,
+        urlFocusNode: urlFocusNode,
+        userNameFocusNode: userNameFocusNode,
+        passwordFocusNode: passwordFocusNode,
+        onSubmit: onSubmit,
+      ),
       body: AsyncValueWidget(
         value: permissionsAsync,
         tryAgain: () => ref.invalidate(enterpriseManagerControllerProvider),

@@ -1,2 +1,2 @@
 export './auth/auth.dart';
-export './enterprise_manager_page.dart';
+export 'enterprise_manager/enterprise_manager.dart';

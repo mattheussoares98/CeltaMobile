@@ -8,9 +8,11 @@ import '../localization/string_hardcoded.dart';
 mixin ErrorHandling {
   AsyncError<T> getAsyncError<T>(Object error, StackTrace st) {
     late final String message;
+    String? supabaseDetails;
 
     if (error is PostgrestException) {
       message = error.message;
+      supabaseDetails = error.details.toString();
     } else if (error is AppException) {
       message = error.message;
     } else if (error is BsError) {
@@ -24,7 +26,7 @@ mixin ErrorHandling {
     if (lowerMessage.contains('timed out') ||
         lowerMessage.contains('failed host')) {
       return AsyncError(
-        'Erro de conexão. Verifique a sua internet'.hardcoded,
+        'Erro de conexão. Verifique a sua internet.'.hardcoded,
         st,
       );
     } else if (lowerMessage.contains('invalid login credentials')) {
@@ -47,6 +49,12 @@ mixin ErrorHandling {
     } else if (lowerMessage.contains('you can only request this after')) {
       return AsyncError(
         'Essa ação está bloqueada temporariamente. Tente novamente daqui a pouco.'
+            .hardcoded,
+        st,
+      );
+    } else if (lowerMessage.contains('duplicate key value')) {
+      return AsyncError(
+        'Esse nome já está cadastrado. Não é possível cadastrar com nomes iguais. $supabaseDetails'
             .hardcoded,
         st,
       );
