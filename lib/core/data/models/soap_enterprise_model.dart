@@ -1,0 +1,98 @@
+import '../../domain/entities/entities.dart';
+
+class SoapEnterpriseModel {
+  final int? Code;
+  final int? PersonalizedCode;
+  final String? Name;
+  final int? CnpjNumber;
+  final int? CodigoInternoVendaMobile_ModeloPedido;
+  final bool? UseRetailSale;
+  final bool? UseWholeSale;
+  final bool? UseEcommerceSale;
+  final bool? EnterpriseParticipateEnterpriseGroup;
+  final int? ProductCodeSizeOfBalanceLabel;
+  final bool? ProductCodeWithCheckerDigit;
+  final String? InscriptionNumber;
+
+  SoapEnterpriseModel({
+    required this.Code,
+    required this.PersonalizedCode,
+    required this.Name,
+    required this.CnpjNumber,
+    required this.CodigoInternoVendaMobile_ModeloPedido,
+    required this.UseEcommerceSale,
+    required this.UseRetailSale,
+    required this.UseWholeSale,
+    required this.EnterpriseParticipateEnterpriseGroup,
+    required this.ProductCodeSizeOfBalanceLabel,
+    required this.ProductCodeWithCheckerDigit,
+    required this.InscriptionNumber,
+  });
+
+  factory SoapEnterpriseModel.fromJson(Map<String, dynamic> json) =>
+      SoapEnterpriseModel(
+        Code: json["Code"],
+        PersonalizedCode: int.parse(json['PersonalizedCode']),
+        Name: json['Name'],
+        CnpjNumber: int.parse(json['CnpjNumber']),
+        UseEcommerceSale: json['SaleTypeECommerce'],
+        UseRetailSale: json['SaleTypeRetail'],
+        UseWholeSale: json['SaleTypeWholeSale'],
+        CodigoInternoVendaMobile_ModeloPedido: json["SaleRequestTypeCode"],
+        EnterpriseParticipateEnterpriseGroup:
+            json["EnterpriseParticipateEnterpriseGroup"],
+        ProductCodeSizeOfBalanceLabel: json["ProductCodeSizeOfBalanceLabel"],
+        ProductCodeWithCheckerDigit: json["ProductCodeWithCheckerDigit"],
+        InscriptionNumber: json["InscriptionNumber"],
+      );
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'Code': Code,
+    'PersonalizedCode': PersonalizedCode,
+    'Name': Name,
+    'CnpjNumber': CnpjNumber,
+    'SaleTypeECommerce': UseEcommerceSale,
+    'SaleTypeRetail': UseRetailSale,
+    'SaleTypeWholeSale': UseWholeSale,
+    'SaleRequestTypeCode': CodigoInternoVendaMobile_ModeloPedido,
+    'EnterpriseParticipateEnterpriseGroup':
+        EnterpriseParticipateEnterpriseGroup,
+    'ProductCodeSizeOfBalanceLabel': ProductCodeSizeOfBalanceLabel,
+    'ProductCodeWithCheckerDigit': ProductCodeWithCheckerDigit,
+    'InscriptionNumber': InscriptionNumber,
+  };
+
+  factory SoapEnterpriseModel.fromEntity(EnterpriseEntity entity) =>
+      SoapEnterpriseModel(
+        Code: entity.Code,
+        PersonalizedCode: entity.PersonalizedCode,
+        Name: entity.name,
+        CnpjNumber: entity.CnpjNumber,
+        CodigoInternoVendaMobile_ModeloPedido:
+            entity.CodigoInternoVendaMobile_ModeloPedido,
+        UseEcommerceSale: entity.UseEcommerceSale,
+        UseRetailSale: entity.UseRetailSale,
+        UseWholeSale: entity.UseWholeSale,
+        EnterpriseParticipateEnterpriseGroup:
+            entity.EnterpriseParticipateEnterpriseGroup,
+        ProductCodeSizeOfBalanceLabel: entity.ProductCodeSizeOfBalanceLabel,
+        ProductCodeWithCheckerDigit: entity.ProductCodeWithCheckerDigit,
+        InscriptionNumber: entity.InscriptionNumber,
+      );
+
+  EnterpriseEntity toEntity() => EnterpriseEntity(
+    name: Name ?? '',
+    Code: Code,
+    PersonalizedCode: PersonalizedCode,
+    CnpjNumber: CnpjNumber,
+    CodigoInternoVendaMobile_ModeloPedido:
+        CodigoInternoVendaMobile_ModeloPedido,
+    UseRetailSale: UseRetailSale,
+    UseWholeSale: UseWholeSale,
+    UseEcommerceSale: UseEcommerceSale,
+    EnterpriseParticipateEnterpriseGroup: EnterpriseParticipateEnterpriseGroup,
+    ProductCodeSizeOfBalanceLabel: ProductCodeSizeOfBalanceLabel,
+    ProductCodeWithCheckerDigit: ProductCodeWithCheckerDigit,
+    InscriptionNumber: InscriptionNumber,
+  );
+}
