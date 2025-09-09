@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_intelligence/core/data/datasource/datasource.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
@@ -37,9 +39,11 @@ void main() {
 
   void mockSuccess() {
     soapRequest.mockPost(
-      enterpriseEntities
-          .map((e) => SoapEnterpriseModel.fromEntity(e).toJson())
-          .toList(),
+      json.encode(
+        enterpriseEntities
+            .map((e) => SoapEnterpriseModel.fromEntity(e).toJson())
+            .toList(),
+      ),
     );
   }
 
