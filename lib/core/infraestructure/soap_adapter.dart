@@ -87,7 +87,7 @@ class SoapAdapter implements SoapRequest {
     } else if (responseBody.toString().contains("sucesso")) {
       return responseBody["status"][typeOfResult];
     }
-    throw BsError('Invalid response structure');
+    throw BsError('Estrutura da resposta inválida');
   }
 
   bool _isValidResponse(
