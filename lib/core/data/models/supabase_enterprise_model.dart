@@ -3,13 +3,13 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/entities.dart';
 import 'models.dart';
 
-class EnterpriseModel extends Equatable {
+class SupabaseEnterpriseModel extends Equatable {
   final String? id;
   final String name;
-  final List<SubEnterpriseModel>? subEnterprises; //from supabase
+  final List<SupabaseSubEnterpriseModel>? subEnterprises; //from supabase
   final String? baseUrl; //from supabase
 
-  const EnterpriseModel({
+  const SupabaseEnterpriseModel({
     required this.id,
     required this.name,
     required this.subEnterprises,
@@ -19,16 +19,16 @@ class EnterpriseModel extends Equatable {
   @override
   List<Object?> get props => [id, name, subEnterprises, baseUrl];
 
-  factory EnterpriseModel.fromJson(Map<String, dynamic> map) {
-    return EnterpriseModel(
+  factory SupabaseEnterpriseModel.fromJson(Map<String, dynamic> map) {
+    return SupabaseEnterpriseModel(
       id: map['id'] as String,
       name: map['name'] as String,
       baseUrl: map['baseUrl'] as String,
       subEnterprises: map['subEnterprises'] != null
-          ? List<SubEnterpriseModel>.from(
+          ? List<SupabaseSubEnterpriseModel>.from(
               (map['subEnterprises'] as List<Map<String, dynamic>>)
-                  .map<SubEnterpriseModel?>(
-                    (x) => SubEnterpriseModel.fromJson(x),
+                  .map<SupabaseSubEnterpriseModel?>(
+                    (x) => SupabaseSubEnterpriseModel.fromJson(x),
                   ),
             )
           : null,
@@ -49,13 +49,13 @@ class EnterpriseModel extends Equatable {
     subEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
   );
 
-  factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
-      EnterpriseModel(
+  factory SupabaseEnterpriseModel.fromEntity(EnterpriseEntity entity) =>
+      SupabaseEnterpriseModel(
         id: entity.id,
         name: entity.name,
         baseUrl: entity.baseUrl,
         subEnterprises: entity.subEnterprises
-            ?.map((e) => SubEnterpriseModel.fromEntity(e))
+            ?.map((e) => SupabaseSubEnterpriseModel.fromEntity(e))
             .toList(),
       );
 }

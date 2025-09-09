@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
 
-class SubEnterpriseModel extends Equatable {
+class SupabaseSubEnterpriseModel extends Equatable {
   final String? id;
   final String name;
   final String cnpj;
-  const SubEnterpriseModel({
+  const SupabaseSubEnterpriseModel({
     required this.id,
     required this.name,
     required this.cnpj,
@@ -15,8 +15,8 @@ class SubEnterpriseModel extends Equatable {
   @override
   List<Object?> get props => [id, name, cnpj];
 
-  factory SubEnterpriseModel.fromJson(Map<String, dynamic> map) {
-    return SubEnterpriseModel(
+  factory SupabaseSubEnterpriseModel.fromJson(Map<String, dynamic> map) {
+    return SupabaseSubEnterpriseModel(
       id: map['id'] as String,
       name: map['name'] as String,
       cnpj: map['cnpj'] as String,
@@ -28,8 +28,8 @@ class SubEnterpriseModel extends Equatable {
   SubEnterpriseEntity toEntity() =>
       SubEnterpriseEntity(id: id, name: name, cnpj: cnpj);
 
-  factory SubEnterpriseModel.fromEntity(SubEnterpriseEntity entity) {
-    return SubEnterpriseModel(
+  factory SupabaseSubEnterpriseModel.fromEntity(SubEnterpriseEntity entity) {
+    return SupabaseSubEnterpriseModel(
       id: entity.id,
       name: entity.name,
       cnpj: entity.cnpj,

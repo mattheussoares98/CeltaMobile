@@ -1,48 +1,79 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/foundation.dart';
-
 import 'entities.dart';
 
 class EnterpriseEntity {
-  final String? id;
   final String name;
-  final List<SubEnterpriseEntity>? subEnterprises; //supabase
+  final String? id; //from supabase
+  final List<SubEnterpriseEntity>? subEnterprises; //from supabase
   final String? baseUrl; //from supabase
+  final int? Code; //from soap(BS)
+  final int? PersonalizedCode; //from soap(BS)
+  final int? CnpjNumber; //from soap(BS)
+  final int? CodigoInternoVendaMobile_ModeloPedido; //from soap(BS)
+  final int? ProductCodeSizeOfBalanceLabel; //from soap(BS)
+  final bool? UseRetailSale; //from soap(BS)
+  final bool? UseWholeSale; //from soap(BS)
+  final bool? UseEcommerceSale; //from soap(BS)
+  final bool? EnterpriseParticipateEnterpriseGroup; //from soap(BS)
+  final bool? ProductCodeWithCheckerDigit; //from soap(BS)
+  final String? InscriptionNumber; //from soap(BS)
 
   const EnterpriseEntity({
-    required this.id,
     required this.name,
-    required this.subEnterprises,
-    required this.baseUrl,
+    this.id,
+    this.subEnterprises,
+    this.baseUrl,
+    this.Code,
+    this.PersonalizedCode,
+    this.CnpjNumber,
+    this.CodigoInternoVendaMobile_ModeloPedido,
+    this.ProductCodeSizeOfBalanceLabel,
+    this.UseRetailSale,
+    this.UseWholeSale,
+    this.UseEcommerceSale,
+    this.EnterpriseParticipateEnterpriseGroup,
+    this.ProductCodeWithCheckerDigit,
+    this.InscriptionNumber,
   });
 
   EnterpriseEntity copyWith({
-    String? id,
     String? name,
-    List<SubEnterpriseEntity>? cnpjs,
+    String? id,
+    List<SubEnterpriseEntity>? subEnterprises,
     String? baseUrl,
+    int? Code,
+    int? PersonalizedCode,
+    int? CnpjNumber,
+    int? CodigoInternoVendaMobile_ModeloPedido,
+    int? ProductCodeSizeOfBalanceLabel,
+    bool? useRetailSale,
+    bool? useWholeSale,
+    bool? useEcommerceSale,
+    bool? EnterpriseParticipateEnterpriseGroup,
+    bool? ProductCodeWithCheckerDigit,
+    String? InscriptionNumber,
   }) {
     return EnterpriseEntity(
-      id: id ?? this.id,
       name: name ?? this.name,
-      subEnterprises: cnpjs ?? this.subEnterprises,
+      id: id ?? this.id,
+      subEnterprises: subEnterprises ?? this.subEnterprises,
       baseUrl: baseUrl ?? this.baseUrl,
+      Code: Code ?? this.Code,
+      PersonalizedCode: PersonalizedCode ?? this.PersonalizedCode,
+      CnpjNumber: CnpjNumber ?? this.CnpjNumber,
+      CodigoInternoVendaMobile_ModeloPedido:
+          CodigoInternoVendaMobile_ModeloPedido ??
+          this.CodigoInternoVendaMobile_ModeloPedido,
+      ProductCodeSizeOfBalanceLabel:
+          ProductCodeSizeOfBalanceLabel ?? this.ProductCodeSizeOfBalanceLabel,
+      UseRetailSale: useRetailSale ?? this.UseRetailSale,
+      UseWholeSale: useWholeSale ?? this.UseWholeSale,
+      UseEcommerceSale: useEcommerceSale ?? this.UseEcommerceSale,
+      EnterpriseParticipateEnterpriseGroup:
+          EnterpriseParticipateEnterpriseGroup ??
+          this.EnterpriseParticipateEnterpriseGroup,
+      ProductCodeWithCheckerDigit:
+          ProductCodeWithCheckerDigit ?? this.ProductCodeWithCheckerDigit,
+      InscriptionNumber: InscriptionNumber ?? this.InscriptionNumber,
     );
   }
-
-  @override
-  String toString() =>
-      'EnterpriseEntity(id: $id, name: $name, cnpjs: $subEnterprises)';
-
-  @override
-  bool operator ==(covariant EnterpriseEntity other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.name == name &&
-        listEquals(other.subEnterprises, subEnterprises);
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ subEnterprises.hashCode;
 }

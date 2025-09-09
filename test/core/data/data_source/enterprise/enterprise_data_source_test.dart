@@ -29,7 +29,7 @@ void main() {
 
   void mockSuccess() {
     supabaseClient.mockResponse(
-      EnterpriseModel.fromEntity(enterpriseEntity).toJson(),
+      SupabaseEnterpriseModel.fromEntity(enterpriseEntity).toJson(),
     );
   }
 
@@ -46,7 +46,7 @@ void main() {
       () async {
         final result = await sut.getEnterpriseByName(enterpriseName);
 
-        expect(result, EnterpriseModel.fromEntity(enterpriseEntity));
+        expect(result, SupabaseEnterpriseModel.fromEntity(enterpriseEntity));
         expect(supabaseClient.rpcCallHistory.length, 1);
         expect(supabaseClient.lastRpcFunction, 'get_enterprise_by_name');
         expect(supabaseClient.lastRpcParams, {'p_name': enterpriseName});

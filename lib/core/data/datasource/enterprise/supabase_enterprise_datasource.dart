@@ -10,7 +10,7 @@ class SupabaseEnterpriseDatasource implements ISupabaseEnterpriseDatasource {
   SupabaseEnterpriseDatasource(this._supabase);
 
   @override
-  Future<EnterpriseModel?> getEnterpriseByName(String name) async {
+  Future<SupabaseEnterpriseModel?> getEnterpriseByName(String name) async {
     try {
       final response = await _supabase.rpc(
         'get_enterprise_by_name',
@@ -21,7 +21,7 @@ class SupabaseEnterpriseDatasource implements ISupabaseEnterpriseDatasource {
         return null;
       }
 
-      return EnterpriseModel.fromJson(response);
+      return SupabaseEnterpriseModel.fromJson(response);
     } catch (e) {
       debugPrint('Error fetching enterprise: $e');
       rethrow;

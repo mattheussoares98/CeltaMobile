@@ -37,7 +37,7 @@ void main() {
 
   void mockSuccess() {
     enterpriseDatasource.mockGetEnterprise(
-      EnterpriseModel.fromEntity(enterpriseEntity),
+      SupabaseEnterpriseModel.fromEntity(enterpriseEntity),
     );
     authRemoteDataSource.mockLogin(UserModel.fromEntity(userEntity));
     authLocalDataSource.mockSaveUser(userEntity);
