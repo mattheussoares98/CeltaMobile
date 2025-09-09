@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../data/data_source/data_source.dart';
+import '../../data/datasource/datasource.dart';
 import '../../domain/repositories/repositories.dart';
 
 class AuthManagerRepositoryImpl implements IAuthManagerRepository {

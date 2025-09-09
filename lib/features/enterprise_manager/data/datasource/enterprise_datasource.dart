@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/models.dart';
-import 'data_source.dart';
+import 'datasource.dart';
 
 class EnterpriseDataSource implements IEnterpriseDataSource {
   final SupabaseClient supabase;

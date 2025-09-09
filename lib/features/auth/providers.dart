@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/data/data_source/data_source.dart';
+import '../../core/data/datasource/datasource.dart';
 import '../../core/providers/providers.dart';
-import 'data/data_source/data_source.dart';
+import 'data/datasource/datasource.dart';
 import 'domain/repositories/repositories.dart';
 
 part 'providers.g.dart';

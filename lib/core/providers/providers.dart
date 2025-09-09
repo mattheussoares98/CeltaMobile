@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../constants/database_keys.dart';
-import '../data/data_source/enterprise/enterprise.dart';
+import '../data/datasource/enterprise/enterprise.dart';
 import '../domain/contracts/contracts.dart';
 import '../infraestructure/infrastructure.dart';
 

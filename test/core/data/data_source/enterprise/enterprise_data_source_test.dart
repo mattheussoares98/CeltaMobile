@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/data/data_source/data_source.dart';
+import 'package:celta_intelligence/core/data/datasource/datasource.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:faker/faker.dart';

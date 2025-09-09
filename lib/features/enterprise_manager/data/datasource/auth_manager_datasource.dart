@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'data_source.dart';
+import 'datasource.dart';
 
 class AuthManagerDataSource implements IAuthManagerDataSource {
   final SupabaseClient supabase;

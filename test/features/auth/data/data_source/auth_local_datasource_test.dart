@@ -1,6 +1,6 @@
 import 'package:celta_intelligence/core/constants/database_keys.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/auth/data/data_source/data_source.dart';
+import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

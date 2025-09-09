@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/enterprise_manager/data/data_source/data_source.dart';
+import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:flutter_test/flutter_test.dart';
