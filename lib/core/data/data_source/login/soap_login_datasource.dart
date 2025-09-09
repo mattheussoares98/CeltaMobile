@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:xml2json/xml2json.dart';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import '../models/user_model.dart';
-import 'i_auth_remote_datasource.dart';
+import '../../../domain/contracts/contracts.dart';
+import '../../../../features/auth/data/models/user_model.dart';
+import 'i_soap_login_datasource.dart';
 
-class AuthRemoteDatasource implements IAuthRemoteDatasource {
+class SoapLoginDataSource implements ISoapLoginDataSource {
   final SoapRequest soapAdapter;
 
-  AuthRemoteDatasource(this.soapAdapter);
+  SoapLoginDataSource(this.soapAdapter);
 
   @override
   Future<UserModel> login({

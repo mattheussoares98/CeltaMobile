@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../core/data/data_source/data_source.dart';
 import '../../core/providers/providers.dart';
 import 'data/data_source/data_source.dart';
 import 'domain/repositories/repositories.dart';
@@ -14,9 +15,9 @@ IAuthLocalDatasource authLocalDatasource(Ref ref) {
 }
 
 @riverpod
-IAuthRemoteDatasource authRemoteDatasource(Ref ref) {
+ISoapLoginDataSource soapLoginDataSource(Ref ref) {
   final soapAdapter = ref.watch(soapAdapterProvider);
-  return AuthRemoteDatasource(soapAdapter);
+  return SoapLoginDataSource(soapAdapter);
 }
 
 @riverpod

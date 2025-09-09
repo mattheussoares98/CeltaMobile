@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/auth/data/data_source/data_source.dart';
+import 'package:celta_intelligence/core/data/data_source/data_source.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -6,7 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late AuthRemoteDatasource sut;
+  late SoapLoginDataSource sut;
 
   late MockSoapAdapter soapAdapter;
 
@@ -15,7 +15,7 @@ void main() {
   late String password;
 
   void initSut() {
-    sut = AuthRemoteDatasource(soapAdapter);
+    sut = SoapLoginDataSource(soapAdapter);
   }
 
   void initInjections() {

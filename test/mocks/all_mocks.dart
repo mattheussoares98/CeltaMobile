@@ -118,7 +118,7 @@ class MockSoapAdapter extends Mock implements SoapRequest {
   }
 }
 
-class MockAuthRemoteDataSource extends Mock implements IAuthRemoteDatasource {
+class MockAuthRemoteDataSource extends Mock implements ISoapLoginDataSource {
   void mockLogin(UserModel user) {
     when(
       () => this.login(
