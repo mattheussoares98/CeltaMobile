@@ -11,7 +11,7 @@ class EnterpriseManagerController extends _$EnterpriseManagerController {
   Future<List<EnterprisePermissionEntity>> build() {
     //dont need to put in a try catch because the riverpor already treat this and return async error if throws
     return ref
-        .watch(enterpriseRepositoryProvider)
+        .watch(enterpriseManagerRepositoryProvider)
         .getAllEnterprisePermissions();
   }
 }

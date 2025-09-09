@@ -1,11 +1,18 @@
+import '../../../../core/data/datasource/datasource.dart';
 import '../../data/datasource/datasource.dart';
 import '../entities/entities.dart';
 import 'repositories.dart';
 
 class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   final IEnterpriseManagerDataSource enterpriseManagerDataSource;
+  final ISoapLoginDataSource soapLoginDataSource;
+  final ISoapEnterpriseDataSource soapEnterpriseDataSource;
 
-  EnterpriseManagerRepositoryImpl(this.enterpriseManagerDataSource);
+  EnterpriseManagerRepositoryImpl({
+    required this.enterpriseManagerDataSource,
+    required this.soapLoginDataSource,
+    required this.soapEnterpriseDataSource,
+  });
 
   @override
   Future<List<EnterprisePermissionEntity>> getAllEnterprisePermissions() async {
@@ -13,5 +20,26 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
         .getAllEnterprisePermissions();
 
     return enterprises.map((e) => e.toEntity()).toList();
+  }
+
+  @override
+  Future<void> createEnterprise({
+    required String enterpriseName,
+    required String baseUrl,
+    required String userName,
+    required String password,
+  }) async {
+    // 1- try make login in bs
+    final user = await soapLoginDataSource.login(
+      url: "$baseUrl/ccs",
+      user: userName,
+      password: password,
+    );
+    // 2- load enterprises from bs
+    await soapEnterpriseDataSource.getEnterprises(
+      url: baseUrl,
+      crossIdentity: user.CrossIdentity_Usuario ?? "",
+    );
+    // 3- try create enterprise in supabase
   }
 }

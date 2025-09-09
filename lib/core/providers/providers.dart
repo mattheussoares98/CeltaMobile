@@ -34,13 +34,13 @@ SoapAdapter soapAdapter(Ref ref) {
 }
 
 @riverpod
-ISupabaseEnterpriseDataSource supabaseEnterpriseDatasource(Ref ref) {
+ISupabaseEnterpriseDataSource supabaseEnterpriseDataSource(Ref ref) {
   final supabase = ref.watch(supabaseClientProvider);
   return SupabaseEnterpriseDataSource(supabase);
 }
 
 @riverpod
-ISoapEnterpriseDataSource soapEnterpriseDatasource(Ref ref) {
+ISoapEnterpriseDataSource soapEnterpriseDataSource(Ref ref) {
   final soapAdapter = ref.watch(soapAdapterProvider);
   return SoapEnterpriseDataSource(soapAdapter: soapAdapter);
 }
@@ -48,9 +48,9 @@ ISoapEnterpriseDataSource soapEnterpriseDatasource(Ref ref) {
 @riverpod
 IEnterpriseRepository enterpriseRepository(Ref ref) {
   final supabaseEnterpriseDatasource = ref.watch(
-    supabaseEnterpriseDatasourceProvider,
+    supabaseEnterpriseDataSourceProvider,
   );
-  final soapEnterpriseDatasource = ref.watch(soapEnterpriseDatasourceProvider);
+  final soapEnterpriseDatasource = ref.watch(soapEnterpriseDataSourceProvider);
 
   return EnterpriseRepositoryImpl(
     supabaseEnterpriseDatasource: supabaseEnterpriseDatasource,
