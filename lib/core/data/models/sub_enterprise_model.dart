@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/entities.dart';
 
 class SubEnterpriseModel extends Equatable {
-  final String id;
+  final String? id;
   final String name;
   final String cnpj;
   const SubEnterpriseModel({

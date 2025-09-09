@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'entities.dart';
 
 class EnterpriseEntity {
-  final String id;
+  final String? id;
   final String name;
   final List<SubEnterpriseEntity>? subEnterprises; //supabase
   final String? baseUrl; //from supabase

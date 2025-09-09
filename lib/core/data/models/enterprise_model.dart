@@ -4,7 +4,7 @@ import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class EnterpriseModel extends Equatable {
-  final String id;
+  final String? id;
   final String name;
   final List<SubEnterpriseModel>? subEnterprises; //from supabase
   final String? baseUrl; //from supabase
