@@ -5,14 +5,12 @@ import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/errors/errors.dart';
-import 'package:celta_intelligence/core/domain/repositories/repositores.dart'
-    as core_enterprise_repositories;
+import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
 import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
-import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart'
-    as enterprise_manager_repositories;
+import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
 import 'package:faker/faker.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
@@ -203,8 +201,7 @@ class MockAuthManagerDataSource extends Mock implements IAuthManagerDataSource {
   }
 }
 
-class MockAuthManagerRepository extends Mock
-    implements enterprise_manager_repositories.IAuthManagerRepository {
+class MockAuthManagerRepository extends Mock implements IAuthManagerRepository {
   MockAuthManagerRepository() {
     when(() => this.logout()).thenAnswer((_) async => {});
   }
@@ -262,8 +259,7 @@ class SupabaseEnterpriseDataSourceSpy extends Mock
   }
 }
 
-class CoreEnterpriseRepositorySpy extends Mock
-    implements core_enterprise_repositories.IEnterpriseRepository {
+class EnterpriseRepositorySpy extends Mock implements IEnterpriseRepository {
   void mockGetSupabaseEnterpriseByName(EnterpriseEntity? response) {
     when(
       () => this.getSupabaseEnterpriseByName(any()),

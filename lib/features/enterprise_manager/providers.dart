@@ -8,14 +8,14 @@ import 'domain/repositories/repositories.dart';
 part 'providers.g.dart';
 
 @riverpod
-IEnterpriseDataSource enterpriseDataSource(Ref ref) {
-  return EnterpriseDataSource(ref.watch(supabaseClientProvider));
+IEnterpriseManagerDataSource enterpriseDataSource(Ref ref) {
+  return EnterpriseManagerDataSource(ref.watch(supabaseClientProvider));
 }
 
 @riverpod
-IEnterpriseRepository enterpriseRepository(Ref ref) {
+IEnterpriseManagerRepository enterpriseRepository(Ref ref) {
   final datasource = ref.watch(enterpriseDataSourceProvider);
-  return EnterpriseRepositoryImpl(datasource);
+  return EnterpriseManagerRepositoryImpl(datasource);
 }
 
 @riverpod

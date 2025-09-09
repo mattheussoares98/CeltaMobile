@@ -6,14 +6,14 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late EnterpriseDataSource sut;
+  late EnterpriseManagerDataSource sut;
 
   late SupabaseClientSpy supabaseClient;
 
   late EnterprisePermissionEntity enterprisePermissionEntity;
 
   void initSut() {
-    sut = EnterpriseDataSource(supabaseClient);
+    sut = EnterpriseManagerDataSource(supabaseClient);
   }
 
   void initInjections() {

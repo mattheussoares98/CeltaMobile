@@ -14,7 +14,7 @@ void main() {
 
   late MockAuthRemoteDataSource authRemoteDataSource;
   late MockAuthLocalDatasource authLocalDataSource;
-  late CoreEnterpriseRepositorySpy enterpriseRepository;
+  late EnterpriseRepositorySpy enterpriseRepository;
 
   late EnterpriseEntity enterpriseEntity;
   late String userName;
@@ -32,7 +32,7 @@ void main() {
   void initInjections() {
     authRemoteDataSource = MockAuthRemoteDataSource();
     authLocalDataSource = MockAuthLocalDatasource();
-    enterpriseRepository = CoreEnterpriseRepositorySpy();
+    enterpriseRepository = EnterpriseRepositorySpy();
   }
 
   void mockSuccess() {

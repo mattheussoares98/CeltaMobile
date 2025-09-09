@@ -3,10 +3,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
-class EnterpriseDataSource implements IEnterpriseDataSource {
+class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
   final SupabaseClient supabase;
 
-  EnterpriseDataSource(this.supabase);
+  EnterpriseManagerDataSource(this.supabase);
   @override
   Future<List<EnterprisePermissionModel>> getAllEnterprisePermissions() async {
     final response = await supabase.rpc('get_all_enterprise_permissions');
