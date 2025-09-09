@@ -42,7 +42,7 @@ void main() {
     test('should call soap adapter with correct values', () async {
       soapAdapter.mockGet("");
 
-      await sut.login(url: url, user: user, password: password);
+      await sut.login(baseUrl: url, user: user, password: password);
 
       verify(
         () => soapAdapter.post(

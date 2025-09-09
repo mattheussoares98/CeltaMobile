@@ -53,7 +53,7 @@ void main() {
   group('Get enterprise', () {
     test('should behave correctly on success', () async {
       final result = await sut.getEnterprises(
-        url: url,
+        baseUrl: url,
         crossIdentity: crossIdentity,
       );
 
@@ -83,7 +83,7 @@ void main() {
       soapRequest.mockPostError();
 
       expect(
-        sut.getEnterprises(url: url, crossIdentity: crossIdentity),
+        sut.getEnterprises(baseUrl: url, crossIdentity: crossIdentity),
         throwsA(isA<BsError>()),
       );
     });

@@ -22,7 +22,7 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
     required String crossIdentity,
   }) async {
     final models = await soapEnterpriseDatasource.getEnterprises(
-      url: url,
+      baseUrl: url,
       crossIdentity: crossIdentity,
     );
 

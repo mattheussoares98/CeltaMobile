@@ -1,5 +1,6 @@
 import '../../../../core/data/datasource/datasource.dart';
 import '../../data/datasource/datasource.dart';
+import '../../data/models/models.dart';
 import '../entities/entities.dart';
 import 'repositories.dart';
 
@@ -31,15 +32,22 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   }) async {
     // 1- try make login in bs
     final user = await soapLoginDataSource.login(
-      url: "$baseUrl/ccs",
+      baseUrl: baseUrl,
       user: userName,
       password: password,
     );
     // 2- load enterprises from bs
-    await soapEnterpriseDataSource.getEnterprises(
-      url: baseUrl,
+    final enterprises = await soapEnterpriseDataSource.getEnterprises(
+      baseUrl: baseUrl,
       crossIdentity: user.CrossIdentity_Usuario ?? "",
     );
     // 3- try create enterprise in supabase
+    await enterpriseManagerDataSource.createEnterpriseWithSubEnterprises(
+      enterpriseName: enterpriseName,
+      baseUrl: baseUrl,
+      subEnterprises: enterprises
+          .map((e) => SubEnterpriseModel(cnpj: e.CnpjNumber!, name: e.Name!))
+          .toList(),
+    );
   }
 }

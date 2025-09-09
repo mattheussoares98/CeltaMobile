@@ -10,6 +10,7 @@ import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
 import 'package:faker/faker.dart';
 import 'package:hive/hive.dart';
@@ -121,11 +122,11 @@ class MockSoapAdapter extends Mock implements SoapRequest {
   }
 }
 
-class MockAuthRemoteDataSource extends Mock implements ISoapLoginDataSource {
+class LoginRemoteDataSourceSpy extends Mock implements ISoapLoginDataSource {
   void mockLogin(UserModel user) {
     when(
       () => this.login(
-        url: any(named: 'url'),
+        baseUrl: any(named: 'baseUrl'),
         user: any(named: 'user'),
         password: any(named: 'password'),
       ),
@@ -243,7 +244,7 @@ class SoapEnterpriseDataSourceSpy extends Mock
   void mockGetEnterprises(List<SoapEnterpriseModel> response) {
     when(
       () => this.getEnterprises(
-        url: any(named: "url"),
+        baseUrl: any(named: "baseUrl"),
         crossIdentity: any(named: "crossIdentity"),
       ),
     ).thenAnswer((_) async => response);
@@ -273,5 +274,30 @@ class EnterpriseRepositorySpy extends Mock implements IEnterpriseRepository {
         crossIdentity: any(named: "crossIdentity"),
       ),
     ).thenAnswer((_) async => response);
+  }
+}
+
+class EnterpriseManagerDataSourceSpy extends Mock
+    implements IEnterpriseManagerDataSource {
+  EnterpriseManagerDataSourceSpy() {
+    when(
+      () => this.createEnterpriseWithSubEnterprises(
+        enterpriseName: any(named: "enterpriseName"),
+        baseUrl: any(named: "baseUrl"),
+        subEnterprises: any(named: "subEnterprises"),
+      ),
+    ).thenAnswer((_) async => {});
+  }
+  When _mockGetAllEnterprisesPermissionsCall() =>
+      when(() => this.getAllEnterprisePermissions());
+
+  void mockGetAllEnterprisesPermissions(
+    List<EnterprisePermissionModel> response,
+  ) {
+    _mockGetAllEnterprisesPermissionsCall().thenAnswer((_) async => response);
+  }
+
+  void mockGetAllEnterprisesPermissionsError() {
+    _mockGetAllEnterprisesPermissionsCall().thenThrow(Exception());
   }
 }

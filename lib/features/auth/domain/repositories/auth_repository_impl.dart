@@ -30,7 +30,7 @@ class AuthRepositoryImpl implements IAuthRepository {
     }
 
     final userModel = await soapLoginDataSource.login(
-      url: enterpriseModel.baseUrl!,
+      baseUrl: enterpriseModel.baseUrl!,
       user: userName,
       password: password,
     );

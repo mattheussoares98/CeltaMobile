@@ -12,7 +12,7 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late AuthRepositoryImpl sut;
 
-  late MockAuthRemoteDataSource authRemoteDataSource;
+  late LoginRemoteDataSourceSpy authRemoteDataSource;
   late MockAuthLocalDatasource authLocalDataSource;
   late EnterpriseRepositorySpy enterpriseRepository;
 
@@ -30,7 +30,7 @@ void main() {
   }
 
   void initInjections() {
-    authRemoteDataSource = MockAuthRemoteDataSource();
+    authRemoteDataSource = LoginRemoteDataSourceSpy();
     authLocalDataSource = MockAuthLocalDatasource();
     enterpriseRepository = EnterpriseRepositorySpy();
   }
@@ -73,7 +73,7 @@ void main() {
       ).called(1);
       verify(
         () => authRemoteDataSource.login(
-          url: enterpriseEntity.baseUrl!,
+          baseUrl: enterpriseEntity.baseUrl!,
           user: userName,
           password: password,
         ),

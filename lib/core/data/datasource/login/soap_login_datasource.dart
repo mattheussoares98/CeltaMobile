@@ -14,7 +14,7 @@ class SoapLoginDataSource implements ISoapLoginDataSource {
 
   @override
   Future<UserModel> login({
-    required String url,
+    required String baseUrl,
     required String user,
     required String password,
   }) async {
@@ -24,7 +24,7 @@ class SoapLoginDataSource implements ISoapLoginDataSource {
       soapAction: "UserCanLoginJson",
       serviceASMX: "CeltaSecurityService.asmx",
       typeOfResult: "UserCanLoginJsonResult",
-      url: url,
+      url: baseUrl,
     );
 
     Map resultAsMap = json.decode(response);

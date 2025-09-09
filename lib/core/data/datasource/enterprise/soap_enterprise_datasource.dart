@@ -10,12 +10,12 @@ class SoapEnterpriseDataSource implements ISoapEnterpriseDataSource {
 
   @override
   Future<List<SoapEnterpriseModel>> getEnterprises({
-    required String url,
+    required String baseUrl,
     required String crossIdentity,
   }) async {
     try {
       final response = await soapAdapter.post(
-        url: url,
+        url: baseUrl,
         parameters: {
           "crossIdentity": crossIdentity,
           "simpleSearchValue": "",
