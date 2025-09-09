@@ -18,4 +18,21 @@ class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
         .map((item) => EnterprisePermissionModel.fromJson(item))
         .toList();
   }
+
+  @override
+  Future<void> createEnterpriseWithSubEnterprises({
+    required String enterpriseName,
+    required String baseUrl,
+    required List<SubEnterpriseModel> subEnterprises,
+  }) async {
+    //TODO test what happens when throws in application
+    await supabase.rpc(
+      'create_enterprise_with_sub_enterprises',
+      params: {
+        'p_enterprise_name': enterpriseName,
+        'p_base_url': baseUrl,
+        'p_sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
+      },
+    );
+  }
 }
