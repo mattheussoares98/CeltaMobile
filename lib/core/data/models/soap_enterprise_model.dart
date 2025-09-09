@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/entities.dart';
 
-class SoapEnterpriseModel {
+class SoapEnterpriseModel extends Equatable {
   final int? Code;
   final int? PersonalizedCode;
   final String? Name;
@@ -14,7 +16,7 @@ class SoapEnterpriseModel {
   final bool? ProductCodeWithCheckerDigit;
   final String? InscriptionNumber;
 
-  SoapEnterpriseModel({
+  const SoapEnterpriseModel({
     required this.Code,
     required this.PersonalizedCode,
     required this.Name,
@@ -28,6 +30,22 @@ class SoapEnterpriseModel {
     required this.ProductCodeWithCheckerDigit,
     required this.InscriptionNumber,
   });
+
+  @override
+  List<Object?> get props => [
+    Code,
+    PersonalizedCode,
+    Name,
+    CnpjNumber,
+    CodigoInternoVendaMobile_ModeloPedido,
+    UseEcommerceSale,
+    UseRetailSale,
+    UseWholeSale,
+    EnterpriseParticipateEnterpriseGroup,
+    ProductCodeSizeOfBalanceLabel,
+    ProductCodeWithCheckerDigit,
+    InscriptionNumber,
+  ];
 
   factory SoapEnterpriseModel.fromJson(Map<String, dynamic> json) =>
       SoapEnterpriseModel(

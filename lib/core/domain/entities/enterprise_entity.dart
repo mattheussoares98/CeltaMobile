@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'entities.dart';
 
-class EnterpriseEntity {
+class EnterpriseEntity extends Equatable {
   final String name;
   final String? id; //from supabase
   final List<SubEnterpriseEntity>? subEnterprises; //from supabase
@@ -34,6 +36,25 @@ class EnterpriseEntity {
     this.ProductCodeWithCheckerDigit,
     this.InscriptionNumber,
   });
+
+  @override
+  List<Object?> get props => [
+    name,
+    id,
+    subEnterprises,
+    baseUrl,
+    Code,
+    PersonalizedCode,
+    CnpjNumber,
+    CodigoInternoVendaMobile_ModeloPedido,
+    ProductCodeSizeOfBalanceLabel,
+    UseRetailSale,
+    UseWholeSale,
+    UseEcommerceSale,
+    EnterpriseParticipateEnterpriseGroup,
+    ProductCodeWithCheckerDigit,
+    InscriptionNumber,
+  ];
 
   EnterpriseEntity copyWith({
     String? name,
