@@ -4,11 +4,13 @@ import 'package:celta_intelligence/core/data/datasource/datasource.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/domain/errors/errors.dart';
 import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
+import 'package:faker/faker.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -212,4 +214,25 @@ class MockAuthManagerRepository extends Mock implements IAuthManagerRepository {
   void mockLoginError() {
     _mockLoginCall().thenThrow(Exception());
   }
+}
+
+class SoapRequestSpy extends Mock implements SoapRequest {
+  void mockPost(dynamic response) {
+    _mockPostCall().thenAnswer((_) async => response);
+  }
+
+  void mockPostError() {
+    _mockPostCall().thenThrow(BsError(faker.lorem.sentence()));
+  }
+
+  When _mockPostCall() => when(
+    () => this.post(
+      parameters: any(named: "parameters"),
+      typeOfResponse: any(named: "typeOfResponse"),
+      typeOfResult: any(named: "typeOfResult"),
+      soapAction: any(named: "soapAction"),
+      serviceASMX: any(named: "serviceASMX"),
+      url: any(named: "url"),
+    ),
+  );
 }

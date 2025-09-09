@@ -15,6 +15,19 @@ class EntityFactory {
           makeSubEnterpriseEntity(),
           makeSubEnterpriseEntity(),
         ],
+        CnpjNumber: faker.randomGenerator.integer(100).toString(),
+        Code: faker.randomGenerator.integer(100),
+        CodigoInternoVendaMobile_ModeloPedido: faker.randomGenerator.integer(
+          100,
+        ),
+        ProductCodeSizeOfBalanceLabel: faker.randomGenerator.integer(100),
+        PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+        InscriptionNumber: faker.randomGenerator.integer(100).toString(),
+        EnterpriseParticipateEnterpriseGroup: faker.randomGenerator.boolean(),
+        ProductCodeWithCheckerDigit: faker.randomGenerator.boolean(),
+        UseEcommerceSale: faker.randomGenerator.boolean(),
+        UseRetailSale: faker.randomGenerator.boolean(),
+        UseWholeSale: faker.randomGenerator.boolean(),
       );
 
   static SubEnterpriseEntity makeSubEnterpriseEntity() => SubEnterpriseEntity(

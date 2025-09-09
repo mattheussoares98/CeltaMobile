@@ -6,13 +6,13 @@ import '../../data/datasource/datasource.dart';
 import 'i_auth_repository.dart';
 
 class AuthRepositoryImpl implements IAuthRepository {
-  final ISoapLoginDataSource authRemoteDatasource;
+  final ISoapLoginDataSource soapLoginDataSource;
   final IAuthLocalDatasource authLocalDatasource;
   final ISupabaseEnterpriseDatasource
   supabaseEnterpriseDatasource; //TODO create IEnterpriseRepository and ErpEnterpriseDataSource to replace here by this new repository
 
   AuthRepositoryImpl({
-    required this.authRemoteDatasource,
+    required this.soapLoginDataSource,
     required this.authLocalDatasource,
     required this.supabaseEnterpriseDatasource,
   });
@@ -29,7 +29,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       throw AppException('Empresa não encontrada'.hardcoded);
     }
 
-    final userModel = await authRemoteDatasource.login(
+    final userModel = await soapLoginDataSource.login(
       url: enterpriseModel.baseUrl!,
       user: userName,
       password: password,

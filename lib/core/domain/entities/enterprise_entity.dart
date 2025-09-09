@@ -8,8 +8,8 @@ class EnterpriseEntity extends Equatable {
   final List<SubEnterpriseEntity>? subEnterprises; //from supabase
   final String? baseUrl; //from supabase
   final int? Code; //from soap(BS)
-  final int? PersonalizedCode; //from soap(BS)
-  final int? CnpjNumber; //from soap(BS)
+  final String? PersonalizedCode; //from soap(BS)
+  final String? CnpjNumber; //from soap(BS)
   final int? CodigoInternoVendaMobile_ModeloPedido; //from soap(BS)
   final int? ProductCodeSizeOfBalanceLabel; //from soap(BS)
   final bool? UseRetailSale; //from soap(BS)
@@ -62,8 +62,8 @@ class EnterpriseEntity extends Equatable {
     List<SubEnterpriseEntity>? subEnterprises,
     String? baseUrl,
     int? Code,
-    int? PersonalizedCode,
-    int? CnpjNumber,
+    String? PersonalizedCode,
+    String? CnpjNumber,
     int? CodigoInternoVendaMobile_ModeloPedido,
     int? ProductCodeSizeOfBalanceLabel,
     bool? useRetailSale,

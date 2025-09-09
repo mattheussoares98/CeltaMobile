@@ -4,9 +4,9 @@ import '../../domain/entities/entities.dart';
 
 class SoapEnterpriseModel extends Equatable {
   final int? Code;
-  final int? PersonalizedCode;
+  final String? PersonalizedCode;
   final String? Name;
-  final int? CnpjNumber;
+  final String? CnpjNumber;
   final int? CodigoInternoVendaMobile_ModeloPedido;
   final bool? UseRetailSale;
   final bool? UseWholeSale;
@@ -50,9 +50,9 @@ class SoapEnterpriseModel extends Equatable {
   factory SoapEnterpriseModel.fromJson(Map<String, dynamic> json) =>
       SoapEnterpriseModel(
         Code: json["Code"],
-        PersonalizedCode: int.parse(json['PersonalizedCode']),
+        PersonalizedCode: json['PersonalizedCode'],
         Name: json['Name'],
-        CnpjNumber: int.parse(json['CnpjNumber']),
+        CnpjNumber: json['CnpjNumber'],
         UseEcommerceSale: json['SaleTypeECommerce'],
         UseRetailSale: json['SaleTypeRetail'],
         UseWholeSale: json['SaleTypeWholeSale'],

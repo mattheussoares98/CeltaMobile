@@ -22,12 +22,12 @@ ISoapLoginDataSource soapLoginDataSource(Ref ref) {
 
 @riverpod
 IAuthRepository authRepository(Ref ref) {
-  final remoteDatasource = ref.watch(authRemoteDatasourceProvider);
+  final soapLoginDataSource = ref.watch(soapLoginDataSourceProvider);
   final localDatasource = ref.watch(authLocalDatasourceProvider);
   final enterpriseDatasource = ref.watch(supabaseEnterpriseDatasourceProvider);
 
   return AuthRepositoryImpl(
-    authRemoteDatasource: remoteDatasource,
+    soapLoginDataSource: soapLoginDataSource,
     authLocalDatasource: localDatasource,
     supabaseEnterpriseDatasource: enterpriseDatasource,
   );

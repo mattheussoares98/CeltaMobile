@@ -23,7 +23,7 @@ void main() {
 
   void initSut() {
     sut = AuthRepositoryImpl(
-      authRemoteDatasource: authRemoteDataSource,
+      soapLoginDataSource: authRemoteDataSource,
       authLocalDatasource: authLocalDataSource,
       supabaseEnterpriseDatasource: enterpriseDatasource,
     );
