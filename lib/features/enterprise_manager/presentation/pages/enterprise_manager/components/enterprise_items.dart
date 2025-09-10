@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../../../constants/constants.dart';
-import '../../../../../../routing/routing.dart';
 import '../../../../domain/entities/entities.dart';
 import 'components.dart';
 
@@ -67,63 +64,7 @@ class EnterpriseItems extends ConsumerWidget {
               ),
             ],
           ),
-          children: enterprise.subEnterprises.map((e) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          textAlign: TextAlign.start,
-                          text: TextSpan(
-                            style: theme.textTheme.bodyMedium,
-                            children: [
-                              TextSpan(
-                                text: '${e.personalizedCode} - ${e.name}',
-                                style: theme.textTheme.titleMedium,
-                              ),
-                              TextSpan(text: ' (${e.cnpjNumber})'),
-                            ],
-                          ),
-                        ),
-                        for (var module in e.modules.where(
-                          (x) => x.isDefinedAtCnpjLevel,
-                        ))
-                          Text(
-                            module.name,
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              color: module.isEnabled ?? false
-                                  ? Colors.green
-                                  : Colors.red,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      context.pushNamed(
-                        AppRoute.enterpriseManagerChangeModulesPermissions.name,
-                        pathParameters: {
-                          'enterpriseId': enterprise.id.toString(),
-                          'subEnterpriseId': e.id.toString(),
-                        },
-                      );
-                    },
-                    icon: Icon(
-                      theme.platform == TargetPlatform.iOS
-                          ? CupertinoIcons.pencil
-                          : Icons.edit,
-                      color: theme.primaryColorDark,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
+          children: [SubEnterprises(enterprise: enterprise)],
         );
       },
     );
