@@ -47,6 +47,7 @@ class EditModulePermissionButtons extends StatelessWidget {
                 Text(module.name, style: theme.textTheme.titleMedium),
                 gapH8,
                 SegmentedButton<bool?>(
+                  showSelectedIcon: false,
                   segments: [
                     ButtonSegment(
                       value: true,
@@ -63,17 +64,18 @@ class EditModulePermissionButtons extends StatelessWidget {
                     onChange(module.id, newSelection.first);
                   },
                   style: ButtonStyle(
+                    //TODO improve these styles
                     backgroundColor: WidgetStateProperty.resolveWith<Color>((
                       states,
                     ) {
                       if (states.contains(WidgetState.selected)) {
                         if (currentValue == true) {
-                          return Colors.green.shade100;
+                          return Colors.green.shade300;
                         }
                         if (currentValue == false) {
                           return Colors.red.shade100;
                         }
-                        return Colors.blue.shade100;
+                        return Colors.blue.shade500;
                       }
                       return Colors.transparent;
                     }),

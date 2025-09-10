@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../routing/routing.dart';
 import '../../../../domain/entities/entities.dart';
+import 'components.dart';
 
 class EnterpriseItems extends ConsumerWidget {
   final List<EnterprisePermissionEntity> enterprises;
@@ -35,52 +36,80 @@ class EnterpriseItems extends ConsumerWidget {
           ),
           iconColor: theme.primaryColorDark,
           collapsedIconColor: theme.primaryColor,
-          title: Row(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Text(
-                  enterprise.name,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: theme.primaryColorDark,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      enterprise.name,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        color: theme.primaryColorDark,
+                      ),
+                    ),
                   ),
-                ),
+                  EditEnterpriseButton(enterprise: enterprise),
+                ],
               ),
-              IconButton(
-                onPressed: () {
-                  context.pushNamed(
-                    AppRoute.enterpriseManagerChangeModulesPermissions.name,
-                    pathParameters: {
-                      'enterpriseId': enterprise.id.toString(),
-                      'cnpj': 'all',
-                    },
+              Wrap(
+                children: enterprise.globalEnabledModules.map((e) {
+                  return Text(
+                    e,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: Colors.green,
+                    ),
                   );
-                },
-                icon: Icon(
-                  theme.platform != TargetPlatform.iOS
-                      ? CupertinoIcons.pencil
-                      : Icons.edit,
-                ),
+                }).toList(),
               ),
             ],
           ),
           children: enterprise.subEnterprises.map((e) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              child: Row(
                 children: [
-                  RichText(
-                    textAlign: TextAlign.start,
-                    text: TextSpan(
-                      style: theme.textTheme.bodyMedium,
-                      children: [
-                        TextSpan(
-                          text: '${e.personalizedCode} - ${e.name}',
-                          style: theme.textTheme.titleMedium,
-                        ),
-                        TextSpan(text: ' (${e.cnpjNumber})'),
-                        //TODO below here, add modules that are defined at cnpj level
-                      ],
+                  Expanded(
+                    child: RichText(
+                      textAlign: TextAlign.start,
+                      text: TextSpan(
+                        style: theme.textTheme.bodyMedium,
+                        children: [
+                          TextSpan(
+                            text: '${e.personalizedCode} - ${e.name}',
+                            style: theme.textTheme.titleMedium,
+                          ),
+                          TextSpan(text: ' (${e.cnpjNumber})'),
+                          for (var module in e.modules.where(
+                            (x) => x.isDefinedAtCnpjLevel,
+                          ))
+                            TextSpan(
+                              text: module.name,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                color: module.isEnabled
+                                    ? Colors.green
+                                    : Colors.red,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      context.pushNamed(
+                        AppRoute.enterpriseManagerChangeModulesPermissions.name,
+                        pathParameters: {
+                          'enterpriseId': enterprise.id.toString(),
+                          'subEnterpriseId': e.id.toString(),
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      theme.platform == TargetPlatform.iOS
+                          ? CupertinoIcons.pencil
+                          : Icons.edit,
+                      color: theme.primaryColorDark,
                     ),
                   ),
                 ],
