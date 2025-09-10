@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
@@ -131,7 +129,7 @@ void main() {
 
       expect(supabaseClient.lastRpcParams, {
         'p_enterprise_id': enterpriseId,
-        'p_permissions_payload': jsonEncode(permissions),
+        'p_permissions_payload': permissions.map((e) => e.toJson()).toList(),
       });
     });
   });

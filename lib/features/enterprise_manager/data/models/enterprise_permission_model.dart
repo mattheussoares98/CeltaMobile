@@ -32,9 +32,9 @@ class EnterprisePermissionModel extends Equatable {
       id: json['id'],
       name: json['name'],
       baseUrl: json['base_url'],
-      globalEnabledModules: (json['global_enabled_modules'] as List).isEmpty
-          ? []
-          : json['global_enabled_modules'],
+      globalEnabledModules: (json['global_enabled_modules'] as List)
+          .map((e) => e.toString())
+          .toList(),
       subEnterprises: (json['sub_enterprises'] as List)
           .map((item) => SubEnterprisePermissionModel.fromJson(item))
           .toList(),

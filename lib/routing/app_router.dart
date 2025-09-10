@@ -99,7 +99,7 @@ GoRouter goRouter(Ref ref) {
                   final cnpj = state.pathParameters['cnpj']!;
 
                   return enterprise_manager.ChangeModulesPermissionPage(
-                    enterpriseId: enterpriseId,
+                    enterpriseId: int.parse(enterpriseId),
                     cnpj: cnpj == 'all' ? null : cnpj,
                   );
                 },

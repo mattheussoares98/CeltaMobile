@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../data/models/models.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'update_permissions_controller.g.dart';
 
@@ -36,7 +37,7 @@ class UpdatePermissionsController extends _$UpdatePermissionsController {
             );
       }
       // After saving, invalidate the main list to show the new data
-      ref.invalidate(enterprisePermissionsProvider);
+      ref.invalidate(enterpriseManagerControllerProvider);
     });
   }
 }
