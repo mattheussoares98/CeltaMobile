@@ -31,9 +31,10 @@ class EntityFactory {
       );
 
   static SubEnterpriseEntity makeSubEnterpriseEntity() => SubEnterpriseEntity(
-    id: faker.guid.guid(),
+    id: faker.randomGenerator.integer(100),
+    personalizedCode: faker.randomGenerator.integer(100).toString(),
     name: faker.company.name(),
-    cnpj: faker.randomGenerator.integer(14, min: 14).toString(),
+    cnpjNumber: faker.randomGenerator.integer(14, min: 14).toString(),
   );
 
   static UserEntity makeUserEntity() => UserEntity(
