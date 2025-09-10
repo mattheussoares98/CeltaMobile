@@ -1,7 +1,7 @@
 import '../models/models.dart';
 
 abstract class IEnterpriseManagerDataSource {
-  Future<List<EnterprisePermissionModel>> getAllEnterprisePermissions();
+  Future<List<EnterprisePermissionModel>> getEnterprisePermissions();
   Future<void> createEnterpriseWithSubEnterprises({
     required String enterpriseName,
     required String baseUrl,

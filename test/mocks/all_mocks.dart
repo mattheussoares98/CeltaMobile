@@ -290,7 +290,7 @@ class EnterpriseManagerDataSourceSpy extends Mock
     ).thenAnswer((_) async => {});
   }
   When _mockGetAllEnterprisesPermissionsCall() =>
-      when(() => this.getAllEnterprisePermissions());
+      when(() => this.getEnterprisePermissions());
 
   void mockGetAllEnterprisesPermissions(
     List<EnterprisePermissionModel> response,

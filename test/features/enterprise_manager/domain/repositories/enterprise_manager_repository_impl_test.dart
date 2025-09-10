@@ -69,7 +69,7 @@ void main() {
       final response = await sut.getAllEnterprisePermissions();
 
       expect(response, enterprisePermissionEntities);
-      verify(() => enterpriseManagerDataSource.getAllEnterprisePermissions());
+      verify(() => enterpriseManagerDataSource.getEnterprisePermissions());
       verifyNoMoreInteractions(enterpriseManagerDataSource);
     });
   });

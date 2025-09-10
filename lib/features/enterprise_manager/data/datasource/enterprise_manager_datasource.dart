@@ -8,8 +8,8 @@ class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
 
   EnterpriseManagerDataSource(this.supabase);
   @override
-  Future<List<EnterprisePermissionModel>> getAllEnterprisePermissions() async {
-    final response = await supabase.rpc('get_all_enterprise_permissions');
+  Future<List<EnterprisePermissionModel>> getEnterprisePermissions() async {
+    final response = await supabase.rpc('get_enterprise_permissions');
 
     if (response == null) {
       return [];

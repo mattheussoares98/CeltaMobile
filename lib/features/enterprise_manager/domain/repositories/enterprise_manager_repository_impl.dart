@@ -18,7 +18,7 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   @override
   Future<List<EnterprisePermissionEntity>> getAllEnterprisePermissions() async {
     final enterprises = await enterpriseManagerDataSource
-        .getAllEnterprisePermissions();
+        .getEnterprisePermissions();
 
     return enterprises.map((e) => e.toEntity()).toList();
   }

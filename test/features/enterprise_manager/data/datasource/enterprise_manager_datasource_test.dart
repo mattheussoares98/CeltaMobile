@@ -66,7 +66,7 @@ void main() {
 
   group('Get all enterprises permissions', () {
     test('should behave correctly', () async {
-      final result = await sut.getAllEnterprisePermissions();
+      final result = await sut.getEnterprisePermissions();
 
       expect(result, [
         EnterprisePermissionModel.fromEntity(enterprisePermissionEntity),
