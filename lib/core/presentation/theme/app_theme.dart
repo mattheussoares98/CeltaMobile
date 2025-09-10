@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
+  static final disabledColor = Colors.grey;
   static ThemeData themeData(ThemeData theme) => ThemeData(
     // * Use this to toggle Material 3 (defaults to true since Flutter 3.16)
     useMaterial3: true,
@@ -11,7 +12,7 @@ class AppTheme {
     primaryColorLight: Colors.lightGreenAccent,
     primaryColorDark: Colors.green[900],
     progressIndicatorTheme: ProgressIndicatorThemeData(
-      color: Colors.white,
+      color: disabledColor,
       strokeWidth: 2,
     ),
     // platform: TargetPlatform.iOS,
