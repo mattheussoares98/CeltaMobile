@@ -47,7 +47,7 @@ class EnterpriseItems extends ConsumerWidget {
               ),
               IconButton(
                 onPressed: () {
-                  context.goNamed(
+                  context.pushNamed(
                     AppRoute.enterpriseManagerChangeModulesPermissions.name,
                     pathParameters: {
                       'enterpriseId': enterprise.id.toString(),
