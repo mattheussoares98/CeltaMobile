@@ -8,4 +8,8 @@ abstract class IEnterpriseManagerDataSource {
     required String baseUrl,
     required List<SubEnterpriseModel> subEnterprises,
   });
+  Future<void> updateModulePermissions({
+    required int enterpriseId,
+    required List<UpdateModulePermissionModel> permissions,
+  });
 }

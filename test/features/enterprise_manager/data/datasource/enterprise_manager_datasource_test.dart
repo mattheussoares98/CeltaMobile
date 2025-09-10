@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
@@ -16,6 +18,7 @@ void main() {
   late String baseUrl;
   late List<SubEnterpriseModel> subEnterprises;
   late int enterpriseId;
+  late List<UpdateModulePermissionModel> permissions;
 
   void initSut() {
     sut = EnterpriseManagerDataSource(supabaseClient);
@@ -57,6 +60,13 @@ void main() {
       ),
     ];
     enterpriseId = faker.randomGenerator.integer(100);
+    permissions = [
+      UpdateModulePermissionModel(
+        moduleId: faker.randomGenerator.integer(100),
+        isEnabled: faker.randomGenerator.boolean(),
+        subEnterpriseId: faker.randomGenerator.integer(100),
+      ),
+    ];
   }
 
   setUp(() {
@@ -107,6 +117,21 @@ void main() {
         'p_enterprise_name': enterpriseName,
         'p_base_url': baseUrl,
         'p_sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
+      });
+    });
+  });
+  group("Update module permissions", () {
+    test("Should behave correctly on success", () async {
+      await sut.updateModulePermissions(
+        enterpriseId: enterpriseId,
+        permissions: permissions,
+      );
+
+      expect(supabaseClient.lastRpcFunction, 'update_module_permission');
+
+      expect(supabaseClient.lastRpcParams, {
+        'p_enterprise_id': enterpriseId,
+        'p_permissions_payload': jsonEncode(permissions),
       });
     });
   });

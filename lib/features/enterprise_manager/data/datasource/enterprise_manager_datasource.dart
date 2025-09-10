@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/models.dart';
@@ -49,5 +51,21 @@ class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
       return EnterprisePermissionModel.fromJson(response.first);
     }
     return null;
+  }
+
+  @override
+  Future<void> updateModulePermissions({
+    required int enterpriseId,
+    required List<UpdateModulePermissionModel> permissions,
+  }) async {
+    final payload = jsonEncode(permissions);
+
+    await supabase.rpc(
+      'update_module_permission',
+      params: {
+        'p_enterprise_id': enterpriseId,
+        'p_permissions_payload': payload,
+      },
+    );
   }
 }
