@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../constants/constants.dart';
+import '../../../../../../routing/routing.dart';
 import '../../../../domain/entities/entities.dart';
 
 class EnterpriseItems extends ConsumerWidget {
@@ -32,12 +35,33 @@ class EnterpriseItems extends ConsumerWidget {
           ),
           iconColor: theme.primaryColorDark,
           collapsedIconColor: theme.primaryColor,
-          title: Text(
-            enterprise.name,
-            //TODO below this name, show modules that are globally enabled
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: theme.primaryColorDark,
-            ),
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  enterprise.name,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: theme.primaryColorDark,
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  context.goNamed(
+                    AppRoute.enterpriseManagerChangeEnabledModules.name,
+                    pathParameters: {
+                      'enterpriseId': enterprise.id.toString(),
+                      'cnpj': 'all',
+                    },
+                  );
+                },
+                icon: Icon(
+                  theme.platform != TargetPlatform.iOS
+                      ? CupertinoIcons.pencil
+                      : Icons.edit,
+                ),
+              ),
+            ],
           ),
           children: enterprise.subEnterprises.map((e) {
             return Padding(

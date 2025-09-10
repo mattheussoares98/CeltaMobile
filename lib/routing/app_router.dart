@@ -65,10 +65,8 @@ GoRouter goRouter(Ref ref) {
 
         redirect: (context, state) {
           final isLoggedInManager = mgrBridge.value != null;
-          final isAtManagerRoot =
-              state.matchedLocation == '/enterprise-manager';
-          final isAtManagerAuth =
-              state.matchedLocation == '/enterprise-manager/auth';
+          final isAtManagerRoot = state.fullPath == '/enterprise-manager';
+          final isAtManagerAuth = state.fullPath == '/enterprise-manager/auth';
 
           if (!isLoggedInManager && !isAtManagerAuth) {
             return '/enterprise-manager/auth';
@@ -102,7 +100,7 @@ GoRouter goRouter(Ref ref) {
 
                   return enterprise_manager.ChangeEnabledModulesPage(
                     enterpriseId: enterpriseId,
-                    cnpj: cnpj,
+                    cnpj: cnpj == 'all' ? null : cnpj,
                   );
                 },
               ),
