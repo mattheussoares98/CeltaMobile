@@ -17,7 +17,7 @@ enum AppRoute {
   auth,
   enterpriseManager,
   enterpriseManagerAuth,
-  enterpriseManagerChangeEnabledModules,
+  enterpriseManagerChangeModulesPermissions,
   enterpriseManagerDash,
   home,
   splash,
@@ -93,7 +93,7 @@ GoRouter goRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: 'permissions/:enterpriseId/:cnpj',
-                name: AppRoute.enterpriseManagerChangeEnabledModules.name,
+                name: AppRoute.enterpriseManagerChangeModulesPermissions.name,
                 builder: (context, state) {
                   final enterpriseId = state.pathParameters['enterpriseId']!;
                   final cnpj = state.pathParameters['cnpj']!;
