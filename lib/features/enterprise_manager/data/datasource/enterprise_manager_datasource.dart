@@ -35,4 +35,21 @@ class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
       },
     );
   }
+
+  @override
+  Future<List<EnterprisePermissionModel>> getEnterprisePermissionsById(
+    int id,
+  ) async {
+    final response = await supabase.rpc(
+      'get_enterprise_permissions',
+      params: {'p_enterprise_id': id},
+    );
+
+    if (response == null) {
+      return [];
+    }
+    return (response as List)
+        .map((item) => EnterprisePermissionModel.fromJson(item))
+        .toList();
+  }
 }

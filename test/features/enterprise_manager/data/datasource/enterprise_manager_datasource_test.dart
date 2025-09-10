@@ -15,6 +15,7 @@ void main() {
   late String enterpriseName;
   late String baseUrl;
   late List<SubEnterpriseModel> subEnterprises;
+  late int enterpriseId;
 
   void initSut() {
     sut = EnterpriseManagerDataSource(supabaseClient);
@@ -55,6 +56,7 @@ void main() {
         id: faker.randomGenerator.integer(100),
       ),
     ];
+    enterpriseId = faker.randomGenerator.integer(100);
   }
 
   setUp(() {
@@ -72,7 +74,19 @@ void main() {
         EnterprisePermissionModel.fromEntity(enterprisePermissionEntity),
       ]);
 
-      expect(supabaseClient.lastRpcFunction, 'get_all_enterprise_permissions');
+      expect(supabaseClient.lastRpcFunction, 'get_enterprise_permissions');
+    });
+  });
+  group('Get enterprises permissions by id', () {
+    test('should behave correctly', () async {
+      final result = await sut.getEnterprisePermissionsById(enterpriseId);
+
+      expect(result, [
+        EnterprisePermissionModel.fromEntity(enterprisePermissionEntity),
+      ]);
+
+      expect(supabaseClient.lastRpcFunction, 'get_enterprise_permissions');
+      expect(supabaseClient.lastRpcParams, {'p_enterprise_id': enterpriseId});
     });
   });
 
