@@ -5,11 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../controllers/controllers.dart';
 
-class ChangeEnabledModulesPage extends ConsumerWidget {
+class ChangeModulesPermissionPage extends ConsumerWidget {
   final String enterpriseId;
   final String? cnpj; // This will be null for enterprise-wide changes
 
-  const ChangeEnabledModulesPage({
+  const ChangeModulesPermissionPage({
     super.key,
     required this.enterpriseId,
     this.cnpj,

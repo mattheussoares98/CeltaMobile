@@ -98,7 +98,7 @@ GoRouter goRouter(Ref ref) {
                   final enterpriseId = state.pathParameters['enterpriseId']!;
                   final cnpj = state.pathParameters['cnpj']!;
 
-                  return enterprise_manager.ChangeEnabledModulesPage(
+                  return enterprise_manager.ChangeModulesPermissionPage(
                     enterpriseId: enterpriseId,
                     cnpj: cnpj == 'all' ? null : cnpj,
                   );
