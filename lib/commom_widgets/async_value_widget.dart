@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../localization/string_hardcoded.dart';
-import '../exceptions/error_handilng.dart';
+import '../exceptions/exceptions.dart';
 
-class AsyncValueWidget<T> extends StatelessWidget with ErrorHandling {
+class AsyncValueWidget<T> extends StatelessWidget {
   const AsyncValueWidget({
     super.key,
     required this.value,
@@ -29,7 +29,7 @@ class AsyncValueWidget<T> extends StatelessWidget with ErrorHandling {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              getAsyncError(e, st).error as String,
+              parseErrorMessage(e),
               style: TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
             ),
             TextButton.icon(
