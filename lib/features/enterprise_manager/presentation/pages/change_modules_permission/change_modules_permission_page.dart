@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../providers.dart';
 import '../../controllers/controllers.dart';
+import 'components/components.dart';
 
 class ChangeModulesPermissionPage extends ConsumerStatefulWidget {
   final int enterpriseId;
@@ -25,20 +27,14 @@ class ChangeModulesPermissionPage extends ConsumerStatefulWidget {
 
 class _ChangeModulesPermissionPageState
     extends ConsumerState<ChangeModulesPermissionPage> {
-  // 1. A local variable to store the "draft" changes.
   Map<int, bool?> _permissionChanges = {};
 
   @override
   Widget build(BuildContext context) {
-    // Provider for the initial data load
     final enterpriseAsync = ref.watch(
       enterprisePermissionsProvider(widget.enterpriseId),
     );
 
-    // Provider for the "Save" button's loading/error state
-    final updateActionState = ref.watch(updatePermissionsControllerProvider);
-
-    // Listen to the data provider to initialize our local state map ONCE
     ref.listen<AsyncValue<EnterprisePermissionEntity?>>(
       enterprisePermissionsProvider(widget.enterpriseId),
       (previous, next) {
@@ -65,10 +61,10 @@ class _ChangeModulesPermissionPageState
         ref.invalidate(enterprisePermissionsProvider);
         Navigator.of(context).pop();
       });
-      // You can add error handling here too (e.g., using your AsyncValueUI extension)
     });
 
     final isGlobalChange = widget.cnpj == null;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -77,26 +73,14 @@ class _ChangeModulesPermissionPageState
               ? 'Permissões Globais'.hardcoded
               : 'Permissões Específicas'.hardcoded,
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: updateActionState.isLoading
-            ? null
-            : () {
-                ref
-                    .read(updatePermissionsControllerProvider.notifier)
-                    .saveChanges(
-                      enterpriseId: widget.enterpriseId,
-                      subEnterpriseId: int.tryParse(widget.cnpj ?? ""),
-                      changes: _permissionChanges,
-                    );
-              },
-        label: Text('Salvar'.hardcoded),
-        icon: updateActionState.isLoading
-            ? const CircularProgressIndicator(
-                color: Colors.white,
-                strokeWidth: 2,
-              )
-            : const Icon(Icons.save),
+        actions: [
+          if (enterpriseAsync.hasValue)
+            SaveButton(
+              enterpriseId: widget.enterpriseId,
+              cnpj: widget.cnpj,
+              permissionChanges: _permissionChanges,
+            ),
+        ],
       ),
       body: AsyncValueWidget(
         tryAgain: () => ref.invalidate(enterprisePermissionsProvider),
@@ -112,84 +96,22 @@ class _ChangeModulesPermissionPageState
                     .firstWhere((se) => se.id == int.parse(widget.cnpj!))
                     .name;
 
-          return ListView(
-            padding: const EdgeInsets.all(16.0),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 'Editando: $scopeName',
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: theme.textTheme.headlineSmall,
               ),
-              const SizedBox(height: 24),
-              ...modulesToDisplay.map((module) {
-                final currentValue = _permissionChanges[module.id];
-
-                // If it's a GLOBAL change, show a simple Switch
-                if (isGlobalChange) {
-                  return SwitchListTile(
-                    title: Text(module.name),
-                    value: currentValue ?? false, // Default global to false
-                    onChanged: (newValue) {
-                      setState(() => _permissionChanges[module.id] = newValue);
-                    },
-                  );
-                }
-                // If it's a SPECIFIC CNPJ change, show the SegmentedButton
-                else {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          module.name,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 8),
-                        SegmentedButton<bool?>(
-                          segments: [
-                            ButtonSegment(
-                              value: true,
-                              label: Text('Habilitado'.hardcoded),
-                            ),
-                            ButtonSegment(
-                              value: null,
-                              label: Text('Herdar'.hardcoded),
-                            ),
-                            ButtonSegment(
-                              value: false,
-                              label: Text('Desabilitado'.hardcoded),
-                            ),
-                          ],
-                          selected: {currentValue},
-                          onSelectionChanged: (newSelection) {
-                            setState(
-                              () => _permissionChanges[module.id] =
-                                  newSelection.first,
-                            );
-                          },
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.resolveWith<Color>((
-                                  states,
-                                ) {
-                                  if (states.contains(WidgetState.selected)) {
-                                    if (currentValue == true) {
-                                      return Colors.green.shade100;
-                                    }
-                                    if (currentValue == false) {
-                                      return Colors.red.shade100;
-                                    }
-                                    return Colors.blue.shade100;
-                                  }
-                                  return Colors.transparent;
-                                }),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              }),
+              gapH16,
+              EditModulePermissionButtons(
+                onChange: (moduleId, newValue) {
+                  setState(() => _permissionChanges[moduleId] = newValue);
+                },
+                modulesToDisplay: modulesToDisplay,
+                isGlobalChange: isGlobalChange,
+                permissionChanges: _permissionChanges,
+              ),
             ],
           );
         },

@@ -33,12 +33,17 @@ class ResponsiveFlowLayout extends StatelessWidget {
         final double totalSpacing = spacing * (crossAxisCount - 1);
         final double itemWidth = (totalWidth - totalSpacing) / crossAxisCount;
 
-        return Wrap(
-          spacing: spacing,
-          runSpacing: runSpacing,
-          children: items.map((item) {
-            return SizedBox(width: min(itemWidth, maxItemWidth!), child: item);
-          }).toList(),
+        return Center(
+          child: Wrap(
+            spacing: spacing,
+            runSpacing: runSpacing,
+            children: items.map((item) {
+              return SizedBox(
+                width: min(itemWidth, maxItemWidth!),
+                child: item,
+              );
+            }).toList(),
+          ),
         );
       },
     );
