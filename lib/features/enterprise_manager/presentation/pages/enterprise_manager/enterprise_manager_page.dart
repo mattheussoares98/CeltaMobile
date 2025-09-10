@@ -38,7 +38,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
 
   Future<void> onSubmit() async {
     await ref
-        .read(enterpriseManagerControllerProvider.notifier)
+        .read(createEnterpriseControllerProvider.notifier)
         .createEnterprise(
           baseUrl: urlController.text,
           enterpriseName: enterpriseNameController.text,
