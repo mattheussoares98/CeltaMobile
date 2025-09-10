@@ -12,12 +12,12 @@ import 'components/components.dart';
 
 class ChangeModulesPermissionPage extends ConsumerStatefulWidget {
   final int enterpriseId;
-  final String? cnpj; // Use the ID for consistency
+  final int? subEnterpriseId; // Use the ID for consistency
 
   const ChangeModulesPermissionPage({
     super.key,
     required this.enterpriseId,
-    this.cnpj,
+    required this.subEnterpriseId,
   });
 
   @override
@@ -63,7 +63,7 @@ class _ChangeModulesPermissionPageState
       });
     });
 
-    final isGlobalChange = widget.cnpj == null;
+    final isGlobalChange = widget.subEnterpriseId == null;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -77,7 +77,7 @@ class _ChangeModulesPermissionPageState
           if (enterpriseAsync.hasValue)
             SaveButton(
               enterpriseId: widget.enterpriseId,
-              cnpj: widget.cnpj,
+              subEnterpriseId: widget.subEnterpriseId,
               permissionChanges: _permissionChanges,
             ),
         ],
@@ -93,7 +93,7 @@ class _ChangeModulesPermissionPageState
           final scopeName = isGlobalChange
               ? enterprise.name
               : enterprise.subEnterprises
-                    .firstWhere((se) => se.id == int.parse(widget.cnpj!))
+                    .firstWhere((se) => se.id == widget.subEnterpriseId)
                     .name;
 
           return Column(
@@ -122,9 +122,9 @@ class _ChangeModulesPermissionPageState
   List<ModulePermissionEntity> _getModulesForScope(
     EnterprisePermissionEntity enterprise,
   ) {
-    if (widget.cnpj != null) {
+    if (widget.subEnterpriseId != null) {
       return enterprise.subEnterprises
-          .firstWhere((se) => se.id == int.parse(widget.cnpj!))
+          .firstWhere((se) => se.id == widget.subEnterpriseId)
           .modules;
     }
     return enterprise.subEnterprises.isNotEmpty

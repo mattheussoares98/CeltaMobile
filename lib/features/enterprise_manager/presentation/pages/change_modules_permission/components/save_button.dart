@@ -6,12 +6,12 @@ import '../../../controllers/controllers.dart';
 
 class SaveButton extends ConsumerWidget {
   final int enterpriseId;
-  final String? cnpj;
+  final int? subEnterpriseId;
   final Map<int, bool?> permissionChanges;
   const SaveButton({
     super.key,
     required this.enterpriseId,
-    required this.cnpj,
+    required this.subEnterpriseId,
     required this.permissionChanges,
   });
 
@@ -31,7 +31,7 @@ class SaveButton extends ConsumerWidget {
                   .read(updatePermissionsControllerProvider.notifier)
                   .saveChanges(
                     enterpriseId: enterpriseId,
-                    subEnterpriseId: int.tryParse(cnpj ?? ""),
+                    subEnterpriseId: subEnterpriseId,
                     changes: permissionChanges,
                   );
             },

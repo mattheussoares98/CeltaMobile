@@ -92,15 +92,16 @@ GoRouter goRouter(Ref ref) {
                 const enterprise_manager.EnterpriseManagerPage(),
             routes: [
               GoRoute(
-                path: 'permissions/:enterpriseId/:cnpj',
+                path: 'permissions/:enterpriseId/:subEnterpriseId',
                 name: AppRoute.enterpriseManagerChangeModulesPermissions.name,
                 builder: (context, state) {
                   final enterpriseId = state.pathParameters['enterpriseId']!;
-                  final cnpj = state.pathParameters['cnpj']!;
+                  final subEnterpriseId =
+                      state.pathParameters['subEnterpriseId']!;
 
                   return enterprise_manager.ChangeModulesPermissionPage(
                     enterpriseId: int.parse(enterpriseId),
-                    cnpj: cnpj == 'all' ? null : cnpj,
+                    subEnterpriseId: int.tryParse(subEnterpriseId),
                   );
                 },
               ),
