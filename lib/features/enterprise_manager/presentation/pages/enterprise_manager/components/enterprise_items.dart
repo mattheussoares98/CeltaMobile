@@ -53,14 +53,17 @@ class EnterpriseItems extends ConsumerWidget {
                 ],
               ),
               Wrap(
-                children: enterprise.globalEnabledModules.map((e) {
-                  return Text(
-                    e,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: Colors.green,
-                    ),
-                  );
-                }).toList(),
+                children: enterprise.globalModules
+                    .where((e) => e.isEnabled == true)
+                    .map((e) {
+                      return Text(
+                        e.name,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          color: Colors.green,
+                        ),
+                      );
+                    })
+                    .toList(),
               ),
             ],
           ),

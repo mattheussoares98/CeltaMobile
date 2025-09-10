@@ -48,10 +48,10 @@ class EntityFactory {
         id: faker.randomGenerator.integer(100),
         name: faker.company.name(),
         baseUrl: faker.internet.httpsUrl(),
-        globalEnabledModules: [
-          faker.lorem.word(),
-          faker.lorem.word(),
-          faker.lorem.word(),
+        globalModules: [
+          makeModulePermissionEntity(),
+          makeModulePermissionEntity(),
+          makeModulePermissionEntity(),
         ],
         subEnterprises: [
           makeSubEnterprisePermissionEntity(),

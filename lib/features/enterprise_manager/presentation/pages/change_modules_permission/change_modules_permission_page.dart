@@ -127,8 +127,6 @@ class _ChangeModulesPermissionPageState
           .firstWhere((se) => se.id == widget.subEnterpriseId)
           .modules;
     }
-    return enterprise.subEnterprises.isNotEmpty
-        ? enterprise.subEnterprises.first.modules
-        : [];
+    return enterprise.globalModules;
   }
 }

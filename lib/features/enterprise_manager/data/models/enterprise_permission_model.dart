@@ -7,33 +7,27 @@ class EnterprisePermissionModel extends Equatable {
   final int id;
   final String name;
   final String baseUrl;
-  final List<String> globalEnabledModules;
+  final List<ModulePermissionModel> globalModules;
   final List<SubEnterprisePermissionModel> subEnterprises;
 
   const EnterprisePermissionModel({
     required this.id,
     required this.name,
     required this.baseUrl,
-    required this.globalEnabledModules,
+    required this.globalModules,
     required this.subEnterprises,
   });
 
   @override
-  List<Object?> get props => [
-    id,
-    name,
-    baseUrl,
-    subEnterprises,
-    globalEnabledModules,
-  ];
+  List<Object?> get props => [id, name, baseUrl, subEnterprises, globalModules];
 
   factory EnterprisePermissionModel.fromJson(Map<String, dynamic> json) {
     return EnterprisePermissionModel(
       id: json['id'],
       name: json['name'],
       baseUrl: json['base_url'],
-      globalEnabledModules: (json['global_enabled_modules'] as List)
-          .map((e) => e.toString())
+      globalModules: (json['global_enabled_modules'] as List)
+          .map((item) => ModulePermissionModel.fromJson(item))
           .toList(),
       subEnterprises: (json['sub_enterprises'] as List)
           .map((item) => SubEnterprisePermissionModel.fromJson(item))
@@ -48,7 +42,9 @@ class EnterprisePermissionModel extends Equatable {
       id: entity.id,
       name: entity.name,
       baseUrl: entity.baseUrl,
-      globalEnabledModules: entity.globalEnabledModules,
+      globalModules: entity.globalModules
+          .map((e) => ModulePermissionModel.fromEntity(e))
+          .toList(),
       subEnterprises: entity.subEnterprises
           .map((e) => SubEnterprisePermissionModel.fromEntity(e))
           .toList(),
@@ -60,7 +56,7 @@ class EnterprisePermissionModel extends Equatable {
       id: id,
       name: name,
       baseUrl: baseUrl,
-      globalEnabledModules: globalEnabledModules,
+      globalModules: globalModules.map((e) => e.toEntity()).toList(),
       subEnterprises: subEnterprises.map((e) => e.toEntity()).toList(),
     );
   }
@@ -69,7 +65,7 @@ class EnterprisePermissionModel extends Equatable {
     'id': id,
     'name': name,
     'base_url': baseUrl,
-    'global_enabled_modules': globalEnabledModules,
+    'global_enabled_modules': globalModules,
     'sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
   };
 }
