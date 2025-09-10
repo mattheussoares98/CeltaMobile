@@ -7,12 +7,14 @@ class SubEnterprisePermissionModel extends Equatable {
   final int id;
   final String name;
   final String cnpjNumber;
+  final String personalizedCode;
   final List<ModulePermissionModel> modules;
 
   const SubEnterprisePermissionModel({
     required this.id,
     required this.name,
     required this.cnpjNumber,
+    required this.personalizedCode,
     required this.modules,
   });
 
@@ -24,6 +26,7 @@ class SubEnterprisePermissionModel extends Equatable {
       id: json['id'],
       name: json['name'],
       cnpjNumber: json['cnpj_number'],
+      personalizedCode: json['personalized_code'],
       modules: (json['modules'] as List)
           .map((item) => ModulePermissionModel.fromJson(item))
           .toList(),
@@ -37,6 +40,7 @@ class SubEnterprisePermissionModel extends Equatable {
       id: entity.id,
       name: entity.name,
       cnpjNumber: entity.cnpjNumber,
+      personalizedCode: entity.personalizedCode,
       modules: entity.modules
           .map((e) => ModulePermissionModel.fromEntity(e))
           .toList(),
@@ -48,6 +52,7 @@ class SubEnterprisePermissionModel extends Equatable {
       id: id,
       name: name,
       cnpjNumber: cnpjNumber,
+      personalizedCode: personalizedCode,
       modules: modules.map((e) => e.toEntity()).toList(),
     );
   }
@@ -56,6 +61,7 @@ class SubEnterprisePermissionModel extends Equatable {
     'id': id,
     'name': name,
     'cnpj_number': cnpjNumber,
+    'personalized_code': personalizedCode,
     'modules': modules.map((e) => e.toJson()).toList(),
   };
 }

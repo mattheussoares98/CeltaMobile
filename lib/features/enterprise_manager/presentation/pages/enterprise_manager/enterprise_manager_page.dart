@@ -73,57 +73,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
           if (enterprises.isEmpty) {
             return Center(child: Text('Nenhuma empresa encontrada.'.hardcoded));
           }
-          // Build a list of enterprises
-          return ListView.builder(
-            itemCount: enterprises.length,
-            itemBuilder: (context, index) {
-              final enterprise = enterprises[index];
-              return ExpansionTile(
-                title: Text(
-                  enterprise.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                children: enterprise.subEnterprises.map((cnpj) {
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      left: 16.0,
-                      right: 16.0,
-                      bottom: 8.0,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${cnpj.name} (${cnpj.cnpjNumber})',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        // Build the list of module switches for this CNPJ
-                        // ...cnpj.modules.map((module) {
-                        //   return SwitchListTile(
-                        //     title: Text(module.name),
-                        //     value: module.isEnabled,
-                        //     onChanged: (newValue) {
-                        //       // Call the controller to update the permission
-                        //       ref
-                        //           .read(
-                        //             enterpriseManagerControllerProvider
-                        //                 .notifier,
-                        //           )
-                        //           .updatePermission(
-                        //             subEnterpriseId: cnpj.id,
-                        //             moduleId: module.id,
-                        //             isEnabled: newValue,
-                        //           );
-                        //     },
-                        //   );
-                        // }),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              );
-            },
-          );
+          return EnterpriseItems(enterprises: enterprises);
         },
       ),
     );

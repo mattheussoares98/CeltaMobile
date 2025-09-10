@@ -59,7 +59,8 @@ class EntityFactory {
       SubEnterprisePermissionEntity(
         id: faker.randomGenerator.integer(100),
         name: faker.company.name(),
-        cnpjNumber: faker.randomGenerator.integer(14, min: 14).toString(),
+        cnpjNumber: faker.randomGenerator.integer(200).toString(),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
         modules: [
           makeModulePermissionEntity(),
           makeModulePermissionEntity(),
