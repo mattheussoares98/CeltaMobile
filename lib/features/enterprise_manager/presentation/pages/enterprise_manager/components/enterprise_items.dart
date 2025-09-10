@@ -73,29 +73,34 @@ class EnterpriseItems extends ConsumerWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: RichText(
-                      textAlign: TextAlign.start,
-                      text: TextSpan(
-                        style: theme.textTheme.bodyMedium,
-                        children: [
-                          TextSpan(
-                            text: '${e.personalizedCode} - ${e.name}',
-                            style: theme.textTheme.titleMedium,
-                          ),
-                          TextSpan(text: ' (${e.cnpjNumber})'),
-                          for (var module in e.modules.where(
-                            (x) => x.isDefinedAtCnpjLevel,
-                          ))
-                            TextSpan(
-                              text: module.name,
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                color: module.isEnabled ?? false
-                                    ? Colors.green
-                                    : Colors.red,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          textAlign: TextAlign.start,
+                          text: TextSpan(
+                            style: theme.textTheme.bodyMedium,
+                            children: [
+                              TextSpan(
+                                text: '${e.personalizedCode} - ${e.name}',
+                                style: theme.textTheme.titleMedium,
                               ),
+                              TextSpan(text: ' (${e.cnpjNumber})'),
+                            ],
+                          ),
+                        ),
+                        for (var module in e.modules.where(
+                          (x) => x.isDefinedAtCnpjLevel,
+                        ))
+                          Text(
+                            module.name,
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: module.isEnabled ?? false
+                                  ? Colors.green
+                                  : Colors.red,
                             ),
-                        ],
-                      ),
+                          ),
+                      ],
                     ),
                   ),
                   IconButton(

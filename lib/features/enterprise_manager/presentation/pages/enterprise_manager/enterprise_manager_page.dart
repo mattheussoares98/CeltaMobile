@@ -53,7 +53,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Gerenciar Módulos'.hardcoded),
+        title: Text('Gerenciar módulos'.hardcoded),
         actions: [LogoutButton()],
       ),
       floatingActionButton: CreateEnterpriseFlottingButton(

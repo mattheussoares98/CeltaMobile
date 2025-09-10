@@ -29,6 +29,20 @@ class _ChangeModulesPermissionPageState
     extends ConsumerState<ChangeModulesPermissionPage> {
   Map<int, bool?> _permissionChanges = {};
 
+  String getScopeName(
+    bool isGlobalChange,
+    EnterprisePermissionEntity enterprise,
+  ) {
+    if (isGlobalChange) {
+      return enterprise.name;
+    } else {
+      final subEnterprise = enterprise.subEnterprises.firstWhere(
+        (se) => se.id == widget.subEnterpriseId,
+      );
+      return '${subEnterprise.personalizedCode} - ${subEnterprise.name}';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final enterpriseAsync = ref.watch(
@@ -68,10 +82,12 @@ class _ChangeModulesPermissionPageState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          isGlobalChange
-              ? 'Permissões Globais'.hardcoded
-              : 'Permissões Específicas'.hardcoded,
+        title: FittedBox(
+          child: Text(
+            isGlobalChange
+                ? 'Permissões globais'.hardcoded
+                : 'Permissões específicas'.hardcoded,
+          ),
         ),
         actions: [
           if (enterpriseAsync.hasValue)
@@ -90,28 +106,29 @@ class _ChangeModulesPermissionPageState
             return Center(child: Text('Empresa não encontrada.'.hardcoded));
           }
           final modulesToDisplay = _getModulesForScope(enterprise);
-          final scopeName = isGlobalChange
-              ? enterprise.name
-              : enterprise.subEnterprises
-                    .firstWhere((se) => se.id == widget.subEnterpriseId)
-                    .name;
+          final scopeName = getScopeName(isGlobalChange, enterprise);
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Editando: $scopeName',
-                style: theme.textTheme.headlineSmall,
-              ),
+              Text(scopeName, style: theme.textTheme.titleSmall),
               gapH16,
-              EditModulePermissionButtons(
-                onChange: (moduleId, newValue) {
-                  setState(() => _permissionChanges[moduleId] = newValue);
-                },
-                modulesToDisplay: modulesToDisplay,
-                isGlobalChange: isGlobalChange,
-                permissionChanges: _permissionChanges,
-              ),
+              if (isGlobalChange)
+                EditEnterpriseSwitch(
+                  onChange: (moduleId, newValue) {
+                    setState(() => _permissionChanges[moduleId] = newValue);
+                  },
+                  modulesToDisplay: modulesToDisplay,
+                  permissionChanges: _permissionChanges,
+                )
+              else
+                EditSubEnterprisesSegmentedButttons(
+                  onChange: (moduleId, newValue) {
+                    setState(() => _permissionChanges[moduleId] = newValue);
+                  },
+                  modulesToDisplay: modulesToDisplay,
+                  permissionChanges: _permissionChanges,
+                ),
             ],
           );
         },
