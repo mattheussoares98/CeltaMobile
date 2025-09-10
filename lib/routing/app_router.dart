@@ -16,8 +16,9 @@ part 'app_router.g.dart';
 enum AppRoute {
   auth,
   enterpriseManager,
-  enterpriseManagerDash,
   enterpriseManagerAuth,
+  enterpriseManagerChangeEnabledModules,
+  enterpriseManagerDash,
   home,
   splash,
 }
@@ -91,6 +92,21 @@ GoRouter goRouter(Ref ref) {
             name: AppRoute.enterpriseManagerDash.name,
             builder: (context, state) =>
                 const enterprise_manager.EnterpriseManagerPage(),
+            routes: [
+              GoRoute(
+                path: 'permissions/:enterpriseId/:cnpj',
+                name: AppRoute.enterpriseManagerChangeEnabledModules.name,
+                builder: (context, state) {
+                  final enterpriseId = state.pathParameters['enterpriseId']!;
+                  final cnpj = state.pathParameters['cnpj']!;
+
+                  return enterprise_manager.ChangeEnabledModulesPage(
+                    enterpriseId: enterpriseId,
+                    cnpj: cnpj,
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),
