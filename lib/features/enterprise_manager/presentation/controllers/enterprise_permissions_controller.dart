@@ -3,10 +3,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
-part 'permission_details_controller.g.dart';
+part 'enterprise_permissions_controller.g.dart';
 
 @riverpod
-Future<EnterprisePermissionEntity?> permissionDetailsController(
+Future<EnterprisePermissionEntity?> enterprisePermissions(
   Ref ref,
   int enterpriseId,
 ) {
