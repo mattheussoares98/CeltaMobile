@@ -2,6 +2,7 @@ import '../entities/entities.dart';
 
 abstract class IEnterpriseManagerRepository {
   Future<List<EnterprisePermissionEntity>> getAllEnterprisePermissions();
+  Future<EnterprisePermissionEntity?> getEnterprisePermissionsById(int id);
   Future<void> createEnterprise({
     required String enterpriseName,
     required String baseUrl,

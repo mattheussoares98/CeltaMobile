@@ -10,8 +10,8 @@ class AsyncValueWidget<T> extends StatelessWidget with ErrorHandling {
   const AsyncValueWidget({
     super.key,
     required this.value,
-    required this.data,
     required this.tryAgain,
+    required this.data,
   });
   final AsyncValue<T> value;
   final Widget Function(T) data;
@@ -22,6 +22,7 @@ class AsyncValueWidget<T> extends StatelessWidget with ErrorHandling {
     final theme = Theme.of(context);
     return value.when(
       data: data,
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, st) => Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -43,7 +44,6 @@ class AsyncValueWidget<T> extends StatelessWidget with ErrorHandling {
           ],
         ),
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

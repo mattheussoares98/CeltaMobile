@@ -24,6 +24,16 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   }
 
   @override
+  Future<EnterprisePermissionEntity?> getEnterprisePermissionsById(
+    int id,
+  ) async {
+    final enterprise = await enterpriseManagerDataSource
+        .getEnterprisePermissionsById(id);
+
+    return enterprise?.toEntity();
+  }
+
+  @override
   Future<void> createEnterprise({
     required String enterpriseName,
     required String baseUrl,

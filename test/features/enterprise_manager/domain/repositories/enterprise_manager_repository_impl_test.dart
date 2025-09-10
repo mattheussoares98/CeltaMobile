@@ -73,6 +73,19 @@ void main() {
       verifyNoMoreInteractions(enterpriseManagerDataSource);
     });
   });
+  group('Get enterprise permissions by id', () {
+    test('should behave correctly on success', () async {
+      final id = faker.randomGenerator.integer(100);
+
+      final response = await sut.getEnterprisePermissionsById(id);
+
+      expect(response, enterprisePermissionEntities);
+      verify(
+        () => enterpriseManagerDataSource.getEnterprisePermissionsById(id),
+      );
+      verifyNoMoreInteractions(enterpriseManagerDataSource);
+    });
+  });
 
   group("Create enterprise", () {
     test("Should behave correctly", () async {

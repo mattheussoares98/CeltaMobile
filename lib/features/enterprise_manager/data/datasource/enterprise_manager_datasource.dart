@@ -37,7 +37,7 @@ class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
   }
 
   @override
-  Future<List<EnterprisePermissionModel>> getEnterprisePermissionsById(
+  Future<EnterprisePermissionModel?> getEnterprisePermissionsById(
     int id,
   ) async {
     final response = await supabase.rpc(
@@ -45,11 +45,9 @@ class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
       params: {'p_enterprise_id': id},
     );
 
-    if (response == null) {
-      return [];
+    if (response is List && response.isNotEmpty) {
+      return EnterprisePermissionModel.fromJson(response.first);
     }
-    return (response as List)
-        .map((item) => EnterprisePermissionModel.fromJson(item))
-        .toList();
+    return null;
   }
 }
