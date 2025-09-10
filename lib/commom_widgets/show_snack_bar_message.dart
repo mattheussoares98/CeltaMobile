@@ -9,14 +9,15 @@ void showSnackBarMessage(
   ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      duration: duration ?? const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      duration: duration ?? const Duration(seconds: 3),
       backgroundColor: backgroundColor,
       content: Text(
         message,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.white,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: Colors.white),
       ),
       dismissDirection: DismissDirection.down,
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
