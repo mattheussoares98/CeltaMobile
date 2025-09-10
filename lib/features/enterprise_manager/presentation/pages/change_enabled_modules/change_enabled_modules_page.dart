@@ -18,7 +18,7 @@ class ChangeEnabledModulesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final enterpriseAsync = ref.watch(
-      permissionDetailsProvider(int.parse(enterpriseId)),
+      permissionDetailsControllerProvider(int.parse(enterpriseId)),
     );
 
     final isGlobalChange = cnpj == null;
@@ -36,7 +36,9 @@ class ChangeEnabledModulesPage extends ConsumerWidget {
       body: AsyncValueWidget(
         value: enterpriseAsync,
         tryAgain: () {
-          ref.invalidate(permissionDetailsProvider(int.parse(enterpriseId)));
+          ref.invalidate(
+            permissionDetailsControllerProvider(int.parse(enterpriseId)),
+          );
         },
         data: (enterprise) {
           final subEnterprise = isGlobalChange

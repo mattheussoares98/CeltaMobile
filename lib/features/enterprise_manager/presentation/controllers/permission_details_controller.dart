@@ -6,7 +6,7 @@ import '../../providers.dart';
 part 'permission_details_controller.g.dart';
 
 @riverpod
-Future<EnterprisePermissionEntity?> permissionDetails(
+Future<EnterprisePermissionEntity?> permissionDetailsController(
   Ref ref,
   int enterpriseId,
 ) {
