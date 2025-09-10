@@ -7,16 +7,24 @@ class ModulePermissionModel extends Equatable {
   final String moduleKey;
   final String name;
   final bool isEnabled;
+  final bool isDefinedAtCnpjLevel;
 
   const ModulePermissionModel({
     required this.id,
     required this.moduleKey,
     required this.name,
     required this.isEnabled,
+    required this.isDefinedAtCnpjLevel,
   });
 
   @override
-  List<Object?> get props => [id, moduleKey, name, isEnabled];
+  List<Object?> get props => [
+    id,
+    moduleKey,
+    name,
+    isEnabled,
+    isDefinedAtCnpjLevel,
+  ];
 
   factory ModulePermissionModel.fromJson(Map<String, dynamic> json) {
     return ModulePermissionModel(
@@ -24,6 +32,7 @@ class ModulePermissionModel extends Equatable {
       moduleKey: json['module_key'],
       name: json['name'],
       isEnabled: json['is_enabled'],
+      isDefinedAtCnpjLevel: json['is_defined_at_cnpj_level'],
     );
   }
 
@@ -33,6 +42,7 @@ class ModulePermissionModel extends Equatable {
       moduleKey: entity.moduleKey,
       name: entity.name,
       isEnabled: entity.isEnabled,
+      isDefinedAtCnpjLevel: entity.isDefinedAtCnpjLevel,
     );
   }
 
@@ -42,6 +52,7 @@ class ModulePermissionModel extends Equatable {
       moduleKey: moduleKey,
       name: name,
       isEnabled: isEnabled,
+      isDefinedAtCnpjLevel: isDefinedAtCnpjLevel,
     );
   }
 
@@ -50,5 +61,6 @@ class ModulePermissionModel extends Equatable {
     'module_key': moduleKey,
     'name': name,
     'is_enabled': isEnabled,
+    'is_defined_at_cnpj_level': isDefinedAtCnpjLevel,
   };
 }

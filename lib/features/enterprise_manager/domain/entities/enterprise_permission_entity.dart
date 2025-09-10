@@ -6,15 +6,23 @@ class EnterprisePermissionEntity extends Equatable {
   final int id;
   final String name;
   final String baseUrl;
+  final List<String> globalEnabledModules;
   final List<SubEnterprisePermissionEntity> subEnterprises;
 
   const EnterprisePermissionEntity({
     required this.id,
     required this.name,
     required this.baseUrl,
+    required this.globalEnabledModules,
     required this.subEnterprises,
   });
 
   @override
-  List<Object?> get props => [id, name, baseUrl, subEnterprises];
+  List<Object?> get props => [
+    id,
+    name,
+    baseUrl,
+    subEnterprises,
+    globalEnabledModules,
+  ];
 }

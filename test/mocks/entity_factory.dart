@@ -48,6 +48,11 @@ class EntityFactory {
         id: faker.randomGenerator.integer(100),
         name: faker.company.name(),
         baseUrl: faker.internet.httpsUrl(),
+        globalEnabledModules: [
+          faker.lorem.word(),
+          faker.lorem.word(),
+          faker.lorem.word(),
+        ],
         subEnterprises: [
           makeSubEnterprisePermissionEntity(),
           makeSubEnterprisePermissionEntity(),
@@ -74,5 +79,6 @@ class EntityFactory {
         moduleKey: faker.guid.guid(),
         name: faker.lorem.word(),
         isEnabled: faker.randomGenerator.boolean(),
+        isDefinedAtCnpjLevel: faker.randomGenerator.boolean(),
       );
 }
