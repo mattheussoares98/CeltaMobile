@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../core/providers/providers.dart';
 import '../auth/providers.dart';
 import 'data/datasource/datasource.dart';
+import 'domain/entities/entities.dart';
 import 'domain/repositories/repositories.dart';
 
 part 'providers.g.dart';
@@ -38,4 +39,14 @@ IAuthManagerDataSource authManagerDataSource(Ref ref) {
 IAuthManagerRepository authManagerRepository(Ref ref) {
   final datasource = ref.watch(authManagerDataSourceProvider);
   return AuthManagerRepositoryImpl(datasource);
+}
+
+@riverpod
+Future<EnterprisePermissionEntity?> enterprisePermissions(
+  Ref ref,
+  int enterpriseId,
+) {
+  final repository = ref.watch(enterpriseManagerRepositoryProvider);
+
+  return repository.getEnterprisePermissionsById(enterpriseId);
 }

@@ -2,7 +2,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../data/models/models.dart';
 import '../../providers.dart';
-import 'enterprise_permissions_controller.dart';
 
 part 'update_permissions_controller.g.dart';
 

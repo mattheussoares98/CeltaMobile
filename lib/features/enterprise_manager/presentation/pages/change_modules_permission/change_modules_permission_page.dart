@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../controllers/controllers.dart';
+import '../../../providers.dart';
 
 class ChangeModulesPermissionPage extends ConsumerWidget {
   final String enterpriseId;
