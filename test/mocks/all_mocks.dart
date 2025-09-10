@@ -288,6 +288,13 @@ class EnterpriseManagerDataSourceSpy extends Mock
         subEnterprises: any(named: "subEnterprises"),
       ),
     ).thenAnswer((_) async => {});
+
+    when(
+      () => this.updateModulePermissions(
+        enterpriseId: any(named: 'enterpriseId'),
+        permissions: any(named: 'permissions'),
+      ),
+    ).thenAnswer((_) async => {});
   }
   When _mockGetAllEnterprisesPermissionsCall() =>
       when(() => this.getEnterprisePermissions());

@@ -1,3 +1,4 @@
+import '../../data/models/models.dart';
 import '../entities/entities.dart';
 
 abstract class IEnterpriseManagerRepository {
@@ -8,5 +9,9 @@ abstract class IEnterpriseManagerRepository {
     required String baseUrl,
     required String userName,
     required String password,
+  });
+  Future<void> updateModulePermissions({
+    required int enterpriseId,
+    required List<UpdateModulePermissionModel> permissions,
   });
 }

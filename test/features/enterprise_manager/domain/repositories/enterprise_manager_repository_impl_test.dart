@@ -21,6 +21,8 @@ void main() {
   late String baseUrl;
   late String userName;
   late String password;
+  late int enterpriseId;
+  late List<UpdateModulePermissionModel> permissions;
 
   void initSut() {
     sut = EnterpriseManagerRepositoryImpl(
@@ -55,6 +57,21 @@ void main() {
     baseUrl = faker.internet.httpsUrl();
     userName = faker.internet.userName();
     password = faker.internet.password();
+    enterpriseId = faker.randomGenerator.integer(100);
+    permissions = [
+      UpdateModulePermissionModel(
+        moduleId: faker.randomGenerator.integer(100),
+        isEnabled: faker.randomGenerator.boolean(),
+      ),
+      UpdateModulePermissionModel(
+        moduleId: faker.randomGenerator.integer(100),
+        isEnabled: faker.randomGenerator.boolean(),
+      ),
+      UpdateModulePermissionModel(
+        moduleId: faker.randomGenerator.integer(100),
+        isEnabled: faker.randomGenerator.boolean(),
+      ),
+    ];
   }
 
   setUp(() {
@@ -141,6 +158,23 @@ void main() {
               .toList(),
         ),
       ).called(1);
+    });
+  });
+
+  group('Update module permission', () {
+    test('should behave correctly on success', () async {
+      await sut.updateModulePermissions(
+        enterpriseId: enterpriseId,
+        permissions: permissions,
+      );
+
+      verify(
+        () => enterpriseManagerDataSource.updateModulePermissions(
+          enterpriseId: enterpriseId,
+          permissions: permissions,
+        ),
+      );
+      verifyNoMoreInteractions(enterpriseManagerDataSource);
     });
   });
 }

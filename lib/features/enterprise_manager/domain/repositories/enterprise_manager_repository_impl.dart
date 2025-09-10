@@ -67,4 +67,15 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
           .toList(),
     );
   }
+
+  @override
+  Future<void> updateModulePermissions({
+    required int enterpriseId,
+    required List<UpdateModulePermissionModel> permissions,
+  }) async {
+    await enterpriseManagerDataSource.updateModulePermissions(
+      enterpriseId: enterpriseId,
+      permissions: permissions,
+    );
+  }
 }
