@@ -1,12 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../exceptions/error_handilng.dart';
 import '../../providers.dart';
 
 part 'login_controller.g.dart';
 
 @riverpod
-class LoginController extends _$LoginController with ErrorHandling {
+class LoginController extends _$LoginController {
   @override
   FutureOr<void> build() {}
 
@@ -17,18 +16,14 @@ class LoginController extends _$LoginController with ErrorHandling {
   }) async {
     state = const AsyncValue.loading();
 
-    try {
-      final authRepository = ref.read(authRepositoryProvider);
-
-      await authRepository.login(
-        enterpriseName: enterpriseName,
-        password: password,
-        userName: userName,
-      );
-
-      state = const AsyncValue.data(null);
-    } catch (e, st) {
-      state = getAsyncError(e, st);
-    }
+    state = await AsyncValue.guard(() async {
+      await ref
+          .read(authRepositoryProvider)
+          .login(
+            enterpriseName: enterpriseName,
+            password: password,
+            userName: userName,
+          );
+    });
   }
 }

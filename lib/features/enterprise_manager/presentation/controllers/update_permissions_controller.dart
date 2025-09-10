@@ -1,13 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../../exceptions/exceptions.dart';
 import '../../data/models/models.dart';
 import '../../providers.dart';
 
 part 'update_permissions_controller.g.dart';
 
 @riverpod
-class UpdatePermissionsController extends _$UpdatePermissionsController
-    with ErrorHandling {
+class UpdatePermissionsController extends _$UpdatePermissionsController {
   @override
   FutureOr<void> build() {}
 
@@ -17,15 +15,17 @@ class UpdatePermissionsController extends _$UpdatePermissionsController
     required Map<int, bool?> changes,
   }) async {
     state = const AsyncValue.loading();
-    try {
-      final permissions = changes.entries.map((entry) {
-        return UpdateModulePermissionModel(
-          moduleId: entry.key,
-          isEnabled: entry.value,
-          subEnterpriseId:
-              subEnterpriseId, // Only add this for specific changes
-        );
-      }).toList();
+    state = await AsyncValue.guard(() async {
+      final permissions = changes.entries
+          .map(
+            (e) => UpdateModulePermissionModel(
+              moduleId: e.key,
+              isEnabled: e.value,
+              subEnterpriseId:
+                  subEnterpriseId, // Only add this for specific changes
+            ),
+          )
+          .toList();
 
       if (permissions.isNotEmpty) {
         await ref
@@ -37,8 +37,6 @@ class UpdatePermissionsController extends _$UpdatePermissionsController
       }
       // After saving, invalidate the main list to show the new data
       ref.invalidate(enterprisePermissionsProvider);
-    } catch (e, st) {
-      state = getAsyncError(e, st);
-    }
+    });
   }
 }
