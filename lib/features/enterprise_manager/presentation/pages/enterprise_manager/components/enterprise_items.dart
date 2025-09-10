@@ -34,6 +34,7 @@ class EnterpriseItems extends ConsumerWidget {
           collapsedIconColor: theme.primaryColor,
           title: Text(
             enterprise.name,
+            //TODO below this name, show modules that are globally enabled
             style: theme.textTheme.titleLarge?.copyWith(
               color: theme.primaryColorDark,
             ),
@@ -54,6 +55,7 @@ class EnterpriseItems extends ConsumerWidget {
                           style: theme.textTheme.titleMedium,
                         ),
                         TextSpan(text: ' (${e.cnpjNumber})'),
+                        //TODO below here, add modules that are defined at cnpj level
                       ],
                     ),
                   ),
