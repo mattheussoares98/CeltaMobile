@@ -118,7 +118,12 @@ void main() {
           baseUrl: baseUrl,
           subEnterprises: enterprises
               .map(
-                (e) => SubEnterpriseModel(cnpj: e.CnpjNumber!, name: e.Name!),
+                (e) => SubEnterpriseModel(
+                  cnpj: e.CnpjNumber!,
+                  name: e.Name!,
+                  personalizedCode: e.PersonalizedCode!,
+                  id: e.Code!,
+                ),
               )
               .toList(),
         ),

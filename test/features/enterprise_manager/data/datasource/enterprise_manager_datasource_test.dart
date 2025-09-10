@@ -39,14 +39,20 @@ void main() {
       SubEnterpriseModel(
         cnpj: faker.randomGenerator.integer(14).toString(),
         name: faker.company.name(),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        id: faker.randomGenerator.integer(100),
       ),
       SubEnterpriseModel(
         cnpj: faker.randomGenerator.integer(14).toString(),
         name: faker.company.name(),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        id: faker.randomGenerator.integer(100),
       ),
       SubEnterpriseModel(
         cnpj: faker.randomGenerator.integer(14).toString(),
         name: faker.company.name(),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        id: faker.randomGenerator.integer(100),
       ),
     ];
   }

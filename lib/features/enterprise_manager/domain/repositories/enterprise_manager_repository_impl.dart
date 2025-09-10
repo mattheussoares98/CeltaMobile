@@ -46,7 +46,14 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
       enterpriseName: enterpriseName,
       baseUrl: baseUrl,
       subEnterprises: enterprises
-          .map((e) => SubEnterpriseModel(cnpj: e.CnpjNumber!, name: e.Name!))
+          .map(
+            (e) => SubEnterpriseModel(
+              cnpj: e.CnpjNumber!,
+              name: e.Name!,
+              personalizedCode: e.PersonalizedCode!,
+              id: e.Code!,
+            ),
+          )
           .toList(),
     );
   }
