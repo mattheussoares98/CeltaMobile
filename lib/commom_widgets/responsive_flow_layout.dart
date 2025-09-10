@@ -8,13 +8,13 @@ class ResponsiveFlowLayout extends StatelessWidget {
   final List<Widget> items;
   final double spacing;
   final double runSpacing;
-  final double? minItemWidth;
+  final double? maxItemWidth;
   const ResponsiveFlowLayout({
     super.key,
     required this.items,
     this.spacing = 8.0,
     this.runSpacing = 8.0,
-    this.minItemWidth = Breakpoint.tablet,
+    this.maxItemWidth = Breakpoint.tablet,
   });
 
   @override
@@ -26,7 +26,7 @@ class ResponsiveFlowLayout extends StatelessWidget {
         }
 
         final double totalWidth = constraints.maxWidth;
-        final int crossAxisCount = (totalWidth / minItemWidth!).floor().clamp(
+        final int crossAxisCount = (totalWidth / maxItemWidth!).floor().clamp(
           1,
           items.length,
         );
@@ -37,7 +37,7 @@ class ResponsiveFlowLayout extends StatelessWidget {
           spacing: spacing,
           runSpacing: runSpacing,
           children: items.map((item) {
-            return SizedBox(width: min(itemWidth, minItemWidth!), child: item);
+            return SizedBox(width: min(itemWidth, maxItemWidth!), child: item);
           }).toList(),
         );
       },
