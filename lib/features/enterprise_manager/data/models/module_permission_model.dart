@@ -6,7 +6,7 @@ class ModulePermissionModel extends Equatable {
   final int id;
   final String moduleKey;
   final String name;
-  final bool isEnabled;
+  final bool? isEnabled;
   final bool isDefinedAtCnpjLevel;
 
   const ModulePermissionModel({

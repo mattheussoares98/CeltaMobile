@@ -86,7 +86,7 @@ class EnterpriseItems extends ConsumerWidget {
                             TextSpan(
                               text: module.name,
                               style: theme.textTheme.titleSmall?.copyWith(
-                                color: module.isEnabled
+                                color: module.isEnabled ?? false
                                     ? Colors.green
                                     : Colors.red,
                               ),
