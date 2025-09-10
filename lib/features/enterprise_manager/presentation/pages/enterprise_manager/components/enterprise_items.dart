@@ -28,7 +28,7 @@ class EnterpriseItems extends ConsumerWidget {
             borderRadius: BorderRadius.circular(Sizes.p12),
           ),
           backgroundColor: theme.primaryColorLight.withAlpha(120),
-          collapsedBackgroundColor: Colors.transparent,
+          collapsedBackgroundColor: theme.primaryColorLight.withAlpha(60),
           tilePadding: const EdgeInsets.all(Sizes.p4),
           childrenPadding: EdgeInsets.only(
             bottom: index + 1 == enterprises.length ? Sizes.p8 : 0,
