@@ -78,7 +78,16 @@ void main() {
           password: password,
         ),
       ).called(1);
-      verify(() => authLocalDataSource.saveUser(userEntity)).called(1);
+      verify(
+        () => authLocalDataSource.saveUser(
+          UserEntity(
+            name: userName,
+            enterpriseName: enterpriseEntity.name,
+            AccessKey: userEntity.AccessKey,
+            CrossIdentity_Usuario: userEntity.CrossIdentity_Usuario,
+          ),
+        ),
+      ).called(1);
 
       verifyNoMoreInteractions(enterpriseRepository);
       verifyNoMoreInteractions(authLocalDataSource);

@@ -39,6 +39,7 @@ class HomePage extends ConsumerWidget {
                   title: 'Sair'.hardcoded,
                   content: 'Tem certeza que deseja sair?'.hardcoded,
                   cancelActionText: 'Cancelar'.hardcoded,
+                  defaultActionText: 'Sim'.hardcoded,
                   onOkPressed: () async {
                     await ref
                         .read(authStateControllerProvider.notifier)

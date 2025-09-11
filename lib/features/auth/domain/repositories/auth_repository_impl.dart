@@ -29,13 +29,20 @@ class AuthRepositoryImpl implements IAuthRepository {
       throw AppException('Empresa não encontrada'.hardcoded);
     }
 
-    final userModel = await soapLoginDataSource.login(
+    final remoteUser = await soapLoginDataSource.login(
       baseUrl: enterpriseModel.baseUrl!,
       user: userName,
       password: password,
     );
 
-    await authLocalDatasource.saveUser(userModel.toEntity());
+    await authLocalDatasource.saveUser(
+      UserEntity(
+        name: userName,
+        enterpriseName: enterpriseName,
+        AccessKey: remoteUser.AccessKey,
+        CrossIdentity_Usuario: remoteUser.CrossIdentity_Usuario,
+      ),
+    );
   }
 
   @override

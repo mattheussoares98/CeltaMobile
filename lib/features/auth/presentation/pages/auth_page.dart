@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/features/auth/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -50,6 +51,21 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final user = await ref.read(authRepositoryProvider).getCurrentUser();
+      if (user?.name != null) {
+        userController.text = user!.name!;
+      }
+      if (user?.enterpriseName != null) {
+        enterpriseController.text = user!.enterpriseName!;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
@@ -59,7 +75,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       });
     });
 
-    final loginState = ref.watch(loginControllerProvider);
+    final loginAsync = ref.watch(loginControllerProvider);
 
     return Scaffold(
       body: ResponsiveScrollableWidget(
@@ -67,31 +83,35 @@ class _AuthPageState extends ConsumerState<AuthPage> {
           key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CeltaImage(),
               EnterpriseField(
+                isLoading: loginAsync.isLoading,
                 enterpriseController: enterpriseController,
                 userFocusNode: userFocusNode,
               ),
               gapH8,
               UserField(
+                isLoading: loginAsync.isLoading,
                 userController: userController,
                 userFocusNode: userFocusNode,
                 passwordFocusNode: passwordFocusNode,
               ),
               gapH8,
               PasswordField(
+                isLoading: loginAsync.isLoading,
                 passwordController: passwordController,
                 passwordFocusNode: passwordFocusNode,
-                onSubmit: onSubmit,
+                onSubmit: loginAsync.isLoading ? null : onSubmit,
               ),
               gapH32,
               EnterButton(
-                isLoading: loginState.isLoading,
+                isLoading: loginAsync.isLoading,
                 enterpriseController: enterpriseController,
                 emailController: userController,
                 passwordController: passwordController,
-                onSubmit: onSubmit,
+                onSubmit: loginAsync.isLoading ? null : onSubmit,
               ),
             ],
           ),

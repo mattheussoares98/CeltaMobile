@@ -8,16 +8,19 @@ import '../../../../../localization/string_hardcoded.dart';
 class EnterpriseField extends StatelessWidget {
   final TextEditingController enterpriseController;
   final FocusNode userFocusNode;
+  final bool isLoading;
   const EnterpriseField({
     super.key,
     required this.enterpriseController,
     required this.userFocusNode,
+    required this.isLoading,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return TextFormField(
+      enabled: !isLoading,
       controller: enterpriseController,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {

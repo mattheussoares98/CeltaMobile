@@ -9,7 +9,7 @@ class EnterButton extends ConsumerWidget {
   final TextEditingController enterpriseController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final VoidCallback onSubmit;
+  final VoidCallback? onSubmit;
   const EnterButton({
     super.key,
     required this.isLoading,

@@ -16,7 +16,7 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
     await box.delete(DatabaseKeys.user.name);
 
     if (localUser != null) {
-      final user = UserModel.fromJson(localUser as Map<String, dynamic>);
+      final user = UserModel.fromJson(Map<String, dynamic>.from(localUser));
       await box.put(
         DatabaseKeys.user.name,
         UserModel(

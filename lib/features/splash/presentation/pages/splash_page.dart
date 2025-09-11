@@ -6,20 +6,35 @@ import 'package:go_router/go_router.dart';
 import '../../../../routing/app_router.dart';
 import '../../../auth/presentation/controllers/controllers.dart';
 
-class SplashPage extends ConsumerWidget {
+class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final localUser = ref.read(authStateControllerProvider).valueOrNull;
-    Future.delayed(const Duration(seconds: kDebugMode ? 1 : 2), () {
-      if (localUser == null) {
-        context.goNamed(AppRoute.auth.name);
-      } else {
-        context.goNamed(AppRoute.home.name);
+  ConsumerState<ConsumerStatefulWidget> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends ConsumerState<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final localUser = ref.read(authStateControllerProvider).valueOrNull;
+        Future.delayed(const Duration(seconds: kDebugMode ? 1 : 2), () {
+          if (localUser?.AccessKey == null ||
+              localUser?.CrossIdentity_Usuario == null) {
+            context.goNamed(AppRoute.auth.name);
+          } else {
+            context.goNamed(AppRoute.home.name);
+          }
+        });
       }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }
