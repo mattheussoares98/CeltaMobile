@@ -4,7 +4,7 @@ import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class SupabaseEnterpriseModel extends Equatable {
-  final String? id;
+  final int? id;
   final String name;
   final List<SupabaseSubEnterpriseModel>? subEnterprises; //from supabase
   final String? baseUrl; //from supabase
@@ -21,12 +21,12 @@ class SupabaseEnterpriseModel extends Equatable {
 
   factory SupabaseEnterpriseModel.fromJson(Map<String, dynamic> map) {
     return SupabaseEnterpriseModel(
-      id: map['id'] as String,
+      id: map['id'] as int,
       name: map['name'] as String,
-      baseUrl: map['baseUrl'] as String,
-      subEnterprises: map['subEnterprises'] != null
+      baseUrl: map['base_url'] as String,
+      subEnterprises: map['sub_enterprises'] != null
           ? List<SupabaseSubEnterpriseModel>.from(
-              (map['subEnterprises'] as List<Map<String, dynamic>>)
+              (map['sub_enterprises'] as List<Map<String, dynamic>>)
                   .map<SupabaseSubEnterpriseModel?>(
                     (x) => SupabaseSubEnterpriseModel.fromJson(x),
                   ),
@@ -38,8 +38,8 @@ class SupabaseEnterpriseModel extends Equatable {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id': id,
     'name': name,
-    'baseUrl': baseUrl,
-    'subEnterprises': subEnterprises?.map((e) => e.toJson()).toList(),
+    'base_url': baseUrl,
+    'sub_enterprises': subEnterprises?.map((e) => e.toJson()).toList(),
   };
 
   EnterpriseEntity toEntity() => EnterpriseEntity(

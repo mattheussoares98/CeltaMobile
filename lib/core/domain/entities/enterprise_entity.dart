@@ -4,7 +4,7 @@ import 'entities.dart';
 
 class EnterpriseEntity extends Equatable {
   final String name;
-  final String? id; //from supabase
+  final int? id; //from supabase
   final List<SubEnterpriseEntity>? subEnterprises; //from supabase
   final String? baseUrl; //from supabase
   final int? Code; //from soap(BS)
@@ -58,7 +58,7 @@ class EnterpriseEntity extends Equatable {
 
   EnterpriseEntity copyWith({
     String? name,
-    String? id,
+    int? id,
     List<SubEnterpriseEntity>? subEnterprises,
     String? baseUrl,
     int? Code,

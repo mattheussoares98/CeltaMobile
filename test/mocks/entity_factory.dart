@@ -5,9 +5,9 @@ import 'package:faker/faker.dart';
 class EntityFactory {
   EntityFactory._();
 
-  static EnterpriseEntity makeEnterpriseEntity({String? id, String? name}) =>
+  static EnterpriseEntity makeEnterpriseEntity({int? id, String? name}) =>
       EnterpriseEntity(
-        id: id ?? faker.guid.guid(),
+        id: id ?? faker.randomGenerator.integer(100),
         name: name ?? faker.company.name(),
         baseUrl: faker.internet.httpsUrl(),
         subEnterprises: [
