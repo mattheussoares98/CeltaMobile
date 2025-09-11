@@ -65,17 +65,24 @@ class SubEnterprises extends StatelessWidget {
                               ],
                             ),
                           ),
-                          for (var module in subEnterprise.modules.where(
-                            (x) => x.isDefinedAtCnpjLevel,
-                          ))
-                            Text(
-                              module.name,
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                color: module.isEnabled ?? false
-                                    ? Colors.green
-                                    : Colors.red,
-                              ),
+                          RichText(
+                            textAlign: TextAlign.start,
+                            text: TextSpan(
+                              children: [
+                                for (var module in subEnterprise.modules.where(
+                                  (x) => x.isDefinedAtCnpjLevel,
+                                ))
+                                  TextSpan(
+                                    text: "${module.name}; ",
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: module.isEnabled ?? false
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                  ),
+                              ],
                             ),
+                          ),
                         ],
                       ),
                     ),
