@@ -1,8 +1,11 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -49,25 +52,24 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final permissionsAsync = ref.watch(enterpriseManagerControllerProvider);
+    final enterprisesAsync = ref.watch(enterpriseManagerControllerProvider);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Gerenciar módulos'.hardcoded),
         actions: [LogoutButton()],
       ),
-      floatingActionButton: CreateEnterpriseFlottingButton(
-        enterpriseNameController: enterpriseNameController,
-        urlController: urlController,
-        userNameController: userNameController,
-        passwordController: passwordController,
-        urlFocusNode: urlFocusNode,
-        userNameFocusNode: userNameFocusNode,
-        passwordFocusNode: passwordFocusNode,
-        onSubmit: onSubmit,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.pushNamed(AppRoute.createEnterprise.name);
+        },
+        child: Icon(
+          theme.platform == TargetPlatform.iOS ? CupertinoIcons.add : Icons.add,
+        ),
       ),
       body: AsyncValueWidget(
-        value: permissionsAsync,
+        value: enterprisesAsync,
         tryAgain: () => ref.invalidate(enterpriseManagerControllerProvider),
         data: (enterprises) {
           if (enterprises.isEmpty) {

@@ -15,6 +15,7 @@ part 'app_router.g.dart';
 
 enum AppRoute {
   auth,
+  createEnterprise,
   enterpriseManager,
   enterpriseManagerAuth,
   enterpriseManagerChangeModulesPermissions,
@@ -104,6 +105,12 @@ GoRouter goRouter(Ref ref) {
                     subEnterpriseId: int.tryParse(subEnterpriseId),
                   );
                 },
+              ),
+              GoRoute(
+                path: 'createEnterprise',
+                name: AppRoute.createEnterprise.name,
+                builder: (context, state) =>
+                    enterprise_manager.CreateEnterprisePage(),
               ),
             ],
           ),

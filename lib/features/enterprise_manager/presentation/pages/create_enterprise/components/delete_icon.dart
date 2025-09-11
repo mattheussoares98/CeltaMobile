@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DeleteIcon extends StatelessWidget {
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
   const DeleteIcon({super.key, required this.onPress});
 
   @override
@@ -15,7 +15,7 @@ class DeleteIcon extends StatelessWidget {
         theme.platform == TargetPlatform.iOS
             ? CupertinoIcons.delete
             : Icons.delete,
-        color: Colors.red,
+        color: onPress == null ? theme.disabledColor : Colors.red,
       ),
     );
   }
