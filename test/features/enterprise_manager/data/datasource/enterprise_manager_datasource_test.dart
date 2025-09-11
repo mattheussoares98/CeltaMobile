@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -101,8 +102,8 @@ void main() {
   group("Create enterprise with sub enterprises", () {
     test("Should behave correctly on success", () async {
       await sut.createEnterpriseWithSubEnterprises(
-        enterpriseName: enterpriseName,
-        baseUrl: baseUrl,
+        enterpriseName: "${enterpriseName.toUpperCase()} ",
+        baseUrl: "${baseUrl.toUpperCase()} ",
         subEnterprises: subEnterprises,
       );
 
@@ -112,8 +113,8 @@ void main() {
       );
 
       expect(supabaseClient.lastRpcParams, {
-        'p_enterprise_name': enterpriseName,
-        'p_base_url': baseUrl,
+        'p_enterprise_name': enterpriseName.toLowerCase().removeWhiteSpaces(),
+        'p_base_url': baseUrl.toLowerCase().removeWhiteSpaces(),
         'p_sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
       });
     });

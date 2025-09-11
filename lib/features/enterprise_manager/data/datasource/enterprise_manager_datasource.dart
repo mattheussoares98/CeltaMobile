@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/models.dart';
@@ -28,8 +29,8 @@ class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
     await supabase.rpc(
       'create_enterprise_with_sub_enterprises',
       params: {
-        'p_enterprise_name': enterpriseName,
-        'p_base_url': baseUrl,
+        'p_enterprise_name': enterpriseName.toLowerCase().removeWhiteSpaces(),
+        'p_base_url': baseUrl.toLowerCase().removeWhiteSpaces(),
         'p_sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
       },
     );
