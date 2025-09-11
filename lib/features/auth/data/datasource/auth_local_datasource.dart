@@ -27,6 +27,6 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
 
   @override
   Future<void> saveUser(UserEntity user) async {
-    await box.put(DatabaseKeys.user, UserModel.fromEntity(user).toJson());
+    await box.put(DatabaseKeys.user.name, UserModel.fromEntity(user).toJson());
   }
 }
