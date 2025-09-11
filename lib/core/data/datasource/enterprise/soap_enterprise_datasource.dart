@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:celta_intelligence/core/data/models/soap_enterprise_model.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 
 import '../../../domain/contracts/contracts.dart';
 import '../datasource.dart';
@@ -17,7 +18,7 @@ class SoapEnterpriseDataSource implements ISoapEnterpriseDataSource {
   }) async {
     try {
       final response = await soapAdapter.post(
-        url: baseUrl,
+        url: baseUrl.toLowerCase().removeWhiteSpaces(),
         parameters: {
           "crossIdentity": crossIdentity,
           "simpleSearchValue": "",

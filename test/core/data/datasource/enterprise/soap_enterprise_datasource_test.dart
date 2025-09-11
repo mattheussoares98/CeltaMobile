@@ -4,6 +4,7 @@ import 'package:celta_intelligence/core/data/datasource/datasource.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/errors/errors.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -63,7 +64,7 @@ void main() {
 
       verify(
         () => soapRequest.post(
-          url: url,
+          url: url.toLowerCase().removeWhiteSpaces(),
           parameters: {
             "crossIdentity": crossIdentity,
             "simpleSearchValue": "",

@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/core/data/datasource/datasource.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -42,11 +43,15 @@ void main() {
     test('should call soap adapter with correct values', () async {
       soapAdapter.mockGet("");
 
-      await sut.login(baseUrl: url, user: user, password: password);
+      await sut.login(
+        baseUrl: " $url ".toUpperCase(),
+        user: user,
+        password: password,
+      );
 
       verify(
         () => soapAdapter.post(
-          url: url,
+          url: url.toLowerCase().removeWhiteSpaces(),
           parameters: {"user": user, "password": password},
           typeOfResponse: "UserCanLoginJsonResponse",
           soapAction: "UserCanLoginJson",

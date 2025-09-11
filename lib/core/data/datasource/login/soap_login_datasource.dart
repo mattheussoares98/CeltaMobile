@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:xml2json/xml2json.dart';
 
 import '../../../domain/contracts/contracts.dart';
@@ -24,7 +25,7 @@ class SoapLoginDataSource implements ISoapLoginDataSource {
       soapAction: "UserCanLoginJson",
       serviceASMX: "CeltaSecurityService.asmx",
       typeOfResult: "UserCanLoginJsonResult",
-      url: baseUrl,
+      url: baseUrl.toLowerCase().removeWhiteSpaces(),
     );
 
     Map resultAsMap = json.decode(response);
