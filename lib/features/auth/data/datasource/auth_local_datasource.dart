@@ -12,7 +12,7 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
 
   @override
   Future<void> clearUser() async {
-    await box.delete(DatabaseKeys.user);
+    await box.delete(DatabaseKeys.user.name);
   }
 
   @override

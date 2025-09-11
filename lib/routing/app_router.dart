@@ -9,6 +9,7 @@ import '../features/auth/presentation/pages/pages.dart';
 import '../features/enterprise_manager/presentation/controllers/controllers.dart';
 import '../features/enterprise_manager/presentation/pages/pages.dart'
     as enterprise_manager;
+import '../features/home/presentation/pages/home_page.dart';
 import 'not_found_page.dart';
 
 part 'app_router.g.dart';
@@ -113,6 +114,11 @@ GoRouter goRouter(Ref ref) {
                     enterprise_manager.CreateEnterprisePage(),
               ),
             ],
+          ),
+          GoRoute(
+            path: 'home',
+            name: AppRoute.home.name,
+            builder: (context, state) => HomePage(),
           ),
         ],
       ),
