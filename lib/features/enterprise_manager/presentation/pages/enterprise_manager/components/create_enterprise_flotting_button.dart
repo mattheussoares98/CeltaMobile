@@ -36,7 +36,6 @@ class CreateEnterpriseFlottingButton extends ConsumerWidget {
     final theme = Theme.of(context);
 
     ref.listen(createEnterpriseControllerProvider, (previous, next) {
-      //TODO create new controller provider to create the enterprise
       next.showAlertDialogOnError(context);
       next.showSnackbarOnSuccess(
         context,

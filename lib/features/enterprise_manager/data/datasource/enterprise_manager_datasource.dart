@@ -25,7 +25,6 @@ class EnterpriseManagerDataSource implements IEnterpriseManagerDataSource {
     required String baseUrl,
     required List<SubEnterpriseModel> subEnterprises,
   }) async {
-    //TODO test what happens when throws in application
     await supabase.rpc(
       'create_enterprise_with_sub_enterprises',
       params: {
