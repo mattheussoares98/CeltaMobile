@@ -19,7 +19,7 @@ class SubEnterprisePermissionModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, name, cnpjNumber, modules];
+  List<Object?> get props => [id, name, cnpjNumber, modules, personalizedCode];
 
   factory SubEnterprisePermissionModel.fromJson(Map<String, dynamic> json) {
     return SubEnterprisePermissionModel(

@@ -308,6 +308,17 @@ class EnterpriseManagerDataSourceSpy extends Mock
   void mockGetAllEnterprisesPermissionsError() {
     _mockGetAllEnterprisesPermissionsCall().thenThrow(Exception());
   }
+
+  When _mockGetEnterprisePermissionsByIdCall() =>
+      when(() => this.getEnterprisePermissionsById(any()));
+
+  void mockGetEnterprisePermissionsById(EnterprisePermissionModel? response) {
+    _mockGetEnterprisePermissionsByIdCall().thenAnswer((_) async => response);
+  }
+
+  void mockGetEnterprisePermissionsByIdError() {
+    _mockGetAllEnterprisesPermissionsCall().thenThrow(Exception());
+  }
 }
 
 class EnterpriseManagerRepositorySpy extends Mock

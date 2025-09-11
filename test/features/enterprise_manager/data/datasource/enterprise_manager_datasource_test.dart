@@ -90,9 +90,10 @@ void main() {
     test('should behave correctly', () async {
       final result = await sut.getEnterprisePermissionsById(enterpriseId);
 
-      expect(result, [
+      expect(
+        result,
         EnterprisePermissionModel.fromEntity(enterprisePermissionEntity),
-      ]);
+      );
 
       expect(supabaseClient.lastRpcFunction, 'get_enterprise_permissions');
       expect(supabaseClient.lastRpcParams, {'p_enterprise_id': enterpriseId});

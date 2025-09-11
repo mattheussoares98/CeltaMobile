@@ -65,7 +65,7 @@ class EnterprisePermissionModel extends Equatable {
     'id': id,
     'name': name,
     'base_url': baseUrl,
-    'global_enabled_modules': globalModules,
+    'global_enabled_modules': globalModules.map((e) => e.toJson()).toList(),
     'sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
   };
 }

@@ -92,11 +92,16 @@ void main() {
   });
   group('Get enterprise permissions by id', () {
     test('should behave correctly on success', () async {
-      final id = faker.randomGenerator.integer(100);
+      enterpriseManagerDataSource.mockGetEnterprisePermissionsById(
+        EnterprisePermissionModel.fromEntity(
+          enterprisePermissionEntities.first,
+        ),
+      );
 
+      final id = faker.randomGenerator.integer(100);
       final response = await sut.getEnterprisePermissionsById(id);
 
-      expect(response, enterprisePermissionEntities);
+      expect(response, enterprisePermissionEntities.first);
       verify(
         () => enterpriseManagerDataSource.getEnterprisePermissionsById(id),
       );
