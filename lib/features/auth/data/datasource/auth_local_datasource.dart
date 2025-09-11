@@ -11,8 +11,22 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
   AuthLocalDatasource(this.box);
 
   @override
-  Future<void> clearUser() async {
+  Future<void> logout() async {
+    final localUser = await box.get(DatabaseKeys.user.name);
     await box.delete(DatabaseKeys.user.name);
+
+    if (localUser != null) {
+      final user = UserModel.fromJson(localUser as Map<String, dynamic>);
+      await box.put(
+        DatabaseKeys.user.name,
+        UserModel(
+          name: user.name,
+          enterpriseName: user.enterpriseName,
+          AccessKey: null,
+          CrossIdentity_Usuario: null,
+        ).toJson(),
+      );
+    }
   }
 
   @override

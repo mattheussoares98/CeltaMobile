@@ -35,11 +35,28 @@ void main() {
     // mockSuccess();
   });
 
-  group('clearUser', () {
-    test('should call delete with correct key', () async {
-      await sut.clearUser();
+  group('logout', () {
+    test('should behave correctly', () async {
+      mockBox.mockGet(
+        DatabaseKeys.user.name,
+        UserModel.fromEntity(userEntity).toJson(),
+      );
 
-      verify(() => mockBox.delete(DatabaseKeys.user)).called(1);
+      await sut.logout();
+
+      verify(() => mockBox.get(DatabaseKeys.user.name)).called(1);
+      verify(() => mockBox.delete(DatabaseKeys.user.name)).called(1);
+      verify(
+        () => mockBox.put(
+          DatabaseKeys.user.name,
+          UserModel(
+            name: userEntity.name,
+            enterpriseName: userEntity.enterpriseName,
+            AccessKey: null,
+            CrossIdentity_Usuario: null,
+          ).toJson(),
+        ),
+      ).called(1);
     });
   });
 
@@ -72,7 +89,7 @@ void main() {
 
       verify(
         () => mockBox.put(
-          DatabaseKeys.user,
+          DatabaseKeys.user.name,
           UserModel.fromEntity(userEntity).toJson(),
         ),
       ).called(1);

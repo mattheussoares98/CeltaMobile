@@ -137,7 +137,7 @@ class LoginRemoteDataSourceSpy extends Mock implements ISoapLoginDataSource {
 
 class MockAuthLocalDatasource extends Mock implements IAuthLocalDatasource {
   MockAuthLocalDatasource() {
-    when(() => this.clearUser()).thenAnswer((_) async => {});
+    when(() => this.logout()).thenAnswer((_) async => {});
   }
 
   void mockSaveUser(UserEntity user) {

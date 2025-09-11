@@ -113,6 +113,7 @@ void main() {
     test("Should behave correctly", () async {
       final user = UserModel(
         name: userName,
+        enterpriseName: enterpriseName,
         AccessKey: faker.guid.guid(),
         CrossIdentity_Usuario: faker.guid.guid(),
       );

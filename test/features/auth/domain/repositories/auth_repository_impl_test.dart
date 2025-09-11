@@ -113,7 +113,7 @@ void main() {
     test("Sould behave correctly", () async {
       await sut.logout();
 
-      verify(() => authLocalDataSource.clearUser()).called(1);
+      verify(() => authLocalDataSource.logout()).called(1);
 
       verifyNoMoreInteractions(authLocalDataSource);
     });

@@ -39,6 +39,7 @@ class EntityFactory {
 
   static UserEntity makeUserEntity() => UserEntity(
     name: faker.person.name(),
+    enterpriseName: faker.company.name(),
     AccessKey: faker.guid.guid(),
     CrossIdentity_Usuario: faker.guid.guid(),
   );

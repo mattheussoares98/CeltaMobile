@@ -4,21 +4,29 @@ import '../../../../core/domain/entities/entities.dart';
 
 class UserModel extends Equatable {
   final String? name;
+  final String? enterpriseName;
   final String? AccessKey;
   final String? CrossIdentity_Usuario;
 
   const UserModel({
     required this.name,
+    required this.enterpriseName,
     required this.AccessKey,
     required this.CrossIdentity_Usuario,
   });
 
   @override
-  List<Object?> get props => [name, AccessKey, CrossIdentity_Usuario];
+  List<Object?> get props => [
+    name,
+    enterpriseName,
+    AccessKey,
+    CrossIdentity_Usuario,
+  ];
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       name: json['name'],
+      enterpriseName: json['enterpriseName'],
       AccessKey: json['AccessKey'],
       CrossIdentity_Usuario: json['CrossIdentity_Usuario'],
     );
@@ -26,6 +34,7 @@ class UserModel extends Equatable {
 
   Map<String, dynamic> toJson() => {
     'name': name,
+    'enterpriseName': enterpriseName,
     'AccessKey': AccessKey,
     'CrossIdentity_Usuario': CrossIdentity_Usuario,
   };
@@ -33,6 +42,7 @@ class UserModel extends Equatable {
   UserEntity toEntity() {
     return UserEntity(
       name: name,
+      enterpriseName: enterpriseName,
       AccessKey: AccessKey,
       CrossIdentity_Usuario: CrossIdentity_Usuario,
     );
@@ -41,6 +51,7 @@ class UserModel extends Equatable {
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(
       name: entity.name,
+      enterpriseName: entity.enterpriseName,
       AccessKey: entity.AccessKey,
       CrossIdentity_Usuario: entity.CrossIdentity_Usuario,
     );
