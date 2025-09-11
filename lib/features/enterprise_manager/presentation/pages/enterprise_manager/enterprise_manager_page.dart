@@ -22,6 +22,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
   final urlController = TextEditingController();
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
+  final filterEnterpriseNameController = TextEditingController();
   final urlFocusNode = FocusNode();
   final userNameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
@@ -34,6 +35,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
     urlController.dispose();
     userNameController.dispose();
     passwordController.dispose();
+    filterEnterpriseNameController.dispose();
     urlFocusNode.dispose();
     userNameFocusNode.dispose();
     passwordFocusNode.dispose();
@@ -75,7 +77,10 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
           if (enterprises.isEmpty) {
             return Center(child: Text('Nenhuma empresa encontrada.'.hardcoded));
           }
-          return EnterpriseItems(enterprises: enterprises);
+          return EnterpriseItems(
+            enterprises: enterprises,
+            filterEnterpriseNameController: filterEnterpriseNameController,
+          );
         },
       ),
     );

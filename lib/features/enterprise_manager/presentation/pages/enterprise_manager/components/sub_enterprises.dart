@@ -30,6 +30,7 @@ class SubEnterprises extends StatelessWidget {
     return ListView.separated(
       itemCount: enterprise.subEnterprises.length,
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       separatorBuilder: (_, index) {
         return _MyDivider();
       },

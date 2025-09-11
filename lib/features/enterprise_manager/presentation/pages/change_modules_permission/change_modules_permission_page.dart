@@ -106,12 +106,15 @@ class _ChangeModulesPermissionPageState
             return Center(child: Text('Empresa não encontrada.'.hardcoded));
           }
           final modulesToDisplay = _getModulesForScope(enterprise);
-          final scopeName = getScopeName(isGlobalChange, enterprise);
+          final scopeName = getScopeName(
+            isGlobalChange,
+            enterprise,
+          ).toUpperCase();
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(scopeName, style: theme.textTheme.titleSmall),
+              Text(scopeName, style: theme.textTheme.titleMedium),
               gapH16,
               if (isGlobalChange)
                 EditEnterpriseSwitch(

@@ -23,6 +23,8 @@ class EditEnterpriseSwitch extends StatelessWidget {
         return Card(
           child: SwitchListTile(
             activeThumbColor: Colors.green,
+            inactiveThumbColor: Colors.redAccent,
+            inactiveTrackColor: Colors.red.shade100,
             dense: true,
             title: Text(module.name),
             value: value ?? false, // Default global to false
