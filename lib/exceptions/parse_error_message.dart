@@ -39,7 +39,7 @@ String parseErrorMessage(Object error) {
     return 'Essa ação está bloqueada temporariamente. Tente novamente daqui a pouco.'
         .hardcoded;
   } else if (lowerMessage.contains('duplicate key value')) {
-    return 'Esse nome já está cadastrado. Não é possível cadastrar com nomes iguais. $supabaseDetails'
+    return 'Essa ação está duplicando dados que não podem ser duplicados. \n$supabaseDetails'
         .hardcoded;
   }
   return message;
