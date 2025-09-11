@@ -4,3 +4,4 @@ export './current_date_provider.dart';
 export './date_formatter.dart';
 export './delay.dart';
 export './init_app.dart';
+export './string_modifier.dart';
