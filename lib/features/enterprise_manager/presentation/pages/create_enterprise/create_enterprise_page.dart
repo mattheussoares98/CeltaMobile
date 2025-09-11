@@ -4,6 +4,7 @@ import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
@@ -59,7 +60,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
         previous: previous,
         message: "Empresa cadastrada com sucesso".hardcoded,
       );
-      // next.doOnSuccess(previous, context.pop); //TODO return this
+      next.doOnSuccess(previous, context.pop);
       ref.invalidate(enterpriseManagerControllerProvider);
     });
 
