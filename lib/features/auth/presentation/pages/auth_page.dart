@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../routing/routing.dart';
 import '../../../../utils/utils.dart';
 import '../controllers/auth_state_controller.dart';
 import '../controllers/login_controller.dart';
@@ -51,10 +53,10 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
-      next.doOnSuccess(
-        previous,
-        () => ref.invalidate(authStateControllerProvider),
-      );
+      next.doOnSuccess(previous, () {
+        ref.invalidate(authStateControllerProvider);
+        context.goNamed(AppRoute.home.name);
+      });
     });
 
     final loginState = ref.watch(loginControllerProvider);
