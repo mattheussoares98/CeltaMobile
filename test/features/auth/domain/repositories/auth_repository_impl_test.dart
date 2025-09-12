@@ -13,7 +13,7 @@ void main() {
   late AuthRepositoryImpl sut;
 
   late LoginRemoteDataSourceSpy authRemoteDataSource;
-  late MockAuthLocalDatasource authLocalDataSource;
+  late AuthLocalDatasourceSpy authLocalDataSource;
   late EnterpriseRepositorySpy enterpriseRepository;
 
   late EnterpriseEntity enterpriseEntity;
@@ -31,7 +31,7 @@ void main() {
 
   void initInjections() {
     authRemoteDataSource = LoginRemoteDataSourceSpy();
-    authLocalDataSource = MockAuthLocalDatasource();
+    authLocalDataSource = AuthLocalDatasourceSpy();
     enterpriseRepository = EnterpriseRepositorySpy();
   }
 
@@ -40,7 +40,6 @@ void main() {
       SupabaseEnterpriseModel.fromEntity(enterpriseEntity).toEntity(),
     );
     authRemoteDataSource.mockLogin(UserModel.fromEntity(userEntity));
-    authLocalDataSource.mockSaveUser(userEntity);
     authLocalDataSource.mockGetUser(userEntity);
   }
 
@@ -56,6 +55,10 @@ void main() {
     initInjections();
     initSut();
     mockSuccess();
+  });
+
+  setUpAll(() {
+    registerFallbackValue(EntityFactory.makeUserEntity());
   });
 
   group('logIn', () {

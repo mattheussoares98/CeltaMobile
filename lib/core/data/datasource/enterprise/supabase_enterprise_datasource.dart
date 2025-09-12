@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../models/models.dart';
@@ -11,20 +11,15 @@ class SupabaseEnterpriseDataSource implements ISupabaseEnterpriseDataSource {
 
   @override
   Future<SupabaseEnterpriseModel?> getEnterpriseByName(String name) async {
-    try {
-      final response = await _supabase.rpc(
-        'get_enterprise_by_name',
-        params: {'p_name': name},
-      );
+    final response = await _supabase.rpc(
+      'get_enterprise_by_name',
+      params: {'p_name': name.toLowerCase().removeWhiteSpaces()},
+    );
 
-      if (response == null) {
-        return null;
-      }
-
-      return SupabaseEnterpriseModel.fromJson(response);
-    } catch (e) {
-      debugPrint('Error fetching enterprise: $e');
-      rethrow;
+    if (response == null) {
+      return null;
     }
+
+    return SupabaseEnterpriseModel.fromJson(response);
   }
 }
