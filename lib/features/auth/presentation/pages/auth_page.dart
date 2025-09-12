@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/features/auth/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -55,12 +54,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final user = await ref.read(authRepositoryProvider).getCurrentUser();
-      if (user?.name != null) {
-        userController.text = user!.name!;
-      }
-      if (user?.enterpriseName != null) {
-        enterpriseController.text = user!.enterpriseName!;
+      if (mounted) {
+        final user = await ref
+            .read(authStateControllerProvider.notifier)
+            .build();
+
+        userController.text = user?.name ?? '';
+        enterpriseController.text = user?.enterpriseName ?? '';
       }
     });
   }
@@ -70,8 +70,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () {
-        ref.invalidate(authStateControllerProvider);
         context.goNamed(AppRoute.home.name);
+        ref.invalidate(authStateControllerProvider);
       });
     });
 
