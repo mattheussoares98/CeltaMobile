@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DeleteIcon extends StatelessWidget {
@@ -12,7 +13,7 @@ class DeleteIcon extends StatelessWidget {
     return IconButton(
       onPressed: onPress,
       icon: Icon(
-        theme.platform == TargetPlatform.iOS
+        defaultTargetPlatform == TargetPlatform.iOS
             ? CupertinoIcons.delete
             : Icons.delete,
         color: onPress == null ? theme.disabledColor : Colors.red,

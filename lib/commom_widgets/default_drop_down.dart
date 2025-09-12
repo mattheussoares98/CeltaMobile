@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
@@ -34,7 +35,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
-    if (theme.platform == TargetPlatform.iOS) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
       return FormField(
         validator: widget.validator,
         initialValue: widget.selectedItem,

@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -55,7 +56,6 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
   @override
   Widget build(BuildContext context) {
     final enterprisesAsync = ref.watch(enterpriseManagerControllerProvider);
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +67,9 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
           context.pushNamed(AppRoute.createEnterprise.name);
         },
         child: Icon(
-          theme.platform == TargetPlatform.iOS ? CupertinoIcons.add : Icons.add,
+          defaultTargetPlatform == TargetPlatform.iOS
+              ? CupertinoIcons.add
+              : Icons.add,
         ),
       ),
       body: AsyncValueWidget(

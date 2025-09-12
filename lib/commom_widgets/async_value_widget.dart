@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +20,6 @@ class AsyncValueWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return value.when(
       data: data,
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -36,7 +36,7 @@ class AsyncValueWidget<T> extends StatelessWidget {
               onPressed: tryAgain,
               label: Text('Tentar novamente'.hardcoded),
               icon: Icon(
-                theme.platform == TargetPlatform.iOS
+                defaultTargetPlatform == TargetPlatform.iOS
                     ? CupertinoIcons.refresh
                     : Icons.refresh,
               ),

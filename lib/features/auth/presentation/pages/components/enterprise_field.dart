@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/presentation/theme/app_decorations.dart';
@@ -18,7 +19,6 @@ class EnterpriseField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return TextFormField(
       enabled: !isLoading,
       controller: enterpriseController,
@@ -31,7 +31,7 @@ class EnterpriseField extends StatelessWidget {
         context: context,
         labelText: 'Empresa'.hardcoded,
         prefixIcon: Icon(
-          theme.platform == TargetPlatform.iOS
+          defaultTargetPlatform == TargetPlatform.iOS
               ? CupertinoIcons.building_2_fill
               : Icons.business,
         ),

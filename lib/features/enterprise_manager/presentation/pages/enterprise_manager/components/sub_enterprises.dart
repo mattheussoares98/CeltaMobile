@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -91,7 +92,7 @@ class SubEnterprises extends StatelessWidget {
                         onTap(context, subEnterprise);
                       },
                       icon: Icon(
-                        theme.platform == TargetPlatform.iOS
+                        defaultTargetPlatform == TargetPlatform.iOS
                             ? CupertinoIcons.pencil
                             : Icons.edit,
                         color: theme.primaryColorDark,
