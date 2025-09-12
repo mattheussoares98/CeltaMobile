@@ -3,15 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/splash/presentation/pages/splash_page.dart';
 import '../features/auth/presentation/controllers/controllers.dart';
-import '../features/auth/presentation/pages/pages.dart';
 import '../features/enterprise_manager/presentation/controllers/controllers.dart';
-import '../features/enterprise_manager/presentation/pages/pages.dart'
-    as enterprise_manager;
-import '../features/enterprises/presentation/pages/pages.dart';
-import '../features/home/presentation/pages/home_page.dart';
 import 'not_found_page.dart';
+import 'routes/routes.dart';
 
 part 'app_router.g.dart';
 
@@ -27,7 +22,7 @@ enum AppRoute {
   splash,
 }
 
-class _Bridge<T> extends ChangeNotifier {
+class Bridge<T> extends ChangeNotifier {
   T? _value;
   T? get value => _value;
   set value(T? v) {
@@ -40,8 +35,8 @@ class _Bridge<T> extends ChangeNotifier {
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
-  final authBridge = _Bridge<Object?>();
-  final mgrBridge = _Bridge<Object?>();
+  final authBridge = Bridge<Object?>();
+  final enterpriseManagerBridge = Bridge<Object?>();
 
   ref.listen<AsyncValue<Object?>>(authStateControllerProvider, (prev, next) {
     authBridge.value = next.valueOrNull;
@@ -49,91 +44,19 @@ GoRouter goRouter(Ref ref) {
 
   ref.listen<AsyncValue<Object?>>(
     authManagerStateProvider,
-    (prev, next) => mgrBridge.value = next.valueOrNull,
+    (prev, next) => enterpriseManagerBridge.value = next.valueOrNull,
     fireImmediately: true,
   );
 
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: false,
-    refreshListenable: Listenable.merge([authBridge, mgrBridge]),
+    refreshListenable: Listenable.merge([authBridge, enterpriseManagerBridge]),
     routes: [
-      GoRoute(
-        path: '/auth',
-        name: AppRoute.auth.name,
-        builder: (context, state) => const AuthPage(),
-      ),
-      GoRoute(
-        path: '/enterprise-manager',
-        name: AppRoute.enterpriseManager.name,
-
-        redirect: (context, state) {
-          final isLoggedInManager = mgrBridge.value != null;
-          final isAtManagerRoot = state.fullPath == '/enterprise-manager';
-          final isAtManagerAuth = state.fullPath == '/enterprise-manager/auth';
-
-          if (!isLoggedInManager && !isAtManagerAuth) {
-            return '/enterprise-manager/auth';
-          }
-
-          if (isLoggedInManager && (isAtManagerRoot || isAtManagerAuth)) {
-            return '/enterprise-manager/dashboard';
-          }
-
-          return null;
-        },
-
-        routes: [
-          GoRoute(
-            path: 'auth',
-            name: AppRoute.enterpriseManagerAuth.name,
-            builder: (context, state) => const enterprise_manager.AuthPage(),
-          ),
-          GoRoute(
-            path: 'dashboard',
-            name: AppRoute.enterpriseManagerDash.name,
-            builder: (context, state) =>
-                const enterprise_manager.EnterpriseManagerPage(),
-            routes: [
-              GoRoute(
-                path: 'permissions/:enterpriseId/:subEnterpriseId',
-                name: AppRoute.enterpriseManagerChangeModulesPermissions.name,
-                builder: (context, state) {
-                  final enterpriseId = state.pathParameters['enterpriseId']!;
-                  final subEnterpriseId =
-                      state.pathParameters['subEnterpriseId']!;
-
-                  return enterprise_manager.ChangeModulesPermissionPage(
-                    enterpriseId: int.parse(enterpriseId),
-                    subEnterpriseId: int.tryParse(subEnterpriseId),
-                  );
-                },
-              ),
-              GoRoute(
-                path: 'createEnterprise',
-                name: AppRoute.createEnterprise.name,
-                builder: (context, state) =>
-                    enterprise_manager.CreateEnterprisePage(),
-              ),
-            ],
-          ),
-          GoRoute(
-            path: 'home',
-            name: AppRoute.home.name,
-            builder: (context, state) => HomePage(),
-          ),
-        ],
-      ),
-      GoRoute(
-        path: '/enterprises',
-        name: AppRoute.enterprises.name,
-        builder: (context, state) => const EnterprisesPage(),
-      ),
-      GoRoute(
-        path: '/splash',
-        name: AppRoute.splash.name,
-        builder: (context, state) => const SplashPage(),
-      ),
+      authRoute(),
+      enterpriseManagerRoute(enterpriseManagerBridge),
+      enterprisesRoute(),
+      splashRoute(),
     ],
 
     errorBuilder: (context, state) => const NotFoundPage(),
