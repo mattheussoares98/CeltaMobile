@@ -19,6 +19,36 @@ class Modules extends StatelessWidget {
             context.pushNamed(AppRoute.enterprises.name);
           },
         ),
+        PrimaryButton(
+          text: 'Alteração de preços'.hardcoded,
+          onPressed: () {
+            context.pushNamed(AppRoute.enterprises.name);
+          },
+        ),
+        PrimaryButton(
+          text: 'Alteração de preços'.hardcoded,
+          onPressed: () {
+            context.pushNamed(AppRoute.enterprises.name);
+          },
+        ),
+        PrimaryButton(
+          text: 'Alteração de preços'.hardcoded,
+          onPressed: () {
+            context.pushNamed(AppRoute.enterprises.name);
+          },
+        ),
+        PrimaryButton(
+          text: 'Alteração de preços'.hardcoded,
+          onPressed: () {
+            context.pushNamed(AppRoute.enterprises.name);
+          },
+        ),
+        PrimaryButton(
+          text: 'Alteração de preços'.hardcoded,
+          onPressed: () {
+            context.pushNamed(AppRoute.enterprises.name);
+          },
+        ),
       ],
     );
   }

@@ -7,10 +7,12 @@ import 'commom_widgets.dart';
 /// Useful for displaying forms and other widgets that need to be scrollable.
 class ResponsiveScrollableWidget extends StatelessWidget {
   final bool? centralize;
+  final double? maxContentWidth;
   const ResponsiveScrollableWidget({
     super.key,
     required this.child,
     this.centralize,
+    this.maxContentWidth,
   });
   final Widget child;
   @override
@@ -21,7 +23,7 @@ class ResponsiveScrollableWidget extends StatelessWidget {
         height: centralize == true ? mediaQuery.size.height : null,
         width: centralize == true ? mediaQuery.size.width : null,
         child: ResponsiveCenter(
-          maxContentWidth: Breakpoint.tablet,
+          maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
           child: Padding(
             padding: const EdgeInsets.all(Sizes.p16),
             child: child,

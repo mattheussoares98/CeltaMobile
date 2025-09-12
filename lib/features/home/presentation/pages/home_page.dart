@@ -19,10 +19,15 @@ class HomePage extends ConsumerWidget {
         context.goNamed(AppRoute.auth.name);
       }
     });
+
+    final mediaquery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(),
       drawer: CompleteDrawer(),
-      body: ResponsiveScrollableWidget(child: Modules()),
+      body: ResponsiveScrollableWidget(
+        maxContentWidth: mediaquery.size.width,
+        child: Modules(),
+      ),
     );
   }
 }
