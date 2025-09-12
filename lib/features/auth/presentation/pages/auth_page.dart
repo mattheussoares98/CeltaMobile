@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -113,12 +114,10 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 },
               ),
               gapH32,
-              EnterButton(
+              PrimaryButton(
+                text: 'Entrar'.hardcoded,
                 isLoading: loginAsync.isLoading,
-                enterpriseController: enterpriseController,
-                emailController: userController,
-                passwordController: passwordController,
-                onSubmit: loginAsync.isLoading ? null : onSubmit,
+                onPressed: loginAsync.isLoading ? null : onSubmit,
               ),
             ],
           ),
