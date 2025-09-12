@@ -15,6 +15,7 @@ void main() {
   late LoginRemoteDataSourceSpy authRemoteDataSource;
   late AuthLocalDatasourceSpy authLocalDataSource;
   late EnterpriseRepositorySpy enterpriseRepository;
+  late LocalSessionDataSourceSpy localSessionDataSource;
 
   late EnterpriseEntity enterpriseEntity;
   late String userName;
@@ -26,6 +27,7 @@ void main() {
       soapLoginDataSource: authRemoteDataSource,
       authLocalDatasource: authLocalDataSource,
       enterpriseRepository: enterpriseRepository,
+      localSessionDataSource: localSessionDataSource,
     );
   }
 
@@ -33,6 +35,7 @@ void main() {
     authRemoteDataSource = LoginRemoteDataSourceSpy();
     authLocalDataSource = AuthLocalDatasourceSpy();
     enterpriseRepository = EnterpriseRepositorySpy();
+    localSessionDataSource = LocalSessionDataSourceSpy();
   }
 
   void mockSuccess() {
@@ -41,6 +44,9 @@ void main() {
     );
     authRemoteDataSource.mockLogin(UserModel.fromEntity(userEntity));
     authLocalDataSource.mockGetUser(userEntity);
+    localSessionDataSource.mockSaveSession(
+      SessionModel(baseUrl: enterpriseEntity.baseUrl),
+    );
   }
 
   void initEntities() {
@@ -89,6 +95,11 @@ void main() {
             AccessKey: userEntity.AccessKey,
             CrossIdentity_Usuario: userEntity.CrossIdentity_Usuario,
           ),
+        ),
+      ).called(1);
+      verify(
+        () => localSessionDataSource.save(
+          SessionModel(baseUrl: enterpriseEntity.baseUrl),
         ),
       ).called(1);
 

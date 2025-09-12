@@ -1,3 +1,4 @@
+import '../../../../core/data/models/models.dart';
 import '../../../../core/domain/repositories/repositores.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../../../localization/string_hardcoded.dart';
@@ -10,11 +11,13 @@ class AuthRepositoryImpl implements IAuthRepository {
   final ISoapLoginDataSource soapLoginDataSource;
   final IAuthLocalDatasource authLocalDatasource;
   final IEnterpriseRepository enterpriseRepository;
+  final ILocalSessionDataSource localSessionDataSource;
 
   AuthRepositoryImpl({
     required this.soapLoginDataSource,
     required this.authLocalDatasource,
     required this.enterpriseRepository,
+    required this.localSessionDataSource,
   });
 
   @override
@@ -42,6 +45,10 @@ class AuthRepositoryImpl implements IAuthRepository {
         AccessKey: remoteUser.AccessKey,
         CrossIdentity_Usuario: remoteUser.CrossIdentity_Usuario,
       ),
+    );
+
+    await localSessionDataSource.save(
+      SessionModel(baseUrl: enterpriseModel.baseUrl),
     );
   }
 

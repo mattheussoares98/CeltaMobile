@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class SessionModel extends Equatable {
   final String? baseUrl;
-  const SessionModel({this.baseUrl});
+  const SessionModel({required this.baseUrl});
 
   Map<String, dynamic> toJson() => {'baseUrl': baseUrl};
 
