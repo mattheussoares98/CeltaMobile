@@ -20,7 +20,7 @@ class LocalSessionDataSource implements ILocalSessionDataSource {
     if (localSession == null) {
       return null;
     } else {
-      return SessionModel.fromJson(localSession);
+      return SessionModel.fromJson(Map<String, dynamic>.from(localSession));
     }
   }
 
