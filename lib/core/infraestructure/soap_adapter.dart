@@ -54,7 +54,7 @@ class SoapAdapter implements contracts.SoapRequest {
           .timeout(const Duration(seconds: 30));
 
       if (response.statusCode != 200) {
-        throw HttpError.serverError;
+        throw HttpError.serverError(response.body);
       }
 
       final Xml2Json xml2json = Xml2Json();
