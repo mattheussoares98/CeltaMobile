@@ -18,7 +18,7 @@ class Modules extends StatelessWidget {
           onPressed: () {
             context.pushNamed(
               AppRoute.enterprises.name,
-              extra: AppRoute.adjustSalePrice.name,
+              extra: AppRoute.adjustSalePriceProducts.name,
             );
           },
         ),

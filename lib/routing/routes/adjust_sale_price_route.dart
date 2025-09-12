@@ -3,10 +3,10 @@ import 'package:go_router/go_router.dart';
 import '../../features/adjust_sale_price/presentation/pages/pages.dart';
 import '../routing.dart';
 
-RouteBase adjustSalePrice() => GoRoute(
-  path: '/adjustSalePrice',
-  name: AppRoute.adjustSalePrice.name,
+RouteBase adjustSalePriceProducts() => GoRoute(
+  path: '/adjustSalePriceProducts',
+  name: AppRoute.adjustSalePriceProducts.name,
   builder: (context, state) {
-    return AdjustSalePricePage(enterpriseCode: state.extra as int);
+    return AdjustSalePriceProductsPage(enterpriseCode: state.extra as int);
   },
 );
