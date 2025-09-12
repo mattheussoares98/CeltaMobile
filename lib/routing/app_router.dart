@@ -9,6 +9,7 @@ import '../features/auth/presentation/pages/pages.dart';
 import '../features/enterprise_manager/presentation/controllers/controllers.dart';
 import '../features/enterprise_manager/presentation/pages/pages.dart'
     as enterprise_manager;
+import '../features/enterprises/presentation/pages/pages.dart';
 import '../features/home/presentation/pages/home_page.dart';
 import 'not_found_page.dart';
 
@@ -21,6 +22,7 @@ enum AppRoute {
   enterpriseManagerAuth,
   enterpriseManagerChangeModulesPermissions,
   enterpriseManagerDash,
+  enterprises,
   home,
   splash,
 }
@@ -122,7 +124,11 @@ GoRouter goRouter(Ref ref) {
           ),
         ],
       ),
-
+      GoRoute(
+        path: '/enterprises',
+        name: AppRoute.enterprises.name,
+        builder: (context, state) => const EnterprisesPage(),
+      ),
       GoRoute(
         path: '/splash',
         name: AppRoute.splash.name,
