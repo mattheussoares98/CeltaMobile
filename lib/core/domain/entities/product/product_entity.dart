@@ -40,7 +40,7 @@ class ProductEntity extends Equatable {
   final bool MarkUpdateClassInAdjustSalePriceIndividual;
   final PriceCostEntity
   PriceCost; //TODO test when the user doesnt has permission
-  final List<StockByEnterpriseAssociatedsEntity>?
+  final List<StockByEnterpriseAssociatedEntity>?
   StockByEnterpriseAssociateds; //TODO test when the user doesnt has permission
   final List<StockEntity>?
   Stocks; //TODO test when the user doesnt has permission
@@ -55,7 +55,6 @@ class ProductEntity extends Equatable {
     required this.PackingQuantity,
     required this.BalanceLabelType,
     required this.StorageAreaAddress,
-
     required this.Value,
     required this.BalanceLabelQuantity,
     required this.RetailPracticedPrice,
@@ -111,5 +110,24 @@ class ProductEntity extends Equatable {
     ECommerceSalePrice,
     ECommerceOfferPrice,
     MinimumWholeQuantity,
+    OperationalCost,
+    ReplacementCost,
+    ReplacementCostMidle,
+    LiquidCost,
+    LiquidCostMidle,
+    RealCost,
+    RealLiquidCost,
+    FiscalCost,
+    FiscalLiquidCost,
+    PendantPrintLabel,
+    AlterationPriceForAllPackings,
+    IsFatherOfGrate,
+    IsChildOfGrate,
+    InClass,
+    MarkUpdateClassInAdjustSalePriceIndividual,
+    PriceCost,
+    StockByEnterpriseAssociateds,
+    Stocks,
+    LastBuyEntrances,
   ];
 }

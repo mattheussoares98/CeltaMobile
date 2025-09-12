@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class StockByEnterpriseAssociatedsEntity extends Equatable {
+class StockByEnterpriseAssociatedEntity extends Equatable {
   final String Enterprise;
   final double StockBalanceForSale;
   final String? StorageAreaAddress;
-  const StockByEnterpriseAssociatedsEntity({
+  const StockByEnterpriseAssociatedEntity({
     required this.Enterprise,
     required this.StockBalanceForSale,
     required this.StorageAreaAddress,
