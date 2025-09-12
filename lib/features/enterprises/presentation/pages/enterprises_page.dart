@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
@@ -32,7 +33,7 @@ class EnterprisesPage extends ConsumerWidget {
                 return Card(
                   child: InkWell(
                     onTap: () {
-                      debugPrint("go to next route");
+                      context.pushNamed(nextRoute, extra: enterprise.Code);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(Sizes.p8),

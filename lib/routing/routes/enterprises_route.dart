@@ -7,7 +7,7 @@ RouteBase enterprisesRoute() => GoRoute(
   path: '/enterprises',
   name: AppRoute.enterprises.name,
   builder: (context, state) {
-    final nextRoute = state.pathParameters['nextRoute']!;
+    final nextRoute = state.extra as String;
 
     return EnterprisesPage(nextRoute);
   },

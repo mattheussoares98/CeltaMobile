@@ -54,6 +54,7 @@ GoRouter goRouter(Ref ref) {
     debugLogDiagnostics: false,
     refreshListenable: Listenable.merge([authBridge, enterpriseManagerBridge]),
     routes: [
+      adjustSalePrice(),
       authRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
       enterprisesRoute(),
