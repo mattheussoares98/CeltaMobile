@@ -10,13 +10,17 @@ class PasswordField extends StatelessWidget {
   final TextEditingController passwordController;
   final FocusNode passwordFocusNode;
   final VoidCallback? onSubmit;
+  final VoidCallback changeShowPassword;
   final bool isLoading;
+  final bool showPassword;
   const PasswordField({
     super.key,
     required this.passwordController,
     required this.passwordFocusNode,
     required this.onSubmit,
+    required this.changeShowPassword,
     required this.isLoading,
+    required this.showPassword,
   });
 
   @override
@@ -38,8 +42,33 @@ class PasswordField extends StatelessWidget {
               ? CupertinoIcons.lock_fill
               : Icons.lock_outline,
         ),
+        suffixIcon: IconButton(
+          onPressed: changeShowPassword,
+          icon: _ShowPasswordIcon(
+            changeShowPassword: changeShowPassword,
+            showPassword: showPassword,
+          ),
+        ),
       ),
-      obscureText: true,
+      obscureText: !showPassword,
     );
+  }
+}
+
+class _ShowPasswordIcon extends StatelessWidget {
+  final VoidCallback? changeShowPassword;
+  final bool showPassword;
+  const _ShowPasswordIcon({
+    required this.changeShowPassword,
+    required this.showPassword,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return Icon(showPassword ? CupertinoIcons.eye : CupertinoIcons.eye_slash);
+    } else {
+      return Icon(showPassword ? Icons.visibility : Icons.visibility_off);
+    }
   }
 }

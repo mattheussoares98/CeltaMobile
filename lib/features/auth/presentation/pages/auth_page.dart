@@ -24,6 +24,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   final userFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
+  bool showPassword = false;
 
   @override
   void dispose() {
@@ -104,6 +105,12 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 passwordController: passwordController,
                 passwordFocusNode: passwordFocusNode,
                 onSubmit: loginAsync.isLoading ? null : onSubmit,
+                showPassword: showPassword,
+                changeShowPassword: () {
+                  setState(() {
+                    showPassword = !showPassword;
+                  });
+                },
               ),
               gapH32,
               EnterButton(
