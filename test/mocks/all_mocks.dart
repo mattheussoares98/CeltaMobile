@@ -362,3 +362,21 @@ class LocalSessionDataSourceSpy extends Mock
     when(() => this.save(session)).thenAnswer((_) async => {});
   }
 }
+
+class SoapProductsDataSourceSpy extends Mock
+    implements ISoapProductsDataSource {
+  void mockGetProductsJson(List<ProductModel> response) {
+    when(
+      () => this.getProductsJson(
+        baseUrl: any(named: "baseUrl"),
+        searchValue: any(named: "searchValue"),
+        routine: any(named: "routine"),
+        searchType: any(named: "searchType"),
+        crossIdentity: any(named: "crossIdentity"),
+        enterpriseCodes: any(named: "enterpriseCodes"),
+        enterpriseEntity: any(named: "enterpriseEntity"),
+        lastBuyEntranceQuantity: any(named: "lastBuyEntranceQuantity"),
+      ),
+    ).thenAnswer((_) async => response);
+  }
+}

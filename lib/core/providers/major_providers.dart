@@ -5,8 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../constants/database_keys.dart';
-import '../data/datasource/enterprise/enterprise.dart';
-import '../data/datasource/session/session.dart';
+import '../data/datasource/datasource.dart';
 import '../domain/contracts/contracts.dart';
 import '../domain/repositories/repositores.dart';
 import '../infraestructure/infrastructure.dart';
@@ -73,4 +72,14 @@ ILocalSessionDataSource localSessionDataSource(Ref ref) {
 @riverpod
 ILocalSessionRepository localSessionRepository(Ref ref) {
   return LocalSessionRepositoryImpl(ref.watch(localSessionDataSourceProvider));
+}
+
+@riverpod
+ISoapProductsDataSource soapProductsDataSource(Ref ref) {
+  return SoapProductsDataSource(ref.watch(soapAdapterProvider));
+}
+
+@riverpod
+ISoapProductsRepository soapProductsRepository(Ref ref) {
+  return SoapProductsRepositoryImpl(ref.watch(soapProductsDataSourceProvider));
 }
