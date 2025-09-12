@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
 import 'product.dart';
 
 class ProductModel extends Equatable {
@@ -188,4 +189,145 @@ class ProductModel extends Equatable {
                 .toList(),
     );
   }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    '    EnterpriseCode': EnterpriseCode,
+    'ProductCode': ProductCode,
+    'ProductPackingCode': ProductPackingCode,
+    'PLU': PLU,
+    'Name': Name,
+    'PackingQuantity': PackingQuantity,
+    'BalanceLabelType': BalanceLabelType,
+    'StorageAreaAddress': StorageAreaAddress,
+    'Value': Value,
+    'BalanceLabelQuantity': BalanceLabelQuantity,
+    'RetailPracticedPrice': RetailPracticedPrice,
+    'RetailSalePrice': RetailSalePrice,
+    'RetailOfferPrice': RetailOfferPrice,
+    'WholePracticedPrice': WholePracticedPrice,
+    'WholeSalePrice': WholeSalePrice,
+    'WholeOfferPrice': WholeOfferPrice,
+    'ECommercePracticedPrice': ECommercePracticedPrice,
+    'ECommerceSalePrice': ECommerceSalePrice,
+    'ECommerceOfferPrice': ECommerceOfferPrice,
+    'MinimumWholeQuantity': MinimumWholeQuantity,
+    'OperationalCost': OperationalCost,
+    'ReplacementCost': ReplacementCost,
+    'ReplacementCostMidle': ReplacementCostMidle,
+    'LiquidCost': LiquidCost,
+    'LiquidCostMidle': LiquidCostMidle,
+    'RealCost': RealCost,
+    'RealLiquidCost': RealLiquidCost,
+    'FiscalCost': FiscalCost,
+    'FiscalLiquidCost': FiscalLiquidCost,
+    'PendantPrintLabel': PendantPrintLabel,
+    'AlterationPriceForAllPackings': AlterationPriceForAllPackings,
+    'IsFatherOfGrate': IsFatherOfGrate,
+    'IsChildOfGrate': IsChildOfGrate,
+    'InClass': InClass,
+    'MarkUpdateClassInAdjustSalePriceIndividual':
+        MarkUpdateClassInAdjustSalePriceIndividual,
+    'PriceCost': PriceCost.toJson(),
+    'StockByEnterpriseAssociateds': StockByEnterpriseAssociateds?.map(
+      (e) => e.toJson(),
+    ),
+    'Stocks': Stocks?.map((e) => e.toJson()),
+    'LastBuyEntrances': LastBuyEntrances?.map((e) => e.toJson()),
+  };
+
+  factory ProductModel.fromEntity(ProductEntity entity) {
+    return ProductModel(
+      EnterpriseCode: entity.EnterpriseCode,
+      ProductCode: entity.ProductCode,
+      ProductPackingCode: entity.ProductPackingCode,
+      PLU: entity.PLU,
+      Name: entity.Name,
+      PackingQuantity: entity.PackingQuantity,
+      BalanceLabelType: entity.BalanceLabelType,
+      StorageAreaAddress: entity.StorageAreaAddress,
+      Value: entity.Value,
+      BalanceLabelQuantity: entity.BalanceLabelQuantity,
+      RetailPracticedPrice: entity.RetailPracticedPrice,
+      RetailSalePrice: entity.RetailSalePrice,
+      RetailOfferPrice: entity.RetailOfferPrice,
+      WholePracticedPrice: entity.WholePracticedPrice,
+      WholeSalePrice: entity.WholeSalePrice,
+      WholeOfferPrice: entity.WholeOfferPrice,
+      ECommercePracticedPrice: entity.ECommercePracticedPrice,
+      ECommerceSalePrice: entity.ECommerceSalePrice,
+      ECommerceOfferPrice: entity.ECommerceOfferPrice,
+      MinimumWholeQuantity: entity.MinimumWholeQuantity,
+      OperationalCost: entity.OperationalCost,
+      ReplacementCost: entity.ReplacementCost,
+      ReplacementCostMidle: entity.ReplacementCostMidle,
+      LiquidCost: entity.LiquidCost,
+      LiquidCostMidle: entity.LiquidCostMidle,
+      RealCost: entity.RealCost,
+      RealLiquidCost: entity.RealLiquidCost,
+      FiscalCost: entity.FiscalCost,
+      FiscalLiquidCost: entity.FiscalLiquidCost,
+      PendantPrintLabel: entity.PendantPrintLabel,
+      AlterationPriceForAllPackings: entity.AlterationPriceForAllPackings,
+      IsFatherOfGrate: entity.IsFatherOfGrate,
+      IsChildOfGrate: entity.IsChildOfGrate,
+      InClass: entity.InClass,
+      MarkUpdateClassInAdjustSalePriceIndividual:
+          entity.MarkUpdateClassInAdjustSalePriceIndividual,
+      PriceCost: PriceCostModel.fromEntity(entity.PriceCost),
+      StockByEnterpriseAssociateds: entity.StockByEnterpriseAssociateds?.map((
+        e,
+      ) {
+        return StockByEnterpriseAssociatedModel.fromEntity(e);
+      }).toList(),
+      Stocks: entity.Stocks?.map((e) => StockModel.fromEntity(e)).toList(),
+      LastBuyEntrances: entity.LastBuyEntrances?.map(
+        (e) => LastBuyEntranceModel.fromEntity(e),
+      ).toList(),
+    );
+  }
+
+  ProductEntity toEntity() => ProductEntity(
+    EnterpriseCode: EnterpriseCode,
+    ProductCode: ProductCode,
+    ProductPackingCode: ProductPackingCode,
+    PLU: PLU,
+    Name: Name,
+    PackingQuantity: PackingQuantity,
+    BalanceLabelType: BalanceLabelType,
+    StorageAreaAddress: StorageAreaAddress,
+    Value: Value,
+    BalanceLabelQuantity: BalanceLabelQuantity,
+    RetailPracticedPrice: RetailPracticedPrice,
+    RetailSalePrice: RetailSalePrice,
+    RetailOfferPrice: RetailOfferPrice,
+    WholePracticedPrice: WholePracticedPrice,
+    WholeSalePrice: WholeSalePrice,
+    WholeOfferPrice: WholeOfferPrice,
+    ECommercePracticedPrice: ECommercePracticedPrice,
+    ECommerceSalePrice: ECommerceSalePrice,
+    ECommerceOfferPrice: ECommerceOfferPrice,
+    MinimumWholeQuantity: MinimumWholeQuantity,
+    OperationalCost: OperationalCost,
+    ReplacementCost: ReplacementCost,
+    ReplacementCostMidle: ReplacementCostMidle,
+    LiquidCost: LiquidCost,
+    LiquidCostMidle: LiquidCostMidle,
+    RealCost: RealCost,
+    RealLiquidCost: RealLiquidCost,
+    FiscalCost: FiscalCost,
+    FiscalLiquidCost: FiscalLiquidCost,
+    PendantPrintLabel: PendantPrintLabel,
+    AlterationPriceForAllPackings: AlterationPriceForAllPackings,
+    IsFatherOfGrate: IsFatherOfGrate,
+    IsChildOfGrate: IsChildOfGrate,
+    InClass: InClass,
+    MarkUpdateClassInAdjustSalePriceIndividual:
+        MarkUpdateClassInAdjustSalePriceIndividual,
+    PriceCost: PriceCost.toEntity(),
+    StockByEnterpriseAssociateds: StockByEnterpriseAssociateds?.map(
+      (e) => e.toEntity(),
+    ).toList(),
+    Stocks: Stocks?.map((e) => e.toEntity()).toList(),
+    LastBuyEntrances: LastBuyEntrances?.map((e) => e.toEntity()).toList(),
+  );
 }
