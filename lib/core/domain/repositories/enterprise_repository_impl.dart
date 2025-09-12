@@ -1,3 +1,5 @@
+import 'package:celta_intelligence/utils/utils.dart';
+
 import '../../data/datasource/datasource.dart';
 import '../entities/entities.dart';
 import 'i_enterprise_repository.dart';
@@ -12,7 +14,9 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
 
   @override
   Future<EnterpriseEntity?> getSupabaseEnterpriseByName(String name) async {
-    final model = await supabaseEnterpriseDatasource.getEnterpriseByName(name);
+    final model = await supabaseEnterpriseDatasource.getEnterpriseByName(
+      name.toLowerCase().removeWhiteSpaces(),
+    );
     return model?.toEntity();
   }
 
