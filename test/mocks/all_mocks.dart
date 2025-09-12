@@ -348,3 +348,17 @@ class EnterpriseManagerRepositorySpy extends Mock
     _mockGetAllEnterprisesPermissionsCall().thenThrow(Exception());
   }
 }
+
+class LocalSessionDataSourceSpy extends Mock
+    implements ILocalSessionDataSource {
+  LocalSessionDataSourceSpy() {
+    when(() => this.clear()).thenAnswer((_) async => {});
+  }
+  void mockGetSession(SessionModel? response) {
+    when(() => this.get()).thenAnswer((_) async => response);
+  }
+
+  void mockSaveSession(SessionModel session) {
+    when(() => this.save(session)).thenAnswer((_) async => {});
+  }
+}
