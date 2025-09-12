@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 
 import '../../features/enterprise_manager/presentation/pages/pages.dart';
-import '../../features/home/presentation/pages/pages.dart';
 import '../routing.dart';
 
 RouteBase enterpriseManagerRoute(Bridge<Object?> mgrBridge) => GoRoute(
@@ -54,11 +53,6 @@ RouteBase enterpriseManagerRoute(Bridge<Object?> mgrBridge) => GoRoute(
           builder: (context, state) => CreateEnterprisePage(),
         ),
       ],
-    ),
-    GoRoute(
-      path: 'home',
-      name: AppRoute.home.name,
-      builder: (context, state) => HomePage(),
     ),
   ],
 );

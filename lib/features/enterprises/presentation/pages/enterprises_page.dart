@@ -7,7 +7,8 @@ import '../../../../constants/constants.dart';
 import '../controllers/controllers.dart';
 
 class EnterprisesPage extends ConsumerWidget {
-  const EnterprisesPage({super.key});
+  final String nextRoute;
+  const EnterprisesPage(this.nextRoute, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

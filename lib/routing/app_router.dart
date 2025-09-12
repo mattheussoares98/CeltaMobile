@@ -12,6 +12,7 @@ part 'app_router.g.dart';
 
 enum AppRoute {
   auth,
+  adjustSalePrice,
   createEnterprise,
   enterpriseManager,
   enterpriseManagerAuth,
@@ -56,6 +57,7 @@ GoRouter goRouter(Ref ref) {
       authRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
       enterprisesRoute(),
+      homeRoute(),
       splashRoute(),
     ],
 

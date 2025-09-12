@@ -6,5 +6,9 @@ import '../routing.dart';
 RouteBase enterprisesRoute() => GoRoute(
   path: '/enterprises',
   name: AppRoute.enterprises.name,
-  builder: (context, state) => const EnterprisesPage(),
+  builder: (context, state) {
+    final nextRoute = state.pathParameters['nextRoute']!;
+
+    return EnterprisesPage(nextRoute);
+  },
 );

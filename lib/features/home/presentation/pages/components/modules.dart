@@ -16,7 +16,10 @@ class Modules extends StatelessWidget {
         PrimaryButton(
           text: 'Alteração de preços'.hardcoded,
           onPressed: () {
-            context.pushNamed(AppRoute.enterprises.name);
+            context.pushNamed(
+              AppRoute.enterprises.name,
+              pathParameters: {'nextRoute': AppRoute.adjustSalePrice.name},
+            );
           },
         ),
         PrimaryButton(
