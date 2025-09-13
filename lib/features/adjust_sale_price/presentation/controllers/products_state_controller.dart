@@ -32,8 +32,6 @@ class ProductsStateController extends _$ProductsStateController {
     return [];
   }
 
-  //TODO create tests
-
   Future<void> loadProducts({
     required String searchValue,
     required int enterpriseCode,
@@ -41,7 +39,7 @@ class ProductsStateController extends _$ProductsStateController {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final user = await ref.read(authStateControllerProvider.future);
-      final session = await ref.read(sessionProvider.future);
+      final userSession = await ref.read(userSessionProvider.future);
       final enterprises = await ref.read(
         enterprisesStateControllerProvider.future,
       );
@@ -49,7 +47,7 @@ class ProductsStateController extends _$ProductsStateController {
         (e) => e.Code == enterpriseCode,
       );
 
-      final baseUrl = session?.baseUrl;
+      final baseUrl = userSession?.baseUrl;
       final crossIdentity = user?.CrossIdentity_Usuario;
       if (baseUrl == null ||
           baseUrl.isEmpty ||

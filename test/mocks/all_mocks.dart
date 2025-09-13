@@ -350,15 +350,15 @@ class EnterpriseManagerRepositorySpy extends Mock
 }
 
 class LocalSessionDataSourceSpy extends Mock
-    implements ILocalSessionDataSource {
+    implements ILocalUserSessionDataSource {
   LocalSessionDataSourceSpy() {
     when(() => this.clear()).thenAnswer((_) async => {});
   }
-  void mockGetSession(SessionModel? response) {
+  void mockGetSession(UserSessionModel? response) {
     when(() => this.get()).thenAnswer((_) async => response);
   }
 
-  void mockSaveSession(SessionModel session) {
+  void mockSaveSession(UserSessionModel session) {
     when(() => this.save(session)).thenAnswer((_) async => {});
   }
 }
@@ -400,12 +400,12 @@ class SoapProductsRepositorySpy extends Mock
 }
 
 class LocalSessionRepositorySpy extends Mock
-    implements ILocalSessionRepository {
-  void mockGetSession(SessionModel? response) {
+    implements ILocalUserSessionRepository {
+  void mockGetSession(UserSessionModel? response) {
     when(() => this.get()).thenAnswer((_) async => response);
   }
 
-  void mockSaveSession(SessionModel session) {
+  void mockSaveSession(UserSessionModel session) {
     when(() => this.save(session)).thenAnswer((_) async => {});
   }
 }

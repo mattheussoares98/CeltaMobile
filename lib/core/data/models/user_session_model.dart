@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-class SessionModel extends Equatable {
+class UserSessionModel extends Equatable {
   //TODO add legacy and personalizedCode search modes
   final String? baseUrl;
-  const SessionModel({required this.baseUrl});
+  const UserSessionModel({required this.baseUrl});
 
   Map<String, dynamic> toJson() => {'baseUrl': baseUrl};
 
-  factory SessionModel.fromJson(Map<String, dynamic> json) =>
-      SessionModel(baseUrl: json['baseUrl']);
+  factory UserSessionModel.fromJson(Map<String, dynamic> json) =>
+      UserSessionModel(baseUrl: json['baseUrl']);
 
   @override
   List<Object?> get props => [baseUrl];

@@ -25,12 +25,14 @@ IAuthRepository authRepository(Ref ref) {
   final soapLoginDataSource = ref.watch(soapLoginDataSourceProvider);
   final localDatasource = ref.watch(authLocalDatasourceProvider);
   final enterpriseRepository = ref.watch(enterpriseRepositoryProvider);
-  final localSessionDataSource = ref.watch(localSessionDataSourceProvider);
+  final localUserSessionDataSource = ref.watch(
+    localUserSessionDataSourceProvider,
+  );
 
   return AuthRepositoryImpl(
     soapLoginDataSource: soapLoginDataSource,
     authLocalDatasource: localDatasource,
     enterpriseRepository: enterpriseRepository,
-    localSessionDataSource: localSessionDataSource,
+    localUserSessionDataSource: localUserSessionDataSource,
   );
 }

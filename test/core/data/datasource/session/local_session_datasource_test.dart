@@ -8,14 +8,14 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late LocalSessionDataSource sut;
+  late LocalUserSessionDataSource sut;
 
   late MockBox hive;
 
-  late SessionModel sessionModel;
+  late UserSessionModel sessionModel;
 
   void initSut() {
-    sut = LocalSessionDataSource(hive);
+    sut = LocalUserSessionDataSource(hive);
   }
 
   void initInjections() {
@@ -23,11 +23,11 @@ void main() {
   }
 
   void mockSuccess() {
-    hive.mockGet(DatabaseKeys.session.name, sessionModel.toJson());
+    hive.mockGet(DatabaseKeys.userSession.name, sessionModel.toJson());
   }
 
   void initEntities() {
-    sessionModel = SessionModel(baseUrl: faker.internet.httpUrl());
+    sessionModel = UserSessionModel(baseUrl: faker.internet.httpUrl());
   }
 
   setUp(() {
@@ -41,18 +41,18 @@ void main() {
     test('Should call hive with correct params', () async {
       await sut.clear();
 
-      verify(() => hive.delete(DatabaseKeys.session.name)).called(1);
+      verify(() => hive.delete(DatabaseKeys.userSession.name)).called(1);
     });
   });
   group('Get', () {
     test('Should behave correctly', () async {
       expect(await sut.get(), sessionModel);
 
-      verify(() => hive.get(DatabaseKeys.session.name)).called(1);
+      verify(() => hive.get(DatabaseKeys.userSession.name)).called(1);
     });
 
     test('Should return null if hive returns null', () async {
-      hive.mockGet(DatabaseKeys.session.name, null);
+      hive.mockGet(DatabaseKeys.userSession.name, null);
 
       expect(await sut.get(), isNull);
     });
@@ -63,7 +63,7 @@ void main() {
       await sut.save(sessionModel);
 
       verify(
-        () => hive.put(DatabaseKeys.session.name, sessionModel.toJson()),
+        () => hive.put(DatabaseKeys.userSession.name, sessionModel.toJson()),
       ).called(1);
     });
   });

@@ -35,14 +35,14 @@ class FakeEnterprisesStateController extends EnterprisesStateController {
   }
 }
 
-class FakeSession extends Session {
-  final SessionModel? sessionToReturn;
+class FakeSession extends UserSession {
+  final UserSessionModel? sessionToReturn;
 
   FakeSession(this.sessionToReturn);
 
   // 2. Override the build method to return your fake data instantly
   @override
-  Future<SessionModel?> build() async {
+  Future<UserSessionModel?> build() async {
     return sessionToReturn;
   }
 }
@@ -52,7 +52,7 @@ void main() {
 
   late FakeAuthStateController fakeAuthStateController;
 
-  late SessionModel session;
+  late UserSessionModel session;
   late String searchValue;
   late UserEntity userEntity;
   late EnterpriseEntity enterpriseEntity;
@@ -68,7 +68,7 @@ void main() {
   });
 
   void initEntities() {
-    session = SessionModel(baseUrl: faker.internet.httpUrl());
+    session = UserSessionModel(baseUrl: faker.internet.httpUrl());
     searchValue = faker.lorem.word();
     userEntity = UserEntity(
       name: faker.person.name(),
@@ -85,7 +85,7 @@ void main() {
 
   void initInjections() {
     fakeAuthStateController = FakeAuthStateController(userEntity);
-    session = SessionModel(baseUrl: faker.internet.httpUrl());
+    session = UserSessionModel(baseUrl: faker.internet.httpUrl());
   }
 
   void mockSuccess() {
@@ -111,7 +111,7 @@ void main() {
       overrides: [
         soapProductsRepositoryProvider.overrideWithValue(sut),
         if (mockSession == true)
-          sessionProvider.overrideWith(() => FakeSession(session)),
+          userSessionProvider.overrideWith(() => FakeSession(session)),
         if (mockAuthState == true)
           authStateControllerProvider.overrideWith(
             () => fakeAuthStateController,

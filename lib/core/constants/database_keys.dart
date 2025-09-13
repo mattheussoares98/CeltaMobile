@@ -1,1 +1,5 @@
-enum DatabaseKeys { application, session, user } //TODO move to infa structure
+enum DatabaseKeys {
+  application,
+  userSession,
+  user,
+} //TODO move to infa structure

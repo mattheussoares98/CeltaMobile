@@ -11,13 +11,13 @@ class AuthRepositoryImpl implements IAuthRepository {
   final ISoapLoginDataSource soapLoginDataSource;
   final IAuthLocalDatasource authLocalDatasource;
   final IEnterpriseRepository enterpriseRepository;
-  final ILocalSessionDataSource localSessionDataSource;
+  final ILocalUserSessionDataSource localUserSessionDataSource;
 
   AuthRepositoryImpl({
     required this.soapLoginDataSource,
     required this.authLocalDatasource,
     required this.enterpriseRepository,
-    required this.localSessionDataSource,
+    required this.localUserSessionDataSource,
   });
 
   @override
@@ -47,8 +47,8 @@ class AuthRepositoryImpl implements IAuthRepository {
       ),
     );
 
-    await localSessionDataSource.save(
-      SessionModel(baseUrl: enterpriseModel.baseUrl),
+    await localUserSessionDataSource.save(
+      UserSessionModel(baseUrl: enterpriseModel.baseUrl),
     );
   }
 

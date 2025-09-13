@@ -27,7 +27,7 @@ void main() {
       soapLoginDataSource: authRemoteDataSource,
       authLocalDatasource: authLocalDataSource,
       enterpriseRepository: enterpriseRepository,
-      localSessionDataSource: localSessionDataSource,
+      localUserSessionDataSource: localSessionDataSource,
     );
   }
 
@@ -45,7 +45,7 @@ void main() {
     authRemoteDataSource.mockLogin(UserModel.fromEntity(userEntity));
     authLocalDataSource.mockGetUser(userEntity);
     localSessionDataSource.mockSaveSession(
-      SessionModel(baseUrl: enterpriseEntity.baseUrl),
+      UserSessionModel(baseUrl: enterpriseEntity.baseUrl),
     );
   }
 
@@ -99,7 +99,7 @@ void main() {
       ).called(1);
       verify(
         () => localSessionDataSource.save(
-          SessionModel(baseUrl: enterpriseEntity.baseUrl),
+          UserSessionModel(baseUrl: enterpriseEntity.baseUrl),
         ),
       ).called(1);
 

@@ -65,13 +65,15 @@ IEnterpriseRepository enterpriseRepository(Ref ref) {
 }
 
 @riverpod
-ILocalSessionDataSource localSessionDataSource(Ref ref) {
-  return LocalSessionDataSource(ref.watch(hiveBoxProvider));
+ILocalUserSessionDataSource localUserSessionDataSource(Ref ref) {
+  return LocalUserSessionDataSource(ref.watch(hiveBoxProvider));
 }
 
 @riverpod
-ILocalSessionRepository localSessionRepository(Ref ref) {
-  return LocalSessionRepositoryImpl(ref.watch(localSessionDataSourceProvider));
+ILocalUserSessionRepository localSessionRepository(Ref ref) {
+  return LocalUserSessionRepositoryImpl(
+    ref.watch(localUserSessionDataSourceProvider),
+  );
 }
 
 @riverpod

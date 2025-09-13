@@ -26,7 +26,7 @@ class EnterprisesStateController extends _$EnterprisesStateController {
       timer?.cancel();
     });
 
-    final session = ref.watch(sessionProvider);
+    final session = ref.watch(userSessionProvider);
     final auth = ref.watch(authStateControllerProvider);
 
     final baseUrl = session.value?.baseUrl;

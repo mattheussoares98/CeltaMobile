@@ -3,26 +3,26 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../data/models/models.dart';
 import 'providers.dart';
 
-part 'session_provider.g.dart';
+part 'user_session_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-class Session extends _$Session {
+class UserSession extends _$UserSession {
   @override
-  Future<SessionModel?> build() async {
+  Future<UserSessionModel?> build() async {
     //dont need to use guard because the riverpor already treat this and return async error if throws
-    return await ref.read(localSessionDataSourceProvider).get();
+    return await ref.read(localUserSessionDataSourceProvider).get();
   }
 
-  Future<void> saveSession(SessionModel value) async {
+  Future<void> saveSession(UserSessionModel value) async {
     state = await AsyncValue.guard(() async {
-      await ref.read(localSessionDataSourceProvider).save(value);
+      await ref.read(localUserSessionDataSourceProvider).save(value);
       return value;
     });
   }
 
   Future<void> clearSession() async {
     state = await AsyncValue.guard(() async {
-      await ref.read(localSessionDataSourceProvider).clear();
+      await ref.read(localUserSessionDataSourceProvider).clear();
       return null;
     });
   }

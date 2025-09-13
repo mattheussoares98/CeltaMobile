@@ -1,2 +1,2 @@
 export './major_providers.dart';
-export './session_provider.dart';
+export 'user_session_provider.dart';

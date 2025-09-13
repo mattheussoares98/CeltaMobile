@@ -7,14 +7,14 @@ import 'package:mocktail/mocktail.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  late ILocalSessionRepository sut;
+  late ILocalUserSessionRepository sut;
 
   late LocalSessionDataSourceSpy localSessionDataSource;
 
-  late SessionModel sessionModel;
+  late UserSessionModel sessionModel;
 
   void initSut() {
-    sut = LocalSessionRepositoryImpl(localSessionDataSource);
+    sut = LocalUserSessionRepositoryImpl(localSessionDataSource);
   }
 
   void initInjections() {
@@ -27,7 +27,7 @@ void main() {
   }
 
   void initEntities() {
-    sessionModel = SessionModel(baseUrl: faker.internet.httpUrl());
+    sessionModel = UserSessionModel(baseUrl: faker.internet.httpUrl());
   }
 
   setUp(() {
