@@ -3,6 +3,7 @@ export './alert_dialogs.dart';
 export './async_value_widget.dart';
 export './default_custom_scroll_view.dart';
 export './default_drop_down.dart';
+export './default_search_products.dart';
 export './default_simple_drop_down.dart';
 export './empty_placeholder_widget.dart';
 export './primary_button.dart';
