@@ -24,10 +24,7 @@ class ResponsiveScrollableWidget extends StatelessWidget {
         width: centralize == true ? mediaQuery.size.width : null,
         child: ResponsiveCenter(
           maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p16),
-            child: child,
-          ),
+          child: Padding(padding: const EdgeInsets.all(Sizes.p8), child: child),
         ),
       ),
     );
