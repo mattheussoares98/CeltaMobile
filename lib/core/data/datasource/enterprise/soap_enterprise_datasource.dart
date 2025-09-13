@@ -16,25 +16,21 @@ class SoapEnterpriseDataSource implements ISoapEnterpriseDataSource {
     required String baseUrl,
     required String crossIdentity,
   }) async {
-    try {
-      final response = await soapAdapter.post(
-        url: baseUrl.toLowerCase().removeWhiteSpaces(),
-        parameters: {
-          "crossIdentity": crossIdentity,
-          "simpleSearchValue": "",
-          "requestTypeCode": 0,
-        },
-        soapAction: "GetEnterprisesJson",
-        typeOfResponse: "GetEnterprisesJsonResponse",
-        serviceASMX: "celtaenterpriseService.asmx",
-        typeOfResult: "GetEnterprisesJsonResult",
-      );
+    final response = await soapAdapter.post(
+      url: baseUrl.toLowerCase().removeWhiteSpaces(),
+      parameters: {
+        "crossIdentity": crossIdentity,
+        "simpleSearchValue": "",
+        "requestTypeCode": 0,
+      },
+      soapAction: "GetEnterprisesJson",
+      typeOfResponse: "GetEnterprisesJsonResponse",
+      serviceASMX: "celtaenterpriseService.asmx",
+      typeOfResult: "GetEnterprisesJsonResult",
+    );
 
-      return (json.decode(response) as List)
-          .map((e) => SoapEnterpriseModel.fromJson(e))
-          .toList();
-    } catch (e) {
-      rethrow;
-    }
+    return (json.decode(response) as List)
+        .map((e) => SoapEnterpriseModel.fromJson(e))
+        .toList();
   }
 }
