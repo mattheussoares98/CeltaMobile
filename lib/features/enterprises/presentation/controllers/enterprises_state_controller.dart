@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/providers/providers.dart';
+import '../../../../exceptions/exceptions.dart';
 import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
 
@@ -26,17 +28,20 @@ class EnterprisesStateController extends _$EnterprisesStateController {
       timer?.cancel();
     });
 
-    final session = ref.watch(userSessionProvider);
-    final auth = ref.watch(authStateControllerProvider);
+    final session = await ref.read(userSessionProvider.future);
+    final auth = await ref.read(authStateControllerProvider.future);
 
-    final baseUrl = session.value?.baseUrl;
-    final crossIdentity = auth.value?.CrossIdentity_Usuario;
+    final baseUrl = session?.baseUrl;
+    final crossIdentity = auth?.CrossIdentity_Usuario;
 
     if (baseUrl == null ||
         baseUrl.isEmpty ||
         crossIdentity == null ||
         crossIdentity.isEmpty) {
-      return [];
+      throw AppException(
+        'URL ou CrossIdentity inválidos. Entre em contato com o suporte técnico'
+            .hardcoded,
+      );
     }
 
     return ref
