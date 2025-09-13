@@ -103,12 +103,19 @@ void main() {
     mockSuccess();
   });
 
-  ProviderContainer makeProviderContainer() {
+  ProviderContainer makeProviderContainer({
+    bool? mockSession = true,
+    bool? mockAuthState = true,
+  }) {
     final container = ProviderContainer(
       overrides: [
         soapProductsRepositoryProvider.overrideWithValue(sut),
-        sessionProvider.overrideWith(() => FakeSession(session)),
-        authStateControllerProvider.overrideWith(() => fakeAuthStateController),
+        if (mockSession == true)
+          sessionProvider.overrideWith(() => FakeSession(session)),
+        if (mockAuthState == true)
+          authStateControllerProvider.overrideWith(
+            () => fakeAuthStateController,
+          ),
         enterprisesStateControllerProvider.overrideWith(
           () => FakeEnterprisesStateController([enterpriseEntity]),
         ),
@@ -119,7 +126,7 @@ void main() {
   }
 
   group('Load products', () {
-    test('should behave correctly', () async {
+    test('should behave correctly on success', () async {
       final container = makeProviderContainer();
 
       await container.read(productsStateControllerProvider.future);
@@ -137,7 +144,10 @@ void main() {
             enterpriseCode: enterpriseEntity.Code!,
           );
 
-      // expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+      expect(states, [
+        isA<AsyncLoading>(),
+        isA<AsyncData<List<ProductEntity>>>(),
+      ]);
       verify(
         () => sut.getProductsJson(
           baseUrl: session.baseUrl!,
@@ -149,6 +159,37 @@ void main() {
           enterpriseEntity: enterpriseEntity,
         ),
       ).called(1);
+    });
+    test('should behave correctly on error', () async {
+      final container = makeProviderContainer(mockSession: false);
+
+      await container.read(productsStateControllerProvider.future);
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        productsStateControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      await container
+          .read(productsStateControllerProvider.notifier)
+          .loadProducts(
+            searchValue: searchValue,
+            enterpriseCode: enterpriseEntity.Code!,
+          );
+
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+      verifyNever(
+        () => sut.getProductsJson(
+          baseUrl: session.baseUrl!,
+          searchValue: searchValue,
+          routine: Routine.adjustSalePrice,
+          searchType: SearchType.dynamic,
+          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          enterpriseCodes: [enterpriseEntity.Code!],
+          enterpriseEntity: enterpriseEntity,
+        ),
+      );
     });
   });
 }
