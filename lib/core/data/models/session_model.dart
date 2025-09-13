@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class SessionModel extends Equatable {
+  //TODO add legacy and personalizedCode search modes
   final String? baseUrl;
   const SessionModel({required this.baseUrl});
 
