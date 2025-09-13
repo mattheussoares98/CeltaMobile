@@ -6,13 +6,16 @@ import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/errors/errors.dart';
 import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
+import 'package:celta_intelligence/core/providers/providers.dart';
 import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
@@ -423,5 +426,40 @@ class AuthRepositorySpy extends Mock implements IAuthRepository {
 
   void mockGetCurrentUser(UserEntity? user) {
     when(() => this.getCurrentUser()).thenAnswer((_) async => user);
+  }
+}
+
+class FakeAuthStateController extends AuthStateController {
+  final UserEntity? userToReturn;
+
+  FakeAuthStateController(this.userToReturn);
+
+  @override
+  Future<UserEntity?> build() async {
+    return userToReturn;
+  }
+}
+
+class FakeEnterprisesStateController extends EnterprisesStateController {
+  final List<EnterpriseEntity> enterprisesToReturn;
+
+  FakeEnterprisesStateController(this.enterprisesToReturn);
+
+  // 2. Override the build method to return your fake data instantly
+  @override
+  Future<List<EnterpriseEntity>> build() async {
+    return enterprisesToReturn;
+  }
+}
+
+class FakeUserSession extends UserSession {
+  final UserSessionModel? sessionToReturn;
+
+  FakeUserSession(this.sessionToReturn);
+
+  // 2. Override the build method to return your fake data instantly
+  @override
+  Future<UserSessionModel?> build() async {
+    return sessionToReturn;
   }
 }

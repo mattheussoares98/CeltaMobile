@@ -12,47 +12,12 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class FakeAuthStateController extends AuthStateController {
-  final UserEntity? userToReturn;
-
-  FakeAuthStateController(this.userToReturn);
-
-  @override
-  Future<UserEntity?> build() async {
-    return userToReturn;
-  }
-}
-
-class FakeEnterprisesStateController extends EnterprisesStateController {
-  final List<EnterpriseEntity> enterprisesToReturn;
-
-  FakeEnterprisesStateController(this.enterprisesToReturn);
-
-  // 2. Override the build method to return your fake data instantly
-  @override
-  Future<List<EnterpriseEntity>> build() async {
-    return enterprisesToReturn;
-  }
-}
-
-class FakeSession extends UserSession {
-  final UserSessionModel? sessionToReturn;
-
-  FakeSession(this.sessionToReturn);
-
-  // 2. Override the build method to return your fake data instantly
-  @override
-  Future<UserSessionModel?> build() async {
-    return sessionToReturn;
-  }
-}
-
 void main() {
   late SoapProductsRepositorySpy sut;
 
   late FakeAuthStateController fakeAuthStateController;
 
-  late UserSessionModel session;
+  late UserSessionModel userSession;
   late String searchValue;
   late UserEntity userEntity;
   late EnterpriseEntity enterpriseEntity;
@@ -68,7 +33,7 @@ void main() {
   });
 
   void initEntities() {
-    session = UserSessionModel(baseUrl: faker.internet.httpUrl());
+    userSession = UserSessionModel(baseUrl: faker.internet.httpUrl());
     searchValue = faker.lorem.word();
     userEntity = UserEntity(
       name: faker.person.name(),
@@ -85,7 +50,7 @@ void main() {
 
   void initInjections() {
     fakeAuthStateController = FakeAuthStateController(userEntity);
-    session = UserSessionModel(baseUrl: faker.internet.httpUrl());
+    userSession = UserSessionModel(baseUrl: faker.internet.httpUrl());
   }
 
   void mockSuccess() {
@@ -111,7 +76,7 @@ void main() {
       overrides: [
         soapProductsRepositoryProvider.overrideWithValue(sut),
         if (mockSession == true)
-          userSessionProvider.overrideWith(() => FakeSession(session)),
+          userSessionProvider.overrideWith(() => FakeUserSession(userSession)),
         if (mockAuthState == true)
           authStateControllerProvider.overrideWith(
             () => fakeAuthStateController,
@@ -150,7 +115,7 @@ void main() {
       ]);
       verify(
         () => sut.getProductsJson(
-          baseUrl: session.baseUrl!,
+          baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
           routine: Routine.adjustSalePrice,
           searchType: SearchType.dynamic,
@@ -181,7 +146,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => sut.getProductsJson(
-          baseUrl: session.baseUrl!,
+          baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
           routine: Routine.adjustSalePrice,
           searchType: SearchType.dynamic,
