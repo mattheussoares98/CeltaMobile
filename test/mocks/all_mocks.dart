@@ -380,3 +380,48 @@ class SoapProductsDataSourceSpy extends Mock
     ).thenAnswer((_) async => response);
   }
 }
+
+class SoapProductsRepositorySpy extends Mock
+    implements ISoapProductsRepository {
+  void mockGetProductsJson(List<ProductEntity> response) {
+    when(
+      () => this.getProductsJson(
+        baseUrl: any(named: "baseUrl"),
+        searchValue: any(named: "searchValue"),
+        routine: any(named: "routine"),
+        searchType: any(named: "searchType"),
+        crossIdentity: any(named: "crossIdentity"),
+        enterpriseCodes: any(named: "enterpriseCodes"),
+        enterpriseEntity: any(named: "enterpriseEntity"),
+        lastBuyEntranceQuantity: any(named: "lastBuyEntranceQuantity"),
+      ),
+    ).thenAnswer((_) async => response);
+  }
+}
+
+class LocalSessionRepositorySpy extends Mock
+    implements ILocalSessionRepository {
+  void mockGetSession(SessionModel? response) {
+    when(() => this.get()).thenAnswer((_) async => response);
+  }
+
+  void mockSaveSession(SessionModel session) {
+    when(() => this.save(session)).thenAnswer((_) async => {});
+  }
+}
+
+class AuthRepositorySpy extends Mock implements IAuthRepository {
+  void mockLogin(UserEntity user) {
+    when(
+      () => this.login(
+        enterpriseName: any(named: 'enterpriseName'),
+        userName: any(named: 'userName'),
+        password: any(named: 'password'),
+      ),
+    ).thenAnswer((_) async => user);
+  }
+
+  void mockGetCurrentUser(UserEntity? user) {
+    when(() => this.getCurrentUser()).thenAnswer((_) async => user);
+  }
+}
