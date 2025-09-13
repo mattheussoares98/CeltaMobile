@@ -64,13 +64,15 @@ class AsyncValueSliverWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return value.when(
       data: data,
-      loading: () => const SliverToBoxAdapter(
+      loading: () => const SliverFillRemaining(
         child: Center(child: CircularProgressIndicator()),
       ),
-      error: (e, st) => Center(
-        child: TextButton(
-          onPressed: tryAgain,
-          child: Text('Erro não esperado. Tente novamente'.hardcoded),
+      error: (e, st) => SliverFillRemaining(
+        child: Center(
+          child: TextButton(
+            onPressed: tryAgain,
+            child: Text('Erro não esperado. Tente novamente'.hardcoded),
+          ),
         ),
       ),
     );
