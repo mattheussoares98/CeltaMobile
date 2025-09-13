@@ -94,16 +94,20 @@ void main() {
     test('should behave correctly on success', () async {
       final container = makeProviderContainer();
 
-      await container.read(productsStateControllerProvider.future);
+      await container.read(
+        productsStateControllerProvider(enterpriseEntity.Code!).future,
+      );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        productsStateControllerProvider,
+        productsStateControllerProvider(enterpriseEntity.Code!),
         (_, next) => states.add(next),
       );
 
       await container
-          .read(productsStateControllerProvider.notifier)
+          .read(
+            productsStateControllerProvider(enterpriseEntity.Code!).notifier,
+          )
           .loadProducts(
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
@@ -128,16 +132,20 @@ void main() {
     test('should behave correctly on error', () async {
       final container = makeProviderContainer(mockSession: false);
 
-      await container.read(productsStateControllerProvider.future);
+      await container.read(
+        productsStateControllerProvider(enterpriseEntity.Code!).future,
+      );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        productsStateControllerProvider,
+        productsStateControllerProvider(enterpriseEntity.Code!),
         (_, next) => states.add(next),
       );
 
       await container
-          .read(productsStateControllerProvider.notifier)
+          .read(
+            productsStateControllerProvider(enterpriseEntity.Code!).notifier,
+          )
           .loadProducts(
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,

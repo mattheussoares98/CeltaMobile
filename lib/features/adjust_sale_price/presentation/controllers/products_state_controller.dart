@@ -14,7 +14,7 @@ part 'products_state_controller.g.dart';
 @riverpod
 class ProductsStateController extends _$ProductsStateController {
   @override
-  Future<List<ProductEntity>> build() async {
+  Future<List<ProductEntity>> build(int enterpriseCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
