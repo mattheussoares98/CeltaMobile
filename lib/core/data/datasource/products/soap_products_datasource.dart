@@ -20,7 +20,7 @@ class SoapProductsDataSource implements ISoapProductsDataSource {
     int? lastBuyEntranceQuantity,
   }) async {
     try {
-      soapRequest.post(
+      return await soapRequest.post(
         url: baseUrl,
         parameters: {
           "filters": json.encode({
