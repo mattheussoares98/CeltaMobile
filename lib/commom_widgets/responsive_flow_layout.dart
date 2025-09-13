@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
 
+//TODO delete this file and use ResponsiveListFlow
 class ResponsiveFlowLayout extends StatelessWidget {
   final List<Widget> items;
   final double spacing;

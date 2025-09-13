@@ -51,120 +51,44 @@ class _AdjustSalePriceProductsPageState
       productsStateControllerProvider(widget.enterpriseCode),
     );
 
-    return ScrollingSliverPage(
-      title: FittedBox(child: Text("Produtos (ajuste de preço)".hardcoded)),
-      slivers: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: DefaultSearchProducts(
+    return Scaffold(
+      appBar: AppBar(
+        title: FittedBox(child: Text("Produtos (ajuste de preço)".hardcoded)),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          children: [
+            DefaultSearchProducts(
               searchValueController: searchValueController,
               isLoading: productsState.isLoading,
               searchProducts: searchProducts,
             ),
-          ),
+            gapH8,
+            Expanded(
+              child: AsyncValueWidget(
+                value: productsState,
+                tryAgain: null,
+                data: (products) {
+                  return ResponsiveListFlow(
+                    itemCount: products.length,
+                    itemBuilder: (_, index) {
+                      final e = products[index];
+                      return Card(
+                        margin: EdgeInsets.only(bottom: Sizes.p8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(Sizes.p8),
+                          child: Text(e.Name),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-        AsyncValueSliverWidget(
-          value: productsState,
-          tryAgain: null,
-          data: (products) {
-            return ResponsiveSliverListFlow(
-              itemCount: products.length,
-              itemsPerRow:
-                  (MediaQuery.of(context).size.width / Breakpoint.tablet)
-                      .ceil(),
-              padding: 0,
-              itemBuilder: (_, index) {
-                final e = products[index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: Text(e.Name),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class ScrollingSliverPage extends StatelessWidget {
-  const ScrollingSliverPage({
-    super.key,
-    required this.title,
-    this.actions,
-    this.itemsPerRow = 2,
-    this.slivers,
-    this.padding = 8,
-  });
-
-  final Widget title;
-  final List<Widget>? actions;
-  final int itemsPerRow;
-  final List<Widget>? slivers;
-  final double padding;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            floating: true,
-            snap: true,
-            title: title,
-            actions: actions,
-          ),
-          if (slivers != null) ...slivers!,
-        ],
       ),
-    );
-  }
-}
-
-class ResponsiveSliverListFlow extends StatelessWidget {
-  final int itemCount;
-  final Widget Function(BuildContext context, int index) itemBuilder;
-  final int itemsPerRow;
-  final double padding;
-  const ResponsiveSliverListFlow({
-    super.key,
-    required this.itemCount,
-    required this.itemBuilder,
-    required this.itemsPerRow,
-    required this.padding,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverList.builder(
-      // Calculate how many rows are needed
-      itemCount: (itemCount / itemsPerRow).ceil(),
-      itemBuilder: (context, rowIndex) {
-        // This builder is only called for the rows visible on screen.
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(itemsPerRow, (colIndex) {
-            final itemIndex = (rowIndex * itemsPerRow) + colIndex;
-            // If the item exists, build it. Otherwise, build an empty placeholder.
-            if (itemIndex < itemCount) {
-              return Expanded(
-                child: Padding(
-                  // Add padding between items in the same row
-                  padding: EdgeInsets.symmetric(horizontal: padding / 2),
-                  child: itemBuilder(context, itemIndex),
-                ),
-              );
-            } else {
-              return const Expanded(child: SizedBox());
-            }
-          }),
-        );
-      },
     );
   }
 }

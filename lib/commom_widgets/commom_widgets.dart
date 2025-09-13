@@ -9,6 +9,7 @@ export './empty_placeholder_widget.dart';
 export './primary_button.dart';
 export './responsive_center.dart';
 export './responsive_flow_layout.dart';
+export './responsive_list_flow.dart';
 export 'responsive_scrollable_widget.dart';
 export './show_modal_page.dart';
 export 'show_snack_bar_message.dart';
