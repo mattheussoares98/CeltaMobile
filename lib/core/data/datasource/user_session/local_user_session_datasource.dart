@@ -26,6 +26,7 @@ class LocalUserSessionDataSource implements ILocalUserSessionDataSource {
 
   @override
   Future<void> save(UserSessionModel session) async {
+    await box.delete(DatabaseKeys.userSession.name);
     await box.put(DatabaseKeys.userSession.name, session.toJson());
   }
 }
