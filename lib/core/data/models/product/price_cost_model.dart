@@ -3,40 +3,40 @@ import 'package:equatable/equatable.dart';
 import '../../../domain/entities/entities.dart';
 
 class PriceCostModel extends Equatable {
-  final double RetailPracticedPrice;
-  final double RetailSalePrice;
-  final double RetailOfferPrice;
-  final double RetailSuggestionPrice;
-  final double RetailMinimumPrice;
-  final double WholePracticedPrice;
-  final double WholeSalePrice;
-  final double WholeOfferPrice;
-  final double WholeSuggestionPrice;
-  final double WholeMinimumPrice;
-  final double ECommercePracticedPrice;
-  final double ECommerceSalePrice;
-  final double ECommerceOfferPrice;
-  final double ECommerceSuggestionPrice;
-  final double ECommerceMinimumPrice;
-  final double MinimumWholeQuantity;
-  final double OperationalCost;
-  final double ReplacementCost;
-  final double ReplacementCostMidle;
-  final double LiquidCost;
-  final double LiquidCostMidle;
-  final double RealCost;
-  final double RealLiquidCost;
-  final double FiscalCost;
-  final double FiscalLiquidCost;
-  final double RetailMargin;
-  final double RetailOfferMargin;
-  final double RetailMinimumMargin;
-  final double WholeMargin;
-  final double WholeOfferMargin;
-  final double WholeMinimumMargin;
-  final double ECommerceMargin;
-  final double ECommerceOfferMargin;
-  final double ECommerceMinimumMargin;
+  final double? RetailPracticedPrice;
+  final double? RetailSalePrice;
+  final double? RetailOfferPrice;
+  final double? RetailSuggestionPrice;
+  final double? RetailMinimumPrice;
+  final double? WholePracticedPrice;
+  final double? WholeSalePrice;
+  final double? WholeOfferPrice;
+  final double? WholeSuggestionPrice;
+  final double? WholeMinimumPrice;
+  final double? ECommercePracticedPrice;
+  final double? ECommerceSalePrice;
+  final double? ECommerceOfferPrice;
+  final double? ECommerceSuggestionPrice;
+  final double? ECommerceMinimumPrice;
+  final double? MinimumWholeQuantity;
+  final double? OperationalCost;
+  final double? ReplacementCost;
+  final double? ReplacementCostMidle;
+  final double? LiquidCost;
+  final double? LiquidCostMidle;
+  final double? RealCost;
+  final double? RealLiquidCost;
+  final double? FiscalCost;
+  final double? FiscalLiquidCost;
+  final double? RetailMargin;
+  final double? RetailOfferMargin;
+  final double? RetailMinimumMargin;
+  final double? WholeMargin;
+  final double? WholeOfferMargin;
+  final double? WholeMinimumMargin;
+  final double? ECommerceMargin;
+  final double? ECommerceOfferMargin;
+  final double? ECommerceMinimumMargin;
   const PriceCostModel({
     required this.RetailPracticedPrice,
     required this.RetailSalePrice,
@@ -75,44 +75,42 @@ class PriceCostModel extends Equatable {
   });
 
   @override
-  List<Object> get props {
-    return [
-      RetailPracticedPrice,
-      RetailSalePrice,
-      RetailOfferPrice,
-      RetailSuggestionPrice,
-      RetailMinimumPrice,
-      WholePracticedPrice,
-      WholeSalePrice,
-      WholeOfferPrice,
-      WholeSuggestionPrice,
-      WholeMinimumPrice,
-      ECommercePracticedPrice,
-      ECommerceSalePrice,
-      ECommerceOfferPrice,
-      ECommerceSuggestionPrice,
-      ECommerceMinimumPrice,
-      MinimumWholeQuantity,
-      OperationalCost,
-      ReplacementCost,
-      ReplacementCostMidle,
-      LiquidCost,
-      LiquidCostMidle,
-      RealCost,
-      RealLiquidCost,
-      FiscalCost,
-      FiscalLiquidCost,
-      RetailMargin,
-      RetailOfferMargin,
-      RetailMinimumMargin,
-      WholeMargin,
-      WholeOfferMargin,
-      WholeMinimumMargin,
-      ECommerceMargin,
-      ECommerceOfferMargin,
-      ECommerceMinimumMargin,
-    ];
-  }
+  List<Object?> get props => [
+    RetailPracticedPrice,
+    RetailSalePrice,
+    RetailOfferPrice,
+    RetailSuggestionPrice,
+    RetailMinimumPrice,
+    WholePracticedPrice,
+    WholeSalePrice,
+    WholeOfferPrice,
+    WholeSuggestionPrice,
+    WholeMinimumPrice,
+    ECommercePracticedPrice,
+    ECommerceSalePrice,
+    ECommerceOfferPrice,
+    ECommerceSuggestionPrice,
+    ECommerceMinimumPrice,
+    MinimumWholeQuantity,
+    OperationalCost,
+    ReplacementCost,
+    ReplacementCostMidle,
+    LiquidCost,
+    LiquidCostMidle,
+    RealCost,
+    RealLiquidCost,
+    FiscalCost,
+    FiscalLiquidCost,
+    RetailMargin,
+    RetailOfferMargin,
+    RetailMinimumMargin,
+    WholeMargin,
+    WholeOfferMargin,
+    WholeMinimumMargin,
+    ECommerceMargin,
+    ECommerceOfferMargin,
+    ECommerceMinimumMargin,
+  ];
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -155,40 +153,40 @@ class PriceCostModel extends Equatable {
 
   factory PriceCostModel.fromJson(Map<String, dynamic> map) {
     return PriceCostModel(
-      RetailPracticedPrice: map['RetailPracticedPrice'] as double,
-      RetailSalePrice: map['RetailSalePrice'] as double,
-      RetailOfferPrice: map['RetailOfferPrice'] as double,
-      RetailSuggestionPrice: map['RetailSuggestionPrice'] as double,
-      RetailMinimumPrice: map['RetailMinimumPrice'] as double,
-      WholePracticedPrice: map['WholePracticedPrice'] as double,
-      WholeSalePrice: map['WholeSalePrice'] as double,
-      WholeOfferPrice: map['WholeOfferPrice'] as double,
-      WholeSuggestionPrice: map['WholeSuggestionPrice'] as double,
-      WholeMinimumPrice: map['WholeMinimumPrice'] as double,
-      ECommercePracticedPrice: map['ECommercePracticedPrice'] as double,
-      ECommerceSalePrice: map['ECommerceSalePrice'] as double,
-      ECommerceOfferPrice: map['ECommerceOfferPrice'] as double,
-      ECommerceSuggestionPrice: map['ECommerceSuggestionPrice'] as double,
-      ECommerceMinimumPrice: map['ECommerceMinimumPrice'] as double,
-      MinimumWholeQuantity: map['MinimumWholeQuantity'] as double,
-      OperationalCost: map['OperationalCost'] as double,
-      ReplacementCost: map['ReplacementCost'] as double,
-      ReplacementCostMidle: map['ReplacementCostMidle'] as double,
-      LiquidCost: map['LiquidCost'] as double,
-      LiquidCostMidle: map['LiquidCostMidle'] as double,
-      RealCost: map['RealCost'] as double,
-      RealLiquidCost: map['RealLiquidCost'] as double,
-      FiscalCost: map['FiscalCost'] as double,
-      FiscalLiquidCost: map['FiscalLiquidCost'] as double,
-      RetailMargin: map['RetailMargin'] as double,
-      RetailOfferMargin: map['RetailOfferMargin'] as double,
-      RetailMinimumMargin: map['RetailMinimumMargin'] as double,
-      WholeMargin: map['WholeMargin'] as double,
-      WholeOfferMargin: map['WholeOfferMargin'] as double,
-      WholeMinimumMargin: map['WholeMinimumMargin'] as double,
-      ECommerceMargin: map['ECommerceMargin'] as double,
-      ECommerceOfferMargin: map['ECommerceOfferMargin'] as double,
-      ECommerceMinimumMargin: map['ECommerceMinimumMargin'] as double,
+      RetailPracticedPrice: map['RetailPracticedPrice'] as double?,
+      RetailSalePrice: map['RetailSalePrice'] as double?,
+      RetailOfferPrice: map['RetailOfferPrice'] as double?,
+      RetailSuggestionPrice: map['RetailSuggestionPrice'] as double?,
+      RetailMinimumPrice: map['RetailMinimumPrice'] as double?,
+      WholePracticedPrice: map['WholePracticedPrice'] as double?,
+      WholeSalePrice: map['WholeSalePrice'] as double?,
+      WholeOfferPrice: map['WholeOfferPrice'] as double?,
+      WholeSuggestionPrice: map['WholeSuggestionPrice'] as double?,
+      WholeMinimumPrice: map['WholeMinimumPrice'] as double?,
+      ECommercePracticedPrice: map['ECommercePracticedPrice'] as double?,
+      ECommerceSalePrice: map['ECommerceSalePrice'] as double?,
+      ECommerceOfferPrice: map['ECommerceOfferPrice'] as double?,
+      ECommerceSuggestionPrice: map['ECommerceSuggestionPrice'] as double?,
+      ECommerceMinimumPrice: map['ECommerceMinimumPrice'] as double?,
+      MinimumWholeQuantity: map['MinimumWholeQuantity'] as double?,
+      OperationalCost: map['OperationalCost'] as double?,
+      ReplacementCost: map['ReplacementCost'] as double?,
+      ReplacementCostMidle: map['ReplacementCostMidle'] as double?,
+      LiquidCost: map['LiquidCost'] as double?,
+      LiquidCostMidle: map['LiquidCostMidle'] as double?,
+      RealCost: map['RealCost'] as double?,
+      RealLiquidCost: map['RealLiquidCost'] as double?,
+      FiscalCost: map['FiscalCost'] as double?,
+      FiscalLiquidCost: map['FiscalLiquidCost'] as double?,
+      RetailMargin: map['RetailMargin'] as double?,
+      RetailOfferMargin: map['RetailOfferMargin'] as double?,
+      RetailMinimumMargin: map['RetailMinimumMargin'] as double?,
+      WholeMargin: map['WholeMargin'] as double?,
+      WholeOfferMargin: map['WholeOfferMargin'] as double?,
+      WholeMinimumMargin: map['WholeMinimumMargin'] as double?,
+      ECommerceMargin: map['ECommerceMargin'] as double?,
+      ECommerceOfferMargin: map['ECommerceOfferMargin'] as double?,
+      ECommerceMinimumMargin: map['ECommerceMinimumMargin'] as double?,
     );
   }
 
