@@ -6,7 +6,6 @@ import '../../constants/constants.dart';
 import '../../core/data/datasource/datasource.dart';
 import '../../core/domain/entities/entities.dart';
 import '../commom_widgets.dart';
-import 'product_item.dart';
 
 class ProductItemWidget extends StatelessWidget {
   final int enterpriseCode;
