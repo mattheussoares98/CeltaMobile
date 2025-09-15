@@ -123,7 +123,7 @@ class ProductItemWidget extends StatelessWidget {
             TitleAndSubTitle(
               title: "Preço ",
               emptyMessage: 'Sem preço'.hardcoded,
-              subTitle: product.RetailSalePrice,
+              subTitle: product.RetailPracticedPrice,
               subTitleIsPrice: true,
             ),
             TitleAndSubTitle(

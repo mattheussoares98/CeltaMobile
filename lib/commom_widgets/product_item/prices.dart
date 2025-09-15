@@ -15,7 +15,7 @@ class Prices extends StatelessWidget {
       children: [
         TitleAndSubTitle(
           title: 'Venda '.hardcoded,
-          subTitle: widget.product.RetailSalePrice,
+          subTitle: widget.product.RetailPracticedPrice,
           subTitleIsPrice: true,
         ),
         TitleAndSubTitle(
