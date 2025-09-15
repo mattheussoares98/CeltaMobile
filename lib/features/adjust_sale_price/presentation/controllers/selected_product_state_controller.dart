@@ -1,0 +1,53 @@
+import 'dart:async';
+
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../../../core/data/datasource/datasource.dart';
+import '../../../../core/providers/providers.dart';
+import '../../../../features/auth/presentation/controllers/controllers.dart';
+import '../../../../features/enterprises/presentation/controllers/controllers.dart';
+import '../../../../core/domain/entities/entities.dart';
+
+part 'selected_product_state_controller.g.dart';
+
+@riverpod
+class SelectedProductStateController extends _$SelectedProductStateController {
+  @override
+  Future<ProductEntity?> build(int enterpriseCode, String plu) async {
+    Timer? timer;
+    final link = ref.keepAlive();
+    ref.onCancel(() {
+      timer = Timer(const Duration(seconds: 20), () {
+        link.close();
+      });
+    });
+    ref.onResume(() {
+      timer?.cancel();
+    });
+    ref.onDispose(() {
+      timer?.cancel();
+    });
+
+    final user = await ref.read(authStateControllerProvider.future);
+    final userSession = await ref.read(userSessionProvider.future);
+    final enterprises = await ref.read(
+      enterprisesStateControllerProvider.future,
+    );
+    final enterpriseEntity = enterprises.firstWhere(
+      (e) => e.Code == enterpriseCode,
+    );
+    final products = await ref
+        .read(soapProductsRepositoryProvider)
+        .getProductsJson(
+          baseUrl: userSession!.baseUrl!,
+          crossIdentity: user!.CrossIdentity_Usuario!,
+          searchValue: plu,
+          routine: Routine.adjustSalePrice,
+          searchType: SearchType.dynamic,
+          enterpriseCodes: [enterpriseCode],
+          enterpriseEntity: enterpriseEntity,
+        );
+
+    return products.first;
+  }
+}
