@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/data/datasource/datasource.dart';
 import '../../../../features/adjust_sale_price/presentation/controllers/controllers.dart';
+import '../../../../routing/routing.dart';
 
 class AdjustSalePriceProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -97,7 +99,10 @@ class _AdjustSalePriceProductsPageState
                                   ),
                                   iconAlignment: IconAlignment.end,
                                   onPressed: () {
-                                    //TODO go to adjust sale prices page
+                                    context.pushNamed(
+                                      AppRoute.adjustSalePrice.name,
+                                      extra: product.PLU,
+                                    );
                                   },
                                 ),
                               ),
