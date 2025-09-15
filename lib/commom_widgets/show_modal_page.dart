@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../constants/constants.dart';
 
 Future<void> showModalPage(Widget body, BuildContext context) async {
   await showModalBottomSheet(
@@ -11,11 +14,9 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
     builder: (context) {
       return Stack(
         children: [
-          Positioned.fill(
-              child: GestureDetector(
-            onTap: Navigator.of(context).pop,
-          )),
+          Positioned.fill(child: GestureDetector(onTap: context.pop)),
           DraggableScrollableSheet(
+            expand: false,
             initialChildSize: 0.95,
             minChildSize: 0.5,
             maxChildSize: 0.95,
@@ -23,30 +24,26 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
               return Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(20)),
-                ),
-                child: Scaffold(
-                  backgroundColor: Colors.transparent,
-                  body: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        //dragglable indicator
-                        Center(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 12),
-                            height: 5,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                        body,
-                      ],
-                    ),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
                   ),
+                ),
+                child: Column(
+                  children: [
+                    //dragglable indicator
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: Sizes.p12),
+                        height: 5,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    Expanded(child: body),
+                  ],
                 ),
               );
             },

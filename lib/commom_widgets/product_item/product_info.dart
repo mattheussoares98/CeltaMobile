@@ -1,0 +1,88 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import '../../core/domain/entities/entities.dart';
+import 'product_item.dart';
+
+class ProductInfo extends StatefulWidget {
+  final ProductEntity product;
+  const ProductInfo({super.key, required this.product});
+
+  @override
+  State<ProductInfo> createState() => _ProductInfoState();
+}
+
+class _ProductInfoState extends State<ProductInfo> {
+  final scrollController = PageController();
+  int currentIndex = 0;
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pages = [
+      Prices(widget: widget),
+      Costs(widget: widget),
+      Margins(widget: widget),
+    ];
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) {
+          scrollController.animateToPage(
+            index,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.linear,
+          );
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              defaultTargetPlatform == TargetPlatform.iOS
+                  ? CupertinoIcons.money_dollar
+                  : Icons.attach_money,
+            ),
+            label: 'Preços'.hardcoded,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              defaultTargetPlatform == TargetPlatform.iOS
+                  ? CupertinoIcons.creditcard
+                  : Icons.credit_card,
+            ),
+            label: 'Custos'.hardcoded,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              defaultTargetPlatform == TargetPlatform.iOS
+                  ? CupertinoIcons.chart_bar
+                  : Icons.bar_chart_rounded,
+            ),
+            label: 'Margens'.hardcoded,
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: PageView(
+          controller: scrollController,
+          onPageChanged: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          children: pages,
+        ),
+      ),
+    );
+  }
+}

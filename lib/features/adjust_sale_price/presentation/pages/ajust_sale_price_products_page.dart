@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../core/data/datasource/datasource.dart';
 import '../../../../features/adjust_sale_price/presentation/controllers/controllers.dart';
 
 class AdjustSalePriceProductsPage extends ConsumerStatefulWidget {
@@ -27,7 +28,7 @@ class _AdjustSalePriceProductsPageState
     searchValueController.dispose();
   }
 
-  Future<void> searchProducts() async {
+  Future<void> _searchProducts() async {
     await ref
         .read(productsStateControllerProvider(widget.enterpriseCode).notifier)
         .loadProducts(
@@ -56,13 +57,13 @@ class _AdjustSalePriceProductsPageState
         title: FittedBox(child: Text("Produtos (ajuste de preço)".hardcoded)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
+        padding: const EdgeInsets.all(Sizes.p4),
         child: Column(
           children: [
             DefaultSearchProducts(
               searchValueController: searchValueController,
               isLoading: productsState.isLoading,
-              searchProducts: searchProducts,
+              searchProducts: _searchProducts,
             ),
             gapH8,
             Expanded(
@@ -73,13 +74,11 @@ class _AdjustSalePriceProductsPageState
                   return ResponsiveListFlow(
                     itemCount: products.length,
                     itemBuilder: (_, index) {
-                      final e = products[index];
-                      return Card(
-                        margin: EdgeInsets.only(bottom: Sizes.p8),
-                        child: Padding(
-                          padding: const EdgeInsets.all(Sizes.p8),
-                          child: Text(e.Name),
-                        ),
+                      final product = products[index];
+                      return ProductItemWidget(
+                        enterpriseCode: widget.enterpriseCode,
+                        product: product,
+                        routine: Routine.adjustSalePrice,
                       );
                     },
                   );
