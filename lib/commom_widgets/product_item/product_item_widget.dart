@@ -11,11 +11,13 @@ class ProductItemWidget extends StatelessWidget {
   final int enterpriseCode;
   final ProductEntity product;
   final Routine routine;
+  final Widget? bottom;
   const ProductItemWidget({
     super.key,
     required this.enterpriseCode,
     required this.product,
     required this.routine,
+    this.bottom,
   });
 
   double _getStockQuantityByName(List<StockEntity>? stocks, String name) {
@@ -149,6 +151,7 @@ class ProductItemWidget extends StatelessWidget {
                   'saldo'.hardcoded,
                 ),
               ),
+              ?bottom,
             ],
           ],
         ),
