@@ -50,11 +50,11 @@ GoRouter goRouter(Ref ref) {
     refreshListenable: Listenable.merge([enterpriseManagerBridge]),
     routes: [
       adjustSalePrice(),
-      adjustSalePriceProducts(),
       authRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
-      enterprisesRoute(),
-      homeRoute(),
+      homeRoute([
+        enterprisesRoute([adjustSalePriceProducts()]),
+      ]),
       splashRoute(),
     ],
 

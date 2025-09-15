@@ -5,7 +5,7 @@ import '../../features/adjust_sale_price/presentation/pages/pages.dart';
 import '../routing.dart';
 
 RouteBase adjustSalePriceProducts() => GoRoute(
-  path: '/adjust-sale-price-products/:enterpriseCode',
+  path: 'adjust-sale-price-products/:enterpriseCode',
   name: AppRoute.adjustSalePriceProducts.name,
   builder: (context, state) {
     return AdjustSalePriceProductsPage(

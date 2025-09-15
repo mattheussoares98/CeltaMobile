@@ -33,10 +33,11 @@ class EnterprisesPage extends ConsumerWidget {
                 return Card(
                   child: InkWell(
                     onTap: () {
-                      context.pushNamed(
+                      context.goNamed(
                         nextRoute,
                         pathParameters: {
                           'enterpriseCode': enterprise.Code.toString(),
+                          'nextRoute': nextRoute,
                         },
                         extra: enterprise,
                       );
