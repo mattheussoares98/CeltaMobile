@@ -30,17 +30,19 @@ class AsyncValueWidget<T> extends StatelessWidget {
           children: [
             Text(
               parseErrorMessage(e),
+              textAlign: TextAlign.center,
               style: TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
             ),
-            TextButton.icon(
-              onPressed: tryAgain,
-              label: Text('Tentar novamente'.hardcoded),
-              icon: Icon(
-                defaultTargetPlatform == TargetPlatform.iOS
-                    ? CupertinoIcons.refresh
-                    : Icons.refresh,
+            if (tryAgain != null)
+              TextButton.icon(
+                onPressed: tryAgain,
+                label: Text('Tentar novamente'.hardcoded),
+                icon: Icon(
+                  defaultTargetPlatform == TargetPlatform.iOS
+                      ? CupertinoIcons.refresh
+                      : Icons.refresh,
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -68,10 +70,30 @@ class AsyncValueSliverWidget<T> extends StatelessWidget {
         child: Center(child: CircularProgressIndicator()),
       ),
       error: (e, st) => SliverFillRemaining(
-        child: Center(
-          child: TextButton(
-            onPressed: tryAgain,
-            child: Text('Erro não esperado. Tente novamente'.hardcoded),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                parseErrorMessage(e),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              if (tryAgain != null)
+                TextButton.icon(
+                  onPressed: tryAgain,
+                  label: Text('Tentar novamente'.hardcoded),
+                  icon: Icon(
+                    defaultTargetPlatform == TargetPlatform.iOS
+                        ? CupertinoIcons.refresh
+                        : Icons.refresh,
+                  ),
+                ),
+            ],
           ),
         ),
       ),
