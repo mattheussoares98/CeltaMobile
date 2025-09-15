@@ -1,5 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -54,6 +56,7 @@ class _AdjustSalePriceProductsPageState
 
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: 30,
         title: FittedBox(child: Text("Produtos (ajuste de preço)".hardcoded)),
       ),
       body: Padding(
@@ -79,6 +82,31 @@ class _AdjustSalePriceProductsPageState
                         enterpriseCode: widget.enterpriseCode,
                         product: product,
                         routine: Routine.adjustSalePrice,
+                        onTap: () {
+                          //TODO go to adjust sale prices page
+                        },
+                        bottom: Padding(
+                          padding: const EdgeInsets.only(top: Sizes.p8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Flexible(
+                                child: PrimaryTextButton(
+                                  text: 'Alterar preços'.hardcoded,
+                                  icon: Icon(
+                                    defaultTargetPlatform == TargetPlatform.iOS
+                                        ? CupertinoIcons.pencil
+                                        : Icons.edit,
+                                  ),
+                                  iconAlignment: IconAlignment.end,
+                                  onPressed: () {
+                                    //TODO go to adjust sale prices page
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     },
                   );

@@ -8,6 +8,7 @@ export './default_search_products.dart';
 export './default_simple_drop_down.dart';
 export './empty_placeholder_widget.dart';
 export './primary_button.dart';
+export './primary_text_button.dart';
 export './responsive_center.dart';
 export './responsive_flow_layout.dart';
 export './responsive_list_flow.dart';

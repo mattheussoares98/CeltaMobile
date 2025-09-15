@@ -12,11 +12,13 @@ class ProductItemWidget extends StatelessWidget {
   final ProductEntity product;
   final Routine routine;
   final Widget? bottom;
+  final VoidCallback? onTap;
   const ProductItemWidget({
     super.key,
     required this.enterpriseCode,
     required this.product,
     required this.routine,
+    this.onTap,
     this.bottom,
   });
 
@@ -73,87 +75,94 @@ class ProductItemWidget extends StatelessWidget {
     );
 
     return Card(
+      clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.only(bottom: Sizes.p8),
-      child: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TitleAndSubTitle(
-              title: product.Name,
-              subTitle: " (${_formatPacking(product.PackingQuantity)})",
-              titleStyle: theme.textTheme.titleMedium,
-              subTitleStyle: theme.textTheme.bodyMedium,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: TitleAndSubTitle(title: "PLU ", subTitle: product.PLU),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleAndSubTitle(
+                title: product.Name,
+                subTitle: " (${_formatPacking(product.PackingQuantity)})",
+                titleStyle: theme.textTheme.titleMedium,
+                subTitleStyle: theme.textTheme.bodyMedium,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TitleAndSubTitle(
+                      title: "PLU ",
+                      subTitle: product.PLU,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showModalPage(ProductInfo(product: product), context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        // vertical: Sizes.p4,
+                        horizontal: Sizes.p8,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Info'.hardcoded,
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                          gapW8,
+                          if (mediaQuery.size.width >= 200)
+                            Icon(
+                              defaultTargetPlatform == TargetPlatform.iOS
+                                  ? Icons.info
+                                  : Icons.info,
+                              color: theme.primaryColor,
+                              size: 16,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TitleAndSubTitle(
+                title: "Preço ",
+                emptyMessage: 'Sem preço'.hardcoded,
+                subTitle: product.RetailPracticedPrice,
+                subTitleIsPrice: true,
+              ),
+              TitleAndSubTitle(
+                title: "Custo líquido ",
+                subTitle: product.LiquidCost,
+                emptyMessage: 'Sem custo líquido'.hardcoded,
+                subTitleIsPrice: true,
+              ),
+              if (routine != Routine.adjustSalePrice) ...[
+                TitleAndSubTitle(
+                  title: "Estoque atual ",
+                  emptyMessage: currentStockQuantity == -1
+                      ? 'Sem permissão p/ ver estoque'.hardcoded
+                      : 'Sem estoque atual'.hardcoded,
+                  //TODO test if return -1, must show that the user doesnt has permission to read this information
+                  subTitle: currentStockQuantity,
                 ),
-                InkWell(
-                  onTap: () {
-                    showModalPage(ProductInfo(product: product), context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      // vertical: Sizes.p4,
-                      horizontal: Sizes.p8,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Info'.hardcoded,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                        gapW8,
-                        if (mediaQuery.size.width >= 200)
-                          Icon(
-                            defaultTargetPlatform == TargetPlatform.iOS
-                                ? Icons.info
-                                : Icons.info,
-                            color: theme.primaryColor,
-                            size: 16,
-                          ),
-                      ],
-                    ),
+                TitleAndSubTitle(
+                  title: "Saldo ",
+                  emptyMessage: 'Sem saldo'.hardcoded,
+                  subTitle: _getStockQuantityByName(
+                    product.Stocks,
+                    'saldo'.hardcoded,
                   ),
                 ),
               ],
-            ),
-            TitleAndSubTitle(
-              title: "Preço ",
-              emptyMessage: 'Sem preço'.hardcoded,
-              subTitle: product.RetailPracticedPrice,
-              subTitleIsPrice: true,
-            ),
-            TitleAndSubTitle(
-              title: "Custo líquido ",
-              subTitle: product.LiquidCost,
-              emptyMessage: 'Sem custo líquido'.hardcoded,
-              subTitleIsPrice: true,
-            ),
-            if (routine != Routine.adjustSalePrice) ...[
-              TitleAndSubTitle(
-                title: "Estoque atual ",
-                emptyMessage: currentStockQuantity == -1
-                    ? 'Sem permissão p/ ver estoque'.hardcoded
-                    : 'Sem estoque atual'.hardcoded,
-                //TODO test if return -1, must show that the user doesnt has permission to read this information
-                subTitle: currentStockQuantity,
-              ),
-              TitleAndSubTitle(
-                title: "Saldo ",
-                emptyMessage: 'Sem saldo'.hardcoded,
-                subTitle: _getStockQuantityByName(
-                  product.Stocks,
-                  'saldo'.hardcoded,
-                ),
-              ),
               ?bottom,
             ],
-          ],
+          ),
         ),
       ),
     );

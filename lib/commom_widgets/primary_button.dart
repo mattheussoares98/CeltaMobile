@@ -13,17 +13,23 @@ class PrimaryButton extends StatelessWidget {
     required this.text,
     this.isLoading = false,
     this.onPressed,
+    this.icon,
+    this.iconAlignment,
   });
   final String text;
   final bool isLoading;
   final VoidCallback? onPressed;
+  final Widget? icon;
+  final IconAlignment? iconAlignment;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: Sizes.p32,
-      child: ElevatedButton(
+      child: ElevatedButton.icon(
         onPressed: onPressed,
-        child: isLoading
+        icon: icon,
+        iconAlignment: iconAlignment,
+        label: isLoading
             ? SizedBox(
                 height: Sizes.p24,
                 width: Sizes.p24,
