@@ -113,6 +113,7 @@ void main() {
           .loadProducts(
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
+            selectedEnterprise: enterpriseEntity,
           );
 
       expect(states, [
@@ -153,6 +154,7 @@ void main() {
           .loadProducts(
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
+            selectedEnterprise: enterpriseEntity,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

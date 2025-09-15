@@ -35,17 +35,23 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   Future<void> loadProducts({
     required String searchValue,
     required int enterpriseCode,
+    required EnterpriseEntity? selectedEnterprise,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final user = await ref.read(authStateControllerProvider.future);
       final userSession = await ref.read(userSessionProvider.future);
-      final enterprises = await ref.read(
-        enterprisesStateControllerProvider.future,
-      );
-      final enterpriseEntity = enterprises.firstWhere(
-        (e) => e.Code == enterpriseCode,
-      );
+
+      late EnterpriseEntity enterpriseEntity;
+
+      if (selectedEnterprise == null) {
+        final enterprises = await ref.read(
+          enterprisesStateControllerProvider.future,
+        );
+        enterpriseEntity = enterprises.firstWhere(
+          (e) => e.Code == enterpriseCode,
+        );
+      }
 
       final baseUrl = userSession?.baseUrl;
       final crossIdentity = user?.CrossIdentity_Usuario;
@@ -68,7 +74,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             routine: Routine.adjustSalePrice,
             searchType: SearchType.dynamic,
             enterpriseCodes: [enterpriseCode],
-            enterpriseEntity: enterpriseEntity,
+            enterpriseEntity: selectedEnterprise ?? enterpriseEntity,
           );
 
       return products;

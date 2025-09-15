@@ -33,7 +33,13 @@ class EnterprisesPage extends ConsumerWidget {
                 return Card(
                   child: InkWell(
                     onTap: () {
-                      context.pushNamed(nextRoute, extra: enterprise.Code);
+                      context.pushNamed(
+                        nextRoute,
+                        pathParameters: {
+                          'enterpriseCode': enterprise.Code.toString(),
+                        },
+                        extra: enterprise,
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(Sizes.p8),
