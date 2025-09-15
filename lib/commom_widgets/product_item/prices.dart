@@ -6,7 +6,7 @@ import 'product_item.dart';
 class Prices extends StatelessWidget {
   const Prices({super.key, required this.widget});
 
-  final ProductInfo widget;
+  final ProductInfoModal widget;
 
   @override
   Widget build(BuildContext context) {

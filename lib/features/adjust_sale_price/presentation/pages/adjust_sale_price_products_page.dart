@@ -82,9 +82,6 @@ class _AdjustSalePriceProductsPageState
                         enterpriseCode: widget.enterpriseCode,
                         product: product,
                         routine: Routine.adjustSalePrice,
-                        onTap: () {
-                          //TODO go to adjust sale prices page
-                        },
                         bottom: Padding(
                           padding: const EdgeInsets.only(top: Sizes.p8),
                           child: Row(

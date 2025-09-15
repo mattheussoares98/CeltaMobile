@@ -7,7 +7,7 @@ class Costs extends StatelessWidget {
   //TODO test these values
   const Costs({super.key, required this.widget});
 
-  final ProductInfo widget;
+  final ProductInfoModal widget;
 
   @override
   Widget build(BuildContext context) {

@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import '../../core/domain/entities/entities.dart';
 import 'product_item.dart';
 
-class ProductInfo extends StatefulWidget {
+class ProductInfoModal extends StatefulWidget {
   final ProductEntity product;
-  const ProductInfo({super.key, required this.product});
+  const ProductInfoModal({super.key, required this.product});
 
   @override
-  State<ProductInfo> createState() => _ProductInfoState();
+  State<ProductInfoModal> createState() => _ProductInfoModalState();
 }
 
-class _ProductInfoState extends State<ProductInfo> {
+class _ProductInfoModalState extends State<ProductInfoModal> {
   final scrollController = PageController();
   int currentIndex = 0;
 

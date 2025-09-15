@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -67,7 +66,6 @@ class ProductItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
 
     final currentStockQuantity = _getStockQuantityByName(
       product.Stocks,
@@ -98,36 +96,7 @@ class ProductItemWidget extends StatelessWidget {
                       subTitle: product.PLU,
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      showModalPage(ProductInfo(product: product), context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        // vertical: Sizes.p4,
-                        horizontal: Sizes.p8,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Info'.hardcoded,
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                          gapW8,
-                          if (mediaQuery.size.width >= 200)
-                            Icon(
-                              defaultTargetPlatform == TargetPlatform.iOS
-                                  ? Icons.info
-                                  : Icons.info,
-                              color: theme.primaryColor,
-                              size: 16,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  InfoButton(product: product),
                 ],
               ),
               TitleAndSubTitle(

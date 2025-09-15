@@ -5,7 +5,7 @@ import 'product_item.dart';
 class Margins extends StatelessWidget {
   const Margins({super.key, required this.widget});
 
-  final ProductInfo widget;
+  final ProductInfoModal widget;
 
   @override
   Widget build(BuildContext context) {
