@@ -11,6 +11,7 @@ part 'app_router.g.dart';
 
 enum AppRoute {
   auth,
+  adjustSalePrice,
   adjustSalePriceProducts,
   createEnterprise,
   enterpriseManager,
@@ -48,6 +49,7 @@ GoRouter goRouter(Ref ref) {
     debugLogDiagnostics: false,
     refreshListenable: Listenable.merge([enterpriseManagerBridge]),
     routes: [
+      adjustSalePrice(),
       adjustSalePriceProducts(),
       authRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
