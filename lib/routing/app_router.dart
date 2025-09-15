@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/auth/presentation/controllers/controllers.dart';
 import '../features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'not_found_page.dart';
 import 'routes/routes.dart';
@@ -36,12 +35,7 @@ class Bridge<T> extends ChangeNotifier {
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
-  final authBridge = Bridge<Object?>();
   final enterpriseManagerBridge = Bridge<Object?>();
-
-  ref.listen<AsyncValue<Object?>>(authStateControllerProvider, (prev, next) {
-    authBridge.value = next.valueOrNull;
-  }, fireImmediately: true);
 
   ref.listen<AsyncValue<Object?>>(
     authManagerStateProvider,
@@ -52,7 +46,7 @@ GoRouter goRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: false,
-    refreshListenable: Listenable.merge([authBridge, enterpriseManagerBridge]),
+    refreshListenable: Listenable.merge([enterpriseManagerBridge]),
     routes: [
       adjustSalePriceProducts(),
       authRoute(),

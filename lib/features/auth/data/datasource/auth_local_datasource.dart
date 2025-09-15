@@ -31,7 +31,7 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
 
   @override
   Future<UserEntity?> getUser() async {
-    final userMap = box.get(DatabaseKeys.user.name);
+    final userMap = await box.get(DatabaseKeys.user.name);
     if (userMap != null) {
       final userModel = UserModel.fromJson(Map<String, dynamic>.from(userMap));
       return userModel.toEntity();

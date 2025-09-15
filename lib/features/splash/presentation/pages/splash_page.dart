@@ -20,7 +20,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        final localUser = ref.read(authStateControllerProvider).valueOrNull;
+        final localUser = await ref.read(authStateControllerProvider.future);
         Future.delayed(const Duration(seconds: kDebugMode ? 1 : 2), () {
           if (localUser?.AccessKey == null ||
               localUser?.CrossIdentity_Usuario == null) {
