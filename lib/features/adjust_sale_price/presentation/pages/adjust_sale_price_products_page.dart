@@ -103,7 +103,11 @@ class _AdjustSalePriceProductsPageState
                                   onPressed: () {
                                     context.pushNamed(
                                       AppRoute.adjustSalePrice.name,
-                                      extra: product.PLU,
+                                      pathParameters: {
+                                        'enterpriseCode': widget.enterpriseCode
+                                            .toString(),
+                                        'plu': product.PLU,
+                                      },
                                     );
                                   },
                                 ),

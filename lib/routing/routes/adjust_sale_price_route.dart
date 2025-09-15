@@ -4,9 +4,15 @@ import '../../features/adjust_sale_price/presentation/pages/pages.dart';
 import '../routing.dart';
 
 RouteBase adjustSalePrice() => GoRoute(
-  path: '/adjust-sale-price',
+  path: '/adjust-sale-price/:enterpriseCode/:plu',
   name: AppRoute.adjustSalePrice.name,
   builder: (context, state) {
-    return AdjustSalePricePage(plu: state.extra as String);
+    final enterpriseCode = state.pathParameters['enterpriseCode']!;
+    final plu = state.pathParameters['plu']!;
+
+    return AdjustSalePricePage(
+      plu: plu,
+      enterpriseCode: int.parse(enterpriseCode),
+    );
   },
 );
