@@ -13,7 +13,11 @@ part 'selected_product_state_controller.g.dart';
 @riverpod
 class SelectedProductStateController extends _$SelectedProductStateController {
   @override
-  Future<ProductEntity?> build(int enterpriseCode, String plu) async {
+  Future<ProductEntity?> build(
+    int enterpriseCode,
+    String plu,
+    ProductEntity? product,
+  ) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -27,6 +31,10 @@ class SelectedProductStateController extends _$SelectedProductStateController {
     ref.onDispose(() {
       timer?.cancel();
     });
+
+    if (product != null) {
+      return product;
+    }
 
     final user = await ref.read(authStateControllerProvider.future);
     final userSession = await ref.read(userSessionProvider.future);

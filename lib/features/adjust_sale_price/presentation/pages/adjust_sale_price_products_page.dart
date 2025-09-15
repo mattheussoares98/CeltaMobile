@@ -108,6 +108,7 @@ class _AdjustSalePriceProductsPageState
                                             .toString(),
                                         'plu': product.PLU,
                                       },
+                                      extra: product,
                                     );
                                   },
                                 ),
