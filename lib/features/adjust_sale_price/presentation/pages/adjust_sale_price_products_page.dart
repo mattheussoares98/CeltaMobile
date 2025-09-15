@@ -34,7 +34,9 @@ class _AdjustSalePriceProductsPageState
 
   Future<void> _searchProducts() async {
     await ref
-        .read(productsStateControllerProvider(widget.enterpriseCode).notifier)
+        .read(
+          searchProductsStateControllerProvider(widget.enterpriseCode).notifier,
+        )
         .loadProducts(
           enterpriseCode: widget.enterpriseCode,
           searchValue: searchValueController.text,
@@ -43,7 +45,7 @@ class _AdjustSalePriceProductsPageState
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(productsStateControllerProvider(widget.enterpriseCode), (
+    ref.listen(searchProductsStateControllerProvider(widget.enterpriseCode), (
       previous,
       next,
     ) {
@@ -53,7 +55,7 @@ class _AdjustSalePriceProductsPageState
     });
 
     final productsState = ref.watch(
-      productsStateControllerProvider(widget.enterpriseCode),
+      searchProductsStateControllerProvider(widget.enterpriseCode),
     );
 
     return Scaffold(

@@ -9,10 +9,10 @@ import '../../../../core/providers/providers.dart';
 import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
 
-part 'products_state_controller.g.dart';
+part 'search_products_state_controller.g.dart';
 
 @riverpod
-class ProductsStateController extends _$ProductsStateController {
+class SearchProductsStateController extends _$SearchProductsStateController {
   @override
   Future<List<ProductEntity>> build(int enterpriseCode) async {
     Timer? timer;

@@ -1,1 +1,1 @@
-export './products_state_controller.dart';
+export 'search_products_state_controller.dart';
