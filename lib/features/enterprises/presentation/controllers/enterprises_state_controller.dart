@@ -28,11 +28,15 @@ class EnterprisesStateController extends _$EnterprisesStateController {
       timer?.cancel();
     });
 
-    final session = await ref.read(userSessionProvider.future);
-    final auth = await ref.read(authStateControllerProvider.future);
+    final sessionAsync = ref.watch(userSessionProvider);
+    final authAsync = ref.watch(authStateControllerProvider);
 
-    final baseUrl = session?.baseUrl;
-    final crossIdentity = auth?.CrossIdentity_Usuario;
+    if (sessionAsync.isLoading || authAsync.isLoading) {
+      return [];
+    }
+
+    final baseUrl = sessionAsync.value?.baseUrl;
+    final crossIdentity = authAsync.value?.CrossIdentity_Usuario;
 
     if (baseUrl == null ||
         baseUrl.isEmpty ||
