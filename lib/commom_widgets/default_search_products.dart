@@ -48,7 +48,6 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
           child: TextFormField(
             enabled: !widget.isLoading,
             controller: widget.searchValueController,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: FormValidators.compose([NonEmptyValidator()]),
             onFieldSubmitted: (_) {
               searchProducts();
