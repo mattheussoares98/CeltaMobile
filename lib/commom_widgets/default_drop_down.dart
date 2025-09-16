@@ -35,7 +35,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
+    if (defaultTargetPlatform != TargetPlatform.iOS) {
       return FormField(
         validator: widget.validator,
         initialValue: widget.selectedItem,
@@ -56,41 +56,26 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                           final selected = await showCupertinoModalPopup<T>(
                             context: context,
                             builder: (_) => CupertinoActionSheet(
-                              title: Text(
-                                widget.label ?? 'Selecionar'.hardcoded,
-                              ),
+                              title: Text('Selecionar'.hardcoded),
                               actions: widget.items!.map((item) {
-                                String text = '';
-                                if (item.child is Text) {
-                                  final textWidget = item.child as Text;
-                                  text = textWidget.data ?? '';
-                                }
-
-                                Color getColor() {
-                                  if (item.enabled == false) {
-                                    return Colors.red;
-                                  } else if (item.value ==
-                                      widget.selectedItem) {
-                                    return theme.primaryColorDark;
-                                  } else {
-                                    return theme.disabledColor;
-                                  }
-                                }
-
                                 return CupertinoActionSheetAction(
                                   onPressed: () {
-                                    Navigator.of(context).pop(item.value);
+                                    if (item.enabled) {
+                                      Navigator.of(context).pop(item.value);
+                                    }
                                   },
-                                  child: Text(
-                                    text,
-                                    style: TextStyle(color: getColor()),
-                                  ),
+                                  child: item.child,
                                 );
                               }).toList(),
                               cancelButton: CupertinoActionSheetAction(
                                 isDefaultAction: true,
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: Text('Cancelar'.hardcoded),
+                                child: Text(
+                                  'Cancelar'.hardcoded,
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    color: CupertinoColors.destructiveRed,
+                                  ),
+                                ),
                               ),
                             ),
                           );
@@ -107,6 +92,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                           maxLines: 1,
                           style: theme.textTheme.titleMedium,
                           textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       if (size.width > 300)
@@ -159,6 +145,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
           fontSize: theme.textTheme.titleMedium!.fontSize,
           color: Colors.black,
           height: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         items: widget.items,
         onChanged: widget.onChanged == null || (widget.items?.length ?? 0) <= 1
