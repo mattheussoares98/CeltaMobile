@@ -43,12 +43,10 @@ class HomePage extends ConsumerWidget {
         ),
       ),
 
-      body: enterprisesAsync.hasError
-          ? Center(child: Text(enterprisesAsync.error.toString()))
-          : ResponsiveScrollableWidget(
-              maxContentWidth: mediaquery.size.width,
-              child: Modules(),
-            ),
+      body: ResponsiveScrollableWidget(
+        maxContentWidth: mediaquery.size.width,
+        child: Modules(),
+      ),
     );
   }
 }

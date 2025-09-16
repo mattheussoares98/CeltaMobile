@@ -8,7 +8,7 @@ class DrawerItem extends StatelessWidget {
   final String message;
   final IconData materialIcon;
   final IconData cupertinoIcon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   const DrawerItem({
     super.key,
     required this.message,
