@@ -16,8 +16,10 @@ class EditEnterpriseSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveFlowLayout(
-      items: modulesToDisplay.map((module) {
+    return ResponsiveListFlow(
+      itemCount: modulesToDisplay.length,
+      itemBuilder: (_, index) {
+        final module = modulesToDisplay[index];
         final value = permissionChanges[module.id];
 
         return Card(
@@ -33,7 +35,7 @@ class EditEnterpriseSwitch extends StatelessWidget {
             },
           ),
         );
-      }).toList(),
+      },
     );
   }
 }

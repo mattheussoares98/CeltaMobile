@@ -26,7 +26,6 @@ class HomePage extends ConsumerWidget {
       selectedEnterpriseStateControllerProvider,
     );
 
-    final mediaquery = MediaQuery.of(context);
     return Scaffold(
       drawer: CompleteDrawer(),
       appBar: AppBar(
@@ -43,10 +42,7 @@ class HomePage extends ConsumerWidget {
         ),
       ),
 
-      body: ResponsiveScrollableWidget(
-        maxContentWidth: mediaquery.size.width,
-        child: Modules(),
-      ),
+      body: Modules(),
     );
   }
 }

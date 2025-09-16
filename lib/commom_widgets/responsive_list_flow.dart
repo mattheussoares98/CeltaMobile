@@ -25,10 +25,11 @@ class ResponsiveListFlow extends StatelessWidget {
         );
 
         return ListView.builder(
-          itemCount: (itemCount / itemsPerRow).floor(),
+          itemCount: max(itemCount, (itemCount / itemsPerRow).floor()),
           itemBuilder: (context, rowIndex) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(itemsPerRow, (colIndex) {
                 final itemIndex = (rowIndex * itemsPerRow) + colIndex;
 
@@ -38,6 +39,7 @@ class ResponsiveListFlow extends StatelessWidget {
                       padding: EdgeInsets.only(
                         left: colIndex == 0 ? 0 : Sizes.p4,
                         right: colIndex == itemsPerRow - 1 ? 0 : Sizes.p4,
+                        bottom: Sizes.p4,
                       ),
                       child: itemBuilder(context, itemIndex),
                     ),

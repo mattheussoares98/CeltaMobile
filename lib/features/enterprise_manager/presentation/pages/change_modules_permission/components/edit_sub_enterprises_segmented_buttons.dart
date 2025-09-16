@@ -44,8 +44,10 @@ class EditSubEnterprisesSegmentedButttons extends StatelessWidget {
       return theme.disabledColor;
     }
 
-    return ResponsiveFlowLayout(
-      items: modulesToDisplay.map((module) {
+    return ResponsiveListFlow(
+      itemCount: modulesToDisplay.length,
+      itemBuilder: (_, index) {
+        final module = modulesToDisplay[index];
         final value = permissionChanges[module.id];
 
         return Card(
@@ -85,7 +87,7 @@ class EditSubEnterprisesSegmentedButttons extends StatelessWidget {
             ),
           ),
         );
-      }).toList(),
+      },
     );
   }
 }

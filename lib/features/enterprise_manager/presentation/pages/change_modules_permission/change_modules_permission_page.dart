@@ -117,20 +117,24 @@ class _ChangeModulesPermissionPageState
               Text(scopeName, style: theme.textTheme.titleMedium),
               gapH16,
               if (isGlobalChange)
-                EditEnterpriseSwitch(
-                  onChange: (moduleId, newValue) {
-                    setState(() => _permissionChanges[moduleId] = newValue);
-                  },
-                  modulesToDisplay: modulesToDisplay,
-                  permissionChanges: _permissionChanges,
+                Expanded(
+                  child: EditEnterpriseSwitch(
+                    onChange: (moduleId, newValue) {
+                      setState(() => _permissionChanges[moduleId] = newValue);
+                    },
+                    modulesToDisplay: modulesToDisplay,
+                    permissionChanges: _permissionChanges,
+                  ),
                 )
               else
-                EditSubEnterprisesSegmentedButttons(
-                  onChange: (moduleId, newValue) {
-                    setState(() => _permissionChanges[moduleId] = newValue);
-                  },
-                  modulesToDisplay: modulesToDisplay,
-                  permissionChanges: _permissionChanges,
+                Expanded(
+                  child: EditSubEnterprisesSegmentedButttons(
+                    onChange: (moduleId, newValue) {
+                      setState(() => _permissionChanges[moduleId] = newValue);
+                    },
+                    modulesToDisplay: modulesToDisplay,
+                    permissionChanges: _permissionChanges,
+                  ),
                 ),
             ],
           );

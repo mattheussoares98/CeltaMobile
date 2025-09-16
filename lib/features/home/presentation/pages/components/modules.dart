@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../routing/routing.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
 
@@ -16,24 +17,33 @@ class Modules extends ConsumerWidget {
       selectedEnterpriseStateControllerProvider,
     );
 
-    return ResponsiveFlowLayout(
-      maxItemWidth: 200,
-      items: [
-        PrimaryButton(
-          text: 'Alteração de preços'.hardcoded,
-          onPressed: selectedEnterprise == null
-              ? null
-              : () {
-                  context.goNamed(
-                    AppRoute.adjustSalePriceProducts.name,
-                    pathParameters: {
-                      'enterpriseCode': selectedEnterprise.Code.toString(),
-                    },
-                    extra: {'enterprise': selectedEnterprise},
-                  );
-                },
-        ),
-      ],
+    final buttons = <Widget>[
+      PrimaryButton(
+        text: 'Alteração de preços'.hardcoded,
+        onPressed: selectedEnterprise == null
+            ? null
+            : () {
+                context.goNamed(
+                  AppRoute.adjustSalePriceProducts.name,
+                  pathParameters: {
+                    'enterpriseCode': selectedEnterprise.Code.toString(),
+                  },
+                  extra: {'enterprise': selectedEnterprise},
+                );
+              },
+      ),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p4),
+      child: ResponsiveListFlow(
+        maxItemWidth: 140,
+        itemCount: buttons.length,
+        itemBuilder: (_, index) {
+          final button = buttons[index];
+          return button;
+        },
+      ),
     );
   }
 }
