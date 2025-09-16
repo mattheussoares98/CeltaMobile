@@ -35,7 +35,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
-    if (defaultTargetPlatform != TargetPlatform.iOS) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
       return FormField(
         validator: widget.validator,
         initialValue: widget.selectedItem,

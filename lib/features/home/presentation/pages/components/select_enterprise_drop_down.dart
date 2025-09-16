@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,7 +32,9 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
       },
       items: enterprises.map((e) {
         Color getColor(bool enabled) {
-          if (enabled == false) {
+          if (defaultTargetPlatform != TargetPlatform.iOS) {
+            return theme.textTheme.bodyMedium!.color!;
+          } else if (enabled == false) {
             return Colors.red;
           } else if (e.Code == selectedEnterprise?.Code) {
             return theme.primaryColor;
@@ -43,25 +46,23 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
         return DropdownMenuItem(
           value: e,
           enabled: true,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                '${e.Code} - ${e.name}',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: getColor(true),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "${e.Code} - ${e.name}",
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: getColor(true),
+                  ),
                 ),
-              ),
-              Text(
-                "CNPJ ${e.CnpjNumber}",
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: getColor(true),
+                TextSpan(
+                  text: " (${e.CnpjNumber})",
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: getColor(true),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       }).toList(),

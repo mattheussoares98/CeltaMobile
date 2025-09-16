@@ -30,6 +30,7 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       drawer: CompleteDrawer(),
       appBar: AppBar(
+        leadingWidth: 40,
         title: AsyncValueWidget(
           value: enterprisesAsync,
           tryAgain: () => ref.invalidate(enterprisesStateControllerProvider),
