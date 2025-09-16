@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -48,8 +49,16 @@ class EnterprisesStateController extends _$EnterprisesStateController {
       );
     }
 
-    return ref
+    final enterprises = await ref
         .watch(enterpriseRepositoryProvider)
         .getSoapEnterprises(url: baseUrl, crossIdentity: crossIdentity);
+
+    if (enterprises.isNotEmpty) {
+      ref
+          .read(selectedEnterpriseStateControllerProvider.notifier)
+          .selectEnterprise(enterprises.first);
+    }
+
+    return enterprises;
   }
 }

@@ -3,12 +3,30 @@ import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/providers/providers.dart';
 import 'package:celta_intelligence/exceptions/exceptions.dart';
 import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/enterprises/presentation/controllers/enterprises_state_controller.dart';
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
+
+class FakeSelectedEnterpriseStateController
+    extends SelectedEnterpriseStateController {
+  @override
+  EnterpriseEntity? build() {
+    return null;
+  }
+
+  @override
+  void selectEnterprise(EnterpriseEntity enterprise) {
+    state = enterprise;
+  }
+
+  @override
+  void clear() {
+    state = null;
+  }
+}
 
 void main() {
   late EnterpriseRepositorySpy enterpriseRepositorySpy;
@@ -37,7 +55,9 @@ void main() {
     return ProviderContainer(
       overrides: [
         enterpriseRepositoryProvider.overrideWithValue(enterpriseRepositorySpy),
-        // Override the controller dependencies with our Fake implementations
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(),
+        ),
         authStateControllerProvider.overrideWith(
           () => FakeAuthStateController(user),
         ),
@@ -47,7 +67,7 @@ void main() {
   }
 
   group('EnterprisesStateController', () {
-    test('should emit [data] and call repository on success', () async {
+    test('should works correctly on success', () async {
       // Pass the valid user and session to the container
       final container = makeProviderContainer(
         user: fakeUser,
@@ -64,6 +84,11 @@ void main() {
 
       // ASSERT: The final state should be the list of enterprises
       expect(states.last, AsyncData(fakeEnterprises));
+
+      expect(
+        container.read(selectedEnterpriseStateControllerProvider),
+        fakeEnterprises.first,
+      );
       verify(
         () => enterpriseRepositorySpy.getSoapEnterprises(
           url: fakeSession.baseUrl!,
