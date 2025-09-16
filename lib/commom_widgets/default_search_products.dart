@@ -48,12 +48,12 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
           child: TextFormField(
             enabled: !widget.isLoading,
             controller: widget.searchValueController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: FormValidators.compose([NonEmptyValidator()]),
             onFieldSubmitted: (_) {
               searchProducts();
             },
             decoration: AppDecorations.input(
-              //TODO change the color of border when is focused
               context: context,
               prefixIcon: width < 220
                   ? null
@@ -92,7 +92,6 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                         defaultTargetPlatform == TargetPlatform.iOS
                             ? CupertinoIcons.camera_fill
                             : Icons.camera_alt,
-                        //TODO change icon color in theme
                       ),
                     ),
                     IconButton(
@@ -108,8 +107,8 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                   ],
                 ),
               ),
-              labelText: 'NOME-PLU-EAN'.hardcoded,
-              hintText: 'NOME-PLU-EAN'
+              labelText: 'NOME-PLU-EAN-%'.hardcoded,
+              hintText: 'NOME-PLU-EAN-%'
                   .hardcoded, //TODO show personalizedCode if is enabled this option
             ),
           ),
