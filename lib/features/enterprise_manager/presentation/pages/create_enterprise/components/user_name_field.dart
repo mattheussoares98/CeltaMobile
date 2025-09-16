@@ -28,7 +28,7 @@ class UserNameField extends StatelessWidget {
       },
       decoration: AppDecorations.input(
         context: context,
-        hintText: "Nome do usuário".hardcoded,
+        hintText: "Nome do usuário no BS".hardcoded,
         suffixIcon: DeleteIcon(
           onPress: isLoading ? null : userNameController.clear,
         ),
