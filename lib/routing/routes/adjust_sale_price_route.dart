@@ -12,11 +12,14 @@ RouteBase adjustSalePrice() => GoRoute(
     final plu = state.pathParameters['plu']!;
 
     final product = (state.extra as Map?)?['product'] as ProductEntity?;
+    final enterprise =
+        (state.extra as Map?)?['enterprise'] as EnterpriseEntity?;
 
     return AdjustSalePricePage(
       plu: plu,
       enterpriseCode: int.parse(enterpriseCode),
       product: product,
+      enterprise: enterprise,
     );
   },
 );

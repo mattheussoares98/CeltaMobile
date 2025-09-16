@@ -9,11 +9,13 @@ class AdjustSalePricePage extends ConsumerWidget {
   final String plu;
   final int enterpriseCode;
   final ProductEntity? product;
+  final EnterpriseEntity? enterprise;
   const AdjustSalePricePage({
     super.key,
     required this.plu,
     required this.enterpriseCode,
     required this.product,
+    required this.enterprise,
   });
 
   @override
