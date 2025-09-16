@@ -10,23 +10,23 @@ import '../../../../core/domain/entities/entities.dart';
 
 part 'enterprises_state_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class EnterprisesStateController extends _$EnterprisesStateController {
   @override
   Future<List<EnterpriseEntity>> build() async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 10), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    // Timer? timer;
+    // final link = ref.keepAlive();
+    // ref.onCancel(() {
+    //   timer = Timer(const Duration(seconds: 10), () {
+    //     link.close();
+    //   });
+    // });
+    // ref.onResume(() {
+    //   timer?.cancel();
+    // });
+    // ref.onDispose(() {
+    //   timer?.cancel();
+    // });
 
     final sessionAsync = ref.watch(userSessionProvider);
     final authAsync = ref.watch(authStateControllerProvider);

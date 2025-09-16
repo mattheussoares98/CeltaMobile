@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
@@ -193,4 +194,7 @@ class EntityFactory {
     ECommerceOfferMargin: faker.randomGenerator.decimal(),
     ECommerceMinimumMargin: faker.randomGenerator.decimal(),
   );
+
+  static UserSessionModel makeUserSessionModel() =>
+      UserSessionModel(baseUrl: faker.internet.httpUrl());
 }
