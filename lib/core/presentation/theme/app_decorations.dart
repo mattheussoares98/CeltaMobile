@@ -56,7 +56,7 @@ class AppDecorations {
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
 
-      contentPadding: const EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.only(left: Sizes.p8),
 
       filled: true,
       fillColor: colorScheme.surfaceContainerHighest.withAlpha(125),
