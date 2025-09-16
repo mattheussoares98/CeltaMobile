@@ -34,13 +34,15 @@ class AsyncValueWidget<T> extends StatelessWidget {
               style: TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
             ),
             if (tryAgain != null)
-              TextButton.icon(
-                onPressed: tryAgain,
-                label: Text('Tentar novamente'.hardcoded),
-                icon: Icon(
-                  defaultTargetPlatform == TargetPlatform.iOS
-                      ? CupertinoIcons.refresh
-                      : Icons.refresh,
+              Center(
+                child: TextButton.icon(
+                  onPressed: tryAgain,
+                  label: Text('Tentar novamente'.hardcoded),
+                  icon: Icon(
+                    defaultTargetPlatform == TargetPlatform.iOS
+                        ? CupertinoIcons.refresh
+                        : Icons.refresh,
+                  ),
                 ),
               ),
           ],
