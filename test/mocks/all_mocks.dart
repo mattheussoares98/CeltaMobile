@@ -220,6 +220,9 @@ class AuthManagerRepositorySpy extends Mock implements IAuthManagerRepository {
 }
 
 class SoapRequestSpy extends Mock implements SoapRequest {
+  SoapRequestSpy() {
+    mockPost(null);
+  }
   void mockPost(dynamic response) {
     _mockPostCall().thenAnswer((_) async => response);
   }
