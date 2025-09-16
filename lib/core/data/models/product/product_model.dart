@@ -191,7 +191,7 @@ class ProductModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    '    EnterpriseCode': EnterpriseCode,
+    'EnterpriseCode': EnterpriseCode,
     'ProductCode': ProductCode,
     'ProductPackingCode': ProductPackingCode,
     'PLU': PLU,
@@ -230,9 +230,9 @@ class ProductModel extends Equatable {
     'PriceCost': PriceCost.toJson(),
     'StockByEnterpriseAssociateds': StockByEnterpriseAssociateds?.map(
       (e) => e.toJson(),
-    ),
-    'Stocks': Stocks?.map((e) => e.toJson()),
-    'LastBuyEntrances': LastBuyEntrances?.map((e) => e.toJson()),
+    ).toList(),
+    'Stocks': Stocks?.map((e) => e.toJson()).toList(),
+    'LastBuyEntrances': LastBuyEntrances?.map((e) => e.toJson()).toList(),
   };
 
   factory ProductModel.fromEntity(ProductEntity entity) {

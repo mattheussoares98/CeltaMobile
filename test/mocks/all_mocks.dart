@@ -111,21 +111,6 @@ class MockBox extends Mock implements Box {
   }
 }
 
-class MockSoapAdapter extends Mock implements SoapRequest {
-  void mockGet(dynamic value) {
-    when(
-      () => this.post(
-        parameters: any(named: 'parameters'),
-        typeOfResponse: any(named: 'typeOfResponse'),
-        typeOfResult: any(named: 'typeOfResult'),
-        soapAction: any(named: 'soapAction'),
-        serviceASMX: any(named: 'serviceASMX'),
-        url: any(named: 'url'),
-      ),
-    ).thenAnswer((_) async => value);
-  }
-}
-
 class LoginRemoteDataSourceSpy extends Mock implements ISoapLoginDataSource {
   void mockLogin(UserModel user) {
     when(

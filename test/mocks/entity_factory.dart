@@ -21,7 +21,7 @@ class EntityFactory {
         CodigoInternoVendaMobile_ModeloPedido: faker.randomGenerator.integer(
           100,
         ),
-        ProductCodeSizeOfBalanceLabel: faker.randomGenerator.integer(100),
+        ProductCodeSizeOfBalanceLabel: faker.randomGenerator.integer(6),
         PersonalizedCode: faker.randomGenerator.integer(100).toString(),
         InscriptionNumber: faker.randomGenerator.integer(100).toString(),
         EnterpriseParticipateEnterpriseGroup: faker.randomGenerator.boolean(),

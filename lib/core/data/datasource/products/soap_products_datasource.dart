@@ -17,7 +17,7 @@ class SoapProductsDataSource implements ISoapProductsDataSource {
     required SearchType searchType,
     required String crossIdentity,
     required List<int> enterpriseCodes,
-    int? lastBuyEntranceQuantity,
+    required int? lastBuyEntranceQuantity,
   }) async {
     try {
       return await soapRequest.post(
@@ -58,7 +58,6 @@ class SoapProductsDataSource implements ISoapProductsDataSource {
         );
   }
 
-  //TODO create tests
   @override
   Future<List<ProductModel>> getProductsJson({
     required String baseUrl,
@@ -80,13 +79,15 @@ class SoapProductsDataSource implements ISoapProductsDataSource {
         searchType: searchType,
         crossIdentity: crossIdentity,
         enterpriseCodes: enterpriseCodes,
+        lastBuyEntranceQuantity: lastBuyEntranceQuantity,
       );
+
+      // throw Exception();
 
       return (json.decode(response) as List)
           .map((e) => ProductModel.fromJson(e))
           .toList();
     } catch (e) {
-      //TODO verify what returns to search again extracting the plu from EAN when is balance format
       if (!isBalanceFormat) {
         rethrow;
       }
@@ -103,6 +104,7 @@ class SoapProductsDataSource implements ISoapProductsDataSource {
         searchType: searchType,
         crossIdentity: crossIdentity,
         enterpriseCodes: enterpriseCodes,
+        lastBuyEntranceQuantity: lastBuyEntranceQuantity,
       );
 
       return (json.decode(response) as List)
