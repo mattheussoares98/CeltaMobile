@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../core/providers/providers.dart';
 import '../../../../routing/routing.dart';
 import '../../../../utils/utils.dart';
 import '../controllers/auth_state_controller.dart';
@@ -72,8 +73,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () {
-        context.goNamed(AppRoute.home.name);
         ref.invalidate(authStateControllerProvider);
+        ref.invalidate(userSessionProvider);
+        context.goNamed(AppRoute.home.name);
       });
     });
 
