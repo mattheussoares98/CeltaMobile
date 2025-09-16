@@ -18,19 +18,19 @@ class SelectedProductStateController extends _$SelectedProductStateController {
     String plu,
     ProductEntity? product,
   ) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    // Timer? timer;
+    // final link = ref.keepAlive();
+    // ref.onCancel(() {
+    //   timer = Timer(const Duration(seconds: 20), () {
+    //     link.close();
+    //   });
+    // });
+    // ref.onResume(() {
+    //   timer?.cancel();
+    // });
+    // ref.onDispose(() {
+    //   timer?.cancel();
+    // });
 
     if (product != null) {
       return product;
