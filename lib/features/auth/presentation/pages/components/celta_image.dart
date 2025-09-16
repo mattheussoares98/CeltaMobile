@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../routing/app_router.dart';
 
 class CeltaImage extends StatelessWidget {
@@ -11,10 +12,9 @@ class CeltaImage extends StatelessWidget {
     return GestureDetector(
       onLongPress: () {
         context.pushNamed(AppRoute.enterpriseManager.name);
-        debugPrint("tried");
       },
-      child: SizedBox(
-        width: 300,
+      child: ResponsiveCenter(
+        maxContentWidth: 300,
         child: Image.asset("lib/core/assets/images/logoCeltaTransparente.png"),
       ),
     );
