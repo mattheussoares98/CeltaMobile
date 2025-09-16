@@ -6,7 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../constants/database_keys.dart';
 import '../data/datasource/datasource.dart';
-import '../domain/contracts/contracts.dart';
 import '../domain/repositories/repositores.dart';
 import '../infraestructure/infrastructure.dart';
 
@@ -15,12 +14,6 @@ part 'major_providers.g.dart';
 @Riverpod(keepAlive: true)
 Box hiveBox(Ref ref) {
   return Hive.box(DatabaseKeys.application.name);
-}
-
-@Riverpod(keepAlive: true)
-HttpClient httpClient(Ref ref) {
-  //TODO gemini said to remove this. Test if it works
-  return HttpAdapter(http.Client());
 }
 
 @Riverpod(keepAlive: true)
