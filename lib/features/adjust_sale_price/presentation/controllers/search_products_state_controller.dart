@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/data/datasource/datasource.dart';
 import '../../../../core/providers/providers.dart';
+import '../../../../exceptions/exceptions.dart';
 import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
 
@@ -48,9 +49,15 @@ class SearchProductsStateController extends _$SearchProductsStateController {
         final enterprises = await ref.read(
           enterprisesStateControllerProvider.future,
         );
-        enterpriseEntity = enterprises.firstWhere(
+        final enterpriseIndex = enterprises.indexWhere(
           (e) => e.Code == enterpriseCode,
         );
+
+        if (enterpriseIndex == -1) {
+          throw AppException('Empresa não encontrada'.hardcoded);
+        } else {
+          enterpriseEntity = enterprises[enterpriseIndex];
+        }
       }
 
       final baseUrl = userSession?.baseUrl;

@@ -132,7 +132,7 @@ void main() {
         ),
       ).called(1);
     });
-    test('should behave correctly on error', () async {
+    test('should behave correctly when session is null', () async {
       final container = makeProviderContainer(mockSession: false);
 
       await container.read(
@@ -155,6 +155,44 @@ void main() {
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
             selectedEnterprise: enterpriseEntity,
+          );
+
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+      verifyNever(
+        () => sut.getProductsJson(
+          baseUrl: userSession.baseUrl!,
+          searchValue: searchValue,
+          routine: Routine.adjustSalePrice,
+          searchType: SearchType.dynamic,
+          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          enterpriseCodes: [enterpriseEntity.Code!],
+          enterpriseEntity: enterpriseEntity,
+        ),
+      );
+    });
+    test('should behave correctly when enterprise id dont exists', () async {
+      final container = makeProviderContainer(mockSession: true);
+
+      await container.read(
+        searchProductsStateControllerProvider(enterpriseEntity.Code!).future,
+      );
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        searchProductsStateControllerProvider(enterpriseEntity.Code!),
+        (_, next) => states.add(next),
+      );
+
+      await container
+          .read(
+            searchProductsStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).notifier,
+          )
+          .loadProducts(
+            searchValue: searchValue,
+            enterpriseCode: enterpriseEntity.Code! + 1000, //wrong code
+            selectedEnterprise: null,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
