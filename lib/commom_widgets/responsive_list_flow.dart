@@ -19,8 +19,6 @@ class ResponsiveListFlow extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        debugPrint('Constraints maxWidth: ${constraints.maxWidth}');
-
         final itemsPerRow = max(
           (constraints.maxWidth / maxItemWidth!).floor(),
           1,
