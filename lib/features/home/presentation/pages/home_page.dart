@@ -6,6 +6,7 @@ import '../../../../utils/utils.dart';
 import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../routing/routing.dart';
+import '../../../enterprises/presentation/controllers/controllers.dart';
 import 'components/components.dart';
 
 class HomePage extends ConsumerWidget {
@@ -20,14 +21,33 @@ class HomePage extends ConsumerWidget {
       }
     });
 
+    final enterprisesAsync = ref.watch(enterprisesStateControllerProvider);
+    final selectedEnterprise = ref.watch(
+      selectedEnterpriseStateControllerProvider,
+    );
+
     final mediaquery = MediaQuery.of(context);
     return Scaffold(
-      appBar: AppBar(),
       drawer: CompleteDrawer(),
-      body: ResponsiveScrollableWidget(
-        maxContentWidth: mediaquery.size.width,
-        child: Modules(),
+      appBar: AppBar(
+        title: AsyncValueWidget(
+          value: enterprisesAsync,
+          tryAgain: () => ref.invalidate(enterprisesStateControllerProvider),
+          data: (enterprises) {
+            return SelectEnterpriseDropDown(
+              selectedEnterprise: selectedEnterprise,
+              enterprises: enterprises,
+            );
+          },
+        ),
       ),
+
+      body: enterprisesAsync.hasError
+          ? Center(child: Text(enterprisesAsync.error.toString()))
+          : ResponsiveScrollableWidget(
+              maxContentWidth: mediaquery.size.width,
+              child: Modules(),
+            ),
     );
   }
 }
