@@ -67,7 +67,6 @@ class _AdjustSalePriceProductsPageState
 
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 30,
         title: FittedBox(child: Text("Produtos (ajuste de preço)".hardcoded)),
       ),
       body: Padding(
@@ -108,14 +107,17 @@ class _AdjustSalePriceProductsPageState
                                   ),
                                   iconAlignment: IconAlignment.end,
                                   onPressed: () {
-                                    context.pushNamed(
+                                    context.goNamed(
                                       AppRoute.adjustSalePrice.name,
                                       pathParameters: {
                                         'enterpriseCode': widget.enterpriseCode
                                             .toString(),
                                         'plu': product.PLU,
                                       },
-                                      extra: product,
+                                      extra: {
+                                        'product': product,
+                                        'enterprise': widget.selectedEnterprise,
+                                      },
                                     );
                                   },
                                 ),
