@@ -37,6 +37,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
     required String searchValue,
     required int enterpriseCode,
     required EnterpriseEntity? selectedEnterprise,
+    int? lastBuyEntranceQuantity = 5,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -82,6 +83,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             searchType: SearchType.dynamic,
             enterpriseCodes: [enterpriseCode],
             enterpriseEntity: selectedEnterprise ?? enterpriseEntity,
+            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           );
 
       return products;

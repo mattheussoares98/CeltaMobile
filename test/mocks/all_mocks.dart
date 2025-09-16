@@ -7,6 +7,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/errors/errors.dart';
 import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
 import 'package:celta_intelligence/core/providers/providers.dart';
+import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
@@ -449,5 +450,22 @@ class FakeUserSession extends UserSession {
   @override
   Future<UserSessionModel?> build() async {
     return sessionToReturn;
+  }
+}
+
+class FakeSelectedProductStateController
+    extends SelectedProductStateController {
+  final ProductEntity? productToReturn;
+
+  FakeSelectedProductStateController(this.productToReturn);
+
+  // 2. Override the build method to return your fake data instantly
+  @override
+  Future<ProductEntity?> build(
+    int enterpriseCode,
+    String plu,
+    ProductEntity? product,
+  ) async {
+    return productToReturn;
   }
 }

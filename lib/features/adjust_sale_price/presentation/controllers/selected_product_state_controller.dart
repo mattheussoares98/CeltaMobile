@@ -36,9 +36,9 @@ class SelectedProductStateController extends _$SelectedProductStateController {
       return product;
     }
 
-    final user = await ref.read(authStateControllerProvider.future);
-    final userSession = await ref.read(userSessionProvider.future);
-    final enterprises = await ref.read(
+    final user = await ref.watch(authStateControllerProvider.future);
+    final userSession = await ref.watch(userSessionProvider.future);
+    final enterprises = await ref.watch(
       enterprisesStateControllerProvider.future,
     );
     final enterpriseEntity = enterprises.firstWhere(
@@ -54,6 +54,7 @@ class SelectedProductStateController extends _$SelectedProductStateController {
           searchType: SearchType.dynamic,
           enterpriseCodes: [enterpriseCode],
           enterpriseEntity: enterpriseEntity,
+          lastBuyEntranceQuantity: null,
         );
 
     return products.first;

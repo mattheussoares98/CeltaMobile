@@ -21,6 +21,7 @@ void main() {
   late String searchValue;
   late UserEntity userEntity;
   late EnterpriseEntity enterpriseEntity;
+  late int lastBuyEntranceQuantity;
 
   setUpAll(() {
     for (var routine in Routine.values) {
@@ -42,6 +43,7 @@ void main() {
       CrossIdentity_Usuario: faker.guid.guid(),
     );
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
+    lastBuyEntranceQuantity = faker.randomGenerator.integer(100);
   }
 
   void initSut() {
@@ -111,6 +113,7 @@ void main() {
             ).notifier,
           )
           .loadProducts(
+            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
             selectedEnterprise: enterpriseEntity,
@@ -122,6 +125,7 @@ void main() {
       ]);
       verify(
         () => sut.getProductsJson(
+          lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
           routine: Routine.adjustSalePrice,
@@ -152,6 +156,7 @@ void main() {
             ).notifier,
           )
           .loadProducts(
+            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
             selectedEnterprise: enterpriseEntity,
@@ -160,6 +165,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => sut.getProductsJson(
+          lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
           routine: Routine.adjustSalePrice,
@@ -190,6 +196,7 @@ void main() {
             ).notifier,
           )
           .loadProducts(
+            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code! + 1000, //wrong code
             selectedEnterprise: null,
@@ -198,6 +205,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => sut.getProductsJson(
+          lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
           routine: Routine.adjustSalePrice,

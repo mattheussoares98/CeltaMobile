@@ -10,6 +10,6 @@ abstract class ISoapProductsRepository {
     required String crossIdentity,
     required List<int> enterpriseCodes,
     required EnterpriseEntity enterpriseEntity,
-    int? lastBuyEntranceQuantity,
+    required int? lastBuyEntranceQuantity,
   });
 }
