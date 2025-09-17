@@ -15,20 +15,31 @@ class PricesTypesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final items = [
+      _PriceTypeItem(priceType: PriceType.retail, onTap: onTap),
+      _PriceTypeItem(priceType: PriceType.whole, onTap: onTap),
+    ];
+    final mediaQuery = MediaQuery.of(context);
+    bool showVertical = mediaQuery.size.width < 200;
     return Column(
       children: [
         TitleWidget(title: "Tipo de preço".hardcoded),
         RadioGroup<PriceType>(
+          key: Key(showVertical ? "vertical" : "horizontal"),
           groupValue: selectedPriceType,
           onChanged: (value) {
             onTap(value!);
           },
-          child: Row(
-            children: [
-              _PriceTypeItem(priceType: PriceType.retail, onTap: onTap),
-              _PriceTypeItem(priceType: PriceType.whole, onTap: onTap),
-            ],
-          ),
+          child: showVertical
+              ? Column(children: items)
+              : Row(
+                  children: items
+                      .map(
+                        (e) =>
+                            Flexible(flex: e.priceType.name.length, child: e),
+                      )
+                      .toList(),
+                ),
         ),
       ],
     );
@@ -42,19 +53,16 @@ class _PriceTypeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: priceType.name.length,
-      child: InkWell(
-        onTap: () {
-          onTap(priceType);
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(child: Text(priceType.name)),
-            Radio(value: priceType),
-          ],
-        ),
+    return InkWell(
+      onTap: () {
+        onTap(priceType);
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Flexible(child: Text(priceType.name)),
+          Radio(value: priceType),
+        ],
       ),
     );
   }
