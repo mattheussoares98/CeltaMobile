@@ -8,7 +8,7 @@ abstract class ISoapAdjustSalePriceDatasource {
     required int productCode,
     required int productPackingCode,
     required SaleType saleType,
-    required List<ReplicationNames> replications,
+    required List<ReplicationTypes> replications,
     required OfferParams? offerParams,
     required RetailParams? retailParams,
     required DateTime now,

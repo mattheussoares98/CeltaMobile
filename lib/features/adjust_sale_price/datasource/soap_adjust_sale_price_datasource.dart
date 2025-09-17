@@ -16,7 +16,7 @@ class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
     required int productCode,
     required int productPackingCode,
     required SaleType saleType,
-    required List<ReplicationNames> replications,
+    required List<ReplicationTypes> replications,
     required OfferParams? offerParams,
     required RetailParams? retailParams,
     required DateTime now,
@@ -26,12 +26,12 @@ class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
       "EnterpriseCode": enterpriseCode,
       "ProductCode": productCode,
       "ProductPackingCode": productPackingCode,
-      "UpdatePriceClass": replications.contains(ReplicationNames.classess),
-      "UpdatePackings": replications.contains(ReplicationNames.packings),
+      "UpdatePriceClass": replications.contains(ReplicationTypes.classess),
+      "UpdatePackings": replications.contains(ReplicationTypes.packings),
       "UpdateEnterpriseGroup": replications.contains(
-        ReplicationNames.operationalGrouping,
+        ReplicationTypes.operationalGrouping,
       ),
-      "UpdateGrate": replications.contains(ReplicationNames.grid),
+      "UpdateGrate": replications.contains(ReplicationTypes.grid),
       "SaleTypeInt": saleType.code, //1 == varejo; 2 == atacado; 3 == ecommerce
     };
 

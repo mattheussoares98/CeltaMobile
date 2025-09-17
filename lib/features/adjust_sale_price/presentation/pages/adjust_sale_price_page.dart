@@ -30,6 +30,11 @@ class AdjustSalePricePage extends ConsumerStatefulWidget {
 class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
   SaleType? selectedSaleType = SaleType.retail;
   PriceType? selectedPriceType = PriceType.retail;
+  bool? isSelectedClass = false;
+  bool? isSelectedGrid = false;
+  bool? isSelectedOperationalGrouping = false;
+  bool? isSelectedPackings = false;
+  List<ReplicationTypes> replications = [ReplicationTypes.packings];
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +72,15 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
           );
         },
         data: (product) {
+          // replications.addAll([
+          //   if (product?.IsFatherOfGrate == true ||
+          //       product?.IsChildOfGrate == true)
+          //     ReplicationTypes.grid,
+          //   if (product?.InClass == true) ReplicationTypes.classess,
+          //   if (selectedEnterprise?.EnterpriseParticipateEnterpriseGroup ==
+          //       true)
+          //     ReplicationTypes.operationalGrouping,
+          // ]);
           return Padding(
             padding: const EdgeInsets.all(Sizes.p4),
             child: Column(
@@ -92,7 +106,30 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                   },
                 ),
                 Divider(),
-                Text("Replication params"),
+                ReplicationTypesWidget(
+                  replications: replications,
+                  isSelectedClass: isSelectedClass,
+                  isSelectedGrid: isSelectedGrid,
+                  isSelectedOperationalGrouping: isSelectedOperationalGrouping,
+                  isSelectedPackings: isSelectedPackings,
+                  onChanged: (replication) {
+                    //TODO ask gemini to make something easier
+                    //TODO test using products that has all replications
+                    setState(() {
+                      if (replication == ReplicationTypes.classess) {
+                        isSelectedClass = !isSelectedClass!;
+                      } else if (replication == ReplicationTypes.grid) {
+                        isSelectedGrid = !isSelectedGrid!;
+                      } else if (replication ==
+                          ReplicationTypes.operationalGrouping) {
+                        isSelectedOperationalGrouping =
+                            !isSelectedOperationalGrouping!;
+                      } else if (replication == ReplicationTypes.packings) {
+                        isSelectedPackings = !isSelectedPackings!;
+                      }
+                    });
+                  },
+                ),
                 Divider(),
                 Text("Start and end date"),
                 Divider(),

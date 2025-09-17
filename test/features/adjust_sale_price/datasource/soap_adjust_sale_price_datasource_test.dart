@@ -19,7 +19,7 @@ void main() {
   late int productCode;
   late int productPackingCode;
   late SaleType saleType;
-  late List<ReplicationNames> replications;
+  late List<ReplicationTypes> replications;
 
   void initSut() {
     sut = SoapAdjustSalePriceDatasource(soapRequest: soapAdapter);
@@ -40,8 +40,8 @@ void main() {
     saleType =
         SaleType.values[faker.randomGenerator.integer(SaleType.values.length)];
     replications = [
-      ReplicationNames.values[faker.randomGenerator.integer(
-        ReplicationNames.values.length,
+      ReplicationTypes.values[faker.randomGenerator.integer(
+        ReplicationTypes.values.length,
       )],
     ];
   }
@@ -90,15 +90,15 @@ void main() {
                 "ProductCode": productCode,
                 "ProductPackingCode": productPackingCode,
                 "UpdatePriceClass": replications.contains(
-                  ReplicationNames.classess,
+                  ReplicationTypes.classess,
                 ),
                 "UpdatePackings": replications.contains(
-                  ReplicationNames.packings,
+                  ReplicationTypes.packings,
                 ),
                 "UpdateEnterpriseGroup": replications.contains(
-                  ReplicationNames.operationalGrouping,
+                  ReplicationTypes.operationalGrouping,
                 ),
-                "UpdateGrate": replications.contains(ReplicationNames.grid),
+                "UpdateGrate": replications.contains(ReplicationTypes.grid),
                 "SaleTypeInt": saleType.code,
                 "Offer": price,
                 "EffectuationDateOffer": now.toIso8601String(),
@@ -150,15 +150,15 @@ void main() {
                 "ProductCode": productCode,
                 "ProductPackingCode": productPackingCode,
                 "UpdatePriceClass": replications.contains(
-                  ReplicationNames.classess,
+                  ReplicationTypes.classess,
                 ),
                 "UpdatePackings": replications.contains(
-                  ReplicationNames.packings,
+                  ReplicationTypes.packings,
                 ),
                 "UpdateEnterpriseGroup": replications.contains(
-                  ReplicationNames.operationalGrouping,
+                  ReplicationTypes.operationalGrouping,
                 ),
-                "UpdateGrate": replications.contains(ReplicationNames.grid),
+                "UpdateGrate": replications.contains(ReplicationTypes.grid),
                 "SaleTypeInt": saleType.code,
                 "Offer": price,
                 "EffectuationDateOffer": effectuationDateOffer
@@ -205,15 +205,15 @@ void main() {
                 "ProductCode": productCode,
                 "ProductPackingCode": productPackingCode,
                 "UpdatePriceClass": replications.contains(
-                  ReplicationNames.classess,
+                  ReplicationTypes.classess,
                 ),
                 "UpdatePackings": replications.contains(
-                  ReplicationNames.packings,
+                  ReplicationTypes.packings,
                 ),
                 "UpdateEnterpriseGroup": replications.contains(
-                  ReplicationNames.operationalGrouping,
+                  ReplicationTypes.operationalGrouping,
                 ),
-                "UpdateGrate": replications.contains(ReplicationNames.grid),
+                "UpdateGrate": replications.contains(ReplicationTypes.grid),
                 "SaleTypeInt": saleType.code,
                 "Price": price,
                 "EffectuationDatePrice": now.toIso8601String(),
@@ -260,15 +260,15 @@ void main() {
                 "ProductCode": productCode,
                 "ProductPackingCode": productPackingCode,
                 "UpdatePriceClass": replications.contains(
-                  ReplicationNames.classess,
+                  ReplicationTypes.classess,
                 ),
                 "UpdatePackings": replications.contains(
-                  ReplicationNames.packings,
+                  ReplicationTypes.packings,
                 ),
                 "UpdateEnterpriseGroup": replications.contains(
-                  ReplicationNames.operationalGrouping,
+                  ReplicationTypes.operationalGrouping,
                 ),
-                "UpdateGrate": replications.contains(ReplicationNames.grid),
+                "UpdateGrate": replications.contains(ReplicationTypes.grid),
                 "SaleTypeInt": saleType.code,
                 "Price": price,
                 "EffectuationDatePrice": effectuationDatePrice
