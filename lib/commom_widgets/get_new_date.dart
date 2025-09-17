@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +18,7 @@ class GetNewDate {
   }) async {
     DateTime? selectedDate;
 
-    if (Platform.isIOS) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
       selectedDate = await _showCupertinoDatePicker(
         minimumDate: minimumDate,
         context: context,
@@ -40,7 +39,7 @@ class GetNewDate {
 
     TimeOfDay? selectedTime;
 
-    if (Platform.isIOS) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
       final time = await _showCupertinoDatePicker(
         minimumDate: minimumDate,
         context: context,
