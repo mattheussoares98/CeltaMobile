@@ -1,9 +1,9 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/presentation/theme/app_decorations.dart';
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/validators/validators.dart';
-import '../../../../../localization/string_hardcoded.dart';
 
 class UserField extends StatelessWidget {
   final TextEditingController userController;
@@ -22,7 +22,7 @@ class UserField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return TextFormField(
+    return DefaultTextFormField(
       enabled: !isLoading,
       focusNode: userFocusNode,
       controller: userController,
@@ -31,16 +31,15 @@ class UserField extends StatelessWidget {
         passwordFocusNode.requestFocus();
       },
       validator: FormValidators.compose([NonEmptyValidator()]),
-      decoration: AppDecorations.input(
-        context: context,
-        labelText: 'Usuário'.hardcoded,
-        prefixIcon: Icon(
-          theme.platform == TargetPlatform.iOS
-              ? CupertinoIcons.person
-              : Icons.person,
-        ),
-      ),
       keyboardType: TextInputType.emailAddress,
+      maxLength: 40,
+      labelText: 'Usuário'.hardcoded,
+      prefixIcon: Icon(
+        theme.platform == TargetPlatform.iOS
+            ? CupertinoIcons.person
+            : Icons.person,
+        color: isLoading ? theme.disabledColor : null,
+      ),
     );
   }
 }

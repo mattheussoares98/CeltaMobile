@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/presentation/theme/app_decorations.dart';
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/validators/validators.dart';
 import '../../../../../localization/string_hardcoded.dart';
 
@@ -26,7 +26,7 @@ class PasswordField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return TextFormField(
+    return DefaultTextFormField(
       enabled: !isLoading,
       controller: passwordController,
       focusNode: passwordFocusNode,
@@ -35,31 +35,31 @@ class PasswordField extends StatelessWidget {
         onSubmit?.call();
       },
       validator: FormValidators.compose([NonEmptyValidator()]),
-      decoration: AppDecorations.input(
-        context: context,
-        labelText: 'Senha'.hardcoded,
-        prefixIcon: Icon(
-          theme.platform == TargetPlatform.iOS
-              ? CupertinoIcons.lock_fill
-              : Icons.lock_outline,
+      maxLength: 30,
+      labelText: 'Senha'.hardcoded,
+      prefixIcon: Icon(
+        theme.platform == TargetPlatform.iOS
+            ? CupertinoIcons.lock_fill
+            : Icons.lock_outline,
+        color: isLoading ? theme.disabledColor : null,
+      ),
+      suffixIcon: IconButton(
+        onPressed: changeShowPassword,
+        icon: _PasswordIcon(
+          changeShowPassword: changeShowPassword,
+          showPassword: showPassword,
         ),
-        suffixIcon: IconButton(
-          onPressed: changeShowPassword,
-          icon: _ShowPasswordIcon(
-            changeShowPassword: changeShowPassword,
-            showPassword: showPassword,
-          ),
-        ),
+        color: isLoading ? theme.disabledColor : null,
       ),
       obscureText: !showPassword,
     );
   }
 }
 
-class _ShowPasswordIcon extends StatelessWidget {
+class _PasswordIcon extends StatelessWidget {
   final VoidCallback? changeShowPassword;
   final bool showPassword;
-  const _ShowPasswordIcon({
+  const _PasswordIcon({
     required this.changeShowPassword,
     required this.showPassword,
   });

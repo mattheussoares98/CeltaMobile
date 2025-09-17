@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/presentation/theme/app_decorations.dart';
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/validators/validators.dart';
 import '../../../../../localization/string_hardcoded.dart';
 
@@ -20,23 +20,20 @@ class EnterpriseField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return TextFormField(
-      enabled: !isLoading,
+    return DefaultTextFormField(
       controller: enterpriseController,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      onFieldSubmitted: (_) {
-        userFocusNode.requestFocus();
-      },
-      validator: FormValidators.compose([NonEmptyValidator()]),
-      decoration: AppDecorations.input(
-        context: context,
-        labelText: 'Empresa'.hardcoded,
-        prefixIcon: Icon(
-          theme.platform == TargetPlatform.iOS
-              ? CupertinoIcons.building_2_fill
-              : Icons.business,
-        ),
+      enabled: !isLoading,
+      labelText: 'Empresa'.hardcoded,
+      maxLength: 25,
+      prefixIcon: Icon(
+        theme.platform == TargetPlatform.iOS
+            ? CupertinoIcons.building_2_fill
+            : Icons.business,
+        color: isLoading ? theme.disabledColor : null,
       ),
+      onFieldSubmitted: (_) => userFocusNode.requestFocus(),
+      validator: FormValidators.compose([NonEmptyValidator()]),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }
