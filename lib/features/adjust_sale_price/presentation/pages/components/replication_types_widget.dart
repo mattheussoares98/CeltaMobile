@@ -1,4 +1,6 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../constants/constants.dart';
@@ -23,14 +25,23 @@ class ReplicationTypesWidget extends StatelessWidget {
       children: [
         TitleWidget(title: 'Parâmetros de replicação'.hardcoded),
         ...availableReplications.map((replication) {
-          return CheckboxListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: Sizes.p8),
-            title: Text(replication.name, style: theme.textTheme.bodyMedium),
-            value: selectedReplications.contains(replication),
-            onChanged: (_) {
-              onChanged(replication);
-            },
-          );
+          if (defaultTargetPlatform == TargetPlatform.iOS) {
+            return CupertinoListTile(
+              title: Text(replication.name, style: theme.textTheme.bodyMedium),
+              trailing: CupertinoSwitch(
+                value: selectedReplications.contains(replication),
+                onChanged: (_) => onChanged(replication),
+              ),
+              onTap: () => onChanged(replication),
+            );
+          } else {
+            return CheckboxListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: Sizes.p8),
+              title: Text(replication.name, style: theme.textTheme.bodyMedium),
+              value: selectedReplications.contains(replication),
+              onChanged: (_) => onChanged(replication),
+            );
+          }
         }),
       ],
     );
