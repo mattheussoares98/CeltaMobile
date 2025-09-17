@@ -1,6 +1,6 @@
-import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../core/domain/entities/entities.dart';
 
-enum SaleType implements SelectableItem {
+enum SaleType implements SelectableCheckBoxItem {
   retail(1, 'Varejo'),
   whole(2, 'Atacado'),
   ecommerce(3, 'E-commerce');

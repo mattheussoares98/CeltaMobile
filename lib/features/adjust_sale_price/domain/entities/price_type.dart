@@ -1,6 +1,6 @@
-import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../core/domain/entities/entities.dart';
 
-enum PriceType implements SelectableItem {
+enum PriceType implements SelectableCheckBoxItem {
   sale('Venda'),
   offer('Oferta');
 
