@@ -72,17 +72,17 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
           );
         },
         data: (product) {
-          // replications.addAll([
-          //   if (product?.IsFatherOfGrate == true ||
-          //       product?.IsChildOfGrate == true)
-          //     ReplicationTypes.grid,
-          //   if (product?.InClass == true) ReplicationTypes.classess,
-          //   if (selectedEnterprise?.EnterpriseParticipateEnterpriseGroup ==
-          //       true)
-          //     ReplicationTypes.operationalGrouping,
-          // ]);
-          return Padding(
-            padding: const EdgeInsets.all(Sizes.p4),
+          replications.addAll([
+            if (product?.IsFatherOfGrate == true ||
+                product?.IsChildOfGrate == true)
+              ReplicationTypes.grid,
+            if (product?.InClass == true) ReplicationTypes.classess,
+            if (selectedEnterprise?.EnterpriseParticipateEnterpriseGroup ==
+                true)
+              ReplicationTypes.operationalGrouping,
+          ]);
+          return ResponsiveScrollableWidget(
+            padding: Sizes.p4,
             child: Column(
               children: [
                 Text("Schedules"),

@@ -18,24 +18,36 @@ class SalesTypeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final items = [
+      if (selectedEnterprise?.UseRetailSale == true)
+        _SaleTypeItem(saleType: SaleType.retail, onTap: onTap),
+      if (selectedEnterprise?.UseWholeSale == true)
+        _SaleTypeItem(saleType: SaleType.whole, onTap: onTap),
+      if (selectedEnterprise?.UseEcommerceSale == true)
+        _SaleTypeItem(saleType: SaleType.ecommerce, onTap: onTap),
+    ];
+
+    final mediaQuery = MediaQuery.of(context);
+    bool showInVertical = mediaQuery.size.width < 300;
+
     return Column(
       children: [
         TitleWidget(title: "Tipo de venda".hardcoded),
         RadioGroup<SaleType>(
+          key: ValueKey(showInVertical ? "vertical" : "horizontal"),
           groupValue: selectedSaleType,
           onChanged: (value) {
             onTap(value!);
           },
-          child: Row(
-            children: [
-              if (selectedEnterprise?.UseRetailSale == true)
-                _SaleTypeItem(saleType: SaleType.retail, onTap: onTap),
-              if (selectedEnterprise?.UseWholeSale == true)
-                _SaleTypeItem(saleType: SaleType.whole, onTap: onTap),
-              if (selectedEnterprise?.UseEcommerceSale == true)
-                _SaleTypeItem(saleType: SaleType.ecommerce, onTap: onTap),
-            ],
-          ),
+          child: showInVertical
+              ? Column(children: [...items])
+              : Row(
+                  children: items
+                      .map(
+                        (e) => Flexible(flex: e.saleType.name.length, child: e),
+                      )
+                      .toList(),
+                ),
         ),
       ],
     );
@@ -49,19 +61,14 @@ class _SaleTypeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: saleType.name.length,
-      child: InkWell(
-        onTap: () {
-          onTap(saleType);
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(child: Text(saleType.name)),
-            Radio(value: saleType),
-          ],
-        ),
+    return InkWell(
+      onTap: () => onTap(saleType),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Flexible(child: Text(saleType.name)),
+          Radio(value: saleType),
+        ],
       ),
     );
   }

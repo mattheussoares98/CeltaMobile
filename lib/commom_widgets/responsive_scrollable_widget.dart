@@ -8,11 +8,13 @@ import 'commom_widgets.dart';
 class ResponsiveScrollableWidget extends StatelessWidget {
   final bool? centralize;
   final double? maxContentWidth;
+  final double? padding;
   const ResponsiveScrollableWidget({
     super.key,
     required this.child,
     this.centralize,
     this.maxContentWidth,
+    this.padding = Sizes.p8,
   });
   final Widget child;
   @override
@@ -24,7 +26,7 @@ class ResponsiveScrollableWidget extends StatelessWidget {
         width: centralize == true ? mediaQuery.size.width : null,
         child: ResponsiveCenter(
           maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
-          child: Padding(padding: const EdgeInsets.all(Sizes.p8), child: child),
+          child: Padding(padding: EdgeInsets.all(padding!), child: child),
         ),
       ),
     );
