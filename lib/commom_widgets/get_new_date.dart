@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'commom_widgets.dart';
 
@@ -24,6 +25,7 @@ class GetNewDate {
         context: context,
         maximumDate: maximumDate,
         currentSelectedDate: currentSelectedDate,
+        mode: CupertinoDatePickerMode.date,
       );
     } else {
       selectedDate = await showDatePicker(
@@ -31,7 +33,6 @@ class GetNewDate {
         firstDate: minimumDate,
         initialDate: currentSelectedDate,
         lastDate: maximumDate,
-        locale: const Locale('pt', 'BR'),
       );
     }
 
@@ -40,10 +41,16 @@ class GetNewDate {
     TimeOfDay? selectedTime;
 
     if (Platform.isIOS) {
-      selectedTime = await _showCupertinoTimePicker(
-        context,
-        currentSelectedDate,
+      final time = await _showCupertinoDatePicker(
+        minimumDate: minimumDate,
+        context: context,
+        maximumDate: maximumDate,
+        currentSelectedDate: currentSelectedDate,
+        mode: CupertinoDatePickerMode.time,
       );
+      selectedTime = time == null
+          ? null
+          : TimeOfDay(hour: time.hour, minute: time.minute);
     } else {
       selectedTime = await showTimePicker(
         context: context,
@@ -88,8 +95,10 @@ class GetNewDate {
     required DateTime? minimumDate,
     required DateTime? currentSelectedDate,
     required BuildContext context,
+    required CupertinoDatePickerMode mode,
   }) async {
-    DateTime? tempPickedDate;
+    DateTime? tempPickedDate = currentSelectedDate;
+    final theme = Theme.of(context);
 
     return await showCupertinoModalPopup<DateTime>(
       context: context,
@@ -97,84 +106,41 @@ class GetNewDate {
         return CupertinoTheme(
           data: CupertinoThemeData(
             brightness: Brightness.light,
-            primaryColor: Theme.of(context).primaryColorDark,
+            primaryColor: theme.primaryColor,
             textTheme: CupertinoTextThemeData(
-              pickerTextStyle: TextStyle(
-                color: Theme.of(context).disabledColor.withAlpha(40),
-                fontSize: 20,
-              ),
               dateTimePickerTextStyle: TextStyle(
-                color: Theme.of(context).primaryColorDark,
+                color: theme.primaryColor,
                 fontSize: 20,
+                fontStyle: FontStyle.italic,
               ),
             ),
           ),
           child: Container(
-            height: 300,
+            height: 230,
             color: Colors.white,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: currentSelectedDate,
-                    minimumDate: minimumDate,
-                    maximumDate: maximumDate,
-                    onDateTimeChanged: (DateTime newDate) {
-                      tempPickedDate = newDate;
-                    },
-                  ),
-                ),
-                CupertinoButton(
-                  child: const Text('OK'),
-                  onPressed: () => Navigator.of(context).pop(tempPickedDate),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  static Future<TimeOfDay?> _showCupertinoTimePicker(
-    BuildContext context,
-    DateTime? currentSelectedDate,
-  ) async {
-    final now = DateTime.now();
-
-    return await showCupertinoModalPopup<TimeOfDay>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 300,
-          color: Colors.white,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 200,
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.time,
-                  initialDateTime: currentSelectedDate,
-                  use24hFormat: true,
-                  onDateTimeChanged: (DateTime newDateTime) {
-                    debugPrint("changed to $newDateTime");
-                  },
-                ),
-              ),
-              CupertinoButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(
-                    TimeOfDay(
-                      hour: currentSelectedDate?.hour ?? now.hour,
-                      minute: currentSelectedDate?.minute ?? now.minute,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 180,
+                    child: CupertinoDatePicker(
+                      mode: mode,
+                      initialDateTime: currentSelectedDate,
+                      minimumDate: minimumDate,
+                      maximumDate: maximumDate,
+                      use24hFormat: true,
+                      onDateTimeChanged: (DateTime newDate) {
+                        tempPickedDate = newDate;
+                      },
                     ),
-                  );
-                },
+                  ),
+                  CupertinoButton(
+                    child: const Text('OK'),
+                    onPressed: () => context.pop(tempPickedDate),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         );
       },
