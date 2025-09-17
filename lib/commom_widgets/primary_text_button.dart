@@ -32,19 +32,18 @@ class PrimaryTextButton extends StatelessWidget {
             onPressed: isLoading ? null : onPressed,
             sizeStyle: CupertinoButtonSize.small,
             padding: EdgeInsets.all(0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(child: Text(text, textAlign: TextAlign.center)),
-                if (isLoading) ...[
-                  gapW8,
-                  CupertinoActivityIndicator(color: theme.disabledColor),
-                ] else if (icon != null && constraints.maxWidth > 220) ...[
-                  gapW8,
-                  icon!,
-                ],
-              ],
-            ),
+            child: isLoading
+                ? CupertinoActivityIndicator(color: theme.disabledColor)
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(child: Text(text, textAlign: TextAlign.center)),
+                      if (icon != null && constraints.maxWidth > 220) ...[
+                        gapW8,
+                        icon!,
+                      ],
+                    ],
+                  ),
           );
         },
       );
