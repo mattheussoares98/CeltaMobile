@@ -16,8 +16,8 @@ class PricesTypesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      _PriceTypeItem(priceType: PriceType.retail, onTap: onTap),
-      _PriceTypeItem(priceType: PriceType.whole, onTap: onTap),
+      _PriceTypeItem(priceType: PriceType.sale, onTap: onTap),
+      _PriceTypeItem(priceType: PriceType.offer, onTap: onTap),
     ];
     final mediaQuery = MediaQuery.of(context);
     bool showVertical = mediaQuery.size.width < 200;

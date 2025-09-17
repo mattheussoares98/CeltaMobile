@@ -1,6 +1,6 @@
 enum PriceType {
-  retail('Varejo'),
-  whole('Atacado');
+  sale('Venda'),
+  offer('Oferta');
 
   final String name;
   const PriceType(this.name);

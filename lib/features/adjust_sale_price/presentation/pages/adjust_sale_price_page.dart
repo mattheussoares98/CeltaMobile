@@ -29,7 +29,7 @@ class AdjustSalePricePage extends ConsumerStatefulWidget {
 
 class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
   SaleType? selectedSaleType = SaleType.retail;
-  PriceType? selectedPriceType = PriceType.retail;
+  PriceType? selectedPriceType = PriceType.sale;
   bool? isSelectedClass = false;
   bool? isSelectedGrid = false;
   bool? isSelectedOperationalGrouping = false;
@@ -129,9 +129,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                 StartAndEndDates(
                   selectedStartDate: selectedStartDate,
                   selectedEndDate: selectedEndDate,
-                  enableEndDate:
-                      selectedPriceType ==
-                      PriceType.whole, //TODO fix these names
+                  enableEndDate: selectedPriceType == PriceType.offer,
                   onChangeStartDate: (newDate) {
                     setState(() {
                       selectedStartDate = newDate;
