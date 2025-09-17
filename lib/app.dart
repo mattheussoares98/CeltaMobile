@@ -16,18 +16,22 @@ class MyApp extends ConsumerWidget {
     final theme = Theme.of(context);
 
     final goRouter = ref.watch(goRouterProvider);
-    return MaterialApp.router(
-      routerConfig: goRouter,
-      debugShowCheckedModeBanner: false,
-      restorationScopeId: 'app',
-      supportedLocales: [const Locale('pt', 'BR')],
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      onGenerateTitle: (BuildContext context) => 'My Shop'.hardcoded,
-      theme: AppTheme.themeData(theme),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: FocusScope.of(context).unfocus,
+      child: MaterialApp.router(
+        routerConfig: goRouter,
+        debugShowCheckedModeBanner: false,
+        restorationScopeId: 'app',
+        supportedLocales: [const Locale('pt', 'BR')],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        onGenerateTitle: (BuildContext context) => 'My Shop'.hardcoded,
+        theme: AppTheme.themeData(theme),
+      ),
     );
   }
 }
