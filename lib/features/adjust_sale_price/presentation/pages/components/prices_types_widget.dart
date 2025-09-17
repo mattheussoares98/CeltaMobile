@@ -1,8 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../constants/constants.dart';
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../domain/entities/entities.dart';
 import 'components.dart';
 
@@ -26,32 +25,12 @@ class PricesTypesWidget extends StatelessWidget {
       children: [
         TitleWidget(title: "Tipo de preço".hardcoded),
         if (theme.platform == TargetPlatform.iOS)
-          CupertinoListSection(
-            dividerMargin: 0,
-            margin: EdgeInsets.zero,
-            topMargin: Sizes.p8,
-            backgroundColor: Colors.transparent,
-            additionalDividerMargin: 0,
-            separatorColor: theme.disabledColor.withAlpha(20),
-            header: null,
-            children: items.map((priceType) {
-              final isSelected = selectedPriceType == priceType;
-              return CupertinoListTile(
-                title: Text(priceType.name),
-                onTap: () => onTap(priceType),
-                backgroundColor: isSelected
-                    ? theme.primaryColorLight.withAlpha(100)
-                    : null,
-                trailing: isSelected
-                    ? const Icon(
-                        CupertinoIcons.check_mark,
-                        color: CupertinoColors.activeGreen,
-                      )
-                    : null,
-              );
-            }).toList(),
+          DefaultCupertinoCheckBox(
+            items: items,
+            selectedSaleType: selectedPriceType,
+            onTap: onTap,
           )
-        else ...[
+        else
           RadioGroup<PriceType>(
             key: Key(showVertical ? "vertical" : "horizontal"),
             groupValue: selectedPriceType,
@@ -75,8 +54,7 @@ class PricesTypesWidget extends StatelessWidget {
                         .toList(),
                   ),
           ),
-          Divider(),
-        ],
+        Divider(),
       ],
     );
   }

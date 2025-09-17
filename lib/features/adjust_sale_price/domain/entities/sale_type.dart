@@ -1,21 +1,14 @@
-enum SaleType {
-  retail(1),
-  whole(2),
-  ecommerce(3);
+import '../../../../commom_widgets/commom_widgets.dart';
+
+enum SaleType implements SelectableItem {
+  retail(1, 'Varejo'),
+  whole(2, 'Atacado'),
+  ecommerce(3, 'E-commerce');
 
   final int code;
-  const SaleType(this.code);
-}
 
-extension SaleTypeExtension on SaleType {
-  String get name {
-    switch (this) {
-      case SaleType.retail:
-        return "Varejo";
-      case SaleType.whole:
-        return "Atacado";
-      case SaleType.ecommerce:
-        return "Ecommerce";
-    }
-  }
+  @override
+  final String name;
+
+  const SaleType(this.code, this.name);
 }
