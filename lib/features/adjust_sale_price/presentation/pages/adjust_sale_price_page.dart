@@ -34,7 +34,9 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
   bool? isSelectedGrid = false;
   bool? isSelectedOperationalGrouping = false;
   bool? isSelectedPackings = false;
-  List<ReplicationTypes> replications = [ReplicationTypes.packings];
+  final Set<ReplicationTypes> _selectedReplications = {
+    ReplicationTypes.packings,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,8 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
           );
         },
         data: (product) {
-          replications.addAll([
+          final availableReplications = <ReplicationTypes>{
+            ReplicationTypes.packings,
             if (product?.IsFatherOfGrate == true ||
                 product?.IsChildOfGrate == true)
               ReplicationTypes.grid,
@@ -80,7 +83,8 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
             if (selectedEnterprise?.EnterpriseParticipateEnterpriseGroup ==
                 true)
               ReplicationTypes.operationalGrouping,
-          ]);
+          };
+
           return ResponsiveScrollableWidget(
             padding: Sizes.p4,
             child: Column(
@@ -107,29 +111,19 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                 ),
                 Divider(),
                 ReplicationTypesWidget(
-                  replications: replications,
-                  isSelectedClass: isSelectedClass,
-                  isSelectedGrid: isSelectedGrid,
-                  isSelectedOperationalGrouping: isSelectedOperationalGrouping,
-                  isSelectedPackings: isSelectedPackings,
-                  onChanged: (replication) {
-                    //TODO ask gemini to make something easier
-                    //TODO test using products that has all replications
+                  availableReplications: availableReplications.toList(),
+                  selectedReplications: _selectedReplications,
+                  onChanged: (replicationType) {
                     setState(() {
-                      if (replication == ReplicationTypes.classess) {
-                        isSelectedClass = !isSelectedClass!;
-                      } else if (replication == ReplicationTypes.grid) {
-                        isSelectedGrid = !isSelectedGrid!;
-                      } else if (replication ==
-                          ReplicationTypes.operationalGrouping) {
-                        isSelectedOperationalGrouping =
-                            !isSelectedOperationalGrouping!;
-                      } else if (replication == ReplicationTypes.packings) {
-                        isSelectedPackings = !isSelectedPackings!;
+                      if (_selectedReplications.contains(replicationType)) {
+                        _selectedReplications.remove(replicationType);
+                      } else {
+                        _selectedReplications.add(replicationType);
                       }
                     });
                   },
                 ),
+
                 Divider(),
                 Text("Start and end date"),
                 Divider(),

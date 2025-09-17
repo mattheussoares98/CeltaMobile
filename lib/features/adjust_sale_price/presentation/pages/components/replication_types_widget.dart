@@ -1,84 +1,38 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
 import 'components.dart';
 
 class ReplicationTypesWidget extends StatelessWidget {
-  final List<ReplicationTypes> replications;
-  final bool? isSelectedClass;
-  final bool? isSelectedGrid;
-  final bool? isSelectedOperationalGrouping;
-  final bool? isSelectedPackings;
+  final List<ReplicationTypes> availableReplications;
+  final Set<ReplicationTypes> selectedReplications;
   final void Function(ReplicationTypes replication) onChanged;
   const ReplicationTypesWidget({
     super.key,
-    required this.replications,
-    required this.isSelectedClass,
-    required this.isSelectedGrid,
-    required this.isSelectedOperationalGrouping,
-    required this.isSelectedPackings,
     required this.onChanged,
+    required this.availableReplications,
+    required this.selectedReplications,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         TitleWidget(title: 'Parâmetros de replicação'.hardcoded),
-        if (replications.contains(ReplicationTypes.packings))
-          _ReplicationTypeItem(
-            replicationType: ReplicationTypes.packings,
-            isSelected: isSelectedPackings,
+        ...availableReplications.map((replication) {
+          return CheckboxListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: Sizes.p8),
+            title: Text(replication.name, style: theme.textTheme.bodyMedium),
+            value: selectedReplications.contains(replication),
             onChanged: (_) {
-              onChanged(ReplicationTypes.packings);
+              onChanged(replication);
             },
-          ),
-        if (replications.contains(ReplicationTypes.grid))
-          _ReplicationTypeItem(
-            replicationType: ReplicationTypes.grid,
-            isSelected: isSelectedGrid,
-            onChanged: (_) {
-              onChanged(ReplicationTypes.grid);
-            },
-          ),
-        if (replications.contains(ReplicationTypes.classess))
-          _ReplicationTypeItem(
-            replicationType: ReplicationTypes.classess,
-            isSelected: isSelectedClass,
-            onChanged: (_) {
-              onChanged(ReplicationTypes.classess);
-            },
-          ),
-        if (replications.contains(ReplicationTypes.operationalGrouping))
-          _ReplicationTypeItem(
-            replicationType: ReplicationTypes.operationalGrouping,
-            isSelected: isSelectedOperationalGrouping,
-            onChanged: (_) {
-              onChanged(ReplicationTypes.operationalGrouping);
-            },
-          ),
+          );
+        }),
       ],
-    );
-  }
-}
-
-class _ReplicationTypeItem extends StatelessWidget {
-  final ReplicationTypes replicationType;
-  final bool? isSelected;
-  final void Function(bool?)? onChanged;
-  const _ReplicationTypeItem({
-    required this.replicationType,
-    required this.isSelected,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CheckboxListTile(
-      title: Text(replicationType.name),
-      value: isSelected,
-      onChanged: onChanged,
     );
   }
 }
