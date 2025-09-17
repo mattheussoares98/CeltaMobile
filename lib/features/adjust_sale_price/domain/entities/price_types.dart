@@ -1,1 +1,0 @@
-enum PriceTypes { retail, whole }

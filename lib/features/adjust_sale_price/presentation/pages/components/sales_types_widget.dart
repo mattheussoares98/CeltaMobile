@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
+import 'components.dart';
 
 class SalesTypeWidget extends StatelessWidget {
   final SaleType? selectedSaleType;
@@ -17,10 +18,9 @@ class SalesTypeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       children: [
-        Text("Tipo de venda".hardcoded, style: theme.textTheme.titleMedium),
+        TitleWidget(title: "Tipo de venda".hardcoded),
         RadioGroup<SaleType>(
           groupValue: selectedSaleType,
           onChanged: (value) {

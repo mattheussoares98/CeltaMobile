@@ -1,4 +1,4 @@
 export './price_params.dart';
-export './price_types.dart';
+export 'price_type.dart';
 export './replication_names.dart';
-export './sale_types.dart';
+export 'sale_type.dart';

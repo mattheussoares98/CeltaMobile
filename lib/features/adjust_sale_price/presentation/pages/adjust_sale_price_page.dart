@@ -28,7 +28,8 @@ class AdjustSalePricePage extends ConsumerStatefulWidget {
 }
 
 class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
-  SaleType? selectedSaleType;
+  SaleType? selectedSaleType = SaleType.retail;
+  PriceType? selectedPriceType = PriceType.retail;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +83,14 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                   },
                 ),
                 Divider(),
-                Text("Price types"),
+                PricesTypesWidget(
+                  selectedPriceType: selectedPriceType,
+                  onTap: (value) {
+                    setState(() {
+                      selectedPriceType = value;
+                    });
+                  },
+                ),
                 Divider(),
                 Text("Replication params"),
                 Divider(),
