@@ -179,12 +179,18 @@ class _CupertinoFormFieldState extends State<_CupertinoFormField> {
               ),
               prefix: widget.prefixIcon != null
                   ? Padding(
-                      padding: const EdgeInsets.only(left: Sizes.p8),
+                      padding: EdgeInsets.only(
+                        left: widget.prefixIcon is IconButton ? 0 : Sizes.p8,
+                      ),
                       child: widget.prefixIcon,
                     )
                   : null,
               suffix: widget.suffixIcon,
-              padding: const EdgeInsets.all(Sizes.p12),
+              padding: EdgeInsets.all(
+                widget.prefixIcon is Icon || widget.suffixIcon is Icon
+                    ? Sizes.p12
+                    : 0,
+              ),
             ),
 
             if (state.hasError)
