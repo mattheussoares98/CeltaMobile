@@ -77,7 +77,13 @@ class _Title extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(title.hardcoded, style: Theme.of(context).textTheme.titleLarge),
+        Expanded(
+          child: Text(
+            title.hardcoded,
+            style: Theme.of(context).textTheme.titleLarge,
+            textAlign: TextAlign.center,
+          ),
+        ),
       ],
     );
   }

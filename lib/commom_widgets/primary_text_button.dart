@@ -14,7 +14,7 @@ class PrimaryTextButton extends StatelessWidget {
     this.isLoading = false,
     this.onPressed,
     this.icon,
-    this.iconAlignment,
+    this.iconAlignment = IconAlignment.end,
   });
   final String text;
   final bool isLoading;

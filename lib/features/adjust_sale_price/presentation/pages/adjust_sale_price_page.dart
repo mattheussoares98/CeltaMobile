@@ -142,7 +142,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                   },
                 ),
                 Divider(),
-                Text("product info"),
+                PricesCostsAndMarginsButton(product: product!),
                 Divider(),
               ],
             ),
