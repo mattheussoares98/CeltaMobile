@@ -19,7 +19,7 @@ class Modules extends ConsumerWidget {
 
     final buttons = <Widget>[
       PrimaryButton(
-        text: 'Alteração de preços'.hardcoded,
+        text: 'Alterar preços'.hardcoded,
         onPressed: selectedEnterprise == null
             ? null
             : () {

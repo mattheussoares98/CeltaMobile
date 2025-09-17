@@ -13,7 +13,7 @@ class DeleteIcon extends StatelessWidget {
     return IconButton(
       onPressed: onPress,
       icon: Icon(
-        defaultTargetPlatform == TargetPlatform.iOS
+        theme.platform == TargetPlatform.iOS
             ? CupertinoIcons.delete
             : Icons.delete,
         color: onPress == null ? theme.disabledColor : Colors.red,

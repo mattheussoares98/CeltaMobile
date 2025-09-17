@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/presentation/theme/theme.dart';
@@ -19,6 +18,8 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextFormField(
       enabled: !isLoading,
       controller: emailController,
@@ -27,7 +28,7 @@ class EmailField extends StatelessWidget {
         context: context,
         labelText: 'Email'.hardcoded,
         prefixIcon: Icon(
-          defaultTargetPlatform == TargetPlatform.iOS
+          theme.platform == TargetPlatform.iOS
               ? CupertinoIcons.mail_solid
               : Icons.email_outlined,
         ),

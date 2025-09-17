@@ -1,7 +1,6 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -65,6 +64,8 @@ class _AdjustSalePriceProductsPageState
       searchProductsStateControllerProvider(widget.enterpriseCode),
     );
 
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text("Produtos (ajuste de preço)".hardcoded)),
@@ -98,10 +99,10 @@ class _AdjustSalePriceProductsPageState
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Flexible(
-                                child: PrimaryTextButton(
+                                child: PrimaryButton(
                                   text: 'Alterar preços'.hardcoded,
                                   icon: Icon(
-                                    defaultTargetPlatform == TargetPlatform.iOS
+                                    theme.platform == TargetPlatform.iOS
                                         ? CupertinoIcons.pencil
                                         : Icons.edit,
                                   ),

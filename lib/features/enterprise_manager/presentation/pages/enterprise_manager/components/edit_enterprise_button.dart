@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +11,8 @@ class EditEnterpriseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return IconButton(
       onPressed: () {
         context.pushNamed(
@@ -23,7 +24,7 @@ class EditEnterpriseButton extends StatelessWidget {
         );
       },
       icon: Icon(
-        defaultTargetPlatform == TargetPlatform.iOS
+        theme.platform == TargetPlatform.iOS
             ? CupertinoIcons.pencil
             : Icons.edit,
       ),

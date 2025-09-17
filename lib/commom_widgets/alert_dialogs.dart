@@ -16,6 +16,7 @@ Future<bool?> showAlertDialog({
   String defaultActionText = 'OK',
   VoidCallback? onOkPressed,
 }) async {
+  final theme = Theme.of(context);
   return await showDialog(
     context: context,
     // * Only make the dialog dismissible if there is a cancel button
@@ -32,7 +33,7 @@ Future<bool?> showAlertDialog({
                 Clipboard.setData(ClipboardData(text: content ?? ''));
               },
               icon: Icon(
-                defaultTargetPlatform == TargetPlatform.iOS
+                theme.platform == TargetPlatform.iOS
                     ? CupertinoIcons.doc_on_clipboard
                     : Icons.copy,
               ),
@@ -44,8 +45,8 @@ Future<bool?> showAlertDialog({
       // https://codewithandrea.com/tips/default-target-platform/
       actions:
           kIsWeb ||
-              !(defaultTargetPlatform == TargetPlatform.iOS ||
-                  defaultTargetPlatform == TargetPlatform.macOS)
+              !(theme.platform == TargetPlatform.iOS ||
+                  theme.platform == TargetPlatform.macOS)
           ? <Widget>[
               if (cancelActionText != null)
                 TextButton(

@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/domain/entities/entities.dart';
@@ -31,6 +30,8 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
       Costs(widget: widget),
       Margins(widget: widget),
     ];
+
+    final theme = Theme.of(context);
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
@@ -47,7 +48,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              defaultTargetPlatform == TargetPlatform.iOS
+              theme.platform == TargetPlatform.iOS
                   ? CupertinoIcons.money_dollar
                   : Icons.attach_money,
             ),
@@ -55,7 +56,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              defaultTargetPlatform == TargetPlatform.iOS
+              theme.platform == TargetPlatform.iOS
                   ? CupertinoIcons.creditcard
                   : Icons.credit_card,
             ),
@@ -63,7 +64,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              defaultTargetPlatform == TargetPlatform.iOS
+              theme.platform == TargetPlatform.iOS
                   ? CupertinoIcons.chart_bar
                   : Icons.bar_chart_rounded,
             ),

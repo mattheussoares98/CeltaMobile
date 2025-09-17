@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
@@ -12,6 +11,8 @@ class PricesCostsAndMarginsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return PrimaryTextButton(
       isLoading: false,
       text: 'Preços, custos e margens'.hardcoded,
@@ -19,9 +20,7 @@ class PricesCostsAndMarginsButton extends StatelessWidget {
         showModalPage(ProductInfoModal(product: product), context);
       },
       icon: Icon(
-        defaultTargetPlatform == TargetPlatform.iOS
-            ? CupertinoIcons.info
-            : Icons.info,
+        theme.platform == TargetPlatform.iOS ? CupertinoIcons.info : Icons.info,
       ),
     );
   }

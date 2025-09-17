@@ -34,7 +34,7 @@ class SalesTypeWidget extends StatelessWidget {
     return Column(
       children: [
         TitleWidget(title: "Tipo de venda".hardcoded),
-        if (defaultTargetPlatform == TargetPlatform.iOS)
+        if (theme.platform == TargetPlatform.iOS)
           CupertinoListSection(
             dividerMargin: 0,
             margin: EdgeInsets.zero,

@@ -61,7 +61,7 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                         widget.searchValueController.clear();
                       },
                       icon: Icon(
-                        defaultTargetPlatform == TargetPlatform.iOS
+                        theme.platform == TargetPlatform.iOS
                             ? CupertinoIcons.delete
                             : Icons.delete,
                         color: widget.isLoading
@@ -78,7 +78,7 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                       IconButton(
                         onPressed: searchProducts,
                         icon: Icon(
-                          defaultTargetPlatform == TargetPlatform.iOS
+                          theme.platform == TargetPlatform.iOS
                               ? CupertinoIcons.search
                               : Icons.search,
                         ),
@@ -88,7 +88,7 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                         //TODO implement
                       },
                       icon: Icon(
-                        defaultTargetPlatform == TargetPlatform.iOS
+                        theme.platform == TargetPlatform.iOS
                             ? CupertinoIcons.camera_fill
                             : Icons.camera_alt,
                       ),
@@ -98,7 +98,7 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                         //TODO implement
                       },
                       icon: Icon(
-                        defaultTargetPlatform == TargetPlatform.iOS
+                        theme.platform == TargetPlatform.iOS
                             ? CupertinoIcons.settings
                             : Icons.settings,
                       ),

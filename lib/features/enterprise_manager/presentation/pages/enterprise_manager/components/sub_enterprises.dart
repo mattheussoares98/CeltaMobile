@@ -92,7 +92,7 @@ class SubEnterprises extends StatelessWidget {
                         onTap(context, subEnterprise);
                       },
                       icon: Icon(
-                        defaultTargetPlatform == TargetPlatform.iOS
+                        theme.platform == TargetPlatform.iOS
                             ? CupertinoIcons.pencil
                             : Icons.edit,
                         color: theme.primaryColorDark,

@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../constants/constants.dart';
@@ -19,6 +18,8 @@ class DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -27,7 +28,7 @@ class DrawerItem extends StatelessWidget {
           children: [
             Expanded(child: Text(message.hardcoded)),
             Icon(
-              defaultTargetPlatform == TargetPlatform.iOS
+              theme.platform == TargetPlatform.iOS
                   ? cupertinoIcon
                   : materialIcon,
             ),

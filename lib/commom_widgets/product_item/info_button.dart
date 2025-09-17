@@ -32,9 +32,7 @@ class InfoButton extends StatelessWidget {
             gapW8,
             if (mediaQuery.size.width >= 200)
               Icon(
-                defaultTargetPlatform == TargetPlatform.iOS
-                    ? Icons.info
-                    : Icons.info,
+                theme.platform == TargetPlatform.iOS ? Icons.info : Icons.info,
                 color: theme.primaryColor,
                 size: 16,
               ),

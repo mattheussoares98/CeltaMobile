@@ -32,7 +32,7 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
       },
       items: enterprises.map((e) {
         Color getColor(bool enabled) {
-          if (defaultTargetPlatform != TargetPlatform.iOS) {
+          if (theme.platform != TargetPlatform.iOS) {
             return theme.textTheme.bodyMedium!.color!;
           } else if (enabled == false) {
             return Colors.red;

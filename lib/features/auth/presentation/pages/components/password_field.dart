@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/presentation/theme/app_decorations.dart';
@@ -25,6 +24,8 @@ class PasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextFormField(
       enabled: !isLoading,
       controller: passwordController,
@@ -38,7 +39,7 @@ class PasswordField extends StatelessWidget {
         context: context,
         labelText: 'Senha'.hardcoded,
         prefixIcon: Icon(
-          defaultTargetPlatform == TargetPlatform.iOS
+          theme.platform == TargetPlatform.iOS
               ? CupertinoIcons.lock_fill
               : Icons.lock_outline,
         ),
@@ -65,7 +66,9 @@ class _ShowPasswordIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
+    final theme = Theme.of(context);
+
+    if (theme.platform == TargetPlatform.iOS) {
       return Icon(showPassword ? CupertinoIcons.eye : CupertinoIcons.eye_slash);
     } else {
       return Icon(showPassword ? Icons.visibility : Icons.visibility_off);

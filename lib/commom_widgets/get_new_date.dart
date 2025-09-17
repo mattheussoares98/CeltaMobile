@@ -1,9 +1,9 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../constants/constants.dart';
 import 'commom_widgets.dart';
 
 class GetNewDate {
@@ -17,8 +17,9 @@ class GetNewDate {
     required BuildContext context,
   }) async {
     DateTime? selectedDate;
+    final theme = Theme.of(context);
 
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
+    if (theme.platform == TargetPlatform.iOS) {
       selectedDate = await _showCupertinoDatePicker(
         minimumDate: minimumDate,
         context: context,
@@ -39,7 +40,7 @@ class GetNewDate {
 
     TimeOfDay? selectedTime;
 
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
+    if (theme.platform == TargetPlatform.iOS) {
       final time = await _showCupertinoDatePicker(
         minimumDate: minimumDate,
         context: context,
@@ -115,29 +116,42 @@ class GetNewDate {
             ),
           ),
           child: Container(
-            height: 230,
+            height: 280,
             color: Colors.white,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 180,
-                    child: CupertinoDatePicker(
-                      mode: mode,
-                      initialDateTime: currentSelectedDate,
-                      minimumDate: minimumDate,
-                      maximumDate: maximumDate,
-                      use24hFormat: true,
-                      onDateTimeChanged: (DateTime newDate) {
-                        tempPickedDate = newDate;
-                      },
+            child: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(Sizes.p8),
+                      child: Text(
+                        mode == CupertinoDatePickerMode.date
+                            ? 'Data'
+                            : 'Horário',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ),
-                  ),
-                  CupertinoButton(
-                    child: const Text('OK'),
-                    onPressed: () => context.pop(tempPickedDate),
-                  ),
-                ],
+                    SizedBox(
+                      height: 180,
+                      child: CupertinoDatePicker(
+                        mode: mode,
+                        initialDateTime: currentSelectedDate,
+                        minimumDate: minimumDate,
+                        maximumDate: maximumDate,
+                        use24hFormat: true,
+                        onDateTimeChanged: (DateTime newDate) {
+                          tempPickedDate = newDate;
+                        },
+                      ),
+                    ),
+                    CupertinoButton(
+                      child: const Text('OK'),
+                      onPressed: () => context.pop(tempPickedDate),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

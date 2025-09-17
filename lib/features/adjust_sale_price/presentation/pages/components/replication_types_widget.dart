@@ -25,7 +25,7 @@ class ReplicationTypesWidget extends StatelessWidget {
       children: [
         TitleWidget(title: 'Parâmetros de replicação'.hardcoded),
         ...availableReplications.map((replication) {
-          if (defaultTargetPlatform == TargetPlatform.iOS) {
+          if (theme.platform == TargetPlatform.iOS) {
             return CupertinoListTile(
               title: Text(replication.name, style: theme.textTheme.bodyMedium),
               trailing: CupertinoSwitch(

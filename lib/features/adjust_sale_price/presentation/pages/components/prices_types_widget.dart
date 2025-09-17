@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../constants/constants.dart';
@@ -26,7 +25,7 @@ class PricesTypesWidget extends StatelessWidget {
     return Column(
       children: [
         TitleWidget(title: "Tipo de preço".hardcoded),
-        if (defaultTargetPlatform == TargetPlatform.iOS)
+        if (theme.platform == TargetPlatform.iOS)
           CupertinoListSection(
             dividerMargin: 0,
             margin: EdgeInsets.zero,

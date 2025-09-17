@@ -101,7 +101,7 @@ class _GetDateItem extends StatelessWidget {
                       onDateChanged(selectedDate);
                     },
               icon: Icon(
-                defaultTargetPlatform == TargetPlatform.iOS
+                theme.platform == TargetPlatform.iOS
                     ? CupertinoIcons.calendar_badge_plus
                     : Icons.calendar_month,
                 color: enabled ? null : theme.disabledColor,

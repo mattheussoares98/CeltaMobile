@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/presentation/theme/app_decorations.dart';
@@ -21,6 +20,8 @@ class UserField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextFormField(
       enabled: !isLoading,
       focusNode: userFocusNode,
@@ -34,7 +35,7 @@ class UserField extends StatelessWidget {
         context: context,
         labelText: 'Usuário'.hardcoded,
         prefixIcon: Icon(
-          defaultTargetPlatform == TargetPlatform.iOS
+          theme.platform == TargetPlatform.iOS
               ? CupertinoIcons.person
               : Icons.person,
         ),

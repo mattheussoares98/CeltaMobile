@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '/constants/app_sizes.dart';
 
@@ -23,6 +24,46 @@ class PrimaryButton extends StatelessWidget {
   final IconAlignment? iconAlignment;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    if (theme.platform == TargetPlatform.iOS) {
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return CupertinoButton.filled(
+            onPressed: isLoading ? null : onPressed,
+            sizeStyle: CupertinoButtonSize.small,
+            padding: EdgeInsets.all(0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: isLoading ? Colors.black : Colors.white,
+                    ),
+                  ),
+                ),
+                if (isLoading)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+                    child: CupertinoActivityIndicator(
+                      color: theme.disabledColor,
+                    ),
+                  )
+                else if (icon != null && constraints.maxWidth > 220)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+                    child: icon!,
+                  ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return SizedBox(
       height: Sizes.p32,
       child: ElevatedButton.icon(

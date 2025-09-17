@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +12,8 @@ class LogoutButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
     return IconButton(
       onPressed: () {
         showAlertDialog(
@@ -28,7 +29,7 @@ class LogoutButton extends ConsumerWidget {
         );
       },
       icon: Icon(
-        defaultTargetPlatform == TargetPlatform.iOS
+        theme.platform == TargetPlatform.iOS
             ? CupertinoIcons.person_crop_circle_badge_xmark
             : Icons.logout,
       ),

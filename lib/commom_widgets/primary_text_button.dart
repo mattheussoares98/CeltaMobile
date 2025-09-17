@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '/constants/app_sizes.dart';
 
@@ -26,11 +25,28 @@ class PrimaryTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      //TODO change and test
-      return CupertinoButton.filled(
-        onPressed: onPressed,
-        child: isLoading ? const CupertinoActivityIndicator() : Text(text),
+    if (theme.platform == TargetPlatform.iOS) {
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return CupertinoButton(
+            onPressed: isLoading ? null : onPressed,
+            sizeStyle: CupertinoButtonSize.small,
+            padding: EdgeInsets.all(0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(child: Text(text, textAlign: TextAlign.center)),
+                if (isLoading) ...[
+                  gapW8,
+                  CupertinoActivityIndicator(color: theme.disabledColor),
+                ] else if (icon != null && constraints.maxWidth > 220) ...[
+                  gapW8,
+                  icon!,
+                ],
+              ],
+            ),
+          );
+        },
       );
     }
     return SizedBox(
