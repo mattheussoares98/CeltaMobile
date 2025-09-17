@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -59,6 +61,7 @@ class DefaultTextFormField extends StatelessWidget {
       );
     }
     return TextFormField(
+      key: ValueKey(Random().nextDouble()),
       enabled: enabled == false,
       controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -80,7 +83,7 @@ class DefaultTextFormField extends StatelessWidget {
   }
 }
 
-class _CupertinoFormField extends StatelessWidget {
+class _CupertinoFormField extends StatefulWidget {
   const _CupertinoFormField({
     required this.controller,
     required this.labelText,
@@ -110,32 +113,60 @@ class _CupertinoFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final int maxLength;
+  @override
+  State<_CupertinoFormField> createState() => _CupertinoFormFieldState();
+}
+
+class _CupertinoFormFieldState extends State<_CupertinoFormField> {
+  FormFieldState<String>? _formFieldState;
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.controller?.addListener(_onControllerChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.controller?.removeListener(_onControllerChanged);
+    super.dispose();
+  }
+
+  void _onControllerChanged() {
+    if (_formFieldState?.value != widget.controller?.text) {
+      _formFieldState?.didChange(widget.controller?.text);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return FormField<String>(
-      validator: validator,
-      enabled: enabled ?? true,
-      initialValue: controller?.text,
-      autovalidateMode: autovalidateMode,
+      key: ValueKey(Random().nextDouble()),
+      validator: widget.validator,
+      enabled: widget.enabled ?? true,
+      initialValue: widget.controller?.text,
+      autovalidateMode: widget.autovalidateMode,
       builder: (state) {
+        _formFieldState = state;
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CupertinoTextField(
-              controller: controller,
-              placeholder: labelText ?? hintText,
+              controller: widget.controller,
+              placeholder: widget.labelText ?? widget.hintText,
               placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.disabledColor,
               ),
-              obscureText: obscureText,
-              onSubmitted: onFieldSubmitted,
-              enabled: enabled == true,
-              focusNode: focusNode,
+              obscureText: widget.obscureText,
+              onSubmitted: widget.onFieldSubmitted,
+              enabled: widget.enabled == true,
+              focusNode: widget.focusNode,
               enableSuggestions: true,
-              maxLength: maxLength,
+              maxLength: widget.maxLength,
               onChanged: (value) {
                 state.didChange(value);
               },
@@ -146,13 +177,13 @@ class _CupertinoFormField extends StatelessWidget {
                     ? Border.all(color: CupertinoColors.destructiveRed)
                     : null,
               ),
-              prefix: prefixIcon != null
+              prefix: widget.prefixIcon != null
                   ? Padding(
                       padding: const EdgeInsets.only(left: Sizes.p8),
-                      child: prefixIcon,
+                      child: widget.prefixIcon,
                     )
                   : null,
-              suffix: suffixIcon,
+              suffix: widget.suffixIcon,
               padding: const EdgeInsets.all(Sizes.p12),
             ),
 
