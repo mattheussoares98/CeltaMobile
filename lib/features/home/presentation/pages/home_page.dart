@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/providers/providers.dart';
 import '../../../../utils/utils.dart';
 import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
@@ -32,7 +33,7 @@ class HomePage extends ConsumerWidget {
         leadingWidth: 40,
         title: AsyncValueWidget(
           value: enterprisesAsync,
-          tryAgain: () => ref.invalidate(enterprisesStateControllerProvider),
+          tryAgain: () => ref.invalidate(enterpriseRepositoryProvider),
           data: (enterprises) {
             return SelectEnterpriseDropDown(
               selectedEnterprise: selectedEnterprise,
