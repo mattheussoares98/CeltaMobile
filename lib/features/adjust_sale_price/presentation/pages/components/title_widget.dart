@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 
 class TitleWidget extends StatelessWidget {
   final String title;
-  const TitleWidget({super.key, required this.title});
+  final bool? enabled;
+  const TitleWidget({super.key, required this.title, this.enabled});
 
   @override
   Widget build(BuildContext context) {
-    return Text(title, style: Theme.of(context).textTheme.titleMedium);
+    final theme = Theme.of(context);
+    return Text(
+      title,
+      style: theme.textTheme.titleMedium?.copyWith(
+        color: enabled == true ? theme.primaryColor : theme.disabledColor,
+      ),
+    );
   }
 }

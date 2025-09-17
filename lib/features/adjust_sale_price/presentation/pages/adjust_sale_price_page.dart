@@ -34,6 +34,8 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
   bool? isSelectedGrid = false;
   bool? isSelectedOperationalGrouping = false;
   bool? isSelectedPackings = false;
+  DateTime? selectedStartDate;
+  DateTime? selectedEndDate;
   final Set<ReplicationTypes> _selectedReplications = {
     ReplicationTypes.packings,
   };
@@ -123,9 +125,24 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                     });
                   },
                 ),
-
                 Divider(),
-                Text("Start and end date"),
+                StartAndEndDates(
+                  selectedStartDate: selectedStartDate,
+                  selectedEndDate: selectedEndDate,
+                  enableEndDate:
+                      selectedPriceType ==
+                      PriceType.whole, //TODO fix these names
+                  onChangeStartDate: (newDate) {
+                    setState(() {
+                      selectedStartDate = newDate;
+                    });
+                  },
+                  onChangeEndDate: (newDate) {
+                    setState(() {
+                      selectedEndDate = newDate;
+                    });
+                  },
+                ),
                 Divider(),
                 Text("product info"),
                 Divider(),
