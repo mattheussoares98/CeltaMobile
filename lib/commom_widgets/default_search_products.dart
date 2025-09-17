@@ -22,10 +22,12 @@ class DefaultSearchProducts extends StatefulWidget {
 
 class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
   final formKey = GlobalKey<FormState>();
+  final focusNode = FocusNode();
 
   @override
   void dispose() {
     super.dispose();
+    focusNode.dispose();
   }
 
   void searchProducts() async {
@@ -48,58 +50,52 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
             maxLength: 40,
             enabled: !widget.isLoading,
             controller: widget.searchValueController,
+            focusNode: focusNode,
             validator: FormValidators.compose([NonEmptyValidator()]),
             onFieldSubmitted: (_) {
               searchProducts();
             },
             prefixIcon: width < 220
                 ? null
-                : IconButton(
-                    onPressed: () {
+                : _DefaultIcon(
+                    onPress: () {
                       widget.searchValueController.clear();
+                      focusNode.requestFocus();
                     },
-                    icon: Icon(
-                      theme.platform == TargetPlatform.iOS
-                          ? CupertinoIcons.delete
-                          : Icons.delete,
-                      color: widget.isLoading
-                          ? theme.disabledColor
-                          : Colors.red,
-                    ),
+                    materialIcon: Icons.delete,
+                    cupertinoIcon: CupertinoIcons.delete,
+                    iconColor: widget.isLoading
+                        ? theme.disabledColor
+                        : Colors.red,
                   ),
+
             suffixIcon: FittedBox(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (width >= 220)
-                    IconButton(
-                      onPressed: searchProducts,
-                      icon: Icon(
-                        theme.platform == TargetPlatform.iOS
-                            ? CupertinoIcons.search
-                            : Icons.search,
-                      ),
+                    _DefaultIcon(
+                      onPress: searchProducts,
+                      materialIcon: Icons.search,
+                      cupertinoIcon: CupertinoIcons.search,
+                      iconColor: widget.isLoading ? theme.disabledColor : null,
                     ),
-                  IconButton(
-                    onPressed: () {
+                  _DefaultIcon(
+                    onPress: () {
                       //TODO implement
                     },
-                    icon: Icon(
-                      theme.platform == TargetPlatform.iOS
-                          ? CupertinoIcons.camera_fill
-                          : Icons.camera_alt,
-                    ),
+                    materialIcon: Icons.camera_alt,
+                    cupertinoIcon: CupertinoIcons.camera_fill,
+                    iconColor: widget.isLoading ? theme.disabledColor : null,
                   ),
-                  IconButton(
-                    onPressed: () {
+                  _DefaultIcon(
+                    onPress: () {
                       //TODO implement
                     },
-                    icon: Icon(
-                      theme.platform == TargetPlatform.iOS
-                          ? CupertinoIcons.settings
-                          : Icons.settings,
-                    ),
+                    materialIcon: Icons.settings,
+                    cupertinoIcon: CupertinoIcons.settings,
+                    iconColor: widget.isLoading ? theme.disabledColor : null,
                   ),
                 ],
               ),
@@ -110,6 +106,33 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
           ),
         );
       },
+    );
+  }
+}
+
+class _DefaultIcon extends StatelessWidget {
+  final VoidCallback onPress;
+  final IconData materialIcon;
+  final IconData cupertinoIcon;
+  final Color? iconColor;
+  const _DefaultIcon({
+    required this.onPress,
+    required this.materialIcon,
+    required this.cupertinoIcon,
+    required this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return IconButton(
+      visualDensity: VisualDensity.comfortable,
+      onPressed: onPress,
+      icon: Icon(
+        theme.platform == TargetPlatform.iOS ? cupertinoIcon : materialIcon,
+        color: iconColor,
+      ),
     );
   }
 }
