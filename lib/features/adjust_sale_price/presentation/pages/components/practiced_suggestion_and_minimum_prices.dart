@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
 
-class PracticedAndSuggestion extends StatelessWidget {
+class PracticedSuggestionAndMinimumPrices extends StatelessWidget {
   final ProductEntity product;
   final SaleType? selectedSaleType;
   final PriceType selectedPriceType;
-  const PracticedAndSuggestion({
+  const PracticedSuggestionAndMinimumPrices({
     super.key,
     required this.product,
     required this.selectedSaleType,
@@ -24,6 +24,19 @@ class PracticedAndSuggestion extends StatelessWidget {
         return product.PriceCost.WholeSuggestionPrice;
       case SaleType.ecommerce:
         return product.PriceCost.ECommerceSuggestionPrice;
+      default:
+        return null;
+    }
+  }
+
+  double? get minimumPrice {
+    switch (selectedSaleType) {
+      case SaleType.retail:
+        return product.PriceCost.RetailMinimumPrice;
+      case SaleType.whole:
+        return product.PriceCost.WholeMinimumPrice;
+      case SaleType.ecommerce:
+        return product.PriceCost.ECommerceMinimumPrice;
       default:
         return null;
     }
@@ -67,6 +80,12 @@ class PracticedAndSuggestion extends StatelessWidget {
               "Sem preço ${selectedPriceType.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} sugerido"
                   .hardcoded,
         ),
+        if (minimumPrice != null && minimumPrice! > 0)
+          _SuggestionItem(
+            title: 'Mínimo '.hardcoded,
+            value: minimumPrice,
+            emptyMessage: "",
+          ),
       ],
     );
   }
@@ -98,7 +117,10 @@ class _SuggestionItem extends StatelessWidget {
         text: title,
         style: theme.textTheme.titleSmall,
         children: [
-          TextSpan(text: "R\$ ".hardcoded, style: theme.textTheme.bodySmall),
+          TextSpan(
+            text: "R\$ ".hardcoded,
+            style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
+          ),
           TextSpan(
             text: value.toString().toBrazilianNumber(),
             style: theme.textTheme.bodyMedium,

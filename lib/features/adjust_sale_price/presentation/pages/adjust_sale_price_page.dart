@@ -143,7 +143,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                 ),
                 _DefaultDivider(),
                 PricesCostsAndMarginsButton(product: product!),
-                PracticedAndSuggestion(
+                PracticedSuggestionAndMinimumPrices(
                   product: product,
                   selectedSaleType: selectedSaleType,
                   selectedPriceType: selectedPriceType!,
