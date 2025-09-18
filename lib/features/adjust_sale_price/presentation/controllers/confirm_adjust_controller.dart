@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/providers/providers.dart';
+import '../../../auth/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
@@ -13,8 +15,6 @@ class ConfirmAdjustController extends _$ConfirmAdjustController {
   FutureOr<void> build() {}
 
   Future<void> confirm({
-    required String baseUrl,
-    required String crossIdentity,
     required int enterpriseCode,
     required int productCode,
     required int productPackingCode,
@@ -22,15 +22,17 @@ class ConfirmAdjustController extends _$ConfirmAdjustController {
     required List<ReplicationTypes> replications,
     required OfferParams? offerParams,
     required RetailParams? retailParams,
-    required DateTime now,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
+      final userSession = await ref.watch(userSessionProvider.future);
+      final userEntity = await ref.watch(authStateControllerProvider.future);
+
       await ref
           .read(soapAdjustSalePriceRepositoryProvider)
           .confirm(
-            baseUrl: baseUrl,
-            crossIdentity: crossIdentity,
+            baseUrl: userSession!.baseUrl!,
+            crossIdentity: userEntity!.CrossIdentity_Usuario!,
             enterpriseCode: enterpriseCode,
             productCode: productCode,
             productPackingCode: productPackingCode,
@@ -38,7 +40,6 @@ class ConfirmAdjustController extends _$ConfirmAdjustController {
             replications: replications,
             offerParams: offerParams,
             retailParams: retailParams,
-            now: now,
           );
     });
   }

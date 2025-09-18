@@ -68,7 +68,6 @@ void main() {
           productPackingCode: productPackingCode,
           saleType: saleType,
           replications: replications,
-          now: now,
           offerParams: OfferParams(
             price: price,
             effectuationDateOffer: null,
@@ -115,7 +114,6 @@ void main() {
     test(
       'should save with correct params when pass offer WITH effectuation date and end date',
       () async {
-        final now = DateTime.now();
         final price = faker.randomGenerator.decimal();
         final effectuationDateOffer = faker.date.dateTime();
         final endDateOffer = faker.date.dateTime();
@@ -128,7 +126,6 @@ void main() {
           productPackingCode: productPackingCode,
           saleType: saleType,
           replications: replications,
-          now: now,
           offerParams: OfferParams(
             price: price,
             effectuationDateOffer: effectuationDateOffer,
@@ -190,7 +187,6 @@ void main() {
           productPackingCode: productPackingCode,
           saleType: saleType,
           replications: replications,
-          now: now,
           offerParams: null,
           retailParams: RetailParams(price: price, effectuationDatePrice: null),
         );
@@ -230,7 +226,6 @@ void main() {
     test(
       'should save with correct params when pass sale retail WITH effectuation date',
       () async {
-        final now = DateTime.now();
         final price = faker.randomGenerator.decimal();
         final effectuationDatePrice = faker.date.dateTime();
 
@@ -242,7 +237,6 @@ void main() {
           productPackingCode: productPackingCode,
           saleType: saleType,
           replications: replications,
-          now: now,
           offerParams: null,
           retailParams: RetailParams(
             price: price,

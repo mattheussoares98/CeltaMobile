@@ -486,7 +486,6 @@ class SoapAdjustSalePriceDatasourceSpy extends Mock
         replications: any(named: "replications"),
         offerParams: any(named: "offerParams"),
         retailParams: any(named: "retailParams"),
-        now: any(named: "now"),
       ),
     ).thenAnswer((_) async => {});
   }
@@ -511,7 +510,6 @@ class SoapAdjustSalePriceRepositorySpy extends Mock
       replications: any(named: "replications"),
       offerParams: any(named: "offerParams"),
       retailParams: any(named: "retailParams"),
-      now: any(named: "now"),
     ),
   );
 }

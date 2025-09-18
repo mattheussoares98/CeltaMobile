@@ -8,7 +8,14 @@ import '../../../../../core/validators/validators.dart';
 
 class PriceFieldAndConfirmButton extends ConsumerWidget {
   final TextEditingController priceController;
-  const PriceFieldAndConfirmButton({super.key, required this.priceController});
+  final void Function()? onPressed;
+  final bool isLoading;
+  const PriceFieldAndConfirmButton({
+    super.key,
+    required this.priceController,
+    required this.onPressed,
+    required this.isLoading,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +32,7 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
               labelText: "Preço".hardcoded,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               onFieldSubmitted: (_) {
-                //TODO implement
+                onPressed?.call();
               },
               keyboardType: TextInputType.numberWithOptions(
                 decimal: true,
@@ -44,9 +51,7 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: Sizes.p8),
                 child: PrimaryButton(
                   text: 'Confirmar'.hardcoded,
-                  onPressed: () {
-                    //TODO create a controller and use in this page
-                  },
+                  onPressed: onPressed,
                 ),
               ),
             ],

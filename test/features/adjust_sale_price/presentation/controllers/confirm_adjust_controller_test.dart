@@ -75,8 +75,6 @@ void main() {
       await container
           .read(confirmAdjustControllerProvider.notifier)
           .confirm(
-            baseUrl: baseUrl,
-            crossIdentity: crossIdentity,
             enterpriseCode: enterpriseCode,
             productCode: productCode,
             productPackingCode: productPackingCode,
@@ -84,7 +82,6 @@ void main() {
             replications: replications,
             retailParams: retailParams,
             saleType: saleType,
-            now: DateTime.now(),
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -99,7 +96,6 @@ void main() {
           replications: replications,
           retailParams: retailParams,
           saleType: saleType,
-          now: any(named: 'now'),
         ),
       ).called(1);
     });
@@ -118,8 +114,6 @@ void main() {
       await container
           .read(confirmAdjustControllerProvider.notifier)
           .confirm(
-            baseUrl: baseUrl,
-            crossIdentity: crossIdentity,
             enterpriseCode: enterpriseCode,
             productCode: productCode,
             productPackingCode: productPackingCode,
@@ -127,7 +121,6 @@ void main() {
             replications: replications,
             retailParams: retailParams,
             saleType: saleType,
-            now: DateTime.now(),
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

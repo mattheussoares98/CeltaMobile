@@ -19,7 +19,6 @@ class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
     required List<ReplicationTypes> replications,
     required OfferParams? offerParams,
     required RetailParams? retailParams,
-    required DateTime now,
   }) async {
     Map<String, dynamic> params = {
       "CrossIdentity": crossIdentity,
@@ -34,6 +33,8 @@ class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
       "UpdateGrate": replications.contains(ReplicationTypes.grid),
       "SaleTypeInt": saleType.code, //1 == varejo; 2 == atacado; 3 == ecommerce
     };
+
+    final now = DateTime.now();
 
     if (offerParams != null) {
       params.addAll({
