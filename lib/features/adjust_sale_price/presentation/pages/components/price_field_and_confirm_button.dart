@@ -12,35 +12,47 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      children: [
-        Expanded(
-          child: DefaultTextFormField(
-            controller: priceController,
-            maxLength: 10,
-            hintText: "Preço".hardcoded,
-            labelText: "Preço".hardcoded,
-            onFieldSubmitted: (_) {
-              //TODO implement
-            },
-            keyboardType: TextInputType.numberWithOptions(
-              decimal: true,
-              //TODO test in iOS
+    return Padding(
+      padding: const EdgeInsets.only(top: Sizes.p8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: DefaultTextFormField(
+              controller: priceController,
+              maxLength: 10,
+              hintText: "Preço".hardcoded,
+              labelText: "Preço".hardcoded,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              onFieldSubmitted: (_) {
+                //TODO implement
+              },
+              keyboardType: TextInputType.numberWithOptions(
+                decimal: true,
+                //TODO test in iOS
+              ),
+              validator: FormValidators.compose([
+                NonEmptyValidator(),
+                NumberValidator(allowDecimal: true),
+              ]),
             ),
-            validator: FormValidators.compose([
-              NonEmptyValidator(),
-              //TODO create number validator
-            ]),
           ),
-        ),
-        gapW8,
-        PrimaryButton(
-          text: 'Confirmar'.hardcoded,
-          onPressed: () {
-            //TODO create a controller and use in this page
-          },
-        ),
-      ],
+          gapW8,
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: Sizes.p8),
+                child: PrimaryButton(
+                  text: 'Confirmar'.hardcoded,
+                  onPressed: () {
+                    //TODO create a controller and use in this page
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
