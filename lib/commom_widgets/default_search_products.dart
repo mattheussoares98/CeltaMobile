@@ -100,8 +100,8 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                 ],
               ),
             ),
-            labelText: 'NOME-PLU-EAN-%'.hardcoded,
-            hintText: 'NOME-PLU-EAN-%'
+            labelText: 'NOME-PLU-EAN-%-BALANÇA'.hardcoded,
+            hintText: 'NOME-PLU-EAN-%-BALANÇA'
                 .hardcoded, //TODO show personalizedCode if is enabled this option
           ),
         );
