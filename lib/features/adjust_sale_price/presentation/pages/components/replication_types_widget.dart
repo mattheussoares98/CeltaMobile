@@ -27,6 +27,7 @@ class ReplicationTypesWidget extends StatelessWidget {
         ...availableReplications.map((replication) {
           if (theme.platform == TargetPlatform.iOS) {
             return CupertinoListTile(
+              padding: EdgeInsets.zero,
               title: Text(replication.name, style: theme.textTheme.bodyMedium),
               trailing: CupertinoSwitch(
                 value: selectedReplications.contains(replication),

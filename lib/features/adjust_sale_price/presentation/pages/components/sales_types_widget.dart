@@ -2,6 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
 import 'components.dart';
@@ -32,11 +33,12 @@ class SalesTypeWidget extends StatelessWidget {
     return Column(
       children: [
         TitleWidget(title: "Tipo de venda".hardcoded),
+        gapH8,
         if (theme.platform == TargetPlatform.iOS)
-          DefaultCupertinoCheckBox(
+          DefaultSegmentedButtons<SaleType>(
             items: items,
-            selectedSaleType: selectedSaleType,
-            onTap: onTap,
+            selectedValue: selectedSaleType?.value,
+            onChanged: onTap,
           )
         else
           RadioGroup<SaleType>(

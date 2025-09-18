@@ -2,10 +2,11 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
 import 'components.dart';
 
-class PricesTypesWidget extends StatelessWidget {
+class PricesTypesWidget extends StatefulWidget {
   final PriceType? selectedPriceType;
   final void Function(PriceType priceType) onTap;
   const PricesTypesWidget({
@@ -14,6 +15,11 @@ class PricesTypesWidget extends StatelessWidget {
     required this.onTap,
   });
 
+  @override
+  State<PricesTypesWidget> createState() => _PricesTypesWidgetState();
+}
+
+class _PricesTypesWidgetState extends State<PricesTypesWidget> {
   @override
   Widget build(BuildContext context) {
     final items = [PriceType.sale, PriceType.offer];
@@ -24,23 +30,27 @@ class PricesTypesWidget extends StatelessWidget {
     return Column(
       children: [
         TitleWidget(title: "Tipo de preço".hardcoded),
+        gapH8,
         if (theme.platform == TargetPlatform.iOS)
-          DefaultCupertinoCheckBox(
+          DefaultSegmentedButtons<PriceType>(
             items: items,
-            selectedSaleType: selectedPriceType,
-            onTap: onTap,
+            selectedValue: widget.selectedPriceType?.value,
+            onChanged: widget.onTap,
           )
         else
           RadioGroup<PriceType>(
             key: Key(showVertical ? "vertical" : "horizontal"),
-            groupValue: selectedPriceType,
+            groupValue: widget.selectedPriceType?.value,
             onChanged: (value) {
-              onTap(value!);
+              widget.onTap(value!);
             },
             child: showVertical
                 ? Column(
                     children: items
-                        .map((e) => _PriceTypeItem(priceType: e, onTap: onTap))
+                        .map(
+                          (e) =>
+                              _PriceTypeItem(priceType: e, onTap: widget.onTap),
+                        )
                         .toList(),
                   )
                 : Row(
@@ -48,7 +58,10 @@ class PricesTypesWidget extends StatelessWidget {
                         .map(
                           (e) => Flexible(
                             flex: e.name.length,
-                            child: _PriceTypeItem(priceType: e, onTap: onTap),
+                            child: _PriceTypeItem(
+                              priceType: e,
+                              onTap: widget.onTap,
+                            ),
                           ),
                         )
                         .toList(),

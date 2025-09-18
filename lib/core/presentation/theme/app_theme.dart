@@ -27,7 +27,7 @@ class AppTheme {
         color: disabledColor,
         strokeWidth: 2,
       ),
-      platform: TargetPlatform.iOS,
+      // platform: TargetPlatform.iOS,
       textTheme: TextTheme(
         titleLarge: theme.textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.bold,

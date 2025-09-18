@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/domain/entities/entities.dart';
 
-enum SaleType implements SelectableItem {
+enum SaleType implements SelectableItem<SaleType> {
   retail(1, 'Varejo'),
   whole(2, 'Atacado'),
   ecommerce(3, 'E-commerce');
