@@ -57,6 +57,17 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
       return;
     }
 
+    bool? confirmed = await showAlertDialog(
+      context: context,
+      title: 'Confirmar?'.hardcoded,
+      cancelActionText: 'Cencelar'.hardcoded,
+      defaultActionText: 'Sim'.hardcoded,
+    );
+
+    if (confirmed != true) {
+      return;
+    }
+
     await ref
         .read(confirmAdjustControllerProvider.notifier)
         .confirm(
