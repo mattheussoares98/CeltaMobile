@@ -194,7 +194,9 @@ class _CupertinoFormFieldState extends State<_CupertinoFormField> {
                   : null,
               suffix: widget.suffixIcon,
               padding: EdgeInsets.all(
-                widget.prefixIcon is Icon || widget.suffixIcon is Icon
+                widget.prefixIcon is Icon ||
+                        widget.suffixIcon is Icon ||
+                        widget.suffixIcon == null
                     ? Sizes.p12
                     : 0,
               ),

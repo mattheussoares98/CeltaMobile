@@ -25,6 +25,7 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
+            flex: 65,
             child: DefaultTextFormField(
               controller: priceController,
               maxLength: 10,
@@ -45,7 +46,8 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
             ),
           ),
           gapW8,
-          Flexible(
+          Expanded(
+            flex: 35,
             child: Column(
               children: [
                 Padding(
