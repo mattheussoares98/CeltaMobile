@@ -67,7 +67,6 @@ class _PricesTypesWidgetState extends State<PricesTypesWidget> {
                         .toList(),
                   ),
           ),
-        Divider(),
       ],
     );
   }

@@ -66,7 +66,6 @@ class SalesTypeWidget extends StatelessWidget {
                         .toList(),
                   ),
           ),
-        Divider(),
       ],
     );
   }

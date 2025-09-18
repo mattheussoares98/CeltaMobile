@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../constants/constants.dart';
@@ -41,6 +40,7 @@ class ReplicationTypesWidget extends StatelessWidget {
               title: Text(replication.name, style: theme.textTheme.bodyMedium),
               value: selectedReplications.contains(replication),
               onChanged: (_) => onChanged(replication),
+              dense: true,
             );
           }
         }),

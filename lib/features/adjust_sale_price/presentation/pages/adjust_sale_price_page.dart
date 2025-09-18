@@ -102,6 +102,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                     });
                   },
                 ),
+                _DefaultDivider(),
                 PricesTypesWidget(
                   selectedPriceType: selectedPriceType,
                   onTap: (value) {
@@ -110,6 +111,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                     });
                   },
                 ),
+                _DefaultDivider(),
                 ReplicationTypesWidget(
                   availableReplications: availableReplications.toList(),
                   selectedReplications: _selectedReplications,
