@@ -63,6 +63,8 @@ class PracticedSuggestionAndMinimumPrices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -72,6 +74,18 @@ class PracticedSuggestionAndMinimumPrices extends StatelessWidget {
           emptyMessage:
               "Sem preço ${selectedPriceType.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} praticado"
                   .hardcoded,
+          anotherMessage:
+              minimumPrice != null &&
+                  minimumPrice! > 0 &&
+                  practiced != null &&
+                  practiced! < minimumPrice!
+              ? TextSpan(
+                  text: " MENOR QUE O MÍNIMO".hardcoded,
+                  style: theme.textTheme.titleSmall!.copyWith(
+                    color: Colors.red,
+                  ),
+                )
+              : null,
         ),
         _SuggestionItem(
           title: 'Sugerido '.hardcoded,
@@ -95,10 +109,12 @@ class _SuggestionItem extends StatelessWidget {
   final String title;
   final double? value;
   final String emptyMessage;
+  final TextSpan? anotherMessage;
   const _SuggestionItem({
     required this.title,
     required this.value,
     required this.emptyMessage,
+    this.anotherMessage,
   });
 
   @override
@@ -125,6 +141,7 @@ class _SuggestionItem extends StatelessWidget {
             text: value.toString().toBrazilianNumber(),
             style: theme.textTheme.bodyMedium,
           ),
+          ?anotherMessage,
         ],
       ),
     );
