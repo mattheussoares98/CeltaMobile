@@ -39,6 +39,14 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
   final Set<ReplicationTypes> _selectedReplications = {
     ReplicationTypes.packings,
   };
+  final priceController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    priceController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +157,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                   selectedPriceType: selectedPriceType!,
                 ),
                 _DefaultDivider(),
+                PriceFieldAndConfirmButton(priceController: priceController),
               ],
             ),
           );

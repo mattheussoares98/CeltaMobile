@@ -64,7 +64,7 @@ class DefaultTextFormField extends StatelessWidget {
       key: ValueKey(Random().nextDouble()),
       enabled: enabled,
       controller: controller,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      autovalidateMode: autovalidateMode,
       onFieldSubmitted: onFieldSubmitted,
       validator: validator,
       obscureText: obscureText,

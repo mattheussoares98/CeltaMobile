@@ -1,5 +1,6 @@
 export './pices_costs_and_margins_button.dart';
 export 'practiced_suggestion_and_minimum_prices.dart';
+export './price_field_and_confirm_button.dart';
 export './prices_types_widget.dart';
 export './replication_types_widget.dart';
 export 'sales_types_widget.dart';
