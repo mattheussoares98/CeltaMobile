@@ -11,6 +11,7 @@ export './default_simple_drop_down.dart';
 export './default_text_form_field.dart';
 export './empty_placeholder_widget.dart';
 export './get_new_date.dart';
+export './loading_page.dart';
 export './primary_button.dart';
 export './primary_text_button.dart';
 export './responsive_center.dart';
