@@ -25,7 +25,7 @@ class DefaultTextFormField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.maxLength,
-    this.enabled,
+    this.enabled = true,
     this.onFieldSubmitted,
     this.validator,
     this.labelText,
@@ -62,7 +62,7 @@ class DefaultTextFormField extends StatelessWidget {
     }
     return TextFormField(
       key: ValueKey(Random().nextDouble()),
-      enabled: enabled == false,
+      enabled: enabled,
       controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: onFieldSubmitted,
@@ -71,6 +71,13 @@ class DefaultTextFormField extends StatelessWidget {
       focusNode: focusNode,
       keyboardType: keyboardType,
       maxLength: maxLength,
+      buildCounter:
+          (
+            context, {
+            required currentLength,
+            required isFocused,
+            required maxLength,
+          }) => null,
       decoration: AppDecorations.input(
         context: context,
         labelText: labelText,
