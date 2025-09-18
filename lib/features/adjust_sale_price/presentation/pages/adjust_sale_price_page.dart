@@ -92,7 +92,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
             child: Column(
               children: [
                 Text("Schedules"),
-                Divider(),
+                _DefaultDivider(),
                 SalesTypeWidget(
                   selectedSaleType: selectedSaleType,
                   selectedEnterprise: selectedEnterprise,
@@ -123,7 +123,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                     });
                   },
                 ),
-                Divider(),
+                _DefaultDivider(),
                 StartAndEndDates(
                   selectedStartDate: selectedStartDate,
                   selectedEndDate: selectedEndDate,
@@ -139,14 +139,26 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                     });
                   },
                 ),
-                Divider(),
+                _DefaultDivider(),
                 PricesCostsAndMarginsButton(product: product!),
-                Divider(),
+                PracticedAndSuggestion(
+                  product: product,
+                  selectedSaleType: selectedSaleType,
+                  selectedPriceType: selectedPriceType!,
+                ),
+                _DefaultDivider(),
               ],
             ),
           );
         },
       ),
     );
+  }
+}
+
+class _DefaultDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Divider(height: Sizes.p8);
   }
 }

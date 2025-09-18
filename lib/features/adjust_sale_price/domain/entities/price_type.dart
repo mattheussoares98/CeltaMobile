@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/domain/entities/entities.dart';
 
 enum PriceType implements SelectableItem<PriceType> {
-  sale('Varejo'),
+  sale('Venda'),
   offer('Oferta');
 
   @override
