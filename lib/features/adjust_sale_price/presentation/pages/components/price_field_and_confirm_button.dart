@@ -45,16 +45,18 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
             ),
           ),
           gapW8,
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: Sizes.p8),
-                child: PrimaryButton(
-                  text: 'Confirmar'.hardcoded,
-                  onPressed: onPressed,
+          Flexible(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: Sizes.p8),
+                  child: PrimaryButton(
+                    text: 'Confirmar'.hardcoded,
+                    onPressed: onPressed,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
