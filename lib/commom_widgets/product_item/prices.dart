@@ -24,12 +24,16 @@ class Prices extends StatelessWidget {
         gapH8,
         TitleAndSubTitle(
           title: 'Venda '.hardcoded,
-          subTitle: widget.product.RetailPracticedPrice,
+          subTitle: widget
+              .product
+              .RetailPracticedPrice, //TODO add information when is offer price and add a button to finish the offer when the user has permission
           subTitleIsPrice: true,
         ),
         TitleAndSubTitle(
           title: 'Atacado '.hardcoded,
-          subTitle: widget.product.WholePracticedPrice,
+          subTitle: widget
+              .product
+              .WholePracticedPrice, //TODO add information when is offer price and add a button to finish the offer when the user has permission
           subTitleIsPrice: true,
         ),
         TitleAndSubTitle(
