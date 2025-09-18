@@ -11,5 +11,6 @@ abstract class ISoapAdjustSalePriceDatasource {
     required List<ReplicationTypes> replications,
     required OfferParams? offerParams,
     required RetailParams? retailParams,
+    required DateTime now,
   });
 }

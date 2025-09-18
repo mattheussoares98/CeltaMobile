@@ -1,6 +1,10 @@
+import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/providers/providers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/providers.dart';
+import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,11 +12,10 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-void main() {
+void main() async {
   late SoapAdjustSalePriceRepositorySpy mockRepository;
 
   late String baseUrl;
-  late String crossIdentity;
   late int enterpriseCode;
   late int productCode;
   late int productPackingCode;
@@ -20,6 +23,9 @@ void main() {
   late List<ReplicationTypes> replications;
   late OfferParams offerParams;
   late RetailParams retailParams;
+  late UserEntity userEntity;
+  late UserSessionModel userSession;
+  late DateTime now;
 
   setUp(() {
     for (final saleType in SaleType.values) {
@@ -32,7 +38,6 @@ void main() {
     mockRepository = SoapAdjustSalePriceRepositorySpy();
 
     baseUrl = faker.internet.httpUrl();
-    crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
     productCode = faker.randomGenerator.integer(1000);
     productPackingCode = faker.randomGenerator.integer(100);
@@ -52,12 +57,19 @@ void main() {
       price: faker.randomGenerator.decimal(),
       effectuationDatePrice: faker.date.dateTime(),
     );
+    userEntity = EntityFactory.makeUserEntity();
+    userSession = UserSessionModel(baseUrl: baseUrl);
+    now = DateTime.now();
   });
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
       overrides: [
         soapAdjustSalePriceRepositoryProvider.overrideWithValue(mockRepository),
+        userSessionProvider.overrideWith(() => FakeUserSession(userSession)),
+        authStateControllerProvider.overrideWith(
+          () => FakeAuthStateController(userEntity),
+        ),
       ],
     );
   }
@@ -82,13 +94,14 @@ void main() {
             replications: replications,
             retailParams: retailParams,
             saleType: saleType,
+            now: now,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
       verify(
         () => mockRepository.confirm(
-          baseUrl: baseUrl,
-          crossIdentity: crossIdentity,
+          baseUrl: userSession.baseUrl!,
+          crossIdentity: userEntity.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseCode,
           productCode: productCode,
           productPackingCode: productPackingCode,
@@ -96,6 +109,7 @@ void main() {
           replications: replications,
           retailParams: retailParams,
           saleType: saleType,
+          now: now,
         ),
       ).called(1);
     });
@@ -121,6 +135,7 @@ void main() {
             replications: replications,
             retailParams: retailParams,
             saleType: saleType,
+            now: now,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

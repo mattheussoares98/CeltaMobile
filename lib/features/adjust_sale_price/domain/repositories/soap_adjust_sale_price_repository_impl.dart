@@ -26,6 +26,7 @@ class SoapAdjustSalePriceRepositoryImpl
     required List<ReplicationTypes> replications,
     required OfferParams? offerParams,
     required RetailParams? retailParams,
+    required DateTime now,
   }) async {
     return await soapAdjustSalePriceDatasource.confirm(
       baseUrl: baseUrl,
@@ -37,6 +38,7 @@ class SoapAdjustSalePriceRepositoryImpl
       replications: replications,
       offerParams: offerParams,
       retailParams: retailParams,
+      now: now,
     );
   }
 }

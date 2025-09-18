@@ -76,6 +76,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
           productPackingCode: product.ProductPackingCode,
           saleType: selectedSaleType!,
           replications: _selectedReplications.toList(),
+          now: DateTime.now(),
           offerParams: selectedPriceType == PriceType.offer
               ? OfferParams(
                   price: priceController.text.toDouble() ?? 0,

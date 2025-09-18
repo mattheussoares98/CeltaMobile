@@ -22,6 +22,7 @@ class ConfirmAdjustController extends _$ConfirmAdjustController {
     required List<ReplicationTypes> replications,
     required OfferParams? offerParams,
     required RetailParams? retailParams,
+    required DateTime now,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -40,6 +41,7 @@ class ConfirmAdjustController extends _$ConfirmAdjustController {
             replications: replications,
             offerParams: offerParams,
             retailParams: retailParams,
+            now: now,
           );
     });
   }

@@ -20,6 +20,7 @@ void main() {
   late List<ReplicationTypes> replications;
   late OfferParams? offerParams;
   late RetailParams? retailParams;
+  late DateTime now;
 
   void initSut() {
     sut = SoapAdjustSalePriceRepositoryImpl(
@@ -46,6 +47,7 @@ void main() {
         ReplicationTypes.values.length,
       )],
     ];
+    now = DateTime.now();
     offerParams = OfferParams(
       price: faker.randomGenerator.decimal(),
       effectuationDateOffer: faker.date.dateTime(),
@@ -82,6 +84,7 @@ void main() {
         replications: replications,
         offerParams: offerParams,
         retailParams: retailParams,
+        now: now,
       );
 
       verify(
@@ -95,6 +98,7 @@ void main() {
           replications: replications,
           offerParams: offerParams,
           retailParams: retailParams,
+          now: now,
         ),
       ).called(1);
 

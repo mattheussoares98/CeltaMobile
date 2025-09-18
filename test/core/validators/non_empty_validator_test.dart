@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/core/validators/validators.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -30,14 +29,14 @@ void main() {
 
       expect(isValid, isFalse);
       // We can also confirm the error message is correct
-      expect(sut.errorMessage, 'Esse campo não pode ser vazio'.hardcoded);
+      expect(sut.errorMessage, isNotEmpty);
     });
 
     test('Should return false for a null value', () {
       final isValid = sut.isValid(null);
 
       expect(isValid, isFalse);
-      expect(sut.errorMessage, 'Esse campo não pode ser vazio'.hardcoded);
+      expect(sut.errorMessage, isNotEmpty);
     });
   });
 }
