@@ -8,6 +8,7 @@ import 'package:celta_intelligence/core/domain/errors/errors.dart';
 import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
 import 'package:celta_intelligence/core/providers/providers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/datasource/datasource.dart';
+import 'package:celta_intelligence/features/adjust_sale_price/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
@@ -489,4 +490,28 @@ class SoapAdjustSalePriceDatasourceSpy extends Mock
       ),
     ).thenAnswer((_) async => {});
   }
+}
+
+class SoapAdjustSalePriceRepositorySpy extends Mock
+    implements ISoapAdjustSalePriceRepository {
+  SoapAdjustSalePriceRepositorySpy() {
+    _confirmCall().thenAnswer((_) async => {});
+  }
+
+  void mockConfirmError() => _confirmCall().thenThrow(Exception());
+
+  When _confirmCall() => when(
+    () => this.confirm(
+      baseUrl: any(named: "baseUrl"),
+      crossIdentity: any(named: "crossIdentity"),
+      enterpriseCode: any(named: "enterpriseCode"),
+      productCode: any(named: "productCode"),
+      productPackingCode: any(named: "productPackingCode"),
+      saleType: any(named: "saleType"),
+      replications: any(named: "replications"),
+      offerParams: any(named: "offerParams"),
+      retailParams: any(named: "retailParams"),
+      now: any(named: "now"),
+    ),
+  );
 }
