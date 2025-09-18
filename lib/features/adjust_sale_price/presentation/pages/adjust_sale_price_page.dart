@@ -39,9 +39,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
   bool? isSelectedPackings = false;
   DateTime? selectedStartDate;
   DateTime? selectedEndDate;
-  final Set<ReplicationTypes> _selectedReplications = {
-    ReplicationTypes.packings,
-  };
+  final Set<ReplicationTypes> _selectedReplications = {};
   final priceController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -91,6 +89,36 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
         );
   }
 
+  List<ReplicationTypes> getAvailableReplications(
+    ProductEntity? product,
+    EnterpriseEntity? selectedEnterprise,
+  ) {
+    return <ReplicationTypes>{
+      ReplicationTypes.packings,
+      if (product?.IsFatherOfGrate == true || product?.IsChildOfGrate == true)
+        ReplicationTypes.grid,
+      if (product?.InClass == true) ReplicationTypes.classess,
+      if (selectedEnterprise?.EnterpriseParticipateEnterpriseGroup == true)
+        ReplicationTypes.operationalGrouping,
+    }.toList();
+  }
+
+  void updateReplicationsSelectesByDefault(
+    ProductEntity? product,
+    EnterpriseEntity? selectedEnterprise,
+    List<ReplicationTypes> availableReplications,
+  ) {
+    if (product?.AlterationPriceForAllPackings == true) {
+      _selectedReplications.add(ReplicationTypes.packings);
+    }
+    if (product?.MarkUpdateClassInAdjustSalePriceIndividual == true) {
+      _selectedReplications.add(ReplicationTypes.classess);
+    }
+    if (availableReplications.contains(ReplicationTypes.operationalGrouping)) {
+      _selectedReplications.add(ReplicationTypes.operationalGrouping);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedProductAsync = ref.watch(
@@ -138,16 +166,16 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
               );
             },
             data: (product) {
-              final availableReplications = <ReplicationTypes>{
-                ReplicationTypes.packings,
-                if (product?.IsFatherOfGrate == true ||
-                    product?.IsChildOfGrate == true)
-                  ReplicationTypes.grid,
-                if (product?.InClass == true) ReplicationTypes.classess,
-                if (selectedEnterprise?.EnterpriseParticipateEnterpriseGroup ==
-                    true)
-                  ReplicationTypes.operationalGrouping,
-              };
+              final availableReplications = getAvailableReplications(
+                product,
+                selectedEnterprise,
+              );
+
+              updateReplicationsSelectesByDefault(
+                product,
+                selectedEnterprise,
+                availableReplications,
+              );
 
               return ResponsiveScrollableWidget(
                 padding: Sizes.p4,
@@ -177,7 +205,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                       ),
                       _DefaultDivider(),
                       ReplicationTypesWidget(
-                        availableReplications: availableReplications.toList(),
+                        availableReplications: availableReplications,
                         selectedReplications: _selectedReplications,
                         onChanged: (replicationType) {
                           setState(() {
