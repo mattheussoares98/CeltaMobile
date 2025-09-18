@@ -1,0 +1,58 @@
+import '../../localization/string_hardcoded.dart';
+import 'validators.dart';
+
+class NumberValidator implements StringValidator {
+  final bool allowDecimal;
+
+  NumberValidator({required this.allowDecimal});
+
+  String? _errorMessage;
+
+  @override
+  String get errorMessage => _errorMessage ?? '';
+
+  @override
+  bool isValid(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      _errorMessage = 'Campo obrigatório'.hardcoded;
+      return false;
+    }
+
+    final separatorCount =
+        value.split('.').length - 1 + value.split(',').length - 1;
+    if (separatorCount > 1) {
+      _errorMessage = 'Formato inválido'.hardcoded;
+      return false;
+    }
+
+    // 1. Sanitize the input string to a universal format (e.g., '1234.56')
+    // This handles both '1.234,56' (pt-BR) and '1,234.56' (en-US)
+    final sanitizedValue = value
+        .replaceAll(RegExp(r'[^\d,.]'), '') // Keep only digits, commas, dots
+        .replaceAll(',', '.'); // Convert comma to dot
+
+    // Remove all dots that are not the last one (to clear thousand separators)
+    final normalizedValue = sanitizedValue.replaceAll(
+      RegExp(r'\.(?=[^.]*\.)'),
+      '',
+    );
+
+    // 2. Try to parse the normalized string
+    final number = num.tryParse(normalizedValue);
+
+    if (number == null) {
+      _errorMessage = 'Formato inválido'.hardcoded;
+      return false;
+    }
+
+    // 3. If decimals are not allowed, check if the number is an integer
+    if (!allowDecimal && number != number.truncate()) {
+      _errorMessage = 'Apenas números inteiros'.hardcoded;
+      return false;
+    }
+
+    // 4. If all checks pass, the value is valid
+    _errorMessage = null;
+    return true;
+  }
+}
