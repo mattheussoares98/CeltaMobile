@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
 
-class DefaultCupertinoCheckBox<T extends SelectableCheckBoxItem>
+class DefaultCupertinoCheckBox<T extends SelectableItem>
     extends StatelessWidget {
   final List<T> items;
   final T? selectedSaleType;
