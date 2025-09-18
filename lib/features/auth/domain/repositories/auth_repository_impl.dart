@@ -8,16 +8,16 @@ import '../../data/datasource/datasource.dart';
 import 'i_auth_repository.dart';
 
 class AuthRepositoryImpl implements IAuthRepository {
-  final ISoapLoginDataSource soapLoginDataSource;
+  final ISoapLoginDatasource soapLoginDatasource;
   final IAuthLocalDatasource authLocalDatasource;
   final IEnterpriseRepository enterpriseRepository;
-  final ILocalUserSessionDataSource localUserSessionDataSource;
+  final ILocalUserSessionDatasource localUserSessionDatasource;
 
   AuthRepositoryImpl({
-    required this.soapLoginDataSource,
+    required this.soapLoginDatasource,
     required this.authLocalDatasource,
     required this.enterpriseRepository,
-    required this.localUserSessionDataSource,
+    required this.localUserSessionDatasource,
   });
 
   @override
@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       throw AppException('Empresa não encontrada'.hardcoded);
     }
 
-    final remoteUser = await soapLoginDataSource.login(
+    final remoteUser = await soapLoginDatasource.login(
       baseUrl: enterpriseModel.baseUrl!,
       user: userName,
       password: password,
@@ -47,7 +47,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       ),
     );
 
-    await localUserSessionDataSource.save(
+    await localUserSessionDatasource.save(
       UserSessionModel(baseUrl: enterpriseModel.baseUrl),
     );
   }

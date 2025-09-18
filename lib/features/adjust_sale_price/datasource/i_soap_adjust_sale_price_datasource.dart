@@ -1,6 +1,6 @@
 import '../domain/entities/entities.dart';
 
-abstract class ISoapAdjustSalePriceDataSource {
+abstract class ISoapAdjustSalePriceDatasource {
   Future<void> confirm({
     required String baseUrl,
     required String crossIdentity,

@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  // late AuthManagerDataSource sut;
+  // late AuthManagerDatasource sut;
 
   // late SupabaseClientSpy supabaseClient;
 
   // late User? user;
 
   void initSut() {
-    // sut = AuthManagerDataSource(supabaseClient);
+    // sut = AuthManagerDatasource(supabaseClient);
   }
 
   void initInjections() {

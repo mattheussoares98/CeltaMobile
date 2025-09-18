@@ -9,7 +9,7 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late SoapAdjustSalePriceRepositoryImpl sut;
 
-  late SoapAdjustSalePriceDataSourceSpy soapAdjustSalePriceDataSource;
+  late SoapAdjustSalePriceDatasourceSpy soapAdjustSalePriceDatasource;
 
   late String baseUrl;
   late String crossIdentity;
@@ -24,12 +24,12 @@ void main() {
 
   void initSut() {
     sut = SoapAdjustSalePriceRepositoryImpl(
-      soapAdjustSalePriceDataSource: soapAdjustSalePriceDataSource,
+      soapAdjustSalePriceDatasource: soapAdjustSalePriceDatasource,
     );
   }
 
   void initInjections() {
-    soapAdjustSalePriceDataSource = SoapAdjustSalePriceDataSourceSpy();
+    soapAdjustSalePriceDatasource = SoapAdjustSalePriceDatasourceSpy();
   }
 
   void mockSuccess() {}
@@ -88,7 +88,7 @@ void main() {
       );
 
       verify(
-        () => soapAdjustSalePriceDataSource.confirm(
+        () => soapAdjustSalePriceDatasource.confirm(
           baseUrl: baseUrl,
           crossIdentity: crossIdentity,
           enterpriseCode: enterpriseCode,
@@ -102,7 +102,7 @@ void main() {
         ),
       ).called(1);
 
-      verifyNoMoreInteractions(soapAdjustSalePriceDataSource);
+      verifyNoMoreInteractions(soapAdjustSalePriceDatasource);
     });
   });
 }

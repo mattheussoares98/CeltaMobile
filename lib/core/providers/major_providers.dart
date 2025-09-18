@@ -33,23 +33,23 @@ SoapAdapter soapAdapter(Ref ref) {
 }
 
 @riverpod
-ISupabaseEnterpriseDataSource supabaseEnterpriseDataSource(Ref ref) {
+ISupabaseEnterpriseDatasource supabaseEnterpriseDatasource(Ref ref) {
   final supabase = ref.watch(supabaseClientProvider);
-  return SupabaseEnterpriseDataSource(supabase);
+  return SupabaseEnterpriseDatasource(supabase);
 }
 
 @riverpod
-ISoapEnterpriseDataSource soapEnterpriseDataSource(Ref ref) {
+ISoapEnterpriseDatasource soapEnterpriseDatasource(Ref ref) {
   final soapAdapter = ref.watch(soapAdapterProvider);
-  return SoapEnterpriseDataSource(soapAdapter: soapAdapter);
+  return SoapEnterpriseDatasource(soapAdapter: soapAdapter);
 }
 
 @riverpod
 IEnterpriseRepository enterpriseRepository(Ref ref) {
   final supabaseEnterpriseDatasource = ref.watch(
-    supabaseEnterpriseDataSourceProvider,
+    supabaseEnterpriseDatasourceProvider,
   );
-  final soapEnterpriseDatasource = ref.watch(soapEnterpriseDataSourceProvider);
+  final soapEnterpriseDatasource = ref.watch(soapEnterpriseDatasourceProvider);
 
   return EnterpriseRepositoryImpl(
     supabaseEnterpriseDatasource: supabaseEnterpriseDatasource,
@@ -58,23 +58,23 @@ IEnterpriseRepository enterpriseRepository(Ref ref) {
 }
 
 @riverpod
-ILocalUserSessionDataSource localUserSessionDataSource(Ref ref) {
-  return LocalUserSessionDataSource(ref.watch(hiveBoxProvider));
+ILocalUserSessionDatasource localUserSessionDatasource(Ref ref) {
+  return LocalUserSessionDatasource(ref.watch(hiveBoxProvider));
 }
 
 @riverpod
 ILocalUserSessionRepository localSessionRepository(Ref ref) {
   return LocalUserSessionRepositoryImpl(
-    ref.watch(localUserSessionDataSourceProvider),
+    ref.watch(localUserSessionDatasourceProvider),
   );
 }
 
 @riverpod
-ISoapProductsDataSource soapProductsDataSource(Ref ref) {
-  return SoapProductsDataSource(ref.watch(soapAdapterProvider));
+ISoapProductsDatasource soapProductsDatasource(Ref ref) {
+  return SoapProductsDatasource(ref.watch(soapAdapterProvider));
 }
 
 @riverpod
 ISoapProductsRepository soapProductsRepository(Ref ref) {
-  return SoapProductsRepositoryImpl(ref.watch(soapProductsDataSourceProvider));
+  return SoapProductsRepositoryImpl(ref.watch(soapProductsDatasourceProvider));
 }

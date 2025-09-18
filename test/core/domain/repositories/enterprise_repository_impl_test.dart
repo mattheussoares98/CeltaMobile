@@ -10,8 +10,8 @@ import '../../../mocks/mocks.dart';
 void main() {
   late IEnterpriseRepository sut;
 
-  late SoapEnterpriseDataSourceSpy soapEnterpriseDataSource;
-  late SupabaseEnterpriseDataSourceSpy supabaseEnterpriseDataSource;
+  late SoapEnterpriseDatasourceSpy soapEnterpriseDatasource;
+  late SupabaseEnterpriseDatasourceSpy supabaseEnterpriseDatasource;
 
   late List<EnterpriseEntity> enterpriseEntities;
   late String enterpriseName;
@@ -20,21 +20,21 @@ void main() {
 
   void initSut() {
     sut = EnterpriseRepositoryImpl(
-      supabaseEnterpriseDatasource: supabaseEnterpriseDataSource,
-      soapEnterpriseDatasource: soapEnterpriseDataSource,
+      supabaseEnterpriseDatasource: supabaseEnterpriseDatasource,
+      soapEnterpriseDatasource: soapEnterpriseDatasource,
     );
   }
 
   void initInjections() {
-    soapEnterpriseDataSource = SoapEnterpriseDataSourceSpy();
-    supabaseEnterpriseDataSource = SupabaseEnterpriseDataSourceSpy();
+    soapEnterpriseDatasource = SoapEnterpriseDatasourceSpy();
+    supabaseEnterpriseDatasource = SupabaseEnterpriseDatasourceSpy();
   }
 
   void mockSuccess() {
-    soapEnterpriseDataSource.mockGetEnterprises(
+    soapEnterpriseDatasource.mockGetEnterprises(
       enterpriseEntities.map((e) => SoapEnterpriseModel.fromEntity(e)).toList(),
     );
-    supabaseEnterpriseDataSource.mockGetEnterpriseByName(
+    supabaseEnterpriseDatasource.mockGetEnterpriseByName(
       SupabaseEnterpriseModel.fromEntity(enterpriseEntities.first),
     );
   }
@@ -65,7 +65,7 @@ void main() {
       SupabaseEnterpriseModel.fromEntity(enterpriseEntities.first).toEntity(),
     );
     verify(
-      () => supabaseEnterpriseDataSource.getEnterpriseByName(enterpriseName),
+      () => supabaseEnterpriseDatasource.getEnterpriseByName(enterpriseName),
     ).called(1);
   });
   test("Behave correctly on get soap enterprises", () async {
@@ -82,7 +82,7 @@ void main() {
     );
 
     verify(
-      () => soapEnterpriseDataSource.getEnterprises(
+      () => soapEnterpriseDatasource.getEnterprises(
         crossIdentity: any(named: "crossIdentity"),
         baseUrl: any(named: "baseUrl"),
       ),

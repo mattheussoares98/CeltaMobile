@@ -12,10 +12,10 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late AuthRepositoryImpl sut;
 
-  late LoginRemoteDataSourceSpy authRemoteDataSource;
-  late AuthLocalDatasourceSpy authLocalDataSource;
+  late LoginRemoteDatasourceSpy authRemoteDatasource;
+  late AuthLocalDatasourceSpy authLocalDatasource;
   late EnterpriseRepositorySpy enterpriseRepository;
-  late LocalSessionDataSourceSpy localSessionDataSource;
+  late LocalSessionDatasourceSpy localSessionDatasource;
 
   late EnterpriseEntity enterpriseEntity;
   late String userName;
@@ -24,27 +24,27 @@ void main() {
 
   void initSut() {
     sut = AuthRepositoryImpl(
-      soapLoginDataSource: authRemoteDataSource,
-      authLocalDatasource: authLocalDataSource,
+      soapLoginDatasource: authRemoteDatasource,
+      authLocalDatasource: authLocalDatasource,
       enterpriseRepository: enterpriseRepository,
-      localUserSessionDataSource: localSessionDataSource,
+      localUserSessionDatasource: localSessionDatasource,
     );
   }
 
   void initInjections() {
-    authRemoteDataSource = LoginRemoteDataSourceSpy();
-    authLocalDataSource = AuthLocalDatasourceSpy();
+    authRemoteDatasource = LoginRemoteDatasourceSpy();
+    authLocalDatasource = AuthLocalDatasourceSpy();
     enterpriseRepository = EnterpriseRepositorySpy();
-    localSessionDataSource = LocalSessionDataSourceSpy();
+    localSessionDatasource = LocalSessionDatasourceSpy();
   }
 
   void mockSuccess() {
     enterpriseRepository.mockGetSupabaseEnterpriseByName(
       SupabaseEnterpriseModel.fromEntity(enterpriseEntity).toEntity(),
     );
-    authRemoteDataSource.mockLogin(UserModel.fromEntity(userEntity));
-    authLocalDataSource.mockGetUser(userEntity);
-    localSessionDataSource.mockSaveSession(
+    authRemoteDatasource.mockLogin(UserModel.fromEntity(userEntity));
+    authLocalDatasource.mockGetUser(userEntity);
+    localSessionDatasource.mockSaveSession(
       UserSessionModel(baseUrl: enterpriseEntity.baseUrl),
     );
   }
@@ -81,14 +81,14 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => authRemoteDataSource.login(
+        () => authRemoteDatasource.login(
           baseUrl: enterpriseEntity.baseUrl!,
           user: userName,
           password: password,
         ),
       ).called(1);
       verify(
-        () => authLocalDataSource.saveUser(
+        () => authLocalDatasource.saveUser(
           UserEntity(
             name: userName,
             enterpriseName: enterpriseEntity.name,
@@ -98,14 +98,14 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => localSessionDataSource.save(
+        () => localSessionDatasource.save(
           UserSessionModel(baseUrl: enterpriseEntity.baseUrl),
         ),
       ).called(1);
 
       verifyNoMoreInteractions(enterpriseRepository);
-      verifyNoMoreInteractions(authLocalDataSource);
-      verifyNoMoreInteractions(authRemoteDataSource);
+      verifyNoMoreInteractions(authLocalDatasource);
+      verifyNoMoreInteractions(authRemoteDatasource);
     });
 
     test("Should throw an AppException on enterprise not found", () async {
@@ -126,9 +126,9 @@ void main() {
       final result = await sut.getCurrentUser();
 
       expect(result, userEntity);
-      verify(() => authLocalDataSource.getUser()).called(1);
+      verify(() => authLocalDatasource.getUser()).called(1);
 
-      verifyNoMoreInteractions(authLocalDataSource);
+      verifyNoMoreInteractions(authLocalDatasource);
     });
   });
 
@@ -136,9 +136,9 @@ void main() {
     test("Sould behave correctly", () async {
       await sut.logout();
 
-      verify(() => authLocalDataSource.logout()).called(1);
+      verify(() => authLocalDatasource.logout()).called(1);
 
-      verifyNoMoreInteractions(authLocalDataSource);
+      verifyNoMoreInteractions(authLocalDatasource);
     });
   });
 }

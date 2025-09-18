@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late EnterpriseManagerDataSource sut;
+  late EnterpriseManagerDatasource sut;
 
   late SupabaseClientSpy supabaseClient;
 
@@ -20,7 +20,7 @@ void main() {
   late List<UpdateModulePermissionModel> permissions;
 
   void initSut() {
-    sut = EnterpriseManagerDataSource(supabaseClient);
+    sut = EnterpriseManagerDatasource(supabaseClient);
   }
 
   void initInjections() {

@@ -9,21 +9,21 @@ import '../../../mocks/mocks.dart';
 void main() {
   late ILocalUserSessionRepository sut;
 
-  late LocalSessionDataSourceSpy localSessionDataSource;
+  late LocalSessionDatasourceSpy localSessionDatasource;
 
   late UserSessionModel sessionModel;
 
   void initSut() {
-    sut = LocalUserSessionRepositoryImpl(localSessionDataSource);
+    sut = LocalUserSessionRepositoryImpl(localSessionDatasource);
   }
 
   void initInjections() {
-    localSessionDataSource = LocalSessionDataSourceSpy();
+    localSessionDatasource = LocalSessionDatasourceSpy();
   }
 
   void mockSuccess() {
-    localSessionDataSource.mockSaveSession(sessionModel);
-    localSessionDataSource.mockGetSession(sessionModel);
+    localSessionDatasource.mockSaveSession(sessionModel);
+    localSessionDatasource.mockGetSession(sessionModel);
   }
 
   void initEntities() {
@@ -40,16 +40,16 @@ void main() {
   test("Should behave correctly on save", () async {
     await sut.save(sessionModel);
 
-    verify(() => localSessionDataSource.save(sessionModel)).called(1);
+    verify(() => localSessionDatasource.save(sessionModel)).called(1);
   });
   test("Should behave correctly on get", () async {
     expect(await sut.get(), sessionModel);
 
-    verify(() => localSessionDataSource.get()).called(1);
+    verify(() => localSessionDatasource.get()).called(1);
   });
   test("Should on clear", () async {
     await sut.clear();
 
-    verify(() => localSessionDataSource.clear()).called(1);
+    verify(() => localSessionDatasource.clear()).called(1);
   });
 }

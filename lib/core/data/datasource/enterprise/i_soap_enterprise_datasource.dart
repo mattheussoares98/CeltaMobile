@@ -1,6 +1,6 @@
 import '../../models/models.dart';
 
-abstract class ISoapEnterpriseDataSource {
+abstract class ISoapEnterpriseDatasource {
   Future<List<SoapEnterpriseModel>> getEnterprises({
     required String baseUrl,
     required String crossIdentity,

@@ -5,19 +5,19 @@ import '../entities/entities.dart';
 import 'repositories.dart';
 
 class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
-  final IEnterpriseManagerDataSource enterpriseManagerDataSource;
-  final ISoapLoginDataSource soapLoginDataSource;
-  final ISoapEnterpriseDataSource soapEnterpriseDataSource;
+  final IEnterpriseManagerDatasource enterpriseManagerDatasource;
+  final ISoapLoginDatasource soapLoginDatasource;
+  final ISoapEnterpriseDatasource soapEnterpriseDatasource;
 
   EnterpriseManagerRepositoryImpl({
-    required this.enterpriseManagerDataSource,
-    required this.soapLoginDataSource,
-    required this.soapEnterpriseDataSource,
+    required this.enterpriseManagerDatasource,
+    required this.soapLoginDatasource,
+    required this.soapEnterpriseDatasource,
   });
 
   @override
   Future<List<EnterprisePermissionEntity>> getAllEnterprisePermissions() async {
-    final enterprises = await enterpriseManagerDataSource
+    final enterprises = await enterpriseManagerDatasource
         .getEnterprisePermissions();
 
     return enterprises.map((e) => e.toEntity()).toList();
@@ -27,7 +27,7 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   Future<EnterprisePermissionEntity?> getEnterprisePermissionsById(
     int id,
   ) async {
-    final enterprise = await enterpriseManagerDataSource
+    final enterprise = await enterpriseManagerDatasource
         .getEnterprisePermissionsById(id);
 
     return enterprise?.toEntity();
@@ -41,18 +41,18 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
     required String password,
   }) async {
     // 1- try make login in bs
-    final user = await soapLoginDataSource.login(
+    final user = await soapLoginDatasource.login(
       baseUrl: baseUrl,
       user: userName,
       password: password,
     );
     // 2- load enterprises from bs
-    final enterprises = await soapEnterpriseDataSource.getEnterprises(
+    final enterprises = await soapEnterpriseDatasource.getEnterprises(
       baseUrl: baseUrl,
       crossIdentity: user.CrossIdentity_Usuario ?? "",
     );
     // 3- try create enterprise in supabase
-    await enterpriseManagerDataSource.createEnterpriseWithSubEnterprises(
+    await enterpriseManagerDatasource.createEnterpriseWithSubEnterprises(
       enterpriseName: enterpriseName,
       baseUrl: baseUrl,
       subEnterprises: enterprises
@@ -73,7 +73,7 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
     required int enterpriseId,
     required List<UpdateModulePermissionModel> permissions,
   }) async {
-    await enterpriseManagerDataSource.updateModulePermissions(
+    await enterpriseManagerDatasource.updateModulePermissions(
       enterpriseId: enterpriseId,
       permissions: permissions,
     );

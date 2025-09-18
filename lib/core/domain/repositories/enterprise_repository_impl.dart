@@ -3,8 +3,8 @@ import '../entities/entities.dart';
 import 'i_enterprise_repository.dart';
 
 class EnterpriseRepositoryImpl implements IEnterpriseRepository {
-  final ISupabaseEnterpriseDataSource supabaseEnterpriseDatasource;
-  final ISoapEnterpriseDataSource soapEnterpriseDatasource;
+  final ISupabaseEnterpriseDatasource supabaseEnterpriseDatasource;
+  final ISoapEnterpriseDatasource soapEnterpriseDatasource;
   EnterpriseRepositoryImpl({
     required this.supabaseEnterpriseDatasource,
     required this.soapEnterpriseDatasource,

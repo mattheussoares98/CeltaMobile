@@ -8,14 +8,14 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late LocalUserSessionDataSource sut;
+  late LocalUserSessionDatasource sut;
 
   late MockBox hive;
 
   late UserSessionModel sessionModel;
 
   void initSut() {
-    sut = LocalUserSessionDataSource(hive);
+    sut = LocalUserSessionDatasource(hive);
   }
 
   void initInjections() {

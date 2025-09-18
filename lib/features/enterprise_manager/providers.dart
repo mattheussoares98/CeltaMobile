@@ -10,34 +10,34 @@ import 'domain/repositories/repositories.dart';
 part 'providers.g.dart';
 
 @riverpod
-IEnterpriseManagerDataSource enterpriseManagerDataSource(Ref ref) {
-  return EnterpriseManagerDataSource(ref.watch(supabaseClientProvider));
+IEnterpriseManagerDatasource enterpriseManagerDatasource(Ref ref) {
+  return EnterpriseManagerDatasource(ref.watch(supabaseClientProvider));
 }
 
 @riverpod
 IEnterpriseManagerRepository enterpriseManagerRepository(Ref ref) {
-  final enterpriseManagerDataSource = ref.watch(
-    enterpriseManagerDataSourceProvider,
+  final enterpriseManagerDatasource = ref.watch(
+    enterpriseManagerDatasourceProvider,
   );
-  final soapLoginDataSource = ref.watch(soapLoginDataSourceProvider);
-  final soapEnterpriseDataSource = ref.watch(soapEnterpriseDataSourceProvider);
+  final soapLoginDatasource = ref.watch(soapLoginDatasourceProvider);
+  final soapEnterpriseDatasource = ref.watch(soapEnterpriseDatasourceProvider);
 
   return EnterpriseManagerRepositoryImpl(
-    enterpriseManagerDataSource: enterpriseManagerDataSource,
-    soapLoginDataSource: soapLoginDataSource,
-    soapEnterpriseDataSource: soapEnterpriseDataSource,
+    enterpriseManagerDatasource: enterpriseManagerDatasource,
+    soapLoginDatasource: soapLoginDatasource,
+    soapEnterpriseDatasource: soapEnterpriseDatasource,
   );
 }
 
 @riverpod
-IAuthManagerDataSource authManagerDataSource(Ref ref) {
+IAuthManagerDatasource authManagerDatasource(Ref ref) {
   final supabase = ref.watch(supabaseClientProvider);
-  return AuthManagerDataSource(supabase);
+  return AuthManagerDatasource(supabase);
 }
 
 @riverpod
 IAuthManagerRepository authManagerRepository(Ref ref) {
-  final datasource = ref.watch(authManagerDataSourceProvider);
+  final datasource = ref.watch(authManagerDatasourceProvider);
   return AuthManagerRepositoryImpl(datasource);
 }
 

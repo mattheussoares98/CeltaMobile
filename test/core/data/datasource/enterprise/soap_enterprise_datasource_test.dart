@@ -12,7 +12,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late SoapEnterpriseDataSource sut;
+  late SoapEnterpriseDatasource sut;
 
   late SoapRequestSpy soapRequest;
 
@@ -31,7 +31,7 @@ void main() {
   }
 
   void initSut() {
-    sut = SoapEnterpriseDataSource(soapAdapter: soapRequest);
+    sut = SoapEnterpriseDatasource(soapAdapter: soapRequest);
   }
 
   void initInjections() {

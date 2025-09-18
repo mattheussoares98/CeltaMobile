@@ -15,24 +15,24 @@ IAuthLocalDatasource authLocalDatasource(Ref ref) {
 }
 
 @riverpod
-ISoapLoginDataSource soapLoginDataSource(Ref ref) {
+ISoapLoginDatasource soapLoginDatasource(Ref ref) {
   final soapAdapter = ref.watch(soapAdapterProvider);
-  return SoapLoginDataSource(soapAdapter);
+  return SoapLoginDatasource(soapAdapter);
 }
 
 @riverpod
 IAuthRepository authRepository(Ref ref) {
-  final soapLoginDataSource = ref.watch(soapLoginDataSourceProvider);
+  final soapLoginDatasource = ref.watch(soapLoginDatasourceProvider);
   final localDatasource = ref.watch(authLocalDatasourceProvider);
   final enterpriseRepository = ref.watch(enterpriseRepositoryProvider);
-  final localUserSessionDataSource = ref.watch(
-    localUserSessionDataSourceProvider,
+  final localUserSessionDatasource = ref.watch(
+    localUserSessionDatasourceProvider,
   );
 
   return AuthRepositoryImpl(
-    soapLoginDataSource: soapLoginDataSource,
+    soapLoginDatasource: soapLoginDatasource,
     authLocalDatasource: localDatasource,
     enterpriseRepository: enterpriseRepository,
-    localUserSessionDataSource: localUserSessionDataSource,
+    localUserSessionDatasource: localUserSessionDatasource,
   );
 }

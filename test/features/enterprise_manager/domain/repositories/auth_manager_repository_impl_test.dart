@@ -9,22 +9,22 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late AuthManagerRepositoryImpl sut;
 
-  late MockAuthManagerDataSource authManagerDataSource;
+  late MockAuthManagerDatasource authManagerDatasource;
 
   late AuthResponse authResponse;
   late String email;
   late String password;
 
   void initSut() {
-    sut = AuthManagerRepositoryImpl(authManagerDataSource);
+    sut = AuthManagerRepositoryImpl(authManagerDatasource);
   }
 
   void initInjections() {
-    authManagerDataSource = MockAuthManagerDataSource();
+    authManagerDatasource = MockAuthManagerDatasource();
   }
 
   void mockSuccess() {
-    authManagerDataSource.mockLogin(authResponse);
+    authManagerDatasource.mockLogin(authResponse);
   }
 
   void initEntities() {
@@ -53,9 +53,9 @@ void main() {
     test('should behave correctly on success', () async {
       await sut.login(email, password);
 
-      verify(() => authManagerDataSource.login(email, password)).called(1);
+      verify(() => authManagerDatasource.login(email, password)).called(1);
 
-      verifyNoMoreInteractions(authManagerDataSource);
+      verifyNoMoreInteractions(authManagerDatasource);
     });
   });
 }

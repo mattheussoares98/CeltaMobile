@@ -9,10 +9,10 @@ import 'repositories.dart';
 
 class SoapAdjustSalePriceRepositoryImpl
     implements ISoapAdjustSalePriceRepository {
-  final ISoapAdjustSalePriceDataSource soapAdjustSalePriceDataSource;
+  final ISoapAdjustSalePriceDatasource soapAdjustSalePriceDatasource;
 
   SoapAdjustSalePriceRepositoryImpl({
-    required this.soapAdjustSalePriceDataSource,
+    required this.soapAdjustSalePriceDatasource,
   });
 
   @override
@@ -28,7 +28,7 @@ class SoapAdjustSalePriceRepositoryImpl
     required RetailParams? retailParams,
     required DateTime now,
   }) async {
-    return await soapAdjustSalePriceDataSource.confirm(
+    return await soapAdjustSalePriceDatasource.confirm(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,

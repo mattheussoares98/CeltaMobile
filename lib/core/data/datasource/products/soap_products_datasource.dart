@@ -6,9 +6,9 @@ import '../../../domain/contracts/contracts.dart';
 import '../../../domain/entities/entities.dart';
 import 'products.dart';
 
-class SoapProductsDataSource implements ISoapProductsDataSource {
+class SoapProductsDatasource implements ISoapProductsDatasource {
   final SoapRequest soapRequest;
-  SoapProductsDataSource(this.soapRequest);
+  SoapProductsDatasource(this.soapRequest);
 
   Future<dynamic> _executeRequest({
     required String baseUrl,

@@ -6,10 +6,10 @@ import 'package:celta_intelligence/utils/utils.dart';
 import '../../../domain/contracts/contracts.dart';
 import '../datasource.dart';
 
-class SoapEnterpriseDataSource implements ISoapEnterpriseDataSource {
+class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
   final SoapRequest soapAdapter;
 
-  SoapEnterpriseDataSource({required this.soapAdapter});
+  SoapEnterpriseDatasource({required this.soapAdapter});
 
   @override
   Future<List<SoapEnterpriseModel>> getEnterprises({

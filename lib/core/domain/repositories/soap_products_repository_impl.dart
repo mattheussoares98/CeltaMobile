@@ -3,8 +3,8 @@ import '../entities/entities.dart';
 import 'repositores.dart';
 
 class SoapProductsRepositoryImpl implements ISoapProductsRepository {
-  final ISoapProductsDataSource soapProductsDataSource;
-  SoapProductsRepositoryImpl(this.soapProductsDataSource);
+  final ISoapProductsDatasource soapProductsDatasource;
+  SoapProductsRepositoryImpl(this.soapProductsDatasource);
 
   @override
   Future<List<ProductEntity>> getProductsJson({
@@ -17,7 +17,7 @@ class SoapProductsRepositoryImpl implements ISoapProductsRepository {
     required EnterpriseEntity enterpriseEntity,
     int? lastBuyEntranceQuantity,
   }) async {
-    return await soapProductsDataSource
+    return await soapProductsDatasource
         .getProductsJson(
           baseUrl: baseUrl,
           searchValue: searchValue,

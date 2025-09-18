@@ -4,9 +4,9 @@ import 'package:hive/hive.dart';
 import '../../../constants/database_keys.dart';
 import 'user_session.dart';
 
-class LocalUserSessionDataSource implements ILocalUserSessionDataSource {
+class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
   final Box box;
-  LocalUserSessionDataSource(this.box);
+  LocalUserSessionDatasource(this.box);
 
   @override
   Future<void> clear() async {

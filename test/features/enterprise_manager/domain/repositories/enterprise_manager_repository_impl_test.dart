@@ -12,9 +12,9 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late EnterpriseManagerRepositoryImpl sut;
 
-  late EnterpriseManagerDataSourceSpy enterpriseManagerDataSource;
-  late LoginRemoteDataSourceSpy soapLoginDataSource;
-  late SoapEnterpriseDataSourceSpy soapEnterpriseDataSource;
+  late EnterpriseManagerDatasourceSpy enterpriseManagerDatasource;
+  late LoginRemoteDatasourceSpy soapLoginDatasource;
+  late SoapEnterpriseDatasourceSpy soapEnterpriseDatasource;
 
   late List<EnterprisePermissionEntity> enterprisePermissionEntities;
   late String enterpriseName;
@@ -26,20 +26,20 @@ void main() {
 
   void initSut() {
     sut = EnterpriseManagerRepositoryImpl(
-      enterpriseManagerDataSource: enterpriseManagerDataSource,
-      soapLoginDataSource: soapLoginDataSource,
-      soapEnterpriseDataSource: soapEnterpriseDataSource,
+      enterpriseManagerDatasource: enterpriseManagerDatasource,
+      soapLoginDatasource: soapLoginDatasource,
+      soapEnterpriseDatasource: soapEnterpriseDatasource,
     );
   }
 
   void initInjections() {
-    enterpriseManagerDataSource = EnterpriseManagerDataSourceSpy();
-    soapLoginDataSource = LoginRemoteDataSourceSpy();
-    soapEnterpriseDataSource = SoapEnterpriseDataSourceSpy();
+    enterpriseManagerDatasource = EnterpriseManagerDatasourceSpy();
+    soapLoginDatasource = LoginRemoteDatasourceSpy();
+    soapEnterpriseDatasource = SoapEnterpriseDatasourceSpy();
   }
 
   void mockSuccess() {
-    enterpriseManagerDataSource.mockGetAllEnterprisesPermissions(
+    enterpriseManagerDatasource.mockGetAllEnterprisesPermissions(
       enterprisePermissionEntities
           .map((e) => EnterprisePermissionModel.fromEntity(e))
           .toList(),
@@ -86,13 +86,13 @@ void main() {
       final response = await sut.getAllEnterprisePermissions();
 
       expect(response, enterprisePermissionEntities);
-      verify(() => enterpriseManagerDataSource.getEnterprisePermissions());
-      verifyNoMoreInteractions(enterpriseManagerDataSource);
+      verify(() => enterpriseManagerDatasource.getEnterprisePermissions());
+      verifyNoMoreInteractions(enterpriseManagerDatasource);
     });
   });
   group('Get enterprise permissions by id', () {
     test('should behave correctly on success', () async {
-      enterpriseManagerDataSource.mockGetEnterprisePermissionsById(
+      enterpriseManagerDatasource.mockGetEnterprisePermissionsById(
         EnterprisePermissionModel.fromEntity(
           enterprisePermissionEntities.first,
         ),
@@ -103,9 +103,9 @@ void main() {
 
       expect(response, enterprisePermissionEntities.first);
       verify(
-        () => enterpriseManagerDataSource.getEnterprisePermissionsById(id),
+        () => enterpriseManagerDatasource.getEnterprisePermissionsById(id),
       );
-      verifyNoMoreInteractions(enterpriseManagerDataSource);
+      verifyNoMoreInteractions(enterpriseManagerDatasource);
     });
   });
 
@@ -117,14 +117,14 @@ void main() {
         AccessKey: faker.guid.guid(),
         CrossIdentity_Usuario: faker.guid.guid(),
       );
-      soapLoginDataSource.mockLogin(user);
+      soapLoginDatasource.mockLogin(user);
 
       List<SoapEnterpriseModel> enterprises = [
         SoapEnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity()),
         SoapEnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity()),
         SoapEnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity()),
       ];
-      soapEnterpriseDataSource.mockGetEnterprises(enterprises);
+      soapEnterpriseDatasource.mockGetEnterprises(enterprises);
 
       await sut.createEnterprise(
         enterpriseName: enterpriseName,
@@ -134,7 +134,7 @@ void main() {
       );
 
       verify(
-        () => soapLoginDataSource.login(
+        () => soapLoginDatasource.login(
           baseUrl: baseUrl,
           user: userName,
           password: password,
@@ -142,14 +142,14 @@ void main() {
       ).called(1);
 
       verify(
-        () => soapEnterpriseDataSource.getEnterprises(
+        () => soapEnterpriseDatasource.getEnterprises(
           baseUrl: baseUrl,
           crossIdentity: user.CrossIdentity_Usuario ?? "",
         ),
       ).called(1);
 
       verify(
-        () => enterpriseManagerDataSource.createEnterpriseWithSubEnterprises(
+        () => enterpriseManagerDatasource.createEnterpriseWithSubEnterprises(
           enterpriseName: enterpriseName,
           baseUrl: baseUrl,
           subEnterprises: enterprises
@@ -175,12 +175,12 @@ void main() {
       );
 
       verify(
-        () => enterpriseManagerDataSource.updateModulePermissions(
+        () => enterpriseManagerDatasource.updateModulePermissions(
           enterpriseId: enterpriseId,
           permissions: permissions,
         ),
       );
-      verifyNoMoreInteractions(enterpriseManagerDataSource);
+      verifyNoMoreInteractions(enterpriseManagerDatasource);
     });
   });
 }

@@ -1,6 +1,6 @@
 import '../../models/models.dart';
 
-abstract class ILocalUserSessionDataSource {
+abstract class ILocalUserSessionDatasource {
   Future<void> save(UserSessionModel session);
   Future<UserSessionModel?> get();
   Future<void> clear();

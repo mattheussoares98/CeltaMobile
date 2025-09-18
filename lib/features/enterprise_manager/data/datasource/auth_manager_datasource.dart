@@ -1,10 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'datasource.dart';
 
-class AuthManagerDataSource implements IAuthManagerDataSource {
+class AuthManagerDatasource implements IAuthManagerDatasource {
   final SupabaseClient supabase;
 
-  AuthManagerDataSource(this.supabase);
+  AuthManagerDatasource(this.supabase);
 
   @override
   User? getCurrentUser() {

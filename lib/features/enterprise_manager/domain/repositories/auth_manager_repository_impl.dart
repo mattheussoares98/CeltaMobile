@@ -3,7 +3,7 @@ import '../../data/datasource/datasource.dart';
 import '../../domain/repositories/repositories.dart';
 
 class AuthManagerRepositoryImpl implements IAuthManagerRepository {
-  final IAuthManagerDataSource dataSource;
+  final IAuthManagerDatasource dataSource;
 
   AuthManagerRepositoryImpl(this.dataSource);
 

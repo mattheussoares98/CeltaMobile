@@ -3,21 +3,21 @@ import '../../data/datasource/user_session/user_session.dart';
 import 'repositores.dart';
 
 class LocalUserSessionRepositoryImpl implements ILocalUserSessionRepository {
-  final ILocalUserSessionDataSource localUserSessionDataSource;
-  LocalUserSessionRepositoryImpl(this.localUserSessionDataSource);
+  final ILocalUserSessionDatasource localUserSessionDatasource;
+  LocalUserSessionRepositoryImpl(this.localUserSessionDatasource);
 
   @override
   Future<void> clear() async {
-    return await localUserSessionDataSource.clear();
+    return await localUserSessionDatasource.clear();
   }
 
   @override
   Future<UserSessionModel?> get() async {
-    return await localUserSessionDataSource.get();
+    return await localUserSessionDatasource.get();
   }
 
   @override
   Future<void> save(UserSessionModel session) async {
-    return await localUserSessionDataSource.save(session);
+    return await localUserSessionDatasource.save(session);
   }
 }

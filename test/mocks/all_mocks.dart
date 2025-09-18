@@ -113,7 +113,7 @@ class MockBox extends Mock implements Box {
   }
 }
 
-class LoginRemoteDataSourceSpy extends Mock implements ISoapLoginDataSource {
+class LoginRemoteDatasourceSpy extends Mock implements ISoapLoginDatasource {
   void mockLogin(UserModel user) {
     when(
       () => this.login(
@@ -137,7 +137,7 @@ class AuthLocalDatasourceSpy extends Mock implements IAuthLocalDatasource {
 }
 
 class MockEnterpriseDatasource extends Mock
-    implements ISupabaseEnterpriseDataSource {
+    implements ISupabaseEnterpriseDatasource {
   void mockGetEnterprise(SupabaseEnterpriseModel? enterprise) {
     when(
       () => this.getEnterpriseByName(any()),
@@ -176,8 +176,8 @@ class MockAuthRepository extends Mock implements IAuthRepository {
   }
 }
 
-class MockAuthManagerDataSource extends Mock implements IAuthManagerDataSource {
-  MockAuthManagerDataSource() {
+class MockAuthManagerDatasource extends Mock implements IAuthManagerDatasource {
+  MockAuthManagerDatasource() {
     when(() => this.logout()).thenAnswer((_) async => {});
   }
 
@@ -230,8 +230,8 @@ class SoapRequestSpy extends Mock implements SoapRequest {
   );
 }
 
-class SoapEnterpriseDataSourceSpy extends Mock
-    implements ISoapEnterpriseDataSource {
+class SoapEnterpriseDatasourceSpy extends Mock
+    implements ISoapEnterpriseDatasource {
   void mockGetEnterprises(List<SoapEnterpriseModel> response) {
     when(
       () => this.getEnterprises(
@@ -242,8 +242,8 @@ class SoapEnterpriseDataSourceSpy extends Mock
   }
 }
 
-class SupabaseEnterpriseDataSourceSpy extends Mock
-    implements ISupabaseEnterpriseDataSource {
+class SupabaseEnterpriseDatasourceSpy extends Mock
+    implements ISupabaseEnterpriseDatasource {
   void mockGetEnterpriseByName(SupabaseEnterpriseModel? response) {
     when(
       () => this.getEnterpriseByName(any()),
@@ -268,9 +268,9 @@ class EnterpriseRepositorySpy extends Mock implements IEnterpriseRepository {
   }
 }
 
-class EnterpriseManagerDataSourceSpy extends Mock
-    implements IEnterpriseManagerDataSource {
-  EnterpriseManagerDataSourceSpy() {
+class EnterpriseManagerDatasourceSpy extends Mock
+    implements IEnterpriseManagerDatasource {
+  EnterpriseManagerDatasourceSpy() {
     when(
       () => this.createEnterpriseWithSubEnterprises(
         enterpriseName: any(named: "enterpriseName"),
@@ -342,9 +342,9 @@ class EnterpriseManagerRepositorySpy extends Mock
   }
 }
 
-class LocalSessionDataSourceSpy extends Mock
-    implements ILocalUserSessionDataSource {
-  LocalSessionDataSourceSpy() {
+class LocalSessionDatasourceSpy extends Mock
+    implements ILocalUserSessionDatasource {
+  LocalSessionDatasourceSpy() {
     when(() => this.clear()).thenAnswer((_) async => {});
   }
   void mockGetSession(UserSessionModel? response) {
@@ -356,8 +356,8 @@ class LocalSessionDataSourceSpy extends Mock
   }
 }
 
-class SoapProductsDataSourceSpy extends Mock
-    implements ISoapProductsDataSource {
+class SoapProductsDatasourceSpy extends Mock
+    implements ISoapProductsDatasource {
   void mockGetProductsJson(List<ProductModel> response) {
     when(
       () => this.getProductsJson(
@@ -471,9 +471,9 @@ class FakeSelectedProductStateController
   }
 }
 
-class SoapAdjustSalePriceDataSourceSpy extends Mock
-    implements ISoapAdjustSalePriceDataSource {
-  SoapAdjustSalePriceDataSourceSpy() {
+class SoapAdjustSalePriceDatasourceSpy extends Mock
+    implements ISoapAdjustSalePriceDatasource {
+  SoapAdjustSalePriceDatasourceSpy() {
     when(
       () => this.confirm(
         baseUrl: any(named: "baseUrl"),

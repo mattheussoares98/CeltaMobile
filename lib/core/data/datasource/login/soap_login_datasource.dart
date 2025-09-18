@@ -8,10 +8,10 @@ import '../../../domain/contracts/contracts.dart';
 import '../../../../features/auth/data/models/user_model.dart';
 import 'i_soap_login_datasource.dart';
 
-class SoapLoginDataSource implements ISoapLoginDataSource {
+class SoapLoginDatasource implements ISoapLoginDatasource {
   final SoapRequest soapAdapter;
 
-  SoapLoginDataSource(this.soapAdapter);
+  SoapLoginDatasource(this.soapAdapter);
 
   @override
   Future<UserModel> login({

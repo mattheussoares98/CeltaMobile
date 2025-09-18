@@ -7,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late SoapLoginDataSource sut;
+  late SoapLoginDatasource sut;
 
   late SoapRequestSpy soapAdapter;
 
@@ -16,7 +16,7 @@ void main() {
   late String password;
 
   void initSut() {
-    sut = SoapLoginDataSource(soapAdapter);
+    sut = SoapLoginDatasource(soapAdapter);
   }
 
   void initInjections() {

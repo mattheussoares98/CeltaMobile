@@ -11,7 +11,7 @@ import '../../../mocks/mocks.dart';
 void main() {
   late SoapProductsRepositoryImpl sut;
 
-  late SoapProductsDataSourceSpy soapProductsDataSource;
+  late SoapProductsDatasourceSpy soapProductsDatasource;
 
   late List<ProductEntity> products;
   late String baseUrl;
@@ -24,15 +24,15 @@ void main() {
   late int lastBuyEntranceQuantity;
 
   void initSut() {
-    sut = SoapProductsRepositoryImpl(soapProductsDataSource);
+    sut = SoapProductsRepositoryImpl(soapProductsDatasource);
   }
 
   void initInjections() {
-    soapProductsDataSource = SoapProductsDataSourceSpy();
+    soapProductsDatasource = SoapProductsDatasourceSpy();
   }
 
   void mockSuccess() {
-    soapProductsDataSource.mockGetProductsJson(
+    soapProductsDatasource.mockGetProductsJson(
       products.map((e) => ProductModel.fromEntity(e)).toList(),
     );
   }
@@ -88,7 +88,7 @@ void main() {
     );
 
     verify(
-      () => soapProductsDataSource.getProductsJson(
+      () => soapProductsDatasource.getProductsJson(
         baseUrl: baseUrl,
         searchValue: searchValue,
         routine: routine,
