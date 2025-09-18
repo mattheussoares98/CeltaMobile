@@ -4,7 +4,7 @@ import '../../../core/domain/contracts/contracts.dart';
 import '../domain/entities/entities.dart';
 import 'datasource.dart';
 
-class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
+class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDataSource {
   final SoapRequest soapRequest;
   SoapAdjustSalePriceDatasource({required this.soapRequest});
 
