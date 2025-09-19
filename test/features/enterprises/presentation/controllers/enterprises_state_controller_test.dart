@@ -10,24 +10,6 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class FakeSelectedEnterpriseStateController
-    extends SelectedEnterpriseStateController {
-  @override
-  EnterpriseEntity? build() {
-    return null;
-  }
-
-  @override
-  void selectEnterprise(EnterpriseEntity enterprise) {
-    state = enterprise;
-  }
-
-  @override
-  void clear() {
-    state = null;
-  }
-}
-
 void main() {
   late EnterpriseRepositorySpy enterpriseRepositorySpy;
   late UserEntity fakeUser;
@@ -56,7 +38,7 @@ void main() {
       overrides: [
         enterpriseRepositoryProvider.overrideWithValue(enterpriseRepositorySpy),
         selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(),
+          () => FakeSelectedEnterpriseStateController(fakeEnterprises.first),
         ),
         authStateControllerProvider.overrideWith(
           () => FakeAuthStateController(user),

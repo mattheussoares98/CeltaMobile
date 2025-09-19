@@ -22,3 +22,19 @@ ISoapAdjustSalePriceRepository soapAdjustSalePriceRepository(Ref ref) {
     ),
   );
 }
+
+@riverpod
+ISoapGetPriceSchedulesDatasource soapGetPriceSchedulesDatasource(Ref ref) {
+  return SoapGetPriceSchedulesDatasource(
+    soapRequest: ref.watch(soapAdapterProvider),
+  );
+}
+
+@riverpod
+ISoapGetPriceSchedulesRepository soapGetPriceSchedulesRepository(Ref ref) {
+  return SoapGetPriceSchedulesRepositoryImpl(
+    soapGetPriceSchedulesDatasource: ref.watch(
+      soapGetPriceSchedulesDatasourceProvider,
+    ),
+  );
+}

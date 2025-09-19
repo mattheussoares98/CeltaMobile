@@ -9,6 +9,7 @@ import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
 import 'package:celta_intelligence/core/providers/providers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/data/models/models.dart';
+import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
@@ -535,4 +536,59 @@ class SoapGetPriceSchedulesDatasourceSpy extends Mock
 
   void mockGetPriceSchedulesError() =>
       _mockGetPriceSchedulesCall().thenThrow(Exception());
+}
+
+class SoapGetPriceSchedulesRepositorySpy extends Mock
+    implements ISoapGetPriceSchedulesRepository {
+  When _mockGetPriceSchedulesCall() => when(
+    () => this.getPriceSchedules(
+      baseUrl: any(named: "baseUrl"),
+      crossIdentity: any(named: "crossIdentity"),
+      enterpriseCode: any(named: "enterpriseCode"),
+      productCode: any(named: "productCode"),
+      productPackingCode: any(named: "productPackingCode"),
+    ),
+  );
+
+  void mockGetPriceSchedules(List<PriceScheduleEntity> response) {
+    _mockGetPriceSchedulesCall().thenAnswer((_) async => response);
+  }
+
+  void mockGetPriceScheduleError() =>
+      _mockGetPriceSchedulesCall().thenThrow(Exception());
+}
+
+class FakePriceSchedulesStateController extends PriceSchedulesStateController {
+  final List<PriceScheduleEntity> priceSchedules;
+
+  FakePriceSchedulesStateController(this.priceSchedules);
+
+  @override
+  FutureOr<List<PriceScheduleEntity>> build(
+    int enterpriseCode,
+    String productPlu,
+  ) async {
+    return priceSchedules;
+  }
+}
+
+class FakeSelectedEnterpriseStateController
+    extends SelectedEnterpriseStateController {
+  final EnterpriseEntity? enterpriseToReturn;
+  FakeSelectedEnterpriseStateController(this.enterpriseToReturn);
+
+  @override
+  EnterpriseEntity? build() {
+    return enterpriseToReturn;
+  }
+
+  @override
+  void selectEnterprise(EnterpriseEntity enterprise) {
+    state = enterprise;
+  }
+
+  @override
+  void clear() {
+    state = null;
+  }
 }
