@@ -49,7 +49,7 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "${e.Code} - ${e.name}",
+                  text: "${e.PersonalizedCode} - ${e.name}",
                   style: theme.textTheme.titleSmall?.copyWith(
                     color: getColor(true),
                   ),
