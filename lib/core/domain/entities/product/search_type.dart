@@ -1,0 +1,16 @@
+enum SearchType {
+  //* Products
+  dynamic(0),
+  approximatePersonalizedCode(5),
+  approximateLegacyCode(11),
+  // exactPriceLookUp(2),
+  // exactEan(4),
+  // approximateName(6),
+
+  //* Buy quotation
+  allProductsFromGoodsReceiving(19),
+  allProductsFromGoodsReceivingGoesForBalance(20);
+
+  final int code;
+  const SearchType(this.code);
+}

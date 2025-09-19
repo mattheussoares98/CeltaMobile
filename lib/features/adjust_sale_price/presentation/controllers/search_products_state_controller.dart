@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/data/datasource/datasource.dart';
 import '../../../../core/providers/providers.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../../../features/auth/presentation/controllers/controllers.dart';
+import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
 
 part 'search_products_state_controller.g.dart';

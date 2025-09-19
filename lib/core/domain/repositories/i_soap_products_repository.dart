@@ -1,4 +1,3 @@
-import '../../data/datasource/datasource.dart';
 import '../entities/entities.dart';
 
 abstract class ISoapProductsRepository {
