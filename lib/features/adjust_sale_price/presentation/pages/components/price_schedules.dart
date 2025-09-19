@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
@@ -51,23 +52,37 @@ class PriceSchedules extends ConsumerWidget {
       value: value,
       tryAgain: loadSchedules,
       data: (schedules) {
-        if (schedules.isEmpty) {
-          return SliverToBoxAdapter(
-            child: PrimaryTextButton(
-              text: 'Obter agendamentos'.hardcoded,
-              icon: Icon(
-                theme.platform == TargetPlatform.iOS
-                    ? CupertinoIcons.timer
-                    : Icons.timer,
-              ),
-              onPressed: loadSchedules,
-            ),
-          );
-        }
         return SliverList.builder(
-          itemCount: schedules.length,
+          itemCount: (schedules?.length ?? 0) + 1,
           itemBuilder: (_, index) {
-            final schedule = schedules[index];
+            if (index == 0) {
+              return Column(
+                children: [
+                  PrimaryTextButton(
+                    text: schedules == null
+                        ? 'Obter agendamentos'.hardcoded
+                        : 'Atualizar agendamentos'.hardcoded,
+                    icon: Icon(
+                      theme.platform == TargetPlatform.iOS
+                          ? CupertinoIcons.timer
+                          : Icons.timer_outlined,
+                    ),
+                    onPressed: loadSchedules,
+                  ),
+                  if (schedules?.isEmpty == true) ...[
+                    gapH8,
+                    Text(
+                      'Nenhum foi agendamento encontrado'.hardcoded,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ],
+              );
+            }
+
+            final schedule = schedules![index - 1];
 
             return Column(
               children: [

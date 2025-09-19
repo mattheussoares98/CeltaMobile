@@ -13,7 +13,7 @@ part 'price_schedules_state_controller.g.dart';
 @riverpod
 class PriceSchedulesStateController extends _$PriceSchedulesStateController {
   @override
-  FutureOr<List<PriceScheduleEntity>> build(
+  FutureOr<List<PriceScheduleEntity>?> build(
     int enterpriseCode,
     String productPlu,
   ) {
@@ -31,7 +31,7 @@ class PriceSchedulesStateController extends _$PriceSchedulesStateController {
       timer?.cancel();
     });
 
-    return [];
+    return null;
   }
 
   Future<void> getPriceSchedules({

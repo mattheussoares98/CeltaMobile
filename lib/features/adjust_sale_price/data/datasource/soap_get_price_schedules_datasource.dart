@@ -35,7 +35,7 @@ class SoapGetPriceSchedulesDatasource
       },
     );
 
-    return (response as List)
+    return (json.decode(response) as List)
         .map((e) => PriceScheduleModel.fromJson(e))
         .toList();
   }

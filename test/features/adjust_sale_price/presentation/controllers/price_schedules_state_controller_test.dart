@@ -52,10 +52,35 @@ void main() {
   }
 
   group('PriceSchedulesStateController', () {
+    test('should start with null value', () async {
+      final container = makeProviderContainer();
+      addTearDown(container.dispose);
+      final states = <AsyncValue<List<PriceScheduleEntity>?>>[];
+
+      container.listen(
+        priceSchedulesStateControllerProvider(
+          enterpriseEntity.Code!,
+          productEntity.PLU,
+        ),
+        (_, next) => states.add(next),
+      );
+
+      final value = await container
+          .read(
+            priceSchedulesStateControllerProvider(
+              enterpriseEntity.Code!,
+              productEntity.PLU,
+            ).notifier,
+          )
+          .build(enterpriseEntity.Code!, productEntity.PLU);
+
+      expect(value, isNull);
+    });
+
     test('should emit [loading, data] on success', () async {
       final container = makeProviderContainer();
       addTearDown(container.dispose);
-      final states = <AsyncValue<List<PriceScheduleEntity>>>[];
+      final states = <AsyncValue<List<PriceScheduleEntity>?>>[];
 
       container.listen(
         priceSchedulesStateControllerProvider(
@@ -96,7 +121,7 @@ void main() {
 
       final container = makeProviderContainer();
       addTearDown(container.dispose);
-      final states = <AsyncValue<List<PriceScheduleEntity>>>[];
+      final states = <AsyncValue<List<PriceScheduleEntity>?>>[];
       container.listen(
         priceSchedulesStateControllerProvider(
           enterpriseEntity.Code!,
