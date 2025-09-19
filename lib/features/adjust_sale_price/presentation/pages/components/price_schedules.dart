@@ -3,6 +3,7 @@ import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
@@ -84,39 +85,58 @@ class PriceSchedules extends ConsumerWidget {
 
             final schedule = schedules![index - 1];
 
-            return Column(
-              children: [
-                Text("Code ${schedule.Code}"),
-                Text("FatherCode ${schedule.FatherCode}"),
-                Text("BrotherCode ${schedule.BrotherCode}"),
-                Text("PriceType ${schedule.PriceType}"),
-                Text("Origin ${schedule.Origin}"),
-                Text("User ${schedule.User}"),
-                Text("PriceTypeString ${schedule.PriceTypeString}"),
-                Text("OriginString ${schedule.OriginString}"),
-                Text("OfferSchedule ${schedule.OfferSchedule}"),
-                Text("Date ${schedule.Date}"),
-                Text("ExecutionDate ${schedule.ExecutionDate}"),
-                Text("ExecutedDate ${schedule.ExecutedDate}"),
-                Text("OriginalPrice ${schedule.OriginalPrice}"),
-                Text("Price ${schedule.Price}"),
-                Text("LastPrice ${schedule.LastPrice}"),
-                Text("RoundedPrice ${schedule.RoundedPrice}"),
-                Text(
-                  "AlteredByEnterpriseGroup ${schedule.AlteredByEnterpriseGroup}",
+            return ResponsiveScrollableWidget(
+              padding: Sizes.p4,
+              child: Card(
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleAndSubTitle(
+                        title: 'Criado por '.hardcoded,
+                        subTitle: schedule.User,
+                      ),
+                      TitleAndSubTitle(
+                        title: 'Tipo de preço '.hardcoded,
+                        subTitle: schedule.PriceTypeString,
+                      ),
+                      TitleAndSubTitle(
+                        title: 'Origem '.hardcoded,
+                        subTitle: schedule.OriginString,
+                      ),
+                      TitleAndSubTitle(
+                        title: 'Alterado em '.hardcoded,
+                        subTitle: DateFormat(
+                          'dd/MM/yyyy HH:mm',
+                        ).format(schedule.Date),
+                      ),
+                      TitleAndSubTitle(
+                        title: 'Será executado em '.hardcoded,
+                        subTitle: DateFormat(
+                          'dd/MM/yyyy HH:mm',
+                        ).format(schedule.ExecutionDate),
+                      ),
+                      TitleAndSubTitle(
+                        title: 'Novo preço '.hardcoded,
+                        subTitle: schedule.OriginalPrice,
+                        subTitleIsPrice: true,
+                      ),
+                      if (schedule.AlteredByEnterpriseGroup)
+                        Text("Alterado por agrupamento de empresas"),
+                      if (schedule.AlteredByClass) Text("Alterado via classe"),
+                      if (schedule.AlteredByPackings)
+                        Text("Alterado por embalagens"),
+                      if (schedule.AlteredByGrid) Text("Alterado por grade"),
+                      if (schedule.UpdateClass) Text("Vai alterar a classe"),
+                      if (schedule.UpdateEnterpriseOperationalGroup)
+                        Text("Vai alterar o grupo operacional de empresas"),
+                      if (schedule.IsFather) Text("É produto pai"),
+                    ],
+                  ),
                 ),
-                Text("AlteredByClass ${schedule.AlteredByClass}"),
-                Text("AlteredByPackings ${schedule.AlteredByPackings}"),
-                Text("AlteredByGrid ${schedule.AlteredByGrid}"),
-                Text("UpdateClass ${schedule.UpdateClass}"),
-                Text(
-                  "UpdateEnterpriseOperationalGroup ${schedule.UpdateEnterpriseOperationalGroup}",
-                ),
-                Text("IsFather ${schedule.IsFather}"),
-                Text("IsBrother ${schedule.IsBrother}"),
-                Text("IsExecuted ${schedule.IsExecuted}"),
-                Text("IsFinished ${schedule.IsFinished}"),
-              ],
+              ),
             );
           },
         );
