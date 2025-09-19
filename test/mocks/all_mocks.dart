@@ -8,6 +8,7 @@ import 'package:celta_intelligence/core/domain/errors/errors.dart';
 import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
 import 'package:celta_intelligence/core/providers/providers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/adjust_sale_price/data/models/models.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
@@ -514,4 +515,24 @@ class SoapAdjustSalePriceRepositorySpy extends Mock
       now: any(named: "now"),
     ),
   );
+}
+
+class SoapGetPriceSchedulesDatasourceSpy extends Mock
+    implements ISoapGetPriceSchedulesDatasource {
+  When _mockGetPriceSchedulesCall() => when(
+    () => this.getPriceSchedules(
+      baseUrl: any(named: "baseUrl"),
+      crossIdentity: any(named: "crossIdentity"),
+      enterpriseCode: any(named: "enterpriseCode"),
+      productCode: any(named: "productCode"),
+      productPackingCode: any(named: "productPackingCode"),
+    ),
+  );
+
+  void mockGetPriceSchedules(List<PriceScheduleModel> response) {
+    _mockGetPriceSchedulesCall().thenAnswer((_) async => response);
+  }
+
+  void mockGetPriceSchedulesError() =>
+      _mockGetPriceSchedulesCall().thenThrow(Exception());
 }
