@@ -1,5 +1,4 @@
 export './product/product.dart';
-export './price_schedule_model.dart';
 export 'user_session_model.dart';
 export './soap_enterprise_model.dart';
 export 'supabase_enterprise_model.dart';
