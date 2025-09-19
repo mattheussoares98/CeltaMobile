@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import '../../../core/domain/contracts/contracts.dart';
-import '../domain/entities/entities.dart';
+import '../../../../core/domain/contracts/contracts.dart';
+import '../../domain/entities/entities.dart';
 import 'datasource.dart';
 
 class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {

@@ -4,7 +4,7 @@ import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/re
 
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/sale_type.dart';
 
-import '../../datasource/datasource.dart';
+import '../../data/datasource/datasource.dart';
 import 'repositories.dart';
 
 class SoapAdjustSalePriceRepositoryImpl

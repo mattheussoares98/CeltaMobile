@@ -7,7 +7,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/errors/errors.dart';
 import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
 import 'package:celta_intelligence/core/providers/providers.dart';
-import 'package:celta_intelligence/features/adjust_sale_price/datasource/datasource.dart';
+import 'package:celta_intelligence/features/adjust_sale_price/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
