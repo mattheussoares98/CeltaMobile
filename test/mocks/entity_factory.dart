@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 
@@ -197,4 +198,33 @@ class EntityFactory {
 
   static UserSessionModel makeUserSessionModel() =>
       UserSessionModel(baseUrl: faker.internet.httpUrl());
+
+  static PriceScheduleEntity makePriceScheduleEntity() => PriceScheduleEntity(
+    Code: faker.randomGenerator.integer(100),
+    FatherCode: faker.randomGenerator.integer(100),
+    BrotherCode: faker.randomGenerator.integer(100),
+    PriceType: faker.randomGenerator.integer(100),
+    Origin: faker.randomGenerator.integer(100),
+    User: faker.internet.userName(),
+    PriceTypeString: faker.randomGenerator.integer(100).toString(),
+    OriginString: faker.randomGenerator.integer(100).toString(),
+    OfferSchedule: faker.randomGenerator.string(5),
+    Date: faker.date.dateTime(),
+    ExecutionDate: faker.date.dateTime(),
+    ExecutedDate: faker.date.dateTime(),
+    OriginalPrice: faker.randomGenerator.decimal(),
+    Price: faker.randomGenerator.decimal(),
+    LastPrice: faker.randomGenerator.decimal(),
+    RoundedPrice: faker.randomGenerator.boolean(),
+    AlteredByEnterpriseGroup: faker.randomGenerator.boolean(),
+    AlteredByClass: faker.randomGenerator.boolean(),
+    AlteredByPackings: faker.randomGenerator.boolean(),
+    AlteredByGrid: faker.randomGenerator.boolean(),
+    UpdateClass: faker.randomGenerator.boolean(),
+    UpdateEnterpriseOperationalGroup: faker.randomGenerator.boolean(),
+    IsFather: faker.randomGenerator.boolean(),
+    IsBrother: faker.randomGenerator.boolean(),
+    IsExecuted: faker.randomGenerator.boolean(),
+    IsFinished: faker.randomGenerator.boolean(),
+  );
 }
