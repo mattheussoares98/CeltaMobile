@@ -154,105 +154,117 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
               ),
             ),
           ),
-          body: AsyncValueWidget(
-            value: selectedProductAsync,
-            tryAgain: () {
-              ref.invalidate(
-                selectedProductStateControllerProvider(
-                  widget.enterpriseCode,
-                  widget.plu,
-                  widget.product,
-                ),
-              );
-            },
-            data: (product) {
-              final availableReplications = getAvailableReplications(
-                product,
-                selectedEnterprise,
-              );
+          body: CustomScrollView(
+            slivers: [
+              PriceSchedules(
+                enterpriseCode: widget.enterpriseCode,
+                product: widget.product!,
+              ),
+              AsyncValueSliverWidget(
+                value: selectedProductAsync,
+                tryAgain: () {
+                  ref.invalidate(
+                    selectedProductStateControllerProvider(
+                      widget.enterpriseCode,
+                      widget.plu,
+                      widget.product,
+                    ),
+                  );
+                },
+                data: (product) {
+                  final availableReplications = getAvailableReplications(
+                    product,
+                    selectedEnterprise,
+                  );
 
-              updateReplicationsSelectesByDefault(
-                product,
-                selectedEnterprise,
-                availableReplications,
-              );
+                  updateReplicationsSelectesByDefault(
+                    product,
+                    selectedEnterprise,
+                    availableReplications,
+                  );
 
-              return ResponsiveScrollableWidget(
-                padding: Sizes.p4,
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      Text("Schedules"),
-                      _DefaultDivider(),
-                      SalesTypeWidget(
-                        selectedSaleType: selectedSaleType,
-                        selectedEnterprise: selectedEnterprise,
-                        onTap: (value) {
-                          setState(() {
-                            selectedSaleType = value;
-                          });
-                        },
+                  return SliverToBoxAdapter(
+                    child: ResponsiveScrollableWidget(
+                      padding: Sizes.p4,
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            _DefaultDivider(),
+                            SalesTypeWidget(
+                              selectedSaleType: selectedSaleType,
+                              selectedEnterprise: selectedEnterprise,
+                              onTap: (value) {
+                                setState(() {
+                                  selectedSaleType = value;
+                                });
+                              },
+                            ),
+                            _DefaultDivider(),
+                            PricesTypesWidget(
+                              selectedPriceType: selectedPriceType,
+                              onTap: (value) {
+                                setState(() {
+                                  selectedPriceType = value;
+                                });
+                              },
+                            ),
+                            _DefaultDivider(),
+                            ReplicationTypesWidget(
+                              availableReplications: availableReplications,
+                              selectedReplications: _selectedReplications,
+                              onChanged: (replicationType) {
+                                setState(() {
+                                  if (_selectedReplications.contains(
+                                    replicationType,
+                                  )) {
+                                    _selectedReplications.remove(
+                                      replicationType,
+                                    );
+                                  } else {
+                                    _selectedReplications.add(replicationType);
+                                  }
+                                });
+                              },
+                            ),
+                            _DefaultDivider(),
+                            StartAndEndDates(
+                              selectedStartDate: selectedStartDate,
+                              selectedEndDate: selectedEndDate,
+                              enableEndDate:
+                                  selectedPriceType == PriceType.offer,
+                              onChangeStartDate: (newDate) {
+                                setState(() {
+                                  selectedStartDate = newDate;
+                                });
+                              },
+                              onChangeEndDate: (newDate) {
+                                setState(() {
+                                  selectedEndDate = newDate;
+                                });
+                              },
+                            ),
+                            _DefaultDivider(),
+                            PricesCostsAndMarginsButton(product: product!),
+                            PracticedSuggestionAndMinimumPrices(
+                              product: product,
+                              selectedSaleType: selectedSaleType,
+                              selectedPriceType: selectedPriceType!,
+                            ),
+                            _DefaultDivider(),
+                            PriceFieldAndConfirmButton(
+                              priceController: priceController,
+                              isLoading: confirmAdjustAsync.isLoading,
+                              onPressed: () => onPressed(product),
+                            ),
+                          ],
+                        ),
                       ),
-                      _DefaultDivider(),
-                      PricesTypesWidget(
-                        selectedPriceType: selectedPriceType,
-                        onTap: (value) {
-                          setState(() {
-                            selectedPriceType = value;
-                          });
-                        },
-                      ),
-                      _DefaultDivider(),
-                      ReplicationTypesWidget(
-                        availableReplications: availableReplications,
-                        selectedReplications: _selectedReplications,
-                        onChanged: (replicationType) {
-                          setState(() {
-                            if (_selectedReplications.contains(
-                              replicationType,
-                            )) {
-                              _selectedReplications.remove(replicationType);
-                            } else {
-                              _selectedReplications.add(replicationType);
-                            }
-                          });
-                        },
-                      ),
-                      _DefaultDivider(),
-                      StartAndEndDates(
-                        selectedStartDate: selectedStartDate,
-                        selectedEndDate: selectedEndDate,
-                        enableEndDate: selectedPriceType == PriceType.offer,
-                        onChangeStartDate: (newDate) {
-                          setState(() {
-                            selectedStartDate = newDate;
-                          });
-                        },
-                        onChangeEndDate: (newDate) {
-                          setState(() {
-                            selectedEndDate = newDate;
-                          });
-                        },
-                      ),
-                      _DefaultDivider(),
-                      PricesCostsAndMarginsButton(product: product!),
-                      PracticedSuggestionAndMinimumPrices(
-                        product: product,
-                        selectedSaleType: selectedSaleType,
-                        selectedPriceType: selectedPriceType!,
-                      ),
-                      _DefaultDivider(),
-                      PriceFieldAndConfirmButton(
-                        priceController: priceController,
-                        isLoading: confirmAdjustAsync.isLoading,
-                        onPressed: () => onPressed(product),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
         if (confirmAdjustAsync.isLoading) LoadingPage(),
