@@ -4,12 +4,15 @@ class PriceScheduleEntity extends Equatable {
   final int Code;
   final int? FatherCode;
   final int? BrotherCode;
+  final int PriceType;
+  final int Origin;
   final String User;
+  final String PriceTypeString;
+  final String OriginString;
+  final String OfferSchedule;
   final DateTime Date;
   final DateTime ExecutionDate;
   final DateTime? ExecutedDate;
-  final int PriceType;
-  final String PriceTypeString;
   final double OriginalPrice;
   final double Price;
   final double LastPrice;
@@ -20,24 +23,24 @@ class PriceScheduleEntity extends Equatable {
   final bool AlteredByGrid;
   final bool UpdateClass;
   final bool UpdateEnterpriseOperationalGroup;
-  final int Origin;
-  final String OriginString;
   final bool IsFather;
   final bool IsBrother;
   final bool IsExecuted;
   final bool IsFinished;
-  final String OfferSchedule;
 
   const PriceScheduleEntity({
     required this.Code,
     required this.FatherCode,
     required this.BrotherCode,
+    required this.PriceType,
+    required this.Origin,
     required this.User,
+    required this.PriceTypeString,
+    required this.OriginString,
+    required this.OfferSchedule,
     required this.Date,
     required this.ExecutionDate,
     required this.ExecutedDate,
-    required this.PriceType,
-    required this.PriceTypeString,
     required this.OriginalPrice,
     required this.Price,
     required this.LastPrice,
@@ -48,13 +51,10 @@ class PriceScheduleEntity extends Equatable {
     required this.AlteredByGrid,
     required this.UpdateClass,
     required this.UpdateEnterpriseOperationalGroup,
-    required this.Origin,
-    required this.OriginString,
     required this.IsFather,
     required this.IsBrother,
     required this.IsExecuted,
     required this.IsFinished,
-    required this.OfferSchedule,
   });
 
   @override
