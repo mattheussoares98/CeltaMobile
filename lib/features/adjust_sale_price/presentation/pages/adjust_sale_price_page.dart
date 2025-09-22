@@ -141,6 +141,8 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
       });
     });
 
+    final product = widget.product ?? selectedProductAsync.value;
+
     return Stack(
       children: [
         Scaffold(
@@ -148,18 +150,17 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
             leadingWidth: 40,
             title: FittedBox(
               child: Text(
-                selectedProductAsync.value == null
-                    ? ""
-                    : "(${selectedProductAsync.value!.PLU}) ${selectedProductAsync.value!.Name}",
+                product == null ? "" : "(${product.PLU}) ${product.Name}",
               ),
             ),
           ),
           body: CustomScrollView(
             slivers: [
-              PriceSchedules(
-                enterpriseCode: widget.enterpriseCode,
-                product: widget.product!,
-              ),
+              if (product != null)
+                PriceSchedules(
+                  enterpriseCode: widget.enterpriseCode,
+                  product: product,
+                ),
               AsyncValueSliverWidget(
                 value: selectedProductAsync,
                 tryAgain: () {
@@ -167,7 +168,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                     selectedProductStateControllerProvider(
                       widget.enterpriseCode,
                       widget.plu,
-                      widget.product,
+                      product,
                     ),
                   );
                 },
@@ -234,14 +235,32 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                               enableEndDate:
                                   selectedPriceType == PriceType.offer,
                               onChangeStartDate: (newDate) {
-                                setState(() {
-                                  selectedStartDate = newDate;
-                                });
+                                if (selectedEndDate != null &&
+                                    newDate.isAfter(selectedEndDate!)) {
+                                  showSnackBarMessage(
+                                    context,
+                                    'A data de início deve ser antes da data de término',
+                                    backgroundColor: Colors.red,
+                                  );
+                                } else {
+                                  setState(() {
+                                    selectedStartDate = newDate;
+                                  });
+                                }
                               },
                               onChangeEndDate: (newDate) {
-                                setState(() {
-                                  selectedEndDate = newDate;
-                                });
+                                if (selectedStartDate != null &&
+                                    newDate.isBefore(selectedStartDate!)) {
+                                  showSnackBarMessage(
+                                    context,
+                                    'A data de término deve ser depois da data de início',
+                                    backgroundColor: Colors.red,
+                                  );
+                                } else {
+                                  setState(() {
+                                    selectedEndDate = newDate;
+                                  });
+                                }
                               },
                             ),
                             _DefaultDivider(),
