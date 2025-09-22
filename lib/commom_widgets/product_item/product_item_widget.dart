@@ -8,7 +8,7 @@ import '../commom_widgets.dart';
 class ProductItemWidget extends StatelessWidget {
   final int enterpriseCode;
   final ProductEntity product;
-  final Routine routine;
+  final BsRoutine routine;
   final Widget? bottom;
   final VoidCallback? onTap;
   const ProductItemWidget({
@@ -110,7 +110,7 @@ class ProductItemWidget extends StatelessWidget {
                 emptyMessage: 'Sem custo líquido'.hardcoded,
                 subTitleIsPrice: true,
               ),
-              if (routine != Routine.adjustSalePrice) ...[
+              if (routine != BsRoutine.adjustSalePrice) ...[
                 TitleAndSubTitle(
                   title: "Estoque atual ",
                   emptyMessage: currentStockQuantity == -1
