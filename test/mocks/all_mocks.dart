@@ -592,3 +592,25 @@ class FakeSelectedEnterpriseStateController
     state = null;
   }
 }
+
+class SoapResourceDatasourceSpy extends Mock
+    implements ISoapResourceDatasource {
+  SoapResourceDatasourceSpy() {
+    _mockCanAccessResourceCall().thenAnswer((_) async => true);
+  }
+
+  When _mockCanAccessResourceCall() => when(
+    () => this.canAccessResource(
+      resource: any(named: "resource"),
+      baseUrl: any(named: "baseUrl"),
+      crossIdentity: any(named: "crossIdentity"),
+      routine: any(named: "routine"),
+    ),
+  );
+
+  void mockCanAccessResourceError() =>
+      _mockCanAccessResourceCall().thenThrow(Exception());
+
+  void mockCanAccessResource(bool value) =>
+      _mockCanAccessResourceCall().thenAnswer((_) async => value);
+}
