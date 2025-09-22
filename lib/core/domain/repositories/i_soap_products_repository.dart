@@ -4,7 +4,7 @@ abstract class ISoapProductsRepository {
   Future<List<ProductEntity>> getProductsJson({
     required String baseUrl,
     required String searchValue,
-    required Routine routine,
+    required BsRoutine routine,
     required SearchType searchType,
     required String crossIdentity,
     required List<int> enterpriseCodes,

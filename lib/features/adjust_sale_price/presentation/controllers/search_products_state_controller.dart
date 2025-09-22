@@ -78,7 +78,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             baseUrl: baseUrl,
             searchValue: searchValue,
             crossIdentity: crossIdentity,
-            routine: Routine.adjustSalePrice,
+            routine: BsRoutine.adjustSalePrice,
             searchType: SearchType.dynamic,
             enterpriseCodes: [enterpriseCode],
             enterpriseEntity: selectedEnterprise ?? enterpriseEntity,

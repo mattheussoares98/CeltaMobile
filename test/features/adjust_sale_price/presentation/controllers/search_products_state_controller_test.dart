@@ -23,7 +23,7 @@ void main() {
   late int lastBuyEntranceQuantity;
 
   setUpAll(() {
-    for (var routine in Routine.values) {
+    for (var routine in BsRoutine.values) {
       registerFallbackValue(routine);
     }
     for (var searchType in SearchType.values) {
@@ -127,7 +127,7 @@ void main() {
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
-          routine: Routine.adjustSalePrice,
+          routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
           crossIdentity: userEntity.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
@@ -167,7 +167,7 @@ void main() {
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
-          routine: Routine.adjustSalePrice,
+          routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
           crossIdentity: userEntity.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
@@ -207,7 +207,7 @@ void main() {
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
-          routine: Routine.adjustSalePrice,
+          routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
           crossIdentity: userEntity.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],

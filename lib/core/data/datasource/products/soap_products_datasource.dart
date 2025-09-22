@@ -13,7 +13,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
   Future<dynamic> _executeRequest({
     required String baseUrl,
     required String searchValue,
-    required Routine routine,
+    required BsRoutine routine,
     required SearchType searchType,
     required String crossIdentity,
     required List<int> enterpriseCodes,
@@ -62,7 +62,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
   Future<List<ProductModel>> getProductsJson({
     required String baseUrl,
     required String searchValue,
-    required Routine routine,
+    required BsRoutine routine,
     required SearchType searchType,
     required String crossIdentity,
     required List<int> enterpriseCodes,

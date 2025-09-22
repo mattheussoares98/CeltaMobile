@@ -1,4 +1,4 @@
-enum Routine {
+enum BsRoutine {
   generic(0),
   saleRequest(1),
   buyRequest(2),
@@ -11,5 +11,5 @@ enum Routine {
   buyQuotation(9);
 
   final int code;
-  const Routine(this.code);
+  const BsRoutine(this.code);
 }

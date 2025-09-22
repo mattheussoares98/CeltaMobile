@@ -49,7 +49,7 @@ class SelectedProductStateController extends _$SelectedProductStateController {
           baseUrl: userSession!.baseUrl!,
           crossIdentity: user!.CrossIdentity_Usuario!,
           searchValue: plu,
-          routine: Routine.adjustSalePrice,
+          routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
           enterpriseCodes: [enterpriseCode],
           enterpriseEntity: enterpriseEntity,

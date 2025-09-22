@@ -91,7 +91,7 @@ class _AdjustSalePriceProductsPageState
                       return ProductItemWidget(
                         enterpriseCode: widget.enterpriseCode,
                         product: product,
-                        routine: Routine.adjustSalePrice,
+                        routine: BsRoutine.adjustSalePrice,
                         bottom: Padding(
                           padding: const EdgeInsets.only(top: Sizes.p8),
                           child: Row(

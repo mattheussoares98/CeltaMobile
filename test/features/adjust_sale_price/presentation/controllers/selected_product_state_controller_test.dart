@@ -24,7 +24,7 @@ void main() {
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     productEntity = EntityFactory.makeProductEntity();
 
-    registerFallbackValue(Routine.adjustSalePrice);
+    registerFallbackValue(BsRoutine.adjustSalePrice);
     registerFallbackValue(SearchType.dynamic);
 
     mockSoapProductsRepository.mockGetProductsJson([productEntity]);
@@ -117,7 +117,7 @@ void main() {
           () => mockSoapProductsRepository.getProductsJson(
             baseUrl: userSession.baseUrl!,
             searchValue: productEntity.PLU,
-            routine: Routine.adjustSalePrice,
+            routine: BsRoutine.adjustSalePrice,
             searchType: SearchType.dynamic,
             enterpriseCodes: [enterpriseEntity.Code!],
             enterpriseEntity: enterpriseEntity,

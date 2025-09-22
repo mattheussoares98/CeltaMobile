@@ -15,7 +15,7 @@ void main() {
   late List<ProductEntity> products;
   late String baseUrl;
   late String searchValue;
-  late Routine routine;
+  late BsRoutine routine;
   late SearchType searchType;
   late String crossIdentity;
   late List<int> enterpriseCodes;
@@ -44,8 +44,8 @@ void main() {
     ];
     baseUrl = faker.internet.httpUrl();
     searchValue = faker.randomGenerator.string(13);
-    routine =
-        Routine.values[faker.randomGenerator.integer(Routine.values.length)];
+    routine = BsRoutine
+        .values[faker.randomGenerator.integer(BsRoutine.values.length)];
     searchType = SearchType
         .values[faker.randomGenerator.integer(SearchType.values.length)];
     crossIdentity = faker.guid.guid();
@@ -65,7 +65,7 @@ void main() {
     mockSuccess();
   });
   setUpAll(() {
-    for (var routine in Routine.values) {
+    for (var routine in BsRoutine.values) {
       registerFallbackValue(routine);
     }
     for (var searchType in SearchType.values) {

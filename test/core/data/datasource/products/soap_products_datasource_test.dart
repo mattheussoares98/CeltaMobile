@@ -17,7 +17,7 @@ void main() {
   late List<ProductEntity> productsEntities;
   late String baseUrl;
   late String searchValue;
-  late Routine routine;
+  late BsRoutine routine;
   late SearchType searchType;
   late String crossIdentity;
   late List<int> enterpriseCodes;
@@ -50,8 +50,8 @@ void main() {
 
     baseUrl = faker.internet.httpUrl();
     searchValue = faker.food.dish();
-    routine =
-        Routine.values[faker.randomGenerator.integer(Routine.values.length)];
+    routine = BsRoutine
+        .values[faker.randomGenerator.integer(BsRoutine.values.length)];
     searchType = SearchType
         .values[faker.randomGenerator.integer(SearchType.values.length)];
     crossIdentity = faker.guid.guid();
