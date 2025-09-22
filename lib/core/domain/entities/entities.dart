@@ -1,4 +1,5 @@
 export './product/product.dart';
+export './bs_resource.dart';
 export 'enterprise_entity.dart';
 export 'selectable_item.dart';
 export 'sub_enterprise_entity.dart';
