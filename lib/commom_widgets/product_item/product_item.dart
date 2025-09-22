@@ -4,4 +4,3 @@ export './margins.dart';
 export './prices.dart';
 export 'product_info_modal.dart';
 export './product_item_widget.dart';
-export './title_and_subtitle.dart';

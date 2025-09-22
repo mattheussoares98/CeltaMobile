@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'product_item.dart';
+import '../commom_widgets.dart';
 
 class Margins extends StatelessWidget {
   const Margins({super.key, required this.widget});

@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import 'product_item.dart';
+import '../commom_widgets.dart';
 
 class Costs extends StatelessWidget {
   //TODO test these values

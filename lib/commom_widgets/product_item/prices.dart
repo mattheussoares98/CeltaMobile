@@ -2,7 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
-import 'product_item.dart';
+import '../commom_widgets.dart';
 
 class Prices extends StatelessWidget {
   const Prices({super.key, required this.widget});

@@ -19,3 +19,4 @@ export './responsive_list_flow.dart';
 export 'responsive_scrollable_widget.dart';
 export './show_modal_page.dart';
 export 'show_snack_bar_message.dart';
+export './title_and_subtitle.dart';

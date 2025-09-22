@@ -2,7 +2,7 @@ import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class TitleAndSubTitle extends StatelessWidget {
-  final String title;
+  final String? title;
   final dynamic subTitle;
   final String? emptyMessage;
   final TextStyle? titleStyle;
@@ -33,8 +33,10 @@ class TitleAndSubTitle extends StatelessWidget {
       }
     }
 
-    String getSubtitleText() {
-      if (subTitleIsNumber && (subTitle as double) == -1) {
+    String? getSubtitleText() {
+      if (subTitle == null) {
+        return null;
+      } else if (subTitleIsNumber && (subTitle as double) == -1) {
         return 'Sem permissão p/ visualizar';
       } else if (showErrorMessage) {
         return emptyMessage!;
@@ -57,6 +59,7 @@ class TitleAndSubTitle extends StatelessWidget {
     }
 
     final subtitleColor = getSubtitleColor();
+    final subtitleText = getSubtitleText();
 
     return RichText(
       textHeightBehavior: const TextHeightBehavior(
@@ -65,7 +68,7 @@ class TitleAndSubTitle extends StatelessWidget {
       ),
       text: TextSpan(
         children: [
-          if (!showErrorMessage)
+          if (!showErrorMessage && title != null)
             TextSpan(
               text: title,
               style: titleStyle ?? theme.textTheme.bodyMedium,
@@ -78,12 +81,13 @@ class TitleAndSubTitle extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
-          TextSpan(
-            text: getSubtitleText(),
-            style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
-              color: subtitleColor,
+          if (subtitleText != null)
+            TextSpan(
+              text: subtitleText,
+              style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
+                color: subtitleColor,
+              ),
             ),
-          ),
           if (subTitleIsPercentage == true && !showErrorMessage)
             TextSpan(
               text: ' %',
