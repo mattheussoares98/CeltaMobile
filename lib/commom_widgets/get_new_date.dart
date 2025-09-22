@@ -81,7 +81,7 @@ class GetNewDate {
     if (finalDateTime.isBefore(minimumDate)) {
       showSnackBarMessage(
         context,
-        'Horário não atualizado'.hardcoded,
+        'O horário não pode ser menor que a data mínima'.hardcoded,
         backgroundColor: Colors.red,
       );
       return null;
