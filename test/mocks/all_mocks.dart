@@ -497,7 +497,7 @@ class SoapAdjustSalePriceDatasourceSpy extends Mock
 class SoapAdjustSalePriceRepositorySpy extends Mock
     implements ISoapAdjustSalePriceRepository {
   SoapAdjustSalePriceRepositorySpy() {
-    _confirmCall().thenAnswer((_) async => {});
+    _confirmCall().thenAnswer((_) async {});
   }
 
   void mockConfirmError() => _confirmCall().thenThrow(Exception());

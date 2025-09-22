@@ -5,6 +5,7 @@ import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/en
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/providers.dart';
 import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,14 +17,13 @@ void main() async {
   late SoapAdjustSalePriceRepositorySpy mockRepository;
 
   late String baseUrl;
-  late int enterpriseCode;
-  late int productCode;
-  late int productPackingCode;
   late SaleType saleType;
   late OfferParams offerParams;
   late UserEntity userEntity;
   late UserSessionModel userSession;
   late DateTime now;
+  late ProductEntity productEntity;
+  late EnterpriseEntity enterpriseEntity;
 
   setUp(() {
     for (final saleType in SaleType.values) {
@@ -36,9 +36,6 @@ void main() async {
     mockRepository = SoapAdjustSalePriceRepositorySpy();
 
     baseUrl = faker.internet.httpUrl();
-    enterpriseCode = faker.randomGenerator.integer(100);
-    productCode = faker.randomGenerator.integer(1000);
-    productPackingCode = faker.randomGenerator.integer(100);
     saleType =
         SaleType.values[faker.randomGenerator.integer(SaleType.values.length)];
     now = DateTime.now();
@@ -49,6 +46,8 @@ void main() async {
     );
     userEntity = EntityFactory.makeUserEntity();
     userSession = UserSessionModel(baseUrl: baseUrl);
+    productEntity = EntityFactory.makeProductEntity();
+    enterpriseEntity = EntityFactory.makeEnterpriseEntity();
   });
 
   ProviderContainer makeProviderContainer() {
@@ -58,6 +57,9 @@ void main() async {
         userSessionProvider.overrideWith(() => FakeUserSession(userSession)),
         authStateControllerProvider.overrideWith(
           () => FakeAuthStateController(userEntity),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(enterpriseEntity),
         ),
       ],
     );
@@ -75,23 +77,16 @@ void main() async {
 
       await container
           .read(finishOfferControllerProvider.notifier)
-          .finish(
-            enterpriseCode: enterpriseCode,
-            productCode: productCode,
-            productPackingCode: productPackingCode,
-            offerParams: offerParams,
-            saleType: saleType,
-            now: now,
-          );
+          .finish(product: productEntity, saleType: saleType, now: now);
 
-      expect(states, [isA<AsyncData>(), isA<AsyncData>()]);
+      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
       verify(
         () => mockRepository.confirm(
           baseUrl: userSession.baseUrl!,
           crossIdentity: userEntity.CrossIdentity_Usuario!,
-          enterpriseCode: enterpriseCode,
-          productCode: productCode,
-          productPackingCode: productPackingCode,
+          enterpriseCode: enterpriseEntity.Code!,
+          productCode: productEntity.ProductCode,
+          productPackingCode: productEntity.ProductPackingCode,
           offerParams: offerParams,
           replications: [],
           retailParams: null,
@@ -114,16 +109,9 @@ void main() async {
 
       await container
           .read(finishOfferControllerProvider.notifier)
-          .finish(
-            enterpriseCode: enterpriseCode,
-            productCode: productCode,
-            productPackingCode: productPackingCode,
-            offerParams: offerParams,
-            saleType: saleType,
-            now: now,
-          );
+          .finish(product: productEntity, saleType: saleType, now: now);
 
-      expect(states, [isA<AsyncData>(), isA<AsyncError>()]);
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
   });
 }

@@ -7,6 +7,8 @@ import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
 import '../../core/presentation/controllers/controllers.dart';
 import '../../core/providers/providers.dart';
+import '../../features/adjust_sale_price/domain/entities/entities.dart';
+import '../../features/adjust_sale_price/presentation/controllers/controllers.dart';
 import '../commom_widgets.dart';
 
 class Prices extends ConsumerWidget {
@@ -48,40 +50,24 @@ class Prices extends ConsumerWidget {
           ),
         gapH8,
         _PracticedPrice(
-          offerPrice: widget.product.RetailOfferPrice,
-          typeOfPrice: 'Venda'.hardcoded,
-          practicedPrice: widget.product.RetailPracticedPrice,
-          onFinishOffer: canAdjustSalePrice.value != true
-              ? null
-              : () {
-                  //TODO finish the offer
-                },
+          saleType: SaleType.retail,
+          product: widget.product,
+          enterpriseCode: enterpriseCode,
         ),
         _PracticedPrice(
-          offerPrice: widget.product.WholeOfferPrice,
-          typeOfPrice: 'Atacado'.hardcoded,
-          practicedPrice: widget.product.WholePracticedPrice,
-          onFinishOffer: canAdjustSalePrice.value != true
-              ? null
-              : () {
-                  //TODO finish the offer
-                },
+          saleType: SaleType.whole,
+          product: widget.product,
+          enterpriseCode: enterpriseCode,
         ),
         _PracticedPrice(
-          offerPrice: widget.product.ECommerceOfferPrice,
-          typeOfPrice: 'E-commerce'.hardcoded,
-          practicedPrice: widget.product.ECommercePracticedPrice,
-          onFinishOffer: canAdjustSalePrice.value != true
-              ? null
-              : () {
-                  //TODO finish the offer
-                },
+          saleType: SaleType.ecommerce,
+          product: widget.product,
+          enterpriseCode: enterpriseCode,
         ),
         if (retailSuggestion > 0 ||
             wholeSuggestion > 0 ||
             ecommerceSuggestion > 0) ...[
           gapH32,
-
           _Title(title: 'Preços sugeridos'.hardcoded),
           gapH8,
           if (retailSuggestion > 0)
@@ -129,51 +115,64 @@ class _Title extends StatelessWidget {
   }
 }
 
-class _PracticedPrice extends StatelessWidget {
-  final double? offerPrice;
-  final String typeOfPrice;
-  final double practicedPrice;
-  final VoidCallback? onFinishOffer;
+class _PracticedPrice extends ConsumerWidget {
+  final SaleType saleType;
+  final ProductEntity product;
+  final int enterpriseCode;
   const _PracticedPrice({
-    required this.offerPrice,
-    required this.typeOfPrice,
-    required this.practicedPrice,
-    required this.onFinishOffer,
+    required this.saleType,
+    required this.product,
+    required this.enterpriseCode,
   });
 
+  double get salePrice {
+    switch (saleType) {
+      case SaleType.retail:
+        return product.RetailPracticedPrice;
+      case SaleType.whole:
+        return product.WholePracticedPrice;
+      case SaleType.ecommerce:
+        return product.ECommercePracticedPrice;
+    }
+  }
+
+  double get offerPrice {
+    switch (saleType) {
+      case SaleType.retail:
+        return product.RetailOfferPrice;
+      case SaleType.whole:
+        return product.WholeOfferPrice;
+      case SaleType.ecommerce:
+        return product.ECommerceOfferPrice;
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
+
+    final finishOfferAsync = ref.watch(finishOfferControllerProvider);
+
     return Row(
       children: [
         Expanded(
           flex: 60,
           child: TitleAndSubTitle(
-            title: '$typeOfPrice ${(offerPrice ?? 0) > 0 ? '(oferta) ' : ''}'
+            title: '${saleType.name} ${(offerPrice) > 0 ? '(oferta) ' : ''}'
                 .hardcoded
                 .hardcoded,
-            subTitle: practicedPrice,
+            subTitle: salePrice,
             subTitleIsPrice: true,
           ),
         ),
-        if ((offerPrice ?? 0) > 0 && onFinishOffer != null)
+        if (offerPrice > 0)
           Expanded(
             flex: 40,
             child: PrimaryTextButton(
-              onPressed: () {
-                showAlertDialog(
-                  context: context,
-                  title: 'Encerrar oferta $typeOfPrice'.hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  content:
-                      'Tem certeza que deseja encerrar a oferta $typeOfPrice?'
-                          .hardcoded,
-                  onOkPressed: onFinishOffer,
-                );
-              },
               text: 'Encerrar'.hardcoded,
               color: Colors.red,
+              isLoading: finishOfferAsync.isLoading,
               icon: mediaQuery.size.width < 300
                   ? null
                   : Icon(
@@ -182,6 +181,27 @@ class _PracticedPrice extends StatelessWidget {
                           : Icons.close,
                       color: Colors.red,
                     ),
+              onPressed: () {
+                showAlertDialog(
+                  context: context,
+                  title: 'Encerrar oferta ${saleType.name.toUpperCase()}'
+                      .hardcoded,
+                  cancelActionText: 'Cancelar'.hardcoded,
+                  defaultActionText: 'Sim'.hardcoded,
+                  content:
+                      'Tem certeza que deseja encerrar a oferta ${saleType.name.toUpperCase()}?'
+                          .hardcoded,
+                  onOkPressed: () {
+                    ref
+                        .read(finishOfferControllerProvider.notifier)
+                        .finish(
+                          product: product,
+                          saleType: saleType,
+                          now: DateTime.now(),
+                        );
+                  },
+                );
+              },
             ),
           ),
       ],

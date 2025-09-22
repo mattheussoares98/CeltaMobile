@@ -1,11 +1,14 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
+import '../../features/adjust_sale_price/presentation/controllers/controllers.dart';
 import '../commom_widgets.dart';
 
-class ProductItemWidget extends StatelessWidget {
+class ProductItemWidget extends ConsumerWidget {
   final int enterpriseCode;
   final ProductEntity product;
   final BsRoutine routine;
@@ -63,7 +66,19 @@ class ProductItemWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(finishOfferControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+      n.showAlertDialogOnSuccess(
+        context,
+        previous: p,
+        title: 'Oferta encerrada'.hardcoded,
+        message:
+            'Oferta encerrada com sucesso. Consulte o produto novamente para atualizar as informações'
+                .hardcoded,
+      );
+    });
+
     final theme = Theme.of(context);
 
     final currentStockQuantity = _getStockQuantityByName(
