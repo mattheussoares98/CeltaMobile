@@ -7,7 +7,12 @@ import '../../../../../core/domain/entities/entities.dart';
 
 class PricesCostsAndMarginsButton extends StatelessWidget {
   final ProductEntity product;
-  const PricesCostsAndMarginsButton({super.key, required this.product});
+  final int enterpriseCode;
+  const PricesCostsAndMarginsButton({
+    super.key,
+    required this.product,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,10 @@ class PricesCostsAndMarginsButton extends StatelessWidget {
       isLoading: false,
       text: 'Preços, custos e margens'.hardcoded,
       onPressed: () {
-        showModalPage(ProductInfoModal(product: product), context);
+        showModalPage(
+          ProductInfoModal(product: product, enterpriseCode: enterpriseCode),
+          context,
+        );
       },
       icon: Icon(
         theme.platform == TargetPlatform.iOS ? CupertinoIcons.info : Icons.info,

@@ -95,7 +95,7 @@ class ProductItemWidget extends StatelessWidget {
                       subTitle: product.PLU,
                     ),
                   ),
-                  InfoButton(product: product),
+                  InfoButton(product: product, enterpriseCode: enterpriseCode),
                 ],
               ),
               TitleAndSubTitle(

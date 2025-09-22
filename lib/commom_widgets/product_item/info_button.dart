@@ -6,8 +6,12 @@ import '../../core/domain/entities/entities.dart';
 import '../commom_widgets.dart';
 
 class InfoButton extends StatelessWidget {
-  const InfoButton({super.key, required this.product});
-
+  const InfoButton({
+    super.key,
+    required this.product,
+    required this.enterpriseCode,
+  });
+  final int enterpriseCode;
   final ProductEntity product;
 
   @override
@@ -16,7 +20,10 @@ class InfoButton extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       onTap: () {
-        showModalPage(ProductInfoModal(product: product), context);
+        showModalPage(
+          ProductInfoModal(product: product, enterpriseCode: enterpriseCode),
+          context,
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),

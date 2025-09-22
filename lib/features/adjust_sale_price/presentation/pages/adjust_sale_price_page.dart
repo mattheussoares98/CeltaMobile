@@ -269,7 +269,10 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                               },
                             ),
                             _DefaultDivider(),
-                            PricesCostsAndMarginsButton(product: product!),
+                            PricesCostsAndMarginsButton(
+                              product: product!,
+                              enterpriseCode: widget.enterpriseCode,
+                            ),
                             PracticedSuggestionAndMinimumPrices(
                               product: product,
                               selectedSaleType: selectedSaleType,

@@ -1,58 +1,88 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/constants.dart';
+import '../../core/domain/entities/entities.dart';
+import '../../core/presentation/controllers/controllers.dart';
+import '../../core/providers/providers.dart';
 import '../commom_widgets.dart';
 
-class Prices extends StatelessWidget {
-  const Prices({super.key, required this.widget});
+class Prices extends ConsumerWidget {
+  const Prices({super.key, required this.widget, required this.enterpriseCode});
 
+  final int enterpriseCode;
   final ProductInfoModal widget;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final retailSuggestion =
         widget.product.PriceCost.RetailSuggestionPrice ?? 0;
     final wholeSuggestion = widget.product.PriceCost.WholeSuggestionPrice ?? 0;
     final ecommerceSuggestion =
         widget.product.PriceCost.ECommerceSuggestionPrice ?? 0;
 
+    final canAdjustSalePrice = ref.watch(
+      canAccessResourceStateControllerProvider(
+        BsRoutine.adjustSalePrice,
+        BsResource.adjustSalePrice,
+        enterpriseCode,
+      ),
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _Title(title: 'Preços praticados'),
+        _Title(title: 'Preços praticados'.hardcoded),
+        if (canAdjustSalePrice.hasError)
+          Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: PrimaryButton(
+              text: 'Atualizar permissão para encerrar oferta'.hardcoded,
+              isLoading: canAdjustSalePrice.isLoading,
+              onPressed: () {
+                ref.invalidate(soapResourceDatasourceProvider);
+              },
+            ),
+          ),
         gapH8,
         _PracticedPrice(
           offerPrice: widget.product.RetailOfferPrice,
           typeOfPrice: 'Venda'.hardcoded,
           practicedPrice: widget.product.RetailPracticedPrice,
-          onFinishOffer: () {
-            //TODO finish the offer
-          },
+          onFinishOffer: canAdjustSalePrice.value != true
+              ? null
+              : () {
+                  //TODO finish the offer
+                },
         ),
         _PracticedPrice(
           offerPrice: widget.product.WholeOfferPrice,
           typeOfPrice: 'Atacado'.hardcoded,
           practicedPrice: widget.product.WholePracticedPrice,
-          onFinishOffer: () {
-            //TODO finish the offer
-          },
+          onFinishOffer: canAdjustSalePrice.value != true
+              ? null
+              : () {
+                  //TODO finish the offer
+                },
         ),
         _PracticedPrice(
           offerPrice: widget.product.ECommerceOfferPrice,
           typeOfPrice: 'E-commerce'.hardcoded,
           practicedPrice: widget.product.ECommercePracticedPrice,
-          onFinishOffer: () {
-            //TODO finish the offer
-          },
+          onFinishOffer: canAdjustSalePrice.value != true
+              ? null
+              : () {
+                  //TODO finish the offer
+                },
         ),
         if (retailSuggestion > 0 ||
             wholeSuggestion > 0 ||
             ecommerceSuggestion > 0) ...[
           gapH32,
 
-          _Title(title: 'Preços sugeridos'),
+          _Title(title: 'Preços sugeridos'.hardcoded),
           gapH8,
           if (retailSuggestion > 0)
             TitleAndSubTitle(
@@ -103,7 +133,7 @@ class _PracticedPrice extends StatelessWidget {
   final double? offerPrice;
   final String typeOfPrice;
   final double practicedPrice;
-  final VoidCallback onFinishOffer;
+  final VoidCallback? onFinishOffer;
   const _PracticedPrice({
     required this.offerPrice,
     required this.typeOfPrice,
@@ -121,14 +151,13 @@ class _PracticedPrice extends StatelessWidget {
           flex: 60,
           child: TitleAndSubTitle(
             title: '$typeOfPrice ${(offerPrice ?? 0) > 0 ? '(oferta) ' : ''}'
+                .hardcoded
                 .hardcoded,
-            subTitle:
-                practicedPrice, //TODO add information when is offer price and add a button to finish the offer when the user has permission
+            subTitle: practicedPrice,
             subTitleIsPrice: true,
           ),
         ),
-        if ((offerPrice ?? 0) >
-            0 /* TODO show only when the user has permission */ )
+        if ((offerPrice ?? 0) > 0 && onFinishOffer != null)
           Expanded(
             flex: 40,
             child: PrimaryTextButton(
@@ -136,10 +165,11 @@ class _PracticedPrice extends StatelessWidget {
                 showAlertDialog(
                   context: context,
                   title: 'Encerrar oferta $typeOfPrice'.hardcoded,
-                  cancelActionText: 'Cancelar',
+                  cancelActionText: 'Cancelar'.hardcoded,
                   content:
                       'Tem certeza que deseja encerrar a oferta $typeOfPrice?'
                           .hardcoded,
+                  onOkPressed: onFinishOffer,
                 );
               },
               text: 'Encerrar'.hardcoded,

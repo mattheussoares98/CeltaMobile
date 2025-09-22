@@ -25,6 +25,7 @@ void main() {
         BsResource.values.length,
       )]; // Replace with a real value
   bool canAccess = faker.randomGenerator.boolean();
+  int enterpriseCode = faker.randomGenerator.integer(100);
 
   setUp(() {
     resourceRepositorySpy = SoapResourceRepositorySpy();
@@ -70,7 +71,11 @@ void main() {
 
       // ACT: Wait for the build method to complete
       final result = await container.read(
-        canAccessResourceStateControllerProvider(routine, resource).future,
+        canAccessResourceStateControllerProvider(
+          routine,
+          resource,
+          enterpriseCode,
+        ).future,
       );
 
       // ASSERT

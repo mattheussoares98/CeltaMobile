@@ -10,7 +10,11 @@ part 'can_access_resource_state_controller.g.dart';
 class CanAccessResourceStateController
     extends _$CanAccessResourceStateController {
   @override
-  Future<bool> build(BsRoutine routine, BsResource resource) async {
+  Future<bool> build(
+    BsRoutine routine,
+    BsResource resource,
+    int enterpriseCode,
+  ) async {
     final userSession = await ref.watch(userSessionProvider.future);
 
     final userEntity = await ref.watch(authStateControllerProvider.future);

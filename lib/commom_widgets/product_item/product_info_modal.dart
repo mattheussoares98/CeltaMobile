@@ -7,7 +7,12 @@ import 'product_item.dart';
 
 class ProductInfoModal extends StatefulWidget {
   final ProductEntity product;
-  const ProductInfoModal({super.key, required this.product});
+  final int enterpriseCode;
+  const ProductInfoModal({
+    super.key,
+    required this.product,
+    required this.enterpriseCode,
+  });
 
   @override
   State<ProductInfoModal> createState() => _ProductInfoModalState();
@@ -26,7 +31,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      Prices(widget: widget),
+      Prices(widget: widget, enterpriseCode: widget.enterpriseCode),
       Costs(widget: widget),
       Margins(widget: widget),
     ];
