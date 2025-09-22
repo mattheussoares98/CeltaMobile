@@ -78,3 +78,13 @@ ISoapProductsDatasource soapProductsDatasource(Ref ref) {
 ISoapProductsRepository soapProductsRepository(Ref ref) {
   return SoapProductsRepositoryImpl(ref.watch(soapProductsDatasourceProvider));
 }
+
+@riverpod
+ISoapResourceDatasource soapResourceDatasource(Ref ref) {
+  return SoapResourceDatasource(ref.watch(soapAdapterProvider));
+}
+
+@riverpod
+ISoapResourceRepository soapResourceRepository(Ref ref) {
+  return SoapResourceRepositoryImpl(ref.watch(soapResourceDatasourceProvider));
+}
