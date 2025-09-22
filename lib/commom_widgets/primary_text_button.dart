@@ -15,6 +15,7 @@ class PrimaryTextButton extends StatelessWidget {
     this.isLoading = false,
     this.onPressed,
     this.icon,
+    this.color,
     this.iconAlignment = IconAlignment.end,
   });
   final String text;
@@ -22,30 +23,33 @@ class PrimaryTextButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? icon;
   final IconAlignment? iconAlignment;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     if (theme.platform == TargetPlatform.iOS) {
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          return CupertinoButton(
-            onPressed: isLoading ? null : onPressed,
-            sizeStyle: CupertinoButtonSize.small,
-            padding: EdgeInsets.all(0),
-            child: isLoading
-                ? CupertinoActivityIndicator(color: theme.disabledColor)
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(child: Text(text, textAlign: TextAlign.center)),
-                      if (icon != null && constraints.maxWidth > 220) ...[
-                        gapW8,
-                        icon!,
-                      ],
-                    ],
+      return CupertinoButton(
+        onPressed: isLoading ? null : onPressed,
+        sizeStyle: CupertinoButtonSize.small,
+        padding: EdgeInsets.all(0),
+        child: isLoading
+            ? CupertinoActivityIndicator(color: theme.disabledColor)
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: color,
+                      ),
+                    ),
                   ),
-          );
-        },
+                  if (icon != null) ...[gapW8, icon!],
+                ],
+              ),
       );
     }
     return SizedBox(
@@ -65,7 +69,7 @@ class PrimaryTextButton extends StatelessWidget {
                   text,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.primaryColorDark,
+                    color: color ?? theme.primaryColorDark,
                   ),
                 ),
               ),
