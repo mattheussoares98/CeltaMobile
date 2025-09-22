@@ -123,16 +123,34 @@ class PriceSchedules extends ConsumerWidget {
                         subTitle: schedule.OriginalPrice,
                         subTitleIsPrice: true,
                       ),
-                      if (schedule.AlteredByEnterpriseGroup)
-                        Text("Alterado por agrupamento de empresas"),
-                      if (schedule.AlteredByClass) Text("Alterado via classe"),
+                      if (schedule.AlteredByClass)
+                        TitleAndSubTitle(
+                          title: "Alterado via classe".hardcoded,
+                          subTitle: null,
+                        ),
                       if (schedule.AlteredByPackings)
-                        Text("Alterado por embalagens"),
-                      if (schedule.AlteredByGrid) Text("Alterado por grade"),
-                      if (schedule.UpdateClass) Text("Vai alterar a classe"),
+                        TitleAndSubTitle(
+                          title: "Alterado por embalagens".hardcoded,
+                          subTitle: null,
+                        ),
+                      if (schedule.AlteredByGrid)
+                        TitleAndSubTitle(
+                          title: "Alterado por grade".hardcoded,
+
+                          subTitle: null,
+                        ),
+                      if (schedule.UpdateClass)
+                        TitleAndSubTitle(
+                          title: "Vai alterar o preço da classe".hardcoded,
+                          subTitle: null,
+                        ),
                       if (schedule.UpdateEnterpriseOperationalGroup)
-                        Text("Vai alterar o grupo operacional de empresas"),
-                      if (schedule.IsFather) Text("É produto pai"),
+                        TitleAndSubTitle(
+                          title:
+                              "Vai alterar preço do agrupamento operacional das empresas"
+                                  .hardcoded,
+                          subTitle: null,
+                        ),
                     ],
                   ),
                 ),

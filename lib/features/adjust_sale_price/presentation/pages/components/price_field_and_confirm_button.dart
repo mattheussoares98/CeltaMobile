@@ -29,8 +29,8 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
             child: DefaultTextFormField(
               controller: priceController,
               maxLength: 10,
-              hintText: "Preço".hardcoded,
-              labelText: "Preço".hardcoded,
+              hintText: "Novo preço".hardcoded,
+              labelText: "Novo preço".hardcoded,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               onFieldSubmitted: (_) {
                 onPressed?.call();
