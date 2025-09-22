@@ -249,8 +249,13 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                                 }
                               },
                               onChangeEndDate: (newDate) {
-                                if (selectedStartDate != null &&
-                                    newDate.isBefore(selectedStartDate!)) {
+                                if (newDate == null) {
+                                  setState(() {
+                                    selectedEndDate = null;
+                                  });
+                                } else if (selectedStartDate != null &&
+                                    newDate.isBefore(selectedStartDate!) ==
+                                        true) {
                                   showSnackBarMessage(
                                     context,
                                     'A data de término deve ser depois da data de início',

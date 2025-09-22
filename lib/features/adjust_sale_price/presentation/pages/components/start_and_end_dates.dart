@@ -10,7 +10,7 @@ class StartAndEndDates extends StatelessWidget {
   final DateTime? selectedStartDate;
   final DateTime? selectedEndDate;
   final void Function(DateTime newDate) onChangeStartDate;
-  final void Function(DateTime newDate) onChangeEndDate;
+  final void Function(DateTime? newDate) onChangeEndDate;
   final bool enableEndDate;
   const StartAndEndDates({
     super.key,
@@ -46,11 +46,7 @@ class StartAndEndDates extends StatelessWidget {
               title: 'Término ',
               isEndDate: true,
               currentSelectedDate: selectedEndDate,
-              onDateChanged: (newDate) {
-                if (newDate != null) {
-                  onChangeEndDate(newDate);
-                }
-              },
+              onDateChanged: onChangeEndDate,
             ),
           ),
         ],
@@ -79,6 +75,7 @@ class _GetDateItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -108,15 +105,33 @@ class _GetDateItem extends StatelessWidget {
             ),
           ],
         ),
-        Text(
-          currentSelectedDate == null && isEndDate
-              ? "Não definido".hardcoded
-              : DateFormat(
-                  'dd/MM/yyyy HH:mm',
-                ).format(currentSelectedDate ?? now),
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: enabled ? null : theme.disabledColor,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Text(
+                currentSelectedDate == null && isEndDate
+                    ? "Não definido".hardcoded
+                    : DateFormat(
+                        'dd/MM/yyyy HH:mm',
+                      ).format(currentSelectedDate ?? now),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: enabled ? null : theme.disabledColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            if (isEndDate && currentSelectedDate != null)
+              IconButton(
+                onPressed: () => onDateChanged(null),
+                icon: Icon(
+                  theme.platform == TargetPlatform.iOS
+                      ? CupertinoIcons.clear
+                      : Icons.clear,
+                  color: Colors.red,
+                ),
+              ),
+          ],
         ),
       ],
     );
