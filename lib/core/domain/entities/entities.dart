@@ -1,4 +1,5 @@
 export './product/product.dart';
+export './settings/settings.dart';
 export './bs_resource.dart';
 export 'enterprise_entity.dart';
 export 'bs_routine.dart';

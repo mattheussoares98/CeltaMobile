@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/domain/entities/product/user_preferred_search_type.dart';
+import 'package:celta_intelligence/core/domain/entities/settings/user_preferred_search_type.dart';
 import 'package:hive/hive.dart';
 
 import '../../../constants/database_keys.dart';

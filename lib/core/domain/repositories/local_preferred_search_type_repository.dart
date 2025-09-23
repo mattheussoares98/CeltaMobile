@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/domain/entities/product/user_preferred_search_type.dart';
+import 'package:celta_intelligence/core/domain/entities/settings/user_preferred_search_type.dart';
 
 import '../../data/datasource/datasource.dart';
 import 'repositores.dart';

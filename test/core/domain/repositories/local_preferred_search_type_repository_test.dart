@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/domain/entities/product/user_preferred_search_type.dart';
+import 'package:celta_intelligence/core/domain/entities/settings/user_preferred_search_type.dart';
 import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';

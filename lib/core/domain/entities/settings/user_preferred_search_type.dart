@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../core/domain/entities/entities.dart';
+import '../entities.dart';
 
 enum UserPreferredSearchType
     implements SelectableItem<UserPreferredSearchType> {
