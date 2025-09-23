@@ -4,8 +4,11 @@ import '../../../../core/domain/entities/entities.dart';
 enum UserPreferredSearchType
     implements SelectableItem<UserPreferredSearchType> {
   dynamic('Dinâmico', SearchType.dynamic),
-  byCode('Código personalizado', SearchType.approximatePersonalizedCode),
-  byLegacyCode('Código legado', SearchType.approximateLegacyCode);
+  personalizedCode(
+    'Código personalizado',
+    SearchType.approximatePersonalizedCode,
+  ),
+  legacyCode('Código legado', SearchType.approximateLegacyCode);
 
   @override
   final String name;
