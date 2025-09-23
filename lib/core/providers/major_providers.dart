@@ -5,7 +5,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../constants/database_keys.dart';
-import '../data/datasource/datasource.dart';
+import '../data/datasource/enterprise/enterprise.dart';
+import '../data/datasource/products/products.dart';
+import '../data/datasource/resource/resource.dart';
+import '../data/datasource/settings/settings.dart';
+import '../data/datasource/user_session/user_session.dart';
 import '../domain/repositories/enterprise/enterprise.dart';
 import '../domain/repositories/products/products.dart';
 import '../domain/repositories/resource/resource.dart';

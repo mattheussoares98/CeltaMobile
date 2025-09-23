@@ -1,4 +1,4 @@
-import '../../../data/datasource/datasource.dart';
+import '../../../data/datasource/enterprise/enterprise.dart';
 import '../../entities/entities.dart';
 import 'i_enterprise_repository.dart';
 

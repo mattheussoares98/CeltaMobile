@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/core/data/datasource/datasource.dart';
+import 'package:celta_intelligence/core/data/datasource/resource/resource.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:faker/faker.dart';

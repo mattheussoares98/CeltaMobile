@@ -1,6 +1,11 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/core/data/datasource/datasource.dart';
+import 'package:celta_intelligence/core/data/datasource/enterprise/enterprise.dart';
+import 'package:celta_intelligence/core/data/datasource/login/login.dart';
+import 'package:celta_intelligence/core/data/datasource/products/products.dart';
+import 'package:celta_intelligence/core/data/datasource/resource/resource.dart';
+import 'package:celta_intelligence/core/data/datasource/settings/settings.dart';
+import 'package:celta_intelligence/core/data/datasource/user_session/user_session.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
