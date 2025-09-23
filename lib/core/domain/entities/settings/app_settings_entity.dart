@@ -2,10 +2,10 @@ import 'settings.dart';
 
 class AppSettingsEntity {
   final UserPreferredSearchType searchPreference;
-  final bool isContinuousScanEnabled;
+  final bool isContinuousScanEnabledInInventory;
 
   const AppSettingsEntity({
     required this.searchPreference,
-    required this.isContinuousScanEnabled,
+    required this.isContinuousScanEnabledInInventory,
   });
 }
