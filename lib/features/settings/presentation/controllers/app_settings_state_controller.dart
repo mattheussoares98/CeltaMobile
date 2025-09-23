@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/core/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../../../../core/domain/entities/entities.dart';
 
 part 'app_settings_state_controller.g.dart';
 
