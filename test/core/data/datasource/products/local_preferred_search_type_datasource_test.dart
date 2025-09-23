@@ -8,14 +8,14 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late LocalSearchTypeDatasource sut;
+  late LocalPreferredSearchTypeDatasource sut;
 
   late MockBox hive;
 
   late UserPreferredSearchType userPreferredSearchType;
 
   void initSut() {
-    sut = LocalSearchTypeDatasource(hive);
+    sut = LocalPreferredSearchTypeDatasource(hive);
   }
 
   void initInjections() {

@@ -4,9 +4,10 @@ import 'package:hive/hive.dart';
 import '../../../constants/database_keys.dart';
 import 'products.dart';
 
-class LocalSearchTypeDatasource implements ISearchTypeDatasource {
+class LocalPreferredSearchTypeDatasource
+    implements IPreferredSearchTypeDatasource {
   final Box box;
-  LocalSearchTypeDatasource(this.box);
+  LocalPreferredSearchTypeDatasource(this.box);
 
   @override
   Future<void> changeDefault(

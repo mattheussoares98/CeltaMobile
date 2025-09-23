@@ -1,6 +1,6 @@
 import '../../../domain/entities/entities.dart';
 
-abstract class ISearchTypeDatasource {
+abstract class IPreferredSearchTypeDatasource {
   Future<void> changeDefault(UserPreferredSearchType userPreferredSearchType);
   Future<UserPreferredSearchType?> loadDefault();
 }
