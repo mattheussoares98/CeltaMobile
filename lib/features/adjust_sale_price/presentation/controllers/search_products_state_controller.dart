@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../core/providers/products/products.dart';
+import '../../../../core/providers/user_session/user_session.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';

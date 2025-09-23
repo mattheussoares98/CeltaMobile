@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:celta_intelligence/core/providers/providers.dart';
+import 'package:celta_intelligence/core/providers/products/products.dart';
+import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';

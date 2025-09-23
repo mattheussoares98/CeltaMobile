@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../data/models/models.dart';
-import 'providers.dart';
+import '../../data/models/models.dart';
+import 'user_session.dart';
 
 part 'user_session_provider.g.dart';
 

@@ -106,8 +106,8 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                       iconColor: widget.isLoading ? theme.disabledColor : null,
                     ),
                   _DefaultIcon(
-                    onPress: () {
-                      //TODO implement
+                    onPress: () async {
+                      // await ref.read(barcodeScanner)
                     },
                     materialIcon: Icons.camera_alt,
                     cupertinoIcon: CupertinoIcons.camera_fill,

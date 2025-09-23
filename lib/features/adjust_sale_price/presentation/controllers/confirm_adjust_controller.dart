@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../core/providers/user_session/user_session.dart';
 import '../../../auth/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';

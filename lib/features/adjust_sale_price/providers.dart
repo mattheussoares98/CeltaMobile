@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/providers.dart';
+import '../../core/providers/soap/soap.dart';
 import 'data/datasource/datasource.dart';
 import 'domain/repositories/repositories.dart';
 
@@ -10,7 +10,7 @@ part 'providers.g.dart';
 @riverpod
 ISoapAdjustSalePriceDatasource soapAdjustSalePriceDatasource(Ref ref) {
   return SoapAdjustSalePriceDatasource(
-    soapRequest: ref.watch(soapAdapterProvider),
+    soapRequest: ref.watch(soapRequestProvider),
   );
 }
 
@@ -26,7 +26,7 @@ ISoapAdjustSalePriceRepository soapAdjustSalePriceRepository(Ref ref) {
 @riverpod
 ISoapGetPriceSchedulesDatasource soapGetPriceSchedulesDatasource(Ref ref) {
   return SoapGetPriceSchedulesDatasource(
-    soapRequest: ref.watch(soapAdapterProvider),
+    soapRequest: ref.watch(soapRequestProvider),
   );
 }
 

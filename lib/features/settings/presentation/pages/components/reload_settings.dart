@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/providers/providers.dart';
+import '../../../../../core/providers/app_settings/app_settings.dart';
 
 class ReloadSettings extends ConsumerWidget {
   const ReloadSettings({super.key});

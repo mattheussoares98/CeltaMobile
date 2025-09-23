@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/providers/user_session_provider.dart';
+import 'package:celta_intelligence/core/providers/user_session/user_session_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/user_entity.dart';

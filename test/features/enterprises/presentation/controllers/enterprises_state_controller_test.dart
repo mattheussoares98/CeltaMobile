@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:celta_intelligence/core/providers/providers.dart';
+import 'package:celta_intelligence/core/providers/enterprise/enterprise.dart';
+import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/exceptions.dart';
 import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
@@ -36,7 +37,9 @@ void main() {
     // We pass the fake data to the container setup
     return ProviderContainer(
       overrides: [
-        enterpriseRepositoryProvider.overrideWithValue(enterpriseRepositorySpy),
+        supabaseEnterpriseRepositoryProvider.overrideWithValue(
+          enterpriseRepositorySpy,
+        ),
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprises.first),
         ),

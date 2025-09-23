@@ -4,7 +4,8 @@ import 'package:celta_intelligence/features/enterprises/presentation/controllers
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../core/providers/enterprise/enterprise.dart';
+import '../../../../core/providers/user_session/user_session.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
@@ -50,7 +51,7 @@ class EnterprisesStateController extends _$EnterprisesStateController {
     }
 
     final enterprises = await ref
-        .watch(enterpriseRepositoryProvider)
+        .watch(supabaseEnterpriseRepositoryProvider)
         .getSoapEnterprises(url: baseUrl, crossIdentity: crossIdentity);
 
     if (enterprises.isNotEmpty) {

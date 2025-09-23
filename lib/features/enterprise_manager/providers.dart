@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/providers.dart';
+import '../../core/providers/enterprise/enterprise.dart';
+import '../../core/providers/supabase/supabase.dart';
 import '../auth/providers.dart';
 import 'data/datasource/datasource.dart';
 import 'domain/entities/entities.dart';
