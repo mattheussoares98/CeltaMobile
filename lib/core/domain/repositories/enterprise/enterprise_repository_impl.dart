@@ -1,5 +1,5 @@
-import '../../data/datasource/datasource.dart';
-import '../entities/entities.dart';
+import '../../../data/datasource/datasource.dart';
+import '../../entities/entities.dart';
 import 'i_enterprise_repository.dart';
 
 class EnterpriseRepositoryImpl implements IEnterpriseRepository {

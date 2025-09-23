@@ -1,5 +1,5 @@
 import '../../../../core/data/models/models.dart';
-import '../../../../core/domain/repositories/repositores.dart';
+import '../../../../core/domain/repositories/enterprise/enterprise.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../../../localization/string_hardcoded.dart';
 import '../../../../core/data/datasource/datasource.dart';

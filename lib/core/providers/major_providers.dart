@@ -6,8 +6,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../constants/database_keys.dart';
 import '../data/datasource/datasource.dart';
-import '../data/datasource/settings/settings.dart';
-import '../domain/repositories/repositores.dart';
+import '../domain/repositories/enterprise/enterprise.dart';
+import '../domain/repositories/products/products.dart';
+import '../domain/repositories/resource/resource.dart';
+import '../domain/repositories/settings/settings.dart';
+import '../domain/repositories/user_session/user_session.dart';
 import '../infraestructure/infrastructure.dart';
 
 part 'major_providers.g.dart';

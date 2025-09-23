@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import '../../entities/entities.dart';
 
 abstract class ISoapResourceRepository {
   Future<bool> canAccessResource({

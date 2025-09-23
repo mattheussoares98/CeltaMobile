@@ -1,6 +1,6 @@
-import '../../../core/data/datasource/products/products.dart';
-import '../entities/entities.dart';
-import 'repositores.dart';
+import '../../../data/datasource/products/products.dart';
+import '../../entities/entities.dart';
+import 'products.dart';
 
 class SoapProductsRepositoryImpl implements ISoapProductsRepository {
   final ISoapProductsDatasource soapProductsDatasource;

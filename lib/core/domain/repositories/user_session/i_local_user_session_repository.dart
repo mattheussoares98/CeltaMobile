@@ -1,4 +1,4 @@
-import '../../data/models/models.dart';
+import '../../../data/models/models.dart';
 
 abstract class ILocalUserSessionRepository {
   Future<void> save(UserSessionModel session);

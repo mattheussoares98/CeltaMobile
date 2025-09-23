@@ -1,7 +1,7 @@
 import '../../../data/datasource/settings/settings.dart';
 import '../../../data/models/models.dart';
 import '../../entities/entities.dart';
-import '../repositores.dart';
+import 'settings.dart';
 
 class LocalAppSettingsRepository implements IAppSettingsRepository {
   final IAppSettingsDatasource appSettingsDatasource;

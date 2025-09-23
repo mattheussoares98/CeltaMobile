@@ -1,10 +1,10 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/core/domain/repositories/repositores.dart';
+import 'package:celta_intelligence/core/domain/repositories/resource/resource.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../mocks/mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late SoapResourceRepositoryImpl sut;

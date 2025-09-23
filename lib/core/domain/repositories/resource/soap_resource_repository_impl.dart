@@ -2,8 +2,8 @@ import 'package:celta_intelligence/core/domain/entities/bs_resource.dart';
 
 import 'package:celta_intelligence/core/domain/entities/bs_routine.dart';
 
-import '../../data/datasource/datasource.dart';
-import 'repositores.dart';
+import '../../../data/datasource/datasource.dart';
+import 'resource.dart';
 
 class SoapResourceRepositoryImpl implements ISoapResourceRepository {
   final ISoapResourceDatasource soapResourceDatasource;
