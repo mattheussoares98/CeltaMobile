@@ -1,7 +1,2 @@
 // TODO move to infa structure
-enum DatabaseKeys {
-  application,
-  userPeferredSearchTypeProducts,
-  userSession,
-  user,
-}
+enum DatabaseKeys { application, appSettings, userSession, user }

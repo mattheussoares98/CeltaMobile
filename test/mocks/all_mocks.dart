@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:celta_intelligence/core/data/datasource/datasource.dart';
+import 'package:celta_intelligence/core/data/datasource/settings/settings.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
@@ -637,27 +638,25 @@ class SoapResourceRepositorySpy extends Mock
       _mockCanAccessResourceCall().thenAnswer((_) async => value);
 }
 
-class LocalPreferredSearchTypeDatasourceSpy extends Mock
-    implements IPreferredSearchTypeDatasource {
-  LocalPreferredSearchTypeDatasourceSpy() {
-    when(() => this.changeDefault(any())).thenAnswer((_) async {});
+class AppSettingsDatasourceSpy extends Mock implements IAppSettingsDatasource {
+  AppSettingsDatasourceSpy() {
+    when(() => this.changeSettings(any())).thenAnswer((_) async {});
   }
 
-  void mockLoadDefault(UserPreferredSearchType value) =>
-      when(() => this.loadDefault()).thenAnswer((_) async => value);
+  void mockLoadDefault(AppSettingsModel value) =>
+      when(() => this.loadSettings()).thenAnswer((_) async => value);
 }
 
-class PreferredSearchTypeRepositorySpy extends Mock
-    implements IPreferredSearchTypeRepository {
-  PreferredSearchTypeRepositorySpy() {
+class AppSettingsRepositorySpy extends Mock implements IAppSettingsRepository {
+  AppSettingsRepositorySpy() {
     _changeDefaultCall().thenAnswer((_) async {});
   }
 
-  When _changeDefaultCall() => when(() => this.changeDefault(any()));
+  When _changeDefaultCall() => when(() => this.changeSettings(any()));
   void mockChangeDefaultError() => _changeDefaultCall().thenThrow(Exception());
 
-  When _loadDefaultCall() => when(() => this.loadDefault());
+  When _loadDefaultCall() => when(() => this.loadSettings());
   void mockLoadDefaultError() => _loadDefaultCall().thenThrow(Exception());
-  void mockLoadDefault(UserPreferredSearchType value) =>
+  void mockLoadDefault(AppSettingsEntity value) =>
       _loadDefaultCall().thenAnswer((_) async => value);
 }

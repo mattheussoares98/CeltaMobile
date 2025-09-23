@@ -2,7 +2,7 @@
 import '../../domain/entities/entities.dart';
 
 class AppSettingsModel {
-  final UserPreferredSearchType searchPreference;
+  final SearchProductTypePreference searchPreference;
   final bool isContinuousScanEnabledInInventory;
 
   const AppSettingsModel({
@@ -12,7 +12,7 @@ class AppSettingsModel {
 
   factory AppSettingsModel.fromJson(Map<String, dynamic> json) {
     return AppSettingsModel(
-      searchPreference: UserPreferredSearchType.values.firstWhere(
+      searchPreference: SearchProductTypePreference.values.firstWhere(
         (element) => element.name == json['searchPreference'],
       ),
       isContinuousScanEnabledInInventory:
@@ -39,7 +39,7 @@ class AppSettingsModel {
   }
 
   AppSettingsModel copyWith({
-    UserPreferredSearchType? searchPreference,
+    SearchProductTypePreference? searchPreference,
     bool? isContinuousScanEnabledInInventory,
   }) {
     return AppSettingsModel(

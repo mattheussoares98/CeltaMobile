@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../constants/database_keys.dart';
 import '../data/datasource/datasource.dart';
+import '../data/datasource/settings/settings.dart';
 import '../domain/repositories/repositores.dart';
 import '../infraestructure/infrastructure.dart';
 
@@ -90,13 +91,11 @@ ISoapResourceRepository soapResourceRepository(Ref ref) {
 }
 
 @riverpod
-IPreferredSearchTypeDatasource preferredSearchTypeDatasource(Ref ref) {
-  return LocalPreferredSearchTypeDatasource(ref.watch(hiveBoxProvider));
+IAppSettingsDatasource appSettingsDatasource(Ref ref) {
+  return LocalAppSettingsDatasource(ref.watch(hiveBoxProvider));
 }
 
 @riverpod
-IPreferredSearchTypeRepository preferredSearchTypeRepository(Ref ref) {
-  return LocalPreferredSearchTypeRepository(
-    ref.watch(preferredSearchTypeDatasourceProvider),
-  );
+IAppSettingsRepository appSettingsRepository(Ref ref) {
+  return LocalAppSettingsRepository(ref.watch(appSettingsDatasourceProvider));
 }

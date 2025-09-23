@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../entities.dart';
 
-enum UserPreferredSearchType
-    implements SelectableItem<UserPreferredSearchType> {
+enum SearchProductTypePreference
+    implements SelectableItem<SearchProductTypePreference> {
   dynamic('Dinâmico', SearchType.dynamic),
   personalizedCode(
     'Código personalizado',
@@ -14,10 +14,10 @@ enum UserPreferredSearchType
   final String name;
   final SearchType searchType;
 
-  const UserPreferredSearchType(this.name, this.searchType);
+  const SearchProductTypePreference(this.name, this.searchType);
 
   @override
-  UserPreferredSearchType get value => this;
+  SearchProductTypePreference get value => this;
   @override
   Color? get color => null;
 }

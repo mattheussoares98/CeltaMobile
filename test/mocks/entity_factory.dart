@@ -227,4 +227,12 @@ class EntityFactory {
     IsExecuted: faker.randomGenerator.boolean(),
     IsFinished: faker.randomGenerator.boolean(),
   );
+
+  static AppSettingsEntity makeAppSettingsEntity() => AppSettingsEntity(
+    searchPreference:
+        SearchProductTypePreference.values[faker.randomGenerator.integer(
+          SearchProductTypePreference.values.length,
+        )],
+    isContinuousScanEnabledInInventory: faker.randomGenerator.boolean(),
+  );
 }
