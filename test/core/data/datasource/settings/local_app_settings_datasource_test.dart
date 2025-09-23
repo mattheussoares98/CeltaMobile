@@ -45,13 +45,19 @@ void main() {
       await sut.changeSettings(AppSettingsModel.fromEntity(appSettingsEntity));
 
       verify(
-        () => hive.put(DatabaseKeys.appSettings.name, appSettingsEntity),
+        () => hive.put(
+          DatabaseKeys.appSettings.name,
+          AppSettingsModel.fromEntity(appSettingsEntity).toJson(),
+        ),
       ).called(1);
     });
   });
   group('Get', () {
     test('Should return correct value when is not null', () async {
-      expect(await sut.loadSettings(), appSettingsEntity);
+      expect(
+        await sut.loadSettings(),
+        AppSettingsModel.fromEntity(appSettingsEntity),
+      );
 
       verify(() => hive.get(DatabaseKeys.appSettings.name)).called(1);
     });

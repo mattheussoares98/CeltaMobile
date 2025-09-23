@@ -31,9 +31,11 @@ void main() {
 
   void mockSuccess() {
     soapAdapter.mockPost(
-      priceScheduleEntities
-          .map((e) => PriceScheduleModel.fromEntity(e).toJson())
-          .toList(),
+      json.encode(
+        priceScheduleEntities
+            .map((e) => PriceScheduleModel.fromEntity(e).toJson())
+            .toList(),
+      ),
     );
   }
 

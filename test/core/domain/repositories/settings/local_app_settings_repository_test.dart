@@ -42,6 +42,10 @@ void main() {
     for (var value in SearchProductTypePreference.values) {
       registerFallbackValue(value);
     }
+
+    registerFallbackValue(
+      AppSettingsModel.fromEntity(EntityFactory.makeAppSettingsEntity()),
+    );
   });
 
   test("Should behave correctly on load default", () async {

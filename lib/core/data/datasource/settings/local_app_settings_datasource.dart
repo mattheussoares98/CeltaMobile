@@ -11,7 +11,7 @@ class LocalAppSettingsDatasource implements IAppSettingsDatasource {
 
   @override
   Future<void> changeSettings(AppSettingsModel model) async {
-    await box.put(DatabaseKeys.appSettings.name, model.searchPreference.name);
+    await box.put(DatabaseKeys.appSettings.name, model.toJson());
   }
 
   @override

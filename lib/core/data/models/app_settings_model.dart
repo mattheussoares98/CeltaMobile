@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/entities.dart';
 
-class AppSettingsModel {
+class AppSettingsModel extends Equatable {
   final SearchProductTypePreference searchPreference;
   final bool isContinuousScanEnabledInInventory;
 
@@ -9,6 +11,12 @@ class AppSettingsModel {
     required this.searchPreference,
     required this.isContinuousScanEnabledInInventory,
   });
+
+  @override
+  List<Object?> get props => [
+    searchPreference,
+    isContinuousScanEnabledInInventory,
+  ];
 
   factory AppSettingsModel.fromJson(Map<String, dynamic> json) {
     return AppSettingsModel(

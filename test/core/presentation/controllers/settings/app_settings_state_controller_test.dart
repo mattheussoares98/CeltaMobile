@@ -15,6 +15,7 @@ void main() {
   setUpAll(() {
     // Register the custom enum as a fallback value for mocktail
     registerFallbackValue(SearchProductTypePreference.dynamic);
+    registerFallbackValue(EntityFactory.makeAppSettingsEntity());
   });
 
   setUp(() {
