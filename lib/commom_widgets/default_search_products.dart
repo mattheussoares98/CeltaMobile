@@ -1,12 +1,15 @@
+import 'package:celta_intelligence/features/settings/presentation/controllers/app_settings_state_controller.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/domain/entities/entities.dart';
 import '../core/validators/validators.dart';
 import '../features/settings/presentation/pages/pages.dart';
 import 'commom_widgets.dart';
 
-class DefaultSearchProducts extends StatefulWidget {
+class DefaultSearchProducts extends ConsumerStatefulWidget {
   final bool isLoading;
   final VoidCallback searchProducts;
   final TextEditingController searchValueController;
@@ -18,10 +21,11 @@ class DefaultSearchProducts extends StatefulWidget {
   });
 
   @override
-  State<DefaultSearchProducts> createState() => _DefaultSearchProductsState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DefaultSearchProductsState();
 }
 
-class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
+class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
   final formKey = GlobalKey<FormState>();
   final focusNode = FocusNode();
 
@@ -38,9 +42,28 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
     widget.searchProducts();
   }
 
+  String getHintText(AppSettingsEntity? settings) {
+    final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
+
+    switch (settings?.searchPreference) {
+      case SearchProductTypePreference.dynamic:
+        return defaultHint;
+      case SearchProductTypePreference.personalizedCode:
+        return SearchProductTypePreference.personalizedCode.name;
+      case SearchProductTypePreference.legacyCode:
+        return SearchProductTypePreference.legacyCode.name;
+      default:
+        return defaultHint;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final settings = ref.watch(appSettingsStateControllerProvider).value;
+    final hintText = getHintText(settings);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
@@ -101,9 +124,8 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                 ],
               ),
             ),
-            labelText: 'NOME-PLU-EAN-%-BALANÇA'.hardcoded,
-            hintText: 'NOME-PLU-EAN-%-BALANÇA'
-                .hardcoded, //TODO show personalizedCode if is enabled this option
+            labelText: hintText,
+            hintText: hintText,
           ),
         );
       },
