@@ -1,8 +1,10 @@
 export './enterprise_repository_impl.dart';
 export './i_enterprise_repository.dart';
 export 'i_local_user_session_repository.dart';
+export './i_preferred_search_type_repository.dart';
 export './i_soap_products_repository.dart';
 export './i_soap_resource_repository.dart';
+export './local_preferred_search_type_repository.dart';
 export 'local_user_session_repository_impl.dart';
 export './soap_products_repository_impl.dart';
 export './soap_resource_repository_impl.dart';

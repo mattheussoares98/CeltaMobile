@@ -636,3 +636,13 @@ class SoapResourceRepositorySpy extends Mock
   void mockCanAccessResource(bool value) =>
       _mockCanAccessResourceCall().thenAnswer((_) async => value);
 }
+
+class LocalPreferredSearchTypeDatasourceSpy extends Mock
+    implements IPreferredSearchTypeDatasource {
+  LocalPreferredSearchTypeDatasourceSpy() {
+    when(() => this.changeDefault(any())).thenAnswer((_) async {});
+  }
+
+  void mockLoadDefault(UserPreferredSearchType value) =>
+      when(() => this.loadDefault()).thenAnswer((_) async => value);
+}
