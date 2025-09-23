@@ -3,37 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/providers/providers.dart';
 import '../controllers/controllers.dart';
+import 'components/components.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final value = ref.watch(appSettingsStateControllerProvider);
+    final asyncValue = ref.watch(appSettingsStateControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Configurações'.hardcoded)),
-      body: AsyncValueWidget(
-        value: value,
-        tryAgain: () {
-          ref.invalidate(appSettingsRepositoryProvider); //TODO test the error
-        },
-        data: (settings) {
-          return Column(
-            children: [
-              DefaultSegmentedButtons(
-                items: SearchProductTypePreference.values,
-                selectedValue: settings?.searchPreference,
-                onChanged: (searchPreference) {
-                  debugPrint(searchPreference.name);
-                },
-              ),
+      appBar: AppBar(
+        title: Center(child: Text('Configurações'.hardcoded)),
+        leadingWidth: 0,
+        leading: SizedBox.shrink(),
+      ),
+      body: ResponsiveScrollableWidget(
+        child: Column(
+          children: [
+            if (asyncValue.hasError)
+              ReloadSettings()
+            else ...[
+              ProductSearchTypeWidget(asyncValue: asyncValue),
             ],
-          );
-        },
+          ],
+        ),
       ),
     );
   }

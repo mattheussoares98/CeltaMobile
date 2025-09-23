@@ -30,7 +30,6 @@ class DefaultSegmentedButtons<T extends SelectableItem<T>>
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        debugPrint(constraints.maxWidth.toString());
         return CupertinoSlidingSegmentedControl<T>(
           groupValue: selectedValue,
           onValueChanged: (value) {
@@ -52,13 +51,15 @@ class DefaultSegmentedButtons<T extends SelectableItem<T>>
                       : Sizes.p4,
                   vertical: Sizes.p8,
                 ),
-                child: Text(
-                  item.name,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: selectedValue == item.value
-                        ? Colors.white
-                        : CupertinoColors.black,
+                child: FittedBox(
+                  child: Text(
+                    item.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: selectedValue == item.value
+                          ? Colors.white
+                          : CupertinoColors.black,
+                    ),
                   ),
                 ),
               ),

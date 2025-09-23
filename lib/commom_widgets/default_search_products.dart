@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/validators/validators.dart';
+import '../features/settings/presentation/pages/pages.dart';
 import 'commom_widgets.dart';
 
 class DefaultSearchProducts extends StatefulWidget {
@@ -91,7 +92,7 @@ class _DefaultSearchProductsState extends State<DefaultSearchProducts> {
                   ),
                   _DefaultIcon(
                     onPress: () {
-                      //TODO implement
+                      showModalPage(SettingsPage(), context);
                     },
                     materialIcon: Icons.settings,
                     cupertinoIcon: CupertinoIcons.settings,

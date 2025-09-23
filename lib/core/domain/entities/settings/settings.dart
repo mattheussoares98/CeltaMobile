@@ -1,2 +1,2 @@
 export 'app_settings_entity.dart';
-export './user_preferred_search_type.dart';
+export 'search_product_type_preference.dart';
