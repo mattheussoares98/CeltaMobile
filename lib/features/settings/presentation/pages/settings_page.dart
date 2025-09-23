@@ -26,6 +26,7 @@ class SettingsPage extends ConsumerWidget {
               ReloadSettings()
             else ...[
               ProductSearchTypeWidget(asyncValue: asyncValue),
+              //TODO add autoScan in according to add the modules, like inventory
             ],
           ],
         ),
