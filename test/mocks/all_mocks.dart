@@ -646,3 +646,18 @@ class LocalPreferredSearchTypeDatasourceSpy extends Mock
   void mockLoadDefault(UserPreferredSearchType value) =>
       when(() => this.loadDefault()).thenAnswer((_) async => value);
 }
+
+class PreferredSearchTypeRepositorySpy extends Mock
+    implements IPreferredSearchTypeRepository {
+  PreferredSearchTypeRepositorySpy() {
+    _changeDefaultCall().thenAnswer((_) async {});
+  }
+
+  When _changeDefaultCall() => when(() => this.changeDefault(any()));
+  void mockChangeDefaultError() => _changeDefaultCall().thenThrow(Exception());
+
+  When _loadDefaultCall() => when(() => this.loadDefault());
+  void mockLoadDefaultError() => _loadDefaultCall().thenThrow(Exception());
+  void mockLoadDefault(UserPreferredSearchType value) =>
+      _loadDefaultCall().thenAnswer((_) async => value);
+}

@@ -88,3 +88,15 @@ ISoapResourceDatasource soapResourceDatasource(Ref ref) {
 ISoapResourceRepository soapResourceRepository(Ref ref) {
   return SoapResourceRepositoryImpl(ref.watch(soapResourceDatasourceProvider));
 }
+
+@riverpod
+IPreferredSearchTypeDatasource preferredSearchTypeDatasource(Ref ref) {
+  return LocalPreferredSearchTypeDatasource(ref.watch(hiveBoxProvider));
+}
+
+@riverpod
+IPreferredSearchTypeRepository preferredSearchTypeRepository(Ref ref) {
+  return LocalPreferredSearchTypeRepository(
+    ref.watch(preferredSearchTypeDatasourceProvider),
+  );
+}
