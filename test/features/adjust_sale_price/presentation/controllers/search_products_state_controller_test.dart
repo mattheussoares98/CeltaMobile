@@ -5,6 +5,7 @@ import 'package:celta_intelligence/core/providers/user_session/user_session.dart
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,6 +23,7 @@ void main() {
   late UserEntity userEntity;
   late EnterpriseEntity enterpriseEntity;
   late int lastBuyEntranceQuantity;
+  late AppSettingsEntity appSettingsEntity;
 
   setUpAll(() {
     for (var routine in BsRoutine.values) {
@@ -44,6 +46,7 @@ void main() {
     );
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     lastBuyEntranceQuantity = faker.randomGenerator.integer(100);
+    appSettingsEntity = EntityFactory.makeAppSettingsEntity();
   }
 
   void initSut() {
@@ -73,6 +76,7 @@ void main() {
   ProviderContainer makeProviderContainer({
     bool? mockSession = true,
     bool? mockAuthState = true,
+    bool? mockAppSettingsState = true,
   }) {
     final container = ProviderContainer(
       overrides: [
@@ -86,6 +90,10 @@ void main() {
         enterprisesStateControllerProvider.overrideWith(
           () => FakeEnterprisesStateController([enterpriseEntity]),
         ),
+        if (mockAppSettingsState == true)
+          appSettingsStateControllerProvider.overrideWith(
+            () => FakeAppSettingsStateController(appSettingsEntity),
+          ),
       ],
     );
     addTearDown(container.dispose);
@@ -129,7 +137,7 @@ void main() {
           baseUrl: userSession.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
-          searchType: SearchType.dynamic,
+          searchType: appSettingsEntity.searchPreference.searchType,
           crossIdentity: userEntity.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
@@ -200,6 +208,47 @@ void main() {
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code! + 1000, //wrong code
             selectedEnterprise: null,
+          );
+
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+      verifyNever(
+        () => sut.getProductsJson(
+          lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+          baseUrl: userSession.baseUrl!,
+          searchValue: searchValue,
+          routine: BsRoutine.adjustSalePrice,
+          searchType: SearchType.dynamic,
+          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          enterpriseCodes: [enterpriseEntity.Code!],
+          enterpriseEntity: enterpriseEntity,
+        ),
+      );
+    });
+
+    test('should behave correctly when appSettings is null', () async {
+      final container = makeProviderContainer(mockAppSettingsState: false);
+
+      await container.read(
+        searchProductsStateControllerProvider(enterpriseEntity.Code!).future,
+      );
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        searchProductsStateControllerProvider(enterpriseEntity.Code!),
+        (_, next) => states.add(next),
+      );
+
+      await container
+          .read(
+            searchProductsStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).notifier,
+          )
+          .loadProducts(
+            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+            searchValue: searchValue,
+            enterpriseCode: enterpriseEntity.Code!,
+            selectedEnterprise: enterpriseEntity,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

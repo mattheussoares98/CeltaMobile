@@ -30,6 +30,7 @@ import 'package:celta_intelligence/features/enterprise_manager/data/models/model
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
@@ -667,4 +668,15 @@ class AppSettingsRepositorySpy extends Mock implements IAppSettingsRepository {
   void mockLoadDefaultError() => _loadDefaultCall().thenThrow(Exception());
   void mockLoadDefault(AppSettingsEntity value) =>
       _loadDefaultCall().thenAnswer((_) async => value);
+}
+
+class FakeAppSettingsStateController extends AppSettingsStateController {
+  final AppSettingsEntity appSettingsToReturn;
+
+  FakeAppSettingsStateController(this.appSettingsToReturn);
+
+  @override
+  Future<AppSettingsEntity> build() async {
+    return appSettingsToReturn;
+  }
 }

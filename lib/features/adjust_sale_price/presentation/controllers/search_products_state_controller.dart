@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/features/settings/presentation/controllers/app_settings_state_controller.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -67,11 +68,14 @@ class SearchProductsStateController extends _$SearchProductsStateController {
           baseUrl.isEmpty ||
           crossIdentity == null ||
           crossIdentity.isEmpty) {
-        throw Exception(
-          'URL ou CrossIdentity nulos. Entre em contato com o suporte técnico e avise sobre esse problema'
-              .hardcoded,
-        );
+        throw Exception('Sessão inválida. Faça o login novamente'.hardcoded);
       }
+
+      final settings = await ref.read(
+        appSettingsStateControllerProvider.future,
+      );
+      final searchType =
+          settings?.searchPreference.searchType ?? SearchType.dynamic;
 
       final products = await ref
           .read(soapProductsRepositoryProvider)
@@ -80,7 +84,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             searchValue: searchValue,
             crossIdentity: crossIdentity,
             routine: BsRoutine.adjustSalePrice,
-            searchType: SearchType.dynamic,
+            searchType: searchType,
             enterpriseCodes: [enterpriseCode],
             enterpriseEntity: selectedEnterprise ?? enterpriseEntity,
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
