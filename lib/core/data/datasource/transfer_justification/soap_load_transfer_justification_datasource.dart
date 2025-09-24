@@ -5,11 +5,11 @@ import '../../../domain/entities/transfer_justification/transfer_justifications.
 import '../../models/models.dart';
 import 'transfer_justification.dart';
 
-class SoapLoadJustificationsDatasource
-    implements ISoapLoadJustificationsDatasource {
+class SoapTransferJustificationDatasource
+    implements ISoapTransferJustificationDatasource {
   final SoapRequest soapRequest;
 
-  SoapLoadJustificationsDatasource(this.soapRequest);
+  SoapTransferJustificationDatasource(this.soapRequest);
   @override
   Future<List<TransferJustificationModel>> load({
     required String baseUrl,

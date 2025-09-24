@@ -1,7 +1,7 @@
 import '../../../domain/entities/transfer_justification/transfer_justification.dart';
 import '../../models/models.dart';
 
-abstract class ISoapLoadJustificationsDatasource {
+abstract class ISoapTransferJustificationDatasource {
   Future<List<TransferJustificationModel>> load({
     required String baseUrl,
     required String crossIdentity,
