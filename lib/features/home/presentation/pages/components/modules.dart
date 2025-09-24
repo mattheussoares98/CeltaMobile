@@ -32,6 +32,20 @@ class Modules extends ConsumerWidget {
                 );
               },
       ),
+      PrimaryButton(
+        text: 'Ajustar estoque'.hardcoded,
+        onPressed: selectedEnterprise == null
+            ? null
+            : () {
+                context.goNamed(
+                  AppRoute.adjustStocks.name,
+                  pathParameters: {
+                    'enterpriseCode': selectedEnterprise.Code.toString(),
+                  },
+                  extra: {'enterprise': selectedEnterprise},
+                );
+              },
+      ),
     ];
 
     return Padding(

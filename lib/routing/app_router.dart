@@ -13,6 +13,7 @@ enum AppRoute {
   auth,
   adjustSalePrice,
   adjustSalePriceProducts,
+  adjustStocks,
   createEnterprise,
   enterpriseManager,
   enterpriseManagerAuth,
@@ -53,6 +54,7 @@ GoRouter goRouter(Ref ref) {
       enterpriseManagerRoute(enterpriseManagerBridge),
       homeRoute([
         adjustSalePriceProducts([adjustSalePrice()]),
+        adjustStocksRoute(),
       ]),
       splashRoute(),
     ],
