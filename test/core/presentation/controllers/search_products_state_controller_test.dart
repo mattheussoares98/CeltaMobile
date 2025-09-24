@@ -1,8 +1,8 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/core/providers/products/products.dart';
 import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
-import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks/mocks.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
   late SoapProductsRepositorySpy sut;
@@ -23,6 +23,7 @@ void main() {
   late EnterpriseEntity enterpriseEntity;
   late int lastBuyEntranceQuantity;
   late AppSettingsEntity appSettingsEntity;
+  late BsRoutine bsRoutine;
 
   setUpAll(() {
     for (var routine in BsRoutine.values) {
@@ -40,6 +41,8 @@ void main() {
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     lastBuyEntranceQuantity = faker.randomGenerator.integer(100);
     appSettingsEntity = EntityFactory.makeAppSettingsEntity();
+    bsRoutine = BsRoutine
+        .values[faker.randomGenerator.integer(BsRoutine.values.length)];
   }
 
   void initSut() {
@@ -63,6 +66,12 @@ void main() {
     initInjections();
     initSut();
     mockSuccess();
+  });
+
+  setUpAll(() {
+    for (var routine in BsRoutine.values) {
+      registerFallbackValue(routine);
+    }
   });
 
   ProviderContainer makeProviderContainer({
@@ -100,12 +109,18 @@ void main() {
       final container = makeProviderContainer();
 
       await container.read(
-        searchProductsStateControllerProvider(enterpriseEntity.Code!).future,
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ).future,
       );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        searchProductsStateControllerProvider(enterpriseEntity.Code!),
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ),
         (_, next) => states.add(next),
       );
 
@@ -113,6 +128,7 @@ void main() {
           .read(
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
+              bsRoutine,
             ).notifier,
           )
           .loadProducts(
@@ -131,7 +147,7 @@ void main() {
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
           searchValue: searchValue,
-          routine: BsRoutine.adjustSalePrice,
+          routine: bsRoutine,
           searchType: appSettingsEntity.searchPreference.searchType,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
@@ -143,12 +159,18 @@ void main() {
       final container = makeProviderContainer(mockSession: false);
 
       await container.read(
-        searchProductsStateControllerProvider(enterpriseEntity.Code!).future,
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ).future,
       );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        searchProductsStateControllerProvider(enterpriseEntity.Code!),
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ),
         (_, next) => states.add(next),
       );
 
@@ -156,6 +178,7 @@ void main() {
           .read(
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
+              bsRoutine,
             ).notifier,
           )
           .loadProducts(
@@ -171,8 +194,8 @@ void main() {
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
           searchValue: searchValue,
-          routine: BsRoutine.adjustSalePrice,
-          searchType: SearchType.dynamic,
+          routine: bsRoutine,
+          searchType: appSettingsEntity.searchPreference.searchType,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
@@ -183,12 +206,18 @@ void main() {
       final container = makeProviderContainer(mockSession: true);
 
       await container.read(
-        searchProductsStateControllerProvider(enterpriseEntity.Code!).future,
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ).future,
       );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        searchProductsStateControllerProvider(enterpriseEntity.Code!),
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ),
         (_, next) => states.add(next),
       );
 
@@ -196,6 +225,7 @@ void main() {
           .read(
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
+              bsRoutine,
             ).notifier,
           )
           .loadProducts(
@@ -211,8 +241,8 @@ void main() {
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
           searchValue: searchValue,
-          routine: BsRoutine.adjustSalePrice,
-          searchType: SearchType.dynamic,
+          routine: bsRoutine,
+          searchType: appSettingsEntity.searchPreference.searchType,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
@@ -224,12 +254,18 @@ void main() {
       final container = makeProviderContainer(mockAppSettingsState: false);
 
       await container.read(
-        searchProductsStateControllerProvider(enterpriseEntity.Code!).future,
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ).future,
       );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        searchProductsStateControllerProvider(enterpriseEntity.Code!),
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ),
         (_, next) => states.add(next),
       );
 
@@ -237,6 +273,7 @@ void main() {
           .read(
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
+              bsRoutine,
             ).notifier,
           )
           .loadProducts(
@@ -252,8 +289,8 @@ void main() {
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
           searchValue: searchValue,
-          routine: BsRoutine.adjustSalePrice,
-          searchType: SearchType.dynamic,
+          routine: bsRoutine,
+          searchType: appSettingsEntity.searchPreference.searchType,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,

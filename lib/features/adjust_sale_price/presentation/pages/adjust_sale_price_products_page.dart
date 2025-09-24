@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
-import '../../../../features/adjust_sale_price/presentation/controllers/controllers.dart';
+import '../../../../core/presentation/controllers/controllers.dart';
 import '../../../../routing/routing.dart';
 
 class AdjustSalePriceProductsPage extends ConsumerStatefulWidget {
@@ -39,7 +39,10 @@ class _AdjustSalePriceProductsPageState
   Future<void> _searchProducts() async {
     await ref
         .read(
-          searchProductsStateControllerProvider(widget.enterpriseCode).notifier,
+          searchProductsStateControllerProvider(
+            widget.enterpriseCode,
+            BsRoutine.adjustSalePrice,
+          ).notifier,
         )
         .loadProducts(
           enterpriseCode: widget.enterpriseCode,
@@ -50,17 +53,23 @@ class _AdjustSalePriceProductsPageState
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(searchProductsStateControllerProvider(widget.enterpriseCode), (
-      previous,
-      next,
-    ) {
-      next.doOnSuccess(previous, () {
-        searchValueController.clear();
-      });
-    });
+    ref.listen(
+      searchProductsStateControllerProvider(
+        widget.enterpriseCode,
+        BsRoutine.adjustSalePrice,
+      ),
+      (previous, next) {
+        next.doOnSuccess(previous, () {
+          searchValueController.clear();
+        });
+      },
+    );
 
     final productsState = ref.watch(
-      searchProductsStateControllerProvider(widget.enterpriseCode),
+      searchProductsStateControllerProvider(
+        widget.enterpriseCode,
+        BsRoutine.adjustSalePrice,
+      ),
     );
 
     final theme = Theme.of(context);

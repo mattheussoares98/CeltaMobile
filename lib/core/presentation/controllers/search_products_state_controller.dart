@@ -15,7 +15,10 @@ part 'search_products_state_controller.g.dart';
 @riverpod
 class SearchProductsStateController extends _$SearchProductsStateController {
   @override
-  Future<List<ProductEntity>> build(int enterpriseCode) async {
+  Future<List<ProductEntity>> build(
+    int enterpriseCode,
+    BsRoutine routine,
+  ) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -81,7 +84,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             baseUrl: baseUrl,
             searchValue: searchValue,
             crossIdentity: crossIdentity,
-            routine: BsRoutine.adjustSalePrice,
+            routine: routine,
             searchType: searchType,
             enterpriseCodes: [enterpriseCode],
             enterpriseEntity: selectedEnterprise ?? enterpriseEntity,
