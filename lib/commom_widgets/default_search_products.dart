@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/domain/entities/entities.dart';
+import '../core/providers/scanner/scanner.dart';
 import '../core/validators/validators.dart';
 import '../features/settings/presentation/pages/pages.dart';
 import 'commom_widgets.dart';
@@ -107,7 +108,13 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                     ),
                   _DefaultIcon(
                     onPress: () async {
-                      // await ref.read(barcodeScanner)
+                      final value = await ref
+                          .read(barcodeScannerRepositoryProvider)
+                          .scan();
+                      if (value != null) {
+                        widget.searchValueController.text = value;
+                        widget.searchProducts();
+                      }
                     },
                     materialIcon: Icons.camera_alt,
                     cupertinoIcon: CupertinoIcons.camera_fill,

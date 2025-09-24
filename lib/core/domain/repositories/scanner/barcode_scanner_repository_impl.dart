@@ -2,7 +2,7 @@ import '../../../data/datasource/scanner/scanner.dart';
 import 'scanner.dart';
 
 class BarcodeScannerRepositoryImpl implements IBarcodeScannerRepository {
-  final FlutterBarcodeScannerDatasource datasource;
+  final IBarcodeScannerDatasource datasource;
 
   BarcodeScannerRepositoryImpl(this.datasource);
 
