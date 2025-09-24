@@ -7,7 +7,12 @@ import 'models.dart';
 class UserSessionModel extends Equatable {
   final UserModel user;
   final SupabaseEnterpriseModel enterprise;
-  const UserSessionModel({required this.user, required this.enterprise});
+  final SoapEnterpriseModel? selectedEnterprise;
+  const UserSessionModel({
+    required this.user,
+    required this.enterprise,
+    this.selectedEnterprise,
+  });
 
   @override
   List<Object?> get props => [user, enterprise];
