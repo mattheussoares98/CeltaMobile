@@ -31,63 +31,65 @@ class Prices extends ConsumerWidget {
       ),
     );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _Title(title: 'Preços praticados'.hardcoded),
-        if (canAdjustSalePrice.hasError)
-          Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: PrimaryButton(
-              text: 'Atualizar permissão para encerrar oferta'.hardcoded,
-              isLoading: canAdjustSalePrice.isLoading,
-              onPressed: () {
-                ref.invalidate(soapResourceDatasourceProvider);
-              },
+    return ResponsiveScrollableWidget(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _Title(title: 'Preços praticados'.hardcoded),
+          if (canAdjustSalePrice.hasError)
+            Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: PrimaryButton(
+                text: 'Atualizar permissão para encerrar oferta'.hardcoded,
+                isLoading: canAdjustSalePrice.isLoading,
+                onPressed: () {
+                  ref.invalidate(soapResourceDatasourceProvider);
+                },
+              ),
             ),
-          ),
-        gapH8,
-        PracticedPrice(
-          saleType: SaleType.retail,
-          product: widget.product,
-          enterpriseCode: enterpriseCode,
-        ),
-        PracticedPrice(
-          saleType: SaleType.whole,
-          product: widget.product,
-          enterpriseCode: enterpriseCode,
-        ),
-        PracticedPrice(
-          saleType: SaleType.ecommerce,
-          product: widget.product,
-          enterpriseCode: enterpriseCode,
-        ),
-        if (retailSuggestion > 0 ||
-            wholeSuggestion > 0 ||
-            ecommerceSuggestion > 0) ...[
-          gapH32,
-          _Title(title: 'Preços sugeridos'.hardcoded),
           gapH8,
-          if (retailSuggestion > 0)
-            TitleAndSubTitle(
-              title: 'Venda '.hardcoded,
-              subTitle: retailSuggestion,
-              subTitleIsPrice: true,
-            ),
-          if (wholeSuggestion > 0)
-            TitleAndSubTitle(
-              title: 'Atacado '.hardcoded,
-              subTitle: wholeSuggestion,
-              subTitleIsPrice: true,
-            ),
-          if (ecommerceSuggestion > 0)
-            TitleAndSubTitle(
-              title: 'Ecommerce '.hardcoded,
-              subTitle: ecommerceSuggestion,
-              subTitleIsPrice: true,
-            ),
+          PracticedPrice(
+            saleType: SaleType.retail,
+            product: widget.product,
+            enterpriseCode: enterpriseCode,
+          ),
+          PracticedPrice(
+            saleType: SaleType.whole,
+            product: widget.product,
+            enterpriseCode: enterpriseCode,
+          ),
+          PracticedPrice(
+            saleType: SaleType.ecommerce,
+            product: widget.product,
+            enterpriseCode: enterpriseCode,
+          ),
+          if (retailSuggestion > 0 ||
+              wholeSuggestion > 0 ||
+              ecommerceSuggestion > 0) ...[
+            gapH32,
+            _Title(title: 'Preços sugeridos'.hardcoded),
+            gapH8,
+            if (retailSuggestion > 0)
+              TitleAndSubTitle(
+                title: 'Venda '.hardcoded,
+                subTitle: retailSuggestion,
+                subTitleIsPrice: true,
+              ),
+            if (wholeSuggestion > 0)
+              TitleAndSubTitle(
+                title: 'Atacado '.hardcoded,
+                subTitle: wholeSuggestion,
+                subTitleIsPrice: true,
+              ),
+            if (ecommerceSuggestion > 0)
+              TitleAndSubTitle(
+                title: 'Ecommerce '.hardcoded,
+                subTitle: ecommerceSuggestion,
+                subTitleIsPrice: true,
+              ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }
