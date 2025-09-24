@@ -106,20 +106,22 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                       cupertinoIcon: CupertinoIcons.search,
                       iconColor: widget.isLoading ? theme.disabledColor : null,
                     ),
-                  _DefaultIcon(
-                    onPress: () async {
-                      final value = await ref
-                          .read(barcodeScannerRepositoryProvider)
-                          .scan();
-                      if (value != null) {
-                        widget.searchValueController.text = value;
-                        widget.searchProducts();
-                      }
-                    },
-                    materialIcon: Icons.camera_alt,
-                    cupertinoIcon: CupertinoIcons.camera_fill,
-                    iconColor: widget.isLoading ? theme.disabledColor : null,
-                  ),
+                  if (theme.platform == TargetPlatform.iOS ||
+                      theme.platform == TargetPlatform.android)
+                    _DefaultIcon(
+                      onPress: () async {
+                        final value = await ref
+                            .read(barcodeScannerRepositoryProvider)
+                            .scan();
+                        if (value != null) {
+                          widget.searchValueController.text = value;
+                          widget.searchProducts();
+                        }
+                      },
+                      materialIcon: Icons.camera_alt,
+                      cupertinoIcon: CupertinoIcons.camera_fill,
+                      iconColor: widget.isLoading ? theme.disabledColor : null,
+                    ),
                   _DefaultIcon(
                     onPress: () {
                       showModalPage(SettingsPage(), context);
