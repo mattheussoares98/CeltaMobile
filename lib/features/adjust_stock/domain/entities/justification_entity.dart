@@ -8,7 +8,7 @@ class GetJustificationsEntity extends Equatable {
   final String FlagTipo_JustMov; /*  "Saída", */
   final String TypeOperator; /*  "(-)", */
   final String Nome_TipoEstoque; /*  "", */
-  final StockTypeEntity CodigoInterno_TipoEstoque;
+  final StockTypeEntity? CodigoInterno_TipoEstoque;
 
   const GetJustificationsEntity({
     required this.CodigoInterno_JustMov,

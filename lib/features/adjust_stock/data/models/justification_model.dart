@@ -9,7 +9,7 @@ class GetJustificationsModel extends Equatable {
   final String FlagTipo_JustMov; /*  "Saída", */
   final String TypeOperator; /*  "(-)", */
   final String Nome_TipoEstoque; /*  "", */
-  final StockTypeModel CodigoInterno_TipoEstoque;
+  final StockTypeModel? CodigoInterno_TipoEstoque;
 
   const GetJustificationsModel({
     required this.CodigoInterno_JustMov,
@@ -37,9 +37,9 @@ class GetJustificationsModel extends Equatable {
         FlagTipo_JustMov: json["FlagTipo_JustMov"],
         TypeOperator: json["TypeOperator"],
         Nome_TipoEstoque: json["Nome_TipoEstoque"],
-        CodigoInterno_TipoEstoque: StockTypeModel.fromJson(
-          json["CodigoInterno_TipoEstoque"],
-        ),
+        CodigoInterno_TipoEstoque: json["CodigoInterno_TipoEstoque"] == null
+            ? null
+            : StockTypeModel.fromJson(json["CodigoInterno_TipoEstoque"]),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -48,7 +48,7 @@ class GetJustificationsModel extends Equatable {
     'FlagTipo_JustMov': FlagTipo_JustMov,
     'TypeOperator': TypeOperator,
     'Nome_TipoEstoque': Nome_TipoEstoque,
-    'CodigoInterno_TipoEstoque': CodigoInterno_TipoEstoque.toJson(),
+    'CodigoInterno_TipoEstoque': CodigoInterno_TipoEstoque?.toJson(),
   };
 
   factory GetJustificationsModel.fromEntity(GetJustificationsEntity entity) =>
@@ -58,9 +58,9 @@ class GetJustificationsModel extends Equatable {
         FlagTipo_JustMov: entity.FlagTipo_JustMov,
         TypeOperator: entity.TypeOperator,
         Nome_TipoEstoque: entity.Nome_TipoEstoque,
-        CodigoInterno_TipoEstoque: StockTypeModel.fromEntity(
-          entity.CodigoInterno_TipoEstoque,
-        ),
+        CodigoInterno_TipoEstoque: entity.CodigoInterno_TipoEstoque == null
+            ? null
+            : StockTypeModel.fromEntity(entity.CodigoInterno_TipoEstoque!),
       );
 
   GetJustificationsEntity toEntity() => GetJustificationsEntity(
@@ -69,6 +69,6 @@ class GetJustificationsModel extends Equatable {
     FlagTipo_JustMov: FlagTipo_JustMov,
     TypeOperator: TypeOperator,
     Nome_TipoEstoque: Nome_TipoEstoque,
-    CodigoInterno_TipoEstoque: CodigoInterno_TipoEstoque.toEntity(),
+    CodigoInterno_TipoEstoque: CodigoInterno_TipoEstoque?.toEntity(),
   );
 }
