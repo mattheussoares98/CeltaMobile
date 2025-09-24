@@ -2,15 +2,15 @@ import 'package:equatable/equatable.dart';
 
 import 'justifications.dart';
 
-class JustificationsEntity extends Equatable {
+class TransferJustificationsEntity extends Equatable {
   final int CodigoInterno_JustMov; /*  37, */
   final String Descricao_JustMov; /*  "SUBTRAIR", */
   final String FlagTipo_JustMov; /*  "Saída", */
   final String TypeOperator; /*  "(-)", */
   final String Nome_TipoEstoque; /*  "", */
-  final StockTypeEntity? CodigoInterno_TipoEstoque;
+  final TransferJustificationStockTypeEntity? CodigoInterno_TipoEstoque;
 
-  const JustificationsEntity({
+  const TransferJustificationsEntity({
     required this.CodigoInterno_JustMov,
     required this.Descricao_JustMov,
     required this.FlagTipo_JustMov,

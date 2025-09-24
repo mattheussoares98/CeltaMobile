@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-class StockTypeEntity extends Equatable {
+class TransferJustificationStockTypeEntity extends Equatable {
   final int CodigoInterno_TipoEstoque;
   final String Nome_TipoEstoque;
   final bool FlagInterno_TipoEstoque;
 
-  const StockTypeEntity({
+  const TransferJustificationStockTypeEntity({
     required this.CodigoInterno_TipoEstoque,
     required this.Nome_TipoEstoque,
     required this.FlagInterno_TipoEstoque,

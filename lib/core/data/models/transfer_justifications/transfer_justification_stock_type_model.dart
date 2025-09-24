@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/justifications/justifications.dart';
+import '../../../domain/entities/transfer_justifications/justifications.dart';
 
-class StockTypeModel extends Equatable {
+class TransferJustificationStockTypeModel extends Equatable {
   final int CodigoInterno_TipoEstoque;
   final String Nome_TipoEstoque;
   final bool FlagInterno_TipoEstoque;
 
-  const StockTypeModel({
+  const TransferJustificationStockTypeModel({
     required this.CodigoInterno_TipoEstoque,
     required this.Nome_TipoEstoque,
     required this.FlagInterno_TipoEstoque,
@@ -20,8 +20,10 @@ class StockTypeModel extends Equatable {
     FlagInterno_TipoEstoque,
   ];
 
-  factory StockTypeModel.fromJson(Map<String, dynamic> json) {
-    return StockTypeModel(
+  factory TransferJustificationStockTypeModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return TransferJustificationStockTypeModel(
       CodigoInterno_TipoEstoque: json['CodigoInterno_TipoEstoque'],
       Nome_TipoEstoque: json['Nome_TipoEstoque'],
       FlagInterno_TipoEstoque: json['FlagInterno_TipoEstoque'],
@@ -34,15 +36,18 @@ class StockTypeModel extends Equatable {
     'FlagInterno_TipoEstoque': FlagInterno_TipoEstoque,
   };
 
-  factory StockTypeModel.fromEntity(StockTypeEntity entity) => StockTypeModel(
+  factory TransferJustificationStockTypeModel.fromEntity(
+    TransferJustificationStockTypeEntity entity,
+  ) => TransferJustificationStockTypeModel(
     CodigoInterno_TipoEstoque: entity.CodigoInterno_TipoEstoque,
     Nome_TipoEstoque: entity.Nome_TipoEstoque,
     FlagInterno_TipoEstoque: entity.FlagInterno_TipoEstoque,
   );
 
-  StockTypeEntity toEntity() => StockTypeEntity(
-    CodigoInterno_TipoEstoque: CodigoInterno_TipoEstoque,
-    Nome_TipoEstoque: Nome_TipoEstoque,
-    FlagInterno_TipoEstoque: FlagInterno_TipoEstoque,
-  );
+  TransferJustificationStockTypeEntity toEntity() =>
+      TransferJustificationStockTypeEntity(
+        CodigoInterno_TipoEstoque: CodigoInterno_TipoEstoque,
+        Nome_TipoEstoque: Nome_TipoEstoque,
+        FlagInterno_TipoEstoque: FlagInterno_TipoEstoque,
+      );
 }
