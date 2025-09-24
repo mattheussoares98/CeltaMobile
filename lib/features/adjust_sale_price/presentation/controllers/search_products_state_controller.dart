@@ -62,7 +62,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
         }
       }
 
-      final baseUrl = userSession?.baseUrl;
+      final baseUrl = userSession?.enterprise.baseUrl;
       final crossIdentity = user?.CrossIdentity_Usuario;
       if (baseUrl == null ||
           baseUrl.isEmpty ||

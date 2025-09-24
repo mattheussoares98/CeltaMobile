@@ -2,7 +2,6 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/providers/products/products.dart';
 import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
-import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,16 +12,12 @@ import '../../../../mocks/mocks.dart';
 
 void main() {
   late SoapProductsRepositorySpy mockSoapProductsRepository;
-  late UserEntity userEntity;
-  late UserSessionModel userSession;
-  late EnterpriseEntity enterpriseEntity;
+  late UserSessionEntity userSessionEntity;
   late ProductEntity productEntity;
 
   setUp(() {
     mockSoapProductsRepository = SoapProductsRepositorySpy();
-    userEntity = EntityFactory.makeUserEntity();
-    userSession = EntityFactory.makeUserSessionModel();
-    enterpriseEntity = EntityFactory.makeEnterpriseEntity();
+    userSessionEntity = EntityFactory.makeUserSessionEntity();
     productEntity = EntityFactory.makeProductEntity();
 
     registerFallbackValue(BsRoutine.adjustSalePrice);
@@ -41,12 +36,11 @@ void main() {
         soapProductsRepositoryProvider.overrideWithValue(
           mockSoapProductsRepository,
         ),
-        authStateControllerProvider.overrideWith(
-          () => FakeAuthStateController(userEntity),
+        userSessionProvider.overrideWith(
+          () => FakeUserSession(UserSessionModel.fromEntity(userSessionEntity)),
         ),
-        userSessionProvider.overrideWith(() => FakeUserSession(userSession)),
         enterprisesStateControllerProvider.overrideWith(
-          () => FakeEnterprisesStateController([enterpriseEntity]),
+          () => FakeEnterprisesStateController([userSessionEntity.enterprise]),
         ),
       ],
     );
@@ -58,7 +52,7 @@ void main() {
       final states = <AsyncValue<ProductEntity?>>[];
       container.listen(
         selectedProductStateControllerProvider(
-          enterpriseEntity.Code!,
+          userSessionEntity.enterprise.Code!,
           productEntity.PLU,
           productEntity,
         ),
@@ -67,7 +61,7 @@ void main() {
 
       final result = await container.read(
         selectedProductStateControllerProvider(
-          enterpriseEntity.Code!,
+          userSessionEntity.enterprise.Code!,
           productEntity.PLU,
           productEntity,
         ).future,
@@ -96,7 +90,7 @@ void main() {
         final states = <AsyncValue<ProductEntity?>>[];
         container.listen(
           selectedProductStateControllerProvider(
-            enterpriseEntity.Code!,
+            userSessionEntity.enterprise.Code!,
             productEntity.PLU,
             null,
           ),
@@ -105,7 +99,7 @@ void main() {
 
         await container.read(
           selectedProductStateControllerProvider(
-            enterpriseEntity.Code!,
+            userSessionEntity.enterprise.Code!,
             productEntity.PLU,
             null,
           ).future,
@@ -116,14 +110,14 @@ void main() {
 
         verify(
           () => mockSoapProductsRepository.getProductsJson(
-            baseUrl: userSession.baseUrl!,
+            baseUrl: userSessionEntity.enterprise.baseUrl!,
             searchValue: productEntity.PLU,
             routine: BsRoutine.adjustSalePrice,
             searchType: SearchType.dynamic,
-            enterpriseCodes: [enterpriseEntity.Code!],
-            enterpriseEntity: enterpriseEntity,
+            enterpriseCodes: [userSessionEntity.enterprise.Code!],
+            enterpriseEntity: userSessionEntity.enterprise,
             lastBuyEntranceQuantity: null,
-            crossIdentity: userEntity.CrossIdentity_Usuario!,
+            crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           ),
         ).called(1);
       },

@@ -16,11 +16,9 @@ import '../../../../mocks/mocks.dart';
 void main() async {
   late SoapAdjustSalePriceRepositorySpy mockRepository;
 
-  late String baseUrl;
   late SaleType saleType;
   late OfferParams offerParams;
-  late UserEntity userEntity;
-  late UserSessionModel userSession;
+  late UserSessionEntity userSessionEntity;
   late DateTime now;
   late ProductEntity productEntity;
   late EnterpriseEntity enterpriseEntity;
@@ -35,7 +33,6 @@ void main() async {
 
     mockRepository = SoapAdjustSalePriceRepositorySpy();
 
-    baseUrl = faker.internet.httpUrl();
     saleType =
         SaleType.values[faker.randomGenerator.integer(SaleType.values.length)];
     now = DateTime.now();
@@ -44,8 +41,7 @@ void main() async {
       effectuationDateOffer: now,
       endDateOffer: null,
     );
-    userEntity = EntityFactory.makeUserEntity();
-    userSession = UserSessionModel(baseUrl: baseUrl);
+    userSessionEntity = EntityFactory.makeUserSessionEntity();
     productEntity = EntityFactory.makeProductEntity();
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
   });
@@ -54,9 +50,11 @@ void main() async {
     return ProviderContainer(
       overrides: [
         soapAdjustSalePriceRepositoryProvider.overrideWithValue(mockRepository),
-        userSessionProvider.overrideWith(() => FakeUserSession(userSession)),
+        userSessionProvider.overrideWith(
+          () => FakeUserSession(UserSessionModel.fromEntity(userSessionEntity)),
+        ),
         authStateControllerProvider.overrideWith(
-          () => FakeAuthStateController(userEntity),
+          () => FakeAuthStateController(userSessionEntity.user),
         ),
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterpriseEntity),
@@ -82,8 +80,8 @@ void main() async {
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
       verify(
         () => mockRepository.confirm(
-          baseUrl: userSession.baseUrl!,
-          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          baseUrl: userSessionEntity.enterprise.baseUrl!,
+          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseEntity.Code!,
           productCode: productEntity.ProductCode,
           productPackingCode: productEntity.ProductPackingCode,

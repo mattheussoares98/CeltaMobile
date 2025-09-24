@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/core/constants/database_keys.dart';
 import 'package:celta_intelligence/core/data/datasource/user_session/user_session.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:faker/faker.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -12,7 +12,7 @@ void main() {
 
   late MockBox hive;
 
-  late UserSessionModel sessionModel;
+  late UserSessionEntity userSessionEntity;
 
   void initSut() {
     sut = LocalUserSessionDatasource(hive);
@@ -23,11 +23,14 @@ void main() {
   }
 
   void mockSuccess() {
-    hive.mockGet(DatabaseKeys.userSession.name, sessionModel.toJson());
+    hive.mockGet(
+      DatabaseKeys.userSession.name,
+      UserSessionModel.fromEntity(userSessionEntity).toJson(),
+    );
   }
 
   void initEntities() {
-    sessionModel = UserSessionModel(baseUrl: faker.internet.httpUrl());
+    userSessionEntity = EntityFactory.makeUserSessionEntity();
   }
 
   setUp(() {
@@ -38,7 +41,7 @@ void main() {
   });
 
   group('clear', () {
-    test('Should call hive with correct params', () async {
+    test('Should call delete with correct params', () async {
       await sut.clear();
 
       verify(() => hive.delete(DatabaseKeys.userSession.name)).called(1);
@@ -46,7 +49,7 @@ void main() {
   });
   group('Get', () {
     test('Should behave correctly', () async {
-      expect(await sut.get(), sessionModel);
+      expect(await sut.get(), UserSessionModel.fromEntity(userSessionEntity));
 
       verify(() => hive.get(DatabaseKeys.userSession.name)).called(1);
     });
@@ -60,11 +63,14 @@ void main() {
 
   group("Save", () {
     test("Should call hive with correct params", () async {
-      await sut.save(sessionModel);
+      await sut.save(UserSessionModel.fromEntity(userSessionEntity));
 
       verify(() => hive.delete(DatabaseKeys.userSession.name)).called(1);
       verify(
-        () => hive.put(DatabaseKeys.userSession.name, sessionModel.toJson()),
+        () => hive.put(
+          DatabaseKeys.userSession.name,
+          UserSessionModel.fromEntity(userSessionEntity).toJson(),
+        ),
       ).called(1);
     });
   });

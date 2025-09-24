@@ -18,9 +18,8 @@ void main() {
 
   late FakeAuthStateController fakeAuthStateController;
 
-  late UserSessionModel userSession;
+  late UserSessionEntity userSessionEntity;
   late String searchValue;
-  late UserEntity userEntity;
   late EnterpriseEntity enterpriseEntity;
   late int lastBuyEntranceQuantity;
   late AppSettingsEntity appSettingsEntity;
@@ -36,14 +35,8 @@ void main() {
   });
 
   void initEntities() {
-    userSession = UserSessionModel(baseUrl: faker.internet.httpUrl());
+    userSessionEntity = EntityFactory.makeUserSessionEntity();
     searchValue = faker.lorem.word();
-    userEntity = UserEntity(
-      name: faker.person.name(),
-      enterpriseName: faker.company.name(),
-      AccessKey: faker.guid.guid(),
-      CrossIdentity_Usuario: faker.guid.guid(),
-    );
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     lastBuyEntranceQuantity = faker.randomGenerator.integer(100);
     appSettingsEntity = EntityFactory.makeAppSettingsEntity();
@@ -54,8 +47,7 @@ void main() {
   }
 
   void initInjections() {
-    fakeAuthStateController = FakeAuthStateController(userEntity);
-    userSession = UserSessionModel(baseUrl: faker.internet.httpUrl());
+    fakeAuthStateController = FakeAuthStateController(userSessionEntity.user);
   }
 
   void mockSuccess() {
@@ -82,7 +74,10 @@ void main() {
       overrides: [
         soapProductsRepositoryProvider.overrideWithValue(sut),
         if (mockSession == true)
-          userSessionProvider.overrideWith(() => FakeUserSession(userSession)),
+          userSessionProvider.overrideWith(
+            () =>
+                FakeUserSession(UserSessionModel.fromEntity(userSessionEntity)),
+          ),
         if (mockAuthState == true)
           authStateControllerProvider.overrideWith(
             () => fakeAuthStateController,
@@ -134,11 +129,11 @@ void main() {
       verify(
         () => sut.getProductsJson(
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSession.baseUrl!,
+          baseUrl: userSessionEntity.enterprise.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
           searchType: appSettingsEntity.searchPreference.searchType,
-          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
         ),
@@ -174,11 +169,11 @@ void main() {
       verifyNever(
         () => sut.getProductsJson(
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSession.baseUrl!,
+          baseUrl: userSessionEntity.enterprise.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
-          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
         ),
@@ -214,11 +209,11 @@ void main() {
       verifyNever(
         () => sut.getProductsJson(
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSession.baseUrl!,
+          baseUrl: userSessionEntity.enterprise.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
-          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
         ),
@@ -255,11 +250,11 @@ void main() {
       verifyNever(
         () => sut.getProductsJson(
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSession.baseUrl!,
+          baseUrl: userSessionEntity.enterprise.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
-          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
         ),

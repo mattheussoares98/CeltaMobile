@@ -37,17 +37,14 @@ class EnterprisesStateController extends _$EnterprisesStateController {
       return [];
     }
 
-    final baseUrl = sessionAsync.value?.baseUrl;
+    final baseUrl = sessionAsync.value?.enterprise.baseUrl;
     final crossIdentity = authAsync.value?.CrossIdentity_Usuario;
 
     if (baseUrl == null ||
         baseUrl.isEmpty ||
         crossIdentity == null ||
         crossIdentity.isEmpty) {
-      throw AppException(
-        'URL ou CrossIdentity inválidos. Entre em contato com o suporte técnico'
-            .hardcoded,
-      );
+      throw AppException('Sessão inválida. Faça o login novamente'.hardcoded);
     }
 
     final enterprises = await ref

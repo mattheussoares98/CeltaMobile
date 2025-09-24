@@ -1,6 +1,6 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/repositories/user_session/user_session.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -11,7 +11,7 @@ void main() {
 
   late LocalSessionDatasourceSpy localSessionDatasource;
 
-  late UserSessionModel sessionModel;
+  late UserSessionEntity userSessionEntity;
 
   void initSut() {
     sut = LocalUserSessionRepositoryImpl(localSessionDatasource);
@@ -22,12 +22,16 @@ void main() {
   }
 
   void mockSuccess() {
-    localSessionDatasource.mockSaveSession(sessionModel);
-    localSessionDatasource.mockGetSession(sessionModel);
+    localSessionDatasource.mockSaveSession(
+      UserSessionModel.fromEntity(userSessionEntity),
+    );
+    localSessionDatasource.mockGetSession(
+      UserSessionModel.fromEntity(userSessionEntity),
+    );
   }
 
   void initEntities() {
-    sessionModel = UserSessionModel(baseUrl: faker.internet.httpUrl());
+    userSessionEntity = EntityFactory.makeUserSessionEntity();
   }
 
   setUp(() {
@@ -38,12 +42,16 @@ void main() {
   });
 
   test("Should behave correctly on save", () async {
-    await sut.save(sessionModel);
+    await sut.save(UserSessionModel.fromEntity(userSessionEntity));
 
-    verify(() => localSessionDatasource.save(sessionModel)).called(1);
+    verify(
+      () => localSessionDatasource.save(
+        UserSessionModel.fromEntity(userSessionEntity),
+      ),
+    ).called(1);
   });
   test("Should behave correctly on get", () async {
-    expect(await sut.get(), sessionModel);
+    expect(await sut.get(), UserSessionModel.fromEntity(userSessionEntity));
 
     verify(() => localSessionDatasource.get()).called(1);
   });

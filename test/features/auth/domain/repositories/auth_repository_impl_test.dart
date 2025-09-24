@@ -21,6 +21,7 @@ void main() {
   late String userName;
   late String password;
   late UserEntity userEntity;
+  late UserSessionEntity userSessionEntity;
 
   void initSut() {
     sut = AuthRepositoryImpl(
@@ -45,7 +46,7 @@ void main() {
     authRemoteDatasource.mockLogin(UserModel.fromEntity(userEntity));
     authLocalDatasource.mockGetUser(userEntity);
     localSessionDatasource.mockSaveSession(
-      UserSessionModel(baseUrl: enterpriseEntity.baseUrl),
+      UserSessionModel.fromEntity(userSessionEntity),
     );
   }
 
@@ -54,6 +55,10 @@ void main() {
     userName = faker.internet.userName();
     password = faker.internet.password();
     userEntity = EntityFactory.makeUserEntity();
+    userSessionEntity = UserSessionEntity(
+      user: userEntity,
+      enterprise: enterpriseEntity,
+    );
   }
 
   setUp(() {
@@ -99,7 +104,7 @@ void main() {
       ).called(1);
       verify(
         () => localSessionDatasource.save(
-          UserSessionModel(baseUrl: enterpriseEntity.baseUrl),
+          UserSessionModel.fromEntity(userSessionEntity),
         ),
       ).called(1);
 

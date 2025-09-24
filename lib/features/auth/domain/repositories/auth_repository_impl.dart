@@ -1,10 +1,10 @@
 import '../../../../core/data/datasource/login/login.dart';
 import '../../../../core/data/datasource/user_session/user_session.dart';
 import '../../../../core/data/models/models.dart';
+import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/domain/repositories/enterprise/enterprise.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../../../localization/string_hardcoded.dart';
-import '../../../../core/domain/entities/entities.dart';
 import '../../data/datasource/datasource.dart';
 import 'i_auth_repository.dart';
 
@@ -27,14 +27,15 @@ class AuthRepositoryImpl implements IAuthRepository {
     required String userName,
     required String password,
   }) async {
-    final enterpriseModel = await enterpriseRepository
-        .getSupabaseEnterpriseByName(enterpriseName);
-    if (enterpriseModel == null) {
+    final enterprise = await enterpriseRepository.getSupabaseEnterpriseByName(
+      enterpriseName,
+    );
+    if (enterprise == null) {
       throw AppException('Empresa não encontrada'.hardcoded);
     }
 
     final remoteUser = await soapLoginDatasource.login(
-      baseUrl: enterpriseModel.baseUrl!,
+      baseUrl: enterprise.baseUrl!,
       user: userName,
       password: password,
     );
@@ -49,7 +50,10 @@ class AuthRepositoryImpl implements IAuthRepository {
     );
 
     await localUserSessionDatasource.save(
-      UserSessionModel(baseUrl: enterpriseModel.baseUrl),
+      UserSessionModel(
+        enterprise: SupabaseEnterpriseModel.fromEntity(enterprise),
+        user: remoteUser,
+      ),
     );
   }
 

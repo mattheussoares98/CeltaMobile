@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/providers/user_session/user_session.dart';
-import '../../../auth/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
@@ -27,13 +26,12 @@ class ConfirmAdjustController extends _$ConfirmAdjustController {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(userSessionProvider.future);
-      final userEntity = await ref.watch(authStateControllerProvider.future);
 
       await ref
           .read(soapAdjustSalePriceRepositoryProvider)
           .confirm(
-            baseUrl: userSession!.baseUrl!,
-            crossIdentity: userEntity!.CrossIdentity_Usuario!,
+            baseUrl: userSession!.enterprise.baseUrl!,
+            crossIdentity: userSession.user.CrossIdentity_Usuario!,
             enterpriseCode: enterpriseCode,
             productCode: productCode,
             productPackingCode: productPackingCode,

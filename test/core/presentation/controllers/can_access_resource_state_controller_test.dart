@@ -3,7 +3,6 @@ import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/core/providers/resource/resource.dart';
 import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
-import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,8 +12,7 @@ import '../../../mocks/mocks.dart';
 
 void main() {
   late SoapResourceRepositorySpy resourceRepositorySpy;
-  late UserEntity userEntity;
-  late UserSessionModel userSession;
+  late UserSessionEntity userSessionEntity;
 
   // Define test parameters
   final routine =
@@ -30,8 +28,7 @@ void main() {
 
   setUp(() {
     resourceRepositorySpy = SoapResourceRepositorySpy();
-    userEntity = EntityFactory.makeUserEntity();
-    userSession = EntityFactory.makeUserSessionModel();
+    userSessionEntity = EntityFactory.makeUserSessionEntity();
 
     resourceRepositorySpy.mockCanAccessResource(canAccess);
   });
@@ -46,17 +43,11 @@ void main() {
     }
   });
 
-  ProviderContainer makeProviderContainer({
-    UserEntity? user,
-    UserSessionModel? session,
-  }) {
+  ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
       overrides: [
         // Override all the dependencies that the controller watches
         soapResourceRepositoryProvider.overrideWithValue(resourceRepositorySpy),
-        authStateControllerProvider.overrideWith(
-          () => FakeAuthStateController(user),
-        ),
         userSessionProvider.overrideWith(() => FakeUserSession(session)),
       ],
     );
@@ -65,8 +56,7 @@ void main() {
   group('CanAccessResourceStateController', () {
     test('should return the correct value', () async {
       final container = makeProviderContainer(
-        user: userEntity,
-        session: userSession,
+        session: UserSessionModel.fromEntity(userSessionEntity),
       );
       addTearDown(container.dispose);
 
@@ -85,8 +75,8 @@ void main() {
         () => resourceRepositorySpy.canAccessResource(
           resource: resource,
           routine: routine,
-          baseUrl: userSession.baseUrl!,
-          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          baseUrl: userSessionEntity.enterprise.baseUrl!,
+          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
         ),
       ).called(1);
     });

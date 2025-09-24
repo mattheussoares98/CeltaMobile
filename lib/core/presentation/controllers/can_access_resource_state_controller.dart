@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../features/auth/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers/resource/resource.dart';
 import '../../providers/user_session/user_session.dart';
@@ -18,9 +17,8 @@ class CanAccessResourceStateController
   ) async {
     final userSession = await ref.watch(userSessionProvider.future);
 
-    final userEntity = await ref.watch(authStateControllerProvider.future);
-    final baseUrl = userSession!.baseUrl!;
-    final crossIdentity = userEntity!.CrossIdentity_Usuario!;
+    final baseUrl = userSession!.enterprise.baseUrl!;
+    final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
     final resourceRepository = ref.watch(soapResourceRepositoryProvider);
 

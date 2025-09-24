@@ -13,14 +13,14 @@ import '../../../../mocks/mocks.dart';
 
 void main() {
   late EnterpriseRepositorySpy enterpriseRepositorySpy;
-  late UserEntity fakeUser;
-  late UserSessionModel fakeSession;
+  late UserEntity userEntity;
+  late UserSessionEntity userSessionEntity;
   late List<EnterpriseEntity> fakeEnterprises;
 
   setUp(() {
     enterpriseRepositorySpy = EnterpriseRepositorySpy();
-    fakeUser = EntityFactory.makeUserEntity();
-    fakeSession = EntityFactory.makeUserSessionModel();
+    userEntity = EntityFactory.makeUserEntity();
+    userSessionEntity = EntityFactory.makeUserSessionEntity();
     fakeEnterprises = [
       EntityFactory.makeEnterpriseEntity(),
       EntityFactory.makeEnterpriseEntity(),
@@ -53,8 +53,8 @@ void main() {
     test('should works correctly on success', () async {
       // Pass the valid user and session to the container
       final container = makeProviderContainer(
-        user: fakeUser,
-        session: fakeSession,
+        user: userEntity,
+        session: UserSessionModel.fromEntity(userSessionEntity),
       );
       final states = <AsyncValue<List<EnterpriseEntity>>>[];
       container.listen(
@@ -74,8 +74,8 @@ void main() {
       );
       verify(
         () => enterpriseRepositorySpy.getSoapEnterprises(
-          url: fakeSession.baseUrl!,
-          crossIdentity: fakeUser.CrossIdentity_Usuario!,
+          url: userSessionEntity.enterprise.baseUrl!,
+          crossIdentity: userEntity.CrossIdentity_Usuario!,
         ),
       ).called(1);
     });

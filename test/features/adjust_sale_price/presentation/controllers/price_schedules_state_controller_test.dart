@@ -1,7 +1,6 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
-import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
@@ -15,16 +14,14 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late SoapGetPriceSchedulesRepositorySpy mockRepository;
 
-  late UserEntity userEntity;
-  late UserSessionModel userSerrionModel;
+  late UserSessionEntity userSessionEntity;
   late EnterpriseEntity enterpriseEntity;
   late List<PriceScheduleEntity> priceSchedulesEntities;
   late ProductEntity productEntity;
 
   setUp(() {
     mockRepository = SoapGetPriceSchedulesRepositorySpy();
-    userEntity = EntityFactory.makeUserEntity();
-    userSerrionModel = EntityFactory.makeUserSessionModel();
+    userSessionEntity = EntityFactory.makeUserSessionEntity();
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     priceSchedulesEntities = [EntityFactory.makePriceScheduleEntity()];
 
@@ -38,11 +35,8 @@ void main() {
         soapGetPriceSchedulesRepositoryProvider.overrideWithValue(
           mockRepository,
         ),
-        authStateControllerProvider.overrideWith(
-          () => FakeAuthStateController(userEntity),
-        ),
         userSessionProvider.overrideWith(
-          () => FakeUserSession(userSerrionModel),
+          () => FakeUserSession(UserSessionModel.fromEntity(userSessionEntity)),
         ),
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterpriseEntity),
@@ -107,8 +101,8 @@ void main() {
       expect(states.last.value, priceSchedulesEntities);
       verify(
         () => mockRepository.getPriceSchedules(
-          baseUrl: userSerrionModel.baseUrl!,
-          crossIdentity: userEntity.CrossIdentity_Usuario!,
+          baseUrl: userSessionEntity.enterprise.baseUrl!,
+          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseEntity.Code!,
           productCode: productEntity.ProductCode,
           productPackingCode: productEntity.ProductPackingCode,

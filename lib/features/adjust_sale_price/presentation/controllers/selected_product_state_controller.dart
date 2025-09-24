@@ -4,7 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/providers/products/products.dart';
 import '../../../../core/providers/user_session/user_session.dart';
-import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
 
@@ -36,7 +35,6 @@ class SelectedProductStateController extends _$SelectedProductStateController {
       return product;
     }
 
-    final user = await ref.watch(authStateControllerProvider.future);
     final userSession = await ref.watch(userSessionProvider.future);
     final enterprises = await ref.watch(
       enterprisesStateControllerProvider.future,
@@ -47,8 +45,8 @@ class SelectedProductStateController extends _$SelectedProductStateController {
     final products = await ref
         .read(soapProductsRepositoryProvider)
         .getProductsJson(
-          baseUrl: userSession!.baseUrl!,
-          crossIdentity: user!.CrossIdentity_Usuario!,
+          baseUrl: userSession!.enterprise.baseUrl!,
+          crossIdentity: userSession.user.CrossIdentity_Usuario!,
           searchValue: plu,
           routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,

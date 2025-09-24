@@ -4,7 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/providers/user_session/user_session.dart';
 import '../../../../features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
-import '../../../auth/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
@@ -42,7 +41,6 @@ class PriceSchedulesStateController extends _$PriceSchedulesStateController {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(userSessionProvider.future);
-      final userEntity = await ref.watch(authStateControllerProvider.future);
       final selectedEnterprise = ref.watch(
         selectedEnterpriseStateControllerProvider,
       );
@@ -50,8 +48,8 @@ class PriceSchedulesStateController extends _$PriceSchedulesStateController {
       return await ref
           .read(soapGetPriceSchedulesRepositoryProvider)
           .getPriceSchedules(
-            baseUrl: userSession!.baseUrl!,
-            crossIdentity: userEntity!.CrossIdentity_Usuario!,
+            baseUrl: userSession!.enterprise.baseUrl!,
+            crossIdentity: userSession.user.CrossIdentity_Usuario!,
             enterpriseCode: selectedEnterprise!.Code!,
             productCode: productCode,
             productPackingCode: productPackingCode,
