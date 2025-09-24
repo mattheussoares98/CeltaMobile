@@ -113,18 +113,20 @@ class ProductItemWidget extends ConsumerWidget {
                   InfoButton(product: product, enterpriseCode: enterpriseCode),
                 ],
               ),
-              TitleAndSubTitle(
-                title: "Preço ",
-                emptyMessage: 'Sem preço'.hardcoded,
-                subTitle: product.RetailPracticedPrice,
-                subTitleIsPrice: true,
-              ),
-              TitleAndSubTitle(
-                title: "Custo líquido ",
-                subTitle: product.LiquidCost,
-                emptyMessage: 'Sem custo líquido'.hardcoded,
-                subTitleIsPrice: true,
-              ),
+              if (routine != BsRoutine.adjustStock) ...[
+                TitleAndSubTitle(
+                  title: "Preço ",
+                  emptyMessage: 'Sem preço'.hardcoded,
+                  subTitle: product.RetailPracticedPrice,
+                  subTitleIsPrice: true,
+                ),
+                TitleAndSubTitle(
+                  title: "Custo líquido ",
+                  subTitle: product.LiquidCost,
+                  emptyMessage: 'Sem custo líquido'.hardcoded,
+                  subTitleIsPrice: true,
+                ),
+              ],
               if (routine != BsRoutine.adjustSalePrice) ...[
                 TitleAndSubTitle(
                   title: "Estoque atual ",
