@@ -7,7 +7,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/providers/products/products.dart';
 import '../../../../core/providers/user_session/user_session.dart';
 import '../../../../exceptions/exceptions.dart';
-import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
 
@@ -42,7 +41,6 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final user = await ref.read(authStateControllerProvider.future);
       final userSession = await ref.read(userSessionProvider.future);
 
       late EnterpriseEntity enterpriseEntity;
@@ -63,7 +61,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
       }
 
       final baseUrl = userSession?.enterprise.baseUrl;
-      final crossIdentity = user?.CrossIdentity_Usuario;
+      final crossIdentity = userSession?.user.CrossIdentity_Usuario;
       if (baseUrl == null ||
           baseUrl.isEmpty ||
           crossIdentity == null ||
