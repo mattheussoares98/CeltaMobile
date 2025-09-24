@@ -197,7 +197,7 @@ class EntityFactory {
 
   static UserSessionEntity makeUserSessionEntity() => UserSessionEntity(
     user: makeUserEntity(),
-    enterprise: makeEnterpriseEntity(),
+    supabaseEnterprise: makeEnterpriseEntity(),
   );
 
   static PriceScheduleEntity makePriceScheduleEntity() => PriceScheduleEntity(

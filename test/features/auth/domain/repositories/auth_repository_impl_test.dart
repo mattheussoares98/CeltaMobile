@@ -57,7 +57,7 @@ void main() {
     userEntity = EntityFactory.makeUserEntity();
     userSessionEntity = UserSessionEntity(
       user: userEntity,
-      enterprise: enterpriseEntity,
+      supabaseEnterprise: enterpriseEntity,
     );
   }
 

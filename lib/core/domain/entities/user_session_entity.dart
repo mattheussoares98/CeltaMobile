@@ -4,16 +4,22 @@ import 'entities.dart';
 
 class UserSessionEntity extends Equatable {
   final UserEntity user;
-  final EnterpriseEntity enterprise;
-  const UserSessionEntity({required this.user, required this.enterprise});
+  final EnterpriseEntity supabaseEnterprise;
+  const UserSessionEntity({
+    required this.user,
+    required this.supabaseEnterprise,
+  });
 
   @override
-  List<Object?> get props => [user, enterprise];
+  List<Object?> get props => [user, supabaseEnterprise];
 
-  UserSessionEntity copyWith({UserEntity? user, EnterpriseEntity? enterprise}) {
+  UserSessionEntity copyWith({
+    UserEntity? user,
+    EnterpriseEntity? supabaseEnterprise,
+  }) {
     return UserSessionEntity(
       user: user ?? this.user,
-      enterprise: enterprise ?? this.enterprise,
+      supabaseEnterprise: supabaseEnterprise ?? this.supabaseEnterprise,
     );
   }
 }

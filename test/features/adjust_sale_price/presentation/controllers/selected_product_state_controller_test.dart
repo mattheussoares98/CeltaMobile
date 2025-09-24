@@ -40,7 +40,9 @@ void main() {
           () => FakeUserSession(UserSessionModel.fromEntity(userSessionEntity)),
         ),
         enterprisesStateControllerProvider.overrideWith(
-          () => FakeEnterprisesStateController([userSessionEntity.enterprise]),
+          () => FakeEnterprisesStateController([
+            userSessionEntity.supabaseEnterprise,
+          ]),
         ),
       ],
     );
@@ -52,7 +54,7 @@ void main() {
       final states = <AsyncValue<ProductEntity?>>[];
       container.listen(
         selectedProductStateControllerProvider(
-          userSessionEntity.enterprise.Code!,
+          userSessionEntity.supabaseEnterprise.Code!,
           productEntity.PLU,
           productEntity,
         ),
@@ -61,7 +63,7 @@ void main() {
 
       final result = await container.read(
         selectedProductStateControllerProvider(
-          userSessionEntity.enterprise.Code!,
+          userSessionEntity.supabaseEnterprise.Code!,
           productEntity.PLU,
           productEntity,
         ).future,
@@ -90,7 +92,7 @@ void main() {
         final states = <AsyncValue<ProductEntity?>>[];
         container.listen(
           selectedProductStateControllerProvider(
-            userSessionEntity.enterprise.Code!,
+            userSessionEntity.supabaseEnterprise.Code!,
             productEntity.PLU,
             null,
           ),
@@ -99,7 +101,7 @@ void main() {
 
         await container.read(
           selectedProductStateControllerProvider(
-            userSessionEntity.enterprise.Code!,
+            userSessionEntity.supabaseEnterprise.Code!,
             productEntity.PLU,
             null,
           ).future,
@@ -110,12 +112,12 @@ void main() {
 
         verify(
           () => mockSoapProductsRepository.getProductsJson(
-            baseUrl: userSessionEntity.enterprise.baseUrl!,
+            baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
             searchValue: productEntity.PLU,
             routine: BsRoutine.adjustSalePrice,
             searchType: SearchType.dynamic,
-            enterpriseCodes: [userSessionEntity.enterprise.Code!],
-            enterpriseEntity: userSessionEntity.enterprise,
+            enterpriseCodes: [userSessionEntity.supabaseEnterprise.Code!],
+            enterpriseEntity: userSessionEntity.supabaseEnterprise,
             lastBuyEntranceQuantity: null,
             crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           ),

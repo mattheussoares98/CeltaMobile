@@ -28,11 +28,13 @@ class UserSessionModel extends Equatable {
   factory UserSessionModel.fromEntity(UserSessionEntity entity) =>
       UserSessionModel(
         user: UserModel.fromEntity(entity.user),
-        enterprise: SupabaseEnterpriseModel.fromEntity(entity.enterprise),
+        enterprise: SupabaseEnterpriseModel.fromEntity(
+          entity.supabaseEnterprise,
+        ),
       );
 
   UserSessionEntity toEntity() => UserSessionEntity(
     user: user.toEntity(),
-    enterprise: enterprise.toEntity(),
+    supabaseEnterprise: enterprise.toEntity(),
   );
 }

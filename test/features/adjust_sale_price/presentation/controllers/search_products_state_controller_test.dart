@@ -129,7 +129,7 @@ void main() {
       verify(
         () => sut.getProductsJson(
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSessionEntity.enterprise.baseUrl!,
+          baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
           searchType: appSettingsEntity.searchPreference.searchType,
@@ -169,7 +169,7 @@ void main() {
       verifyNever(
         () => sut.getProductsJson(
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSessionEntity.enterprise.baseUrl!,
+          baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
@@ -209,7 +209,7 @@ void main() {
       verifyNever(
         () => sut.getProductsJson(
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSessionEntity.enterprise.baseUrl!,
+          baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
@@ -250,7 +250,7 @@ void main() {
       verifyNever(
         () => sut.getProductsJson(
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSessionEntity.enterprise.baseUrl!,
+          baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
           searchValue: searchValue,
           routine: BsRoutine.adjustSalePrice,
           searchType: SearchType.dynamic,
