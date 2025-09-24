@@ -51,7 +51,7 @@ class EnterprisesStateController extends _$EnterprisesStateController {
     }
 
     final enterprises = await ref
-        .watch(supabaseEnterpriseRepositoryProvider)
+        .watch(enterpriseRepositoryProvider)
         .getSoapEnterprises(url: baseUrl, crossIdentity: crossIdentity);
 
     if (enterprises.isNotEmpty) {

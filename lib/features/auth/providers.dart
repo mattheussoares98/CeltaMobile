@@ -27,7 +27,7 @@ ISoapLoginDatasource soapLoginDatasource(Ref ref) {
 IAuthRepository authRepository(Ref ref) {
   final soapLoginDatasource = ref.watch(soapLoginDatasourceProvider);
   final localDatasource = ref.watch(authLocalDatasourceProvider);
-  final enterpriseRepository = ref.watch(supabaseEnterpriseRepositoryProvider);
+  final enterpriseRepository = ref.watch(enterpriseRepositoryProvider);
   final localUserSessionDatasource = ref.watch(
     localUserSessionDatasourceProvider,
   );

@@ -33,7 +33,7 @@ class HomePage extends ConsumerWidget {
         leadingWidth: 40,
         title: AsyncValueWidget(
           value: enterprisesAsync,
-          tryAgain: () => ref.invalidate(supabaseEnterpriseRepositoryProvider),
+          tryAgain: () => ref.invalidate(enterpriseRepositoryProvider),
           data: (enterprises) {
             return SelectEnterpriseDropDown(
               selectedEnterprise: selectedEnterprise,

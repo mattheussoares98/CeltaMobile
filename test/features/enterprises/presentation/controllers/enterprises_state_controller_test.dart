@@ -37,9 +37,7 @@ void main() {
     // We pass the fake data to the container setup
     return ProviderContainer(
       overrides: [
-        supabaseEnterpriseRepositoryProvider.overrideWithValue(
-          enterpriseRepositorySpy,
-        ),
+        enterpriseRepositoryProvider.overrideWithValue(enterpriseRepositorySpy),
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprises.first),
         ),
