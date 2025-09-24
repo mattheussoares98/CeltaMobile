@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'justifications.dart';
+import 'transfer_justification.dart';
 
 class TransferJustificationsEntity extends Equatable {
   final int CodigoInterno_JustMov; /*  37, */

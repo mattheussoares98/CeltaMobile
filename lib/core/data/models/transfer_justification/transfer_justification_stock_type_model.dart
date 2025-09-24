@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/transfer_justifications/justifications.dart';
+import '../../../domain/entities/transfer_justification/transfer_justification.dart';
 
 class TransferJustificationStockTypeModel extends Equatable {
   final int CodigoInterno_TipoEstoque;

@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
-import 'justifications.dart';
+import 'transfer_justification.dart';
 
-class TransferJustificationsModel extends Equatable {
+class TransferJustificationModel extends Equatable {
   final int CodigoInterno_JustMov; /*  37, */
   final String Descricao_JustMov; /*  "SUBTRAIR", */
   final String FlagTipo_JustMov; /*  "Saída", */
@@ -11,7 +11,7 @@ class TransferJustificationsModel extends Equatable {
   final String Nome_TipoEstoque; /*  "", */
   final TransferJustificationStockTypeModel? CodigoInterno_TipoEstoque;
 
-  const TransferJustificationsModel({
+  const TransferJustificationModel({
     required this.CodigoInterno_JustMov,
     required this.Descricao_JustMov,
     required this.FlagTipo_JustMov,
@@ -30,8 +30,8 @@ class TransferJustificationsModel extends Equatable {
     CodigoInterno_TipoEstoque,
   ];
 
-  factory TransferJustificationsModel.fromJson(Map<String, dynamic> json) =>
-      TransferJustificationsModel(
+  factory TransferJustificationModel.fromJson(Map<String, dynamic> json) =>
+      TransferJustificationModel(
         CodigoInterno_JustMov: json["CodigoInterno_JustMov"],
         Descricao_JustMov: json["Descricao_JustMov"],
         FlagTipo_JustMov: json["FlagTipo_JustMov"],
@@ -53,9 +53,9 @@ class TransferJustificationsModel extends Equatable {
     'CodigoInterno_TipoEstoque': CodigoInterno_TipoEstoque?.toJson(),
   };
 
-  factory TransferJustificationsModel.fromEntity(
+  factory TransferJustificationModel.fromEntity(
     TransferJustificationsEntity entity,
-  ) => TransferJustificationsModel(
+  ) => TransferJustificationModel(
     CodigoInterno_JustMov: entity.CodigoInterno_JustMov,
     Descricao_JustMov: entity.Descricao_JustMov,
     FlagTipo_JustMov: entity.FlagTipo_JustMov,

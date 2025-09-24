@@ -1,4 +1,4 @@
-export 'transfer_justifications/justifications.dart';
+export 'transfer_justification/transfer_justification.dart';
 export './product/product.dart';
 export './settings/settings.dart';
 export './bs_resource.dart';
