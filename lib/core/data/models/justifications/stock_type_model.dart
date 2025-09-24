@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import '../../../domain/entities/justifications/justifications.dart';
 
 class StockTypeModel extends Equatable {
   final int CodigoInterno_TipoEstoque;

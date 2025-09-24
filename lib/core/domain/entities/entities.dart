@@ -1,3 +1,4 @@
+export './justifications/justifications.dart';
 export './product/product.dart';
 export './settings/settings.dart';
 export './bs_resource.dart';

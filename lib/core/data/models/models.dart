@@ -1,3 +1,4 @@
+export './justifications/justifications.dart';
 export './product/product.dart';
 export './app_settings_model.dart';
 export 'user_session_model.dart';

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import '../../../domain/entities/entities.dart';
+import 'justifications.dart';
 
 class GetJustificationsModel extends Equatable {
   final int CodigoInterno_JustMov; /*  37, */
@@ -51,7 +51,7 @@ class GetJustificationsModel extends Equatable {
     'CodigoInterno_TipoEstoque': CodigoInterno_TipoEstoque?.toJson(),
   };
 
-  factory GetJustificationsModel.fromEntity(GetJustificationsEntity entity) =>
+  factory GetJustificationsModel.fromEntity(JustificationsEntity entity) =>
       GetJustificationsModel(
         CodigoInterno_JustMov: entity.CodigoInterno_JustMov,
         Descricao_JustMov: entity.Descricao_JustMov,
@@ -63,7 +63,7 @@ class GetJustificationsModel extends Equatable {
             : StockTypeModel.fromEntity(entity.CodigoInterno_TipoEstoque!),
       );
 
-  GetJustificationsEntity toEntity() => GetJustificationsEntity(
+  JustificationsEntity toEntity() => JustificationsEntity(
     CodigoInterno_JustMov: CodigoInterno_JustMov,
     Descricao_JustMov: Descricao_JustMov,
     FlagTipo_JustMov: FlagTipo_JustMov,
