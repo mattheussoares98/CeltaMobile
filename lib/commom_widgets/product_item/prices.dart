@@ -35,7 +35,7 @@ class Prices extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _Title(title: 'Preços praticados'.hardcoded),
+          DefaultTitle(title: 'Preços praticados'.hardcoded),
           if (canAdjustSalePrice.hasError)
             Padding(
               padding: const EdgeInsets.all(Sizes.p8),
@@ -67,7 +67,7 @@ class Prices extends ConsumerWidget {
               wholeSuggestion > 0 ||
               ecommerceSuggestion > 0) ...[
             gapH32,
-            _Title(title: 'Preços sugeridos'.hardcoded),
+            DefaultTitle(title: 'Preços sugeridos'.hardcoded),
             gapH8,
             if (retailSuggestion > 0)
               TitleAndSubTitle(
@@ -90,27 +90,6 @@ class Prices extends ConsumerWidget {
           ],
         ],
       ),
-    );
-  }
-}
-
-class _Title extends StatelessWidget {
-  final String title;
-  const _Title({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Text(
-            title.hardcoded,
-            style: Theme.of(context).textTheme.titleLarge,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants/constants.dart';
 import '../commom_widgets.dart';
 
 class Costs extends StatelessWidget {
@@ -15,6 +16,8 @@ class Costs extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          DefaultTitle(title: 'Custos'.hardcoded),
+          gapH8,
           TitleAndSubTitle(
             title: 'Líquido '.hardcoded,
             subTitle: widget.product.LiquidCost,

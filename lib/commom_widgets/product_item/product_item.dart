@@ -1,4 +1,5 @@
 export './costs.dart';
+export './default_title.dart';
 export './finish_offer_button.dart';
 export './info_button.dart';
 export './margins.dart';
