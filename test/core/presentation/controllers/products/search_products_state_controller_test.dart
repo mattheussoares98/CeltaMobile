@@ -2,7 +2,6 @@ import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/core/providers/products/products.dart';
-import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
@@ -11,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../mocks/mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late SoapProductsRepositorySpy sut;

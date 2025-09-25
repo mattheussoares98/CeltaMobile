@@ -9,7 +9,7 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late ILocalUserSessionRepository sut;
 
-  late LocalSessionDatasourceSpy localSessionDatasource;
+  late LocalUserSessionDatasourceSpy localSessionDatasource;
 
   late UserSessionEntity userSessionEntity;
 
@@ -18,7 +18,7 @@ void main() {
   }
 
   void initInjections() {
-    localSessionDatasource = LocalSessionDatasourceSpy();
+    localSessionDatasource = LocalUserSessionDatasourceSpy();
   }
 
   void mockSuccess() {

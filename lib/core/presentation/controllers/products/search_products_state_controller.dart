@@ -4,11 +4,11 @@ import 'package:celta_intelligence/features/settings/presentation/controllers/ap
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/providers/products/products.dart';
-import '../../../../core/providers/user_session/user_session.dart';
-import '../../../../exceptions/exceptions.dart';
-import '../../../../features/enterprises/presentation/controllers/controllers.dart';
-import '../../../../core/domain/entities/entities.dart';
+import '../../../../../core/providers/products/products.dart';
+import '../../../../../core/providers/user_session/user_session.dart';
+import '../../../../../exceptions/exceptions.dart';
+import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
+import '../../../../../core/domain/entities/entities.dart';
 
 part 'search_products_state_controller.g.dart';
 

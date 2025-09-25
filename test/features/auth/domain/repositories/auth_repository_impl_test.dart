@@ -15,7 +15,7 @@ void main() {
   late LoginRemoteDatasourceSpy authRemoteDatasource;
   late AuthLocalDatasourceSpy authLocalDatasource;
   late EnterpriseRepositorySpy enterpriseRepository;
-  late LocalSessionDatasourceSpy localSessionDatasource;
+  late LocalUserSessionDatasourceSpy localSessionDatasource;
 
   late EnterpriseEntity enterpriseEntity;
   late String userName;
@@ -36,7 +36,7 @@ void main() {
     authRemoteDatasource = LoginRemoteDatasourceSpy();
     authLocalDatasource = AuthLocalDatasourceSpy();
     enterpriseRepository = EnterpriseRepositorySpy();
-    localSessionDatasource = LocalSessionDatasourceSpy();
+    localSessionDatasource = LocalUserSessionDatasourceSpy();
   }
 
   void mockSuccess() {

@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../domain/entities/entities.dart';
-import '../../providers/resource/resource.dart';
-import '../../providers/user_session/user_session.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../providers/resource/resource.dart';
+import '../../../providers/user_session/user_session.dart';
 
 part 'can_access_resource_state_controller.g.dart';
 

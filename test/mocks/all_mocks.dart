@@ -356,9 +356,9 @@ class EnterpriseManagerRepositorySpy extends Mock
   }
 }
 
-class LocalSessionDatasourceSpy extends Mock
+class LocalUserSessionDatasourceSpy extends Mock
     implements ILocalUserSessionDatasource {
-  LocalSessionDatasourceSpy() {
+  LocalUserSessionDatasourceSpy() {
     when(() => this.clear()).thenAnswer((_) async => {});
   }
   void mockGetSession(UserSessionModel? response) {

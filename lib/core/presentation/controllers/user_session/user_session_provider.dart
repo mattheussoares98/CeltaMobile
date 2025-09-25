@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/models/models.dart';
-import 'user_session.dart';
+import '../../../data/models/models.dart';
+import '../../../providers/user_session/user_session.dart';
 
 part 'user_session_provider.g.dart';
 
@@ -14,6 +14,7 @@ class UserSession extends _$UserSession {
   }
 
   Future<void> saveSession(UserSessionModel value) async {
+    state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(localUserSessionDatasourceProvider).save(value);
       return value;
@@ -21,6 +22,7 @@ class UserSession extends _$UserSession {
   }
 
   Future<void> clearSession() async {
+    state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(localUserSessionDatasourceProvider).clear();
       return null;
