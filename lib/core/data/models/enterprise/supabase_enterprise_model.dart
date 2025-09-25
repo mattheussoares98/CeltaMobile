@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import '../../../domain/entities/entities.dart';
+import '../models.dart';
 
 class SupabaseEnterpriseModel extends Equatable {
   final int? id;
