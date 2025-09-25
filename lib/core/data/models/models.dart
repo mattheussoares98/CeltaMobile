@@ -1,5 +1,6 @@
 export 'enterprise/enterprise.dart';
 export './product/product.dart';
+export 'stock/stock.dart';
 export 'transfer_justification/transfer_justification.dart';
 
 export './app_settings_model.dart';

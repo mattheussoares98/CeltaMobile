@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class StockTypeEntity extends Equatable {
-  final int CodigoInterno_TipoEstoque; /* : 1, */
+  final int? CodigoInterno_TipoEstoque; /* : 1, */
   final String Nome_TipoEstoque; /* : "Estoque Atual", */
   final bool FlagInterno_TipoEstoque; /* : true */
 
