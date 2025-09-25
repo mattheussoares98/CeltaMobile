@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/transfer_justification/transfer_justification.dart';
 
+//TODO delete this model and entity
 class TransferJustificationStockTypeModel extends Equatable {
   final int CodigoInterno_TipoEstoque;
   final String Nome_TipoEstoque;

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_intelligence/core/data/models/stock/stock_type_model.dart';
 
 import '../../../domain/contracts/contracts.dart';
@@ -26,6 +28,8 @@ class SoapStockTypeDatasource implements ISoapStockTypeDatasource {
     );
 
     //TODO create tests
-    return (value as List).map((e) => StockTypeModel.fromJson(e)).toList();
+    return (json.decode(value) as List)
+        .map((e) => StockTypeModel.fromJson(e))
+        .toList();
   }
 }

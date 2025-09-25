@@ -241,18 +241,10 @@ class EntityFactory {
       TransferJustificationEntity(
         CodigoInterno_JustMov: faker.randomGenerator.integer(100),
         Descricao_JustMov: faker.lorem.word(),
-        FlagTipo_JustMov: faker.lorem.word(),
-        TypeOperator: faker.lorem.word(),
-        Nome_TipoEstoque: faker.lorem.word(),
-        CodigoInterno_TipoEstoque: makeTransferJustificationStockTypeEntity(),
-      );
-
-  static TransferJustificationStockTypeEntity
-  makeTransferJustificationStockTypeEntity() =>
-      TransferJustificationStockTypeEntity(
-        CodigoInterno_TipoEstoque: faker.randomGenerator.integer(100),
-        Nome_TipoEstoque: faker.lorem.word(),
+        FlagTipo_JustMov: faker.randomGenerator.integer(10),
         FlagInterno_TipoEstoque: faker.randomGenerator.boolean(),
+        Nome_TipoEstoque: faker.lorem.word(),
+        CodigoInterno_TipoEstoque: faker.randomGenerator.integer(100),
       );
 
   static StockTypeEntity makeStockTypeEntity() => StockTypeEntity(
