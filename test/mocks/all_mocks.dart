@@ -5,6 +5,7 @@ import 'package:celta_intelligence/core/data/datasource/login/login.dart';
 import 'package:celta_intelligence/core/data/datasource/products/products.dart';
 import 'package:celta_intelligence/core/data/datasource/resource/resource.dart';
 import 'package:celta_intelligence/core/data/datasource/settings/settings.dart';
+import 'package:celta_intelligence/core/data/datasource/stock/stock.dart';
 import 'package:celta_intelligence/core/data/datasource/transfer_justification/transfer_justification.dart';
 import 'package:celta_intelligence/core/data/datasource/user_session/user_session.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
@@ -694,4 +695,16 @@ class SoapTransferJustificationDatasourceSpy extends Mock
 
   void mockLoad(List<TransferJustificationModel> response) =>
       _mockLoadCall().thenAnswer((_) async => response);
+}
+
+class SoapStockTypeDatasourceSpy extends Mock
+    implements ISoapStockTypeDatasource {
+  void mockLoad(List<StockTypeModel> response) {
+    when(
+      () => this.load(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+      ),
+    ).thenAnswer((_) async => response);
+  }
 }

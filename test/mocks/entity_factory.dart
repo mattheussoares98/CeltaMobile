@@ -254,4 +254,10 @@ class EntityFactory {
         Nome_TipoEstoque: faker.lorem.word(),
         FlagInterno_TipoEstoque: faker.randomGenerator.boolean(),
       );
+
+  static StockTypeEntity makeStockTypeEntity() => StockTypeEntity(
+    CodigoInterno_TipoEstoque: faker.randomGenerator.integer(100),
+    Nome_TipoEstoque: faker.lorem.word(),
+    FlagInterno_TipoEstoque: faker.randomGenerator.boolean(),
+  );
 }
