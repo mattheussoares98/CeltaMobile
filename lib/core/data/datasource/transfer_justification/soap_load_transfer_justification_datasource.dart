@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../../../domain/contracts/contracts.dart';
-import '../../../domain/entities/transfer_justification/transfer_justifications.dart';
+import '../../../domain/entities/entities.dart';
 import '../../models/models.dart';
 import 'transfer_justification.dart';
 

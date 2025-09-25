@@ -54,7 +54,7 @@ class TransferJustificationModel extends Equatable {
   };
 
   factory TransferJustificationModel.fromEntity(
-    TransferJustificationsEntity entity,
+    TransferJustificationEntity entity,
   ) => TransferJustificationModel(
     CodigoInterno_JustMov: entity.CodigoInterno_JustMov,
     Descricao_JustMov: entity.Descricao_JustMov,
@@ -68,7 +68,7 @@ class TransferJustificationModel extends Equatable {
           ),
   );
 
-  TransferJustificationsEntity toEntity() => TransferJustificationsEntity(
+  TransferJustificationEntity toEntity() => TransferJustificationEntity(
     CodigoInterno_JustMov: CodigoInterno_JustMov,
     Descricao_JustMov: Descricao_JustMov,
     FlagTipo_JustMov: FlagTipo_JustMov,

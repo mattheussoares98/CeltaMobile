@@ -12,7 +12,7 @@ class SoapTransferJustificationRepositoryImpl
   SoapTransferJustificationRepositoryImpl(this.datasource);
 
   @override
-  Future<List<TransferJustificationsEntity>> load({
+  Future<List<TransferJustificationEntity>> load({
     required String baseUrl,
     required String crossIdentity,
     required TransferJustificationType type,
@@ -22,8 +22,6 @@ class SoapTransferJustificationRepositoryImpl
       crossIdentity: crossIdentity,
       type: type,
     );
-
-    //TODO create tests
 
     return justifications.map((e) => e.toEntity()).toList();
   }

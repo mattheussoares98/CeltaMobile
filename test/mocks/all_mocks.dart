@@ -5,6 +5,7 @@ import 'package:celta_intelligence/core/data/datasource/login/login.dart';
 import 'package:celta_intelligence/core/data/datasource/products/products.dart';
 import 'package:celta_intelligence/core/data/datasource/resource/resource.dart';
 import 'package:celta_intelligence/core/data/datasource/settings/settings.dart';
+import 'package:celta_intelligence/core/data/datasource/transfer_justification/transfer_justification.dart';
 import 'package:celta_intelligence/core/data/datasource/user_session/user_session.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
@@ -679,4 +680,18 @@ class FakeAppSettingsStateController extends AppSettingsStateController {
   Future<AppSettingsEntity> build() async {
     return appSettingsToReturn;
   }
+}
+
+class SoapTransferJustificationDatasourceSpy extends Mock
+    implements ISoapTransferJustificationDatasource {
+  When _mockLoadCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+      type: any(named: 'type'),
+    ),
+  );
+
+  void mockLoad(List<TransferJustificationModel> response) =>
+      _mockLoadCall().thenAnswer((_) async => response);
 }
