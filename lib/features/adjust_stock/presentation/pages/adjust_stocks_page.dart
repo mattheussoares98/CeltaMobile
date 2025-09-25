@@ -9,8 +9,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
-import '../../../../core/providers/stock/stock.dart';
-import '../../../../core/providers/transfer_justification/transfer_justification.dart';
+import 'components/components.dart';
 
 class AdjustStocksPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -28,6 +27,8 @@ class AdjustStocksPage extends ConsumerStatefulWidget {
 
 class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
   final searchValueController = TextEditingController();
+  TransferJustificationEntity? selectedJustification;
+  StockTypeEntity? selectedStockType;
 
   @override
   void dispose() {
@@ -72,10 +73,11 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       ),
     );
 
-    final stocksState = ref.watch(
+    final stocksAsync = ref.watch(
       stockTypeStateControllerProvider(widget.enterpriseCode),
     );
-    final transferJustificationState = ref.watch(
+
+    final justificationsAsync = ref.watch(
       transferJustificationStateControllerProvider(
         widget.enterpriseCode,
         TransferJustificationType.adjustStock,
@@ -91,70 +93,74 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
           body: Padding(
             padding: const EdgeInsets.all(Sizes.p4),
             child: Column(
-              mainAxisAlignment:
-                  stocksState.hasError || transferJustificationState.hasError
-                  ? MainAxisAlignment.center
-                  : MainAxisAlignment.start,
               children: [
-                if (stocksState.hasError || transferJustificationState.hasError)
-                  Center(
-                    child: PrimaryTextButton(
-                      text: 'Carregar justificativas e estoques'.hardcoded,
-                      onPressed: () {
-                        if (stocksState.hasError) {
-                          ref.invalidate(
-                            soapTransferJustificationRepositoryProvider,
-                          );
-                        }
-                        if (transferJustificationState.hasError) {
-                          ref.invalidate(soapStockTypeRepositoryProvider);
-                        }
-                      },
-                    ),
-                  )
-                else ...[
-                  DefaultSearchProducts(
-                    searchValueController: searchValueController,
-                    isLoading:
-                        productsState.isLoading ||
-                        stocksState.isLoading ||
-                        transferJustificationState.isLoading ||
-                        stocksState.hasError ||
-                        transferJustificationState.hasError,
-                    searchProducts: _searchProducts,
-                  ),
-                  gapH8,
-                  Expanded(
-                    child: AsyncValueWidget(
-                      value: productsState,
-                      tryAgain: null,
-                      data: (products) {
-                        return ResponsiveListFlow(
-                          itemCount: products.length,
-                          itemBuilder: (_, index) {
-                            final product = products[index];
-                            return ProductItemWidget(
-                              enterpriseCode: widget.enterpriseCode,
-                              product: product,
-                              routine: BsRoutine.adjustStock,
-                              bottom: Text(
-                                'open option to adjust stock'.hardcoded,
-                              ),
-                            );
-                          },
+                DefaultSearchProducts(
+                  searchValueController: searchValueController,
+                  isLoading: productsState.isLoading,
+                  searchProducts: _searchProducts,
+                ),
+                gapH8,
+                JustificationsDropdown(
+                  selectedJustification: selectedJustification,
+                  asyncValue: justificationsAsync,
+                  enterpriseCode: widget.enterpriseCode,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedJustification = value;
+                    });
+
+                    if (value?.CodigoInterno_TipoEstoque != null &&
+                        stocksAsync.value != null) {
+                      setState(() {
+                        selectedStockType = stocksAsync.value!.firstWhere(
+                          (e) =>
+                              e.CodigoInterno_TipoEstoque ==
+                              value?.CodigoInterno_TipoEstoque,
                         );
-                      },
-                    ),
+                      });
+                    }
+                  },
+                ),
+                StocksDropdown(
+                  asyncValue: stocksAsync,
+                  enterpriseCode: widget.enterpriseCode,
+                  selectedJustification: selectedJustification,
+                  selectedStockType: selectedStockType,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedStockType = value;
+                    });
+                  },
+                ),
+                gapH8,
+                Expanded(
+                  child: AsyncValueWidget(
+                    value: productsState,
+                    tryAgain: null,
+                    data: (products) {
+                      return ResponsiveListFlow(
+                        itemCount: products.length,
+                        itemBuilder: (_, index) {
+                          final product = products[index];
+                          return ProductItemWidget(
+                            enterpriseCode: widget.enterpriseCode,
+                            product: product,
+                            routine: BsRoutine.adjustStock,
+                            bottom: Text(
+                              'open option to adjust stock'.hardcoded,
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
-                ],
+                ),
               ],
             ),
           ),
         ),
-        if (productsState.isLoading ||
-            stocksState.isLoading ||
-            transferJustificationState.isLoading)
-          LoadingPage(),
+        //TODO only when is confirming
+        if (1 == 2) LoadingPage(),
       ],
     );
   }

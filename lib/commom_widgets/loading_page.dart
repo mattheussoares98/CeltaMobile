@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
+import 'commom_widgets.dart';
 
 class LoadingPage extends StatelessWidget {
-  const LoadingPage({super.key});
+  final String? title;
+  const LoadingPage({super.key, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +15,7 @@ class LoadingPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.disabledColor.withAlpha(50),
-      body: Center(
-        child: isIos
-            ? CupertinoActivityIndicator(radius: size)
-            : SizedBox(
-                width: size,
-                height: size,
-                child: const CircularProgressIndicator(),
-              ),
-      ),
+      body: LoadingWidget(size: size, title: title),
     );
   }
 }

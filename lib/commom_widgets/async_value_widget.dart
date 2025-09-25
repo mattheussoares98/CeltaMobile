@@ -24,7 +24,7 @@ class AsyncValueWidget<T> extends StatelessWidget {
     final theme = Theme.of(context);
     return value.when(
       data: data,
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Center(child: LoadingWidget()),
       error: (e, st) => Padding(
         padding: const EdgeInsets.all(Sizes.p8),
         child: Column(
