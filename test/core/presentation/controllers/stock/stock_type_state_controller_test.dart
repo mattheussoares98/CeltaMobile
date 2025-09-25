@@ -1,9 +1,9 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/repositories/stock/stock.dart';
-import 'package:celta_intelligence/core/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_intelligence/core/providers/stock/stock.dart';
+import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/exceptions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

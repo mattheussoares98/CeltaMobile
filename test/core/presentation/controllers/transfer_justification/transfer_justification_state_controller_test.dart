@@ -1,8 +1,8 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/repositories/transfer_justification/transfer_justification.dart';
-import 'package:celta_intelligence/core/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/core/presentation/controllers/transfer_justification/transfer_justification.dart';
+import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/core/providers/transfer_justification/transfer_justification.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

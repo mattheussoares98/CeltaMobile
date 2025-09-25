@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
-import '../../core/presentation/controllers/controllers.dart';
+import '../../core/presentation/controllers/resource/resource.dart';
 import '../../core/providers/resource/resource.dart';
 import '../../features/adjust_sale_price/domain/entities/entities.dart';
 import '../commom_widgets.dart';
