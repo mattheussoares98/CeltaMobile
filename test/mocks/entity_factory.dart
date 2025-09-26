@@ -252,4 +252,16 @@ class EntityFactory {
     Nome_TipoEstoque: faker.lorem.word(),
     FlagInterno_TipoEstoque: faker.randomGenerator.boolean(),
   );
+
+  static AdjustStockItemEntity makeAdjustStockItemEntity() =>
+      AdjustStockItemEntity(
+        EnterpriseCode: faker.randomGenerator.integer(100),
+        ProductCode: faker.randomGenerator.integer(100),
+        ProductPackingCode: faker.randomGenerator.integer(100),
+        JustificationCode: faker.randomGenerator.integer(100),
+        StockTypeCode: faker.randomGenerator.integer(100),
+        StockTypeRecipientCode: faker.randomGenerator.integer(100),
+        IsPendingAdjust: faker.randomGenerator.boolean(),
+        Quantity: faker.randomGenerator.decimal(),
+      );
 }
