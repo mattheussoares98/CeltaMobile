@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../core/providers/enterprise/enterprise.dart';
 import '../../../../utils/utils.dart';
-import '../../../../features/auth/presentation/controllers/controllers.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../routing/routing.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
@@ -15,7 +15,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(authStateControllerProvider, (previous, next) {
+    ref.listen(userSessionProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       if (next.value == null) {
         context.goNamed(AppRoute.auth.name);

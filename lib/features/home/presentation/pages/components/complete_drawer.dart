@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../auth/presentation/controllers/controllers.dart';
+import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import 'components.dart';
 
 class CompleteDrawer extends ConsumerWidget {
@@ -15,7 +15,7 @@ class CompleteDrawer extends ConsumerWidget {
     final mediaQuery = MediaQuery.of(context);
     final exitHeight = 40.0;
 
-    final user = ref.watch(authStateControllerProvider);
+    final userSession = ref.watch(userSessionProvider);
 
     return Drawer(
       width: min(mediaQuery.size.width * 0.85, 400),
@@ -30,7 +30,7 @@ class CompleteDrawer extends ConsumerWidget {
                 children: [
                   CeltaImage(),
                   DrawerItem(
-                    message: user.value?.name ?? "",
+                    message: userSession.value?.user.name ?? "",
                     materialIcon: Icons.person,
                     cupertinoIcon: CupertinoIcons.person,
                     onTap: null,
@@ -41,7 +41,7 @@ class CompleteDrawer extends ConsumerWidget {
             SizedBox(
               height: exitHeight,
               child: ExitDrawerItem(
-                logout: ref.read(authStateControllerProvider.notifier).logout,
+                logout: ref.read(userSessionProvider.notifier).logout,
               ),
             ),
           ],

@@ -2,7 +2,6 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/core/providers/enterprise/enterprise.dart';
-import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,7 +26,7 @@ void main() {
     enterpriseRepositorySpy.mockGetSoapEnterprises(fakeEnterprises);
   });
 
-  ProviderContainer makeProviderContainer({UserEntity? user}) {
+  ProviderContainer makeProviderContainer({UserSessionModel? user}) {
     // We pass the fake data to the container setup
     return ProviderContainer(
       overrides: [
@@ -35,9 +34,7 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprises.first),
         ),
-        authStateControllerProvider.overrideWith(
-          () => FakeAuthStateController(user),
-        ),
+        userSessionProvider.overrideWith(() => FakeUserSession(user)),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(
             UserSessionModel.fromEntity(userSessionEntity),
@@ -50,7 +47,9 @@ void main() {
   group('EnterprisesStateController', () {
     test('should works correctly on success', () async {
       // Pass the valid user and session to the container
-      final container = makeProviderContainer(user: userSessionEntity.user);
+      final container = makeProviderContainer(
+        user: UserSessionModel.fromEntity(userSessionEntity),
+      );
       final states = <AsyncValue<List<EnterpriseEntity>>>[];
       container.listen(
         enterprisesStateControllerProvider,

@@ -21,7 +21,7 @@ class UserSession extends _$UserSession {
     });
   }
 
-  Future<void> clearSession() async {
+  Future<void> logout() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(localUserSessionRepositoryProvider).logout();

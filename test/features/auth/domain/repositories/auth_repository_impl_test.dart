@@ -13,7 +13,6 @@ void main() {
   late AuthRepositoryImpl sut;
 
   late LoginRemoteDatasourceSpy authRemoteDatasource;
-  late AuthLocalDatasourceSpy authLocalDatasource;
   late EnterpriseRepositorySpy enterpriseRepository;
   late LocalUserSessionDatasourceSpy localSessionDatasource;
 
@@ -26,7 +25,6 @@ void main() {
   void initSut() {
     sut = AuthRepositoryImpl(
       soapLoginDatasource: authRemoteDatasource,
-      authLocalDatasource: authLocalDatasource,
       enterpriseRepository: enterpriseRepository,
       localUserSessionDatasource: localSessionDatasource,
     );
@@ -34,7 +32,6 @@ void main() {
 
   void initInjections() {
     authRemoteDatasource = LoginRemoteDatasourceSpy();
-    authLocalDatasource = AuthLocalDatasourceSpy();
     enterpriseRepository = EnterpriseRepositorySpy();
     localSessionDatasource = LocalUserSessionDatasourceSpy();
   }
@@ -44,7 +41,6 @@ void main() {
       SupabaseEnterpriseModel.fromEntity(enterpriseEntity).toEntity(),
     );
     authRemoteDatasource.mockLogin(UserModel.fromEntity(userEntity));
-    authLocalDatasource.mockGetUser(userEntity);
     localSessionDatasource.mockSaveSession(
       UserSessionModel.fromEntity(userSessionEntity),
     );
@@ -93,23 +89,12 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => authLocalDatasource.saveUser(
-          UserEntity(
-            name: userName,
-            enterpriseName: enterpriseEntity.name,
-            AccessKey: userEntity.AccessKey,
-            CrossIdentity_Usuario: userEntity.CrossIdentity_Usuario,
-          ),
-        ),
-      ).called(1);
-      verify(
         () => localSessionDatasource.save(
           UserSessionModel.fromEntity(userSessionEntity),
         ),
       ).called(1);
 
       verifyNoMoreInteractions(enterpriseRepository);
-      verifyNoMoreInteractions(authLocalDatasource);
       verifyNoMoreInteractions(authRemoteDatasource);
     });
 
@@ -123,27 +108,6 @@ void main() {
       );
 
       expect(result, throwsA(isA<AppException>()));
-    });
-  });
-
-  group("Get current user", () {
-    test("Should behave correctly on success", () async {
-      final result = await sut.getCurrentUser();
-
-      expect(result, userEntity);
-      verify(() => authLocalDatasource.getUser()).called(1);
-
-      verifyNoMoreInteractions(authLocalDatasource);
-    });
-  });
-
-  group("Logout", () {
-    test("Sould behave correctly", () async {
-      await sut.logout();
-
-      verify(() => authLocalDatasource.logout()).called(1);
-
-      verifyNoMoreInteractions(authLocalDatasource);
     });
   });
 }

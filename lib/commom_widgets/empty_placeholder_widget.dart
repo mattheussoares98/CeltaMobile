@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_sizes.dart';
-import '../features/auth/presentation/controllers/controllers.dart';
+import '../core/presentation/controllers/user_session/user_session.dart';
 import '../localization/string_hardcoded.dart';
 import '../routing/app_router.dart';
 import 'commom_widgets.dart';
@@ -14,11 +14,11 @@ class EmptyPlaceholderWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userState = ref.watch(authStateControllerProvider);
+    final userSession = ref.watch(userSessionProvider);
 
     bool goToAuth =
-        userState.value?.CrossIdentity_Usuario == null ||
-        userState.value?.AccessKey == null;
+        userSession.value?.user.CrossIdentity_Usuario == null ||
+        userSession.value?.user.AccessKey == null;
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p16),

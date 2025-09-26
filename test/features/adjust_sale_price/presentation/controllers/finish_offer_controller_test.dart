@@ -4,7 +4,6 @@ import 'package:celta_intelligence/core/presentation/controllers/user_session/us
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/providers.dart';
-import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,9 +53,6 @@ void main() async {
           () => FakeValidatedUserSession(
             UserSessionModel.fromEntity(userSessionEntity),
           ),
-        ),
-        authStateControllerProvider.overrideWith(
-          () => FakeAuthStateController(userSessionEntity.user),
         ),
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterpriseEntity),

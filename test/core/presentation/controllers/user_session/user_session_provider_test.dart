@@ -107,7 +107,7 @@ void main() {
           container.listen(userSessionProvider, (_, next) => states.add(next));
 
           // ACT
-          await container.read(userSessionProvider.notifier).clearSession();
+          await container.read(userSessionProvider.notifier).logout();
 
           // ASSERT
           expect(states, [

@@ -8,7 +8,6 @@ import '../../../../constants/constants.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../routing/routing.dart';
 import '../../../../utils/utils.dart';
-import '../controllers/auth_state_controller.dart';
 import '../controllers/login_controller.dart';
 import 'components/components.dart';
 
@@ -58,12 +57,12 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        final user = await ref
-            .read(authStateControllerProvider.notifier)
+        final userSession = await ref
+            .read(userSessionProvider.notifier)
             .build();
 
-        userController.text = user?.name ?? '';
-        enterpriseController.text = user?.enterpriseName ?? '';
+        userController.text = userSession?.user.name ?? '';
+        enterpriseController.text = userSession?.user.enterpriseName ?? '';
       }
     });
   }
@@ -73,7 +72,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () {
-        ref.invalidate(authStateControllerProvider);
+        ref.invalidate(userSessionProvider);
         ref.invalidate(userSessionProvider);
         context.goNamed(AppRoute.home.name);
       });

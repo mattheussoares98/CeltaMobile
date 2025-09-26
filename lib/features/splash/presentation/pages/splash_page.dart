@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../routing/app_router.dart';
-import '../../../auth/presentation/controllers/controllers.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -20,10 +20,10 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        final localUser = await ref.read(authStateControllerProvider.future);
+        final userSession = await ref.read(userSessionProvider.future);
         Future.delayed(const Duration(seconds: kDebugMode ? 1 : 2), () {
-          if (localUser?.AccessKey == null ||
-              localUser?.CrossIdentity_Usuario == null) {
+          if (userSession?.user.AccessKey == null ||
+              userSession?.user.CrossIdentity_Usuario == null) {
             context.goNamed(AppRoute.auth.name);
           } else {
             context.goNamed(AppRoute.home.name);

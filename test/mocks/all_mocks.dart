@@ -23,10 +23,8 @@ import 'package:celta_intelligence/features/adjust_sale_price/data/models/models
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/auth/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
-import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
@@ -140,17 +138,6 @@ class LoginRemoteDatasourceSpy extends Mock implements ISoapLoginDatasource {
   }
 }
 
-class AuthLocalDatasourceSpy extends Mock implements IAuthLocalDatasource {
-  AuthLocalDatasourceSpy() {
-    when(() => this.logout()).thenAnswer((_) async => {});
-    when(() => this.saveUser(any())).thenAnswer((_) async => {});
-  }
-
-  void mockGetUser(UserEntity? user) {
-    when(() => this.getUser()).thenAnswer((_) async => user);
-  }
-}
-
 class MockEnterpriseDatasource extends Mock
     implements ISupabaseEnterpriseDatasource {
   void mockGetEnterprise(SupabaseEnterpriseModel? enterprise) {
@@ -163,21 +150,7 @@ class MockEnterpriseDatasource extends Mock
 class MockAuthRepository extends Mock implements IAuthRepository {
   MockAuthRepository() {
     _mockLoginCall().thenAnswer((_) async => {});
-    _mockLogoutCall().thenAnswer((_) async => {});
   }
-
-  When _mockGetCurrentUserCall() => when(() => this.getCurrentUser());
-
-  void mockGetCurrentUser(UserEntity? user) {
-    _mockGetCurrentUserCall().thenAnswer((_) async => user);
-  }
-
-  void mockGetCurrentUserError() {
-    _mockGetCurrentUserCall().thenThrow(Exception());
-  }
-
-  When _mockLogoutCall() => when(() => this.logout());
-  void mockLogoutError() => _mockLogoutCall().thenThrow(Exception());
 
   When _mockLoginCall() => when(
     () => this.login(
@@ -427,21 +400,6 @@ class AuthRepositorySpy extends Mock implements IAuthRepository {
         password: any(named: 'password'),
       ),
     ).thenAnswer((_) async => user);
-  }
-
-  void mockGetCurrentUser(UserEntity? user) {
-    when(() => this.getCurrentUser()).thenAnswer((_) async => user);
-  }
-}
-
-class FakeAuthStateController extends AuthStateController {
-  final UserEntity? userToReturn;
-
-  FakeAuthStateController(this.userToReturn);
-
-  @override
-  Future<UserEntity?> build() async {
-    return userToReturn;
   }
 }
 
