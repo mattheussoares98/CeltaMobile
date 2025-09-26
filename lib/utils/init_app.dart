@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../core/constants/database_keys.dart';
+import '../core/infraestructure/infrastructure.dart' show DatabaseConstants;
 
 Future<void> initApp() async {
   await _initSupabase();
@@ -23,15 +23,16 @@ Future<void> _initHive() async {
 
   try {
     if (kIsWeb) {
-      path = DatabaseKeys.application.name;
+      path = 'path';
     } else {
       final appDocumentDir = await path_provider
           .getApplicationDocumentsDirectory();
       path = appDocumentDir.path;
     }
     Hive.init(path);
-    await Hive.openBox(DatabaseKeys.application.name);
-    await Hive.openBox(DatabaseKeys.transferBetweenStocksLotItems.name);
+    for (var box in DatabaseConstants.values) {
+      await Hive.openBox(box.name);
+    }
   } catch (e) {
     debugPrint(e.toString());
   }

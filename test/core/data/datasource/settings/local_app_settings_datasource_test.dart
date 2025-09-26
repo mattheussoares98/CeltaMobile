@@ -1,7 +1,7 @@
-import 'package:celta_intelligence/core/constants/database_keys.dart';
 import 'package:celta_intelligence/core/data/datasource/settings/settings.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/infraestructure/infrastructure.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -24,7 +24,7 @@ void main() {
 
   void mockSuccess() {
     hive.mockGet(
-      DatabaseKeys.appSettings.name,
+      DatabaseConstants.appSettings.name,
       AppSettingsModel.fromEntity(appSettingsEntity).toJson(),
     );
   }
@@ -46,7 +46,7 @@ void main() {
 
       verify(
         () => hive.put(
-          DatabaseKeys.appSettings.name,
+          DatabaseConstants.appSettings.name,
           AppSettingsModel.fromEntity(appSettingsEntity).toJson(),
         ),
       ).called(1);
@@ -59,11 +59,11 @@ void main() {
         AppSettingsModel.fromEntity(appSettingsEntity),
       );
 
-      verify(() => hive.get(DatabaseKeys.appSettings.name)).called(1);
+      verify(() => hive.get(DatabaseConstants.appSettings.name)).called(1);
     });
 
     test('Should return correct value when returns null', () async {
-      hive.mockGet(DatabaseKeys.appSettings.name, null);
+      hive.mockGet(DatabaseConstants.appSettings.name, null);
 
       expect(
         await sut.loadSettings(),

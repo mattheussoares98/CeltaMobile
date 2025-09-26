@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
 import '../../../../core/domain/entities/entities.dart';
-import '../../../constants/database_keys.dart';
+import '../../../infraestructure/infrastructure.dart';
 import '../../models/models.dart';
 import 'settings.dart';
 
@@ -11,12 +11,12 @@ class LocalAppSettingsDatasource implements IAppSettingsDatasource {
 
   @override
   Future<void> changeSettings(AppSettingsModel model) async {
-    await box.put(DatabaseKeys.appSettings.name, model.toJson());
+    await box.put(DatabaseConstants.appSettings.name, model.toJson());
   }
 
   @override
   Future<AppSettingsModel?> loadSettings() async {
-    final value = await box.get(DatabaseKeys.appSettings.name);
+    final value = await box.get(DatabaseConstants.appSettings.name);
     if (value == null) {
       return AppSettingsModel(
         searchPreference: SearchProductTypePreference.dynamic,

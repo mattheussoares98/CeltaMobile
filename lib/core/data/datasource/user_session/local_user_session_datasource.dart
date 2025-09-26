@@ -2,7 +2,7 @@ import 'package:celta_intelligence/core/data/models/user_session_model.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../features/auth/data/models/models.dart';
-import '../../../constants/database_keys.dart';
+import '../../../infraestructure/infrastructure.dart';
 import 'user_session.dart';
 
 class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
@@ -11,15 +11,15 @@ class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
 
   @override
   Future<void> logout() async {
-    final localUser = await box.get(DatabaseKeys.userSession.name);
-    await box.delete(DatabaseKeys.userSession.name);
+    final localUser = await box.get(DatabaseConstants.userSession.name);
+    await box.delete(DatabaseConstants.userSession.name);
 
     if (localUser != null) {
       final userSession = UserSessionModel.fromJson(
         Map<String, dynamic>.from(localUser),
       );
       await box.put(
-        DatabaseKeys.userSession.name,
+        DatabaseConstants.userSession.name,
         UserSessionModel(
           user: UserModel(
             name: userSession.user.name,
@@ -36,7 +36,7 @@ class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
 
   @override
   Future<UserSessionModel?> get() async {
-    final localSession = await box.get(DatabaseKeys.userSession.name);
+    final localSession = await box.get(DatabaseConstants.userSession.name);
 
     if (localSession == null) {
       return null;
@@ -47,7 +47,7 @@ class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
 
   @override
   Future<void> save(UserSessionModel session) async {
-    await box.delete(DatabaseKeys.userSession.name);
-    await box.put(DatabaseKeys.userSession.name, session.toJson());
+    await box.delete(DatabaseConstants.userSession.name);
+    await box.put(DatabaseConstants.userSession.name, session.toJson());
   }
 }

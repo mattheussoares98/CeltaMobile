@@ -1,7 +1,7 @@
-import 'package:celta_intelligence/core/constants/database_keys.dart';
 import 'package:celta_intelligence/core/data/datasource/user_session/user_session.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/infraestructure/infrastructure.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -25,7 +25,7 @@ void main() {
 
   void mockSuccess() {
     hive.mockGet(
-      DatabaseKeys.userSession.name,
+      DatabaseConstants.userSession.name,
       UserSessionModel.fromEntity(userSessionEntity).toJson(),
     );
   }
@@ -45,11 +45,11 @@ void main() {
     test('Should behave correctly', () async {
       await sut.logout();
 
-      verify(() => hive.get(DatabaseKeys.userSession.name)).called(1);
-      verify(() => hive.delete(DatabaseKeys.userSession.name)).called(1);
+      verify(() => hive.get(DatabaseConstants.userSession.name)).called(1);
+      verify(() => hive.delete(DatabaseConstants.userSession.name)).called(1);
       verify(
         () => hive.put(
-          DatabaseKeys.userSession.name,
+          DatabaseConstants.userSession.name,
           UserSessionModel(
             user: UserModel(
               name: userSessionEntity.user.name,
@@ -68,11 +68,11 @@ void main() {
     test('Should behave correctly', () async {
       expect(await sut.get(), UserSessionModel.fromEntity(userSessionEntity));
 
-      verify(() => hive.get(DatabaseKeys.userSession.name)).called(1);
+      verify(() => hive.get(DatabaseConstants.userSession.name)).called(1);
     });
 
     test('Should return null if hive returns null', () async {
-      hive.mockGet(DatabaseKeys.userSession.name, null);
+      hive.mockGet(DatabaseConstants.userSession.name, null);
 
       expect(await sut.get(), isNull);
     });
@@ -82,10 +82,10 @@ void main() {
     test("Should call hive with correct params", () async {
       await sut.save(UserSessionModel.fromEntity(userSessionEntity));
 
-      verify(() => hive.delete(DatabaseKeys.userSession.name)).called(1);
+      verify(() => hive.delete(DatabaseConstants.userSession.name)).called(1);
       verify(
         () => hive.put(
-          DatabaseKeys.userSession.name,
+          DatabaseConstants.userSession.name,
           UserSessionModel.fromEntity(userSessionEntity).toJson(),
         ),
       ).called(1);

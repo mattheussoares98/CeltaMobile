@@ -8,5 +8,5 @@ part 'app_settings_datasource_provider.g.dart';
 
 @riverpod
 IAppSettingsDatasource appSettingsDatasource(Ref ref) {
-  return LocalAppSettingsDatasource(ref.watch(hiveBoxProvider));
+  return LocalAppSettingsDatasource(ref.watch(hiveBoxAppSettingsProvider));
 }

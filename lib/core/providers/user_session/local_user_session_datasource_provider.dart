@@ -8,5 +8,5 @@ part 'local_user_session_datasource_provider.g.dart';
 
 @riverpod
 ILocalUserSessionDatasource localUserSessionDatasource(Ref ref) {
-  return LocalUserSessionDatasource(ref.watch(hiveBoxProvider));
+  return LocalUserSessionDatasource(ref.watch(hiveBoxUserSessionProvider));
 }
