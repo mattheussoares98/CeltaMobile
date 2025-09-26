@@ -4,6 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/repositories/user_session/user_session.dart';
 import 'user_session.dart';
 
+part 'local_user_session_repository_provider.g.dart';
+
 @riverpod
 ILocalUserSessionRepository localUserSessionRepository(Ref ref) {
   return LocalUserSessionRepositoryImpl(
