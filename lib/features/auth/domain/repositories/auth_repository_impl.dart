@@ -4,6 +4,7 @@ import '../../../../core/data/models/models.dart';
 import '../../../../core/domain/repositories/enterprise/enterprise.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../../../localization/string_hardcoded.dart';
+import '../../data/models/models.dart';
 import 'i_auth_repository.dart';
 
 class AuthRepositoryImpl implements IAuthRepository {
@@ -39,7 +40,12 @@ class AuthRepositoryImpl implements IAuthRepository {
     await localUserSessionDatasource.save(
       UserSessionModel(
         enterprise: SupabaseEnterpriseModel.fromEntity(enterprise),
-        user: remoteUser,
+        user: UserModel(
+          name: userName,
+          enterpriseName: enterpriseName,
+          AccessKey: remoteUser.AccessKey,
+          CrossIdentity_Usuario: remoteUser.CrossIdentity_Usuario,
+        ),
       ),
     );
   }
