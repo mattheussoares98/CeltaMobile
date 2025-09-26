@@ -3,6 +3,5 @@ enum DatabaseKeys {
   application,
   appSettings,
   userSession,
-  user,
   transferBetweenStocksLotItems,
 }
