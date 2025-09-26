@@ -17,7 +17,7 @@ class CanAccessResourceStateController
   ) async {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
-    final baseUrl = userSession!.enterprise.baseUrl!;
+    final baseUrl = userSession!.enterprise!.baseUrl!;
     final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
     final resourceRepository = ref.watch(soapResourceRepositoryProvider);

@@ -6,7 +6,7 @@ import 'models.dart';
 
 class UserSessionModel extends Equatable {
   final UserModel user;
-  final SupabaseEnterpriseModel enterprise;
+  final SupabaseEnterpriseModel? enterprise;
   final SoapEnterpriseModel? selectedEnterprise;
   const UserSessionModel({
     required this.user,
@@ -19,7 +19,7 @@ class UserSessionModel extends Equatable {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'user': user.toJson(),
-    'enterprise': enterprise.toJson(),
+    'enterprise': enterprise?.toJson(),
   };
 
   factory UserSessionModel.fromJson(Map<String, dynamic> json) =>
@@ -33,13 +33,13 @@ class UserSessionModel extends Equatable {
   factory UserSessionModel.fromEntity(UserSessionEntity entity) =>
       UserSessionModel(
         user: UserModel.fromEntity(entity.user),
-        enterprise: SupabaseEnterpriseModel.fromEntity(
-          entity.supabaseEnterprise,
-        ),
+        enterprise: entity.supabaseEnterprise == null
+            ? null
+            : SupabaseEnterpriseModel.fromEntity(entity.supabaseEnterprise!),
       );
 
   UserSessionEntity toEntity() => UserSessionEntity(
     user: user.toEntity(),
-    supabaseEnterprise: enterprise.toEntity(),
+    supabaseEnterprise: enterprise?.toEntity(),
   );
 }

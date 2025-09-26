@@ -56,8 +56,8 @@ void main() {
     verify(() => localSessionDatasource.get()).called(1);
   });
   test("Should on clear", () async {
-    await sut.clear();
+    await sut.logout();
 
-    verify(() => localSessionDatasource.clear()).called(1);
+    verify(() => localSessionDatasource.logout()).called(1);
   });
 }

@@ -72,7 +72,7 @@ void main() {
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
         verify(
           () => mockRepository.confirm(
-            baseUrl: fakeSession.enterprise.baseUrl!,
+            baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             items: items,
           ),
@@ -100,7 +100,7 @@ void main() {
       // Verify the repository was never called because the session was invalid
       verifyNever(
         () => mockRepository.confirm(
-          baseUrl: fakeSession.enterprise.baseUrl!,
+          baseUrl: fakeSession.enterprise!.baseUrl!,
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           items: items,
         ),

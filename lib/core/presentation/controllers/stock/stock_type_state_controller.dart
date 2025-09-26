@@ -29,7 +29,7 @@ class StockTypeStateController extends _$StockTypeStateController {
     final repository = ref.watch(soapStockTypeRepositoryProvider);
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
-    final baseUrl = userSession!.enterprise.baseUrl!;
+    final baseUrl = userSession!.enterprise!.baseUrl!;
     final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
     return await repository.load(

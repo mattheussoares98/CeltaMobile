@@ -33,7 +33,7 @@ class EnterprisesStateController extends _$EnterprisesStateController {
       return [];
     }
 
-    final baseUrl = sessionAsync.value!.enterprise.baseUrl!;
+    final baseUrl = sessionAsync.value!.enterprise!.baseUrl!;
     final crossIdentity = sessionAsync.value!.user.CrossIdentity_Usuario!;
 
     final enterprises = await ref

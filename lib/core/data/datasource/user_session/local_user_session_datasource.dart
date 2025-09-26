@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/core/data/models/user_session_model.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../features/auth/data/models/models.dart';
 import '../../../constants/database_keys.dart';
 import 'user_session.dart';
 
@@ -9,8 +10,28 @@ class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
   LocalUserSessionDatasource(this.box);
 
   @override
-  Future<void> clear() async {
+  Future<void> logout() async {
+    final localUser = await box.get(DatabaseKeys.userSession.name);
     await box.delete(DatabaseKeys.userSession.name);
+
+    if (localUser != null) {
+      final userSession = UserSessionModel.fromJson(
+        Map<String, dynamic>.from(localUser),
+      );
+      await box.put(
+        DatabaseKeys.userSession.name,
+        UserSessionModel(
+          user: UserModel(
+            name: userSession.user.name,
+            enterpriseName: userSession.user.enterpriseName,
+            AccessKey: null,
+            CrossIdentity_Usuario: null,
+          ),
+          enterprise: null,
+          selectedEnterprise: null,
+        ).toJson(),
+      );
+    }
   }
 
   @override

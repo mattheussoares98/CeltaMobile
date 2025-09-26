@@ -19,7 +19,7 @@ class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
       final repository = ref.watch(soapAdjustStockRepositoryProvider);
       final userSession = await ref.watch(validatedUserSessionProvider.future);
 
-      final baseUrl = userSession!.enterprise.baseUrl!;
+      final baseUrl = userSession!.enterprise!.baseUrl!;
       final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
       await repository.confirm(

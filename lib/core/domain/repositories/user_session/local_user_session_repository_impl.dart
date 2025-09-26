@@ -7,8 +7,8 @@ class LocalUserSessionRepositoryImpl implements ILocalUserSessionRepository {
   LocalUserSessionRepositoryImpl(this.localUserSessionDatasource);
 
   @override
-  Future<void> clear() async {
-    return await localUserSessionDatasource.clear();
+  Future<void> logout() async {
+    return await localUserSessionDatasource.logout();
   }
 
   @override

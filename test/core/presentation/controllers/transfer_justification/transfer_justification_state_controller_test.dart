@@ -99,7 +99,7 @@ void main() {
         ]);
         verify(
           () => soapTransferJustificationRepository.load(
-            baseUrl: userSession.enterprise.baseUrl!,
+            baseUrl: userSession.enterprise!.baseUrl!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             type: justificationType,
           ),

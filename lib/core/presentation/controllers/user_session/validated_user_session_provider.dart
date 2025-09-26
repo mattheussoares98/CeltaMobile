@@ -18,7 +18,7 @@ class ValidatedUserSession extends _$ValidatedUserSession {
     if (userSession == null ||
         userSession.user.CrossIdentity_Usuario == null ||
         userSession.user.AccessKey == null ||
-        userSession.enterprise.baseUrl == null) {
+        userSession.enterprise?.baseUrl == null) {
       throw AppException('Sessão inválida. Efetue o login novamente'.hardcoded);
     }
 

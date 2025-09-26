@@ -114,7 +114,7 @@ void main() {
             isA<AsyncLoading>(),
             isA<AsyncData<UserSessionModel?>>(),
           ]);
-          verify(() => localUserSessionDatasource.clear()).called(1);
+          verify(() => localUserSessionDatasource.logout()).called(1);
         },
       );
     });

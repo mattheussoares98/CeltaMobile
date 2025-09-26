@@ -73,7 +73,7 @@ void main() {
         ]);
         verify(
           () => mockRepository.load(
-            baseUrl: fakeSession.enterprise.baseUrl!,
+            baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           ),
         ).called(1);

@@ -77,7 +77,7 @@ void main() {
         () => resourceRepositorySpy.canAccessResource(
           resource: resource,
           routine: routine,
-          baseUrl: userSessionEntity.supabaseEnterprise.baseUrl!,
+          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
         ),
       ).called(1);

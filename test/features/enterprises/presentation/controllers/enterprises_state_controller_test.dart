@@ -69,7 +69,7 @@ void main() {
       );
       verify(
         () => enterpriseRepositorySpy.getSoapEnterprises(
-          url: userSessionEntity.supabaseEnterprise.baseUrl!,
+          url: userSessionEntity.supabaseEnterprise!.baseUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
         ),
       ).called(1);

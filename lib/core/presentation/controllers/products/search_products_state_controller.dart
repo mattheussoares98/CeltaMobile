@@ -63,7 +63,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
         }
       }
 
-      final baseUrl = userSession!.enterprise.baseUrl!;
+      final baseUrl = userSession!.enterprise!.baseUrl!;
       final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
       final settings = await ref.read(

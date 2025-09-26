@@ -45,7 +45,7 @@ class SelectedProductStateController extends _$SelectedProductStateController {
     final products = await ref
         .read(soapProductsRepositoryProvider)
         .getProductsJson(
-          baseUrl: userSession!.enterprise.baseUrl!,
+          baseUrl: userSession!.enterprise!.baseUrl!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
           searchValue: plu,
           routine: BsRoutine.adjustSalePrice,

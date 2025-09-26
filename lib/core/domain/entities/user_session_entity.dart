@@ -4,7 +4,7 @@ import 'entities.dart';
 
 class UserSessionEntity extends Equatable {
   final UserEntity user;
-  final EnterpriseEntity supabaseEnterprise;
+  final EnterpriseEntity? supabaseEnterprise;
   final EnterpriseEntity? selectedEnterprise;
   const UserSessionEntity({
     required this.user,
