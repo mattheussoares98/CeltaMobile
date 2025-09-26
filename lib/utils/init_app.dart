@@ -31,6 +31,7 @@ Future<void> _initHive() async {
     }
     Hive.init(path);
     await Hive.openBox(DatabaseKeys.application.name);
+    await Hive.openBox(DatabaseKeys.transferBetweenStocksLotItems.name);
   } catch (e) {
     debugPrint(e.toString());
   }
