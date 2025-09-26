@@ -708,3 +708,16 @@ class SoapStockTypeDatasourceSpy extends Mock
     ).thenAnswer((_) async => response);
   }
 }
+
+class SoapAdjustStockDatasourceSpy extends Mock
+    implements ISoapAdjustStockDatasource {
+  SoapAdjustStockDatasourceSpy() {
+    when(
+      () => this.confirm(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        items: any(named: 'items'),
+      ),
+    ).thenAnswer((_) async {});
+  }
+}
