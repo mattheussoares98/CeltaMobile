@@ -12,6 +12,7 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
 
   @override
   Future<void> logout() async {
+    //TODO use userSession instead
     final localUser = await box.get(DatabaseKeys.user.name);
     await box.delete(DatabaseKeys.user.name);
 
