@@ -2,8 +2,8 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/repositories/stock/stock.dart';
 import 'package:celta_intelligence/core/presentation/controllers/stock/confirm_adjust_stock_controller.dart';
+import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/core/providers/stock/stock.dart';
-import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -34,7 +34,9 @@ void main() {
     return ProviderContainer(
       overrides: [
         soapAdjustStockRepositoryProvider.overrideWithValue(mockRepository),
-        userSessionProvider.overrideWith(() => FakeUserSession(session)),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(session),
+        ),
       ],
     );
   }

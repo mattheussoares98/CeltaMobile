@@ -17,7 +17,7 @@ import 'package:celta_intelligence/core/domain/repositories/products/products.da
 import 'package:celta_intelligence/core/domain/repositories/resource/resource.dart';
 import 'package:celta_intelligence/core/domain/repositories/settings/settings.dart';
 import 'package:celta_intelligence/core/domain/repositories/user_session/user_session.dart';
-import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
+import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/data/models/models.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
@@ -461,6 +461,18 @@ class FakeUserSession extends UserSession {
   final UserSessionModel? sessionToReturn;
 
   FakeUserSession(this.sessionToReturn);
+
+  // 2. Override the build method to return your fake data instantly
+  @override
+  Future<UserSessionModel?> build() async {
+    return sessionToReturn;
+  }
+}
+
+class FakeValidatedUserSession extends ValidatedUserSession {
+  final UserSessionModel? sessionToReturn;
+
+  FakeValidatedUserSession(this.sessionToReturn);
 
   // 2. Override the build method to return your fake data instantly
   @override

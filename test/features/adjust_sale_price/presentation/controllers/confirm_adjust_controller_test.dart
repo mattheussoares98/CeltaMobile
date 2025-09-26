@@ -1,6 +1,6 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
+import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/providers.dart';
@@ -62,8 +62,10 @@ void main() async {
     return ProviderContainer(
       overrides: [
         soapAdjustSalePriceRepositoryProvider.overrideWithValue(mockRepository),
-        userSessionProvider.overrideWith(
-          () => FakeUserSession(UserSessionModel.fromEntity(userSessionEntity)),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(
+            UserSessionModel.fromEntity(userSessionEntity),
+          ),
         ),
         authStateControllerProvider.overrideWith(
           () => FakeAuthStateController(userSessionEntity.user),

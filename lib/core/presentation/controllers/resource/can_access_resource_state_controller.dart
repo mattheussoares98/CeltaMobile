@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../../../providers/resource/resource.dart';
-import '../../../providers/user_session/user_session.dart';
+import '../user_session/user_session.dart';
 
 part 'can_access_resource_state_controller.g.dart';
 
@@ -15,7 +15,7 @@ class CanAccessResourceStateController
     BsResource resource,
     int enterpriseCode,
   ) async {
-    final userSession = await ref.watch(userSessionProvider.future);
+    final userSession = await ref.watch(validatedUserSessionProvider.future);
 
     final baseUrl = userSession!.enterprise.baseUrl!;
     final crossIdentity = userSession.user.CrossIdentity_Usuario!;

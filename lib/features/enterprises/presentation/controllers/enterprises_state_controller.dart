@@ -1,13 +1,10 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../core/providers/enterprise/enterprise.dart';
-import '../../../../core/providers/user_session/user_session.dart';
-import '../../../../exceptions/exceptions.dart';
-import '../../../../features/auth/presentation/controllers/controllers.dart';
+import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
 
 part 'enterprises_state_controller.g.dart';
@@ -30,22 +27,14 @@ class EnterprisesStateController extends _$EnterprisesStateController {
     //   timer?.cancel();
     // });
 
-    final sessionAsync = ref.watch(userSessionProvider);
-    final authAsync = ref.watch(authStateControllerProvider);
+    final sessionAsync = ref.watch(validatedUserSessionProvider);
 
-    if (sessionAsync.isLoading || authAsync.isLoading) {
+    if (sessionAsync.isLoading) {
       return [];
     }
 
-    final baseUrl = sessionAsync.value?.enterprise.baseUrl;
-    final crossIdentity = authAsync.value?.CrossIdentity_Usuario;
-
-    if (baseUrl == null ||
-        baseUrl.isEmpty ||
-        crossIdentity == null ||
-        crossIdentity.isEmpty) {
-      throw AppException('Sessão inválida. Faça o login novamente'.hardcoded);
-    }
+    final baseUrl = sessionAsync.value!.enterprise.baseUrl!;
+    final crossIdentity = sessionAsync.value!.user.CrossIdentity_Usuario!;
 
     final enterprises = await ref
         .watch(enterpriseRepositoryProvider)

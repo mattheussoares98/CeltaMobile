@@ -51,7 +51,9 @@ void main() {
         soapTransferJustificationRepositoryProvider.overrideWithValue(
           soapTransferJustificationRepository,
         ),
-        userSessionProvider.overrideWith(() => FakeUserSession(session)),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(session),
+        ),
       ],
     );
   }
@@ -104,43 +106,5 @@ void main() {
         ).called(1);
       },
     );
-
-    test('should emit [loading, error] when session is null', () async {
-      // ARRANGE: No need to mock the repository, as it won't be called.
-      // We pass null for the session to simulate a failure condition.
-      final container = makeProviderContainer(session: null);
-      addTearDown(container.dispose);
-
-      final states = <AsyncValue<List<TransferJustificationEntity>>>[];
-      container.listen(
-        transferJustificationStateControllerProvider(
-          enterpriseCode,
-          justificationType,
-        ),
-        (_, next) => states.add(next),
-        fireImmediately: true,
-      );
-
-      // ACT & ASSERT: Expect the future to complete with an error
-      await expectLater(
-        container.read(
-          transferJustificationStateControllerProvider(
-            enterpriseCode,
-            justificationType,
-          ).future,
-        ),
-        throwsA(isA<Exception>()), // The controller throws a generic Exception
-      );
-
-      // ASSERT
-      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-      verifyNever(
-        () => soapTransferJustificationRepository.load(
-          baseUrl: any(named: 'baseUrl'),
-          crossIdentity: any(named: 'crossIdentity'),
-          type: any(named: 'type'),
-        ),
-      );
-    });
   });
 }

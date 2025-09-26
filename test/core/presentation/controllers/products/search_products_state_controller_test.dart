@@ -1,8 +1,8 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
+import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/core/providers/products/products.dart';
-import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
@@ -83,9 +83,10 @@ void main() {
       overrides: [
         soapProductsRepositoryProvider.overrideWithValue(sut),
         if (mockSession == true)
-          userSessionProvider.overrideWith(
-            () =>
-                FakeUserSession(UserSessionModel.fromEntity(userSessionEntity)),
+          validatedUserSessionProvider.overrideWith(
+            () => FakeValidatedUserSession(
+              UserSessionModel.fromEntity(userSessionEntity),
+            ),
           ),
         if (mockAuthState == true)
           authStateControllerProvider.overrideWith(

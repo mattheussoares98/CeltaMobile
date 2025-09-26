@@ -5,10 +5,10 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/providers/products/products.dart';
-import '../../../../../core/providers/user_session/user_session.dart';
 import '../../../../../exceptions/exceptions.dart';
 import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../user_session/user_session.dart';
 
 part 'search_products_state_controller.g.dart';
 
@@ -44,7 +44,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final userSession = await ref.read(userSessionProvider.future);
+      final userSession = await ref.read(validatedUserSessionProvider.future);
 
       late EnterpriseEntity enterpriseEntity;
 
@@ -63,14 +63,8 @@ class SearchProductsStateController extends _$SearchProductsStateController {
         }
       }
 
-      final baseUrl = userSession?.enterprise.baseUrl;
-      final crossIdentity = userSession?.user.CrossIdentity_Usuario;
-      if (baseUrl == null ||
-          baseUrl.isEmpty ||
-          crossIdentity == null ||
-          crossIdentity.isEmpty) {
-        throw Exception('Sessão inválida. Faça o login novamente'.hardcoded);
-      }
+      final baseUrl = userSession!.enterprise.baseUrl!;
+      final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
       final settings = await ref.read(
         appSettingsStateControllerProvider.future,

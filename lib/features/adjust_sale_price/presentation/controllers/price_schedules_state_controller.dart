@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/providers/user_session/user_session.dart';
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
@@ -40,7 +40,7 @@ class PriceSchedulesStateController extends _$PriceSchedulesStateController {
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final userSession = await ref.watch(userSessionProvider.future);
+      final userSession = await ref.watch(validatedUserSessionProvider.future);
       final selectedEnterprise = ref.watch(
         selectedEnterpriseStateControllerProvider,
       );

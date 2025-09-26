@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
-import '../../../../core/providers/user_session/user_session.dart';
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../routing/routing.dart';
 import '../../../../utils/utils.dart';
 import '../controllers/auth_state_controller.dart';

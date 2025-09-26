@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/providers/user_session/user_session.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../exceptions/exceptions.dart';
 import '../../../providers/transfer_justification/transfer_justification.dart';
+import '../user_session/user_session.dart';
 
 part 'transfer_justification_state_controller.g.dart';
 
@@ -33,12 +31,9 @@ class TransferJustificationStateController
     });
 
     final repository = ref.watch(soapTransferJustificationRepositoryProvider);
-    final userSession = await ref.watch(userSessionProvider.future);
+    final userSession = await ref.watch(validatedUserSessionProvider.future);
 
-    if (userSession == null) {
-      throw AppException('Sessão inválida. Efetue o login novamente'.hardcoded);
-    }
-    final baseUrl = userSession.enterprise.baseUrl!;
+    final baseUrl = userSession!.enterprise.baseUrl!;
     final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
     return await repository.load(

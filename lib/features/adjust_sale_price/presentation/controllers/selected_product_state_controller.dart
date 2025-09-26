@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../core/providers/products/products.dart';
-import '../../../../core/providers/user_session/user_session.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
 
@@ -35,7 +35,7 @@ class SelectedProductStateController extends _$SelectedProductStateController {
       return product;
     }
 
-    final userSession = await ref.watch(userSessionProvider.future);
+    final userSession = await ref.watch(validatedUserSessionProvider.future);
     final enterprises = await ref.watch(
       enterprisesStateControllerProvider.future,
     );
