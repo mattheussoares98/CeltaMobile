@@ -27,6 +27,7 @@ class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
         crossIdentity: crossIdentity,
         items: items,
       );
+      //TODO move to adjustStock presentation
     });
   }
 }
