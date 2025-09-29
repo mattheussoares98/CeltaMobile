@@ -1,0 +1,167 @@
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/presentation/controllers/lot_state_controller.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+// 1. Create a Mock for the repository dependency
+class MockLocalItemsLotRepository extends Mock
+    implements ILocalItemsLotRepository {}
+
+void main() {
+  late MockLocalItemsLotRepository mockRepository;
+  late List<AdjustStockItemEntity> fakeLot;
+  late AdjustStockItemEntity newItem;
+
+  setUp(() {
+    mockRepository = MockLocalItemsLotRepository();
+    fakeLot = [
+      EntityFactory.makeAdjustStockItemEntity(),
+      EntityFactory.makeAdjustStockItemEntity(),
+    ];
+    newItem = EntityFactory.makeAdjustStockItemEntity();
+
+    // Register fallback value for mocktail's `any()` matcher
+    registerFallbackValue(EntityFactory.makeAdjustStockItemEntity());
+  });
+
+  ProviderContainer makeProviderContainer() {
+    return ProviderContainer(
+      overrides: [
+        localItemsLotRepositoryProvider.overrideWithValue(mockRepository),
+      ],
+    );
+  }
+
+  group('LotStateController', () {
+    group('build', () {
+      test(
+        'should call repository.load and return a list on success',
+        () async {
+          // ARRANGE
+          when(() => mockRepository.load()).thenAnswer((_) async => fakeLot);
+
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+
+          // ACT: Wait for the build method to complete
+          final result = await container.read(
+            lotStateControllerProvider.future,
+          );
+
+          // ASSERT
+          expect(result, fakeLot);
+          verify(() => mockRepository.load()).called(1);
+        },
+      );
+    });
+
+    group('addItem', () {
+      test(
+        'should emit [loading, data] and add the item to the list',
+        () async {
+          // ARRANGE
+          when(() => mockRepository.load()).thenAnswer((_) async => fakeLot);
+          when(() => mockRepository.addItem(any())).thenAnswer((_) async {});
+
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(
+            lotStateControllerProvider.future,
+          ); // Wait for initial build
+
+          final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
+          container.listen(
+            lotStateControllerProvider,
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          await container
+              .read(lotStateControllerProvider.notifier)
+              .addItem(newItem);
+
+          // ASSERT
+          expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+          // Check that the final state contains the new item
+          expect(states.last.value, hasLength(3));
+          expect(
+            states.last.value!.any(
+              (item) => item.ProductCode == newItem.ProductCode,
+            ),
+            isTrue,
+          );
+          verify(() => mockRepository.addItem(newItem)).called(1);
+        },
+      );
+    });
+
+    group('removeItem', () {
+      test(
+        'should emit [loading, data] and remove the item from the list',
+        () async {
+          // ARRANGE
+          final itemToRemove = fakeLot.first;
+          when(() => mockRepository.load()).thenAnswer((_) async => fakeLot);
+          when(() => mockRepository.removeItem(any())).thenAnswer((_) async {});
+
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(lotStateControllerProvider.future);
+
+          final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
+          container.listen(
+            lotStateControllerProvider,
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          await container
+              .read(lotStateControllerProvider.notifier)
+              .removeItem(itemToRemove);
+
+          // ASSERT
+          expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+          expect(states.last.value, hasLength(1));
+          expect(
+            states.last.value!.any(
+              (item) => item.ProductCode == itemToRemove.ProductCode,
+            ),
+            isFalse,
+          );
+          verify(() => mockRepository.removeItem(itemToRemove)).called(1);
+        },
+      );
+    });
+
+    group('clearLot', () {
+      test('should emit [loading, data] with an empty list', () async {
+        // ARRANGE
+        when(() => mockRepository.load()).thenAnswer((_) async => fakeLot);
+        when(() => mockRepository.clear()).thenAnswer((_) async {});
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        await container.read(lotStateControllerProvider.future);
+
+        final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
+        container.listen(
+          lotStateControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container.read(lotStateControllerProvider.notifier).clearLot();
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        expect(states.last.value, isEmpty);
+        verify(() => mockRepository.clear()).called(1);
+      });
+    });
+  });
+}
