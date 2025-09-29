@@ -10,18 +10,21 @@ import 'routes/routes.dart';
 part 'app_router.g.dart';
 
 enum AppRoute {
-  auth,
-  adjustSalePrice,
-  adjustSalePriceProducts,
-  adjustStocks,
-  createEnterprise,
-  enterpriseManager,
-  enterpriseManagerAuth,
-  enterpriseManagerChangeModulesPermissions,
-  enterpriseManagerDash,
-  enterprises,
-  home,
-  splash,
+  auth('Autenticação'),
+  adjustSalePrice('Alterar preços'),
+  adjustSalePriceProducts('Alterar preços'),
+  adjustStocks('Ajustar estoque'),
+  createEnterprise('Criar empresa'),
+  enterpriseManager('Gerenciamento de empresas'),
+  enterpriseManagerAuth('Autenticação'),
+  enterpriseManagerChangeModulesPermissions('Permissões de módulos'),
+  enterpriseManagerDash('Dashboard'),
+  enterprises('Empresas'),
+  home('Home'),
+  splash('Splash');
+
+  final String module;
+  const AppRoute(this.module);
 }
 
 class Bridge<T> extends ChangeNotifier {

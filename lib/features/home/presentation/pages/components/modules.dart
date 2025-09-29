@@ -1,12 +1,11 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../routing/routing.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
+import 'components.dart';
 
 class Modules extends ConsumerWidget {
   const Modules({super.key});
@@ -18,33 +17,21 @@ class Modules extends ConsumerWidget {
     );
 
     final buttons = <Widget>[
-      PrimaryButton(
-        text: 'Alterar preços'.hardcoded,
-        onPressed: selectedEnterprise == null
+      DefaultModuleButton(
+        selectedEnterprise: selectedEnterprise,
+        route: AppRoute.adjustSalePriceProducts,
+        pathParameters: selectedEnterprise == null
             ? null
-            : () {
-                context.goNamed(
-                  AppRoute.adjustSalePriceProducts.name,
-                  pathParameters: {
-                    'enterpriseCode': selectedEnterprise.Code.toString(),
-                  },
-                  extra: {'enterprise': selectedEnterprise},
-                );
-              },
+            : {'enterpriseCode': selectedEnterprise.Code.toString()},
+        extra: {'enterprise': selectedEnterprise},
       ),
-      PrimaryButton(
-        text: 'Ajustar estoque'.hardcoded,
-        onPressed: selectedEnterprise == null
+      DefaultModuleButton(
+        selectedEnterprise: selectedEnterprise,
+        route: AppRoute.adjustStocks,
+        pathParameters: selectedEnterprise == null
             ? null
-            : () {
-                context.goNamed(
-                  AppRoute.adjustStocks.name,
-                  pathParameters: {
-                    'enterpriseCode': selectedEnterprise.Code.toString(),
-                  },
-                  extra: {'enterprise': selectedEnterprise},
-                );
-              },
+            : {'enterpriseCode': selectedEnterprise.Code.toString()},
+        extra: {'enterprise': selectedEnterprise},
       ),
     ];
 
