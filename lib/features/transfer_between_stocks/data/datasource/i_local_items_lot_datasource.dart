@@ -1,4 +1,4 @@
-import '../../../core/data/models/models.dart';
+import '../../../../core/data/models/models.dart';
 
 abstract class ILocalItemsLotDatasource {
   Future<void> addItem(AdjustStockItemModel item);

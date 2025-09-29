@@ -16,7 +16,7 @@ class Modules extends ConsumerWidget {
       selectedEnterpriseStateControllerProvider,
     );
 
-    final buttons = <Widget>[
+    final buttons = <DefaultModuleButton>[
       DefaultModuleButton(
         selectedEnterprise: selectedEnterprise,
         route: AppRoute.adjustSalePriceProducts,
@@ -33,7 +33,17 @@ class Modules extends ConsumerWidget {
             : {'enterpriseCode': selectedEnterprise.Code.toString()},
         extra: {'enterprise': selectedEnterprise},
       ),
+      DefaultModuleButton(
+        selectedEnterprise: selectedEnterprise,
+        route: AppRoute.transferBetweenStocks,
+        pathParameters: selectedEnterprise == null
+            ? null
+            : {'enterpriseCode': selectedEnterprise.Code.toString()},
+        extra: {'enterprise': selectedEnterprise},
+      ),
     ];
+
+    buttons.sort((a, b) => a.route.module.compareTo(b.route.module));
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p4),

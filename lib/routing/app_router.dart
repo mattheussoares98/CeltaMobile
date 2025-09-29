@@ -21,7 +21,8 @@ enum AppRoute {
   enterpriseManagerDash('Dashboard'),
   enterprises('Empresas'),
   home('Home'),
-  splash('Splash');
+  splash('Splash'),
+  transferBetweenStocks('Transferência entre estoques');
 
   final String module;
   const AppRoute(this.module);
@@ -58,6 +59,7 @@ GoRouter goRouter(Ref ref) {
       homeRoute([
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
+        transferBetweenStocksRoute(),
       ]),
       splashRoute(),
     ],
