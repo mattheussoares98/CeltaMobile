@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/core/domain/entities/stock/adjust_stock_item_entity.dart';
 
-import '../../../../core/data/models/models.dart';
-import '../../data/datasource/datasource.dart';
+import '../../../core/data/models/models.dart';
+import '../datasource/datasource.dart';
 import 'repositories.dart';
 
 class LocalItemsLotRepositoryImpl implements ILocalItemsLotRepository {

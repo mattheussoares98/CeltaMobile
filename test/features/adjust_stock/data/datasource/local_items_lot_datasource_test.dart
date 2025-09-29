@@ -1,5 +1,5 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:celta_intelligence/features/adjust_stock/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/datasource/datasource.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

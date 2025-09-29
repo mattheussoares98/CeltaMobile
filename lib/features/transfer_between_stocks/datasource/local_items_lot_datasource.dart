@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import '../../../../core/data/models/models.dart';
+import '../../../core/data/models/models.dart';
 import 'datasource.dart';
 
 class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
