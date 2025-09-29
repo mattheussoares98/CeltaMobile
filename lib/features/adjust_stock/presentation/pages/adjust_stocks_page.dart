@@ -9,6 +9,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
+import '../../../adjust_sale_price/presentation/controllers/controllers.dart';
 import 'components/components.dart';
 
 class AdjustStocksPage extends ConsumerStatefulWidget {
@@ -27,14 +28,20 @@ class AdjustStocksPage extends ConsumerStatefulWidget {
 
 class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
   final searchValueController = TextEditingController();
+  final quantityController = TextEditingController();
+  final quantityFocusNode = FocusNode();
   TransferJustificationEntity? selectedJustification;
   StockTypeEntity? selectedStockType;
+  int? selectedIndex;
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     super.dispose();
 
     searchValueController.dispose();
+    quantityController.dispose();
+    quantityFocusNode.dispose();
   }
 
   Future<void> _searchProducts() async {
@@ -52,6 +59,20 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
         );
   }
 
+  void changeSelectedIndex(int index) async {
+    if (selectedIndex != index) {
+      setState(() {
+        selectedIndex = index;
+      });
+      await Future.delayed(Duration(milliseconds: 100));
+      quantityFocusNode.requestFocus();
+    } else {
+      setState(() {
+        selectedIndex = null;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(
@@ -65,6 +86,20 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
         });
       },
     );
+    ref.listen(confirmAdjustStockControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'Ajuste efetuado com sucesso'.hardcoded,
+      );
+      n.doOnSuccess(p, () {
+        quantityController.clear();
+        setState(() {
+          selectedIndex = null;
+        });
+      });
+    });
 
     final productsState = ref.watch(
       searchProductsStateControllerProvider(
@@ -84,83 +119,103 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       ),
     );
 
+    final confirmAdjustStockAsync = ref.watch(confirmAdjustControllerProvider);
+
     return Stack(
       children: [
         Scaffold(
           appBar: AppBar(
             title: FittedBox(child: Text("Ajuste de estoque".hardcoded)),
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(Sizes.p4),
-            child: Column(
-              children: [
-                DefaultSearchProducts(
-                  searchValueController: searchValueController,
-                  isLoading: productsState.isLoading,
-                  searchProducts: _searchProducts,
-                ),
-                gapH8,
-                JustificationsDropdown(
-                  selectedJustification: selectedJustification,
-                  asyncValue: justificationsAsync,
-                  enterpriseCode: widget.enterpriseCode,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedJustification = value;
-                    });
-
-                    if (value?.CodigoInterno_TipoEstoque != null &&
-                        stocksAsync.value != null) {
+          body: Form(
+            key: formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(Sizes.p4),
+              child: Column(
+                children: [
+                  DefaultSearchProducts(
+                    searchValueController: searchValueController,
+                    isLoading: productsState.isLoading,
+                    searchProducts: _searchProducts,
+                  ),
+                  gapH8,
+                  JustificationsDropdown(
+                    selectedJustification: selectedJustification,
+                    asyncValue: justificationsAsync,
+                    enterpriseCode: widget.enterpriseCode,
+                    onChanged: (value) {
                       setState(() {
-                        selectedStockType = stocksAsync.value!.firstWhere(
-                          (e) =>
-                              e.CodigoInterno_TipoEstoque ==
-                              value?.CodigoInterno_TipoEstoque,
-                        );
+                        selectedJustification = value;
                       });
-                    }
-                  },
-                ),
-                StocksDropdown(
-                  asyncValue: stocksAsync,
-                  enterpriseCode: widget.enterpriseCode,
-                  selectedJustification: selectedJustification,
-                  selectedStockType: selectedStockType,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedStockType = value;
-                    });
-                  },
-                ),
-                gapH8,
-                Expanded(
-                  child: AsyncValueWidget(
-                    value: productsState,
-                    tryAgain: null,
-                    data: (products) {
-                      return ResponsiveListFlow(
-                        itemCount: products.length,
-                        itemBuilder: (_, index) {
-                          final product = products[index];
-                          return ProductItemWidget(
-                            enterpriseCode: widget.enterpriseCode,
-                            product: product,
-                            routine: BsRoutine.adjustStock,
-                            bottom: Text(
-                              'open option to adjust stock'.hardcoded,
-                            ),
+
+                      if (value?.CodigoInterno_TipoEstoque != null &&
+                          stocksAsync.value != null) {
+                        setState(() {
+                          selectedStockType = stocksAsync.value!.firstWhere(
+                            (e) =>
+                                e.CodigoInterno_TipoEstoque ==
+                                value?.CodigoInterno_TipoEstoque,
                           );
-                        },
-                      );
+                        });
+                      }
                     },
                   ),
-                ),
-              ],
+                  StocksDropdown(
+                    asyncValue: stocksAsync,
+                    enterpriseCode: widget.enterpriseCode,
+                    selectedJustification: selectedJustification,
+                    selectedStockType: selectedStockType,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedStockType = value;
+                      });
+                    },
+                  ),
+                  gapH8,
+                  Expanded(
+                    child: AsyncValueWidget(
+                      value: productsState,
+                      tryAgain: null,
+                      data: (products) {
+                        return ResponsiveListFlow(
+                          itemCount: products.length,
+                          itemBuilder: (_, index) {
+                            final product = products[index];
+                            return ProductItemWidget(
+                              enterpriseCode: widget.enterpriseCode,
+                              product: product,
+                              routine: BsRoutine.adjustStock,
+                              onTap: () {
+                                changeSelectedIndex(index);
+                              },
+                              showDropIcon: true,
+                              isSelected: selectedIndex == index,
+                              bottom: selectedIndex == index
+                                  ? ConfirmAdjustStock(
+                                      product: product,
+                                      formKey: formKey,
+                                      enterpriseCode: widget.enterpriseCode,
+                                      selectedJustification:
+                                          selectedJustification,
+                                      selectedStockType: selectedStockType,
+                                      quantityController: quantityController,
+                                      isLoading:
+                                          confirmAdjustStockAsync.isLoading,
+                                      quantityFocusNode: quantityFocusNode,
+                                    )
+                                  : null,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-        //TODO only when is confirming
-        if (1 == 2) LoadingPage(),
+        if (confirmAdjustStockAsync.isLoading) LoadingPage(),
       ],
     );
   }

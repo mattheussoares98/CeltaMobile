@@ -16,8 +16,8 @@ class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
   Future<void> confirm(List<AdjustStockItemEntity> items) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final repository = ref.watch(soapAdjustStockRepositoryProvider);
-      final userSession = await ref.watch(validatedUserSessionProvider.future);
+      final repository = ref.read(soapAdjustStockRepositoryProvider);
+      final userSession = await ref.read(validatedUserSessionProvider.future);
 
       final baseUrl = userSession!.enterprise!.baseUrl!;
       final crossIdentity = userSession.user.CrossIdentity_Usuario!;

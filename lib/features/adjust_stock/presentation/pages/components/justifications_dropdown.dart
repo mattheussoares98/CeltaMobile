@@ -35,6 +35,13 @@ class JustificationsDropdown extends ConsumerWidget {
         return DefaultSimpleDropDown<TransferJustificationEntity?>(
           isLoading: asyncValue.isLoading,
           onChanged: onChanged,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (value) {
+            if (value == null) {
+              return 'Justificativa obrigatória'.hardcoded;
+            }
+            return null;
+          },
           items: justifications.map((e) {
             return DropdownMenuItem(
               value: e,

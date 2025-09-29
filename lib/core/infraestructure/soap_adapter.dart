@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:http/http.dart';
 import 'package:xml2json/xml2json.dart';
 
@@ -78,7 +79,9 @@ class SoapAdapter implements contracts.SoapRequest {
     Map<String, dynamic> responseBody,
     String? typeOfResult,
   ) {
-    if (typeOfResult != null && responseBody[typeOfResult] != null) {
+    if (typeOfResult == null) {
+      return 'Sucesso'.hardcoded;
+    } else if (responseBody[typeOfResult] != null) {
       if (_isValidResponse(responseBody, typeOfResult)) {
         return responseBody[typeOfResult]["diffgr:diffgram"]["NewDataSet"]
             .toString();

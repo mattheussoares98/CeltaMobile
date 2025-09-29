@@ -31,9 +31,16 @@ class StocksDropdown extends ConsumerWidget {
       data: (stocks) {
         return DefaultSimpleDropDown<StockTypeEntity?>(
           isLoading: asyncValue.isLoading,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: selectedJustification?.CodigoInterno_TipoEstoque != null
               ? null
               : onChanged,
+          validator: (value) {
+            if (value == null) {
+              return 'Estoque obrigatório'.hardcoded;
+            }
+            return null;
+          },
           items: stocks.map((e) {
             return DropdownMenuItem(
               value: e,

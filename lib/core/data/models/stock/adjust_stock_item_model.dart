@@ -8,7 +8,7 @@ class AdjustStockItemModel extends Equatable {
   final int ProductPackingCode;
   final int JustificationCode;
   final int StockTypeCode;
-  final int StockTypeRecipientCode;
+  final int? StockTypeRecipientCode;
   final bool IsPendingAdjust;
   final double Quantity;
 

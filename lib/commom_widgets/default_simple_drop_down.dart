@@ -10,6 +10,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
   final String hint;
   final String? Function(T?)? validator;
   final bool? isLoading;
+  final AutovalidateMode? autovalidateMode;
 
   const DefaultSimpleDropDown({
     super.key,
@@ -19,6 +20,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
     required this.hint,
     this.validator,
     this.isLoading,
+    this.autovalidateMode,
   });
 
   @override
@@ -26,13 +28,18 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: DropdownButtonFormField<T>(
-        decoration: InputDecoration(border: InputBorder.none),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+          focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+        ),
         initialValue: value,
         padding: EdgeInsets.symmetric(horizontal: Sizes.p16),
         items: items,
         alignment: Alignment.center,
         isExpanded: true,
         onChanged: onChanged,
+        autovalidateMode: autovalidateMode,
         isDense: true,
         dropdownColor: Colors.white,
         validator: validator,
