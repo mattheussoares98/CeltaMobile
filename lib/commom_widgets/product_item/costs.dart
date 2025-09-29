@@ -5,7 +5,6 @@ import '../../constants/constants.dart';
 import '../commom_widgets.dart';
 
 class Costs extends StatelessWidget {
-  //TODO test these values
   const Costs({super.key, required this.widget});
 
   final ProductInfoModal widget;
