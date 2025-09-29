@@ -36,8 +36,6 @@ class TitleAndSubTitle extends StatelessWidget {
     String? getSubtitleText() {
       if (subTitle == null) {
         return null;
-      } else if (subTitleIsNumber && (subTitle as double) == -1) {
-        return 'Sem permissão p/ visualizar';
       } else if (showErrorMessage) {
         return emptyMessage!;
       } else if (subTitleIsNumber) {
