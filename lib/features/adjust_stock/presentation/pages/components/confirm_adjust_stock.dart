@@ -75,7 +75,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
           ),
         ),
         gapW8,
-        Flexible(
+        Expanded(
           child: PrimaryButton(
             text: 'Confirmar'.hardcoded,
             onPressed: confirmAdjust,

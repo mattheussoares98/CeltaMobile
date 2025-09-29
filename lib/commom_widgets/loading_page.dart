@@ -15,7 +15,9 @@ class LoadingPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.disabledColor.withAlpha(50),
-      body: LoadingWidget(size: size, title: title),
+      body: Center(
+        child: LoadingWidget(size: size, title: title),
+      ),
     );
   }
 }

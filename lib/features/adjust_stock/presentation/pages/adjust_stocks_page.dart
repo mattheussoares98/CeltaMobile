@@ -9,7 +9,6 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
-import '../../../adjust_sale_price/presentation/controllers/controllers.dart';
 import 'components/components.dart';
 
 class AdjustStocksPage extends ConsumerStatefulWidget {
@@ -119,7 +118,9 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       ),
     );
 
-    final confirmAdjustStockAsync = ref.watch(confirmAdjustControllerProvider);
+    final confirmAdjustStockAsync = ref.watch(
+      confirmAdjustStockControllerProvider,
+    );
 
     return Stack(
       children: [
