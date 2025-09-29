@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../providers.dart';
 
 part 'login_controller.g.dart';
@@ -24,6 +25,8 @@ class LoginController extends _$LoginController {
             password: password,
             userName: userName,
           );
+      ref.invalidate(userSessionProvider);
+      ref.invalidate(validatedUserSessionProvider);
     });
   }
 }
