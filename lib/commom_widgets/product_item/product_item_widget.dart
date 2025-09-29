@@ -14,6 +14,8 @@ class ProductItemWidget extends ConsumerWidget {
   final BsRoutine routine;
   final Widget? bottom;
   final VoidCallback? onTap;
+  final bool? showDropIcon;
+  final bool? isSelected;
   const ProductItemWidget({
     super.key,
     required this.enterpriseCode,
@@ -21,6 +23,8 @@ class ProductItemWidget extends ConsumerWidget {
     required this.routine,
     this.onTap,
     this.bottom,
+    this.showDropIcon,
+    this.isSelected,
   });
 
   double _getStockQuantityByName(List<StockEntity>? stocks, String name) {
@@ -145,6 +149,11 @@ class ProductItemWidget extends ConsumerWidget {
                   ),
                 ),
               ],
+              if (showDropIcon == true)
+                SelectedIconIndicator(
+                  selected: isSelected ?? false,
+                  productItemWidget: this,
+                ),
               ?bottom,
             ],
           ),
