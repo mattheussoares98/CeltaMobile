@@ -18,13 +18,13 @@ void main() {
     fakeItem1 = AdjustStockItemModel.fromEntity(
       EntityFactory.makeAdjustStockItemEntity().copyWith(
         EnterpriseCode: 1,
-        ProductCode: 101,
+        ProductPackingCode: 101,
       ),
     );
     fakeItem2 = AdjustStockItemModel.fromEntity(
       EntityFactory.makeAdjustStockItemEntity().copyWith(
         EnterpriseCode: 1,
-        ProductCode: 102,
+        ProductPackingCode: 102,
       ),
     );
   });
@@ -42,7 +42,7 @@ void main() {
         },
         '2': {
           // enterpriseCode '2'
-          '201': {'ProductCode': 201, 'EnterpriseCode': 2 /* ... */},
+          '201': {'ProductPackingCode': 201, 'EnterpriseCode': 2 /* ... */},
         },
       };
       when(
@@ -54,7 +54,7 @@ void main() {
 
       // ASSERT
       expect(result.length, 2);
-      expect(result.any((item) => item.ProductCode == 101), isTrue);
+      expect(result.any((item) => item.ProductPackingCode == 101), isTrue);
     });
 
     test('should return an empty list if enterprise has no lot', () async {

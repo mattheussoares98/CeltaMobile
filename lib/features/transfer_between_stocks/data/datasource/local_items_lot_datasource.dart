@@ -35,7 +35,7 @@ class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
   Future<void> addItem(AdjustStockItemModel item) async {
     final allLots = await _getAllLots();
     final enterpriseCodeStr = item.EnterpriseCode.toString();
-    final productCodeStr = item.ProductCode.toString();
+    final productCodeStr = item.ProductPackingCode.toString();
 
     final enterpriseLotMap = Map<String, dynamic>.from(
       allLots[enterpriseCodeStr] ?? {},
@@ -50,7 +50,7 @@ class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
   Future<void> removeItem(AdjustStockItemModel item) async {
     final allLots = await _getAllLots();
     final enterpriseCodeStr = item.EnterpriseCode.toString();
-    final productCodeStr = item.ProductCode.toString();
+    final productCodeStr = item.ProductPackingCode.toString();
 
     if (allLots.containsKey(enterpriseCodeStr)) {
       final enterpriseLotMap = Map<String, dynamic>.from(
