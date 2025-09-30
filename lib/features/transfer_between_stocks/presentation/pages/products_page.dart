@@ -9,6 +9,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
+import '../controllers/controllers.dart';
 import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
@@ -72,6 +73,33 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     }
   }
 
+  Future<void> addInLot(ProductEntity product) async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    ref
+        .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
+        .addItem(
+          AdjustStockItemEntity(
+            EnterpriseCode: product.EnterpriseCode,
+            ProductCode: product.ProductCode,
+            ProductPackingCode: product.ProductPackingCode,
+            JustificationCode: selectedJustification!.CodigoInterno_JustMov,
+            StockTypeCode: selectedOriginStock!.CodigoInterno_TipoEstoque!,
+            StockTypeRecipientCode:
+                selectedDestinyStock!.CodigoInterno_TipoEstoque,
+            IsPendingAdjust: false,
+            Quantity: quantityController.text.toDouble() ?? 0,
+          ),
+        );
+
+    quantityController.clear();
+    setState(() {
+      selectedIndex = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(
@@ -90,10 +118,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       n.showSnackbarOnSuccess(
         context,
         previous: p,
-        message: 'Ajuste efetuado com sucesso'.hardcoded,
+        message: 'Lote enviado com sucesso'.hardcoded,
       );
       n.doOnSuccess(p, () {
-        quantityController.clear();
         setState(() {
           selectedIndex = null;
         });
@@ -206,12 +233,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                               isSelected: selectedIndex == index,
                               bottom: selectedIndex == index
                                   ? AddInLot(
-                                      product: product,
-                                      formKey: formKey,
-                                      enterpriseCode: widget.enterpriseCode,
-                                      selectedJustification:
-                                          selectedJustification,
-                                      selectedStockType: selectedOriginStock,
+                                      addInLot: () => addInLot(product),
                                       quantityController: quantityController,
                                       isLoading:
                                           confirmAdjustStockAsync.isLoading,

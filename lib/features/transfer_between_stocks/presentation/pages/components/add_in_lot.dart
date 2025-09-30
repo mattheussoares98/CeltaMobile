@@ -5,40 +5,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/validators/validators.dart';
 
 class AddInLot extends ConsumerWidget {
-  final ProductEntity product;
-  final TransferJustificationEntity? selectedJustification;
-  final StockTypeEntity? selectedStockType;
   final TextEditingController quantityController;
   final bool isLoading;
   final FocusNode quantityFocusNode;
-  final int enterpriseCode;
-  final GlobalKey<FormState> formKey;
+  final VoidCallback addInLot;
   const AddInLot({
     super.key,
-    required this.product,
-    required this.selectedJustification,
-    required this.selectedStockType,
     required this.quantityController,
     required this.quantityFocusNode,
     required this.isLoading,
-    required this.enterpriseCode,
-    required this.formKey,
+    required this.addInLot,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<void> addInLot() async {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      }
-
-      //TODO add in lot
-    }
-
     final theme = Theme.of(context);
 
     return Row(
