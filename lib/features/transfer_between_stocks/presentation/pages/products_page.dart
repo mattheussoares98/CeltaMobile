@@ -7,7 +7,6 @@ import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
-import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart.dart';
@@ -15,10 +14,26 @@ import 'components/components.dart.dart';
 class ProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
   final EnterpriseEntity? selectedEnterprise;
+  final TransferJustificationEntity? selectedJustification;
+  final StockTypeEntity? selectedOriginStock;
+  final StockTypeEntity? selectedDestinyStock;
+  final void Function(TransferJustificationEntity? value) changeJustification;
+  final void Function(StockTypeEntity? value) changeOriginStock;
+  final void Function(StockTypeEntity? value) changeDestinyStock;
+  final AsyncValue<List<StockTypeEntity>> stocksAsync;
+  final AsyncValue<List<TransferJustificationEntity>> justificationsAsync;
   const ProductsPage({
     super.key,
     required this.enterpriseCode,
     required this.selectedEnterprise,
+    required this.selectedJustification,
+    required this.selectedOriginStock,
+    required this.selectedDestinyStock,
+    required this.changeJustification,
+    required this.changeOriginStock,
+    required this.changeDestinyStock,
+    required this.stocksAsync,
+    required this.justificationsAsync,
   });
 
   @override
@@ -29,9 +44,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   final searchValueController = TextEditingController();
   final quantityController = TextEditingController();
   final quantityFocusNode = FocusNode();
-  TransferJustificationEntity? selectedJustification;
-  StockTypeEntity? selectedOriginStock;
-  StockTypeEntity? selectedDestinyStock;
   int? selectedIndex;
   final formKey = GlobalKey<FormState>();
 
@@ -83,9 +95,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         .addItem(
           ProductLotInfoEntity(
             product: product,
-            selectedJustification: selectedJustification!,
-            selectedOriginStock: selectedOriginStock!,
-            selectedDestinyStock: selectedDestinyStock!,
+            selectedJustification: widget.selectedJustification!,
+            selectedOriginStock: widget.selectedOriginStock!,
+            selectedDestinyStock: widget.selectedDestinyStock!,
             quantity: quantityController.text.toDouble() ?? 0,
           ),
         );
@@ -117,17 +129,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       ),
     );
 
-    final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(widget.enterpriseCode),
-    );
-
-    final justificationsAsync = ref.watch(
-      transferJustificationStateControllerProvider(
-        widget.enterpriseCode,
-        TransferJustificationType.transferBetweenStocks,
-      ),
-    );
-
     final confirmAdjustStockAsync = ref.watch(
       confirmAdjustStockControllerProvider,
     );
@@ -151,47 +152,37 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     searchProducts: _searchProducts,
                   ),
                   JustificationsDropdown(
-                    selectedJustification: selectedJustification,
-                    asyncValue: justificationsAsync,
+                    selectedJustification: widget.selectedJustification,
+                    asyncValue: widget.justificationsAsync,
                     enterpriseCode: widget.enterpriseCode,
                     onChanged: (value) {
-                      setState(() {
-                        selectedJustification = value;
-                      });
+                      widget.changeJustification(value);
 
                       if (value?.CodigoInterno_TipoEstoque != null &&
-                          stocksAsync.value != null) {
-                        setState(() {
-                          selectedOriginStock = stocksAsync.value!.firstWhere(
+                          widget.stocksAsync.value != null) {
+                        widget.changeOriginStock(
+                          widget.stocksAsync.value!.firstWhere(
                             (e) =>
                                 e.CodigoInterno_TipoEstoque ==
                                 value?.CodigoInterno_TipoEstoque,
-                          );
-                        });
+                          ),
+                        );
                       }
                     },
                   ),
                   OriginStocksDropdown(
-                    asyncValue: stocksAsync,
+                    asyncValue: widget.stocksAsync,
                     enterpriseCode: widget.enterpriseCode,
-                    selectedJustification: selectedJustification,
-                    selectedOriginStock: selectedOriginStock,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedOriginStock = value;
-                      });
-                    },
+                    selectedJustification: widget.selectedJustification,
+                    selectedOriginStock: widget.selectedOriginStock,
+                    onChanged: widget.changeOriginStock,
                   ),
                   DestinyStocksDropdown(
-                    asyncValue: stocksAsync,
+                    asyncValue: widget.stocksAsync,
                     enterpriseCode: widget.enterpriseCode,
-                    selectedDestinyStock: selectedDestinyStock,
-                    selectedOriginStock: selectedOriginStock,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedDestinyStock = value;
-                      });
-                    },
+                    selectedDestinyStock: widget.selectedDestinyStock,
+                    selectedOriginStock: widget.selectedOriginStock,
+                    onChanged: widget.changeDestinyStock,
                   ),
                   gapH8,
                   Expanded(

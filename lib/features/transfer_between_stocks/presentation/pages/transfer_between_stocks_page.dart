@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
+import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import '../controllers/controllers.dart';
 import 'pages.dart';
 
@@ -30,6 +31,10 @@ class _TransferBetweenStocksPageState
   int currentIndex = 0;
   final pageController = PageController();
 
+  TransferJustificationEntity? selectedJustification;
+  StockTypeEntity? selectedOriginStock;
+  StockTypeEntity? selectedDestinyStock;
+
   @override
   void dispose() {
     pageController.dispose();
@@ -42,10 +47,41 @@ class _TransferBetweenStocksPageState
     final theme = Theme.of(context);
     final isIos = theme.platform == TargetPlatform.iOS;
 
+    final stocksAsync = ref.watch(
+      stockTypeStateControllerProvider(widget.enterpriseCode),
+    );
+
+    final justificationsAsync = ref.watch(
+      transferJustificationStateControllerProvider(
+        widget.enterpriseCode,
+        TransferJustificationType.transferBetweenStocks,
+      ),
+    );
+
     final pages = [
       ProductsPage(
         enterpriseCode: widget.enterpriseCode,
         selectedEnterprise: widget.selectedEnterprise,
+        selectedJustification: selectedJustification,
+        selectedOriginStock: selectedOriginStock,
+        selectedDestinyStock: selectedDestinyStock,
+        stocksAsync: stocksAsync,
+        justificationsAsync: justificationsAsync,
+        changeJustification: (value) {
+          setState(() {
+            selectedJustification = value;
+          });
+        },
+        changeOriginStock: (value) {
+          setState(() {
+            selectedOriginStock = value;
+          });
+        },
+        changeDestinyStock: (value) {
+          setState(() {
+            selectedDestinyStock = value;
+          });
+        },
       ),
       LotPage(enterpriseCode: widget.enterpriseCode),
     ];
@@ -60,6 +96,16 @@ class _TransferBetweenStocksPageState
         previous: p,
         message: 'Lote enviado com sucesso'.hardcoded,
       );
+      n.doOnSuccess(p, () {
+        ref
+            .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
+            .clearLot(widget.enterpriseCode);
+        pageController.animateToPage(
+          0,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.linear,
+        );
+      });
     });
 
     return Scaffold(
