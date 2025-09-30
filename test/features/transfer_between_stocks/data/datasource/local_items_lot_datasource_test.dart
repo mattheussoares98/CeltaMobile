@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/infraestructure/infrastructure.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/data/datasource/datasource.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -29,7 +30,7 @@ void main() {
     );
   });
 
-  const lotKey = 'items_lot';
+  final lotKey = DatabaseConstants.transferLot.name;
 
   group('load', () {
     test('should return a list of items for the correct enterprise', () async {

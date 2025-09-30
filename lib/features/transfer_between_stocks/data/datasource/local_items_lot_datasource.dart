@@ -1,10 +1,11 @@
 import 'package:hive/hive.dart';
 import '../../../../core/data/models/models.dart';
+import '../../../../core/infraestructure/infrastructure.dart';
 import 'datasource.dart';
 
 class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
   final Box box;
-  static const _lotKey = 'items_lot';
+  final _lotKey = DatabaseConstants.transferLot.name;
 
   LocalItemsLotDatasource(this.box);
 
