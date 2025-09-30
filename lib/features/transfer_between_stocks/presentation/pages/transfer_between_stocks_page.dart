@@ -118,7 +118,7 @@ class _TransferBetweenStocksPageState
                             lotAsync.value
                                     ?.where(
                                       (e) =>
-                                          e.EnterpriseCode ==
+                                          e.product.EnterpriseCode ==
                                           widget.enterpriseCode,
                                     )
                                     .toList()

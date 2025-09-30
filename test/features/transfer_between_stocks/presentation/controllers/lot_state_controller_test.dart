@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/presentation/controllers/lot_state_controller.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/providers.dart';
@@ -15,21 +15,21 @@ class MockLocalItemsLotRepository extends Mock
 
 void main() {
   late MockLocalItemsLotRepository mockRepository;
-  late List<AdjustStockItemEntity> fakeLot;
-  late AdjustStockItemEntity newItem;
+  late List<ProductLotInfoEntity> fakeLot;
+  late ProductLotInfoEntity newItem;
   late int enterpriseCode;
 
   setUp(() {
     mockRepository = MockLocalItemsLotRepository();
     fakeLot = [
-      EntityFactory.makeAdjustStockItemEntity(),
-      EntityFactory.makeAdjustStockItemEntity(),
+      EntityFactory.makeProductLotInfoEntity(),
+      EntityFactory.makeProductLotInfoEntity(),
     ];
-    newItem = EntityFactory.makeAdjustStockItemEntity();
+    newItem = EntityFactory.makeProductLotInfoEntity();
     enterpriseCode = faker.randomGenerator.integer(100);
 
     // Register fallback value for mocktail's `any()` matcher
-    registerFallbackValue(EntityFactory.makeAdjustStockItemEntity());
+    registerFallbackValue(EntityFactory.makeProductLotInfoEntity());
   });
 
   ProviderContainer makeProviderContainer() {
@@ -81,7 +81,7 @@ void main() {
             lotStateControllerProvider(enterpriseCode).future,
           ); // Wait for initial build
 
-          final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
+          final states = <AsyncValue<List<ProductLotInfoEntity>>>[];
           container.listen(
             lotStateControllerProvider(enterpriseCode),
             (_, next) => states.add(next),
@@ -98,7 +98,9 @@ void main() {
           expect(states.last.value, hasLength(3));
           expect(
             states.last.value!.any(
-              (item) => item.ProductPackingCode == newItem.ProductPackingCode,
+              (item) =>
+                  item.product.ProductPackingCode ==
+                  newItem.product.ProductPackingCode,
             ),
             isTrue,
           );
@@ -124,7 +126,7 @@ void main() {
             lotStateControllerProvider(enterpriseCode).future,
           );
 
-          final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
+          final states = <AsyncValue<List<ProductLotInfoEntity>>>[];
           container.listen(
             lotStateControllerProvider(enterpriseCode),
             (_, next) => states.add(next),
@@ -141,7 +143,8 @@ void main() {
           expect(
             states.last.value!.any(
               (item) =>
-                  item.ProductPackingCode == itemToRemove.ProductPackingCode,
+                  item.product.ProductPackingCode ==
+                  itemToRemove.product.ProductPackingCode,
             ),
             isFalse,
           );
@@ -160,7 +163,7 @@ void main() {
         addTearDown(container.dispose);
         await container.read(lotStateControllerProvider(enterpriseCode).future);
 
-        final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
+        final states = <AsyncValue<List<ProductLotInfoEntity>>>[];
         container.listen(
           lotStateControllerProvider(enterpriseCode),
           (_, next) => states.add(next),

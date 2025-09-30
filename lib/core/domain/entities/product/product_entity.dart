@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import 'product.dart';
@@ -130,4 +131,93 @@ class ProductEntity extends Equatable {
     Stocks,
     LastBuyEntrances,
   ];
+
+  ProductEntity copyWith({
+    int? EnterpriseCode,
+    int? ProductCode,
+    int? ProductPackingCode,
+    String? PLU,
+    String? Name,
+    String? PackingQuantity,
+    String? BalanceLabelType,
+    String? StorageAreaAddress,
+    double? Value,
+    double? BalanceLabelQuantity,
+    double? RetailPracticedPrice,
+    double? RetailSalePrice,
+    double? RetailOfferPrice,
+    double? WholePracticedPrice,
+    double? WholeSalePrice,
+    double? WholeOfferPrice,
+    double? ECommercePracticedPrice,
+    double? ECommerceSalePrice,
+    double? ECommerceOfferPrice,
+    double? MinimumWholeQuantity,
+    double? OperationalCost,
+    double? ReplacementCost,
+    double? ReplacementCostMidle,
+    double? LiquidCost,
+    double? LiquidCostMidle,
+    double? RealCost,
+    double? RealLiquidCost,
+    double? FiscalCost,
+    double? FiscalLiquidCost,
+    bool? PendantPrintLabel,
+    bool? AlterationPriceForAllPackings,
+    bool? IsFatherOfGrate,
+    bool? IsChildOfGrate,
+    bool? InClass,
+    bool? MarkUpdateClassInAdjustSalePriceIndividual,
+    PriceCostEntity? PriceCost,
+    List<StockByEnterpriseAssociatedEntity>? StockByEnterpriseAssociateds,
+    List<StockEntity>? Stocks,
+    List<LastBuyEntranceEntity>? LastBuyEntrances,
+  }) {
+    return ProductEntity(
+      EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
+      ProductCode: ProductCode ?? this.ProductCode,
+      ProductPackingCode: ProductPackingCode ?? this.ProductPackingCode,
+      PLU: PLU ?? this.PLU,
+      Name: Name ?? this.Name,
+      PackingQuantity: PackingQuantity ?? this.PackingQuantity,
+      BalanceLabelType: BalanceLabelType ?? this.BalanceLabelType,
+      StorageAreaAddress: StorageAreaAddress ?? this.StorageAreaAddress,
+      Value: Value ?? this.Value,
+      BalanceLabelQuantity: BalanceLabelQuantity ?? this.BalanceLabelQuantity,
+      RetailPracticedPrice: RetailPracticedPrice ?? this.RetailPracticedPrice,
+      RetailSalePrice: RetailSalePrice ?? this.RetailSalePrice,
+      RetailOfferPrice: RetailOfferPrice ?? this.RetailOfferPrice,
+      WholePracticedPrice: WholePracticedPrice ?? this.WholePracticedPrice,
+      WholeSalePrice: WholeSalePrice ?? this.WholeSalePrice,
+      WholeOfferPrice: WholeOfferPrice ?? this.WholeOfferPrice,
+      ECommercePracticedPrice:
+          ECommercePracticedPrice ?? this.ECommercePracticedPrice,
+      ECommerceSalePrice: ECommerceSalePrice ?? this.ECommerceSalePrice,
+      ECommerceOfferPrice: ECommerceOfferPrice ?? this.ECommerceOfferPrice,
+      MinimumWholeQuantity: MinimumWholeQuantity ?? this.MinimumWholeQuantity,
+      OperationalCost: OperationalCost ?? this.OperationalCost,
+      ReplacementCost: ReplacementCost ?? this.ReplacementCost,
+      ReplacementCostMidle: ReplacementCostMidle ?? this.ReplacementCostMidle,
+      LiquidCost: LiquidCost ?? this.LiquidCost,
+      LiquidCostMidle: LiquidCostMidle ?? this.LiquidCostMidle,
+      RealCost: RealCost ?? this.RealCost,
+      RealLiquidCost: RealLiquidCost ?? this.RealLiquidCost,
+      FiscalCost: FiscalCost ?? this.FiscalCost,
+      FiscalLiquidCost: FiscalLiquidCost ?? this.FiscalLiquidCost,
+      PendantPrintLabel: PendantPrintLabel ?? this.PendantPrintLabel,
+      AlterationPriceForAllPackings:
+          AlterationPriceForAllPackings ?? this.AlterationPriceForAllPackings,
+      IsFatherOfGrate: IsFatherOfGrate ?? this.IsFatherOfGrate,
+      IsChildOfGrate: IsChildOfGrate ?? this.IsChildOfGrate,
+      InClass: InClass ?? this.InClass,
+      MarkUpdateClassInAdjustSalePriceIndividual:
+          MarkUpdateClassInAdjustSalePriceIndividual ??
+          this.MarkUpdateClassInAdjustSalePriceIndividual,
+      PriceCost: PriceCost ?? this.PriceCost,
+      StockByEnterpriseAssociateds:
+          StockByEnterpriseAssociateds ?? this.StockByEnterpriseAssociateds,
+      Stocks: Stocks ?? this.Stocks,
+      LastBuyEntrances: LastBuyEntrances ?? this.LastBuyEntrances,
+    );
+  }
 }

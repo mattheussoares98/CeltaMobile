@@ -8,12 +8,14 @@ class ProductLotInfoModel extends Equatable {
   final TransferJustificationModel selectedJustification;
   final StockTypeModel selectedOriginStock;
   final StockTypeModel selectedDestinyStock;
+  final double quantity;
 
   const ProductLotInfoModel({
     required this.product,
     required this.selectedJustification,
     required this.selectedOriginStock,
     required this.selectedDestinyStock,
+    required this.quantity,
   });
 
   @override
@@ -22,6 +24,7 @@ class ProductLotInfoModel extends Equatable {
     selectedJustification,
     selectedOriginStock,
     selectedDestinyStock,
+    quantity,
   ];
 
   factory ProductLotInfoModel.fromJson(Map<String, dynamic> json) {
@@ -31,6 +34,7 @@ class ProductLotInfoModel extends Equatable {
         json['selectedJustification'],
       ),
       selectedOriginStock: StockTypeModel.fromJson(json['selectedOriginStock']),
+      quantity: double.tryParse(json['quantity'].toString()) ?? 0,
       selectedDestinyStock: StockTypeModel.fromJson(
         json['selectedDestinyStock'],
       ),
@@ -39,9 +43,9 @@ class ProductLotInfoModel extends Equatable {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'product': product.toJson(),
-    'justification': selectedJustification.toJson(),
-    'originStock': selectedOriginStock.toJson(),
-    'destinyStock': selectedDestinyStock.toJson(),
+    'selectedJustification': selectedJustification.toJson(),
+    'selectedOriginStock': selectedOriginStock.toJson(),
+    'selectedDestinyStock': selectedDestinyStock.toJson(),
   };
 
   factory ProductLotInfoModel.fromEntity(ProductLotInfoEntity entity) {
@@ -56,6 +60,7 @@ class ProductLotInfoModel extends Equatable {
       selectedDestinyStock: StockTypeModel.fromEntity(
         entity.selectedDestinyStock,
       ),
+      quantity: entity.quantity,
     );
   }
 
@@ -64,5 +69,6 @@ class ProductLotInfoModel extends Equatable {
     selectedJustification: selectedJustification.toEntity(),
     selectedOriginStock: selectedOriginStock.toEntity(),
     selectedDestinyStock: selectedDestinyStock.toEntity(),
+    quantity: quantity,
   );
 }

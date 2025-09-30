@@ -1,8 +1,8 @@
-import '../../../../core/domain/entities/entities.dart';
+import '../entities/entities.dart';
 
 abstract class ILocalItemsLotRepository {
-  Future<void> addItem(AdjustStockItemEntity item);
-  Future<void> removeItem(AdjustStockItemEntity item);
-  Future<List<AdjustStockItemEntity>> load(int enterpriseCode);
+  Future<void> addItem(ProductLotInfoEntity item);
+  Future<void> removeItem(ProductLotInfoEntity item);
+  Future<List<ProductLotInfoEntity>> load(int enterpriseCode);
   Future<void> clear(int enterpriseCode);
 }

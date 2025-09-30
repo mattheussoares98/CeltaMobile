@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../../core/domain/entities/entities.dart';
+import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
 part 'lot_state_controller.g.dart';
@@ -8,11 +8,11 @@ part 'lot_state_controller.g.dart';
 @riverpod
 class LotStateController extends _$LotStateController {
   @override
-  Future<List<AdjustStockItemEntity>> build(int enterpriseCode) {
+  Future<List<ProductLotInfoEntity>> build(int enterpriseCode) {
     return ref.watch(localItemsLotRepositoryProvider).load(enterpriseCode);
   }
 
-  Future<void> addItem(AdjustStockItemEntity item) async {
+  Future<void> addItem(ProductLotInfoEntity item) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localItemsLotRepositoryProvider);
@@ -20,7 +20,10 @@ class LotStateController extends _$LotStateController {
 
       final previousState = state.valueOrNull ?? [];
       final updatedList = previousState
-          .where((i) => i.ProductPackingCode != item.ProductPackingCode)
+          .where(
+            (i) =>
+                i.product.ProductPackingCode != item.product.ProductPackingCode,
+          )
           .toList();
       updatedList.add(item);
 
@@ -28,7 +31,7 @@ class LotStateController extends _$LotStateController {
     });
   }
 
-  Future<void> removeItem(AdjustStockItemEntity item) async {
+  Future<void> removeItem(ProductLotInfoEntity item) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localItemsLotRepositoryProvider);
@@ -36,7 +39,10 @@ class LotStateController extends _$LotStateController {
 
       final previousState = state.valueOrNull ?? [];
       final newState = previousState
-          .where((i) => i.ProductPackingCode != item.ProductPackingCode)
+          .where(
+            (i) =>
+                i.product.ProductPackingCode != item.product.ProductPackingCode,
+          )
           .toList();
 
       return newState;

@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 
 class EntityFactory {
@@ -263,5 +264,14 @@ class EntityFactory {
         StockTypeRecipientCode: faker.randomGenerator.integer(100),
         IsPendingAdjust: faker.randomGenerator.boolean(),
         Quantity: faker.randomGenerator.decimal(),
+      );
+
+  static ProductLotInfoEntity makeProductLotInfoEntity() =>
+      ProductLotInfoEntity(
+        product: makeProductEntity(),
+        selectedJustification: makeTransferJustificationEntity(),
+        selectedOriginStock: makeStockTypeEntity(),
+        selectedDestinyStock: makeStockTypeEntity(),
+        quantity: faker.randomGenerator.decimal(),
       );
 }

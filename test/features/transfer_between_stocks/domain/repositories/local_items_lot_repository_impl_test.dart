@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/data/models/models.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/repositories/repositories.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,7 +16,7 @@ class LocalItemsLotDatasourceSpy extends Mock
     when(() => this.clear(any())).thenAnswer((_) async {});
   }
 
-  void mockLoad(List<AdjustStockItemModel> response) {
+  void mockLoad(List<ProductLotInfoModel> response) {
     when(() => this.load(any())).thenAnswer((_) async => response);
   }
 }
@@ -24,7 +24,7 @@ class LocalItemsLotDatasourceSpy extends Mock
 void main() {
   late LocalItemsLotRepositoryImpl sut;
   late LocalItemsLotDatasourceSpy mockDatasource;
-  late List<AdjustStockItemEntity> itemsEntities;
+  late List<ProductLotInfoEntity> itemsEntities;
   late int enterpriseCode;
 
   setUp(() {
@@ -32,13 +32,13 @@ void main() {
     sut = LocalItemsLotRepositoryImpl(mockDatasource);
 
     itemsEntities = [
-      EntityFactory.makeAdjustStockItemEntity(),
-      EntityFactory.makeAdjustStockItemEntity(),
-      EntityFactory.makeAdjustStockItemEntity(),
+      EntityFactory.makeProductLotInfoEntity(),
+      EntityFactory.makeProductLotInfoEntity(),
+      EntityFactory.makeProductLotInfoEntity(),
     ];
 
     mockDatasource.mockLoad(
-      itemsEntities.map((e) => AdjustStockItemModel.fromEntity(e)).toList(),
+      itemsEntities.map((e) => ProductLotInfoModel.fromEntity(e)).toList(),
     );
 
     enterpriseCode = faker.randomGenerator.integer(100);
@@ -46,9 +46,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(
-      AdjustStockItemModel.fromEntity(
-        EntityFactory.makeAdjustStockItemEntity(),
-      ),
+      ProductLotInfoModel.fromEntity(EntityFactory.makeProductLotInfoEntity()),
     );
   });
 
@@ -60,7 +58,7 @@ void main() {
 
         verify(
           () => mockDatasource.addItem(
-            AdjustStockItemModel.fromEntity(itemsEntities.first),
+            ProductLotInfoModel.fromEntity(itemsEntities.first),
           ),
         );
       },
@@ -75,7 +73,7 @@ void main() {
 
         verify(
           () => mockDatasource.removeItem(
-            AdjustStockItemModel.fromEntity(itemsEntities.first),
+            ProductLotInfoModel.fromEntity(itemsEntities.first),
           ),
         );
       },

@@ -8,6 +8,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
+import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart.dart';
 
@@ -80,16 +81,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     ref
         .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
         .addItem(
-          AdjustStockItemEntity(
-            EnterpriseCode: product.EnterpriseCode,
-            ProductCode: product.ProductCode,
-            ProductPackingCode: product.ProductPackingCode,
-            JustificationCode: selectedJustification!.CodigoInterno_JustMov,
-            StockTypeCode: selectedOriginStock!.CodigoInterno_TipoEstoque!,
-            StockTypeRecipientCode:
-                selectedDestinyStock!.CodigoInterno_TipoEstoque,
-            IsPendingAdjust: false,
-            Quantity: quantityController.text.toDouble() ?? 0,
+          ProductLotInfoEntity(
+            product: product,
+            selectedJustification: selectedJustification!,
+            selectedOriginStock: selectedOriginStock!,
+            selectedDestinyStock: selectedDestinyStock!,
+            quantity: quantityController.text.toDouble() ?? 0,
           ),
         );
 
@@ -211,10 +208,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                             final productInLotIndex = lotAsync.value
                                 ?.indexWhere(
                                   (e) =>
-                                      e.ProductPackingCode ==
+                                      e.product.ProductPackingCode ==
                                       product.ProductPackingCode,
                                 );
-                            AdjustStockItemEntity? lotItem;
+                            ProductLotInfoEntity? lotItem;
                             if (productInLotIndex != -1 &&
                                 productInLotIndex != null) {
                               lotItem = lotAsync.value?[productInLotIndex];
@@ -234,7 +231,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                                 children: [
                                   if (lotItem != null)
                                     Text(
-                                      '${lotItem.Quantity.toString().toBrazilianNumber(3)} qts no lote',
+                                      '${lotItem.quantity.toString().toBrazilianNumber(3)} qts no lote',
                                       textAlign: TextAlign.start,
                                     ),
                                   if (selectedIndex == index)

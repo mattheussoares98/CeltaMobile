@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/infraestructure/infrastructure.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/data/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -9,23 +9,27 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late LocalItemsLotDatasource sut;
   late MockBox mockBox;
-  late AdjustStockItemModel fakeItem1;
-  late AdjustStockItemModel fakeItem2;
+  late ProductLotInfoModel fakeItem1;
+  late ProductLotInfoModel fakeItem2;
 
   setUp(() {
     mockBox = MockBox();
     sut = LocalItemsLotDatasource(mockBox);
 
-    fakeItem1 = AdjustStockItemModel.fromEntity(
-      EntityFactory.makeAdjustStockItemEntity().copyWith(
-        EnterpriseCode: 1,
-        ProductPackingCode: 101,
+    fakeItem1 = ProductLotInfoModel.fromEntity(
+      EntityFactory.makeProductLotInfoEntity().copyWith(
+        product: EntityFactory.makeProductEntity().copyWith(
+          EnterpriseCode: 1,
+          ProductPackingCode: 101,
+        ),
       ),
     );
-    fakeItem2 = AdjustStockItemModel.fromEntity(
-      EntityFactory.makeAdjustStockItemEntity().copyWith(
-        EnterpriseCode: 1,
-        ProductPackingCode: 102,
+    fakeItem2 = ProductLotInfoModel.fromEntity(
+      EntityFactory.makeProductLotInfoEntity().copyWith(
+        product: EntityFactory.makeProductEntity().copyWith(
+          EnterpriseCode: 1,
+          ProductPackingCode: 102,
+        ),
       ),
     );
   });
@@ -55,7 +59,10 @@ void main() {
 
       // ASSERT
       expect(result.length, 2);
-      expect(result.any((item) => item.ProductPackingCode == 101), isTrue);
+      expect(
+        result.any((item) => item.product.ProductPackingCode == 101),
+        isTrue,
+      );
     });
 
     test('should return an empty list if enterprise has no lot', () async {

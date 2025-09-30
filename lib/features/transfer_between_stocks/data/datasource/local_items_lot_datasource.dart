@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import '../../../../core/data/models/models.dart';
 import '../../../../core/infraestructure/infrastructure.dart';
+import '../models/models.dart';
 import 'datasource.dart';
 
 class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
@@ -20,23 +20,23 @@ class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
   }
 
   @override
-  Future<List<AdjustStockItemModel>> load(int enterpriseCode) async {
+  Future<List<ProductLotInfoModel>> load(int enterpriseCode) async {
     final allLots = await _getAllLots();
     final enterpriseLotMap = allLots[enterpriseCode.toString()] as Map? ?? {};
 
     return enterpriseLotMap.values
         .map(
           (itemMap) =>
-              AdjustStockItemModel.fromJson(Map<String, dynamic>.from(itemMap)),
+              ProductLotInfoModel.fromJson(Map<String, dynamic>.from(itemMap)),
         )
         .toList();
   }
 
   @override
-  Future<void> addItem(AdjustStockItemModel item) async {
+  Future<void> addItem(ProductLotInfoModel item) async {
     final allLots = await _getAllLots();
-    final enterpriseCodeStr = item.EnterpriseCode.toString();
-    final productCodeStr = item.ProductPackingCode.toString();
+    final enterpriseCodeStr = item.product.EnterpriseCode.toString();
+    final productCodeStr = item.product.ProductPackingCode.toString();
 
     final enterpriseLotMap = Map<String, dynamic>.from(
       allLots[enterpriseCodeStr] ?? {},
@@ -48,10 +48,10 @@ class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
   }
 
   @override
-  Future<void> removeItem(AdjustStockItemModel item) async {
+  Future<void> removeItem(ProductLotInfoModel item) async {
     final allLots = await _getAllLots();
-    final enterpriseCodeStr = item.EnterpriseCode.toString();
-    final productCodeStr = item.ProductPackingCode.toString();
+    final enterpriseCodeStr = item.product.EnterpriseCode.toString();
+    final productCodeStr = item.product.ProductPackingCode.toString();
 
     if (allLots.containsKey(enterpriseCodeStr)) {
       final enterpriseLotMap = Map<String, dynamic>.from(
