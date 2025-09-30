@@ -149,6 +149,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       confirmAdjustStockControllerProvider,
     );
 
+    final lotAsync = ref.watch(
+      lotStateControllerProvider(widget.enterpriseCode),
+    );
+
     return Stack(
       children: [
         Scaffold(
@@ -222,6 +226,19 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                           itemCount: products.length,
                           itemBuilder: (_, index) {
                             final product = products[index];
+
+                            final productInLotIndex = lotAsync.value
+                                ?.indexWhere(
+                                  (e) =>
+                                      e.ProductPackingCode ==
+                                      product.ProductPackingCode,
+                                );
+                            AdjustStockItemEntity? lotItem;
+                            if (productInLotIndex != -1 &&
+                                productInLotIndex != null) {
+                              lotItem = lotAsync.value?[productInLotIndex];
+                            }
+
                             return ProductItemWidget(
                               enterpriseCode: widget.enterpriseCode,
                               product: product,
@@ -231,15 +248,24 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                               },
                               showDropIcon: true,
                               isSelected: selectedIndex == index,
-                              bottom: selectedIndex == index
-                                  ? AddInLot(
+                              bottom: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  if (lotItem != null)
+                                    Text(
+                                      '${lotItem.Quantity.toString().toBrazilianNumber(3)} qts no lote',
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  if (selectedIndex == index)
+                                    AddInLot(
                                       addInLot: () => addInLot(product),
                                       quantityController: quantityController,
                                       isLoading:
                                           confirmAdjustStockAsync.isLoading,
                                       quantityFocusNode: quantityFocusNode,
-                                    )
-                                  : null,
+                                    ),
+                                ],
+                              ),
                             );
                           },
                         );

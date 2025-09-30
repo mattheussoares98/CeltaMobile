@@ -100,7 +100,12 @@ class ProductItemWidget extends ConsumerWidget {
               InkWell(
                 onTap: onTap,
                 child: Padding(
-                  padding: const EdgeInsets.all(Sizes.p8),
+                  padding: const EdgeInsets.fromLTRB(
+                    Sizes.p8,
+                    Sizes.p8,
+                    Sizes.p8,
+                    0,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -173,7 +178,15 @@ class ProductItemWidget extends ConsumerWidget {
             ],
           ),
           if (bottom != null)
-            Padding(padding: const EdgeInsets.all(Sizes.p8), child: bottom),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                0,
+                Sizes.p8,
+                Sizes.p8,
+              ),
+              child: bottom,
+            ),
         ],
       ),
     );
