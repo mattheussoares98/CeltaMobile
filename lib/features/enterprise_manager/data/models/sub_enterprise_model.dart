@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/domain/entities/entities.dart';
+
 class SubEnterpriseModel extends Equatable {
   final String cnpj;
   final String name;
@@ -20,4 +22,12 @@ class SubEnterpriseModel extends Equatable {
     'personalizedCode': personalizedCode,
     'id': id,
   };
+
+  factory SubEnterpriseModel.fromEntity(SubEnterpriseEntity entity) =>
+      SubEnterpriseModel(
+        cnpj: entity.cnpjNumber,
+        name: entity.name,
+        personalizedCode: entity.personalizedCode,
+        id: entity.id!,
+      );
 }

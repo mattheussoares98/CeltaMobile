@@ -29,7 +29,7 @@ class TransferJustificationModel extends Equatable {
     CodigoInterno_TipoEstoque,
   ];
 
-  factory TransferJustificationModel.fromJson(Map<String, dynamic> json) =>
+  factory TransferJustificationModel.fromJson(Map json) =>
       TransferJustificationModel(
         CodigoInterno_JustMov: json["CodigoInterno_JustMov"],
         Descricao_JustMov: json["Descricao_JustMov"],

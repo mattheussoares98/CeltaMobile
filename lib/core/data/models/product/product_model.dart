@@ -132,7 +132,7 @@ class ProductModel extends Equatable {
     LastBuyEntrances,
   ];
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
+  factory ProductModel.fromJson(Map json) {
     return ProductModel(
       EnterpriseCode: json['EnterpriseCode'] as int,
       ProductCode: json['ProductCode'] as int,

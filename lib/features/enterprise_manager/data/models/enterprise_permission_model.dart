@@ -21,7 +21,7 @@ class EnterprisePermissionModel extends Equatable {
   @override
   List<Object?> get props => [id, name, baseUrl, subEnterprises, globalModules];
 
-  factory EnterprisePermissionModel.fromJson(Map<String, dynamic> json) {
+  factory EnterprisePermissionModel.fromJson(Map json) {
     return EnterprisePermissionModel(
       id: json['id'],
       name: json['name'],

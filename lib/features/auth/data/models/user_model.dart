@@ -23,7 +23,7 @@ class UserModel extends Equatable {
     CrossIdentity_Usuario,
   ];
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromJson(Map json) {
     return UserModel(
       name: json['name'],
       enterpriseName: json['enterpriseName'],

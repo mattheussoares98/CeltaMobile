@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../features/enterprise_manager/data/models/models.dart';
 import '../entities.dart';
 
 class EnterpriseEntity extends Equatable {
@@ -97,4 +98,26 @@ class EnterpriseEntity extends Equatable {
       InscriptionNumber: InscriptionNumber ?? this.InscriptionNumber,
     );
   }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'name': name,
+    'id': id,
+    'sub_enterprises': subEnterprises
+        ?.map((e) => SubEnterpriseModel.fromEntity(e).toJson())
+        .toList(),
+    'base_url': baseUrl,
+    'Code': Code,
+    'PersonalizedCode': PersonalizedCode,
+    'CnpjNumber': CnpjNumber,
+    'CodigoInternoVendaMobile_ModeloPedido':
+        CodigoInternoVendaMobile_ModeloPedido,
+    'ProductCodeSizeOfBalanceLabel': ProductCodeSizeOfBalanceLabel,
+    'UseRetailSale': UseRetailSale,
+    'UseWholeSale': UseWholeSale,
+    'UseEcommerceSale': UseEcommerceSale,
+    'EnterpriseParticipateEnterpriseGroup':
+        EnterpriseParticipateEnterpriseGroup,
+    'ProductCodeWithCheckerDigit': ProductCodeWithCheckerDigit,
+    'InscriptionNumber': InscriptionNumber,
+  };
 }

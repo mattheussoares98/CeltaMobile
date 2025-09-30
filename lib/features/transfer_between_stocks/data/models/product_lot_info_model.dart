@@ -27,14 +27,14 @@ class ProductLotInfoModel extends Equatable {
     quantity,
   ];
 
-  factory ProductLotInfoModel.fromJson(Map<String, dynamic> json) {
+  factory ProductLotInfoModel.fromJson(Map json) {
     return ProductLotInfoModel(
       product: ProductModel.fromJson(json['product']),
       selectedJustification: TransferJustificationModel.fromJson(
         json['selectedJustification'],
       ),
       selectedOriginStock: StockTypeModel.fromJson(json['selectedOriginStock']),
-      quantity: double.tryParse(json['quantity'].toString()) ?? 0,
+      quantity: json['quantity'],
       selectedDestinyStock: StockTypeModel.fromJson(
         json['selectedDestinyStock'],
       ),
@@ -46,6 +46,7 @@ class ProductLotInfoModel extends Equatable {
     'selectedJustification': selectedJustification.toJson(),
     'selectedOriginStock': selectedOriginStock.toJson(),
     'selectedDestinyStock': selectedDestinyStock.toJson(),
+    'quantity': quantity,
   };
 
   factory ProductLotInfoModel.fromEntity(ProductLotInfoEntity entity) {

@@ -22,15 +22,12 @@ class UserSessionModel extends Equatable {
     'enterprise': enterprise?.toJson(),
   };
 
-  factory UserSessionModel.fromJson(Map<String, dynamic> json) =>
-      UserSessionModel(
-        user: UserModel.fromJson(Map<String, dynamic>.from(json['user'])),
-        enterprise: json['enterprise'] == null
-            ? null
-            : SupabaseEnterpriseModel.fromJson(
-                Map<String, dynamic>.from(json['enterprise']),
-              ),
-      );
+  factory UserSessionModel.fromJson(Map json) => UserSessionModel(
+    user: UserModel.fromJson(json['user']),
+    enterprise: json['enterprise'] == null
+        ? null
+        : SupabaseEnterpriseModel.fromJson(json['enterprise']),
+  );
 
   factory UserSessionModel.fromEntity(UserSessionEntity entity) =>
       UserSessionModel(

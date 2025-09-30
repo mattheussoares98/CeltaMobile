@@ -24,6 +24,6 @@ class LocalAppSettingsDatasource implements IAppSettingsDatasource {
       );
     }
 
-    return AppSettingsModel.fromJson(Map<String, dynamic>.from(value));
+    return AppSettingsModel.fromJson(value);
   }
 }

@@ -41,7 +41,7 @@ class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
     if (localSession == null) {
       return null;
     } else {
-      return UserSessionModel.fromJson(Map<String, dynamic>.from(localSession));
+      return UserSessionModel.fromJson(localSession);
     }
   }
 

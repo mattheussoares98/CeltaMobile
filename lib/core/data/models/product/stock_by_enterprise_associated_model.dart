@@ -19,7 +19,7 @@ class StockByEnterpriseAssociatedModel extends Equatable {
     StorageAreaAddress,
   ];
 
-  factory StockByEnterpriseAssociatedModel.fromJson(Map<String, dynamic> json) {
+  factory StockByEnterpriseAssociatedModel.fromJson(Map json) {
     return StockByEnterpriseAssociatedModel(
       Enterprise: json['Enterprise'],
       StockBalanceForSale: json['StockBalanceForSale'],

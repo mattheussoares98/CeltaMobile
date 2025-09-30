@@ -35,17 +35,16 @@ class AdjustStockItemModel extends Equatable {
     Quantity,
   ];
 
-  factory AdjustStockItemModel.fromJson(Map<String, dynamic> json) =>
-      AdjustStockItemModel(
-        EnterpriseCode: json['EnterpriseCode'],
-        ProductCode: json['ProductCode'],
-        ProductPackingCode: json['ProductPackingCode'],
-        JustificationCode: json['JustificationCode'],
-        StockTypeCode: json['StockTypeCode'],
-        StockTypeRecipientCode: json['StockTypeRecipientCode'],
-        IsPendingAdjust: json['IsPendingAdjust'],
-        Quantity: json['Quantity'],
-      );
+  factory AdjustStockItemModel.fromJson(Map json) => AdjustStockItemModel(
+    EnterpriseCode: json['EnterpriseCode'],
+    ProductCode: json['ProductCode'],
+    ProductPackingCode: json['ProductPackingCode'],
+    JustificationCode: json['JustificationCode'],
+    StockTypeCode: json['StockTypeCode'],
+    StockTypeRecipientCode: json['StockTypeRecipientCode'],
+    IsPendingAdjust: json['IsPendingAdjust'],
+    Quantity: json['Quantity'],
+  );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'EnterpriseCode': EnterpriseCode,

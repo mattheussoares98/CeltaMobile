@@ -26,7 +26,7 @@ class ModulePermissionModel extends Equatable {
     isDefinedAtCnpjLevel,
   ];
 
-  factory ModulePermissionModel.fromJson(Map<String, dynamic> json) {
+  factory ModulePermissionModel.fromJson(Map json) {
     return ModulePermissionModel(
       id: json['id'],
       moduleKey: json['module_key'],

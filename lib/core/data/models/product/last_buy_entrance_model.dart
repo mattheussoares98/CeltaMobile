@@ -28,7 +28,7 @@ class LastBuyEntranceModel extends Equatable {
     Quantity,
   ];
 
-  factory LastBuyEntranceModel.fromJson(Map<String, dynamic> json) {
+  factory LastBuyEntranceModel.fromJson(Map json) {
     return LastBuyEntranceModel(
       Number: json['Number'],
       EntranceDate: json['EntranceDate'],

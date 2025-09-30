@@ -19,7 +19,7 @@ class SupabaseEnterpriseModel extends Equatable {
   @override
   List<Object?> get props => [id, name, subEnterprises, baseUrl];
 
-  factory SupabaseEnterpriseModel.fromJson(Map<String, dynamic> map) {
+  factory SupabaseEnterpriseModel.fromJson(Map map) {
     return SupabaseEnterpriseModel(
       id: map['id'] as int,
       name: map['name'] as String,

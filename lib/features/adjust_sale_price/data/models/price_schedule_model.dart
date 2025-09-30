@@ -89,38 +89,37 @@ class PriceScheduleModel extends Equatable {
     OfferSchedule,
   ];
 
-  factory PriceScheduleModel.fromJson(Map<String, dynamic> data) =>
-      PriceScheduleModel(
-        Code: data['Code'] as int,
-        FatherCode: data['FatherCode'] as int?,
-        BrotherCode: data['BrotherCode'] as int?,
-        User: data['User'] as String,
-        Date: DateTime.parse(data['Date']),
-        ExecutionDate: DateTime.parse(data['ExecutionDate']),
-        ExecutedDate: data['ExecutedDate'] == null
-            ? null
-            : DateTime.parse(data['ExecutedDate']),
-        PriceType: data['PriceType'] as int,
-        PriceTypeString: data['PriceTypeString'] as String,
-        OriginalPrice: data['OriginalPrice'] as double,
-        Price: data['Price'] as double,
-        LastPrice: data['LastPrice'] as double,
-        RoundedPrice: data['RoundedPrice'] as bool,
-        AlteredByEnterpriseGroup: data['AlteredByEnterpriseGroup'] as bool,
-        AlteredByClass: data['AlteredByClass'] as bool,
-        AlteredByPackings: data['AlteredByPackings'] as bool,
-        AlteredByGrid: data['AlteredByGrid'] as bool,
-        UpdateClass: data['UpdateClass'] as bool,
-        UpdateEnterpriseOperationalGroup:
-            data['UpdateEnterpriseOperationalGroup'] as bool,
-        Origin: data['Origin'] as int,
-        OriginString: data['OriginString'] as String,
-        IsFather: data['IsFather'] as bool,
-        IsBrother: data['IsBrother'] as bool,
-        IsExecuted: data['IsExecuted'] as bool,
-        IsFinished: data['IsFinished'] as bool,
-        OfferSchedule: data['OfferSchedule'] as String,
-      );
+  factory PriceScheduleModel.fromJson(Map data) => PriceScheduleModel(
+    Code: data['Code'] as int,
+    FatherCode: data['FatherCode'] as int?,
+    BrotherCode: data['BrotherCode'] as int?,
+    User: data['User'] as String,
+    Date: DateTime.parse(data['Date']),
+    ExecutionDate: DateTime.parse(data['ExecutionDate']),
+    ExecutedDate: data['ExecutedDate'] == null
+        ? null
+        : DateTime.parse(data['ExecutedDate']),
+    PriceType: data['PriceType'] as int,
+    PriceTypeString: data['PriceTypeString'] as String,
+    OriginalPrice: data['OriginalPrice'] as double,
+    Price: data['Price'] as double,
+    LastPrice: data['LastPrice'] as double,
+    RoundedPrice: data['RoundedPrice'] as bool,
+    AlteredByEnterpriseGroup: data['AlteredByEnterpriseGroup'] as bool,
+    AlteredByClass: data['AlteredByClass'] as bool,
+    AlteredByPackings: data['AlteredByPackings'] as bool,
+    AlteredByGrid: data['AlteredByGrid'] as bool,
+    UpdateClass: data['UpdateClass'] as bool,
+    UpdateEnterpriseOperationalGroup:
+        data['UpdateEnterpriseOperationalGroup'] as bool,
+    Origin: data['Origin'] as int,
+    OriginString: data['OriginString'] as String,
+    IsFather: data['IsFather'] as bool,
+    IsBrother: data['IsBrother'] as bool,
+    IsExecuted: data['IsExecuted'] as bool,
+    IsFinished: data['IsFinished'] as bool,
+    OfferSchedule: data['OfferSchedule'] as String,
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': Code,

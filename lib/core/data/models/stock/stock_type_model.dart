@@ -20,7 +20,7 @@ class StockTypeModel extends Equatable {
     FlagInterno_TipoEstoque,
   ];
 
-  factory StockTypeModel.fromJson(Map<String, dynamic> json) {
+  factory StockTypeModel.fromJson(Map json) {
     return StockTypeModel(
       CodigoInterno_TipoEstoque: json['CodigoInterno_TipoEstoque'],
       Nome_TipoEstoque: json['Nome_TipoEstoque'],

@@ -47,22 +47,21 @@ class SoapEnterpriseModel extends Equatable {
     InscriptionNumber,
   ];
 
-  factory SoapEnterpriseModel.fromJson(Map<String, dynamic> json) =>
-      SoapEnterpriseModel(
-        Code: json["Code"],
-        PersonalizedCode: json['PersonalizedCode'],
-        Name: json['Name'],
-        CnpjNumber: json['CnpjNumber'],
-        UseEcommerceSale: json['SaleTypeECommerce'],
-        UseRetailSale: json['SaleTypeRetail'],
-        UseWholeSale: json['SaleTypeWholeSale'],
-        CodigoInternoVendaMobile_ModeloPedido: json["SaleRequestTypeCode"],
-        EnterpriseParticipateEnterpriseGroup:
-            json["EnterpriseParticipateEnterpriseGroup"],
-        ProductCodeSizeOfBalanceLabel: json["ProductCodeSizeOfBalanceLabel"],
-        ProductCodeWithCheckerDigit: json["ProductCodeWithCheckerDigit"],
-        InscriptionNumber: json["InscriptionNumber"],
-      );
+  factory SoapEnterpriseModel.fromJson(Map json) => SoapEnterpriseModel(
+    Code: json["Code"],
+    PersonalizedCode: json['PersonalizedCode'],
+    Name: json['Name'],
+    CnpjNumber: json['CnpjNumber'],
+    UseEcommerceSale: json['SaleTypeECommerce'],
+    UseRetailSale: json['SaleTypeRetail'],
+    UseWholeSale: json['SaleTypeWholeSale'],
+    CodigoInternoVendaMobile_ModeloPedido: json["SaleRequestTypeCode"],
+    EnterpriseParticipateEnterpriseGroup:
+        json["EnterpriseParticipateEnterpriseGroup"],
+    ProductCodeSizeOfBalanceLabel: json["ProductCodeSizeOfBalanceLabel"],
+    ProductCodeWithCheckerDigit: json["ProductCodeWithCheckerDigit"],
+    InscriptionNumber: json["InscriptionNumber"],
+  );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'Code': Code,

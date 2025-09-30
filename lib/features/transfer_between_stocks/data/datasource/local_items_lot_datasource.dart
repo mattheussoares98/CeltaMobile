@@ -25,10 +25,7 @@ class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
     final enterpriseLotMap = allLots[enterpriseCode.toString()] as Map? ?? {};
 
     return enterpriseLotMap.values
-        .map(
-          (itemMap) =>
-              ProductLotInfoModel.fromJson(Map<String, dynamic>.from(itemMap)),
-        )
+        .map((itemMap) => ProductLotInfoModel.fromJson(itemMap))
         .toList();
   }
 

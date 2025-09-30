@@ -18,7 +18,7 @@ class AppSettingsModel extends Equatable {
     isContinuousScanEnabledInInventory,
   ];
 
-  factory AppSettingsModel.fromJson(Map<String, dynamic> json) {
+  factory AppSettingsModel.fromJson(Map json) {
     return AppSettingsModel(
       searchPreference: SearchProductTypePreference.values.firstWhere(
         (element) => element.name == json['searchPreference'],

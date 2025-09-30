@@ -21,7 +21,7 @@ class StockModel extends Equatable {
     StockQuantity,
   ];
 
-  factory StockModel.fromJson(Map<String, dynamic> json) => StockModel(
+  factory StockModel.fromJson(Map json) => StockModel(
     EnterpriseCode: json["EnterpriseCode"],
     Enterprise: json["Enterprise"],
     StockName: json["StockName"],
