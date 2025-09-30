@@ -95,73 +95,82 @@ class ProductItemWidget extends ConsumerWidget {
       margin: EdgeInsets.only(bottom: Sizes.p8),
       child: Column(
         children: [
-          InkWell(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.all(Sizes.p8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TitleAndSubTitle(
-                    title: product.Name,
-                    subTitle: " (${_formatPacking(product.PackingQuantity)})",
-                    titleStyle: theme.textTheme.titleMedium,
-                    subTitleStyle: theme.textTheme.bodyMedium,
-                  ),
-                  Row(
+          Stack(
+            children: [
+              InkWell(
+                onTap: onTap,
+                child: Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: TitleAndSubTitle(
-                          title: "PLU ",
-                          subTitle: product.PLU,
+                      TitleAndSubTitle(
+                        title: product.Name,
+                        subTitle:
+                            " (${_formatPacking(product.PackingQuantity)})",
+                        titleStyle: theme.textTheme.titleMedium,
+                        subTitleStyle: theme.textTheme.bodyMedium,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TitleAndSubTitle(
+                              title: "PLU ",
+                              subTitle: product.PLU,
+                            ),
+                          ),
+                          InfoButton(
+                            product: product,
+                            enterpriseCode: enterpriseCode,
+                          ),
+                        ],
+                      ),
+                      if (routine != BsRoutine.adjustStock) ...[
+                        TitleAndSubTitle(
+                          title: "Preço ",
+                          emptyMessage: 'Sem preço'.hardcoded,
+                          subTitle: product.RetailPracticedPrice,
+                          subTitleIsPrice: true,
                         ),
-                      ),
-                      InfoButton(
-                        product: product,
-                        enterpriseCode: enterpriseCode,
-                      ),
+                        TitleAndSubTitle(
+                          title: "Custo líquido ",
+                          subTitle: product.LiquidCost,
+                          emptyMessage: 'Sem custo líquido'.hardcoded,
+                          subTitleIsPrice: true,
+                        ),
+                      ],
+                      if (routine != BsRoutine.adjustSalePrice) ...[
+                        TitleAndSubTitle(
+                          title: "Estoque atual ",
+                          emptyMessage: currentStockQuantity == -1
+                              ? 'Sem permissão p/ ver estoque'.hardcoded
+                              : 'Sem estoque atual'.hardcoded,
+                          //TODO test if return -1, must show that the user doesnt has permission to read this information
+                          subTitle: currentStockQuantity,
+                        ),
+                        TitleAndSubTitle(
+                          title: "Saldo ",
+                          emptyMessage: 'Sem saldo'.hardcoded,
+                          subTitle: _getStockQuantityByName(
+                            product.Stocks,
+                            'saldo'.hardcoded,
+                          ),
+                        ),
+                      ],
                     ],
                   ),
-                  if (routine != BsRoutine.adjustStock) ...[
-                    TitleAndSubTitle(
-                      title: "Preço ",
-                      emptyMessage: 'Sem preço'.hardcoded,
-                      subTitle: product.RetailPracticedPrice,
-                      subTitleIsPrice: true,
-                    ),
-                    TitleAndSubTitle(
-                      title: "Custo líquido ",
-                      subTitle: product.LiquidCost,
-                      emptyMessage: 'Sem custo líquido'.hardcoded,
-                      subTitleIsPrice: true,
-                    ),
-                  ],
-                  if (routine != BsRoutine.adjustSalePrice) ...[
-                    TitleAndSubTitle(
-                      title: "Estoque atual ",
-                      emptyMessage: currentStockQuantity == -1
-                          ? 'Sem permissão p/ ver estoque'.hardcoded
-                          : 'Sem estoque atual'.hardcoded,
-                      //TODO test if return -1, must show that the user doesnt has permission to read this information
-                      subTitle: currentStockQuantity,
-                    ),
-                    TitleAndSubTitle(
-                      title: "Saldo ",
-                      emptyMessage: 'Sem saldo'.hardcoded,
-                      subTitle: _getStockQuantityByName(
-                        product.Stocks,
-                        'saldo'.hardcoded,
-                      ),
-                    ),
-                  ],
-                  if (showDropIcon == true)
-                    SelectedIconIndicator(
-                      selected: isSelected ?? false,
-                      productItemWidget: this,
-                    ),
-                ],
+                ),
               ),
-            ),
+              if (showDropIcon == true)
+                Positioned(
+                  right: Sizes.p8,
+                  bottom: Sizes.p8,
+                  child: SelectedIconIndicator(
+                    selected: isSelected ?? false,
+                    productItemWidget: this,
+                  ),
+                ),
+            ],
           ),
           if (bottom != null)
             Padding(padding: const EdgeInsets.all(Sizes.p8), child: bottom),
