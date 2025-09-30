@@ -14,13 +14,13 @@ class LocalItemsLotRepositoryImpl implements ILocalItemsLotRepository {
   }
 
   @override
-  Future<void> clear() async {
-    await datasource.clear();
+  Future<void> clear(int enterpriseCode) async {
+    await datasource.clear(enterpriseCode);
   }
 
   @override
-  Future<List<AdjustStockItemEntity>> load() async {
-    final items = await datasource.load();
+  Future<List<AdjustStockItemEntity>> load(int enterpriseCode) async {
+    final items = await datasource.load(enterpriseCode);
     return items.map((e) => e.toEntity()).toList();
   }
 

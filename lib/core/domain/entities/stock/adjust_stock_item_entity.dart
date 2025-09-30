@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 class AdjustStockItemEntity extends Equatable {
@@ -32,4 +33,27 @@ class AdjustStockItemEntity extends Equatable {
     IsPendingAdjust,
     Quantity,
   ];
+
+  AdjustStockItemEntity copyWith({
+    int? EnterpriseCode,
+    int? ProductCode,
+    int? ProductPackingCode,
+    int? JustificationCode,
+    int? StockTypeCode,
+    int? StockTypeRecipientCode,
+    bool? IsPendingAdjust,
+    double? Quantity,
+  }) {
+    return AdjustStockItemEntity(
+      EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
+      ProductCode: ProductCode ?? this.ProductCode,
+      ProductPackingCode: ProductPackingCode ?? this.ProductPackingCode,
+      JustificationCode: JustificationCode ?? this.JustificationCode,
+      StockTypeCode: StockTypeCode ?? this.StockTypeCode,
+      StockTypeRecipientCode:
+          StockTypeRecipientCode ?? this.StockTypeRecipientCode,
+      IsPendingAdjust: IsPendingAdjust ?? this.IsPendingAdjust,
+      Quantity: Quantity ?? this.Quantity,
+    );
+  }
 }

@@ -3,33 +3,69 @@ import '../../../../core/data/models/models.dart';
 import 'datasource.dart';
 
 class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
-  //unique Box for this feature
   final Box box;
+  static const _lotKey = 'items_lot';
 
   LocalItemsLotDatasource(this.box);
 
-  @override
-  Future<void> addItem(AdjustStockItemModel item) async {
-    // THE FIX: Use a unique product identifier as the key.
-    // Hive's .put() method automatically handles both INSERT and UPDATE.
-    // If the key exists, it's updated. If not, it's created
-    await box.put(item.ProductCode, item.toJson());
+  // Helper to get the main map of all lots from the box
+  Future<Map<String, dynamic>> _getAllLots() async {
+    return Map<String, dynamic>.from(await box.get(_lotKey) ?? {});
+  }
+
+  // Helper to save the main map back to the box
+  Future<void> _saveAllLots(Map<String, dynamic> allLots) async {
+    await box.put(_lotKey, allLots);
   }
 
   @override
-  Future<void> removeItem(AdjustStockItemModel item) async {
-    await box.delete(item.ProductCode);
-  }
+  Future<List<AdjustStockItemModel>> load(int enterpriseCode) async {
+    final allLots = await _getAllLots();
+    final enterpriseLotMap = allLots[enterpriseCode.toString()] as Map? ?? {};
 
-  @override
-  Future<List<AdjustStockItemModel>> load() async {
-    return box.values
-        .map((e) => AdjustStockItemModel.fromJson(Map<String, dynamic>.from(e)))
+    return enterpriseLotMap.values
+        .map(
+          (itemMap) =>
+              AdjustStockItemModel.fromJson(Map<String, dynamic>.from(itemMap)),
+        )
         .toList();
   }
 
   @override
-  Future<void> clear() async {
-    await box.clear();
+  Future<void> addItem(AdjustStockItemModel item) async {
+    final allLots = await _getAllLots();
+    final enterpriseCodeStr = item.EnterpriseCode.toString();
+    final productCodeStr = item.ProductCode.toString();
+
+    final enterpriseLotMap = Map<String, dynamic>.from(
+      allLots[enterpriseCodeStr] ?? {},
+    );
+    enterpriseLotMap[productCodeStr] = item.toJson();
+    allLots[enterpriseCodeStr] = enterpriseLotMap;
+
+    await _saveAllLots(allLots);
+  }
+
+  @override
+  Future<void> removeItem(AdjustStockItemModel item) async {
+    final allLots = await _getAllLots();
+    final enterpriseCodeStr = item.EnterpriseCode.toString();
+    final productCodeStr = item.ProductCode.toString();
+
+    if (allLots.containsKey(enterpriseCodeStr)) {
+      final enterpriseLotMap = Map<String, dynamic>.from(
+        allLots[enterpriseCodeStr],
+      );
+      enterpriseLotMap.remove(productCodeStr);
+      allLots[enterpriseCodeStr] = enterpriseLotMap;
+      await _saveAllLots(allLots);
+    }
+  }
+
+  @override
+  Future<void> clear(int enterpriseCode) async {
+    final allLots = await _getAllLots();
+    allLots.remove(enterpriseCode.toString());
+    await _saveAllLots(allLots);
   }
 }

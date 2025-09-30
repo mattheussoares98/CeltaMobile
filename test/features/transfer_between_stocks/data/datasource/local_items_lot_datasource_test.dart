@@ -8,81 +8,138 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late LocalItemsLotDatasource sut;
   late MockBox mockBox;
-  late List<AdjustStockItemModel> items;
+  late AdjustStockItemModel fakeItem1;
+  late AdjustStockItemModel fakeItem2;
 
   setUp(() {
     mockBox = MockBox();
     sut = LocalItemsLotDatasource(mockBox);
 
-    // Create some fake data to use in the tests
+    fakeItem1 = AdjustStockItemModel.fromEntity(
+      EntityFactory.makeAdjustStockItemEntity().copyWith(
+        EnterpriseCode: 1,
+        ProductCode: 101,
+      ),
+    );
+    fakeItem2 = AdjustStockItemModel.fromEntity(
+      EntityFactory.makeAdjustStockItemEntity().copyWith(
+        EnterpriseCode: 1,
+        ProductCode: 102,
+      ),
+    );
+  });
 
-    items = [
-      EntityFactory.makeAdjustStockItemEntity(),
-      EntityFactory.makeAdjustStockItemEntity(),
-    ].map((e) => AdjustStockItemModel.fromEntity(e)).toList();
+  const lotKey = 'items_lot';
+
+  group('load', () {
+    test('should return a list of items for the correct enterprise', () async {
+      // ARRANGE
+      final initialMap = {
+        '1': {
+          // enterpriseCode '1'
+          '101': fakeItem1.toJson(),
+          '102': fakeItem2.toJson(),
+        },
+        '2': {
+          // enterpriseCode '2'
+          '201': {'ProductCode': 201, 'EnterpriseCode': 2 /* ... */},
+        },
+      };
+      when(
+        () => mockBox.get(lotKey, defaultValue: any(named: 'defaultValue')),
+      ).thenReturn(initialMap);
+
+      // ACT
+      final result = await sut.load(1); // Load items for enterprise 1
+
+      // ASSERT
+      expect(result.length, 2);
+      expect(result.any((item) => item.ProductCode == 101), isTrue);
+    });
+
+    test('should return an empty list if enterprise has no lot', () async {
+      // ARRANGE
+      when(
+        () => mockBox.get(lotKey, defaultValue: any(named: 'defaultValue')),
+      ).thenReturn({});
+
+      // ACT
+      final result = await sut.load(1);
+
+      // ASSERT
+      expect(result, isEmpty);
+    });
   });
 
   group('addItem', () {
-    test('should call box.put with the correct key and value', () async {
+    test('should add a new item to an existing enterprise lot', () async {
       // ARRANGE
-      // Tell the mock that the .put() method should complete successfully
-      when(() => mockBox.put(any(), any())).thenAnswer((_) async => {});
+      final initialMap = {
+        '1': {'101': fakeItem1.toJson()},
+      };
+      when(
+        () => mockBox.get(lotKey, defaultValue: any(named: 'defaultValue')),
+      ).thenReturn(initialMap);
+      when(() => mockBox.put(any(), any())).thenAnswer((_) async {});
 
       // ACT
-      await sut.addItem(items.first);
+      await sut.addItem(fakeItem2);
 
       // ASSERT
-      // Verify that .put() was called once with the product code as the key
-      // and the item's map representation as the value.
-      verify(
-        () => mockBox.put(items.first.ProductCode, items.first.toJson()),
-      ).called(1);
+      final captured = verify(() => mockBox.put(lotKey, captureAny())).captured;
+      final finalMap = captured.first as Map;
+      // Check that the new map for enterprise '1' now contains both products
+      expect(finalMap['1']['102'], isNotNull);
+      expect(finalMap['1'].length, 2);
     });
   });
 
   group('removeItem', () {
-    test('should call box.delete with the correct key', () async {
+    test('should remove an item from an enterprise lot', () async {
       // ARRANGE
-      when(() => mockBox.delete(any())).thenAnswer((_) async => {});
+      final initialMap = {
+        '1': {'101': fakeItem1.toJson(), '102': fakeItem2.toJson()},
+      };
+      when(
+        () => mockBox.get(lotKey, defaultValue: any(named: 'defaultValue')),
+      ).thenReturn(initialMap);
+      when(() => mockBox.put(any(), any())).thenAnswer((_) async {});
 
       // ACT
-      await sut.removeItem(items.first);
+      await sut.removeItem(fakeItem1);
 
       // ASSERT
-      verify(() => mockBox.delete(items.first.ProductCode)).called(1);
-    });
-  });
-
-  group('load', () {
-    test('should return a list of items from box.values', () async {
-      // ARRANGE
-      final itemsMap = [items[0].toJson(), items[1].toJson()];
-      // Tell the mock to return a list of maps when .values is accessed
-      when(() => mockBox.values).thenReturn(itemsMap);
-
-      // ACT
-      final result = await sut.load();
-
-      // ASSERT
-      expect(result, isA<List<AdjustStockItemModel>>());
-      expect(result.length, 2);
-      // Check if one of the items matches our fake data
-      expect(result.first.ProductCode, items.first.ProductCode);
+      final captured = verify(() => mockBox.put(lotKey, captureAny())).captured;
+      final finalMap = captured.first as Map;
+      // Check that the map for enterprise '1' now only contains one product
+      expect(finalMap['1']['101'], isNull);
+      expect(finalMap['1'].length, 1);
     });
   });
 
   group('clear', () {
-    test('should call box.clear', () async {
+    test('should remove the entire lot for a specific enterprise', () async {
       // ARRANGE
+      final initialMap = {
+        '1': {'101': fakeItem1.toJson()},
+        '2': {
+          '201': {'ProductCode': 201 /* ... */},
+        },
+      };
       when(
-        () => mockBox.clear(),
-      ).thenAnswer((_) async => 0); // .clear() returns an int
+        () => mockBox.get(lotKey, defaultValue: any(named: 'defaultValue')),
+      ).thenReturn(initialMap);
+      when(() => mockBox.put(any(), any())).thenAnswer((_) async {});
 
       // ACT
-      await sut.clear();
+      await sut.clear(1); // Clear lot for enterprise 1
 
       // ASSERT
-      verify(() => mockBox.clear()).called(1);
+      final captured = verify(() => mockBox.put(lotKey, captureAny())).captured;
+      final finalMap = captured.first as Map;
+      // Check that the entry for enterprise '1' is gone, but '2' remains
+      expect(finalMap.containsKey('1'), isFalse);
+      expect(finalMap.containsKey('2'), isTrue);
     });
   });
 }

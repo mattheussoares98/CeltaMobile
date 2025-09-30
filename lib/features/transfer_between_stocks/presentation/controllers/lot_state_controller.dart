@@ -8,8 +8,8 @@ part 'lot_state_controller.g.dart';
 @riverpod
 class LotStateController extends _$LotStateController {
   @override
-  Future<List<AdjustStockItemEntity>> build() {
-    return ref.watch(localItemsLotRepositoryProvider).load();
+  Future<List<AdjustStockItemEntity>> build(int enterpriseCode) {
+    return ref.watch(localItemsLotRepositoryProvider).load(enterpriseCode);
   }
 
   Future<void> addItem(AdjustStockItemEntity item) async {
@@ -43,11 +43,11 @@ class LotStateController extends _$LotStateController {
     });
   }
 
-  Future<void> clearLot() async {
+  Future<void> clearLot(int enterpriseCode) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localItemsLotRepositoryProvider);
-      await repository.clear();
+      await repository.clear(enterpriseCode);
       return [];
     });
   }

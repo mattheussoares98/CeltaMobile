@@ -2,6 +2,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/presentation/controllers/lot_state_controller.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/providers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -16,6 +17,7 @@ void main() {
   late MockLocalItemsLotRepository mockRepository;
   late List<AdjustStockItemEntity> fakeLot;
   late AdjustStockItemEntity newItem;
+  late int enterpriseCode;
 
   setUp(() {
     mockRepository = MockLocalItemsLotRepository();
@@ -24,6 +26,7 @@ void main() {
       EntityFactory.makeAdjustStockItemEntity(),
     ];
     newItem = EntityFactory.makeAdjustStockItemEntity();
+    enterpriseCode = faker.randomGenerator.integer(100);
 
     // Register fallback value for mocktail's `any()` matcher
     registerFallbackValue(EntityFactory.makeAdjustStockItemEntity());
@@ -43,19 +46,21 @@ void main() {
         'should call repository.load and return a list on success',
         () async {
           // ARRANGE
-          when(() => mockRepository.load()).thenAnswer((_) async => fakeLot);
+          when(
+            () => mockRepository.load(enterpriseCode),
+          ).thenAnswer((_) async => fakeLot);
 
           final container = makeProviderContainer();
           addTearDown(container.dispose);
 
           // ACT: Wait for the build method to complete
           final result = await container.read(
-            lotStateControllerProvider.future,
+            lotStateControllerProvider(enterpriseCode).future,
           );
 
           // ASSERT
           expect(result, fakeLot);
-          verify(() => mockRepository.load()).called(1);
+          verify(() => mockRepository.load(enterpriseCode)).called(1);
         },
       );
     });
@@ -65,24 +70,26 @@ void main() {
         'should emit [loading, data] and add the item to the list',
         () async {
           // ARRANGE
-          when(() => mockRepository.load()).thenAnswer((_) async => fakeLot);
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => fakeLot);
           when(() => mockRepository.addItem(any())).thenAnswer((_) async {});
 
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            lotStateControllerProvider.future,
+            lotStateControllerProvider(enterpriseCode).future,
           ); // Wait for initial build
 
           final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
           container.listen(
-            lotStateControllerProvider,
+            lotStateControllerProvider(enterpriseCode),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(lotStateControllerProvider.notifier)
+              .read(lotStateControllerProvider(enterpriseCode).notifier)
               .addItem(newItem);
 
           // ASSERT
@@ -106,22 +113,26 @@ void main() {
         () async {
           // ARRANGE
           final itemToRemove = fakeLot.first;
-          when(() => mockRepository.load()).thenAnswer((_) async => fakeLot);
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => fakeLot);
           when(() => mockRepository.removeItem(any())).thenAnswer((_) async {});
 
           final container = makeProviderContainer();
           addTearDown(container.dispose);
-          await container.read(lotStateControllerProvider.future);
+          await container.read(
+            lotStateControllerProvider(enterpriseCode).future,
+          );
 
           final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
           container.listen(
-            lotStateControllerProvider,
+            lotStateControllerProvider(enterpriseCode),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(lotStateControllerProvider.notifier)
+              .read(lotStateControllerProvider(enterpriseCode).notifier)
               .removeItem(itemToRemove);
 
           // ASSERT
@@ -141,26 +152,28 @@ void main() {
     group('clearLot', () {
       test('should emit [loading, data] with an empty list', () async {
         // ARRANGE
-        when(() => mockRepository.load()).thenAnswer((_) async => fakeLot);
-        when(() => mockRepository.clear()).thenAnswer((_) async {});
+        when(() => mockRepository.load(any())).thenAnswer((_) async => fakeLot);
+        when(() => mockRepository.clear(any())).thenAnswer((_) async {});
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);
-        await container.read(lotStateControllerProvider.future);
+        await container.read(lotStateControllerProvider(enterpriseCode).future);
 
         final states = <AsyncValue<List<AdjustStockItemEntity>>>[];
         container.listen(
-          lotStateControllerProvider,
+          lotStateControllerProvider(enterpriseCode),
           (_, next) => states.add(next),
         );
 
         // ACT
-        await container.read(lotStateControllerProvider.notifier).clearLot();
+        await container
+            .read(lotStateControllerProvider(enterpriseCode).notifier)
+            .clearLot(enterpriseCode);
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
         expect(states.last.value, isEmpty);
-        verify(() => mockRepository.clear()).called(1);
+        verify(() => mockRepository.clear(enterpriseCode)).called(1);
       });
     });
   });
