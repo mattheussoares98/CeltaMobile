@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +9,7 @@ import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import '../controllers/controllers.dart';
-import 'components/components.dart';
+import 'components/components.dart.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -113,19 +112,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         });
       },
     );
-    ref.listen(confirmAdjustStockControllerProvider, (p, n) {
-      n.showAlertDialogOnError(context);
-      n.showSnackbarOnSuccess(
-        context,
-        previous: p,
-        message: 'Lote enviado com sucesso'.hardcoded,
-      );
-      n.doOnSuccess(p, () {
-        setState(() {
-          selectedIndex = null;
-        });
-      });
-    });
 
     final productsState = ref.watch(
       searchProductsStateControllerProvider(
@@ -156,11 +142,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(
-            title: FittedBox(
-              child: Text("Transferência entre estoques".hardcoded),
-            ),
-          ),
           body: Form(
             key: formKey,
             child: Padding(
@@ -172,7 +153,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     isLoading: productsState.isLoading,
                     searchProducts: _searchProducts,
                   ),
-                  gapH8,
                   JustificationsDropdown(
                     selectedJustification: selectedJustification,
                     asyncValue: justificationsAsync,
@@ -223,6 +203,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       tryAgain: null,
                       data: (products) {
                         return ResponsiveListFlow(
+                          maxItemWidth: 380,
                           itemCount: products.length,
                           itemBuilder: (_, index) {
                             final product = products[index];
