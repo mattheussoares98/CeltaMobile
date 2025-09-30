@@ -20,7 +20,7 @@ class LotStateController extends _$LotStateController {
 
       final previousState = state.valueOrNull ?? [];
       final updatedList = previousState
-          .where((i) => i.ProductCode != item.ProductCode)
+          .where((i) => i.ProductPackingCode != item.ProductPackingCode)
           .toList();
       updatedList.add(item);
 
@@ -36,7 +36,7 @@ class LotStateController extends _$LotStateController {
 
       final previousState = state.valueOrNull ?? [];
       final newState = previousState
-          .where((i) => i.ProductCode != item.ProductCode)
+          .where((i) => i.ProductPackingCode != item.ProductPackingCode)
           .toList();
 
       return newState;

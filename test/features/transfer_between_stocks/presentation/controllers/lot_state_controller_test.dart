@@ -98,7 +98,7 @@ void main() {
           expect(states.last.value, hasLength(3));
           expect(
             states.last.value!.any(
-              (item) => item.ProductCode == newItem.ProductCode,
+              (item) => item.ProductPackingCode == newItem.ProductPackingCode,
             ),
             isTrue,
           );
@@ -140,7 +140,8 @@ void main() {
           expect(states.last.value, hasLength(1));
           expect(
             states.last.value!.any(
-              (item) => item.ProductCode == itemToRemove.ProductCode,
+              (item) =>
+                  item.ProductPackingCode == itemToRemove.ProductPackingCode,
             ),
             isFalse,
           );
