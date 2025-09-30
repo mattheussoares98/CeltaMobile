@@ -126,7 +126,7 @@ class MockBox extends Mock implements Box {
   }
 }
 
-class LoginRemoteDatasourceSpy extends Mock implements ISoapLoginDatasource {
+class SoapLoginDatasourceSpy extends Mock implements ISoapLoginDatasource {
   void mockLogin(UserModel user) {
     when(
       () => this.login(
@@ -334,13 +334,10 @@ class LocalUserSessionDatasourceSpy extends Mock
     implements ILocalUserSessionDatasource {
   LocalUserSessionDatasourceSpy() {
     when(() => this.logout()).thenAnswer((_) async => {});
+    when(() => this.save(any())).thenAnswer((_) async {});
   }
   void mockGetSession(UserSessionModel? response) {
     when(() => this.get()).thenAnswer((_) async => response);
-  }
-
-  void mockSaveSession(UserSessionModel session) {
-    when(() => this.save(session)).thenAnswer((_) async => {});
   }
 }
 

@@ -32,6 +32,12 @@ void main() {
     );
   }
 
+  setUpAll(() {
+    registerFallbackValue(
+      UserSessionModel.fromEntity(EntityFactory.makeUserSessionEntity()),
+    );
+  });
+
   group('UserSession Controller', () {
     group('build', () {
       test(
@@ -68,7 +74,6 @@ void main() {
         'should emit [loading, data] and call datasource.save on success',
         () async {
           localUserSessionDatasource.mockGetSession(null);
-          localUserSessionDatasource.mockSaveSession(userSession);
 
           final container = makeProviderContainer();
           addTearDown(container.dispose);

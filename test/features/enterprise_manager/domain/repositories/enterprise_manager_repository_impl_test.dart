@@ -13,7 +13,7 @@ void main() {
   late EnterpriseManagerRepositoryImpl sut;
 
   late EnterpriseManagerDatasourceSpy enterpriseManagerDatasource;
-  late LoginRemoteDatasourceSpy soapLoginDatasource;
+  late SoapLoginDatasourceSpy soapLoginDatasource;
   late SoapEnterpriseDatasourceSpy soapEnterpriseDatasource;
 
   late List<EnterprisePermissionEntity> enterprisePermissionEntities;
@@ -34,7 +34,7 @@ void main() {
 
   void initInjections() {
     enterpriseManagerDatasource = EnterpriseManagerDatasourceSpy();
-    soapLoginDatasource = LoginRemoteDatasourceSpy();
+    soapLoginDatasource = SoapLoginDatasourceSpy();
     soapEnterpriseDatasource = SoapEnterpriseDatasourceSpy();
   }
 

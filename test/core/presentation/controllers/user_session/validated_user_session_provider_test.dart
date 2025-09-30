@@ -35,6 +35,12 @@ void main() {
     );
   }
 
+  setUpAll(() {
+    registerFallbackValue(
+      UserSessionModel.fromEntity(EntityFactory.makeUserSessionEntity()),
+    );
+  });
+
   group('Validated UserSession Controller', () {
     group('build', () {
       test(

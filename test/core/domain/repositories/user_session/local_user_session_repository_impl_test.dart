@@ -22,9 +22,6 @@ void main() {
   }
 
   void mockSuccess() {
-    localSessionDatasource.mockSaveSession(
-      UserSessionModel.fromEntity(userSessionEntity),
-    );
     localSessionDatasource.mockGetSession(
       UserSessionModel.fromEntity(userSessionEntity),
     );
@@ -39,6 +36,12 @@ void main() {
     initInjections();
     initSut();
     mockSuccess();
+  });
+
+  setUpAll(() {
+    registerFallbackValue(
+      UserSessionModel.fromEntity(EntityFactory.makeUserSessionEntity()),
+    );
   });
 
   test("Should behave correctly on save", () async {

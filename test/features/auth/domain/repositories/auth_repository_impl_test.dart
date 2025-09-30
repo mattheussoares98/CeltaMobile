@@ -10,50 +10,48 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late AuthRepositoryImpl sut;
+  late IAuthRepository sut;
 
-  late LoginRemoteDatasourceSpy authRemoteDatasource;
+  late SoapLoginDatasourceSpy soapLoginDatasource;
   late EnterpriseRepositorySpy enterpriseRepository;
   late LocalUserSessionDatasourceSpy localSessionDatasource;
 
-  late EnterpriseEntity enterpriseEntity;
-  late String userName;
   late String password;
-  late UserEntity userEntity;
   late UserSessionEntity userSessionEntity;
 
   void initSut() {
     sut = AuthRepositoryImpl(
-      soapLoginDatasource: authRemoteDatasource,
+      soapLoginDatasource: soapLoginDatasource,
       enterpriseRepository: enterpriseRepository,
       localUserSessionDatasource: localSessionDatasource,
     );
   }
 
   void initInjections() {
-    authRemoteDatasource = LoginRemoteDatasourceSpy();
+    soapLoginDatasource = SoapLoginDatasourceSpy();
     enterpriseRepository = EnterpriseRepositorySpy();
     localSessionDatasource = LocalUserSessionDatasourceSpy();
   }
 
   void mockSuccess() {
     enterpriseRepository.mockGetSupabaseEnterpriseByName(
-      SupabaseEnterpriseModel.fromEntity(enterpriseEntity).toEntity(),
+      userSessionEntity.supabaseEnterprise,
     );
-    authRemoteDatasource.mockLogin(UserModel.fromEntity(userEntity));
-    localSessionDatasource.mockSaveSession(
-      UserSessionModel.fromEntity(userSessionEntity),
-    );
+    soapLoginDatasource.mockLogin(UserModel.fromEntity(userSessionEntity.user));
   }
 
   void initEntities() {
-    enterpriseEntity = EntityFactory.makeEnterpriseEntity();
-    userName = faker.internet.userName();
     password = faker.internet.password();
-    userEntity = EntityFactory.makeUserEntity();
+    final enterprise = SupabaseEnterpriseModel.fromEntity(
+      EntityFactory.makeEnterpriseEntity(),
+    ).toEntity();
     userSessionEntity = UserSessionEntity(
-      user: userEntity,
-      supabaseEnterprise: enterpriseEntity,
+      user: EntityFactory.makeUserEntity().copyWith(
+        enterpriseName: enterprise.name,
+      ),
+      supabaseEnterprise: SupabaseEnterpriseModel.fromEntity(
+        EntityFactory.makeEnterpriseEntity(),
+      ).toEntity(),
     );
   }
 
@@ -66,44 +64,58 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeUserEntity());
+    registerFallbackValue(
+      UserSessionModel.fromEntity(EntityFactory.makeUserSessionEntity()),
+    );
   });
 
   group('logIn', () {
     test('should behave correctly on success', () async {
       await sut.login(
-        enterpriseName: enterpriseEntity.name,
-        userName: userName,
+        enterpriseName: userSessionEntity.supabaseEnterprise!.name,
+        userName: userSessionEntity.user.name!,
         password: password,
       );
 
       verify(
         () => enterpriseRepository.getSupabaseEnterpriseByName(
-          enterpriseEntity.name,
+          userSessionEntity.supabaseEnterprise!.name,
         ),
       ).called(1);
       verify(
-        () => authRemoteDatasource.login(
-          baseUrl: enterpriseEntity.baseUrl!,
-          user: userName,
+        () => soapLoginDatasource.login(
+          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
+          user: userSessionEntity.user.name!,
           password: password,
         ),
       ).called(1);
       verify(
         () => localSessionDatasource.save(
-          UserSessionModel.fromEntity(userSessionEntity),
+          UserSessionModel(
+            user: UserModel(
+              name: userSessionEntity.user.name,
+              enterpriseName: userSessionEntity.supabaseEnterprise!.name,
+              AccessKey: userSessionEntity.user.AccessKey,
+              CrossIdentity_Usuario:
+                  userSessionEntity.user.CrossIdentity_Usuario,
+            ),
+            enterprise: SupabaseEnterpriseModel.fromEntity(
+              userSessionEntity.supabaseEnterprise!,
+            ),
+          ),
         ),
       ).called(1);
 
       verifyNoMoreInteractions(enterpriseRepository);
-      verifyNoMoreInteractions(authRemoteDatasource);
+      verifyNoMoreInteractions(soapLoginDatasource);
     });
 
     test("Should throw an AppException on enterprise not found", () async {
       enterpriseRepository.mockGetSupabaseEnterpriseByName(null);
 
       final result = sut.login(
-        enterpriseName: enterpriseEntity.name,
-        userName: userName,
+        enterpriseName: userSessionEntity.supabaseEnterprise!.name,
+        userName: userSessionEntity.user.name!,
         password: password,
       );
 
