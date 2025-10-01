@@ -5,9 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../controllers/controllers.dart';
+import 'components/components.dart.dart';
 
 class LotPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -32,6 +31,9 @@ class _LotPageState extends ConsumerState<LotPage> {
         ref.invalidate(lotStateControllerProvider(widget.enterpriseCode));
       },
       data: (items) {
+        if (items.isEmpty) {
+          return Center(child: Text('Lote vazio'.hardcoded));
+        }
         return Column(
           children: [
             Expanded(
@@ -119,51 +121,6 @@ class _LotPageState extends ConsumerState<LotPage> {
             ),
           ],
         );
-      },
-    );
-  }
-}
-
-class ConfirmOrRequestButton extends ConsumerWidget {
-  final bool isRequest;
-  final int enterpriseCode;
-  const ConfirmOrRequestButton({
-    super.key,
-    required this.isRequest,
-    required this.enterpriseCode,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return PrimaryButton(
-      text: isRequest ? 'Solicitar'.hardcoded : 'Confirmar'.hardcoded,
-      onPressed: () async {
-        //TODO show message to confirm and validate if is working correctly
-        final items = await ref.read(
-          lotStateControllerProvider(enterpriseCode).future,
-        );
-
-        ref
-            .read(confirmAdjustStockControllerProvider.notifier)
-            .confirm(
-              items
-                  .map(
-                    (e) => AdjustStockItemEntity(
-                      EnterpriseCode: e.product.EnterpriseCode,
-                      ProductCode: e.product.ProductCode,
-                      ProductPackingCode: e.product.ProductPackingCode,
-                      JustificationCode:
-                          e.selectedJustification.CodigoInterno_JustMov,
-                      StockTypeCode:
-                          e.selectedOriginStock.CodigoInterno_TipoEstoque!,
-                      StockTypeRecipientCode:
-                          e.selectedDestinyStock.CodigoInterno_TipoEstoque,
-                      IsPendingAdjust: isRequest,
-                      Quantity: e.quantity,
-                    ),
-                  )
-                  .toList(),
-            );
       },
     );
   }

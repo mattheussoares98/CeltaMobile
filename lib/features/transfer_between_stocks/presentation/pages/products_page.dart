@@ -6,7 +6,6 @@ import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
-import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart.dart';
@@ -129,125 +128,115 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       ),
     );
 
-    final confirmAdjustStockAsync = ref.watch(
-      confirmAdjustStockControllerProvider,
-    );
-
     final lotAsync = ref.watch(
       lotStateControllerProvider(widget.enterpriseCode),
     );
 
-    return Stack(
-      children: [
-        Scaffold(
-          body: Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(Sizes.p4),
-              child: Column(
-                children: [
-                  DefaultSearchProducts(
-                    searchValueController: searchValueController,
-                    isLoading: productsState.isLoading,
-                    searchProducts: _searchProducts,
-                  ),
-                  JustificationsDropdown(
-                    selectedJustification: widget.selectedJustification,
-                    asyncValue: widget.justificationsAsync,
-                    enterpriseCode: widget.enterpriseCode,
-                    onChanged: (value) {
-                      widget.changeJustification(value);
+    return Scaffold(
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p4),
+          child: Column(
+            children: [
+              DefaultSearchProducts(
+                searchValueController: searchValueController,
+                isLoading: productsState.isLoading,
+                searchProducts: _searchProducts,
+              ),
+              JustificationsDropdown(
+                selectedJustification: widget.selectedJustification,
+                asyncValue: widget.justificationsAsync,
+                enterpriseCode: widget.enterpriseCode,
+                onChanged: (value) {
+                  widget.changeJustification(value);
 
-                      if (value?.CodigoInterno_TipoEstoque != null &&
-                          widget.stocksAsync.value != null) {
-                        widget.changeOriginStock(
-                          widget.stocksAsync.value!.firstWhere(
-                            (e) =>
-                                e.CodigoInterno_TipoEstoque ==
-                                value?.CodigoInterno_TipoEstoque,
+                  if (value?.CodigoInterno_TipoEstoque != null &&
+                      widget.stocksAsync.value != null) {
+                    widget.changeOriginStock(
+                      widget.stocksAsync.value!.firstWhere(
+                        (e) =>
+                            e.CodigoInterno_TipoEstoque ==
+                            value?.CodigoInterno_TipoEstoque,
+                      ),
+                    );
+                  }
+                },
+              ),
+              OriginStocksDropdown(
+                asyncValue: widget.stocksAsync,
+                enterpriseCode: widget.enterpriseCode,
+                selectedJustification: widget.selectedJustification,
+                selectedOriginStock: widget.selectedOriginStock,
+                onChanged: widget.changeOriginStock,
+              ),
+              DestinyStocksDropdown(
+                asyncValue: widget.stocksAsync,
+                enterpriseCode: widget.enterpriseCode,
+                selectedDestinyStock: widget.selectedDestinyStock,
+                selectedOriginStock: widget.selectedOriginStock,
+                onChanged: widget.changeDestinyStock,
+              ),
+              gapH8,
+              Expanded(
+                child: AsyncValueWidget(
+                  value: productsState,
+                  tryAgain: null,
+                  data: (products) {
+                    return ResponsiveListFlow(
+                      maxItemWidth: 380,
+                      itemCount: products.length,
+                      itemBuilder: (_, index) {
+                        final product = products[index];
+
+                        final productInLotIndex = lotAsync.value?.indexWhere(
+                          (e) =>
+                              e.product.ProductPackingCode ==
+                              product.ProductPackingCode,
+                        );
+                        ProductLotInfoEntity? lotItem;
+                        if (productInLotIndex != -1 &&
+                            productInLotIndex != null) {
+                          lotItem = lotAsync.value?[productInLotIndex];
+                        }
+
+                        return ProductItemWidget(
+                          enterpriseCode: widget.enterpriseCode,
+                          product: product,
+                          routine: BsRoutine.adjustStock,
+                          onTap: () {
+                            changeSelectedIndex(index);
+                          },
+                          showDropIcon: true,
+                          isSelected: selectedIndex == index,
+                          bottom: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              if (lotItem != null)
+                                Text(
+                                  '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
+                                  textAlign: TextAlign.start,
+                                ),
+                              if (selectedIndex == index) ...[
+                                gapH8,
+                                AddInLot(
+                                  addInLot: () => addInLot(product),
+                                  quantityController: quantityController,
+                                  quantityFocusNode: quantityFocusNode,
+                                ),
+                              ],
+                            ],
                           ),
                         );
-                      }
-                    },
-                  ),
-                  OriginStocksDropdown(
-                    asyncValue: widget.stocksAsync,
-                    enterpriseCode: widget.enterpriseCode,
-                    selectedJustification: widget.selectedJustification,
-                    selectedOriginStock: widget.selectedOriginStock,
-                    onChanged: widget.changeOriginStock,
-                  ),
-                  DestinyStocksDropdown(
-                    asyncValue: widget.stocksAsync,
-                    enterpriseCode: widget.enterpriseCode,
-                    selectedDestinyStock: widget.selectedDestinyStock,
-                    selectedOriginStock: widget.selectedOriginStock,
-                    onChanged: widget.changeDestinyStock,
-                  ),
-                  gapH8,
-                  Expanded(
-                    child: AsyncValueWidget(
-                      value: productsState,
-                      tryAgain: null,
-                      data: (products) {
-                        return ResponsiveListFlow(
-                          maxItemWidth: 380,
-                          itemCount: products.length,
-                          itemBuilder: (_, index) {
-                            final product = products[index];
-
-                            final productInLotIndex = lotAsync.value
-                                ?.indexWhere(
-                                  (e) =>
-                                      e.product.ProductPackingCode ==
-                                      product.ProductPackingCode,
-                                );
-                            ProductLotInfoEntity? lotItem;
-                            if (productInLotIndex != -1 &&
-                                productInLotIndex != null) {
-                              lotItem = lotAsync.value?[productInLotIndex];
-                            }
-
-                            return ProductItemWidget(
-                              enterpriseCode: widget.enterpriseCode,
-                              product: product,
-                              routine: BsRoutine.adjustStock,
-                              onTap: () {
-                                changeSelectedIndex(index);
-                              },
-                              showDropIcon: true,
-                              isSelected: selectedIndex == index,
-                              bottom: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  if (lotItem != null)
-                                    Text(
-                                      '${lotItem.quantity.toString().toBrazilianNumber(3)} qts no lote',
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  if (selectedIndex == index)
-                                    AddInLot(
-                                      addInLot: () => addInLot(product),
-                                      quantityController: quantityController,
-                                      isLoading:
-                                          confirmAdjustStockAsync.isLoading,
-                                      quantityFocusNode: quantityFocusNode,
-                                    ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
                       },
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-            ),
+            ],
           ),
         ),
-        if (confirmAdjustStockAsync.isLoading) LoadingPage(),
-      ],
+      ),
     );
   }
 }

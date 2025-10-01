@@ -9,14 +9,12 @@ import '../../../../../core/validators/validators.dart';
 
 class AddInLot extends ConsumerWidget {
   final TextEditingController quantityController;
-  final bool isLoading;
   final FocusNode quantityFocusNode;
   final VoidCallback addInLot;
   const AddInLot({
     super.key,
     required this.quantityController,
     required this.quantityFocusNode,
-    required this.isLoading,
     required this.addInLot,
   });
 
@@ -57,7 +55,6 @@ class AddInLot extends ConsumerWidget {
                   : Icons.add,
             ),
             onPressed: addInLot,
-            isLoading: isLoading,
           ),
         ),
       ],
