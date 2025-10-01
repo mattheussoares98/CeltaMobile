@@ -135,4 +135,39 @@ void main() {
       });
     });
   });
+  group("Get enabled modules by cnpj", () {
+    test("Should behave correctly on success", () async {
+      final enterprises = [
+        EntityFactory.makeEnabledModulesByCnpjEntity(),
+        EntityFactory.makeEnabledModulesByCnpjEntity(),
+        EntityFactory.makeEnabledModulesByCnpjEntity(),
+      ];
+
+      final enterpriseName = faker.company.name();
+
+      supabaseClient.mockResponse(
+        enterprises
+            .map((e) => EnabledModulesByCnpModel.fromEntity(e).toJson())
+            .toList(),
+      );
+
+      final response = await sut.getEnabledModulesByEnterpriseName(
+        enterpriseName,
+      );
+
+      expect(
+        response,
+        enterprises.map((e) => EnabledModulesByCnpModel.fromEntity(e)).toList(),
+      );
+
+      expect(
+        supabaseClient.lastRpcFunction,
+        'get_enabled_modules_for_enterprise',
+      );
+
+      expect(supabaseClient.lastRpcParams, {
+        'p_enterprise_name': enterpriseName,
+      });
+    });
+  });
 }
