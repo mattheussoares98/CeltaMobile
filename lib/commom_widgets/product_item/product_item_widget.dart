@@ -12,7 +12,8 @@ class ProductItemWidget extends ConsumerWidget {
   final int enterpriseCode;
   final ProductEntity product;
   final BsRoutine routine;
-  final Widget? bottom;
+  final Widget? notClickableBottom;
+  final Widget? clickableBottom;
   final VoidCallback? onTap;
   final bool? showDropIcon;
   final bool? isSelected;
@@ -22,7 +23,8 @@ class ProductItemWidget extends ConsumerWidget {
     required this.product,
     required this.routine,
     this.onTap,
-    this.bottom,
+    this.notClickableBottom,
+    this.clickableBottom,
     this.showDropIcon,
     this.isSelected,
   });
@@ -100,12 +102,7 @@ class ProductItemWidget extends ConsumerWidget {
               InkWell(
                 onTap: onTap,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Sizes.p8,
-                    Sizes.p8,
-                    Sizes.p8,
-                    0,
-                  ),
+                  padding: const EdgeInsets.all(Sizes.p8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -150,7 +147,6 @@ class ProductItemWidget extends ConsumerWidget {
                           emptyMessage: currentStockQuantity == -1
                               ? 'Sem permissão p/ ver estoque'.hardcoded
                               : 'Sem estoque atual'.hardcoded,
-                          //TODO test if return -1, must show that the user doesnt has permission to read this information
                           subTitle: currentStockQuantity,
                         ),
                         TitleAndSubTitle(
@@ -162,6 +158,7 @@ class ProductItemWidget extends ConsumerWidget {
                           ),
                         ),
                       ],
+                      ?clickableBottom,
                     ],
                   ),
                 ),
@@ -177,7 +174,7 @@ class ProductItemWidget extends ConsumerWidget {
                 ),
             ],
           ),
-          if (bottom != null)
+          if (notClickableBottom != null)
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 Sizes.p8,
@@ -185,7 +182,7 @@ class ProductItemWidget extends ConsumerWidget {
                 Sizes.p8,
                 Sizes.p8,
               ),
-              child: bottom,
+              child: notClickableBottom,
             ),
         ],
       ),

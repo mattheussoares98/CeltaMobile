@@ -101,7 +101,7 @@ class _AdjustSalePriceProductsPageState
                         enterpriseCode: widget.enterpriseCode,
                         product: product,
                         routine: BsRoutine.adjustSalePrice,
-                        bottom: Padding(
+                        notClickableBottom: Padding(
                           padding: const EdgeInsets.only(top: Sizes.p8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,

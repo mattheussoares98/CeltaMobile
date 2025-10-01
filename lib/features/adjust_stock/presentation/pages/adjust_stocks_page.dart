@@ -191,7 +191,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                               },
                               showDropIcon: true,
                               isSelected: selectedIndex == index,
-                              bottom: selectedIndex == index
+                              notClickableBottom: selectedIndex == index
                                   ? ConfirmAdjustStock(
                                       product: product,
                                       formKey: formKey,

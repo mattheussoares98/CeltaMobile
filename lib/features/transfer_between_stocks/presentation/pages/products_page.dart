@@ -209,24 +209,22 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                           },
                           showDropIcon: true,
                           isSelected: selectedIndex == index,
-                          bottom: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              if (lotItem != null)
-                                Text(
+                          clickableBottom: lotItem == null
+                              ? null
+                              : Text(
                                   '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
                                   textAlign: TextAlign.start,
                                 ),
-                              if (selectedIndex == index) ...[
-                                gapH8,
-                                AddInLot(
-                                  addInLot: () => addInLot(product),
-                                  quantityController: quantityController,
-                                  quantityFocusNode: quantityFocusNode,
-                                ),
-                              ],
-                            ],
-                          ),
+                          notClickableBottom: selectedIndex == index
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: Sizes.p8),
+                                  child: AddInLot(
+                                    addInLot: () => addInLot(product),
+                                    quantityController: quantityController,
+                                    quantityFocusNode: quantityFocusNode,
+                                  ),
+                                )
+                              : null,
                         );
                       },
                     );
