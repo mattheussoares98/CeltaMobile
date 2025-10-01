@@ -15,6 +15,16 @@ void main() {
     expect(sut.isValid("145619,99.1"), isFalse);
     expect(sut.isValid("145619.99,1"), isFalse);
   });
+  test('Allow decimal with maximum decimal houses', () {
+    final sut = NumberValidator(allowDecimal: true, maxDecimalHouses: 3);
+    //true result
+    expect(sut.isValid("1,001"), isTrue);
+    expect(sut.isValid("1.0012"), isFalse);
+
+    //false result
+    expect(sut.isValid("145619,99.1"), isFalse);
+    expect(sut.isValid("145619.99,1"), isFalse);
+  });
 
   test('Dont allow decimal', () {
     final sut = NumberValidator(allowDecimal: false);

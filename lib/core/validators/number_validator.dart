@@ -3,8 +3,9 @@ import 'validators.dart';
 
 class NumberValidator implements StringValidator {
   final bool allowDecimal;
+  final int? maxDecimalHouses;
 
-  NumberValidator({required this.allowDecimal});
+  NumberValidator({required this.allowDecimal, this.maxDecimalHouses});
 
   String? _errorMessage;
 
@@ -49,6 +50,15 @@ class NumberValidator implements StringValidator {
     if (!allowDecimal && number != number.truncate()) {
       _errorMessage = 'Apenas números inteiros'.hardcoded;
       return false;
+    }
+
+    if (maxDecimalHouses != null && normalizedValue.contains('.')) {
+      // Get the part of the string after the decimal point
+      final decimalPart = normalizedValue.split('.').last;
+      if (decimalPart.length > maxDecimalHouses!) {
+        _errorMessage = 'Máximo de $maxDecimalHouses casas decimais'.hardcoded;
+        return false;
+      }
     }
 
     // 4. If all checks pass, the value is valid
