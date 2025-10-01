@@ -297,6 +297,22 @@ class EnterpriseManagerDatasourceSpy extends Mock
   void mockGetEnterprisePermissionsByIdError() {
     _mockGetAllEnterprisesPermissionsCall().thenThrow(Exception());
   }
+
+  When _mockGetEnabledModulesByEnterpriseNameCall() {
+    return when(() => this.getEnabledModulesByEnterpriseName(any()));
+  }
+
+  void mockGetEnabledModulesByEnterpriseName(
+    List<EnabledModulesByCnpjModel> response,
+  ) {
+    _mockGetEnabledModulesByEnterpriseNameCall().thenAnswer(
+      (_) async => response,
+    );
+  }
+
+  void mockGetEnabledModulesByEnterpriseNameError() {
+    _mockGetEnabledModulesByEnterpriseNameCall().thenThrow(Exception());
+  }
 }
 
 class EnterpriseManagerRepositorySpy extends Mock

@@ -23,6 +23,7 @@ void main() {
   late String password;
   late int enterpriseId;
   late List<UpdateModulePermissionModel> permissions;
+  late List<EnabledModulesByCnpjEntity> enabledModulesByCnpjEntities;
 
   void initSut() {
     sut = EnterpriseManagerRepositoryImpl(
@@ -42,6 +43,11 @@ void main() {
     enterpriseManagerDatasource.mockGetAllEnterprisesPermissions(
       enterprisePermissionEntities
           .map((e) => EnterprisePermissionModel.fromEntity(e))
+          .toList(),
+    );
+    enterpriseManagerDatasource.mockGetEnabledModulesByEnterpriseName(
+      enabledModulesByCnpjEntities
+          .map((e) => EnabledModulesByCnpjModel.fromEntity(e))
           .toList(),
     );
   }
@@ -71,6 +77,11 @@ void main() {
         moduleId: faker.randomGenerator.integer(100),
         isEnabled: faker.randomGenerator.boolean(),
       ),
+    ];
+    enabledModulesByCnpjEntities = [
+      EntityFactory.makeEnabledModulesByCnpjEntity(),
+      EntityFactory.makeEnabledModulesByCnpjEntity(),
+      EntityFactory.makeEnabledModulesByCnpjEntity(),
     ];
   }
 
@@ -178,6 +189,22 @@ void main() {
         () => enterpriseManagerDatasource.updateModulePermissions(
           enterpriseId: enterpriseId,
           permissions: permissions,
+        ),
+      );
+      verifyNoMoreInteractions(enterpriseManagerDatasource);
+    });
+  });
+
+  group('Get enabled modules by enterprise name', () {
+    test('should behave correctly on success', () async {
+      final response = await sut.getEnabledModulesByEnterpriseName(
+        enterpriseName,
+      );
+
+      expect(response, enabledModulesByCnpjEntities);
+      verify(
+        () => enterpriseManagerDatasource.getEnabledModulesByEnterpriseName(
+          enterpriseName,
         ),
       );
       verifyNoMoreInteractions(enterpriseManagerDatasource);

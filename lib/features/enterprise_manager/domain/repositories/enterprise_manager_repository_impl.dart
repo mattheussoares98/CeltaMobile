@@ -79,4 +79,14 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
       permissions: permissions,
     );
   }
+
+  @override
+  Future<List<EnabledModulesByCnpjEntity>> getEnabledModulesByEnterpriseName(
+    String enterpriseName,
+  ) async {
+    final enterprises = await enterpriseManagerDatasource
+        .getEnabledModulesByEnterpriseName(enterpriseName);
+
+    return enterprises.map((e) => e.toEntity()).toList();
+  }
 }

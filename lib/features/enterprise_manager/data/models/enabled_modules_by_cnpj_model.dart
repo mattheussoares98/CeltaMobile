@@ -2,13 +2,13 @@ import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
 
-class EnabledModulesByCnpModel extends Equatable {
+class EnabledModulesByCnpjModel extends Equatable {
   final int idFromErp;
   final String cnpjNumber;
   final String name;
   final List<String> enabledModules;
 
-  const EnabledModulesByCnpModel({
+  const EnabledModulesByCnpjModel({
     required this.idFromErp,
     required this.cnpjNumber,
     required this.name,
@@ -18,8 +18,8 @@ class EnabledModulesByCnpModel extends Equatable {
   @override
   List<Object?> get props => [idFromErp, cnpjNumber, name, enabledModules];
 
-  factory EnabledModulesByCnpModel.fromJson(Map json) {
-    return EnabledModulesByCnpModel(
+  factory EnabledModulesByCnpjModel.fromJson(Map json) {
+    return EnabledModulesByCnpjModel(
       idFromErp: json['idFromErp'],
       cnpjNumber: json['cnpjNumber'],
       name: json['name'],
@@ -27,10 +27,10 @@ class EnabledModulesByCnpModel extends Equatable {
     );
   }
 
-  factory EnabledModulesByCnpModel.fromEntity(
+  factory EnabledModulesByCnpjModel.fromEntity(
     EnabledModulesByCnpjEntity entity,
   ) {
-    return EnabledModulesByCnpModel(
+    return EnabledModulesByCnpjModel(
       idFromErp: entity.idFromErp,
       cnpjNumber: entity.cnpjNumber,
       name: entity.name,

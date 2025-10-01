@@ -12,7 +12,7 @@ abstract class IEnterpriseManagerDatasource {
     required int enterpriseId,
     required List<UpdateModulePermissionModel> permissions,
   });
-  Future<List<EnabledModulesByCnpModel>> getEnabledModulesByEnterpriseName(
+  Future<List<EnabledModulesByCnpjModel>> getEnabledModulesByEnterpriseName(
     String enterpriseName,
   );
 }

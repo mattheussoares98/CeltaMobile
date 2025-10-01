@@ -14,4 +14,7 @@ abstract class IEnterpriseManagerRepository {
     required int enterpriseId,
     required List<UpdateModulePermissionModel> permissions,
   });
+  Future<List<EnabledModulesByCnpjEntity>> getEnabledModulesByEnterpriseName(
+    String enterpriseName,
+  );
 }

@@ -66,7 +66,7 @@ class EnterpriseManagerDatasource implements IEnterpriseManagerDatasource {
   }
 
   @override
-  Future<List<EnabledModulesByCnpModel>> getEnabledModulesByEnterpriseName(
+  Future<List<EnabledModulesByCnpjModel>> getEnabledModulesByEnterpriseName(
     String enterpriseName,
   ) async {
     final response = await supabase.rpc(
@@ -75,7 +75,9 @@ class EnterpriseManagerDatasource implements IEnterpriseManagerDatasource {
     );
 
     if (response is List && response.isNotEmpty) {
-      return response.map((e) => EnabledModulesByCnpModel.fromJson(e)).toList();
+      return response
+          .map((e) => EnabledModulesByCnpjModel.fromJson(e))
+          .toList();
     }
     return [];
   }

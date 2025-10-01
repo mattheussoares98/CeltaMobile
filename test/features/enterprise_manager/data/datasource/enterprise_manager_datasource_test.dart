@@ -147,7 +147,7 @@ void main() {
 
       supabaseClient.mockResponse(
         enterprises
-            .map((e) => EnabledModulesByCnpModel.fromEntity(e).toJson())
+            .map((e) => EnabledModulesByCnpjModel.fromEntity(e).toJson())
             .toList(),
       );
 
@@ -157,7 +157,9 @@ void main() {
 
       expect(
         response,
-        enterprises.map((e) => EnabledModulesByCnpModel.fromEntity(e)).toList(),
+        enterprises
+            .map((e) => EnabledModulesByCnpjModel.fromEntity(e))
+            .toList(),
       );
 
       expect(
