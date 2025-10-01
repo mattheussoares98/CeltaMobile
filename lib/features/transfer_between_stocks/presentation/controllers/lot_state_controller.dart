@@ -19,13 +19,16 @@ class LotStateController extends _$LotStateController {
       await repository.addItem(item);
 
       final previousState = state.valueOrNull ?? [];
-      final updatedList = previousState
-          .where(
-            (i) =>
-                i.product.ProductPackingCode != item.product.ProductPackingCode,
-          )
-          .toList();
-      updatedList.add(item);
+      final updatedList = [...previousState];
+
+      int productIndex = updatedList.indexWhere(
+        (i) => i.product.ProductPackingCode == item.product.ProductPackingCode,
+      );
+      if (productIndex == -1) {
+        updatedList.add(item);
+      } else {
+        updatedList[productIndex] = item;
+      }
 
       return updatedList;
     });

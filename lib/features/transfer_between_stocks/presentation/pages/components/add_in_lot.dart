@@ -21,6 +21,7 @@ class AddInLot extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return Row(
       children: [
@@ -41,7 +42,7 @@ class AddInLot extends ConsumerWidget {
             labelText: "Quantidade".hardcoded,
             validator: FormValidators.compose([
               NonEmptyValidator(),
-              NumberValidator(allowDecimal: true),
+              NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
             ]),
           ),
         ),
@@ -49,11 +50,13 @@ class AddInLot extends ConsumerWidget {
         Expanded(
           child: PrimaryButton(
             text: 'Lote'.hardcoded,
-            icon: Icon(
-              theme.platform == TargetPlatform.iOS
-                  ? CupertinoIcons.add
-                  : Icons.add,
-            ),
+            icon: mediaQuery.size.width < 300
+                ? null
+                : Icon(
+                    theme.platform == TargetPlatform.iOS
+                        ? CupertinoIcons.add
+                        : Icons.add,
+                  ),
             onPressed: addInLot,
           ),
         ),

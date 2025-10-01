@@ -17,7 +17,35 @@ class LotPage extends ConsumerStatefulWidget {
 }
 
 class _LotPageState extends ConsumerState<LotPage> {
-  int? changingQuantityIndex;
+  int? selectedIndex;
+  final quantityController = TextEditingController();
+  final quantityFocusNode = FocusNode();
+
+  void changeSelectedIndex(int index, double? quantity) {
+    if (selectedIndex == index) {
+      setState(() {
+        selectedIndex = null;
+      });
+    } else {
+      setState(() {
+        selectedIndex = index;
+      });
+      Future.delayed(Duration(milliseconds: 100), () {
+        quantityFocusNode.requestFocus();
+        quantityController.text = quantity.toString().toBrazilianNumber();
+        quantityController.selection = TextSelection.fromPosition(
+          TextPosition(offset: quantityController.text.length),
+        );
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    quantityController.dispose();
+    quantityFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,61 +65,13 @@ class _LotPageState extends ConsumerState<LotPage> {
         return Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (_, index) {
-                  final item = items[index];
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      bottom: (index == items.length - 1) ? Sizes.p32 : 0,
-                    ),
-                    child: Card(
-                      clipBehavior: Clip.antiAlias,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            changingQuantityIndex = index;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(Sizes.p8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitleAndSubTitle(
-                                title: null,
-                                subTitle:
-                                    "${item.product.Name} (${item.product.PLU})",
-                              ),
-                              TitleAndSubTitle(
-                                title: 'Just '.hardcoded,
-                                subTitle: item
-                                    .selectedJustification
-                                    .Descricao_JustMov,
-                              ),
-                              TitleAndSubTitle(
-                                title: 'De '.hardcoded,
-                                subTitle:
-                                    item.selectedOriginStock.Nome_TipoEstoque,
-                              ),
-                              TitleAndSubTitle(
-                                title: 'Para '.hardcoded,
-                                subTitle:
-                                    item.selectedDestinyStock.Nome_TipoEstoque,
-                              ),
-                              TitleAndSubTitle(
-                                title: 'Qtd '.hardcoded,
-                                subTitle: item.quantity
-                                    .toString()
-                                    .toBrazilianNumber(3),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
+              child: LotItems(
+                items: items,
+                selectedIndex: selectedIndex,
+                changeSelectedIndex: changeSelectedIndex,
+                quantityController: quantityController,
+                enterpriseCode: widget.enterpriseCode,
+                quantityFocusNode: quantityFocusNode,
               ),
             ),
             Padding(
