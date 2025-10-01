@@ -27,27 +27,30 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: DropdownButtonFormField<T>(
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
-          focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+      child: InkWell(
+        onTap: () {},
+        child: DropdownButtonFormField<T>(
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+            focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+          ),
+          initialValue: value,
+          padding: EdgeInsets.symmetric(horizontal: Sizes.p16),
+          items: items,
+          alignment: Alignment.center,
+          isExpanded: true,
+          onChanged: onChanged,
+          autovalidateMode: autovalidateMode,
+          isDense: true,
+          dropdownColor: Colors.white,
+          validator: validator,
+          icon: Padding(
+            padding: const EdgeInsets.only(right: Sizes.p8),
+            child: isLoading == true ? _LoadingWidget() : _IconWidget(),
+          ),
+          hint: Center(child: Text(hint)),
         ),
-        initialValue: value,
-        padding: EdgeInsets.symmetric(horizontal: Sizes.p16),
-        items: items,
-        alignment: Alignment.center,
-        isExpanded: true,
-        onChanged: onChanged,
-        autovalidateMode: autovalidateMode,
-        isDense: true,
-        dropdownColor: Colors.white,
-        validator: validator,
-        icon: Padding(
-          padding: const EdgeInsets.only(right: Sizes.p8),
-          child: isLoading == true ? _LoadingWidget() : _IconWidget(),
-        ),
-        hint: Text(hint),
       ),
     );
   }
