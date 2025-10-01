@@ -25,6 +25,7 @@ class UserSession extends _$UserSession {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(localUserSessionRepositoryProvider).logout();
+      //TODO clear some database data
       return null;
     });
   }
