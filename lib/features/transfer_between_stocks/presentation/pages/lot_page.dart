@@ -83,7 +83,7 @@ class _LotPageState extends ConsumerState<LotPage> {
                                 title: 'Qtd '.hardcoded,
                                 subTitle: item.quantity
                                     .toString()
-                                    .toBrazilianNumber(),
+                                    .toBrazilianNumber(3),
                               ),
                             ],
                           ),

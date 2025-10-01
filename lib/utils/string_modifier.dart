@@ -1,15 +1,29 @@
 extension StringModifier on String {
   String toBrazilianNumber([
     int decimalHouses = 2,
-    bool hideDecimalIfWhole = false,
+    bool showDecimalUntilLastNumber = true,
   ]) {
-    double value = double.parse(this);
+    final value = double.tryParse(this.replaceAll(',', '.'));
+    if (value == null) {
+      return this;
+    }
 
-    if (hideDecimalIfWhole && value % 1 == 0) {
-      return value.toInt().toString().replaceAllMapped(
+    if (showDecimalUntilLastNumber) {
+      if (value % 1 == 0) {
+        return value.toInt().toString().replaceAllMapped(
+          RegExp(r'\B(?=(\d{3})+(?!\d))'),
+          (match) => '.',
+        );
+      }
+
+      List<String> parts = value.toString().split('.');
+
+      parts[0] = parts[0].replaceAllMapped(
         RegExp(r'\B(?=(\d{3})+(?!\d))'),
         (match) => '.',
       );
+
+      return parts.join(',');
     }
 
     String formatted = value.toStringAsFixed(decimalHouses);
