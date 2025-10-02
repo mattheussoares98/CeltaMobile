@@ -43,6 +43,13 @@ class ModulesWidget extends ConsumerWidget {
       DefaultModuleButton(
         enabledModulesByEnterpriseAsync: enabledModulesByEnterpriseAsync,
         selectedEnterprise: selectedEnterprise,
+        route: AppRoute.customerRegister,
+        module: Modules.customerRegister,
+        passEnterpriseToNextRoute: false,
+      ),
+      DefaultModuleButton(
+        enabledModulesByEnterpriseAsync: enabledModulesByEnterpriseAsync,
+        selectedEnterprise: selectedEnterprise,
         route: AppRoute.transferBetweenStocks,
         module: Modules.transferBetweenStocks,
       ),

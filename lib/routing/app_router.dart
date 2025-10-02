@@ -15,6 +15,7 @@ enum AppRoute {
   adjustSalePriceProducts('Alterar preços'),
   adjustStocks('Ajustar estoque'),
   createEnterprise('Criar empresa'),
+  customerRegister('Cadastro de clientes'),
   enterpriseManager('Gerenciamento de empresas'),
   enterpriseManagerAuth('Autenticação'),
   enterpriseManagerChangeModulesPermissions('Permissões de módulos'),
@@ -59,6 +60,7 @@ GoRouter goRouter(Ref ref) {
       homeRoute([
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
+        customerRegisterRoute(),
         transferBetweenStocksRoute(),
       ]),
       splashRoute(),

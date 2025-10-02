@@ -14,6 +14,7 @@ class DefaultModuleButton extends StatelessWidget {
   final Modules module;
   final AsyncValue<List<EnabledModulesByCnpjEntity>>
   enabledModulesByEnterpriseAsync;
+  final bool passEnterpriseToNextRoute;
 
   const DefaultModuleButton({
     super.key,
@@ -21,6 +22,7 @@ class DefaultModuleButton extends StatelessWidget {
     required this.route,
     required this.enabledModulesByEnterpriseAsync,
     required this.module,
+    this.passEnterpriseToNextRoute = true,
   });
 
   @override
@@ -62,10 +64,12 @@ class DefaultModuleButton extends StatelessWidget {
 
               context.goNamed(
                 route.name,
-                pathParameters: {
-                  'enterpriseCode': selectedEnterprise!.Code.toString(),
-                },
-                extra: {'enterprise': selectedEnterprise},
+                pathParameters: passEnterpriseToNextRoute
+                    ? {'enterpriseCode': selectedEnterprise!.Code.toString()}
+                    : {},
+                extra: passEnterpriseToNextRoute
+                    ? {'enterprise': selectedEnterprise}
+                    : null,
               );
             },
     );
