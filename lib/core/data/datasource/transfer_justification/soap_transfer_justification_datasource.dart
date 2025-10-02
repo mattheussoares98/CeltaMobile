@@ -29,8 +29,6 @@ class SoapTransferJustificationDatasource
       },
     );
 
-    //TODO create tests
-
     return (json.decode(result) as List)
         .map((e) => TransferJustificationModel.fromJson(e))
         .toList();

@@ -43,7 +43,7 @@ class TransferJustificationModel extends Equatable {
     'CodigoInterno_JustMov': CodigoInterno_JustMov,
     'Descricao_JustMov': Descricao_JustMov,
     'FlagTipo_JustMov': FlagTipo_JustMov,
-    'TypeOperator': FlagInterno_TipoEstoque,
+    'FlagInterno_TipoEstoque': FlagInterno_TipoEstoque,
     'Nome_TipoEstoque': Nome_TipoEstoque,
     'CodigoInterno_TipoEstoque': CodigoInterno_TipoEstoque,
   };
