@@ -27,7 +27,6 @@ class SoapStockTypeDatasource implements ISoapStockTypeDatasource {
       },
     );
 
-    //TODO create tests
     return (json.decode(value) as List)
         .map((e) => StockTypeModel.fromJson(e))
         .toList();
