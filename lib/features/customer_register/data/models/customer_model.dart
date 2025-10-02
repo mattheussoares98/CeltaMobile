@@ -1,8 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../../core/data/models/models.dart';
 import '../../domain/entities/customer_entity.dart';
 import 'models.dart';
 
-class CustomerModel {
+class CustomerModel extends Equatable {
   final int? Code;
   final String? PersonalizedCode;
   final String? Name;
@@ -19,7 +21,7 @@ class CustomerModel {
   final CustomerSaleBlockadeInstructionModel? saleBlockadeInstructionModel;
   final CustomerSaleBlockadeModel? saleBlockadeModel;
 
-  CustomerModel({
+  const CustomerModel({
     required this.Name,
     required this.Code,
     required this.PersonalizedCode,
@@ -36,6 +38,25 @@ class CustomerModel {
     required this.saleBlockadeInstructionModel,
     required this.saleBlockadeModel,
   });
+
+  @override
+  List<Object?> get props => [
+    Code,
+    PersonalizedCode,
+    Name,
+    ReducedName,
+    CpfCnpjNumber,
+    RegistrationNumber,
+    DateOfBirth,
+    SexType,
+    PersonType,
+    Emails,
+    Telephones,
+    Addresses,
+    CustomerCovenants,
+    saleBlockadeInstructionModel,
+    saleBlockadeModel,
+  ];
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'Code': Code,
@@ -65,7 +86,7 @@ class CustomerModel {
     DateOfBirth: json['DateOfBirth'],
     SexType: json['SexType'],
     PersonType: json['PersonType'],
-    Emails: json['Emails'],
+    Emails: (json['Emails'] as List?)?.map((e) => e.toString()).toList(),
     Telephones: (json['Telephones'] as List?)
         ?.map((e) => CustomerTelephoneModel.fromJson(e))
         .toList(),

@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
@@ -281,5 +282,87 @@ class EntityFactory {
         cnpjNumber: faker.randomGenerator.integer(100).toString(),
         name: faker.company.name(),
         enabledModules: Modules.values,
+      );
+
+  static CustomerEntity makeCustomerEntity() => CustomerEntity(
+    Name: faker.person.name(),
+    Code: faker.randomGenerator.integer(100),
+    PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+    ReducedName: faker.person.name(),
+    CpfCnpjNumber: faker.randomGenerator.integer(100).toString(),
+    RegistrationNumber: faker.guid.guid(),
+    DateOfBirth: faker.date.dateTime().toIso8601String(),
+    SexType: faker.randomGenerator.integer(1) == 1 ? "M" : "F",
+    PersonType: faker.randomGenerator.integer(1) == 1 ? "PJ" : "PF",
+    Emails: [
+      faker.internet.email(),
+      faker.internet.email(),
+      faker.internet.email(),
+    ],
+    Telephones: [
+      makeCustomerTelephoneEntity(),
+      makeCustomerTelephoneEntity(),
+      makeCustomerTelephoneEntity(),
+    ],
+    Addresses: [makeAddressEntity(), makeAddressEntity(), makeAddressEntity()],
+    CustomerCovenants: [
+      makeCustomerCovenantEntity(),
+      makeCustomerCovenantEntity(),
+      makeCustomerCovenantEntity(),
+    ],
+    saleBlockadeInstruction: makeCustomerSaleBlockadeInstructionEntity(),
+    saleBlockade: makeCustomerSaleBlockadeEntity(),
+  );
+
+  static CustomerTelephoneEntity makeCustomerTelephoneEntity() =>
+      CustomerTelephoneEntity(
+        AreaCode: faker.randomGenerator.integer(100).toString(),
+        PhoneNumber: faker.phoneNumber.us(),
+      );
+
+  static AddressEntity makeAddressEntity() => AddressEntity(
+    Zip: faker.address.zipCode(),
+    Address: faker.address.streetAddress(),
+    Number: faker.randomGenerator.integer(100).toString(),
+    District: faker.address.city(),
+    City: faker.address.city(),
+    State: faker.address.state(),
+    Complement: faker.address.neighborhood(),
+    Reference: faker.address.neighborhood(),
+  );
+
+  static CustomerCovenantEntity makeCustomerCovenantEntity() =>
+      CustomerCovenantEntity(
+        covenant: makeCovenantEntity(),
+        Matriculate: faker.guid.guid(),
+        LimitOfPurchase: faker.randomGenerator.decimal(),
+      );
+
+  static CovenantEntity makeCovenantEntity() => CovenantEntity(
+    Code: faker.randomGenerator.integer(100),
+    PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+    Name: faker.company.name(),
+  );
+
+  static CustomerSaleBlockadeInstructionEntity
+  makeCustomerSaleBlockadeInstructionEntity() =>
+      CustomerSaleBlockadeInstructionEntity(
+        Code: faker.randomGenerator.integer(100),
+        PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+        LegacyCode: faker.lorem.word(),
+        Description: faker.lorem.sentence(),
+      );
+
+  static CustomerSaleBlockadeEntity makeCustomerSaleBlockadeEntity() =>
+      CustomerSaleBlockadeEntity(
+        Code: faker.randomGenerator.integer(100),
+        PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+        LegacyCode: faker.randomGenerator.integer(100).toString(),
+        Description: faker.lorem.sentence(),
+        AllowSaleRequest: faker.randomGenerator.boolean(),
+        AllowSale: faker.randomGenerator.boolean(),
+        AllowSaleWithPaymentFinalizationTypeCheckOrPortion: faker
+            .randomGenerator
+            .boolean(),
       );
 }

@@ -8,7 +8,7 @@ class CustomerEntity {
   final String? ReducedName;
   final String? CpfCnpjNumber;
   final String? RegistrationNumber;
-  final String? DateOfBirth;
+  final String? DateOfBirth; //TODO verify to change to DateTime
   final String? SexType;
   final String? PersonType;
   final List<String>? Emails;
