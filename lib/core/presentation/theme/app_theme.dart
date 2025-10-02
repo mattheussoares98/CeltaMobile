@@ -9,6 +9,7 @@ class AppTheme {
     final primaryColorLight = Colors.lightGreenAccent;
     final primaryColorDark = Colors.green[900]!;
     final secondaryColor = Colors.amber;
+    final scaffoldBackgroundColor = Colors.white;
 
     return ThemeData(
       // * Use this to toggle Material 3 (defaults to true since Flutter 3.16)
@@ -17,6 +18,14 @@ class AppTheme {
       primaryColor: primaryColor,
       primaryColorLight: primaryColorLight,
       primaryColorDark: primaryColorDark,
+      scaffoldBackgroundColor: scaffoldBackgroundColor,
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: true,
+        backgroundColor: scaffoldBackgroundColor,
+        selectedItemColor: primaryColor,
+        unselectedItemColor: disabledColor,
+      ),
       colorScheme: theme.colorScheme.copyWith(
         primary: primaryColor,
         primaryContainer: primaryColorLight,
