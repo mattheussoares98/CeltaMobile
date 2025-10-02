@@ -280,10 +280,6 @@ class EntityFactory {
         idFromErp: faker.randomGenerator.integer(100),
         cnpjNumber: faker.randomGenerator.integer(100).toString(),
         name: faker.company.name(),
-        enabledModules: [
-          faker.lorem.word(),
-          faker.lorem.word(),
-          faker.lorem.word(),
-        ],
+        enabledModules: Modules.values,
       );
 }

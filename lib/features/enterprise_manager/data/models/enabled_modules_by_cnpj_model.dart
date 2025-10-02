@@ -6,7 +6,7 @@ class EnabledModulesByCnpjModel extends Equatable {
   final int idFromErp;
   final String cnpjNumber;
   final String name;
-  final List<String> enabledModules;
+  final List<Modules> enabledModules;
 
   const EnabledModulesByCnpjModel({
     required this.idFromErp,
@@ -20,10 +20,12 @@ class EnabledModulesByCnpjModel extends Equatable {
 
   factory EnabledModulesByCnpjModel.fromJson(Map json) {
     return EnabledModulesByCnpjModel(
-      idFromErp: json['idFromErp'],
-      cnpjNumber: json['cnpjNumber'],
+      idFromErp: json['id_from_erp'],
+      cnpjNumber: json['cnpj_number'],
       name: json['name'],
-      enabledModules: json['enabledModules'],
+      enabledModules: (json['enabled_modules'] as List)
+          .map((e) => Modules.values.firstWhere((element) => element.name == e))
+          .toList(),
     );
   }
 
@@ -39,10 +41,10 @@ class EnabledModulesByCnpjModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'idFromErp': idFromErp,
-    'cnpjNumber': cnpjNumber,
+    'id_from_erp': idFromErp,
+    'cnpj_number': cnpjNumber,
     'name': name,
-    'enabledModules': enabledModules,
+    'enabled_modules': enabledModules,
   };
 
   EnabledModulesByCnpjEntity toEntity() => EnabledModulesByCnpjEntity(

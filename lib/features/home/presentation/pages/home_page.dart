@@ -43,7 +43,9 @@ class HomePage extends ConsumerWidget {
         ),
       ),
 
-      body: Modules(),
+      body: enterprisesAsync.isLoading
+          ? Center(child: LoadingWidget())
+          : ModulesWidget(),
     );
   }
 }
