@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../../core/domain/entities/entities.dart';
 import 'entities.dart';
 
-class CustomerEntity {
+class CustomerEntity extends Equatable {
   final int? Code;
   final String? PersonalizedCode;
   final String? Name;
@@ -18,7 +20,7 @@ class CustomerEntity {
   final CustomerSaleBlockadeInstructionEntity? saleBlockadeInstruction;
   final CustomerSaleBlockadeEntity? saleBlockade;
 
-  CustomerEntity({
+  const CustomerEntity({
     required this.Name,
     required this.Code,
     required this.PersonalizedCode,
@@ -35,4 +37,23 @@ class CustomerEntity {
     required this.saleBlockadeInstruction,
     required this.saleBlockade,
   });
+
+  @override
+  List<Object?> get props => [
+    Code,
+    PersonalizedCode,
+    Name,
+    ReducedName,
+    CpfCnpjNumber,
+    RegistrationNumber,
+    DateOfBirth,
+    SexType,
+    PersonType,
+    Emails,
+    Telephones,
+    Addresses,
+    CustomerCovenants,
+    saleBlockadeInstruction,
+    saleBlockade,
+  ];
 }

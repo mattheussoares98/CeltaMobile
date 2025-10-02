@@ -25,6 +25,8 @@ import 'package:celta_intelligence/features/adjust_sale_price/domain/repositorie
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/customer_register/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/customer_register/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
@@ -704,4 +706,22 @@ class SoapAdjustStockDatasourceSpy extends Mock
       ),
     ).thenAnswer((_) async {});
   }
+}
+
+class SoapCustomerDatasourceSpy extends Mock
+    implements ISoapCustomerDatasource {
+  When _mockLoadCall() => when(
+    () => this.loadCustomer(
+      searchType: any(named: 'searchType'),
+      searchValue: any(named: 'searchValue'),
+      crossIdentity: any(named: 'crossIdentity'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+      baseUrl: any(named: 'baseUrl'),
+    ),
+  );
+
+  void mockLoad(List<CustomerModel> response) =>
+      _mockLoadCall().thenAnswer((_) async => response);
+
+  void mockLoadError() => _mockLoadCall().thenThrow(Exception());
 }
