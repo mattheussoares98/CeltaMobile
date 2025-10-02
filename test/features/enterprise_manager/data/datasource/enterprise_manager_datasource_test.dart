@@ -143,8 +143,6 @@ void main() {
         EntityFactory.makeEnabledModulesByCnpjEntity(),
       ];
 
-      final enterpriseName = faker.company.name();
-
       supabaseClient.mockResponse(
         enterprises
             .map((e) => EnabledModulesByCnpjModel.fromEntity(e).toJson())
@@ -152,7 +150,7 @@ void main() {
       );
 
       final response = await sut.getEnabledModulesByEnterpriseName(
-        enterpriseName,
+        enterprises.first.name,
       );
 
       expect(
@@ -168,7 +166,7 @@ void main() {
       );
 
       expect(supabaseClient.lastRpcParams, {
-        'p_enterprise_name': enterpriseName,
+        'p_enterprise_name': enterprises.first.name,
       });
     });
   });

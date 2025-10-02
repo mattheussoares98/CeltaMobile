@@ -44,7 +44,7 @@ class EnabledModulesByCnpjModel extends Equatable {
     'id_from_erp': idFromErp,
     'cnpj_number': cnpjNumber,
     'name': name,
-    'enabled_modules': enabledModules,
+    'enabled_modules': enabledModules.map((e) => e.name).toList(),
   };
 
   EnabledModulesByCnpjEntity toEntity() => EnabledModulesByCnpjEntity(
