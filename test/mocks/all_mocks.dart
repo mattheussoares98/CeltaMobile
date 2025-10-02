@@ -14,6 +14,7 @@ import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/errors/errors.dart';
+import 'package:celta_intelligence/core/domain/repositories/customer/customer.dart';
 import 'package:celta_intelligence/core/domain/repositories/enterprise/enterprise.dart';
 import 'package:celta_intelligence/core/domain/repositories/products/products.dart';
 import 'package:celta_intelligence/core/domain/repositories/resource/resource.dart';
@@ -721,6 +722,24 @@ class SoapCustomerDatasourceSpy extends Mock
   );
 
   void mockLoad(List<CustomerModel> response) =>
+      _mockLoadCall().thenAnswer((_) async => response);
+
+  void mockLoadError() => _mockLoadCall().thenThrow(Exception());
+}
+
+class SoapCustomerRepositorySpy extends Mock
+    implements ISoapCustomerRepository {
+  When _mockLoadCall() => when(
+    () => this.loadCustomer(
+      searchType: any(named: 'searchType'),
+      searchValue: any(named: 'searchValue'),
+      crossIdentity: any(named: 'crossIdentity'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+      baseUrl: any(named: 'baseUrl'),
+    ),
+  );
+
+  void mockLoad(List<CustomerEntity> response) =>
       _mockLoadCall().thenAnswer((_) async => response);
 
   void mockLoadError() => _mockLoadCall().thenThrow(Exception());
