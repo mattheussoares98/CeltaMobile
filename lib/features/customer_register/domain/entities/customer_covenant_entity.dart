@@ -1,0 +1,18 @@
+import 'package:equatable/equatable.dart';
+
+import 'entities.dart';
+
+class CustomerCovenantEntity extends Equatable {
+  final CovenantEntity? covenant;
+  final String? Matriculate;
+  final double? LimitOfPurchase;
+
+  const CustomerCovenantEntity({
+    required this.covenant,
+    required this.Matriculate,
+    required this.LimitOfPurchase,
+  });
+
+  @override
+  List<Object?> get props => [covenant, Matriculate, LimitOfPurchase];
+}
