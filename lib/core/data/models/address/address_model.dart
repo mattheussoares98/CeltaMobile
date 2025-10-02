@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
+
 class AddressModel extends Equatable {
   final String Zip;
   final String Address;
@@ -54,4 +56,28 @@ class AddressModel extends Equatable {
     "Complement": Complement,
     "Reference": Reference,
   };
+
+  factory AddressModel.fromEntity(AddressEntity entity) {
+    return AddressModel(
+      Zip: entity.Zip,
+      Address: entity.Address,
+      Number: entity.Number,
+      District: entity.District,
+      City: entity.City,
+      State: entity.State,
+      Complement: entity.Complement,
+      Reference: entity.Reference,
+    );
+  }
+
+  AddressEntity toEntity() => AddressEntity(
+    Zip: Zip,
+    Address: Address,
+    Number: Number,
+    District: District,
+    City: City,
+    State: State,
+    Complement: Complement,
+    Reference: Reference,
+  );
 }

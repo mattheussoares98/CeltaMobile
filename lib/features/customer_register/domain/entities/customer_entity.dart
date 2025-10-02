@@ -15,8 +15,8 @@ class CustomerEntity {
   final List<CustomerTelephoneEntity>? Telephones;
   final List<CustomerCovenantEntity>? CustomerCovenants;
   final List<AddressEntity>? Addresses;
-  final CustomerSaleBlockadeInstructionEntity? saleBlockadeInstructionEntity;
-  final CustomerSaleBlockadeEntity? saleBlockadeEntity;
+  final CustomerSaleBlockadeInstructionEntity? saleBlockadeInstruction;
+  final CustomerSaleBlockadeEntity? saleBlockade;
 
   CustomerEntity({
     required this.Name,
@@ -32,7 +32,7 @@ class CustomerEntity {
     required this.Telephones,
     required this.Addresses,
     required this.CustomerCovenants,
-    required this.saleBlockadeInstructionEntity,
-    required this.saleBlockadeEntity,
+    required this.saleBlockadeInstruction,
+    required this.saleBlockade,
   });
 }
