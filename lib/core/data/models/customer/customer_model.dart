@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/data/models/models.dart';
-import '../../domain/entities/customer_entity.dart';
-import 'models.dart';
+import '../models.dart';
+import '../../../domain/entities/entities.dart';
+import 'customer.dart';
 
 class CustomerModel extends Equatable {
   final int? Code;
@@ -11,7 +11,7 @@ class CustomerModel extends Equatable {
   final String? ReducedName;
   final String? CpfCnpjNumber;
   final String? RegistrationNumber;
-  final String? DateOfBirth;
+  final DateTime? DateOfBirth;
   final String? SexType;
   final String? PersonType;
   final List<String>? Emails;
@@ -65,7 +65,7 @@ class CustomerModel extends Equatable {
     'ReducedName': ReducedName,
     'CpfCnpjNumber': CpfCnpjNumber,
     'RegistrationNumber': RegistrationNumber,
-    'DateOfBirth': DateOfBirth,
+    'DateOfBirth': DateOfBirth?.toIso8601String(),
     'SexType': SexType,
     'PersonType': PersonType,
     'Emails': Emails,
@@ -83,7 +83,9 @@ class CustomerModel extends Equatable {
     ReducedName: json['ReducedName'],
     CpfCnpjNumber: json['CpfCnpjNumber'],
     RegistrationNumber: json['RegistrationNumber'],
-    DateOfBirth: json['DateOfBirth'],
+    DateOfBirth: json['DateOfBirth'] == null
+        ? null
+        : DateTime.parse(json['DateOfBirth']),
     SexType: json['SexType'],
     PersonType: json['PersonType'],
     Emails: (json['Emails'] as List?)?.map((e) => e.toString()).toList(),

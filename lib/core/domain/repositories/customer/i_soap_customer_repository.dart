@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import '../../entities/customer/customer.dart';
 
 abstract class ISoapCustomerRepository {
   Future<List<CustomerEntity>> loadCustomer({

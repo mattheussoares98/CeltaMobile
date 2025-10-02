@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/core/data/datasource/customer/customer.dart';
 import 'package:celta_intelligence/core/data/datasource/enterprise/enterprise.dart';
 import 'package:celta_intelligence/core/data/datasource/login/login.dart';
 import 'package:celta_intelligence/core/data/datasource/products/products.dart';
@@ -8,6 +9,7 @@ import 'package:celta_intelligence/core/data/datasource/settings/settings.dart';
 import 'package:celta_intelligence/core/data/datasource/stock/stock.dart';
 import 'package:celta_intelligence/core/data/datasource/transfer_justification/transfer_justification.dart';
 import 'package:celta_intelligence/core/data/datasource/user_session/user_session.dart';
+import 'package:celta_intelligence/core/data/models/customer/customer.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
@@ -25,8 +27,6 @@ import 'package:celta_intelligence/features/adjust_sale_price/domain/repositorie
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
-import 'package:celta_intelligence/features/customer_register/data/datasource/datasource.dart';
-import 'package:celta_intelligence/features/customer_register/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';

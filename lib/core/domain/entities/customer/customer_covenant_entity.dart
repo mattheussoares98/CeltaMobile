@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'entities.dart';
+import 'customer.dart';
 
 class CustomerCovenantEntity extends Equatable {
   final CovenantEntity? covenant;

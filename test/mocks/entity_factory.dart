@@ -1,6 +1,6 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/domain/entities/customer/customer.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
@@ -291,7 +291,7 @@ class EntityFactory {
     ReducedName: faker.person.name(),
     CpfCnpjNumber: faker.randomGenerator.integer(100).toString(),
     RegistrationNumber: faker.guid.guid(),
-    DateOfBirth: faker.date.dateTime().toIso8601String(),
+    DateOfBirth: faker.date.dateTime(),
     SexType: faker.randomGenerator.integer(1) == 1 ? "M" : "F",
     PersonType: faker.randomGenerator.integer(1) == 1 ? "PJ" : "PF",
     Emails: [

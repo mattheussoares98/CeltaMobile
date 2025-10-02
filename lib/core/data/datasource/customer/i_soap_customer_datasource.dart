@@ -1,5 +1,5 @@
-import '../../domain/entities/entities.dart';
-import '../models/models.dart';
+import '../../../domain/entities/customer/customer.dart';
+import '../../models/customer/customer.dart';
 
 abstract class ISoapCustomerDatasource {
   Future<List<CustomerModel>> loadCustomer({

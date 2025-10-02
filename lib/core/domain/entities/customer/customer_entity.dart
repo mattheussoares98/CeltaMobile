@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import 'entities.dart';
+import '../entities.dart';
 
 class CustomerEntity extends Equatable {
   final int? Code;
@@ -10,7 +9,7 @@ class CustomerEntity extends Equatable {
   final String? ReducedName;
   final String? CpfCnpjNumber;
   final String? RegistrationNumber;
-  final String? DateOfBirth; //TODO verify to change to DateTime
+  final DateTime? DateOfBirth;
   final String? SexType;
   final String? PersonType;
   final List<String>? Emails;

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import '../../../domain/entities/entities.dart';
 
 class CustomerSaleBlockadeModel extends Equatable {
   final int Code;

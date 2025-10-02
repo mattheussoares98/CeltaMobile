@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import '../../../domain/entities/entities.dart';
 
 class CustomerTelephoneModel extends Equatable {
   final String? AreaCode;

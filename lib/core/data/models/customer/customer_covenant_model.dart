@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import '../../../domain/entities/entities.dart';
+import 'customer.dart';
 
 class CustomerCovenantModel extends Equatable {
   final CovenantModel? covenant;
