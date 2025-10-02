@@ -1,3 +1,4 @@
+export 'address/address.dart';
 export 'enterprise/enterprise.dart';
 export './product/product.dart';
 export 'stock/stock.dart';
