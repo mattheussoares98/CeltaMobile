@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/core/providers/hive/hive.dart';
 import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,12 +11,16 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late LocalUserSessionDatasourceSpy localUserSessionDatasource;
   late UserSessionModel userSession;
+  late MockBox mockTransferLotBox;
+  late MockBox mockAppSettingsBox;
 
   setUp(() {
     localUserSessionDatasource = LocalUserSessionDatasourceSpy();
     userSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    mockTransferLotBox = MockBox();
+    mockAppSettingsBox = MockBox();
 
     registerFallbackValue(userSession);
 
@@ -28,6 +33,8 @@ void main() {
         localUserSessionDatasourceProvider.overrideWithValue(
           localUserSessionDatasource,
         ),
+        hiveBoxTransferLotProvider.overrideWithValue(mockTransferLotBox),
+        hiveBoxAppSettingsProvider.overrideWithValue(mockAppSettingsBox),
       ],
     );
   }
@@ -100,7 +107,7 @@ void main() {
       );
     });
 
-    group('clearSession', () {
+    group('logout', () {
       test(
         'should emit [loading, data(null)] and call datasource.clear on success',
         () async {
@@ -120,6 +127,8 @@ void main() {
             isA<AsyncData<UserSessionModel?>>(),
           ]);
           verify(() => localUserSessionDatasource.logout()).called(1);
+          verify(() => mockTransferLotBox.clear()).called(1);
+          verify(() => mockAppSettingsBox.clear()).called(1);
         },
       );
     });

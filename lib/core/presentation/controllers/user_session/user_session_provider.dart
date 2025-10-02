@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/models/models.dart';
+import '../../../providers/hive/hive.dart';
 import '../../../providers/user_session/user_session.dart';
 
 part 'user_session_provider.g.dart';
@@ -25,7 +26,8 @@ class UserSession extends _$UserSession {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(localUserSessionRepositoryProvider).logout();
-      //TODO clear some database data
+      ref.read(hiveBoxTransferLotProvider).clear();
+      ref.read(hiveBoxAppSettingsProvider).clear();
       return null;
     });
   }

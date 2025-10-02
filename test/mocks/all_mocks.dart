@@ -119,6 +119,7 @@ class MockBox extends Mock implements Box {
   MockBox() {
     when(() => this.delete(any())).thenAnswer((_) async => {});
     when(() => this.put(any(), any())).thenAnswer((_) async => {});
+    when(() => this.clear()).thenAnswer((_) async => 0);
   }
 
   void mockGet(String key, dynamic value) {
