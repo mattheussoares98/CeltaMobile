@@ -21,6 +21,7 @@ class DefaultTextFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final int maxLength;
+  final Function(String)? onChanged;
   const DefaultTextFormField({
     super.key,
     required this.controller,
@@ -36,6 +37,7 @@ class DefaultTextFormField extends StatelessWidget {
     this.autovalidateMode,
     this.focusNode,
     this.keyboardType,
+    this.onChanged,
     this.obscureText = false,
   });
 
@@ -58,6 +60,7 @@ class DefaultTextFormField extends StatelessWidget {
         focusNode: focusNode,
         keyboardType: keyboardType,
         maxLength: maxLength,
+        onChanged: onChanged,
       );
     }
     return TextFormField(
@@ -71,6 +74,7 @@ class DefaultTextFormField extends StatelessWidget {
       focusNode: focusNode,
       keyboardType: keyboardType,
       maxLength: maxLength,
+      onChanged: onChanged,
       buildCounter:
           (
             context, {
@@ -91,6 +95,21 @@ class DefaultTextFormField extends StatelessWidget {
 }
 
 class _CupertinoFormField extends StatefulWidget {
+  final TextEditingController? controller;
+  final String? labelText;
+  final String? hintText;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final String? Function(String?)? validator;
+  final bool obscureText;
+  final void Function(String)? onFieldSubmitted;
+  final bool? enabled;
+  final AutovalidateMode? autovalidateMode;
+  final FocusNode? focusNode;
+  final TextInputType? keyboardType;
+  final int maxLength;
+  final Function(String)? onChanged;
+
   const _CupertinoFormField({
     required this.controller,
     required this.labelText,
@@ -105,21 +124,9 @@ class _CupertinoFormField extends StatefulWidget {
     required this.focusNode,
     required this.keyboardType,
     required this.maxLength,
+    required this.onChanged,
   });
 
-  final TextEditingController? controller;
-  final String? labelText;
-  final String? hintText;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final String? Function(String?)? validator;
-  final bool obscureText;
-  final void Function(String)? onFieldSubmitted;
-  final bool? enabled;
-  final AutovalidateMode? autovalidateMode;
-  final FocusNode? focusNode;
-  final TextInputType? keyboardType;
-  final int maxLength;
   @override
   State<_CupertinoFormField> createState() => _CupertinoFormFieldState();
 }
@@ -175,6 +182,7 @@ class _CupertinoFormFieldState extends State<_CupertinoFormField> {
               enableSuggestions: true,
               maxLength: widget.maxLength,
               onChanged: (value) {
+                widget.onChanged?.call(value);
                 state.didChange(value);
               },
               decoration: BoxDecoration(
