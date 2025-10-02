@@ -45,6 +45,7 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
   bool cpfCnpjIsValid = false;
   Future<void> searchCustomer() async {
     setState(() {
+      //TODO fix because is missing the focus when change the value
       cpfCnpjIsValid = CpfCnpjValidator().isValid(
         widget.cpfCnpjController.text,
       );
