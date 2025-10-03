@@ -171,5 +171,29 @@ void main() {
         ),
       );
     });
+
+    test('should update customer correctly', () async {
+      final container = makeProviderContainer(
+        session: fakeSession, //throws
+        enterprise: fakeEnterprise,
+      );
+      addTearDown(container.dispose);
+
+      await container.read(customerStateControllerProvider.future);
+      final states = <AsyncValue<CustomerEntity?>>[];
+      container.listen(
+        customerStateControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      final newCustomer = EntityFactory.makeCustomerEntity();
+
+      container
+          .read(customerStateControllerProvider.notifier)
+          .updateCustomer(newCustomer);
+
+      expect(states, [isA<AsyncData>()]);
+      expect(states.last.value, newCustomer);
+    });
   });
 }

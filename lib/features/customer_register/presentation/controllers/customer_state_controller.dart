@@ -13,20 +13,6 @@ part 'customer_state_controller.g.dart';
 class CustomerStateController extends _$CustomerStateController {
   @override
   FutureOr<CustomerEntity?> build() async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
-
     return null;
   }
 
@@ -76,5 +62,9 @@ class CustomerStateController extends _$CustomerStateController {
     } catch (e) {
       state = AsyncValue.data(emptyCustomer);
     }
+  }
+
+  void updateCustomer(CustomerEntity entity) {
+    state = AsyncValue.data(entity);
   }
 }
