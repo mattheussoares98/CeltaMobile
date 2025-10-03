@@ -7,7 +7,7 @@ import 'components.dart';
 
 class PasswordConfirmationField extends StatelessWidget {
   final PersonalDataPage personalDataPage;
-  const PasswordConfirmationField({super.key, required this.personalDataPage});
+  const PasswordConfirmationField(this.personalDataPage, {super.key});
 
   @override
   Widget build(BuildContext context) {

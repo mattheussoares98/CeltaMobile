@@ -8,7 +8,7 @@ import 'components.dart';
 
 class NameField extends StatelessWidget {
   final PersonalDataPage personalDataPage;
-  const NameField({super.key, required this.personalDataPage});
+  const NameField(this.personalDataPage, {super.key});
 
   @override
   Widget build(BuildContext context) {

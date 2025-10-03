@@ -8,7 +8,7 @@ import '../personal_data.dart';
 
 class BirthDateField extends StatelessWidget {
   final PersonalDataPage personalDataPage;
-  const BirthDateField({super.key, required this.personalDataPage});
+  const BirthDateField(this.personalDataPage, {super.key});
 
   @override
   Widget build(BuildContext context) {

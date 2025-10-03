@@ -7,7 +7,7 @@ import 'components.dart';
 
 class ReducedNameField extends StatelessWidget {
   final PersonalDataPage personalDataPage;
-  const ReducedNameField({super.key, required this.personalDataPage});
+  const ReducedNameField(this.personalDataPage, {super.key});
 
   @override
   Widget build(BuildContext context) {

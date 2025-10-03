@@ -8,7 +8,7 @@ import 'components.dart';
 
 class CpfCnpjField extends StatelessWidget {
   final PersonalDataPage personalDataPage;
-  const CpfCnpjField({super.key, required this.personalDataPage});
+  const CpfCnpjField(this.personalDataPage, {super.key});
 
   @override
   Widget build(BuildContext context) {

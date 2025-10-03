@@ -7,7 +7,7 @@ import 'components.dart';
 
 class InscriptionField extends StatelessWidget {
   final PersonalDataPage personalDataPage;
-  const InscriptionField({super.key, required this.personalDataPage});
+  const InscriptionField(this.personalDataPage, {super.key});
 
   @override
   Widget build(BuildContext context) {

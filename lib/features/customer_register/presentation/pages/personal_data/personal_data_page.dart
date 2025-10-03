@@ -63,22 +63,22 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
           key: widget.formKey,
           child: Column(
             children: [
-              CpfCnpjField(personalDataPage: widget),
+              CpfCnpjField(widget),
               if (widget.customer != null) ...[
                 if (widget.cpfCnpjController.text.length == 14) ...[
                   gapH8,
-                  InscriptionField(personalDataPage: widget),
+                  InscriptionField(widget),
                 ],
                 gapH8,
-                NameField(personalDataPage: widget),
+                NameField(widget),
                 gapH8,
-                ReducedNameField(personalDataPage: widget),
+                ReducedNameField(widget),
                 gapH8,
-                BirthDateField(personalDataPage: widget),
+                BirthDateField(widget),
                 gapH8,
-                PasswordField(personalDataPage: widget),
+                PasswordField(widget),
                 gapH8,
-                PasswordConfirmationField(personalDataPage: widget),
+                PasswordConfirmationField(widget),
                 if (widget.cpfCnpjController.text.length == 11)
                   SexDropDown(selectedSex: selectedSex),
               ],
