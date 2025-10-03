@@ -5,10 +5,10 @@ import '../../../domain/entities/entities.dart';
 class AddressModel extends Equatable {
   final String Zip;
   final String Address;
-  final String Number;
+  final String? Number;
   final String District;
   final String City;
-  final String State;
+  final String? State;
   final String? Complement;
   final String? Reference;
 
@@ -34,7 +34,7 @@ class AddressModel extends Equatable {
     Complement,
     Reference,
   ];
-  factory AddressModel.fromJson(Map<String, dynamic> json) {
+  factory AddressModel.fromJson(Map json) {
     return AddressModel(
       Zip: json["Zip"],
       Address: json["Address"],
@@ -79,5 +79,16 @@ class AddressModel extends Equatable {
     State: State,
     Complement: Complement,
     Reference: Reference,
+  );
+
+  factory AddressModel.fromViaCep(Map data) => AddressModel(
+    Zip: data["cep"],
+    Address: data["logradouro"],
+    Complement: data["complemento"],
+    District: data["bairro"],
+    City: data["localidade"],
+    State: BrazilStates.values.where((e) => e.uf == data["uf"]).first.name,
+    Number: null,
+    Reference: null,
   );
 }

@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 class AddressEntity extends Equatable {
   final String Zip;
   final String Address;
-  final String Number;
+  final String? Number;
   final String District;
   final String City;
-  final String State;
+  final String? State;
   final String? Complement;
   final String? Reference;
 
