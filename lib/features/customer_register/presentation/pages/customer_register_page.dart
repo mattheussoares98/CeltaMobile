@@ -20,6 +20,7 @@ class CustomerRegisterPage extends ConsumerStatefulWidget {
 }
 
 class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
+  //! personal data
   int selectedIndex = 0;
   final cpfCnpjController = TextEditingController();
   final nameController = TextEditingController();
@@ -36,6 +37,12 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final inscriptionFocusNode = FocusNode();
   final personalPageFormKey = GlobalKey<FormState>();
   CustomerSexType? selectedSex;
+  //! personal data
+
+  //! address
+  final addressPageFormKey = GlobalKey<FormState>();
+  final cepController = TextEditingController();
+  //! address
 
   @override
   void dispose() async {
@@ -53,6 +60,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     passwordConfirmationFocusNode.dispose();
     birthDateFocusNode.dispose();
     inscriptionFocusNode.dispose();
+
+    cepController.dispose();
   }
 
   Future<void> onChangeCpfCnpj() async {
@@ -130,7 +139,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         },
         selectedSex: selectedSex,
       ),
-      AddressPage(),
+      AddressPage(cepController: cepController),
       EmailPage(),
       PhonePage(),
       CovenantsPage(),
