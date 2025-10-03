@@ -1,0 +1,42 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../../../../../../commom_widgets/commom_widgets.dart';
+import 'components.dart';
+
+class PasswordConfirmationField extends StatelessWidget {
+  final TextEditingController passwordConfirmationController;
+  final FocusNode passwordConfirmationFocusNode;
+  final TextEditingController passwordController;
+  const PasswordConfirmationField({
+    super.key,
+    required this.passwordConfirmationController,
+    required this.passwordConfirmationFocusNode,
+    required this.passwordController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTextFormField(
+      controller: passwordConfirmationController,
+      maxLength: 20,
+      hintText: 'Confirmar senha'.hardcoded,
+      labelText: 'Confirmar senha'.hardcoded,
+      obscureText: true,
+      focusNode: passwordConfirmationFocusNode,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (_) {
+        if (passwordController.text.isEmpty &&
+            passwordConfirmationController.text.isEmpty) {
+          return null;
+        } else if (passwordController.text ==
+            passwordConfirmationController.text) {
+          return null;
+        }
+
+        return 'As senhas não conferem'.hardcoded;
+      },
+      suffixIcon: DefaultDeleteIcon(controller: passwordConfirmationController),
+    );
+  }
+}

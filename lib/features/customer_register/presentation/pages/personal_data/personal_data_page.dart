@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/validators/validators.dart';
+import 'components/components.dart';
 
 class PersonalDataPage extends ConsumerStatefulWidget {
   //TODO analyse if is possible to change the stateful to stateless
@@ -49,88 +49,46 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //TODO chack which fields are obligatory
-      appBar: AppBar(title: const Text('PersonalDataPage')),
+      appBar: AppBar(title: Text('Dados pessoais'.hardcoded)),
       body: ResponsiveScrollableWidget(
         child: Form(
           key: widget.formKey,
           child: Column(
             children: [
-              DefaultTextFormField(
-                controller: widget.cpfCnpjController,
-                maxLength: 14,
-                hintText: 'CPF/CNPJ'.hardcoded,
-                labelText: 'CPF/CNPJ'.hardcoded,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                onFieldSubmitted: (_) {
-                  widget.nameFocusNode.requestFocus();
-                },
-                validator: FormValidators.compose([
-                  NonEmptyValidator(),
-                  CpfCnpjValidator(),
-                ]),
-                onChanged: (_) {
-                  widget.onChangeCpfCnpj();
-                },
+              CpfCnpjField(
+                cpfCnpjController: widget.cpfCnpjController,
+                nameFocusNode: widget.nameFocusNode,
+                onChangeCpfCnpj: widget.onChangeCpfCnpj,
               ),
               if (widget.customer != null) ...[
                 gapH8,
-                DefaultTextFormField(
-                  controller: widget.nameController,
-                  maxLength: 50,
-                  hintText: 'Nome'.hardcoded,
-                  labelText: 'Nome'.hardcoded,
-                  focusNode: widget.nameFocusNode,
-                  validator: FormValidators.compose([
-                    NonEmptyValidator(),
-                    MinLengthValidator(3),
-                  ]),
-                  onFieldSubmitted: (_) {
-                    widget.reducedNameFocusNode.requestFocus();
-                  },
+                NameField(
+                  nameController: widget.nameController,
+                  nameFocusNode: widget.nameFocusNode,
+                  reducedNameFocusNode: widget.reducedNameFocusNode,
                 ),
                 gapH8,
-                DefaultTextFormField(
-                  controller: widget.reducedNameController,
-                  maxLength: 30,
-                  hintText: 'Nome reduzido'.hardcoded,
-                  labelText: 'Nome reduzido'.hardcoded,
-                  focusNode: widget.reducedNameFocusNode,
-                  onFieldSubmitted: (_) {
-                    widget.passwordFocusNode.requestFocus();
-                  },
+                ReducedNameField(
+                  reducedNameController: widget.reducedNameController,
+                  reducedNameFocusNode: widget.reducedNameFocusNode,
+                  passwordFocusNode: widget.passwordFocusNode,
                 ),
                 gapH8,
-                DefaultTextFormField(
-                  controller: widget.passwordController,
-                  maxLength: 20,
-                  hintText: 'Senha'.hardcoded,
-                  labelText: 'Senha'.hardcoded,
-                  focusNode: widget.passwordFocusNode,
-                  onFieldSubmitted: (_) {
-                    widget.passwordConfirmationFocusNode.requestFocus();
-                  },
+                PasswordField(
+                  passwordController: widget.passwordController,
+                  passwordFocusNode: widget.passwordFocusNode,
+                  passwordConfirmationFocusNode:
+                      widget.passwordConfirmationFocusNode,
                 ),
                 gapH8,
-                DefaultTextFormField(
-                  controller: widget.passwordConfirmationController,
-                  maxLength: 20,
-                  hintText: 'Confirmar senha'.hardcoded,
-                  labelText: 'Confirmar senha'.hardcoded,
-                  focusNode: widget.passwordConfirmationFocusNode,
+                PasswordConfirmationField(
+                  passwordConfirmationController:
+                      widget.passwordConfirmationController,
+                  passwordConfirmationFocusNode:
+                      widget.passwordConfirmationFocusNode,
+                  passwordController: widget.passwordController,
                 ),
-                DefaultSimpleDropDown<String?>(
-                  value: selectedSex,
-                  hint: 'Sexo'.hardcoded,
-                  onChanged: (_) {},
-                  items: ['Masculino', 'Feminino']
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Center(child: Text(e)),
-                        ),
-                      )
-                      .toList(),
-                ),
+                SexDropDown(selectedSex: selectedSex),
               ],
             ],
           ),

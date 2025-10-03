@@ -1,0 +1,44 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../core/validators/validators.dart';
+import 'components.dart';
+
+class PasswordField extends StatelessWidget {
+  final TextEditingController passwordController;
+  final FocusNode passwordFocusNode;
+  final FocusNode passwordConfirmationFocusNode;
+  const PasswordField({
+    super.key,
+    required this.passwordController,
+    required this.passwordFocusNode,
+    required this.passwordConfirmationFocusNode,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTextFormField(
+      controller: passwordController,
+      maxLength: 20,
+      hintText: 'Senha'.hardcoded,
+      labelText: 'Senha'.hardcoded,
+      obscureText: true,
+      focusNode: passwordFocusNode,
+      onFieldSubmitted: (_) {
+        passwordConfirmationFocusNode.requestFocus();
+      },
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return null;
+        } else if (MinLengthValidator(3).isValid(value)) {
+          return null;
+        }
+
+        return MinLengthValidator(3).errorMessage;
+      },
+      suffixIcon: DefaultDeleteIcon(controller: passwordController),
+    );
+  }
+}
