@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import '../entities.dart';
@@ -55,4 +56,41 @@ class CustomerEntity extends Equatable {
     saleBlockadeInstruction,
     saleBlockade,
   ];
+
+  CustomerEntity copyWith({
+    int? Code,
+    String? PersonalizedCode,
+    String? Name,
+    String? ReducedName,
+    String? CpfCnpjNumber,
+    String? RegistrationNumber,
+    DateTime? DateOfBirth,
+    CustomerSexType? SexType,
+    String? PersonType,
+    List<String>? Emails,
+    List<CustomerTelephoneEntity>? Telephones,
+    List<CustomerCovenantEntity>? CustomerCovenants,
+    List<AddressEntity>? Addresses,
+    CustomerSaleBlockadeInstructionEntity? saleBlockadeInstruction,
+    CustomerSaleBlockadeEntity? saleBlockade,
+  }) {
+    return CustomerEntity(
+      Code: Code ?? this.Code,
+      PersonalizedCode: PersonalizedCode ?? this.PersonalizedCode,
+      Name: Name ?? this.Name,
+      ReducedName: ReducedName ?? this.ReducedName,
+      CpfCnpjNumber: CpfCnpjNumber ?? this.CpfCnpjNumber,
+      RegistrationNumber: RegistrationNumber ?? this.RegistrationNumber,
+      DateOfBirth: DateOfBirth ?? this.DateOfBirth,
+      SexType: SexType ?? this.SexType,
+      PersonType: PersonType ?? this.PersonType,
+      Emails: Emails ?? this.Emails,
+      Telephones: Telephones ?? this.Telephones,
+      CustomerCovenants: CustomerCovenants ?? this.CustomerCovenants,
+      Addresses: Addresses ?? this.Addresses,
+      saleBlockadeInstruction:
+          saleBlockadeInstruction ?? this.saleBlockadeInstruction,
+      saleBlockade: saleBlockade ?? this.saleBlockade,
+    );
+  }
 }
