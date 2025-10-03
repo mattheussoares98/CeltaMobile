@@ -3,6 +3,7 @@ import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../core/domain/entities/entities.dart';
@@ -37,7 +38,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   CustomerSexType? selectedSex;
 
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
     cpfCnpjController.dispose();
     nameController.dispose();
@@ -138,43 +139,66 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
 
     return Stack(
       children: [
-        Scaffold(
-          body: pages[selectedIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            unselectedFontSize: 11,
-            selectedFontSize: 11,
-            currentIndex: selectedIndex,
-            onTap: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                label: 'Dados'.hardcoded,
-                icon: Icon(isIos ? CupertinoIcons.person : Icons.person),
-              ),
-              BottomNavigationBarItem(
-                label: 'Endereço'.hardcoded,
-                icon: Icon(isIos ? CupertinoIcons.location : Icons.location_on),
-              ),
-              BottomNavigationBarItem(
-                label: 'E-mail'.hardcoded,
-                icon: Icon(isIos ? CupertinoIcons.mail : Icons.email),
-              ),
-              BottomNavigationBarItem(
-                label: 'Telefone'.hardcoded,
-                icon: Icon(isIos ? CupertinoIcons.phone : Icons.phone),
-              ),
-              BottomNavigationBarItem(
-                label: 'Convênios'.hardcoded,
-                icon: Icon(isIos ? CupertinoIcons.creditcard : Icons.wallet),
-              ),
-              BottomNavigationBarItem(
-                label: 'Salvar'.hardcoded,
-                icon: Icon(isIos ? CupertinoIcons.check_mark : Icons.save),
-              ),
-            ],
+        PopScope(
+          onPopInvokedWithResult: (didPop, result) async {
+            final customer = await ref.read(
+              customerStateControllerProvider.future,
+            );
+            if (customer != null) {
+              ref
+                  .read(customerStateControllerProvider.notifier)
+                  .updateCustomer(
+                    customer.copyWith(
+                      RegistrationNumber: inscriptionController.text,
+                      Name: nameController.text,
+                      ReducedName: reducedNameController.text,
+                      DateOfBirth: DateFormat(
+                        'dd/MM/yyyy',
+                      ).tryParse(birthDateController.text),
+                    ),
+                  );
+            }
+          },
+          child: Scaffold(
+            body: pages[selectedIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              unselectedFontSize: 11,
+              selectedFontSize: 11,
+              currentIndex: selectedIndex,
+              onTap: (index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  label: 'Dados'.hardcoded,
+                  icon: Icon(isIos ? CupertinoIcons.person : Icons.person),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Endereço'.hardcoded,
+                  icon: Icon(
+                    isIos ? CupertinoIcons.location : Icons.location_on,
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  label: 'E-mail'.hardcoded,
+                  icon: Icon(isIos ? CupertinoIcons.mail : Icons.email),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Telefone'.hardcoded,
+                  icon: Icon(isIos ? CupertinoIcons.phone : Icons.phone),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Convênios'.hardcoded,
+                  icon: Icon(isIos ? CupertinoIcons.creditcard : Icons.wallet),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Salvar'.hardcoded,
+                  icon: Icon(isIos ? CupertinoIcons.check_mark : Icons.save),
+                ),
+              ],
+            ),
           ),
         ),
         if (customerAsync.isLoading) LoadingPage(),
