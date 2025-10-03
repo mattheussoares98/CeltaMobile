@@ -71,6 +71,34 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await updateFields();
+    });
+  }
+
+  Future<void> updateFields() async {
+    final customer = await ref.read(customerStateControllerProvider.future);
+
+    if (customer != null) {
+      cpfCnpjController.text = customer.CpfCnpjNumber ?? '';
+      inscriptionController.text = customer.RegistrationNumber ?? '';
+      nameController.text = customer.Name ?? '';
+      reducedNameController.text = customer.ReducedName ?? '';
+
+      if (customer.DateOfBirth != null) {
+        final day = customer.DateOfBirth!.day.toString().padLeft(2, '0');
+        final month = customer.DateOfBirth!.month.toString().padLeft(2, '0');
+        final year = customer.DateOfBirth!.year.toString().padLeft(4, '0');
+        birthDateController.text = '$day/$month/$year';
+      }
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIos = theme.platform == TargetPlatform.iOS;
@@ -78,8 +106,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     final customerAsync = ref.watch(customerStateControllerProvider);
     ref.listen(customerStateControllerProvider, (p, n) {
       n.doOnSuccess(p, () {
-        nameController.text = n.value?.Name ?? '';
-        reducedNameController.text = n.value?.ReducedName ?? '';
+        updateFields();
       });
     });
 
