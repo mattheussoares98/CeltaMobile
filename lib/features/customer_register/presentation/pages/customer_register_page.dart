@@ -33,6 +33,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final birthDateFocusNode = FocusNode();
   final inscriptionFocusNode = FocusNode();
   final personalPageFormKey = GlobalKey<FormState>();
+  String? selectedSex;
 
   @override
   void dispose() {
@@ -128,6 +129,12 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         birthDateFocusNode: birthDateFocusNode,
         inscriptionController: inscriptionController,
         inscriptionFocusNode: inscriptionFocusNode,
+        onChangeSex: (sex) {
+          setState(() {
+            selectedSex = sex;
+          });
+        },
+        selectedSex: selectedSex,
       ),
       AddressPage(),
       EmailPage(),

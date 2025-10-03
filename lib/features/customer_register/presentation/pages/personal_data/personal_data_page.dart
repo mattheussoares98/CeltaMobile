@@ -1,13 +1,12 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import 'components/components.dart';
 
-class PersonalDataPage extends ConsumerStatefulWidget {
+class PersonalDataPage extends StatelessWidget {
   //TODO analyse if is possible to change the stateful to stateless
   final CustomerEntity? customer;
   final TextEditingController cpfCnpjController;
@@ -25,6 +24,8 @@ class PersonalDataPage extends ConsumerStatefulWidget {
   final FocusNode inscriptionFocusNode;
   final GlobalKey<FormState> formKey;
   final VoidCallback onChangeCpfCnpj;
+  final String? selectedSex;
+  final Function(String? value) onChangeSex;
   const PersonalDataPage({
     super.key,
     required this.customer,
@@ -43,15 +44,9 @@ class PersonalDataPage extends ConsumerStatefulWidget {
     required this.inscriptionFocusNode,
     required this.formKey,
     required this.onChangeCpfCnpj,
+    required this.selectedSex,
+    required this.onChangeSex,
   });
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _PersonalDataPageState();
-}
-
-class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
-  String? selectedSex;
 
   @override
   Widget build(BuildContext context) {
@@ -60,27 +55,26 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
       appBar: AppBar(title: Text('Dados pessoais'.hardcoded)),
       body: ResponsiveScrollableWidget(
         child: Form(
-          key: widget.formKey,
+          key: formKey,
           child: Column(
             children: [
-              CpfCnpjField(widget),
-              if (widget.customer != null) ...[
-                if (widget.cpfCnpjController.text.length == 14) ...[
+              CpfCnpjField(this),
+              if (customer != null) ...[
+                if (cpfCnpjController.text.length == 14) ...[
                   gapH8,
-                  InscriptionField(widget),
+                  InscriptionField(this),
                 ],
                 gapH8,
-                NameField(widget),
+                NameField(this),
                 gapH8,
-                ReducedNameField(widget),
+                ReducedNameField(this),
                 gapH8,
-                BirthDateField(widget),
+                BirthDateField(this),
                 gapH8,
-                PasswordField(widget),
+                PasswordField(this),
                 gapH8,
-                PasswordConfirmationField(widget),
-                if (widget.cpfCnpjController.text.length == 11)
-                  SexDropDown(selectedSex: selectedSex),
+                PasswordConfirmationField(this),
+                if (cpfCnpjController.text.length == 11) SexDropDown(this),
               ],
             ],
           ),
