@@ -2,6 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import '../personal_data.dart';
 
 class SexDropDown extends StatelessWidget {
@@ -10,15 +11,15 @@ class SexDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultSimpleDropDown<String?>(
+    return DefaultSimpleDropDown<CustomerSexType?>(
       value: personalDataPage.selectedSex,
       hint: 'Sexo'.hardcoded,
       onChanged: personalDataPage.onChangeSex,
-      items: ['Masculino', 'Feminino']
+      items: CustomerSexType.values
           .map(
             (e) => DropdownMenuItem(
               value: e,
-              child: Center(child: Text(e)),
+              child: Center(child: Text(e.name)),
             ),
           )
           .toList(),

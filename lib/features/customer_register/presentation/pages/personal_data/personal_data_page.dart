@@ -24,8 +24,8 @@ class PersonalDataPage extends StatelessWidget {
   final FocusNode inscriptionFocusNode;
   final GlobalKey<FormState> formKey;
   final VoidCallback onChangeCpfCnpj;
-  final String? selectedSex;
-  final Function(String? value) onChangeSex;
+  final CustomerSexType? selectedSex;
+  final Function(CustomerSexType? value) onChangeSex;
   const PersonalDataPage({
     super.key,
     required this.customer,

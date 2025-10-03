@@ -12,7 +12,7 @@ class CustomerModel extends Equatable {
   final String? CpfCnpjNumber;
   final String? RegistrationNumber;
   final DateTime? DateOfBirth;
-  final String? SexType;
+  final CustomerSexType? SexType;
   final String? PersonType;
   final List<String>? Emails;
   final List<CustomerTelephoneModel>? Telephones;
@@ -86,7 +86,11 @@ class CustomerModel extends Equatable {
     DateOfBirth: json['DateOfBirth'] == null
         ? null
         : DateTime.parse(json['DateOfBirth']),
-    SexType: json['SexType'],
+    SexType: json['SexType'] == null
+        ? null
+        : CustomerSexType.values.firstWhere(
+            (e) => e.shortName == json['SexType'],
+          ),
     PersonType: json['PersonType'],
     Emails: (json['Emails'] as List?)?.map((e) => e.toString()).toList(),
     Telephones: (json['Telephones'] as List?)

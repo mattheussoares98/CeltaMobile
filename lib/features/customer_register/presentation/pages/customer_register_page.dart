@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/validators/validators.dart';
 import '../controllers/controllers.dart';
 import 'pages.dart';
@@ -33,7 +34,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final birthDateFocusNode = FocusNode();
   final inscriptionFocusNode = FocusNode();
   final personalPageFormKey = GlobalKey<FormState>();
-  String? selectedSex;
+  CustomerSexType? selectedSex;
 
   @override
   void dispose() {
@@ -95,6 +96,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         final year = customer.DateOfBirth!.year.toString().padLeft(4, '0');
         birthDateController.text = '$day/$month/$year';
       }
+
+      selectedSex = customer.SexType;
       setState(() {});
     }
   }

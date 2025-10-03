@@ -10,7 +10,7 @@ class CustomerEntity extends Equatable {
   final String? CpfCnpjNumber;
   final String? RegistrationNumber;
   final DateTime? DateOfBirth;
-  final String? SexType;
+  final CustomerSexType? SexType;
   final String? PersonType;
   final List<String>? Emails;
   final List<CustomerTelephoneEntity>? Telephones;

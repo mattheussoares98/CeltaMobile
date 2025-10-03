@@ -292,7 +292,7 @@ class EntityFactory {
     CpfCnpjNumber: faker.randomGenerator.integer(100).toString(),
     RegistrationNumber: faker.guid.guid(),
     DateOfBirth: faker.date.dateTime(),
-    SexType: faker.randomGenerator.integer(1) == 1 ? "M" : "F",
+    SexType: CustomerSexType.values[faker.randomGenerator.integer(2)],
     PersonType: faker.randomGenerator.integer(1) == 1 ? "PJ" : "PF",
     Emails: [
       faker.internet.email(),
