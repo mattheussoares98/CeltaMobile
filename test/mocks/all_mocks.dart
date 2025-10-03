@@ -28,6 +28,7 @@ import 'package:celta_intelligence/features/adjust_sale_price/domain/repositorie
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/customer_register/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
@@ -743,4 +744,15 @@ class SoapCustomerRepositorySpy extends Mock
       _mockLoadCall().thenAnswer((_) async => response);
 
   void mockLoadError() => _mockLoadCall().thenThrow(Exception());
+}
+
+class LoadAddressByCepDatasourceSpy extends Mock
+    implements ILoadAddressByCepDatasource {
+  void mockLoad(AddressModel? response) {
+    _mockLoadCall().thenAnswer((_) async => response);
+  }
+
+  void mockLoadError() => _mockLoadCall().thenThrow(Exception());
+
+  When _mockLoadCall() => when(() => this.get(any()));
 }
