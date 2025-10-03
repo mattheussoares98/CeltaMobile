@@ -1,4 +1,5 @@
 export 'cupertino/cupertino.dart';
+export 'form_field/form_field.dart';
 export 'product_item/product_item.dart';
 export './action_text_button.dart';
 export './alert_dialogs.dart';
@@ -7,7 +8,6 @@ export './default_drop_down.dart';
 export './default_search_products.dart';
 export './default_segmented_buttons.dart';
 export './default_simple_drop_down.dart';
-export './default_text_form_field.dart';
 export './empty_placeholder_widget.dart';
 export './get_new_date.dart';
 export './loading_page.dart';
