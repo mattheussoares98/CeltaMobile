@@ -54,18 +54,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     inscriptionFocusNode.dispose();
   }
 
-  void clearAllFields() {
-    nameController.clear();
-    reducedNameController.clear();
-    passwordController.clear();
-    passwordConfirmationController.clear();
-    birthDateController.clear();
-  }
-
   Future<void> onChangeCpfCnpj() async {
     if (CpfCnpjValidator().isValid(cpfCnpjController.text)) {
-      clearAllFields();
-
       await ref
           .read(customerStateControllerProvider.notifier)
           .loadCustomer(cpfCnpjController.text);
