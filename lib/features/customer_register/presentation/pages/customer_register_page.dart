@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../core/validators/validators.dart';
 import '../controllers/controllers.dart';
 import 'pages.dart';
 
@@ -43,6 +44,23 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     passwordConfirmationFocusNode.dispose();
   }
 
+  void clearAllFields() {
+    nameController.clear();
+    reducedNameController.clear();
+    passwordController.clear();
+    passwordConfirmationController.clear();
+  }
+
+  Future<void> onChangeCpfCnpj() async {
+    if (CpfCnpjValidator().isValid(cpfCnpjController.text)) {
+      clearAllFields();
+
+      await ref
+          .read(customerStateControllerProvider.notifier)
+          .loadCustomer(cpfCnpjController.text);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -69,6 +87,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         reducedNameFocusNode: reducedNameFocusNode,
         passwordFocusNode: passwordFocusNode,
         passwordConfirmationFocusNode: passwordConfirmationFocusNode,
+        onChangeCpfCnpj: onChangeCpfCnpj,
       ),
       AddressPage(),
       EmailPage(),

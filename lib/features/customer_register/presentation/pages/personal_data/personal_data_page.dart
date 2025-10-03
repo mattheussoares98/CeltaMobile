@@ -6,7 +6,6 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/validators/validators.dart';
-import '../../controllers/controllers.dart';
 
 class PersonalDataPage extends ConsumerStatefulWidget {
   //TODO analyse if is possible to change the stateful to stateless
@@ -21,6 +20,7 @@ class PersonalDataPage extends ConsumerStatefulWidget {
   final FocusNode passwordFocusNode;
   final FocusNode passwordConfirmationFocusNode;
   final GlobalKey<FormState> formKey;
+  final VoidCallback onChangeCpfCnpj;
   const PersonalDataPage({
     super.key,
     required this.customer,
@@ -34,6 +34,7 @@ class PersonalDataPage extends ConsumerStatefulWidget {
     required this.passwordFocusNode,
     required this.passwordConfirmationFocusNode,
     required this.formKey,
+    required this.onChangeCpfCnpj,
   });
 
   @override
@@ -43,13 +44,6 @@ class PersonalDataPage extends ConsumerStatefulWidget {
 
 class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
   String? selectedSex;
-  Future<void> searchCustomer() async {
-    if (CpfCnpjValidator().isValid(widget.cpfCnpjController.text)) {
-      await ref
-          .read(customerStateControllerProvider.notifier)
-          .loadCustomer(widget.cpfCnpjController.text);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +69,7 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                   CpfCnpjValidator(),
                 ]),
                 onChanged: (_) {
-                  searchCustomer();
+                  widget.onChangeCpfCnpj();
                 },
               ),
               if (widget.customer != null) ...[
