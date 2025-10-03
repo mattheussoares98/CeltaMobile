@@ -3,38 +3,34 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/validators/validators.dart';
+import '../../pages.dart';
 import 'components.dart';
 
 class CpfCnpjField extends StatelessWidget {
-  final TextEditingController cpfCnpjController;
-  final FocusNode nameFocusNode;
-  final VoidCallback onChangeCpfCnpj;
-  const CpfCnpjField({
-    super.key,
-    required this.cpfCnpjController,
-    required this.nameFocusNode,
-    required this.onChangeCpfCnpj,
-  });
+  final PersonalDataPage personalDataPage;
+  const CpfCnpjField({super.key, required this.personalDataPage});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextFormField(
-      controller: cpfCnpjController,
+      controller: personalDataPage.cpfCnpjController,
       maxLength: 14,
       hintText: 'CPF/CNPJ'.hardcoded,
       labelText: 'CPF/CNPJ'.hardcoded,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
-        nameFocusNode.requestFocus();
+        personalDataPage.nameFocusNode.requestFocus();
       },
       validator: FormValidators.compose([
         NonEmptyValidator(),
         CpfCnpjValidator(),
       ]),
       onChanged: (_) {
-        onChangeCpfCnpj();
+        personalDataPage.onChangeCpfCnpj();
       },
-      suffixIcon: DefaultDeleteIcon(controller: cpfCnpjController),
+      suffixIcon: DefaultDeleteIcon(
+        controller: personalDataPage.cpfCnpjController,
+      ),
     );
   }
 }

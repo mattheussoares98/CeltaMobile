@@ -59,41 +59,18 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
           key: widget.formKey,
           child: Column(
             children: [
-              CpfCnpjField(
-                cpfCnpjController: widget.cpfCnpjController,
-                nameFocusNode: widget.nameFocusNode,
-                onChangeCpfCnpj: widget.onChangeCpfCnpj,
-              ),
+              CpfCnpjField(personalDataPage: widget),
               if (widget.customer != null) ...[
                 gapH8,
-                NameField(
-                  nameController: widget.nameController,
-                  nameFocusNode: widget.nameFocusNode,
-                  reducedNameFocusNode: widget.reducedNameFocusNode,
-                ),
+                NameField(personalDataPage: widget),
                 gapH8,
-                ReducedNameField(
-                  reducedNameController: widget.reducedNameController,
-                  reducedNameFocusNode: widget.reducedNameFocusNode,
-                  passwordFocusNode: widget.passwordFocusNode,
-                ),
+                ReducedNameField(personalDataPage: widget),
                 gapH8,
                 BirthDateField(personalDataPage: widget),
                 gapH8,
-                PasswordField(
-                  passwordController: widget.passwordController,
-                  passwordFocusNode: widget.passwordFocusNode,
-                  passwordConfirmationFocusNode:
-                      widget.passwordConfirmationFocusNode,
-                ),
+                PasswordField(personalDataPage: widget),
                 gapH8,
-                PasswordConfirmationField(
-                  passwordConfirmationController:
-                      widget.passwordConfirmationController,
-                  passwordConfirmationFocusNode:
-                      widget.passwordConfirmationFocusNode,
-                  passwordController: widget.passwordController,
-                ),
+                PasswordConfirmationField(personalDataPage: widget),
                 SexDropDown(selectedSex: selectedSex),
               ],
             ],

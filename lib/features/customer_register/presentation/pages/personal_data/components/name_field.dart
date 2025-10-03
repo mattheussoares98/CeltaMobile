@@ -3,35 +3,31 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/validators/validators.dart';
+import '../personal_data.dart';
 import 'components.dart';
 
 class NameField extends StatelessWidget {
-  final TextEditingController nameController;
-  final FocusNode nameFocusNode;
-  final FocusNode reducedNameFocusNode;
-  const NameField({
-    super.key,
-    required this.nameController,
-    required this.nameFocusNode,
-    required this.reducedNameFocusNode,
-  });
+  final PersonalDataPage personalDataPage;
+  const NameField({super.key, required this.personalDataPage});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextFormField(
-      controller: nameController,
+      controller: personalDataPage.nameController,
       maxLength: 50,
       hintText: 'Nome'.hardcoded,
       labelText: 'Nome'.hardcoded,
-      focusNode: nameFocusNode,
+      focusNode: personalDataPage.nameFocusNode,
       validator: FormValidators.compose([
         NonEmptyValidator(),
         MinLengthValidator(3),
       ]),
       onFieldSubmitted: (_) {
-        reducedNameFocusNode.requestFocus();
+        personalDataPage.reducedNameFocusNode.requestFocus();
       },
-      suffixIcon: DefaultDeleteIcon(controller: nameController),
+      suffixIcon: DefaultDeleteIcon(
+        controller: personalDataPage.nameController,
+      ),
     );
   }
 }
