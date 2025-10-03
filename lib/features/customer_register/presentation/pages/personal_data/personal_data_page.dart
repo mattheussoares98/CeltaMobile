@@ -16,11 +16,13 @@ class PersonalDataPage extends ConsumerStatefulWidget {
   final TextEditingController passwordController;
   final TextEditingController passwordConfirmationController;
   final TextEditingController birthDateController;
+  final TextEditingController inscriptionController;
   final FocusNode nameFocusNode;
   final FocusNode reducedNameFocusNode;
   final FocusNode passwordFocusNode;
   final FocusNode passwordConfirmationFocusNode;
   final FocusNode birthDateFocusNode;
+  final FocusNode inscriptionFocusNode;
   final GlobalKey<FormState> formKey;
   final VoidCallback onChangeCpfCnpj;
   const PersonalDataPage({
@@ -32,11 +34,13 @@ class PersonalDataPage extends ConsumerStatefulWidget {
     required this.passwordController,
     required this.passwordConfirmationController,
     required this.birthDateController,
+    required this.inscriptionController,
     required this.nameFocusNode,
     required this.reducedNameFocusNode,
     required this.passwordFocusNode,
     required this.passwordConfirmationFocusNode,
     required this.birthDateFocusNode,
+    required this.inscriptionFocusNode,
     required this.formKey,
     required this.onChangeCpfCnpj,
   });
@@ -61,6 +65,10 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
             children: [
               CpfCnpjField(personalDataPage: widget),
               if (widget.customer != null) ...[
+                if (widget.cpfCnpjController.text.length == 14) ...[
+                  gapH8,
+                  InscriptionField(personalDataPage: widget),
+                ],
                 gapH8,
                 NameField(personalDataPage: widget),
                 gapH8,
@@ -71,7 +79,8 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                 PasswordField(personalDataPage: widget),
                 gapH8,
                 PasswordConfirmationField(personalDataPage: widget),
-                SexDropDown(selectedSex: selectedSex),
+                if (widget.cpfCnpjController.text.length == 11)
+                  SexDropDown(selectedSex: selectedSex),
               ],
             ],
           ),

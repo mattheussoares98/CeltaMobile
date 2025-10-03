@@ -1,6 +1,7 @@
 export './birth_date_field.dart';
 export './cpf_cnpj_field.dart';
 export './default_delete_icon.dart';
+export './inscription_field.dart';
 export './name_field.dart';
 export './password_confirmation_field.dart';
 export './password_field.dart';

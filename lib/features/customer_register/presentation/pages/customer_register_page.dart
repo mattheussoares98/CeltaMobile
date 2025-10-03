@@ -25,11 +25,13 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final passwordController = TextEditingController();
   final passwordConfirmationController = TextEditingController();
   final birthDateController = TextEditingController();
+  final inscriptionController = TextEditingController();
   final nameFocusNode = FocusNode();
   final reducedNameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final passwordConfirmationFocusNode = FocusNode();
   final birthDateFocusNode = FocusNode();
+  final inscriptionFocusNode = FocusNode();
   final personalPageFormKey = GlobalKey<FormState>();
 
   @override
@@ -41,11 +43,13 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     passwordController.dispose();
     passwordConfirmationController.dispose();
     birthDateController.dispose();
+    inscriptionController.dispose();
     nameFocusNode.dispose();
     reducedNameFocusNode.dispose();
     passwordFocusNode.dispose();
     passwordConfirmationFocusNode.dispose();
     birthDateFocusNode.dispose();
+    inscriptionFocusNode.dispose();
   }
 
   void clearAllFields() {
@@ -95,6 +99,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         onChangeCpfCnpj: onChangeCpfCnpj,
         birthDateController: birthDateController,
         birthDateFocusNode: birthDateFocusNode,
+        inscriptionController: inscriptionController,
+        inscriptionFocusNode: inscriptionFocusNode,
       ),
       AddressPage(),
       EmailPage(),
