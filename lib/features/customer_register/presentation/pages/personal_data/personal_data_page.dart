@@ -15,10 +15,12 @@ class PersonalDataPage extends ConsumerStatefulWidget {
   final TextEditingController reducedNameController;
   final TextEditingController passwordController;
   final TextEditingController passwordConfirmationController;
+  final TextEditingController birthDateController;
   final FocusNode nameFocusNode;
   final FocusNode reducedNameFocusNode;
   final FocusNode passwordFocusNode;
   final FocusNode passwordConfirmationFocusNode;
+  final FocusNode birthDateFocusNode;
   final GlobalKey<FormState> formKey;
   final VoidCallback onChangeCpfCnpj;
   const PersonalDataPage({
@@ -29,10 +31,12 @@ class PersonalDataPage extends ConsumerStatefulWidget {
     required this.reducedNameController,
     required this.passwordController,
     required this.passwordConfirmationController,
+    required this.birthDateController,
     required this.nameFocusNode,
     required this.reducedNameFocusNode,
     required this.passwordFocusNode,
     required this.passwordConfirmationFocusNode,
+    required this.birthDateFocusNode,
     required this.formKey,
     required this.onChangeCpfCnpj,
   });
@@ -73,6 +77,8 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                   reducedNameFocusNode: widget.reducedNameFocusNode,
                   passwordFocusNode: widget.passwordFocusNode,
                 ),
+                gapH8,
+                BirthDateField(personalDataPage: widget),
                 gapH8,
                 PasswordField(
                   passwordController: widget.passwordController,
