@@ -109,8 +109,67 @@ void main() {
             .loadCustomer(fakeCpfCnpj);
 
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-        expect(states.last.value, isNull);
+        expect(
+          states.last.value,
+          CustomerEntity(
+            Name: null,
+            Code: null,
+            PersonalizedCode: null,
+            ReducedName: null,
+            CpfCnpjNumber: null,
+            RegistrationNumber: null,
+            DateOfBirth: null,
+            SexType: null,
+            PersonType: null,
+            Emails: null,
+            Telephones: null,
+            Addresses: null,
+            CustomerCovenants: null,
+            saleBlockadeInstruction: null,
+            saleBlockade: null,
+          ),
+        );
       },
     );
+    test('should return entity with empty values when throws', () async {
+      final container = makeProviderContainer(
+        session: null, //throws
+        enterprise: fakeEnterprise,
+      );
+      addTearDown(container.dispose);
+
+      await container.read(customerStateControllerProvider.future);
+      final states = <AsyncValue<CustomerEntity?>>[];
+      container.listen(
+        customerStateControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      await container
+          .read(customerStateControllerProvider.notifier)
+          .loadCustomer(fakeCpfCnpj);
+
+      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+      expect(
+        states.last.value,
+        CustomerEntity(
+          Name: null,
+          Code: null,
+          PersonalizedCode: null,
+          ReducedName: null,
+          CpfCnpjNumber: null,
+          RegistrationNumber: null,
+          DateOfBirth: null,
+          SexType: null,
+          PersonType: null,
+          Emails: null,
+          Telephones: null,
+          Addresses: null,
+          CustomerCovenants: null,
+          saleBlockadeInstruction: null,
+          saleBlockade: null,
+        ),
+      );
+    });
   });
 }

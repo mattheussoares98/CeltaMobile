@@ -9,6 +9,7 @@ import '../../../../../core/validators/validators.dart';
 import '../../controllers/controllers.dart';
 
 class PersonalDataPage extends ConsumerStatefulWidget {
+  //TODO analyse if is possible to change the stateful to stateless
   final CustomerEntity? customer;
   final TextEditingController cpfCnpjController;
   final TextEditingController nameController;
@@ -42,21 +43,12 @@ class PersonalDataPage extends ConsumerStatefulWidget {
 
 class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
   String? selectedSex;
-  bool cpfCnpjIsValid = false;
   Future<void> searchCustomer() async {
-    setState(() {
-      //TODO fix because is missing the focus when change the value
-      cpfCnpjIsValid = CpfCnpjValidator().isValid(
-        widget.cpfCnpjController.text,
-      );
-    });
-    if (!cpfCnpjIsValid) {
-      return;
+    if (CpfCnpjValidator().isValid(widget.cpfCnpjController.text)) {
+      await ref
+          .read(customerStateControllerProvider.notifier)
+          .loadCustomer(widget.cpfCnpjController.text);
     }
-
-    await ref
-        .read(customerStateControllerProvider.notifier)
-        .loadCustomer(widget.cpfCnpjController.text);
   }
 
   @override
@@ -86,7 +78,7 @@ class _PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                   searchCustomer();
                 },
               ),
-              if (cpfCnpjIsValid) ...[
+              if (widget.customer != null) ...[
                 gapH8,
                 DefaultTextFormField(
                   controller: widget.nameController,
