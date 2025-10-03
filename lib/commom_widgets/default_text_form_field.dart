@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../constants/constants.dart';
 import '../core/presentation/theme/theme.dart';
@@ -22,6 +23,7 @@ class DefaultTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final int maxLength;
   final Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
   const DefaultTextFormField({
     super.key,
     required this.controller,
@@ -38,6 +40,7 @@ class DefaultTextFormField extends StatelessWidget {
     this.focusNode,
     this.keyboardType,
     this.onChanged,
+    this.inputFormatters,
     this.obscureText = false,
   });
 
@@ -61,6 +64,7 @@ class DefaultTextFormField extends StatelessWidget {
         keyboardType: keyboardType,
         maxLength: maxLength,
         onChanged: onChanged,
+        inputFormatters: inputFormatters,
       );
     }
     return TextFormField(
@@ -69,6 +73,7 @@ class DefaultTextFormField extends StatelessWidget {
       controller: controller,
       autovalidateMode: autovalidateMode,
       onFieldSubmitted: onFieldSubmitted,
+      inputFormatters: inputFormatters,
       validator: validator,
       obscureText: obscureText,
       focusNode: focusNode,
@@ -109,6 +114,7 @@ class _CupertinoFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   final int maxLength;
   final Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   const _CupertinoFormField({
     required this.controller,
@@ -125,6 +131,7 @@ class _CupertinoFormField extends StatefulWidget {
     required this.keyboardType,
     required this.maxLength,
     required this.onChanged,
+    required this.inputFormatters,
   });
 
   @override
@@ -170,6 +177,7 @@ class _CupertinoFormFieldState extends State<_CupertinoFormField> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CupertinoTextField(
+              inputFormatters: widget.inputFormatters,
               controller: widget.controller,
               placeholder: widget.labelText ?? widget.hintText,
               placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
