@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:celta_intelligence/core/data/models/address/address_model.dart';
-import 'package:celta_intelligence/utils/utils.dart';
-
+import '../../../../core/data/models/address/address_model.dart';
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';
 
@@ -18,17 +14,10 @@ class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
       method: 'get',
     );
 
-    if (response["error"] != "") {
+    if (response.toString().toLowerCase().contains('erro')) {
       return null;
     } else {
-      final decoded = json.decode(
-        response["success"].toString().removeBreakLines().removeWhiteSpaces(),
-      );
-      if (decoded.toString().contains("erro")) {
-        return null;
-      }
-
-      return AddressModel.fromViaCep(json.decode(response["success"]));
+      return AddressModel.fromViaCep(response);
     }
   }
 }
