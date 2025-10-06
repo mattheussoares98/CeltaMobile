@@ -27,6 +27,7 @@ class UrlField extends StatelessWidget {
         userNameFocusNode.requestFocus();
       },
       decoration: AppDecorations.input(
+        //TODO use DefaultTextFormField
         context: context,
         hintText: "Url".hardcoded,
         suffixIcon: DeleteIcon(onPress: isLoading ? null : urlController.clear),

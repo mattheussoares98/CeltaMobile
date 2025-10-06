@@ -27,6 +27,7 @@ class PasswordField extends StatelessWidget {
         onSubmit();
       },
       decoration: AppDecorations.input(
+        //TODO use DefaultTextFormField
         context: context,
         hintText: "Senha".hardcoded,
         suffixIcon: DeleteIcon(

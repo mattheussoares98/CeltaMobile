@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
+import 'commom_widgets.dart';
 
 class DefaultSimpleDropDown<T> extends StatelessWidget {
   final void Function(T?)? onChanged;
@@ -27,8 +28,9 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
+      margin: EdgeInsets.zero,
       child: InkWell(
-        onTap: () {},
+        onTap: onChanged == null ? null : () {},
         child: DropdownButtonFormField<T>(
           decoration: InputDecoration(
             border: InputBorder.none,
@@ -47,7 +49,9 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
           validator: validator,
           icon: Padding(
             padding: const EdgeInsets.only(right: Sizes.p8),
-            child: isLoading == true ? _LoadingWidget() : _IconWidget(),
+            child: isLoading == true
+                ? LoadingWidget(size: Sizes.p16)
+                : _IconWidget(),
           ),
           hint: Center(child: Text(hint)),
         ),
@@ -66,15 +70,5 @@ class _IconWidget extends StatelessWidget {
           : Icons.arrow_drop_down,
       size: theme.platform == TargetPlatform.iOS ? Sizes.p12 : null,
     );
-  }
-}
-
-class _LoadingWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return theme.platform == TargetPlatform.iOS
-        ? CupertinoActivityIndicator(color: theme.disabledColor)
-        : const CircularProgressIndicator();
   }
 }

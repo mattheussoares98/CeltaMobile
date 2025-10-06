@@ -25,6 +25,7 @@ class EnterpriseNameField extends StatelessWidget {
         urlFocusNode.requestFocus();
       },
       decoration: AppDecorations.input(
+        //TODO use DefaultTextFormField
         context: context,
         hintText: "Nome da empresa".hardcoded,
         suffixIcon: DeleteIcon(

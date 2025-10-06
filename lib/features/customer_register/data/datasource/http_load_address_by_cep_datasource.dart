@@ -14,10 +14,6 @@ class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
       method: 'get',
     );
 
-    if (response.toString().toLowerCase().contains('erro')) {
-      return null;
-    } else {
-      return AddressModel.fromViaCep(response);
-    }
+    return AddressModel.fromViaCep(response);
   }
 }

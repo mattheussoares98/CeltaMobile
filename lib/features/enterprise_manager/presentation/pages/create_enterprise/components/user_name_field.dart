@@ -27,6 +27,7 @@ class UserNameField extends StatelessWidget {
         passwordFocusNode.requestFocus();
       },
       decoration: AppDecorations.input(
+        //TODO use DefaultTextFormField
         context: context,
         hintText: "Nome do usuário no BS".hardcoded,
         suffixIcon: DeleteIcon(

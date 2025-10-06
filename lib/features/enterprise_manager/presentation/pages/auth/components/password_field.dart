@@ -30,6 +30,7 @@ class PasswordField extends StatelessWidget {
       onFieldSubmitted: (_) => onSubmit(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: AppDecorations.input(
+        //TODO use DefaultTextFormField
         context: context,
         labelText: 'Senha'.hardcoded,
         prefixIcon: Icon(

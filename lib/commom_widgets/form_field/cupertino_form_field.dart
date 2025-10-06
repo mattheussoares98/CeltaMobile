@@ -22,18 +22,21 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
   void initState() {
     super.initState();
 
-    widget.defaultTextFormField.controller.addListener(_onControllerChanged);
+    widget.defaultTextFormField.controller?.addListener(_onControllerChanged);
   }
 
   @override
   void dispose() {
-    widget.defaultTextFormField.controller.removeListener(_onControllerChanged);
+    widget.defaultTextFormField.controller?.removeListener(
+      _onControllerChanged,
+    );
     super.dispose();
   }
 
   void _onControllerChanged() {
-    if (_formFieldState?.value != widget.defaultTextFormField.controller.text) {
-      _formFieldState?.didChange(widget.defaultTextFormField.controller.text);
+    if (_formFieldState?.value !=
+        widget.defaultTextFormField.controller?.text) {
+      _formFieldState?.didChange(widget.defaultTextFormField.controller?.text);
     }
   }
 
@@ -45,7 +48,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
       key: ValueKey(Random().nextDouble()),
       validator: widget.defaultTextFormField.validator,
       enabled: widget.defaultTextFormField.enabled ?? true,
-      initialValue: widget.defaultTextFormField.controller.text,
+      initialValue: widget.defaultTextFormField.controller?.text,
       autovalidateMode: widget.defaultTextFormField.autovalidateMode,
       builder: (state) {
         _formFieldState = state;

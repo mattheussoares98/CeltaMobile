@@ -41,12 +41,25 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
 
   //! address
   final addressPageFormKey = GlobalKey<FormState>();
-  final cepController = TextEditingController();
+  final zipController = TextEditingController();
+  final numberController = TextEditingController();
+  final addressController = TextEditingController();
+  final districtController = TextEditingController();
+  final cityController = TextEditingController();
+  final complementController = TextEditingController();
+  final referenceController = TextEditingController();
+  BrazilStates? state;
+  final numberFocusNode = FocusNode();
+  final complementFocusNode = FocusNode();
+  final referenceFocusNode = FocusNode();
+  List<AddressEntity> addressess = [];
+  final addressFormKey = GlobalKey<FormState>();
   //! address
 
   @override
   void dispose() async {
     super.dispose();
+    //! personal data
     cpfCnpjController.dispose();
     nameController.dispose();
     reducedNameController.dispose();
@@ -61,7 +74,17 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     birthDateFocusNode.dispose();
     inscriptionFocusNode.dispose();
 
-    cepController.dispose();
+    //! address
+    zipController.dispose();
+    numberController.dispose();
+    addressController.dispose();
+    districtController.dispose();
+    cityController.dispose();
+    complementController.dispose();
+    referenceController.dispose();
+    numberFocusNode.dispose();
+    complementFocusNode.dispose();
+    referenceFocusNode.dispose();
   }
 
   Future<void> onChangeCpfCnpj() async {
@@ -96,6 +119,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         final year = customer.DateOfBirth!.year.toString().padLeft(4, '0');
         birthDateController.text = '$day/$month/$year';
       }
+
+      addressess = [...?customer.Addresses];
 
       selectedSex = customer.SexType;
       setState(() {});
@@ -139,7 +164,64 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         },
         selectedSex: selectedSex,
       ),
-      AddressPage(cepController: cepController),
+      AddressPage(
+        formKey: addressFormKey,
+        zipController: zipController,
+        numberController: numberController,
+        addressController: addressController,
+        districtController: districtController,
+        cityController: cityController,
+        complementController: complementController,
+        referenceController: referenceController,
+        state: state,
+        numberFocusNode: numberFocusNode,
+        complementFocusNode: complementFocusNode,
+        referenceFocusNode: referenceFocusNode,
+        addressess: addressess,
+        removeAddress: (index) {
+          setState(() {
+            addressess.removeAt(index);
+          });
+        },
+        addAddress: () {
+          if (addressFormKey.currentState?.validate() != true) {
+            return;
+          }
+
+          if (addressess.any(
+            (e) =>
+                e.Zip == zipController.text &&
+                e.Number == numberController.text,
+          )) {
+            showSnackBarMessage(
+              context,
+              'Esse endereço já foi inserido'.hardcoded,
+              backgroundColor: Colors.red,
+            );
+            return;
+          }
+
+          setState(() {
+            addressess.add(
+              AddressEntity(
+                Zip: zipController.text,
+                Address: addressController.text,
+                Number: numberController.text,
+                District: districtController.text,
+                City: cityController.text,
+                State: state?.name,
+                Complement: complementController.text,
+                Reference: referenceController.text,
+              ),
+            );
+          });
+        },
+        onChangeState: (value) {
+          setState(() {
+            state = value;
+          });
+        },
+      ),
       EmailPage(),
       PhonePage(),
       CovenantsPage(),
@@ -164,6 +246,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                       DateOfBirth: DateFormat(
                         'dd/MM/yyyy',
                       ).tryParse(birthDateController.text),
+                      Addresses: addressess,
                     ),
                   );
             }

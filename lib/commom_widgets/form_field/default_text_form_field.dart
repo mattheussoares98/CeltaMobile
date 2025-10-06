@@ -8,7 +8,7 @@ import 'form_field.dart';
 
 class DefaultTextFormField extends StatelessWidget {
   final bool? enabled;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final void Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
   final String? labelText;
@@ -20,13 +20,13 @@ class DefaultTextFormField extends StatelessWidget {
   final AutovalidateMode? autovalidateMode;
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
-  final int maxLength;
+  final int? maxLength;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
   const DefaultTextFormField({
     super.key,
-    required this.controller,
-    required this.maxLength,
+    this.maxLength,
+    this.controller,
     this.enabled = true,
     this.onFieldSubmitted,
     this.validator,
@@ -71,6 +71,7 @@ class DefaultTextFormField extends StatelessWidget {
             required maxLength,
           }) => null,
       decoration: AppDecorations.input(
+        enabled: enabled ?? true,
         context: context,
         labelText: labelText,
         hintText: hintText,

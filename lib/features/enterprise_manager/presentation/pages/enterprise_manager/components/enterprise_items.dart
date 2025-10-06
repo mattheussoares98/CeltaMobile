@@ -42,6 +42,7 @@ class _EnterpriseItemsState extends ConsumerState<EnterpriseItems> {
                 setState(() {});
               },
               decoration: AppDecorations.input(
+                //TODO use DefaultTextFormField
                 context: context,
                 hintText: "Filtrar empresa",
                 labelText: 'Filtrar empresa',

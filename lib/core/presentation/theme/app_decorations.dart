@@ -5,6 +5,7 @@ import '../../../constants/constants.dart';
 class AppDecorations {
   static InputDecoration input({
     required BuildContext context,
+    bool enabled = true,
     String? labelText,
     String? hintText,
     Widget? prefixIcon,
@@ -45,7 +46,7 @@ class AppDecorations {
         color: colorScheme.onSurface.withAlpha(125),
         fontSize: 12,
       ),
-
+      enabled: enabled,
       border: border,
       enabledBorder: border,
       focusedBorder: focusedBorder,

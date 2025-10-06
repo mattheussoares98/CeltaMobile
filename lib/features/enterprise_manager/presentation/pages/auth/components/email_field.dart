@@ -25,6 +25,7 @@ class EmailField extends StatelessWidget {
       controller: emailController,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: AppDecorations.input(
+        //TODO use DefaultTextFormField
         context: context,
         labelText: 'Email'.hardcoded,
         prefixIcon: Icon(
