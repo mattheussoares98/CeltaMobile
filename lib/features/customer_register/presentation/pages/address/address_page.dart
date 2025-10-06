@@ -36,10 +36,11 @@ class AddressPage extends ConsumerWidget {
               maxLength: 8,
               labelText: 'CEP'.hardcoded,
               hintText: 'CEP'.hardcoded,
-              suffixIcon: PrimaryTextButton(
-                text: 'Pesquisar CEP'.hardcoded,
-                onPressed: seekAddress,
-              ),
+              onChanged: (value) {
+                if (value.length == 8) {
+                  seekAddress();
+                }
+              },
               keyboardType: TextInputType.numberWithOptions(
                 decimal: false,
               ), //TODO test in iOS
