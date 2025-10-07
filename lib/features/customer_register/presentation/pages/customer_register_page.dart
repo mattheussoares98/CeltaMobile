@@ -275,6 +275,10 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
               selectedFontSize: 11,
               currentIndex: selectedIndex,
               onTap: (index) {
+                if (selectedIndex == 0 &&
+                    personalPageFormKey.currentState?.validate() != true) {
+                  return;
+                }
                 setState(() {
                   selectedIndex = index;
                 });

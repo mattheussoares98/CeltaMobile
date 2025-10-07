@@ -17,7 +17,7 @@ class SexDropDown extends StatelessWidget {
       onChanged: personalDataPage.onChangeSex,
       validator: (sex) {
         if (sex == null) {
-          return 'Sexo obrigatório'.hardcoded;
+          return 'Campo obrigatório'.hardcoded;
         }
         return null;
       },
