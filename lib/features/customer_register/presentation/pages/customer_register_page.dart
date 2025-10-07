@@ -52,8 +52,10 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final numberFocusNode = FocusNode();
   final complementFocusNode = FocusNode();
   final referenceFocusNode = FocusNode();
+  final zipFocusNode = FocusNode();
   List<AddressEntity> addressess = [];
   final addressFormKey = GlobalKey<FormState>();
+  bool showAddressFields = false;
   //! address
 
   @override
@@ -85,6 +87,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     numberFocusNode.dispose();
     complementFocusNode.dispose();
     referenceFocusNode.dispose();
+    zipFocusNode.dispose();
   }
 
   Future<void> onChangeCpfCnpj() async {
@@ -177,30 +180,20 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         numberFocusNode: numberFocusNode,
         complementFocusNode: complementFocusNode,
         referenceFocusNode: referenceFocusNode,
+        zipFocusNode: zipFocusNode,
         addressess: addressess,
+        showAddressFields: showAddressFields,
+        changeShowAllFields: (value) {
+          setState(() {
+            showAddressFields = value;
+          });
+        },
         removeAddress: (index) {
           setState(() {
             addressess.removeAt(index);
           });
         },
         addAddress: () {
-          if (addressFormKey.currentState?.validate() != true) {
-            return;
-          }
-
-          if (addressess.any(
-            (e) =>
-                e.Zip == zipController.text &&
-                e.Number == numberController.text,
-          )) {
-            showSnackBarMessage(
-              context,
-              'Esse endereço já foi inserido'.hardcoded,
-              backgroundColor: Colors.red,
-            );
-            return;
-          }
-
           setState(() {
             addressess.add(
               AddressEntity(

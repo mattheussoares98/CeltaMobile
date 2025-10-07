@@ -11,6 +11,19 @@ part 'get_address_by_cep_controller.g.dart';
 class GetAddressByCepController extends _$GetAddressByCepController {
   @override
   FutureOr<AddressEntity?> build() async {
+    Timer? timer;
+    final link = ref.keepAlive();
+    ref.onCancel(() {
+      timer = Timer(const Duration(seconds: 20), () {
+        link.close();
+      });
+    });
+    ref.onResume(() {
+      timer?.cancel();
+    });
+    ref.onDispose(() {
+      timer?.cancel();
+    });
     return null;
   }
 
