@@ -1,6 +1,6 @@
 enum CustomerSexType {
   male('Masculino', 'M'),
-  female('Faminino', 'F');
+  female('Feminino', 'F');
 
   final String name;
   final String shortName;
