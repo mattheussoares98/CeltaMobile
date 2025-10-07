@@ -58,6 +58,12 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   bool showAddressFields = false;
   //! address
 
+  //! emails
+  List<String> emails = [];
+  final emailController = TextEditingController();
+  final emailFormKey = GlobalKey<FormState>();
+  //! emails
+
   @override
   void dispose() async {
     super.dispose();
@@ -147,6 +153,10 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         state = BrazilStates.values[stateIndex];
       }
       //! address
+
+      //! emails
+      emails = [...?customer.Emails];
+      //! emails
     }
     setState(() {});
   }
@@ -234,7 +244,22 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           });
         },
       ),
-      EmailPage(),
+      EmailPage(
+        emails: emails,
+        emailController: emailController,
+        formKey: emailFormKey,
+        removeEmail: (index) {
+          setState(() {
+            emails.removeAt(index);
+          });
+        },
+        addEmail: () {
+          setState(() {
+            emails.add(emailController.text);
+            emailController.clear();
+          });
+        },
+      ),
       PhonePage(),
       CovenantsPage(),
       SavePage(),
@@ -262,6 +287,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                         'dd/MM/yyyy',
                       ).tryParse(birthDateController.text),
                       Addresses: addressess,
+                      Emails: emails,
                     ),
                   );
             }

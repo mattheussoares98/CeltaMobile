@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../components/components.dart';
 import '../address.dart';
 
 class InformedAddressess extends StatelessWidget {
@@ -17,13 +18,7 @@ class InformedAddressess extends StatelessWidget {
 
     return Column(
       children: [
-        gapH16,
-        Divider(thickness: 0.5),
-        Text(
-          'Endereços informados'.hardcoded,
-          style: theme.textTheme.titleLarge,
-        ),
-        gapH8,
+        DefaultDivider('Endereços informados'),
         ListView.builder(
           shrinkWrap: true,
           itemCount: page.addressess.length,
