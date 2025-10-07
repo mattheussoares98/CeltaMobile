@@ -97,6 +97,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
       return;
     }
     widget.addAddress();
+    ref.invalidate(getAddressByCepControllerProvider);
     widget.changeShowAllFields(false);
     clearFields(clearZip: true);
   }
