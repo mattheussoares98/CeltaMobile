@@ -102,6 +102,36 @@ class _AddressPageState extends ConsumerState<AddressPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final address = await ref.read(
+          getAddressByCepControllerProvider.future,
+        );
+        if (address != null) {
+          widget.changeShowAllFields(true);
+          widget.addressController.text = address.Address;
+          widget.districtController.text = address.District;
+          widget.cityController.text = address.City;
+          widget.complementController.text = address.Complement ?? '';
+          widget.referenceController.text = address.Reference ?? '';
+
+          final stateIndex = BrazilStates.values.indexWhere(
+            (e) => e.name == address.State,
+          );
+          if (stateIndex == -1) {
+            return;
+          } else {
+            widget.onChangeState(BrazilStates.values[stateIndex]);
+          }
+        }
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     ref.listen(getAddressByCepControllerProvider, (p, n) {
       if (n.hasError) {

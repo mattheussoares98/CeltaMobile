@@ -108,8 +108,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   }
 
   Future<void> updateFields() async {
+    //! personal data
     final customer = await ref.read(customerStateControllerProvider.future);
-
     if (customer != null) {
       cpfCnpjController.text = customer.CpfCnpjNumber ?? '';
       inscriptionController.text = customer.RegistrationNumber ?? '';
@@ -122,10 +122,29 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         final year = customer.DateOfBirth!.year.toString().padLeft(4, '0');
         birthDateController.text = '$day/$month/$year';
       }
-
-      addressess = [...?customer.Addresses];
-
       selectedSex = customer.SexType;
+      //! personal data
+
+      //! address
+      addressess = [...?customer.Addresses];
+      final address = await ref.read(getAddressByCepControllerProvider.future);
+      if (address != null) {
+        showAddressFields = true;
+        zipController.text = address.Zip;
+        addressController.text = address.Address;
+        districtController.text = address.District;
+        cityController.text = address.City;
+
+        final stateIndex = BrazilStates.values.indexWhere(
+          (e) => e.name == address.State,
+        );
+        if (stateIndex == -1) {
+          return;
+        } else {
+          state = BrazilStates.values[stateIndex];
+        }
+      }
+      //! address
       setState(() {});
     }
   }
