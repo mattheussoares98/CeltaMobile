@@ -81,6 +81,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     passwordConfirmationFocusNode.dispose();
     birthDateFocusNode.dispose();
     inscriptionFocusNode.dispose();
+    personalPageFormKey.currentState?.dispose();
+    //! personal data
 
     //! address
     zipController.dispose();
@@ -94,6 +96,13 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     complementFocusNode.dispose();
     referenceFocusNode.dispose();
     zipFocusNode.dispose();
+    addressFormKey.currentState?.dispose();
+    //! address
+
+    //! emails
+    emailController.dispose();
+    emailFormKey.currentState?.dispose();
+    //! emails
   }
 
   Future<void> onChangeCpfCnpj() async {
