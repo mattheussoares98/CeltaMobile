@@ -74,7 +74,10 @@ class PersonalDataPage extends StatelessWidget {
                 PasswordField(this),
                 gapH8,
                 PasswordConfirmationField(this),
-                if (cpfCnpjController.text.length == 11) SexDropDown(this),
+                if (cpfCnpjController.text.length == 11) ...[
+                  gapH8,
+                  SexDropDown(this),
+                ],
               ],
             ],
           ),

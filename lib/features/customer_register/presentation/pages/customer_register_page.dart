@@ -182,9 +182,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         inscriptionController: inscriptionController,
         inscriptionFocusNode: inscriptionFocusNode,
         onChangeSex: (sex) {
-          setState(() {
-            selectedSex = sex;
-          });
+          selectedSex = sex;
         },
         selectedSex: selectedSex,
       ),

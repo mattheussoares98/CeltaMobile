@@ -18,6 +18,7 @@ class NameField extends StatelessWidget {
       hintText: 'Nome'.hardcoded,
       labelText: 'Nome'.hardcoded,
       focusNode: personalDataPage.nameFocusNode,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormValidators.compose([
         NonEmptyValidator(),
         MinLengthValidator(3),
