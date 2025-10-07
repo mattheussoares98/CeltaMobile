@@ -15,6 +15,12 @@ class SexDropDown extends StatelessWidget {
       value: personalDataPage.selectedSex,
       hint: 'Sexo'.hardcoded,
       onChanged: personalDataPage.onChangeSex,
+      validator: (sex) {
+        if (sex == null) {
+          return 'Sexo obrigatório'.hardcoded;
+        }
+        return null;
+      },
       items: CustomerSexType.values
           .map(
             (e) => DropdownMenuItem(
