@@ -64,6 +64,14 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final emailFormKey = GlobalKey<FormState>();
   //! emails
 
+  //! phone
+  final dddController = TextEditingController();
+  final phoneController = TextEditingController();
+  final phoneFocusNode = FocusNode();
+  final phoneFormKey = GlobalKey<FormState>();
+  List<CustomerTelephoneEntity> phones = [];
+  //! phone
+
   @override
   void dispose() async {
     super.dispose();
@@ -103,6 +111,13 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     emailController.dispose();
     emailFormKey.currentState?.dispose();
     //! emails
+
+    //! phone
+    dddController.dispose();
+    phoneController.dispose();
+    phoneFocusNode.dispose();
+    phoneFormKey.currentState?.dispose();
+    //! phone
   }
 
   Future<void> onChangeCpfCnpj() async {
@@ -166,6 +181,10 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       //! emails
       emails = [...?customer.Emails];
       //! emails
+
+      //! phone
+      phones = [...?customer.Telephones];
+      //! phone
     }
     setState(() {});
   }
@@ -269,7 +288,31 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           });
         },
       ),
-      PhonePage(),
+      PhonePage(
+        phones: phones,
+        dddController: dddController,
+        phoneController: phoneController,
+        phoneFocusNode: phoneFocusNode,
+        formKey: phoneFormKey,
+        addPhone: () {
+          setState(() {
+            phones.add(
+              CustomerTelephoneEntity(
+                AreaCode: dddController.text,
+                PhoneNumber: phoneController.text,
+              ),
+            );
+          });
+
+          dddController.clear();
+          phoneController.clear();
+        },
+        removePhone: (index) {
+          setState(() {
+            phones.removeAt(index);
+          });
+        },
+      ),
       CovenantsPage(),
       SavePage(),
     ];
@@ -297,6 +340,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                       ).tryParse(birthDateController.text),
                       Addresses: addressess,
                       Emails: emails,
+                      Telephones: phones,
                     ),
                   );
             }
