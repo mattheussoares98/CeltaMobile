@@ -130,7 +130,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       final address = await ref.read(getAddressByCepControllerProvider.future);
       if (address != null) {
         showAddressFields = true;
-        zipController.text = address.Zip;
+        zipController.text = address.Zip.replaceAll(RegExp(r'-'), '');
         addressController.text = address.Address;
         districtController.text = address.District;
         cityController.text = address.City;
