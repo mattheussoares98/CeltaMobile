@@ -111,7 +111,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     //! personal data
     final customer = await ref.read(customerStateControllerProvider.future);
     if (customer != null) {
-      cpfCnpjController.text = customer.CpfCnpjNumber ?? '';
       inscriptionController.text = customer.RegistrationNumber ?? '';
       nameController.text = customer.Name ?? '';
       reducedNameController.text = customer.ReducedName ?? '';
@@ -121,6 +120,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         final month = customer.DateOfBirth!.month.toString().padLeft(2, '0');
         final year = customer.DateOfBirth!.year.toString().padLeft(4, '0');
         birthDateController.text = '$day/$month/$year';
+      } else {
+        birthDateController.text = '';
       }
       selectedSex = customer.SexType;
       //! personal data
