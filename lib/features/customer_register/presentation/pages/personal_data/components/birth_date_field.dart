@@ -51,9 +51,7 @@ class BirthDateField extends StatelessWidget {
           ),
         ],
       ),
-      validator: FormValidators.compose([
-        //TODO create date validator
-      ]),
+      validator: FormValidators.compose([DateValidator()]),
     );
   }
 }
