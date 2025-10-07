@@ -108,9 +108,12 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   }
 
   Future<void> updateFields() async {
-    //! personal data
     final customer = await ref.read(customerStateControllerProvider.future);
     if (customer != null) {
+      //! personal data
+      if (customer.CpfCnpjNumber != null) {
+        cpfCnpjController.text = customer.CpfCnpjNumber!;
+      }
       inscriptionController.text = customer.RegistrationNumber ?? '';
       nameController.text = customer.Name ?? '';
       reducedNameController.text = customer.ReducedName ?? '';
@@ -131,23 +134,21 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       final address = await ref.read(getAddressByCepControllerProvider.future);
       if (address != null) {
         showAddressFields = true;
-        zipController.text = address.Zip.replaceAll(RegExp(r'-'), '');
-        addressController.text = address.Address;
-        districtController.text = address.District;
-        cityController.text = address.City;
+      }
+      zipController.text = address?.Zip.replaceAll(RegExp(r'-'), '') ?? '';
+      addressController.text = address?.Address ?? '';
+      districtController.text = address?.District ?? '';
+      cityController.text = address?.City ?? '';
 
-        final stateIndex = BrazilStates.values.indexWhere(
-          (e) => e.name == address.State,
-        );
-        if (stateIndex == -1) {
-          return;
-        } else {
-          state = BrazilStates.values[stateIndex];
-        }
+      final stateIndex = BrazilStates.values.indexWhere(
+        (e) => e.name == address?.State,
+      );
+      if (stateIndex != -1) {
+        state = BrazilStates.values[stateIndex];
       }
       //! address
-      setState(() {});
     }
+    setState(() {});
   }
 
   @override
@@ -253,6 +254,9 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                   .read(customerStateControllerProvider.notifier)
                   .updateCustomer(
                     customer.copyWith(
+                      CpfCnpjNumber: cpfCnpjController.text,
+                      PersonType: selectedSex?.name,
+                      SexType: selectedSex,
                       RegistrationNumber: inscriptionController.text,
                       Name: nameController.text,
                       ReducedName: reducedNameController.text,
