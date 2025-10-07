@@ -81,6 +81,12 @@ class _AddressPageState extends ConsumerState<AddressPage> {
       if (n.hasError) {
         clearFields(clearZip: false);
       }
+      n.showSnackbarOnError(
+        context,
+        previous: p,
+        message: 'Ocorreu um erro não esperado. Tente novamente'.hardcoded,
+      );
+      //TODO test this error. Probably needs to throw in the datasource
       n.doOnSuccess(p, () {
         if (n.value == null) {
           return;
