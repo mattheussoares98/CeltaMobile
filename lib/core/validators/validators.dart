@@ -1,4 +1,5 @@
 export './cpf_cnpj_validator.dart';
+export './date_validator.dart';
 export 'email_validator.dart';
 export './form_validators.dart';
 export './min_length_validator.dart';
