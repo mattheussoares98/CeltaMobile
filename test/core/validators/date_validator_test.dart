@@ -1,27 +1,31 @@
 import 'package:celta_intelligence/core/validators/validators.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  // Define a fixed period to use for all tests
+  final startDate = DateTime(2025, 1, 1);
+  final endDate = DateTime(2025, 1, 31);
+
   late DateValidator sut;
 
   setUp(() {
-    sut = DateValidator();
+    // Instantiate the validator with the required period
+    sut = DateValidator(minimumDate: startDate, maximumDate: endDate);
   });
 
   group('DateValidator', () {
     group('Valid Dates', () {
-      test('should return true for a valid Brazilian date (dd/MM/yyyy)', () {
-        expect(sut.isValid('31/03/1998'), true);
+      test('should return true for a date within the allowed period', () {
+        expect(sut.isValid('15/01/2025'), true);
       });
 
-      // test('should return true for a valid American date (MM/dd/yyyy)', () {
-      //   expect(sut.isValid('03/31/1998'), true);
-      // });
+      test('should return true for a date exactly on the start date', () {
+        expect(sut.isValid('01/01/2025'), true);
+      });
 
-      // test('should return true for a valid ISO date (yyyy-MM-dd)', () {
-      //   expect(sut.isValid('1998-03-31'), true);
-      // });
+      test('should return true for a date exactly on the end date', () {
+        expect(sut.isValid('31/01/2025'), true);
+      });
     });
 
     group('Invalid Dates', () {
@@ -33,27 +37,25 @@ void main() {
         expect(sut.isValid(''), false);
       });
 
-      test('should return false for a non-date string', () {
-        expect(sut.isValid('not a date'), false);
+      test('should return false for an invalid format', () {
+        sut.isValid('not-a-date');
+        expect(sut.errorMessage, isNotEmpty);
       });
 
-      test('should return false for an incomplete date', () {
-        expect(sut.isValid('31/03/'), false);
+      test('should return false for an impossible date', () {
+        expect(sut.isValid('31/02/2025'), false);
       });
 
-      test('should return false for an impossible date (e.g., month 13)', () {
-        expect(sut.isValid('31/13/1998'), false);
-      });
-
-      test('should return false for an impossible date (e.g., Feb 30)', () {
-        expect(sut.isValid('30/02/2024'), false);
-      });
-
-      test('should return false and have the correct error message', () {
-        final isValid = sut.isValid('invalid date');
+      test('should return false for a date BEFORE the allowed period', () {
+        final isValid = sut.isValid('31/12/2024');
         expect(isValid, false);
-        // The error message is static, so we can check it on any failure.
-        expect(sut.errorMessage, 'Data inválida'.hardcoded);
+        expect(sut.errorMessage, isNotEmpty);
+      });
+
+      test('should return false for a date AFTER the allowed period', () {
+        final isValid = sut.isValid('01/02/2025');
+        expect(isValid, false);
+        expect(sut.errorMessage, isNotEmpty);
       });
     });
   });

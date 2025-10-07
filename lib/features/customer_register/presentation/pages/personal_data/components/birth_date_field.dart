@@ -12,6 +12,10 @@ class BirthDateField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final minimumDate = DateTime(now.year - 100);
+    final maximumDate = DateTime(now.year - 5);
+
     return DefaultTextFormField(
       controller: personalDataPage.birthDateController,
       maxLength: 10,
@@ -27,10 +31,9 @@ class BirthDateField extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () async {
-              final now = DateTime.now();
               final newDate = await GetNewDate.get(
-                minimumDate: DateTime(now.year - 100),
-                maximumDate: DateTime(now.year - 5),
+                minimumDate: minimumDate,
+                maximumDate: maximumDate,
                 currentSelectedDate: personalDataPage.customer?.DateOfBirth,
                 context: context,
                 insertHoursAndMinutes: false,
@@ -51,7 +54,9 @@ class BirthDateField extends StatelessWidget {
           ),
         ],
       ),
-      validator: FormValidators.compose([DateValidator()]),
+      validator: FormValidators.compose([
+        DateValidator(minimumDate: minimumDate, maximumDate: maximumDate),
+      ]),
     );
   }
 }

@@ -4,8 +4,13 @@ import '../../localization/string_hardcoded.dart';
 import 'validators.dart';
 
 class DateValidator implements StringValidator {
+  final DateTime minimumDate;
+  final DateTime maximumDate;
+
+  DateValidator({required this.minimumDate, required this.maximumDate});
   @override
-  String get errorMessage => 'Data inválida'.hardcoded;
+  String get errorMessage => _errorMessage.hardcoded;
+  String _errorMessage = '';
 
   // A list of all the date formats we want to accept
   final List<DateFormat> _acceptedFormats = [
@@ -20,21 +25,51 @@ class DateValidator implements StringValidator {
       return false;
     }
 
+    DateTime? parsedDate;
+
     // Loop through each of our accepted formats
     for (final format in _acceptedFormats) {
       try {
         // The 'true' parameter enables UTC parsing for consistency.
         // .parseStrict() will throw an error if the format doesn't match exactly.
-        format.parseStrict(value, true);
+        parsedDate = format.parseStrict(value, true);
         // If we get here, parsing was successful, so the date is valid.
-        return true;
+        break;
       } catch (e) {
         // If parsing fails, just ignore the error and try the next format.
         continue;
       }
     }
+    if (parsedDate == null) {
+      _errorMessage = 'Data inválida'.hardcoded;
+      return false;
+    }
 
-    // If the loop finishes and no format has matched, the date is invalid.
-    return false;
+    final normalizedParsedDate = DateTime(
+      parsedDate.year,
+      parsedDate.month,
+      parsedDate.day,
+    );
+    final normalizedStartDate = DateTime(
+      minimumDate.year,
+      minimumDate.month,
+      minimumDate.day,
+    );
+    final normalizedEndDate = DateTime(
+      maximumDate.year,
+      maximumDate.month,
+      maximumDate.day,
+    );
+
+    if (normalizedParsedDate.isBefore(normalizedStartDate) ||
+        normalizedParsedDate.isAfter(normalizedEndDate)) {
+      final formatter = DateFormat('dd/MM/yyyy');
+      _errorMessage =
+          'Período inválido. ${formatter.format(minimumDate)} ~ ${formatter.format(maximumDate)}'
+              .hardcoded;
+      return false;
+    }
+
+    return true;
   }
 }
