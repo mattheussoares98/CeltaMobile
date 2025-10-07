@@ -1,14 +1,13 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/validators/validators.dart';
 import '../../controllers/controllers.dart';
+import 'components/components.dart';
 
 class AddressPage extends ConsumerStatefulWidget {
   final TextEditingController zipController;
@@ -60,29 +59,50 @@ class AddressPage extends ConsumerStatefulWidget {
 
 class _AddressPageState extends ConsumerState<AddressPage> {
   final zipFormKey = GlobalKey<FormState>();
+  Future<void> seekAddress() async {
+    if (zipFormKey.currentState?.validate() != true) return;
+    ref
+        .read(getAddressByCepControllerProvider.notifier)
+        .getAddress(widget.zipController.text);
+  }
+
+  void clearFields({required bool clearZip}) {
+    if (clearZip) {
+      widget.zipController.clear();
+    }
+    widget.addressController.clear();
+    widget.districtController.clear();
+    widget.cityController.clear();
+    widget.onChangeState(null);
+    widget.numberController.clear();
+    widget.referenceController.clear();
+    widget.complementController.clear();
+  }
+
+  void addAddress() {
+    if (widget.formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    if (widget.addressess.any(
+      (e) =>
+          e.Zip == widget.zipController.text &&
+          e.Number == widget.numberController.text,
+    )) {
+      showSnackBarMessage(
+        context,
+        'Esse endereço já foi inserido'.hardcoded,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    widget.addAddress();
+    widget.changeShowAllFields(false);
+    clearFields(clearZip: true);
+  }
 
   @override
   Widget build(BuildContext context) {
-    Future<void> seekAddress() async {
-      if (zipFormKey.currentState?.validate() != true) return;
-      ref
-          .read(getAddressByCepControllerProvider.notifier)
-          .getAddress(widget.zipController.text);
-    }
-
-    void clearFields({required bool clearZip}) {
-      if (clearZip) {
-        widget.zipController.clear();
-      }
-      widget.addressController.clear();
-      widget.districtController.clear();
-      widget.cityController.clear();
-      widget.onChangeState(null);
-      widget.numberController.clear();
-      widget.referenceController.clear();
-      widget.complementController.clear();
-    }
-
     ref.listen(getAddressByCepControllerProvider, (p, n) {
       if (n.hasError) {
         clearFields(clearZip: false);
@@ -119,9 +139,6 @@ class _AddressPageState extends ConsumerState<AddressPage> {
 
     final getAddressAsync = ref.watch(getAddressByCepControllerProvider);
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return Scaffold(
       appBar: AppBar(title: Text('Endereços'.hardcoded)),
       body: Form(
@@ -133,76 +150,21 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                 children: [
                   Form(
                     key: zipFormKey,
-                    child: DefaultTextFormField(
-                      controller: widget.zipController,
-                      enabled: !getAddressAsync.isLoading,
-                      focusNode: widget.zipFocusNode,
-                      maxLength: 8,
-                      labelText: 'CEP'.hardcoded,
-                      hintText: 'CEP'.hardcoded,
-                      prefixIcon: IconButton(
-                        onPressed: () {
-                          widget.zipController.clear();
-                          widget.zipFocusNode.requestFocus();
-                          widget.changeShowAllFields(false);
-                        },
-                        icon: Icon(
-                          isIOS ? CupertinoIcons.delete : Icons.delete,
-                          color: Colors.red,
-                        ),
-                      ),
-                      suffixIcon: getAddressAsync.isLoading
-                          ? LoadingWidget(size: Sizes.p16)
-                          : PrimaryTextButton(
-                              text: 'Pesquisar CEP'.hardcoded,
-                              onPressed: seekAddress,
-                            ),
-                      onChanged: (value) {
-                        if (value.length == 8) {
-                          seekAddress();
-                        }
-                      },
-                      keyboardType: TextInputType.numberWithOptions(
-                        decimal: false,
-                      ), //TODO test in iOS
-                      onFieldSubmitted: (_) {
-                        seekAddress();
-                      },
-                      validator: FormValidators.compose([
-                        NonEmptyValidator(),
-                        NumberValidator(allowDecimal: false),
-                        MinLengthValidator(8),
-                      ]),
+                    child: ZipField(
+                      page: widget,
+                      isLoading: getAddressAsync.isLoading,
+                      seekAddress: seekAddress,
                     ),
                   ),
                   if (widget.showAddressFields) ...[
                     gapH8,
-                    DefaultTextFormField(
-                      controller: widget.addressController,
-                      enabled: false,
-                      labelText: 'Logradouro'.hardcoded,
-                      hintText: 'Logradouro'.hardcoded,
-                    ),
+                    AddressField(widget),
                     gapH8,
                     Row(
                       children: [
-                        Expanded(
-                          child: DefaultTextFormField(
-                            controller: widget.districtController,
-                            enabled: false,
-                            labelText: 'Bairro'.hardcoded,
-                            hintText: 'Bairro'.hardcoded,
-                          ),
-                        ),
+                        Expanded(child: DistrictField(widget)),
                         gapW8,
-                        Expanded(
-                          child: DefaultTextFormField(
-                            controller: widget.cityController,
-                            enabled: false,
-                            labelText: 'Cidade'.hardcoded,
-                            hintText: 'Cidade'.hardcoded,
-                          ),
-                        ),
+                        Expanded(child: CityField(widget)),
                       ],
                     ),
                     gapH8,
@@ -210,42 +172,17 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                       children: [
                         Expanded(
                           flex: 60,
-                          child: DefaultSimpleDropDown<BrazilStates?>(
+                          child: StatesDropDown(
                             isLoading: getAddressAsync.isLoading,
-                            onChanged: null,
-                            items: BrazilStates.values
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e,
-                                    onTap: () => widget.onChangeState(e),
-                                    child: Center(child: Text(e.name)),
-                                  ),
-                                )
-                                .toList(),
-                            value: widget.state,
-                            hint: 'Estado'.hardcoded,
+                            page: widget,
                           ),
                         ),
                         gapW8,
                         Expanded(
                           flex: 40,
-                          child: DefaultTextFormField(
-                            enabled: !getAddressAsync.isLoading,
-                            controller: widget.numberController,
-                            focusNode: widget.numberFocusNode,
-                            labelText: 'Número'.hardcoded,
-                            hintText: 'Número'.hardcoded,
-                            validator: FormValidators.compose([
-                              NonEmptyValidator(),
-                              MinLengthValidator(1),
-                              NumberValidator(allowDecimal: false),
-                            ]),
-                            onFieldSubmitted: (_) {
-                              widget.complementFocusNode.requestFocus();
-                            },
-                            keyboardType: TextInputType.numberWithOptions(
-                              decimal: false,
-                            ), //TODO test in iOS
+                          child: NumberField(
+                            isLoading: getAddressAsync.isLoading,
+                            page: widget,
                           ),
                         ),
                       ],
@@ -254,25 +191,16 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: DefaultTextFormField(
-                            enabled: !getAddressAsync.isLoading,
-                            controller: widget.complementController,
-                            focusNode: widget.complementFocusNode,
-                            labelText: 'Complemento'.hardcoded,
-                            hintText: 'Complemento'.hardcoded,
-                            onFieldSubmitted: (_) {
-                              widget.referenceFocusNode.requestFocus();
-                            },
+                          child: ComplementField(
+                            isLoading: getAddressAsync.isLoading,
+                            page: widget,
                           ),
                         ),
                         gapW8,
                         Expanded(
-                          child: DefaultTextFormField(
-                            focusNode: widget.referenceFocusNode,
-                            enabled: !getAddressAsync.isLoading,
-                            controller: widget.referenceController,
-                            labelText: 'Referência'.hardcoded,
-                            hintText: 'Referência'.hardcoded,
+                          child: ReferenceField(
+                            page: widget,
+                            isLoading: getAddressAsync.isLoading,
                           ),
                         ),
                       ],
@@ -280,102 +208,12 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                     gapH32,
                     PrimaryButton(
                       text: 'Adicionar endereço'.hardcoded,
-                      onPressed: () {
-                        if (widget.formKey.currentState?.validate() != true) {
-                          return;
-                        }
-
-                        if (widget.addressess.any(
-                          (e) =>
-                              e.Zip == widget.zipController.text &&
-                              e.Number == widget.numberController.text,
-                        )) {
-                          showSnackBarMessage(
-                            context,
-                            'Esse endereço já foi inserido'.hardcoded,
-                            backgroundColor: Colors.red,
-                          );
-                          return;
-                        }
-                        widget.addAddress();
-                        //TODO move showAllFields and clearFields to previous page
-                        widget.changeShowAllFields(false);
-                        clearFields(clearZip: true);
-                      },
+                      onPressed: addAddress,
                     ),
                   ],
                 ],
               ),
-              if (widget.addressess.isNotEmpty) ...[
-                gapH16,
-                Divider(thickness: 0.5),
-                Text(
-                  'Endereços informados'.hardcoded,
-                  style: theme.textTheme.titleLarge,
-                ),
-                gapH8,
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.addressess.length,
-                  itemBuilder: (_, index) {
-                    final address = widget.addressess[index];
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(Sizes.p8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TitleAndSubTitle(
-                                    title: 'CEP '.hardcoded,
-                                    subTitle: address.Zip,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    showAlertDialog(
-                                      context: context,
-                                      title: 'Excluir endereço?'.hardcoded,
-                                      onOkPressed: () {
-                                        widget.removeAddress(index);
-                                      },
-                                      cancelActionText: 'Não'.hardcoded,
-                                      defaultActionText: 'Sim'.hardcoded,
-                                    );
-                                  },
-                                  icon: Icon(
-                                    isIOS
-                                        ? CupertinoIcons.delete
-                                        : Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              '${address.Address}, número ${address.Number}. ${address.District}, ${address.City}, ${address.State}',
-                            ),
-                            if (address.Complement != null &&
-                                address.Complement!.isNotEmpty)
-                              TitleAndSubTitle(
-                                title: 'Complemento '.hardcoded,
-                                subTitle: address.Complement,
-                              ),
-                            if (address.Reference != null &&
-                                address.Reference!.isNotEmpty)
-                              TitleAndSubTitle(
-                                title: 'Referência '.hardcoded,
-                                subTitle: address.Reference,
-                              ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+              if (widget.addressess.isNotEmpty) ...[InformedAddressess(widget)],
             ],
           ),
         ),
