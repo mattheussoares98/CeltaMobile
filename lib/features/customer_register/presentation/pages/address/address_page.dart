@@ -91,14 +91,16 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         widget.addressController.text = n.value?.Address ?? '';
         widget.districtController.text = n.value?.District ?? '';
         widget.cityController.text = n.value?.City ?? '';
-        widget.onChangeState(
-          BrazilStates.values.firstWhere(
-            (e) => e.name == n.value?.State,
-            orElse: () {
-              return BrazilStates.acre;
-            },
-          ),
+
+        final stateIndex = BrazilStates.values.indexWhere(
+          (e) => e.name == n.value?.State,
         );
+
+        if (stateIndex == -1) {
+          return;
+        } else {
+          widget.onChangeState(BrazilStates.values[stateIndex]);
+        }
         Future.delayed(Duration(milliseconds: 100), () {
           widget.numberFocusNode.requestFocus();
         });
