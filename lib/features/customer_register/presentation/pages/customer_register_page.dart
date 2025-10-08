@@ -48,12 +48,10 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final cityController = TextEditingController();
   final complementController = TextEditingController();
   final referenceController = TextEditingController();
-  BrazilStates? state;
   final numberFocusNode = FocusNode();
   final complementFocusNode = FocusNode();
   final referenceFocusNode = FocusNode();
   final zipFocusNode = FocusNode();
-  bool showAddressFields = false;
   //! address
 
   //! emails
@@ -166,24 +164,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       selectedSex = customer.SexType;
       //! personal data
 
-      //! address
-      final address = await ref.read(getAddressByCepControllerProvider.future);
-      if (address != null) {
-        showAddressFields = true;
-      }
-      zipController.text = address?.Zip.replaceAll(RegExp(r'-'), '') ?? '';
-      addressController.text = address?.Address ?? '';
-      districtController.text = address?.District ?? '';
-      cityController.text = address?.City ?? '';
-
-      final stateIndex = BrazilStates.values.indexWhere(
-        (e) => e.name == address?.State,
-      );
-      if (stateIndex != -1) {
-        state = BrazilStates.values[stateIndex];
-      }
-      //! address
-
       //! emails
       emails = [...?customer.Emails];
       //! emails
@@ -245,22 +225,10 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         cityController: cityController,
         complementController: complementController,
         referenceController: referenceController,
-        state: state,
         numberFocusNode: numberFocusNode,
         complementFocusNode: complementFocusNode,
         referenceFocusNode: referenceFocusNode,
         zipFocusNode: zipFocusNode,
-        showAddressFields: showAddressFields,
-        changeShowAllFields: (value) {
-          setState(() {
-            showAddressFields = value;
-          });
-        },
-        onChangeState: (value) {
-          setState(() {
-            state = value;
-          });
-        },
       ),
       EmailPage(
         emails: emails,

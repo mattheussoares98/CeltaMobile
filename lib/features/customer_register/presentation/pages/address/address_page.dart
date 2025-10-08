@@ -17,14 +17,10 @@ class AddressPage extends ConsumerStatefulWidget {
   final TextEditingController cityController;
   final TextEditingController complementController;
   final TextEditingController referenceController;
-  final BrazilStates? state;
   final FocusNode numberFocusNode;
   final FocusNode complementFocusNode;
   final FocusNode referenceFocusNode;
   final FocusNode zipFocusNode;
-  final void Function(BrazilStates? state) onChangeState;
-  final bool showAddressFields;
-  final void Function(bool value) changeShowAllFields;
   final CustomerEntity? customer;
 
   const AddressPage({
@@ -36,14 +32,10 @@ class AddressPage extends ConsumerStatefulWidget {
     required this.cityController,
     required this.complementController,
     required this.referenceController,
-    required this.state,
     required this.numberFocusNode,
     required this.complementFocusNode,
     required this.referenceFocusNode,
     required this.zipFocusNode,
-    required this.onChangeState,
-    required this.showAddressFields,
-    required this.changeShowAllFields,
     required this.customer,
   });
 
@@ -54,6 +46,8 @@ class AddressPage extends ConsumerStatefulWidget {
 class _AddressPageState extends ConsumerState<AddressPage> {
   final formKey = GlobalKey<FormState>();
   final zipFormKey = GlobalKey<FormState>();
+  bool showAllFields = false;
+  BrazilStates? state;
 
   @override
   void initState() {
@@ -65,7 +59,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
           getAddressByCepControllerProvider.future,
         );
         if (address != null) {
-          widget.changeShowAllFields(true);
+          setState(() => showAllFields = true);
           widget.addressController.text = address.Address;
           widget.districtController.text = address.District;
           widget.cityController.text = address.City;
@@ -78,7 +72,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
           if (stateIndex == -1) {
             return;
           } else {
-            widget.onChangeState(BrazilStates.values[stateIndex]);
+            state = BrazilStates.values[stateIndex];
           }
         }
       }
@@ -99,10 +93,14 @@ class _AddressPageState extends ConsumerState<AddressPage> {
     widget.addressController.clear();
     widget.districtController.clear();
     widget.cityController.clear();
-    widget.onChangeState(null);
+    state = null;
     widget.numberController.clear();
     widget.referenceController.clear();
     widget.complementController.clear();
+
+    setState(() {
+      showAllFields = false;
+    });
   }
 
   void addAddress() {
@@ -136,7 +134,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                 Number: widget.numberController.text,
                 District: widget.districtController.text,
                 City: widget.cityController.text,
-                State: widget.state?.name ?? '',
+                State: state?.name ?? '',
                 Complement: widget.complementController.text,
                 Reference: widget.referenceController.text,
               ),
@@ -144,7 +142,6 @@ class _AddressPageState extends ConsumerState<AddressPage> {
           ),
         );
     ref.invalidate(getAddressByCepControllerProvider);
-    widget.changeShowAllFields(false);
     clearFields(clearZip: true);
   }
 
@@ -153,7 +150,6 @@ class _AddressPageState extends ConsumerState<AddressPage> {
     ref.listen(getAddressByCepControllerProvider, (p, n) {
       if (n.hasError) {
         clearFields(clearZip: false);
-        widget.changeShowAllFields(false);
       }
       n.showSnackbarOnError(
         context,
@@ -164,7 +160,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         if (n.value == null) {
           return;
         }
-        widget.changeShowAllFields(true);
+        setState(() => showAllFields = true);
         widget.addressController.text = n.value?.Address ?? '';
         widget.districtController.text = n.value?.District ?? '';
         widget.cityController.text = n.value?.City ?? '';
@@ -176,7 +172,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         if (stateIndex == -1) {
           return;
         } else {
-          widget.onChangeState(BrazilStates.values[stateIndex]);
+          state = BrazilStates.values[stateIndex];
         }
         Future.delayed(Duration(milliseconds: 100), () {
           widget.numberFocusNode.requestFocus();
@@ -201,9 +197,11 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                       page: widget,
                       isLoading: getAddressAsync.isLoading,
                       seekAddress: seekAddress,
+                      changeShowAllFields: (value) =>
+                          setState(() => showAllFields = value),
                     ),
                   ),
-                  if (widget.showAddressFields) ...[
+                  if (showAllFields) ...[
                     gapH8,
                     AddressField(widget),
                     gapH8,
@@ -221,7 +219,9 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                           flex: 60,
                           child: StatesDropDown(
                             isLoading: getAddressAsync.isLoading,
-                            page: widget,
+                            onChangeState: (state) =>
+                                setState(() => this.state = state),
+                            state: state,
                           ),
                         ),
                         gapW8,

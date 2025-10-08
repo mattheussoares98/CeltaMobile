@@ -11,11 +11,13 @@ class ZipField extends StatelessWidget {
   final AddressPage page;
   final bool isLoading;
   final VoidCallback seekAddress;
+  final void Function(bool value) changeShowAllFields;
   const ZipField({
     super.key,
     required this.page,
     required this.isLoading,
     required this.seekAddress,
+    required this.changeShowAllFields,
   });
 
   @override
@@ -32,7 +34,7 @@ class ZipField extends StatelessWidget {
       hintText: 'CEP'.hardcoded,
       prefixIcon: IconButton(
         onPressed: () {
-          page.changeShowAllFields(false);
+          changeShowAllFields(false);
           page.zipController.clear();
         },
         icon: Icon(

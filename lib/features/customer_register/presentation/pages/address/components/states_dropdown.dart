@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
-import '../address.dart';
 
 class StatesDropDown extends StatelessWidget {
   const StatesDropDown({
     super.key,
     required this.isLoading,
-    required this.page,
+    required this.state,
+    required this.onChangeState,
   });
 
   final bool isLoading;
-  final AddressPage page;
+  final BrazilStates? state;
+  final void Function(BrazilStates? state) onChangeState;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,12 @@ class StatesDropDown extends StatelessWidget {
           .map(
             (e) => DropdownMenuItem(
               value: e,
-              onTap: () => page.onChangeState(e),
+              onTap: () => onChangeState(e),
               child: Center(child: Text(e.name)),
             ),
           )
           .toList(),
-      value: page.state,
+      value: state,
       hint: 'Estado'.hardcoded,
     );
   }
