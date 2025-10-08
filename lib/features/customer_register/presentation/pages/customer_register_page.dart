@@ -1,6 +1,4 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +8,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/validators/validators.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../controllers/controllers.dart';
+import 'components/components.dart';
 import 'pages.dart';
 
 class CustomerRegisterPage extends ConsumerStatefulWidget {
@@ -202,9 +201,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIos = theme.platform == TargetPlatform.iOS;
-
     final customerAsync = ref.watch(customerStateControllerProvider);
     ref.listen(customerStateControllerProvider, (p, n) {
       n.doOnSuccess(p, () {
@@ -373,47 +369,19 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           },
           child: Scaffold(
             body: pages[selectedIndex],
-            bottomNavigationBar: BottomNavigationBar(
-              unselectedFontSize: 11,
-              selectedFontSize: 11,
-              currentIndex: selectedIndex,
-              onTap: (index) {
+            bottomNavigationBar: BottomNavigationWidget(
+              customer: customerAsync.value,
+              selectedIndex: selectedIndex,
+              onTapItem: (index) {
                 if (selectedIndex == 0 &&
                     personalPageFormKey.currentState?.validate() != true) {
                   return;
                 }
+
                 setState(() {
                   selectedIndex = index;
                 });
               },
-              items: [
-                BottomNavigationBarItem(
-                  label: 'Dados'.hardcoded,
-                  icon: Icon(isIos ? CupertinoIcons.person : Icons.person),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Endereço'.hardcoded,
-                  icon: Icon(
-                    isIos ? CupertinoIcons.location : Icons.location_on,
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  label: 'E-mail'.hardcoded,
-                  icon: Icon(isIos ? CupertinoIcons.mail : Icons.email),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Telefone'.hardcoded,
-                  icon: Icon(isIos ? CupertinoIcons.phone : Icons.phone),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Convênios'.hardcoded,
-                  icon: Icon(isIos ? CupertinoIcons.creditcard : Icons.wallet),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Salvar'.hardcoded,
-                  icon: Icon(isIos ? CupertinoIcons.check_mark : Icons.save),
-                ),
-              ],
             ),
           ),
         ),
