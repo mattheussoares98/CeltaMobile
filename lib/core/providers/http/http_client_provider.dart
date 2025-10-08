@@ -5,9 +5,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/contracts/contracts.dart';
 import '../../infraestructure/infrastructure.dart';
 
-part 'client_http_provider.g.dart';
+part 'http_client_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-HttpClient clientHttp(Ref ref) {
+HttpClient httpClient(Ref ref) {
   return HttpAdapter(http.Client());
 }

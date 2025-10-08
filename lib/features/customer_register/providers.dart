@@ -9,9 +9,7 @@ part 'providers.g.dart';
 
 @riverpod
 ILoadAddressByCepDatasource loadAddressByCepDatasource(Ref ref) {
-  return HttpLoadAddressByCepDatasource(
-    ref.watch(clientHttpProvider),
-  ); //TODO change clientHttp to httpClient
+  return HttpLoadAddressByCepDatasource(ref.watch(httpClientProvider));
 }
 
 @riverpod
