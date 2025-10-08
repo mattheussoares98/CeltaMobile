@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class CovenantEntity extends Equatable {
-  final int? CodigoInterno_Convenio;
   final String? Codigo_Convenio;
   final String? Cnpj_Convenio;
   final String? InscricaoEstadual_Convenio;
@@ -35,31 +34,31 @@ class CovenantEntity extends Equatable {
   final String? EstadoCobranca_Convenio;
   final String? ComplementoCobranca_Convenio;
   final String? ReferenciaCobranca_Convenio;
-  final int? CodigoInterno_GrupoFinanReceita;
-  final int? CodigoInterno_CategFinanReceita;
-  final int? CodigoInterno_SubCategFinanReceita;
   final String? CodigoAreaTel1_Convenio;
   final String? Telefone1_Convenio;
   final String? CodigoAreaTel2_Convenio;
   final String? Telefone2_Convenio;
   final String? CodigoAreaTel3_Convenio;
   final String? Telefone3_Convenio;
-  final int? CodigoInterno_InstFinan;
   final String? NumeroConta_Convenio;
   final String? NomeConta_Convenio;
   final String? DigitoConta_Convenio;
   final String? AgenciaInstFinan_Convenio;
   final String? DigitoAgenciaInstFinan_Convenio;
+  final String? CodigoLegado_Convenio;
+  final int? CodigoInterno_Convenio;
+  final int? CodigoInterno_GrupoFinanReceita;
+  final int? CodigoInterno_CategFinanReceita;
+  final int? CodigoInterno_SubCategFinanReceita;
+  final int? CodigoInterno_InstFinan;
   final int? FlagCodigoPersonalizado_Convenio;
   final int? FlagObrigaMatriculaConvd_Convenio;
   final int? FlagPermCompraAdicional_Convenio;
-  final String? CodigoLegado_Convenio;
   final int? FlagEnderecoContemNum_Convenio;
   final int? FlagEnderecoContemNumEntrega_Convenio;
   final int? FlagEnderecoContemNumCobranca_Convenio;
 
   const CovenantEntity({
-    required this.CodigoInterno_Convenio,
     required this.Codigo_Convenio,
     required this.Cnpj_Convenio,
     required this.InscricaoEstadual_Convenio,
@@ -93,25 +92,26 @@ class CovenantEntity extends Equatable {
     required this.EstadoCobranca_Convenio,
     required this.ComplementoCobranca_Convenio,
     required this.ReferenciaCobranca_Convenio,
-    required this.CodigoInterno_GrupoFinanReceita,
-    required this.CodigoInterno_CategFinanReceita,
-    required this.CodigoInterno_SubCategFinanReceita,
     required this.CodigoAreaTel1_Convenio,
     required this.Telefone1_Convenio,
     required this.CodigoAreaTel2_Convenio,
     required this.Telefone2_Convenio,
     required this.CodigoAreaTel3_Convenio,
     required this.Telefone3_Convenio,
-    required this.CodigoInterno_InstFinan,
     required this.NumeroConta_Convenio,
     required this.NomeConta_Convenio,
     required this.DigitoConta_Convenio,
     required this.AgenciaInstFinan_Convenio,
     required this.DigitoAgenciaInstFinan_Convenio,
+    required this.CodigoLegado_Convenio,
+    required this.CodigoInterno_Convenio,
+    required this.CodigoInterno_GrupoFinanReceita,
+    required this.CodigoInterno_CategFinanReceita,
+    required this.CodigoInterno_SubCategFinanReceita,
+    required this.CodigoInterno_InstFinan,
     required this.FlagCodigoPersonalizado_Convenio,
     required this.FlagObrigaMatriculaConvd_Convenio,
     required this.FlagPermCompraAdicional_Convenio,
-    required this.CodigoLegado_Convenio,
     required this.FlagEnderecoContemNum_Convenio,
     required this.FlagEnderecoContemNumEntrega_Convenio,
     required this.FlagEnderecoContemNumCobranca_Convenio,
