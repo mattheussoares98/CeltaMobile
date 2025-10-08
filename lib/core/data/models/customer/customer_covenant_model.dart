@@ -18,15 +18,15 @@ class CustomerCovenantModel extends Equatable {
   List<Object?> get props => [covenant, Matriculate, LimitOfPurchase];
 
   factory CustomerCovenantModel.fromJson(Map json) => CustomerCovenantModel(
-    covenant: json['covenant'] != null
-        ? CovenantInfoModel.fromJson(json['covenant'])
+    covenant: json['Covenant'] != null
+        ? CovenantInfoModel.fromJson(json['Covenant'])
         : null,
     Matriculate: json['Matriculate'],
     LimitOfPurchase: json['LimitOfPurchase'].toDouble(),
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'covenant': covenant?.toJson(),
+    'Covenant': covenant?.toJson(),
     'Matriculate': Matriculate,
     'LimitOfPurchase': LimitOfPurchase,
   };
