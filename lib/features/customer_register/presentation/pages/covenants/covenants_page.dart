@@ -100,15 +100,16 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
           return ResponsiveScrollableWidget(
             child: Column(
               children: [
-                NotBindedCovenants(
-                  formKey: formKey,
-                  notBindedCovenants: notBindedCovenants,
-                  changeSelectedIndex: changeSelectedIndex,
-                  selectedIndex: selectedIndex,
-                  bindCovenant: bindCovenant,
-                  limitController: widget.limitController,
-                  limitFocusNode: widget.limitFocusNode,
-                ),
+                if (notBindedCovenants.isNotEmpty)
+                  NotBindedCovenants(
+                    formKey: formKey,
+                    notBindedCovenants: notBindedCovenants,
+                    changeSelectedIndex: changeSelectedIndex,
+                    selectedIndex: selectedIndex,
+                    bindCovenant: bindCovenant,
+                    limitController: widget.limitController,
+                    limitFocusNode: widget.limitFocusNode,
+                  ),
                 if (widget.bindedCovenants.isNotEmpty) ...[
                   DefaultDivider('Convênios vinculados'),
                   BindedCovenants(bindedCovenants: widget.bindedCovenants),
