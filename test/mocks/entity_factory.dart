@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/entities/customer/customer.dart';
+import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
@@ -333,12 +334,12 @@ class EntityFactory {
 
   static CustomerCovenantEntity makeCustomerCovenantEntity() =>
       CustomerCovenantEntity(
-        covenant: makeCovenantEntity(),
+        covenant: makeCovenantInfoEntity(),
         Matriculate: faker.guid.guid(),
         LimitOfPurchase: faker.randomGenerator.decimal(),
       );
 
-  static CovenantInfoEntity makeCovenantEntity() => CovenantInfoEntity(
+  static CovenantInfoEntity makeCovenantInfoEntity() => CovenantInfoEntity(
     Code: faker.randomGenerator.integer(100),
     PersonalizedCode: faker.randomGenerator.integer(100).toString(),
     Name: faker.company.name(),
@@ -365,4 +366,63 @@ class EntityFactory {
             .randomGenerator
             .boolean(),
       );
+
+  static CovenantEntity makeCovenantEntity() => CovenantEntity(
+    Codigo_Convenio: faker.lorem.word(),
+    Cnpj_Convenio: faker.lorem.word(),
+    InscricaoEstadual_Convenio: faker.lorem.word(),
+    Nome_Convenio: faker.lorem.word(),
+    NomeFantasia_Convenio: faker.lorem.word(),
+    DataCadastro_Convenio: faker.lorem.word(),
+    EMail_Convenio: faker.lorem.word(),
+    Contato_Convenio: faker.lorem.word(),
+    DataNascimentoContato_Convenio: faker.lorem.word(),
+    Logradouro_Convenio: faker.lorem.word(),
+    NumEndereco_Convenio: faker.lorem.word(),
+    Cep_Convenio: faker.lorem.word(),
+    Cidade_Convenio: faker.lorem.word(),
+    Bairro_Convenio: faker.lorem.word(),
+    Estado_Convenio: faker.lorem.word(),
+    Complemento_Convenio: faker.lorem.word(),
+    Referencia_Convenio: faker.lorem.word(),
+    LogradouroEntrega_Convenio: faker.lorem.word(),
+    NumEnderecoEntrega_Convenio: faker.lorem.word(),
+    CepEntrega_Convenio: faker.lorem.word(),
+    CidadeEntrega_Convenio: faker.lorem.word(),
+    BairroEntrega_Convenio: faker.lorem.word(),
+    EstadoEntrega_Convenio: faker.lorem.word(),
+    ComplementoEntrega_Convenio: faker.lorem.word(),
+    ReferenciaEntrega_Convenio: faker.lorem.word(),
+    LogradouroCobranca_Convenio: faker.lorem.word(),
+    NumEnderecoCobranca_Convenio: faker.lorem.word(),
+    CepCobranca_Convenio: faker.lorem.word(),
+    CidadeCobranca_Convenio: faker.lorem.word(),
+    BairroCobranca_Convenio: faker.lorem.word(),
+    EstadoCobranca_Convenio: faker.lorem.word(),
+    ComplementoCobranca_Convenio: faker.lorem.word(),
+    ReferenciaCobranca_Convenio: faker.lorem.word(),
+    CodigoAreaTel1_Convenio: faker.lorem.word(),
+    Telefone1_Convenio: faker.lorem.word(),
+    CodigoAreaTel2_Convenio: faker.lorem.word(),
+    Telefone2_Convenio: faker.lorem.word(),
+    CodigoAreaTel3_Convenio: faker.lorem.word(),
+    Telefone3_Convenio: faker.lorem.word(),
+    NumeroConta_Convenio: faker.lorem.word(),
+    NomeConta_Convenio: faker.lorem.word(),
+    DigitoConta_Convenio: faker.lorem.word(),
+    AgenciaInstFinan_Convenio: faker.lorem.word(),
+    DigitoAgenciaInstFinan_Convenio: faker.lorem.word(),
+    CodigoLegado_Convenio: faker.lorem.word(),
+    CodigoInterno_Convenio: faker.randomGenerator.integer(100),
+    CodigoInterno_GrupoFinanReceita: faker.randomGenerator.integer(100),
+    CodigoInterno_CategFinanReceita: faker.randomGenerator.integer(100),
+    CodigoInterno_SubCategFinanReceita: faker.randomGenerator.integer(100),
+    CodigoInterno_InstFinan: faker.randomGenerator.integer(100),
+    FlagCodigoPersonalizado_Convenio: faker.randomGenerator.integer(100),
+    FlagObrigaMatriculaConvd_Convenio: faker.randomGenerator.integer(100),
+    FlagPermCompraAdicional_Convenio: faker.randomGenerator.integer(100),
+    FlagEnderecoContemNum_Convenio: faker.randomGenerator.integer(100),
+    FlagEnderecoContemNumEntrega_Convenio: faker.randomGenerator.integer(100),
+    FlagEnderecoContemNumCobranca_Convenio: faker.randomGenerator.integer(100),
+  );
 }

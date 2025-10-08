@@ -29,6 +29,7 @@ import 'package:celta_intelligence/features/adjust_sale_price/presentation/contr
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/customer_register/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/customer_register/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
@@ -768,7 +769,7 @@ class SoapLoadCovenantsDatasourceSpy extends Mock
     ),
   );
 
-  void mockLoad(List<CovenantInfoModel> response) {
+  void mockLoad(List<CovenantModel> response) {
     _mockLoadCall().thenAnswer((_) async => response);
   }
 }
