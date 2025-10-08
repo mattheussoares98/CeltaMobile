@@ -27,7 +27,7 @@ class SoapLoadCovenantsDatasource implements ISoapLoadCovenantsDatasource {
       typeOfResult: "GetCovenantJsonResult",
       parameters: {
         "crossIdentity": crossIdentity,
-        "covenantData": "%", //% to find everything
+        "covenantData": searchValue, //% to find everything
         "covenantDataType": searchCovenantType.code,
       },
     );
