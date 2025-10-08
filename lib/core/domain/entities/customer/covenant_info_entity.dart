@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-class CovenantEntity extends Equatable {
+class CovenantInfoEntity extends Equatable {
   final int Code;
   final String PersonalizedCode;
   final String Name;
 
-  const CovenantEntity({
+  const CovenantInfoEntity({
     required this.Code,
     required this.PersonalizedCode,
     required this.Name,

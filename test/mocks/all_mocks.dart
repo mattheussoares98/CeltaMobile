@@ -768,7 +768,7 @@ class SoapLoadCovenantsDatasourceSpy extends Mock
     ),
   );
 
-  void mockLoad(List<CovenantModel> response) {
+  void mockLoad(List<CovenantInfoModel> response) {
     _mockLoadCall().thenAnswer((_) async => response);
   }
 }

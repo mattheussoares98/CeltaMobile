@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'customer.dart';
 
 class CustomerCovenantEntity extends Equatable {
-  final CovenantEntity? covenant;
+  final CovenantInfoEntity? covenant;
   final String? Matriculate;
   final double? LimitOfPurchase;
 

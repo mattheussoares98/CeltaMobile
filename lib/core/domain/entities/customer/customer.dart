@@ -1,4 +1,4 @@
-export 'covenant_entity.dart';
+export 'covenant_info_entity.dart';
 export 'customer_covenant_entity.dart';
 export 'customer_entity.dart';
 export 'customer_sale_blockade_entity.dart';

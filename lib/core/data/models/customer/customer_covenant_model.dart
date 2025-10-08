@@ -4,7 +4,7 @@ import '../../../domain/entities/entities.dart';
 import 'customer.dart';
 
 class CustomerCovenantModel extends Equatable {
-  final CovenantModel? covenant;
+  final CovenantInfoModel? covenant;
   final String? Matriculate;
   final double? LimitOfPurchase;
 
@@ -19,7 +19,7 @@ class CustomerCovenantModel extends Equatable {
 
   factory CustomerCovenantModel.fromJson(Map json) => CustomerCovenantModel(
     covenant: json['covenant'] != null
-        ? CovenantModel.fromJson(json['covenant'])
+        ? CovenantInfoModel.fromJson(json['covenant'])
         : null,
     Matriculate: json['Matriculate'],
     LimitOfPurchase: json['LimitOfPurchase'].toDouble(),
@@ -34,7 +34,7 @@ class CustomerCovenantModel extends Equatable {
   factory CustomerCovenantModel.fromEntity(CustomerCovenantEntity entity) =>
       CustomerCovenantModel(
         covenant: entity.covenant != null
-            ? CovenantModel.fromEntity(entity.covenant!)
+            ? CovenantInfoModel.fromEntity(entity.covenant!)
             : null,
         Matriculate: entity.Matriculate,
         LimitOfPurchase: entity.LimitOfPurchase,

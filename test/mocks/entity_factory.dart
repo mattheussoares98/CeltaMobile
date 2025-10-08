@@ -338,7 +338,7 @@ class EntityFactory {
         LimitOfPurchase: faker.randomGenerator.decimal(),
       );
 
-  static CovenantEntity makeCovenantEntity() => CovenantEntity(
+  static CovenantInfoEntity makeCovenantEntity() => CovenantInfoEntity(
     Code: faker.randomGenerator.integer(100),
     PersonalizedCode: faker.randomGenerator.integer(100).toString(),
     Name: faker.company.name(),

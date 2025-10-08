@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
 
-class CovenantModel extends Equatable {
+class CovenantInfoModel extends Equatable {
   final int Code;
   final String PersonalizedCode;
   final String Name;
 
-  const CovenantModel({
+  const CovenantInfoModel({
     required this.Code,
     required this.PersonalizedCode,
     required this.Name,
@@ -16,7 +16,7 @@ class CovenantModel extends Equatable {
   @override
   List<Object?> get props => [Code, PersonalizedCode, Name];
 
-  factory CovenantModel.fromJson(Map json) => CovenantModel(
+  factory CovenantInfoModel.fromJson(Map json) => CovenantInfoModel(
     Code: json['Code'] as int,
     PersonalizedCode: json['PersonalizedCode'] as String,
     Name: json['Name'] as String,
@@ -28,13 +28,14 @@ class CovenantModel extends Equatable {
     'Name': Name,
   };
 
-  factory CovenantModel.fromEntity(CovenantEntity entity) => CovenantModel(
-    Code: entity.Code,
-    PersonalizedCode: entity.PersonalizedCode,
-    Name: entity.Name,
-  );
+  factory CovenantInfoModel.fromEntity(CovenantInfoEntity entity) =>
+      CovenantInfoModel(
+        Code: entity.Code,
+        PersonalizedCode: entity.PersonalizedCode,
+        Name: entity.Name,
+      );
 
-  CovenantEntity toEntity() => CovenantEntity(
+  CovenantInfoEntity toEntity() => CovenantInfoEntity(
     Code: Code,
     PersonalizedCode: PersonalizedCode,
     Name: Name,
