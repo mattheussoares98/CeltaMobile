@@ -756,3 +756,19 @@ class LoadAddressByCepDatasourceSpy extends Mock
 
   When _mockLoadCall() => when(() => this.get(any()));
 }
+
+class SoapLoadCovenantsDatasourceSpy extends Mock
+    implements ISoapLoadCovenantsDatasource {
+  When _mockLoadCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+      searchCovenantType: any(named: 'searchCovenantType'),
+      searchValue: any(named: 'searchValue'),
+    ),
+  );
+
+  void mockLoad(List<CovenantModel> response) {
+    _mockLoadCall().thenAnswer((_) async => response);
+  }
+}
