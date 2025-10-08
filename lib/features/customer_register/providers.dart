@@ -2,6 +2,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/http/http.dart';
+import '../../core/providers/soap/soap.dart';
 import 'data/datasource/datasource.dart';
 import 'domain/repositories/repositories.dart';
 
@@ -16,5 +17,17 @@ ILoadAddressByCepDatasource loadAddressByCepDatasource(Ref ref) {
 ILoadAddressByCepRepository loadAddressByCepRepository(Ref ref) {
   return LoadAddressByCepRepositoryImpl(
     ref.watch(loadAddressByCepDatasourceProvider),
+  );
+}
+
+@riverpod
+ISoapLoadCovenantsDatasource soapLoadCovenantsDatasource(Ref ref) {
+  return SoapLoadCovenantsDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapLoadCovenantsRepository soapLoadCovenantsRepository(Ref ref) {
+  return SoapLoadCovenantsRepositoryImpl(
+    ref.watch(soapLoadCovenantsDatasourceProvider),
   );
 }
