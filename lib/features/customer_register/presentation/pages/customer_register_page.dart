@@ -55,7 +55,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   //! address
 
   //! emails
-  List<String> emails = [];
   final emailController = TextEditingController();
   final emailFormKey = GlobalKey<FormState>();
   //! emails
@@ -164,10 +163,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       selectedSex = customer.SexType;
       //! personal data
 
-      //! emails
-      emails = [...?customer.Emails];
-      //! emails
-
       //! phone
       phones = [...?customer.Telephones];
       //! phone
@@ -231,20 +226,9 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         zipFocusNode: zipFocusNode,
       ),
       EmailPage(
-        emails: emails,
         emailController: emailController,
         formKey: emailFormKey,
-        removeEmail: (index) {
-          setState(() {
-            emails.removeAt(index);
-          });
-        },
-        addEmail: () {
-          setState(() {
-            emails.add(emailController.text);
-            emailController.clear();
-          });
-        },
+        customer: customerAsync.value,
       ),
       PhonePage(
         phones: phones,
@@ -301,7 +285,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                       DateOfBirth: DateFormat(
                         'dd/MM/yyyy',
                       ).tryParse(birthDateController.text),
-                      Emails: emails,
                       Telephones: phones,
                     ),
                   );

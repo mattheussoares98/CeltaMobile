@@ -1,36 +1,36 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/validators/validators.dart';
+import '../../controllers/controllers.dart';
 import '../components/components.dart';
 
-class EmailPage extends StatelessWidget {
-  final List<String> emails;
+class EmailPage extends ConsumerWidget {
+  final CustomerEntity? customer;
   final TextEditingController emailController;
   final GlobalKey<FormState> formKey;
-  final VoidCallback addEmail;
-  final void Function(int index) removeEmail;
   const EmailPage({
     super.key,
-    required this.emails,
     required this.emailController,
     required this.formKey,
-    required this.addEmail,
-    required this.removeEmail,
+    required this.customer,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     void insertEmail() {
       if (formKey.currentState?.validate() != true) {
         return;
-      } else if (emails.any((e) => e == emailController.text)) {
+      } else if (customer?.Emails?.any((e) => e == emailController.text) ??
+          false) {
         showSnackBarMessage(
           context,
           'Esse e-mail já foi adicionado'.hardcoded,
@@ -39,8 +39,22 @@ class EmailPage extends StatelessWidget {
         return;
       }
 
-      addEmail();
+      ref
+          .read(customerStateControllerProvider.notifier)
+          .updateCustomer(
+            customer!.copyWith(
+              Emails: (customer?.Emails ?? [])..add(emailController.text),
+            ),
+          );
       emailController.clear();
+    }
+
+    void removeEmail(int index) {
+      ref
+          .read(customerStateControllerProvider.notifier)
+          .updateCustomer(
+            customer!.copyWith(Emails: [...customer!.Emails!..removeAt(index)]),
+          );
     }
 
     return Scaffold(
@@ -77,13 +91,13 @@ class EmailPage extends StatelessWidget {
                 text: 'Inserir e-mail'.hardcoded,
                 onPressed: insertEmail,
               ),
-              if (emails.isNotEmpty) ...[
+              if (customer?.Emails != null && customer!.Emails!.isNotEmpty) ...[
                 DefaultDivider('E-mails informados'),
                 ListView.builder(
                   shrinkWrap: true,
-                  itemCount: emails.length,
+                  itemCount: customer!.Emails!.length,
                   itemBuilder: (_, index) {
-                    final email = emails[index];
+                    final email = customer!.Emails![index];
 
                     return Card(
                       child: Padding(
