@@ -1,18 +1,22 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 import '../address.dart';
 
-class InformedAddressess extends StatelessWidget {
+class InformedAddressess extends ConsumerWidget {
   final AddressPage page;
-  const InformedAddressess(this.page, {super.key});
+  final CustomerEntity? customer;
+  const InformedAddressess(this.page, this.customer, {super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
@@ -21,9 +25,9 @@ class InformedAddressess extends StatelessWidget {
         DefaultDivider('Endereços informados'),
         ListView.builder(
           shrinkWrap: true,
-          itemCount: page.addressess.length,
+          itemCount: customer?.Addresses?.length,
           itemBuilder: (_, index) {
-            final address = page.addressess[index];
+            final address = customer!.Addresses![index];
             return Card(
               child: Padding(
                 padding: const EdgeInsets.all(Sizes.p8),
@@ -44,7 +48,16 @@ class InformedAddressess extends StatelessWidget {
                               context: context,
                               title: 'Excluir endereço?'.hardcoded,
                               onOkPressed: () {
-                                page.removeAddress(index);
+                                ref
+                                    .read(
+                                      customerStateControllerProvider.notifier,
+                                    )
+                                    .updateCustomer(
+                                      customer!.copyWith(
+                                        Addresses: [...?customer!.Addresses]
+                                          ..remove(address),
+                                      ),
+                                    );
                               },
                               cancelActionText: 'Não'.hardcoded,
                               defaultActionText: 'Sim'.hardcoded,

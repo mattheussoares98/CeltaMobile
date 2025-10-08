@@ -23,12 +23,9 @@ class AddressPage extends ConsumerStatefulWidget {
   final FocusNode referenceFocusNode;
   final FocusNode zipFocusNode;
   final void Function(BrazilStates? state) onChangeState;
-  final List<AddressEntity> addressess;
-  final VoidCallback addAddress;
-  final GlobalKey<FormState> formKey;
-  final void Function(int index) removeAddress;
   final bool showAddressFields;
   final void Function(bool value) changeShowAllFields;
+  final CustomerEntity? customer;
 
   const AddressPage({
     super.key,
@@ -45,12 +42,9 @@ class AddressPage extends ConsumerStatefulWidget {
     required this.referenceFocusNode,
     required this.zipFocusNode,
     required this.onChangeState,
-    required this.addressess,
-    required this.addAddress,
-    required this.formKey,
-    required this.removeAddress,
     required this.showAddressFields,
     required this.changeShowAllFields,
+    required this.customer,
   });
 
   @override
@@ -58,49 +52,8 @@ class AddressPage extends ConsumerStatefulWidget {
 }
 
 class _AddressPageState extends ConsumerState<AddressPage> {
+  final formKey = GlobalKey<FormState>();
   final zipFormKey = GlobalKey<FormState>();
-  Future<void> seekAddress() async {
-    if (zipFormKey.currentState?.validate() != true) return;
-    ref
-        .read(getAddressByCepControllerProvider.notifier)
-        .getAddress(widget.zipController.text);
-  }
-
-  void clearFields({required bool clearZip}) {
-    if (clearZip) {
-      widget.zipController.clear();
-    }
-    widget.addressController.clear();
-    widget.districtController.clear();
-    widget.cityController.clear();
-    widget.onChangeState(null);
-    widget.numberController.clear();
-    widget.referenceController.clear();
-    widget.complementController.clear();
-  }
-
-  void addAddress() {
-    if (widget.formKey.currentState?.validate() != true) {
-      return;
-    }
-
-    if (widget.addressess.any(
-      (e) =>
-          e.Zip == widget.zipController.text &&
-          e.Number == widget.numberController.text,
-    )) {
-      showSnackBarMessage(
-        context,
-        'Esse endereço já foi inserido'.hardcoded,
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
-    widget.addAddress();
-    ref.invalidate(getAddressByCepControllerProvider);
-    widget.changeShowAllFields(false);
-    clearFields(clearZip: true);
-  }
 
   @override
   void initState() {
@@ -130,6 +83,69 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         }
       }
     });
+  }
+
+  Future<void> seekAddress() async {
+    if (zipFormKey.currentState?.validate() != true) return;
+    ref
+        .read(getAddressByCepControllerProvider.notifier)
+        .getAddress(widget.zipController.text);
+  }
+
+  void clearFields({required bool clearZip}) {
+    if (clearZip) {
+      widget.zipController.clear();
+    }
+    widget.addressController.clear();
+    widget.districtController.clear();
+    widget.cityController.clear();
+    widget.onChangeState(null);
+    widget.numberController.clear();
+    widget.referenceController.clear();
+    widget.complementController.clear();
+  }
+
+  void addAddress() {
+    if (formKey.currentState?.validate() != true || widget.customer == null) {
+      return;
+    }
+
+    if (widget.customer!.Addresses?.any(
+          (e) =>
+              e.Zip == widget.zipController.text &&
+              e.Number == widget.numberController.text,
+        ) ??
+        false) {
+      showSnackBarMessage(
+        context,
+        'Esse endereço já foi inserido'.hardcoded,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    ref
+        .read(customerStateControllerProvider.notifier)
+        .updateCustomer(
+          widget.customer!.copyWith(
+            Addresses: [
+              ...?widget.customer!.Addresses,
+              AddressEntity(
+                Zip: widget.zipController.text,
+                Address: widget.addressController.text,
+                Number: widget.numberController.text,
+                District: widget.districtController.text,
+                City: widget.cityController.text,
+                State: widget.state?.name ?? '',
+                Complement: widget.complementController.text,
+                Reference: widget.referenceController.text,
+              ),
+            ],
+          ),
+        );
+    ref.invalidate(getAddressByCepControllerProvider);
+    widget.changeShowAllFields(false);
+    clearFields(clearZip: true);
   }
 
   @override
@@ -173,7 +189,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
     return Scaffold(
       appBar: AppBar(title: Text('Endereços'.hardcoded)),
       body: Form(
-        key: widget.formKey,
+        key: formKey,
         child: ResponsiveScrollableWidget(
           child: Column(
             children: [
@@ -244,7 +260,10 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                   ],
                 ],
               ),
-              if (widget.addressess.isNotEmpty) ...[InformedAddressess(widget)],
+              if (widget.customer?.Addresses != null &&
+                  widget.customer!.Addresses!.isNotEmpty) ...[
+                InformedAddressess(widget, widget.customer),
+              ],
             ],
           ),
         ),

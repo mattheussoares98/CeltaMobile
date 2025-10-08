@@ -53,8 +53,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final complementFocusNode = FocusNode();
   final referenceFocusNode = FocusNode();
   final zipFocusNode = FocusNode();
-  List<AddressEntity> addressess = [];
-  final addressFormKey = GlobalKey<FormState>(); //TODO remove from here
   bool showAddressFields = false;
   //! address
 
@@ -109,7 +107,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     complementFocusNode.dispose();
     referenceFocusNode.dispose();
     zipFocusNode.dispose();
-    addressFormKey.currentState?.dispose();
     //! address
 
     //! emails
@@ -170,7 +167,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       //! personal data
 
       //! address
-      addressess = [...?customer.Addresses];
       final address = await ref.read(getAddressByCepControllerProvider.future);
       if (address != null) {
         showAddressFields = true;
@@ -241,7 +237,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         selectedSex: selectedSex,
       ),
       AddressPage(
-        formKey: addressFormKey,
+        customer: customerAsync.value,
         zipController: zipController,
         numberController: numberController,
         addressController: addressController,
@@ -254,32 +250,10 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         complementFocusNode: complementFocusNode,
         referenceFocusNode: referenceFocusNode,
         zipFocusNode: zipFocusNode,
-        addressess: addressess,
         showAddressFields: showAddressFields,
         changeShowAllFields: (value) {
           setState(() {
             showAddressFields = value;
-          });
-        },
-        removeAddress: (index) {
-          setState(() {
-            addressess.removeAt(index);
-          });
-        },
-        addAddress: () {
-          setState(() {
-            addressess.add(
-              AddressEntity(
-                Zip: zipController.text,
-                Address: addressController.text,
-                Number: numberController.text,
-                District: districtController.text,
-                City: cityController.text,
-                State: state?.name,
-                Complement: complementController.text,
-                Reference: referenceController.text,
-              ),
-            );
           });
         },
         onChangeState: (value) {
@@ -343,14 +317,13 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       children: [
         PopScope(
           onPopInvokedWithResult: (didPop, result) async {
-            final customer = await ref.read(
-              customerStateControllerProvider.future,
-            );
-            if (customer != null) {
+            //TODO remove this
+
+            if (customerAsync.value != null) {
               ref
                   .read(customerStateControllerProvider.notifier)
                   .updateCustomer(
-                    customer.copyWith(
+                    customerAsync.value!.copyWith(
                       CpfCnpjNumber: cpfCnpjController.text,
                       PersonType: selectedSex?.name,
                       SexType: selectedSex,
@@ -360,7 +333,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                       DateOfBirth: DateFormat(
                         'dd/MM/yyyy',
                       ).tryParse(birthDateController.text),
-                      Addresses: addressess,
                       Emails: emails,
                       Telephones: phones,
                     ),
