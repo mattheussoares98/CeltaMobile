@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:celta_intelligence/features/customer_register/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 
@@ -11,7 +12,7 @@ part 'covenants_state_controller.g.dart';
 @riverpod
 class CovenantsStateController extends _$CovenantsStateController {
   @override
-  FutureOr<List<CovenantEntity>?> build() async {
+  FutureOr<List<CovenantEntity>?> build(EnterpriseEntity enterprise) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {

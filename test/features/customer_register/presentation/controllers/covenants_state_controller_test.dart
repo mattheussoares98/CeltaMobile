@@ -1,9 +1,11 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/customer_register/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/customer_register/providers.dart';
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -18,6 +20,7 @@ void main() {
   late MockSoapLoadCovenantsRepository mockRepository;
   late UserSessionModel fakeSession;
   late List<CovenantEntity> fakeCovenants;
+  late EnterpriseEntity enterpriseEntity;
 
   setUpAll(() {
     registerFallbackValue(SearchCovenantType.approximateName);
@@ -29,6 +32,7 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeCovenants = [EntityFactory.makeCovenantEntity()];
+    enterpriseEntity = EntityFactory.makeEnterpriseEntity();
   });
 
   // THE FIX 1: Make your container helper flexible
@@ -38,6 +42,9 @@ void main() {
         soapLoadCovenantsRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(enterpriseEntity),
         ),
       ],
     );
@@ -63,7 +70,9 @@ void main() {
 
         // ACT & ASSERT
         await expectLater(
-          container.read(covenantsStateControllerProvider.future),
+          container.read(
+            covenantsStateControllerProvider(enterpriseEntity).future,
+          ),
           completion(equals(fakeCovenants)),
         );
 
@@ -88,7 +97,9 @@ void main() {
       // The FakeValidatedUserSession will now throw an AppException,
       // which the CovenantsStateController will catch and re-throw.
       await expectLater(
-        container.read(covenantsStateControllerProvider.future),
+        container.read(
+          covenantsStateControllerProvider(enterpriseEntity).future,
+        ),
         throwsA(isA<AppException>()),
       );
 

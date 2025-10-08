@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 
 class DefaultDivider extends StatelessWidget {
@@ -12,7 +13,7 @@ class DefaultDivider extends StatelessWidget {
       children: [
         gapH16,
         Divider(thickness: 0.5),
-        Text(title, style: Theme.of(context).textTheme.titleLarge),
+        DefaultTitle(title: title),
         gapH8,
       ],
     );

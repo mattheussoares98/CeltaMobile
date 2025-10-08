@@ -1,16 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'product_item.dart';
-
 class SelectedIconIndicator extends StatelessWidget {
-  final ProductItemWidget productItemWidget;
   final bool selected;
-  const SelectedIconIndicator({
-    super.key,
-    required this.productItemWidget,
-    this.selected = false,
-  });
+  const SelectedIconIndicator({super.key, required this.selected});
 
   @override
   Widget build(BuildContext context) {

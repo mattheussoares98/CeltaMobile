@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/validators/validators.dart';
+import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../controllers/controllers.dart';
 import 'pages.dart';
 
@@ -54,7 +55,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final referenceFocusNode = FocusNode();
   final zipFocusNode = FocusNode();
   List<AddressEntity> addressess = [];
-  final addressFormKey = GlobalKey<FormState>();
+  final addressFormKey = GlobalKey<FormState>(); //TODO remove from here
   bool showAddressFields = false;
   //! address
 
@@ -68,9 +69,14 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final dddController = TextEditingController();
   final phoneController = TextEditingController();
   final phoneFocusNode = FocusNode();
-  final phoneFormKey = GlobalKey<FormState>();
+  final phoneFormKey = GlobalKey<FormState>(); //TODO remove from here
   List<CustomerTelephoneEntity> phones = [];
   //! phone
+
+  //! covenants
+  final limitController = TextEditingController();
+  final limitFocusNode = FocusNode();
+  //! covenants
 
   @override
   void dispose() async {
@@ -118,6 +124,11 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     phoneFocusNode.dispose();
     phoneFormKey.currentState?.dispose();
     //! phone
+
+    //! covenants
+    limitController.dispose();
+    limitFocusNode.dispose();
+    //! covenants
   }
 
   Future<void> onChangeCpfCnpj() async {
@@ -200,6 +211,15 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         updateFields();
       });
     });
+
+    final selectedEnterprise = ref.watch(
+      selectedEnterpriseStateControllerProvider,
+    );
+    final covenantsAsync = ref.watch(
+      covenantsStateControllerProvider(
+        selectedEnterprise!,
+      ), //only achieves here if has a selected enterprise
+    );
 
     final pages = [
       PersonalDataPage(
@@ -313,7 +333,13 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           });
         },
       ),
-      CovenantsPage(),
+      CovenantsPage(
+        covenantsAsync: covenantsAsync,
+        limitController: limitController,
+        limitFocusNode: limitFocusNode,
+        bindedCovenants: [...?customerAsync.value?.CustomerCovenants],
+        customer: customerAsync.value,
+      ),
       SavePage(),
     ];
 

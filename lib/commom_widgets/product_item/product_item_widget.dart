@@ -167,10 +167,7 @@ class ProductItemWidget extends ConsumerWidget {
                 Positioned(
                   right: Sizes.p8,
                   bottom: Sizes.p8,
-                  child: SelectedIconIndicator(
-                    selected: isSelected ?? false,
-                    productItemWidget: this,
-                  ),
+                  child: SelectedIconIndicator(selected: isSelected ?? false),
                 ),
             ],
           ),
