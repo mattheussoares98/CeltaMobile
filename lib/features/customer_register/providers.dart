@@ -31,3 +31,19 @@ ISoapLoadCovenantsRepository soapLoadCovenantsRepository(Ref ref) {
     ref.watch(soapLoadCovenantsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInsertUpdateCustomerDatasource soapInsertUpdateCustomerDatasource(
+  Ref ref,
+) {
+  return SoapInsertUpdateCustomerDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapInsertUpdateCustomerRepository soapInsertUpdateCustomerRepository(
+  Ref ref,
+) {
+  return SoapInsertUpdateCustomerRepositoryImpl(
+    ref.watch(soapInsertUpdateCustomerDatasourceProvider),
+  );
+}
