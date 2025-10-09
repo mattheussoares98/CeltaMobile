@@ -18,7 +18,6 @@ class SoapLoadCovenantsDatasource implements ISoapLoadCovenantsDatasource {
     required SearchCovenantType searchCovenantType,
     required String searchValue,
   }) async {
-    //TODO create tests
     final response = await soapRequest.post(
       url: baseUrl,
       typeOfResponse: "GetCovenantJsonResponse",
