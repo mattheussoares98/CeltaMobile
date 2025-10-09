@@ -331,7 +331,8 @@ class EntityFactory {
     Number: faker.randomGenerator.integer(100).toString(),
     District: faker.address.city(),
     City: faker.address.city(),
-    State: faker.address.state(),
+    State: BrazilStates
+        .values[faker.randomGenerator.integer(BrazilStates.values.length)],
     Complement: faker.address.neighborhood(),
     Reference: faker.address.neighborhood(),
   );

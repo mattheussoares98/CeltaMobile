@@ -71,7 +71,7 @@ class InformedAddressess extends ConsumerWidget {
                       ],
                     ),
                     Text(
-                      '${address.Address}, número ${address.Number}. ${address.District}, ${address.City}, ${address.State}',
+                      '${address.Address}, número ${address.Number}. ${address.District}, ${address.City}, ${address.State?.name}',
                     ),
                     if (address.Complement != null &&
                         address.Complement!.isNotEmpty)

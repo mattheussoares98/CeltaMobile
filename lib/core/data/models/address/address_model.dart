@@ -8,7 +8,7 @@ class AddressModel extends Equatable {
   final String? Number;
   final String District;
   final String City;
-  final String? State;
+  final BrazilStates? State;
   final String? Complement;
   final String? Reference;
 
@@ -41,7 +41,9 @@ class AddressModel extends Equatable {
       Number: json["Number"],
       District: json["District"],
       City: json["City"],
-      State: json["State"],
+      State: json["State"] == null
+          ? null
+          : BrazilStates.values.firstWhere((e) => e.uf == json["State"]),
       Complement: json["Complement"],
       Reference: json["Reference"],
     );
@@ -52,7 +54,7 @@ class AddressModel extends Equatable {
     "Number": Number,
     "District": District,
     "City": City,
-    "State": State,
+    "State": State?.uf,
     "Complement": Complement,
     "Reference": Reference,
   };
@@ -87,7 +89,7 @@ class AddressModel extends Equatable {
     Complement: data["complemento"],
     District: data["bairro"],
     City: data["localidade"],
-    State: BrazilStates.values.where((e) => e.uf == data["uf"]).first.name,
+    State: BrazilStates.values.where((e) => e.uf == data["uf"]).first,
     Number: null,
     Reference: null,
   );

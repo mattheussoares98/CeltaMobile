@@ -67,7 +67,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
           widget.referenceController.text = address.Reference ?? '';
 
           final stateIndex = BrazilStates.values.indexWhere(
-            (e) => e.name == address.State,
+            (e) => e.name == address.State?.name,
           );
           if (stateIndex == -1) {
             return;
@@ -119,6 +119,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         'Esse endereço já foi inserido'.hardcoded,
         backgroundColor: Colors.red,
       );
+
       return;
     }
 
@@ -134,13 +135,16 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                 Number: widget.numberController.text,
                 District: widget.districtController.text,
                 City: widget.cityController.text,
-                State: state?.name ?? '',
+                State: state,
                 Complement: widget.complementController.text,
                 Reference: widget.referenceController.text,
               ),
             ],
           ),
         );
+    setState(() {
+      showAllFields = false;
+    });
     ref.invalidate(getAddressByCepControllerProvider);
     clearFields(clearZip: true);
   }
@@ -166,7 +170,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         widget.cityController.text = n.value?.City ?? '';
 
         final stateIndex = BrazilStates.values.indexWhere(
-          (e) => e.name == n.value?.State,
+          (e) => e.name == n.value?.State?.name,
         );
 
         if (stateIndex == -1) {
