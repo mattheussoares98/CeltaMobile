@@ -161,6 +161,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                       }
                     },
                   ),
+                  gapH8,
                   StocksDropdown(
                     asyncValue: stocksAsync,
                     enterpriseCode: widget.enterpriseCode,

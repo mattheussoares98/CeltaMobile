@@ -145,6 +145,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               isLoading: productsState.isLoading,
               searchProducts: _searchProducts,
             ),
+            gapH8,
             JustificationsDropdown(
               selectedJustification: widget.selectedJustification,
               asyncValue: widget.justificationsAsync,
@@ -164,6 +165,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 }
               },
             ),
+            gapH8,
             OriginStocksDropdown(
               asyncValue: widget.stocksAsync,
               enterpriseCode: widget.enterpriseCode,
@@ -171,6 +173,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               selectedOriginStock: widget.selectedOriginStock,
               onChanged: widget.changeOriginStock,
             ),
+            gapH8,
             DestinyStocksDropdown(
               asyncValue: widget.stocksAsync,
               enterpriseCode: widget.enterpriseCode,
