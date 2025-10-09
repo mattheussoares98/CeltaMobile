@@ -15,13 +15,6 @@ class SoapInsertUpdateCustomerDatasource
     required String baseUrl,
     required String crossIdentity,
   }) async {
-    // final customerJson = customer.toJson();
-    // if (customer.CustomerCovenants != null &&
-    //     customer.CustomerCovenants!.isNotEmpty) {
-    //   customerJson['CustomerCovenants'] = customer.CustomerCovenants!
-    //       .map((e) => e.toJson())
-    //       .toList();
-    // }
     await soapRequest.post(
       url: baseUrl,
       typeOfResponse: "InsertUpdateCustomerResponse",
@@ -30,9 +23,7 @@ class SoapInsertUpdateCustomerDatasource
       typeOfResult: "InsertUpdateCustomerResult",
       parameters: {
         "crossIdentity": crossIdentity,
-        "json": json.encode(
-          customer.toJson(),
-        ), //TODO customerCovenants is different in CeltaMobile, need to check
+        "json": json.encode(customer.toJson()),
       },
     );
   }

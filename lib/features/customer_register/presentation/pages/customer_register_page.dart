@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -138,6 +139,18 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     });
   }
 
+  void clearFields() {
+    cpfCnpjController.clear();
+    inscriptionController.clear();
+    nameController.clear();
+    reducedNameController.clear();
+    birthDateController.clear();
+    passwordController.clear();
+    passwordConfirmationController.clear();
+    selectedSex = null;
+    setState(() {});
+  }
+
   Future<void> updateFields() async {
     final customer = await ref.read(customerStateControllerProvider.future);
     if (customer != null) {
@@ -148,6 +161,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       inscriptionController.text = customer.RegistrationNumber ?? '';
       nameController.text = customer.Name ?? '';
       reducedNameController.text = customer.ReducedName ?? '';
+      passwordController.text = customer.Password ?? '';
+      passwordConfirmationController.text = customer.Password ?? '';
 
       if (customer.DateOfBirth != null) {
         final day = customer.DateOfBirth!.day.toString().padLeft(2, '0');
@@ -170,6 +185,24 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       n.doOnSuccess(p, () {
         updateFields();
       });
+    });
+
+    final insertUpdateAsync = ref.watch(insertUpdateCustomerControllerProvider);
+    ref.listen(insertUpdateCustomerControllerProvider, (p, n) {
+      n.doOnSuccess(p, () async {
+        showSnackBarMessage(
+          context,
+          'Cliente cadastrado/atualizado com sucesso'.hardcoded,
+        );
+        ref
+            .read(customerStateControllerProvider.notifier)
+            .updateCustomer(CustomerEntity.empty());
+        clearFields();
+        setState(() {
+          selectedIndex = 0;
+        });
+      });
+      n.showAlertDialogOnError(context);
     });
 
     final selectedEnterprise = ref.watch(
@@ -270,6 +303,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                         RegistrationNumber: inscriptionController.text,
                         Name: nameController.text,
                         ReducedName: reducedNameController.text,
+                        Password: passwordController.text,
                         DateOfBirth: DateFormat(
                           'dd/MM/yyyy',
                         ).tryParse(birthDateController.text),
@@ -283,7 +317,8 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
             },
           ),
         ),
-        if (customerAsync.isLoading) LoadingPage(),
+        if (customerAsync.isLoading || insertUpdateAsync.isLoading)
+          LoadingPage(),
       ],
     );
   }

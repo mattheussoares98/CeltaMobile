@@ -10,6 +10,8 @@ class CustomerEntity extends Equatable {
   final String? ReducedName;
   final String? CpfCnpjNumber;
   final String? RegistrationNumber;
+  final String? Password;
+  final bool? HasPassword;
   final DateTime? DateOfBirth;
   final CustomerSexType? SexType;
   final CustomerPersonType? PersonType;
@@ -27,6 +29,8 @@ class CustomerEntity extends Equatable {
     required this.ReducedName,
     required this.CpfCnpjNumber,
     required this.RegistrationNumber,
+    required this.Password,
+    required this.HasPassword,
     required this.DateOfBirth,
     required this.SexType,
     required this.PersonType,
@@ -46,6 +50,8 @@ class CustomerEntity extends Equatable {
     ReducedName,
     CpfCnpjNumber,
     RegistrationNumber,
+    Password,
+    HasPassword,
     DateOfBirth,
     SexType,
     PersonType,
@@ -64,6 +70,8 @@ class CustomerEntity extends Equatable {
     String? ReducedName,
     String? CpfCnpjNumber,
     String? RegistrationNumber,
+    String? Password,
+    bool? HasPassword,
     DateTime? DateOfBirth,
     CustomerSexType? SexType,
     CustomerPersonType? PersonType,
@@ -81,6 +89,8 @@ class CustomerEntity extends Equatable {
       ReducedName: ReducedName ?? this.ReducedName,
       CpfCnpjNumber: CpfCnpjNumber ?? this.CpfCnpjNumber,
       RegistrationNumber: RegistrationNumber ?? this.RegistrationNumber,
+      Password: Password ?? this.Password,
+      HasPassword: HasPassword ?? this.HasPassword,
       DateOfBirth: DateOfBirth ?? this.DateOfBirth,
       SexType: SexType ?? this.SexType,
       PersonType: PersonType ?? this.PersonType,
@@ -93,4 +103,24 @@ class CustomerEntity extends Equatable {
       saleBlockade: saleBlockade ?? this.saleBlockade,
     );
   }
+
+  factory CustomerEntity.empty() => const CustomerEntity(
+    Code: null,
+    PersonalizedCode: null,
+    Name: null,
+    ReducedName: null,
+    CpfCnpjNumber: null,
+    RegistrationNumber: null,
+    Password: null,
+    HasPassword: null,
+    DateOfBirth: null,
+    SexType: null,
+    PersonType: null,
+    Emails: null,
+    Telephones: null,
+    CustomerCovenants: null,
+    Addresses: null,
+    saleBlockadeInstruction: null,
+    saleBlockade: null,
+  );
 }

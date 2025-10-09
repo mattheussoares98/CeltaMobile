@@ -17,23 +17,7 @@ class CustomerStateController extends _$CustomerStateController {
   }
 
   Future<void> loadCustomer(String cpfCnpj) async {
-    final emptyCustomer = CustomerEntity(
-      Name: null,
-      Code: null,
-      PersonalizedCode: null,
-      ReducedName: null,
-      CpfCnpjNumber: null,
-      RegistrationNumber: null,
-      DateOfBirth: null,
-      SexType: null,
-      PersonType: null,
-      Emails: null,
-      Telephones: null,
-      Addresses: null,
-      CustomerCovenants: null,
-      saleBlockadeInstruction: null,
-      saleBlockade: null,
-    );
+    final emptyCustomer = CustomerEntity.empty();
     try {
       state = const AsyncValue.loading();
       final validatedUserSession = await ref.read(

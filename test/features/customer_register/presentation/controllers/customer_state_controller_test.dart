@@ -109,26 +109,7 @@ void main() {
             .loadCustomer(fakeCpfCnpj);
 
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-        expect(
-          states.last.value,
-          CustomerEntity(
-            Name: null,
-            Code: null,
-            PersonalizedCode: null,
-            ReducedName: null,
-            CpfCnpjNumber: null,
-            RegistrationNumber: null,
-            DateOfBirth: null,
-            SexType: null,
-            PersonType: null,
-            Emails: null,
-            Telephones: null,
-            Addresses: null,
-            CustomerCovenants: null,
-            saleBlockadeInstruction: null,
-            saleBlockade: null,
-          ),
-        );
+        expect(states.last.value, CustomerEntity.empty());
       },
     );
     test('should return entity with empty values when throws', () async {
@@ -150,26 +131,7 @@ void main() {
           .loadCustomer(fakeCpfCnpj);
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-      expect(
-        states.last.value,
-        CustomerEntity(
-          Name: null,
-          Code: null,
-          PersonalizedCode: null,
-          ReducedName: null,
-          CpfCnpjNumber: null,
-          RegistrationNumber: null,
-          DateOfBirth: null,
-          SexType: null,
-          PersonType: null,
-          Emails: null,
-          Telephones: null,
-          Addresses: null,
-          CustomerCovenants: null,
-          saleBlockadeInstruction: null,
-          saleBlockade: null,
-        ),
-      );
+      expect(states.last.value, CustomerEntity.empty());
     });
 
     test('should update customer correctly', () async {

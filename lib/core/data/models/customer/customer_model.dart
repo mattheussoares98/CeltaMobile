@@ -11,6 +11,8 @@ class CustomerModel extends Equatable {
   final String? ReducedName;
   final String? CpfCnpjNumber;
   final String? RegistrationNumber;
+  final String? Password;
+  final bool? HasPassword;
   final DateTime? DateOfBirth;
   final CustomerSexType? SexType;
   final CustomerPersonType? PersonType;
@@ -28,6 +30,8 @@ class CustomerModel extends Equatable {
     required this.ReducedName,
     required this.CpfCnpjNumber,
     required this.RegistrationNumber,
+    required this.Password,
+    required this.HasPassword,
     required this.DateOfBirth,
     required this.SexType,
     required this.PersonType,
@@ -47,6 +51,8 @@ class CustomerModel extends Equatable {
     ReducedName,
     CpfCnpjNumber,
     RegistrationNumber,
+    Password,
+    HasPassword,
     DateOfBirth,
     SexType,
     PersonType,
@@ -59,12 +65,14 @@ class CustomerModel extends Equatable {
   ];
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'Code': Code,
+    'Code': Code ?? 0,
     'PersonalizedCode': PersonalizedCode,
     'Name': Name,
     'ReducedName': ReducedName,
     'CpfCnpjNumber': CpfCnpjNumber,
     'RegistrationNumber': RegistrationNumber,
+    'Password': Password,
+    'HasPassword': HasPassword,
     'DateOfBirth': DateOfBirth?.toIso8601String(),
     'SexType': SexType?.shortName,
     'PersonType': PersonType?.shortName,
@@ -72,8 +80,8 @@ class CustomerModel extends Equatable {
     'Telephones': Telephones?.map((e) => e.toJson()).toList(),
     'Addresses': Addresses?.map((e) => e.toJson()).toList(),
     'CustomerCovenants': CustomerCovenants?.map((e) => e.toJson()).toList(),
-    'saleBlockadeInstructionModel': saleBlockadeInstructionModel?.toJson(),
-    'saleBlockadeModel': saleBlockadeModel?.toJson(),
+    'SaleBlockadeInstructionModel': saleBlockadeInstructionModel?.toJson(),
+    'SaleBlockadeModel': saleBlockadeModel?.toJson(),
   };
 
   factory CustomerModel.fromJson(Map json) => CustomerModel(
@@ -83,6 +91,8 @@ class CustomerModel extends Equatable {
     ReducedName: json['ReducedName'],
     CpfCnpjNumber: json['CpfCnpjNumber'],
     RegistrationNumber: json['RegistrationNumber'],
+    Password: json['Password'],
+    HasPassword: json['HasPassword'],
     DateOfBirth: json['DateOfBirth'] == null
         ? null
         : DateTime.parse(json['DateOfBirth']),
@@ -106,14 +116,14 @@ class CustomerModel extends Equatable {
     CustomerCovenants: (json['CustomerCovenants'] as List?)
         ?.map((e) => CustomerCovenantModel.fromJson(e))
         .toList(),
-    saleBlockadeInstructionModel: json['saleBlockadeInstructionModel'] == null
+    saleBlockadeInstructionModel: json['SaleBlockadeInstructionModel'] == null
         ? null
         : CustomerSaleBlockadeInstructionModel.fromJson(
-            json['saleBlockadeInstructionModel'],
+            json['SaleBlockadeInstructionModel'],
           ),
-    saleBlockadeModel: json['saleBlockadeModel'] == null
+    saleBlockadeModel: json['SaleBlockadeModel'] == null
         ? null
-        : CustomerSaleBlockadeModel.fromJson(json['saleBlockadeModel']),
+        : CustomerSaleBlockadeModel.fromJson(json['SaleBlockadeModel']),
   );
 
   factory CustomerModel.fromEntity(CustomerEntity entity) => CustomerModel(
@@ -123,6 +133,8 @@ class CustomerModel extends Equatable {
     ReducedName: entity.ReducedName,
     CpfCnpjNumber: entity.CpfCnpjNumber,
     RegistrationNumber: entity.RegistrationNumber,
+    Password: entity.Password,
+    HasPassword: entity.HasPassword,
     DateOfBirth: entity.DateOfBirth,
     SexType: entity.SexType,
     PersonType: entity.PersonType,
@@ -153,6 +165,8 @@ class CustomerModel extends Equatable {
     ReducedName: ReducedName,
     CpfCnpjNumber: CpfCnpjNumber,
     RegistrationNumber: RegistrationNumber,
+    Password: Password,
+    HasPassword: HasPassword,
     DateOfBirth: DateOfBirth,
     SexType: SexType,
     PersonType: PersonType,
