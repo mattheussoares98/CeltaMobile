@@ -778,3 +778,16 @@ class SoapLoadCovenantsDatasourceSpy extends Mock
     _mockLoadCall().thenAnswer((_) async => response);
   }
 }
+
+class SoapInsertUpdateCustomerDatasourceSpy extends Mock
+    implements ISoapInsertUpdateCustomerDatasource {
+  When _mockInsertUpdateCall() => when(
+    () => this.insertOrUpdateCustomer(
+      customer: any(named: 'customer'),
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+    ),
+  );
+
+  void mockInsertUpdate() => _mockInsertUpdateCall().thenAnswer((_) async {});
+}
