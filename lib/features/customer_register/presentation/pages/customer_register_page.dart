@@ -181,6 +181,21 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       ), //only achieves here if has a selected enterprise
     );
 
+    final addressPage = AddressPage(
+      customer: customerAsync.value,
+      zipController: zipController,
+      numberController: numberController,
+      addressController: addressController,
+      districtController: districtController,
+      cityController: cityController,
+      complementController: complementController,
+      referenceController: referenceController,
+      numberFocusNode: numberFocusNode,
+      complementFocusNode: complementFocusNode,
+      referenceFocusNode: referenceFocusNode,
+      zipFocusNode: zipFocusNode,
+    );
+
     final pages = [
       PersonalDataPage(
         formKey: personalPageFormKey,
@@ -204,20 +219,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         },
         selectedSex: selectedSex,
       ),
-      AddressPage(
-        customer: customerAsync.value,
-        zipController: zipController,
-        numberController: numberController,
-        addressController: addressController,
-        districtController: districtController,
-        cityController: cityController,
-        complementController: complementController,
-        referenceController: referenceController,
-        numberFocusNode: numberFocusNode,
-        complementFocusNode: complementFocusNode,
-        referenceFocusNode: referenceFocusNode,
-        zipFocusNode: zipFocusNode,
-      ),
+      addressPage,
       EmailPage(
         emailController: emailController,
         formKey: emailFormKey,
@@ -233,10 +235,13 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         covenantsAsync: covenantsAsync,
         limitController: limitController,
         limitFocusNode: limitFocusNode,
-        bindedCovenants: [...?customerAsync.value?.CustomerCovenants],
         customer: customerAsync.value,
       ),
-      SavePage(),
+      SavePage(
+        customer: customerAsync.value,
+        passwordController: passwordController,
+        addressPage: addressPage,
+      ),
     ];
 
     return Stack(

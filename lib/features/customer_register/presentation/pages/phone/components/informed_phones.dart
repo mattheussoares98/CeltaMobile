@@ -7,6 +7,7 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import '../../components/components.dart';
 
 class InformedPhones extends ConsumerWidget {
   final CustomerEntity? customer;
@@ -27,42 +28,47 @@ class InformedPhones extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: customer?.Telephones?.length,
-      itemBuilder: (_, index) {
-        final phone = customer!.Telephones![index];
+    return Column(
+      children: [
+        DefaultDivider('Telefones informados'.hardcoded),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: customer?.Telephones?.length,
+          itemBuilder: (_, index) {
+            final phone = customer!.Telephones![index];
 
-        return Card(
-          child: Padding(
-            padding: EdgeInsets.only(left: Sizes.p8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text('(${phone.AreaCode}) ${phone.PhoneNumber}'),
-                ),
-                IconButton(
-                  onPressed: () {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Remover telefone?'.hardcoded,
-                      defaultActionText: 'Sim'.hardcoded,
-                      cancelActionText: 'Cancelar'.hardcoded,
-                      onOkPressed: () {
-                        removeTelephone(index);
+            return Card(
+              child: Padding(
+                padding: EdgeInsets.only(left: Sizes.p8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text('(${phone.AreaCode}) ${phone.PhoneNumber}'),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showAlertDialog(
+                          context: context,
+                          title: 'Remover telefone?'.hardcoded,
+                          defaultActionText: 'Sim'.hardcoded,
+                          cancelActionText: 'Cancelar'.hardcoded,
+                          onOkPressed: () {
+                            removeTelephone(index);
+                          },
+                        );
                       },
-                    );
-                  },
-                  icon: Icon(
-                    isIOS ? CupertinoIcons.delete : Icons.delete,
-                    color: Colors.red,
-                  ),
+                      icon: Icon(
+                        isIOS ? CupertinoIcons.delete : Icons.delete,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
-      },
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -8,14 +8,13 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import '../../components/components.dart';
 
 class BindedCovenants extends ConsumerWidget {
-  final List<CustomerCovenantEntity> bindedCovenants;
   final CustomerEntity? customer;
-  final void Function(int? index) changeSelectedIndex;
+  final void Function(int? index)? changeSelectedIndex;
   const BindedCovenants({
     super.key,
-    required this.bindedCovenants,
     required this.customer,
     required this.changeSelectedIndex,
   });
@@ -25,70 +24,78 @@ class BindedCovenants extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: bindedCovenants.length,
-      itemBuilder: (_, index) {
-        final covenant = bindedCovenants[index];
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  covenant.covenant?.Name ?? '',
-                  style: theme.textTheme.titleMedium,
-                ),
-                TitleAndSubTitle(
-                  title: 'Código '.hardcoded,
-                  subTitle: covenant.covenant?.Code.toString(),
-                ),
-                Row(
+    return Column(
+      children: [
+        DefaultDivider('Convênios vinculados'.hardcoded),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: customer!.CustomerCovenants!.length,
+          itemBuilder: (_, index) {
+            final covenant = customer!.CustomerCovenants![index];
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      child: TitleAndSubTitle(
-                        title: 'Limite '.hardcoded,
-                        subTitle:
-                            'R\$ ${covenant.LimitOfPurchase.toString().toBrazilianNumber(2, false)}',
-                      ),
+                    Text(
+                      covenant.covenant?.Name ?? '',
+                      style: theme.textTheme.titleMedium,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        showAlertDialog(
-                          context: context,
-                          title: 'Remover convênio'.hardcoded,
-                          content:
-                              'Tem certeza que deseja remover esse convênio?'
-                                  .hardcoded,
-                          onOkPressed: () {
-                            ref
-                                .read(customerStateControllerProvider.notifier)
-                                .updateCustomer(
-                                  customer!.copyWith(
-                                    CustomerCovenants: [
-                                      ...bindedCovenants..removeAt(index),
-                                    ],
-                                  ),
-                                );
-                            changeSelectedIndex(null);
+                    TitleAndSubTitle(
+                      title: 'Código '.hardcoded,
+                      subTitle: covenant.covenant?.Code.toString(),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TitleAndSubTitle(
+                            title: 'Limite '.hardcoded,
+                            subTitle:
+                                'R\$ ${covenant.LimitOfPurchase.toString().toBrazilianNumber(2, false)}',
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            showAlertDialog(
+                              context: context,
+                              title: 'Remover convênio'.hardcoded,
+                              content:
+                                  'Tem certeza que deseja remover esse convênio?'
+                                      .hardcoded,
+                              onOkPressed: () {
+                                ref
+                                    .read(
+                                      customerStateControllerProvider.notifier,
+                                    )
+                                    .updateCustomer(
+                                      customer!.copyWith(
+                                        CustomerCovenants: [
+                                          ...customer!.CustomerCovenants!
+                                            ..removeAt(index),
+                                        ],
+                                      ),
+                                    );
+                                changeSelectedIndex?.call(null);
+                              },
+                              cancelActionText: 'Não'.hardcoded,
+                              defaultActionText: 'Sim'.hardcoded,
+                            );
                           },
-                          cancelActionText: 'Não'.hardcoded,
-                          defaultActionText: 'Sim'.hardcoded,
-                        );
-                      },
-                      icon: Icon(
-                        isIOS ? CupertinoIcons.delete : Icons.delete,
-                        color: Colors.red,
-                      ),
+                          icon: Icon(
+                            isIOS ? CupertinoIcons.delete : Icons.delete,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        );
-      },
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

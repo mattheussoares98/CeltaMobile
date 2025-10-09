@@ -6,7 +6,6 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
-import '../components/components.dart';
 import 'components/components.dart';
 
 class PhonePage extends ConsumerWidget {
@@ -101,10 +100,8 @@ class PhonePage extends ConsumerWidget {
                 onPressed: addPhone,
               ),
               if (customer?.Telephones != null &&
-                  customer!.Telephones!.isNotEmpty) ...[
-                DefaultDivider('Telefones informados'.hardcoded),
+                  customer!.Telephones!.isNotEmpty)
                 InformedPhones(customer: customer),
-              ],
             ],
           ),
         ),

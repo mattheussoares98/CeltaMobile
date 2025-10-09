@@ -7,21 +7,18 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
-import '../components/components.dart';
 import 'components/components.dart';
 
 class CovenantsPage extends ConsumerStatefulWidget {
   final AsyncValue<List<CovenantEntity>?> covenantsAsync;
   final TextEditingController limitController;
   final FocusNode limitFocusNode;
-  final List<CustomerCovenantEntity> bindedCovenants;
   final CustomerEntity? customer;
   const CovenantsPage({
     super.key,
     required this.covenantsAsync,
     required this.limitController,
     required this.limitFocusNode,
-    required this.bindedCovenants,
     required this.customer,
   });
 
@@ -62,7 +59,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
         .updateCustomer(
           widget.customer!.copyWith(
             CustomerCovenants: [
-              ...widget.bindedCovenants,
+              ...?widget.customer?.CustomerCovenants,
               CustomerCovenantEntity(
                 covenant: CovenantInfoEntity(
                   Code: covenant.Codigo_Convenio?.toInt() ?? 0,
@@ -90,9 +87,11 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
         data: (covenants) {
           final notBindedCovenants = covenants!
               .where(
-                (e) => !widget.bindedCovenants.any(
-                  (b) => b.covenant?.Code == e.Codigo_Convenio?.toInt(),
-                ),
+                (e) =>
+                    widget.customer?.CustomerCovenants?.any(
+                      (b) => b.covenant?.Code == e.Codigo_Convenio?.toInt(),
+                    ) ==
+                    false,
               )
               .toList();
 
@@ -109,14 +108,12 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
                     limitController: widget.limitController,
                     limitFocusNode: widget.limitFocusNode,
                   ),
-                if (widget.bindedCovenants.isNotEmpty) ...[
-                  DefaultDivider('Convênios vinculados'),
+                if (widget.customer?.CustomerCovenants != null &&
+                    widget.customer!.CustomerCovenants!.isNotEmpty)
                   BindedCovenants(
                     changeSelectedIndex: changeSelectedIndex,
-                    bindedCovenants: widget.bindedCovenants,
                     customer: widget.customer,
                   ),
-                ],
               ],
             ),
           );

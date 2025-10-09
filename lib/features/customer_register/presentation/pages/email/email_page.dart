@@ -8,7 +8,7 @@ import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/validators/validators.dart';
 import '../../controllers/controllers.dart';
-import '../components/components.dart';
+import 'components/components.dart';
 
 class EmailPage extends ConsumerWidget {
   final CustomerEntity? customer;
@@ -49,14 +49,6 @@ class EmailPage extends ConsumerWidget {
       emailController.clear();
     }
 
-    void removeEmail(int index) {
-      ref
-          .read(customerStateControllerProvider.notifier)
-          .updateCustomer(
-            customer!.copyWith(Emails: [...customer!.Emails!..removeAt(index)]),
-          );
-    }
-
     return Scaffold(
       appBar: AppBar(title: Text('E-mails'.hardcoded)),
       body: ResponsiveScrollableWidget(
@@ -91,42 +83,8 @@ class EmailPage extends ConsumerWidget {
                 text: 'Inserir e-mail'.hardcoded,
                 onPressed: insertEmail,
               ),
-              if (customer?.Emails != null && customer!.Emails!.isNotEmpty) ...[
-                DefaultDivider('E-mails informados'),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: customer!.Emails!.length,
-                  itemBuilder: (_, index) {
-                    final email = customer!.Emails![index];
-
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: Sizes.p8),
-                        child: Row(
-                          children: [
-                            Expanded(child: Text(email)),
-                            IconButton(
-                              onPressed: () {
-                                showAlertDialog(
-                                  context: context,
-                                  title: 'Remover e-mail?'.hardcoded,
-                                  onOkPressed: () => removeEmail(index),
-                                  defaultActionText: 'Sim'.hardcoded,
-                                  cancelActionText: 'Não'.hardcoded,
-                                );
-                              },
-                              icon: Icon(
-                                isIOS ? CupertinoIcons.delete : Icons.delete,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+              if (customer?.Emails != null && customer!.Emails!.isNotEmpty)
+                InformedEmails(customer: customer),
             ],
           ),
         ),
