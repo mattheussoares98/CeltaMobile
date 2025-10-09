@@ -35,8 +35,10 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Endereço'.hardcoded,
           icon: BadgeIcon(
-            valid:
-                customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
+            valid: customer == null
+                ? null
+                : customer?.Addresses != null &&
+                      customer!.Addresses!.isNotEmpty,
             cupertinoIcon: CupertinoIcons.location,
             materialIcon: Icons.location_on,
           ),
@@ -44,7 +46,9 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'E-mail'.hardcoded,
           icon: BadgeIcon(
-            valid: customer?.Emails != null && customer!.Emails!.isNotEmpty,
+            valid: customer == null
+                ? null
+                : customer?.Emails != null && customer!.Emails!.isNotEmpty,
             cupertinoIcon: CupertinoIcons.mail,
             materialIcon: Icons.email,
           ),
@@ -52,9 +56,10 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Telefone'.hardcoded,
           icon: BadgeIcon(
-            valid:
-                customer?.Telephones != null &&
-                customer!.Telephones!.isNotEmpty,
+            valid: customer == null
+                ? null
+                : customer?.Telephones != null &&
+                      customer!.Telephones!.isNotEmpty,
             cupertinoIcon: CupertinoIcons.phone,
             materialIcon: Icons.phone,
           ),
@@ -62,9 +67,10 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Convênios'.hardcoded,
           icon: BadgeIcon(
-            valid:
-                customer?.CustomerCovenants != null &&
-                customer!.CustomerCovenants!.isNotEmpty,
+            valid: customer == null
+                ? null
+                : customer?.CustomerCovenants != null &&
+                      customer!.CustomerCovenants!.isNotEmpty,
             cupertinoIcon: CupertinoIcons.creditcard,
             materialIcon: Icons.wallet,
           ),
