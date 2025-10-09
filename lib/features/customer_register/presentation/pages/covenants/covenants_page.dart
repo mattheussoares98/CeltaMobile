@@ -112,7 +112,10 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
                   ),
                 if (widget.bindedCovenants.isNotEmpty) ...[
                   DefaultDivider('Convênios vinculados'),
-                  BindedCovenants(bindedCovenants: widget.bindedCovenants),
+                  BindedCovenants(
+                    bindedCovenants: widget.bindedCovenants,
+                    customer: widget.customer,
+                  ),
                 ],
               ],
             ),
