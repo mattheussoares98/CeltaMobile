@@ -12,10 +12,12 @@ import '../../../controllers/controllers.dart';
 class BindedCovenants extends ConsumerWidget {
   final List<CustomerCovenantEntity> bindedCovenants;
   final CustomerEntity? customer;
+  final void Function(int? index) changeSelectedIndex;
   const BindedCovenants({
     super.key,
     required this.bindedCovenants,
     required this.customer,
+    required this.changeSelectedIndex,
   });
 
   @override
@@ -69,6 +71,7 @@ class BindedCovenants extends ConsumerWidget {
                                     ],
                                   ),
                                 );
+                            changeSelectedIndex(null);
                           },
                           cancelActionText: 'Não'.hardcoded,
                           defaultActionText: 'Sim'.hardcoded,

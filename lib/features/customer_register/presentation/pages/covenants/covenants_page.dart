@@ -33,8 +33,8 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
   int? selectedIndex;
   final formKey = GlobalKey<FormState>();
 
-  void changeSelectedIndex(int index) {
-    if (selectedIndex == index) {
+  void changeSelectedIndex(int? index) {
+    if (selectedIndex == index || index == null) {
       setState(() {
         selectedIndex = null;
       });
@@ -77,8 +77,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
         );
 
     widget.limitController.clear();
-
-    setState(() {});
+    changeSelectedIndex(null);
   }
 
   @override
@@ -113,6 +112,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
                 if (widget.bindedCovenants.isNotEmpty) ...[
                   DefaultDivider('Convênios vinculados'),
                   BindedCovenants(
+                    changeSelectedIndex: changeSelectedIndex,
                     bindedCovenants: widget.bindedCovenants,
                     customer: widget.customer,
                   ),
