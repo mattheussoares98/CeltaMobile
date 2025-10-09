@@ -63,8 +63,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   final dddController = TextEditingController();
   final phoneController = TextEditingController();
   final phoneFocusNode = FocusNode();
-  final phoneFormKey = GlobalKey<FormState>(); //TODO remove from here
-  List<CustomerTelephoneEntity> phones = [];
   //! phone
 
   //! covenants
@@ -115,7 +113,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     dddController.dispose();
     phoneController.dispose();
     phoneFocusNode.dispose();
-    phoneFormKey.currentState?.dispose();
     //! phone
 
     //! covenants
@@ -162,10 +159,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       }
       selectedSex = customer.SexType;
       //! personal data
-
-      //! phone
-      phones = [...?customer.Telephones];
-      //! phone
     }
     setState(() {});
   }
@@ -231,29 +224,10 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         customer: customerAsync.value,
       ),
       PhonePage(
-        phones: phones,
         dddController: dddController,
         phoneController: phoneController,
         phoneFocusNode: phoneFocusNode,
-        formKey: phoneFormKey,
-        addPhone: () {
-          setState(() {
-            phones.add(
-              CustomerTelephoneEntity(
-                AreaCode: dddController.text,
-                PhoneNumber: phoneController.text,
-              ),
-            );
-          });
-
-          dddController.clear();
-          phoneController.clear();
-        },
-        removePhone: (index) {
-          setState(() {
-            phones.removeAt(index);
-          });
-        },
+        customer: customerAsync.value,
       ),
       CovenantsPage(
         covenantsAsync: covenantsAsync,
@@ -285,7 +259,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                       DateOfBirth: DateFormat(
                         'dd/MM/yyyy',
                       ).tryParse(birthDateController.text),
-                      Telephones: phones,
                     ),
                   );
             }

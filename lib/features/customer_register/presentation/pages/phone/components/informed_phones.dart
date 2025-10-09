@@ -1,26 +1,37 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../phone.dart';
+import '../../../../../../core/domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
-class InformedPhones extends StatelessWidget {
-  const InformedPhones(this.page, {super.key});
-
-  final PhonePage page;
+class InformedPhones extends ConsumerWidget {
+  final CustomerEntity? customer;
+  const InformedPhones({super.key, required this.customer});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    void removeTelephone(int index) {
+      ref
+          .read(customerStateControllerProvider.notifier)
+          .updateCustomer(
+            customer!.copyWith(
+              Telephones: [...customer!.Telephones!..removeAt(index)],
+            ),
+          );
+    }
+
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: page.phones.length,
+      itemCount: customer?.Telephones?.length,
       itemBuilder: (_, index) {
-        final phone = page.phones[index];
+        final phone = customer!.Telephones![index];
 
         return Card(
           child: Padding(
@@ -38,7 +49,7 @@ class InformedPhones extends StatelessWidget {
                       defaultActionText: 'Sim'.hardcoded,
                       cancelActionText: 'Cancelar'.hardcoded,
                       onOkPressed: () {
-                        page.removePhone(index);
+                        removeTelephone(index);
                       },
                     );
                   },
