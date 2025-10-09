@@ -241,44 +241,39 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
 
     return Stack(
       children: [
-        PopScope(
-          onPopInvokedWithResult: (didPop, result) async {
-            //TODO remove this
+        Scaffold(
+          body: pages[selectedIndex],
+          bottomNavigationBar: BottomNavigationWidget(
+            customer: customerAsync.value,
+            selectedIndex: selectedIndex,
+            onTapItem: (index) {
+              if (selectedIndex == 0 &&
+                  personalPageFormKey.currentState?.validate() != true) {
+                return;
+              }
 
-            if (customerAsync.value != null) {
-              ref
-                  .read(customerStateControllerProvider.notifier)
-                  .updateCustomer(
-                    customerAsync.value!.copyWith(
-                      CpfCnpjNumber: cpfCnpjController.text,
-                      PersonType: selectedSex?.name,
-                      SexType: selectedSex,
-                      RegistrationNumber: inscriptionController.text,
-                      Name: nameController.text,
-                      ReducedName: reducedNameController.text,
-                      DateOfBirth: DateFormat(
-                        'dd/MM/yyyy',
-                      ).tryParse(birthDateController.text),
-                    ),
-                  );
-            }
-          },
-          child: Scaffold(
-            body: pages[selectedIndex],
-            bottomNavigationBar: BottomNavigationWidget(
-              customer: customerAsync.value,
-              selectedIndex: selectedIndex,
-              onTapItem: (index) {
-                if (selectedIndex == 0 &&
-                    personalPageFormKey.currentState?.validate() != true) {
-                  return;
-                }
+              if (customerAsync.value != null) {
+                ref
+                    .read(customerStateControllerProvider.notifier)
+                    .updateCustomer(
+                      customerAsync.value!.copyWith(
+                        CpfCnpjNumber: cpfCnpjController.text,
+                        PersonType: selectedSex?.name,
+                        SexType: selectedSex,
+                        RegistrationNumber: inscriptionController.text,
+                        Name: nameController.text,
+                        ReducedName: reducedNameController.text,
+                        DateOfBirth: DateFormat(
+                          'dd/MM/yyyy',
+                        ).tryParse(birthDateController.text),
+                      ),
+                    );
+              }
 
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
-            ),
+              setState(() {
+                selectedIndex = index;
+              });
+            },
           ),
         ),
         if (customerAsync.isLoading) LoadingPage(),
