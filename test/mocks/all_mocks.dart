@@ -31,6 +31,7 @@ import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/customer_register/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/customer_register/data/models/models.dart';
+import 'package:celta_intelligence/features/customer_register/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
@@ -790,4 +791,17 @@ class SoapInsertUpdateCustomerDatasourceSpy extends Mock
   );
 
   void mockInsertUpdate() => _mockInsertUpdateCall().thenAnswer((_) async {});
+}
+
+class SoapInsertUpdateCustomerRepositorySpy extends Mock
+    implements ISoapInsertUpdateCustomerRepository {
+  SoapInsertUpdateCustomerRepositorySpy() {
+    when(
+      () => this.insertOrUpdateCustomer(
+        customer: any(named: 'customer'),
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+      ),
+    ).thenAnswer((_) async {});
+  }
 }
