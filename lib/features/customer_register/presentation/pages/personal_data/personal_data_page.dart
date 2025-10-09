@@ -51,7 +51,6 @@ class PersonalDataPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //TODO chack which fields are obligatory
       appBar: AppBar(title: Text('Dados pessoais'.hardcoded)),
       body: ResponsiveScrollableWidget(
         child: Form(
