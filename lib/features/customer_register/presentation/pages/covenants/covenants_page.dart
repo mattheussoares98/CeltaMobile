@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -61,7 +62,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
               ...?widget.customer?.CustomerCovenants,
               CustomerCovenantEntity(
                 covenant: CovenantInfoEntity(
-                  Code: covenant.CodigoInterno_Convenio?.toInt() ?? 0,
+                  Code: covenant.Codigo_Convenio?.toInt() ?? 0,
                   PersonalizedCode: covenant.CodigoLegado_Convenio.toString(),
                   Name: covenant.Nome_Convenio ?? '',
                 ),
@@ -84,14 +85,18 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
         value: widget.covenantsAsync,
         tryAgain: () => ref.invalidate(covenantsStateControllerProvider),
         data: (covenants) {
-          final notBindedCovenants = [...covenants!];
-          notBindedCovenants.removeWhere(
-            (e) =>
-                widget.customer?.CustomerCovenants?.any((b) {
-                  return e.CodigoInterno_Convenio == b.covenant?.Code;
-                }) ==
-                true,
-          );
+          final notBindedCovenants = covenants!
+              .where(
+                (e) =>
+                    widget.customer?.CustomerCovenants
+                        ?.where(
+                          (x) => e.Codigo_Convenio?.toInt() == x.covenant?.Code,
+                        )
+                        .toList()
+                        .isEmpty !=
+                    false,
+              )
+              .toList();
 
           return ResponsiveScrollableWidget(
             child: Column(
