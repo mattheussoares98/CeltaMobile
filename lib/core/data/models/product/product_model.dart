@@ -39,12 +39,9 @@ class ProductModel extends Equatable {
   final bool IsChildOfGrate;
   final bool InClass;
   final bool MarkUpdateClassInAdjustSalePriceIndividual;
-  final PriceCostModel
-  PriceCost; //TODO test when the user doesnt has permission
-  final List<StockByEnterpriseAssociatedModel>?
-  StockByEnterpriseAssociateds; //TODO test when the user doesnt has permission
-  final List<StockModel>?
-  Stocks; //TODO test when the user doesnt has permission
+  final PriceCostModel PriceCost;
+  final List<StockByEnterpriseAssociatedModel>? StockByEnterpriseAssociateds;
+  final List<StockModel>? Stocks;
   final List<LastBuyEntranceModel>? LastBuyEntrances;
 
   const ProductModel({
