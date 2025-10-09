@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/presentation/theme/theme.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import 'components.dart';
 
 class UserNameField extends StatelessWidget {
@@ -19,20 +19,17 @@ class UserNameField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return DefaultTextFormField(
       enabled: !isLoading,
       controller: userNameController,
       focusNode: userNameFocusNode,
       onFieldSubmitted: (_) {
         passwordFocusNode.requestFocus();
       },
-      decoration: AppDecorations.input(
-        //TODO use DefaultTextFormField
-        context: context,
-        hintText: "Nome do usuário no BS".hardcoded,
-        suffixIcon: DeleteIcon(
-          onPress: isLoading ? null : userNameController.clear,
-        ),
+      labelText: "Nome do usuário no BS".hardcoded,
+      hintText: "Nome do usuário no BS".hardcoded,
+      suffixIcon: DeleteIcon(
+        onPress: isLoading ? null : userNameController.clear,
       ),
     );
   }

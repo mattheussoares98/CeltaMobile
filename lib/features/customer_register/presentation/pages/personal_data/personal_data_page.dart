@@ -7,7 +7,6 @@ import '../../../../../core/domain/entities/entities.dart';
 import 'components/components.dart';
 
 class PersonalDataPage extends StatelessWidget {
-  //TODO analyse if is possible to change the stateful to stateless
   final CustomerEntity? customer;
   final TextEditingController cpfCnpjController;
   final TextEditingController nameController;

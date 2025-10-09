@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/presentation/theme/theme.dart';
 import '../../../../domain/entities/entities.dart';
 import 'components.dart';
 
@@ -36,17 +36,13 @@ class _EnterpriseItemsState extends ConsumerState<EnterpriseItems> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(Sizes.p8),
-            child: TextFormField(
+            child: DefaultTextFormField(
               controller: widget.filterEnterpriseNameController,
               onChanged: (_) {
                 setState(() {});
               },
-              decoration: AppDecorations.input(
-                //TODO use DefaultTextFormField
-                context: context,
-                hintText: "Filtrar empresa",
-                labelText: 'Filtrar empresa',
-              ),
+              hintText: "Filtrar empresa",
+              labelText: 'Filtrar empresa',
             ),
           ),
         ),

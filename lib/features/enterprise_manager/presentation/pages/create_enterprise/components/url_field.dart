@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/presentation/theme/theme.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import 'components.dart';
 
 class UrlField extends StatelessWidget {
@@ -19,19 +19,16 @@ class UrlField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return DefaultTextFormField(
       enabled: !isLoading,
       controller: urlController,
       focusNode: urlFocusNode,
       onFieldSubmitted: (_) {
         userNameFocusNode.requestFocus();
       },
-      decoration: AppDecorations.input(
-        //TODO use DefaultTextFormField
-        context: context,
-        hintText: "Url".hardcoded,
-        suffixIcon: DeleteIcon(onPress: isLoading ? null : urlController.clear),
-      ),
+      labelText: "Url".hardcoded,
+      hintText: "Url".hardcoded,
+      suffixIcon: DeleteIcon(onPress: isLoading ? null : urlController.clear),
     );
   }
 }
