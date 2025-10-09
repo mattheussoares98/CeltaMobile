@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/validators/validators.dart';
-import '../../../controllers/controllers.dart';
 
 class PhoneField extends ConsumerWidget {
   final CustomerEntity? customer;
@@ -13,6 +12,7 @@ class PhoneField extends ConsumerWidget {
   final TextEditingController dddController;
   final TextEditingController phoneController;
   final FocusNode phoneFocusNode;
+  final VoidCallback addPhone;
   const PhoneField({
     super.key,
     required this.customer,
@@ -20,44 +20,11 @@ class PhoneField extends ConsumerWidget {
     required this.dddController,
     required this.phoneController,
     required this.phoneFocusNode,
+    required this.addPhone,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void insertPhone() {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      } else if (customer?.Telephones?.any(
-            (e) =>
-                e.PhoneNumber == phoneController.text &&
-                e.AreaCode == dddController.text,
-          ) ??
-          false) {
-        showSnackBarMessage(
-          context,
-          'Esse telefone já foi adicionado'.hardcoded,
-          backgroundColor: Colors.red,
-        );
-        return;
-      }
-
-      ref
-          .read(customerStateControllerProvider.notifier)
-          .updateCustomer(
-            customer!.copyWith(
-              Telephones: (customer?.Telephones ?? [])
-                ..add(
-                  CustomerTelephoneEntity(
-                    AreaCode: dddController.text,
-                    PhoneNumber: phoneController.text,
-                  ),
-                ),
-            ),
-          );
-      phoneController.clear();
-      dddController.clear();
-    }
-
     return DefaultTextFormField(
       controller: phoneController,
       focusNode: phoneFocusNode,
@@ -66,7 +33,7 @@ class PhoneField extends ConsumerWidget {
       labelText: 'Telefone'.hardcoded,
       hintText: 'Telefone'.hardcoded,
       onFieldSubmitted: (_) {
-        insertPhone();
+        addPhone();
       },
       validator: FormValidators.compose([
         NonEmptyValidator(),

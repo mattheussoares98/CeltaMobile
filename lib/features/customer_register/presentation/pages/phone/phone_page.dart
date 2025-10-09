@@ -1,13 +1,15 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 import '../components/components.dart';
 import 'components/components.dart';
 
-class PhonePage extends StatelessWidget {
+class PhonePage extends ConsumerWidget {
   final TextEditingController dddController;
   final TextEditingController phoneController;
   final FocusNode phoneFocusNode;
@@ -24,19 +26,39 @@ class PhonePage extends StatelessWidget {
   static final phoneFormKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     void addPhone() {
-      // setState(() {
-      //   phones.add(
-      //     CustomerTelephoneEntity(
-      //       AreaCode: dddController.text,
-      //       PhoneNumber: phoneController.text,
-      //     ),
-      //   );
-      // });
+      if (phoneFormKey.currentState?.validate() != true) {
+        return;
+      } else if (customer?.Telephones?.any(
+            (e) =>
+                e.PhoneNumber == phoneController.text &&
+                e.AreaCode == dddController.text,
+          ) ??
+          false) {
+        showSnackBarMessage(
+          context,
+          'Esse telefone já foi adicionado'.hardcoded,
+          backgroundColor: Colors.red,
+        );
+        return;
+      }
 
-      dddController.clear();
+      ref
+          .read(customerStateControllerProvider.notifier)
+          .updateCustomer(
+            customer!.copyWith(
+              Telephones: (customer?.Telephones ?? [])
+                ..add(
+                  CustomerTelephoneEntity(
+                    AreaCode: dddController.text,
+                    PhoneNumber: phoneController.text,
+                  ),
+                ),
+            ),
+          );
       phoneController.clear();
+      dddController.clear();
     }
 
     return Scaffold(
@@ -68,6 +90,7 @@ class PhonePage extends StatelessWidget {
                       dddController: dddController,
                       phoneController: phoneController,
                       phoneFocusNode: phoneFocusNode,
+                      addPhone: addPhone,
                     ),
                   ),
                 ],
