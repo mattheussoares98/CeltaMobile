@@ -134,7 +134,7 @@ void main() {
       expect(states.last.value, CustomerEntity.empty());
     });
 
-    test('should update customer correctly', () async {
+    test('should update customer correctly when is not null', () async {
       final container = makeProviderContainer(
         session: fakeSession, //throws
         enterprise: fakeEnterprise,
@@ -156,6 +156,27 @@ void main() {
 
       expect(states, [isA<AsyncData>()]);
       expect(states.last.value, newCustomer);
+    });
+    test('should update customer correctly when is null', () async {
+      final container = makeProviderContainer(
+        session: fakeSession, //throws
+        enterprise: fakeEnterprise,
+      );
+      addTearDown(container.dispose);
+
+      await container.read(customerStateControllerProvider.future);
+      final states = <AsyncValue<CustomerEntity?>>[];
+      container.listen(
+        customerStateControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      container
+          .read(customerStateControllerProvider.notifier)
+          .updateCustomer(null);
+
+      expect(states, [isA<AsyncData>()]);
+      expect(states.last.value, null);
     });
   });
 }

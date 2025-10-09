@@ -194,9 +194,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           context,
           'Cliente cadastrado/atualizado com sucesso'.hardcoded,
         );
-        ref
-            .read(customerStateControllerProvider.notifier)
-            .updateCustomer(CustomerEntity.empty());
+        ref.read(customerStateControllerProvider.notifier).updateCustomer(null);
         clearFields();
         setState(() {
           selectedIndex = 0;

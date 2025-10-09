@@ -48,7 +48,7 @@ class CustomerStateController extends _$CustomerStateController {
     }
   }
 
-  void updateCustomer(CustomerEntity entity) {
+  void updateCustomer(CustomerEntity? entity) {
     state = AsyncValue.data(entity);
   }
 }
