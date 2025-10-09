@@ -8,7 +8,6 @@ class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
 
   @override
   Future<AddressModel?> get(String cep) async {
-    //TODO create tests
     final response = await httpClient.request(
       url: 'https://viacep.com.br/ws/$cep/json/',
       method: 'get',

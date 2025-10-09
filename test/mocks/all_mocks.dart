@@ -805,3 +805,20 @@ class SoapInsertUpdateCustomerRepositorySpy extends Mock
     ).thenAnswer((_) async {});
   }
 }
+
+class HttpClientSpy extends Mock implements HttpClient {
+  void mockRequest(dynamic response) {
+    _mockRequestCall().thenAnswer((_) async => response);
+  }
+
+  When _mockRequestCall() => when(
+    () => this.request(
+      url: any(named: 'url'),
+      method: any(named: 'method'),
+      addDefaultHeaders: any(named: 'addDefaultHeaders'),
+      body: any(named: 'body'),
+      headers: any(named: 'headers'),
+      decodeBody: any(named: 'decodeBody'),
+    ),
+  );
+}
