@@ -12,7 +12,7 @@ class CustomerEntity extends Equatable {
   final String? RegistrationNumber;
   final DateTime? DateOfBirth;
   final CustomerSexType? SexType;
-  final String? PersonType;
+  final CustomerPersonType? PersonType;
   final List<String>? Emails;
   final List<CustomerTelephoneEntity>? Telephones;
   final List<CustomerCovenantEntity>? CustomerCovenants;
@@ -66,7 +66,7 @@ class CustomerEntity extends Equatable {
     String? RegistrationNumber,
     DateTime? DateOfBirth,
     CustomerSexType? SexType,
-    String? PersonType,
+    CustomerPersonType? PersonType,
     List<String>? Emails,
     List<CustomerTelephoneEntity>? Telephones,
     List<CustomerCovenantEntity>? CustomerCovenants,

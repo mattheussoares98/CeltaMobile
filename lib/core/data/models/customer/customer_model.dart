@@ -13,7 +13,7 @@ class CustomerModel extends Equatable {
   final String? RegistrationNumber;
   final DateTime? DateOfBirth;
   final CustomerSexType? SexType;
-  final String? PersonType;
+  final CustomerPersonType? PersonType;
   final List<String>? Emails;
   final List<CustomerTelephoneModel>? Telephones;
   final List<CustomerCovenantModel>? CustomerCovenants;
@@ -66,8 +66,8 @@ class CustomerModel extends Equatable {
     'CpfCnpjNumber': CpfCnpjNumber,
     'RegistrationNumber': RegistrationNumber,
     'DateOfBirth': DateOfBirth?.toIso8601String(),
-    'SexType': SexType,
-    'PersonType': PersonType,
+    'SexType': SexType?.shortName,
+    'PersonType': PersonType?.shortName,
     'Emails': Emails,
     'Telephones': Telephones?.map((e) => e.toJson()).toList(),
     'Addresses': Addresses?.map((e) => e.toJson()).toList(),
@@ -91,7 +91,11 @@ class CustomerModel extends Equatable {
         : CustomerSexType.values.firstWhere(
             (e) => e.shortName == json['SexType'],
           ),
-    PersonType: json['PersonType'],
+    PersonType: json['PersonType'] == null
+        ? null
+        : CustomerPersonType.values.firstWhere(
+            (e) => e.shortName == json['PersonType'],
+          ),
     Emails: (json['Emails'] as List?)?.map((e) => e.toString()).toList(),
     Telephones: (json['Telephones'] as List?)
         ?.map((e) => CustomerTelephoneModel.fromJson(e))

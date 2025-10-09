@@ -294,7 +294,10 @@ class EntityFactory {
     RegistrationNumber: faker.guid.guid(),
     DateOfBirth: faker.date.dateTime(),
     SexType: CustomerSexType.values[faker.randomGenerator.integer(2)],
-    PersonType: faker.randomGenerator.integer(1) == 1 ? "PJ" : "PF",
+    PersonType:
+        CustomerPersonType.values[faker.randomGenerator.integer(
+          CustomerPersonType.values.length,
+        )],
     Emails: [
       faker.internet.email(),
       faker.internet.email(),

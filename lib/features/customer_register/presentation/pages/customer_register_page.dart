@@ -263,7 +263,9 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                     .updateCustomer(
                       customerAsync.value!.copyWith(
                         CpfCnpjNumber: cpfCnpjController.text,
-                        PersonType: selectedSex?.name,
+                        PersonType: cpfCnpjController.text.length == 11
+                            ? CustomerPersonType.fisica
+                            : CustomerPersonType.juridica,
                         SexType: selectedSex,
                         RegistrationNumber: inscriptionController.text,
                         Name: nameController.text,

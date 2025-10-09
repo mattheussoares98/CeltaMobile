@@ -67,7 +67,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
                   Name: covenant.Nome_Convenio ?? '',
                 ),
                 LimitOfPurchase: double.tryParse(widget.limitController.text),
-                Matriculate: '99',
+                Matriculate: '',
               ),
             ],
           ),
