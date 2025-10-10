@@ -33,6 +33,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
   @override
   Widget build(BuildContext context) {
     final pages = [
+      //TODO check in all modules, if load the data from each page. Because if is necessary, needs to hide depending on the module
       Prices(widget: widget, enterpriseCode: widget.enterpriseCode),
       Stocks(widget: widget),
       Addresses(widget: widget),
