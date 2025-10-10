@@ -32,11 +32,13 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
   Widget build(BuildContext context) {
     final pages = [
       Prices(widget: widget, enterpriseCode: widget.enterpriseCode),
+      Stocks(widget: widget),
       Costs(widget: widget),
       Margins(widget: widget),
     ];
 
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
@@ -53,25 +55,23 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              theme.platform == TargetPlatform.iOS
-                  ? CupertinoIcons.money_dollar
-                  : Icons.attach_money,
+              isIOS ? CupertinoIcons.money_dollar : Icons.attach_money,
             ),
             label: 'Preços'.hardcoded,
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              theme.platform == TargetPlatform.iOS
-                  ? CupertinoIcons.creditcard
-                  : Icons.credit_card,
+              isIOS ? CupertinoIcons.archivebox : Icons.inventory_2_outlined,
             ),
+            label: 'Estoques'.hardcoded,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
             label: 'Custos'.hardcoded,
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              theme.platform == TargetPlatform.iOS
-                  ? CupertinoIcons.chart_bar
-                  : Icons.bar_chart_rounded,
+              isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart_rounded,
             ),
             label: 'Margens'.hardcoded,
           ),
