@@ -1,0 +1,140 @@
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/search_products/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/search_products/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/search_products/providers.dart';
+import 'package:faker/faker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+class MockSoapSendToPrintRepository extends Mock
+    implements ISoapSendToPrintRepository {}
+
+void main() {
+  late MockSoapSendToPrintRepository mockRepository;
+  late UserSessionModel fakeSession;
+  late EnterpriseEntity fakeEnterprise;
+  late String fakeProductPackingCode;
+  late bool fakeNewValue;
+
+  setUp(() {
+    mockRepository = MockSoapSendToPrintRepository();
+    fakeSession = UserSessionModel.fromEntity(
+      EntityFactory.makeUserSessionEntity(),
+    );
+    fakeEnterprise = EntityFactory.makeEnterpriseEntity();
+    fakeProductPackingCode = faker.randomGenerator.string(10);
+    fakeNewValue = faker.randomGenerator.boolean();
+  });
+
+  ProviderContainer makeProviderContainer({
+    UserSessionModel? session,
+    EnterpriseEntity? enterprise,
+  }) {
+    return ProviderContainer(
+      overrides: [
+        soapSendToPrintRepositoryProvider.overrideWithValue(mockRepository),
+        // Override all the controller's dependencies
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(session),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(enterprise),
+        ),
+      ],
+    );
+  }
+
+  group('SendToPrintController', () {
+    test(
+      'should emit [loading, data] and call repository on success',
+      () async {
+        // ARRANGE
+        when(
+          () => mockRepository.send(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            productPackingCode: any(named: 'productPackingCode'),
+            newValue: any(named: 'newValue'),
+          ),
+        ).thenAnswer((_) async {});
+
+        final container = makeProviderContainer(
+          session: fakeSession,
+          enterprise: fakeEnterprise,
+        );
+        await container.read(sendToPrintControllerProvider.future);
+        addTearDown(container.dispose);
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          sendToPrintControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT: Call the action method on the notifier
+        await container
+            .read(sendToPrintControllerProvider.notifier)
+            .send(
+              productPackingCode: fakeProductPackingCode,
+              newValue: fakeNewValue,
+            );
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        verify(
+          () => mockRepository.send(
+            baseUrl: fakeSession.enterprise!.baseUrl!,
+            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+            enterpriseCode: fakeEnterprise.Code!,
+            productPackingCode: fakeProductPackingCode,
+            newValue: fakeNewValue,
+          ),
+        ).called(1);
+      },
+    );
+
+    test('should emit [loading, error] when session is invalid', () async {
+      // ARRANGE: Pass null for the session to trigger the error path
+      final container = makeProviderContainer(
+        session: null,
+        enterprise: fakeEnterprise,
+      );
+      await container.read(sendToPrintControllerProvider.future);
+      addTearDown(container.dispose);
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        sendToPrintControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      await container
+          .read(sendToPrintControllerProvider.notifier)
+          .send(
+            productPackingCode: fakeProductPackingCode,
+            newValue: fakeNewValue,
+          );
+
+      // ASSERT
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+      // Verify the repository was never called
+      verifyNever(
+        () => mockRepository.send(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          productPackingCode: any(named: 'productPackingCode'),
+          newValue: any(named: 'newValue'),
+        ),
+      );
+    });
+  });
+}
