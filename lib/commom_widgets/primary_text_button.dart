@@ -69,7 +69,7 @@ class PrimaryTextButton extends StatelessWidget {
                   text,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: color ?? theme.primaryColorDark,
+                    color: color ?? theme.primaryColor,
                   ),
                 ),
               ),
