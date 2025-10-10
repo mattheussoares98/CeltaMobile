@@ -1,7 +1,7 @@
 extension StringModifier on String {
   String toBrazilianNumber([
     int decimalHouses = 2,
-    bool showDecimalUntilLastNumber = true,
+    bool showDecimalUntilLastNumber = false,
   ]) {
     final value = double.tryParse(this.replaceAll(',', '.'));
     if (value == null) {
