@@ -37,6 +37,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
       Prices(widget: widget, enterpriseCode: widget.enterpriseCode),
       Stocks(widget: widget),
       Addresses(widget: widget),
+      Shopping(widget: widget),
       Costs(widget: widget),
       if (widget.routine == BsRoutine.adjustSalePrice) Margins(widget: widget),
     ];
@@ -44,8 +45,21 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: PageView(
+          controller: scrollController,
+          onPageChanged: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          children: pages,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
+        type: BottomNavigationBarType.fixed,
         onTap: (index) {
           scrollController.animateToPage(
             index,
@@ -74,6 +88,14 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
             label: 'Endereços'.hardcoded,
           ),
           BottomNavigationBarItem(
+            icon: Icon(
+              isIOS
+                  ? CupertinoIcons.shopping_cart
+                  : Icons.shopping_cart_outlined,
+            ),
+            label: 'Compras'.hardcoded,
+          ),
+          BottomNavigationBarItem(
             icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
             label: 'Custos'.hardcoded,
           ),
@@ -85,18 +107,6 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
               label: 'Margens'.hardcoded,
             ),
         ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: PageView(
-          controller: scrollController,
-          onPageChanged: (index) {
-            setState(() {
-              currentIndex = index;
-            });
-          },
-          children: pages,
-        ),
       ),
     );
   }

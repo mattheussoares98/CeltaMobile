@@ -8,4 +8,5 @@ export './prices.dart';
 export 'product_info_modal.dart';
 export './product_item_widget.dart';
 export './selected_icon_indicator.dart';
+export './shopping.dart';
 export './stocks.dart.dart';
