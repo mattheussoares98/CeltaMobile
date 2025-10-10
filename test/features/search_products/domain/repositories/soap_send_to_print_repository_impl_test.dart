@@ -12,7 +12,7 @@ void main() {
   late String baseUrl;
   late String crossIdentity;
   late int enterpriseCode;
-  late String productPackingCode;
+  late int productPackingCode;
   late bool newValue;
 
   setUp(() {
@@ -21,7 +21,7 @@ void main() {
 
     baseUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
-    productPackingCode = faker.guid.guid();
+    productPackingCode = faker.randomGenerator.integer(100);
     newValue = faker.randomGenerator.boolean();
     enterpriseCode = faker.randomGenerator.integer(100);
   });

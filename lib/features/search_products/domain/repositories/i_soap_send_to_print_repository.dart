@@ -3,7 +3,7 @@ abstract class ISoapSendToPrintRepository {
     required String baseUrl,
     required String crossIdentity,
     required int enterpriseCode,
-    required String productPackingCode,
+    required int productPackingCode,
     required bool newValue,
   });
 }

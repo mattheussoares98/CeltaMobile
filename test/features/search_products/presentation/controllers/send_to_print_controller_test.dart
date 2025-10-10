@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/search_products/domain/repositories/repositories.dart';
@@ -15,12 +16,35 @@ import '../../../../mocks/mocks.dart';
 class MockSoapSendToPrintRepository extends Mock
     implements ISoapSendToPrintRepository {}
 
+// Add this new Fake class to your test file
+class FakeSearchProductsStateController extends SearchProductsStateController {
+  final List<ProductEntity> initialState;
+  FakeSearchProductsStateController(this.initialState);
+
+  // This public property will store the product we want to check.
+  ProductEntity? updatedProduct;
+
+  @override
+  Future<List<ProductEntity>> build(
+    int enterpriseCode,
+    BsRoutine routine,
+  ) async => initialState;
+
+  @override
+  Future<void> updateProduct(ProductEntity product) async {
+    // Instead of doing real work, it just saves the product to our property.
+    updatedProduct = product;
+  }
+}
+
 void main() {
   late MockSoapSendToPrintRepository mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
-  late String fakeProductPackingCode;
+  late int fakeProductPackingCode;
   late bool fakeNewValue;
+  late ProductEntity fakeProduct;
+  late FakeSearchProductsStateController fakeSearchProductStateController;
 
   setUp(() {
     mockRepository = MockSoapSendToPrintRepository();
@@ -28,8 +52,18 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeEnterprise = EntityFactory.makeEnterpriseEntity();
-    fakeProductPackingCode = faker.randomGenerator.string(10);
+    fakeProductPackingCode = faker.randomGenerator.integer(100);
     fakeNewValue = faker.randomGenerator.boolean();
+    fakeProduct = EntityFactory.makeProductEntity().copyWith(
+      ProductPackingCode: fakeProductPackingCode,
+    );
+    fakeSearchProductStateController = FakeSearchProductsStateController([
+      fakeProduct,
+    ]);
+  });
+
+  setUpAll(() {
+    registerFallbackValue(EntityFactory.makeProductEntity());
   });
 
   ProviderContainer makeProviderContainer({
@@ -46,6 +80,10 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterprise),
         ),
+        searchProductsStateControllerProvider(
+          fakeEnterprise.Code!,
+          BsRoutine.priceConference,
+        ).overrideWith(() => fakeSearchProductStateController),
       ],
     );
   }
@@ -84,6 +122,8 @@ void main() {
             .send(
               productPackingCode: fakeProductPackingCode,
               newValue: fakeNewValue,
+              enterpriseCode: fakeEnterprise.Code!,
+              routine: BsRoutine.priceConference,
             );
 
         // ASSERT
@@ -121,6 +161,8 @@ void main() {
           .send(
             productPackingCode: fakeProductPackingCode,
             newValue: fakeNewValue,
+            enterpriseCode: fakeEnterprise.Code!,
+            routine: BsRoutine.priceConference,
           );
 
       // ASSERT
@@ -134,6 +176,53 @@ void main() {
           productPackingCode: any(named: 'productPackingCode'),
           newValue: any(named: 'newValue'),
         ),
+      );
+    });
+
+    test('should call repository and update product list on success', () async {
+      // ARRANGE
+      when(
+        () => mockRepository.send(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          productPackingCode: any(named: 'productPackingCode'),
+          newValue: any(named: 'newValue'),
+        ),
+      ).thenAnswer((_) async {});
+
+      final container = makeProviderContainer(
+        session: fakeSession,
+        enterprise: fakeEnterprise,
+      );
+      addTearDown(container.dispose);
+
+      // ACT
+      await container
+          .read(sendToPrintControllerProvider.notifier)
+          .send(
+            productPackingCode: fakeProductPackingCode,
+            newValue: fakeNewValue,
+            enterpriseCode: fakeEnterprise.Code!,
+            routine: BsRoutine.priceConference,
+          );
+
+      // ASSERT
+      // 1. Verify the repository call
+      verify(
+        () => mockRepository.send(
+          baseUrl: any(named: 'baseUrl'), //TODO fix
+          crossIdentity: any(named: 'crossIdentity'), //TODO fix
+          enterpriseCode: any(named: 'enterpriseCode'), //TODO fix
+          productPackingCode: any(named: 'productPackingCode'), //TODO fix
+          newValue: any(named: 'newValue'), //TODO fix
+        ),
+      ).called(1);
+
+      expect(fakeSearchProductStateController.updatedProduct, isNotNull);
+      expect(
+        fakeSearchProductStateController.updatedProduct!.PendantPrintLabel,
+        fakeNewValue,
       );
     });
   });

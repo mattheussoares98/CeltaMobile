@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../providers.dart';
@@ -14,8 +16,10 @@ class SendToPrintController extends _$SendToPrintController {
   Future<void> build() async {}
 
   Future<void> send({
-    required String productPackingCode,
+    required int productPackingCode,
     required bool newValue,
+    required int enterpriseCode,
+    required BsRoutine routine,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -32,6 +36,23 @@ class SendToPrintController extends _$SendToPrintController {
             enterpriseCode: selectedEnterprise!.Code!,
             productPackingCode: productPackingCode,
             newValue: newValue,
+          );
+
+      final products = await ref.read(
+        searchProductsStateControllerProvider(enterpriseCode, routine).future,
+      );
+
+      ref
+          .read(
+            searchProductsStateControllerProvider(
+              enterpriseCode,
+              routine,
+            ).notifier,
+          )
+          .updateProduct(
+            products
+                .firstWhere((e) => e.ProductPackingCode == productPackingCode)
+                .copyWith(PendantPrintLabel: newValue),
           );
     });
   }

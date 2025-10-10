@@ -16,7 +16,8 @@ part 'search_products_state_controller.g.dart';
 class SearchProductsStateController extends _$SearchProductsStateController {
   @override
   Future<List<ProductEntity>> build(
-    int enterpriseCode,
+    int
+    enterpriseCode, //TODO change to cnpj number to avoid show products from other enterprises when do logout and login with another enterprise in less than 20 seconds
     BsRoutine routine,
   ) async {
     Timer? timer;
@@ -89,7 +90,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
     });
   }
 
-  Future<void> updateProduct(ProductEntity updatedProduct) async {
+  void updateProduct(ProductEntity updatedProduct) {
     // 1. Get the current state.
     final currentState = state;
     // 2. Make sure we have data to update.

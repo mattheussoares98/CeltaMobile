@@ -337,7 +337,7 @@ void main() {
         ProductPackingCode: productsEntities.first.ProductPackingCode,
       );
       // ACT: Call the updateProduct method
-      await container
+      container
           .read(
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
@@ -394,7 +394,7 @@ void main() {
             );
 
         // ACT
-        await container
+        container
             .read(
               searchProductsStateControllerProvider(
                 enterpriseEntity.Code!,
