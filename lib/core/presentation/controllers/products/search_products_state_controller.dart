@@ -88,4 +88,29 @@ class SearchProductsStateController extends _$SearchProductsStateController {
       return products;
     });
   }
+
+  Future<void> updateProduct(ProductEntity updatedProduct) async {
+    // 1. Get the current state.
+    final currentState = state;
+    // 2. Make sure we have data to update.
+    if (currentState is! AsyncData<List<ProductEntity>>) {
+      // If the list isn't loaded, do nothing.
+      return;
+    }
+
+    // 3. Find the index of the old product.
+    final productIndex = currentState.value.indexWhere(
+      (p) => p.ProductPackingCode == updatedProduct.ProductPackingCode,
+    );
+
+    // 4. If the product exists in the list, replace it.
+    if (productIndex != -1) {
+      // Create a new list to ensure Riverpod detects the state change.
+      final newList = List<ProductEntity>.from(currentState.value);
+      newList[productIndex] = updatedProduct;
+
+      // 5. Set the new state. The UI will update instantly.
+      state = AsyncData(newList);
+    }
+  }
 }

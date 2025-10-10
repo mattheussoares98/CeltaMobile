@@ -23,6 +23,7 @@ void main() {
   late int lastBuyEntranceQuantity;
   late AppSettingsEntity appSettingsEntity;
   late BsRoutine bsRoutine;
+  late List<ProductEntity> productsEntities;
 
   setUpAll(() {
     for (var routine in BsRoutine.values) {
@@ -42,6 +43,11 @@ void main() {
     appSettingsEntity = EntityFactory.makeAppSettingsEntity();
     bsRoutine = BsRoutine
         .values[faker.randomGenerator.integer(BsRoutine.values.length)];
+    productsEntities = [
+      EntityFactory.makeProductEntity(),
+      EntityFactory.makeProductEntity(),
+      EntityFactory.makeProductEntity(),
+    ];
   }
 
   void initSut() {
@@ -55,11 +61,7 @@ void main() {
   }
 
   void mockSuccess() {
-    sut.mockGetProductsJson([
-      EntityFactory.makeProductEntity(),
-      EntityFactory.makeProductEntity(),
-      EntityFactory.makeProductEntity(),
-    ]);
+    sut.mockGetProductsJson(productsEntities);
   }
 
   setUp(() {
@@ -297,5 +299,122 @@ void main() {
         ),
       );
     });
+  });
+
+  group('updateProduct', () {
+    test('should update a product in the list if it exists', () async {
+      // Set up the repository mock to return the initial list
+      sut.mockGetProductsJson(productsEntities);
+
+      final container = makeProviderContainer();
+      addTearDown(container.dispose);
+
+      // Load the initial state
+      await container.read(
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ).future,
+      );
+
+      //loading products
+      await container
+          .read(
+            searchProductsStateControllerProvider(
+              enterpriseEntity.Code!,
+              bsRoutine,
+            ).notifier,
+          )
+          .loadProducts(
+            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+            searchValue: searchValue,
+            enterpriseCode: enterpriseEntity.Code!,
+            selectedEnterprise: enterpriseEntity,
+          );
+
+      // Create the updated version of the first product
+      final updatedProduct = EntityFactory.makeProductEntity().copyWith(
+        ProductPackingCode: productsEntities.first.ProductPackingCode,
+      );
+      // ACT: Call the updateProduct method
+      await container
+          .read(
+            searchProductsStateControllerProvider(
+              enterpriseEntity.Code!,
+              bsRoutine,
+            ).notifier,
+          )
+          .updateProduct(updatedProduct);
+
+      // ASSERT
+      // Read the final state of the provider
+      final finalState = container.read(
+        searchProductsStateControllerProvider(
+          enterpriseEntity.Code!,
+          bsRoutine,
+        ),
+      );
+
+      // Check that the list still has 2 items
+      expect(finalState.value, hasLength(3));
+      // Check that the product with the matching code now has the new name
+      expect(finalState.value?.first, updatedProduct);
+    });
+
+    test(
+      'should do nothing if the product to update is not in the list',
+      () async {
+        // Create an updated product that does NOT exist in the initial list
+        final nonExistentProduct = EntityFactory.makeProductEntity();
+
+        sut.mockGetProductsJson(productsEntities);
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        await container.read(
+          searchProductsStateControllerProvider(
+            enterpriseEntity.Code!,
+            bsRoutine,
+          ).future,
+        );
+
+        //loading products
+        await container
+            .read(
+              searchProductsStateControllerProvider(
+                enterpriseEntity.Code!,
+                bsRoutine,
+              ).notifier,
+            )
+            .loadProducts(
+              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              searchValue: searchValue,
+              enterpriseCode: enterpriseEntity.Code!,
+              selectedEnterprise: enterpriseEntity,
+            );
+
+        // ACT
+        await container
+            .read(
+              searchProductsStateControllerProvider(
+                enterpriseEntity.Code!,
+                bsRoutine,
+              ).notifier,
+            )
+            .updateProduct(nonExistentProduct);
+
+        // ASSERT
+        // Check that the state is still the original list and has not changed.
+        final finalState = container.read(
+          searchProductsStateControllerProvider(
+            enterpriseEntity.Code!,
+            bsRoutine,
+          ),
+        );
+        expect(finalState.value, productsEntities);
+        expect(finalState.value, hasLength(3));
+        expect(finalState.value, productsEntities);
+      },
+    );
   });
 }
