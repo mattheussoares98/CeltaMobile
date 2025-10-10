@@ -37,6 +37,7 @@ import 'package:celta_intelligence/features/enterprise_manager/data/models/model
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/search_products/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:hive/hive.dart';
@@ -821,4 +822,19 @@ class HttpClientSpy extends Mock implements HttpClient {
       decodeBody: any(named: 'decodeBody'),
     ),
   );
+}
+
+class SoapSendToPrintDatasourceSpy extends Mock
+    implements ISoapSendToPrintDatasource {
+  SoapSendToPrintDatasourceSpy() {
+    when(
+      () => this.send(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        productPackingCode: any(named: 'productPackingCode'),
+        newValue: any(named: 'newValue'),
+      ),
+    ).thenAnswer((_) async {});
+  }
 }

@@ -6,7 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late ISoapSendToPrint sut;
+  late ISoapSendToPrintDatasource sut;
 
   late SoapRequestSpy soapAdapter;
 
@@ -17,7 +17,7 @@ void main() {
   late bool newValue;
 
   void initSut() {
-    sut = SoapSendToPrint(soapAdapter);
+    sut = SoapSendToPrintDatasource(soapAdapter);
   }
 
   void initInjections() {
