@@ -37,11 +37,13 @@ GoRouter goRouter(Ref ref) {
     routes: [
       authRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
-      expeditionConferenceDocumentsRoute([expeditionConferenceProductsRoute()]),
       homeRoute([
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
         customerRegisterRoute(),
+        expeditionConferenceDocumentsRoute([
+          expeditionConferenceProductsRoute(),
+        ]),
         searchProductsRoute(),
         transferBetweenStocksRoute(),
       ]),
