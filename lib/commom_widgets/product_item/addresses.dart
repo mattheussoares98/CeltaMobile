@@ -22,37 +22,47 @@ class Addresses extends ConsumerWidget {
             child: DefaultTitle(title: 'Endereços'.hardcoded),
           ),
         ),
-        SliverToBoxAdapter(
-          child: Center(
-            child: TitleAndSubTitle(
-              title: 'Endereço na empresa selecionada',
-              subTitle: widget.product.StorageAreaAddress ?? 'Não há',
-              subTitleStyle: theme.textTheme.titleSmall,
+        if (widget.product.StorageAreaAddress == null &&
+            (widget.product.StockByEnterpriseAssociateds?.length ?? 0) ==
+                0) ...[
+          SliverToBoxAdapter(
+            child: Text(
+              'Não há endereços cadastrados para esse produto'.hardcoded,
             ),
           ),
-        ),
+        ] else ...[
+          SliverToBoxAdapter(
+            child: Center(
+              child: TitleAndSubTitle(
+                title: 'Endereço na empresa selecionada',
+                subTitle: widget.product.StorageAreaAddress ?? 'Não há',
+                subTitleStyle: theme.textTheme.titleSmall,
+              ),
+            ),
+          ),
 
-        SliverList.builder(
-          itemCount: widget.product.StockByEnterpriseAssociateds?.length,
-          itemBuilder: (_, index) {
-            final stock = widget.product.StockByEnterpriseAssociateds![index];
+          SliverList.builder(
+            itemCount: widget.product.StockByEnterpriseAssociateds?.length ?? 0,
+            itemBuilder: (_, index) {
+              final stock = widget.product.StockByEnterpriseAssociateds![index];
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Divider(),
-                TitleAndSubTitle(
-                  title: 'Empresa'.hardcoded,
-                  subTitle: stock.Enterprise,
-                ),
-                TitleAndSubTitle(
-                  title: 'Endereço'.hardcoded,
-                  subTitle: stock.StorageAreaAddress ?? 'Não há'.hardcoded,
-                ),
-              ],
-            );
-          },
-        ),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Divider(),
+                  TitleAndSubTitle(
+                    title: 'Empresa'.hardcoded,
+                    subTitle: stock.Enterprise,
+                  ),
+                  TitleAndSubTitle(
+                    title: 'Endereço'.hardcoded,
+                    subTitle: stock.StorageAreaAddress ?? 'Não há'.hardcoded,
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       ],
     );
   }
