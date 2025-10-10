@@ -1,16 +1,137 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SearchProductsPage extends ConsumerWidget {
+import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../constants/constants.dart';
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/products/products.dart';
+
+class SearchProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  const SearchProductsPage({super.key, required this.enterpriseCode});
+  final EnterpriseEntity? selectedEnterprise;
+  const SearchProductsPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.selectedEnterprise,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SearchProductsPageState();
+}
+
+class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
+  final searchValueController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  int? selectedIndex;
+
+  @override
+  void dispose() {
+    searchValueController.dispose();
+    formKey.currentState?.dispose();
+    super.dispose();
+  }
+
+  Future<void> searchProducts() async {
+    await ref
+        .read(
+          searchProductsStateControllerProvider(
+            widget.enterpriseCode,
+            BsRoutine.priceConference,
+          ).notifier,
+        )
+        .loadProducts(
+          enterpriseCode: widget.enterpriseCode,
+          searchValue: searchValueController.text,
+          selectedEnterprise: widget.selectedEnterprise,
+        );
+  }
+
+  void changeSelectedIndex(int index) {
+    if (selectedIndex != index) {
+      setState(() {
+        selectedIndex = index;
+      });
+    } else {
+      setState(() {
+        selectedIndex = null;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final productsState = ref.watch(
+      searchProductsStateControllerProvider(
+        widget.enterpriseCode,
+        BsRoutine.priceConference,
+      ),
+    );
+
+    ref.listen(
+      searchProductsStateControllerProvider(
+        widget.enterpriseCode,
+        BsRoutine.priceConference,
+      ),
+      (p, n) {
+        n.doOnSuccess(p, () {
+          searchValueController.clear();
+        });
+      },
+    );
+
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     return Scaffold(
       appBar: AppBar(title: Text('Pesquisar produtos'.hardcoded)),
-      body: Center(child: Text('Pesquisar produtos'.hardcoded)),
+      body: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              DefaultSearchProducts(
+                searchValueController: searchValueController,
+                isLoading: productsState.isLoading,
+                searchProducts: searchProducts,
+              ),
+              gapH8,
+              Expanded(
+                child: AsyncValueWidget(
+                  value: productsState,
+                  tryAgain: null,
+                  data: (products) {
+                    return ResponsiveListFlow(
+                      itemCount: products.length,
+                      itemBuilder: (_, index) {
+                        final product = products[index];
+                        return ProductItemWidget(
+                          enterpriseCode: widget.enterpriseCode,
+                          product: product,
+                          routine: BsRoutine.priceConference,
+                          notClickableBottom: PrimaryTextButton(
+                            text: 'Marcar para impressão'.hardcoded,
+                            icon: Icon(
+                              isIOS ? CupertinoIcons.printer : Icons.print,
+                            ),
+                            onPressed: () {
+                              //TODO implement
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

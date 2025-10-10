@@ -81,7 +81,7 @@ class TitleAndSubTitle extends StatelessWidget {
             ),
           if (subtitleText != null)
             TextSpan(
-              text: subTitleIsNumber
+              text: subTitleIsNumber && subTitleIsPrice == true
                   ? subtitleText.toBrazilianNumber(2, false)
                   : subtitleText,
               style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
