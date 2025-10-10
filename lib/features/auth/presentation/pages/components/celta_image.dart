@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../routing/app_router.dart';
+import '../../../../../routing/routing.dart';
 
 class CeltaImage extends StatelessWidget {
   const CeltaImage({super.key});
@@ -11,7 +11,7 @@ class CeltaImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        context.pushNamed(AppRoute.enterpriseManager.name);
+        context.pushNamed(Routes.enterpriseManager.name);
       },
       child: ResponsiveCenter(
         maxContentWidth: 300,

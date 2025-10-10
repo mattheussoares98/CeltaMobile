@@ -117,7 +117,7 @@ class _AdjustSalePriceProductsPageState
                                   iconAlignment: IconAlignment.end,
                                   onPressed: () {
                                     context.goNamed(
-                                      AppRoute.adjustSalePrice.name,
+                                      Routes.adjustSalePrice.name,
                                       pathParameters: {
                                         'enterpriseCode': widget.enterpriseCode
                                             .toString(),

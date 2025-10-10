@@ -6,7 +6,7 @@ import '../routing.dart';
 
 RouteBase expeditionConferenceDocumentsRoute(List<RouteBase> routes) => GoRoute(
   path: 'expedition-conference/:enterpriseCode',
-  name: AppRoute.expeditionConference.name,
+  name: Routes.expeditionConference.name,
   routes: routes,
   builder: (context, state) {
     final enterprise =

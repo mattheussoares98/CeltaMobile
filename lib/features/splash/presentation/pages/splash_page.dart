@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../routing/app_router.dart';
+import '../../../../routing/routing.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -24,9 +24,9 @@ class _SplashPageState extends ConsumerState<SplashPage> {
         Future.delayed(const Duration(seconds: kDebugMode ? 1 : 2), () {
           if (userSession?.user.AccessKey == null ||
               userSession?.user.CrossIdentity_Usuario == null) {
-            context.goNamed(AppRoute.auth.name);
+            context.goNamed(Routes.auth.name);
           } else {
-            context.goNamed(AppRoute.home.name);
+            context.goNamed(Routes.home.name);
           }
         });
       }

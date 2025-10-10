@@ -5,7 +5,7 @@ import '../routing.dart';
 
 RouteBase enterpriseManagerRoute(Bridge<Object?> mgrBridge) => GoRoute(
   path: '/enterprise-manager',
-  name: AppRoute.enterpriseManager.name,
+  name: Routes.enterpriseManager.name,
 
   redirect: (context, state) {
     final isLoggedInManager = mgrBridge.value != null;
@@ -26,17 +26,17 @@ RouteBase enterpriseManagerRoute(Bridge<Object?> mgrBridge) => GoRoute(
   routes: [
     GoRoute(
       path: 'auth',
-      name: AppRoute.enterpriseManagerAuth.name,
+      name: Routes.enterpriseManagerAuth.name,
       builder: (context, state) => const AuthPage(),
     ),
     GoRoute(
       path: 'dashboard',
-      name: AppRoute.enterpriseManagerDash.name,
+      name: Routes.enterpriseManagerDash.name,
       builder: (context, state) => const EnterpriseManagerPage(),
       routes: [
         GoRoute(
           path: 'permissions/:enterpriseId/:subEnterpriseId',
-          name: AppRoute.enterpriseManagerChangeModulesPermissions.name,
+          name: Routes.enterpriseManagerChangeModulesPermissions.name,
           builder: (context, state) {
             final enterpriseId = state.pathParameters['enterpriseId']!;
             final subEnterpriseId = state.pathParameters['subEnterpriseId']!;
@@ -49,7 +49,7 @@ RouteBase enterpriseManagerRoute(Bridge<Object?> mgrBridge) => GoRoute(
         ),
         GoRoute(
           path: 'createEnterprise',
-          name: AppRoute.createEnterprise.name,
+          name: Routes.createEnterprise.name,
           builder: (context, state) => CreateEnterprisePage(),
         ),
       ],

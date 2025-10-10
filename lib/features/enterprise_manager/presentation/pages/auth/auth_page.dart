@@ -43,7 +43,7 @@ class _EnterpriseManagerAuthPageState extends ConsumerState<AuthPage> {
 
     if (authResponse != null) {
       context.pop();
-      context.pushNamed(AppRoute.enterpriseManager.name);
+      context.pushNamed(Routes.enterpriseManager.name);
     }
   }
 

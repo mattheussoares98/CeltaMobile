@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../constants/app_sizes.dart';
 import '../core/presentation/controllers/user_session/user_session.dart';
 import '../localization/string_hardcoded.dart';
-import '../routing/app_router.dart';
+import '../routing/routing.dart';
 import 'commom_widgets.dart';
 
 class EmptyPlaceholderWidget extends ConsumerWidget {
@@ -35,7 +35,7 @@ class EmptyPlaceholderWidget extends ConsumerWidget {
             gapH32,
             PrimaryButton(
               onPressed: () => context.goNamed(
-                goToAuth ? AppRoute.auth.name : AppRoute.home.name,
+                goToAuth ? Routes.auth.name : Routes.home.name,
               ),
               text: goToAuth
                   ? 'Ir para login'.hardcoded

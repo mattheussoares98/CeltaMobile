@@ -6,7 +6,7 @@ import '../routing.dart';
 
 RouteBase adjustStocksRoute() => GoRoute(
   path: 'adjust-stocks/:enterpriseCode',
-  name: AppRoute.adjustStocks.name,
+  name: Routes.adjustStocks.name,
   builder: (context, state) {
     final enterprise =
         (state.extra as Map?)?['enterprise'] as EnterpriseEntity?;

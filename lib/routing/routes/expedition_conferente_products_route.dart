@@ -7,7 +7,7 @@ import '../routing.dart';
 
 RouteBase expeditionConferenceProductsRoute() => GoRoute(
   path: 'products-conference/:stepCode/:expeditionControlCode',
-  name: AppRoute.expeditionConferenceProducts.name,
+  name: Routes.expeditionConferenceProducts.name,
   builder: (context, state) {
     final enterprise =
         (state.extra as Map?)?['enterprise'] as EnterpriseEntity?;

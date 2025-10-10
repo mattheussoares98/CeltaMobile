@@ -65,7 +65,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.pushNamed(AppRoute.createEnterprise.name);
+          context.pushNamed(Routes.createEnterprise.name);
         },
         child: Icon(
           theme.platform == TargetPlatform.iOS ? CupertinoIcons.add : Icons.add,

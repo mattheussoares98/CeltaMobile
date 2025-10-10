@@ -10,7 +10,7 @@ import '../../../../enterprise_manager/domain/entities/entities.dart';
 
 class DefaultModuleButton extends StatelessWidget {
   final EnterpriseEntity? selectedEnterprise;
-  final AppRoute route;
+  final Routes route;
   final Modules module;
   final AsyncValue<List<EnabledModulesByCnpjEntity>>
   enabledModulesByEnterpriseAsync;

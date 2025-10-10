@@ -16,7 +16,7 @@ class EditEnterpriseButton extends StatelessWidget {
     return IconButton(
       onPressed: () {
         context.pushNamed(
-          AppRoute.enterpriseManagerChangeModulesPermissions.name,
+          Routes.enterpriseManagerChangeModulesPermissions.name,
           pathParameters: {
             'enterpriseId': enterprise.id.toString(),
             'subEnterpriseId': 'all',

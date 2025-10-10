@@ -12,7 +12,7 @@ class CeltaImage extends StatelessWidget {
     return GestureDetector(
       onLongPress: () {
         context.pop();
-        context.pushNamed(AppRoute.enterpriseManager.name);
+        context.pushNamed(Routes.enterpriseManager.name);
       },
       child: ResponsiveCenter(
         maxContentWidth: 300,

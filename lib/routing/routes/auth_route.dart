@@ -5,6 +5,6 @@ import '../routing.dart';
 
 RouteBase authRoute() => GoRoute(
   path: '/auth',
-  name: AppRoute.auth.name,
+  name: Routes.auth.name,
   builder: (context, state) => const AuthPage(),
 );

@@ -15,7 +15,7 @@ class SubEnterprises extends StatelessWidget {
     SubEnterprisePermissionEntity subEnterprise,
   ) {
     context.pushNamed(
-      AppRoute.enterpriseManagerChangeModulesPermissions.name,
+      Routes.enterpriseManagerChangeModulesPermissions.name,
       pathParameters: {
         'enterpriseId': enterprise.id.toString(),
         'subEnterpriseId': subEnterprise.id.toString(),

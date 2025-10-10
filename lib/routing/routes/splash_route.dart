@@ -5,6 +5,6 @@ import '../routing.dart';
 
 RouteBase splashRoute() => GoRoute(
   path: '/splash',
-  name: AppRoute.splash.name,
+  name: Routes.splash.name,
   builder: (context, state) => const SplashPage(),
 );

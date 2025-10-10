@@ -74,7 +74,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       next.doOnSuccess(previous, () {
         ref.invalidate(userSessionProvider);
         ref.invalidate(validatedUserSessionProvider);
-        context.goNamed(AppRoute.home.name);
+        context.goNamed(Routes.home.name);
       });
     });
 

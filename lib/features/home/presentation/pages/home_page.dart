@@ -18,7 +18,7 @@ class HomePage extends ConsumerWidget {
     ref.listen(userSessionProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       if (next.value == null) {
-        context.goNamed(AppRoute.auth.name);
+        context.goNamed(Routes.auth.name);
       }
     });
 

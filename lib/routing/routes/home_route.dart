@@ -5,7 +5,7 @@ import '../routing.dart';
 
 RouteBase homeRoute(List<RouteBase> routes) => GoRoute(
   path: '/home',
-  name: AppRoute.home.name,
+  name: Routes.home.name,
   builder: (context, state) => HomePage(),
   routes: routes,
 );

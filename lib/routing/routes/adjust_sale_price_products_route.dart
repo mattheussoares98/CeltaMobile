@@ -6,7 +6,7 @@ import '../routing.dart';
 
 RouteBase adjustSalePriceProducts(List<RouteBase> routes) => GoRoute(
   path: 'adjust-sale-price-products/:enterpriseCode',
-  name: AppRoute.adjustSalePriceProducts.name,
+  name: Routes.adjustSalePriceProducts.name,
   routes: routes,
   builder: (context, state) {
     final enterprise =

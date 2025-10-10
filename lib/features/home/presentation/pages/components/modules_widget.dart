@@ -31,32 +31,32 @@ class ModulesWidget extends ConsumerWidget {
       DefaultModuleButton(
         enabledModulesByEnterpriseAsync: enabledModulesByEnterpriseAsync,
         selectedEnterprise: selectedEnterprise,
-        route: AppRoute.adjustSalePriceProducts,
+        route: Routes.adjustSalePriceProducts,
         module: Modules.adjustPrice,
       ),
       DefaultModuleButton(
         enabledModulesByEnterpriseAsync: enabledModulesByEnterpriseAsync,
         selectedEnterprise: selectedEnterprise,
-        route: AppRoute.adjustStocks,
+        route: Routes.adjustStocks,
         module: Modules.adjustStock,
       ),
       DefaultModuleButton(
         enabledModulesByEnterpriseAsync: enabledModulesByEnterpriseAsync,
         selectedEnterprise: selectedEnterprise,
-        route: AppRoute.customerRegister,
+        route: Routes.customerRegister,
         module: Modules.customerRegister,
         passEnterpriseToNextRoute: false,
       ),
       DefaultModuleButton(
         enabledModulesByEnterpriseAsync: enabledModulesByEnterpriseAsync,
         selectedEnterprise: selectedEnterprise,
-        route: AppRoute.transferBetweenStocks,
+        route: Routes.transferBetweenStocks,
         module: Modules.transferBetweenStocks,
       ),
       DefaultModuleButton(
         enabledModulesByEnterpriseAsync: enabledModulesByEnterpriseAsync,
         selectedEnterprise: selectedEnterprise,
-        route: AppRoute.searchProducts,
+        route: Routes.searchProducts,
         module: Modules.searchProducts,
       ),
     ];

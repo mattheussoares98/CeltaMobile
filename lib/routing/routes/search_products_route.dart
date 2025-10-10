@@ -6,7 +6,7 @@ import '../routing.dart';
 
 RouteBase searchProductsRoute() => GoRoute(
   path: 'search-products/:enterpriseCode',
-  name: AppRoute.searchProducts.name,
+  name: Routes.searchProducts.name,
   builder: (context, state) {
     final enterprise =
         (state.extra as Map?)?['enterprise'] as EnterpriseEntity?;

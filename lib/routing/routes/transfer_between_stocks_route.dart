@@ -6,7 +6,7 @@ import '../routing.dart';
 
 RouteBase transferBetweenStocksRoute() => GoRoute(
   path: 'transfer-between-stocks/:enterpriseCode',
-  name: AppRoute.transferBetweenStocks.name,
+  name: Routes.transferBetweenStocks.name,
   builder: (context, state) {
     final enterprise =
         (state.extra as Map?)?['enterprise'] as EnterpriseEntity?;

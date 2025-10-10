@@ -5,7 +5,7 @@ import '../routing.dart';
 
 RouteBase customerRegisterRoute() => GoRoute(
   path: 'customer-register',
-  name: AppRoute.customerRegister.name,
+  name: Routes.customerRegister.name,
   builder: (context, state) {
     return CustomerRegisterPage();
   },
