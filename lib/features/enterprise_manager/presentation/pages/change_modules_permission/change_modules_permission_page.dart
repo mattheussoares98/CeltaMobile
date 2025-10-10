@@ -151,6 +151,6 @@ class _ChangeModulesPermissionPageState
           .firstWhere((se) => se.id == widget.subEnterpriseId)
           .modules;
     }
-    return enterprise.globalModules;
+    return enterprise.globalModules..sort((a, b) => a.name.compareTo(b.name));
   }
 }
