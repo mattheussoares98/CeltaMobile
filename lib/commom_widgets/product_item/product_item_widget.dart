@@ -37,7 +37,7 @@ class ProductItemWidget extends ConsumerWidget {
     final currentStockIndex = stocks.indexWhere(
       (e) =>
           e.EnterpriseCode == enterpriseCode &&
-          e.StockName.toLowerCase() == name.toLowerCase(),
+          e.StockName.toLowerCase().contains(name.toLowerCase()),
     );
 
     if (currentStockIndex == -1) {
@@ -151,8 +151,8 @@ class ProductItemWidget extends ConsumerWidget {
                           subTitle: currentStockQuantity,
                         ),
                         TitleAndSubTitle(
-                          title: "Saldo ",
-                          emptyMessage: 'Sem saldo'.hardcoded,
+                          title: "Saldo de venda",
+                          emptyMessage: 'Sem saldo de venda'.hardcoded,
                           subTitle: _getStockQuantityByName(
                             product.Stocks,
                             'saldo'.hardcoded,
