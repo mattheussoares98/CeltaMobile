@@ -68,7 +68,7 @@ class TitleAndSubTitle extends StatelessWidget {
         children: [
           if (!showErrorMessage && title != null)
             TextSpan(
-              text: title,
+              text: "${title!.trimRight()} ",
               style: titleStyle ?? theme.textTheme.bodyMedium,
             ),
           if (subTitleIsPrice == true && !showErrorMessage)
