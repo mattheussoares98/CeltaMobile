@@ -4,6 +4,8 @@ export 'adjust_stocks_route.dart';
 export './auth_route.dart';
 export './customer_register_route.dart';
 export './enterprise_manager_route.dart';
+export './expedition_conference_documents_route.dart';
+export './expedition_conferente_products_route.dart';
 export './home_route.dart';
 export './search_products_route.dart';
 export './splash_route.dart';

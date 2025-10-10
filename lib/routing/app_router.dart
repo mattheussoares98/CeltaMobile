@@ -21,6 +21,8 @@ enum AppRoute {
   enterpriseManagerChangeModulesPermissions('Permissões de módulos'),
   enterpriseManagerDash('Dashboard'),
   enterprises('Empresas'),
+  expeditionConference('Conferência (expedição) documentos'),
+  expeditionConferenceProducts('Conferência (expedição) produtos'),
   home('Home'),
   searchProducts('Pesquisar produtos'),
   splash('Splash'),
@@ -58,6 +60,7 @@ GoRouter goRouter(Ref ref) {
     routes: [
       authRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
+      expeditionConferenceDocumentsRoute([expeditionConferenceProductsRoute()]),
       homeRoute([
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
