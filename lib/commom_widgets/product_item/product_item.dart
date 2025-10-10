@@ -1,3 +1,4 @@
+export './addresses.dart';
 export './costs.dart';
 export './default_title.dart';
 export './finish_offer_button.dart';

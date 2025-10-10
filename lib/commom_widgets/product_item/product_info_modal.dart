@@ -33,6 +33,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
     final pages = [
       Prices(widget: widget, enterpriseCode: widget.enterpriseCode),
       Stocks(widget: widget),
+      Addresses(widget: widget),
       Costs(widget: widget),
       Margins(widget: widget),
     ];
@@ -64,6 +65,10 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
               isIOS ? CupertinoIcons.archivebox : Icons.inventory_2_outlined,
             ),
             label: 'Estoques'.hardcoded,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(isIOS ? CupertinoIcons.location : Icons.location_pin),
+            label: 'Endereços'.hardcoded,
           ),
           BottomNavigationBarItem(
             icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
