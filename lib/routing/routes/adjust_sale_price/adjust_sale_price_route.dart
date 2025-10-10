@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 
-import '../../core/domain/entities/entities.dart';
-import '../../features/adjust_sale_price/presentation/pages/pages.dart';
-import '../routing.dart';
+import '../../../core/domain/entities/entities.dart';
+import '../../../features/adjust_sale_price/presentation/pages/pages.dart';
+import '../../routing.dart';
 
 RouteBase adjustSalePrice() => GoRoute(
   path: 'adjust-sale-price/:plu',

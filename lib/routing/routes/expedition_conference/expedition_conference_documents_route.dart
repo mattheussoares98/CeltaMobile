@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 
-import '../../core/domain/entities/entities.dart';
-import '../../features/expedition_conference/presentation/pages/pages.dart';
-import '../routing.dart';
+import '../../../core/domain/entities/entities.dart';
+import '../../../features/expedition_conference/presentation/pages/pages.dart';
+import '../../routing.dart';
 
 RouteBase expeditionConferenceDocumentsRoute(List<RouteBase> routes) => GoRoute(
   path: 'expedition-conference/:enterpriseCode',
