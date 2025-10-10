@@ -7,7 +7,6 @@ import '../../constants/constants.dart';
 import '../commom_widgets.dart';
 
 class Shopping extends StatelessWidget {
-  //TODO remove riverpod from these pages that is not using
   const Shopping({super.key, required this.widget});
 
   final ProductInfoModal widget;

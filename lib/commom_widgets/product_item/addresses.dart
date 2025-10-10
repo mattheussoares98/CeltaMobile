@@ -1,17 +1,16 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/constants.dart';
 import '../commom_widgets.dart';
 
-class Addresses extends ConsumerWidget {
+class Addresses extends StatelessWidget {
   const Addresses({super.key, required this.widget});
 
   final ProductInfoModal widget;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return CustomScrollView(

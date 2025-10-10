@@ -1,19 +1,18 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 
 import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
 import '../commom_widgets.dart';
 
-class Stocks extends ConsumerWidget {
+class Stocks extends StatelessWidget {
   const Stocks({super.key, required this.widget});
 
   final ProductInfoModal widget;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final groupedStocks = groupBy(
       widget.product.Stocks ?? <StockEntity>[],
       (stock) => (stock).Enterprise,
