@@ -62,9 +62,11 @@ class Stocks extends ConsumerWidget {
                   return Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      TitleAndSubTitle(
-                        title: stock.StockName,
-                        subTitle: stock.StockQuantity,
+                      Expanded(
+                        child: TitleAndSubTitle(
+                          title: stock.StockName,
+                          subTitle: stock.StockQuantity,
+                        ),
                       ),
                     ],
                   );
