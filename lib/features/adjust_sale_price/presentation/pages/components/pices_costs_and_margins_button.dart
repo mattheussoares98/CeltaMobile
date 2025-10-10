@@ -23,7 +23,11 @@ class PricesCostsAndMarginsButton extends StatelessWidget {
       text: 'Preços, custos e margens'.hardcoded,
       onPressed: () {
         showModalPage(
-          ProductInfoModal(product: product, enterpriseCode: enterpriseCode),
+          ProductInfoModal(
+            product: product,
+            enterpriseCode: enterpriseCode,
+            routine: BsRoutine.adjustSalePrice,
+          ),
           context,
         );
       },

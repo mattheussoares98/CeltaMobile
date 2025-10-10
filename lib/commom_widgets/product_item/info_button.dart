@@ -10,9 +10,11 @@ class InfoButton extends StatelessWidget {
     super.key,
     required this.product,
     required this.enterpriseCode,
+    required this.routine,
   });
   final int enterpriseCode;
   final ProductEntity product;
+  final BsRoutine routine;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,11 @@ class InfoButton extends StatelessWidget {
     return InkWell(
       onTap: () {
         showModalPage(
-          ProductInfoModal(product: product, enterpriseCode: enterpriseCode),
+          ProductInfoModal(
+            product: product,
+            enterpriseCode: enterpriseCode,
+            routine: routine,
+          ),
           context,
         );
       },

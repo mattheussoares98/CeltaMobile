@@ -124,6 +124,7 @@ class ProductItemWidget extends ConsumerWidget {
                           InfoButton(
                             product: product,
                             enterpriseCode: enterpriseCode,
+                            routine: routine,
                           ),
                         ],
                       ),

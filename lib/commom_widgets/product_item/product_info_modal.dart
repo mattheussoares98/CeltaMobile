@@ -8,10 +8,12 @@ import 'product_item.dart';
 class ProductInfoModal extends StatefulWidget {
   final ProductEntity product;
   final int enterpriseCode;
+  final BsRoutine routine;
   const ProductInfoModal({
     super.key,
     required this.product,
     required this.enterpriseCode,
+    required this.routine,
   });
 
   @override
@@ -35,7 +37,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
       Stocks(widget: widget),
       Addresses(widget: widget),
       Costs(widget: widget),
-      Margins(widget: widget),
+      if (widget.routine == BsRoutine.adjustSalePrice) Margins(widget: widget),
     ];
 
     final theme = Theme.of(context);
@@ -74,12 +76,13 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
             icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
             label: 'Custos'.hardcoded,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart_rounded,
+          if (widget.routine == BsRoutine.adjustSalePrice)
+            BottomNavigationBarItem(
+              icon: Icon(
+                isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart_rounded,
+              ),
+              label: 'Margens'.hardcoded,
             ),
-            label: 'Margens'.hardcoded,
-          ),
         ],
       ),
       body: Padding(
