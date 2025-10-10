@@ -5,4 +5,5 @@ enum Modules {
   saleRequest,
   transferBetweenStocks,
   reports,
+  searchProducts,
 }
