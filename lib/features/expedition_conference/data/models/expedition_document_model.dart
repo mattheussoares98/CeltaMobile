@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/entities.dart';
 
-class ExpeditionDocumentModel {
+class ExpeditionDocumentModel extends Equatable {
   final int? EnterpriseCode;
   final int? ExpeditionControlCode;
   final int? OriginCode;
@@ -10,7 +12,7 @@ class ExpeditionDocumentModel {
   final String? StepName;
   final String? OriginTypeString;
 
-  ExpeditionDocumentModel({
+  const ExpeditionDocumentModel({
     required this.EnterpriseCode,
     required this.ExpeditionControlCode,
     required this.OriginCode,
@@ -20,6 +22,18 @@ class ExpeditionDocumentModel {
     required this.StepName,
     required this.OriginTypeString,
   });
+
+  @override
+  List<Object?> get props => [
+    EnterpriseCode,
+    ExpeditionControlCode,
+    OriginCode,
+    OriginType,
+    StepCode,
+    DocumentNumber,
+    StepName,
+    OriginTypeString,
+  ];
 
   factory ExpeditionDocumentModel.fromJson(Map<String, dynamic> json) =>
       ExpeditionDocumentModel(
