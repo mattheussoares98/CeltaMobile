@@ -1,2 +1,2 @@
 export 'documents/documents.dart';
-export './products_conference_page.dart';
+export 'products/products_conference_page.dart';

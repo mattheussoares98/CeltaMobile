@@ -16,11 +16,13 @@ RouteBase expeditionConferenceProductsRoute() => GoRoute(
         .toInt()!;
     final stepCode = state.pathParameters['stepCode']!.toInt()!;
     final documentNumber = state.pathParameters['documentNumber']!;
+    final enterpriseCode = state.pathParameters['enterpriseCode']!.toInt()!;
 
     return ProductsConferencePage(
       expeditionControlCode: expeditionControlCode,
       stepCode: stepCode,
       documentNumber: documentNumber,
+      enterpriseCode: enterpriseCode,
       selectedEnterprise: enterprise,
     );
   },
