@@ -10,7 +10,7 @@ enum Routes {
   enterpriseManagerChangeModulesPermissions('Permissões de módulos'),
   enterpriseManagerDash('Dashboard'),
   enterprises('Empresas'),
-  expeditionConferenceDocuments('Conferência (expedição)'),
+  expeditionConferenceDocuments('Expedição (conferência)'),
   expeditionConferenceProducts('Conferência (expedição) produtos'),
   home('Home'),
   searchProducts('Pesquisar produtos'),
