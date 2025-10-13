@@ -37,6 +37,8 @@ import 'package:celta_intelligence/features/enterprise_manager/data/models/model
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/expedition_conference/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/expedition_conference/data/models/models.dart';
 import 'package:celta_intelligence/features/search_products/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
@@ -837,4 +839,19 @@ class SoapSendToPrintDatasourceSpy extends Mock
       ),
     ).thenAnswer((_) async {});
   }
+}
+
+class SoapLoadExpeditionDocumentsDatasourceSpy extends Mock
+    implements ISoapLoadExpeditionDocumentsDatasource {
+  void mockLoad(List<ExpeditionDocumentModel> response) {
+    _mockLoadCall().thenAnswer((_) async => response);
+  }
+
+  When _mockLoadCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+    ),
+  );
 }
