@@ -2,8 +2,8 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import 'components.dart';
 
 class BottomNavigationWidget extends StatelessWidget {
   final int selectedIndex;

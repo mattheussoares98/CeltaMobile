@@ -9,9 +9,9 @@ class BadgeIcon extends StatelessWidget {
   final IconData materialIcon;
   const BadgeIcon({
     super.key,
-    required this.valid,
     required this.cupertinoIcon,
     required this.materialIcon,
+    this.valid,
   });
 
   @override
