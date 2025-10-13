@@ -14,11 +14,13 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
   final bool isLoading;
   final VoidCallback searchProducts;
   final TextEditingController searchValueController;
+  final FocusNode? focusNode;
   const DefaultSearchProducts({
     super.key,
     required this.isLoading,
     required this.searchProducts,
     required this.searchValueController,
+    this.focusNode,
   });
 
   @override
@@ -28,12 +30,11 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
 
 class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
   final formKey = GlobalKey<FormState>();
-  final focusNode = FocusNode();
 
   @override
   void dispose() {
     super.dispose();
-    focusNode.dispose();
+    formKey.currentState?.dispose();
   }
 
   void searchProducts() async {
@@ -75,7 +76,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
             maxLength: 40,
             enabled: !widget.isLoading,
             controller: widget.searchValueController,
-            focusNode: focusNode,
+            focusNode: widget.focusNode,
             validator: FormValidators.compose([NonEmptyValidator()]),
             onFieldSubmitted: (_) {
               searchProducts();
@@ -85,7 +86,9 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                 : _DefaultIcon(
                     onPress: () {
                       widget.searchValueController.clear();
-                      focusNode.requestFocus();
+                      Future.delayed(Duration(milliseconds: 100), () {
+                        widget.focusNode?.requestFocus();
+                      });
                     },
                     materialIcon: Icons.delete,
                     cupertinoIcon: CupertinoIcons.delete,
