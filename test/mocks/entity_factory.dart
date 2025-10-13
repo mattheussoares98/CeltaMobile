@@ -2,6 +2,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 
@@ -430,4 +431,16 @@ class EntityFactory {
     FlagEnderecoContemNumEntrega_Convenio: faker.randomGenerator.integer(100),
     FlagEnderecoContemNumCobranca_Convenio: faker.randomGenerator.integer(100),
   );
+
+  static ExpeditionDocumentEntity makeExpeditionDocumentEntity() =>
+      ExpeditionDocumentEntity(
+        EnterpriseCode: faker.randomGenerator.integer(100),
+        ExpeditionControlCode: faker.randomGenerator.integer(100),
+        OriginCode: faker.randomGenerator.integer(100),
+        OriginType: faker.randomGenerator.integer(100),
+        StepCode: faker.randomGenerator.integer(100),
+        DocumentNumber: faker.randomGenerator.integer(100).toString(),
+        StepName: faker.lorem.word(),
+        OriginTypeString: faker.lorem.word(),
+      );
 }
