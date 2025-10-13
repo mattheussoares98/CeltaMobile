@@ -48,9 +48,9 @@ class TitleAndSubTitle extends StatelessWidget {
     Color? getSubtitleColor() {
       if (showErrorMessage) {
         return Colors.red;
-      } else if (subTitleIsNumber && (subTitle as double) <= 0) {
+      } else if (subTitleIsNumber && (subTitle as num) <= 0) {
         return Colors.red;
-      } else if (subTitleIsNumber && (subTitle as double) > 0) {
+      } else if (subTitleIsNumber && (subTitle as num) > 0) {
         return Colors.green;
       }
       return null;
