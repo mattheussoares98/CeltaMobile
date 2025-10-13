@@ -443,4 +443,15 @@ class EntityFactory {
         StepName: faker.lorem.word(),
         OriginTypeString: faker.lorem.word(),
       );
+
+  static ExpeditionProductEntity makeExpeditionProductEntity() =>
+      ExpeditionProductEntity(
+        EnterpriseCode: faker.randomGenerator.integer(100),
+        ProductCode: faker.randomGenerator.integer(100),
+        ProductPackingCode: faker.randomGenerator.integer(100),
+        Quantity: faker.randomGenerator.decimal(),
+        PriceLookUp: faker.lorem.word(),
+        Name: faker.food.dish(),
+        Packing: faker.lorem.word(),
+      );
 }
