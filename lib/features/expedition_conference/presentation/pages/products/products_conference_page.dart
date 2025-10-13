@@ -76,7 +76,7 @@ class _ProductsConferencePageState
           BottomNavigationBarItem(
             label: 'Pendentes'.hardcoded,
             icon: BadgeIcon(
-              valid: null, //TODO change to a widget param
+              badge: null, //TODO change to a widget param
               cupertinoIcon: CupertinoIcons.exclamationmark_triangle,
               materialIcon: Icons.error,
             ),
@@ -84,7 +84,7 @@ class _ProductsConferencePageState
           BottomNavigationBarItem(
             label: 'Conferidos'.hardcoded,
             icon: BadgeIcon(
-              valid: null,
+              badge: null,
               cupertinoIcon: CupertinoIcons.checkmark_seal,
               materialIcon: Icons.verified_rounded,
             ),

@@ -27,7 +27,7 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Dados'.hardcoded,
           icon: BadgeIcon(
-            valid: null,
+            badge: null,
             cupertinoIcon: CupertinoIcons.person,
             materialIcon: Icons.person,
           ),
@@ -35,10 +35,13 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Endereço'.hardcoded,
           icon: BadgeIcon(
-            valid: customer == null
+            badge: customer == null
                 ? null
-                : customer?.Addresses != null &&
-                      customer!.Addresses!.isNotEmpty,
+                : Badge(
+                    isValid:
+                        customer?.Addresses != null &&
+                        customer!.Addresses!.isNotEmpty,
+                  ),
             cupertinoIcon: CupertinoIcons.location,
             materialIcon: Icons.location_on,
           ),
@@ -46,9 +49,13 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'E-mail'.hardcoded,
           icon: BadgeIcon(
-            valid: customer == null
+            badge: customer == null
                 ? null
-                : customer?.Emails != null && customer!.Emails!.isNotEmpty,
+                : Badge(
+                    isValid:
+                        customer?.Emails != null &&
+                        customer!.Emails!.isNotEmpty,
+                  ),
             cupertinoIcon: CupertinoIcons.mail,
             materialIcon: Icons.email,
           ),
@@ -56,10 +63,13 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Telefone'.hardcoded,
           icon: BadgeIcon(
-            valid: customer == null
+            badge: customer == null
                 ? null
-                : customer?.Telephones != null &&
-                      customer!.Telephones!.isNotEmpty,
+                : Badge(
+                    isValid:
+                        customer?.Telephones != null &&
+                        customer!.Telephones!.isNotEmpty,
+                  ),
             cupertinoIcon: CupertinoIcons.phone,
             materialIcon: Icons.phone,
           ),
@@ -67,10 +77,13 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Convênios'.hardcoded,
           icon: BadgeIcon(
-            valid: customer == null
+            badge: customer == null
                 ? null
-                : customer?.CustomerCovenants != null &&
-                      customer!.CustomerCovenants!.isNotEmpty,
+                : Badge(
+                    isValid:
+                        customer?.CustomerCovenants != null &&
+                        customer!.CustomerCovenants!.isNotEmpty,
+                  ),
             cupertinoIcon: CupertinoIcons.creditcard,
             materialIcon: Icons.wallet,
           ),
@@ -78,12 +91,38 @@ class BottomNavigationWidget extends StatelessWidget {
         BottomNavigationBarItem(
           label: 'Salvar'.hardcoded,
           icon: BadgeIcon(
-            valid: null,
+            badge: null,
             cupertinoIcon: CupertinoIcons.check_mark,
             materialIcon: Icons.save,
           ),
         ),
       ],
     );
+  }
+}
+
+class Badge extends StatelessWidget {
+  final bool isValid;
+  const Badge({super.key, required this.isValid});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    final size = 17.0;
+
+    if (isValid) {
+      return Icon(
+        isIOS ? CupertinoIcons.checkmark : Icons.check,
+        color: Colors.green,
+        size: size,
+      );
+    } else {
+      return Icon(
+        isIOS ? CupertinoIcons.clear : Icons.close,
+        color: Colors.red,
+        size: size,
+      );
+    }
   }
 }

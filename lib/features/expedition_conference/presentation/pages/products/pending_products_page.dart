@@ -36,7 +36,7 @@ class PendingProductsPage extends ConsumerWidget {
       searchProductsStateControllerProvider(
         enterpriseCode,
         BsRoutine.goodsReceiving, //TODO change to module
-        selectedEnterprise!.name,
+        selectedEnterprise?.name ?? '',
       ),
     );
 
@@ -44,7 +44,7 @@ class PendingProductsPage extends ConsumerWidget {
       searchProductsStateControllerProvider(
         enterpriseCode,
         BsRoutine.goodsReceiving, //TODO change to module
-        selectedEnterprise!.name,
+        selectedEnterprise?.name ?? '',
       ),
       (p, n) {
         n.showSnackbarOnError(
