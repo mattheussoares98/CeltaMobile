@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/expedition_conference/domain/repositories/repositories.dart';
@@ -12,8 +11,6 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-// --- Fakes and Mocks for Dependencies ---
-
 class MockSoapLoadExpeditionDocumentsRepository extends Mock
     implements ISoapLoadExpeditionDocumentsRepository {}
 
@@ -22,7 +19,6 @@ void main() {
   late UserSessionModel fakeSession;
   late List<ExpeditionDocumentEntity> fakeDocuments;
   late int fakeEnterpriseCode;
-  late EnterpriseEntity fakeEnterprise;
 
   setUp(() {
     mockRepository = MockSoapLoadExpeditionDocumentsRepository();
@@ -31,7 +27,6 @@ void main() {
     );
     fakeDocuments = [EntityFactory.makeExpeditionDocumentEntity()];
     fakeEnterpriseCode = faker.randomGenerator.integer(100);
-    fakeEnterprise = EntityFactory.makeEnterpriseEntity();
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -66,28 +61,16 @@ void main() {
         final container = makeProviderContainer(session: fakeSession);
         addTearDown(container.dispose);
 
-        final states = <AsyncValue<List<ExpeditionDocumentEntity>?>>[];
-        container.listen(
-          expeditionDocumentsStateControllerProvider(
-            fakeEnterpriseCode,
-            fakeEnterprise.name,
+        await expectLater(
+          container.read(
+            expeditionDocumentsStateControllerProvider(
+              fakeEnterpriseCode,
+              '',
+            ).future,
           ),
-          (_, next) => states.add(next),
+          completion(equals(fakeDocuments)),
         );
 
-        // ACT
-        await container
-            .read(
-              expeditionDocumentsStateControllerProvider(
-                fakeEnterpriseCode,
-                fakeEnterprise.name,
-              ).notifier,
-            )
-            .load(fakeEnterpriseCode);
-
-        // ASSERT
-        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-        expect(states.last.value, fakeDocuments);
         verify(
           () => mockRepository.load(
             baseUrl: fakeSession.enterprise!.baseUrl!,
@@ -105,11 +88,9 @@ void main() {
 
       final states = <AsyncValue<List<ExpeditionDocumentEntity>?>>[];
       container.listen(
-        expeditionDocumentsStateControllerProvider(
-          fakeEnterpriseCode,
-          fakeEnterprise.name,
-        ),
+        expeditionDocumentsStateControllerProvider(fakeEnterpriseCode, ''),
         (_, next) => states.add(next),
+        fireImmediately: true,
       );
 
       // ACT
@@ -117,10 +98,12 @@ void main() {
           .read(
             expeditionDocumentsStateControllerProvider(
               fakeEnterpriseCode,
-              fakeEnterprise.name,
-            ).notifier,
+              '',
+            ).future,
           )
-          .load(fakeEnterpriseCode);
+          .catchError((_) {
+            return null;
+          });
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

@@ -15,7 +15,7 @@ class ExpeditionDocumentsStateController
   FutureOr<List<ExpeditionDocumentEntity>?> build(
     int enterpriseCode,
     String enterpriseName,
-  ) {
+  ) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -30,21 +30,14 @@ class ExpeditionDocumentsStateController
       timer?.cancel();
     });
 
-    return null;
-  }
+    final userSession = await ref.watch(validatedUserSessionProvider.future);
 
-  Future<void> load(int enterpriseCode) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final userSession = await ref.watch(validatedUserSessionProvider.future);
-
-      return await ref
-          .read(soapLoadExpeditionDocumentsRepositoryProvider)
-          .load(
-            baseUrl: userSession!.enterprise!.baseUrl!,
-            crossIdentity: userSession.user.CrossIdentity_Usuario!,
-            enterpriseCode: enterpriseCode,
-          );
-    });
+    return await ref
+        .read(soapLoadExpeditionDocumentsRepositoryProvider)
+        .load(
+          baseUrl: userSession!.enterprise!.baseUrl!,
+          crossIdentity: userSession.user.CrossIdentity_Usuario!,
+          enterpriseCode: enterpriseCode,
+        );
   }
 }
