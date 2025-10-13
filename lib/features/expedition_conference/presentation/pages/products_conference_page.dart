@@ -8,18 +8,20 @@ class ProductsConferencePage extends ConsumerWidget {
   final int expeditionControlCode;
   final int stepCode;
   final EnterpriseEntity? selectedEnterprise;
+  final String documentNumber;
   const ProductsConferencePage({
     super.key,
     required this.expeditionControlCode,
     required this.stepCode,
     required this.selectedEnterprise,
+    required this.documentNumber,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text('Documentos'.hardcoded)),
-      body: Center(child: Text('Documentos'.hardcoded)),
+      appBar: AppBar(title: Text('Pendentes ($documentNumber)'.hardcoded)),
+      body: Center(child: Text('Pendentes'.hardcoded)),
     );
   }
 }

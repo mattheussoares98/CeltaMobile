@@ -40,6 +40,7 @@ class DocumentsItems extends StatelessWidget {
                     'expeditionControlCode':
                         document.ExpeditionControlCode.toString(),
                     'stepCode': document.StepCode.toString(),
+                    'documentNumber': document.DocumentNumber.toString(),
                     'enterpriseCode': selectedEnterprise?.Code.toString() ?? '',
                   },
                   extra: {'enterprise': selectedEnterprise},

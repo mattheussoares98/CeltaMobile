@@ -6,7 +6,7 @@ import '../../../features/expedition_conference/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase expeditionConferenceProductsRoute() => GoRoute(
-  path: 'products-conference/:stepCode/:expeditionControlCode',
+  path: 'products-conference/:stepCode/:expeditionControlCode/:documentNumber',
   name: Routes.expeditionConferenceProducts.name,
   builder: (context, state) {
     final enterprise =
@@ -15,10 +15,12 @@ RouteBase expeditionConferenceProductsRoute() => GoRoute(
     final expeditionControlCode = state.pathParameters['expeditionControlCode']!
         .toInt()!;
     final stepCode = state.pathParameters['stepCode']!.toInt()!;
+    final documentNumber = state.pathParameters['documentNumber']!;
 
     return ProductsConferencePage(
       expeditionControlCode: expeditionControlCode,
       stepCode: stepCode,
+      documentNumber: documentNumber,
       selectedEnterprise: enterprise,
     );
   },
