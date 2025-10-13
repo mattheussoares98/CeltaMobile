@@ -23,3 +23,15 @@ ISoapLoadExpeditionDocumentsRepository soapLoadExpeditionDocumentsRepository(
     ref.watch(soapLoadExpeditionDocumentsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapLoadPendingProductsDatasource soapLoadPendingProductsDatasource(Ref ref) {
+  return SoapLoadPendingProductsDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapLoadPendingProductsRepository soapLoadPendingProductsRepository(Ref ref) {
+  return SoapLoadPendingProductsRepositoryImpl(
+    ref.watch(soapLoadPendingProductsDatasourceProvider),
+  );
+}
