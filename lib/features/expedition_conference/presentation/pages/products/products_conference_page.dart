@@ -1,14 +1,12 @@
-import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
-import 'components/components.dart';
+import 'products.dart';
 
 class ProductsConferencePage extends ConsumerStatefulWidget {
   final int expeditionControlCode;
@@ -34,6 +32,7 @@ class _ProductsConferencePageState
     extends ConsumerState<ProductsConferencePage> {
   final searchValueController = TextEditingController();
   final focusNode = FocusNode();
+  int currentIndex = 0;
 
   @override
   void dispose() {
@@ -41,31 +40,6 @@ class _ProductsConferencePageState
 
     searchValueController.dispose();
     focusNode.dispose();
-  }
-
-  void searchProducts() {
-    ref
-        .read(
-          searchProductsStateControllerProvider(
-            widget.selectedEnterprise!.Code!,
-            BsRoutine.goodsReceiving,
-            widget.selectedEnterprise!.name,
-          ).notifier,
-        )
-        .loadProducts(
-          searchValue: searchValueController.text,
-          enterpriseCode: widget.selectedEnterprise!.Code!,
-          selectedEnterprise: widget.selectedEnterprise,
-        );
-  }
-
-  void onRefresh() {
-    ref.invalidate(
-      pendingProductsStateControllerProvider(
-        widget.expeditionControlCode,
-        widget.selectedEnterprise?.name ?? '',
-      ),
-    );
   }
 
   @override
@@ -77,78 +51,45 @@ class _ProductsConferencePageState
       ),
     );
 
-    final searchProductsAsync = ref.watch(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.goodsReceiving, //TODO change to module
-        widget.selectedEnterprise!.name,
+    final pages = [
+      PendingProductsPage(
+        expeditionControlCode: widget.expeditionControlCode,
+        focusNode: focusNode,
+        searchValueController: searchValueController,
+        selectedEnterprise: widget.selectedEnterprise,
+        documentNumber: widget.documentNumber,
+        enterpriseCode: widget.enterpriseCode,
+        pendingProductsAsync: pendingProductsAsync,
       ),
-    );
-
-    ref.listen(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.goodsReceiving, //TODO change to module
-        widget.selectedEnterprise!.name,
-      ),
-      (p, n) {
-        n.showSnackbarOnError(
-          context,
-          previous: p,
-          message: 'Houve um problema para pesquisar o produto. Tente novamente'
-              .hardcoded,
-        );
-
-        n.doOnSuccess(p, () {
-          if (searchProductsAsync.value != null &&
-              searchProductsAsync.value!.length == 1) {
-            //TODO add in confered product
-            debugPrint('TODO add in confered product');
-            Future.delayed(Duration(milliseconds: 100), () {
-              focusNode.requestFocus();
-            });
-          } else {
-            //TODO show modal page to select the correct product to count
-            debugPrint(
-              'show modal page to select the correct product to count',
-            );
-          }
-          searchValueController.clear();
-        });
-      },
-    );
-
+      ConferedProductsPage(),
+    ];
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pendentes (${widget.documentNumber})'.hardcoded),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: AsyncValueWidget(
-          value: pendingProductsAsync,
-          tryAgain: onRefresh,
-          data: (products) {
-            if (products == null || products.isEmpty) {
-              return EmptyProductsMessage(onRefresh: onRefresh);
-            }
-
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: DefaultSearchProducts(
-                    isLoading:
-                        pendingProductsAsync.isLoading ||
-                        searchProductsAsync.isLoading,
-                    focusNode: focusNode,
-                    searchProducts: searchProducts,
-                    searchValueController: searchValueController,
-                  ),
-                ),
-                PendingProductsItems(products: products),
-              ],
-            );
-          },
-        ),
+      body: pages[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            label: 'Pendentes'.hardcoded,
+            icon: BadgeIcon(
+              valid: null, //TODO change to a widget param
+              cupertinoIcon: CupertinoIcons.exclamationmark_triangle,
+              materialIcon: Icons.error,
+            ),
+          ),
+          BottomNavigationBarItem(
+            label: 'Conferidos'.hardcoded,
+            icon: BadgeIcon(
+              valid: null,
+              cupertinoIcon: CupertinoIcons.checkmark_seal,
+              materialIcon: Icons.verified_rounded,
+            ),
+          ),
+        ],
       ),
     );
   }
