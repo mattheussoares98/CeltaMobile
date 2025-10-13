@@ -55,7 +55,7 @@ void main() {
 
           // ACT: Wait for the build method to complete
           final result = await container.read(
-            lotStateControllerProvider(enterpriseCode).future,
+            lotStateControllerProvider(enterpriseCode, '').future,
           );
 
           // ASSERT
@@ -78,18 +78,18 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            lotStateControllerProvider(enterpriseCode).future,
+            lotStateControllerProvider(enterpriseCode, '').future,
           ); // Wait for initial build
 
           final states = <AsyncValue<List<ProductLotInfoEntity>>>[];
           container.listen(
-            lotStateControllerProvider(enterpriseCode),
+            lotStateControllerProvider(enterpriseCode, ''),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(lotStateControllerProvider(enterpriseCode).notifier)
+              .read(lotStateControllerProvider(enterpriseCode, '').notifier)
               .addItem(newItem);
 
           // ASSERT
@@ -123,18 +123,18 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            lotStateControllerProvider(enterpriseCode).future,
+            lotStateControllerProvider(enterpriseCode, '').future,
           );
 
           final states = <AsyncValue<List<ProductLotInfoEntity>>>[];
           container.listen(
-            lotStateControllerProvider(enterpriseCode),
+            lotStateControllerProvider(enterpriseCode, ''),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(lotStateControllerProvider(enterpriseCode).notifier)
+              .read(lotStateControllerProvider(enterpriseCode, '').notifier)
               .removeItem(itemToRemove);
 
           // ASSERT
@@ -161,17 +161,19 @@ void main() {
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);
-        await container.read(lotStateControllerProvider(enterpriseCode).future);
+        await container.read(
+          lotStateControllerProvider(enterpriseCode, '').future,
+        );
 
         final states = <AsyncValue<List<ProductLotInfoEntity>>>[];
         container.listen(
-          lotStateControllerProvider(enterpriseCode),
+          lotStateControllerProvider(enterpriseCode, ''),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(lotStateControllerProvider(enterpriseCode).notifier)
+            .read(lotStateControllerProvider(enterpriseCode, '').notifier)
             .clearLot(enterpriseCode);
 
         // ASSERT

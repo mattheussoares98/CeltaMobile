@@ -56,14 +56,14 @@ void main() {
 
         final states = <AsyncValue<List<StockTypeEntity>>>[];
         container.listen(
-          stockTypeStateControllerProvider(enterpriseCode),
+          stockTypeStateControllerProvider(enterpriseCode, ''),
           (_, next) => states.add(next),
           fireImmediately: true,
         );
 
         // ACT: Wait for the build method to complete
         await container.read(
-          stockTypeStateControllerProvider(enterpriseCode).future,
+          stockTypeStateControllerProvider(enterpriseCode, '').future,
         );
 
         // ASSERT

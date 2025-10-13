@@ -14,6 +14,7 @@ class CanAccessResourceStateController
     BsRoutine routine,
     BsResource resource,
     int enterpriseCode,
+    String enterpriseName,
   ) async {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 

@@ -70,7 +70,7 @@ void main() {
         container.listen(
           expeditionDocumentsStateControllerProvider(
             fakeEnterpriseCode,
-            fakeEnterprise,
+            fakeEnterprise.name,
           ),
           (_, next) => states.add(next),
         );
@@ -80,7 +80,7 @@ void main() {
             .read(
               expeditionDocumentsStateControllerProvider(
                 fakeEnterpriseCode,
-                fakeEnterprise,
+                fakeEnterprise.name,
               ).notifier,
             )
             .load(fakeEnterpriseCode);
@@ -107,7 +107,7 @@ void main() {
       container.listen(
         expeditionDocumentsStateControllerProvider(
           fakeEnterpriseCode,
-          fakeEnterprise,
+          fakeEnterprise.name,
         ),
         (_, next) => states.add(next),
       );
@@ -117,7 +117,7 @@ void main() {
           .read(
             expeditionDocumentsStateControllerProvider(
               fakeEnterpriseCode,
-              fakeEnterprise,
+              fakeEnterprise.name,
             ).notifier,
           )
           .load(fakeEnterpriseCode);

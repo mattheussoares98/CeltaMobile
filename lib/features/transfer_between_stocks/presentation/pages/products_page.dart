@@ -61,6 +61,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           searchProductsStateControllerProvider(
             widget.enterpriseCode,
             BsRoutine.adjustStock,
+            widget.selectedEnterprise?.name ?? '',
           ).notifier,
         )
         .loadProducts(
@@ -90,7 +91,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     }
 
     ref
-        .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
+        .read(
+          lotStateControllerProvider(
+            widget.enterpriseCode,
+            widget.selectedEnterprise?.name ?? '',
+          ).notifier,
+        )
         .addItem(
           ProductLotInfoEntity(
             product: product,
@@ -113,6 +119,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustStock,
+        widget.selectedEnterprise?.name ?? '',
       ),
       (previous, next) {
         next.doOnSuccess(previous, () {
@@ -125,11 +132,15 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustStock,
+        widget.selectedEnterprise?.name ?? '',
       ),
     );
 
     final lotAsync = ref.watch(
-      lotStateControllerProvider(widget.enterpriseCode),
+      lotStateControllerProvider(
+        widget.enterpriseCode,
+        widget.selectedEnterprise?.name ?? '',
+      ),
     );
 
     final theme = Theme.of(context);
@@ -150,6 +161,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               selectedJustification: widget.selectedJustification,
               asyncValue: widget.justificationsAsync,
               enterpriseCode: widget.enterpriseCode,
+              selectedEnterprise: widget.selectedEnterprise,
               onChanged: (value) {
                 widget.changeJustification(value);
 
@@ -169,12 +181,14 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             OriginStocksDropdown(
               asyncValue: widget.stocksAsync,
               enterpriseCode: widget.enterpriseCode,
+              selectedEnterprise: widget.selectedEnterprise,
               selectedJustification: widget.selectedJustification,
               selectedOriginStock: widget.selectedOriginStock,
               onChanged: widget.changeOriginStock,
             ),
             gapH8,
             DestinyStocksDropdown(
+              selectedEnterprise: widget.selectedEnterprise,
               asyncValue: widget.stocksAsync,
               enterpriseCode: widget.enterpriseCode,
               selectedDestinyStock: widget.selectedDestinyStock,

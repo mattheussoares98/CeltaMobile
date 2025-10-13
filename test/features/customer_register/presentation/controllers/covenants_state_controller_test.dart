@@ -71,7 +71,7 @@ void main() {
         // ACT & ASSERT
         await expectLater(
           container.read(
-            covenantsStateControllerProvider(enterpriseEntity).future,
+            covenantsStateControllerProvider(enterpriseEntity.name).future,
           ),
           completion(equals(fakeCovenants)),
         );
@@ -98,7 +98,7 @@ void main() {
       // which the CovenantsStateController will catch and re-throw.
       await expectLater(
         container.read(
-          covenantsStateControllerProvider(enterpriseEntity).future,
+          covenantsStateControllerProvider(enterpriseEntity.name).future,
         ),
         throwsA(isA<AppException>()),
       );

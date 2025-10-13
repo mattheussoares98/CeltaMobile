@@ -18,6 +18,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   Future<List<ProductEntity>> build(
     int enterpriseCode,
     BsRoutine routine,
+    String enterpriseName,
   ) async {
     Timer? timer;
     final link = ref.keepAlive();

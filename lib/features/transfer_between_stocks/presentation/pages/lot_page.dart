@@ -5,12 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../core/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart.dart';
 
 class LotPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  const LotPage({super.key, required this.enterpriseCode});
+  final EnterpriseEntity? selectedEnterprise;
+  const LotPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.selectedEnterprise,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LotPageState();
@@ -50,13 +56,21 @@ class _LotPageState extends ConsumerState<LotPage> {
   @override
   Widget build(BuildContext context) {
     final lotAsync = ref.watch(
-      lotStateControllerProvider(widget.enterpriseCode),
+      lotStateControllerProvider(
+        widget.enterpriseCode,
+        widget.selectedEnterprise?.name ?? '',
+      ),
     );
 
     return AsyncValueWidget(
       value: lotAsync,
       tryAgain: () {
-        ref.invalidate(lotStateControllerProvider(widget.enterpriseCode));
+        ref.invalidate(
+          lotStateControllerProvider(
+            widget.enterpriseCode,
+            widget.selectedEnterprise?.name ?? '',
+          ),
+        );
       },
       data: (items) {
         if (items.isEmpty) {
@@ -71,6 +85,7 @@ class _LotPageState extends ConsumerState<LotPage> {
                 changeSelectedIndex: changeSelectedIndex,
                 quantityController: quantityController,
                 enterpriseCode: widget.enterpriseCode,
+                selectedEnterprise: widget.selectedEnterprise,
                 quantityFocusNode: quantityFocusNode,
               ),
             ),
@@ -87,6 +102,7 @@ class _LotPageState extends ConsumerState<LotPage> {
                     child: ConfirmOrRequestButton(
                       isRequest: true,
                       enterpriseCode: widget.enterpriseCode,
+                      selectedEnterprise: widget.selectedEnterprise,
                     ),
                   ),
                   gapW8,
@@ -94,6 +110,7 @@ class _LotPageState extends ConsumerState<LotPage> {
                     child: ConfirmOrRequestButton(
                       isRequest: false,
                       enterpriseCode: widget.enterpriseCode,
+                      selectedEnterprise: widget.selectedEnterprise,
                     ),
                   ),
                 ],

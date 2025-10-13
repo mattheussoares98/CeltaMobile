@@ -49,13 +49,17 @@ class _TransferBetweenStocksPageState
     final isIos = theme.platform == TargetPlatform.iOS;
 
     final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(widget.enterpriseCode),
+      stockTypeStateControllerProvider(
+        widget.enterpriseCode,
+        widget.selectedEnterprise?.name ?? '',
+      ),
     );
 
     final justificationsAsync = ref.watch(
       transferJustificationStateControllerProvider(
         widget.enterpriseCode,
         TransferJustificationType.transferBetweenStocks,
+        widget.selectedEnterprise?.name ?? '',
       ),
     );
 
@@ -84,11 +88,17 @@ class _TransferBetweenStocksPageState
           });
         },
       ),
-      LotPage(enterpriseCode: widget.enterpriseCode),
+      LotPage(
+        enterpriseCode: widget.enterpriseCode,
+        selectedEnterprise: widget.selectedEnterprise,
+      ),
     ];
 
     final lotAsync = ref.watch(
-      lotStateControllerProvider(widget.enterpriseCode),
+      lotStateControllerProvider(
+        widget.enterpriseCode,
+        widget.selectedEnterprise?.name ?? '',
+      ),
     );
 
     final confirmAdjustStockAsync = ref.watch(
@@ -103,7 +113,12 @@ class _TransferBetweenStocksPageState
       );
       n.doOnSuccess(p, () {
         ref
-            .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
+            .read(
+              lotStateControllerProvider(
+                widget.enterpriseCode,
+                widget.selectedEnterprise?.name ?? '',
+              ).notifier,
+            )
             .clearLot(widget.enterpriseCode);
         pageController.animateToPage(
           0,

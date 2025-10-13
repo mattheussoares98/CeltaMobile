@@ -207,9 +207,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       selectedEnterpriseStateControllerProvider,
     );
     final covenantsAsync = ref.watch(
-      covenantsStateControllerProvider(
-        selectedEnterprise!,
-      ), //only achieves here if has a selected enterprise
+      covenantsStateControllerProvider(selectedEnterprise?.name ?? ''),
     );
 
     final addressPage = AddressPage(

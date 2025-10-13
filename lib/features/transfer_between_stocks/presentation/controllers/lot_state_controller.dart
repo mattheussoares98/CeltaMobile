@@ -8,7 +8,10 @@ part 'lot_state_controller.g.dart';
 @riverpod
 class LotStateController extends _$LotStateController {
   @override
-  Future<List<ProductLotInfoEntity>> build(int enterpriseCode) {
+  Future<List<ProductLotInfoEntity>> build(
+    int enterpriseCode,
+    String enterpriseName,
+  ) {
     return ref.watch(localItemsLotRepositoryProvider).load(enterpriseCode);
   }
 

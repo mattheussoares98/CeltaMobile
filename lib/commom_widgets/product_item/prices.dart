@@ -7,6 +7,7 @@ import '../../core/domain/entities/entities.dart';
 import '../../core/presentation/controllers/resource/resource.dart';
 import '../../core/providers/resource/resource.dart';
 import '../../features/adjust_sale_price/domain/entities/entities.dart';
+import '../../features/enterprises/presentation/controllers/controllers.dart';
 import '../commom_widgets.dart';
 
 class Prices extends ConsumerWidget {
@@ -22,12 +23,16 @@ class Prices extends ConsumerWidget {
     final wholeSuggestion = widget.product.PriceCost.WholeSuggestionPrice ?? 0;
     final ecommerceSuggestion =
         widget.product.PriceCost.ECommerceSuggestionPrice ?? 0;
+    final selectedEnterprise = ref.watch(
+      selectedEnterpriseStateControllerProvider,
+    );
 
     final canAdjustSalePrice = ref.watch(
       canAccessResourceStateControllerProvider(
         BsRoutine.adjustSalePrice,
         BsResource.adjustSalePrice,
         enterpriseCode,
+        selectedEnterprise?.name ?? '',
       ),
     );
 

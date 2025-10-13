@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
@@ -15,7 +14,7 @@ class ExpeditionDocumentsStateController
   @override
   FutureOr<List<ExpeditionDocumentEntity>?> build(
     int enterpriseCode,
-    EnterpriseEntity enterprise,
+    String enterpriseName,
   ) {
     Timer? timer;
     final link = ref.keepAlive();

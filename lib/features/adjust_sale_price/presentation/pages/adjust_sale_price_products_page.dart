@@ -42,6 +42,7 @@ class _AdjustSalePriceProductsPageState
           searchProductsStateControllerProvider(
             widget.enterpriseCode,
             BsRoutine.adjustSalePrice,
+            widget.selectedEnterprise?.name ?? '',
           ).notifier,
         )
         .loadProducts(
@@ -57,6 +58,7 @@ class _AdjustSalePriceProductsPageState
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustSalePrice,
+        widget.selectedEnterprise?.name ?? '',
       ),
       (previous, next) {
         next.doOnSuccess(previous, () {
@@ -69,6 +71,7 @@ class _AdjustSalePriceProductsPageState
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustSalePrice,
+        widget.selectedEnterprise?.name ?? '',
       ),
     );
 
