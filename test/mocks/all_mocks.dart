@@ -855,3 +855,18 @@ class SoapLoadExpeditionDocumentsDatasourceSpy extends Mock
     ),
   );
 }
+
+class SoapLoadPendingProductsDatasourceSpy extends Mock
+    implements ISoapLoadPendingProductsDatasource {
+  void mockLoad(List<ExpeditionProductModel> response) {
+    _mockLoadCall().thenAnswer((_) async => response);
+  }
+
+  When _mockLoadCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+      expeditionControlCode: any(named: 'expeditionControlCode'),
+    ),
+  );
+}
