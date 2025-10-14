@@ -22,6 +22,10 @@ class AsyncValueWidget<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    if (value.isLoading) {
+      return Center(child: LoadingWidget());
+    }
+
     return value.when(
       data: data,
       loading: () => Center(child: LoadingWidget()),
