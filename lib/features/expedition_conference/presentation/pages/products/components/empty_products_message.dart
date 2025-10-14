@@ -19,6 +19,7 @@ class EmptyProductsMessage extends ConsumerWidget {
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             'Nenhum produto foi encontrado'.hardcoded,
