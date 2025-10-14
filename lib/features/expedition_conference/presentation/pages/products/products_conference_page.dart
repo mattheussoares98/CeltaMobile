@@ -48,9 +48,6 @@ class _ProductsConferencePageState
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     final pendingProductsAsync = ref.watch(
       expeditionConferenceControllerProvider(
         widget.expeditionControlCode,
@@ -192,47 +189,14 @@ class _ProductsConferencePageState
                   selectedEnterprise: widget.selectedEnterprise,
                 )
               : pages[currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: currentIndex,
+          bottomNavigationBar: BottomNavBar(
+            pendingProductsAsync: pendingProductsAsync,
             onTap: (index) {
               setState(() {
                 currentIndex = index;
               });
             },
-            items: [
-              BottomNavigationBarItem(
-                label: 'Pendentes'.hardcoded,
-                icon: Badge(
-                  label: Text(
-                    pendingProductsAsync.value?.pendingProducts.length
-                            .toString() ??
-                        '0',
-                  ),
-                  offset: Offset(8, -6),
-                  child: Icon(
-                    isIOS
-                        ? CupertinoIcons.exclamationmark_triangle
-                        : Icons.error,
-                  ),
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: 'Conferidos'.hardcoded,
-                icon: Badge(
-                  label: Text(
-                    pendingProductsAsync.value?.scannedProducts.length
-                            .toString() ??
-                        '0',
-                  ),
-                  offset: Offset(8, -6),
-                  child: Icon(
-                    isIOS
-                        ? CupertinoIcons.checkmark_seal
-                        : Icons.verified_rounded,
-                  ),
-                ),
-              ),
-            ],
+            currentIndex: currentIndex,
           ),
         ),
         if (confirmAsync.isLoading) LoadingPage(),
