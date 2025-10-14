@@ -89,7 +89,6 @@ class _ProductsConferencePageState
             ),
           );
           context.pop();
-          //TODO test if is working. If not, find another way to close the page and reload documents
         });
         n.showAlertDialogOnError(context);
       },
