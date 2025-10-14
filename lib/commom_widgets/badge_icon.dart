@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../constants/constants.dart';
 
 class BadgeIcon extends StatelessWidget {
-  final Widget? badge;
+  final Widget? badge; //TODO change to Badge widget
   final IconData cupertinoIcon;
   final IconData materialIcon;
   const BadgeIcon({

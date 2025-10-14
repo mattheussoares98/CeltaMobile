@@ -38,14 +38,14 @@ class PendingProductsPage extends ConsumerWidget {
       ref
           .read(
             searchProductsStateControllerProvider(
-              selectedEnterprise!.Code!,
-              BsRoutine.goodsReceiving,
-              selectedEnterprise!.name,
+              enterpriseCode,
+              BsRoutine.generic,
+              selectedEnterprise?.name ?? '',
             ).notifier,
           )
           .loadProducts(
             searchValue: searchValueController.text,
-            enterpriseCode: selectedEnterprise!.Code!,
+            enterpriseCode: enterpriseCode,
             selectedEnterprise: selectedEnterprise,
           );
     }
