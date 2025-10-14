@@ -67,7 +67,7 @@ void main() {
 
         await expectLater(
           container.read(
-            pendingProductsStateControllerProvider(
+            expeditionConferenceControllerProvider(
               expeditionControlCode,
               '',
             ).future,

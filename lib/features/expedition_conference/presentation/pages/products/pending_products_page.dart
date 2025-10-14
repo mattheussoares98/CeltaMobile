@@ -75,7 +75,7 @@ class PendingProductsPage extends ConsumerWidget {
 
     void onRefresh() {
       ref.invalidate(
-        pendingProductsStateControllerProvider(
+        expeditionConferenceControllerProvider(
           expeditionControlCode,
           selectedEnterprise?.name ?? '',
         ),

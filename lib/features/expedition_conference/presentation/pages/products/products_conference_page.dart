@@ -45,7 +45,7 @@ class _ProductsConferencePageState
   @override
   Widget build(BuildContext context) {
     final pendingProductsAsync = ref.watch(
-      pendingProductsStateControllerProvider(
+      expeditionConferenceControllerProvider(
         widget.expeditionControlCode,
         widget.selectedEnterprise?.name ?? '',
       ),

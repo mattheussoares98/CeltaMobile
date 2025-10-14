@@ -6,10 +6,10 @@ import '../../../../core/presentation/controllers/user_session/user_session.dart
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
-part 'pending_products_state_controller.g.dart';
+part 'expedition_conference_controller.g.dart';
 
 @riverpod
-class PendingProductsStateController extends _$PendingProductsStateController {
+class ExpeditionConferenceController extends _$ExpeditionConferenceController {
   @override
   FutureOr<List<ExpeditionProductEntity>?> build(
     int expeditionControlCode,
