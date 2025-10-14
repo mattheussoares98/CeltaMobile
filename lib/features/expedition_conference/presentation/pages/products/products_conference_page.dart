@@ -171,7 +171,7 @@ class _ProductsConferencePageState
       ),
       ConferedProductsPage(
         onRefresh: onRefresh,
-        pendingProductsAsync: pendingProductsAsync,
+        scannedProducts: pendingProductsAsync.value?.scannedProducts,
       ),
     ];
     return Stack(
