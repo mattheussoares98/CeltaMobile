@@ -2,7 +2,6 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 
 class BottomNavigationWidget extends StatelessWidget {
@@ -18,6 +17,8 @@ class BottomNavigationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
     return BottomNavigationBar(
       unselectedFontSize: 11,
       selectedFontSize: 11,
@@ -26,103 +27,82 @@ class BottomNavigationWidget extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           label: 'Dados'.hardcoded,
-          icon: BadgeIcon(
-            badge: null,
-            cupertinoIcon: CupertinoIcons.person,
-            materialIcon: Icons.person,
-          ),
+          icon: Icon(isIOS ? CupertinoIcons.person : Icons.person),
         ),
         BottomNavigationBarItem(
           label: 'Endereço'.hardcoded,
-          icon: BadgeIcon(
-            badge: customer == null
-                ? null
-                : Badge(
-                    isValid:
-                        customer?.Addresses != null &&
-                        customer!.Addresses!.isNotEmpty,
-                  ),
-            cupertinoIcon: CupertinoIcons.location,
+          icon: _ValidatedBadge(
+            isValid:
+                customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.location_on,
+            cupertinoIcon: CupertinoIcons.location,
           ),
         ),
         BottomNavigationBarItem(
           label: 'E-mail'.hardcoded,
-          icon: BadgeIcon(
-            badge: customer == null
-                ? null
-                : Badge(
-                    isValid:
-                        customer?.Emails != null &&
-                        customer!.Emails!.isNotEmpty,
-                  ),
-            cupertinoIcon: CupertinoIcons.mail,
+          icon: _ValidatedBadge(
+            isValid:
+                customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.email,
+            cupertinoIcon: CupertinoIcons.mail,
           ),
         ),
         BottomNavigationBarItem(
           label: 'Telefone'.hardcoded,
-          icon: BadgeIcon(
-            badge: customer == null
-                ? null
-                : Badge(
-                    isValid:
-                        customer?.Telephones != null &&
-                        customer!.Telephones!.isNotEmpty,
-                  ),
-            cupertinoIcon: CupertinoIcons.phone,
+          icon: _ValidatedBadge(
+            isValid:
+                customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.phone,
+            cupertinoIcon: CupertinoIcons.phone,
           ),
         ),
         BottomNavigationBarItem(
           label: 'Convênios'.hardcoded,
-          icon: BadgeIcon(
-            badge: customer == null
-                ? null
-                : Badge(
-                    isValid:
-                        customer?.CustomerCovenants != null &&
-                        customer!.CustomerCovenants!.isNotEmpty,
-                  ),
-            cupertinoIcon: CupertinoIcons.creditcard,
+          icon: _ValidatedBadge(
+            isValid:
+                customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.wallet,
+            cupertinoIcon: CupertinoIcons.creditcard,
           ),
         ),
         BottomNavigationBarItem(
           label: 'Salvar'.hardcoded,
-          icon: BadgeIcon(
-            badge: null,
-            cupertinoIcon: CupertinoIcons.check_mark,
-            materialIcon: Icons.save,
-          ),
+          icon: Icon(isIOS ? CupertinoIcons.check_mark : Icons.save),
         ),
       ],
     );
   }
 }
 
-class Badge extends StatelessWidget {
+class _ValidatedBadge extends StatelessWidget {
   final bool isValid;
-  const Badge({super.key, required this.isValid});
+  final IconData materialIcon;
+  final IconData cupertinoIcon;
+  const _ValidatedBadge({
+    required this.isValid,
+    required this.materialIcon,
+    required this.cupertinoIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-    final size = 17.0;
 
-    if (isValid) {
-      return Icon(
-        isIOS ? CupertinoIcons.checkmark : Icons.check,
-        color: Colors.green,
-        size: size,
-      );
-    } else {
-      return Icon(
-        isIOS ? CupertinoIcons.clear : Icons.close,
-        color: Colors.red,
-        size: size,
-      );
-    }
+    return Badge(
+      offset: const Offset(8, -6),
+      backgroundColor: Colors.transparent,
+      label: Icon(
+        isValid
+            ? (isIOS ? CupertinoIcons.checkmark : Icons.check)
+            : (isIOS ? CupertinoIcons.clear : Icons.close),
+        color: isValid ? Colors.green : Colors.red,
+        size: 17,
+      ),
+      child: Icon(
+        isIOS ? cupertinoIcon : materialIcon,
+        color: theme.disabledColor,
+      ),
+    );
   }
 }
