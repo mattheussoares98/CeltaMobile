@@ -870,3 +870,17 @@ class SoapLoadPendingProductsDatasourceSpy extends Mock
     ),
   );
 }
+
+class SoapConfirmConferenceDatasourceSpy extends Mock
+    implements ISoapConfirmConferenceDatasource {
+  SoapConfirmConferenceDatasourceSpy() {
+    when(
+      () => this.confirm(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        expeditionControlCode: any(named: 'expeditionControlCode'),
+        stepCode: any(named: 'stepCode'),
+      ),
+    ).thenAnswer((_) async {});
+  }
+}
