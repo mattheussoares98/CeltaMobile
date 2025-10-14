@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
@@ -57,7 +58,16 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
     final currentState = state.value!;
     final pendingQty = currentState.pendingQuantities[productPackingCode];
 
-    if (pendingQty != null && pendingQty > 0) {
+    if (pendingQty == null || pendingQty <= 0) {
+      state = AsyncError(
+        Exception('Esse produto não está pendente para conferência'.hardcoded),
+        StackTrace.current,
+      );
+      //TODO create test
+      return;
+    }
+
+    if (pendingQty > 0) {
       final newPending = Map.of(currentState.pendingQuantities);
       final newScanned = Map.of(currentState.scannedQuantities);
 
