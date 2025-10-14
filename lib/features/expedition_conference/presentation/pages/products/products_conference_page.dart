@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../controllers/controllers.dart';
@@ -56,7 +55,7 @@ class _ProductsConferencePageState
     final searchProductsAsync = ref.watch(
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
-        BsRoutine.goodsReceiving, //TODO change to module
+        BsRoutine.generic,
         widget.selectedEnterprise?.name ?? '',
       ),
     );
@@ -64,7 +63,7 @@ class _ProductsConferencePageState
     ref.listen(
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
-        BsRoutine.goodsReceiving, //TODO change to module
+        BsRoutine.generic,
         widget.selectedEnterprise?.name ?? '',
       ),
       (p, n) {
@@ -78,8 +77,7 @@ class _ProductsConferencePageState
         n.doOnSuccess(p, () {
           if (n.hasValue != true) {
             return;
-          }
-          if (n.value != null && n.value!.length == 1) {
+          } else if (n.value != null && n.value!.length == 1) {
             ref
                 .read(
                   expeditionConferenceControllerProvider(
@@ -92,7 +90,7 @@ class _ProductsConferencePageState
             Future.delayed(Duration(milliseconds: 100), () {
               focusNode.requestFocus();
             });
-          } else {
+          } else if (n.value != null && n.value!.length > 1) {
             //TODO show modal page to select the correct product to count
             debugPrint(
               'show modal page to select the correct product to count',
@@ -111,6 +109,9 @@ class _ProductsConferencePageState
         ),
       );
     }
+
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final pages = [
       PendingProductsPage(
@@ -141,18 +142,28 @@ class _ProductsConferencePageState
         items: [
           BottomNavigationBarItem(
             label: 'Pendentes'.hardcoded,
-            icon: BadgeIcon(
-              badge: null, //TODO change to a widget param
-              cupertinoIcon: CupertinoIcons.exclamationmark_triangle,
-              materialIcon: Icons.error,
+            icon: Badge(
+              label: Text(
+                pendingProductsAsync.value?.pendingProducts.length.toString() ??
+                    '0',
+              ),
+              offset: Offset(8, -6),
+              child: Icon(
+                isIOS ? CupertinoIcons.exclamationmark_triangle : Icons.error,
+              ),
             ),
           ),
           BottomNavigationBarItem(
             label: 'Conferidos'.hardcoded,
-            icon: BadgeIcon(
-              badge: null,
-              cupertinoIcon: CupertinoIcons.checkmark_seal,
-              materialIcon: Icons.verified_rounded,
+            icon: Badge(
+              label: Text(
+                pendingProductsAsync.value?.scannedProducts.length.toString() ??
+                    '0',
+              ),
+              offset: Offset(8, -6),
+              child: Icon(
+                isIOS ? CupertinoIcons.checkmark_seal : Icons.verified_rounded,
+              ),
             ),
           ),
         ],
