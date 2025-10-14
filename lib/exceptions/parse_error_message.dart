@@ -4,7 +4,7 @@ import '../../exceptions/exceptions.dart';
 import '../core/domain/errors/errors.dart';
 import '../localization/string_hardcoded.dart';
 
-String parseErrorMessage(Object error) {
+String parseErrorMessage(Object? error) {
   late final String message;
   String? supabaseDetails;
 
@@ -15,6 +15,8 @@ String parseErrorMessage(Object error) {
     message = error.message;
   } else if (error is BsError) {
     message = error.message;
+  } else if (error is Exception) {
+    message = error.toString().replaceFirst('Exception: ', '');
   } else {
     message = error.toString();
   }
