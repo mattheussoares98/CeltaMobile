@@ -1,9 +1,11 @@
+import 'package:equatable/equatable.dart';
+
 import 'expedition_product_entity.dart';
 
 typedef ProductPackingCodeID = int;
 typedef QuantityID = double;
 
-class ExpeditionConferenceState {
+class ExpeditionConferenceState extends Equatable {
   final List<ExpeditionProductEntity> initialProducts;
   final Map<ProductPackingCodeID, QuantityID> pendingQuantities;
   final Map<ProductPackingCodeID, QuantityID> scannedQuantities;
@@ -13,6 +15,13 @@ class ExpeditionConferenceState {
     required this.pendingQuantities,
     required this.scannedQuantities,
   });
+
+  @override
+  List<Object?> get props => [
+    initialProducts,
+    pendingQuantities,
+    scannedQuantities,
+  ];
 
   bool get isComplete => pendingQuantities.values.every((qty) => qty == 0);
 

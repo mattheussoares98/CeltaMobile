@@ -85,7 +85,10 @@ class _ProductsConferencePageState
                     widget.selectedEnterprise?.name ?? '',
                   ).notifier,
                 )
-                .scanProduct(n.value!.first.ProductPackingCode);
+                .scanProduct(
+                  n.value!.first.ProductPackingCode,
+                  widget.stepCode,
+                );
 
             Future.delayed(Duration(milliseconds: 100), () {
               focusNode.requestFocus();

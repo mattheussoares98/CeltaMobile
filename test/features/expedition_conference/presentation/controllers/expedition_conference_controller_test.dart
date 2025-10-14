@@ -11,17 +11,38 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class MockSoapLoadExpeditionProductsRepository extends Mock
+class MockSoapLoadPendingProductsRepository extends Mock
     implements ISoapLoadPendingProductsRepository {}
 
+class FakeConfirmConferenceController extends ConfirmConferenceController {
+  bool wasCalled = false;
+  int? expeditionCode;
+  int? stepCode;
+
+  @override
+  Future<bool> confirm({
+    required int expeditionControlCode,
+    required int stepCode,
+  }) async {
+    wasCalled = true;
+    this.expeditionCode = expeditionControlCode;
+    this.stepCode = stepCode;
+    return true;
+  }
+}
+
 void main() {
-  late MockSoapLoadExpeditionProductsRepository mockRepository;
+  late MockSoapLoadPendingProductsRepository mockRepository;
+
+  late FakeConfirmConferenceController fakeConfirmController;
+
   late UserSessionModel fakeSession;
   late List<ExpeditionProductEntity> fakeProducts;
   late int expeditionControlCode;
 
   setUp(() {
-    mockRepository = MockSoapLoadExpeditionProductsRepository();
+    mockRepository = MockSoapLoadPendingProductsRepository();
+    fakeConfirmController = FakeConfirmConferenceController();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -41,6 +62,9 @@ void main() {
         ),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
+        ),
+        confirmConferenceControllerProvider.overrideWith(
+          () => fakeConfirmController,
         ),
       ],
     );
@@ -72,7 +96,7 @@ void main() {
               '',
             ).future,
           ),
-          completion(equals(fakeProducts)),
+          completion(equals(ExpeditionConferenceState.initial(fakeProducts))),
         );
 
         verify(
@@ -119,5 +143,127 @@ void main() {
         ),
       );
     });
+  });
+
+  group('scanProduct', () {
+    test(
+      'should decrement pending quantity and not call confirm on a partial scan',
+      () async {
+        // ARRANGE
+        // Create a product with a quantity of 2
+        final productToScan = EntityFactory.makeExpeditionProductEntity(
+          quantity: 2,
+          productPackingCode: 123,
+        );
+
+        when(
+          () => mockRepository.load(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            expeditionControlCode: any(named: 'expeditionControlCode'),
+          ),
+        ).thenAnswer((_) async => [productToScan]);
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // Wait for the initial products to load
+        await container.read(
+          expeditionConferenceControllerProvider(
+            expeditionControlCode,
+            '',
+          ).future,
+        );
+
+        final controller = container.read(
+          expeditionConferenceControllerProvider(
+            expeditionControlCode,
+            '',
+          ).notifier,
+        );
+
+        // ACT: Scan the product once
+        const stepCodeForConfirmation = 4;
+        controller.scanProduct(
+          productToScan.ProductPackingCode,
+          stepCodeForConfirmation,
+        );
+
+        // ASSERT
+
+        final state = container.read(
+          expeditionConferenceControllerProvider(expeditionControlCode, ''),
+        );
+        expect(
+          state.value?.pendingQuantities[productToScan.ProductPackingCode],
+          1,
+        );
+        expect(
+          state.value?.scannedQuantities[productToScan.ProductPackingCode],
+          1,
+        );
+        expect(fakeConfirmController.wasCalled, isFalse);
+      },
+    );
+
+    test(
+      'should call confirm controller when the last product is scanned',
+      () async {
+        // ARRANGE
+        // Create a product with a quantity of 2
+        final productToScan = EntityFactory.makeExpeditionProductEntity(
+          quantity: 1,
+          productPackingCode: 123,
+        );
+
+        when(
+          () => mockRepository.load(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            expeditionControlCode: any(named: 'expeditionControlCode'),
+          ),
+        ).thenAnswer((_) async => [productToScan]);
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // Wait for the initial products to load
+        await container.read(
+          expeditionConferenceControllerProvider(
+            expeditionControlCode,
+            '',
+          ).future,
+        );
+
+        final controller = container.read(
+          expeditionConferenceControllerProvider(
+            expeditionControlCode,
+            '',
+          ).notifier,
+        );
+
+        // ACT: Scan the product once
+        const stepCodeForConfirmation = 4;
+        controller.scanProduct(
+          productToScan.ProductPackingCode,
+          stepCodeForConfirmation,
+        );
+
+        // ASSERT
+
+        final state = container.read(
+          expeditionConferenceControllerProvider(expeditionControlCode, ''),
+        );
+        expect(
+          state.value?.pendingQuantities[productToScan.ProductPackingCode],
+          0,
+        );
+        expect(
+          state.value?.scannedQuantities[productToScan.ProductPackingCode],
+          1,
+        );
+        expect(fakeConfirmController.wasCalled, isTrue);
+      },
+    );
   });
 }

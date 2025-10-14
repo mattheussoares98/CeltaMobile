@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'expedition_conference_controller.g.dart';
 
@@ -48,7 +49,10 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
     );
   }
 
-  void scanProduct(ProductPackingCodeID productPackingCode) {
+  Future<void> scanProduct(
+    ProductPackingCodeID productPackingCode,
+    int stepCode,
+  ) async {
     if (state.value == null) return;
     final currentState = state.value!;
     final pendingQty = currentState.pendingQuantities[productPackingCode];
@@ -61,12 +65,21 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
       newScanned[productPackingCode] =
           (newScanned[productPackingCode] ?? 0) + 1;
 
-      state = AsyncData(
-        currentState.copyWith(
-          pendingQuantities: newPending,
-          scannedQuantities: newScanned,
-        ),
+      final newState = currentState.copyWith(
+        pendingQuantities: newPending,
+        scannedQuantities: newScanned,
       );
+
+      state = AsyncData(newState);
+
+      if (newState.isComplete) {
+        await ref
+            .read(confirmConferenceControllerProvider.notifier)
+            .confirm(
+              expeditionControlCode: expeditionControlCode,
+              stepCode: stepCode,
+            );
+      }
     }
   }
 }
