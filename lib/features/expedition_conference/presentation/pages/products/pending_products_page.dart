@@ -45,44 +45,29 @@ class PendingProductsPage extends ConsumerWidget {
           );
     }
 
+    if (pendingProductsAsync.value?.pendingProducts == null ||
+        pendingProductsAsync.value!.pendingProducts.isEmpty) {
+      return EmptyProductsMessage(onRefresh: onRefresh);
+    }
+
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
-      child: AsyncValueWidget(
-        value: pendingProductsAsync,
-        tryAgain: onRefresh,
-        data: (conferenceState) {
-          if (conferenceState.pendingProducts.isEmpty &&
-              conferenceState.scannedProducts.isNotEmpty) {
-            return Center(
-              child: PrimaryTextButton(
-                text: 'Should try to confirm the conference',
-                onPressed: () {
-                  //TODO implement
-                },
-              ),
-            );
-          }
-
-          if (conferenceState.pendingProducts.isEmpty) {
-            return EmptyProductsMessage(onRefresh: onRefresh);
-          }
-
-          return CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: DefaultSearchProducts(
-                  isLoading:
-                      pendingProductsAsync.isLoading ||
-                      searchProductsAsync.isLoading,
-                  focusNode: focusNode,
-                  searchProducts: searchProducts,
-                  searchValueController: searchValueController,
-                ),
-              ),
-              PendingProductsItems(products: conferenceState.pendingProducts),
-            ],
-          );
-        },
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: DefaultSearchProducts(
+              isLoading:
+                  pendingProductsAsync.isLoading ||
+                  searchProductsAsync.isLoading,
+              focusNode: focusNode,
+              searchProducts: searchProducts,
+              searchValueController: searchValueController,
+            ),
+          ),
+          PendingProductsItems(
+            products: pendingProductsAsync.value!.pendingProducts,
+          ),
+        ],
       ),
     );
   }

@@ -48,11 +48,24 @@ class _ProductsConferencePageState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     final pendingProductsAsync = ref.watch(
       expeditionConferenceControllerProvider(
         widget.expeditionControlCode,
         widget.selectedEnterprise?.name ?? '',
       ),
+    );
+
+    ref.listen(
+      expeditionConferenceControllerProvider(
+        widget.expeditionControlCode,
+        widget.selectedEnterprise?.name ?? '',
+      ),
+      (p, n) {
+        n.showAlertDialogOnError(context);
+      },
     );
 
     final searchProductsAsync = ref.watch(
@@ -122,9 +135,14 @@ class _ProductsConferencePageState
               focusNode.requestFocus();
             });
           } else if (n.value != null && n.value!.length > 1) {
-            //TODO show modal page to select the correct product to count
-            debugPrint(
-              'show modal page to select the correct product to count',
+            showModalPage(
+              SelectProductModalPage(
+                n: n,
+                expeditionControlCode: widget.expeditionControlCode,
+                stepCode: widget.stepCode,
+                selectedEnterprise: widget.selectedEnterprise,
+              ),
+              context,
             );
           }
           searchValueController.clear();
@@ -140,9 +158,6 @@ class _ProductsConferencePageState
         ),
       );
     }
-
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final pages = [
       PendingProductsPage(
