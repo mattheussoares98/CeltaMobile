@@ -70,7 +70,8 @@ class _ProductsConferencePageState
       (p, n) {
         n.doOnSuccess(p, () {
           ref.invalidate(
-            confirmConferenceControllerProvider(
+            expeditionDocumentsStateControllerProvider(
+              widget.enterpriseCode,
               widget.selectedEnterprise?.name ?? '',
             ),
           );
