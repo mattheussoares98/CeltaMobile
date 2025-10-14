@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,12 +26,7 @@ mixin SearchProductsListenerMixin {
         selectedEnterprise?.name ?? '',
       ),
       (p, n) {
-        n.showSnackbarOnError(
-          context,
-          previous: p,
-          message: 'Houve um problema para pesquisar o produto. Tente novamente'
-              .hardcoded,
-        );
+        n.showSnackbarOnError(context, previous: p, message: n.error);
 
         n.doOnSuccess(p, () {
           if (n.value != null && n.value!.length == 1) {
