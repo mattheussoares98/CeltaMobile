@@ -60,6 +60,18 @@ class PendingProductsPage extends ConsumerWidget {
           value: pendingProductsAsync,
           tryAgain: onRefresh,
           data: (conferenceState) {
+            if (conferenceState.pendingProducts.isEmpty &&
+                conferenceState.scannedProducts.isNotEmpty) {
+              return Center(
+                child: PrimaryTextButton(
+                  text: 'Should try to confirm the conference',
+                  onPressed: () {
+                    //TODO implement
+                  },
+                ),
+              );
+            }
+
             if (conferenceState.pendingProducts.isEmpty) {
               return EmptyProductsMessage(onRefresh: onRefresh);
             }
