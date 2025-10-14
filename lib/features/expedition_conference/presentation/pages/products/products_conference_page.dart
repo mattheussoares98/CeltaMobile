@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +8,7 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../controllers/controllers.dart';
+import '../mixins/mixins.dart';
 import 'components/components.dart';
 import 'products.dart';
 
@@ -32,8 +32,8 @@ class ProductsConferencePage extends ConsumerStatefulWidget {
       _ProductsConferencePageState();
 }
 
-class _ProductsConferencePageState
-    extends ConsumerState<ProductsConferencePage> {
+class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
+    with SearchProductsListenerMixin {
   final searchValueController = TextEditingController();
   final focusNode = FocusNode();
   int currentIndex = 0;
@@ -48,6 +48,17 @@ class _ProductsConferencePageState
 
   @override
   Widget build(BuildContext context) {
+    listenSearchProducts(
+      ref: ref,
+      context: context,
+      searchValueController: searchValueController,
+      focusNode: focusNode,
+      stepCode: widget.stepCode,
+      expeditionControlCode: widget.expeditionControlCode,
+      enterpriseCode: widget.enterpriseCode,
+      selectedEnterprise: widget.selectedEnterprise,
+    );
+
     final pendingProductsAsync = ref.watch(
       expeditionConferenceControllerProvider(
         widget.expeditionControlCode,
@@ -95,55 +106,6 @@ class _ProductsConferencePageState
       confirmConferenceControllerProvider(
         widget.selectedEnterprise?.name ?? '',
       ),
-    );
-
-    ref.listen(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.generic,
-        widget.selectedEnterprise?.name ?? '',
-      ),
-      (p, n) {
-        n.showSnackbarOnError(
-          context,
-          previous: p,
-          message: 'Houve um problema para pesquisar o produto. Tente novamente'
-              .hardcoded,
-        );
-
-        n.doOnSuccess(p, () {
-          if (n.hasValue != true) {
-            return;
-          } else if (n.value != null && n.value!.length == 1) {
-            ref
-                .read(
-                  expeditionConferenceControllerProvider(
-                    widget.expeditionControlCode,
-                    widget.selectedEnterprise?.name ?? '',
-                  ).notifier,
-                )
-                .scanProduct(
-                  n.value!.first.ProductPackingCode,
-                  widget.stepCode,
-                );
-
-            Future.delayed(Duration(milliseconds: 100), () {
-              focusNode.requestFocus();
-            });
-          } else if (n.value != null && n.value!.length > 1) {
-            showModalPage(
-              SelectProductModalPage(
-                n: n,
-                expeditionControlCode: widget.expeditionControlCode,
-                stepCode: widget.stepCode,
-                selectedEnterprise: widget.selectedEnterprise,
-              ),
-              context,
-            );
-          }
-          searchValueController.clear();
-        });
-      },
     );
 
     void onRefresh() {
