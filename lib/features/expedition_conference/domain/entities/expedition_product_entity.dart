@@ -29,4 +29,24 @@ class ExpeditionProductEntity extends Equatable {
     Name,
     Packing,
   ];
+
+  ExpeditionProductEntity copyWith({
+    int? EnterpriseCode,
+    int? ProductCode,
+    int? ProductPackingCode,
+    double? Quantity,
+    String? PriceLookUp,
+    String? Name,
+    String? Packing,
+  }) {
+    return ExpeditionProductEntity(
+      EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
+      ProductCode: ProductCode ?? this.ProductCode,
+      ProductPackingCode: ProductPackingCode ?? this.ProductPackingCode,
+      Quantity: Quantity ?? this.Quantity,
+      PriceLookUp: PriceLookUp ?? this.PriceLookUp,
+      Name: Name ?? this.Name,
+      Packing: Packing ?? this.Packing,
+    );
+  }
 }
