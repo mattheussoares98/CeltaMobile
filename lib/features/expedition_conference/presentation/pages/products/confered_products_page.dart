@@ -7,13 +7,8 @@ import '../../../domain/entities/entities.dart';
 import 'components/components.dart';
 
 class ConferedProductsPage extends ConsumerWidget {
-  final VoidCallback onRefresh;
   final List<ExpeditionProductEntity>? scannedProducts;
-  const ConferedProductsPage({
-    super.key,
-    required this.onRefresh,
-    required this.scannedProducts,
-  });
+  const ConferedProductsPage({super.key, required this.scannedProducts});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -6,6 +6,7 @@ import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class PendingProductsPage extends ConsumerWidget {
@@ -14,8 +15,8 @@ class PendingProductsPage extends ConsumerWidget {
   final FocusNode focusNode;
   final TextEditingController searchValueController;
   final AsyncValue<ExpeditionConferenceState> pendingProductsAsync;
-  final VoidCallback onRefresh;
   final AsyncValue<List<ProductEntity>> searchProductsAsync;
+  final int expeditionControlCode;
   const PendingProductsPage({
     super.key,
     required this.enterpriseCode,
@@ -23,8 +24,8 @@ class PendingProductsPage extends ConsumerWidget {
     required this.focusNode,
     required this.searchValueController,
     required this.pendingProductsAsync,
-    required this.onRefresh,
     required this.searchProductsAsync,
+    required this.expeditionControlCode,
   });
 
   @override
@@ -47,7 +48,16 @@ class PendingProductsPage extends ConsumerWidget {
 
     if (pendingProductsAsync.value?.pendingProducts == null ||
         pendingProductsAsync.value!.pendingProducts.isEmpty) {
-      return EmptyProductsMessage(onRefresh: onRefresh);
+      return EmptyProductsMessage(
+        onRefreshEmptyProducts: () {
+          ref.invalidate(
+            expeditionConferenceControllerProvider(
+              expeditionControlCode,
+              selectedEnterprise?.name ?? '',
+            ),
+          );
+        },
+      );
     }
 
     return Padding(

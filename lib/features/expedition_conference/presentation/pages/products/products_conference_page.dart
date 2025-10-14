@@ -108,15 +108,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       ),
     );
 
-    void onRefresh() {
-      ref.invalidate(
-        expeditionConferenceControllerProvider(
-          widget.expeditionControlCode,
-          widget.selectedEnterprise?.name ?? '',
-        ),
-      );
-    }
-
     final pages = [
       PendingProductsPage(
         focusNode: focusNode,
@@ -124,11 +115,10 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
         selectedEnterprise: widget.selectedEnterprise,
         enterpriseCode: widget.enterpriseCode,
         pendingProductsAsync: pendingProductsAsync,
-        onRefresh: onRefresh,
         searchProductsAsync: searchProductsAsync,
+        expeditionControlCode: widget.expeditionControlCode,
       ),
       ConferedProductsPage(
-        onRefresh: onRefresh,
         scannedProducts: pendingProductsAsync.value?.scannedProducts,
       ),
     ];

@@ -7,8 +7,8 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 
 class EmptyProductsMessage extends ConsumerWidget {
-  final VoidCallback onRefresh;
-  const EmptyProductsMessage({super.key, required this.onRefresh});
+  final VoidCallback onRefreshEmptyProducts;
+  const EmptyProductsMessage({super.key, required this.onRefreshEmptyProducts});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +28,7 @@ class EmptyProductsMessage extends ConsumerWidget {
           PrimaryTextButton(
             text: 'Pesquisar novamente'.hardcoded,
             icon: Icon(isIOS ? CupertinoIcons.refresh : Icons.refresh_rounded),
-            onPressed: onRefresh,
+            onPressed: onRefreshEmptyProducts,
           ),
         ],
       ),
