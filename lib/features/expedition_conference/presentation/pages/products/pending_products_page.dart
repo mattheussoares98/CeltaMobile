@@ -65,13 +65,16 @@ class PendingProductsPage extends ConsumerWidget {
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: DefaultSearchProducts(
-              isLoading:
-                  pendingProductsAsync.isLoading ||
-                  searchProductsAsync.isLoading,
-              focusNode: focusNode,
-              searchProducts: searchProducts,
-              searchValueController: searchValueController,
+            child: Padding(
+              padding: const EdgeInsets.only(top: Sizes.p4),
+              child: DefaultSearchProducts(
+                isLoading:
+                    pendingProductsAsync.isLoading ||
+                    searchProductsAsync.isLoading,
+                focusNode: focusNode,
+                searchProducts: searchProducts,
+                searchValueController: searchValueController,
+              ),
             ),
           ),
           PendingProductsItems(
