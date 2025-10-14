@@ -51,7 +51,9 @@ class PendingProductsPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Pendentes ($documentNumber)'.hardcoded)),
+      appBar: AppBar(
+        title: FittedBox(child: Text('Pendentes ($documentNumber)'.hardcoded)),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
         child: AsyncValueWidget(
