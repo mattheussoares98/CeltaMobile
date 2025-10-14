@@ -47,11 +47,15 @@ extension AsyncValueUI on AsyncValue {
   void showSnackbarOnError(
     BuildContext context, {
     required AsyncValue? previous,
-    required String message,
+    required Object? message,
     Color? backgroundColor = Colors.red,
   }) {
     if (previous != null && previous.isLoading && !isLoading && hasError) {
-      showSnackBarMessage(context, message, backgroundColor: backgroundColor);
+      showSnackBarMessage(
+        context,
+        parseErrorMessage(message),
+        backgroundColor: backgroundColor,
+      );
     }
   }
 }
