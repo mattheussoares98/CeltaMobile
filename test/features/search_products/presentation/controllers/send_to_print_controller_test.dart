@@ -213,11 +213,11 @@ void main() {
       // 1. Verify the repository call
       verify(
         () => mockRepository.send(
-          baseUrl: any(named: 'baseUrl'), //TODO fix
-          crossIdentity: any(named: 'crossIdentity'), //TODO fix
-          enterpriseCode: any(named: 'enterpriseCode'), //TODO fix
-          productPackingCode: any(named: 'productPackingCode'), //TODO fix
-          newValue: any(named: 'newValue'), //TODO fix
+          baseUrl: fakeSession.enterprise!.baseUrl!,
+          crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+          enterpriseCode: fakeEnterprise.Code!,
+          productPackingCode: fakeProductPackingCode,
+          newValue: fakeNewValue,
         ),
       ).called(1);
 

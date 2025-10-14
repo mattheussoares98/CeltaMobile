@@ -16,7 +16,6 @@ extension AsyncValueUI on AsyncValue {
   }
 
   void doOnSuccess(AsyncValue<void>? previous, VoidCallback action) {
-    //TODO add a parameter to validate if has data or not
     if (previous is AsyncLoading && !isLoading && !hasError) {
       action();
     }

@@ -35,9 +35,7 @@ mixin SearchProductsListenerMixin {
         );
 
         n.doOnSuccess(p, () {
-          if (n.hasValue != true) {
-            return;
-          } else if (n.value != null && n.value!.length == 1) {
+          if (n.value != null && n.value!.length == 1) {
             ref
                 .read(
                   expeditionConferenceControllerProvider(
