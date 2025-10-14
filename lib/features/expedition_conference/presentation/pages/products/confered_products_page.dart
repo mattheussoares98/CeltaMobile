@@ -18,29 +18,26 @@ class ConferedProductsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Produtos Conferidos'.hardcoded)),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: AsyncValueWidget(
-          value: pendingProductsAsync,
-          tryAgain: onRefresh,
-          data: (conferenceState) {
-            if (conferenceState.scannedProducts.isEmpty) {
-              return Center(
-                child: Text('Nenhum produto conferido até o momento'.hardcoded),
-              );
-            }
-
-            return ListView.builder(
-              itemCount: conferenceState.scannedProducts.length,
-              itemBuilder: (_, index) {
-                final product = conferenceState.scannedProducts[index];
-                return ProductItem(product: product);
-              },
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p8),
+      child: AsyncValueWidget(
+        value: pendingProductsAsync,
+        tryAgain: onRefresh,
+        data: (conferenceState) {
+          if (conferenceState.scannedProducts.isEmpty) {
+            return Center(
+              child: Text('Nenhum produto conferido até o momento'.hardcoded),
             );
-          },
-        ),
+          }
+
+          return ListView.builder(
+            itemCount: conferenceState.scannedProducts.length,
+            itemBuilder: (_, index) {
+              final product = conferenceState.scannedProducts[index];
+              return ProductItem(product: product);
+            },
+          );
+        },
       ),
     );
   }

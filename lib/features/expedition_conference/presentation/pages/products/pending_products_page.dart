@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,8 +9,6 @@ import '../../../domain/entities/entities.dart';
 import 'components/components.dart';
 
 class PendingProductsPage extends ConsumerWidget {
-  final int expeditionControlCode;
-  final String documentNumber;
   final int enterpriseCode;
   final EnterpriseEntity? selectedEnterprise;
   final FocusNode focusNode;
@@ -21,8 +18,6 @@ class PendingProductsPage extends ConsumerWidget {
   final AsyncValue<List<ProductEntity>> searchProductsAsync;
   const PendingProductsPage({
     super.key,
-    required this.expeditionControlCode,
-    required this.documentNumber,
     required this.enterpriseCode,
     required this.selectedEnterprise,
     required this.focusNode,
@@ -50,49 +45,44 @@ class PendingProductsPage extends ConsumerWidget {
           );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(child: Text('Pendentes ($documentNumber)'.hardcoded)),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: AsyncValueWidget(
-          value: pendingProductsAsync,
-          tryAgain: onRefresh,
-          data: (conferenceState) {
-            if (conferenceState.pendingProducts.isEmpty &&
-                conferenceState.scannedProducts.isNotEmpty) {
-              return Center(
-                child: PrimaryTextButton(
-                  text: 'Should try to confirm the conference',
-                  onPressed: () {
-                    //TODO implement
-                  },
-                ),
-              );
-            }
-
-            if (conferenceState.pendingProducts.isEmpty) {
-              return EmptyProductsMessage(onRefresh: onRefresh);
-            }
-
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: DefaultSearchProducts(
-                    isLoading:
-                        pendingProductsAsync.isLoading ||
-                        searchProductsAsync.isLoading,
-                    focusNode: focusNode,
-                    searchProducts: searchProducts,
-                    searchValueController: searchValueController,
-                  ),
-                ),
-                PendingProductsItems(products: conferenceState.pendingProducts),
-              ],
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p8),
+      child: AsyncValueWidget(
+        value: pendingProductsAsync,
+        tryAgain: onRefresh,
+        data: (conferenceState) {
+          if (conferenceState.pendingProducts.isEmpty &&
+              conferenceState.scannedProducts.isNotEmpty) {
+            return Center(
+              child: PrimaryTextButton(
+                text: 'Should try to confirm the conference',
+                onPressed: () {
+                  //TODO implement
+                },
+              ),
             );
-          },
-        ),
+          }
+
+          if (conferenceState.pendingProducts.isEmpty) {
+            return EmptyProductsMessage(onRefresh: onRefresh);
+          }
+
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: DefaultSearchProducts(
+                  isLoading:
+                      pendingProductsAsync.isLoading ||
+                      searchProductsAsync.isLoading,
+                  focusNode: focusNode,
+                  searchProducts: searchProducts,
+                  searchValueController: searchValueController,
+                ),
+              ),
+              PendingProductsItems(products: conferenceState.pendingProducts),
+            ],
+          );
+        },
       ),
     );
   }

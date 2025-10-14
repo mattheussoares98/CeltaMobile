@@ -74,7 +74,7 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
 
       if (newState.isComplete) {
         await ref
-            .read(confirmConferenceControllerProvider.notifier)
+            .read(confirmConferenceControllerProvider(enterpriseName).notifier)
             .confirm(
               expeditionControlCode: expeditionControlCode,
               stepCode: stepCode,

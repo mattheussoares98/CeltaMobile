@@ -3,10 +3,13 @@ import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../controllers/controllers.dart';
+import 'components/components.dart';
 import 'products.dart';
 
 class ProductsConferencePage extends ConsumerStatefulWidget {
@@ -56,6 +59,30 @@ class _ProductsConferencePageState
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.generic,
+        widget.selectedEnterprise?.name ?? '',
+      ),
+    );
+
+    ref.listen(
+      confirmConferenceControllerProvider(
+        widget.selectedEnterprise?.name ?? '',
+      ),
+      (p, n) {
+        n.doOnSuccess(p, () {
+          ref.invalidate(
+            confirmConferenceControllerProvider(
+              widget.selectedEnterprise?.name ?? '',
+            ),
+          );
+          context.pop();
+          //TODO test if is working. If not, find another way to close the page and reload documents
+        });
+        n.showAlertDialogOnError(context);
+      },
+    );
+
+    final confirmAsync = ref.watch(
+      confirmConferenceControllerProvider(
         widget.selectedEnterprise?.name ?? '',
       ),
     );
@@ -118,11 +145,9 @@ class _ProductsConferencePageState
 
     final pages = [
       PendingProductsPage(
-        expeditionControlCode: widget.expeditionControlCode,
         focusNode: focusNode,
         searchValueController: searchValueController,
         selectedEnterprise: widget.selectedEnterprise,
-        documentNumber: widget.documentNumber,
         enterpriseCode: widget.enterpriseCode,
         pendingProductsAsync: pendingProductsAsync,
         onRefresh: onRefresh,
@@ -133,44 +158,70 @@ class _ProductsConferencePageState
         pendingProductsAsync: pendingProductsAsync,
       ),
     ];
-    return Scaffold(
-      body: pages[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            label: 'Pendentes'.hardcoded,
-            icon: Badge(
-              label: Text(
-                pendingProductsAsync.value?.pendingProducts.length.toString() ??
-                    '0',
-              ),
-              offset: Offset(8, -6),
-              child: Icon(
-                isIOS ? CupertinoIcons.exclamationmark_triangle : Icons.error,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: FittedBox(
+              child: Text(
+                '${currentIndex == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
+                    .hardcoded,
               ),
             ),
           ),
-          BottomNavigationBarItem(
-            label: 'Conferidos'.hardcoded,
-            icon: Badge(
-              label: Text(
-                pendingProductsAsync.value?.scannedProducts.length.toString() ??
-                    '0',
+          body: confirmAsync.hasError
+              ? TryConfirmAgain(
+                  confirmAsync: confirmAsync,
+                  expeditionControlCode: widget.expeditionControlCode,
+                  stepCode: widget.stepCode,
+                  selectedEnterprise: widget.selectedEnterprise,
+                )
+              : pages[currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: currentIndex,
+            onTap: (index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                label: 'Pendentes'.hardcoded,
+                icon: Badge(
+                  label: Text(
+                    pendingProductsAsync.value?.pendingProducts.length
+                            .toString() ??
+                        '0',
+                  ),
+                  offset: Offset(8, -6),
+                  child: Icon(
+                    isIOS
+                        ? CupertinoIcons.exclamationmark_triangle
+                        : Icons.error,
+                  ),
+                ),
               ),
-              offset: Offset(8, -6),
-              child: Icon(
-                isIOS ? CupertinoIcons.checkmark_seal : Icons.verified_rounded,
+              BottomNavigationBarItem(
+                label: 'Conferidos'.hardcoded,
+                icon: Badge(
+                  label: Text(
+                    pendingProductsAsync.value?.scannedProducts.length
+                            .toString() ??
+                        '0',
+                  ),
+                  offset: Offset(8, -6),
+                  child: Icon(
+                    isIOS
+                        ? CupertinoIcons.checkmark_seal
+                        : Icons.verified_rounded,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+        if (confirmAsync.isLoading) LoadingPage(),
+      ],
     );
   }
 }

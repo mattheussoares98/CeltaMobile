@@ -63,9 +63,9 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        confirmConferenceControllerProvider.overrideWith(
-          () => fakeConfirmController,
-        ),
+        confirmConferenceControllerProvider(
+          '',
+        ).overrideWith(() => fakeConfirmController),
       ],
     );
   }

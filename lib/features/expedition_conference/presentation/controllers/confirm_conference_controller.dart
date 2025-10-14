@@ -8,7 +8,7 @@ part 'confirm_conference_controller.g.dart';
 @riverpod
 class ConfirmConferenceController extends _$ConfirmConferenceController {
   @override
-  FutureOr<void> build() {}
+  FutureOr<void> build(String enterpriseName) {}
 
   Future<bool> confirm({
     required int expeditionControlCode,
