@@ -1,0 +1,124 @@
+import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/features/expedition_conference/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/expedition_conference/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/expedition_conference/providers.dart';
+import 'package:faker/faker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+class MockSoapConfirmConferenceRepository extends Mock
+    implements ISoapConfirmConferenceRepository {}
+
+void main() {
+  late MockSoapConfirmConferenceRepository mockRepository;
+  late UserSessionModel fakeSession;
+  late int fakeExpeditionCode;
+  late int fakeStepCode;
+
+  setUp(() {
+    mockRepository = MockSoapConfirmConferenceRepository();
+    fakeSession = UserSessionModel.fromEntity(
+      EntityFactory.makeUserSessionEntity(),
+    );
+    fakeExpeditionCode = faker.randomGenerator.integer(1000);
+    fakeStepCode = faker.randomGenerator.integer(10);
+  });
+
+  ProviderContainer makeProviderContainer({UserSessionModel? session}) {
+    return ProviderContainer(
+      overrides: [
+        soapConfirmConferenceRepositoryProvider.overrideWithValue(
+          mockRepository,
+        ),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(session),
+        ),
+      ],
+    );
+  }
+
+  group('ConfirmConferenceController', () {
+    test(
+      'should emit [loading, data], call repository, and return true on success',
+      () async {
+        // ARRANGE
+        when(
+          () => mockRepository.confirm(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            expeditionControlCode: any(named: 'expeditionControlCode'),
+            stepCode: any(named: 'stepCode'),
+          ),
+        ).thenAnswer((_) async {});
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          confirmConferenceControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        final result = await container
+            .read(confirmConferenceControllerProvider.notifier)
+            .confirm(
+              expeditionControlCode: fakeExpeditionCode,
+              stepCode: fakeStepCode,
+            );
+
+        // ASSERT
+        expect(result, isTrue);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        verify(
+          () => mockRepository.confirm(
+            baseUrl: fakeSession.enterprise!.baseUrl!,
+            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+            expeditionControlCode: fakeExpeditionCode,
+            stepCode: fakeStepCode,
+          ),
+        ).called(1);
+      },
+    );
+
+    test(
+      'should emit [loading, error] and return false when session is invalid',
+      () async {
+        // ARRANGE: Pass null for the session to trigger the error path
+        final container = makeProviderContainer(session: null);
+        addTearDown(container.dispose);
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          confirmConferenceControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        final result = await container
+            .read(confirmConferenceControllerProvider.notifier)
+            .confirm(
+              expeditionControlCode: fakeExpeditionCode,
+              stepCode: fakeStepCode,
+            );
+
+        // ASSERT
+        expect(result, isFalse);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+        verifyNever(
+          () => mockRepository.confirm(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            expeditionControlCode: any(named: 'expeditionControlCode'),
+            stepCode: any(named: 'stepCode'),
+          ),
+        );
+      },
+    );
+  });
+}
