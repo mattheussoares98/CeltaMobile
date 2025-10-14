@@ -53,10 +53,7 @@ class SelectProductModalPage extends ConsumerWidget {
                             selectedEnterprise?.name ?? '',
                           ).notifier,
                         )
-                        .scanProduct(
-                          n.value!.first.ProductPackingCode,
-                          stepCode,
-                        );
+                        .scanProduct(product.ProductPackingCode, stepCode);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),
