@@ -34,3 +34,15 @@ ISoapLoadPendingProductsRepository soapLoadPendingProductsRepository(Ref ref) {
     ref.watch(soapLoadPendingProductsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapConfirmConferenceDatasource soapConfirmConferenceDatasource(Ref ref) {
+  return SoapConfirmConferenceDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapConfirmConferenceRepository soapConfirmConferenceRepository(Ref ref) {
+  return SoapConfirmConferenceRepositoryImpl(
+    ref.watch(soapConfirmConferenceDatasourceProvider),
+  );
+}
