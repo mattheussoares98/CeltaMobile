@@ -63,7 +63,6 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
         Exception('Esse produto não está pendente para conferência'.hardcoded),
         StackTrace.current,
       );
-      //TODO create test
       return;
     }
 
