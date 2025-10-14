@@ -102,13 +102,15 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (width >= 220)
+                  if (width >= 220 && !widget.isLoading)
                     _DefaultIcon(
                       onPress: searchProducts,
                       materialIcon: Icons.search,
                       cupertinoIcon: CupertinoIcons.search,
                       iconColor: widget.isLoading ? theme.disabledColor : null,
-                    ),
+                    )
+                  else if (widget.isLoading)
+                    LoadingWidget(),
                   if (theme.platform == TargetPlatform.iOS ||
                       theme.platform == TargetPlatform.android)
                     _DefaultIcon(
