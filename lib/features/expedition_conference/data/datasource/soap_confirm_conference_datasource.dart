@@ -15,8 +15,6 @@ class SoapConfirmConferenceDatasource
     required int expeditionControlCode,
     required int stepCode,
   }) async {
-    // await Future.delayed(Duration(seconds: 2));
-    // throw Exception(); //TODO only for tests, remove after
     await soapRequest.post(
       url: baseUrl,
       typeOfResponse: "ConfirmConferenceResponse",
