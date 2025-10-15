@@ -11,7 +11,7 @@ class SoapInventoryProductsDatasource
   //TODO create tests similar to core load products
 
   @override
-  Future<List<InventoryProductModel>> getProductsJson({
+  Future<List<InventoryProductModel>> load({
     required String baseUrl,
     required String searchValue,
     required int inventoryProcessCode,

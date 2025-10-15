@@ -901,3 +901,23 @@ class SoapLoadInventoryDatasourceSpy extends Mock
     ),
   );
 }
+
+class SoapInventoryProductsDatasourceSpy extends Mock
+    implements ISoapInventoryProductsDatasource {
+  void mockLoad(List<InventoryProductModel> response) {
+    _mockLoadCall().thenAnswer((_) async => response);
+  }
+
+  When _mockLoadCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      searchValue: any(named: 'searchValue'),
+      inventoryProcessCode: any(named: 'inventoryProcessCode'),
+      searchType: any(named: 'searchType'),
+      crossIdentity: any(named: 'crossIdentity'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+      inventoryCountingCode: any(named: 'inventoryCountingCode'),
+      selectedEnterprise: any(named: 'selectedEnterprise'),
+    ),
+  );
+}

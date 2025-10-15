@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../domain/entities/entities.dart';
+
 class InventoryProductModel extends Equatable {
   final String productName;
   final int codigoInternoProEmb;
@@ -30,5 +32,30 @@ class InventoryProductModel extends Equatable {
     plu: json['CodigoPlu_ProEmb'],
     codigoProEmb: json['Codigo_ProEmb'] ?? "",
     quantidadeInvContProEmb: double.tryParse(json['Quantidade_InvContProEmb']),
+  );
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'Nome_Produto': productName,
+    'CodigoInterno_ProEmb': codigoInternoProEmb,
+    'CodigoPlu_ProEmb': plu,
+    'Codigo_ProEmb': codigoProEmb,
+    'Quantidade_InvContProEmb': quantidadeInvContProEmb,
+  };
+
+  factory InventoryProductModel.fromEntity(InventoryProductEntity entity) =>
+      InventoryProductModel(
+        productName: entity.productName,
+        codigoInternoProEmb: entity.codigoInternoProEmb,
+        plu: entity.plu,
+        codigoProEmb: entity.codigoProEmb,
+        quantidadeInvContProEmb: entity.quantidadeInvContProEmb,
+      );
+
+  InventoryProductEntity toEntity() => InventoryProductEntity(
+    productName: productName,
+    codigoInternoProEmb: codigoInternoProEmb,
+    plu: plu,
+    codigoProEmb: codigoProEmb,
+    quantidadeInvContProEmb: quantidadeInvContProEmb,
   );
 }

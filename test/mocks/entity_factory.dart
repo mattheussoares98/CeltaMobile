@@ -491,4 +491,13 @@ class EntityFactory {
     NumeroContagemInvCont: faker.randomGenerator.integer(100),
     ObsInvCont: faker.lorem.word(),
   );
+
+  static InventoryProductEntity makeInventoryProductEntity() =>
+      InventoryProductEntity(
+        productName: faker.food.dish(),
+        codigoInternoProEmb: faker.randomGenerator.integer(100),
+        plu: faker.guid.guid(),
+        codigoProEmb: faker.randomGenerator.integer(100).toString(),
+        quantidadeInvContProEmb: faker.randomGenerator.decimal(),
+      );
 }
