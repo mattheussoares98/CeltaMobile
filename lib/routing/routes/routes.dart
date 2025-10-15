@@ -1,5 +1,6 @@
 export 'adjust_sale_price/adjust_sale_price.dart';
 export 'expedition_conference/expedition_conference.dart';
+export 'inventory/inventory.dart';
 export 'adjust_stocks_route.dart';
 export './auth_route.dart';
 export './customer_register_route.dart';
