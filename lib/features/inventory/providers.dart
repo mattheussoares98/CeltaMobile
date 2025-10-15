@@ -18,3 +18,15 @@ ISoapLoadInventoryRepository soapLoadInventoryRepository(Ref ref) {
     ref.watch(soapLoadInventoryDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInventoryProductsDatasource soapInventoryProductsDatasource(Ref ref) {
+  return SoapInventoryProductsDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapInventoryProductsRepository soapInventoryProductsRepository(Ref ref) {
+  return SoapInventoryProductsRepositoryImpl(
+    ref.watch(soapInventoryProductsDatasourceProvider),
+  );
+}
