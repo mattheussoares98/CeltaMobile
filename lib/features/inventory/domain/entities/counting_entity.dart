@@ -5,7 +5,7 @@ class CountingEntity extends Equatable {
   final int NumeroContagemInvCont;
   final int FlagTipoContagemInvCont;
   final int CodigoInternoInventario;
-  final String ObsInvCont;
+  final String? ObsInvCont;
 
   const CountingEntity({
     required this.CodigoInternoInvCont,
