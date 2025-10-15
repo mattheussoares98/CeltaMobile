@@ -3,6 +3,7 @@ import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/en
 import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 
@@ -456,5 +457,26 @@ class EntityFactory {
     PriceLookUp: faker.lorem.word(),
     Name: faker.food.dish(),
     Packing: faker.lorem.word(),
+  );
+
+  static InventoryEntity makeInventoryEntity() => InventoryEntity(
+    frozenProces: FrozenProcessEntity(
+      CataCriacaoInventario: faker.date.dateTime(),
+      DataCongelamentoInventario: faker.date.dateTime(),
+      CodigoInternoInventario: faker.randomGenerator.integer(100),
+      CodigoInternoEmpresa: faker.randomGenerator.integer(100),
+      NomeTipoEstoque: faker.lorem.word(),
+      ObsInventario: faker.lorem.sentence(),
+      NomeFuncionario: faker.person.name(),
+      NomeEmpresa: faker.company.name(),
+      CodigoEmpresa: faker.randomGenerator.integer(100).toString(),
+    ),
+    counting: CountingEntity(
+      CodigoInternoInvCont: faker.randomGenerator.integer(100),
+      FlagTipoContagemInvCont: faker.randomGenerator.integer(100),
+      CodigoInternoInventario: faker.randomGenerator.integer(100),
+      NumeroContagemInvCont: faker.randomGenerator.integer(100),
+      ObsInvCont: faker.lorem.word(),
+    ),
   );
 }
