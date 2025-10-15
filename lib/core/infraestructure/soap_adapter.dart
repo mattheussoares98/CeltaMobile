@@ -75,7 +75,7 @@ class SoapAdapter implements contracts.SoapRequest {
     }
   }
 
-  String _handleSuccessResponse(
+  dynamic _handleSuccessResponse(
     Map<String, dynamic> responseBody,
     String? typeOfResult,
   ) {
@@ -83,8 +83,7 @@ class SoapAdapter implements contracts.SoapRequest {
       return 'Sucesso'.hardcoded;
     } else if (responseBody[typeOfResult] != null) {
       if (_isValidResponse(responseBody, typeOfResult)) {
-        return responseBody[typeOfResult]["diffgr:diffgram"]["NewDataSet"]
-            .toString();
+        return responseBody[typeOfResult]["diffgr:diffgram"]["NewDataSet"];
       }
       return responseBody[typeOfResult].toString();
     } else if (responseBody.toString().contains("sucesso")) {
