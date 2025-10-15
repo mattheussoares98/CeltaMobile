@@ -3,6 +3,7 @@ enum Modules {
   adjustStock,
   customerRegister,
   expeditionConference,
+  inventory,
   saleRequest,
   transferBetweenStocks,
   reports,
