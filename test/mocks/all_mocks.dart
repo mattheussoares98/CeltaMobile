@@ -889,7 +889,7 @@ class SoapConfirmConferenceDatasourceSpy extends Mock
 
 class SoapLoadInventoryDatasourceSpy extends Mock
     implements ISoapLoadInventoryDatasource {
-  void mockLoad(List<InventoryModel> response) {
+  void mockLoad(InventoryModel response) {
     _mockLoadCall().thenAnswer((_) async => response);
   }
 

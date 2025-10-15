@@ -35,10 +35,10 @@ class CountingModel extends Equatable {
   );
 
   Map<String, dynamic> toJson() => {
-    'CodigoInterno_InvCont': CodigoInternoInvCont,
-    'FlagTipoContagem_InvCont': FlagTipoContagemInvCont,
-    'CodigoInterno_Inventario': CodigoInternoInventario,
-    'NumeroContagem_InvCont': NumeroContagemInvCont,
+    'CodigoInterno_InvCont': CodigoInternoInvCont.toString(),
+    'FlagTipoContagem_InvCont': FlagTipoContagemInvCont.toString(),
+    'CodigoInterno_Inventario': CodigoInternoInventario.toString(),
+    'NumeroContagem_InvCont': NumeroContagemInvCont.toString(),
     'Obs_InvCont': ObsInvCont,
   };
 

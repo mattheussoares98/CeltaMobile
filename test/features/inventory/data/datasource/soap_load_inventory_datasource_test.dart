@@ -14,7 +14,7 @@ void main() {
   late String baseUrl;
   late String crossIdentity;
   late int enterpriseCode;
-  late List<InventoryModel> inventoryModels;
+  late InventoryModel inventoryModel;
 
   void initSut() {
     sut = SoapLoadInventoryDatasource(soapRequest);
@@ -25,18 +25,16 @@ void main() {
   }
 
   void mockSuccess() {
-    soapRequest.mockPost(inventoryModels.map((e) => e.toJson()).toList());
+    soapRequest.mockPost(inventoryModel.toJson());
   }
 
   void initEntities() {
     baseUrl = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(1000);
-    inventoryModels = [
+    inventoryModel = InventoryModel.fromEntity(
       EntityFactory.makeInventoryEntity(),
-      EntityFactory.makeInventoryEntity(),
-      EntityFactory.makeInventoryEntity(),
-    ].map((e) => InventoryModel.fromEntity(e)).toList();
+    );
   }
 
   setUp(() {
@@ -53,7 +51,7 @@ void main() {
       enterpriseCode: enterpriseCode,
     );
 
-    expect(response, inventoryModels);
+    expect(response, inventoryModel);
 
     verify(
       () => soapRequest.post(

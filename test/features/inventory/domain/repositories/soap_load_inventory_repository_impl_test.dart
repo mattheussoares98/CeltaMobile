@@ -11,7 +11,7 @@ void main() {
 
   late SoapLoadInventoryDatasourceSpy datasource;
 
-  late List<InventoryModel> inventoriesModels;
+  late InventoryModel inventoryModel;
   late String baseUrl;
   late String crossIdentity;
   late int enterpriseCode;
@@ -25,15 +25,13 @@ void main() {
   }
 
   void mockSuccess() {
-    datasource.mockLoad(inventoriesModels);
+    datasource.mockLoad(inventoryModel);
   }
 
   void initEntities() {
-    inventoriesModels = [
+    inventoryModel = InventoryModel.fromEntity(
       EntityFactory.makeInventoryEntity(),
-      EntityFactory.makeInventoryEntity(),
-      EntityFactory.makeInventoryEntity(),
-    ].map((e) => InventoryModel.fromEntity(e)).toList();
+    );
     baseUrl = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(1000);
@@ -53,7 +51,7 @@ void main() {
       enterpriseCode: enterpriseCode,
     );
 
-    expect(response, inventoriesModels.map((e) => e.toEntity()).toList());
+    expect(response, inventoryModel.toEntity());
 
     verify(
       () => datasource.load(

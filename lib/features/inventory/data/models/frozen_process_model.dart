@@ -56,7 +56,8 @@ class FrozenProcessModel extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'CodigoInterno_Inventario': CodigoInternoInventario,
+      'CodigoInterno_Inventario': CodigoInternoInventario.toString(),
+      'CodigoInterno_Empresa1': CodigoInternoEmpresa.toString(),
       'DataCriacao_Inventario': CataCriacaoInventario.toIso8601String(),
       'DataCongelamento_Inventario':
           DataCongelamentoInventario.toIso8601String(),
@@ -64,7 +65,6 @@ class FrozenProcessModel extends Equatable {
       'Obs_Inventario': ObsInventario,
       'Nome_Funcionario': NomeFuncionario,
       'Nome_Empresa': NomeEmpresa,
-      'CodigoInterno_Empresa1': CodigoInternoEmpresa,
       'Codigo_Empresa': CodigoEmpresa,
     };
   }
