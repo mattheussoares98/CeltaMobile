@@ -12,7 +12,7 @@ RouteBase inventoryCountingsRoute() => GoRoute(
     final enterprise =
         (state.extra as Map?)?['enterprise'] as EnterpriseEntity?;
     final countings =
-        (state.extra as Map?)?['enterprise'] as List<CountingEntity>?;
+        (state.extra as Map?)?['counting'] as List<CountingEntity>?;
 
     final codigoInternoInventario = int.parse(
       state.pathParameters['codigoInternoInventario'].toString(),

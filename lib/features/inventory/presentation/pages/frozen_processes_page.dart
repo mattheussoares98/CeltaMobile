@@ -1,11 +1,13 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
+import '../../../../routing/routing.dart';
 import '../controllers/controllers.dart';
 
 class FrozenProcessesPage extends ConsumerWidget {
@@ -26,7 +28,6 @@ class FrozenProcessesPage extends ConsumerWidget {
       ),
     );
     final dateFormatter = DateFormat('dd/MM/yyyy HH:mm');
-
     return Scaffold(
       appBar: AppBar(title: Text('Processos congelados'.hardcoded)),
       body: AsyncValueWidget(
@@ -40,7 +41,7 @@ class FrozenProcessesPage extends ConsumerWidget {
           );
         },
         data: (inventories) {
-          return ListView.builder(
+          return ResponsiveListFlow(
             itemCount: inventories?.frozenProcesses.length ?? 0,
             itemBuilder: (_, index) {
               final frozenProcess = inventories!.frozenProcesses[index];
@@ -49,7 +50,24 @@ class FrozenProcessesPage extends ConsumerWidget {
                 clipBehavior: Clip.antiAlias,
                 child: InkWell(
                   onTap: () {
-                    //TODO implement navigation to countings page
+                    context.goNamed(
+                      Routes.inventoryCountings.name,
+                      pathParameters: {
+                        'enterpriseCode': enterpriseCode.toString(),
+                        'codigoInternoInventario':
+                            frozenProcess.CodigoInternoInventario.toString(),
+                      },
+                      extra: {
+                        'enterprise': selectedEnterprise,
+                        'counting': inventories.countings
+                            .where(
+                              (e) =>
+                                  frozenProcess.CodigoInternoInventario ==
+                                  e.CodigoInternoInventario,
+                            )
+                            .toList(),
+                      },
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),
@@ -57,34 +75,36 @@ class FrozenProcessesPage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TitleAndSubTitle(
-                          title: 'Empresa',
+                          title: 'Empresa'.hardcoded,
                           subTitle: frozenProcess.NomeEmpresa,
                         ),
                         TitleAndSubTitle(
-                          title: 'Tipo de estoque',
+                          title: 'Tipo de estoque'.hardcoded,
                           subTitle: frozenProcess.NomeTipoEstoque,
                         ),
                         TitleAndSubTitle(
-                          title: 'Responsável',
+                          title: 'Responsável'.hardcoded,
                           subTitle: frozenProcess.NomeFuncionario,
                         ),
                         TitleAndSubTitle(
-                          title: 'Criado em',
+                          title: 'Criado em'.hardcoded,
                           subTitle: dateFormatter.format(
                             frozenProcess.CataCriacaoInventario,
                           ),
                         ),
                         TitleAndSubTitle(
-                          title: 'Congelado em',
+                          title: 'Congelado em'.hardcoded,
                           subTitle: dateFormatter.format(
                             frozenProcess.DataCongelamentoInventario,
                           ),
                         ),
-                        if (frozenProcess.ObsInventario != null)
-                          TitleAndSubTitle(
-                            title: 'Observações',
-                            subTitle: frozenProcess.ObsInventario,
-                          ),
+
+                        TitleAndSubTitle(
+                          title: frozenProcess.ObsInventario == null
+                              ? 'Sem observações'.hardcoded
+                              : 'Observações'.hardcoded,
+                          subTitle: frozenProcess.ObsInventario,
+                        ),
                       ],
                     ),
                   ),
