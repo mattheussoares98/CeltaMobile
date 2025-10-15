@@ -12,6 +12,7 @@ enum Routes {
   enterprises('Empresas'),
   expeditionConferenceDocuments('Expedição (conferência)'),
   expeditionConferenceProducts('Conferência (expedição) produtos'),
+  inventoryCountings('Contagens'),
   inventoryFrozenProcesses('Inventário'),
   home('Home'),
   searchProducts('Pesquisar produtos'),
