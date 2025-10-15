@@ -8,7 +8,7 @@ class SoapLoadInventoryDatasource implements ISoapLoadInventoryDatasource {
   SoapLoadInventoryDatasource(this.soapRequest);
 
   @override
-  Future<List<InventoryModel>> load({
+  Future<InventoryModel> load({
     required String baseUrl,
     required String crossIdentity,
     required int enterpriseCode,
@@ -25,6 +25,6 @@ class SoapLoadInventoryDatasource implements ISoapLoadInventoryDatasource {
       },
     );
 
-    return (response as List).map((e) => InventoryModel.fromJson(e)).toList();
+    return InventoryModel.fromJson(response);
   }
 }

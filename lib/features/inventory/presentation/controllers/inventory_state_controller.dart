@@ -11,7 +11,7 @@ part 'inventory_state_controller.g.dart';
 @riverpod
 class InventoryStateController extends _$InventoryStateController {
   @override
-  FutureOr<List<InventoryEntity>?> build(
+  FutureOr<InventoryEntity?> build(
     int enterpriseCode,
     String enterpriseName,
   ) async {

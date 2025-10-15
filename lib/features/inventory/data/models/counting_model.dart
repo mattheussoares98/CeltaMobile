@@ -27,10 +27,10 @@ class CountingModel extends Equatable {
   ];
 
   factory CountingModel.fromJson(Map json) => CountingModel(
-    CodigoInternoInvCont: json['CodigoInterno_InvCont'],
-    FlagTipoContagemInvCont: json['FlagTipoContagem_InvCont'],
-    CodigoInternoInventario: json['CodigoInterno_Inventario'],
-    NumeroContagemInvCont: json['NumeroContagem_InvCont'],
+    CodigoInternoInvCont: int.parse(json['CodigoInterno_InvCont']),
+    FlagTipoContagemInvCont: int.parse(json['FlagTipoContagem_InvCont']),
+    CodigoInternoInventario: int.parse(json['CodigoInterno_Inventario']),
+    NumeroContagemInvCont: int.parse(json['NumeroContagem_InvCont']),
     ObsInvCont: json['Obs_InvCont'],
   );
 

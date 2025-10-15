@@ -25,7 +25,7 @@ class FrozenProcessesPage extends ConsumerWidget {
         selectedEnterprise?.name ?? '',
       ),
     );
-    final dateFormatter = DateFormat('dd/MM/yyyy');
+    final dateFormatter = DateFormat('dd/MM/yyyy HH:mm');
 
     return Scaffold(
       appBar: AppBar(title: Text('Processos congelados'.hardcoded)),
@@ -40,14 +40,10 @@ class FrozenProcessesPage extends ConsumerWidget {
           );
         },
         data: (inventories) {
-          final frozenProcesses = inventories
-              ?.map((inventory) => inventory.frozenProces)
-              .toList();
-
           return ListView.builder(
-            itemCount: frozenProcesses?.length ?? 0,
+            itemCount: inventories?.frozenProcesses.length ?? 0,
             itemBuilder: (_, index) {
-              final frozenProcess = frozenProcesses![index];
+              final frozenProcess = inventories!.frozenProcesses[index];
 
               return Card(
                 clipBehavior: Clip.antiAlias,
@@ -58,13 +54,14 @@ class FrozenProcessesPage extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TitleAndSubTitle(
                           title: 'Empresa',
                           subTitle: frozenProcess.NomeEmpresa,
                         ),
                         TitleAndSubTitle(
-                          title: 'Tipo estoque',
+                          title: 'Tipo de estoque',
                           subTitle: frozenProcess.NomeTipoEstoque,
                         ),
                         TitleAndSubTitle(
@@ -83,10 +80,11 @@ class FrozenProcessesPage extends ConsumerWidget {
                             frozenProcess.DataCongelamentoInventario,
                           ),
                         ),
-                        TitleAndSubTitle(
-                          title: 'Observações',
-                          subTitle: frozenProcess.ObsInventario,
-                        ),
+                        if (frozenProcess.ObsInventario != null)
+                          TitleAndSubTitle(
+                            title: 'Observações',
+                            subTitle: frozenProcess.ObsInventario,
+                          ),
                       ],
                     ),
                   ),

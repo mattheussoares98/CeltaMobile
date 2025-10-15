@@ -18,7 +18,7 @@ class MockSoapLoadInventoryRepository extends Mock
 void main() {
   late MockSoapLoadInventoryRepository mockRepository;
   late UserSessionModel fakeSession;
-  late List<InventoryEntity> fakeInventories;
+  late InventoryEntity fakeInventory;
   late int fakeEnterpriseCode;
   late String fakeEnterpriseName;
 
@@ -27,7 +27,7 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
-    fakeInventories = [EntityFactory.makeInventoryEntity()];
+    fakeInventory = EntityFactory.makeInventoryEntity();
     fakeEnterpriseCode = faker.randomGenerator.integer(100);
     fakeEnterpriseName = faker.company.name();
   });
@@ -54,7 +54,7 @@ void main() {
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),
-        ).thenAnswer((_) async => fakeInventories);
+        ).thenAnswer((_) async => fakeInventory);
 
         final container = makeProviderContainer(session: fakeSession);
         addTearDown(container.dispose);
@@ -68,7 +68,7 @@ void main() {
         );
 
         // ASSERT
-        expect(result, fakeInventories);
+        expect(result, fakeInventory);
         verify(
           () => mockRepository.load(
             baseUrl: fakeSession.enterprise!.baseUrl!,

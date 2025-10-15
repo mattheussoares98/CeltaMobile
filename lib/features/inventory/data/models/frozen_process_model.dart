@@ -8,7 +8,7 @@ class FrozenProcessModel extends Equatable {
   final DateTime DataCongelamentoInventario;
   final int CodigoInternoEmpresa;
   final String NomeTipoEstoque;
-  final String ObsInventario;
+  final String? ObsInventario;
   final String NomeFuncionario;
   final String NomeEmpresa;
   final String CodigoEmpresa;
@@ -40,17 +40,17 @@ class FrozenProcessModel extends Equatable {
 
   factory FrozenProcessModel.fromJson(Map json) {
     return FrozenProcessModel(
-      CodigoInternoInventario: json['CodigoInterno_Inventario'],
       CataCriacaoInventario: DateTime.parse(json['DataCriacao_Inventario']),
       DataCongelamentoInventario: DateTime.parse(
         json['DataCongelamento_Inventario'],
       ),
+      CodigoInternoInventario: int.parse(json['CodigoInterno_Inventario']),
+      CodigoInternoEmpresa: int.parse(json['CodigoInterno_Empresa1']),
+      CodigoEmpresa: json['Codigo_Empresa'],
       NomeTipoEstoque: json['Nome_TipoEstoque'],
       ObsInventario: json['Obs_Inventario'],
       NomeFuncionario: json['Nome_Funcionario'],
       NomeEmpresa: json['Nome_Empresa'],
-      CodigoInternoEmpresa: json['CodigoInterno_Empresa1'],
-      CodigoEmpresa: json['Codigo_Empresa'],
     );
   }
 

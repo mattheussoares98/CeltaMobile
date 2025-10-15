@@ -6,7 +6,7 @@ class FrozenProcessEntity extends Equatable {
   final DateTime DataCongelamentoInventario;
   final int CodigoInternoEmpresa;
   final String NomeTipoEstoque;
-  final String ObsInventario;
+  final String? ObsInventario;
   final String NomeFuncionario;
   final String NomeEmpresa;
   final String CodigoEmpresa;

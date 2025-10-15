@@ -8,7 +8,7 @@ class SoapLoadInventoryRepositoryImpl implements ISoapLoadInventoryRepository {
   SoapLoadInventoryRepositoryImpl(this.datasource);
 
   @override
-  Future<List<InventoryEntity>> load({
+  Future<InventoryEntity> load({
     required String baseUrl,
     required String crossIdentity,
     required int enterpriseCode,
@@ -19,6 +19,6 @@ class SoapLoadInventoryRepositoryImpl implements ISoapLoadInventoryRepository {
       enterpriseCode: enterpriseCode,
     );
 
-    return response.map((e) => e.toEntity()).toList();
+    return response.toEntity();
   }
 }
