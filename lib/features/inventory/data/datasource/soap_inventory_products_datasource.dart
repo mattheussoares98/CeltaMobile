@@ -1,0 +1,113 @@
+import '../../../../core/domain/contracts/contracts.dart';
+import '../../../../core/domain/entities/entities.dart';
+import '../models/models.dart';
+import 'datasource.dart';
+
+class SoapInventoryProductsDatasource
+    implements ISoapInventoryProductsDatasource {
+  final SoapRequest soapRequest;
+  SoapInventoryProductsDatasource(this.soapRequest);
+
+  //TODO create tests similar to core load products
+
+  @override
+  Future<List<InventoryProductModel>> getProductsJson({
+    required String baseUrl,
+    required String searchValue,
+    required int inventoryProcessCode,
+    required SearchType searchType,
+    required String crossIdentity,
+    required int enterpriseCode,
+    required int inventoryCountingCode,
+    required EnterpriseEntity selectedEnterprise,
+  }) async {
+    bool isBalanceFormat = _getIsBalanceFormat(searchValue);
+
+    try {
+      final response = await _executeRequest(
+        baseUrl: baseUrl,
+        searchValue: searchValue,
+        inventoryProcessCode: inventoryProcessCode,
+        searchType: searchType,
+        crossIdentity: crossIdentity,
+        enterpriseCode: enterpriseCode,
+        inventoryCountingCode: inventoryCountingCode,
+      );
+
+      return (response["Produtos"] is Map
+              ? [response["Produtos"]]
+              : response as List)
+          .map((e) => InventoryProductModel.fromJson(e))
+          .toList();
+    } catch (e) {
+      if (!isBalanceFormat) {
+        rethrow;
+      }
+    }
+
+    final response = await _executeRequest(
+      baseUrl: baseUrl,
+      searchValue: _extractPluFromEan(
+        searchValue: searchValue,
+        enterprise: selectedEnterprise,
+      ),
+      searchType: searchType,
+      crossIdentity: crossIdentity,
+      enterpriseCode: enterpriseCode,
+      inventoryCountingCode: inventoryCountingCode,
+      inventoryProcessCode: inventoryProcessCode,
+    );
+
+    return (response["Produtos"] is Map
+            ? [response["Produtos"]]
+            : response as List)
+        .map((e) => InventoryProductModel.fromJson(e))
+        .toList();
+  }
+
+  Future<dynamic> _executeRequest({
+    required String baseUrl,
+    required String searchValue,
+    required int inventoryProcessCode,
+    required SearchType searchType,
+    required String crossIdentity,
+    required int enterpriseCode,
+    required int inventoryCountingCode,
+  }) async {
+    try {
+      return await soapRequest.post(
+        url: baseUrl,
+        parameters: {
+          "crossIdentity": crossIdentity,
+          "enterpriseCode": enterpriseCode,
+          "searchValue": searchValue,
+          "searchTypeInt": searchType.code,
+          "inventoryProcessCode": inventoryProcessCode,
+          "inventoryCountingCode": inventoryCountingCode,
+        },
+        typeOfResponse: "GetProductsJsonResponse",
+        typeOfResult: "GetProductsJsonResult",
+        soapAction: "GetProductsJson",
+        serviceASMX: "CeltaProductService.asmx",
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  bool _getIsBalanceFormat(String searchValue) =>
+      searchValue.length == 13 && searchValue.startsWith("2");
+
+  String _extractPluFromEan({
+    required String searchValue,
+    required EnterpriseEntity enterprise,
+  }) {
+    return searchValue
+        .replaceFirst(RegExp(r'2'), '')
+        .replaceRange(
+          enterprise.ProductCodeSizeOfBalanceLabel!,
+          null,
+          enterprise.ProductCodeWithCheckerDigit == true ? "" : ".",
+        );
+  }
+}
