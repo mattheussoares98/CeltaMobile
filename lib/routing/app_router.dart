@@ -44,6 +44,7 @@ GoRouter goRouter(Ref ref) {
         expeditionConferenceDocumentsRoute([
           expeditionConferenceProductsRoute(),
         ]),
+        inventoryFrozenProcessesRoute([]),
         searchProductsRoute(),
         transferBetweenStocksRoute(),
       ]),

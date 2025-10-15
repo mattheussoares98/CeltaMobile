@@ -6,7 +6,7 @@ import '../../routing.dart';
 
 RouteBase inventoryFrozenProcessesRoute(List<RouteBase> routes) => GoRoute(
   path: 'inventory-frozen-processes/:enterpriseCode',
-  name: Routes.expeditionConferenceDocuments.name,
+  name: Routes.inventoryFrozenProcesses.name,
   routes: routes,
   builder: (context, state) {
     final enterprise =
