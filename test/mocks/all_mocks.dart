@@ -39,6 +39,8 @@ import 'package:celta_intelligence/features/enterprise_manager/domain/repositori
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/expedition_conference/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/expedition_conference/data/models/models.dart';
+import 'package:celta_intelligence/features/inventory/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/inventory/data/models/models.dart';
 import 'package:celta_intelligence/features/search_products/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
@@ -883,4 +885,19 @@ class SoapConfirmConferenceDatasourceSpy extends Mock
       ),
     ).thenAnswer((_) async {});
   }
+}
+
+class SoapLoadInventoryDatasourceSpy extends Mock
+    implements ISoapLoadInventoryDatasource {
+  void mockLoad(List<InventoryModel> response) {
+    _mockLoadCall().thenAnswer((_) async => response);
+  }
+
+  When _mockLoadCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+    ),
+  );
 }

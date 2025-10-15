@@ -1,0 +1,67 @@
+import 'package:celta_intelligence/features/inventory/data/models/models.dart';
+import 'package:celta_intelligence/features/inventory/domain/repositories/repositories.dart';
+import 'package:faker/faker.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+void main() {
+  late ISoapLoadInventoryRepository sut;
+
+  late SoapLoadInventoryDatasourceSpy datasource;
+
+  late List<InventoryModel> inventoriesModels;
+  late String baseUrl;
+  late String crossIdentity;
+  late int enterpriseCode;
+
+  void initSut() {
+    sut = SoapLoadInventoryRepositoryImpl(datasource);
+  }
+
+  void initInjections() {
+    datasource = SoapLoadInventoryDatasourceSpy();
+  }
+
+  void mockSuccess() {
+    datasource.mockLoad(inventoriesModels);
+  }
+
+  void initEntities() {
+    inventoriesModels = [
+      EntityFactory.makeInventoryEntity(),
+      EntityFactory.makeInventoryEntity(),
+      EntityFactory.makeInventoryEntity(),
+    ].map((e) => InventoryModel.fromEntity(e)).toList();
+    baseUrl = faker.internet.httpsUrl();
+    crossIdentity = faker.guid.guid();
+    enterpriseCode = faker.randomGenerator.integer(1000);
+  }
+
+  setUp(() {
+    initEntities();
+    initInjections();
+    initSut();
+    mockSuccess();
+  });
+
+  test('should behave correctly on success', () async {
+    final response = await sut.load(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      enterpriseCode: enterpriseCode,
+    );
+
+    expect(response, inventoriesModels.map((e) => e.toEntity()).toList());
+
+    verify(
+      () => datasource.load(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        enterpriseCode: enterpriseCode,
+      ),
+    );
+    verifyNoMoreInteractions(datasource);
+  });
+}
