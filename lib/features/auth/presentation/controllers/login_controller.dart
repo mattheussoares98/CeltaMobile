@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../providers.dart';
 
@@ -28,7 +27,6 @@ class LoginController extends _$LoginController {
           );
       ref.invalidate(userSessionProvider);
       ref.invalidate(validatedUserSessionProvider);
-      ref.invalidate(searchProductsStateControllerProvider);
     });
   }
 }

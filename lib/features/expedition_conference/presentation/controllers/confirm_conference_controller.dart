@@ -17,7 +17,7 @@ class ConfirmConferenceController extends _$ConfirmConferenceController {
     bool succeeds = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final userSession = await ref.read(validatedUserSessionProvider.future);
+      final userSession = await ref.watch(validatedUserSessionProvider.future);
       final repository = ref.read(soapConfirmConferenceRepositoryProvider);
 
       await repository.confirm(

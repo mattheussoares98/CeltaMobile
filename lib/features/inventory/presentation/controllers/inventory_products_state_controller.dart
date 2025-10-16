@@ -41,11 +41,13 @@ class InventoryProductsStateController
     //TODO create tests
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.read(validatedUserSessionProvider.future);
+      final validatedUser = await ref.watch(
+        validatedUserSessionProvider.future,
+      );
       final selectedEnterprise = ref.read(
         selectedEnterpriseStateControllerProvider,
       );
-      final settings = await ref.read(
+      final settings = await ref.watch(
         appSettingsStateControllerProvider.future,
       );
       final searchType =

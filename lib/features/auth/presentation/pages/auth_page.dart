@@ -72,8 +72,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () {
-        ref.invalidate(userSessionProvider);
-        ref.invalidate(validatedUserSessionProvider);
         context.goNamed(Routes.home.name);
       });
     });

@@ -17,7 +17,9 @@ class InsertUpdateCustomerController extends _$InsertUpdateCustomerController {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final customer = await ref.read(customerStateControllerProvider.future);
-      final validatedUser = await ref.read(validatedUserSessionProvider.future);
+      final validatedUser = await ref.watch(
+        validatedUserSessionProvider.future,
+      );
 
       return await ref
           .read(soapInsertUpdateCustomerRepositoryProvider)

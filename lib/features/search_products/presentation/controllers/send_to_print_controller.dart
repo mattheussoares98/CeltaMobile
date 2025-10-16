@@ -24,7 +24,9 @@ class SendToPrintController extends _$SendToPrintController {
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.read(validatedUserSessionProvider.future);
+      final validatedUser = await ref.watch(
+        validatedUserSessionProvider.future,
+      );
       final selectedEnterprise = ref.read(
         selectedEnterpriseStateControllerProvider,
       );

@@ -45,7 +45,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final userSession = await ref.read(validatedUserSessionProvider.future);
+      final userSession = await ref.watch(validatedUserSessionProvider.future);
       final selectedEnterprise = ref.read(
         selectedEnterpriseStateControllerProvider,
       );

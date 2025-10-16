@@ -20,7 +20,7 @@ class CustomerStateController extends _$CustomerStateController {
     final emptyCustomer = CustomerEntity.empty();
     try {
       state = const AsyncValue.loading();
-      final validatedUserSession = await ref.read(
+      final validatedUserSession = await ref.watch(
         validatedUserSessionProvider.future,
       );
       final selectedEnterprise = ref.read(
