@@ -3,6 +3,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/core/providers/products/products.dart';
+import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
@@ -24,6 +25,7 @@ void main() {
   late AppSettingsEntity appSettingsEntity;
   late BsRoutine bsRoutine;
   late List<ProductEntity> productsEntities;
+  late Modules module;
 
   setUpAll(() {
     for (var routine in BsRoutine.values) {
@@ -31,6 +33,9 @@ void main() {
     }
     for (var searchType in SearchType.values) {
       registerFallbackValue(searchType);
+    }
+    for (var value in Modules.values) {
+      registerFallbackValue(value);
     }
     registerFallbackValue(EntityFactory.makeEnterpriseEntity());
   });
@@ -48,6 +53,8 @@ void main() {
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
     ];
+    module =
+        Modules.values[faker.randomGenerator.integer(Modules.values.length)];
   }
 
   void initSut() {
@@ -114,6 +121,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ).future,
       );
 
@@ -122,6 +130,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ),
         (_, next) => states.add(next),
       );
@@ -131,6 +140,7 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
+              module,
             ).notifier,
           )
           .loadProducts(
@@ -164,6 +174,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ).future,
       );
 
@@ -172,6 +183,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ),
         (_, next) => states.add(next),
       );
@@ -181,6 +193,7 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
+              module,
             ).notifier,
           )
           .loadProducts(
@@ -211,6 +224,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ).future,
       );
 
@@ -219,6 +233,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ),
         (_, next) => states.add(next),
       );
@@ -228,6 +243,7 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
+              module,
             ).notifier,
           )
           .loadProducts(
@@ -259,6 +275,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ).future,
       );
 
@@ -267,6 +284,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ),
         (_, next) => states.add(next),
       );
@@ -276,6 +294,7 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
+              module,
             ).notifier,
           )
           .loadProducts(
@@ -314,6 +333,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ).future,
       );
 
@@ -323,6 +343,7 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
+              module,
             ).notifier,
           )
           .loadProducts(
@@ -342,6 +363,7 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
+              module,
             ).notifier,
           )
           .updateProduct(updatedProduct);
@@ -352,6 +374,7 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
+          module,
         ),
       );
 
@@ -375,6 +398,7 @@ void main() {
           searchProductsStateControllerProvider(
             enterpriseEntity.Code!,
             bsRoutine,
+            module,
           ).future,
         );
 
@@ -384,6 +408,7 @@ void main() {
               searchProductsStateControllerProvider(
                 enterpriseEntity.Code!,
                 bsRoutine,
+                module,
               ).notifier,
             )
             .loadProducts(
@@ -399,6 +424,7 @@ void main() {
               searchProductsStateControllerProvider(
                 enterpriseEntity.Code!,
                 bsRoutine,
+                module,
               ).notifier,
             )
             .updateProduct(nonExistentProduct);
@@ -409,6 +435,7 @@ void main() {
           searchProductsStateControllerProvider(
             enterpriseEntity.Code!,
             bsRoutine,
+            module,
           ),
         );
         expect(finalState.value, productsEntities);

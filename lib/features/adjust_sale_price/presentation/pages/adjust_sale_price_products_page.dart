@@ -10,6 +10,7 @@ import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../routing/routing.dart';
+import '../../../enterprise_manager/domain/entities/entities.dart';
 
 class AdjustSalePriceProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -42,6 +43,7 @@ class _AdjustSalePriceProductsPageState
           searchProductsStateControllerProvider(
             widget.enterpriseCode,
             BsRoutine.adjustSalePrice,
+            Modules.adjustPrice,
           ).notifier,
         )
         .loadProducts(
@@ -57,6 +59,7 @@ class _AdjustSalePriceProductsPageState
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustSalePrice,
+        Modules.adjustPrice,
       ),
       (previous, next) {
         next.doOnSuccess(previous, () {
@@ -69,6 +72,7 @@ class _AdjustSalePriceProductsPageState
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustSalePrice,
+        Modules.adjustPrice,
       ),
     );
 

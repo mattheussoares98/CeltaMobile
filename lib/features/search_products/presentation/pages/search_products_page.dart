@@ -8,6 +8,7 @@ import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
+import '../../../enterprise_manager/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 
 class SearchProductsPage extends ConsumerStatefulWidget {
@@ -40,6 +41,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
           searchProductsStateControllerProvider(
             widget.enterpriseCode,
             BsRoutine.priceConference,
+            Modules.searchProducts,
           ).notifier,
         )
         .loadProducts(
@@ -55,6 +57,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.priceConference,
+        Modules.searchProducts,
       ),
     );
 
@@ -62,6 +65,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.priceConference,
+        Modules.searchProducts,
       ),
       (p, n) {
         n.doOnSuccess(p, () {

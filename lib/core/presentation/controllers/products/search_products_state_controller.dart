@@ -8,6 +8,7 @@ import '../../../../../core/providers/products/products.dart';
 import '../../../../../exceptions/exceptions.dart';
 import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../features/enterprise_manager/domain/entities/entities.dart';
 import '../user_session/user_session.dart';
 
 part 'search_products_state_controller.g.dart';
@@ -18,7 +19,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   Future<List<ProductEntity>> build(
     int enterpriseCode,
     BsRoutine routine,
-    //TODO add module param, because wont have routine for all modules
+    Modules module,
   ) async {
     Timer? timer;
     final link = ref.keepAlive();

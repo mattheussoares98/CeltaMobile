@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import '../products/components/components.dart';
 
@@ -20,7 +21,11 @@ mixin SearchProductsListenerMixin {
     required EnterpriseEntity? selectedEnterprise,
   }) {
     ref.listen(
-      searchProductsStateControllerProvider(enterpriseCode, BsRoutine.generic),
+      searchProductsStateControllerProvider(
+        enterpriseCode,
+        BsRoutine.generic,
+        Modules.expeditionConference,
+      ),
       (p, n) {
         n.showSnackbarOnError(context, previous: p, message: n.error);
 

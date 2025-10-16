@@ -2,6 +2,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/search_products/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/search_products/presentation/controllers/controllers.dart';
@@ -28,6 +29,7 @@ class FakeSearchProductsStateController extends SearchProductsStateController {
   Future<List<ProductEntity>> build(
     int enterpriseCode,
     BsRoutine routine,
+    Modules module,
   ) async => initialState;
 
   @override
@@ -83,6 +85,7 @@ void main() {
         searchProductsStateControllerProvider(
           fakeEnterprise.Code!,
           BsRoutine.priceConference,
+          Modules.searchProducts,
         ).overrideWith(() => fakeSearchProductStateController),
       ],
     );

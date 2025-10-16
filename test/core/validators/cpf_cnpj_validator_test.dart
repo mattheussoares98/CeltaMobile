@@ -46,7 +46,7 @@ void main() {
     expect(sut.errorMessage, '');
   });
   test('Should return error if is not int value', () {
-    expect(sut.isValid(faker.randomGenerator.string(14)), false);
+    expect(sut.isValid(faker.lorem.word()), false);
     expect(sut.errorMessage, 'Digite somente números'.hardcoded);
   });
 }

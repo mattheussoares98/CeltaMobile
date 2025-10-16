@@ -6,6 +6,7 @@ import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
+import '../../../enterprise_manager/domain/entities/entities.dart';
 import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart.dart';
@@ -61,6 +62,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           searchProductsStateControllerProvider(
             widget.enterpriseCode,
             BsRoutine.adjustStock,
+            Modules.transferBetweenStocks,
           ).notifier,
         )
         .loadProducts(
@@ -118,6 +120,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustStock,
+        Modules.transferBetweenStocks,
       ),
       (previous, next) {
         next.doOnSuccess(previous, () {
@@ -130,6 +133,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustStock,
+        Modules.transferBetweenStocks,
       ),
     );
 

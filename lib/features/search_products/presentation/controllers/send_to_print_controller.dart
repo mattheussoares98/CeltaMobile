@@ -6,6 +6,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
+import '../../../enterprise_manager/domain/entities/entities.dart';
 import '../../providers.dart';
 
 part 'send_to_print_controller.g.dart';
@@ -39,7 +40,11 @@ class SendToPrintController extends _$SendToPrintController {
           );
 
       final products = await ref.read(
-        searchProductsStateControllerProvider(enterpriseCode, routine).future,
+        searchProductsStateControllerProvider(
+          enterpriseCode,
+          routine,
+          Modules.searchProducts,
+        ).future,
       );
 
       ref
@@ -47,6 +52,7 @@ class SendToPrintController extends _$SendToPrintController {
             searchProductsStateControllerProvider(
               enterpriseCode,
               routine,
+              Modules.searchProducts,
             ).notifier,
           )
           .updateProduct(
