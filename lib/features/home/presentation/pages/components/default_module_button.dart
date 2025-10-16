@@ -67,9 +67,6 @@ class DefaultModuleButton extends StatelessWidget {
                 pathParameters: passEnterpriseToNextRoute
                     ? {'enterpriseCode': selectedEnterprise!.Code.toString()}
                     : {},
-                extra: passEnterpriseToNextRoute
-                    ? {'enterprise': selectedEnterprise}
-                    : null,
               );
             },
     );

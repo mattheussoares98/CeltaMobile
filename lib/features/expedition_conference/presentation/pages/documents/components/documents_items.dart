@@ -4,19 +4,18 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../routing/routing.dart';
 import '../../../../domain/entities/entities.dart';
 
 class DocumentsItems extends StatelessWidget {
   final List<ExpeditionDocumentEntity> documents;
   final VoidCallback? onRefresh;
-  final EnterpriseEntity? selectedEnterprise;
+  final int enterpriseCode;
   const DocumentsItems({
     super.key,
     required this.documents,
     required this.onRefresh,
-    required this.selectedEnterprise,
+    required this.enterpriseCode,
   });
 
   @override
@@ -41,9 +40,8 @@ class DocumentsItems extends StatelessWidget {
                         document.ExpeditionControlCode.toString(),
                     'stepCode': document.StepCode.toString(),
                     'documentNumber': document.DocumentNumber.toString(),
-                    'enterpriseCode': selectedEnterprise?.Code.toString() ?? '',
+                    'enterpriseCode': enterpriseCode.toString(),
                   },
-                  extra: {'enterprise': selectedEnterprise},
                 );
               },
               child: Padding(

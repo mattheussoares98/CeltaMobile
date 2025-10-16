@@ -3,25 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class DocumentsPage extends ConsumerWidget {
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
-  const DocumentsPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.selectedEnterprise,
-  });
+  const DocumentsPage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final enterpriseName =
+        ref.watch(validatedUserSessionProvider).value?.enterprise?.name ?? '';
+
     final value = ref.watch(
       expeditionDocumentsStateControllerProvider(
         enterpriseCode,
-        selectedEnterprise?.name ?? '',
+        enterpriseName,
       ),
     );
 
@@ -29,7 +27,7 @@ class DocumentsPage extends ConsumerWidget {
       ref.invalidate(
         expeditionDocumentsStateControllerProvider(
           enterpriseCode,
-          selectedEnterprise?.name ?? '',
+          enterpriseName,
         ),
       );
     }
@@ -47,7 +45,7 @@ class DocumentsPage extends ConsumerWidget {
           return DocumentsItems(
             documents: documents,
             onRefresh: onRefresh,
-            selectedEnterprise: selectedEnterprise,
+            enterpriseCode: enterpriseCode,
           );
         },
       ),
