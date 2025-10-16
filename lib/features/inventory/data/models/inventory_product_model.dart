@@ -31,7 +31,9 @@ class InventoryProductModel extends Equatable {
     codigoInternoProEmb: int.parse(json['CodigoInterno_ProEmb']),
     plu: json['CodigoPlu_ProEmb'],
     codigoProEmb: json['Codigo_ProEmb'] ?? "",
-    quantidadeInvContProEmb: double.tryParse(json['Quantidade_InvContProEmb']),
+    quantidadeInvContProEmb: double.tryParse(
+      json['Quantidade_InvContProEmb'] ?? '',
+    ),
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
