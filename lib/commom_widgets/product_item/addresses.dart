@@ -34,7 +34,11 @@ class Addresses extends StatelessWidget {
             child: Center(
               child: TitleAndSubTitle(
                 title: 'Endereço na empresa selecionada',
-                subTitle: widget.product.StorageAreaAddress ?? 'Não há',
+                subTitle:
+                    widget.product.StorageAreaAddress == null ||
+                        widget.product.StorageAreaAddress!.isEmpty
+                    ? 'Não há'
+                    : widget.product.StorageAreaAddress,
                 subTitleStyle: theme.textTheme.titleSmall,
               ),
             ),
