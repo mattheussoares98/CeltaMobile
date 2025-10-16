@@ -13,7 +13,6 @@ import 'components/components.dart.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
   final TransferJustificationEntity? selectedJustification;
   final StockTypeEntity? selectedOriginStock;
   final StockTypeEntity? selectedDestinyStock;
@@ -25,7 +24,6 @@ class ProductsPage extends ConsumerStatefulWidget {
   const ProductsPage({
     super.key,
     required this.enterpriseCode,
-    required this.selectedEnterprise,
     required this.selectedJustification,
     required this.selectedOriginStock,
     required this.selectedDestinyStock,
@@ -68,7 +66,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         .loadProducts(
           enterpriseCode: widget.enterpriseCode,
           searchValue: searchValueController.text,
-          selectedEnterprise: widget.selectedEnterprise,
         );
   }
 
@@ -92,12 +89,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     }
 
     ref
-        .read(
-          lotStateControllerProvider(
-            widget.enterpriseCode,
-            widget.selectedEnterprise?.name ?? '',
-          ).notifier,
-        )
+        .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
         .addItem(
           ProductLotInfoEntity(
             product: product,
@@ -138,10 +130,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     );
 
     final lotAsync = ref.watch(
-      lotStateControllerProvider(
-        widget.enterpriseCode,
-        widget.selectedEnterprise?.name ?? '',
-      ),
+      lotStateControllerProvider(widget.enterpriseCode),
     );
 
     final theme = Theme.of(context);
@@ -162,7 +151,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               selectedJustification: widget.selectedJustification,
               asyncValue: widget.justificationsAsync,
               enterpriseCode: widget.enterpriseCode,
-              selectedEnterprise: widget.selectedEnterprise,
               onChanged: (value) {
                 widget.changeJustification(value);
 
@@ -182,14 +170,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             OriginStocksDropdown(
               asyncValue: widget.stocksAsync,
               enterpriseCode: widget.enterpriseCode,
-              selectedEnterprise: widget.selectedEnterprise,
               selectedJustification: widget.selectedJustification,
               selectedOriginStock: widget.selectedOriginStock,
               onChanged: widget.changeOriginStock,
             ),
             gapH8,
             DestinyStocksDropdown(
-              selectedEnterprise: widget.selectedEnterprise,
               asyncValue: widget.stocksAsync,
               enterpriseCode: widget.enterpriseCode,
               selectedDestinyStock: widget.selectedDestinyStock,

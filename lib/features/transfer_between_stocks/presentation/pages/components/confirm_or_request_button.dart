@@ -10,12 +10,10 @@ import '../../controllers/controllers.dart';
 class ConfirmOrRequestButton extends ConsumerWidget {
   final bool isRequest;
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
   const ConfirmOrRequestButton({
     super.key,
     required this.isRequest,
     required this.enterpriseCode,
-    required this.selectedEnterprise,
   });
 
   @override
@@ -30,10 +28,7 @@ class ConfirmOrRequestButton extends ConsumerWidget {
           defaultActionText: 'Sim'.hardcoded,
           onOkPressed: () async {
             final items = await ref.read(
-              lotStateControllerProvider(
-                enterpriseCode,
-                selectedEnterprise?.name ?? '',
-              ).future,
+              lotStateControllerProvider(enterpriseCode).future,
             );
 
             ref

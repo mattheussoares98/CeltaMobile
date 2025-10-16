@@ -41,12 +41,14 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   Future<void> loadProducts({
     required String searchValue,
     required int enterpriseCode,
-    required EnterpriseEntity? selectedEnterprise,
     int? lastBuyEntranceQuantity = 5,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.read(validatedUserSessionProvider.future);
+      final selectedEnterprise = ref.read(
+        selectedEnterpriseStateControllerProvider,
+      );
 
       late EnterpriseEntity enterpriseEntity;
 

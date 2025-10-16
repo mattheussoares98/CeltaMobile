@@ -12,7 +12,6 @@ class OriginStocksDropdown extends ConsumerWidget {
   final TransferJustificationEntity? selectedJustification;
   final StockTypeEntity? selectedOriginStock;
   final void Function(StockTypeEntity? value) onChanged;
-  final EnterpriseEntity? selectedEnterprise;
   const OriginStocksDropdown({
     super.key,
     required this.asyncValue,
@@ -20,7 +19,6 @@ class OriginStocksDropdown extends ConsumerWidget {
     required this.selectedJustification,
     required this.selectedOriginStock,
     required this.onChanged,
-    required this.selectedEnterprise,
   });
 
   @override
@@ -28,12 +26,7 @@ class OriginStocksDropdown extends ConsumerWidget {
     return AsyncValueWidget(
       value: asyncValue,
       tryAgain: () {
-        ref.invalidate(
-          stockTypeStateControllerProvider(
-            enterpriseCode,
-            selectedEnterprise?.name ?? '',
-          ),
-        );
+        ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
       },
       data: (stocks) {
         return DefaultSimpleDropDown<StockTypeEntity?>(

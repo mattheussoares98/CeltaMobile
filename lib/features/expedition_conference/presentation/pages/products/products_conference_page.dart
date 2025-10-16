@@ -16,14 +16,12 @@ import 'products.dart';
 class ProductsConferencePage extends ConsumerStatefulWidget {
   final int expeditionControlCode;
   final int stepCode;
-  final EnterpriseEntity? selectedEnterprise;
   final String documentNumber;
   final int enterpriseCode;
   const ProductsConferencePage({
     super.key,
     required this.expeditionControlCode,
     required this.stepCode,
-    required this.selectedEnterprise,
     required this.documentNumber,
     required this.enterpriseCode,
   });
@@ -57,21 +55,14 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       stepCode: widget.stepCode,
       expeditionControlCode: widget.expeditionControlCode,
       enterpriseCode: widget.enterpriseCode,
-      selectedEnterprise: widget.selectedEnterprise,
     );
 
     final pendingProductsAsync = ref.watch(
-      expeditionConferenceControllerProvider(
-        widget.expeditionControlCode,
-        widget.selectedEnterprise?.name ?? '',
-      ),
+      expeditionConferenceControllerProvider(widget.expeditionControlCode),
     );
 
     ref.listen(
-      expeditionConferenceControllerProvider(
-        widget.expeditionControlCode,
-        widget.selectedEnterprise?.name ?? '',
-      ),
+      expeditionConferenceControllerProvider(widget.expeditionControlCode),
       (p, n) {
         n.showAlertDialogOnError(context);
       },
@@ -85,35 +76,22 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       ),
     );
 
-    ref.listen(
-      confirmConferenceControllerProvider(
-        widget.selectedEnterprise?.name ?? '',
-      ),
-      (p, n) {
-        n.doOnSuccess(p, () {
-          ref.invalidate(
-            expeditionDocumentsStateControllerProvider(
-              widget.enterpriseCode,
-              widget.selectedEnterprise?.name ?? '',
-            ),
-          );
-          context.pop();
-        });
-        n.showAlertDialogOnError(context);
-      },
-    );
+    ref.listen(confirmConferenceControllerProvider, (p, n) {
+      n.doOnSuccess(p, () {
+        ref.invalidate(
+          expeditionDocumentsStateControllerProvider(widget.enterpriseCode),
+        );
+        context.pop();
+      });
+      n.showAlertDialogOnError(context);
+    });
 
-    final confirmAsync = ref.watch(
-      confirmConferenceControllerProvider(
-        widget.selectedEnterprise?.name ?? '',
-      ),
-    );
+    final confirmAsync = ref.watch(confirmConferenceControllerProvider);
 
     final pages = [
       PendingProductsPage(
         focusNode: focusNode,
         searchValueController: searchValueController,
-        selectedEnterprise: widget.selectedEnterprise,
         enterpriseCode: widget.enterpriseCode,
         pendingProductsAsync: pendingProductsAsync,
         searchProductsAsync: searchProductsAsync,
@@ -139,7 +117,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
                   confirmAsync: confirmAsync,
                   expeditionControlCode: widget.expeditionControlCode,
                   stepCode: widget.stepCode,
-                  selectedEnterprise: widget.selectedEnterprise,
                 )
               : pages[currentIndex],
           bottomNavigationBar: BottomNavBar(

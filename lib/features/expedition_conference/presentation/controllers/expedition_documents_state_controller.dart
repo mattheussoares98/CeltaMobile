@@ -12,10 +12,7 @@ part 'expedition_documents_state_controller.g.dart';
 class ExpeditionDocumentsStateController
     extends _$ExpeditionDocumentsStateController {
   @override
-  FutureOr<List<ExpeditionDocumentEntity>?> build(
-    int enterpriseCode,
-    String enterpriseName,
-  ) async {
+  FutureOr<List<ExpeditionDocumentEntity>?> build(int enterpriseCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {

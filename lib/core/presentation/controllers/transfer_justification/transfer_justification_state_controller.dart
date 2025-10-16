@@ -15,7 +15,6 @@ class TransferJustificationStateController
   Future<List<TransferJustificationEntity>> build(
     int enterpriseCode,
     TransferJustificationType type,
-    String enterpriseName,
   ) async {
     Timer? timer;
     final link = ref.keepAlive();

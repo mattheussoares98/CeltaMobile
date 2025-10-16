@@ -14,12 +14,7 @@ import 'components/components.dart';
 
 class AdjustStocksPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
-  const AdjustStocksPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.selectedEnterprise,
-  });
+  const AdjustStocksPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -56,7 +51,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
         .loadProducts(
           enterpriseCode: widget.enterpriseCode,
           searchValue: searchValueController.text,
-          selectedEnterprise: widget.selectedEnterprise,
         );
   }
 
@@ -112,17 +106,13 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     );
 
     final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(
-        widget.enterpriseCode,
-        widget.selectedEnterprise?.name ?? '',
-      ),
+      stockTypeStateControllerProvider(widget.enterpriseCode),
     );
 
     final justificationsAsync = ref.watch(
       transferJustificationStateControllerProvider(
         widget.enterpriseCode,
         TransferJustificationType.adjustStock,
-        widget.selectedEnterprise?.name ?? '',
       ),
     );
 
@@ -152,7 +142,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                     selectedJustification: selectedJustification,
                     asyncValue: justificationsAsync,
                     enterpriseCode: widget.enterpriseCode,
-                    selectedEnterprise: widget.selectedEnterprise,
                     onChanged: (value) {
                       setState(() {
                         selectedJustification = value;
@@ -176,7 +165,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                     enterpriseCode: widget.enterpriseCode,
                     selectedJustification: selectedJustification,
                     selectedStockType: selectedStockType,
-                    selectedEnterprise: widget.selectedEnterprise,
                     onChanged: (value) {
                       setState(() {
                         selectedStockType = value;

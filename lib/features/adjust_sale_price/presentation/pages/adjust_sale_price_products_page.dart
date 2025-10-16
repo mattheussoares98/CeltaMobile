@@ -14,12 +14,7 @@ import '../../../enterprise_manager/domain/entities/entities.dart';
 
 class AdjustSalePriceProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
-  const AdjustSalePriceProductsPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.selectedEnterprise,
-  });
+  const AdjustSalePriceProductsPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -49,7 +44,6 @@ class _AdjustSalePriceProductsPageState
         .loadProducts(
           enterpriseCode: widget.enterpriseCode,
           searchValue: searchValueController.text,
-          selectedEnterprise: widget.selectedEnterprise,
         );
   }
 

@@ -13,12 +13,7 @@ import '../controllers/controllers.dart';
 
 class SearchProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
-  const SearchProductsPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.selectedEnterprise,
-  });
+  const SearchProductsPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -47,7 +42,6 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
         .loadProducts(
           enterpriseCode: widget.enterpriseCode,
           searchValue: searchValueController.text,
-          selectedEnterprise: widget.selectedEnterprise,
         );
   }
 

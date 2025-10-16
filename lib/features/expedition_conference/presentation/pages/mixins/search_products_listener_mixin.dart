@@ -18,7 +18,6 @@ mixin SearchProductsListenerMixin {
     required int stepCode,
     required int expeditionControlCode,
     required int enterpriseCode,
-    required EnterpriseEntity? selectedEnterprise,
   }) {
     ref.listen(
       searchProductsStateControllerProvider(
@@ -35,7 +34,6 @@ mixin SearchProductsListenerMixin {
                 .read(
                   expeditionConferenceControllerProvider(
                     expeditionControlCode,
-                    selectedEnterprise?.name ?? '',
                   ).notifier,
                 )
                 .scanProduct(n.value!.first.ProductPackingCode, stepCode);
@@ -49,7 +47,6 @@ mixin SearchProductsListenerMixin {
                 n: n,
                 expeditionControlCode: expeditionControlCode,
                 stepCode: stepCode,
-                selectedEnterprise: selectedEnterprise,
               ),
               context,
             );

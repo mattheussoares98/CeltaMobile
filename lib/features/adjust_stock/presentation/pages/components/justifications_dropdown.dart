@@ -11,14 +11,12 @@ class JustificationsDropdown extends ConsumerWidget {
   final AsyncValue<List<TransferJustificationEntity>> asyncValue;
   final int enterpriseCode;
   final void Function(TransferJustificationEntity? value) onChanged;
-  final EnterpriseEntity? selectedEnterprise;
   const JustificationsDropdown({
     super.key,
     required this.selectedJustification,
     required this.asyncValue,
     required this.enterpriseCode,
     required this.onChanged,
-    required this.selectedEnterprise,
   });
 
   @override
@@ -30,7 +28,6 @@ class JustificationsDropdown extends ConsumerWidget {
           transferJustificationStateControllerProvider(
             enterpriseCode,
             TransferJustificationType.adjustStock,
-            selectedEnterprise?.name ?? '',
           ),
         );
       },

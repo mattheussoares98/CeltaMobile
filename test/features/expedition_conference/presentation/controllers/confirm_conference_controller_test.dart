@@ -60,13 +60,13 @@ void main() {
 
         final states = <AsyncValue<void>>[];
         container.listen(
-          confirmConferenceControllerProvider(''),
+          confirmConferenceControllerProvider,
           (_, next) => states.add(next),
         );
 
         // ACT
         final result = await container
-            .read(confirmConferenceControllerProvider('').notifier)
+            .read(confirmConferenceControllerProvider.notifier)
             .confirm(
               expeditionControlCode: fakeExpeditionCode,
               stepCode: fakeStepCode,
@@ -95,13 +95,13 @@ void main() {
 
         final states = <AsyncValue<void>>[];
         container.listen(
-          confirmConferenceControllerProvider(''),
+          confirmConferenceControllerProvider,
           (_, next) => states.add(next),
         );
 
         // ACT
         final result = await container
-            .read(confirmConferenceControllerProvider('').notifier)
+            .read(confirmConferenceControllerProvider.notifier)
             .confirm(
               expeditionControlCode: fakeExpeditionCode,
               stepCode: fakeStepCode,

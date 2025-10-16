@@ -12,13 +12,11 @@ class SelectProductModalPage extends ConsumerWidget {
   final AsyncValue<List<ProductEntity>> n;
   final int expeditionControlCode;
   final int stepCode;
-  final EnterpriseEntity? selectedEnterprise;
   const SelectProductModalPage({
     super.key,
     required this.n,
     required this.expeditionControlCode,
     required this.stepCode,
-    required this.selectedEnterprise,
   });
 
   @override
@@ -50,7 +48,6 @@ class SelectProductModalPage extends ConsumerWidget {
                         .read(
                           expeditionConferenceControllerProvider(
                             expeditionControlCode,
-                            selectedEnterprise?.name ?? '',
                           ).notifier,
                         )
                         .scanProduct(product.ProductPackingCode, stepCode);

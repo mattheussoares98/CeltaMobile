@@ -12,7 +12,6 @@ import 'components/components.dart';
 
 class PendingProductsPage extends ConsumerWidget {
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
   final FocusNode focusNode;
   final TextEditingController searchValueController;
   final AsyncValue<ExpeditionConferenceState> pendingProductsAsync;
@@ -21,7 +20,6 @@ class PendingProductsPage extends ConsumerWidget {
   const PendingProductsPage({
     super.key,
     required this.enterpriseCode,
-    required this.selectedEnterprise,
     required this.focusNode,
     required this.searchValueController,
     required this.pendingProductsAsync,
@@ -43,7 +41,6 @@ class PendingProductsPage extends ConsumerWidget {
           .loadProducts(
             searchValue: searchValueController.text,
             enterpriseCode: enterpriseCode,
-            selectedEnterprise: selectedEnterprise,
           );
     }
 
@@ -52,10 +49,7 @@ class PendingProductsPage extends ConsumerWidget {
       return EmptyProductsMessage(
         onRefreshEmptyProducts: () {
           ref.invalidate(
-            expeditionConferenceControllerProvider(
-              expeditionControlCode,
-              selectedEnterprise?.name ?? '',
-            ),
+            expeditionConferenceControllerProvider(expeditionControlCode),
           );
         },
       );

@@ -13,10 +13,7 @@ part 'expedition_conference_controller.g.dart';
 @riverpod
 class ExpeditionConferenceController extends _$ExpeditionConferenceController {
   @override
-  FutureOr<ExpeditionConferenceState> build(
-    int expeditionControlCode,
-    String enterpriseName,
-  ) async {
+  FutureOr<ExpeditionConferenceState> build(int expeditionControlCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -83,7 +80,7 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
 
       if (newState.isComplete) {
         await ref
-            .read(confirmConferenceControllerProvider(enterpriseName).notifier)
+            .read(confirmConferenceControllerProvider.notifier)
             .confirm(
               expeditionControlCode: expeditionControlCode,
               stepCode: stepCode,

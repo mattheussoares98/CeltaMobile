@@ -41,7 +41,6 @@ class EnterprisesPage extends ConsumerWidget {
                           'enterpriseCode': enterprise.Code.toString(),
                           'nextRoute': nextRoute,
                         },
-                        extra: enterprise,
                       );
                     },
                     child: Padding(

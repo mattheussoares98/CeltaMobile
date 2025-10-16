@@ -147,7 +147,6 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
-            selectedEnterprise: enterpriseEntity,
           );
 
       expect(states, [
@@ -200,7 +199,6 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
-            selectedEnterprise: enterpriseEntity,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -250,7 +248,6 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code! + 1000, //wrong code
-            selectedEnterprise: null,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -301,7 +298,6 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
-            selectedEnterprise: enterpriseEntity,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -350,7 +346,6 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
-            selectedEnterprise: enterpriseEntity,
           );
 
       // Create the updated version of the first product
@@ -415,7 +410,6 @@ void main() {
               lastBuyEntranceQuantity: lastBuyEntranceQuantity,
               searchValue: searchValue,
               enterpriseCode: enterpriseEntity.Code!,
-              selectedEnterprise: enterpriseEntity,
             );
 
         // ACT

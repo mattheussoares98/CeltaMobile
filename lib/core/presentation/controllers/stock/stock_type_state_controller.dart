@@ -11,10 +11,7 @@ part 'stock_type_state_controller.g.dart';
 @riverpod
 class StockTypeStateController extends _$StockTypeStateController {
   @override
-  Future<List<StockTypeEntity>> build(
-    int enterpriseCode,
-    String enterpriseName,
-  ) async {
+  Future<List<StockTypeEntity>> build(int enterpriseCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {

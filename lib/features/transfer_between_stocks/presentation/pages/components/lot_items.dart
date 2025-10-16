@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/validators/validators.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
@@ -18,7 +17,6 @@ class LotItems extends ConsumerWidget {
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
 
   const LotItems({
     super.key,
@@ -28,7 +26,6 @@ class LotItems extends ConsumerWidget {
     required this.quantityController,
     required this.quantityFocusNode,
     required this.enterpriseCode,
-    required this.selectedEnterprise,
   });
 
   static final _formKey = GlobalKey<FormState>();
@@ -44,12 +41,7 @@ class LotItems extends ConsumerWidget {
         return;
       }
       ref
-          .read(
-            lotStateControllerProvider(
-              enterpriseCode,
-              selectedEnterprise?.name ?? '',
-            ).notifier,
-          )
+          .read(lotStateControllerProvider(enterpriseCode).notifier)
           .addItem(item.copyWith(quantity: quantityController.text.toDouble()));
       changeSelectedIndex(index, 0);
     }
@@ -157,7 +149,6 @@ class LotItems extends ConsumerWidget {
                                     .read(
                                       lotStateControllerProvider(
                                         enterpriseCode,
-                                        selectedEnterprise?.name ?? '',
                                       ).notifier,
                                     )
                                     .removeItem(item);

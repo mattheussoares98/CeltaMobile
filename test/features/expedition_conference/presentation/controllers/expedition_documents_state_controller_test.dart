@@ -65,7 +65,6 @@ void main() {
           container.read(
             expeditionDocumentsStateControllerProvider(
               fakeEnterpriseCode,
-              '',
             ).future,
           ),
           completion(equals(fakeDocuments)),
@@ -88,7 +87,7 @@ void main() {
 
       final states = <AsyncValue<List<ExpeditionDocumentEntity>?>>[];
       container.listen(
-        expeditionDocumentsStateControllerProvider(fakeEnterpriseCode, ''),
+        expeditionDocumentsStateControllerProvider(fakeEnterpriseCode),
         (_, next) => states.add(next),
         fireImmediately: true,
       );
@@ -98,7 +97,6 @@ void main() {
           .read(
             expeditionDocumentsStateControllerProvider(
               fakeEnterpriseCode,
-              '',
             ).future,
           )
           .catchError((_) {

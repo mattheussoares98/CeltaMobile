@@ -63,9 +63,9 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        confirmConferenceControllerProvider(
-          '',
-        ).overrideWith(() => fakeConfirmController),
+        confirmConferenceControllerProvider.overrideWith(
+          () => fakeConfirmController,
+        ),
       ],
     );
   }
@@ -93,7 +93,6 @@ void main() {
           container.read(
             expeditionConferenceControllerProvider(
               expeditionControlCode,
-              '',
             ).future,
           ),
           completion(equals(ExpeditionConferenceState.initial(fakeProducts))),
@@ -116,7 +115,7 @@ void main() {
 
       final states = <AsyncValue<List<ExpeditionDocumentEntity>?>>[];
       container.listen(
-        expeditionDocumentsStateControllerProvider(expeditionControlCode, ''),
+        expeditionDocumentsStateControllerProvider(expeditionControlCode),
         (_, next) => states.add(next),
         fireImmediately: true,
       );
@@ -126,7 +125,6 @@ void main() {
           .read(
             expeditionDocumentsStateControllerProvider(
               expeditionControlCode,
-              '',
             ).future,
           )
           .catchError((_) {
@@ -169,16 +167,12 @@ void main() {
 
         // Wait for the initial products to load
         await container.read(
-          expeditionConferenceControllerProvider(
-            expeditionControlCode,
-            '',
-          ).future,
+          expeditionConferenceControllerProvider(expeditionControlCode).future,
         );
 
         final controller = container.read(
           expeditionConferenceControllerProvider(
             expeditionControlCode,
-            '',
           ).notifier,
         );
 
@@ -192,7 +186,7 @@ void main() {
         // ASSERT
 
         final state = container.read(
-          expeditionConferenceControllerProvider(expeditionControlCode, ''),
+          expeditionConferenceControllerProvider(expeditionControlCode),
         );
         expect(
           state.value?.pendingQuantities[productToScan.ProductPackingCode],
@@ -229,16 +223,12 @@ void main() {
 
         // Wait for the initial products to load
         await container.read(
-          expeditionConferenceControllerProvider(
-            expeditionControlCode,
-            '',
-          ).future,
+          expeditionConferenceControllerProvider(expeditionControlCode).future,
         );
 
         final controller = container.read(
           expeditionConferenceControllerProvider(
             expeditionControlCode,
-            '',
           ).notifier,
         );
 
@@ -252,7 +242,7 @@ void main() {
         // ASSERT
 
         final state = container.read(
-          expeditionConferenceControllerProvider(expeditionControlCode, ''),
+          expeditionConferenceControllerProvider(expeditionControlCode),
         );
         expect(
           state.value?.pendingQuantities[productToScan.ProductPackingCode],
@@ -288,16 +278,12 @@ void main() {
 
         // Wait for the initial products to load
         await container.read(
-          expeditionConferenceControllerProvider(
-            expeditionControlCode,
-            '',
-          ).future,
+          expeditionConferenceControllerProvider(expeditionControlCode).future,
         );
 
         final controller = container.read(
           expeditionConferenceControllerProvider(
             expeditionControlCode,
-            '',
           ).notifier,
         );
 
@@ -308,7 +294,7 @@ void main() {
         // ASSERT
 
         final state = container.read(
-          expeditionConferenceControllerProvider(expeditionControlCode, ''),
+          expeditionConferenceControllerProvider(expeditionControlCode),
         );
         expect(state.error, isNotNull);
       },

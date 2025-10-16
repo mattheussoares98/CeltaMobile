@@ -14,13 +14,8 @@ import 'pages.dart';
 
 class TransferBetweenStocksPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
 
-  const TransferBetweenStocksPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.selectedEnterprise,
-  });
+  const TransferBetweenStocksPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -49,24 +44,19 @@ class _TransferBetweenStocksPageState
     final isIos = theme.platform == TargetPlatform.iOS;
 
     final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(
-        widget.enterpriseCode,
-        widget.selectedEnterprise?.name ?? '',
-      ),
+      stockTypeStateControllerProvider(widget.enterpriseCode),
     );
 
     final justificationsAsync = ref.watch(
       transferJustificationStateControllerProvider(
         widget.enterpriseCode,
         TransferJustificationType.transferBetweenStocks,
-        widget.selectedEnterprise?.name ?? '',
       ),
     );
 
     final pages = [
       ProductsPage(
         enterpriseCode: widget.enterpriseCode,
-        selectedEnterprise: widget.selectedEnterprise,
         selectedJustification: selectedJustification,
         selectedOriginStock: selectedOriginStock,
         selectedDestinyStock: selectedDestinyStock,
@@ -88,17 +78,11 @@ class _TransferBetweenStocksPageState
           });
         },
       ),
-      LotPage(
-        enterpriseCode: widget.enterpriseCode,
-        selectedEnterprise: widget.selectedEnterprise,
-      ),
+      LotPage(enterpriseCode: widget.enterpriseCode),
     ];
 
     final lotAsync = ref.watch(
-      lotStateControllerProvider(
-        widget.enterpriseCode,
-        widget.selectedEnterprise?.name ?? '',
-      ),
+      lotStateControllerProvider(widget.enterpriseCode),
     );
 
     final confirmAdjustStockAsync = ref.watch(
@@ -113,12 +97,7 @@ class _TransferBetweenStocksPageState
       );
       n.doOnSuccess(p, () {
         ref
-            .read(
-              lotStateControllerProvider(
-                widget.enterpriseCode,
-                widget.selectedEnterprise?.name ?? '',
-              ).notifier,
-            )
+            .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
             .clearLot(widget.enterpriseCode);
         pageController.animateToPage(
           0,

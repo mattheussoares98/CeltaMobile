@@ -79,7 +79,6 @@ void main() {
           transferJustificationStateControllerProvider(
             enterpriseCode,
             justificationType,
-            '',
           ),
           (_, next) => states.add(next),
           fireImmediately: true,
@@ -90,7 +89,6 @@ void main() {
           transferJustificationStateControllerProvider(
             enterpriseCode,
             justificationType,
-            '',
           ).future,
         );
 
