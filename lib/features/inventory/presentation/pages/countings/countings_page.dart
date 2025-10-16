@@ -38,7 +38,10 @@ class CountingsPage extends ConsumerWidget {
             );
           }
 
-          return CountingsItems(countings: countings);
+          return CountingsItems(
+            countings: countings,
+            enterpriseCode: enterpriseCode,
+          );
         },
       ),
     );
