@@ -10,10 +10,12 @@ import '../../../../domain/entities/entities.dart';
 class CountingsItems extends StatelessWidget {
   final List<CountingEntity>? countings;
   final int enterpriseCode;
+  final int codigoInternoInventario;
   const CountingsItems({
     super.key,
     required this.countings,
     required this.enterpriseCode,
+    required this.codigoInternoInventario,
   });
 
   @override
@@ -33,6 +35,7 @@ class CountingsItems extends StatelessWidget {
                   'codigoInternoInvCont':
                       counting.CodigoInternoInvCont.toString(),
                   'enterpriseCode': enterpriseCode.toString(),
+                  'codigoInternoInventario': codigoInternoInventario.toString(),
                 },
               );
             },

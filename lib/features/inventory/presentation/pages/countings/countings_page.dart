@@ -41,6 +41,7 @@ class CountingsPage extends ConsumerWidget {
           return CountingsItems(
             countings: countings,
             enterpriseCode: enterpriseCode,
+            codigoInternoInventario: codigoInternoInventario,
           );
         },
       ),
