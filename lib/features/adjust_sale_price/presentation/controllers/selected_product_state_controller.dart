@@ -31,8 +31,8 @@ class SelectedProductStateController extends _$SelectedProductStateController {
     //   timer?.cancel();
     // });
 
-    if (product != null) {
-      return product;
+    if (state.value != null) {
+      return state.value; //TODO test this change
     }
 
     final userSession = await ref.watch(validatedUserSessionProvider.future);
