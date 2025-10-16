@@ -20,11 +20,7 @@ mixin SearchProductsListenerMixin {
     required EnterpriseEntity? selectedEnterprise,
   }) {
     ref.listen(
-      searchProductsStateControllerProvider(
-        enterpriseCode,
-        BsRoutine.generic,
-        selectedEnterprise?.name ?? '',
-      ),
+      searchProductsStateControllerProvider(enterpriseCode, BsRoutine.generic),
       (p, n) {
         n.showSnackbarOnError(context, previous: p, message: n.error);
 

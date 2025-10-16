@@ -18,7 +18,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   Future<List<ProductEntity>> build(
     int enterpriseCode,
     BsRoutine routine,
-    String enterpriseName,
+    //TODO add module param, because wont have routine for all modules
   ) async {
     Timer? timer;
     final link = ref.keepAlive();

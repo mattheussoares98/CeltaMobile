@@ -56,39 +56,49 @@ void main() {
   }
 
   group('SelectedProductStateController', () {
-    test('should return the initialProduct immediately if provided', () async {
-      final container = makeProviderContainer();
-      final states = <AsyncValue<ProductEntity?>>[];
-      container.listen(
-        selectedProductStateControllerProvider(
-          enterpriseCode,
-          productEntity.PLU,
-        ),
-        (_, next) => states.add(next),
-      );
+    test(
+      'should return the previous product when call more than once the same provider',
+      () async {
+        final container = makeProviderContainer();
+        final states = <AsyncValue<ProductEntity?>>[];
+        container.listen(
+          selectedProductStateControllerProvider(
+            enterpriseCode,
+            productEntity.PLU,
+          ),
+          (_, next) => states.add(next),
+        );
 
-      final result = await container.read(
-        selectedProductStateControllerProvider(
-          enterpriseCode,
-          productEntity.PLU,
-        ).future,
-      );
+        final result = await container.read(
+          selectedProductStateControllerProvider(
+            enterpriseCode,
+            productEntity.PLU,
+          ).future,
+        );
 
-      expect(result, productEntity);
+        expect(result, productEntity);
 
-      verifyNever(
-        () => mockSoapProductsRepository.getProductsJson(
-          baseUrl: any(named: 'baseUrl'),
-          crossIdentity: any(named: 'crossIdentity'),
-          searchValue: any(named: 'searchValue'),
-          routine: any(named: 'routine'),
-          searchType: any(named: 'searchType'),
-          enterpriseCodes: any(named: 'enterpriseCodes'),
-          enterpriseEntity: any(named: 'enterpriseEntity'),
-          lastBuyEntranceQuantity: any(named: 'lastBuyEntranceQuantity'),
-        ),
-      );
-    });
+        await container.read(
+          selectedProductStateControllerProvider(
+            enterpriseCode,
+            productEntity.PLU,
+          ).future,
+        );
+
+        verify(
+          () => mockSoapProductsRepository.getProductsJson(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            searchValue: any(named: 'searchValue'),
+            routine: any(named: 'routine'),
+            searchType: any(named: 'searchType'),
+            enterpriseCodes: any(named: 'enterpriseCodes'),
+            enterpriseEntity: any(named: 'enterpriseEntity'),
+            lastBuyEntranceQuantity: any(named: 'lastBuyEntranceQuantity'),
+          ),
+        ).called(1);
+      },
+    );
 
     test(
       'should fetch product from repository if initialProduct is null',

@@ -114,7 +114,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ).future,
       );
 
@@ -123,7 +122,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ),
         (_, next) => states.add(next),
       );
@@ -133,7 +131,6 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
-              enterpriseEntity.name,
             ).notifier,
           )
           .loadProducts(
@@ -167,7 +164,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ).future,
       );
 
@@ -176,7 +172,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ),
         (_, next) => states.add(next),
       );
@@ -186,7 +181,6 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
-              enterpriseEntity.name,
             ).notifier,
           )
           .loadProducts(
@@ -217,7 +211,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ).future,
       );
 
@@ -226,7 +219,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ),
         (_, next) => states.add(next),
       );
@@ -236,7 +228,6 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
-              enterpriseEntity.name,
             ).notifier,
           )
           .loadProducts(
@@ -268,7 +259,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ).future,
       );
 
@@ -277,7 +267,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ),
         (_, next) => states.add(next),
       );
@@ -287,7 +276,6 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
-              enterpriseEntity.name,
             ).notifier,
           )
           .loadProducts(
@@ -326,7 +314,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ).future,
       );
 
@@ -336,7 +323,6 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
-              enterpriseEntity.name,
             ).notifier,
           )
           .loadProducts(
@@ -356,7 +342,6 @@ void main() {
             searchProductsStateControllerProvider(
               enterpriseEntity.Code!,
               bsRoutine,
-              enterpriseEntity.name,
             ).notifier,
           )
           .updateProduct(updatedProduct);
@@ -367,7 +352,6 @@ void main() {
         searchProductsStateControllerProvider(
           enterpriseEntity.Code!,
           bsRoutine,
-          enterpriseEntity.name,
         ),
       );
 
@@ -391,7 +375,6 @@ void main() {
           searchProductsStateControllerProvider(
             enterpriseEntity.Code!,
             bsRoutine,
-            enterpriseEntity.name,
           ).future,
         );
 
@@ -401,7 +384,6 @@ void main() {
               searchProductsStateControllerProvider(
                 enterpriseEntity.Code!,
                 bsRoutine,
-                enterpriseEntity.name,
               ).notifier,
             )
             .loadProducts(
@@ -417,7 +399,6 @@ void main() {
               searchProductsStateControllerProvider(
                 enterpriseEntity.Code!,
                 bsRoutine,
-                enterpriseEntity.name,
               ).notifier,
             )
             .updateProduct(nonExistentProduct);
@@ -428,7 +409,6 @@ void main() {
           searchProductsStateControllerProvider(
             enterpriseEntity.Code!,
             bsRoutine,
-            enterpriseEntity.name,
           ),
         );
         expect(finalState.value, productsEntities);

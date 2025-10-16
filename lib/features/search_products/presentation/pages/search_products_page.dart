@@ -40,7 +40,6 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
           searchProductsStateControllerProvider(
             widget.enterpriseCode,
             BsRoutine.priceConference,
-            widget.selectedEnterprise?.name ?? '',
           ).notifier,
         )
         .loadProducts(
@@ -56,7 +55,6 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.priceConference,
-        widget.selectedEnterprise?.name ?? '',
       ),
     );
 
@@ -64,7 +62,6 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.priceConference,
-        widget.selectedEnterprise?.name ?? '',
       ),
       (p, n) {
         n.doOnSuccess(p, () {

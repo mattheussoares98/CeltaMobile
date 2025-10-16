@@ -28,7 +28,6 @@ class FakeSearchProductsStateController extends SearchProductsStateController {
   Future<List<ProductEntity>> build(
     int enterpriseCode,
     BsRoutine routine,
-    String enterpriseName,
   ) async => initialState;
 
   @override
@@ -84,7 +83,6 @@ void main() {
         searchProductsStateControllerProvider(
           fakeEnterprise.Code!,
           BsRoutine.priceConference,
-          fakeEnterprise.name,
         ).overrideWith(() => fakeSearchProductStateController),
       ],
     );

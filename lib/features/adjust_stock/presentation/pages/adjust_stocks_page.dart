@@ -49,7 +49,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
           searchProductsStateControllerProvider(
             widget.enterpriseCode,
             BsRoutine.adjustStock,
-            widget.selectedEnterprise?.name ?? '',
           ).notifier,
         )
         .loadProducts(
@@ -79,7 +78,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustStock,
-        widget.selectedEnterprise?.name ?? '',
       ),
       (previous, next) {
         next.doOnSuccess(previous, () {
@@ -106,7 +104,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.adjustStock,
-        widget.selectedEnterprise?.name ?? '',
       ),
     );
 

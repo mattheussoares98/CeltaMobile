@@ -92,7 +92,7 @@ class EntityFactory {
   static ProductEntity makeProductEntity() => ProductEntity(
     EnterpriseCode: faker.randomGenerator.integer(100),
     ProductCode: faker.randomGenerator.integer(100),
-    ProductPackingCode: faker.randomGenerator.integer(100),
+    ProductPackingCode: faker.randomGenerator.integer(999999),
     PLU: faker.randomGenerator.integer(100).toString(),
     Name: faker.food.dish(),
     PackingQuantity: faker.randomGenerator.integer(100).toString(),

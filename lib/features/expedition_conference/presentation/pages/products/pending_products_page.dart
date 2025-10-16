@@ -36,7 +36,6 @@ class PendingProductsPage extends ConsumerWidget {
             searchProductsStateControllerProvider(
               enterpriseCode,
               BsRoutine.generic,
-              selectedEnterprise?.name ?? '',
             ).notifier,
           )
           .loadProducts(

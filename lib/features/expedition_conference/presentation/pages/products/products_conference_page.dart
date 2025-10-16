@@ -80,7 +80,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
         BsRoutine.generic,
-        widget.selectedEnterprise?.name ?? '',
       ),
     );
 

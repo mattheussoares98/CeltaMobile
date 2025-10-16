@@ -39,11 +39,7 @@ class SendToPrintController extends _$SendToPrintController {
           );
 
       final products = await ref.read(
-        searchProductsStateControllerProvider(
-          enterpriseCode,
-          routine,
-          selectedEnterprise.name,
-        ).future,
+        searchProductsStateControllerProvider(enterpriseCode, routine).future,
       );
 
       ref
@@ -51,7 +47,6 @@ class SendToPrintController extends _$SendToPrintController {
             searchProductsStateControllerProvider(
               enterpriseCode,
               routine,
-              selectedEnterprise.name,
             ).notifier,
           )
           .updateProduct(
