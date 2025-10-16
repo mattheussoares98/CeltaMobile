@@ -14,6 +14,7 @@ enum Routes {
   expeditionConferenceProducts('Conferência (expedição) produtos'),
   inventoryCountings('Contagens'),
   inventoryFrozenProcesses('Inventário'),
+  inventoryProducts('Inventário (produtos)'),
   home('Home'),
   searchProducts('Pesquisar produtos'),
   splash('Splash'),
