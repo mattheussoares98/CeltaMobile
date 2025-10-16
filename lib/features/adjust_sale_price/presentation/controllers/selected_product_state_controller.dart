@@ -37,11 +37,9 @@ class SelectedProductStateController extends _$SelectedProductStateController {
 
     final userSession = await ref.watch(validatedUserSessionProvider.future);
     final enterprises = await ref.watch(
-      enterprisesStateControllerProvider.future,
+      enterprisesStateControllerProvider(enterpriseCode).future,
     );
-    final enterpriseEntity = enterprises.firstWhere(
-      (e) => e.Code == enterpriseCode,
-    );
+    final enterpriseEntity = enterprises.first;
     final products = await ref
         .read(soapProductsRepositoryProvider)
         .getProductsJson(

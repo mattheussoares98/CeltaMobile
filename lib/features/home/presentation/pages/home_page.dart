@@ -22,7 +22,9 @@ class HomePage extends ConsumerWidget {
       }
     });
 
-    final enterprisesAsync = ref.watch(enterprisesStateControllerProvider);
+    final enterprisesAsync = ref.watch(
+      enterprisesStateControllerProvider(null),
+    );
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
     );

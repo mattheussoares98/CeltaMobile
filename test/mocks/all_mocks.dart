@@ -436,7 +436,7 @@ class FakeEnterprisesStateController extends EnterprisesStateController {
 
   // 2. Override the build method to return your fake data instantly
   @override
-  Future<List<EnterpriseEntity>> build() async {
+  Future<List<EnterpriseEntity>> build(int? enterpriseCode) async {
     return enterprisesToReturn;
   }
 }

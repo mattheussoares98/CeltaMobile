@@ -13,7 +13,9 @@ class EnterprisesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enterprisesAsync = ref.watch(enterprisesStateControllerProvider);
+    final enterprisesAsync = ref.watch(
+      (enterprisesStateControllerProvider(null)),
+    );
     final theme = Theme.of(context);
 
     return Scaffold(

@@ -51,7 +51,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
 
       if (selectedEnterprise == null) {
         final enterprises = await ref.read(
-          enterprisesStateControllerProvider.future,
+          enterprisesStateControllerProvider(enterpriseCode).future,
         );
         final enterpriseIndex = enterprises.indexWhere(
           (e) => e.Code == enterpriseCode,

@@ -41,7 +41,9 @@ void main() {
             UserSessionModel.fromEntity(userSessionEntity),
           ),
         ),
-        enterprisesStateControllerProvider.overrideWith(
+        enterprisesStateControllerProvider(
+          userSessionEntity.selectedEnterprise!.Code,
+        ).overrideWith(
           () => FakeEnterprisesStateController([
             userSessionEntity.supabaseEnterprise!,
           ]),

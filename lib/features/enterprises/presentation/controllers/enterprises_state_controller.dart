@@ -12,7 +12,7 @@ part 'enterprises_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class EnterprisesStateController extends _$EnterprisesStateController {
   @override
-  Future<List<EnterpriseEntity>> build() async {
+  Future<List<EnterpriseEntity>> build(int? enterpriseCode) async {
     // Timer? timer;
     // final link = ref.keepAlive();
     // ref.onCancel(() {
@@ -38,7 +38,11 @@ class EnterprisesStateController extends _$EnterprisesStateController {
 
     final enterprises = await ref
         .watch(enterpriseRepositoryProvider)
-        .getSoapEnterprises(url: baseUrl, crossIdentity: crossIdentity);
+        .getSoapEnterprises(
+          url: baseUrl,
+          crossIdentity: crossIdentity,
+          enterpriseOriginCode: enterpriseCode,
+        );
 
     if (enterprises.isNotEmpty) {
       ref
