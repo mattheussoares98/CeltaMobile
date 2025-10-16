@@ -3,26 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class FrozenProcessesPage extends ConsumerWidget {
   final int enterpriseCode;
-  final EnterpriseEntity? selectedEnterprise;
+  final String enterpriseName;
   const FrozenProcessesPage({
     super.key,
     required this.enterpriseCode,
-    required this.selectedEnterprise,
+    required this.enterpriseName,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final value = ref.watch(
-      inventoryStateControllerProvider(
-        enterpriseCode,
-        selectedEnterprise?.name ?? '',
-      ),
+      inventoryStateControllerProvider(enterpriseCode, enterpriseName),
     );
 
     return Scaffold(
@@ -31,10 +27,7 @@ class FrozenProcessesPage extends ConsumerWidget {
         value: value,
         tryAgain: () {
           ref.invalidate(
-            inventoryStateControllerProvider(
-              enterpriseCode,
-              selectedEnterprise?.name ?? '',
-            ),
+            inventoryStateControllerProvider(enterpriseCode, enterpriseName),
           );
         },
         data: (inventories) {
@@ -45,9 +38,9 @@ class FrozenProcessesPage extends ConsumerWidget {
 
               return FrozenItem(
                 frozenProcess: frozenProcess,
-                selectedEnterprise: selectedEnterprise,
                 inventories: inventories,
                 enterpriseCode: enterpriseCode,
+                enterpriseName: enterpriseName,
               );
             },
           );

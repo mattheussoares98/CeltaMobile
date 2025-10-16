@@ -5,19 +5,18 @@ import 'package:intl/intl.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../routing/routing.dart';
 import '../../../../domain/entities/entities.dart';
 
 class FrozenItem extends StatelessWidget {
   final FrozenProcessEntity frozenProcess;
-  final EnterpriseEntity? selectedEnterprise;
+  final String enterpriseName;
   final InventoryEntity inventories;
   final int enterpriseCode;
   const FrozenItem({
     super.key,
     required this.frozenProcess,
-    required this.selectedEnterprise,
+    required this.enterpriseName,
     required this.inventories,
     required this.enterpriseCode,
   });
@@ -36,16 +35,7 @@ class FrozenItem extends StatelessWidget {
               'enterpriseCode': enterpriseCode.toString(),
               'codigoInternoInventario':
                   frozenProcess.CodigoInternoInventario.toString(),
-            },
-            extra: {
-              'enterprise': selectedEnterprise,
-              'counting': inventories.countings
-                  .where(
-                    (e) =>
-                        frozenProcess.CodigoInternoInventario ==
-                        e.CodigoInternoInventario,
-                  )
-                  .toList(),
+              'enterpriseName': enterpriseName,
             },
           );
         },

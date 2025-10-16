@@ -65,7 +65,10 @@ class DefaultModuleButton extends StatelessWidget {
               context.goNamed(
                 route.name,
                 pathParameters: passEnterpriseToNextRoute
-                    ? {'enterpriseCode': selectedEnterprise!.Code.toString()}
+                    ? {
+                        'enterpriseCode': selectedEnterprise!.Code.toString(),
+                        'enterpriseName': selectedEnterprise!.name,
+                      }
                     : {},
                 extra: passEnterpriseToNextRoute
                     ? {'enterprise': selectedEnterprise}

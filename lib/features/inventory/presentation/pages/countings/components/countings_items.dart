@@ -11,6 +11,7 @@ class CountingsItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      //TODO add RefreshIndicator
       itemCount: countings?.length ?? 0,
       itemBuilder: (_, index) {
         final counting = countings![index];
