@@ -15,6 +15,7 @@ class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
   Future<List<SoapEnterpriseModel>> getEnterprises({
     required String baseUrl,
     required String crossIdentity,
+    int? enterpriseOriginCode,
   }) async {
     final response = await soapAdapter.post(
       url: baseUrl.toLowerCase().removeWhiteSpaces(),
@@ -22,6 +23,7 @@ class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
         "crossIdentity": crossIdentity,
         "simpleSearchValue": "",
         "requestTypeCode": 0,
+        "enterpriseOriginCode": enterpriseOriginCode,
       },
       soapAction: "GetEnterprisesJson",
       typeOfResponse: "GetEnterprisesJsonResponse",

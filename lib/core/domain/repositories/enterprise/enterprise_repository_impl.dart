@@ -20,10 +20,12 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
   Future<List<EnterpriseEntity>> getSoapEnterprises({
     required String url,
     required String crossIdentity,
+    int? enterpriseOriginCode,
   }) async {
     final models = await soapEnterpriseDatasource.getEnterprises(
       baseUrl: url,
       crossIdentity: crossIdentity,
+      enterpriseOriginCode: enterpriseOriginCode,
     );
 
     return models.map((e) => e.toEntity()).toList();

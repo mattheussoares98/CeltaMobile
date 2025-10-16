@@ -6,5 +6,6 @@ abstract class IEnterpriseRepository {
   Future<List<EnterpriseEntity>> getSoapEnterprises({
     required String url,
     required String crossIdentity,
+    int? enterpriseOriginCode,
   });
 }
