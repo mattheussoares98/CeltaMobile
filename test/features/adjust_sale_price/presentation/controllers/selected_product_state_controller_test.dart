@@ -63,7 +63,6 @@ void main() {
         selectedProductStateControllerProvider(
           enterpriseCode,
           productEntity.PLU,
-          productEntity,
         ),
         (_, next) => states.add(next),
       );
@@ -72,7 +71,6 @@ void main() {
         selectedProductStateControllerProvider(
           enterpriseCode,
           productEntity.PLU,
-          productEntity,
         ).future,
       );
 
@@ -101,7 +99,6 @@ void main() {
           selectedProductStateControllerProvider(
             enterpriseCode,
             productEntity.PLU,
-            null,
           ),
           (_, next) => states.add(next),
         );
@@ -110,7 +107,6 @@ void main() {
           selectedProductStateControllerProvider(
             enterpriseCode,
             productEntity.PLU,
-            null,
           ).future,
         );
 

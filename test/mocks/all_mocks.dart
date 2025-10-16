@@ -477,11 +477,7 @@ class FakeSelectedProductStateController
 
   // 2. Override the build method to return your fake data instantly
   @override
-  Future<ProductEntity?> build(
-    int enterpriseCode,
-    String plu,
-    ProductEntity? product,
-  ) async {
+  Future<ProductEntity?> build(int enterpriseCode, String plu) async {
     return productToReturn;
   }
 }

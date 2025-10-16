@@ -12,11 +12,7 @@ part 'selected_product_state_controller.g.dart';
 @riverpod
 class SelectedProductStateController extends _$SelectedProductStateController {
   @override
-  Future<ProductEntity?> build(
-    int enterpriseCode,
-    String plu,
-    ProductEntity? product,
-  ) async {
+  Future<ProductEntity?> build(int enterpriseCode, String plu) async {
     // Timer? timer;
     // final link = ref.keepAlive();
     // ref.onCancel(() {
