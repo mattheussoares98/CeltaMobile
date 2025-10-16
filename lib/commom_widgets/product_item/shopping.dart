@@ -13,6 +13,17 @@ class Shopping extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    if (widget.product.LastBuyEntrances == null ||
+        widget.product.LastBuyEntrances!.isEmpty) {
+      return Center(
+        child: Text(
+          'Nenhuma compra foi encontrada'.hardcoded,
+          style: theme.textTheme.titleMedium,
+        ),
+      );
+    }
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
