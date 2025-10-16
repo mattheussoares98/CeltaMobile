@@ -3,22 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class CountingsPage extends ConsumerWidget {
   final int codigoInternoInventario;
   final int enterpriseCode;
-  final String enterpriseName;
   const CountingsPage({
     super.key,
     required this.codigoInternoInventario,
     required this.enterpriseCode,
-    required this.enterpriseName,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final enterpriseName =
+        ref.watch(validatedUserSessionProvider).value?.enterprise?.name ?? '';
+
     final value = ref.watch(
       inventoryStateControllerProvider(enterpriseCode, enterpriseName),
     );

@@ -10,13 +10,11 @@ import '../../../../domain/entities/entities.dart';
 
 class FrozenItem extends StatelessWidget {
   final FrozenProcessEntity frozenProcess;
-  final String enterpriseName;
   final InventoryEntity inventories;
   final int enterpriseCode;
   const FrozenItem({
     super.key,
     required this.frozenProcess,
-    required this.enterpriseName,
     required this.inventories,
     required this.enterpriseCode,
   });
@@ -35,7 +33,6 @@ class FrozenItem extends StatelessWidget {
               'enterpriseCode': enterpriseCode.toString(),
               'codigoInternoInventario':
                   frozenProcess.CodigoInternoInventario.toString(),
-              'enterpriseName': enterpriseName,
             },
           );
         },

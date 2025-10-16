@@ -4,7 +4,7 @@ import '../../../features/inventory/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase inventoryFrozenProcessesRoute(List<RouteBase> routes) => GoRoute(
-  path: 'inventory-frozen-processes/:enterpriseCode/:enterpriseName',
+  path: 'inventory-frozen-processes/:enterpriseCode',
   name: Routes.inventoryFrozenProcesses.name,
   routes: routes,
   builder: (context, state) {
@@ -12,7 +12,6 @@ RouteBase inventoryFrozenProcessesRoute(List<RouteBase> routes) => GoRoute(
       enterpriseCode: int.parse(
         state.pathParameters['enterpriseCode'].toString(),
       ),
-      enterpriseName: state.pathParameters['enterpriseName']!,
     );
   },
 );

@@ -13,12 +13,10 @@ RouteBase inventoryCountingsRoute() => GoRoute(
     final enterpriseCode = int.parse(
       state.pathParameters['enterpriseCode'].toString(),
     );
-    final enterpriseName = state.pathParameters['enterpriseName'];
 
     return CountingsPage(
       codigoInternoInventario: codigoInternoInventario,
       enterpriseCode: enterpriseCode,
-      enterpriseName: enterpriseName!,
     );
   },
 );
