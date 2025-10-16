@@ -8,7 +8,12 @@ import 'components/components.dart';
 
 class DocumentsPage extends ConsumerWidget {
   final int enterpriseCode;
-  const DocumentsPage({super.key, required this.enterpriseCode});
+  final String enterpriseName;
+  const DocumentsPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.enterpriseName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,6 +41,7 @@ class DocumentsPage extends ConsumerWidget {
             documents: documents,
             onRefresh: onRefresh,
             enterpriseCode: enterpriseCode,
+            enterpriseName: enterpriseName,
           );
         },
       ),

@@ -14,7 +14,12 @@ import '../../../enterprise_manager/domain/entities/entities.dart';
 
 class AdjustSalePriceProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  const AdjustSalePriceProductsPage({super.key, required this.enterpriseCode});
+  final String enterpriseName;
+  const AdjustSalePriceProductsPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.enterpriseName,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -119,6 +124,7 @@ class _AdjustSalePriceProductsPageState
                                       pathParameters: {
                                         'enterpriseCode': widget.enterpriseCode
                                             .toString(),
+                                        'enterpriseName': widget.enterpriseName,
                                         'plu': product.PLU,
                                       },
                                     );

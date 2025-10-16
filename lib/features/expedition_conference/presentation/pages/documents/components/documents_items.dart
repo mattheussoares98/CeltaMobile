@@ -11,11 +11,13 @@ class DocumentsItems extends StatelessWidget {
   final List<ExpeditionDocumentEntity> documents;
   final VoidCallback? onRefresh;
   final int enterpriseCode;
+  final String enterpriseName;
   const DocumentsItems({
     super.key,
     required this.documents,
     required this.onRefresh,
     required this.enterpriseCode,
+    required this.enterpriseName,
   });
 
   @override
@@ -41,6 +43,7 @@ class DocumentsItems extends StatelessWidget {
                     'stepCode': document.StepCode.toString(),
                     'documentNumber': document.DocumentNumber.toString(),
                     'enterpriseCode': enterpriseCode.toString(),
+                    'enterpriseName': enterpriseName,
                   },
                 );
               },

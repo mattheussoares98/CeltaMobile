@@ -12,6 +12,7 @@ RouteBase inventoryFrozenProcessesRoute(List<RouteBase> routes) => GoRoute(
       enterpriseCode: int.parse(
         state.pathParameters['enterpriseCode'].toString(),
       ),
+      enterpriseName: state.pathParameters['enterpriseName']!,
     );
   },
 );
