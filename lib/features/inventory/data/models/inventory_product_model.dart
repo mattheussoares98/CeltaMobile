@@ -36,10 +36,10 @@ class InventoryProductModel extends Equatable {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'Nome_Produto': productName,
-    'CodigoInterno_ProEmb': codigoInternoProEmb,
+    'CodigoInterno_ProEmb': codigoInternoProEmb.toString(),
     'CodigoPlu_ProEmb': plu,
     'Codigo_ProEmb': codigoProEmb,
-    'Quantidade_InvContProEmb': quantidadeInvContProEmb,
+    'Quantidade_InvContProEmb': quantidadeInvContProEmb?.toString(),
   };
 
   factory InventoryProductModel.fromEntity(InventoryProductEntity entity) =>

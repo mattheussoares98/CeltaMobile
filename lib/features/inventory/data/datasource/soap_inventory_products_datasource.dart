@@ -36,7 +36,7 @@ class SoapInventoryProductsDatasource
 
       return (response["Produtos"] is Map
               ? [response["Produtos"]]
-              : response as List)
+              : response["Produtos"] as List)
           .map((e) => InventoryProductModel.fromJson(e))
           .toList();
     } catch (e) {
@@ -60,7 +60,7 @@ class SoapInventoryProductsDatasource
 
     return (response["Produtos"] is Map
             ? [response["Produtos"]]
-            : response as List)
+            : response["Produtos"] as List)
         .map((e) => InventoryProductModel.fromJson(e))
         .toList();
   }
