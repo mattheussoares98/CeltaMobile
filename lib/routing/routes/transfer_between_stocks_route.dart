@@ -4,7 +4,7 @@ import '../../features/transfer_between_stocks/presentation/pages/pages.dart';
 import '../routing.dart';
 
 RouteBase transferBetweenStocksRoute() => GoRoute(
-  path: 'transfer-between-stocks/:enterpriseCode',
+  path: 'transfer-between-stocks/:enterpriseName/:enterpriseCode',
   name: Routes.transferBetweenStocks.name,
   builder: (context, state) {
     return TransferBetweenStocksPage(
