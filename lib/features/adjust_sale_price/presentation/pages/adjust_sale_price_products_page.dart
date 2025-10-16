@@ -126,10 +126,6 @@ class _AdjustSalePriceProductsPageState
                                             .toString(),
                                         'plu': product.PLU,
                                       },
-                                      extra: {
-                                        'product': product,
-                                        'enterprise': widget.selectedEnterprise,
-                                      },
                                     );
                                   },
                                 ),

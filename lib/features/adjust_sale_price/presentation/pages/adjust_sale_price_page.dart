@@ -15,14 +15,10 @@ import 'components/components.dart';
 class AdjustSalePricePage extends ConsumerStatefulWidget {
   final String plu;
   final int enterpriseCode;
-  final ProductEntity? product;
-  final EnterpriseEntity? enterprise;
   const AdjustSalePricePage({
     super.key,
     required this.plu,
     required this.enterpriseCode,
-    required this.product,
-    required this.enterprise,
   });
 
   @override
@@ -122,11 +118,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
   @override
   Widget build(BuildContext context) {
     final selectedProductAsync = ref.watch(
-      selectedProductStateControllerProvider(
-        widget.enterpriseCode,
-        widget.plu,
-        widget.product,
-      ),
+      selectedProductStateControllerProvider(widget.enterpriseCode, widget.plu),
     );
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
@@ -141,7 +133,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
       });
     });
 
-    final product = widget.product ?? selectedProductAsync.value;
+    final product = selectedProductAsync.value;
 
     return Stack(
       children: [
@@ -168,7 +160,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                     selectedProductStateControllerProvider(
                       widget.enterpriseCode,
                       widget.plu,
-                      product,
                     ),
                   );
                 },
