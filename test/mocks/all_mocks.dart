@@ -41,6 +41,8 @@ import 'package:celta_intelligence/features/expedition_conference/data/datasourc
 import 'package:celta_intelligence/features/expedition_conference/data/models/models.dart';
 import 'package:celta_intelligence/features/inventory/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/inventory/data/models/models.dart';
+import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/inventory/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/search_products/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
@@ -916,4 +918,22 @@ class SoapInventoryProductsDatasourceSpy extends Mock
       selectedEnterprise: any(named: 'selectedEnterprise'),
     ),
   );
+}
+
+class SoapInventoryProductsRepositorySpy extends Mock
+    implements ISoapInventoryProductsRepository {
+  void mockGetProducts(List<InventoryProductEntity> response) {
+    when(
+      () => this.load(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        searchValue: any(named: 'searchValue'),
+        codigoInternoInventario: any(named: 'codigoInternoInventario'),
+        searchType: any(named: 'searchType'),
+        codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
+        selectedEnterprise: any(named: 'selectedEnterprise'),
+      ),
+    ).thenAnswer((_) async => response);
+  }
 }

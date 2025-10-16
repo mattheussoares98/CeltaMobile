@@ -38,7 +38,6 @@ class InventoryProductsStateController
   }
 
   Future<void> loadProducts(String searchValue) async {
-    //TODO create tests
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
@@ -66,5 +65,30 @@ class InventoryProductsStateController
             selectedEnterprise: selectedEnterprise!,
           );
     });
+  }
+
+  void updateProduct(InventoryProductEntity updatedProduct) {
+    // 1. Get the current state.
+    final currentState = state;
+    // 2. Make sure we have data to update.
+    if (currentState is! AsyncData<List<InventoryProductEntity>>) {
+      // If the list isn't loaded, do nothing.
+      return;
+    }
+
+    // 3. Find the index of the old product.
+    final productIndex = currentState.value.indexWhere(
+      (p) => p.plu == updatedProduct.plu,
+    );
+
+    // 4. If the product exists in the list, replace it.
+    if (productIndex != -1) {
+      // Create a new list to ensure Riverpod detects the state change.
+      final newList = List<InventoryProductEntity>.from(currentState.value);
+      newList[productIndex] = updatedProduct;
+
+      // 5. Set the new state. The UI will update instantly.
+      state = AsyncData(newList);
+    }
   }
 }

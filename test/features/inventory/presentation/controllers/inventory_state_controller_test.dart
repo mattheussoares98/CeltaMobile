@@ -13,7 +13,19 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class MockSoapLoadInventoryRepository extends Mock
-    implements ISoapLoadInventoryRepository {}
+    implements ISoapLoadInventoryRepository {
+  void mockLoad(InventoryEntity response) {
+    _mockLoadCall().thenAnswer((_) async => response);
+  }
+
+  When _mockLoadCall() => when(
+    () => load(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+    ),
+  );
+}
 
 void main() {
   late MockSoapLoadInventoryRepository mockRepository;
