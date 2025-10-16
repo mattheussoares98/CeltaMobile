@@ -52,18 +52,12 @@ void main() {
       );
       final states = <AsyncValue<List<EnterpriseEntity>>>[];
       container.listen(
-        enterprisesStateControllerProvider(
-          userSessionEntity.selectedEnterprise!.Code,
-        ),
+        enterprisesStateControllerProvider(null),
         (_, next) => states.add(next),
       );
 
       // ACT: Wait for the build method to complete
-      await container.read(
-        enterprisesStateControllerProvider(
-          userSessionEntity.selectedEnterprise!.Code,
-        ).future,
-      );
+      await container.read(enterprisesStateControllerProvider(null).future);
 
       // ASSERT: The final state should be the list of enterprises
       expect(states.last, AsyncData(fakeEnterprises));

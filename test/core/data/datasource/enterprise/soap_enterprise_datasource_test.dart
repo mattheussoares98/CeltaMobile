@@ -19,6 +19,7 @@ void main() {
   late List<EnterpriseEntity> enterpriseEntities;
   late String url;
   late String crossIdentity;
+  late int? enterpriseOriginCode;
 
   void initEntities() {
     enterpriseEntities = [
@@ -28,6 +29,9 @@ void main() {
     ];
     url = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
+    enterpriseOriginCode = faker.randomGenerator.boolean() == true
+        ? faker.randomGenerator.integer(100)
+        : null;
   }
 
   void initSut() {
@@ -60,6 +64,7 @@ void main() {
       final result = await sut.getEnterprises(
         baseUrl: url,
         crossIdentity: crossIdentity,
+        enterpriseOriginCode: enterpriseOriginCode,
       );
 
       verify(
@@ -69,6 +74,7 @@ void main() {
             "crossIdentity": crossIdentity,
             "simpleSearchValue": "",
             "requestTypeCode": 0,
+            "enterpriseOriginCode": enterpriseOriginCode,
           },
           soapAction: "GetEnterprisesJson",
           typeOfResponse: "GetEnterprisesJsonResponse",

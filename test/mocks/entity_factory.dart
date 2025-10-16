@@ -10,30 +10,31 @@ import 'package:faker/faker.dart';
 class EntityFactory {
   EntityFactory._();
 
-  static EnterpriseEntity makeEnterpriseEntity({int? id, String? name}) =>
-      EnterpriseEntity(
-        id: id ?? faker.randomGenerator.integer(100),
-        name: name ?? faker.company.name(),
-        baseUrl: faker.internet.httpsUrl(),
-        subEnterprises: [
-          makeSubEnterpriseEntity(),
-          makeSubEnterpriseEntity(),
-          makeSubEnterpriseEntity(),
-        ],
-        CnpjNumber: faker.randomGenerator.integer(100).toString(),
-        Code: faker.randomGenerator.integer(100),
-        CodigoInternoVendaMobile_ModeloPedido: faker.randomGenerator.integer(
-          100,
-        ),
-        ProductCodeSizeOfBalanceLabel: faker.randomGenerator.integer(6),
-        PersonalizedCode: faker.randomGenerator.integer(100).toString(),
-        InscriptionNumber: faker.randomGenerator.integer(100).toString(),
-        EnterpriseParticipateEnterpriseGroup: faker.randomGenerator.boolean(),
-        ProductCodeWithCheckerDigit: faker.randomGenerator.boolean(),
-        UseEcommerceSale: faker.randomGenerator.boolean(),
-        UseRetailSale: faker.randomGenerator.boolean(),
-        UseWholeSale: faker.randomGenerator.boolean(),
-      );
+  static EnterpriseEntity makeEnterpriseEntity({
+    int? id,
+    String? name,
+    int? code,
+  }) => EnterpriseEntity(
+    id: id ?? faker.randomGenerator.integer(100),
+    name: name ?? faker.company.name(),
+    baseUrl: faker.internet.httpsUrl(),
+    subEnterprises: [
+      makeSubEnterpriseEntity(),
+      makeSubEnterpriseEntity(),
+      makeSubEnterpriseEntity(),
+    ],
+    CnpjNumber: faker.randomGenerator.integer(100).toString(),
+    Code: code ?? faker.randomGenerator.integer(100),
+    CodigoInternoVendaMobile_ModeloPedido: faker.randomGenerator.integer(100),
+    ProductCodeSizeOfBalanceLabel: faker.randomGenerator.integer(6),
+    PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+    InscriptionNumber: faker.randomGenerator.integer(100).toString(),
+    EnterpriseParticipateEnterpriseGroup: faker.randomGenerator.boolean(),
+    ProductCodeWithCheckerDigit: faker.randomGenerator.boolean(),
+    UseEcommerceSale: faker.randomGenerator.boolean(),
+    UseRetailSale: faker.randomGenerator.boolean(),
+    UseWholeSale: faker.randomGenerator.boolean(),
+  );
 
   static SubEnterpriseEntity makeSubEnterpriseEntity() => SubEnterpriseEntity(
     id: faker.randomGenerator.integer(100),
@@ -199,9 +200,12 @@ class EntityFactory {
     ECommerceMinimumMargin: faker.randomGenerator.decimal(),
   );
 
-  static UserSessionEntity makeUserSessionEntity() => UserSessionEntity(
+  static UserSessionEntity makeUserSessionEntity({
+    int? selectedEnterpriseCode,
+  }) => UserSessionEntity(
     user: makeUserEntity(),
     supabaseEnterprise: makeEnterpriseEntity(),
+    selectedEnterprise: makeEnterpriseEntity(code: selectedEnterpriseCode),
   );
 
   static PriceScheduleEntity makePriceScheduleEntity() => PriceScheduleEntity(

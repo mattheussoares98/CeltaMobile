@@ -4,6 +4,7 @@ import 'package:celta_intelligence/core/presentation/controllers/user_session/us
 import 'package:celta_intelligence/core/providers/products/products.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,10 +15,14 @@ void main() {
   late SoapProductsRepositorySpy mockSoapProductsRepository;
   late UserSessionEntity userSessionEntity;
   late ProductEntity productEntity;
+  late int enterpriseCode;
 
   setUp(() {
+    enterpriseCode = faker.randomGenerator.integer(100);
     mockSoapProductsRepository = SoapProductsRepositorySpy();
-    userSessionEntity = EntityFactory.makeUserSessionEntity();
+    userSessionEntity = EntityFactory.makeUserSessionEntity(
+      selectedEnterpriseCode: enterpriseCode,
+    );
     productEntity = EntityFactory.makeProductEntity();
 
     registerFallbackValue(BsRoutine.adjustSalePrice);
@@ -41,9 +46,7 @@ void main() {
             UserSessionModel.fromEntity(userSessionEntity),
           ),
         ),
-        enterprisesStateControllerProvider(
-          userSessionEntity.selectedEnterprise!.Code,
-        ).overrideWith(
+        enterprisesStateControllerProvider(enterpriseCode).overrideWith(
           () => FakeEnterprisesStateController([
             userSessionEntity.supabaseEnterprise!,
           ]),
@@ -58,7 +61,7 @@ void main() {
       final states = <AsyncValue<ProductEntity?>>[];
       container.listen(
         selectedProductStateControllerProvider(
-          userSessionEntity.supabaseEnterprise!.Code!,
+          enterpriseCode,
           productEntity.PLU,
           productEntity,
         ),
@@ -67,7 +70,7 @@ void main() {
 
       final result = await container.read(
         selectedProductStateControllerProvider(
-          userSessionEntity.supabaseEnterprise!.Code!,
+          enterpriseCode,
           productEntity.PLU,
           productEntity,
         ).future,
@@ -96,7 +99,7 @@ void main() {
         final states = <AsyncValue<ProductEntity?>>[];
         container.listen(
           selectedProductStateControllerProvider(
-            userSessionEntity.supabaseEnterprise!.Code!,
+            enterpriseCode,
             productEntity.PLU,
             null,
           ),
@@ -105,7 +108,7 @@ void main() {
 
         await container.read(
           selectedProductStateControllerProvider(
-            userSessionEntity.supabaseEnterprise!.Code!,
+            enterpriseCode,
             productEntity.PLU,
             null,
           ).future,
@@ -120,7 +123,7 @@ void main() {
             searchValue: productEntity.PLU,
             routine: BsRoutine.adjustSalePrice,
             searchType: SearchType.dynamic,
-            enterpriseCodes: [userSessionEntity.supabaseEnterprise!.Code!],
+            enterpriseCodes: [enterpriseCode],
             enterpriseEntity: userSessionEntity.supabaseEnterprise!,
             lastBuyEntranceQuantity: null,
             crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
