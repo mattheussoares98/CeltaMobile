@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/validators/validators.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 import 'pages.dart';
@@ -203,12 +202,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       n.showAlertDialogOnError(context);
     });
 
-    final selectedEnterprise = ref.watch(
-      selectedEnterpriseStateControllerProvider,
-    );
-    final covenantsAsync = ref.watch(
-      covenantsStateControllerProvider(selectedEnterprise?.name ?? ''),
-    );
+    final covenantsAsync = ref.watch(covenantsStateControllerProvider);
 
     final addressPage = AddressPage(
       customer: customerAsync.value,

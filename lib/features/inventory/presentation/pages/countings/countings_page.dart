@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -18,20 +17,13 @@ class CountingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enterpriseName =
-        ref.watch(validatedUserSessionProvider).value?.enterprise?.name ?? '';
-
-    final value = ref.watch(
-      inventoryStateControllerProvider(enterpriseCode, enterpriseName),
-    );
+    final value = ref.watch(inventoryStateControllerProvider(enterpriseCode));
     return Scaffold(
       appBar: AppBar(title: Text('Contagens'.hardcoded)),
       body: AsyncValueWidget(
         value: value,
         tryAgain: () {
-          ref.invalidate(
-            inventoryStateControllerProvider(enterpriseCode, enterpriseName),
-          );
+          ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
         },
         data: (inventory) {
           final countings = inventory?.countings

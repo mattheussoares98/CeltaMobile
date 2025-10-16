@@ -20,7 +20,6 @@ void main() {
   late UserSessionModel fakeSession;
   late InventoryEntity fakeInventory;
   late int fakeEnterpriseCode;
-  late String fakeEnterpriseName;
 
   setUp(() {
     mockRepository = MockSoapLoadInventoryRepository();
@@ -29,7 +28,6 @@ void main() {
     );
     fakeInventory = EntityFactory.makeInventoryEntity();
     fakeEnterpriseCode = faker.randomGenerator.integer(100);
-    fakeEnterpriseName = faker.company.name();
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -61,10 +59,7 @@ void main() {
 
         // ACT: Reading the future will trigger the build and wait for it to complete.
         final result = await container.read(
-          inventoryStateControllerProvider(
-            fakeEnterpriseCode,
-            fakeEnterpriseName,
-          ).future,
+          inventoryStateControllerProvider(fakeEnterpriseCode).future,
         );
 
         // ASSERT
@@ -87,10 +82,7 @@ void main() {
       // ACT & ASSERT: Expect the future to throw an AppException.
       await expectLater(
         container.read(
-          inventoryStateControllerProvider(
-            fakeEnterpriseCode,
-            fakeEnterpriseName,
-          ).future,
+          inventoryStateControllerProvider(fakeEnterpriseCode).future,
         ),
         throwsA(isA<AppException>()),
       );

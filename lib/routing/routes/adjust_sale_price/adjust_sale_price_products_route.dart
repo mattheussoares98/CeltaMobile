@@ -4,7 +4,7 @@ import '../../../features/adjust_sale_price/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase adjustSalePriceProducts(List<RouteBase> routes) => GoRoute(
-  path: 'adjust-sale-price-products/:enterpriseName/:enterpriseCode',
+  path: 'adjust-sale-price-products/:enterpriseCode',
   name: Routes.adjustSalePriceProducts.name,
   routes: routes,
   builder: (context, state) {
@@ -12,7 +12,6 @@ RouteBase adjustSalePriceProducts(List<RouteBase> routes) => GoRoute(
       enterpriseCode: int.parse(
         state.pathParameters['enterpriseCode'].toString(),
       ),
-      enterpriseName: state.pathParameters['enterpriseName'].toString(),
     );
   },
 );

@@ -70,9 +70,7 @@ void main() {
 
         // ACT & ASSERT
         await expectLater(
-          container.read(
-            covenantsStateControllerProvider(enterpriseEntity.name).future,
-          ),
+          container.read(covenantsStateControllerProvider.future),
           completion(equals(fakeCovenants)),
         );
 
@@ -97,9 +95,7 @@ void main() {
       // The FakeValidatedUserSession will now throw an AppException,
       // which the CovenantsStateController will catch and re-throw.
       await expectLater(
-        container.read(
-          covenantsStateControllerProvider(enterpriseEntity.name).future,
-        ),
+        container.read(covenantsStateControllerProvider.future),
         throwsA(isA<AppException>()),
       );
 

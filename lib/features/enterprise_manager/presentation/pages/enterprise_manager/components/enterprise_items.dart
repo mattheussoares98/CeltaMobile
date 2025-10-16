@@ -38,7 +38,7 @@ class _EnterpriseItemsState extends ConsumerState<EnterpriseItems> {
         ),
         FilteredEnterprises(
           enterprises: widget.enterprises,
-          filterEnterpriseNameController: widget.filterEnterpriseNameController,
+          filterController: widget.filterEnterpriseNameController,
         ),
       ],
     );

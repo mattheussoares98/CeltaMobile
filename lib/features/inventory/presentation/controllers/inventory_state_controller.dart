@@ -11,10 +11,7 @@ part 'inventory_state_controller.g.dart';
 @riverpod
 class InventoryStateController extends _$InventoryStateController {
   @override
-  FutureOr<InventoryEntity?> build(
-    int enterpriseCode,
-    String enterpriseName,
-  ) async {
+  FutureOr<InventoryEntity?> build(int enterpriseCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {

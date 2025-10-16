@@ -8,27 +8,18 @@ import 'components/components.dart';
 
 class FrozenProcessesPage extends ConsumerWidget {
   final int enterpriseCode;
-  final String enterpriseName;
-  const FrozenProcessesPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.enterpriseName,
-  });
+  const FrozenProcessesPage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final value = ref.watch(
-      inventoryStateControllerProvider(enterpriseCode, enterpriseName),
-    );
+    final value = ref.watch(inventoryStateControllerProvider(enterpriseCode));
 
     return Scaffold(
       appBar: AppBar(title: Text('Processos congelados'.hardcoded)),
       body: AsyncValueWidget(
         value: value,
         tryAgain: () {
-          ref.invalidate(
-            inventoryStateControllerProvider(enterpriseCode, enterpriseName),
-          );
+          ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
         },
         data: (inventories) {
           return ResponsiveListFlow(
@@ -40,7 +31,6 @@ class FrozenProcessesPage extends ConsumerWidget {
                 frozenProcess: frozenProcess,
                 inventories: inventories,
                 enterpriseCode: enterpriseCode,
-                enterpriseName: enterpriseName,
               );
             },
           );

@@ -6,11 +6,11 @@ import 'components.dart';
 
 class FilteredEnterprises extends StatefulWidget {
   final List<EnterprisePermissionEntity> enterprises;
-  final TextEditingController filterEnterpriseNameController;
+  final TextEditingController filterController;
   const FilteredEnterprises({
     super.key,
     required this.enterprises,
-    required this.filterEnterpriseNameController,
+    required this.filterController,
   });
 
   @override
@@ -22,7 +22,7 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
   void initState() {
     super.initState();
 
-    widget.filterEnterpriseNameController.addListener(listener);
+    widget.filterController.addListener(listener);
   }
 
   void listener() {
@@ -31,7 +31,7 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
 
   @override
   void dispose() {
-    widget.filterEnterpriseNameController.removeListener(listener);
+    widget.filterController.removeListener(listener);
     super.dispose();
   }
 
@@ -41,7 +41,7 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
 
     final filteredEnterprises = (widget.enterprises.where((e) {
       return e.name.toLowerCase().contains(
-        widget.filterEnterpriseNameController.text.toLowerCase(),
+        widget.filterController.text.toLowerCase(),
       );
     }).toList())..sort((a, b) => a.name.compareTo(b.name));
 

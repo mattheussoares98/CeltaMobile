@@ -11,7 +11,7 @@ part 'covenants_state_controller.g.dart';
 @riverpod
 class CovenantsStateController extends _$CovenantsStateController {
   @override
-  FutureOr<List<CovenantEntity>?> build(String enterpriseName) async {
+  FutureOr<List<CovenantEntity>?> build() async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -27,7 +27,7 @@ class CovenantsStateController extends _$CovenantsStateController {
     });
 
     final repository = ref.read(soapLoadCovenantsRepositoryProvider);
-    final validatedUserSession = await ref.read(
+    final validatedUserSession = await ref.watch(
       validatedUserSessionProvider.future,
     );
 

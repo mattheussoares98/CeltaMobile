@@ -4,7 +4,7 @@ import '../../../features/expedition_conference/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase expeditionConferenceDocumentsRoute(List<RouteBase> routes) => GoRoute(
-  path: 'expedition-conference-documents/:enterpriseName/:enterpriseCode',
+  path: 'expedition-conference-documents/:enterpriseCode',
   name: Routes.expeditionConferenceDocuments.name,
   routes: routes,
   builder: (context, state) {
@@ -12,7 +12,6 @@ RouteBase expeditionConferenceDocumentsRoute(List<RouteBase> routes) => GoRoute(
       enterpriseCode: int.parse(
         state.pathParameters['enterpriseCode'].toString(),
       ),
-      enterpriseName: state.pathParameters['enterpriseName']!,
     );
   },
 );

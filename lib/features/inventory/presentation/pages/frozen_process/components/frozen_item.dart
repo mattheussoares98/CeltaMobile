@@ -12,13 +12,11 @@ class FrozenItem extends StatelessWidget {
   final FrozenProcessEntity frozenProcess;
   final InventoryEntity inventories;
   final int enterpriseCode;
-  final String enterpriseName;
   const FrozenItem({
     super.key,
     required this.frozenProcess,
     required this.inventories,
     required this.enterpriseCode,
-    required this.enterpriseName,
   });
 
   @override
@@ -33,7 +31,6 @@ class FrozenItem extends StatelessWidget {
             Routes.inventoryCountings.name,
             pathParameters: {
               'enterpriseCode': enterpriseCode.toString(),
-              'enterpriseName': enterpriseName,
               'codigoInternoInventario':
                   frozenProcess.CodigoInternoInventario.toString(),
             },
