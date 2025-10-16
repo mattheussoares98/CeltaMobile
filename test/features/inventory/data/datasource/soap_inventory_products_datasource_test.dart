@@ -67,9 +67,9 @@ void main() {
       searchValue: searchValue,
       searchType: searchType,
       crossIdentity: crossIdentity,
-      inventoryProcessCode: inventoryProcessCode,
+      codigoInternoInventario: inventoryProcessCode,
       enterpriseCode: enterpriseCode,
-      inventoryCountingCode: inventoryCountingCode,
+      codigoInternoInvCont: inventoryCountingCode,
       selectedEnterprise: selectedEnterprise,
     );
 
@@ -86,10 +86,10 @@ void main() {
           "inventoryProcessCode": inventoryProcessCode,
           "inventoryCountingCode": inventoryCountingCode,
         },
-        typeOfResponse: "GetProductsJsonResponse",
-        typeOfResult: "GetProductsJsonResult",
-        soapAction: "GetProductsJson",
-        serviceASMX: "CeltaProductService.asmx",
+        typeOfResponse: "GetProductResponse",
+        soapAction: "GetProduct",
+        serviceASMX: "CeltaInventoryService.asmx",
+        typeOfResult: "GetProductResult",
       ),
     ).called(1);
   });
@@ -97,11 +97,11 @@ void main() {
     final products = await sut.load(
       baseUrl: baseUrl,
       searchValue: searchValue,
-      inventoryProcessCode: inventoryProcessCode,
+      codigoInternoInventario: inventoryProcessCode,
       searchType: searchType,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
-      inventoryCountingCode: inventoryCountingCode,
+      codigoInternoInvCont: inventoryCountingCode,
       selectedEnterprise: selectedEnterprise,
     );
 
@@ -118,10 +118,10 @@ void main() {
           "inventoryProcessCode": inventoryProcessCode,
           "inventoryCountingCode": inventoryCountingCode,
         },
-        typeOfResponse: "GetProductsJsonResponse",
-        typeOfResult: "GetProductsJsonResult",
-        soapAction: "GetProductsJson",
-        serviceASMX: "CeltaProductService.asmx",
+        typeOfResponse: "GetProductResponse",
+        soapAction: "GetProduct",
+        serviceASMX: "CeltaInventoryService.asmx",
+        typeOfResult: "GetProductResult",
       ),
     ).called(1);
 

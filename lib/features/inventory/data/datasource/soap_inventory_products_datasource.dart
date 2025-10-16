@@ -14,11 +14,11 @@ class SoapInventoryProductsDatasource
   Future<List<InventoryProductModel>> load({
     required String baseUrl,
     required String searchValue,
-    required int inventoryProcessCode,
+    required int codigoInternoInventario,
     required SearchType searchType,
     required String crossIdentity,
     required int enterpriseCode,
-    required int inventoryCountingCode,
+    required int codigoInternoInvCont,
     required EnterpriseEntity selectedEnterprise,
   }) async {
     bool isBalanceFormat = _getIsBalanceFormat(searchValue);
@@ -27,11 +27,11 @@ class SoapInventoryProductsDatasource
       final response = await _executeRequest(
         baseUrl: baseUrl,
         searchValue: searchValue,
-        inventoryProcessCode: inventoryProcessCode,
+        inventoryProcessCode: codigoInternoInventario,
         searchType: searchType,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
-        inventoryCountingCode: inventoryCountingCode,
+        inventoryCountingCode: codigoInternoInvCont,
       );
 
       return (response["Produtos"] is Map
@@ -54,8 +54,8 @@ class SoapInventoryProductsDatasource
       searchType: searchType,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
-      inventoryCountingCode: inventoryCountingCode,
-      inventoryProcessCode: inventoryProcessCode,
+      inventoryCountingCode: codigoInternoInvCont,
+      inventoryProcessCode: codigoInternoInventario,
     );
 
     return (response["Produtos"] is Map
@@ -85,10 +85,10 @@ class SoapInventoryProductsDatasource
           "inventoryProcessCode": inventoryProcessCode,
           "inventoryCountingCode": inventoryCountingCode,
         },
-        typeOfResponse: "GetProductsJsonResponse",
-        typeOfResult: "GetProductsJsonResult",
-        soapAction: "GetProductsJson",
-        serviceASMX: "CeltaProductService.asmx",
+        typeOfResponse: "GetProductResponse",
+        soapAction: "GetProduct",
+        serviceASMX: "CeltaInventoryService.asmx",
+        typeOfResult: "GetProductResult",
       );
     } catch (e) {
       rethrow;

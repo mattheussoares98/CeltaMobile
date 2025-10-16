@@ -908,11 +908,11 @@ class SoapInventoryProductsDatasourceSpy extends Mock
     () => this.load(
       baseUrl: any(named: 'baseUrl'),
       searchValue: any(named: 'searchValue'),
-      inventoryProcessCode: any(named: 'inventoryProcessCode'),
+      codigoInternoInventario: any(named: 'inventoryProcessCode'),
       searchType: any(named: 'searchType'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
-      inventoryCountingCode: any(named: 'inventoryCountingCode'),
+      codigoInternoInvCont: any(named: 'inventoryCountingCode'),
       selectedEnterprise: any(named: 'selectedEnterprise'),
     ),
   );

@@ -17,8 +17,8 @@ class InventoryProductsStateController
   @override
   FutureOr<List<InventoryProductEntity>> build(
     int enterpriseCode,
-    int inventoryProcessCode,
-    int inventoryCountingCode,
+    int codigoInternoInventario,
+    int codigoInternoInvCont,
   ) async {
     Timer? timer;
     final link = ref.keepAlive();
@@ -60,9 +60,9 @@ class InventoryProductsStateController
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             enterpriseCode: enterpriseCode,
             searchValue: searchValue,
-            inventoryProcessCode: inventoryProcessCode,
+            codigoInternoInventario: codigoInternoInventario,
             searchType: searchType,
-            inventoryCountingCode: inventoryCountingCode,
+            codigoInternoInvCont: codigoInternoInvCont,
             selectedEnterprise: selectedEnterprise!,
           );
     });

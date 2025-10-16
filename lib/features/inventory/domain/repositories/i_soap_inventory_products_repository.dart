@@ -7,9 +7,9 @@ abstract class ISoapInventoryProductsRepository {
     required String crossIdentity,
     required int enterpriseCode,
     required String searchValue,
-    required int inventoryProcessCode,
+    required int codigoInternoInventario,
     required SearchType searchType,
-    required int inventoryCountingCode,
+    required int codigoInternoInvCont,
     required EnterpriseEntity selectedEnterprise,
   });
 }

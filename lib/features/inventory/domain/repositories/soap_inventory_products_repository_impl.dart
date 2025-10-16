@@ -16,21 +16,21 @@ class SoapInventoryProductsRepositoryImpl
   Future<List<InventoryProductEntity>> load({
     required String baseUrl,
     required String searchValue,
-    required int inventoryProcessCode,
+    required int codigoInternoInventario,
     required SearchType searchType,
     required String crossIdentity,
     required int enterpriseCode,
-    required int inventoryCountingCode,
+    required int codigoInternoInvCont,
     required EnterpriseEntity selectedEnterprise,
   }) async {
     final response = await datasource.load(
       baseUrl: baseUrl,
       searchValue: searchValue,
-      inventoryProcessCode: inventoryProcessCode,
+      codigoInternoInventario: codigoInternoInventario,
       searchType: searchType,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
-      inventoryCountingCode: inventoryCountingCode,
+      codigoInternoInvCont: codigoInternoInvCont,
       selectedEnterprise: selectedEnterprise,
     );
 

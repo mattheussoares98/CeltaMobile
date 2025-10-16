@@ -69,11 +69,11 @@ void main() {
     final response = await sut.load(
       baseUrl: baseUrl,
       searchValue: searchValue,
-      inventoryProcessCode: inventoryProcessCode,
+      codigoInternoInventario: inventoryProcessCode,
       searchType: searchType,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
-      inventoryCountingCode: inventoryCountingCode,
+      codigoInternoInvCont: inventoryCountingCode,
       selectedEnterprise: selectedEnterprise,
     );
 
@@ -83,11 +83,11 @@ void main() {
       () => datasource.load(
         baseUrl: baseUrl,
         searchValue: searchValue,
-        inventoryProcessCode: inventoryProcessCode,
+        codigoInternoInventario: inventoryProcessCode,
         searchType: searchType,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
-        inventoryCountingCode: inventoryCountingCode,
+        codigoInternoInvCont: inventoryCountingCode,
         selectedEnterprise: selectedEnterprise,
       ),
     );

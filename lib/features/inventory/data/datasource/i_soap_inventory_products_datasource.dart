@@ -5,11 +5,11 @@ abstract class ISoapInventoryProductsDatasource {
   Future<List<InventoryProductModel>> load({
     required String baseUrl,
     required String searchValue,
-    required int inventoryProcessCode,
+    required int codigoInternoInventario,
     required SearchType searchType,
     required String crossIdentity,
     required int enterpriseCode,
-    required int inventoryCountingCode,
+    required int codigoInternoInvCont,
     required EnterpriseEntity selectedEnterprise,
   });
 }
