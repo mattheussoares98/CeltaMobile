@@ -15,7 +15,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
   }
 
   Future<void> entry({
-    required int productPackingCode,
+    required int codigoInternoProEmb,
     required double quantity,
     required bool isSubtract,
   }) async {
@@ -31,11 +31,11 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             baseUrl: validatedUser!.enterprise!.baseUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
-            productPackingCode: productPackingCode,
+            productPackingCode: codigoInternoProEmb,
             quantity: quantity,
             isSubtract: isSubtract,
           );
-      return productPackingCode;
+      return codigoInternoProEmb;
     });
   }
 }

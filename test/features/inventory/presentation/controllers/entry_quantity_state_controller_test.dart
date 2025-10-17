@@ -83,7 +83,7 @@ void main() {
               ).notifier,
             )
             .entry(
-              productPackingCode: productPackingCode,
+              codigoInternoProEmb: productPackingCode,
               quantity: quantity,
               isSubtract: isSubtract,
             );
@@ -126,7 +126,7 @@ void main() {
             ).notifier,
           )
           .entry(
-            productPackingCode: productPackingCode,
+            codigoInternoProEmb: productPackingCode,
             quantity: quantity,
             isSubtract: isSubtract,
           );
