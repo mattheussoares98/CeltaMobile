@@ -96,6 +96,7 @@ void main() {
           LastChangedProductEntity(
             codigoInternoProEmb: codigoInternoProEmb,
             quantity: quantity,
+            isSubtract: isSubtract,
           ),
         );
         verify(

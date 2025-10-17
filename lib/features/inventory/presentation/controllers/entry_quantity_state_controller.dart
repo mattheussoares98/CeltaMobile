@@ -37,6 +37,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
       return LastChangedProductEntity(
         codigoInternoProEmb: codigoInternoProEmb,
         quantity: quantity,
+        isSubtract: isSubtract,
       );
     });
   }
