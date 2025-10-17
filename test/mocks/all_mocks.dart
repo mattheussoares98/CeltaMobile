@@ -937,3 +937,19 @@ class SoapInventoryProductsRepositorySpy extends Mock
     ).thenAnswer((_) async => response);
   }
 }
+
+class SoapInventoryEntryQuantityDatasourceSpy extends Mock
+    implements ISoapInventoryEntryQuantityDatasource {
+  SoapInventoryEntryQuantityDatasourceSpy() {
+    when(
+      () => this.entry(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
+        productPackingCode: any(named: 'productPackingCode'),
+        quantity: any(named: 'quantity'),
+        isSubtract: any(named: 'isSubtract'),
+      ),
+    ).thenAnswer((_) async {});
+  }
+}
