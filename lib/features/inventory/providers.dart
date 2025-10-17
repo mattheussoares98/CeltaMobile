@@ -30,3 +30,31 @@ ISoapInventoryProductsRepository soapInventoryProductsRepository(Ref ref) {
     ref.watch(soapInventoryProductsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInventoryEntryQuantityDatasource soapInventoryEntryQuantityDatasource(
+  Ref ref,
+) {
+  return SoapInventoryEntryQuantityDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapInventoryEntryQuantityRepository soapInventoryEntryQuantityRepository(
+  Ref ref,
+) {
+  return SoapInventoryEntryQuantityRepositoryImpl(
+    ref.watch(soapInventoryEntryQuantityDatasourceProvider),
+  );
+}
+
+@riverpod
+ISoapInventoryAnnulDatasource soapInventoryAnnulDatasource(Ref ref) {
+  return SoapInventoryAnnulDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapInventoryAnnulRepository soapInventoryAnnulRepository(Ref ref) {
+  return SoapInventoryAnnulRepositoryImpl(
+    ref.watch(soapInventoryAnnulDatasourceProvider),
+  );
+}
