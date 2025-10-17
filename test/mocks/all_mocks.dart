@@ -953,3 +953,17 @@ class SoapInventoryEntryQuantityDatasourceSpy extends Mock
     ).thenAnswer((_) async {});
   }
 }
+
+class SoapInventoryAnnulDatasourceSpy extends Mock
+    implements ISoapInventoryAnnulDatasource {
+  SoapInventoryAnnulDatasourceSpy() {
+    when(
+      () => this.annul(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
+        productPackingCode: any(named: 'productPackingCode'),
+      ),
+    ).thenAnswer((_) async {});
+  }
+}
