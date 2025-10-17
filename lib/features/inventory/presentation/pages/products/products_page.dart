@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../controllers/controllers.dart';
+import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -23,13 +24,19 @@ class ProductsPage extends ConsumerStatefulWidget {
 }
 
 class _ProductsPageState extends ConsumerState<ProductsPage> {
-  final controller = TextEditingController();
-  final focusNode = FocusNode();
+  final searchProductsController = TextEditingController();
+  final quantityController = TextEditingController();
+  final searchProductsFocusNode = FocusNode();
+  final quantityFocusNode = FocusNode();
+  int? selectedIndex;
+  bool insertIndividually = false;
 
   @override
   void dispose() {
-    controller.dispose();
-    focusNode.dispose();
+    searchProductsController.dispose();
+    quantityController.dispose();
+    searchProductsFocusNode.dispose();
+    quantityFocusNode.dispose();
     super.dispose();
   }
 
@@ -42,7 +49,22 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             widget.codigoInternoInvCont,
           ).notifier,
         )
-        .loadProducts(controller.text);
+        .loadProducts(searchProductsController.text);
+  }
+
+  void changeSelectedIndex(int index) {
+    if (selectedIndex == index) {
+      setState(() {
+        selectedIndex = null;
+      });
+    } else {
+      setState(() {
+        selectedIndex = index;
+      });
+      Future.delayed(Duration(milliseconds: 100), () {
+        quantityFocusNode.requestFocus();
+      });
+    }
   }
 
   @override
@@ -62,11 +84,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       ),
       (previous, next) {
         next.doOnSuccess(previous, () {
-          controller.clear();
-          Future.delayed(Duration(milliseconds: 100), () {
-            //TODO change the focus only when is individual setting
-            focusNode.requestFocus();
-          });
+          searchProductsController.clear();
+          if (insertIndividually) {
+            Future.delayed(Duration(milliseconds: 100), () {
+              searchProductsFocusNode.requestFocus();
+            });
+          }
         });
         next.showSnackbarOnError(
           context,
@@ -84,10 +107,24 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           slivers: [
             SliverToBoxAdapter(
               child: DefaultSearchProducts(
-                focusNode: focusNode,
+                focusNode: searchProductsFocusNode,
                 isLoading: productsState.isLoading,
                 searchProducts: _searchProducts,
-                searchValueController: controller,
+                searchValueController: searchProductsController,
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: Sizes.p8),
+                child: DefaultSwitch(
+                  title: 'Inserir individualmente'.hardcoded,
+                  value: insertIndividually,
+                  onChanged: (value) {
+                    setState(() {
+                      insertIndividually = value;
+                    });
+                  },
+                ),
               ),
             ),
             SliverList.builder(
@@ -96,8 +133,24 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 final product = productsState.value![index];
 
                 return Card(
+                  margin: const EdgeInsets.only(top: Sizes.p8),
                   clipBehavior: Clip.antiAlias,
-                  child: Column(children: [Text(product.productName)]),
+                  child: Column(
+                    children: [
+                      ProductInformations(
+                        onChangeSelectedIndex: () => changeSelectedIndex(index),
+                        product: product,
+                        isSelected: selectedIndex == index,
+                      ),
+                      if (selectedIndex == index) ...[
+                        QuantityButtonsAndField(
+                          insertIndividually: insertIndividually,
+                          quantityFocusNode: quantityFocusNode,
+                          quantityController: quantityController,
+                        ),
+                      ],
+                    ],
+                  ),
                 );
               },
             ),
