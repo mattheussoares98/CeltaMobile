@@ -43,7 +43,8 @@ class FrozenItem extends StatelessWidget {
             children: [
               TitleAndSubTitle(
                 title: 'Empresa'.hardcoded,
-                subTitle: frozenProcess.NomeEmpresa,
+                subTitle:
+                    '${frozenProcess.CodigoEmpresa} - ${frozenProcess.NomeEmpresa}',
               ),
               TitleAndSubTitle(
                 title: 'Tipo de estoque'.hardcoded,
