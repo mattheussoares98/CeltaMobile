@@ -16,12 +16,14 @@ class PrimaryButton extends StatelessWidget {
     this.onPressed,
     this.icon,
     this.iconAlignment,
+    this.backgroundColor,
   });
   final String text;
   final bool isLoading;
   final VoidCallback? onPressed;
   final Widget? icon;
   final IconAlignment? iconAlignment;
+  final Color? backgroundColor;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -33,6 +35,7 @@ class PrimaryButton extends StatelessWidget {
             onPressed: isLoading ? null : onPressed,
             sizeStyle: CupertinoButtonSize.small,
             padding: EdgeInsets.all(0),
+            color: backgroundColor ?? theme.primaryColor,
             child: isLoading
                 ? CupertinoActivityIndicator(color: theme.disabledColor)
                 : Row(
@@ -59,6 +62,11 @@ class PrimaryButton extends StatelessWidget {
         onPressed: onPressed,
         icon: icon,
         iconAlignment: iconAlignment,
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(
+            backgroundColor ?? theme.primaryColor,
+          ),
+        ),
         label: isLoading
             ? SizedBox(
                 height: Sizes.p24,
