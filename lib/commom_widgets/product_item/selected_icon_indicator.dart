@@ -8,18 +8,15 @@ class SelectedIconIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final notSelectedIcon = Icon(
-      theme.platform == TargetPlatform.iOS
-          ? CupertinoIcons.drop
-          : Icons.arrow_drop_down,
+      isIOS ? CupertinoIcons.arrow_down : Icons.arrow_drop_down,
       color: theme.colorScheme.primary,
     );
 
     final selectedIcon = Icon(
-      theme.platform == TargetPlatform.iOS
-          ? CupertinoIcons.arrow_up
-          : Icons.arrow_drop_up,
+      isIOS ? CupertinoIcons.arrow_up : Icons.arrow_drop_up,
       color: theme.colorScheme.primary,
     );
 
