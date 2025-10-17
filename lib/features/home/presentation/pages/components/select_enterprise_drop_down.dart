@@ -46,6 +46,7 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
           value: e,
           enabled: true,
           child: RichText(
+            overflow: TextOverflow.ellipsis,
             text: TextSpan(
               children: [
                 TextSpan(
