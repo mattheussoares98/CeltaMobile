@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/inventory/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/inventory/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/inventory/providers.dart';
@@ -18,7 +19,7 @@ void main() {
   late UserSessionModel fakeSession;
   late int fakeCodigoInternoInvCont;
   late double quantity;
-  late int productPackingCode;
+  late int codigoInternoProEmb;
   late bool isSubtract;
 
   setUp(() {
@@ -28,7 +29,7 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeCodigoInternoInvCont = faker.randomGenerator.integer(1000);
-    productPackingCode = faker.randomGenerator.integer(1000);
+    codigoInternoProEmb = faker.randomGenerator.integer(1000);
     isSubtract = faker.randomGenerator.boolean();
   });
 
@@ -69,7 +70,7 @@ void main() {
         await container.read(
           entryQuantityStateControllerProvider(fakeCodigoInternoInvCont).future,
         );
-        final states = <AsyncValue<int?>>[];
+        final states = <AsyncValue<LastChangedProductEntity?>>[];
         container.listen(
           entryQuantityStateControllerProvider(fakeCodigoInternoInvCont),
           (_, next) => states.add(next),
@@ -83,20 +84,26 @@ void main() {
               ).notifier,
             )
             .entry(
-              codigoInternoProEmb: productPackingCode,
+              codigoInternoProEmb: codigoInternoProEmb,
               quantity: quantity,
               isSubtract: isSubtract,
             );
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-        expect(states.last.value, productPackingCode);
+        expect(
+          states.last.value,
+          LastChangedProductEntity(
+            codigoInternoProEmb: codigoInternoProEmb,
+            quantity: quantity,
+          ),
+        );
         verify(
           () => mockRepository.entry(
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: fakeCodigoInternoInvCont,
-            productPackingCode: productPackingCode,
+            productPackingCode: codigoInternoProEmb,
             quantity: quantity,
             isSubtract: isSubtract,
           ),
@@ -112,7 +119,7 @@ void main() {
       await container.read(
         entryQuantityStateControllerProvider(fakeCodigoInternoInvCont).future,
       );
-      final states = <AsyncValue<int?>>[];
+      final states = <AsyncValue<LastChangedProductEntity?>>[];
       container.listen(
         entryQuantityStateControllerProvider(fakeCodigoInternoInvCont),
         (_, next) => states.add(next),
@@ -126,7 +133,7 @@ void main() {
             ).notifier,
           )
           .entry(
-            codigoInternoProEmb: productPackingCode,
+            codigoInternoProEmb: codigoInternoProEmb,
             quantity: quantity,
             isSubtract: isSubtract,
           );

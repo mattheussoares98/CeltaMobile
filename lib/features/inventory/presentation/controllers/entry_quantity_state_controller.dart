@@ -1,16 +1,15 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
 part 'entry_quantity_state_controller.g.dart';
 
-typedef LastProductChanged = int;
-
 @Riverpod(keepAlive: true)
 class EntryQuantityStateController extends _$EntryQuantityStateController {
   @override
-  FutureOr<LastProductChanged?> build(int codigoInternoInvCont) async {
+  FutureOr<LastChangedProductEntity?> build(int codigoInternoInvCont) async {
     return null;
   }
 
@@ -35,7 +34,10 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             quantity: quantity,
             isSubtract: isSubtract,
           );
-      return codigoInternoProEmb;
+      return LastChangedProductEntity(
+        codigoInternoProEmb: codigoInternoProEmb,
+        quantity: quantity,
+      );
     });
   }
 }
