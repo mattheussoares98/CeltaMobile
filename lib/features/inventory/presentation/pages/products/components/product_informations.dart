@@ -1,5 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/string_modifier.dart';
 import 'package:flutter/material.dart';
+import 'package:riverpod/riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
@@ -9,15 +11,19 @@ class ProductInformations extends StatelessWidget {
   final VoidCallback onChangeSelectedIndex;
   final InventoryProductEntity product;
   final bool isSelected;
+  final AsyncValue<LastChangedProductEntity?> entryQuantityAsync;
   const ProductInformations({
     super.key,
     required this.onChangeSelectedIndex,
     required this.product,
     required this.isSelected,
+    required this.entryQuantityAsync,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return InkWell(
       onTap: onChangeSelectedIndex,
       child: Padding(
@@ -26,6 +32,23 @@ class ProductInformations extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TitleAndSubTitle(title: null, subTitle: product.productName),
+            if (entryQuantityAsync.value?.codigoInternoProEmb ==
+                product.codigoInternoProEmb)
+              TitleAndSubTitle(
+                title: 'Última quantidade alterada '.hardcoded,
+                subTitle: entryQuantityAsync.value?.quantity
+                    .toString()
+                    .toBrazilianNumber(3),
+                titleStyle: theme.textTheme.bodyMedium?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                  color: theme.primaryColor,
+                ),
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: theme.primaryColor,
+                ),
+              ),
             Row(
               children: [
                 Expanded(

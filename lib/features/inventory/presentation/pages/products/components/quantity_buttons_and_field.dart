@@ -1,26 +1,46 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/validators/validators.dart';
+import '../../../controllers/controllers.dart';
 
 class QuantityButtonsAndField extends ConsumerWidget {
   final bool insertIndividually;
   final FocusNode quantityFocusNode;
   final TextEditingController quantityController;
+  final int codigoInternoInvCont;
+  final int codigoInternoProEmb;
   const QuantityButtonsAndField({
     super.key,
     required this.insertIndividually,
     required this.quantityFocusNode,
     required this.quantityController,
+    required this.codigoInternoInvCont,
+    required this.codigoInternoProEmb,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void entry(bool isSubtract) {
+      ref
+          .read(
+            entryQuantityStateControllerProvider(codigoInternoInvCont).notifier,
+          )
+          .entry(
+            codigoInternoProEmb: codigoInternoProEmb,
+            quantity: insertIndividually
+                ? 1
+                : quantityController.text.toDouble()!,
+            isSubtract: isSubtract,
+          );
+    }
+
     return Padding(
-      padding: const EdgeInsets.all(Sizes.p8),
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, Sizes.p8, Sizes.p8, 0),
       child: Column(
         children: [
           Row(
@@ -31,7 +51,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
                   text:
                       '${'Subtrair'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
                   onPressed: () {
-                    //TODO subtract
+                    entry(true);
                   },
                 ),
               ),
@@ -42,7 +62,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
                   text:
                       '${'Somar'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
                   onPressed: () {
-                    //TODO add
+                    entry(false);
                   },
                 ),
               ),
@@ -69,8 +89,8 @@ class QuantityButtonsAndField extends ConsumerWidget {
                       //TODO test in iOS
                     ),
                     maxLength: 10,
-                    onFieldSubmitted: (value) {
-                      //TODO send quantity
+                    onFieldSubmitted: (_) {
+                      entry(false);
                     },
                   ),
                 ),

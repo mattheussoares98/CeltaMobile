@@ -99,64 +99,87 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       },
     );
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Produtos'.hardcoded)),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: DefaultSearchProducts(
-                focusNode: searchProductsFocusNode,
-                isLoading: productsState.isLoading,
-                searchProducts: _searchProducts,
-                searchValueController: searchProductsController,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: Sizes.p8),
-                child: DefaultSwitch(
-                  title: 'Inserir individualmente'.hardcoded,
-                  value: insertIndividually,
-                  onChanged: (value) {
-                    setState(() {
-                      insertIndividually = value;
-                    });
+    final entryQuantityAsync = ref.watch(
+      entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
+    );
+
+    ref.listen(
+      entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
+      (p, n) {
+        n.showAlertDialogOnError(context);
+        n.doOnSuccess(p, () {
+          quantityController.clear();
+        });
+      },
+    );
+
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(title: Text('Produtos'.hardcoded)),
+          body: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: DefaultSearchProducts(
+                    focusNode: searchProductsFocusNode,
+                    isLoading: productsState.isLoading,
+                    searchProducts: _searchProducts,
+                    searchValueController: searchProductsController,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: Sizes.p8),
+                    child: DefaultSwitch(
+                      title: 'Inserir individualmente'.hardcoded,
+                      value: insertIndividually,
+                      onChanged: (value) {
+                        setState(() {
+                          insertIndividually = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SliverList.builder(
+                  itemCount: productsState.value?.length ?? 0,
+                  itemBuilder: (_, index) {
+                    final product = productsState.value![index];
+
+                    return Card(
+                      margin: const EdgeInsets.only(top: Sizes.p8),
+                      clipBehavior: Clip.antiAlias,
+                      child: Column(
+                        children: [
+                          ProductInformations(
+                            onChangeSelectedIndex: () =>
+                                changeSelectedIndex(index),
+                            product: product,
+                            isSelected: selectedIndex == index,
+                            entryQuantityAsync: entryQuantityAsync,
+                          ),
+                          if (selectedIndex == index) ...[
+                            QuantityButtonsAndField(
+                              insertIndividually: insertIndividually,
+                              quantityFocusNode: quantityFocusNode,
+                              quantityController: quantityController,
+                              codigoInternoInvCont: widget.codigoInternoInvCont,
+                              codigoInternoProEmb: product.codigoInternoProEmb,
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
                   },
                 ),
-              ),
+              ],
             ),
-            SliverList.builder(
-              itemCount: productsState.value?.length ?? 0,
-              itemBuilder: (_, index) {
-                final product = productsState.value![index];
-
-                return Card(
-                  margin: const EdgeInsets.only(top: Sizes.p8),
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
-                    children: [
-                      ProductInformations(
-                        onChangeSelectedIndex: () => changeSelectedIndex(index),
-                        product: product,
-                        isSelected: selectedIndex == index,
-                      ),
-                      if (selectedIndex == index) ...[
-                        QuantityButtonsAndField(
-                          insertIndividually: insertIndividually,
-                          quantityFocusNode: quantityFocusNode,
-                          quantityController: quantityController,
-                        ),
-                      ],
-                    ],
-                  ),
-                );
-              },
-            ),
-          ],
+          ),
         ),
-      ),
+        if (entryQuantityAsync.isLoading) LoadingPage(),
+      ],
     );
   }
 }
