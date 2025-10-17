@@ -40,7 +40,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(Sizes.p8, Sizes.p8, Sizes.p8, 0),
+      padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
         children: [
           Row(

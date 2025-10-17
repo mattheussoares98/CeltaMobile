@@ -23,6 +23,7 @@ class ProductInformations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final lastChangedProduct = entryQuantityAsync.value;
 
     return InkWell(
       onTap: onChangeSelectedIndex,
@@ -32,11 +33,13 @@ class ProductInformations extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TitleAndSubTitle(title: null, subTitle: product.productName),
-            if (entryQuantityAsync.value?.codigoInternoProEmb ==
+            if (lastChangedProduct?.codigoInternoProEmb ==
                 product.codigoInternoProEmb)
               TitleAndSubTitle(
-                title: 'Última quantidade alterada '.hardcoded,
-                subTitle: entryQuantityAsync.value?.quantity
+                title:
+                    'Última quantidade alterada ${lastChangedProduct?.isSubtract == true ? " -" : ""}'
+                        .hardcoded,
+                subTitle: lastChangedProduct?.quantity
                     .toString()
                     .toBrazilianNumber(3),
                 titleStyle: theme.textTheme.bodyMedium?.copyWith(
