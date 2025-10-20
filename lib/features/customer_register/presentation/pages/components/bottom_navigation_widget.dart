@@ -2,6 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 
 class BottomNavigationWidget extends StatelessWidget {
@@ -31,7 +32,7 @@ class BottomNavigationWidget extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           label: 'Endereço'.hardcoded,
-          icon: _ValidatedBadge(
+          icon: ValidatedBadge(
             isValid:
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.location_on,
@@ -40,7 +41,7 @@ class BottomNavigationWidget extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           label: 'E-mail'.hardcoded,
-          icon: _ValidatedBadge(
+          icon: ValidatedBadge(
             isValid:
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.email,
@@ -49,7 +50,7 @@ class BottomNavigationWidget extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           label: 'Telefone'.hardcoded,
-          icon: _ValidatedBadge(
+          icon: ValidatedBadge(
             isValid:
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.phone,
@@ -58,7 +59,7 @@ class BottomNavigationWidget extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           label: 'Convênios'.hardcoded,
-          icon: _ValidatedBadge(
+          icon: ValidatedBadge(
             isValid:
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.wallet,
@@ -70,39 +71,6 @@ class BottomNavigationWidget extends StatelessWidget {
           icon: Icon(isIOS ? CupertinoIcons.check_mark : Icons.save),
         ),
       ],
-    );
-  }
-}
-
-class _ValidatedBadge extends StatelessWidget {
-  final bool isValid;
-  final IconData materialIcon;
-  final IconData cupertinoIcon;
-  const _ValidatedBadge({
-    required this.isValid,
-    required this.materialIcon,
-    required this.cupertinoIcon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
-    return Badge(
-      offset: const Offset(8, -6),
-      backgroundColor: Colors.transparent,
-      label: Icon(
-        isValid
-            ? (isIOS ? CupertinoIcons.checkmark : Icons.check)
-            : (isIOS ? CupertinoIcons.clear : Icons.close),
-        color: isValid ? Colors.green : Colors.red,
-        size: 17,
-      ),
-      child: Icon(
-        isIOS ? cupertinoIcon : materialIcon,
-        color: theme.disabledColor,
-      ),
     );
   }
 }
