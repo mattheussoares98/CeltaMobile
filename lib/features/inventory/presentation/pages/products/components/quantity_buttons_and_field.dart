@@ -85,9 +85,41 @@ class QuantityButtonsAndField extends ConsumerWidget {
               ],
             ),
             gapH8,
-            if (!insertIndividually)
-              Row(
-                children: [
+            Row(
+              children: [
+                Expanded(
+                  child: PrimaryButton(
+                    text: 'Anular',
+                    backgroundColor: Colors.red,
+                    onPressed: () async {
+                      final pressed = await showAlertDialog(
+                        context: context,
+                        title: 'Anular'.hardcoded,
+                        content:
+                            'Tem certeza que deseja anular a contagem desse produto?'
+                                .hardcoded,
+                        defaultActionText: 'Sim'.hardcoded,
+                        cancelActionText: 'Não'.hardcoded,
+                      );
+
+                      if (pressed == true) {
+                        ref
+                            .read(
+                              entryQuantityStateControllerProvider(
+                                codigoInternoInvCont,
+                              ).notifier,
+                            )
+                            .annul(
+                              codigoInternoProEmb,
+                              enterpriseCode,
+                              codigoInternoInventario,
+                            );
+                      }
+                    },
+                  ),
+                ),
+                gapW8,
+                if (!insertIndividually)
                   Expanded(
                     flex: 2,
                     child: DefaultTextFormField(
@@ -109,41 +141,11 @@ class QuantityButtonsAndField extends ConsumerWidget {
                         entry(false);
                       },
                     ),
-                  ),
-                  gapW8,
-                  Expanded(
-                    child: PrimaryButton(
-                      text: 'Anular',
-                      backgroundColor: Colors.red,
-                      onPressed: () async {
-                        final pressed = await showAlertDialog(
-                          context: context,
-                          title: 'Anular'.hardcoded,
-                          content:
-                              'Tem certeza que deseja anular a contagem desse produto?'
-                                  .hardcoded,
-                          defaultActionText: 'Sim'.hardcoded,
-                          cancelActionText: 'Não'.hardcoded,
-                        );
-
-                        if (pressed == true) {
-                          ref
-                              .read(
-                                entryQuantityStateControllerProvider(
-                                  codigoInternoInvCont,
-                                ).notifier,
-                              )
-                              .annul(
-                                codigoInternoProEmb,
-                                enterpriseCode,
-                                codigoInternoInventario,
-                              );
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                  )
+                else
+                  Expanded(flex: 2, child: SizedBox.shrink()),
+              ],
+            ),
           ],
         ),
       ),
