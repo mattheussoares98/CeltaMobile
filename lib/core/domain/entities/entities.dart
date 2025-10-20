@@ -3,6 +3,7 @@ export 'customer/customer.dart';
 export 'enterprise/enterprise.dart';
 export './product/product.dart';
 export './settings/settings.dart';
+export './request_type/request_type.dart';
 export './stock/stock.dart';
 export 'transfer_justification/transfer_justification.dart';
 
