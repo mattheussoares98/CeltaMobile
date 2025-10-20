@@ -133,7 +133,11 @@ class QuantityButtonsAndField extends ConsumerWidget {
                                   codigoInternoInvCont,
                                 ).notifier,
                               )
-                              .annul(codigoInternoProEmb);
+                              .annul(
+                                codigoInternoProEmb,
+                                enterpriseCode,
+                                codigoInternoInventario,
+                              );
                         }
                       },
                     ),

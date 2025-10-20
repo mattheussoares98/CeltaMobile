@@ -29,16 +29,17 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
         validatedUserSessionProvider.future,
       );
 
-      final product = ref
-          .read(
-            inventoryProductsStateControllerProvider(
-              enterpriseCode,
-              codigoInternoInventario,
-              codigoInternoInvCont,
-            ),
-          )
-          .value!
-          .firstWhere((e) => e.codigoInternoProEmb == codigoInternoProEmb);
+      final products = await ref.read(
+        inventoryProductsStateControllerProvider(
+          enterpriseCode,
+          codigoInternoInventario,
+          codigoInternoInvCont,
+        ).future,
+      );
+
+      final product = products.firstWhere(
+        (e) => e.codigoInternoProEmb == codigoInternoProEmb,
+      );
 
       final newQuantity = isSubtract
           ? (product.quantidadeInvContProEmb ?? 0) - quantity
@@ -79,12 +80,17 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
     });
   }
 
-  Future<void> annul(int codigoInternoProEmb) async {
+  Future<void> annul(
+    int codigoInternoProEmb,
+    int enterpriseCode,
+    int codigoInternoInventario,
+  ) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
         validatedUserSessionProvider.future,
       );
+
       await ref
           .read(soapInventoryAnnulRepositoryProvider)
           .annul(
@@ -93,7 +99,39 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             codigoInternoInvCont: codigoInternoInvCont,
             codigoInternoProEmb: codigoInternoProEmb,
           );
-      //TODO update the product locally
+
+      final product = await ref
+          .read(
+            inventoryProductsStateControllerProvider(
+              enterpriseCode,
+              codigoInternoInventario,
+              codigoInternoInvCont,
+            ).future,
+          )
+          .then((products) {
+            return products.firstWhere(
+              (e) => e.codigoInternoProEmb == codigoInternoProEmb,
+            );
+          });
+
+      ref
+          .read(
+            inventoryProductsStateControllerProvider(
+              enterpriseCode,
+              codigoInternoInventario,
+              codigoInternoInvCont,
+            ).notifier,
+          )
+          .updateProduct(
+            InventoryProductEntity(
+              productName: product.productName,
+              codigoInternoProEmb: product.codigoInternoProEmb,
+              plu: product.plu,
+              codigoProEmb: product.codigoProEmb,
+              quantidadeInvContProEmb: null,
+            ),
+          );
+
       return null;
     });
   }

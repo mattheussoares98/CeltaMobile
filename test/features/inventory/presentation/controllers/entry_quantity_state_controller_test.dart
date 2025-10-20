@@ -94,9 +94,7 @@ void main() {
             quantity: any(named: 'quantity'),
             isSubtract: any(named: 'isSubtract'),
           ),
-        ).thenAnswer((_) async {
-          await Future.delayed(Duration.zero);
-        });
+        ).thenAnswer((_) async => {});
 
         final container = makeProviderContainer(session: fakeSession);
         addTearDown(container.dispose);
@@ -261,7 +259,9 @@ void main() {
             quantity: any(named: 'quantity'),
             isSubtract: any(named: 'isSubtract'),
           ),
-        ).thenAnswer((_) async => {});
+        ).thenAnswer((_) async {
+          await Future.delayed(Duration.zero);
+        });
 
         final container = makeProviderContainer(session: fakeSession);
         addTearDown(container.dispose);
@@ -276,10 +276,7 @@ void main() {
         );
 
         // ACT
-        final quantityToAdd =
-            fakeProduct.quantidadeInvContProEmb! -
-            (fakeProduct.quantidadeInvContProEmb!) -
-            1;
+        final quantityToAdd = fakeProduct.quantidadeInvContProEmb! * 2;
         await container
             .read(
               entryQuantityStateControllerProvider(
@@ -289,7 +286,7 @@ void main() {
             .entry(
               codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
               quantity: quantityToAdd,
-              isSubtract: isSubtract,
+              isSubtract: true,
               enterpriseCode:
                   enterpriseCode, // Pass dummy values for the family params
               codigoInternoInventario: codigoInternoInventario,
@@ -323,11 +320,9 @@ void main() {
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
-            codigoInternoProEmb: any(named: 'productPackingCode'),
+            codigoInternoProEmb: any(named: 'codigoInternoProEmb'),
           ),
-        ).thenAnswer((_) async {
-          await Future.delayed(Duration.zero);
-        });
+        ).thenAnswer((_) async => {});
 
         final container = makeProviderContainer(session: fakeSession);
         // Override the annul repository provider for this specific test
@@ -352,7 +347,11 @@ void main() {
                 codigoInternoInvCont,
               ).notifier,
             )
-            .annul(fakeProduct.codigoInternoProEmb);
+            .annul(
+              fakeProduct.codigoInternoProEmb,
+              enterpriseCode,
+              codigoInternoInventario,
+            );
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -390,10 +389,78 @@ void main() {
           .read(
             entryQuantityStateControllerProvider(codigoInternoInvCont).notifier,
           )
-          .annul(fakeProduct.codigoInternoProEmb);
+          .annul(
+            fakeProduct.codigoInternoProEmb,
+            enterpriseCode,
+            codigoInternoInventario,
+          );
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
+
+    test(
+      'should call updateProduct on the products controller with the new quantity',
+      () async {
+        when(
+          () => mockAnnulRepository.annul(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
+            codigoInternoProEmb: any(named: 'codigoInternoProEmb'),
+          ),
+        ).thenAnswer((_) async {
+          await Future.delayed(Duration.zero);
+        });
+
+        final container = makeProviderContainer(session: fakeSession);
+        // Override the annul repository provider for this specific test
+
+        addTearDown(container.dispose);
+
+        // Let the initial build finish
+        await container.read(
+          entryQuantityStateControllerProvider(codigoInternoInvCont).future,
+        );
+
+        final states = <AsyncValue<LastChangedProductEntity?>>[];
+        container.listen(
+          entryQuantityStateControllerProvider(codigoInternoInvCont),
+          (_, next) => states.add(next),
+        );
+
+        // ACT: Call the annul method
+        await container
+            .read(
+              entryQuantityStateControllerProvider(
+                codigoInternoInvCont,
+              ).notifier,
+            )
+            .annul(
+              fakeProduct.codigoInternoProEmb,
+              enterpriseCode,
+              codigoInternoInventario,
+            );
+
+        // ASSERT
+        // 1. Verify the repository was called.
+        verify(
+          () => mockAnnulRepository.annul(
+            baseUrl: fakeSession.enterprise!.baseUrl!,
+            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+            codigoInternoInvCont: codigoInternoInvCont,
+            codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+          ),
+        ).called(1);
+
+        // 2. Check the public property on our Spy object.
+        expect(spyProductsController.updatedProduct, isNotNull);
+        // 3. Check that the new quantity is correct (initial 5.0 + added 10.0)
+        expect(
+          spyProductsController.updatedProduct!.quantidadeInvContProEmb,
+          null,
+        );
+      },
+    );
   });
 }
