@@ -93,6 +93,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             codigoInternoInvCont: codigoInternoInvCont,
             productPackingCode: productPackingCode,
           );
+      //TODO update the product locally
       return null;
     });
   }

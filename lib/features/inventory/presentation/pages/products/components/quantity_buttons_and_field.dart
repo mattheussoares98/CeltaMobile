@@ -115,8 +115,26 @@ class QuantityButtonsAndField extends ConsumerWidget {
                     child: PrimaryButton(
                       text: 'Anular',
                       backgroundColor: Colors.red,
-                      onPressed: () {
-                        //TODO send anull quantity
+                      onPressed: () async {
+                        final pressed = await showAlertDialog(
+                          context: context,
+                          title: 'Anular'.hardcoded,
+                          content:
+                              'Tem certeza que deseja anular a contagem desse produto?'
+                                  .hardcoded,
+                          defaultActionText: 'Sim'.hardcoded,
+                          cancelActionText: 'Não'.hardcoded,
+                        );
+
+                        if (pressed == true) {
+                          ref
+                              .read(
+                                entryQuantityStateControllerProvider(
+                                  codigoInternoInvCont,
+                                ).notifier,
+                              )
+                              .annul(codigoInternoProEmb);
+                        }
                       },
                     ),
                   ),
