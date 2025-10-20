@@ -29,6 +29,8 @@ import 'package:celta_intelligence/features/adjust_sale_price/domain/repositorie
 import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/features/buy_request/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
 import 'package:celta_intelligence/features/customer_register/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/customer_register/data/models/models.dart';
 import 'package:celta_intelligence/features/customer_register/domain/repositories/repositories.dart';
@@ -966,4 +968,18 @@ class SoapInventoryAnnulDatasourceSpy extends Mock
       ),
     ).thenAnswer((_) async {});
   }
+}
+
+class SoapLoadBuyersDatasourceSpy extends Mock
+    implements ISoapLoadBuyersDatasource {
+  void mockLoad(List<BuyerModel> response) {
+    _mockLoadCall().thenAnswer((_) async => response);
+  }
+
+  When _mockLoadCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+    ),
+  );
 }
