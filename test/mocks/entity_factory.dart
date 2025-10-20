@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
@@ -504,4 +505,15 @@ class EntityFactory {
         codigoProEmb: faker.randomGenerator.integer(100).toString(),
         quantidadeInvContProEmb: faker.randomGenerator.decimal(),
       );
+
+  static BuyerEntity makeBuyerEntity() => BuyerEntity(
+    Code: faker.randomGenerator.integer(100),
+    PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+    Name: faker.person.name(),
+    NameReduced: faker.person.name(),
+    CpfNumber: faker.guid.guid(),
+    RgNumber: faker.guid.guid(),
+    Seller: faker.randomGenerator.boolean(),
+    Buyer: faker.randomGenerator.boolean(),
+  );
 }
