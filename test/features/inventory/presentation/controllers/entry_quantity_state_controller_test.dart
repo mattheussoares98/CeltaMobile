@@ -14,6 +14,9 @@ import '../../../../mocks/mocks.dart';
 class MockSoapInventoryEntryQuantityRepository extends Mock
     implements ISoapInventoryEntryQuantityRepository {}
 
+class MockSoapInventoryAnnulRepository extends Mock
+    implements ISoapInventoryAnnulRepository {}
+
 class SpyInventoryProductsStateController
     extends InventoryProductsStateController {
   final List<InventoryProductEntity> initialState;
@@ -32,7 +35,8 @@ class SpyInventoryProductsStateController
 }
 
 void main() {
-  late MockSoapInventoryEntryQuantityRepository mockRepository;
+  late MockSoapInventoryEntryQuantityRepository mockEntryQuantityRepository;
+  late ISoapInventoryAnnulRepository mockAnnulRepository;
   late UserSessionModel fakeSession;
   late int codigoInternoInvCont;
   late bool isSubtract;
@@ -42,7 +46,8 @@ void main() {
   late InventoryProductEntity fakeProduct;
 
   setUp(() {
-    mockRepository = MockSoapInventoryEntryQuantityRepository();
+    mockEntryQuantityRepository = MockSoapInventoryEntryQuantityRepository();
+    mockAnnulRepository = MockSoapInventoryAnnulRepository();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -58,7 +63,10 @@ void main() {
     return ProviderContainer(
       overrides: [
         soapInventoryEntryQuantityRepositoryProvider.overrideWithValue(
-          mockRepository,
+          mockEntryQuantityRepository,
+        ),
+        soapInventoryAnnulRepositoryProvider.overrideWithValue(
+          mockAnnulRepository,
         ),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
@@ -78,7 +86,7 @@ void main() {
       () async {
         // ARRANGE
         when(
-          () => mockRepository.entry(
+          () => mockEntryQuantityRepository.entry(
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
@@ -128,7 +136,7 @@ void main() {
           ),
         );
         verify(
-          () => mockRepository.entry(
+          () => mockEntryQuantityRepository.entry(
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
@@ -170,7 +178,7 @@ void main() {
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
-        () => mockRepository.entry(
+        () => mockEntryQuantityRepository.entry(
           baseUrl: any(named: 'baseUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
@@ -186,7 +194,7 @@ void main() {
       () async {
         // ARRANGE
         when(
-          () => mockRepository.entry(
+          () => mockEntryQuantityRepository.entry(
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
@@ -219,7 +227,7 @@ void main() {
         // ASSERT
         // 1. Verify the repository was called.
         verify(
-          () => mockRepository.entry(
+          () => mockEntryQuantityRepository.entry(
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
@@ -245,7 +253,7 @@ void main() {
       () async {
         // ARRANGE
         when(
-          () => mockRepository.entry(
+          () => mockEntryQuantityRepository.entry(
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
@@ -292,7 +300,7 @@ void main() {
         // ASSERT
         // 1. Verify the repository was called.
         verifyNever(
-          () => mockRepository.entry(
+          () => mockEntryQuantityRepository.entry(
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
@@ -303,5 +311,89 @@ void main() {
         );
       },
     );
+  });
+
+  group('annul', () {
+    test(
+      'should emit [loading, data(null)] and call repository on success',
+      () async {
+        // Stub its 'annul' method to succeed
+        when(
+          () => mockAnnulRepository.annul(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
+            productPackingCode: any(named: 'productPackingCode'),
+          ),
+        ).thenAnswer((_) async {
+          await Future.delayed(Duration.zero);
+        });
+
+        final container = makeProviderContainer(session: fakeSession);
+        // Override the annul repository provider for this specific test
+
+        addTearDown(container.dispose);
+
+        // Let the initial build finish
+        await container.read(
+          entryQuantityStateControllerProvider(codigoInternoInvCont).future,
+        );
+
+        final states = <AsyncValue<LastChangedProductEntity?>>[];
+        container.listen(
+          entryQuantityStateControllerProvider(codigoInternoInvCont),
+          (_, next) => states.add(next),
+        );
+
+        // ACT: Call the annul method
+        await container
+            .read(
+              entryQuantityStateControllerProvider(
+                codigoInternoInvCont,
+              ).notifier,
+            )
+            .annul(fakeProduct.codigoInternoProEmb);
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        // The final state should be data with a null value
+        expect(states.last.value, isNull);
+
+        // Verify the repository was called correctly
+        verify(
+          () => mockAnnulRepository.annul(
+            baseUrl: fakeSession.enterprise!.baseUrl!,
+            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+            codigoInternoInvCont: codigoInternoInvCont,
+            productPackingCode: fakeProduct.codigoInternoProEmb,
+          ),
+        ).called(1);
+      },
+    );
+
+    test('should emit [loading, error] when session is invalid', () async {
+      // ARRANGE: Pass null for the session to trigger the failure path
+      final container = makeProviderContainer(session: null);
+      addTearDown(container.dispose);
+      await container.read(
+        entryQuantityStateControllerProvider(codigoInternoInvCont).future,
+      );
+
+      final states = <AsyncValue<LastChangedProductEntity?>>[];
+      container.listen(
+        entryQuantityStateControllerProvider(codigoInternoInvCont),
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      await container
+          .read(
+            entryQuantityStateControllerProvider(codigoInternoInvCont).notifier,
+          )
+          .annul(fakeProduct.codigoInternoProEmb);
+
+      // ASSERT
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+    });
   });
 }

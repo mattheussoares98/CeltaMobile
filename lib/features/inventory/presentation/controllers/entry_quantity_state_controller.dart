@@ -78,4 +78,22 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
       );
     });
   }
+
+  Future<void> annul(int productPackingCode) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final validatedUser = await ref.watch(
+        validatedUserSessionProvider.future,
+      );
+      await ref
+          .read(soapInventoryAnnulRepositoryProvider)
+          .annul(
+            baseUrl: validatedUser!.enterprise!.baseUrl!,
+            crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
+            codigoInternoInvCont: codigoInternoInvCont,
+            productPackingCode: productPackingCode,
+          );
+      return null;
+    });
+  }
 }
