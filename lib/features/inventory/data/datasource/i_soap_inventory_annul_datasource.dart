@@ -3,6 +3,6 @@ abstract class ISoapInventoryAnnulDatasource {
     required String baseUrl,
     required String crossIdentity,
     required int codigoInternoInvCont,
-    required int productPackingCode,
+    required int codigoInternoProEmb,
   });
 }

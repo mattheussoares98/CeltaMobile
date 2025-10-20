@@ -323,7 +323,7 @@ void main() {
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
-            productPackingCode: any(named: 'productPackingCode'),
+            codigoInternoProEmb: any(named: 'productPackingCode'),
           ),
         ).thenAnswer((_) async {
           await Future.delayed(Duration.zero);
@@ -365,7 +365,7 @@ void main() {
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
-            productPackingCode: fakeProduct.codigoInternoProEmb,
+            codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
           ),
         ).called(1);
       },

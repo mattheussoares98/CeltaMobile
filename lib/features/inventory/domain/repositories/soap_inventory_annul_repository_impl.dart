@@ -11,13 +11,13 @@ class SoapInventoryAnnulRepositoryImpl
     required String baseUrl,
     required String crossIdentity,
     required int codigoInternoInvCont,
-    required int productPackingCode,
+    required int codigoInternoProEmb,
   }) async {
     await datasource.annul(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       codigoInternoInvCont: codigoInternoInvCont,
-      productPackingCode: productPackingCode,
+      codigoInternoProEmb: codigoInternoProEmb,
     );
   }
 }

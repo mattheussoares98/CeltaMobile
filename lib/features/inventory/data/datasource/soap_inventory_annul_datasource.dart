@@ -10,7 +10,7 @@ class SoapInventoryAnnulDatasource implements ISoapInventoryAnnulDatasource {
     required String baseUrl,
     required String crossIdentity,
     required int codigoInternoInvCont,
-    required int productPackingCode,
+    required int codigoInternoProEmb,
   }) async {
     await soapRequest.post(
       url: baseUrl,
@@ -21,7 +21,7 @@ class SoapInventoryAnnulDatasource implements ISoapInventoryAnnulDatasource {
       parameters: {
         "crossIdentity": crossIdentity,
         "countingCode": codigoInternoInvCont,
-        "productPackingCode": productPackingCode,
+        "productPackingCode": codigoInternoProEmb,
       },
     );
   }

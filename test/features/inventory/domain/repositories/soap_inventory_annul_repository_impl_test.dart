@@ -52,14 +52,14 @@ void main() {
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       codigoInternoInvCont: codigoInternoInvCont,
-      productPackingCode: productPackingCode,
+      codigoInternoProEmb: productPackingCode,
     );
     verify(
       () => datasource.annul(
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         codigoInternoInvCont: codigoInternoInvCont,
-        productPackingCode: productPackingCode,
+        codigoInternoProEmb: productPackingCode,
       ),
     );
     verifyNoMoreInteractions(datasource);

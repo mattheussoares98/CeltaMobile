@@ -962,7 +962,7 @@ class SoapInventoryAnnulDatasourceSpy extends Mock
         baseUrl: any(named: 'baseUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
-        productPackingCode: any(named: 'productPackingCode'),
+        codigoInternoProEmb: any(named: 'productPackingCode'),
       ),
     ).thenAnswer((_) async {});
   }

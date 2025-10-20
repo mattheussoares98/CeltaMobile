@@ -79,7 +79,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
     });
   }
 
-  Future<void> annul(int productPackingCode) async {
+  Future<void> annul(int codigoInternoProEmb) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
@@ -91,7 +91,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             baseUrl: validatedUser!.enterprise!.baseUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
-            productPackingCode: productPackingCode,
+            codigoInternoProEmb: codigoInternoProEmb,
           );
       //TODO update the product locally
       return null;

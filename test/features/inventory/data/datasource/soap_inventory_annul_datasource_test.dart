@@ -44,7 +44,7 @@ void main() {
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       codigoInternoInvCont: codigoInternoInvCont,
-      productPackingCode: productPackingCode,
+      codigoInternoProEmb: productPackingCode,
     );
 
     verify(
