@@ -108,6 +108,14 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       ),
       (previous, next) {
         next.doOnSuccess(previous, () {
+          setState(() {
+            selectedIndex = null;
+          });
+          if (next.value?.length == 1) {
+            setState(() {
+              selectedIndex = 0;
+            });
+          }
           searchProductsController.clear();
           if (insertIndividually) {
             Future.delayed(Duration(milliseconds: 100), () {
