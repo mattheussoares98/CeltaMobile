@@ -1,6 +1,7 @@
 enum Modules {
   adjustPrice,
   adjustStock,
+  buyRequest,
   customerRegister,
   expeditionConference,
   inventory,
