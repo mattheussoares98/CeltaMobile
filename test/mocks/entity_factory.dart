@@ -516,4 +516,18 @@ class EntityFactory {
     Seller: faker.randomGenerator.boolean(),
     Buyer: faker.randomGenerator.boolean(),
   );
+
+  static RequestTypeEntity makeRequestTypeEntity() => RequestTypeEntity(
+    Code: faker.randomGenerator.integer(100),
+    OperationType: faker.randomGenerator.integer(100),
+    UseWholePrice: faker.randomGenerator.integer(1, min: 0),
+    UnitValueType: faker.randomGenerator.integer(100),
+    TransferUnitValueType: faker.randomGenerator.integer(100),
+    PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+    Name: faker.person.name(),
+    OperationTypeString: faker.lorem.word(),
+    UseWholePriceString: faker.randomGenerator.integer(1, min: 0).toString(),
+    UnitValueTypeString: faker.randomGenerator.integer(100).toString(),
+    TransferUnitValueTypeString: faker.randomGenerator.integer(100).toString(),
+  );
 }
