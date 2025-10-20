@@ -27,9 +27,17 @@ class QuantityButtonsAndField extends ConsumerWidget {
     required this.codigoInternoInventario,
   });
 
+  static final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void entry(bool isSubtract) {
+      if (formKey.currentState?.validate() != true) {
+        if (!quantityFocusNode.hasFocus) {
+          quantityFocusNode.requestFocus();
+        }
+        return;
+      }
       ref
           .read(
             entryQuantityStateControllerProvider(codigoInternoInvCont).notifier,
@@ -45,74 +53,77 @@ class QuantityButtonsAndField extends ConsumerWidget {
           );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(Sizes.p8),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 4,
-                child: PrimaryButton(
-                  text:
-                      '${'Subtrair'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
-                  onPressed: () {
-                    entry(true);
-                  },
-                ),
-              ),
-              gapW8,
-              Expanded(
-                flex: 6,
-                child: PrimaryButton(
-                  text:
-                      '${'Somar'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
-                  onPressed: () {
-                    entry(false);
-                  },
-                ),
-              ),
-            ],
-          ),
-          gapH8,
-          if (!insertIndividually)
+    return Form(
+      key: formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          children: [
             Row(
               children: [
                 Expanded(
-                  flex: 2,
-                  child: DefaultTextFormField(
-                    focusNode: quantityFocusNode,
-                    controller: quantityController,
-                    labelText: 'Quantidade'.hardcoded,
-                    hintText: 'Quantidade'.hardcoded,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: FormValidators.compose([
-                      NonEmptyValidator(),
-                      NumberValidator(allowDecimal: true),
-                    ]),
-                    keyboardType: TextInputType.numberWithOptions(
-                      decimal: true,
-                      //TODO test in iOS
-                    ),
-                    maxLength: 10,
-                    onFieldSubmitted: (_) {
-                      entry(false);
+                  flex: 4,
+                  child: PrimaryButton(
+                    text:
+                        '${'Subtrair'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
+                    onPressed: () {
+                      entry(true);
                     },
                   ),
                 ),
                 gapW8,
                 Expanded(
+                  flex: 6,
                   child: PrimaryButton(
-                    text: 'Anular',
-                    backgroundColor: Colors.red,
+                    text:
+                        '${'Somar'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
                     onPressed: () {
-                      //TODO send anull quantity
+                      entry(false);
                     },
                   ),
                 ),
               ],
             ),
-        ],
+            gapH8,
+            if (!insertIndividually)
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: DefaultTextFormField(
+                      focusNode: quantityFocusNode,
+                      controller: quantityController,
+                      labelText: 'Quantidade'.hardcoded,
+                      hintText: 'Quantidade'.hardcoded,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: FormValidators.compose([
+                        NonEmptyValidator(),
+                        NumberValidator(allowDecimal: true),
+                      ]),
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                        //TODO test in iOS
+                      ),
+                      maxLength: 10,
+                      onFieldSubmitted: (_) {
+                        entry(false);
+                      },
+                    ),
+                  ),
+                  gapW8,
+                  Expanded(
+                    child: PrimaryButton(
+                      text: 'Anular',
+                      backgroundColor: Colors.red,
+                      onPressed: () {
+                        //TODO send anull quantity
+                      },
+                    ),
+                  ),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
