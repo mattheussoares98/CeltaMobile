@@ -29,19 +29,17 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
         validatedUserSessionProvider.future,
       );
 
-      final product = await ref
+      final product = ref
           .read(
             inventoryProductsStateControllerProvider(
               enterpriseCode,
               codigoInternoInventario,
               codigoInternoInvCont,
-            ).future,
+            ),
           )
-          .then((value) {
-            return value.firstWhere(
-              (e) => e.codigoInternoProEmb == codigoInternoProEmb,
-            );
-          });
+          .value!
+          .firstWhere((e) => e.codigoInternoProEmb == codigoInternoProEmb);
+
       final newQuantity = isSubtract
           ? (product.quantidadeInvContProEmb ?? 0) - quantity
           : (product.quantidadeInvContProEmb ?? 0) + quantity;
