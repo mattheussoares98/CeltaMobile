@@ -118,7 +118,6 @@ void main() {
 
   group('Load products', () {
     test('should behave correctly on success', () async {
-      //TODO fix this test, sometimes is failing
       final container = makeProviderContainer();
 
       await container.read(
