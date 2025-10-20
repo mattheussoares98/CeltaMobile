@@ -50,6 +50,30 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           ).notifier,
         )
         .loadProducts(searchProductsController.text);
+
+    final products = ref.read(
+      inventoryProductsStateControllerProvider(
+        widget.enterpriseCode,
+        widget.codigoInternoInventario,
+        widget.codigoInternoInvCont,
+      ),
+    );
+
+    if (insertIndividually && products.value?.length == 1) {
+      ref
+          .read(
+            entryQuantityStateControllerProvider(
+              widget.codigoInternoInvCont,
+            ).notifier,
+          )
+          .entry(
+            codigoInternoProEmb: products.value!.first.codigoInternoProEmb,
+            quantity: 1,
+            isSubtract: false,
+            enterpriseCode: widget.enterpriseCode,
+            codigoInternoInventario: widget.codigoInternoInventario,
+          );
+    }
   }
 
   void changeSelectedIndex(int index) {
