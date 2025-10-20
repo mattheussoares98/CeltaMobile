@@ -17,9 +17,13 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final pages = [IdentificationPage(), EnterprisesPage(), ProductsPage()];
+    final pages = [
+      IdentificationPage(),
+      EnterprisesPage(),
+      ProductsPage(),
+      ConfirmationPage(),
+    ];
     return Scaffold(
-      appBar: AppBar(title: Text('Pedidos de compra'.hardcoded)),
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => setState(() => currentIndex = index),
