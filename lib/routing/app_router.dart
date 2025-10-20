@@ -40,6 +40,7 @@ GoRouter goRouter(Ref ref) {
       homeRoute([
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
+        buyRequestRoute(),
         customerRegisterRoute(),
         expeditionConferenceDocumentsRoute([
           expeditionConferenceProductsRoute(),

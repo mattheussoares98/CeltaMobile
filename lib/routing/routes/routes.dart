@@ -3,6 +3,7 @@ export 'expedition_conference/expedition_conference.dart';
 export 'inventory/inventory.dart';
 export 'adjust_stocks_route.dart';
 export './auth_route.dart';
+export './buy_request_route.dart';
 export './customer_register_route.dart';
 export './enterprise_manager_route.dart';
 export './home_route.dart';
