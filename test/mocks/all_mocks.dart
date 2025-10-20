@@ -4,6 +4,7 @@ import 'package:celta_intelligence/core/data/datasource/customer/customer.dart';
 import 'package:celta_intelligence/core/data/datasource/enterprise/enterprise.dart';
 import 'package:celta_intelligence/core/data/datasource/login/login.dart';
 import 'package:celta_intelligence/core/data/datasource/products/products.dart';
+import 'package:celta_intelligence/core/data/datasource/request_type/request_type.dart';
 import 'package:celta_intelligence/core/data/datasource/resource/resource.dart';
 import 'package:celta_intelligence/core/data/datasource/settings/settings.dart';
 import 'package:celta_intelligence/core/data/datasource/stock/stock.dart';
@@ -982,4 +983,19 @@ class SoapLoadBuyersDatasourceSpy extends Mock
       crossIdentity: any(named: 'crossIdentity'),
     ),
   );
+}
+
+class SoapLoadRequestTypeDatasourceSpy extends Mock
+    implements ISoapLoadRequestTypeDatasource {
+  void mockLoad(List<RequestTypeModel> response) {
+    when(
+      () => this.load(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        inclusiveBuy: any(named: 'inclusiveBuy'),
+        inclusiveTransfer: any(named: 'inclusiveTransfer'),
+        inclusiveSale: any(named: 'inclusiveSale'),
+      ),
+    ).thenAnswer((_) async => response);
+  }
 }
