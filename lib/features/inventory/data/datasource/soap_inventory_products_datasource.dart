@@ -8,8 +8,6 @@ class SoapInventoryProductsDatasource
   final SoapRequest soapRequest;
   SoapInventoryProductsDatasource(this.soapRequest);
 
-  //TODO create tests similar to core load products
-
   @override
   Future<List<InventoryProductModel>> load({
     required String baseUrl,
