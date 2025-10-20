@@ -240,5 +240,68 @@ void main() {
         );
       },
     );
+    test(
+      'should emit error when the new quantity is going to be negative',
+      () async {
+        // ARRANGE
+        when(
+          () => mockRepository.entry(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
+            productPackingCode: any(named: 'productPackingCode'),
+            quantity: any(named: 'quantity'),
+            isSubtract: any(named: 'isSubtract'),
+          ),
+        ).thenAnswer((_) async => {});
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        await container.read(
+          entryQuantityStateControllerProvider(codigoInternoInvCont).future,
+        );
+        final states = <AsyncValue<LastChangedProductEntity?>>[];
+        container.listen(
+          entryQuantityStateControllerProvider(codigoInternoInvCont),
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        final quantityToAdd =
+            fakeProduct.quantidadeInvContProEmb! -
+            (fakeProduct.quantidadeInvContProEmb!) -
+            1;
+        await container
+            .read(
+              entryQuantityStateControllerProvider(
+                codigoInternoInvCont,
+              ).notifier,
+            )
+            .entry(
+              codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+              quantity: quantityToAdd,
+              isSubtract: isSubtract,
+              enterpriseCode:
+                  enterpriseCode, // Pass dummy values for the family params
+              codigoInternoInventario: codigoInternoInventario,
+            );
+
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+
+        // ASSERT
+        // 1. Verify the repository was called.
+        verifyNever(
+          () => mockRepository.entry(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
+            productPackingCode: any(named: 'productPackingCode'),
+            quantity: any(named: 'quantity'),
+            isSubtract: any(named: 'isSubtract'),
+          ),
+        );
+      },
+    );
   });
 }

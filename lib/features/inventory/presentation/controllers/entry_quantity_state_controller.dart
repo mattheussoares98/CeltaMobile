@@ -1,7 +1,9 @@
 import 'package:celta_intelligence/features/inventory/presentation/controllers/inventory_products_state_controller.dart';
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../../../exceptions/exceptions.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
@@ -27,17 +29,6 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
         validatedUserSessionProvider.future,
       );
 
-      await ref
-          .read(soapInventoryEntryQuantityRepositoryProvider)
-          .entry(
-            baseUrl: validatedUser!.enterprise!.baseUrl!,
-            crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
-            codigoInternoInvCont: codigoInternoInvCont,
-            productPackingCode: codigoInternoProEmb,
-            quantity: quantity,
-            isSubtract: isSubtract,
-          );
-
       final product = await ref
           .read(
             inventoryProductsStateControllerProvider(
@@ -51,6 +42,24 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
               (e) => e.codigoInternoProEmb == codigoInternoProEmb,
             );
           });
+      final newQuantity = isSubtract
+          ? (product.quantidadeInvContProEmb ?? 0) - quantity
+          : (product.quantidadeInvContProEmb ?? 0) + quantity;
+
+      if (newQuantity < 0) {
+        throw AppException('A quantidade não pode ficar negativa'.hardcoded);
+      }
+
+      await ref
+          .read(soapInventoryEntryQuantityRepositoryProvider)
+          .entry(
+            baseUrl: validatedUser!.enterprise!.baseUrl!,
+            crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
+            codigoInternoInvCont: codigoInternoInvCont,
+            productPackingCode: codigoInternoProEmb,
+            quantity: quantity,
+            isSubtract: isSubtract,
+          );
 
       ref
           .read(
@@ -61,13 +70,9 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             ).notifier,
           )
           .updateProduct(
-            product.copyWith(
-              quantidadeInvContProEmb: isSubtract
-                  ? (product.quantidadeInvContProEmb ?? 0) - quantity
-                  : (product.quantidadeInvContProEmb ?? 0) + quantity,
-            ),
+            product.copyWith(quantidadeInvContProEmb: newQuantity),
           );
-      //TODO test if is changing correctly the quantity locally
+
       return LastChangedProductEntity(
         codigoInternoProEmb: codigoInternoProEmb,
         quantity: quantity,
