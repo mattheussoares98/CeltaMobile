@@ -14,6 +14,8 @@ class QuantityButtonsAndField extends ConsumerWidget {
   final TextEditingController quantityController;
   final int codigoInternoInvCont;
   final int codigoInternoProEmb;
+  final int enterpriseCode;
+  final int codigoInternoInventario;
   const QuantityButtonsAndField({
     super.key,
     required this.insertIndividually,
@@ -21,6 +23,8 @@ class QuantityButtonsAndField extends ConsumerWidget {
     required this.quantityController,
     required this.codigoInternoInvCont,
     required this.codigoInternoProEmb,
+    required this.enterpriseCode,
+    required this.codigoInternoInventario,
   });
 
   @override
@@ -31,6 +35,8 @@ class QuantityButtonsAndField extends ConsumerWidget {
             entryQuantityStateControllerProvider(codigoInternoInvCont).notifier,
           )
           .entry(
+            codigoInternoInventario: codigoInternoInventario,
+            enterpriseCode: enterpriseCode,
             codigoInternoProEmb: codigoInternoProEmb,
             quantity: insertIndividually
                 ? 1

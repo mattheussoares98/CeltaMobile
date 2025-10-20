@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/features/inventory/presentation/controllers/inventory_products_state_controller.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
@@ -17,6 +18,8 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
     required int codigoInternoProEmb,
     required double quantity,
     required bool isSubtract,
+    required int enterpriseCode,
+    required int codigoInternoInventario,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -34,6 +37,37 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             quantity: quantity,
             isSubtract: isSubtract,
           );
+
+      final product = await ref
+          .read(
+            inventoryProductsStateControllerProvider(
+              enterpriseCode,
+              codigoInternoInventario,
+              codigoInternoInvCont,
+            ).future,
+          )
+          .then((value) {
+            return value.firstWhere(
+              (e) => e.codigoInternoProEmb == codigoInternoProEmb,
+            );
+          });
+
+      ref
+          .read(
+            inventoryProductsStateControllerProvider(
+              enterpriseCode,
+              codigoInternoInventario,
+              codigoInternoInvCont,
+            ).notifier,
+          )
+          .updateProduct(
+            product.copyWith(
+              quantidadeInvContProEmb: isSubtract
+                  ? (product.quantidadeInvContProEmb ?? 0) - quantity
+                  : (product.quantidadeInvContProEmb ?? 0) + quantity,
+            ),
+          );
+      //TODO test if is changing correctly the quantity locally
       return LastChangedProductEntity(
         codigoInternoProEmb: codigoInternoProEmb,
         quantity: quantity,

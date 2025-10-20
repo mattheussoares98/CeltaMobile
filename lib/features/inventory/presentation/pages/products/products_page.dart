@@ -167,6 +167,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                               quantityController: quantityController,
                               codigoInternoInvCont: widget.codigoInternoInvCont,
                               codigoInternoProEmb: product.codigoInternoProEmb,
+                              enterpriseCode: widget.enterpriseCode,
+                              codigoInternoInventario:
+                                  widget.codigoInternoInventario,
                             ),
                           ],
                         ],
