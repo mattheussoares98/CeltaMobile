@@ -8,8 +8,10 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/validators/validators.dart';
+import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
+import 'components.dart';
 
 class SuppliersItems extends ConsumerWidget {
   final TextEditingController supplierController;
@@ -24,10 +26,20 @@ class SuppliersItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+
     Future<void> loadSuppliers() async {
       if (formKey.currentState?.validate() != true) {
         return;
       }
+
+      ref
+          .read(pendingBuyRequestStateControllerProvider.notifier)
+          .updatePending(
+            (pendingAsync.value ?? PendingBuyRequestEntity.empty()).copyWith(
+              selectedSupplier: null,
+            ),
+          );
 
       await ref
           .read(
@@ -82,42 +94,21 @@ class SuppliersItems extends ConsumerWidget {
             ),
           ),
           gapH8,
-          if (suppliersState.value != null)
+          if (pendingAsync.value?.selectedSupplier != null &&
+              suppliersState.value == null)
+            SupplierItem(
+              supplier: pendingAsync.value!.selectedSupplier!,
+              pending: pendingAsync.value,
+            )
+          else if (suppliersState.value != null)
             ListView.builder(
               shrinkWrap: true, //TODO change to CustomScrollView
               itemCount: suppliersState.value!.length,
               itemBuilder: (_, index) {
                 final supplier = suppliersState.value![index];
-                return Card(
-                  margin: EdgeInsets.only(top: Sizes.p8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleAndSubTitle(
-                          title: 'Código',
-                          subTitle: supplier.Code.toString(),
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Nome',
-                          subTitle: supplier.Name,
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Nome fantasia',
-                          subTitle: supplier.FantasizesName,
-                        ),
-                        TitleAndSubTitle(
-                          title: 'CPF/CNPJ',
-                          subTitle: supplier.CnpjCpfNumber,
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Tipo comércio',
-                          subTitle: supplier.SupplierRegimeType,
-                        ),
-                      ],
-                    ),
-                  ),
+                return SupplierItem(
+                  supplier: supplier,
+                  pending: pendingAsync.value,
                 );
               },
             ),
