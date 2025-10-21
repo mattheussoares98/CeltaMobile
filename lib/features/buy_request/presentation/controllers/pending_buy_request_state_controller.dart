@@ -20,7 +20,7 @@ class PendingBuyRequestStateController
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localPendingBuyRequestRepositoryProvider);
-      await repository.update(entity);
+      repository.update(entity);
 
       return entity;
     });
