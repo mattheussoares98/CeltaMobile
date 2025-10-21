@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
@@ -13,20 +11,6 @@ part 'request_type_state_controller.g.dart';
 class RequestTypeStateController extends _$RequestTypeStateController {
   @override
   FutureOr<List<RequestTypeEntity>?> build(Modules module) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
-
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
     return await ref

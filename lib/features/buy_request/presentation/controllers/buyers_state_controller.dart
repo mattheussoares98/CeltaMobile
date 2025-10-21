@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
@@ -12,20 +10,6 @@ part 'buyers_state_controller.g.dart';
 class BuyersStateController extends _$BuyersStateController {
   @override
   FutureOr<List<BuyerEntity>?> build() async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
-
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
     return await ref
