@@ -34,3 +34,25 @@ const gapH24 = SizedBox(height: Sizes.p24);
 const gapH32 = SizedBox(height: Sizes.p32);
 const gapH48 = SizedBox(height: Sizes.p48);
 const gapH64 = SizedBox(height: Sizes.p64);
+
+/// Constant gap widths
+const gapSliverW4 = SliverToBoxAdapter(child: gapW4);
+const gapSliverW8 = SliverToBoxAdapter(child: gapW8);
+const gapSliverW12 = SliverToBoxAdapter(child: gapW12);
+const gapSliverW16 = SliverToBoxAdapter(child: gapW16);
+const gapSliverW20 = SliverToBoxAdapter(child: gapW20);
+const gapSliverW24 = SliverToBoxAdapter(child: gapW24);
+const gapSliverW32 = SliverToBoxAdapter(child: gapW32);
+const gapSliverW48 = SliverToBoxAdapter(child: gapW48);
+const gapSliverW64 = SliverToBoxAdapter(child: gapW64);
+
+/// Constant gapSliver heights
+const gapSliverH4 = SliverToBoxAdapter(child: gapH4);
+const gapSliverH8 = SliverToBoxAdapter(child: gapH8);
+const gapSliverH12 = SliverToBoxAdapter(child: gapH12);
+const gapSliverH16 = SliverToBoxAdapter(child: gapH16);
+const gapSliverH20 = SliverToBoxAdapter(child: gapH20);
+const gapSliverH24 = SliverToBoxAdapter(child: gapH24);
+const gapSliverH32 = SliverToBoxAdapter(child: gapH32);
+const gapSliverH48 = SliverToBoxAdapter(child: gapH48);
+const gapSliverH64 = SliverToBoxAdapter(child: gapH64);
