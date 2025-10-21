@@ -10,7 +10,12 @@ import 'components/components.dart';
 
 class IdentificationPage extends ConsumerWidget {
   final TextEditingController supplierController;
-  const IdentificationPage({super.key, required this.supplierController});
+  final GlobalKey<FormState> identificationFormKey;
+  const IdentificationPage({
+    super.key,
+    required this.supplierController,
+    required this.identificationFormKey,
+  });
 
   static final formKey = GlobalKey<FormState>();
 
@@ -23,17 +28,20 @@ class IdentificationPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Identificação'.hardcoded)),
       body: ResponsiveScrollableWidget(
-        child: Column(
-          children: [
-            BuyersDropdown(),
-            gapH8,
-            RequestTypeDropdown(),
-            gapH8,
-            SuppliersItems(
-              supplierController: supplierController,
-              suppliersState: suppliersState,
-            ),
-          ],
+        child: Form(
+          key: identificationFormKey,
+          child: Column(
+            children: [
+              BuyersDropdown(),
+              gapH8,
+              RequestTypeDropdown(),
+              gapH8,
+              SuppliersItems(
+                supplierController: supplierController,
+                suppliersState: suppliersState,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -48,6 +48,12 @@ class RequestTypeDropdown extends ConsumerWidget {
                     ),
                   )
                   .toList(),
+              validator: (value) {
+                if (value == null) {
+                  return 'Selecione um modelo'.hardcoded;
+                }
+                return null;
+              },
               value: pendingAsync.value?.selectedRequestType,
               hint: 'Selecionar'.hardcoded,
               isLoading: requestsState.isLoading,

@@ -44,6 +44,12 @@ class BuyersDropdown extends ConsumerWidget {
                     ),
                   )
                   .toList(),
+              validator: (value) {
+                if (value == null) {
+                  return 'Selecione um comprador'.hardcoded;
+                }
+                return null;
+              },
               value: pendingAsync.value?.selectedBuyer,
               hint: 'Selecionar'.hardcoded,
               isLoading: buyersState.isLoading,
