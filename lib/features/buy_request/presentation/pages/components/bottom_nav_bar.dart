@@ -1,22 +1,28 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../controllers/controllers.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends ConsumerWidget {
   final void Function(int)? onTap;
   const BottomNavBar({super.key, required this.onTap});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
     return BottomNavigationBar(
       onTap: onTap,
       items: [
         BottomNavigationBarItem(
           label: 'Identificação'.hardcoded,
           icon: ValidatedBadge(
-            isValid: true, //TODO change
+            isValid:
+                pendingAsync.value?.selectedBuyer != null &&
+                pendingAsync.value?.selectedRequestType != null &&
+                pendingAsync.value?.selectedSupplier != null,
             materialIcon: Icons.info,
             cupertinoIcon: CupertinoIcons.info,
           ),
