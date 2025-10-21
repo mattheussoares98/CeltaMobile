@@ -9,26 +9,37 @@ class ResponsiveScrollableWidget extends StatelessWidget {
   final bool? centralize;
   final double? maxContentWidth;
   final double? padding;
+  final bool? isSliverPage;
   const ResponsiveScrollableWidget({
     super.key,
     required this.child,
     this.centralize,
     this.maxContentWidth,
+    this.isSliverPage = false,
     this.padding = Sizes.p8,
   });
   final Widget child;
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: centralize == true ? mediaQuery.size.height : null,
-        width: centralize == true ? mediaQuery.size.width : null,
-        child: ResponsiveCenter(
-          maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
-          child: Padding(padding: EdgeInsets.all(padding!), child: child),
-        ),
-      ),
-    );
+    return isSliverPage == true
+        ? SizedBox(
+            height: centralize == true ? mediaQuery.size.height : null,
+            width: centralize == true ? mediaQuery.size.width : null,
+            child: ResponsiveCenter(
+              maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
+              child: Padding(padding: EdgeInsets.all(padding!), child: child),
+            ),
+          )
+        : SingleChildScrollView(
+            child: SizedBox(
+              height: centralize == true ? mediaQuery.size.height : null,
+              width: centralize == true ? mediaQuery.size.width : null,
+              child: ResponsiveCenter(
+                maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
+                child: Padding(padding: EdgeInsets.all(padding!), child: child),
+              ),
+            ),
+          );
   }
 }
