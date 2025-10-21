@@ -9,7 +9,7 @@ import '../../../enterprise_manager/domain/entities/entities.dart';
 
 part 'request_type_state_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class RequestTypeStateController extends _$RequestTypeStateController {
   @override
   FutureOr<List<RequestTypeEntity>?> build(Modules module) async {

@@ -8,7 +8,7 @@ import '../../providers.dart';
 
 part 'buyers_state_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class BuyersStateController extends _$BuyersStateController {
   @override
   FutureOr<List<BuyerEntity>?> build() async {
