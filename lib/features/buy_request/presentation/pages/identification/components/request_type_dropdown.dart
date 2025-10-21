@@ -6,6 +6,7 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../enterprise_manager/domain/entities/entities.dart';
+import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
@@ -15,6 +16,8 @@ class RequestTypeDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+
     return AsyncValueWidget(
       value: requestsState,
       tryAgain: () {
@@ -27,8 +30,13 @@ class RequestTypeDropdown extends ConsumerWidget {
             DefaultSmallTitle(title: 'Modelo de pedido'.hardcoded),
             gapH4,
             DefaultSimpleDropDown<RequestTypeEntity?>(
-              onChanged: (requests) {
-                //TODO change selectedRequest
+              onChanged: (request) {
+                ref
+                    .read(pendingBuyRequestStateControllerProvider.notifier)
+                    .updatePending(
+                      (pendingAsync.value ?? PendingBuyRequestEntity.empty())
+                          .copyWith(selectedRequestType: request),
+                    );
               },
               items: requests
                   ?.map(
@@ -38,7 +46,7 @@ class RequestTypeDropdown extends ConsumerWidget {
                     ),
                   )
                   .toList(),
-              value: null, //TODO add selectedRequest
+              value: pendingAsync.value?.selectedRequestType,
               hint: 'Selecionar'.hardcoded,
               isLoading: requestsState.isLoading,
             ),
