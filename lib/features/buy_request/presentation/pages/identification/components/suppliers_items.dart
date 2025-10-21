@@ -121,18 +121,22 @@ class _SupplierItemsState extends ConsumerState<SuppliersItems> {
             ),
           ),
           gapH8,
-          ListView.builder(
-            shrinkWrap: true, //TODO change to CustomScrollView
-            itemCount: widget.suppliersState.value?.length ?? suppliers.length,
-            itemBuilder: (_, index) {
-              final supplier =
-                  widget.suppliersState.value?[index] ?? suppliers[index];
-              return SupplierItem(
-                supplier: supplier,
-                pending: pendingAsync.value,
-              );
-            },
-          ),
+          if (widget.suppliersState.isLoading)
+            Center(child: LoadingWidget())
+          else
+            ListView.builder(
+              shrinkWrap: true, //TODO change to CustomScrollView
+              itemCount:
+                  widget.suppliersState.value?.length ?? suppliers.length,
+              itemBuilder: (_, index) {
+                final supplier =
+                    widget.suppliersState.value?[index] ?? suppliers[index];
+                return SupplierItem(
+                  supplier: supplier,
+                  pending: pendingAsync.value,
+                );
+              },
+            ),
         ],
       ),
     );
