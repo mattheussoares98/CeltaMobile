@@ -5,6 +5,7 @@ class DatabaseConstants {
 
   static List<_HiveBoxConfig> get values => <_HiveBoxConfig>[
     appSettings,
+    buyRequest,
     userSession,
     transferLot,
   ];
@@ -17,6 +18,11 @@ class DatabaseConstants {
   static final userSession = _HiveBoxConfig(
     name: 'user_session',
     keys: ['current_user_session'],
+  );
+
+  static final buyRequest = _HiveBoxConfig(
+    name: 'buyRequest',
+    keys: ['pending_buy_request'],
   );
 
   static final transferLot = _HiveBoxConfig(
