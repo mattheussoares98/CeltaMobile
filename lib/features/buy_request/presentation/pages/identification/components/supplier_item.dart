@@ -21,12 +21,7 @@ class SupplierItem extends ConsumerWidget {
     void onTap() {
       final newValue = pending?.selectedSupplier == supplier ? null : supplier;
       final entity = newValue == null && pending != null
-          ? PendingBuyRequestEntity(
-              selectedBuyer: pending!.selectedBuyer,
-              selectedSupplier: null,
-              selectedEnterprises: pending?.selectedEnterprises,
-              selectedRequestType: pending?.selectedRequestType,
-            )
+          ? pending!.annulValue(annulSelectedSupplier: true)
           : (pending ?? PendingBuyRequestEntity.empty()).copyWith(
               selectedSupplier: newValue,
             );

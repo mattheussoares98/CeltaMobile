@@ -8,7 +8,6 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/validators/validators.dart';
-import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 import 'components.dart';
@@ -65,12 +64,7 @@ class _SupplierItemsState extends ConsumerState<SuppliersItems> {
         ref
             .read(pendingBuyRequestStateControllerProvider.notifier)
             .updatePending(
-              PendingBuyRequestEntity(
-                selectedBuyer: pendingAsync.value?.selectedBuyer,
-                selectedRequestType: pendingAsync.value?.selectedRequestType,
-                selectedSupplier: null,
-                selectedEnterprises: pendingAsync.value?.selectedEnterprises,
-              ),
+              pendingAsync.value!.annulValue(annulSelectedSupplier: true),
             );
       }
 

@@ -38,6 +38,26 @@ class PendingBuyRequestEntity extends Equatable {
     );
   }
 
+  PendingBuyRequestEntity annulValue({
+    bool? annulSelectedBuyer,
+    bool? annulSelectedSupplier,
+    bool? annulSelectedEnterprises,
+    bool? annulSelectedRequestType,
+  }) {
+    return PendingBuyRequestEntity(
+      selectedBuyer: annulSelectedBuyer == true ? null : this.selectedBuyer,
+      selectedSupplier: annulSelectedSupplier == true
+          ? null
+          : this.selectedSupplier,
+      selectedEnterprises: annulSelectedEnterprises == true
+          ? null
+          : this.selectedEnterprises,
+      selectedRequestType: annulSelectedRequestType == true
+          ? null
+          : this.selectedRequestType,
+    );
+  }
+
   factory PendingBuyRequestEntity.empty() => const PendingBuyRequestEntity(
     selectedBuyer: null,
     selectedSupplier: null,
