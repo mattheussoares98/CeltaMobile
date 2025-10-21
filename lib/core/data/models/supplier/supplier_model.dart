@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../domain/entities/entities.dart';
 
-class SupplierModel {
+class SupplierModel extends Equatable {
   final int Code;
   final String Name;
   final String FantasizesName;
@@ -13,7 +15,7 @@ class SupplierModel {
   final List? Telephones; //TODO check if needs to create a model
   final List? Addresses; //TODO check if needs to create a model
 
-  SupplierModel({
+  const SupplierModel({
     required this.Code,
     required this.Name,
     required this.FantasizesName,
@@ -82,4 +84,19 @@ class SupplierModel {
     Emails: Emails,
     Telephones: Telephones,
   );
+
+  @override
+  List<Object?> get props => [
+    Code,
+    Name,
+    FantasizesName,
+    CnpjCpfNumber,
+    InscriptionRgNumber,
+    SupplierType,
+    SupplierRegimeType,
+    Date,
+    Emails,
+    Telephones,
+    Addresses,
+  ];
 }
