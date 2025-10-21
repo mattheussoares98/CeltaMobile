@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../../../../core/domain/entities/entities.dart';
 
 class SoapEnterpriseByFiltersModel extends Equatable {
   final int? Code;
