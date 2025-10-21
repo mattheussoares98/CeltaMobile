@@ -26,8 +26,9 @@ class UserSession extends _$UserSession {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(localUserSessionRepositoryProvider).logout();
-      ref.read(hiveBoxTransferLotProvider).clear();
       ref.read(hiveBoxAppSettingsProvider).clear();
+      ref.read(hiveBoxBuyRequestProvider).clear();
+      ref.read(hiveBoxTransferLotProvider).clear();
       return null;
     });
   }
