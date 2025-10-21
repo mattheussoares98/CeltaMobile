@@ -16,10 +16,10 @@ class SoapLoadBuyersDatasource implements ISoapLoadBuyersDatasource {
   }) async {
     final response = await soapRequest.post(
       url: baseUrl,
-      typeOfResponse: "GetBuyersResponse",
-      soapAction: "GetBuyers",
-      serviceASMX: "CeltaBuyRequestService.asmx",
-      typeOfResult: "GetBuyersResult",
+      typeOfResponse: "GetEmployeeJsonResponse",
+      soapAction: "GetEmployeeJson",
+      serviceASMX: "CeltaEmployeeService.asmx",
+      typeOfResult: "GetEmployeeJsonResult",
       parameters: {
         "filters": json.encode({
           "CrossIdentity": crossIdentity,

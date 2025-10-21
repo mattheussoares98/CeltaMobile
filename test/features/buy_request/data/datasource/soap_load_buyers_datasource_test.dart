@@ -59,10 +59,10 @@ void main() {
     verify(
       () => soapAdapter.post(
         url: baseUrl,
-        typeOfResponse: "GetBuyersResponse",
-        soapAction: "GetBuyers",
-        serviceASMX: "CeltaBuyRequestService.asmx",
-        typeOfResult: "GetBuyersResult",
+        typeOfResponse: "GetEmployeeJsonResponse",
+        soapAction: "GetEmployeeJson",
+        serviceASMX: "CeltaEmployeeService.asmx",
+        typeOfResult: "GetEmployeeJsonResult",
         parameters: {
           "filters": json.encode({
             "CrossIdentity": crossIdentity,
