@@ -18,3 +18,19 @@ ISoapLoadBuyersRepository soapLoadBuyersRepository(Ref ref) {
     ref.watch(soapLoadBuyersDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapLoadEnterpriseByFiltersDatasource soapLoadEnterpriseByFiltersDatasource(
+  Ref ref,
+) {
+  return SoapLoadEnterpriseByFiltersDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapLoadEnterpriseByFiltersRepository soapLoadEnterpriseByFiltersRepository(
+  Ref ref,
+) {
+  return SoapLoadEnterpriseByFiltersRepositoryImpl(
+    ref.watch(soapLoadEnterpriseByFiltersDatasourceProvider),
+  );
+}
