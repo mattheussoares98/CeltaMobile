@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
@@ -10,6 +11,7 @@ class PendingBuyRequestStateController
     extends _$PendingBuyRequestStateController {
   @override
   FutureOr<PendingBuyRequestEntity> build() async {
+    ref.watch(userSessionProvider); //force update the data when do logout
     final repository = ref.read(localPendingBuyRequestRepositoryProvider);
     final localData = await repository.load();
 
