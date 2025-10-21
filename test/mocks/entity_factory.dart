@@ -556,4 +556,15 @@ class EntityFactory {
       faker.address.streetAddress(),
     ],
   );
+
+  static PendingBuyRequestEntity makePendingBuyRequestEntity() =>
+      PendingBuyRequestEntity(
+        selectedBuyer: makeBuyerEntity(),
+        selectedSupplier: makeSupplierEntity(),
+        selectedEnterprises: [
+          makeEnterpriseEntity(),
+          makeEnterpriseEntity(),
+          makeEnterpriseEntity(),
+        ],
+      );
 }
