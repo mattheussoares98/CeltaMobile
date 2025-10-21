@@ -25,7 +25,7 @@ class BuyersDropdown extends ConsumerWidget {
           children: [
             DefaultSmallTitle(title: 'Comprador'.hardcoded),
             gapH4,
-            DefaultDropDown<BuyerEntity>(
+            DefaultSimpleDropDown<BuyerEntity?>(
               onChanged: (buyer) {
                 //TODO change selectedBuyer
               },
@@ -37,9 +37,9 @@ class BuyersDropdown extends ConsumerWidget {
                     ),
                   )
                   .toList(),
-              selectedItem: null, //TODO add selectedBuyer
-              hint: Text('Selecionar'.hardcoded),
-              label: 'Comprador'.hardcoded,
+              value: null, //TODO add selectedBuyer
+              hint: 'Selecionar'.hardcoded,
+              isLoading: buyersState.isLoading,
             ),
           ],
         );

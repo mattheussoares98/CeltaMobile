@@ -26,8 +26,8 @@ class RequestTypeDropdown extends ConsumerWidget {
           children: [
             DefaultSmallTitle(title: 'Modelo de pedido'.hardcoded),
             gapH4,
-            DefaultDropDown<RequestTypeEntity>(
-              onChanged: (request) {
+            DefaultSimpleDropDown<RequestTypeEntity?>(
+              onChanged: (requests) {
                 //TODO change selectedRequest
               },
               items: requests
@@ -38,9 +38,9 @@ class RequestTypeDropdown extends ConsumerWidget {
                     ),
                   )
                   .toList(),
-              selectedItem: null, //TODO add selectedRequest
-              hint: Text('Selecionar'.hardcoded),
-              label: 'Modelo de pedido'.hardcoded,
+              value: null, //TODO add selectedRequest
+              hint: 'Selecionar'.hardcoded,
+              isLoading: requestsState.isLoading,
             ),
           ],
         );
