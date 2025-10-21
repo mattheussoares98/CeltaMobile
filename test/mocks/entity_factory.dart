@@ -530,4 +530,30 @@ class EntityFactory {
     UnitValueTypeString: faker.randomGenerator.integer(100).toString(),
     TransferUnitValueTypeString: faker.randomGenerator.integer(100).toString(),
   );
+
+  static SupplierEntity makeSupplierEntity() => SupplierEntity(
+    Code: faker.randomGenerator.integer(100),
+    Name: faker.person.name(),
+    FantasizesName: faker.company.name(),
+    CnpjCpfNumber: faker.randomGenerator.integer(100).toString(),
+    InscriptionRgNumber: faker.randomGenerator.integer(100).toString(),
+    SupplierType: faker.lorem.word(),
+    SupplierRegimeType: faker.lorem.word(),
+    Date: faker.date.dateTime().toString(),
+    Emails: [
+      faker.internet.email(),
+      faker.internet.email(),
+      faker.internet.email(),
+    ],
+    Telephones: [
+      faker.phoneNumber.us(),
+      faker.phoneNumber.us(),
+      faker.phoneNumber.us(),
+    ],
+    Addresses: [
+      faker.address.streetAddress(),
+      faker.address.streetAddress(),
+      faker.address.streetAddress(),
+    ],
+  );
 }
