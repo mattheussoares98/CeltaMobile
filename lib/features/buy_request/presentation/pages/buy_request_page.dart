@@ -14,11 +14,19 @@ class BuyRequestPage extends ConsumerStatefulWidget {
 }
 
 class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
+  final supplierController = TextEditingController();
   int currentIndex = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    supplierController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final pages = [
-      IdentificationPage(),
+      IdentificationPage(supplierController: supplierController),
       EnterprisesPage(),
       ProductsPage(),
       ConfirmationPage(),
