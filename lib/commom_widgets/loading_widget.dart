@@ -6,7 +6,13 @@ import '../constants/constants.dart';
 class LoadingWidget extends StatelessWidget {
   final double? size;
   final String? title;
-  const LoadingWidget({super.key, this.size = Sizes.p24, this.title});
+  final double? padding;
+  const LoadingWidget({
+    super.key,
+    this.size = Sizes.p24,
+    this.title,
+    this.padding,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,7 @@ class LoadingWidget extends StatelessWidget {
           gapH16,
         ],
         Padding(
-          padding: const EdgeInsets.all(Sizes.p16),
+          padding: EdgeInsets.all(padding ?? Sizes.p16),
           child: isIos
               ? CupertinoActivityIndicator(radius: size! * 0.5)
               : SizedBox(

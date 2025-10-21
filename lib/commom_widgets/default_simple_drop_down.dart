@@ -49,9 +49,11 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
           validator: validator,
           icon: Padding(
             padding: const EdgeInsets.only(right: Sizes.p8),
-            child: isLoading == true
-                ? LoadingWidget(size: Sizes.p16)
-                : _IconWidget(),
+            child: SizedBox(
+              child: isLoading == true
+                  ? LoadingWidget(size: Sizes.p16, padding: Sizes.p4)
+                  : _IconWidget(),
+            ),
           ),
           hint: Center(child: Text(hint)),
         ),
