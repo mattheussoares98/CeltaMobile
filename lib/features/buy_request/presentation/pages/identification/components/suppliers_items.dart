@@ -13,7 +13,7 @@ import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 import 'components.dart';
 
-class SuppliersItems extends ConsumerWidget {
+class SuppliersItems extends ConsumerStatefulWidget {
   final TextEditingController supplierController;
   final AsyncValue<List<SupplierEntity>?> suppliersState;
   const SuppliersItems({
@@ -22,10 +22,38 @@ class SuppliersItems extends ConsumerWidget {
     required this.suppliersState,
   });
 
-  static final formKey = GlobalKey<FormState>();
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _SupplierItemsState();
+}
+
+class _SupplierItemsState extends ConsumerState<SuppliersItems> {
+  final formKey = GlobalKey<FormState>();
+  List<SupplierEntity> suppliers = [];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        suppliers = [...?widget.suppliersState.value];
+        final pendingAsync = await ref.read(
+          pendingBuyRequestStateControllerProvider.future,
+        );
+
+        if (pendingAsync.selectedSupplier != null &&
+            widget.suppliersState.value?.any(
+                  (e) => e.Code == pendingAsync.selectedSupplier?.Code,
+                ) !=
+                true) {
+          suppliers.add(pendingAsync.selectedSupplier!);
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     Future<void> loadSuppliers() async {
@@ -33,13 +61,18 @@ class SuppliersItems extends ConsumerWidget {
         return;
       }
 
-      ref
-          .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(
-            (pendingAsync.value ?? PendingBuyRequestEntity.empty()).copyWith(
-              selectedSupplier: null,
-            ),
-          );
+      if (pendingAsync.value?.selectedSupplier != null) {
+        ref
+            .read(pendingBuyRequestStateControllerProvider.notifier)
+            .updatePending(
+              PendingBuyRequestEntity(
+                selectedBuyer: pendingAsync.value?.selectedBuyer,
+                selectedRequestType: pendingAsync.value?.selectedRequestType,
+                selectedSupplier: null,
+                selectedEnterprises: pendingAsync.value?.selectedEnterprises,
+              ),
+            );
+      }
 
       await ref
           .read(
@@ -47,7 +80,7 @@ class SuppliersItems extends ConsumerWidget {
               SearchSupplierType.buyRequest,
             ).notifier,
           )
-          .load(supplierController.text);
+          .load(widget.supplierController.text);
     }
 
     ref.listen(supplierStateControllerProvider(SearchSupplierType.buyRequest), (
@@ -56,7 +89,7 @@ class SuppliersItems extends ConsumerWidget {
     ) {
       n.showSnackbarOnError(context, previous: p, message: n.error);
       n.doOnSuccess(p, () {
-        supplierController.clear();
+        widget.supplierController.clear();
       });
     });
 
@@ -73,7 +106,7 @@ class SuppliersItems extends ConsumerWidget {
           DefaultTextFormField(
             labelText: 'Fornecedor'.hardcoded,
             hintText: 'Fornecedor'.hardcoded,
-            controller: supplierController,
+            controller: widget.supplierController,
             maxLength: 50,
             validator: FormValidators.compose([NonEmptyValidator()]),
             onFieldSubmitted: (value) {
@@ -81,7 +114,7 @@ class SuppliersItems extends ConsumerWidget {
             },
             prefixIcon: IconButton(
               onPressed: () {
-                supplierController.clear();
+                widget.supplierController.clear();
               },
               icon: Icon(
                 isIOS ? CupertinoIcons.delete : Icons.delete,
@@ -94,24 +127,18 @@ class SuppliersItems extends ConsumerWidget {
             ),
           ),
           gapH8,
-          if (pendingAsync.value?.selectedSupplier != null &&
-              suppliersState.value == null)
-            SupplierItem(
-              supplier: pendingAsync.value!.selectedSupplier!,
-              pending: pendingAsync.value,
-            )
-          else if (suppliersState.value != null)
-            ListView.builder(
-              shrinkWrap: true, //TODO change to CustomScrollView
-              itemCount: suppliersState.value!.length,
-              itemBuilder: (_, index) {
-                final supplier = suppliersState.value![index];
-                return SupplierItem(
-                  supplier: supplier,
-                  pending: pendingAsync.value,
-                );
-              },
-            ),
+          ListView.builder(
+            shrinkWrap: true, //TODO change to CustomScrollView
+            itemCount: widget.suppliersState.value?.length ?? suppliers.length,
+            itemBuilder: (_, index) {
+              final supplier =
+                  widget.suppliersState.value?[index] ?? suppliers[index];
+              return SupplierItem(
+                supplier: supplier,
+                pending: pendingAsync.value,
+              );
+            },
+          ),
         ],
       ),
     );
