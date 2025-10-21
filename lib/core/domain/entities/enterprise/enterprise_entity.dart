@@ -7,17 +7,19 @@ class EnterpriseEntity extends Equatable {
   final int? id; //from supabase
   final List<SubEnterpriseEntity>? subEnterprises; //from supabase
   final String? baseUrl; //from supabase
-  final int? Code; //from soap(BS)
-  final String? PersonalizedCode; //from soap(BS)
-  final String? CnpjNumber; //from soap(BS)
-  final int? CodigoInternoVendaMobile_ModeloPedido; //from soap(BS)
-  final int? ProductCodeSizeOfBalanceLabel; //from soap(BS)
-  final bool? UseRetailSale; //from soap(BS)
-  final bool? UseWholeSale; //from soap(BS)
-  final bool? UseEcommerceSale; //from soap(BS)
-  final bool? EnterpriseParticipateEnterpriseGroup; //from soap(BS)
-  final bool? ProductCodeWithCheckerDigit; //from soap(BS)
-  final String? InscriptionNumber; //from soap(BS)
+  final int? Code; //from soap
+  final String? PersonalizedCode; //from soap
+  final String? CnpjNumber; //from soap
+  final int? CodigoInternoVendaMobile_ModeloPedido; //from GetEnterprisesJson
+  final int? ProductCodeSizeOfBalanceLabel; //from GetEnterprisesJson
+  final bool? UseRetailSale; //from GetEnterprisesJson
+  final bool? UseWholeSale; //from GetEnterprisesJson
+  final bool? UseEcommerceSale; //from GetEnterprisesJson
+  final bool? EnterpriseParticipateEnterpriseGroup; //from GetEnterprisesJson
+  final bool? ProductCodeWithCheckerDigit; //from GetEnterprisesJson
+  final String? InscriptionNumber; //from soap
+  final int? SaleRequestTypeCode; //from GetEnterprisesJsonByFilters
+  final String? FantasizesName; //from GetEnterprisesJsonByFilters
 
   const EnterpriseEntity({
     required this.name,
@@ -35,6 +37,8 @@ class EnterpriseEntity extends Equatable {
     this.EnterpriseParticipateEnterpriseGroup,
     this.ProductCodeWithCheckerDigit,
     this.InscriptionNumber,
+    this.SaleRequestTypeCode,
+    this.FantasizesName,
   });
 
   @override
@@ -54,6 +58,8 @@ class EnterpriseEntity extends Equatable {
     EnterpriseParticipateEnterpriseGroup,
     ProductCodeWithCheckerDigit,
     InscriptionNumber,
+    SaleRequestTypeCode,
+    FantasizesName,
   ];
 
   EnterpriseEntity copyWith({
@@ -72,6 +78,8 @@ class EnterpriseEntity extends Equatable {
     bool? EnterpriseParticipateEnterpriseGroup,
     bool? ProductCodeWithCheckerDigit,
     String? InscriptionNumber,
+    int? SaleRequestTypeCode,
+    String? FantasizesName,
   }) {
     return EnterpriseEntity(
       name: name ?? this.name,
@@ -95,6 +103,8 @@ class EnterpriseEntity extends Equatable {
       ProductCodeWithCheckerDigit:
           ProductCodeWithCheckerDigit ?? this.ProductCodeWithCheckerDigit,
       InscriptionNumber: InscriptionNumber ?? this.InscriptionNumber,
+      SaleRequestTypeCode: SaleRequestTypeCode ?? this.SaleRequestTypeCode,
+      FantasizesName: FantasizesName ?? this.FantasizesName,
     );
   }
 }
