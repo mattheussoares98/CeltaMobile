@@ -1016,3 +1016,17 @@ class SoapLoadSupplierDatasourceSpy extends Mock
     ),
   );
 }
+
+class SoapLoadEnterpriseByFiltersDatasourceSpy extends Mock
+    implements ISoapLoadEnterpriseByFiltersDatasource {
+  void mockLoad(List<SoapEnterpriseByFiltersModel> response) {
+    when(
+      () => this.load(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        supplierCode: any(named: 'supplierCode'),
+        requestTypeCode: any(named: 'requestTypeCode'),
+      ),
+    ).thenAnswer((_) async => response);
+  }
+}
