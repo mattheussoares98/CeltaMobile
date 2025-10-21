@@ -25,6 +25,7 @@ class SupplierItem extends ConsumerWidget {
               selectedBuyer: pending!.selectedBuyer,
               selectedSupplier: null,
               selectedEnterprises: pending?.selectedEnterprises,
+              selectedRequestType: pending?.selectedRequestType,
             )
           : (pending ?? PendingBuyRequestEntity.empty()).copyWith(
               selectedSupplier: newValue,

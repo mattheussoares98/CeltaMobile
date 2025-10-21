@@ -5,11 +5,13 @@ import 'entities.dart';
 
 class PendingBuyRequestEntity extends Equatable {
   final BuyerEntity? selectedBuyer;
+  final RequestTypeEntity? selectedRequestType;
   final SupplierEntity? selectedSupplier;
   final List<EnterpriseEntity>? selectedEnterprises;
 
   const PendingBuyRequestEntity({
     required this.selectedBuyer,
+    required this.selectedRequestType,
     required this.selectedSupplier,
     required this.selectedEnterprises,
   });
@@ -17,6 +19,7 @@ class PendingBuyRequestEntity extends Equatable {
   @override
   List<Object?> get props => [
     selectedBuyer,
+    selectedRequestType,
     selectedSupplier,
     selectedEnterprises,
   ];
@@ -25,11 +28,13 @@ class PendingBuyRequestEntity extends Equatable {
     BuyerEntity? selectedBuyer,
     SupplierEntity? selectedSupplier,
     List<EnterpriseEntity>? selectedEnterprises,
+    RequestTypeEntity? selectedRequestType,
   }) {
     return PendingBuyRequestEntity(
       selectedBuyer: selectedBuyer ?? this.selectedBuyer,
       selectedSupplier: selectedSupplier ?? this.selectedSupplier,
       selectedEnterprises: selectedEnterprises ?? this.selectedEnterprises,
+      selectedRequestType: selectedRequestType ?? this.selectedRequestType,
     );
   }
 
@@ -37,5 +42,6 @@ class PendingBuyRequestEntity extends Equatable {
     selectedBuyer: null,
     selectedSupplier: null,
     selectedEnterprises: null,
+    selectedRequestType: null,
   );
 }

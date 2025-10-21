@@ -560,6 +560,7 @@ class EntityFactory {
 
   static PendingBuyRequestEntity makePendingBuyRequestEntity() =>
       PendingBuyRequestEntity(
+        selectedRequestType: makeRequestTypeEntity(),
         selectedBuyer: makeBuyerEntity(),
         selectedSupplier: makeSupplierEntity(),
         selectedEnterprises:

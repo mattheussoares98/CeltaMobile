@@ -7,12 +7,14 @@ import 'models.dart';
 class PendingBuyRequestModel extends Equatable {
   final BuyerModel? selectedBuyer;
   final SupplierModel? selectedSupplier;
+  final RequestTypeModel? selectedRequestType;
   final List<SoapEnterpriseByFiltersModel>? selectedEnterprises;
 
   const PendingBuyRequestModel({
     required this.selectedBuyer,
     required this.selectedSupplier,
     required this.selectedEnterprises,
+    required this.selectedRequestType,
   });
 
   @override
@@ -20,6 +22,7 @@ class PendingBuyRequestModel extends Equatable {
     selectedBuyer,
     selectedSupplier,
     selectedEnterprises,
+    selectedRequestType,
   ];
 
   factory PendingBuyRequestModel.fromJson(Map json) {
@@ -29,6 +32,9 @@ class PendingBuyRequestModel extends Equatable {
           : null,
       selectedSupplier: json['selectedSupplier'] != null
           ? SupplierModel.fromJson(json['selectedSupplier'])
+          : null,
+      selectedRequestType: json['selectedRequestType'] != null
+          ? RequestTypeModel.fromJson(json['selectedRequestType'])
           : null,
       selectedEnterprises: json['selectedEnterprises'] != null
           ? List<SoapEnterpriseByFiltersModel>.from(
@@ -43,6 +49,7 @@ class PendingBuyRequestModel extends Equatable {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'selectedBuyer': selectedBuyer?.toJson(),
     'selectedSupplier': selectedSupplier?.toJson(),
+    'selectedRequestType': selectedRequestType?.toJson(),
     'selectedEnterprises': selectedEnterprises?.map((e) => e.toJson()).toList(),
   };
 
@@ -57,6 +64,9 @@ class PendingBuyRequestModel extends Equatable {
       selectedEnterprises: entity.selectedEnterprises
           ?.map((e) => SoapEnterpriseByFiltersModel.fromEntity(e))
           .toList(),
+      selectedRequestType: entity.selectedRequestType == null
+          ? null
+          : RequestTypeModel.fromEntity(entity.selectedRequestType!),
     );
   }
 
@@ -64,6 +74,7 @@ class PendingBuyRequestModel extends Equatable {
     return PendingBuyRequestEntity(
       selectedBuyer: selectedBuyer?.toEntity(),
       selectedSupplier: selectedSupplier?.toEntity(),
+      selectedRequestType: selectedRequestType?.toEntity(),
       selectedEnterprises: selectedEnterprises
           ?.map((e) => e.toEntity())
           .toList(),
