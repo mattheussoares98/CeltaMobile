@@ -49,7 +49,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                   color: theme.disabledColor.withAlpha(50),
                   onPressed:
                       widget.onChanged == null ||
-                          (widget.items?.length ?? 0) <= 1
+                          (widget.items?.length ?? 0) < 1
                       ? null
                       : () async {
                           final selected = await showCupertinoModalPopup<T>(
@@ -147,7 +147,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
           overflow: TextOverflow.ellipsis,
         ),
         items: widget.items,
-        onChanged: widget.onChanged == null || (widget.items?.length ?? 0) <= 1
+        onChanged: widget.onChanged == null || (widget.items?.length ?? 0) < 1
             ? null
             : (value) {
                 if (value != null && widget.onChanged != null) {
