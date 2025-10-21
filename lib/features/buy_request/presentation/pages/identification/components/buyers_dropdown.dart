@@ -14,6 +14,8 @@ class BuyersDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+
     return AsyncValueWidget(
       value: buyersState,
       tryAgain: () {
@@ -27,7 +29,12 @@ class BuyersDropdown extends ConsumerWidget {
             gapH4,
             DefaultSimpleDropDown<BuyerEntity?>(
               onChanged: (buyer) {
-                //TODO change selectedBuyer
+                ref
+                    .read(pendingBuyRequestStateControllerProvider.notifier)
+                    .updatePending(
+                      (pendingAsync.value ?? PendingBuyRequestEntity.empty())
+                          .copyWith(selectedBuyer: buyer),
+                    );
               },
               items: buyers
                   ?.map(
@@ -37,7 +44,7 @@ class BuyersDropdown extends ConsumerWidget {
                     ),
                   )
                   .toList(),
-              value: null, //TODO add selectedBuyer
+              value: pendingAsync.value?.selectedBuyer,
               hint: 'Selecionar'.hardcoded,
               isLoading: buyersState.isLoading,
             ),
