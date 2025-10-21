@@ -1030,3 +1030,13 @@ class SoapLoadEnterpriseByFiltersDatasourceSpy extends Mock
     ).thenAnswer((_) async => response);
   }
 }
+
+class LocalPendingBuyRequestDatasourceSpy extends Mock
+    implements ILocalPendingBuyRequestDatasource {
+  LocalPendingBuyRequestDatasourceSpy() {
+    when(() => this.update(any())).thenAnswer((_) async {});
+  }
+  void mockLoad(PendingBuyRequestModel? response) {
+    when(() => this.load()).thenAnswer((_) async => response);
+  }
+}

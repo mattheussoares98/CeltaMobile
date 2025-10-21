@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
 import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
@@ -561,10 +562,15 @@ class EntityFactory {
       PendingBuyRequestEntity(
         selectedBuyer: makeBuyerEntity(),
         selectedSupplier: makeSupplierEntity(),
-        selectedEnterprises: [
-          makeEnterpriseEntity(),
-          makeEnterpriseEntity(),
-          makeEnterpriseEntity(),
-        ],
+        selectedEnterprises:
+            [
+                  makeEnterpriseEntity(),
+                  makeEnterpriseEntity(),
+                  makeEnterpriseEntity(),
+                ]
+                .map(
+                  (e) => SoapEnterpriseByFiltersModel.fromEntity(e).toEntity(),
+                )
+                .toList(),
       );
 }
