@@ -32,4 +32,10 @@ class PendingBuyRequestEntity extends Equatable {
       selectedEnterprises: selectedEnterprises ?? this.selectedEnterprises,
     );
   }
+
+  factory PendingBuyRequestEntity.empty() => const PendingBuyRequestEntity(
+    selectedBuyer: null,
+    selectedSupplier: null,
+    selectedEnterprises: null,
+  );
 }
