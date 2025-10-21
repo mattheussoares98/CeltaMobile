@@ -9,11 +9,11 @@ import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class BuyersDropdown extends ConsumerWidget {
-  final AsyncValue<List<BuyerEntity>?> buyersState;
-  const BuyersDropdown({super.key, required this.buyersState});
+  const BuyersDropdown({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final buyersState = ref.watch(buyersStateControllerProvider);
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     return AsyncValueWidget(
