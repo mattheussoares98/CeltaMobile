@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../core/providers/hive/hive.dart';
 import '../../core/providers/soap/soap.dart';
 import 'data/datasource/datasource.dart';
 import 'domain/repository/repository.dart';
@@ -32,5 +33,17 @@ ISoapLoadEnterpriseByFiltersRepository soapLoadEnterpriseByFiltersRepository(
 ) {
   return SoapLoadEnterpriseByFiltersRepositoryImpl(
     ref.watch(soapLoadEnterpriseByFiltersDatasourceProvider),
+  );
+}
+
+@riverpod
+ILocalPendingBuyRequestDatasource localPendingBuyRequestDatasource(Ref ref) {
+  return LocalPendingBuyRequestDatasource(ref.watch(hiveBoxBuyRequestProvider));
+}
+
+@riverpod
+ILocalPendingBuyRequestRepository LocalPendingBuyRequestRepository(Ref ref) {
+  return LocalPendingBuyRequestRepositoryImpl(
+    ref.watch(localPendingBuyRequestDatasourceProvider),
   );
 }
