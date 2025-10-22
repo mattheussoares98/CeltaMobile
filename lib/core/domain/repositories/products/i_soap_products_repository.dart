@@ -1,3 +1,4 @@
+import '../../../data/datasource/products/products.dart';
 import '../../entities/entities.dart';
 
 abstract class ISoapProductsRepository {
@@ -10,5 +11,6 @@ abstract class ISoapProductsRepository {
     required List<int> enterpriseCodes,
     required EnterpriseEntity enterpriseEntity,
     required int? lastBuyEntranceQuantity,
+    BuyRequestFilters? buyRequestFilters,
   });
 }

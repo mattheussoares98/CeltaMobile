@@ -15,7 +15,8 @@ class SoapProductsRepositoryImpl implements ISoapProductsRepository {
     required String crossIdentity,
     required List<int> enterpriseCodes,
     required EnterpriseEntity enterpriseEntity,
-    int? lastBuyEntranceQuantity,
+    required int? lastBuyEntranceQuantity,
+    BuyRequestFilters? buyRequestFilters,
   }) async {
     return await soapProductsDatasource
         .getProductsJson(
@@ -27,6 +28,7 @@ class SoapProductsRepositoryImpl implements ISoapProductsRepository {
           enterpriseCodes: enterpriseCodes,
           enterpriseEntity: enterpriseEntity,
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+          buyRequestFilters: buyRequestFilters,
         )
         .then((products) {
           return products.map((e) => e.toEntity()).toList();

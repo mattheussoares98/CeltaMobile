@@ -12,8 +12,8 @@ abstract class ISoapProductsDatasource {
     required String crossIdentity,
     required List<int> enterpriseCodes,
     required EnterpriseEntity enterpriseEntity,
-    int? lastBuyEntranceQuantity,
-    BuyRequestFilters? buyRequestFilters,
+    required int? lastBuyEntranceQuantity,
+    required BuyRequestFilters? buyRequestFilters,
   });
 }
 

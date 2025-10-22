@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/core/data/datasource/products/products.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/repositories/products/products.dart';
@@ -21,6 +22,7 @@ void main() {
   late List<int> enterpriseCodes;
   late EnterpriseEntity enterpriseEntity;
   late int lastBuyEntranceQuantity;
+  late BuyRequestFilters? buyRequestFilters;
 
   void initSut() {
     sut = SoapProductsRepositoryImpl(soapProductsDatasource);
@@ -56,6 +58,12 @@ void main() {
     ];
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     lastBuyEntranceQuantity = faker.randomGenerator.integer(100);
+    buyRequestFilters = faker.randomGenerator.boolean() == false
+        ? null
+        : BuyRequestFilters(
+            requestTypeCode: faker.randomGenerator.integer(100),
+            supplierCode: faker.randomGenerator.integer(100),
+          );
   }
 
   setUp(() {
@@ -84,6 +92,7 @@ void main() {
       enterpriseCodes: enterpriseCodes,
       enterpriseEntity: enterpriseEntity,
       lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+      buyRequestFilters: buyRequestFilters,
     );
 
     verify(
@@ -96,6 +105,7 @@ void main() {
         enterpriseCodes: enterpriseCodes,
         enterpriseEntity: enterpriseEntity,
         lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+        buyRequestFilters: buyRequestFilters,
       ),
     ).called(1);
   });
