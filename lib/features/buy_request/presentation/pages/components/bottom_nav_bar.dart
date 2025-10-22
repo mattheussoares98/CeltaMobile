@@ -8,12 +8,19 @@ import '../../controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
   final void Function(int)? onTap;
-  const BottomNavBar({super.key, required this.onTap});
+  final int currentIndex;
+  const BottomNavBar({
+    super.key,
+    required this.onTap,
+    required this.currentIndex,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+
     return BottomNavigationBar(
+      currentIndex: currentIndex,
       onTap: onTap,
       items: [
         BottomNavigationBarItem(
@@ -30,7 +37,9 @@ class BottomNavBar extends ConsumerWidget {
         BottomNavigationBarItem(
           label: 'Empresas'.hardcoded,
           icon: ValidatedBadge(
-            isValid: true, //TODO change
+            isValid:
+                pendingAsync.value?.selectedEnterprises?.isNotEmpty ==
+                true, //TODO change
             materialIcon: Icons.business,
             cupertinoIcon: CupertinoIcons.building_2_fill,
           ),

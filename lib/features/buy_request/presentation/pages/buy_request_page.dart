@@ -42,17 +42,24 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     return Scaffold(
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavBar(
+        currentIndex: currentIndex,
         onTap: (index) {
-          bool needsValidate = index > currentIndex;
-
-          if (needsValidate &&
+          if (currentIndex == 0 &&
               identificationFormKey.currentState?.validate() != true) {
             return;
-          } else if (needsValidate &&
+          } else if (currentIndex == 0 &&
               pendingAsync.value?.selectedSupplier == null) {
             showSnackBarMessage(
               context,
               'Selecione um fornecedor'.hardcoded,
+              backgroundColor: Colors.red,
+            );
+          } else if (currentIndex == 1 &&
+              (pendingAsync.value?.selectedEnterprises == null ||
+                  pendingAsync.value!.selectedEnterprises!.isEmpty)) {
+            showSnackBarMessage(
+              context,
+              'Selecione pelo menos uma empresa'.hardcoded,
               backgroundColor: Colors.red,
             );
           } else {
