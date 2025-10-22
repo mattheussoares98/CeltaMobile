@@ -19,6 +19,32 @@ class RequestTypeDropdown extends ConsumerWidget {
       requestTypeStateControllerProvider(Modules.buyRequest),
     );
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+    final pendingValue = pendingAsync.value;
+
+    void update(RequestTypeEntity? request) {
+      ref
+          .read(pendingBuyRequestStateControllerProvider.notifier)
+          .updatePending(
+            (pendingValue ?? PendingBuyRequestEntity.empty()).copyWith(
+              selectedRequestType: request,
+            ),
+          );
+      ref.invalidate(enterprisesStateControllerProvider);
+      //TODO invalidate products
+    }
+
+    bool needShowAlertDialog(RequestTypeEntity? request) {
+      if (pendingValue?.selectedEnterprises == null) {
+        return false;
+      } else if (pendingValue!.selectedEnterprises!.isEmpty) {
+        return false;
+      } else if (pendingValue.selectedRequestType == null) {
+        return false;
+      } else if (pendingValue.selectedRequestType == request) {
+        return false;
+      }
+      return true;
+    }
 
     return AsyncValueSliverWidget(
       value: requestsState,
@@ -34,12 +60,21 @@ class RequestTypeDropdown extends ConsumerWidget {
               gapH4,
               DefaultSimpleDropDown<RequestTypeEntity?>(
                 onChanged: (request) {
-                  ref
-                      .read(pendingBuyRequestStateControllerProvider.notifier)
-                      .updatePending(
-                        (pendingAsync.value ?? PendingBuyRequestEntity.empty())
-                            .copyWith(selectedRequestType: request),
-                      );
+                  if (needShowAlertDialog(request)) {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Atenção!'.hardcoded,
+                      content:
+                          'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'
+                              .hardcoded,
+                      cancelActionText: 'Cancelar'.hardcoded,
+                      onOkPressed: () {
+                        update(request);
+                      },
+                    );
+                  } else {
+                    update(request);
+                  }
                 },
                 items: requests
                     ?.map(
@@ -55,7 +90,7 @@ class RequestTypeDropdown extends ConsumerWidget {
                   }
                   return null;
                 },
-                value: pendingAsync.value?.selectedRequestType,
+                value: pendingValue?.selectedRequestType,
                 hint: 'Selecionar'.hardcoded,
                 isLoading: requestsState.isLoading,
               ),

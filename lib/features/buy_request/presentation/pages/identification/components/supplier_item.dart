@@ -45,6 +45,7 @@ class SupplierItem extends ConsumerWidget {
                   entity.annulValue(annulSelectedEnterprises: true),
                 );
             ref.invalidate(enterprisesStateControllerProvider);
+            //TODO invalidate products
           },
         );
       } else {
