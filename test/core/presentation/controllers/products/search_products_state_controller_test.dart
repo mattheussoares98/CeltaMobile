@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/core/data/datasource/products/products.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
@@ -26,6 +27,7 @@ void main() {
   late BsRoutine bsRoutine;
   late List<ProductEntity> productsEntities;
   late Modules module;
+  late BuyRequestFilters? buyRequestFilters;
 
   setUpAll(() {
     for (var routine in BsRoutine.values) {
@@ -55,6 +57,12 @@ void main() {
     ];
     module =
         Modules.values[faker.randomGenerator.integer(Modules.values.length)];
+    buyRequestFilters = faker.randomGenerator.boolean() == true
+        ? BuyRequestFilters(
+            requestTypeCode: faker.randomGenerator.integer(100),
+            supplierCode: faker.randomGenerator.integer(100),
+          )
+        : null;
   }
 
   void initSut() {
@@ -147,6 +155,7 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
+            buyRequestFilters: buyRequestFilters,
           );
 
       expect(states, [
@@ -163,6 +172,7 @@ void main() {
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
+          buyRequestFilters: buyRequestFilters,
         ),
       ).called(1);
     });
@@ -199,6 +209,7 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
+            buyRequestFilters: buyRequestFilters,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -212,6 +223,7 @@ void main() {
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
+          buyRequestFilters: buyRequestFilters,
         ),
       );
     });
@@ -248,6 +260,7 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code! + 1000, //wrong code
+            buyRequestFilters: buyRequestFilters,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -261,6 +274,7 @@ void main() {
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
+          buyRequestFilters: buyRequestFilters,
         ),
       );
     });

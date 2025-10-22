@@ -9,6 +9,7 @@ import '../../../../../exceptions/exceptions.dart';
 import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../features/enterprise_manager/domain/entities/entities.dart';
+import '../../../data/datasource/products/products.dart';
 import '../user_session/user_session.dart';
 
 part 'search_products_state_controller.g.dart';
@@ -42,6 +43,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
     required String searchValue,
     required int enterpriseCode,
     int? lastBuyEntranceQuantity = 5,
+    BuyRequestFilters? buyRequestFilters,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -87,6 +89,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             enterpriseCodes: [enterpriseCode],
             enterpriseEntity: selectedEnterprise ?? enterpriseEntity,
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+            buyRequestFilters: buyRequestFilters,
           );
 
       return products;
