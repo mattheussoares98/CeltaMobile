@@ -16,45 +16,47 @@ class BuyersDropdown extends ConsumerWidget {
     final buyersState = ref.watch(buyersStateControllerProvider);
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
-    return AsyncValueWidget(
+    return AsyncValueSliverWidget(
       value: buyersState,
       tryAgain: () {
         ref.invalidate(buyersStateControllerProvider);
       },
       data: (buyers) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DefaultSmallTitle(title: 'Comprador'.hardcoded),
-            gapH4,
-            DefaultSimpleDropDown<BuyerEntity?>(
-              onChanged: (buyer) {
-                ref
-                    .read(pendingBuyRequestStateControllerProvider.notifier)
-                    .updatePending(
-                      (pendingAsync.value ?? PendingBuyRequestEntity.empty())
-                          .copyWith(selectedBuyer: buyer),
-                    );
-              },
-              items: buyers
-                  ?.map(
-                    (e) => DropdownMenuItem(
-                      value: e,
-                      child: Center(child: Text(e.Name)),
-                    ),
-                  )
-                  .toList(),
-              validator: (value) {
-                if (value == null) {
-                  return 'Selecione um comprador'.hardcoded;
-                }
-                return null;
-              },
-              value: pendingAsync.value?.selectedBuyer,
-              hint: 'Selecionar'.hardcoded,
-              isLoading: buyersState.isLoading,
-            ),
-          ],
+        return SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DefaultSmallTitle(title: 'Comprador'.hardcoded),
+              gapH4,
+              DefaultSimpleDropDown<BuyerEntity?>(
+                onChanged: (buyer) {
+                  ref
+                      .read(pendingBuyRequestStateControllerProvider.notifier)
+                      .updatePending(
+                        (pendingAsync.value ?? PendingBuyRequestEntity.empty())
+                            .copyWith(selectedBuyer: buyer),
+                      );
+                },
+                items: buyers
+                    ?.map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Center(child: Text(e.Name)),
+                      ),
+                    )
+                    .toList(),
+                validator: (value) {
+                  if (value == null) {
+                    return 'Selecione um comprador'.hardcoded;
+                  }
+                  return null;
+                },
+                value: pendingAsync.value?.selectedBuyer,
+                hint: 'Selecionar'.hardcoded,
+                isLoading: buyersState.isLoading,
+              ),
+            ],
+          ),
         );
       },
     );

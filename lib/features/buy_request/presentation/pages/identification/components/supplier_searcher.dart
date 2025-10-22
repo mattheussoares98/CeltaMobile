@@ -10,12 +10,11 @@ import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/validators/validators.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
-import 'components.dart';
 
-class SuppliersItems extends ConsumerStatefulWidget {
+class SupplierSearcher extends ConsumerStatefulWidget {
   final TextEditingController supplierController;
   final AsyncValue<List<SupplierEntity>?> suppliersState;
-  const SuppliersItems({
+  const SupplierSearcher({
     super.key,
     required this.supplierController,
     required this.suppliersState,
@@ -25,30 +24,13 @@ class SuppliersItems extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _SupplierItemsState();
 }
 
-class _SupplierItemsState extends ConsumerState<SuppliersItems> {
+class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
   final formKey = GlobalKey<FormState>();
-  List<SupplierEntity> suppliers = [];
 
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        suppliers = [...?widget.suppliersState.value];
-        final pendingAsync = await ref.read(
-          pendingBuyRequestStateControllerProvider.future,
-        );
-
-        if (pendingAsync.selectedSupplier != null &&
-            widget.suppliersState.value?.any(
-                  (e) => e.Code == pendingAsync.selectedSupplier?.Code,
-                ) !=
-                true) {
-          suppliers.add(pendingAsync.selectedSupplier!);
-        }
-      }
-    });
+  void dispose() {
+    formKey.currentState?.dispose();
+    super.dispose();
   }
 
   @override
@@ -90,53 +72,40 @@ class _SupplierItemsState extends ConsumerState<SuppliersItems> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return Form(
-      key: formKey,
+    return SliverToBoxAdapter(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DefaultSmallTitle(title: 'Fornecedores'.hardcoded),
           gapH8,
-          DefaultTextFormField(
-            labelText: 'Fornecedor'.hardcoded,
-            hintText: 'Fornecedor'.hardcoded,
-            controller: widget.supplierController,
-            maxLength: 50,
-            validator: FormValidators.compose([NonEmptyValidator()]),
-            onFieldSubmitted: (value) {
-              loadSuppliers();
-            },
-            prefixIcon: IconButton(
-              onPressed: () {
-                widget.supplierController.clear();
+          Form(
+            key: formKey,
+            child: DefaultTextFormField(
+              labelText: 'Fornecedor'.hardcoded,
+              hintText: 'Fornecedor'.hardcoded,
+              controller: widget.supplierController,
+              maxLength: 50,
+              validator: FormValidators.compose([NonEmptyValidator()]),
+              onFieldSubmitted: (value) {
+                loadSuppliers();
               },
-              icon: Icon(
-                isIOS ? CupertinoIcons.delete : Icons.delete,
-                color: Colors.red,
+              prefixIcon: IconButton(
+                onPressed: () {
+                  widget.supplierController.clear();
+                },
+                icon: Icon(
+                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                  color: Colors.red,
+                ),
               ),
-            ),
-            suffixIcon: IconButton(
-              onPressed: loadSuppliers,
-              icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+              suffixIcon: IconButton(
+                onPressed: loadSuppliers,
+                icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+              ),
             ),
           ),
           gapH8,
-          if (widget.suppliersState.isLoading)
-            Center(child: LoadingWidget())
-          else
-            ListView.builder(
-              shrinkWrap: true, //TODO change to CustomScrollView
-              itemCount:
-                  widget.suppliersState.value?.length ?? suppliers.length,
-              itemBuilder: (_, index) {
-                final supplier =
-                    widget.suppliersState.value?[index] ?? suppliers[index];
-                return SupplierItem(
-                  supplier: supplier,
-                  pending: pendingAsync.value,
-                );
-              },
-            ),
+          if (widget.suppliersState.isLoading) Center(child: LoadingWidget()),
         ],
       ),
     );

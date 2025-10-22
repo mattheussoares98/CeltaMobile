@@ -20,45 +20,47 @@ class RequestTypeDropdown extends ConsumerWidget {
     );
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
-    return AsyncValueWidget(
+    return AsyncValueSliverWidget(
       value: requestsState,
       tryAgain: () {
         ref.invalidate(requestTypeStateControllerProvider(Modules.buyRequest));
       },
       data: (requests) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DefaultSmallTitle(title: 'Modelo de pedido'.hardcoded),
-            gapH4,
-            DefaultSimpleDropDown<RequestTypeEntity?>(
-              onChanged: (request) {
-                ref
-                    .read(pendingBuyRequestStateControllerProvider.notifier)
-                    .updatePending(
-                      (pendingAsync.value ?? PendingBuyRequestEntity.empty())
-                          .copyWith(selectedRequestType: request),
-                    );
-              },
-              items: requests
-                  ?.map(
-                    (e) => DropdownMenuItem(
-                      value: e,
-                      child: Center(child: Text(e.Name)),
-                    ),
-                  )
-                  .toList(),
-              validator: (value) {
-                if (value == null) {
-                  return 'Selecione um modelo'.hardcoded;
-                }
-                return null;
-              },
-              value: pendingAsync.value?.selectedRequestType,
-              hint: 'Selecionar'.hardcoded,
-              isLoading: requestsState.isLoading,
-            ),
-          ],
+        return SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DefaultSmallTitle(title: 'Modelo de pedido'.hardcoded),
+              gapH4,
+              DefaultSimpleDropDown<RequestTypeEntity?>(
+                onChanged: (request) {
+                  ref
+                      .read(pendingBuyRequestStateControllerProvider.notifier)
+                      .updatePending(
+                        (pendingAsync.value ?? PendingBuyRequestEntity.empty())
+                            .copyWith(selectedRequestType: request),
+                      );
+                },
+                items: requests
+                    ?.map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Center(child: Text(e.Name)),
+                      ),
+                    )
+                    .toList(),
+                validator: (value) {
+                  if (value == null) {
+                    return 'Selecione um modelo'.hardcoded;
+                  }
+                  return null;
+                },
+                value: pendingAsync.value?.selectedRequestType,
+                hint: 'Selecionar'.hardcoded,
+                isLoading: requestsState.isLoading,
+              ),
+            ],
+          ),
         );
       },
     );
