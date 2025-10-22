@@ -96,6 +96,7 @@ void main() {
     bool? mockSession = true,
     bool? mockAuthState = true,
     bool? mockAppSettingsState = true,
+    bool? mockSelectedEnterprise = true,
   }) {
     final container = ProviderContainer(
       overrides: [
@@ -111,6 +112,10 @@ void main() {
         enterprisesStateControllerProvider(enterpriseEntity.Code).overrideWith(
           () => FakeEnterprisesStateController([enterpriseEntity]),
         ),
+        if (mockSelectedEnterprise == true)
+          selectedEnterpriseStateControllerProvider.overrideWith(
+            () => FakeSelectedEnterpriseStateController(enterpriseEntity),
+          ),
         if (mockAppSettingsState == true)
           appSettingsStateControllerProvider.overrideWith(
             () => FakeAppSettingsStateController(appSettingsEntity),
@@ -209,57 +214,6 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCode: enterpriseEntity.Code!,
-            buyRequestFilters: buyRequestFilters,
-          );
-
-      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-      verifyNever(
-        () => sut.getProductsJson(
-          lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
-          searchValue: searchValue,
-          routine: bsRoutine,
-          searchType: appSettingsEntity.searchPreference.searchType,
-          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
-          enterpriseCodes: [enterpriseEntity.Code!],
-          enterpriseEntity: enterpriseEntity,
-          buyRequestFilters: buyRequestFilters,
-        ),
-      );
-    });
-    test('should behave correctly when enterprise id dont exists', () async {
-      final container = makeProviderContainer(mockSession: true);
-
-      await container.read(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ).future,
-      );
-
-      final states = <AsyncValue<void>>[];
-      container.listen(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ),
-        (_, next) => states.add(next),
-      );
-
-      await container
-          .read(
-            searchProductsStateControllerProvider(
-              enterpriseEntity.Code!,
-              bsRoutine,
-              module,
-            ).notifier,
-          )
-          .loadProducts(
-            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-            searchValue: searchValue,
-            enterpriseCode: enterpriseEntity.Code! + 1000, //wrong code
             buyRequestFilters: buyRequestFilters,
           );
 

@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:celta_intelligence/features/settings/presentation/controllers/app_settings_state_controller.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/providers/products/products.dart';
-import '../../../../../exceptions/exceptions.dart';
 import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../features/enterprise_manager/domain/entities/entities.dart';
@@ -52,23 +50,6 @@ class SearchProductsStateController extends _$SearchProductsStateController {
         selectedEnterpriseStateControllerProvider,
       );
 
-      late EnterpriseEntity enterpriseEntity;
-
-      if (selectedEnterprise == null) {
-        final enterprises = await ref.read(
-          enterprisesStateControllerProvider(enterpriseCode).future,
-        );
-        final enterpriseIndex = enterprises.indexWhere(
-          (e) => e.Code == enterpriseCode,
-        );
-
-        if (enterpriseIndex == -1) {
-          throw AppException('Empresa não encontrada'.hardcoded);
-        } else {
-          enterpriseEntity = enterprises[enterpriseIndex];
-        }
-      }
-
       final baseUrl = userSession!.enterprise!.baseUrl!;
       final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
@@ -87,7 +68,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             routine: routine,
             searchType: searchType,
             enterpriseCodes: [enterpriseCode],
-            enterpriseEntity: selectedEnterprise ?? enterpriseEntity,
+            enterpriseEntity: selectedEnterprise!,
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             buyRequestFilters: buyRequestFilters,
           );

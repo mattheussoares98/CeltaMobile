@@ -408,6 +408,7 @@ class SoapProductsRepositorySpy extends Mock
         enterpriseCodes: any(named: "enterpriseCodes"),
         enterpriseEntity: any(named: "enterpriseEntity"),
         lastBuyEntranceQuantity: any(named: "lastBuyEntranceQuantity"),
+        buyRequestFilters: any(named: "buyRequestFilters"),
       ),
     ).thenAnswer((_) async => response);
   }
