@@ -22,6 +22,7 @@ void main() {
   late String crossIdentity;
   late List<int> enterpriseCodes;
   late EnterpriseEntity enterpriseEntity;
+  late BuyRequestFilters buyRequestFilters;
 
   void initSut() {
     sut = SoapProductsDatasource(soapAdapter);
@@ -61,6 +62,10 @@ void main() {
       faker.randomGenerator.integer(300, min: 200),
     ];
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
+    buyRequestFilters = BuyRequestFilters(
+      requestTypeCode: faker.randomGenerator.integer(100),
+      supplierCode: faker.randomGenerator.integer(100),
+    );
   }
 
   setUp(() {
@@ -85,6 +90,7 @@ void main() {
       enterpriseCodes: enterpriseCodes,
       enterpriseEntity: enterpriseEntity,
       lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+      buyRequestFilters: buyRequestFilters,
     );
 
     expect(
@@ -107,6 +113,8 @@ void main() {
             "SearchType": searchType.code,
             "RoutineInt": routine.code,
             "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
+            "RequestTypeCode": buyRequestFilters.requestTypeCode,
+            "SupplierCode": buyRequestFilters.supplierCode,
           }),
         },
       ),
@@ -129,6 +137,7 @@ void main() {
       enterpriseCodes: enterpriseCodes,
       enterpriseEntity: enterpriseEntity,
       lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+      buyRequestFilters: buyRequestFilters,
     );
 
     expect(
@@ -151,6 +160,8 @@ void main() {
             "SearchType": searchType.code,
             "RoutineInt": routine.code,
             "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
+            "RequestTypeCode": buyRequestFilters.requestTypeCode,
+            "SupplierCode": buyRequestFilters.supplierCode,
           }),
         },
       ),
@@ -159,30 +170,62 @@ void main() {
     //needs to uncomment the throw Exception(); in production code and /* .called(1) */ below to work
     verifyNever(
       () => soapAdapter.post(
-        url: baseUrl,
-        typeOfResponse: "GetProductsJsonResponse",
-        typeOfResult: "GetProductsJsonResult",
-        soapAction: "GetProductsJson",
-        serviceASMX: "CeltaProductService.asmx",
-        parameters: {
-          "filters": json.encode({
-            "CrossIdentity": crossIdentity,
-            "EnterpriseCodes": enterpriseCodes,
-            "SearchValue": balanceFormat
-                .replaceFirst(RegExp(r'2'), '')
-                .replaceRange(
-                  enterpriseEntity.ProductCodeSizeOfBalanceLabel!,
-                  null,
-                  enterpriseEntity.ProductCodeWithCheckerDigit == true
-                      ? ""
-                      : ".",
-                ),
-            "SearchType": searchType.code,
-            "RoutineInt": routine.code,
-            "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
-          }),
-        },
+        url: any(named: 'url'),
+        typeOfResponse: any(named: 'typeOfResponse'),
+        typeOfResult: any(named: 'typeOfResult'),
+        soapAction: any(named: 'soapAction'),
+        serviceASMX: any(named: 'serviceASMX'),
+        parameters: any(named: "parameters"),
       ),
     ) /* .called(1) */;
   });
+
+  test(
+    'should call soap adapter with correct values when buyRequestFilters is null',
+    () async {
+      bool generateLastBuyEntrance = faker.randomGenerator.boolean();
+      int? lastBuyEntranceQuantity = generateLastBuyEntrance
+          ? faker.randomGenerator.integer(100)
+          : null;
+
+      final products = await sut.getProductsJson(
+        baseUrl: baseUrl,
+        searchValue: searchValue,
+        routine: routine,
+        searchType: searchType,
+        crossIdentity: crossIdentity,
+        enterpriseCodes: enterpriseCodes,
+        enterpriseEntity: enterpriseEntity,
+        lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+        buyRequestFilters: null,
+      );
+
+      expect(
+        products,
+        productsEntities.map((e) => ProductModel.fromEntity(e)).toList(),
+      );
+
+      verify(
+        () => soapAdapter.post(
+          url: baseUrl,
+          typeOfResponse: "GetProductsJsonResponse",
+          typeOfResult: "GetProductsJsonResult",
+          soapAction: "GetProductsJson",
+          serviceASMX: "CeltaProductService.asmx",
+          parameters: {
+            "filters": json.encode({
+              "CrossIdentity": crossIdentity,
+              "EnterpriseCodes": enterpriseCodes,
+              "SearchValue": searchValue,
+              "SearchType": searchType.code,
+              "RoutineInt": routine.code,
+              "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
+              // "RequestTypeCode": requestTypeCode,
+              // "SupplierCode": supplierCode,
+            }),
+          },
+        ),
+      ).called(1);
+    },
+  );
 }

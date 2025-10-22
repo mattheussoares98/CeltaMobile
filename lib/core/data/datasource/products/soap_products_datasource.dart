@@ -18,20 +18,27 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
     required String crossIdentity,
     required List<int> enterpriseCodes,
     required int? lastBuyEntranceQuantity,
+    required BuyRequestFilters? buyRequestFilters,
   }) async {
     try {
+      final parameters = {
+        "CrossIdentity": crossIdentity,
+        "EnterpriseCodes": enterpriseCodes,
+        "SearchValue": searchValue,
+        "SearchType": searchType.code,
+        "RoutineInt": routine.code,
+        "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
+      };
+
+      if (buyRequestFilters != null) {
+        parameters.addAll({
+          "RequestTypeCode": buyRequestFilters.requestTypeCode,
+          "SupplierCode": buyRequestFilters.supplierCode,
+        });
+      }
       return await soapRequest.post(
         url: baseUrl,
-        parameters: {
-          "filters": json.encode({
-            "CrossIdentity": crossIdentity,
-            "EnterpriseCodes": enterpriseCodes,
-            "SearchValue": searchValue,
-            "SearchType": searchType.code,
-            "RoutineInt": routine.code,
-            "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
-          }),
-        },
+        parameters: {"filters": json.encode(parameters)},
         typeOfResponse: "GetProductsJsonResponse",
         typeOfResult: "GetProductsJsonResult",
         soapAction: "GetProductsJson",
@@ -68,6 +75,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
     required List<int> enterpriseCodes,
     required EnterpriseEntity enterpriseEntity,
     int? lastBuyEntranceQuantity,
+    BuyRequestFilters? buyRequestFilters,
   }) async {
     bool isBalanceFormat = _getIsBalanceFormat(searchValue);
 
@@ -80,6 +88,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
         crossIdentity: crossIdentity,
         enterpriseCodes: enterpriseCodes,
         lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+        buyRequestFilters: buyRequestFilters,
       );
 
       // throw Exception();
@@ -105,6 +114,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
         crossIdentity: crossIdentity,
         enterpriseCodes: enterpriseCodes,
         lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+        buyRequestFilters: buyRequestFilters,
       );
 
       return (json.decode(response) as List)
