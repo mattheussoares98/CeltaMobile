@@ -11,7 +11,9 @@ class PendingBuyRequestStateController
     extends _$PendingBuyRequestStateController {
   @override
   FutureOr<PendingBuyRequestEntity> build() async {
-    ref.watch(userSessionProvider); //force update the data when do logout
+    await ref.watch(
+      userSessionProvider.future,
+    ); //force update the data when do logout
     final repository = ref.read(localPendingBuyRequestRepositoryProvider);
     final localData = await repository.load();
 

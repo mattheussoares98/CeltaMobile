@@ -916,11 +916,11 @@ class SoapInventoryProductsDatasourceSpy extends Mock
     () => this.load(
       baseUrl: any(named: 'baseUrl'),
       searchValue: any(named: 'searchValue'),
-      codigoInternoInventario: any(named: 'inventoryProcessCode'),
+      codigoInternoInventario: any(named: 'codigoInternoInventario'),
       searchType: any(named: 'searchType'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
-      codigoInternoInvCont: any(named: 'inventoryCountingCode'),
+      codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
       selectedEnterprise: any(named: 'selectedEnterprise'),
     ),
   );
@@ -968,7 +968,7 @@ class SoapInventoryAnnulDatasourceSpy extends Mock
         baseUrl: any(named: 'baseUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
-        codigoInternoProEmb: any(named: 'productPackingCode'),
+        codigoInternoProEmb: any(named: 'codigoInternoProEmb'),
       ),
     ).thenAnswer((_) async {});
   }

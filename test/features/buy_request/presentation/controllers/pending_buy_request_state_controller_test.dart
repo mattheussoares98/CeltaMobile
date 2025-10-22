@@ -1,3 +1,5 @@
+import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/buy_request/domain/repository/repository.dart';
 import 'package:celta_intelligence/features/buy_request/presentation/controllers/controllers.dart';
@@ -33,6 +35,11 @@ void main() {
         localPendingBuyRequestRepositoryProvider.overrideWithValue(
           mockRepository,
         ),
+        userSessionProvider.overrideWith(
+          () => FakeUserSession(
+            UserSessionModel.fromEntity(EntityFactory.makeUserSessionEntity()),
+          ),
+        ),
       ],
     );
   }
@@ -60,7 +67,6 @@ void main() {
       when(() => mockRepository.load()).thenAnswer((_) async => null);
 
       final container = makeProviderContainer();
-      addTearDown(container.dispose);
 
       // ACT
       final result = await container.read(

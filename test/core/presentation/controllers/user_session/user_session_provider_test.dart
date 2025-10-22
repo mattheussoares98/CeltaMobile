@@ -11,8 +11,9 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late LocalUserSessionDatasourceSpy localUserSessionDatasource;
   late UserSessionModel userSession;
-  late MockBox mockTransferLotBox;
   late MockBox mockAppSettingsBox;
+  late MockBox mockBuyRequestBox;
+  late MockBox mockTransferLotBox;
 
   setUp(() {
     localUserSessionDatasource = LocalUserSessionDatasourceSpy();
@@ -21,6 +22,7 @@ void main() {
     );
     mockTransferLotBox = MockBox();
     mockAppSettingsBox = MockBox();
+    mockBuyRequestBox = MockBox();
 
     registerFallbackValue(userSession);
 
@@ -33,8 +35,9 @@ void main() {
         localUserSessionDatasourceProvider.overrideWithValue(
           localUserSessionDatasource,
         ),
-        hiveBoxTransferLotProvider.overrideWithValue(mockTransferLotBox),
         hiveBoxAppSettingsProvider.overrideWithValue(mockAppSettingsBox),
+        hiveBoxBuyRequestProvider.overrideWithValue(mockBuyRequestBox),
+        hiveBoxTransferLotProvider.overrideWithValue(mockTransferLotBox),
       ],
     );
   }
@@ -127,8 +130,9 @@ void main() {
             isA<AsyncData<UserSessionModel?>>(),
           ]);
           verify(() => localUserSessionDatasource.logout()).called(1);
-          verify(() => mockTransferLotBox.clear()).called(1);
           verify(() => mockAppSettingsBox.clear()).called(1);
+          verify(() => mockBuyRequestBox.clear()).called(1);
+          verify(() => mockTransferLotBox.clear()).called(1);
         },
       );
     });

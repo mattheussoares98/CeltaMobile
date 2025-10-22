@@ -119,6 +119,7 @@ void main() {
   group('Load products', () {
     test('should behave correctly on success', () async {
       final container = makeProviderContainer();
+      addTearDown(container.dispose);
 
       await container.read(
         inventoryProductsStateControllerProvider(
@@ -160,7 +161,7 @@ void main() {
           enterpriseCode: enterpriseCode,
           searchValue: searchValue,
           codigoInternoInventario: codigoInternoInventario,
-          searchType: searchType,
+          searchType: appSettingsEntity.searchPreference.searchType,
           codigoInternoInvCont: codigoInternoInvCont,
           selectedEnterprise: selectedEnterprise,
         ),
@@ -168,6 +169,7 @@ void main() {
     });
     test('should behave correctly when session is null', () async {
       final container = makeProviderContainer(mockSession: false);
+      addTearDown(container.dispose);
 
       await container.read(
         inventoryProductsStateControllerProvider(
@@ -214,6 +216,7 @@ void main() {
 
     test('should behave correctly when appSettings is null', () async {
       final container = makeProviderContainer(mockAppSettingsState: false);
+      addTearDown(container.dispose);
 
       await container.read(
         inventoryProductsStateControllerProvider(
