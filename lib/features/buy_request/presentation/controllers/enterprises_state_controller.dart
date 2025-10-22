@@ -12,7 +12,7 @@ class EnterprisesStateController extends _$EnterprisesStateController {
   @override
   FutureOr<List<EnterpriseEntity>> build() async {
     final repository = ref.read(soapLoadEnterpriseByFiltersRepositoryProvider);
-    final pending = await ref.watch(
+    final pending = await ref.read(
       pendingBuyRequestStateControllerProvider.future,
     );
     final userSession = await ref.watch(validatedUserSessionProvider.future);
