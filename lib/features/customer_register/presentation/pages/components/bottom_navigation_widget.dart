@@ -28,7 +28,10 @@ class BottomNavigationWidget extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           label: 'Dados'.hardcoded,
-          icon: Icon(isIOS ? CupertinoIcons.person : Icons.person),
+          icon: Icon(
+            isIOS ? CupertinoIcons.person : Icons.person,
+            color: selectedIndex == 0 ? theme.primaryColor : null,
+          ),
         ),
         BottomNavigationBarItem(
           label: 'Endereço'.hardcoded,
@@ -37,6 +40,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.location_on,
             cupertinoIcon: CupertinoIcons.location,
+            iconColor: selectedIndex == 1 ? theme.primaryColor : null,
           ),
         ),
         BottomNavigationBarItem(
@@ -46,6 +50,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.email,
             cupertinoIcon: CupertinoIcons.mail,
+            iconColor: selectedIndex == 2 ? theme.primaryColor : null,
           ),
         ),
         BottomNavigationBarItem(
@@ -55,6 +60,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.phone,
             cupertinoIcon: CupertinoIcons.phone,
+            iconColor: selectedIndex == 3 ? theme.primaryColor : null,
           ),
         ),
         BottomNavigationBarItem(
@@ -64,11 +70,15 @@ class BottomNavigationWidget extends StatelessWidget {
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.wallet,
             cupertinoIcon: CupertinoIcons.creditcard,
+            iconColor: selectedIndex == 4 ? theme.primaryColor : null,
           ),
         ),
         BottomNavigationBarItem(
           label: 'Salvar'.hardcoded,
-          icon: Icon(isIOS ? CupertinoIcons.check_mark : Icons.save),
+          icon: Icon(
+            isIOS ? CupertinoIcons.check_mark : Icons.save,
+            color: selectedIndex == 5 ? theme.primaryColor : null,
+          ),
         ),
       ],
     );
