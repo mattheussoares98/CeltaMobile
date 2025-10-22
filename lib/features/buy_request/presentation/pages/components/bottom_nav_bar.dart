@@ -18,6 +18,7 @@ class BottomNavBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+    final theme = Theme.of(context);
 
     return BottomNavigationBar(
       currentIndex: currentIndex,
@@ -32,6 +33,7 @@ class BottomNavBar extends ConsumerWidget {
                 pendingAsync.value?.selectedSupplier != null,
             materialIcon: Icons.info,
             cupertinoIcon: CupertinoIcons.info,
+            iconColor: currentIndex == 0 ? theme.primaryColor : null,
           ),
         ),
         BottomNavigationBarItem(
@@ -42,6 +44,7 @@ class BottomNavBar extends ConsumerWidget {
                 true, //TODO change
             materialIcon: Icons.business,
             cupertinoIcon: CupertinoIcons.building_2_fill,
+            iconColor: currentIndex == 1 ? theme.primaryColor : null,
           ),
         ),
         BottomNavigationBarItem(
@@ -50,6 +53,7 @@ class BottomNavBar extends ConsumerWidget {
             isValid: true, //TODO change
             materialIcon: Icons.shopping_cart,
             cupertinoIcon: CupertinoIcons.shopping_cart,
+            iconColor: currentIndex == 2 ? theme.primaryColor : null,
           ),
         ),
         BottomNavigationBarItem(
@@ -58,6 +62,7 @@ class BottomNavBar extends ConsumerWidget {
             isValid: true, //TODO change
             materialIcon: Icons.check_box_outlined,
             cupertinoIcon: CupertinoIcons.checkmark_square,
+            iconColor: currentIndex == 3 ? theme.primaryColor : null,
           ),
         ),
       ],
