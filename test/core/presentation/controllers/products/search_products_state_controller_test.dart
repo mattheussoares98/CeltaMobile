@@ -159,7 +159,7 @@ void main() {
           .loadProducts(
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
-            enterpriseCode: enterpriseEntity.Code!,
+            enterpriseCodes: [enterpriseEntity.Code!],
             buyRequestFilters: buyRequestFilters,
           );
 
@@ -213,7 +213,7 @@ void main() {
           .loadProducts(
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
-            enterpriseCode: enterpriseEntity.Code!,
+            enterpriseCodes: [enterpriseEntity.Code!],
             buyRequestFilters: buyRequestFilters,
           );
 
@@ -265,7 +265,7 @@ void main() {
           .loadProducts(
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
-            enterpriseCode: enterpriseEntity.Code!,
+            enterpriseCodes: [enterpriseEntity.Code!],
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -313,7 +313,7 @@ void main() {
           .loadProducts(
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
-            enterpriseCode: enterpriseEntity.Code!,
+            enterpriseCodes: [enterpriseEntity.Code!],
           );
 
       // Create the updated version of the first product
@@ -377,7 +377,7 @@ void main() {
             .loadProducts(
               lastBuyEntranceQuantity: lastBuyEntranceQuantity,
               searchValue: searchValue,
-              enterpriseCode: enterpriseEntity.Code!,
+              enterpriseCodes: [enterpriseEntity.Code!],
             );
 
         // ACT

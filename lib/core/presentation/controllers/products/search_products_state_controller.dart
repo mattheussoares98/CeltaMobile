@@ -39,7 +39,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
 
   Future<void> loadProducts({
     required String searchValue,
-    required int enterpriseCode,
+    required List<int> enterpriseCodes,
     int? lastBuyEntranceQuantity = 5,
     BuyRequestFilters? buyRequestFilters,
   }) async {
@@ -67,7 +67,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             crossIdentity: crossIdentity,
             routine: routine,
             searchType: searchType,
-            enterpriseCodes: [enterpriseCode],
+            enterpriseCodes: enterpriseCodes,
             enterpriseEntity: selectedEnterprise!,
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             buyRequestFilters: buyRequestFilters,

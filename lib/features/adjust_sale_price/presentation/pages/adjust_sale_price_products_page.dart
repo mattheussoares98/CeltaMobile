@@ -42,7 +42,7 @@ class _AdjustSalePriceProductsPageState
           ).notifier,
         )
         .loadProducts(
-          enterpriseCode: widget.enterpriseCode,
+          enterpriseCodes: [widget.enterpriseCode],
           searchValue: searchValueController.text,
         );
   }

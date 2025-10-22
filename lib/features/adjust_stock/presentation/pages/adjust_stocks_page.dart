@@ -49,7 +49,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
           ).notifier,
         )
         .loadProducts(
-          enterpriseCode: widget.enterpriseCode,
+          enterpriseCodes: [widget.enterpriseCode],
           searchValue: searchValueController.text,
         );
   }

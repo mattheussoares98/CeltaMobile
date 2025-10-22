@@ -40,7 +40,7 @@ class PendingProductsPage extends ConsumerWidget {
           )
           .loadProducts(
             searchValue: searchValueController.text,
-            enterpriseCode: enterpriseCode,
+            enterpriseCodes: [enterpriseCode],
           );
     }
 
