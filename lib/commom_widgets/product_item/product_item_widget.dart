@@ -17,6 +17,7 @@ class ProductItemWidget extends ConsumerWidget {
   final VoidCallback? onTap;
   final bool? showDropIcon;
   final bool? isSelected;
+  final Widget? itemBeforeProductName;
   const ProductItemWidget({
     super.key,
     required this.enterpriseCode,
@@ -27,6 +28,7 @@ class ProductItemWidget extends ConsumerWidget {
     this.clickableBottom,
     this.showDropIcon,
     this.isSelected,
+    this.itemBeforeProductName,
   });
 
   double _getStockQuantityByName(List<StockEntity>? stocks, String name) {
@@ -106,6 +108,7 @@ class ProductItemWidget extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      ?itemBeforeProductName,
                       TitleAndSubTitle(
                         title: product.Name,
                         subTitle:
@@ -129,12 +132,14 @@ class ProductItemWidget extends ConsumerWidget {
                         ],
                       ),
                       if (routine != BsRoutine.adjustStock) ...[
-                        TitleAndSubTitle(
-                          title: "Preço ",
-                          emptyMessage: 'Sem preço'.hardcoded,
-                          subTitle: product.RetailPracticedPrice,
-                          subTitleIsPrice: true,
-                        ),
+                        if (routine != BsRoutine.buyRequest) ...[
+                          TitleAndSubTitle(
+                            title: "Preço ",
+                            emptyMessage: 'Sem preço'.hardcoded,
+                            subTitle: product.RetailPracticedPrice,
+                            subTitleIsPrice: true,
+                          ),
+                        ],
                         TitleAndSubTitle(
                           title: "Custo líquido ",
                           subTitle: product.LiquidCost,

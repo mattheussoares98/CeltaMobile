@@ -71,5 +71,6 @@ class SoapEnterpriseByFiltersModel extends Equatable {
     FantasizesName: FantasizesName,
     CnpjNumber: CnpjNumber,
     InscriptionNumber: InscriptionNumber,
+    Code: Code,
   );
 }

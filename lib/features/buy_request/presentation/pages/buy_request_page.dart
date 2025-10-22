@@ -18,11 +18,13 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   final supplierController = TextEditingController();
   int currentIndex = 0;
   final identificationFormKey = GlobalKey<FormState>();
+  final searchProductController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     supplierController.dispose();
+    searchProductController.dispose();
   }
 
   @override
@@ -35,7 +37,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         identificationFormKey: identificationFormKey,
       ),
       EnterprisesPage(),
-      ProductsPage(),
+      ProductsPage(searchProductController: searchProductController),
       ConfirmationPage(),
     ];
 
