@@ -9,12 +9,14 @@ class PendingBuyRequestModel extends Equatable {
   final SupplierModel? selectedSupplier;
   final RequestTypeModel? selectedRequestType;
   final List<SoapEnterpriseByFiltersModel>? selectedEnterprises;
+  final Map<ProductKey, BuyRequestProductItemModel>? products;
 
   const PendingBuyRequestModel({
     required this.selectedBuyer,
     required this.selectedSupplier,
     required this.selectedEnterprises,
     required this.selectedRequestType,
+    required this.products,
   });
 
   @override
@@ -23,6 +25,7 @@ class PendingBuyRequestModel extends Equatable {
     selectedSupplier,
     selectedEnterprises,
     selectedRequestType,
+    products,
   ];
 
   factory PendingBuyRequestModel.fromJson(Map json) {
@@ -43,6 +46,16 @@ class PendingBuyRequestModel extends Equatable {
               ),
             )
           : null,
+      products: json['products'] == null
+          ? null
+          : Map.fromEntries(
+              (json['products'] as Map<String, dynamic>).entries.map(
+                (entry) => MapEntry(
+                  ProductKey.fromMapKey(entry.key),
+                  BuyRequestProductItemModel.fromJson(entry.value),
+                ),
+              ),
+            ),
     );
   }
 
@@ -51,6 +64,13 @@ class PendingBuyRequestModel extends Equatable {
     'selectedSupplier': selectedSupplier?.toJson(),
     'selectedRequestType': selectedRequestType?.toJson(),
     'selectedEnterprises': selectedEnterprises?.map((e) => e.toJson()).toList(),
+    'products': products == null
+        ? null
+        : Map.fromEntries(
+            products!.entries.map(
+              (entry) => MapEntry(entry.key.toMapKey(), entry.value.toJson()),
+            ),
+          ),
   };
 
   factory PendingBuyRequestModel.fromEntity(PendingBuyRequestEntity entity) {
@@ -67,6 +87,16 @@ class PendingBuyRequestModel extends Equatable {
       selectedRequestType: entity.selectedRequestType == null
           ? null
           : RequestTypeModel.fromEntity(entity.selectedRequestType!),
+      products: entity.products == null
+          ? null
+          : Map.fromEntries(
+              entity.products!.entries.map(
+                (entry) => MapEntry(
+                  entry.key,
+                  BuyRequestProductItemModel.fromEntity(entry.value),
+                ),
+              ),
+            ),
     );
   }
 
@@ -78,6 +108,13 @@ class PendingBuyRequestModel extends Equatable {
       selectedEnterprises: selectedEnterprises
           ?.map((e) => e.toEntity())
           .toList(),
+      products: products == null
+          ? {}
+          : Map.fromEntries(
+              products!.entries.map(
+                (entry) => MapEntry(entry.key, entry.value.toEntity()),
+              ),
+            ),
     );
   }
 }

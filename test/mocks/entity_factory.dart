@@ -91,10 +91,14 @@ class EntityFactory {
         isDefinedAtCnpjLevel: faker.randomGenerator.boolean(),
       );
 
-  static ProductEntity makeProductEntity() => ProductEntity(
-    EnterpriseCode: faker.randomGenerator.integer(100),
+  static ProductEntity makeProductEntity({
+    int? enterpriseCode,
+    int? productPackingCode,
+  }) => ProductEntity(
+    EnterpriseCode: enterpriseCode ?? faker.randomGenerator.integer(100),
     ProductCode: faker.randomGenerator.integer(100),
-    ProductPackingCode: faker.randomGenerator.integer(999999),
+    ProductPackingCode:
+        productPackingCode ?? faker.randomGenerator.integer(999999),
     PLU: faker.randomGenerator.integer(100).toString(),
     Name: faker.food.dish(),
     PackingQuantity: faker.randomGenerator.integer(100).toString(),
@@ -558,20 +562,35 @@ class EntityFactory {
     ],
   );
 
-  static PendingBuyRequestEntity makePendingBuyRequestEntity() =>
-      PendingBuyRequestEntity(
-        selectedRequestType: makeRequestTypeEntity(),
-        selectedBuyer: makeBuyerEntity(),
-        selectedSupplier: makeSupplierEntity(),
-        selectedEnterprises:
-            [
-                  makeEnterpriseEntity(),
-                  makeEnterpriseEntity(),
-                  makeEnterpriseEntity(),
-                ]
-                .map(
-                  (e) => SoapEnterpriseByFiltersModel.fromEntity(e).toEntity(),
-                )
-                .toList(),
-      );
+  static PendingBuyRequestEntity makePendingBuyRequestEntity() {
+    final enterpriseCode = faker.randomGenerator.integer(100);
+    final productPackingCode = faker.randomGenerator.integer(100);
+
+    return PendingBuyRequestEntity(
+      selectedRequestType: makeRequestTypeEntity(),
+      selectedBuyer: makeBuyerEntity(),
+      selectedSupplier: makeSupplierEntity(),
+      products: {
+        ProductKey(
+          enterpriseCode: enterpriseCode,
+          productPackingCode: productPackingCode,
+        ): BuyRequestProductItemEntity(
+          product: makeProductEntity(
+            productPackingCode: productPackingCode,
+            enterpriseCode: enterpriseCode,
+          ),
+          quantity: faker.randomGenerator.decimal(),
+          cost: faker.randomGenerator.decimal(),
+        ),
+      },
+      selectedEnterprises:
+          [
+                makeEnterpriseEntity(),
+                makeEnterpriseEntity(),
+                makeEnterpriseEntity(),
+              ]
+              .map((e) => SoapEnterpriseByFiltersModel.fromEntity(e).toEntity())
+              .toList(),
+    );
+  }
 }

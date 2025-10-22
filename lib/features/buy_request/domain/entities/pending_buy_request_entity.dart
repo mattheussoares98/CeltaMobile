@@ -8,12 +8,14 @@ class PendingBuyRequestEntity extends Equatable {
   final RequestTypeEntity? selectedRequestType;
   final SupplierEntity? selectedSupplier;
   final List<EnterpriseEntity>? selectedEnterprises;
+  final Map<ProductKey, BuyRequestProductItemEntity>? products;
 
   const PendingBuyRequestEntity({
     required this.selectedBuyer,
     required this.selectedRequestType,
     required this.selectedSupplier,
     required this.selectedEnterprises,
+    required this.products,
   });
 
   @override
@@ -22,6 +24,7 @@ class PendingBuyRequestEntity extends Equatable {
     selectedRequestType,
     selectedSupplier,
     selectedEnterprises,
+    products,
   ];
 
   PendingBuyRequestEntity copyWith({
@@ -29,12 +32,14 @@ class PendingBuyRequestEntity extends Equatable {
     SupplierEntity? selectedSupplier,
     List<EnterpriseEntity>? selectedEnterprises,
     RequestTypeEntity? selectedRequestType,
+    Map<ProductKey, BuyRequestProductItemEntity>? products,
   }) {
     return PendingBuyRequestEntity(
       selectedBuyer: selectedBuyer ?? this.selectedBuyer,
       selectedSupplier: selectedSupplier ?? this.selectedSupplier,
       selectedEnterprises: selectedEnterprises ?? this.selectedEnterprises,
       selectedRequestType: selectedRequestType ?? this.selectedRequestType,
+      products: products ?? this.products,
     );
   }
 
@@ -43,6 +48,7 @@ class PendingBuyRequestEntity extends Equatable {
     bool? annulSelectedSupplier,
     bool? annulSelectedEnterprises,
     bool? annulSelectedRequestType,
+    bool? annulProducts,
   }) {
     return PendingBuyRequestEntity(
       selectedBuyer: annulSelectedBuyer == true ? null : this.selectedBuyer,
@@ -55,6 +61,7 @@ class PendingBuyRequestEntity extends Equatable {
       selectedRequestType: annulSelectedRequestType == true
           ? null
           : this.selectedRequestType,
+      products: annulProducts == true ? null : this.products,
     );
   }
 
@@ -63,5 +70,6 @@ class PendingBuyRequestEntity extends Equatable {
     selectedSupplier: null,
     selectedEnterprises: null,
     selectedRequestType: null,
+    products: null,
   );
 }
