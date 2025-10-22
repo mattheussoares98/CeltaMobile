@@ -63,6 +63,7 @@ class PrimaryButton extends StatelessWidget {
         icon: icon,
         iconAlignment: iconAlignment,
         style: ButtonStyle(
+          padding: WidgetStateProperty.all(EdgeInsets.all(Sizes.p12)),
           backgroundColor: WidgetStateProperty.all(
             backgroundColor ?? theme.primaryColor,
           ),
