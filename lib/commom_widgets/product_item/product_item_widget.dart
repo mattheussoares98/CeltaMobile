@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,6 +15,7 @@ class ProductItemWidget extends ConsumerWidget {
   final Widget? notClickableBottom;
   final Widget? clickableBottom;
   final VoidCallback? onTap;
+  final VoidCallback? onDelete;
   final bool? showDropIcon;
   final bool? isSelected;
   final Widget? itemBeforeProductName;
@@ -22,6 +24,7 @@ class ProductItemWidget extends ConsumerWidget {
     required this.product,
     required this.routine,
     this.onTap,
+    this.onDelete,
     this.notClickableBottom,
     this.clickableBottom,
     this.showDropIcon,
@@ -86,6 +89,7 @@ class ProductItemWidget extends ConsumerWidget {
     });
 
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final currentStockQuantity = _getStockQuantityByName(
       product.Stocks,
@@ -167,12 +171,34 @@ class ProductItemWidget extends ConsumerWidget {
                   ),
                 ),
               ),
-              if (showDropIcon == true)
-                Positioned(
-                  right: Sizes.p8,
-                  bottom: Sizes.p8,
-                  child: SelectedIconIndicator(selected: isSelected ?? false),
+              Positioned(
+                right: Sizes.p8,
+                bottom: Sizes.p8,
+                child: Row(
+                  children: [
+                    if (onDelete != null)
+                      IconButton(
+                        onPressed: onDelete == null
+                            ? null
+                            : () {
+                                showAlertDialog(
+                                  context: context,
+                                  title: 'Remover item?'.hardcoded,
+                                  onOkPressed: onDelete,
+                                  cancelActionText: 'Cancelar'.hardcoded,
+                                  defaultActionText: 'Remover'.hardcoded,
+                                );
+                              },
+                        icon: Icon(
+                          isIOS ? CupertinoIcons.delete : Icons.delete,
+                          color: Colors.red,
+                        ),
+                      ),
+                    if (showDropIcon == true)
+                      SelectedIconIndicator(selected: isSelected ?? false),
+                  ],
                 ),
+              ),
             ],
           ),
           if (notClickableBottom != null)

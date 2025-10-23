@@ -9,6 +9,7 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
+import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
@@ -118,6 +119,17 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       routine: BsRoutine.buyRequest,
                       showDropIcon: true,
                       isSelected: selectedIndex == index,
+                      onDelete:
+                          pendingAsync.value?.products?.containsKey(
+                                ProductKey(
+                                  enterpriseCode: product.EnterpriseCode,
+                                  productPackingCode:
+                                      product.ProductPackingCode,
+                                ),
+                              ) ??
+                              false
+                          ? () {}
+                          : null,
                       itemBeforeProductName: TitleAndSubTitle(
                         title: null,
                         subTitle:
