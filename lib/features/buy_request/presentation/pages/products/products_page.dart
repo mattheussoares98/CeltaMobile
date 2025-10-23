@@ -61,7 +61,11 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ).notifier,
           )
           .loadProducts(
-            enterpriseCodes: [selectedEnterprise?.Code ?? 0],
+            enterpriseCodes:
+                pendingAsync.value?.selectedEnterprises
+                    ?.map((e) => e.Code!)
+                    .toList() ??
+                [],
             searchValue: widget.searchProductController.text,
           );
     }
