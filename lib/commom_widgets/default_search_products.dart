@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../constants/constants.dart';
 import '../core/domain/entities/entities.dart';
 import '../core/providers/scanner/scanner.dart';
 import '../core/validators/validators.dart';
@@ -72,74 +73,81 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
 
         return Form(
           key: formKey,
-          child: DefaultTextFormField(
-            maxLength: 40,
-            enabled: !widget.isLoading,
-            controller: widget.searchValueController,
-            focusNode: widget.focusNode,
-            validator: FormValidators.compose([NonEmptyValidator()]),
-            onFieldSubmitted: (_) {
-              searchProducts();
-            },
-            prefixIcon: width < 220
-                ? null
-                : _DefaultIcon(
-                    onPress: () {
-                      widget.searchValueController.clear();
-                      Future.delayed(Duration(milliseconds: 100), () {
-                        widget.focusNode?.requestFocus();
-                      });
-                    },
-                    materialIcon: Icons.delete,
-                    cupertinoIcon: CupertinoIcons.delete,
-                    iconColor: widget.isLoading
-                        ? theme.disabledColor
-                        : Colors.red,
-                  ),
-
-            suffixIcon: FittedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (width >= 220 && !widget.isLoading)
-                    _DefaultIcon(
-                      onPress: searchProducts,
-                      materialIcon: Icons.search,
-                      cupertinoIcon: CupertinoIcons.search,
-                      iconColor: widget.isLoading ? theme.disabledColor : null,
-                    )
-                  else if (widget.isLoading)
-                    LoadingWidget(),
-                  if (theme.platform == TargetPlatform.iOS ||
-                      theme.platform == TargetPlatform.android)
-                    _DefaultIcon(
-                      onPress: () async {
-                        final value = await ref
-                            .read(barcodeScannerRepositoryProvider)
-                            .scan();
-                        if (value != null) {
-                          widget.searchValueController.text = value;
-                          widget.searchProducts();
-                        }
+          child: Padding(
+            padding: const EdgeInsets.only(top: Sizes.p4),
+            child: DefaultTextFormField(
+              maxLength: 40,
+              enabled: !widget.isLoading,
+              controller: widget.searchValueController,
+              focusNode: widget.focusNode,
+              validator: FormValidators.compose([NonEmptyValidator()]),
+              onFieldSubmitted: (_) {
+                searchProducts();
+              },
+              prefixIcon: width < 220
+                  ? null
+                  : _DefaultIcon(
+                      onPress: () {
+                        widget.searchValueController.clear();
+                        Future.delayed(Duration(milliseconds: 100), () {
+                          widget.focusNode?.requestFocus();
+                        });
                       },
-                      materialIcon: Icons.camera_alt,
-                      cupertinoIcon: CupertinoIcons.camera_fill,
+                      materialIcon: Icons.delete,
+                      cupertinoIcon: CupertinoIcons.delete,
+                      iconColor: widget.isLoading
+                          ? theme.disabledColor
+                          : Colors.red,
+                    ),
+
+              suffixIcon: FittedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (width >= 220 && !widget.isLoading)
+                      _DefaultIcon(
+                        onPress: searchProducts,
+                        materialIcon: Icons.search,
+                        cupertinoIcon: CupertinoIcons.search,
+                        iconColor: widget.isLoading
+                            ? theme.disabledColor
+                            : null,
+                      )
+                    else if (widget.isLoading)
+                      LoadingWidget(),
+                    if (theme.platform == TargetPlatform.iOS ||
+                        theme.platform == TargetPlatform.android)
+                      _DefaultIcon(
+                        onPress: () async {
+                          final value = await ref
+                              .read(barcodeScannerRepositoryProvider)
+                              .scan();
+                          if (value != null) {
+                            widget.searchValueController.text = value;
+                            widget.searchProducts();
+                          }
+                        },
+                        materialIcon: Icons.camera_alt,
+                        cupertinoIcon: CupertinoIcons.camera_fill,
+                        iconColor: widget.isLoading
+                            ? theme.disabledColor
+                            : null,
+                      ),
+                    _DefaultIcon(
+                      onPress: () {
+                        showModalPage(SettingsPage(), context);
+                      },
+                      materialIcon: Icons.settings,
+                      cupertinoIcon: CupertinoIcons.settings,
                       iconColor: widget.isLoading ? theme.disabledColor : null,
                     ),
-                  _DefaultIcon(
-                    onPress: () {
-                      showModalPage(SettingsPage(), context);
-                    },
-                    materialIcon: Icons.settings,
-                    cupertinoIcon: CupertinoIcons.settings,
-                    iconColor: widget.isLoading ? theme.disabledColor : null,
-                  ),
-                ],
+                  ],
+                ),
               ),
+              labelText: hintText,
+              hintText: hintText,
             ),
-            labelText: hintText,
-            hintText: hintText,
           ),
         );
       },
