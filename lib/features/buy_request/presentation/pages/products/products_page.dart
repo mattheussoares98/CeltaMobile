@@ -159,9 +159,19 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               value: productsState,
               tryAgain: null,
               data: (products) {
+                final filteredProducts = products
+                    .where(
+                      (e) =>
+                          pendingAsync.value?.selectedEnterprises
+                              ?.map((e) => e.Code)
+                              .contains(e.EnterpriseCode) ==
+                          true,
+                    )
+                    .toList();
+
                 return ProductsItems(
                   selectedIndex: selectedIndex,
-                  products: products,
+                  products: filteredProducts,
                   onTap: onTap,
                   fieldsFormKey: fieldsFormKey,
                   quantityFormKey: quantityFormKey,
