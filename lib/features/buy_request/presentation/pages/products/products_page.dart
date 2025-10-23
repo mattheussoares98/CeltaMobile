@@ -95,8 +95,16 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         );
   }
 
-  void onTap(int index) {
+  void onTap(int index, ProductEntity product) {
+    widget.quantityController.clear();
+    widget.costController.clear();
+
     if (selectedIndex != index) {
+      if ((product.PriceCost.LiquidCost ?? 0) > 0) {
+        widget.costController.text = product.PriceCost.LiquidCost
+            .toString()
+            .toBrazilianNumber(4);
+      }
       setState(() {
         selectedIndex = index;
       });

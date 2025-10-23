@@ -12,7 +12,7 @@ import 'components.dart';
 class ProductsItems extends ConsumerWidget {
   final int? selectedIndex;
   final List<ProductEntity> products;
-  final void Function(int index) onTap;
+  final void Function(int index, ProductEntity product) onTap;
   final GlobalKey<FormState> fieldsFormKey;
   final GlobalKey<FormState> quantityFormKey;
   final FocusNode quantityFocusNode;
@@ -75,7 +75,7 @@ class ProductsItems extends ConsumerWidget {
             pendingAsync.value?.products?[productKey];
 
         return ProductItemWidget(
-          onTap: () => onTap(index),
+          onTap: () => onTap(index, product),
           product: product,
           routine: BsRoutine.buyRequest,
           showDropIcon: true,
