@@ -3,6 +3,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 import 'pages.dart';
@@ -24,6 +25,40 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   final quantityFocusNode = FocusNode();
   final costFocusNode = FocusNode();
 
+  List<SupplierEntity> suppliers = [];
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        suppliers = await ref
+            .read(
+              supplierStateControllerProvider(
+                SearchSupplierType.buyRequest,
+              ).future,
+            )
+            .then((value) {
+              return [...?value];
+            });
+
+        final pendingAsync = await ref.read(
+          pendingBuyRequestStateControllerProvider.future,
+        );
+
+        if (pendingAsync.selectedSupplier != null &&
+            suppliers.any(
+                  (e) => e.Code == pendingAsync.selectedSupplier?.Code,
+                ) !=
+                true) {
+          setState(() {
+            suppliers.add(pendingAsync.selectedSupplier!);
+          });
+        }
+      }
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -43,6 +78,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       IdentificationPage(
         supplierController: supplierController,
         identificationFormKey: identificationFormKey,
+        suppliers: suppliers,
       ),
       EnterprisesPage(),
       ProductsPage(

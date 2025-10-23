@@ -11,10 +11,12 @@ import 'components/components.dart';
 class IdentificationPage extends ConsumerStatefulWidget {
   final TextEditingController supplierController;
   final GlobalKey<FormState> identificationFormKey;
+  final List<SupplierEntity> suppliers;
   const IdentificationPage({
     super.key,
     required this.supplierController,
     required this.identificationFormKey,
+    required this.suppliers,
   });
 
   @override
@@ -24,38 +26,6 @@ class IdentificationPage extends ConsumerStatefulWidget {
 
 class _IdentificationPageState extends ConsumerState<IdentificationPage> {
   final formKey = GlobalKey<FormState>();
-  List<SupplierEntity> suppliers = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        suppliers = await ref
-            .read(
-              supplierStateControllerProvider(
-                SearchSupplierType.buyRequest,
-              ).future,
-            )
-            .then((value) {
-              return [...?value];
-            });
-
-        final pendingAsync = await ref.read(
-          pendingBuyRequestStateControllerProvider.future,
-        );
-
-        if (pendingAsync.selectedSupplier != null &&
-            suppliers.any(
-                  (e) => e.Code == pendingAsync.selectedSupplier?.Code,
-                ) !=
-                true) {
-          suppliers.add(pendingAsync.selectedSupplier!);
-        }
-      }
-    });
-  }
 
   @override
   void dispose() {
@@ -87,7 +57,7 @@ class _IdentificationPageState extends ConsumerState<IdentificationPage> {
               ),
               SupplierItems(
                 suppliersState: suppliersState,
-                suppliers: suppliers,
+                suppliers: widget.suppliers,
               ),
             ],
           ),
