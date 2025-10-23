@@ -16,15 +16,39 @@ class EnterprisesPage extends ConsumerWidget {
     final enterprisesAsync = ref.watch(enterprisesStateControllerProvider);
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
-    void changeSelectedEnterprise(EnterpriseEntity enterprise) {
+    void changeSelectedEnterprise(EnterpriseEntity enterprise) async {
       final isSelected =
           pendingAsync.value?.selectedEnterprises?.contains(enterprise) ??
           false;
 
       final selectedEnterprises = [...?pendingAsync.value?.selectedEnterprises];
+      final products = pendingAsync.value?.products ?? {};
 
       if (isSelected) {
-        selectedEnterprises.remove(enterprise);
+        final productsMap = pendingAsync.value?.products;
+        bool hasProductFromThisEnterpriseInserted =
+            productsMap?.keys.any((k) => k.enterpriseCode == enterprise.Code) ??
+            false;
+
+        if (hasProductFromThisEnterpriseInserted) {
+          await showAlertDialog(
+            context: context,
+            title: 'Remover empresa?'.hardcoded,
+            content:
+                'Há produtos informados para essa empresa. Ao remover ela, os produtos serão removidos também'
+                    .hardcoded,
+            defaultActionText: 'Remover'.hardcoded,
+            cancelActionText: 'Cancelar'.hardcoded,
+            onOkPressed: () {
+              selectedEnterprises.remove(enterprise);
+              products.removeWhere((key, value) {
+                return key.enterpriseCode == enterprise.Code;
+              });
+            },
+          );
+        } else {
+          selectedEnterprises.remove(enterprise);
+        }
       } else {
         selectedEnterprises.add(enterprise);
       }
@@ -34,6 +58,7 @@ class EnterprisesPage extends ConsumerWidget {
           .updatePending(
             (pendingAsync.value ?? PendingBuyRequestEntity.empty()).copyWith(
               selectedEnterprises: selectedEnterprises,
+              products: products,
             ),
           );
     }
