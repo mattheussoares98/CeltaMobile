@@ -593,4 +593,12 @@ class EntityFactory {
               .toList(),
     );
   }
+
+  static BuyRequestProductItemEntity makeBuyRequestProductItemEntity({
+    int? enterpriseCode,
+  }) => BuyRequestProductItemEntity(
+    product: makeProductEntity(enterpriseCode: enterpriseCode),
+    quantity: faker.randomGenerator.decimal(),
+    cost: faker.randomGenerator.decimal(),
+  );
 }
