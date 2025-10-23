@@ -52,8 +52,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       widget.costFocusNode.requestFocus();
       return;
     }
-    final products = pendingAsync.value?.products;
-    products?.addAll({
+    final products = pendingAsync.value?.products ?? {};
+    products.addAll({
       ProductKey(
         enterpriseCode: product.EnterpriseCode,
         productPackingCode: product.ProductPackingCode,
