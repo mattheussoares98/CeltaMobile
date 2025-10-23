@@ -5,13 +5,13 @@ class ValidatedBadge extends StatelessWidget {
   final bool isValid;
   final IconData materialIcon;
   final IconData cupertinoIcon;
-  final Color? iconColor;
+  final bool isSelected;
   const ValidatedBadge({
     super.key,
     required this.isValid,
     required this.materialIcon,
     required this.cupertinoIcon,
-    this.iconColor,
+    this.isSelected = false,
   });
 
   @override
@@ -31,10 +31,7 @@ class ValidatedBadge extends StatelessWidget {
       ),
       child: Icon(
         isIOS ? cupertinoIcon : materialIcon,
-        color:
-            iconColor ??
-            theme
-                .disabledColor, //TODO change to "isSelected" param and treat here the color
+        color: isSelected ? theme.primaryColor : theme.disabledColor,
       ),
     );
   }

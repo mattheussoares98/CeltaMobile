@@ -40,7 +40,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.location_on,
             cupertinoIcon: CupertinoIcons.location,
-            iconColor: selectedIndex == 1 ? theme.primaryColor : null,
+            isSelected: selectedIndex == 1,
           ),
         ),
         BottomNavigationBarItem(
@@ -50,7 +50,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.email,
             cupertinoIcon: CupertinoIcons.mail,
-            iconColor: selectedIndex == 2 ? theme.primaryColor : null,
+            isSelected: selectedIndex == 2,
           ),
         ),
         BottomNavigationBarItem(
@@ -60,7 +60,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.phone,
             cupertinoIcon: CupertinoIcons.phone,
-            iconColor: selectedIndex == 3 ? theme.primaryColor : null,
+            isSelected: selectedIndex == 3,
           ),
         ),
         BottomNavigationBarItem(
@@ -70,7 +70,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             materialIcon: Icons.wallet,
             cupertinoIcon: CupertinoIcons.creditcard,
-            iconColor: selectedIndex == 4 ? theme.primaryColor : null,
+            isSelected: selectedIndex == 4,
           ),
         ),
         BottomNavigationBarItem(
