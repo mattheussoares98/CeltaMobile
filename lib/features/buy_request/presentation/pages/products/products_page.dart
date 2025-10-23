@@ -7,6 +7,7 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../core/validators/validators.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../domain/entities/entities.dart';
@@ -14,7 +15,18 @@ import '../../controllers/controllers.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final TextEditingController searchProductController;
-  const ProductsPage({super.key, required this.searchProductController});
+  final TextEditingController quantityController;
+  final TextEditingController costController;
+  final FocusNode quantityFocusNode;
+  final FocusNode costFocusNode;
+  const ProductsPage({
+    super.key,
+    required this.searchProductController,
+    required this.quantityController,
+    required this.costController,
+    required this.quantityFocusNode,
+    required this.costFocusNode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
@@ -22,6 +34,44 @@ class ProductsPage extends ConsumerStatefulWidget {
 
 class _ProductsPageState extends ConsumerState<ProductsPage> {
   int? selectedIndex;
+  final fieldsFormKey = GlobalKey<FormState>();
+  final quantityFormKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    fieldsFormKey.currentState?.dispose();
+    quantityFormKey.currentState?.dispose();
+    super.dispose();
+  }
+
+  void insertProduct(
+    AsyncValue<PendingBuyRequestEntity> pendingAsync,
+    ProductEntity product,
+  ) {
+    if (fieldsFormKey.currentState?.validate() != true) {
+      widget.costFocusNode.requestFocus();
+      return;
+    }
+    final products = pendingAsync.value?.products;
+    products?.addAll({
+      ProductKey(
+        enterpriseCode: product.EnterpriseCode,
+        productPackingCode: product.ProductPackingCode,
+      ): BuyRequestProductItemEntity(
+        product: product,
+        quantity: widget.quantityController.text.toDouble()!,
+        cost: widget.costController.text.toDouble()!,
+      ),
+    });
+    ref
+        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .updatePending(pendingAsync.value!.copyWith(products: products));
+    widget.quantityController.clear();
+    widget.costController.clear();
+    setState(() {
+      selectedIndex = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +85,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         BsRoutine.buyRequest,
         Modules.buyRequest,
       ),
-      (previous, next) {
-        next.doOnSuccess(previous, () {
+      (products, next) {
+        next.doOnSuccess(products, () {
           widget.searchProductController.clear();
         });
       },
@@ -77,6 +127,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       if (selectedIndex != index) {
         setState(() {
           selectedIndex = index;
+        });
+        Future.delayed(Duration(milliseconds: 100), () {
+          widget.quantityFocusNode.requestFocus();
         });
       } else {
         setState(() {
@@ -128,7 +181,28 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                                 ),
                               ) ??
                               false
-                          ? () {}
+                          ? () {
+                              final products = pendingAsync.value?.products;
+                              products?.removeWhere((key, value) {
+                                return key ==
+                                    ProductKey(
+                                      enterpriseCode: product.EnterpriseCode,
+                                      productPackingCode:
+                                          product.ProductPackingCode,
+                                    );
+                              });
+
+                              ref
+                                  .read(
+                                    pendingBuyRequestStateControllerProvider
+                                        .notifier,
+                                  )
+                                  .updatePending(
+                                    pendingAsync.value!.copyWith(
+                                      products: products,
+                                    ),
+                                  );
+                            }
                           : null,
                       itemBeforeProductName: TitleAndSubTitle(
                         title: null,
@@ -139,20 +213,87 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                         ),
                       ),
                       notClickableBottom: selectedIndex == index
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: Sizes.p8),
-                              child: Row(
-                                children: [
-                                  Expanded(child: DefaultTextFormField()),
-                                  gapW8,
-                                  Expanded(child: DefaultTextFormField()),
-                                  gapW8,
-                                  Expanded(
-                                    child: PrimaryButton(
-                                      text: 'Confirmar'.hardcoded,
+                          ? Form(
+                              key: fieldsFormKey,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: Sizes.p8),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Form(
+                                        key: quantityFormKey,
+                                        child: DefaultTextFormField(
+                                          focusNode: widget.quantityFocusNode,
+                                          controller: widget.quantityController,
+                                          labelText: 'Quantidade'.hardcoded,
+                                          hintText: 'Quantidade'.hardcoded,
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                decimal: true,
+                                                //TODO test in iOS
+                                              ),
+                                          validator: FormValidators.compose([
+                                            NonEmptyValidator(),
+                                            NumberValidator(
+                                              allowDecimal: true,
+                                              maxDecimalHouses: 3,
+                                            ),
+                                          ]),
+                                          maxLength: 13,
+                                          onFieldSubmitted: (_) {
+                                            if (quantityFormKey.currentState
+                                                    ?.validate() !=
+                                                true) {
+                                              widget.quantityFocusNode
+                                                  .requestFocus();
+                                            } else {
+                                              widget.costFocusNode
+                                                  .requestFocus();
+                                            }
+                                          },
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    gapW8,
+                                    Expanded(
+                                      child: DefaultTextFormField(
+                                        focusNode: widget.costFocusNode,
+                                        controller: widget.costController,
+                                        labelText: 'Custo'.hardcoded,
+                                        hintText: 'Custo'.hardcoded,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        keyboardType:
+                                            TextInputType.numberWithOptions(
+                                              decimal: true,
+                                              //TODO test in iOS
+                                            ),
+                                        validator: FormValidators.compose([
+                                          NonEmptyValidator(),
+                                          NumberValidator(
+                                            allowDecimal: true,
+                                            maxDecimalHouses: 4,
+                                          ),
+                                        ]),
+                                        maxLength: 13,
+                                        onFieldSubmitted: (_) {
+                                          insertProduct(pendingAsync, product);
+                                        },
+                                      ),
+                                    ),
+                                    gapW8,
+                                    Expanded(
+                                      child: PrimaryButton(
+                                        text: 'Confirmar'.hardcoded,
+                                        onPressed: () {
+                                          insertProduct(pendingAsync, product);
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             )
                           : null,

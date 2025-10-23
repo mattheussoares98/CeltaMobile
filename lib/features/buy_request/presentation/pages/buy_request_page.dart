@@ -19,12 +19,20 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   int currentIndex = 0;
   final identificationFormKey = GlobalKey<FormState>();
   final searchProductController = TextEditingController();
+  final quantityController = TextEditingController();
+  final costController = TextEditingController();
+  final quantityFocusNode = FocusNode();
+  final costFocusNode = FocusNode();
 
   @override
   void dispose() {
     super.dispose();
     supplierController.dispose();
     searchProductController.dispose();
+    quantityController.dispose();
+    costController.dispose();
+    quantityFocusNode.dispose();
+    costFocusNode.dispose();
   }
 
   @override
@@ -37,7 +45,13 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         identificationFormKey: identificationFormKey,
       ),
       EnterprisesPage(),
-      ProductsPage(searchProductController: searchProductController),
+      ProductsPage(
+        searchProductController: searchProductController,
+        quantityController: quantityController,
+        costController: costController,
+        quantityFocusNode: quantityFocusNode,
+        costFocusNode: costFocusNode,
+      ),
       ConfirmationPage(),
     ];
 
