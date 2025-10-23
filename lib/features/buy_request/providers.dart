@@ -47,3 +47,15 @@ ILocalPendingBuyRequestRepository LocalPendingBuyRequestRepository(Ref ref) {
     ref.watch(localPendingBuyRequestDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInsertBuyRequestDatasource soapInsertBuyRequestDatasource(Ref ref) {
+  return SoapInsertBuyRequestDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapInsertBuyRequestRepository SoapInsertBuyRequestRepository(Ref ref) {
+  return SoapInsertBuyRequestRepositoryImpl(
+    ref.watch(soapInsertBuyRequestDatasourceProvider),
+  );
+}
