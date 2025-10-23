@@ -96,7 +96,6 @@ class _AdjustSalePriceProductsPageState
                     itemBuilder: (_, index) {
                       final product = products[index];
                       return ProductItemWidget(
-                        enterpriseCode: widget.enterpriseCode,
                         product: product,
                         routine: BsRoutine.adjustSalePrice,
                         notClickableBottom: Padding(

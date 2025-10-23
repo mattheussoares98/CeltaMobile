@@ -114,7 +114,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
                     return ProductItemWidget(
                       onTap: () => onTap(index),
-                      enterpriseCode: selectedEnterprise?.Code ?? 0,
                       product: product,
                       routine: BsRoutine.buyRequest,
                       showDropIcon: true,

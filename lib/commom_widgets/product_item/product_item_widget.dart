@@ -9,7 +9,6 @@ import '../../features/adjust_sale_price/presentation/controllers/controllers.da
 import '../commom_widgets.dart';
 
 class ProductItemWidget extends ConsumerWidget {
-  final int enterpriseCode;
   final ProductEntity product;
   final BsRoutine routine;
   final Widget? notClickableBottom;
@@ -20,7 +19,6 @@ class ProductItemWidget extends ConsumerWidget {
   final Widget? itemBeforeProductName;
   const ProductItemWidget({
     super.key,
-    required this.enterpriseCode,
     required this.product,
     required this.routine,
     this.onTap,
@@ -38,7 +36,7 @@ class ProductItemWidget extends ConsumerWidget {
 
     final currentStockIndex = stocks.indexWhere(
       (e) =>
-          e.EnterpriseCode == enterpriseCode &&
+          e.EnterpriseCode == product.EnterpriseCode &&
           e.StockName.toLowerCase().contains(name.toLowerCase()),
     );
 
@@ -126,7 +124,7 @@ class ProductItemWidget extends ConsumerWidget {
                           ),
                           InfoButton(
                             product: product,
-                            enterpriseCode: enterpriseCode,
+                            enterpriseCode: product.EnterpriseCode,
                             routine: routine,
                           ),
                         ],

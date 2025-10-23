@@ -182,7 +182,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                           itemBuilder: (_, index) {
                             final product = products[index];
                             return ProductItemWidget(
-                              enterpriseCode: widget.enterpriseCode,
                               product: product,
                               routine: BsRoutine.adjustStock,
                               onTap: () {

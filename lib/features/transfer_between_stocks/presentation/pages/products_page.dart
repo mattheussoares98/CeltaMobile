@@ -206,7 +206,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       }
 
                       return ProductItemWidget(
-                        enterpriseCode: widget.enterpriseCode,
                         product: product,
                         routine: BsRoutine.adjustStock,
                         onTap: () {
