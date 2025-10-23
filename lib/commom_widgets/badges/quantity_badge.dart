@@ -23,9 +23,9 @@ class QuantityBadge extends StatelessWidget {
       label: CircleAvatar(
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
-        radius: 10,
+        radius: quantity?.toString().length == 1 ? 8 : 10,
         child: Padding(
-          padding: const EdgeInsets.all(2),
+          padding: EdgeInsets.all(quantity?.toString().length == 1 ? 1 : 2),
           child: Center(
             child: FittedBox(child: Text(quantity?.toString() ?? '0')),
           ),
