@@ -22,15 +22,14 @@ class RequestTypeDropdown extends ConsumerWidget {
     final pendingValue = pendingAsync.value;
 
     void update(RequestTypeEntity? request) {
+      final entity = (pendingValue ?? PendingBuyRequestEntity.empty())
+          .copyWith(selectedRequestType: request)
+          .annulValue(annulSelectedEnterprises: true, annulProducts: true);
       ref
           .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(
-            (pendingValue ?? PendingBuyRequestEntity.empty()).copyWith(
-              selectedRequestType: request,
-            ),
-          );
+          .updatePending(entity);
+
       ref.invalidate(enterprisesStateControllerProvider);
-      //TODO invalidate products
     }
 
     bool needShowAlertDialog(RequestTypeEntity? request) {
