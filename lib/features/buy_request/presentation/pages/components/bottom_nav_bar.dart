@@ -56,7 +56,11 @@ class BottomNavBar extends ConsumerWidget {
         BottomNavigationBarItem(
           label: 'Confirmação'.hardcoded,
           icon: ValidatedBadge(
-            isValid: true, //TODO change
+            isValid:
+                pendingAsync.value?.selectedBuyer != null &&
+                pendingAsync.value?.selectedRequestType != null &&
+                pendingAsync.value?.selectedSupplier != null &&
+                pendingAsync.value?.products?.isNotEmpty == true,
             materialIcon: Icons.check_box_outlined,
             cupertinoIcon: CupertinoIcons.checkmark_square,
             isSelected: currentIndex == 3,
