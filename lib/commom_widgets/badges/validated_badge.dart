@@ -31,7 +31,10 @@ class ValidatedBadge extends StatelessWidget {
       ),
       child: Icon(
         isIOS ? cupertinoIcon : materialIcon,
-        color: iconColor ?? theme.disabledColor,
+        color:
+            iconColor ??
+            theme
+                .disabledColor, //TODO change to "isSelected" param and treat here the color
       ),
     );
   }

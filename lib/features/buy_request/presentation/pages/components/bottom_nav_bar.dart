@@ -38,22 +38,20 @@ class BottomNavBar extends ConsumerWidget {
         ),
         BottomNavigationBarItem(
           label: 'Empresas'.hardcoded,
-          icon: ValidatedBadge(
-            isValid:
-                pendingAsync.value?.selectedEnterprises?.isNotEmpty ==
-                true, //TODO change
+          icon: QuantityBadge(
+            quantity: pendingAsync.value?.selectedEnterprises?.length,
             materialIcon: Icons.business,
             cupertinoIcon: CupertinoIcons.building_2_fill,
-            iconColor: currentIndex == 1 ? theme.primaryColor : null,
+            isSelected: currentIndex == 1,
           ),
         ),
         BottomNavigationBarItem(
           label: 'Produtos'.hardcoded,
-          icon: ValidatedBadge(
-            isValid: true, //TODO change
+          icon: QuantityBadge(
+            quantity: pendingAsync.value?.products?.length,
             materialIcon: Icons.shopping_cart,
             cupertinoIcon: CupertinoIcons.shopping_cart,
-            iconColor: currentIndex == 2 ? theme.primaryColor : null,
+            isSelected: currentIndex == 2,
           ),
         ),
         BottomNavigationBarItem(
