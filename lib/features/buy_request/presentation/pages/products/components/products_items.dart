@@ -103,14 +103,16 @@ class ProductsItems extends ConsumerWidget {
                           child: CostFormField(
                             costFocusNode: costFocusNode,
                             costController: costController,
-                            insertProduct: () => insertProduct,
+                            insertProduct: () =>
+                                insertProduct(pendingAsync, product),
                           ),
                         ),
                         gapW8,
                         Expanded(
                           child: PrimaryButton(
                             text: 'Confirmar'.hardcoded,
-                            onPressed: () => insertProduct,
+                            onPressed: () =>
+                                insertProduct(pendingAsync, product),
                           ),
                         ),
                       ],
