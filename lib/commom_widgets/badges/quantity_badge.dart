@@ -17,15 +17,17 @@ class QuantityBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    bool isSmall = (quantity?.toString() ?? '0').length <= 1;
     return Badge(
       offset: const Offset(8, -6),
       backgroundColor: Colors.transparent,
       label: CircleAvatar(
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
-        radius: quantity?.toString().length == 1 ? 8 : 10,
+        radius: isSmall ? 8 : 10,
         child: Padding(
-          padding: EdgeInsets.all(quantity?.toString().length == 1 ? 1 : 2),
+          padding: EdgeInsets.all(isSmall ? 1 : 2),
           child: Center(
             child: FittedBox(child: Text(quantity?.toString() ?? '0')),
           ),
