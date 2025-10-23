@@ -72,6 +72,18 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     final theme = Theme.of(context);
 
+    void onTap(int index) {
+      if (selectedIndex != index) {
+        setState(() {
+          selectedIndex = index;
+        });
+      } else {
+        setState(() {
+          selectedIndex = null;
+        });
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text('Produtos'.hardcoded)),
       body: Padding(
@@ -100,41 +112,39 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                         ?.selectedEnterprises
                         ?.firstWhere((e) => e.Code == product.EnterpriseCode);
 
-                    return Column(
-                      children: [
-                        ProductItemWidget(
-                          onTap: () {
-                            setState(() {
-                              selectedIndex = index;
-                            });
-                          },
-                          enterpriseCode: selectedEnterprise?.Code ?? 0,
-                          product: product,
-                          routine: BsRoutine.buyRequest,
-                          showDropIcon: true,
-                          isSelected: selectedIndex == index,
-                          itemBeforeProductName: TitleAndSubTitle(
-                            title: null,
-                            subTitle:
-                                '(${correspondentEnterprise?.PersonalizedCode}) - ${correspondentEnterprise?.name}',
-                            subTitleStyle: theme.textTheme.titleMedium
-                                ?.copyWith(color: theme.primaryColor),
-                          ),
-                          notClickableBottom: Row(
-                            children: [
-                              Expanded(child: DefaultTextFormField()),
-                              gapW8,
-                              Expanded(child: DefaultTextFormField()),
-                              gapW8,
-                              Expanded(
-                                child: PrimaryButton(
-                                  text: 'Confirmar'.hardcoded,
-                                ),
-                              ),
-                            ],
-                          ),
+                    return ProductItemWidget(
+                      onTap: () => onTap(index),
+                      enterpriseCode: selectedEnterprise?.Code ?? 0,
+                      product: product,
+                      routine: BsRoutine.buyRequest,
+                      showDropIcon: true,
+                      isSelected: selectedIndex == index,
+                      itemBeforeProductName: TitleAndSubTitle(
+                        title: null,
+                        subTitle:
+                            '(${correspondentEnterprise?.PersonalizedCode}) - ${correspondentEnterprise?.name}',
+                        subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                          color: theme.primaryColor,
                         ),
-                      ],
+                      ),
+                      notClickableBottom: selectedIndex == index
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: Sizes.p8),
+                              child: Row(
+                                children: [
+                                  Expanded(child: DefaultTextFormField()),
+                                  gapW8,
+                                  Expanded(child: DefaultTextFormField()),
+                                  gapW8,
+                                  Expanded(
+                                    child: PrimaryButton(
+                                      text: 'Confirmar'.hardcoded,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : null,
                     );
                   },
                 );
