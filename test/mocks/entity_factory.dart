@@ -570,6 +570,7 @@ class EntityFactory {
       selectedRequestType: makeRequestTypeEntity(),
       selectedBuyer: makeBuyerEntity(),
       selectedSupplier: makeSupplierEntity(),
+      lastSavedRequestNumber: faker.lorem.word(),
       products: {
         ProductKey(
           enterpriseCode: enterpriseCode,

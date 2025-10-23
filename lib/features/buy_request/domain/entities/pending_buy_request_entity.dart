@@ -9,6 +9,7 @@ class PendingBuyRequestEntity extends Equatable {
   final SupplierEntity? selectedSupplier;
   final List<EnterpriseEntity>? selectedEnterprises;
   final Map<ProductKey, BuyRequestProductItemEntity>? products;
+  final String? lastSavedRequestNumber;
 
   const PendingBuyRequestEntity({
     required this.selectedBuyer,
@@ -16,6 +17,7 @@ class PendingBuyRequestEntity extends Equatable {
     required this.selectedSupplier,
     required this.selectedEnterprises,
     required this.products,
+    required this.lastSavedRequestNumber,
   });
 
   @override
@@ -25,6 +27,7 @@ class PendingBuyRequestEntity extends Equatable {
     selectedSupplier,
     selectedEnterprises,
     products,
+    lastSavedRequestNumber,
   ];
 
   PendingBuyRequestEntity copyWith({
@@ -33,6 +36,7 @@ class PendingBuyRequestEntity extends Equatable {
     List<EnterpriseEntity>? selectedEnterprises,
     RequestTypeEntity? selectedRequestType,
     Map<ProductKey, BuyRequestProductItemEntity>? products,
+    String? lastSavedRequestNumber,
   }) {
     return PendingBuyRequestEntity(
       selectedBuyer: selectedBuyer ?? this.selectedBuyer,
@@ -40,6 +44,8 @@ class PendingBuyRequestEntity extends Equatable {
       selectedEnterprises: selectedEnterprises ?? this.selectedEnterprises,
       selectedRequestType: selectedRequestType ?? this.selectedRequestType,
       products: products ?? this.products,
+      lastSavedRequestNumber:
+          lastSavedRequestNumber ?? this.lastSavedRequestNumber,
     );
   }
 
@@ -49,6 +55,7 @@ class PendingBuyRequestEntity extends Equatable {
     bool? annulSelectedEnterprises,
     bool? annulSelectedRequestType,
     bool? annulProducts,
+    bool? annulLastSavedRequestNumber,
   }) {
     return PendingBuyRequestEntity(
       selectedBuyer: annulSelectedBuyer == true ? null : this.selectedBuyer,
@@ -62,6 +69,9 @@ class PendingBuyRequestEntity extends Equatable {
           ? null
           : this.selectedRequestType,
       products: annulProducts == true ? null : this.products,
+      lastSavedRequestNumber: annulLastSavedRequestNumber == true
+          ? null
+          : this.lastSavedRequestNumber,
     );
   }
 
@@ -71,5 +81,6 @@ class PendingBuyRequestEntity extends Equatable {
     selectedEnterprises: null,
     selectedRequestType: null,
     products: null,
+    lastSavedRequestNumber: null,
   );
 }

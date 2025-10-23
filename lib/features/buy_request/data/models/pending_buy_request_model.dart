@@ -10,6 +10,7 @@ class PendingBuyRequestModel extends Equatable {
   final RequestTypeModel? selectedRequestType;
   final List<SoapEnterpriseByFiltersModel>? selectedEnterprises;
   final Map<ProductKey, BuyRequestProductItemModel>? products;
+  final String? lastSavedRequestNumber;
 
   const PendingBuyRequestModel({
     required this.selectedBuyer,
@@ -17,6 +18,7 @@ class PendingBuyRequestModel extends Equatable {
     required this.selectedEnterprises,
     required this.selectedRequestType,
     required this.products,
+    required this.lastSavedRequestNumber,
   });
 
   @override
@@ -26,6 +28,7 @@ class PendingBuyRequestModel extends Equatable {
     selectedEnterprises,
     selectedRequestType,
     products,
+    lastSavedRequestNumber,
   ];
 
   factory PendingBuyRequestModel.fromJson(Map json) {
@@ -56,6 +59,7 @@ class PendingBuyRequestModel extends Equatable {
                 ),
               ),
             ),
+      lastSavedRequestNumber: json['lastSavedRequestNumber'],
     );
   }
 
@@ -71,6 +75,7 @@ class PendingBuyRequestModel extends Equatable {
               (entry) => MapEntry(entry.key.toMapKey(), entry.value.toJson()),
             ),
           ),
+    'lastSavedRequestNumber': lastSavedRequestNumber,
   };
 
   factory PendingBuyRequestModel.fromEntity(PendingBuyRequestEntity entity) {
@@ -84,6 +89,7 @@ class PendingBuyRequestModel extends Equatable {
       selectedEnterprises: entity.selectedEnterprises
           ?.map((e) => SoapEnterpriseByFiltersModel.fromEntity(e))
           .toList(),
+      lastSavedRequestNumber: entity.lastSavedRequestNumber,
       selectedRequestType: entity.selectedRequestType == null
           ? null
           : RequestTypeModel.fromEntity(entity.selectedRequestType!),
@@ -105,6 +111,7 @@ class PendingBuyRequestModel extends Equatable {
       selectedBuyer: selectedBuyer?.toEntity(),
       selectedSupplier: selectedSupplier?.toEntity(),
       selectedRequestType: selectedRequestType?.toEntity(),
+      lastSavedRequestNumber: lastSavedRequestNumber,
       selectedEnterprises: selectedEnterprises
           ?.map((e) => e.toEntity())
           .toList(),
