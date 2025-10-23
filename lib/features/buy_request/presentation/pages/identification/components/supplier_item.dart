@@ -27,9 +27,7 @@ class SupplierItem extends ConsumerWidget {
               selectedSupplier: newValue,
             );
 
-      if (pending?.selectedEnterprises != null &&
-          pending!.selectedEnterprises!.isNotEmpty) {
-        //TODO add validation when has products too
+      if (pending?.selectedEnterprises?.isNotEmpty == true) {
         showAlertDialog(
           context: context,
           title: 'Alterar fornecedor?'.hardcoded,
@@ -42,10 +40,12 @@ class SupplierItem extends ConsumerWidget {
             ref
                 .read(pendingBuyRequestStateControllerProvider.notifier)
                 .updatePending(
-                  entity.annulValue(annulSelectedEnterprises: true),
+                  entity.annulValue(
+                    annulSelectedEnterprises: true,
+                    annulProducts: true,
+                  ),
                 );
             ref.invalidate(enterprisesStateControllerProvider);
-            //TODO invalidate products
           },
         );
       } else {
