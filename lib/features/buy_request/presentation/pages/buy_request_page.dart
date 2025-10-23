@@ -71,6 +71,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
               backgroundColor: Colors.red,
             );
           } else if (currentIndex == 1 &&
+              index > 1 &&
               (pendingAsync.value?.selectedEnterprises == null ||
                   pendingAsync.value!.selectedEnterprises!.isEmpty)) {
             showSnackBarMessage(
