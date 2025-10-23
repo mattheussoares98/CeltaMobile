@@ -1042,3 +1042,23 @@ class LocalPendingBuyRequestDatasourceSpy extends Mock
     when(() => this.load()).thenAnswer((_) async => response);
   }
 }
+
+class SoapInsertBuyRequestDatasourceSpy extends Mock
+    implements ISoapInsertBuyRequestDatasource {
+  void mockInsert(String response) {
+    _mockInsertCall().thenAnswer((_) async => response);
+  }
+
+  When _mockInsertCall() => when(
+    () => this.insertBuyRequest(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+      buyerCode: any(named: 'buyerCode'),
+      requestTypeCode: any(named: 'requestTypeCode'),
+      supplierCode: any(named: 'supplierCode'),
+      observations: any(named: 'observations'),
+      enterpriseCodes: any(named: 'enterpriseCodes'),
+      products: any(named: 'products'),
+    ),
+  );
+}
