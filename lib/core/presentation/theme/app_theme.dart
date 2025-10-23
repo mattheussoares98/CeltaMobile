@@ -8,7 +8,7 @@ class AppTheme {
     final primaryColor = Colors.green;
     final primaryColorLight = Colors.lightGreenAccent;
     final primaryColorDark = Colors.green[900]!;
-    final secondaryColor = Colors.amber;
+    final secondaryColor = Colors.orange;
     final scaffoldBackgroundColor = Colors.white;
 
     return ThemeData(
