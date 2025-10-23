@@ -7,11 +7,11 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../core/validators/validators.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
+import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final TextEditingController searchProductController;
@@ -73,6 +73,43 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     });
   }
 
+  Future<void> searchProducts(
+    EnterpriseEntity? selectedEnterprise,
+    AsyncValue<PendingBuyRequestEntity> pendingAsync,
+  ) async {
+    await ref
+        .read(
+          searchProductsStateControllerProvider(
+            selectedEnterprise?.Code ?? 0,
+            BsRoutine.buyRequest,
+            Modules.buyRequest,
+          ).notifier,
+        )
+        .loadProducts(
+          enterpriseCodes:
+              pendingAsync.value?.selectedEnterprises
+                  ?.map((e) => e.Code!)
+                  .toList() ??
+              [],
+          searchValue: widget.searchProductController.text,
+        );
+  }
+
+  void onTap(int index) {
+    if (selectedIndex != index) {
+      setState(() {
+        selectedIndex = index;
+      });
+      Future.delayed(Duration(milliseconds: 100), () {
+        widget.quantityFocusNode.requestFocus();
+      });
+    } else {
+      setState(() {
+        selectedIndex = null;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedEnterprise = ref.watch(
@@ -102,42 +139,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
-    Future<void> searchProducts() async {
-      await ref
-          .read(
-            searchProductsStateControllerProvider(
-              selectedEnterprise?.Code ?? 0,
-              BsRoutine.buyRequest,
-              Modules.buyRequest,
-            ).notifier,
-          )
-          .loadProducts(
-            enterpriseCodes:
-                pendingAsync.value?.selectedEnterprises
-                    ?.map((e) => e.Code!)
-                    .toList() ??
-                [],
-            searchValue: widget.searchProductController.text,
-          );
-    }
-
-    final theme = Theme.of(context);
-
-    void onTap(int index) {
-      if (selectedIndex != index) {
-        setState(() {
-          selectedIndex = index;
-        });
-        Future.delayed(Duration(milliseconds: 100), () {
-          widget.quantityFocusNode.requestFocus();
-        });
-      } else {
-        setState(() {
-          selectedIndex = null;
-        });
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(title: Text('Produtos'.hardcoded)),
       body: Padding(
@@ -147,7 +148,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             SliverToBoxAdapter(
               child: DefaultSearchProducts(
                 isLoading: productsState.isLoading,
-                searchProducts: searchProducts,
+                searchProducts: () =>
+                    searchProducts(selectedEnterprise, pendingAsync),
                 searchValueController: widget.searchProductController,
               ),
             ),
@@ -156,149 +158,17 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               value: productsState,
               tryAgain: null,
               data: (products) {
-                return SliverList.builder(
-                  itemCount: products.length,
-                  itemBuilder: (_, index) {
-                    final product = products[index];
-
-                    final correspondentEnterprise = pendingAsync
-                        .value
-                        ?.selectedEnterprises
-                        ?.firstWhere((e) => e.Code == product.EnterpriseCode);
-
-                    return ProductItemWidget(
-                      onTap: () => onTap(index),
-                      product: product,
-                      routine: BsRoutine.buyRequest,
-                      showDropIcon: true,
-                      isSelected: selectedIndex == index,
-                      onDelete:
-                          pendingAsync.value?.products?.containsKey(
-                                ProductKey(
-                                  enterpriseCode: product.EnterpriseCode,
-                                  productPackingCode:
-                                      product.ProductPackingCode,
-                                ),
-                              ) ??
-                              false
-                          ? () {
-                              final products = pendingAsync.value?.products;
-                              products?.removeWhere((key, value) {
-                                return key ==
-                                    ProductKey(
-                                      enterpriseCode: product.EnterpriseCode,
-                                      productPackingCode:
-                                          product.ProductPackingCode,
-                                    );
-                              });
-
-                              ref
-                                  .read(
-                                    pendingBuyRequestStateControllerProvider
-                                        .notifier,
-                                  )
-                                  .updatePending(
-                                    pendingAsync.value!.copyWith(
-                                      products: products,
-                                    ),
-                                  );
-                            }
-                          : null,
-                      itemBeforeProductName: TitleAndSubTitle(
-                        title: null,
-                        subTitle:
-                            '(${correspondentEnterprise?.PersonalizedCode}) - ${correspondentEnterprise?.name}',
-                        subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.primaryColor,
-                        ),
-                      ),
-                      notClickableBottom: selectedIndex == index
-                          ? Form(
-                              key: fieldsFormKey,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: Sizes.p8),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Form(
-                                        key: quantityFormKey,
-                                        child: DefaultTextFormField(
-                                          focusNode: widget.quantityFocusNode,
-                                          controller: widget.quantityController,
-                                          labelText: 'Quantidade'.hardcoded,
-                                          hintText: 'Quantidade'.hardcoded,
-                                          autovalidateMode: AutovalidateMode
-                                              .onUserInteraction,
-                                          keyboardType:
-                                              TextInputType.numberWithOptions(
-                                                decimal: true,
-                                                //TODO test in iOS
-                                              ),
-                                          validator: FormValidators.compose([
-                                            NonEmptyValidator(),
-                                            NumberValidator(
-                                              allowDecimal: true,
-                                              maxDecimalHouses: 3,
-                                            ),
-                                          ]),
-                                          maxLength: 13,
-                                          onFieldSubmitted: (_) {
-                                            if (quantityFormKey.currentState
-                                                    ?.validate() !=
-                                                true) {
-                                              widget.quantityFocusNode
-                                                  .requestFocus();
-                                            } else {
-                                              widget.costFocusNode
-                                                  .requestFocus();
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    gapW8,
-                                    Expanded(
-                                      child: DefaultTextFormField(
-                                        focusNode: widget.costFocusNode,
-                                        controller: widget.costController,
-                                        labelText: 'Custo'.hardcoded,
-                                        hintText: 'Custo'.hardcoded,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        keyboardType:
-                                            TextInputType.numberWithOptions(
-                                              decimal: true,
-                                              //TODO test in iOS
-                                            ),
-                                        validator: FormValidators.compose([
-                                          NonEmptyValidator(),
-                                          NumberValidator(
-                                            allowDecimal: true,
-                                            maxDecimalHouses: 4,
-                                          ),
-                                        ]),
-                                        maxLength: 13,
-                                        onFieldSubmitted: (_) {
-                                          insertProduct(pendingAsync, product);
-                                        },
-                                      ),
-                                    ),
-                                    gapW8,
-                                    Expanded(
-                                      child: PrimaryButton(
-                                        text: 'Confirmar'.hardcoded,
-                                        onPressed: () {
-                                          insertProduct(pendingAsync, product);
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : null,
-                    );
-                  },
+                return ProductsItems(
+                  selectedIndex: selectedIndex,
+                  products: products,
+                  onTap: onTap,
+                  fieldsFormKey: fieldsFormKey,
+                  quantityFormKey: quantityFormKey,
+                  quantityFocusNode: widget.quantityFocusNode,
+                  quantityController: widget.quantityController,
+                  costFocusNode: widget.costFocusNode,
+                  costController: widget.costController,
+                  insertProduct: insertProduct,
                 );
               },
             ),
