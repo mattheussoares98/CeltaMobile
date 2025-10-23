@@ -49,7 +49,7 @@ class PendingBuyRequestModel extends Equatable {
       products: json['products'] == null
           ? null
           : Map.fromEntries(
-              (json['products'] as Map<String, dynamic>).entries.map(
+              (json['products'] as Map).entries.map(
                 (entry) => MapEntry(
                   ProductKey.fromMapKey(entry.key),
                   BuyRequestProductItemModel.fromJson(entry.value),
