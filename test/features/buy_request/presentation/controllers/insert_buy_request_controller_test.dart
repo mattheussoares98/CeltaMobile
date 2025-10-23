@@ -15,12 +15,23 @@ import '../../../../mocks/mocks.dart';
 class FakePendingBuyRequest extends PendingBuyRequestStateController {
   final PendingBuyRequestEntity? requestToReturn;
   FakePendingBuyRequest(this.requestToReturn);
+
+  PendingBuyRequestEntity? updatedEntity;
+
   @override
   Future<PendingBuyRequestEntity> build() async {
     if (requestToReturn == null) {
       throw AppException('Pedido pendente inválido.');
     }
     return requestToReturn!;
+  }
+
+  // We override updatePending to "spy" on the value passed to it.
+  @override
+  Future<void> updatePending(PendingBuyRequestEntity entity) async {
+    updatedEntity = entity;
+    // We don't need to call super() or update the state,
+    // just record the value.
   }
 }
 
@@ -54,6 +65,7 @@ void main() {
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
     PendingBuyRequestEntity? pendingRequest,
+    FakePendingBuyRequest? pendingBuyRequestStateController,
   }) {
     return ProviderContainer(
       overrides: [
@@ -64,7 +76,9 @@ void main() {
           () => FakeValidatedUserSession(session),
         ),
         pendingBuyRequestStateControllerProvider.overrideWith(
-          () => FakePendingBuyRequest(pendingRequest),
+          () =>
+              pendingBuyRequestStateController ??
+              FakePendingBuyRequest(pendingRequest),
         ),
       ],
     );
@@ -147,5 +161,54 @@ void main() {
         throwsA(isA<AppException>()),
       );
     });
+
+    test(
+      'should call updatePending with correct data after successful insert',
+      () async {
+        // 1. Create a spy
+        final pendingBuyRequestStateController = FakePendingBuyRequest(
+          fakePendingRequest,
+        );
+        // 2. Stub the repository to return the fake request number
+        when(
+          () => mockRepository.insertBuyRequest(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            buyerCode: any(named: 'buyerCode'),
+            requestTypeCode: any(named: 'requestTypeCode'),
+            supplierCode: any(named: 'supplierCode'),
+            enterpriseCodes: any(named: 'enterpriseCodes'),
+            observations: any(named: 'observations'),
+            products: any(named: 'products'),
+          ),
+        ).thenAnswer(
+          (_) async => fakeLastSavedRequestNumber,
+        ); // Return the fake ID
+
+        // 3. Create the container and pass in the spy
+        final pendingBuyRequestEntity =
+            EntityFactory.makePendingBuyRequestEntity();
+        final container = makeProviderContainer(
+          session: fakeSession,
+          pendingRequest: pendingBuyRequestEntity,
+          pendingBuyRequestStateController: pendingBuyRequestStateController,
+        );
+        addTearDown(container.dispose);
+
+        // ACT
+        await container.read(
+          insertBuyRequestControllerProvider(fakeObservations ?? '').future,
+        );
+
+        // ASSERT
+        // Check the 'updatedEntity' property on our spy
+        expect(
+          pendingBuyRequestStateController.updatedEntity,
+          PendingBuyRequestEntity.empty().copyWith(
+            lastSavedRequestNumber: fakeLastSavedRequestNumber,
+          ),
+        );
+      },
+    );
   });
 }

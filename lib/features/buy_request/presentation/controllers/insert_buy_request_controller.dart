@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 import 'controllers.dart';
 
@@ -13,10 +14,10 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
     final pending = await ref.read(
       pendingBuyRequestStateControllerProvider.future,
-      //TODO add property of last saved number and allow always go to confirm page
+      //TODO allow always go to confirm page to see the last saved request number
     );
 
-    await ref
+    final response = await ref
         .read(soapInsertBuyRequestRepositoryProvider)
         .insertBuyRequest(
           baseUrl: userSession!.enterprise!.baseUrl!,
@@ -29,6 +30,14 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
               .toList(),
           observations: observations,
           products: pending.products!.values.map((e) => e).toList(),
+        );
+
+    ref
+        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .updatePending(
+          PendingBuyRequestEntity.empty().copyWith(
+            lastSavedRequestNumber: response,
+          ),
         );
   }
 }
