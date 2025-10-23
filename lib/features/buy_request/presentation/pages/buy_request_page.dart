@@ -96,28 +96,54 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       bottomNavigationBar: BottomNavBar(
         currentIndex: currentIndex,
         onTap: (index) {
-          if (currentIndex == 0 &&
-              identificationFormKey.currentState?.validate() != true) {
+          bool needValidate = index > currentIndex;
+          if (!needValidate) {
+            setState(() => currentIndex = index);
             return;
-          } else if (currentIndex == 0 &&
-              pendingAsync.value?.selectedSupplier == null) {
-            showSnackBarMessage(
-              context,
-              'Selecione um fornecedor'.hardcoded,
-              backgroundColor: Colors.red,
-            );
-          } else if (currentIndex == 1 &&
-              index > 1 &&
-              (pendingAsync.value?.selectedEnterprises == null ||
-                  pendingAsync.value!.selectedEnterprises!.isEmpty)) {
+          }
+
+          bool enterprisesAreValid =
+              pendingAsync.value?.selectedEnterprises != null &&
+              pendingAsync.value!.selectedEnterprises!.isNotEmpty;
+          bool productsAreValid =
+              pendingAsync.value?.products != null &&
+              pendingAsync.value!.products!.isNotEmpty;
+
+          //! cant exit the first page in these cases
+          if (currentIndex == 0) {
+            //1- form fields not valid
+            if (identificationFormKey.currentState?.validate() != true) {
+              return;
+            } else if (pendingAsync.value?.selectedSupplier == null) {
+              //2- supplier not selected
+              showSnackBarMessage(
+                context,
+                'Selecione um fornecedor'.hardcoded,
+                backgroundColor: Colors.red,
+              );
+              return;
+            }
+          }
+
+          if (index > 1 && !enterprisesAreValid) {
             showSnackBarMessage(
               context,
               'Selecione pelo menos uma empresa'.hardcoded,
               backgroundColor: Colors.red,
             );
-          } else {
-            setState(() => currentIndex = index);
+            return;
+          } else if (index > 2) {
+            if (!productsAreValid) {
+              showSnackBarMessage(
+                context,
+                'Insira pelo menos um produto'.hardcoded,
+                backgroundColor: Colors.red,
+              );
+              return;
+            }
           }
+
+          setState(() => currentIndex = index);
         },
       ),
     );
