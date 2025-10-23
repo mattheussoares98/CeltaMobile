@@ -66,23 +66,27 @@ class ProductsItems extends ConsumerWidget {
       itemBuilder: (_, index) {
         final product = products[index];
 
+        final productKey = ProductKey(
+          enterpriseCode: product.EnterpriseCode,
+          productPackingCode: product.ProductPackingCode,
+        );
+
+        BuyRequestProductItemEntity? insertedItem =
+            pendingAsync.value?.products?[productKey];
+
         return ProductItemWidget(
           onTap: () => onTap(index),
           product: product,
           routine: BsRoutine.buyRequest,
           showDropIcon: true,
           isSelected: selectedIndex == index,
-          onDelete:
-              pendingAsync.value?.products?.containsKey(
-                    ProductKey(
-                      enterpriseCode: product.EnterpriseCode,
-                      productPackingCode: product.ProductPackingCode,
-                    ),
-                  ) ??
-                  false
-              ? () => onDelete(product, pendingAsync)
-              : null,
+          onDelete: insertedItem == null
+              ? null
+              : () => onDelete(product, pendingAsync),
           itemBeforeProductName: EnterpriseCodeAndProductName(product: product),
+          clickableBottom: insertedItem == null
+              ? null
+              : CostQuantityAndTotalWritten(insertedItem: insertedItem),
           notClickableBottom: selectedIndex == index
               ? Form(
                   key: fieldsFormKey,
