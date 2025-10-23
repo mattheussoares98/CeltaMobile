@@ -8,7 +8,6 @@ import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
-import '../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
@@ -74,13 +73,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   }
 
   Future<void> searchProducts(
-    EnterpriseEntity? selectedEnterprise,
     AsyncValue<PendingBuyRequestEntity> pendingAsync,
   ) async {
     await ref
         .read(
           searchProductsStateControllerProvider(
-            selectedEnterprise?.Code ?? 0,
+            0,
             BsRoutine.buyRequest,
             Modules.buyRequest,
           ).notifier,
@@ -120,13 +118,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedEnterprise = ref.watch(
-      selectedEnterpriseStateControllerProvider,
-    );
-
     ref.listen(
       searchProductsStateControllerProvider(
-        selectedEnterprise?.Code ?? 0,
+        0,
         BsRoutine.buyRequest,
         Modules.buyRequest,
       ),
@@ -139,7 +133,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     final productsState = ref.watch(
       searchProductsStateControllerProvider(
-        selectedEnterprise?.Code ?? 0,
+        0,
         BsRoutine.buyRequest,
         Modules.buyRequest,
       ),
@@ -156,8 +150,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             SliverToBoxAdapter(
               child: DefaultSearchProducts(
                 isLoading: productsState.isLoading,
-                searchProducts: () =>
-                    searchProducts(selectedEnterprise, pendingAsync),
+                searchProducts: () => searchProducts(pendingAsync),
                 searchValueController: widget.searchProductController,
               ),
             ),
