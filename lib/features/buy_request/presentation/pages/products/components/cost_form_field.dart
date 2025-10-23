@@ -19,6 +19,15 @@ class CostFormField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTextFormField(
+      onTap: () {
+        if (costFocusNode.hasFocus) {
+          return;
+        }
+        costController.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: costController.text.length,
+        );
+      },
       focusNode: costFocusNode,
       controller: costController,
       labelText: 'Custo'.hardcoded,

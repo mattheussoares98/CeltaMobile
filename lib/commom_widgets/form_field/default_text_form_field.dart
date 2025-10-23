@@ -23,6 +23,7 @@ class DefaultTextFormField extends StatelessWidget {
   final int? maxLength;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
+  final VoidCallback? onTap;
   const DefaultTextFormField({
     super.key,
     this.maxLength,
@@ -40,6 +41,7 @@ class DefaultTextFormField extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.inputFormatters,
+    this.onTap,
     this.obscureText = false,
   });
 
@@ -63,6 +65,7 @@ class DefaultTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       maxLength: maxLength,
       onChanged: onChanged,
+      onTap: onTap,
       buildCounter:
           (
             context, {

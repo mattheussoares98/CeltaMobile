@@ -57,6 +57,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CupertinoTextField(
+              onTap: widget.defaultTextFormField.onTap,
               inputFormatters: widget.defaultTextFormField.inputFormatters,
               controller: widget.defaultTextFormField.controller,
               placeholder:
