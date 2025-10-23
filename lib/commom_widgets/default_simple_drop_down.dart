@@ -12,6 +12,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
   final String? Function(T?)? validator;
   final bool? isLoading;
   final AutovalidateMode? autovalidateMode;
+  final void Function(T?)? onTap;
 
   const DefaultSimpleDropDown({
     super.key,
@@ -22,6 +23,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
     this.validator,
     this.isLoading,
     this.autovalidateMode,
+    this.onTap,
   });
 
   @override
@@ -32,6 +34,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
       child: InkWell(
         onTap: onChanged == null ? null : () {},
         child: DropdownButtonFormField<T>(
+          onTap: onTap == null ? null : () => onTap!(value),
           decoration: InputDecoration(
             border: InputBorder.none,
             errorBorder: OutlineInputBorder(borderSide: BorderSide.none),

@@ -22,6 +22,9 @@ class RequestTypeDropdown extends ConsumerWidget {
     final pendingValue = pendingAsync.value;
 
     void update(RequestTypeEntity? request) {
+      if (request == pendingValue?.selectedRequestType) {
+        return;
+      }
       final entity = (pendingValue ?? PendingBuyRequestEntity.empty())
           .copyWith(selectedRequestType: request)
           .annulValue(annulSelectedEnterprises: true, annulProducts: true);
@@ -30,19 +33,6 @@ class RequestTypeDropdown extends ConsumerWidget {
           .updatePending(entity);
 
       ref.invalidate(enterprisesStateControllerProvider);
-    }
-
-    bool needShowAlertDialog(RequestTypeEntity? request) {
-      if (pendingValue?.selectedEnterprises == null) {
-        return false;
-      } else if (pendingValue!.selectedEnterprises!.isEmpty) {
-        return false;
-      } else if (pendingValue.selectedRequestType == null) {
-        return false;
-      } else if (pendingValue.selectedRequestType == request) {
-        return false;
-      }
-      return true;
     }
 
     return AsyncValueSliverWidget(
@@ -58,22 +48,19 @@ class RequestTypeDropdown extends ConsumerWidget {
               DefaultSmallTitle(title: 'Modelo de pedido'.hardcoded),
               gapH4,
               DefaultSimpleDropDown<RequestTypeEntity?>(
-                onChanged: (request) {
-                  if (needShowAlertDialog(request)) {
+                onTap: (request) {
+                  if (pendingValue?.selectedEnterprises?.isNotEmpty == true) {
                     showAlertDialog(
                       context: context,
                       title: 'Atenção!'.hardcoded,
                       content:
                           'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'
                               .hardcoded,
-                      cancelActionText: 'Cancelar'.hardcoded,
-                      onOkPressed: () {
-                        update(request);
-                      },
                     );
-                  } else {
-                    update(request);
                   }
+                },
+                onChanged: (request) {
+                  update(request);
                 },
                 items: requests
                     ?.map(
