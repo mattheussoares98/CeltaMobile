@@ -8,12 +8,14 @@ class QuantityFormField extends StatelessWidget {
   final GlobalKey<FormState> quantityFormKey;
   final FocusNode quantityFocusNode;
   final TextEditingController quantityController;
+  final TextEditingController costController;
   final FocusNode costFocusNode;
   const QuantityFormField({
     super.key,
     required this.quantityFormKey,
     required this.quantityFocusNode,
     required this.quantityController,
+    required this.costController,
     required this.costFocusNode,
   });
 
@@ -40,6 +42,10 @@ class QuantityFormField extends StatelessWidget {
           if (quantityFormKey.currentState?.validate() != true) {
             quantityFocusNode.requestFocus();
           } else {
+            costController.selection = TextSelection(
+              baseOffset: 0,
+              extentOffset: costController.text.length,
+            );
             costFocusNode.requestFocus();
           }
         },

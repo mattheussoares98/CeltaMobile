@@ -99,6 +99,7 @@ class ProductsItems extends ConsumerWidget {
                             quantityFormKey: quantityFormKey,
                             quantityFocusNode: quantityFocusNode,
                             quantityController: quantityController,
+                            costController: costController,
                             costFocusNode: costFocusNode,
                           ),
                         ),
