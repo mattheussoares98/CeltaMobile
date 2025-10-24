@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,7 +39,6 @@ class _IdentificationPageState extends ConsumerState<IdentificationPage> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('Identificação'.hardcoded)),
       body: Form(
         key: widget.identificationFormKey,
         child: ResponsiveScrollableWidget(

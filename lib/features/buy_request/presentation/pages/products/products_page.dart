@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -94,7 +93,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Produtos'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
         child: CustomScrollView(

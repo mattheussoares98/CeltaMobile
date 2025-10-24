@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +13,6 @@ class EnterprisesPage extends ConsumerWidget {
     final enterprisesAsync = ref.watch(enterprisesStateControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Empresas'.hardcoded)),
       body: ResponsiveScrollableWidget(
         isSliverPage: true, //TODO change this param name
         child: AsyncValueWidget(

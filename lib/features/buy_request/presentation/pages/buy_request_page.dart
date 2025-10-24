@@ -138,6 +138,13 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     }
   }
 
+  final appBarTitles = [
+    'Identificação'.hardcoded,
+    'Empresas'.hardcoded,
+    'Produtos'.hardcoded,
+    'Confirmação'.hardcoded,
+  ];
+
   @override
   Widget build(BuildContext context) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
@@ -175,6 +182,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     ];
 
     return Scaffold(
+      appBar: AppBar(title: Text(appBarTitles[currentIndex])),
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavBar(
         currentIndex: currentIndex,

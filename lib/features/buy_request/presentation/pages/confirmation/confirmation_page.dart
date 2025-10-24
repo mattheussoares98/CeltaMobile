@@ -26,7 +26,6 @@ class ConfirmationPage extends ConsumerWidget {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Confirmação'.hardcoded)),
       body: ResponsiveScrollableWidget(
         isSliverPage: true,
         child: CustomScrollView(
