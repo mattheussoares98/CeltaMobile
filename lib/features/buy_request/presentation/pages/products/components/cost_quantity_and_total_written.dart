@@ -34,7 +34,7 @@ class CostQuantityAndTotalWritten extends StatelessWidget {
           title: 'Total'.hardcoded,
           subTitleIsPrice: true,
           subTitle: (insertedItem.cost * insertedItem.quantity)
-              .toString()
+              .toStringAsFixed(4)
               .toBrazilianNumber(4, true),
           titleStyle: theme.textTheme.titleSmall?.copyWith(color: color),
           subTitleStyle: theme.textTheme.titleSmall?.copyWith(color: color),

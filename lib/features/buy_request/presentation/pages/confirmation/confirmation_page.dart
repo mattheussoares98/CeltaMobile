@@ -26,6 +26,7 @@ class ConfirmationPage extends ConsumerWidget {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     return Scaffold(
+      persistentFooterButtons: [Footer(pendingAsync: pendingAsync)],
       body: ResponsiveScrollableWidget(
         isSliverPage: true,
         child: CustomScrollView(
@@ -83,13 +84,18 @@ class ConfirmationPage extends ConsumerWidget {
                   );
                 },
               ),
+              gapSliverH8,
             ] else
               UnselectedMessage(title: 'Nenhuma empresa selecionada'.hardcoded),
             if (pendingAsync.value?.products != null &&
                 pendingAsync.value!.products!.isNotEmpty) ...[
               SliverToBoxAdapter(
-                child: DefaultSmallTitle(title: 'Produtos'.hardcoded),
+                child: DefaultSmallTitle(
+                  title: 'Produtos (${pendingAsync.value!.products!.length})'
+                      .hardcoded,
+                ),
               ),
+              gapSliverH8,
               ProductsItems(
                 products:
                     pendingAsync.value?.products?.values
