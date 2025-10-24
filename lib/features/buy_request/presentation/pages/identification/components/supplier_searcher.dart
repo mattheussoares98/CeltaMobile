@@ -46,7 +46,11 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
         ref
             .read(pendingBuyRequestStateControllerProvider.notifier)
             .updatePending(
-              pendingAsync.value!.annulValue(annulSelectedSupplier: true),
+              pendingAsync.value!.annulValue(
+                annulSelectedSupplier: true,
+                annulSelectedEnterprises: true,
+                annulProducts: true,
+              ),
             );
       }
 
@@ -87,7 +91,27 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
               maxLength: 50,
               validator: FormValidators.compose([NonEmptyValidator()]),
               onFieldSubmitted: (value) {
-                loadSuppliers();
+                bool hasSelectedEnterprises =
+                    pendingAsync.value?.selectedEnterprises?.isNotEmpty ??
+                    false;
+                bool hasSelectedProducts =
+                    pendingAsync.value?.products?.isNotEmpty ?? false;
+
+                if (pendingAsync.value?.selectedSupplier != null &&
+                    (hasSelectedEnterprises || hasSelectedProducts)) {
+                  showAlertDialog(
+                    context: context,
+                    title: 'Consultar fornecedores?'.hardcoded,
+                    content:
+                        'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'
+                            .hardcoded,
+                    cancelActionText: 'Cancelar'.hardcoded,
+                    defaultActionText: 'Consultar'.hardcoded,
+                    onOkPressed: loadSuppliers,
+                  );
+                } else {
+                  loadSuppliers();
+                }
               },
               prefixIcon: IconButton(
                 onPressed: () {

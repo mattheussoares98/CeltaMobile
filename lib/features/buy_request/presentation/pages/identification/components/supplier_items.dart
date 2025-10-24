@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
@@ -17,6 +18,10 @@ class SupplierItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+
+    if (pendingAsync.isLoading) {
+      return SliverToBoxAdapter(child: LoadingWidget());
+    }
 
     return SliverList.builder(
       itemCount: suppliersState.value?.length ?? suppliers.length,
