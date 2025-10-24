@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../core/providers/supplier/supplier.dart';
+import '../../../domain/entities/entities.dart';
+import '../user_session/user_session.dart';
+import '../../../providers/supplier/supplier.dart';
 
 part 'supplier_state_controller.g.dart';
 
