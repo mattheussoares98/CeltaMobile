@@ -50,37 +50,43 @@ class DefaultTextFormField extends StatelessWidget {
     final theme = Theme.of(context);
 
     if (theme.platform == TargetPlatform.iOS) {
-      return CupertinoFormField(defaultTextFormField: this);
+      return Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: CupertinoFormField(defaultTextFormField: this),
+      );
     }
-    return TextFormField(
-      key: ValueKey(Random().nextDouble()),
-      enabled: enabled,
-      controller: controller,
-      autovalidateMode: autovalidateMode,
-      onFieldSubmitted: onFieldSubmitted,
-      inputFormatters: inputFormatters,
-      validator: validator,
-      obscureText: obscureText,
-      focusNode: focusNode,
-      keyboardType: keyboardType,
-      maxLength: maxLength,
-      onChanged: onChanged,
-      onTap: onTap,
-      buildCounter:
-          (
-            context, {
-            required currentLength,
-            required isFocused,
-            required maxLength,
-          }) => null,
-      decoration: AppDecorations.input(
-        enabled: enabled ?? true,
-        context: context,
-        labelText: labelText,
-        hintText: hintText,
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
-        errorText: errorText,
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: TextFormField(
+        key: ValueKey(Random().nextDouble()),
+        enabled: enabled,
+        controller: controller,
+        autovalidateMode: autovalidateMode,
+        onFieldSubmitted: onFieldSubmitted,
+        inputFormatters: inputFormatters,
+        validator: validator,
+        obscureText: obscureText,
+        focusNode: focusNode,
+        keyboardType: keyboardType,
+        maxLength: maxLength,
+        onChanged: onChanged,
+        onTap: onTap,
+        buildCounter:
+            (
+              context, {
+              required currentLength,
+              required isFocused,
+              required maxLength,
+            }) => null,
+        decoration: AppDecorations.input(
+          enabled: enabled ?? true,
+          context: context,
+          labelText: labelText,
+          hintText: hintText,
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          errorText: errorText,
+        ),
       ),
     );
   }
