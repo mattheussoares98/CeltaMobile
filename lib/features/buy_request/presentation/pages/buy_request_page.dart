@@ -85,6 +85,11 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     AsyncValue<PendingBuyRequestEntity> pendingAsync,
     ProductEntity product,
   ) {
+    if (productsQuantityFormKey.currentState?.validate() != true) {
+      quantityFocusNode.requestFocus();
+      return;
+    }
+
     if (productsFieldsFormKey.currentState?.validate() != true) {
       costFocusNode.requestFocus();
       return;
