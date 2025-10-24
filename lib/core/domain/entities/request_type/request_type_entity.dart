@@ -12,6 +12,8 @@ class RequestTypeEntity extends Equatable {
   final String UseWholePriceString;
   final String UnitValueTypeString;
   final String TransferUnitValueTypeString;
+  final bool AllowDiscount;
+  final bool AllowAlterCostOrSalePrice;
 
   const RequestTypeEntity({
     required this.Code,
@@ -25,6 +27,8 @@ class RequestTypeEntity extends Equatable {
     required this.UseWholePriceString,
     required this.UnitValueTypeString,
     required this.TransferUnitValueTypeString,
+    required this.AllowDiscount,
+    required this.AllowAlterCostOrSalePrice,
   });
 
   @override
@@ -40,5 +44,7 @@ class RequestTypeEntity extends Equatable {
     UnitValueTypeString,
     TransferUnitValueType,
     TransferUnitValueTypeString,
+    AllowDiscount,
+    AllowAlterCostOrSalePrice,
   ];
 }

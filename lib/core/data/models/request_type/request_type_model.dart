@@ -14,6 +14,8 @@ class RequestTypeModel extends Equatable {
   final String UnitValueTypeString;
   final int TransferUnitValueType;
   final String TransferUnitValueTypeString;
+  final bool AllowDiscount;
+  final bool AllowAlterCostOrSalePrice;
 
   const RequestTypeModel({
     required this.Code,
@@ -27,6 +29,8 @@ class RequestTypeModel extends Equatable {
     required this.UnitValueTypeString,
     required this.TransferUnitValueType,
     required this.TransferUnitValueTypeString,
+    required this.AllowDiscount,
+    required this.AllowAlterCostOrSalePrice,
   });
 
   @override
@@ -42,6 +46,8 @@ class RequestTypeModel extends Equatable {
     UnitValueTypeString,
     TransferUnitValueType,
     TransferUnitValueTypeString,
+    AllowDiscount,
+    AllowAlterCostOrSalePrice,
   ];
 
   factory RequestTypeModel.fromJson(Map json) => RequestTypeModel(
@@ -56,6 +62,8 @@ class RequestTypeModel extends Equatable {
     UnitValueTypeString: json['UnitValueTypeString'] as String,
     TransferUnitValueType: json['TransferUnitValueType'] as int,
     TransferUnitValueTypeString: json['TransferUnitValueTypeString'] as String,
+    AllowDiscount: json['AllowDiscount'] as bool,
+    AllowAlterCostOrSalePrice: json['AllowAlterCostOrSalePrice'] as bool,
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -70,6 +78,8 @@ class RequestTypeModel extends Equatable {
     'UnitValueTypeString': UnitValueTypeString,
     'TransferUnitValueType': TransferUnitValueType,
     'TransferUnitValueTypeString': TransferUnitValueTypeString,
+    'AllowDiscount': AllowDiscount,
+    'AllowAlterCostOrSalePrice': AllowAlterCostOrSalePrice,
   };
 
   factory RequestTypeModel.fromEntity(RequestTypeEntity entity) =>
@@ -85,6 +95,8 @@ class RequestTypeModel extends Equatable {
         UnitValueTypeString: entity.UnitValueTypeString,
         TransferUnitValueType: entity.TransferUnitValueType,
         TransferUnitValueTypeString: entity.TransferUnitValueTypeString,
+        AllowDiscount: entity.AllowDiscount,
+        AllowAlterCostOrSalePrice: entity.AllowAlterCostOrSalePrice,
       );
 
   RequestTypeEntity toEntity() => RequestTypeEntity(
@@ -99,5 +111,7 @@ class RequestTypeModel extends Equatable {
     UnitValueTypeString: UnitValueTypeString,
     TransferUnitValueType: TransferUnitValueType,
     TransferUnitValueTypeString: TransferUnitValueTypeString,
+    AllowDiscount: AllowDiscount,
+    AllowAlterCostOrSalePrice: AllowAlterCostOrSalePrice,
   );
 }
