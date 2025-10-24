@@ -14,7 +14,12 @@ import 'components/components.dart';
 
 class ConfirmationPage extends ConsumerWidget {
   final ProductsPage productsPage;
-  const ConfirmationPage({super.key, required this.productsPage});
+  final TextEditingController observationsController;
+  const ConfirmationPage({
+    super.key,
+    required this.productsPage,
+    required this.observationsController,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,12 +32,22 @@ class ConfirmationPage extends ConsumerWidget {
         child: CustomScrollView(
           slivers: [
             if (pendingAsync.value?.lastSavedRequestNumber != null) ...[
-              TitleAndSubTitle(
-                title: 'Último pedido salvo'.hardcoded,
-                subTitle: pendingAsync.value!.lastSavedRequestNumber,
+              SliverToBoxAdapter(
+                child: TitleAndSubTitle(
+                  title: 'Último pedido salvo'.hardcoded,
+                  subTitle: pendingAsync.value!.lastSavedRequestNumber,
+                ),
               ),
               gapSliverH8,
             ],
+            SliverToBoxAdapter(
+              child: DefaultTextFormField(
+                controller: observationsController,
+                hintText: 'Observações'.hardcoded,
+                labelText: 'Observações'.hardcoded,
+              ),
+            ),
+            gapSliverH8,
             BuyersDropdown(enabled: false),
             gapSliverH8,
             RequestTypeDropdown(enabled: false),

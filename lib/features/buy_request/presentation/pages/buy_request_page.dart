@@ -26,6 +26,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   final productsQuantityFormKey = GlobalKey<FormState>();
   final searchProductController = TextEditingController();
   final quantityController = TextEditingController();
+  final observationsController = TextEditingController();
   final costController = TextEditingController();
   final quantityFocusNode = FocusNode();
   final costFocusNode = FocusNode();
@@ -70,6 +71,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     supplierController.dispose();
     searchProductController.dispose();
     quantityController.dispose();
+    observationsController.dispose();
     costController.dispose();
     quantityFocusNode.dispose();
     costFocusNode.dispose();
@@ -161,7 +163,10 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       ),
       EnterprisesPage(),
       productsPage,
-      ConfirmationPage(productsPage: productsPage),
+      ConfirmationPage(
+        productsPage: productsPage,
+        observationsController: observationsController,
+      ),
     ];
 
     return Scaffold(
