@@ -43,63 +43,72 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final dtf = widget.defaultTextFormField;
 
     return FormField<String>(
       key: ValueKey(Random().nextDouble()),
-      validator: widget.defaultTextFormField.validator,
-      enabled: widget.defaultTextFormField.enabled ?? true,
-      initialValue: widget.defaultTextFormField.controller?.text,
-      autovalidateMode: widget.defaultTextFormField.autovalidateMode,
+      validator: dtf.validator,
+      enabled: dtf.enabled ?? true,
+      initialValue: dtf.controller?.text,
+      autovalidateMode: dtf.autovalidateMode,
       builder: (state) {
         _formFieldState = state;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (dtf.labelText != null)
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: Sizes.p8,
+                  bottom: Sizes.p4,
+                ),
+                child: Text(
+                  dtf.labelText!,
+                  style: CupertinoTheme.of(context).textTheme.textStyle
+                      .copyWith(color: theme.disabledColor, fontSize: 12),
+                ),
+              ),
             CupertinoTextField(
-              onTap: widget.defaultTextFormField.onTap,
-              inputFormatters: widget.defaultTextFormField.inputFormatters,
-              controller: widget.defaultTextFormField.controller,
-              maxLines: widget.defaultTextFormField.maxLines,
-              placeholder:
-                  widget.defaultTextFormField.labelText ??
-                  widget.defaultTextFormField.hintText,
+              onTap: dtf.onTap,
+              inputFormatters: dtf.inputFormatters,
+              controller: dtf.controller,
+              minLines: 1,
+              maxLines: dtf.maxLines ?? 1,
+              placeholder: dtf.labelText ?? dtf.hintText,
               placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.disabledColor,
               ),
-              obscureText: widget.defaultTextFormField.obscureText,
-              onSubmitted: widget.defaultTextFormField.onFieldSubmitted,
-              enabled: widget.defaultTextFormField.enabled == true,
-              focusNode: widget.defaultTextFormField.focusNode,
+              obscureText: dtf.obscureText,
+              onSubmitted: dtf.onFieldSubmitted,
+              enabled: dtf.enabled == true,
+              focusNode: dtf.focusNode,
               enableSuggestions: true,
-              maxLength: widget.defaultTextFormField.maxLength,
+              maxLength: dtf.maxLength,
               onChanged: (value) {
-                widget.defaultTextFormField.onChanged?.call(value);
+                dtf.onChanged?.call(value);
                 state.didChange(value);
               },
               decoration: BoxDecoration(
                 color: CupertinoColors.tertiarySystemFill.resolveFrom(context),
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(Sizes.p8),
                 border: state.hasError
                     ? Border.all(color: CupertinoColors.destructiveRed)
                     : null,
               ),
-              prefix: widget.defaultTextFormField.prefixIcon != null
+              prefix: dtf.prefixIcon != null
                   ? Padding(
                       padding: EdgeInsets.only(
-                        left:
-                            widget.defaultTextFormField.prefixIcon is IconButton
-                            ? 0
-                            : Sizes.p8,
+                        left: dtf.prefixIcon is IconButton ? 0 : Sizes.p8,
                       ),
-                      child: widget.defaultTextFormField.prefixIcon,
+                      child: dtf.prefixIcon,
                     )
                   : null,
-              suffix: widget.defaultTextFormField.suffixIcon,
+              suffix: dtf.suffixIcon,
               padding: EdgeInsets.all(
-                widget.defaultTextFormField.prefixIcon is Icon ||
-                        widget.defaultTextFormField.suffixIcon is Icon ||
-                        widget.defaultTextFormField.suffixIcon == null
+                dtf.prefixIcon is Icon ||
+                        dtf.suffixIcon is Icon ||
+                        dtf.suffixIcon == null
                     ? Sizes.p12
                     : 0,
               ),
@@ -112,7 +121,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
                   state.errorText!,
                   style: const TextStyle(
                     color: CupertinoColors.destructiveRed,
-                    fontSize: 12,
+                    fontSize: Sizes.p12,
                   ),
                 ),
               ),
