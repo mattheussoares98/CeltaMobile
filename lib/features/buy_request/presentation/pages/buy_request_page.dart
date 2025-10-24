@@ -4,6 +4,7 @@ import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
@@ -182,7 +183,20 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: Text(appBarTitles[currentIndex])),
+      appBar: AppBar(
+        title: FittedBox(child: Text(appBarTitles[currentIndex])),
+        actionsPadding: const EdgeInsets.all(Sizes.p8),
+        actions: [
+          CartPriceIcon(
+            onTap: () {
+              setState(() {
+                currentIndex = 3;
+              });
+            },
+            pendingAsync: pendingAsync,
+          ),
+        ],
+      ),
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavBar(
         currentIndex: currentIndex,
