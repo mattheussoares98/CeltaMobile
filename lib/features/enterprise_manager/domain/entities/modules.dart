@@ -8,6 +8,7 @@ enum Modules {
   inventory,
   saleRequest,
   transferBetweenStocks,
+  transferRequest,
   reports,
   searchProducts,
 }
