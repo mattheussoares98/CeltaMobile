@@ -58,7 +58,7 @@ class BuyersDropdown extends ConsumerWidget {
                   return null;
                 },
                 value: pendingAsync.value?.selectedBuyer,
-                hint: 'Selecionar'.hardcoded,
+                hint: 'Selecione'.hardcoded,
                 isLoading: buyersState.isLoading,
               ),
             ],

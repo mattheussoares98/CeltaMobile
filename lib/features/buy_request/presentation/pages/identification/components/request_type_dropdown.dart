@@ -80,7 +80,7 @@ class RequestTypeDropdown extends ConsumerWidget {
                   return null;
                 },
                 value: pendingValue?.selectedRequestType,
-                hint: 'Selecionar'.hardcoded,
+                hint: 'Selecione'.hardcoded,
                 isLoading: requestsState.isLoading,
               ),
             ],

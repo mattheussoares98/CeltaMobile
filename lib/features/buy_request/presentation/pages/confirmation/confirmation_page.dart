@@ -10,6 +10,7 @@ import '../enterprises/components/components.dart';
 import '../identification/components/components.dart';
 import '../pages.dart';
 import '../products/components/components.dart';
+import 'components/components.dart';
 
 class ConfirmationPage extends ConsumerWidget {
   final ProductsPage productsPage;
@@ -18,7 +19,6 @@ class ConfirmationPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(title: Text('Confirmação'.hardcoded)),
@@ -48,16 +48,11 @@ class ConfirmationPage extends ConsumerWidget {
                   enabled: false,
                 ),
               ),
+              gapSliverH8,
             ] else
-              SliverToBoxAdapter(
-                child: Text(
-                  'Nenhum fornecedor selecionado'.hardcoded,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: Colors.red,
-                  ),
-                ),
+              UnselectedMessage(
+                title: 'Nenhum fornecedor selecionado'.hardcoded,
               ),
-            gapSliverH8,
             if ((pendingAsync.value?.selectedEnterprises?.length ?? 0) > 0) ...[
               SliverToBoxAdapter(
                 child: DefaultSmallTitle(title: 'Empresas'.hardcoded),
@@ -75,14 +70,7 @@ class ConfirmationPage extends ConsumerWidget {
                 },
               ),
             ] else
-              SliverToBoxAdapter(
-                child: Text(
-                  'Nenhuma empresa selecionada'.hardcoded,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: Colors.red,
-                  ),
-                ),
-              ),
+              UnselectedMessage(title: 'Nenhuma empresa selecionada'.hardcoded),
             if (pendingAsync.value?.products != null &&
                 pendingAsync.value!.products!.isNotEmpty) ...[
               SliverToBoxAdapter(
@@ -97,14 +85,7 @@ class ConfirmationPage extends ConsumerWidget {
                 productsPage: productsPage,
               ),
             ] else
-              SliverToBoxAdapter(
-                child: Text(
-                  'Nenhum produto informado'.hardcoded,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: Colors.red,
-                  ),
-                ),
-              ),
+              UnselectedMessage(title: 'Nenhum produto informado'.hardcoded),
           ],
         ),
       ),
