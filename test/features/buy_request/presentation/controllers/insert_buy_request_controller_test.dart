@@ -42,11 +42,10 @@ void main() {
   late MockSoapInsertBuyRequestRepository mockRepository;
   late UserSessionModel fakeSession;
   late PendingBuyRequestEntity fakePendingRequest;
-  late String? fakeObservations;
+  late String fakeObservations;
   late String fakeLastSavedRequestNumber;
 
   setUpAll(() {
-    // Register fallback values
     registerFallbackValue(<BuyRequestProductItemEntity>[]);
   });
 
@@ -56,9 +55,7 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakePendingRequest = EntityFactory.makePendingBuyRequestEntity();
-    fakeObservations = faker.randomGenerator.boolean() == false
-        ? null
-        : faker.lorem.sentence();
+    fakeObservations = faker.lorem.sentence();
     fakeLastSavedRequestNumber = faker.lorem.word();
   });
 
@@ -84,92 +81,11 @@ void main() {
     );
   }
 
-  group('InsertBuyRequestController', () {
-    test('should call repository with correct data on success', () async {
-      // ARRANGE
-      when(
-        () => mockRepository.insertBuyRequest(
-          baseUrl: any(named: 'baseUrl'),
-          crossIdentity: any(named: 'crossIdentity'),
-          buyerCode: any(named: 'buyerCode'),
-          requestTypeCode: any(named: 'requestTypeCode'),
-          supplierCode: any(named: 'supplierCode'),
-          enterpriseCodes: any(named: 'enterpriseCodes'),
-          observations: any(named: 'observations'),
-          products: any(named: 'products'),
-        ),
-      ).thenAnswer((_) async => fakeLastSavedRequestNumber);
-
-      final container = makeProviderContainer(
-        session: fakeSession,
-        pendingRequest: fakePendingRequest,
-      );
-      addTearDown(container.dispose);
-
-      // ACT: Reading the future will trigger the build and wait for it to complete.
-      await container.read(
-        insertBuyRequestControllerProvider(fakeObservations ?? '').future,
-      );
-
-      // ASSERT
-      verify(
-        () => mockRepository.insertBuyRequest(
-          baseUrl: fakeSession.enterprise!.baseUrl!,
-          crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-          buyerCode: fakePendingRequest.selectedBuyer!.Code,
-          requestTypeCode: fakePendingRequest.selectedRequestType!.Code,
-          supplierCode: fakePendingRequest.selectedSupplier!.Code,
-          enterpriseCodes: fakePendingRequest.selectedEnterprises!
-              .map((e) => e.Code!)
-              .toList(),
-          observations: fakeObservations,
-          products: fakePendingRequest.products!.values.toList(),
-        ),
-      ).called(1);
-    });
-
-    test('should throw AppException when session is invalid', () async {
-      // ARRANGE: Pass null for the session
-      final container = makeProviderContainer(
-        session: null,
-        pendingRequest: fakePendingRequest,
-      );
-      addTearDown(container.dispose);
-
-      // ACT & ASSERT: Expect the future to throw an AppException
-      await expectLater(
-        container.read(
-          insertBuyRequestControllerProvider(fakeObservations ?? '').future,
-        ),
-        throwsA(isA<AppException>()),
-      );
-    });
-
-    test('should throw error when pending request is invalid', () async {
-      // ARRANGE: Pass null for the pending request
-      final container = makeProviderContainer(
-        session: fakeSession,
-        pendingRequest: null,
-      );
-      addTearDown(container.dispose);
-
-      // ACT & ASSERT
-      await expectLater(
-        container.read(
-          insertBuyRequestControllerProvider(fakeObservations ?? '').future,
-        ),
-        throwsA(isA<AppException>()),
-      );
-    });
-
+  group('InsertBuyRequestController insert', () {
     test(
-      'should call updatePending with correct data after successful insert',
+      'should emit [loading, data] and call repository on success',
       () async {
-        // 1. Create a spy
-        final pendingBuyRequestStateController = FakePendingBuyRequest(
-          fakePendingRequest,
-        );
-        // 2. Stub the repository to return the fake request number
+        // ARRANGE
         when(
           () => mockRepository.insertBuyRequest(
             baseUrl: any(named: 'baseUrl'),
@@ -177,33 +93,137 @@ void main() {
             buyerCode: any(named: 'buyerCode'),
             requestTypeCode: any(named: 'requestTypeCode'),
             supplierCode: any(named: 'supplierCode'),
-            enterpriseCodes: any(named: 'enterpriseCodes'),
             observations: any(named: 'observations'),
+            enterpriseCodes: any(named: 'enterpriseCodes'),
             products: any(named: 'products'),
           ),
-        ).thenAnswer(
-          (_) async => fakeLastSavedRequestNumber,
-        ); // Return the fake ID
+        ).thenAnswer((_) async {
+          await Future.delayed(Duration.zero); // Simulate async delay
+          return fakeLastSavedRequestNumber;
+        });
 
-        // 3. Create the container and pass in the spy
-        final pendingBuyRequestEntity =
-            EntityFactory.makePendingBuyRequestEntity();
         final container = makeProviderContainer(
           session: fakeSession,
-          pendingRequest: pendingBuyRequestEntity,
-          pendingBuyRequestStateController: pendingBuyRequestStateController,
+          pendingRequest: fakePendingRequest,
+        );
+        addTearDown(container.dispose);
+        await container.read(insertBuyRequestControllerProvider.future);
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          insertBuyRequestControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT: Call the 'insert' method, not read the provider's future
+        await container
+            .read(insertBuyRequestControllerProvider.notifier)
+            .insert(fakeObservations);
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        verify(
+          () => mockRepository.insertBuyRequest(
+            baseUrl: fakeSession.enterprise!.baseUrl!,
+            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+            buyerCode: fakePendingRequest.selectedBuyer!.Code,
+            requestTypeCode: fakePendingRequest.selectedRequestType!.Code,
+            supplierCode: fakePendingRequest.selectedSupplier!.Code,
+            observations: fakeObservations,
+            enterpriseCodes: fakePendingRequest.selectedEnterprises!
+                .map((e) => e.Code!)
+                .toList(),
+            products: fakePendingRequest.products!.values.toList(),
+          ),
+        ).called(1);
+      },
+    );
+
+    test('should emit [loading, error] when session is invalid', () async {
+      // ARRANGE: Pass null for the session
+      final container = makeProviderContainer(
+        session: null,
+        pendingRequest: fakePendingRequest,
+      );
+      addTearDown(container.dispose);
+      await container.read(insertBuyRequestControllerProvider.future);
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        insertBuyRequestControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      await container
+          .read(insertBuyRequestControllerProvider.notifier)
+          .insert(fakeObservations);
+
+      // ASSERT
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+    });
+
+    test(
+      'should emit [loading, error] when pending request is invalid',
+      () async {
+        // ARRANGE: Pass null for the pending request
+        final container = makeProviderContainer(
+          session: fakeSession,
+          pendingRequest: null,
+        );
+        addTearDown(container.dispose);
+        await container.read(insertBuyRequestControllerProvider.future);
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          insertBuyRequestControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(insertBuyRequestControllerProvider.notifier)
+            .insert(fakeObservations);
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+      },
+    );
+
+    test(
+      'should call updatePending with correct data after successful insert',
+      () async {
+        // ARRANGE
+        final spyPendingController = FakePendingBuyRequest(fakePendingRequest);
+        when(
+          () => mockRepository.insertBuyRequest(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            buyerCode: any(named: 'buyerCode'),
+            requestTypeCode: any(named: 'requestTypeCode'),
+            supplierCode: any(named: 'supplierCode'),
+            observations: any(named: 'observations'),
+            enterpriseCodes: any(named: 'enterpriseCodes'),
+            products: any(named: 'products'),
+          ),
+        ).thenAnswer((_) async => fakeLastSavedRequestNumber);
+
+        final container = makeProviderContainer(
+          session: fakeSession,
+          pendingBuyRequestStateController: spyPendingController,
         );
         addTearDown(container.dispose);
 
         // ACT
-        await container.read(
-          insertBuyRequestControllerProvider(fakeObservations ?? '').future,
-        );
+        await container
+            .read(insertBuyRequestControllerProvider.notifier)
+            .insert(fakeObservations);
 
         // ASSERT
         // Check the 'updatedEntity' property on our spy
+        expect(spyPendingController.updatedEntity, isNotNull);
         expect(
-          pendingBuyRequestStateController.updatedEntity,
+          spyPendingController.updatedEntity,
           PendingBuyRequestEntity.empty().copyWith(
             lastSavedRequestNumber: fakeLastSavedRequestNumber,
           ),
