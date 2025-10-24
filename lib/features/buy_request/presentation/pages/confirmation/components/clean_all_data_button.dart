@@ -24,32 +24,37 @@ class CleanAllDataButton extends ConsumerWidget {
         pendingValue?.selectedSupplier != null;
 
     return SliverToBoxAdapter(
-      child: PrimaryTextButton(
-        text: 'Limpar todos dados'.hardcoded,
-        onPressed: hasSelectedValues
-            ? () {
-                showAlertDialog(
-                  context: context,
-                  title: 'Apagar dados'.hardcoded,
-                  content:
-                      'Tem certeza que deseja remover todos dados inseridos?'
-                          .hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Confirmar'.hardcoded,
-                  onOkPressed: () {
-                    ref
-                        .read(pendingBuyRequestStateControllerProvider.notifier)
-                        .updatePending(PendingBuyRequestEntity.empty());
-                    observationsController.clear();
-                  },
-                );
-              }
-            : null,
-        icon: Icon(
-          isIOS ? CupertinoIcons.delete : Icons.delete,
+      child: Visibility(
+        visible: hasSelectedValues,
+        child: PrimaryTextButton(
+          text: 'Limpar todos dados'.hardcoded,
+          onPressed: hasSelectedValues
+              ? () {
+                  showAlertDialog(
+                    context: context,
+                    title: 'Apagar dados'.hardcoded,
+                    content:
+                        'Tem certeza que deseja remover todos dados inseridos?'
+                            .hardcoded,
+                    cancelActionText: 'Cancelar'.hardcoded,
+                    defaultActionText: 'Confirmar'.hardcoded,
+                    onOkPressed: () {
+                      ref
+                          .read(
+                            pendingBuyRequestStateControllerProvider.notifier,
+                          )
+                          .updatePending(PendingBuyRequestEntity.empty());
+                      observationsController.clear();
+                    },
+                  );
+                }
+              : null,
+          icon: Icon(
+            isIOS ? CupertinoIcons.delete : Icons.delete,
+            color: hasSelectedValues ? Colors.red : theme.disabledColor,
+          ),
           color: hasSelectedValues ? Colors.red : theme.disabledColor,
         ),
-        color: hasSelectedValues ? Colors.red : theme.disabledColor,
       ),
     );
   }
