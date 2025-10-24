@@ -22,7 +22,7 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
       hint: Text('Selecione a empresa'.hardcoded),
       selectedItem: selectedEnterprise,
       label: selectedEnterprise != null
-          ? '${selectedEnterprise!.Code} - ${selectedEnterprise!.name}'
+          ? '${selectedEnterprise!.PersonalizedCode} - ${selectedEnterprise!.name}'
           : null,
       onChanged: (enterprise) {
         ref
