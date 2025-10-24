@@ -67,6 +67,8 @@ class SoapAdapter implements contracts.SoapRequest {
 
       if (responseBody["status"] == "OK") {
         return _handleSuccessResponse(responseBody, typeOfResult);
+      } else if (responseBody["status"].contains("sucesso")) {
+        return _handleSuccessResponse(responseBody, typeOfResult);
       } else {
         throw BsError(responseBody["status"]);
       }
