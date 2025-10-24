@@ -15,6 +15,7 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
     final requestsAsync = ref.watch(
       requestTypeStateControllerProvider(Modules.transferRequest),
     );
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(title: Text('Modelos de pedido'.hardcoded)),
@@ -59,6 +60,17 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
                         TitleAndSubTitle(
                           title: 'Preço praticado'.hardcoded,
                           subTitle: request.UnitValueTypeString,
+                        ),
+                        TitleAndSubTitle(
+                          title: null,
+                          subTitle: request.AllowAlterCostOrSalePrice == true
+                              ? "Pode alterar preço de custo ou venda"
+                              : "Não pode alterar preço de custo ou venda",
+                          subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                            color: request.AllowAlterCostOrSalePrice == true
+                                ? Colors.green
+                                : Colors.red,
+                          ),
                         ),
                       ],
                     ),
