@@ -9,7 +9,10 @@ class DefaultSmallTitle extends StatelessWidget {
     final theme = Theme.of(context);
     return Text(
       title,
-      style: theme.textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
+      style: theme.textTheme.titleSmall?.copyWith(
+        fontStyle: FontStyle.italic,
+        color: theme.primaryColor,
+      ),
     );
   }
 }

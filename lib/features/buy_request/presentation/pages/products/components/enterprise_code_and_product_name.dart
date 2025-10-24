@@ -22,7 +22,7 @@ class EnterpriseCodeAndProductName extends ConsumerWidget {
       subTitle:
           '(${correspondentEnterprise?.PersonalizedCode}) - ${correspondentEnterprise?.name}',
       subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-        color: theme.primaryColor,
+        color: theme.colorScheme.secondary,
       ),
     );
   }
