@@ -33,6 +33,9 @@ class ConfirmationPage extends ConsumerWidget {
               isSliverPage: true,
               child: CustomScrollView(
                 slivers: [
+                  CleanAllDataButton(
+                    observationsController: observationsController,
+                  ),
                   if (pendingAsync.value?.lastSavedRequestNumber != null) ...[
                     SliverToBoxAdapter(
                       child: TitleAndSubTitle(
