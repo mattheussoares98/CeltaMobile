@@ -5,7 +5,7 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/validators/validators.dart';
 
 class QuantityFormField extends StatelessWidget {
-  final GlobalKey<FormState> quantityFormKey;
+  final GlobalKey<FormState>? quantityFormKey;
   final FocusNode quantityFocusNode;
   final TextEditingController quantityController;
   final TextEditingController costController;
@@ -39,7 +39,7 @@ class QuantityFormField extends StatelessWidget {
         ]),
         maxLength: 13,
         onFieldSubmitted: (_) {
-          if (quantityFormKey.currentState?.validate() != true) {
+          if (quantityFormKey?.currentState?.validate() != true) {
             quantityFocusNode.requestFocus();
           } else {
             costController.selection = TextSelection(

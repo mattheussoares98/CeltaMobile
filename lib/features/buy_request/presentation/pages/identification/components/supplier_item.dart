@@ -11,15 +11,20 @@ import '../../../controllers/controllers.dart';
 class SupplierItem extends ConsumerWidget {
   final SupplierEntity supplier;
   final PendingBuyRequestEntity? pending;
+  final bool? enabled;
   const SupplierItem({
     super.key,
     required this.supplier,
     required this.pending,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onTap() {
+      if (enabled == false) {
+        return;
+      }
       final newValue = pending?.selectedSupplier == supplier ? null : supplier;
       final entity = newValue == null && pending != null
           ? pending!.annulValue(annulSelectedSupplier: true)
@@ -59,7 +64,7 @@ class SupplierItem extends ConsumerWidget {
       clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.only(top: Sizes.p8),
       child: InkWell(
-        onTap: onTap,
+        onTap: enabled == false ? null : onTap,
         child: RadioGroup<SupplierEntity>(
           groupValue: pending?.selectedSupplier,
           onChanged: (_) {
@@ -78,7 +83,8 @@ class SupplierItem extends ConsumerWidget {
                         subTitle: supplier.Code.toString(),
                       ),
                     ),
-                    Radio(value: supplier),
+                    if (enabled == true)
+                      Radio(value: supplier, enabled: enabled),
                   ],
                 ),
                 TitleAndSubTitle(title: 'Nome', subTitle: supplier.Name),

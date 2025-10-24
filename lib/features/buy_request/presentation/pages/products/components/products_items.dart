@@ -7,36 +7,17 @@ import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import '../../pages.dart';
 import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
-  final int? selectedIndex;
   final List<ProductEntity> products;
-  final void Function(int index, ProductEntity product) onTap;
-  final GlobalKey<FormState> fieldsFormKey;
-  final GlobalKey<FormState> quantityFormKey;
-  final FocusNode quantityFocusNode;
-  final TextEditingController quantityController;
-  final FocusNode costFocusNode;
-  final TextEditingController costController;
-  final void Function(
-    AsyncValue<PendingBuyRequestEntity> pendingAsync,
-    ProductEntity product,
-  )
-  insertProduct;
+  final ProductsPage productsPage;
 
   const ProductsItems({
     super.key,
-    required this.selectedIndex,
     required this.products,
-    required this.onTap,
-    required this.fieldsFormKey,
-    required this.quantityFormKey,
-    required this.quantityFocusNode,
-    required this.quantityController,
-    required this.costFocusNode,
-    required this.costController,
-    required this.insertProduct,
+    required this.productsPage,
   });
 
   @override
@@ -75,11 +56,11 @@ class ProductsItems extends ConsumerWidget {
             pendingAsync.value?.products?[productKey];
 
         return ProductItemWidget(
-          onTap: () => onTap(index, product),
+          onTap: () => productsPage.onTapProduct(index, product),
           product: product,
           routine: BsRoutine.buyRequest,
           showDropIcon: true,
-          isSelected: selectedIndex == index,
+          isSelected: productsPage.selectedIndex == index,
           onDelete: insertedItem == null
               ? null
               : () => onDelete(product, pendingAsync),
@@ -87,37 +68,41 @@ class ProductsItems extends ConsumerWidget {
           clickableBottom: insertedItem == null
               ? null
               : CostQuantityAndTotalWritten(insertedItem: insertedItem),
-          notClickableBottom: selectedIndex == index
+          notClickableBottom: productsPage.selectedIndex == index
               ? Form(
-                  key: fieldsFormKey,
+                  key: productsPage.fieldsFormKey,
                   child: Padding(
                     padding: const EdgeInsets.only(top: Sizes.p8),
                     child: Row(
                       children: [
                         Expanded(
                           child: QuantityFormField(
-                            quantityFormKey: quantityFormKey,
-                            quantityFocusNode: quantityFocusNode,
-                            quantityController: quantityController,
-                            costController: costController,
-                            costFocusNode: costFocusNode,
+                            quantityFormKey: productsPage.quantityFormKey,
+                            quantityFocusNode: productsPage.quantityFocusNode,
+                            quantityController: productsPage.quantityController,
+                            costController: productsPage.costController,
+                            costFocusNode: productsPage.costFocusNode,
                           ),
                         ),
                         gapW8,
                         Expanded(
                           child: CostFormField(
-                            costFocusNode: costFocusNode,
-                            costController: costController,
-                            insertProduct: () =>
-                                insertProduct(pendingAsync, product),
+                            costFocusNode: productsPage.costFocusNode,
+                            costController: productsPage.costController,
+                            insertProduct: () => productsPage.insertProduct(
+                              pendingAsync,
+                              product,
+                            ),
                           ),
                         ),
                         gapW8,
                         Expanded(
                           child: PrimaryButton(
                             text: 'Confirmar'.hardcoded,
-                            onPressed: () =>
-                                insertProduct(pendingAsync, product),
+                            onPressed: () => productsPage.insertProduct(
+                              pendingAsync,
+                              product,
+                            ),
                           ),
                         ),
                       ],

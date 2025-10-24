@@ -1,9 +1,11 @@
 import 'package:celta_intelligence/commom_widgets/commom_widgets.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/domain/entities/entities.dart';
+import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 import 'pages.dart';
@@ -18,7 +20,10 @@ class BuyRequestPage extends ConsumerStatefulWidget {
 class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   final supplierController = TextEditingController();
   int currentIndex = 0;
+  int? selectedProductIndex;
   final identificationFormKey = GlobalKey<FormState>();
+  final productsFieldsFormKey = GlobalKey<FormState>();
+  final productsQuantityFormKey = GlobalKey<FormState>();
   final searchProductController = TextEditingController();
   final quantityController = TextEditingController();
   final costController = TextEditingController();
@@ -68,11 +73,85 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     costController.dispose();
     quantityFocusNode.dispose();
     costFocusNode.dispose();
+
+    identificationFormKey.currentState?.dispose();
+    productsFieldsFormKey.currentState?.dispose();
+    productsQuantityFormKey.currentState?.dispose();
+  }
+
+  void insertProduct(
+    AsyncValue<PendingBuyRequestEntity> pendingAsync,
+    ProductEntity product,
+  ) {
+    if (productsFieldsFormKey.currentState?.validate() != true) {
+      costFocusNode.requestFocus();
+      return;
+    }
+    final products = pendingAsync.value?.products ?? {};
+    products.addAll({
+      ProductKey(
+        enterpriseCode: product.EnterpriseCode,
+        productPackingCode: product.ProductPackingCode,
+      ): BuyRequestProductItemEntity(
+        product: product,
+        quantity: quantityController.text.toDouble()!,
+        cost: costController.text.toDouble()!,
+      ),
+    });
+    ref
+        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .updatePending(pendingAsync.value!.copyWith(products: products));
+    quantityController.clear();
+    costController.clear();
+    setState(() {
+      selectedProductIndex = null;
+    });
+  }
+
+  void onTapProduct(int index, ProductEntity product) {
+    quantityController.clear();
+    costController.clear();
+
+    if (selectedProductIndex != index) {
+      if ((product.PriceCost.LiquidCost ?? 0) > 0) {
+        costController.text = product.PriceCost.LiquidCost
+            .toString()
+            .toBrazilianNumber(4);
+      }
+      setState(() {
+        selectedProductIndex = index;
+      });
+      Future.delayed(Duration(milliseconds: 100), () {
+        quantityFocusNode.requestFocus();
+      });
+    } else {
+      setState(() {
+        selectedProductIndex = null;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+
+    final productsPage = ProductsPage(
+      searchProductController: searchProductController,
+      quantityController: quantityController,
+      costController: costController,
+      quantityFocusNode: quantityFocusNode,
+      costFocusNode: costFocusNode,
+      insertProduct: insertProduct,
+      fieldsFormKey: productsFieldsFormKey,
+      quantityFormKey: productsQuantityFormKey,
+      selectedIndex: selectedProductIndex,
+      onTapProduct: onTapProduct,
+      changeSelectedIndex: (index) {
+        setState(() {
+          selectedProductIndex = index;
+        });
+      },
+    );
 
     final pages = [
       IdentificationPage(
@@ -81,14 +160,8 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         suppliers: suppliers,
       ),
       EnterprisesPage(),
-      ProductsPage(
-        searchProductController: searchProductController,
-        quantityController: quantityController,
-        costController: costController,
-        quantityFocusNode: quantityFocusNode,
-        costFocusNode: costFocusNode,
-      ),
-      ConfirmationPage(),
+      productsPage,
+      ConfirmationPage(productsPage: productsPage),
     ];
 
     return Scaffold(

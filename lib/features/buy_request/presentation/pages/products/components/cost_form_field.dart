@@ -8,7 +8,7 @@ import '../../../../../../core/validators/validators.dart';
 class CostFormField extends ConsumerWidget {
   final FocusNode costFocusNode;
   final TextEditingController costController;
-  final VoidCallback insertProduct;
+  final VoidCallback? insertProduct;
   const CostFormField({
     super.key,
     required this.costFocusNode,
@@ -43,7 +43,7 @@ class CostFormField extends ConsumerWidget {
       ]),
       maxLength: 13,
       onFieldSubmitted: (_) {
-        insertProduct();
+        insertProduct?.call();
       },
     );
   }

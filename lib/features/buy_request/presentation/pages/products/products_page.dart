@@ -18,6 +18,13 @@ class ProductsPage extends ConsumerStatefulWidget {
   final TextEditingController costController;
   final FocusNode quantityFocusNode;
   final FocusNode costFocusNode;
+  final void Function(AsyncValue<PendingBuyRequestEntity>, ProductEntity)
+  insertProduct;
+  final int? selectedIndex;
+  final void Function(int? index) changeSelectedIndex;
+  final GlobalKey<FormState> fieldsFormKey;
+  final GlobalKey<FormState> quantityFormKey;
+  final void Function(int, ProductEntity) onTapProduct;
   const ProductsPage({
     super.key,
     required this.searchProductController,
@@ -25,6 +32,12 @@ class ProductsPage extends ConsumerStatefulWidget {
     required this.costController,
     required this.quantityFocusNode,
     required this.costFocusNode,
+    required this.insertProduct,
+    required this.selectedIndex,
+    required this.changeSelectedIndex,
+    required this.fieldsFormKey,
+    required this.quantityFormKey,
+    required this.onTapProduct,
   });
 
   @override
@@ -32,46 +45,6 @@ class ProductsPage extends ConsumerStatefulWidget {
 }
 
 class _ProductsPageState extends ConsumerState<ProductsPage> {
-  int? selectedIndex;
-  final fieldsFormKey = GlobalKey<FormState>();
-  final quantityFormKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    fieldsFormKey.currentState?.dispose();
-    quantityFormKey.currentState?.dispose();
-    super.dispose();
-  }
-
-  void insertProduct(
-    AsyncValue<PendingBuyRequestEntity> pendingAsync,
-    ProductEntity product,
-  ) {
-    if (fieldsFormKey.currentState?.validate() != true) {
-      widget.costFocusNode.requestFocus();
-      return;
-    }
-    final products = pendingAsync.value?.products ?? {};
-    products.addAll({
-      ProductKey(
-        enterpriseCode: product.EnterpriseCode,
-        productPackingCode: product.ProductPackingCode,
-      ): BuyRequestProductItemEntity(
-        product: product,
-        quantity: widget.quantityController.text.toDouble()!,
-        cost: widget.costController.text.toDouble()!,
-      ),
-    });
-    ref
-        .read(pendingBuyRequestStateControllerProvider.notifier)
-        .updatePending(pendingAsync.value!.copyWith(products: products));
-    widget.quantityController.clear();
-    widget.costController.clear();
-    setState(() {
-      selectedIndex = null;
-    });
-  }
-
   Future<void> searchProducts(
     AsyncValue<PendingBuyRequestEntity> pendingAsync,
   ) async {
@@ -93,28 +66,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         );
   }
 
-  void onTap(int index, ProductEntity product) {
-    widget.quantityController.clear();
-    widget.costController.clear();
-
-    if (selectedIndex != index) {
-      if ((product.PriceCost.LiquidCost ?? 0) > 0) {
-        widget.costController.text = product.PriceCost.LiquidCost
-            .toString()
-            .toBrazilianNumber(4);
-      }
-      setState(() {
-        selectedIndex = index;
-      });
-      Future.delayed(Duration(milliseconds: 100), () {
-        widget.quantityFocusNode.requestFocus();
-      });
-    } else {
-      setState(() {
-        selectedIndex = null;
-      });
-    }
-  }
+  //TODO changeto stateless
 
   @override
   Widget build(BuildContext context) {
@@ -170,16 +122,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     .toList();
 
                 return ProductsItems(
-                  selectedIndex: selectedIndex,
+                  productsPage: widget,
                   products: filteredProducts,
-                  onTap: onTap,
-                  fieldsFormKey: fieldsFormKey,
-                  quantityFormKey: quantityFormKey,
-                  quantityFocusNode: widget.quantityFocusNode,
-                  quantityController: widget.quantityController,
-                  costFocusNode: widget.costFocusNode,
-                  costController: widget.costController,
-                  insertProduct: insertProduct,
                 );
               },
             ),
