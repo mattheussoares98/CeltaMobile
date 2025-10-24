@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../controllers/controllers.dart';
 
-class LastSavedRequestNumber extends ConsumerWidget {
-  const LastSavedRequestNumber({super.key});
+class LastSavedRequestsNumbers extends ConsumerWidget {
+  const LastSavedRequestsNumbers({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +15,7 @@ class LastSavedRequestNumber extends ConsumerWidget {
 
     return SliverToBoxAdapter(
       child: TitleAndSubTitle(
-        title: 'Último pedido salvo'.hardcoded,
+        title: 'Último(s) pedido(s) salvo(s)'.hardcoded,
         subTitle: regex
             .allMatches(pendingAsync.value!.lastSavedRequestNumber!)
             .first

@@ -44,7 +44,7 @@ class ConfirmationPage extends ConsumerWidget {
                     observationsController: observationsController,
                   ),
                   if (pendingAsync.value?.lastSavedRequestNumber != null) ...[
-                    LastSavedRequestNumber(),
+                    LastSavedRequestsNumbers(),
                     gapSliverH8,
                   ],
                   SliverToBoxAdapter(
