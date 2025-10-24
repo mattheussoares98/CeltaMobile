@@ -4,15 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
 class Footer extends ConsumerWidget {
-  final AsyncValue<PendingBuyRequestEntity> pendingAsync;
-  const Footer({super.key, required this.pendingAsync});
+  final TextEditingController observationsController;
+  const Footer({super.key, required this.observationsController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     final total =
         pendingAsync.value?.products?.values.fold<double>(
@@ -48,7 +49,9 @@ class Footer extends ConsumerWidget {
                   cancelActionText: 'Cancelar'.hardcoded,
                   defaultActionText: 'Sim'.hardcoded,
                   onOkPressed: () {
-                    //TODO implement
+                    ref
+                        .read(insertBuyRequestControllerProvider.notifier)
+                        .insert(observationsController.text);
                   },
                 );
               },

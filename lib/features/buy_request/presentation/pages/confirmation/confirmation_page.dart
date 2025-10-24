@@ -127,7 +127,7 @@ class ConfirmationPage extends ConsumerWidget {
               ),
             ),
           ),
-          Footer(pendingAsync: pendingAsync),
+          Footer(observationsController: observationsController),
         ],
       ),
     );

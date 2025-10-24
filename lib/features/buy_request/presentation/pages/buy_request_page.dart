@@ -149,6 +149,14 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   @override
   Widget build(BuildContext context) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+    final insertAsync = ref.watch(insertBuyRequestControllerProvider);
+
+    ref.listen(insertBuyRequestControllerProvider, (p, n) {
+      n.doOnSuccess(p, () {
+        showSnackBarMessage(context, 'Pedido salvo com sucesso'.hardcoded);
+      });
+      n.showAlertDialogOnError(context);
+    });
 
     final productsPage = ProductsPage(
       searchProductController: searchProductController,
@@ -182,74 +190,79 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       ),
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(child: Text(appBarTitles[currentIndex])),
-        actionsPadding: const EdgeInsets.all(Sizes.p8),
-        actions: [
-          CartPriceIcon(
-            onTap: () {
-              setState(() {
-                currentIndex = 3;
-              });
-            },
-            pendingAsync: pendingAsync,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: FittedBox(child: Text(appBarTitles[currentIndex])),
+            actionsPadding: const EdgeInsets.all(Sizes.p8),
+            actions: [
+              CartPriceIcon(
+                onTap: () {
+                  setState(() {
+                    currentIndex = 3;
+                  });
+                },
+                pendingAsync: pendingAsync,
+              ),
+            ],
           ),
-        ],
-      ),
-      body: pages[currentIndex],
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          bool enterprisesAreValid =
-              pendingAsync.value?.selectedEnterprises != null &&
-              pendingAsync.value!.selectedEnterprises!.isNotEmpty;
-          bool buyerIsSelected = pendingAsync.value?.selectedBuyer != null;
-          bool requestTypeIsSelected =
-              pendingAsync.value?.selectedRequestType != null;
-          bool supplierIsSelected =
-              pendingAsync.value?.selectedSupplier != null;
+          body: pages[currentIndex],
+          bottomNavigationBar: BottomNavBar(
+            currentIndex: currentIndex,
+            onTap: (index) {
+              bool enterprisesAreValid =
+                  pendingAsync.value?.selectedEnterprises != null &&
+                  pendingAsync.value!.selectedEnterprises!.isNotEmpty;
+              bool buyerIsSelected = pendingAsync.value?.selectedBuyer != null;
+              bool requestTypeIsSelected =
+                  pendingAsync.value?.selectedRequestType != null;
+              bool supplierIsSelected =
+                  pendingAsync.value?.selectedSupplier != null;
 
-          if (currentIndex == 0 && (index == 1 || index == 2)) {
-            bool isValid =
-                identificationFormKey.currentState?.validate() == true;
-            if (!isValid) {
-              return;
-            } else if (pendingAsync.value?.selectedSupplier == null) {
-              showSnackBarMessage(
-                context,
-                'Selecione um fornecedor'.hardcoded,
-                backgroundColor: Colors.red,
-              );
-              return;
-            }
-          }
+              if (currentIndex == 0 && (index == 1 || index == 2)) {
+                bool isValid =
+                    identificationFormKey.currentState?.validate() == true;
+                if (!isValid) {
+                  return;
+                } else if (pendingAsync.value?.selectedSupplier == null) {
+                  showSnackBarMessage(
+                    context,
+                    'Selecione um fornecedor'.hardcoded,
+                    backgroundColor: Colors.red,
+                  );
+                  return;
+                }
+              }
 
-          if ((index == 1 || index == 2)) {
-            if (!buyerIsSelected ||
-                !requestTypeIsSelected ||
-                !supplierIsSelected) {
-              showSnackBarMessage(
-                context,
-                'Preencha os campos de identificação'.hardcoded,
-                backgroundColor: Colors.red,
-              );
-              return;
-            }
-          }
+              if ((index == 1 || index == 2)) {
+                if (!buyerIsSelected ||
+                    !requestTypeIsSelected ||
+                    !supplierIsSelected) {
+                  showSnackBarMessage(
+                    context,
+                    'Preencha os campos de identificação'.hardcoded,
+                    backgroundColor: Colors.red,
+                  );
+                  return;
+                }
+              }
 
-          if (index == 2 && !enterprisesAreValid) {
-            showSnackBarMessage(
-              context,
-              'Selecione pelo menos uma empresa'.hardcoded,
-              backgroundColor: Colors.red,
-            );
-            return;
-          }
+              if (index == 2 && !enterprisesAreValid) {
+                showSnackBarMessage(
+                  context,
+                  'Selecione pelo menos uma empresa'.hardcoded,
+                  backgroundColor: Colors.red,
+                );
+                return;
+              }
 
-          setState(() => currentIndex = index);
-        },
-      ),
+              setState(() => currentIndex = index);
+            },
+          ),
+        ),
+        if (insertAsync.isLoading) LoadingPage(),
+      ],
     );
   }
 }
