@@ -110,15 +110,17 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               value: productsState,
               tryAgain: null,
               data: (products) {
-                final filteredProducts = products
-                    .where(
-                      (e) =>
-                          pendingAsync.value?.selectedEnterprises
-                              ?.map((e) => e.Code)
-                              .contains(e.EnterpriseCode) ==
-                          true,
-                    )
-                    .toList();
+                final filteredProducts =
+                    products
+                        .where(
+                          (e) =>
+                              pendingAsync.value?.selectedEnterprises
+                                  ?.map((e) => e.Code)
+                                  .contains(e.EnterpriseCode) ==
+                              true,
+                        )
+                        .toList()
+                      ..sort((e1, e2) => e1.Name.compareTo(e2.Name));
 
                 return ProductsItems(
                   productsPage: widget,
