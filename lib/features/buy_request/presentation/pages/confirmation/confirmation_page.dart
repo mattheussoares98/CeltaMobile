@@ -26,93 +26,106 @@ class ConfirmationPage extends ConsumerWidget {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     return Scaffold(
-      persistentFooterButtons: [Footer(pendingAsync: pendingAsync)],
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: CustomScrollView(
-          slivers: [
-            if (pendingAsync.value?.lastSavedRequestNumber != null) ...[
-              SliverToBoxAdapter(
-                child: TitleAndSubTitle(
-                  title: 'Último pedido salvo'.hardcoded,
-                  subTitle: pendingAsync.value!.lastSavedRequestNumber,
-                ),
-              ),
-              gapSliverH8,
-            ],
-            SliverToBoxAdapter(
-              child: DefaultTextFormField(
-                controller: observationsController,
-                hintText: 'Observações'.hardcoded,
-                labelText: 'Observações'.hardcoded,
-                maxLines: 4,
+      body: Column(
+        children: [
+          Expanded(
+            child: ResponsiveScrollableWidget(
+              isSliverPage: true,
+              child: CustomScrollView(
+                slivers: [
+                  if (pendingAsync.value?.lastSavedRequestNumber != null) ...[
+                    SliverToBoxAdapter(
+                      child: TitleAndSubTitle(
+                        title: 'Último pedido salvo'.hardcoded,
+                        subTitle: pendingAsync.value!.lastSavedRequestNumber,
+                      ),
+                    ),
+                    gapSliverH8,
+                  ],
+                  SliverToBoxAdapter(
+                    child: DefaultTextFormField(
+                      controller: observationsController,
+                      hintText: 'Observações'.hardcoded,
+                      labelText: 'Observações'.hardcoded,
+                      maxLines: 4,
+                    ),
+                  ),
+                  gapSliverH8,
+                  BuyersDropdown(),
+                  gapSliverH8,
+                  RequestTypeDropdown(),
+                  gapSliverH8,
+                  if (pendingAsync.value?.selectedSupplier != null) ...[
+                    SliverToBoxAdapter(
+                      child: DefaultSmallTitle(title: 'Fornecedor'.hardcoded),
+                    ),
+                    SliverToBoxAdapter(
+                      child: SupplierItem(
+                        supplier: pendingAsync.value!.selectedSupplier!,
+                        pending: pendingAsync.value,
+                        enabled: false,
+                      ),
+                    ),
+                    gapSliverH8,
+                  ] else
+                    UnselectedMessage(
+                      title: 'Nenhum fornecedor selecionado'.hardcoded,
+                    ),
+                  if ((pendingAsync.value?.selectedEnterprises?.length ?? 0) >
+                      0) ...[
+                    SliverToBoxAdapter(
+                      child: DefaultSmallTitle(
+                        title:
+                            'Empresas (${pendingAsync.value!.selectedEnterprises!.length})'
+                                .hardcoded,
+                      ),
+                    ),
+                    SliverList.builder(
+                      itemCount:
+                          pendingAsync.value?.selectedEnterprises?.length ?? 0,
+                      itemBuilder: (_, index) {
+                        final enterprise =
+                            pendingAsync.value?.selectedEnterprises?[index];
+
+                        return EnterpriseItem(
+                          enterprise: enterprise!,
+                          enabled: false,
+                        );
+                      },
+                    ),
+                    gapSliverH8,
+                  ] else
+                    UnselectedMessage(
+                      title: 'Nenhuma empresa selecionada'.hardcoded,
+                    ),
+                  if (pendingAsync.value?.products != null &&
+                      pendingAsync.value!.products!.isNotEmpty) ...[
+                    SliverToBoxAdapter(
+                      child: DefaultSmallTitle(
+                        title:
+                            'Produtos (${pendingAsync.value!.products!.length})'
+                                .hardcoded,
+                      ),
+                    ),
+                    gapSliverH8,
+                    ProductsItems(
+                      products:
+                          pendingAsync.value?.products?.values
+                              .map((e) => e.product)
+                              .toList() ??
+                          [],
+                      productsPage: productsPage,
+                    ),
+                  ] else
+                    UnselectedMessage(
+                      title: 'Nenhum produto informado'.hardcoded,
+                    ),
+                ],
               ),
             ),
-            gapSliverH8,
-            BuyersDropdown(),
-            gapSliverH8,
-            RequestTypeDropdown(),
-            gapSliverH8,
-            if (pendingAsync.value?.selectedSupplier != null) ...[
-              SliverToBoxAdapter(
-                child: DefaultSmallTitle(title: 'Fornecedor'.hardcoded),
-              ),
-              SliverToBoxAdapter(
-                child: SupplierItem(
-                  supplier: pendingAsync.value!.selectedSupplier!,
-                  pending: pendingAsync.value,
-                  enabled: false,
-                ),
-              ),
-              gapSliverH8,
-            ] else
-              UnselectedMessage(
-                title: 'Nenhum fornecedor selecionado'.hardcoded,
-              ),
-            if ((pendingAsync.value?.selectedEnterprises?.length ?? 0) > 0) ...[
-              SliverToBoxAdapter(
-                child: DefaultSmallTitle(
-                  title:
-                      'Empresas (${pendingAsync.value!.selectedEnterprises!.length})'
-                          .hardcoded,
-                ),
-              ),
-              SliverList.builder(
-                itemCount: pendingAsync.value?.selectedEnterprises?.length ?? 0,
-                itemBuilder: (_, index) {
-                  final enterprise =
-                      pendingAsync.value?.selectedEnterprises?[index];
-
-                  return EnterpriseItem(
-                    enterprise: enterprise!,
-                    enabled: false,
-                  );
-                },
-              ),
-              gapSliverH8,
-            ] else
-              UnselectedMessage(title: 'Nenhuma empresa selecionada'.hardcoded),
-            if (pendingAsync.value?.products != null &&
-                pendingAsync.value!.products!.isNotEmpty) ...[
-              SliverToBoxAdapter(
-                child: DefaultSmallTitle(
-                  title: 'Produtos (${pendingAsync.value!.products!.length})'
-                      .hardcoded,
-                ),
-              ),
-              gapSliverH8,
-              ProductsItems(
-                products:
-                    pendingAsync.value?.products?.values
-                        .map((e) => e.product)
-                        .toList() ??
-                    [],
-                productsPage: productsPage,
-              ),
-            ] else
-              UnselectedMessage(title: 'Nenhum produto informado'.hardcoded),
-          ],
-        ),
+          ),
+          Footer(pendingAsync: pendingAsync),
+        ],
       ),
     );
   }

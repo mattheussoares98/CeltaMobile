@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
 import '../../../../domain/entities/entities.dart';
 
 class Footer extends ConsumerWidget {
@@ -21,37 +22,40 @@ class Footer extends ConsumerWidget {
         ) ??
         0;
 
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            children: [
-              Text('Total'.hardcoded, style: theme.textTheme.titleSmall),
-              TitleAndSubTitle(
-                title: null,
-                subTitle: total,
-                subTitleIsPrice: true,
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Text('Total'.hardcoded, style: theme.textTheme.titleSmall),
+                TitleAndSubTitle(
+                  title: null,
+                  subTitle: total,
+                  subTitleIsPrice: true,
+                ),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: PrimaryButton(
-            text: 'Salvar',
-            onPressed: () {
-              showAlertDialog(
-                context: context,
-                title: 'Salvar pedido?'.hardcoded,
-                cancelActionText: 'Cancelar'.hardcoded,
-                defaultActionText: 'Sim'.hardcoded,
-                onOkPressed: () {
-                  //TODO implement
-                },
-              );
-            },
+          Expanded(
+            child: PrimaryButton(
+              text: 'Salvar',
+              onPressed: () {
+                showAlertDialog(
+                  context: context,
+                  title: 'Salvar pedido?'.hardcoded,
+                  cancelActionText: 'Cancelar'.hardcoded,
+                  defaultActionText: 'Sim'.hardcoded,
+                  onOkPressed: () {
+                    //TODO implement
+                  },
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
