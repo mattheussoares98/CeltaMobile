@@ -42,19 +42,21 @@ class Footer extends ConsumerWidget {
           Expanded(
             child: PrimaryButton(
               text: 'Salvar',
-              onPressed: () {
-                showAlertDialog(
-                  context: context,
-                  title: 'Salvar pedido?'.hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Sim'.hardcoded,
-                  onOkPressed: () {
-                    ref
-                        .read(insertBuyRequestControllerProvider.notifier)
-                        .insert(observationsController.text);
-                  },
-                );
-              },
+              onPressed: pendingAsync.value?.products?.values.isEmpty ?? true
+                  ? null
+                  : () {
+                      showAlertDialog(
+                        context: context,
+                        title: 'Salvar pedido?'.hardcoded,
+                        cancelActionText: 'Cancelar'.hardcoded,
+                        defaultActionText: 'Sim'.hardcoded,
+                        onOkPressed: () {
+                          ref
+                              .read(insertBuyRequestControllerProvider.notifier)
+                              .insert(observationsController.text);
+                        },
+                      );
+                    },
             ),
           ),
         ],
