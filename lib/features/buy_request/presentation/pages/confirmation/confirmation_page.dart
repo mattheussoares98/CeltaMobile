@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,6 +25,12 @@ class ConfirmationPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+    ref.listen(insertBuyRequestControllerProvider, (p, n) {
+      n.doOnSuccess(p, () {
+        showSnackBarMessage(context, 'Pedido salvo com sucesso'.hardcoded);
+      });
+      n.showAlertDialogOnError(context);
+    });
 
     return Scaffold(
       body: Column(

@@ -151,13 +151,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
     final insertAsync = ref.watch(insertBuyRequestControllerProvider);
 
-    ref.listen(insertBuyRequestControllerProvider, (p, n) {
-      n.doOnSuccess(p, () {
-        showSnackBarMessage(context, 'Pedido salvo com sucesso'.hardcoded);
-      });
-      n.showAlertDialogOnError(context);
-    });
-
     final productsPage = ProductsPage(
       searchProductController: searchProductController,
       quantityController: quantityController,
