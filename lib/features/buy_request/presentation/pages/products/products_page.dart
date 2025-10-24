@@ -47,6 +47,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   Future<void> searchProducts(
     AsyncValue<PendingBuyRequestEntity> pendingAsync,
   ) async {
+    widget.changeSelectedIndex(null);
     await ref
         .read(
           searchProductsStateControllerProvider(
