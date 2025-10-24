@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../controllers/controllers.dart';
+import '../../../../../core/presentation/controllers/supplier/supplier.dart';
 import 'components/components.dart';
 
 class IdentificationPage extends ConsumerStatefulWidget {
