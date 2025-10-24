@@ -9,8 +9,7 @@ import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class BuyersDropdown extends ConsumerWidget {
-  final bool? enabled;
-  const BuyersDropdown({super.key, this.enabled = true});
+  const BuyersDropdown({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,19 +29,14 @@ class BuyersDropdown extends ConsumerWidget {
               DefaultSmallTitle(title: 'Comprador'.hardcoded),
               gapH4,
               DefaultSimpleDropDown<BuyerEntity?>(
-                onChanged: enabled == false
-                    ? null
-                    : (buyer) {
-                        ref
-                            .read(
-                              pendingBuyRequestStateControllerProvider.notifier,
-                            )
-                            .updatePending(
-                              (pendingAsync.value ??
-                                      PendingBuyRequestEntity.empty())
-                                  .copyWith(selectedBuyer: buyer),
-                            );
-                      },
+                onChanged: (buyer) {
+                  ref
+                      .read(pendingBuyRequestStateControllerProvider.notifier)
+                      .updatePending(
+                        (pendingAsync.value ?? PendingBuyRequestEntity.empty())
+                            .copyWith(selectedBuyer: buyer),
+                      );
+                },
                 items: buyers
                     ?.map(
                       (e) => DropdownMenuItem(

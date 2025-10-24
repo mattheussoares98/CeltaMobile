@@ -11,8 +11,7 @@ import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class RequestTypeDropdown extends ConsumerWidget {
-  final bool? enabled;
-  const RequestTypeDropdown({super.key, this.enabled = true});
+  const RequestTypeDropdown({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,11 +59,9 @@ class RequestTypeDropdown extends ConsumerWidget {
                     );
                   }
                 },
-                onChanged: enabled == false
-                    ? null
-                    : (request) {
-                        update(request);
-                      },
+                onChanged: (request) {
+                  update(request);
+                },
                 items: requests
                     ?.map(
                       (e) => DropdownMenuItem(

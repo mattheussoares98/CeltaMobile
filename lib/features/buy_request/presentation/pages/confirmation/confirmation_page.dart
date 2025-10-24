@@ -48,9 +48,9 @@ class ConfirmationPage extends ConsumerWidget {
               ),
             ),
             gapSliverH8,
-            BuyersDropdown(enabled: false),
+            BuyersDropdown(),
             gapSliverH8,
-            RequestTypeDropdown(enabled: false),
+            RequestTypeDropdown(),
             gapSliverH8,
             if (pendingAsync.value?.selectedSupplier != null) ...[
               SliverToBoxAdapter(
