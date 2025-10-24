@@ -3,6 +3,7 @@ enum Routes {
   adjustSalePrice('Alterar preços'),
   adjustSalePriceProducts('Alterar preços'),
   adjustStocks('Ajustar estoque'),
+  buyQuotations('Cotação de compras'),
   buyRequest('Pedido de compras'),
   createEnterprise('Criar empresa'),
   customerRegister('Cadastro de clientes'),
