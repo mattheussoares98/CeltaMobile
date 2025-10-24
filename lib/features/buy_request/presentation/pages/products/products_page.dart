@@ -11,7 +11,7 @@ import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class ProductsPage extends ConsumerStatefulWidget {
+class ProductsPage extends ConsumerWidget {
   final TextEditingController searchProductController;
   final TextEditingController quantityController;
   final TextEditingController costController;
@@ -40,36 +40,29 @@ class ProductsPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    Future<void> searchProducts(
+      AsyncValue<PendingBuyRequestEntity> pendingAsync,
+    ) async {
+      changeSelectedIndex(null);
+      await ref
+          .read(
+            searchProductsStateControllerProvider(
+              0,
+              BsRoutine.buyRequest,
+              Modules.buyRequest,
+            ).notifier,
+          )
+          .loadProducts(
+            enterpriseCodes:
+                pendingAsync.value?.selectedEnterprises
+                    ?.map((e) => e.Code!)
+                    .toList() ??
+                [],
+            searchValue: searchProductController.text,
+          );
+    }
 
-class _ProductsPageState extends ConsumerState<ProductsPage> {
-  Future<void> searchProducts(
-    AsyncValue<PendingBuyRequestEntity> pendingAsync,
-  ) async {
-    widget.changeSelectedIndex(null);
-    await ref
-        .read(
-          searchProductsStateControllerProvider(
-            0,
-            BsRoutine.buyRequest,
-            Modules.buyRequest,
-          ).notifier,
-        )
-        .loadProducts(
-          enterpriseCodes:
-              pendingAsync.value?.selectedEnterprises
-                  ?.map((e) => e.Code!)
-                  .toList() ??
-              [],
-          searchValue: widget.searchProductController.text,
-        );
-  }
-
-  //TODO changeto stateless
-
-  @override
-  Widget build(BuildContext context) {
     ref.listen(
       searchProductsStateControllerProvider(
         0,
@@ -78,7 +71,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       ),
       (products, next) {
         next.doOnSuccess(products, () {
-          widget.searchProductController.clear();
+          searchProductController.clear();
         });
       },
     );
@@ -102,7 +95,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               child: DefaultSearchProducts(
                 isLoading: productsState.isLoading,
                 searchProducts: () => searchProducts(pendingAsync),
-                searchValueController: widget.searchProductController,
+                searchValueController: searchProductController,
               ),
             ),
             gapSliverH8,
@@ -123,7 +116,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       ..sort((e1, e2) => e1.Name.compareTo(e2.Name));
 
                 return ProductsItems(
-                  productsPage: widget,
+                  productsPage: this,
                   products: filteredProducts,
                 );
               },
