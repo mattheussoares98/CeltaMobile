@@ -169,26 +169,21 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       bottomNavigationBar: BottomNavBar(
         currentIndex: currentIndex,
         onTap: (index) {
-          bool needValidate = index > currentIndex;
-          if (!needValidate) {
-            setState(() => currentIndex = index);
-            return;
-          }
-
           bool enterprisesAreValid =
               pendingAsync.value?.selectedEnterprises != null &&
               pendingAsync.value!.selectedEnterprises!.isNotEmpty;
-          bool productsAreValid =
-              pendingAsync.value?.products != null &&
-              pendingAsync.value!.products!.isNotEmpty;
+          bool buyerIsSelected = pendingAsync.value?.selectedBuyer != null;
+          bool requestTypeIsSelected =
+              pendingAsync.value?.selectedRequestType != null;
+          bool supplierIsSelected =
+              pendingAsync.value?.selectedSupplier != null;
 
-          //! cant exit the first page in these cases
-          if (currentIndex == 0) {
-            //1- form fields not valid
-            if (identificationFormKey.currentState?.validate() != true) {
+          if (currentIndex == 0 && (index == 1 || index == 2)) {
+            bool isValid =
+                identificationFormKey.currentState?.validate() == true;
+            if (!isValid) {
               return;
             } else if (pendingAsync.value?.selectedSupplier == null) {
-              //2- supplier not selected
               showSnackBarMessage(
                 context,
                 'Selecione um fornecedor'.hardcoded,
@@ -198,22 +193,26 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             }
           }
 
-          if (index > 1 && !enterprisesAreValid) {
+          if ((index == 1 || index == 2)) {
+            if (!buyerIsSelected ||
+                !requestTypeIsSelected ||
+                !supplierIsSelected) {
+              showSnackBarMessage(
+                context,
+                'Preencha os campos de identificação'.hardcoded,
+                backgroundColor: Colors.red,
+              );
+              return;
+            }
+          }
+
+          if (index == 2 && !enterprisesAreValid) {
             showSnackBarMessage(
               context,
               'Selecione pelo menos uma empresa'.hardcoded,
               backgroundColor: Colors.red,
             );
             return;
-          } else if (index > 2) {
-            if (!productsAreValid) {
-              showSnackBarMessage(
-                context,
-                'Insira pelo menos um produto'.hardcoded,
-                backgroundColor: Colors.red,
-              );
-              return;
-            }
           }
 
           setState(() => currentIndex = index);
