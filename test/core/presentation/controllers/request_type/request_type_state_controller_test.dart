@@ -6,6 +6,7 @@ import 'package:celta_intelligence/core/presentation/controllers/user_session/us
 import 'package:celta_intelligence/core/providers/request_type/request_type.dart';
 import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -31,11 +32,17 @@ void main() {
       EntityFactory.makeRequestTypeEntity(),
       EntityFactory.makeRequestTypeEntity(),
     ];
-    module = Modules.buyRequest;
+    module = [
+      Modules.buyRequest,
+      Modules.transferRequest,
+      Modules.saleRequest,
+    ][faker.randomGenerator.integer(3)];
   });
 
   setUpAll(() {
-    registerFallbackValue(Modules.buyRequest);
+    for (var value in Modules.values) {
+      registerFallbackValue(value);
+    }
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -78,9 +85,9 @@ void main() {
           () => mockRepository.load(
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            inclusiveBuy: true,
-            inclusiveTransfer: false,
-            inclusiveSale: false,
+            inclusiveBuy: module == Modules.buyRequest,
+            inclusiveTransfer: module == Modules.transferRequest,
+            inclusiveSale: module == Modules.saleRequest,
           ),
         ).called(1);
       },

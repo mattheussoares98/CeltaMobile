@@ -18,9 +18,9 @@ class RequestTypeStateController extends _$RequestTypeStateController {
         .load(
           baseUrl: userSession!.enterprise!.baseUrl!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
-          inclusiveBuy: true,
-          inclusiveTransfer: false,
-          inclusiveSale: false,
+          inclusiveBuy: module == Modules.buyRequest,
+          inclusiveTransfer: module == Modules.transferRequest,
+          inclusiveSale: module == Modules.saleRequest,
         );
   }
 }
