@@ -24,6 +24,7 @@ class DefaultTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
   final VoidCallback? onTap;
+  final int? maxLines;
   const DefaultTextFormField({
     super.key,
     this.maxLength,
@@ -42,6 +43,7 @@ class DefaultTextFormField extends StatelessWidget {
     this.onChanged,
     this.inputFormatters,
     this.onTap,
+    this.maxLines,
     this.obscureText = false,
   });
 
@@ -59,6 +61,8 @@ class DefaultTextFormField extends StatelessWidget {
       padding: const EdgeInsets.only(top: 4),
       child: TextFormField(
         key: ValueKey(Random().nextDouble()),
+        minLines: 1,
+        maxLines: maxLines ?? 1,
         enabled: enabled,
         controller: controller,
         autovalidateMode: autovalidateMode,
@@ -86,6 +90,7 @@ class DefaultTextFormField extends StatelessWidget {
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
           errorText: errorText,
+          isMultiLine: (maxLines ?? 1) > 1,
         ),
       ),
     );

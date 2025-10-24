@@ -60,6 +60,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
               onTap: widget.defaultTextFormField.onTap,
               inputFormatters: widget.defaultTextFormField.inputFormatters,
               controller: widget.defaultTextFormField.controller,
+              maxLines: widget.defaultTextFormField.maxLines,
               placeholder:
                   widget.defaultTextFormField.labelText ??
                   widget.defaultTextFormField.hintText,

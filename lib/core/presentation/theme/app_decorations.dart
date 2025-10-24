@@ -11,6 +11,7 @@ class AppDecorations {
     Widget? prefixIcon,
     Widget? suffixIcon,
     String? errorText,
+    bool? isMultiLine,
   }) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -53,14 +54,16 @@ class AppDecorations {
       errorBorder: errorBorder,
       focusedErrorBorder: errorBorder,
       disabledBorder: border,
-
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
-
-      contentPadding: const EdgeInsets.only(left: Sizes.p8),
-
+      contentPadding: EdgeInsets.only(
+        top: isMultiLine == true ? Sizes.p8 : 0,
+        bottom: isMultiLine == true ? Sizes.p8 : 0,
+        left: Sizes.p8,
+      ),
       filled: true,
       fillColor: colorScheme.surfaceContainerHighest.withAlpha(125),
+      alignLabelWithHint: isMultiLine,
     );
   }
 }

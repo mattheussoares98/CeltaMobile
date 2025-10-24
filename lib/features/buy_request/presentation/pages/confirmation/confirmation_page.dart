@@ -45,6 +45,7 @@ class ConfirmationPage extends ConsumerWidget {
                 controller: observationsController,
                 hintText: 'Observações'.hardcoded,
                 labelText: 'Observações'.hardcoded,
+                maxLines: 4,
               ),
             ),
             gapSliverH8,
