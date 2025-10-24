@@ -70,7 +70,11 @@ class ConfirmationPage extends ConsumerWidget {
               ),
             if ((pendingAsync.value?.selectedEnterprises?.length ?? 0) > 0) ...[
               SliverToBoxAdapter(
-                child: DefaultSmallTitle(title: 'Empresas'.hardcoded),
+                child: DefaultSmallTitle(
+                  title:
+                      'Empresas (${pendingAsync.value!.selectedEnterprises!.length})'
+                          .hardcoded,
+                ),
               ),
               SliverList.builder(
                 itemCount: pendingAsync.value?.selectedEnterprises?.length ?? 0,
