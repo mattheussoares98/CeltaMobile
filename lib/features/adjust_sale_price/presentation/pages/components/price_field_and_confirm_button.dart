@@ -41,7 +41,10 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
               ),
               validator: FormValidators.compose([
                 NonEmptyValidator(),
-                NumberValidator(allowDecimal: true),
+                NumberValidator(
+                  allowDecimal: true,
+                  needsBeGreaterThanZero: false,
+                ),
               ]),
             ),
           ),
