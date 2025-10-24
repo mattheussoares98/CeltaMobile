@@ -37,12 +37,7 @@ class ConfirmationPage extends ConsumerWidget {
                     observationsController: observationsController,
                   ),
                   if (pendingAsync.value?.lastSavedRequestNumber != null) ...[
-                    SliverToBoxAdapter(
-                      child: TitleAndSubTitle(
-                        title: 'Último pedido salvo'.hardcoded,
-                        subTitle: pendingAsync.value!.lastSavedRequestNumber,
-                      ),
-                    ),
+                    LastSavedRequestNumber(),
                     gapSliverH8,
                   ],
                   SliverToBoxAdapter(
