@@ -1,7 +1,9 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import 'products_management.dart';
 
 class ProductsManagementPage extends ConsumerStatefulWidget {
@@ -44,9 +46,35 @@ class _ProductsManagementPageState
     ];
     final appBarTitles = ['Inserir produtos'.hardcoded, 'Carrinho'.hardcoded];
 
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     return Scaffold(
       appBar: AppBar(title: Text(appBarTitles[currentIndex])),
       body: pages[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) => setState(() => currentIndex = index),
+        items: [
+          BottomNavigationBarItem(
+            label: 'Inserir'.hardcoded,
+            icon: Icon(
+              isIOS
+                  ? CupertinoIcons.cart_badge_plus
+                  : Icons.add_shopping_cart_outlined,
+            ),
+          ),
+          BottomNavigationBarItem(
+            label: 'Carrinho'.hardcoded,
+            icon: QuantityBadge(
+              quantity: 0,
+              materialIcon: Icons.shopping_cart,
+              cupertinoIcon: CupertinoIcons.shopping_cart,
+              isSelected: currentIndex == 1,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
