@@ -1082,3 +1082,21 @@ class SoapLoadDestinyEnterprisesDatasourceSpy extends Mock
     ).thenAnswer((_) async => response);
   }
 }
+
+class SoapLoadProductByRequestTypeDatasourceSpy extends Mock
+    implements ISoapLoadProductByRequestTypeDatasource {
+  void mockLoad(List<ProductModel> response) {
+    when(
+      () => this.load(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        enterpriseOriginCode: any(named: 'enterpriseOriginCode'),
+        enterpriseDestinyCode: any(named: 'enterpriseDestinyCode'),
+        requestTypeCode: any(named: 'requestTypeCode'),
+        searchValue: any(named: 'searchValue'),
+        enterpriseEntity: any(named: 'enterpriseEntity'),
+        searchType: any(named: 'searchType'),
+      ),
+    ).thenAnswer((_) async => response);
+  }
+}
