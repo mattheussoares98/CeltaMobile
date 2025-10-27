@@ -110,7 +110,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
           enterprise: enterpriseEntity,
         ),
         routine: routine,
-        searchType: searchType,
+        searchType: SearchType.dynamic,
         crossIdentity: crossIdentity,
         enterpriseCodes: enterpriseCodes,
         lastBuyEntranceQuantity: lastBuyEntranceQuantity,

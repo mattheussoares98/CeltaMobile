@@ -49,7 +49,7 @@ class SoapInventoryProductsDatasource
         searchValue: searchValue,
         enterprise: selectedEnterprise,
       ),
-      searchType: searchType,
+      searchType: SearchType.dynamic,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       inventoryCountingCode: codigoInternoInvCont,

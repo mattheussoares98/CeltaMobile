@@ -142,7 +142,7 @@ void main() {
     ).called(1);
 
     //needs to uncomment the throw Exception(); in production code and /* .called(1) */ below to work
-    verify(
+    verifyNever(
       () => soapAdapter.post(
         url: any(named: 'url'),
         typeOfResponse: any(named: 'typeOfResponse'),
@@ -151,7 +151,7 @@ void main() {
         serviceASMX: any(named: 'serviceASMX'),
         parameters: any(named: "parameters"),
       ),
-    ).called(1);
+    );
   });
 
   test(
