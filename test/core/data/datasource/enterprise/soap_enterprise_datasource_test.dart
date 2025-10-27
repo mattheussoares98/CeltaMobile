@@ -20,6 +20,7 @@ void main() {
   late String url;
   late String crossIdentity;
   late int? enterpriseOriginCode;
+  late int? requestTypeCode;
 
   void initEntities() {
     enterpriseEntities = [
@@ -30,6 +31,9 @@ void main() {
     url = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     enterpriseOriginCode = faker.randomGenerator.boolean() == true
+        ? faker.randomGenerator.integer(100)
+        : null;
+    requestTypeCode = faker.randomGenerator.boolean() == true
         ? faker.randomGenerator.integer(100)
         : null;
   }
@@ -65,6 +69,7 @@ void main() {
         baseUrl: url,
         crossIdentity: crossIdentity,
         enterpriseOriginCode: enterpriseOriginCode,
+        requestTypeCode: requestTypeCode,
       );
 
       verify(
@@ -73,7 +78,7 @@ void main() {
           parameters: {
             "crossIdentity": crossIdentity,
             "simpleSearchValue": "",
-            "requestTypeCode": 0,
+            "requestTypeCode": requestTypeCode,
             "enterpriseOriginCode": enterpriseOriginCode,
           },
           soapAction: "GetEnterprisesJson",

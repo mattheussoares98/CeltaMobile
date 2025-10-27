@@ -244,6 +244,8 @@ class SoapEnterpriseDatasourceSpy extends Mock
       () => this.getEnterprises(
         baseUrl: any(named: "baseUrl"),
         crossIdentity: any(named: "crossIdentity"),
+        enterpriseOriginCode: any(named: "enterpriseOriginCode"),
+        requestTypeCode: any(named: "requestTypeCode"),
       ),
     ).thenAnswer((_) async => response);
   }

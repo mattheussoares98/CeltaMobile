@@ -534,6 +534,8 @@ class EntityFactory {
     UseWholePriceString: faker.randomGenerator.integer(1, min: 0).toString(),
     UnitValueTypeString: faker.randomGenerator.integer(100).toString(),
     TransferUnitValueTypeString: faker.randomGenerator.integer(100).toString(),
+    AllowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
+    AllowDiscount: faker.randomGenerator.boolean(),
   );
 
   static SupplierEntity makeSupplierEntity() => SupplierEntity(

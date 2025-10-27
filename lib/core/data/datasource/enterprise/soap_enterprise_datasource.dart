@@ -16,13 +16,14 @@ class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
     required String baseUrl,
     required String crossIdentity,
     int? enterpriseOriginCode,
+    int? requestTypeCode,
   }) async {
     final response = await soapAdapter.post(
       url: baseUrl.toLowerCase().removeWhiteSpaces(),
       parameters: {
         "crossIdentity": crossIdentity,
         "simpleSearchValue": "",
-        "requestTypeCode": 0,
+        "requestTypeCode": requestTypeCode,
         "enterpriseOriginCode": enterpriseOriginCode,
       },
       soapAction: "GetEnterprisesJson",

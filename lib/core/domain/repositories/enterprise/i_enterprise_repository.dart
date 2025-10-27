@@ -7,5 +7,6 @@ abstract class IEnterpriseRepository {
     required String url,
     required String crossIdentity,
     int? enterpriseOriginCode,
+    int? requestTypeCode,
   });
 }

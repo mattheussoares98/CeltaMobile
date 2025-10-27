@@ -17,6 +17,8 @@ void main() {
   late String enterpriseName;
   late String url;
   late String crossIdentity;
+  late int? requestTypeCode;
+  late int? enterpriseOriginCode;
 
   void initSut() {
     sut = EnterpriseRepositoryImpl(
@@ -48,6 +50,12 @@ void main() {
     enterpriseName = faker.company.name();
     url = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
+    requestTypeCode = faker.randomGenerator.boolean() == true
+        ? faker.randomGenerator.integer(100)
+        : null;
+    enterpriseOriginCode = faker.randomGenerator.boolean() == true
+        ? faker.randomGenerator.integer(100)
+        : null;
   }
 
   setUp(() {
@@ -72,6 +80,8 @@ void main() {
     final response = await sut.getSoapEnterprises(
       url: url,
       crossIdentity: crossIdentity,
+      requestTypeCode: requestTypeCode,
+      enterpriseOriginCode: enterpriseOriginCode,
     );
 
     expect(
@@ -85,6 +95,8 @@ void main() {
       () => soapEnterpriseDatasource.getEnterprises(
         crossIdentity: any(named: "crossIdentity"),
         baseUrl: any(named: "baseUrl"),
+        requestTypeCode: any(named: "requestTypeCode"),
+        enterpriseOriginCode: any(named: "enterpriseOriginCode"),
       ),
     ).called(1);
   });

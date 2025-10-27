@@ -5,5 +5,6 @@ abstract class ISoapEnterpriseDatasource {
     required String baseUrl,
     required String crossIdentity,
     int? enterpriseOriginCode,
+    int? requestTypeCode,
   });
 }

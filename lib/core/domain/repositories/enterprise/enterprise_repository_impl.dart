@@ -21,11 +21,13 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
     required String url,
     required String crossIdentity,
     int? enterpriseOriginCode,
+    int? requestTypeCode,
   }) async {
     final models = await soapEnterpriseDatasource.getEnterprises(
       baseUrl: url,
       crossIdentity: crossIdentity,
       enterpriseOriginCode: enterpriseOriginCode,
+      requestTypeCode: requestTypeCode,
     );
 
     return models.map((e) => e.toEntity()).toList();
