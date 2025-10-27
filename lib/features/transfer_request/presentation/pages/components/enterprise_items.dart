@@ -1,0 +1,57 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
+import '../../../../../core/domain/entities/entities.dart';
+
+class EnterpriseItems extends ConsumerWidget {
+  final List<EnterpriseEntity> enterprises;
+  final VoidCallback onTap;
+  final VoidCallback onRefresh;
+  const EnterpriseItems({
+    super.key,
+    required this.enterprises,
+    required this.onTap,
+    required this.onRefresh,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        onRefresh();
+      },
+      child: ListView.builder(
+        itemCount: enterprises.length,
+        itemBuilder: (_, index) {
+          final enterprise = enterprises[index];
+          return Card(
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleAndSubTitle(
+                      title: null,
+                      subTitle:
+                          '${enterprise.PersonalizedCode} - ${enterprise.name}',
+                    ),
+                    TitleAndSubTitle(
+                      title: 'CNPJ'.hardcoded,
+                      subTitle: enterprise.CnpjNumber,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
