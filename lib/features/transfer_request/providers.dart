@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../core/providers/hive/hive.dart';
 import '../../core/providers/soap/soap.dart';
 import 'data/datasource/datasource.dart';
 import 'domain/repositories/repositories.dart';
@@ -36,5 +37,19 @@ ISoapLoadProductByRequestTypeRepository soapLoadProductByRequestTypeRepository(
 ) {
   return SoapLoadProductByRequestTypeRepositoryImpl(
     ref.watch(soapLoadProductByRequestTypeDatasourceProvider),
+  );
+}
+
+@riverpod
+ILocalTransferRequestDatasource localTransferRequestDatasource(Ref ref) {
+  return LocalTransferRequestDatasource(
+    ref.watch(hiveBoxTransferRequestProvider),
+  );
+}
+
+@riverpod
+ILocalTransferRequestRepository localTransferRequestRepository(Ref ref) {
+  return LocalTransferRequestRepositoryImpl(
+    ref.watch(localTransferRequestDatasourceProvider),
   );
 }
