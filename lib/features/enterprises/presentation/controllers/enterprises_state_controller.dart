@@ -6,13 +6,17 @@ import '../../../../core/presentation/controllers/user_session/user_session.dart
 import '../../../../core/providers/enterprise/enterprise.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
+import '../../../enterprise_manager/domain/entities/entities.dart';
 
 part 'enterprises_state_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class EnterprisesStateController extends _$EnterprisesStateController {
   @override
-  Future<List<EnterpriseEntity>> build(int? enterpriseCode) async {
+  Future<List<EnterpriseEntity>> build({
+    int? enterpriseCode,
+    Modules? module,
+  }) async {
     // Timer? timer;
     // final link = ref.keepAlive();
     // ref.onCancel(() {

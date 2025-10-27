@@ -109,7 +109,9 @@ void main() {
           ),
         if (mockAuthState == true)
           userSessionProvider.overrideWith(() => fakeUserSession),
-        enterprisesStateControllerProvider(enterpriseEntity.Code).overrideWith(
+        enterprisesStateControllerProvider(
+          enterpriseCode: enterpriseEntity.Code,
+        ).overrideWith(
           () => FakeEnterprisesStateController([enterpriseEntity]),
         ),
         if (mockSelectedEnterprise == true)

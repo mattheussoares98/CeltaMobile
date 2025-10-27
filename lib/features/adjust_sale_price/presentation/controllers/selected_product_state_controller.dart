@@ -33,7 +33,7 @@ class SelectedProductStateController extends _$SelectedProductStateController {
 
     final userSession = await ref.watch(validatedUserSessionProvider.future);
     final enterprises = await ref.watch(
-      enterprisesStateControllerProvider(enterpriseCode).future,
+      enterprisesStateControllerProvider(enterpriseCode: enterpriseCode).future,
     );
     final enterpriseEntity = enterprises.first;
     final products = await ref
