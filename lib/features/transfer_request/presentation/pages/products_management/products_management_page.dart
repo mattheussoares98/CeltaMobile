@@ -26,10 +26,16 @@ class _ProductsManagementPageState
     extends ConsumerState<ProductsManagementPage> {
   int currentIndex = 0;
   final searchValueController = TextEditingController();
+  final quantityController = TextEditingController();
+  final searchValueFocusNode = FocusNode();
+  final quantityFocusNode = FocusNode();
 
   @override
   void dispose() {
     searchValueController.dispose();
+    quantityController.dispose();
+    searchValueFocusNode.dispose();
+    quantityFocusNode.dispose();
     super.dispose();
   }
 
@@ -41,6 +47,9 @@ class _ProductsManagementPageState
         enterpriseDestinyCode: widget.enterpriseDestinyCode,
         requestTypeCode: widget.requestTypeCode,
         searchValueController: searchValueController,
+        searchValueFocusNode: searchValueFocusNode,
+        quantityController: quantityController,
+        quantityFocusNode: quantityFocusNode,
       ),
       CartPage(),
     ];
