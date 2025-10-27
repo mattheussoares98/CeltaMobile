@@ -1,8 +1,10 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../routing/routing.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -39,7 +41,14 @@ class DestinyEnterprisesPage extends ConsumerWidget {
           return EnterpriseItems(
             enterprises: enterprises,
             onTap: (enterprise) {
-              //TODO navigate to another page
+              context.goNamed(
+                Routes.transferRequestProductsManagement.name,
+                pathParameters: {
+                  'requestTypeCode': requestTypeCode.toString(),
+                  'enterpriseOriginCode': enterpriseOriginCode.toString(),
+                  'enterpriseDestinyCode': enterprise.Code.toString(),
+                },
+              );
             },
             onRefresh: () {
               ref.invalidate(
