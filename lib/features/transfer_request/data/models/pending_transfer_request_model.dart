@@ -4,7 +4,7 @@ import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class PendingTransferRequestModel extends Equatable {
-  final Map<ProductKey, TransferRequestProductItemModel>? products;
+  final Map<DraftKey, TransferRequestProductItemModel>? products;
 
   const PendingTransferRequestModel({required this.products});
 
@@ -18,7 +18,7 @@ class PendingTransferRequestModel extends Equatable {
           : Map.fromEntries(
               (json['products'] as Map).entries.map(
                 (entry) => MapEntry(
-                  ProductKey.fromMapKey(entry.key),
+                  DraftKey.fromMapKey(entry.key),
                   TransferRequestProductItemModel.fromJson(entry.value),
                 ),
               ),

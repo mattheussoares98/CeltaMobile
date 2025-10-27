@@ -1,16 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-class ProductKey extends Equatable {
+class DraftKey extends Equatable {
   final int requestTypeCode;
   final int enterpriseOrigin;
   final int enterpriseDestinyCode;
-  final int productPackingCode;
 
-  const ProductKey({
+  const DraftKey({
     required this.requestTypeCode,
     required this.enterpriseOrigin,
     required this.enterpriseDestinyCode,
-    required this.productPackingCode,
   });
 
   @override
@@ -18,23 +16,21 @@ class ProductKey extends Equatable {
     requestTypeCode,
     enterpriseOrigin,
     enterpriseDestinyCode,
-    productPackingCode,
   ];
 
   String toMapKey() {
-    return '$requestTypeCode-$enterpriseOrigin-$enterpriseDestinyCode-$productPackingCode';
+    return '$requestTypeCode-$enterpriseOrigin-$enterpriseDestinyCode';
   }
 
-  factory ProductKey.fromMapKey(String key) {
+  factory DraftKey.fromMapKey(String key) {
     final parts = key.split('-');
-    if (parts.length != 4) {
+    if (parts.length != 3) {
       throw FormatException('Invalid ProductKey format');
     }
-    return ProductKey(
+    return DraftKey(
       requestTypeCode: int.parse(parts[0]),
       enterpriseOrigin: int.parse(parts[1]),
       enterpriseDestinyCode: int.parse(parts[2]),
-      productPackingCode: int.parse(parts[3]),
     );
   }
 }
