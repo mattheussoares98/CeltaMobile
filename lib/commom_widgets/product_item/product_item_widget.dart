@@ -138,7 +138,9 @@ class ProductItemWidget extends ConsumerWidget {
                           TitleAndSubTitle(
                             title: "Preço ",
                             emptyMessage: 'Sem preço'.hardcoded,
-                            subTitle: product.RetailPracticedPrice,
+                            subTitle: product.Value > 0
+                                ? product.Value
+                                : product.RetailPracticedPrice,
                             subTitleIsPrice: true,
                           ),
                         ],
