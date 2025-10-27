@@ -22,6 +22,7 @@ enum Routes {
   splash('Splash'),
   transferRequestDestinyEnterprises('Empresas de destino'),
   transferRequestOriginEnterprises('Empresas de origem'),
+  transferRequestProductsManagement('Manuseio de produtos'),
   transferRequestRequestsTypes('Pedido de transferência'),
   transferBetweenStocks('Transferência entre estoques');
 
