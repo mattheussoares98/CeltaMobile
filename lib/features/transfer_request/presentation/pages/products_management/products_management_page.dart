@@ -1,0 +1,52 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'products_management.dart';
+
+class ProductsManagementPage extends ConsumerStatefulWidget {
+  final int enterpriseOriginCode;
+  final int enterpriseDestinyCode;
+  final int requestTypeCode;
+  const ProductsManagementPage({
+    super.key,
+    required this.enterpriseOriginCode,
+    required this.enterpriseDestinyCode,
+    required this.requestTypeCode,
+  });
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ProductsManagementPageState();
+}
+
+class _ProductsManagementPageState
+    extends ConsumerState<ProductsManagementPage> {
+  int currentIndex = 0;
+  final searchValueController = TextEditingController();
+
+  @override
+  void dispose() {
+    searchValueController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pages = [
+      InsertProductsPage(
+        enterpriseOriginCode: widget.enterpriseOriginCode,
+        enterpriseDestinyCode: widget.enterpriseDestinyCode,
+        requestTypeCode: widget.requestTypeCode,
+        searchValueController: searchValueController,
+      ),
+      CartPage(),
+    ];
+    final appBarTitles = ['Inserir produtos'.hardcoded, 'Carrinho'.hardcoded];
+
+    return Scaffold(
+      appBar: AppBar(title: Text(appBarTitles[currentIndex])),
+      body: pages[currentIndex],
+    );
+  }
+}
