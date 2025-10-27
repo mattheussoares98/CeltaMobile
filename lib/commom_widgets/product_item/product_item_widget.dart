@@ -144,12 +144,14 @@ class ProductItemWidget extends ConsumerWidget {
                             subTitleIsPrice: true,
                           ),
                         ],
-                        TitleAndSubTitle(
-                          title: "Custo líquido ",
-                          subTitle: product.LiquidCost,
-                          emptyMessage: 'Sem custo líquido'.hardcoded,
-                          subTitleIsPrice: true,
-                        ),
+                        if (routine != BsRoutine.transferRequest) ...[
+                          TitleAndSubTitle(
+                            title: "Custo líquido ",
+                            subTitle: product.LiquidCost,
+                            emptyMessage: 'Sem custo líquido'.hardcoded,
+                            subTitleIsPrice: true,
+                          ),
+                        ],
                       ],
                       if (routine != BsRoutine.adjustSalePrice) ...[
                         TitleAndSubTitle(
