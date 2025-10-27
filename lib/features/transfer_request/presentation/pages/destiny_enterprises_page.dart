@@ -38,7 +38,7 @@ class DestinyEnterprisesPage extends ConsumerWidget {
         data: (enterprises) {
           return EnterpriseItems(
             enterprises: enterprises,
-            onTap: () {
+            onTap: (enterprise) {
               //TODO navigate to another page
             },
             onRefresh: () {

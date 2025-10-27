@@ -1,8 +1,10 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../routing/routes.dart';
 import '../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
 import 'components/components.dart';
@@ -30,8 +32,14 @@ class OriginEnterprisesPage extends ConsumerWidget {
           //TODO treat if the enterprise is enabled or not
           return EnterpriseItems(
             enterprises: enterprises,
-            onTap: () {
-              //TODO go to destiny enterprises
+            onTap: (enterprise) {
+              context.goNamed(
+                Routes.transferRequestDestinyEnterprises.name,
+                pathParameters: {
+                  'requestTypeCode': requestTypeCode.toString(),
+                  'enterpriseOriginCode': enterprise.Code.toString(),
+                },
+              );
             },
             onRefresh: () {
               ref.invalidate(

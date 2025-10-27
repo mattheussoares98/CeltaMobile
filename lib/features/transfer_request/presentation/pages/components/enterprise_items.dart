@@ -8,7 +8,7 @@ import '../../../../../core/domain/entities/entities.dart';
 
 class EnterpriseItems extends ConsumerWidget {
   final List<EnterpriseEntity> enterprises;
-  final VoidCallback onTap;
+  final void Function(EnterpriseEntity enterprise) onTap;
   final VoidCallback onRefresh;
   const EnterpriseItems({
     super.key,
@@ -30,7 +30,7 @@ class EnterpriseItems extends ConsumerWidget {
           return Card(
             clipBehavior: Clip.antiAlias,
             child: InkWell(
-              onTap: onTap,
+              onTap: () => onTap(enterprise),
               child: Padding(
                 padding: const EdgeInsets.all(Sizes.p8),
                 child: Column(

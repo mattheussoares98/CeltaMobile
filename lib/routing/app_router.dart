@@ -50,7 +50,10 @@ GoRouter goRouter(Ref ref) {
           inventoryCountingsRoute(),
           inventoryProductsRoute(),
         ]),
-        transferRequestRquestsTypesRoute([originEnterprisesRoute()]),
+        transferRequestRquestsTypesRoute([
+          originEnterprisesRoute(),
+          destinyEnterprisesRoute(),
+        ]),
         searchProductsRoute(),
         transferBetweenStocksRoute(),
       ]),

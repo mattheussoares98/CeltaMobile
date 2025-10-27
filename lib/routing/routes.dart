@@ -20,6 +20,7 @@ enum Routes {
   home('Home'),
   searchProducts('Pesquisar produtos'),
   splash('Splash'),
+  transferRequestDestinyEnterprises('Empresas de destino'),
   transferRequestOriginEnterprises('Empresas de origem'),
   transferRequestRequestsTypes('Pedido de transferência'),
   transferBetweenStocks('Transferência entre estoques');
