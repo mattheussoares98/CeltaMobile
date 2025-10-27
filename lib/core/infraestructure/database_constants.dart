@@ -29,6 +29,11 @@ class DatabaseConstants {
     name: 'transfer_lot_items',
     keys: [], //use dynamic keys according to change the lot
   );
+
+  static final transferRequest = _HiveBoxConfig(
+    name: 'transfer_lot_items',
+    keys: [], //use dynamic keys
+  );
 }
 
 class _HiveBoxConfig {

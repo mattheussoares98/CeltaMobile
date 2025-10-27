@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/domain/entities/entities.dart';
@@ -15,4 +16,16 @@ class TransferRequestProductItemEntity extends Equatable {
 
   @override
   List<Object?> get props => [product, quantity, value];
+
+  TransferRequestProductItemEntity copyWith({
+    ProductEntity? product,
+    double? quantity,
+    double? value,
+  }) {
+    return TransferRequestProductItemEntity(
+      product: product ?? this.product,
+      quantity: quantity ?? this.quantity,
+      value: value ?? this.value,
+    );
+  }
 }
