@@ -8,6 +8,7 @@ class SoapEnterpriseModel extends Equatable {
   final String? Name;
   final String? CnpjNumber;
   final int? CodigoInternoVendaMobile_ModeloPedido;
+  final int? SaleRequestTypeCode;
   final bool? UseRetailSale;
   final bool? UseWholeSale;
   final bool? UseEcommerceSale;
@@ -22,6 +23,7 @@ class SoapEnterpriseModel extends Equatable {
     required this.Name,
     required this.CnpjNumber,
     required this.CodigoInternoVendaMobile_ModeloPedido,
+    required this.SaleRequestTypeCode,
     required this.UseEcommerceSale,
     required this.UseRetailSale,
     required this.UseWholeSale,
@@ -38,6 +40,7 @@ class SoapEnterpriseModel extends Equatable {
     Name,
     CnpjNumber,
     CodigoInternoVendaMobile_ModeloPedido,
+    SaleRequestTypeCode,
     UseEcommerceSale,
     UseRetailSale,
     UseWholeSale,
@@ -55,7 +58,9 @@ class SoapEnterpriseModel extends Equatable {
     UseEcommerceSale: json['SaleTypeECommerce'],
     UseRetailSale: json['SaleTypeRetail'],
     UseWholeSale: json['SaleTypeWholeSale'],
-    CodigoInternoVendaMobile_ModeloPedido: json["SaleRequestTypeCode"],
+    CodigoInternoVendaMobile_ModeloPedido:
+        json["CodigoInternoVendaMobile_ModeloPedido"],
+    SaleRequestTypeCode: json["SaleRequestTypeCode"],
     EnterpriseParticipateEnterpriseGroup:
         json["EnterpriseParticipateEnterpriseGroup"],
     ProductCodeSizeOfBalanceLabel: json["ProductCodeSizeOfBalanceLabel"],
@@ -71,7 +76,9 @@ class SoapEnterpriseModel extends Equatable {
     'SaleTypeECommerce': UseEcommerceSale,
     'SaleTypeRetail': UseRetailSale,
     'SaleTypeWholeSale': UseWholeSale,
-    'SaleRequestTypeCode': CodigoInternoVendaMobile_ModeloPedido,
+    'CodigoInternoVendaMobile_ModeloPedido':
+        CodigoInternoVendaMobile_ModeloPedido,
+    'SaleRequestTypeCode': SaleRequestTypeCode,
     'EnterpriseParticipateEnterpriseGroup':
         EnterpriseParticipateEnterpriseGroup,
     'ProductCodeSizeOfBalanceLabel': ProductCodeSizeOfBalanceLabel,
@@ -87,6 +94,7 @@ class SoapEnterpriseModel extends Equatable {
         CnpjNumber: entity.CnpjNumber,
         CodigoInternoVendaMobile_ModeloPedido:
             entity.CodigoInternoVendaMobile_ModeloPedido,
+        SaleRequestTypeCode: entity.SaleRequestTypeCode,
         UseEcommerceSale: entity.UseEcommerceSale,
         UseRetailSale: entity.UseRetailSale,
         UseWholeSale: entity.UseWholeSale,
@@ -104,6 +112,7 @@ class SoapEnterpriseModel extends Equatable {
     CnpjNumber: CnpjNumber,
     CodigoInternoVendaMobile_ModeloPedido:
         CodigoInternoVendaMobile_ModeloPedido,
+    SaleRequestTypeCode: SaleRequestTypeCode,
     UseRetailSale: UseRetailSale,
     UseWholeSale: UseWholeSale,
     UseEcommerceSale: UseEcommerceSale,
