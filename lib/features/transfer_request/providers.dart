@@ -22,3 +22,19 @@ ISoapLoadDestinyEnterprisesRepository soapLoadDestinyEnterprisesRepository(
     ref.watch(soapLoadDestinyEnterprisesDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapLoadProductByRequestTypeDatasource soapLoadProductByRequestTypeDatasource(
+  Ref ref,
+) {
+  return SoapLoadProductByRequestTypeDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapLoadProductByRequestTypeRepository soapLoadProductByRequestTypeRepository(
+  Ref ref,
+) {
+  return SoapLoadProductByRequestTypeRepositoryImpl(
+    ref.watch(soapLoadProductByRequestTypeDatasourceProvider),
+  );
+}
