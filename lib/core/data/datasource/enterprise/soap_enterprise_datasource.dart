@@ -18,14 +18,19 @@ class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
     int? enterpriseOriginCode,
     int? requestTypeCode,
   }) async {
+    final parameters = <String, dynamic>{
+      "crossIdentity": crossIdentity,
+      "simpleSearchValue": "",
+    };
+    parameters.addAll({
+      if (enterpriseOriginCode != null)
+        "enterpriseOriginCode": enterpriseOriginCode,
+      if (requestTypeCode != null) "requestTypeCode": requestTypeCode,
+    });
+
     final response = await soapAdapter.post(
       url: baseUrl.toLowerCase().removeWhiteSpaces(),
-      parameters: {
-        "crossIdentity": crossIdentity,
-        "simpleSearchValue": "",
-        "requestTypeCode": requestTypeCode,
-        "enterpriseOriginCode": enterpriseOriginCode,
-      },
+      parameters: parameters,
       soapAction: "GetEnterprisesJson",
       typeOfResponse: "GetEnterprisesJsonResponse",
       serviceASMX: "celtaenterpriseService.asmx",

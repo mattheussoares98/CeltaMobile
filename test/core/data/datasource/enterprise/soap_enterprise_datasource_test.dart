@@ -78,8 +78,9 @@ void main() {
           parameters: {
             "crossIdentity": crossIdentity,
             "simpleSearchValue": "",
-            "requestTypeCode": requestTypeCode,
-            "enterpriseOriginCode": enterpriseOriginCode,
+            if (requestTypeCode != null) "requestTypeCode": requestTypeCode,
+            if (enterpriseOriginCode != null)
+              "enterpriseOriginCode": enterpriseOriginCode,
           },
           soapAction: "GetEnterprisesJson",
           typeOfResponse: "GetEnterprisesJsonResponse",
