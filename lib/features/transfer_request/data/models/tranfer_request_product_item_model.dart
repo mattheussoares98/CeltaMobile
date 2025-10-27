@@ -6,28 +6,28 @@ import '../../domain/entities/entities.dart';
 class TransferRequestProductItemModel extends Equatable {
   final ProductModel product;
   final double quantity;
-  final double price;
+  final double value;
 
   const TransferRequestProductItemModel({
     required this.product,
     required this.quantity,
-    required this.price,
+    required this.value,
   });
 
   @override
-  List<Object?> get props => [product, quantity, price];
+  List<Object?> get props => [product, quantity, value];
 
   factory TransferRequestProductItemModel.fromJson(Map json) =>
       TransferRequestProductItemModel(
         product: ProductModel.fromJson(json['product']),
         quantity: json['quantity'].toDouble(),
-        price: json['price'].toDouble(),
+        value: json['value'].toDouble(),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'product': product.toJson(),
     'quantity': quantity,
-    'price': price,
+    'value': value,
   };
 
   factory TransferRequestProductItemModel.fromEntity(
@@ -35,13 +35,13 @@ class TransferRequestProductItemModel extends Equatable {
   ) => TransferRequestProductItemModel(
     product: ProductModel.fromEntity(entity.product),
     quantity: entity.quantity,
-    price: entity.price,
+    value: entity.value,
   );
 
   TransferRequestProductItemEntity toEntity() =>
       TransferRequestProductItemEntity(
         product: product.toEntity(),
         quantity: quantity,
-        price: price,
+        value: value,
       );
 }

@@ -5,14 +5,14 @@ import '../../../../core/domain/entities/entities.dart';
 class TransferRequestProductItemEntity extends Equatable {
   final ProductEntity product;
   final double quantity;
-  final double price;
+  final double value;
 
   const TransferRequestProductItemEntity({
     required this.product,
     required this.quantity,
-    required this.price,
+    required this.value,
   });
 
   @override
-  List<Object?> get props => [product, quantity, price];
+  List<Object?> get props => [product, quantity, value];
 }
