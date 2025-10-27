@@ -49,6 +49,7 @@ import 'package:celta_intelligence/features/inventory/domain/entities/entities.d
 import 'package:celta_intelligence/features/inventory/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/search_products/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/transfer_request/data/datasource/datasource.dart';
 import 'package:faker/faker.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
@@ -1066,4 +1067,18 @@ class SoapInsertBuyRequestDatasourceSpy extends Mock
       products: any(named: 'products'),
     ),
   );
+}
+
+class SoapLoadDestinyEnterprisesDatasourceSpy extends Mock
+    implements ISoapLoadDestinyEnterprisesDatasource {
+  void mockLoad(List<SoapEnterpriseModel> response) {
+    when(
+      () => this.load(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        requestTypeCode: any(named: 'requestTypeCode'),
+        enterpriseOriginCode: any(named: 'enterpriseOriginCode'),
+      ),
+    ).thenAnswer((_) async => response);
+  }
 }
