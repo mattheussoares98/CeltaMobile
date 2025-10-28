@@ -24,6 +24,11 @@ class NumberValidator implements StringValidator {
       return false;
     }
 
+    if (RegExp(r'[^\d,.]').hasMatch(value)) {
+      _errorMessage = 'Formato inválido'.hardcoded;
+      return false;
+    }
+
     final separatorCount =
         value.split('.').length - 1 + value.split(',').length - 1;
     if (separatorCount > 1) {

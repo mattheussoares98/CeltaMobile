@@ -17,6 +17,7 @@ void main() {
     //false result
     expect(sut.isValid("145619,99.1"), isFalse);
     expect(sut.isValid("145619.99,1"), isFalse);
+    expect(sut.isValid("14561999,1z"), isFalse);
   });
   test('Allow decimal with maximum decimal houses', () {
     final sut = NumberValidator(
