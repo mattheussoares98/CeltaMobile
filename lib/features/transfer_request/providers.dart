@@ -63,3 +63,19 @@ ILocalLastSavedNumberRepository localLastSavedNumberRepository(Ref ref) {
     ref.watch(localLastSavedNumberDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInsertTransferRequestDatasource soapInsertTransferRequestDatasource(
+  Ref ref,
+) {
+  return SoapInsertTransferRequestDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapInsertTransferRequestRepository soapInsertTransferRequestRepository(
+  Ref ref,
+) {
+  return SoapInsertTransferRequestRepositoryImpl(
+    ref.watch(soapInsertTransferRequestDatasourceProvider),
+  );
+}
