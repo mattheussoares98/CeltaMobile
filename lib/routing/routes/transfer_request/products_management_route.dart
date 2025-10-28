@@ -4,8 +4,7 @@ import '../../../features/transfer_request/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase productsManagementRoute() => GoRoute(
-  path:
-      'products-management/:requestTypeCode/:enterpriseOriginCode/:enterpriseDestinyCode',
+  path: 'products-management/:enterpriseDestinyCode',
   name: Routes.transferRequestProductsManagement.name,
   builder: (context, state) {
     final requestTypeCode = int.parse(

@@ -4,7 +4,7 @@ import '../../../features/transfer_request/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase destinyEnterprisesRoute() => GoRoute(
-  path: 'destiny-enterprises/:requestTypeCode/:enterpriseOriginCode',
+  path: 'destiny-enterprises/:enterpriseOriginCode',
   name: Routes.transferRequestDestinyEnterprises.name,
   builder: (context, state) {
     final requestTypeCode = int.parse(
