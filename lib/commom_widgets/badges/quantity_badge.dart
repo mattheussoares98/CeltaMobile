@@ -5,12 +5,16 @@ class QuantityBadge extends StatelessWidget {
   final IconData materialIcon;
   final IconData cupertinoIcon;
   final bool isSelected;
+  final Widget? subtitle;
+  final Offset? offset;
   const QuantityBadge({
     super.key,
     required this.quantity,
     required this.materialIcon,
     required this.cupertinoIcon,
     required this.isSelected,
+    this.subtitle,
+    this.offset,
   });
 
   @override
@@ -20,7 +24,7 @@ class QuantityBadge extends StatelessWidget {
 
     bool isSmall = (quantity?.toString() ?? '0').length <= 1;
     return Badge(
-      offset: const Offset(8, -6),
+      offset: offset ?? const Offset(8, -6),
       backgroundColor: Colors.transparent,
       label: CircleAvatar(
         backgroundColor: Colors.red,
@@ -33,9 +37,14 @@ class QuantityBadge extends StatelessWidget {
           ),
         ),
       ),
-      child: Icon(
-        isIOS ? cupertinoIcon : materialIcon,
-        color: isSelected ? theme.primaryColor : theme.disabledColor,
+      child: Column(
+        children: [
+          Icon(
+            isIOS ? cupertinoIcon : materialIcon,
+            color: isSelected ? theme.primaryColor : theme.disabledColor,
+          ),
+          ?subtitle,
+        ],
       ),
     );
   }

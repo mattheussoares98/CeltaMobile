@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
 
-import '../../../../../constants/constants.dart';
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../domain/entities/entities.dart';
 
 class CartPriceIcon extends StatelessWidget {
@@ -25,28 +25,15 @@ class CartPriceIcon extends StatelessWidget {
         ) ??
         0.0;
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Badge(
-            label: Text(
-              (pendingAsync.value?.products?.values.length ?? 0).toString(),
-            ),
-            child: Icon(
-              isIOS ? CupertinoIcons.shopping_cart : Icons.shopping_cart,
-              color: theme.disabledColor,
-              size: Sizes.p24,
-            ),
-          ),
-          Text(
-            'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
-            style: TextStyle(fontSize: 9),
-          ),
-        ],
+    return QuantityBadge(
+      quantity: pendingAsync.value?.products?.values.length,
+      materialIcon: Icons.shopping_cart,
+      cupertinoIcon: CupertinoIcons.shopping_cart,
+      isSelected: false,
+      offset: Offset(3, -3),
+      subtitle: Text(
+        'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
+        style: TextStyle(fontSize: 9),
       ),
     );
   }
