@@ -1,6 +1,9 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
@@ -13,6 +16,21 @@ class CartPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(
+      insertTransferRequestControllerProvider(
+        DraftKey(
+          requestTypeCode: insertProductsPage.requestTypeCode,
+          enterpriseOrigin: insertProductsPage.enterpriseOriginCode,
+          enterpriseDestinyCode: insertProductsPage.enterpriseDestinyCode,
+        ),
+      ),
+      (p, n) {
+        n.doOnSuccess(p, () {
+          showSnackBarMessage(context, 'Pedido salvo com sucesso'.hardcoded);
+        });
+      },
+    );
+
     final pendingAsync = ref.watch(
       cartProductsStateControllerProvider(
         DraftKey(
@@ -33,6 +51,7 @@ class CartPage extends ConsumerWidget {
         children: [
           if (lastSavedAsync.value != null)
             LastSavedNumber(number: lastSavedAsync.value!),
+          //TODO change to a sliver page to avoid show the LastSavedNumber fixed
           Expanded(
             child: ProductsItems(
               showClearCart: products.length > 2,
