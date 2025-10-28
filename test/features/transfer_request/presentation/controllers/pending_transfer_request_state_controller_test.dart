@@ -101,7 +101,7 @@ void main() {
         ).thenAnswer((_) async => fakeItems);
         // 2. addItem call
         when(
-          () => mockRepository.addItem(fakeDraftKey, fakeItems[1]),
+          () => mockRepository.addItem(any(), any()),
         ).thenAnswer((_) async {});
         // 3. The second load (from invalidateSelf)
         when(
@@ -128,7 +128,12 @@ void main() {
         // ASSERT
         // Verify the repository methods were called
         verify(
-          () => mockRepository.addItem(fakeDraftKey, fakeItems[1]),
+          () => mockRepository.addItem(
+            fakeDraftKey,
+            fakeItems[1].copyWith(
+              quantity: fakeItems[1].quantity + fakeItems[1].quantity,
+            ),
+          ),
         ).called(1);
         verify(
           () => mockRepository.load(fakeDraftKey),

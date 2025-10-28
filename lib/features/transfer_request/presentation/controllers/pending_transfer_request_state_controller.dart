@@ -17,7 +17,20 @@ class PendingTransferRequestStateController
   Future<void> addItem(TransferRequestProductItemEntity item) async {
     final repository = ref.read(localTransferRequestRepositoryProvider);
 
-    await repository.addItem(draftKey, item);
+    final currentItemIndex = state.value?.indexWhere(
+      (i) => i.product.ProductPackingCode == item.product.ProductPackingCode,
+    );
+
+    if (currentItemIndex != null && currentItemIndex != -1) {
+      await repository.addItem(
+        draftKey,
+        item.copyWith(
+          quantity: state.value![currentItemIndex].quantity + item.quantity,
+        ),
+      );
+    } else {
+      await repository.addItem(draftKey, item);
+    }
 
     ref.invalidateSelf();
 
