@@ -54,7 +54,7 @@ class _QuantityFieldAndInsertButtonState
 
     ref
         .read(
-          pendingTransferRequestStateControllerProvider(
+          cartProductsStateControllerProvider(
             DraftKey(
               requestTypeCode: widget.insertProductsPage.requestTypeCode,
               enterpriseOrigin: widget.insertProductsPage.enterpriseOriginCode,

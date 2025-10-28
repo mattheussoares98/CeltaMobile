@@ -82,7 +82,7 @@ void main() {
 
           // ACT: Wait for the build method to complete
           final result = await container.read(
-            pendingTransferRequestStateControllerProvider(fakeDraftKey).future,
+            cartProductsStateControllerProvider(fakeDraftKey).future,
           );
 
           // ASSERT
@@ -113,16 +113,12 @@ void main() {
 
         // Wait for the initial build
         await container.read(
-          pendingTransferRequestStateControllerProvider(fakeDraftKey).future,
+          cartProductsStateControllerProvider(fakeDraftKey).future,
         );
 
         // ACT
         await container
-            .read(
-              pendingTransferRequestStateControllerProvider(
-                fakeDraftKey,
-              ).notifier,
-            )
+            .read(cartProductsStateControllerProvider(fakeDraftKey).notifier)
             .addItem(fakeItems[1]);
 
         // ASSERT
@@ -141,7 +137,7 @@ void main() {
 
         // Verify the final state is the new list
         final finalState = container.read(
-          pendingTransferRequestStateControllerProvider(fakeDraftKey),
+          cartProductsStateControllerProvider(fakeDraftKey),
         );
         expect(finalState.value, hasLength(2));
         expect(finalState.value, fakeItems);
@@ -166,16 +162,12 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingTransferRequestStateControllerProvider(fakeDraftKey).future,
+            cartProductsStateControllerProvider(fakeDraftKey).future,
           );
 
           // ACT
           await container
-              .read(
-                pendingTransferRequestStateControllerProvider(
-                  fakeDraftKey,
-                ).notifier,
-              )
+              .read(cartProductsStateControllerProvider(fakeDraftKey).notifier)
               .removeItem(fakeItems[0]);
 
           // ASSERT
@@ -185,7 +177,7 @@ void main() {
           verify(() => mockRepository.load(fakeDraftKey)).called(2);
 
           final finalState = container.read(
-            pendingTransferRequestStateControllerProvider(fakeDraftKey),
+            cartProductsStateControllerProvider(fakeDraftKey),
           );
           expect(finalState.value, hasLength(1));
           expect(finalState.value, [fakeItems[1]]);
@@ -207,16 +199,12 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
         await container.read(
-          pendingTransferRequestStateControllerProvider(fakeDraftKey).future,
+          cartProductsStateControllerProvider(fakeDraftKey).future,
         );
 
         // ACT
         await container
-            .read(
-              pendingTransferRequestStateControllerProvider(
-                fakeDraftKey,
-              ).notifier,
-            )
+            .read(cartProductsStateControllerProvider(fakeDraftKey).notifier)
             .clearLot();
 
         // ASSERT
@@ -224,7 +212,7 @@ void main() {
         verify(() => mockRepository.load(fakeDraftKey)).called(2);
 
         final finalState = container.read(
-          pendingTransferRequestStateControllerProvider(fakeDraftKey),
+          cartProductsStateControllerProvider(fakeDraftKey),
         );
         expect(finalState.value, isEmpty);
       });

@@ -4,11 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
-part 'pending_transfer_request_state_controller.g.dart';
+part 'cart_products_state_controller.g.dart';
 
 @riverpod
-class PendingTransferRequestStateController
-    extends _$PendingTransferRequestStateController {
+class CartProductsStateController extends _$CartProductsStateController {
   @override
   Future<List<TransferRequestProductItemEntity>> build(DraftKey draftKey) {
     return ref.watch(localTransferRequestRepositoryProvider).load(draftKey);

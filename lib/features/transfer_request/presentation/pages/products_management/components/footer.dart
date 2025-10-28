@@ -16,7 +16,7 @@ class Footer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final pendingAsync = ref.watch(
-      pendingTransferRequestStateControllerProvider(
+      cartProductsStateControllerProvider(
         DraftKey(
           requestTypeCode: insertProductsPage.requestTypeCode,
           enterpriseOrigin: insertProductsPage.enterpriseOriginCode,
@@ -61,7 +61,7 @@ class Footer extends ConsumerWidget {
                         defaultActionText: 'Sim'.hardcoded,
                         onOkPressed: () {
                           ref.read(
-                            pendingTransferRequestStateControllerProvider(
+                            cartProductsStateControllerProvider(
                               DraftKey(
                                 requestTypeCode:
                                     insertProductsPage.requestTypeCode,

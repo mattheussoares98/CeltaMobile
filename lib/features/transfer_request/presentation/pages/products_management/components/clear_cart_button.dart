@@ -33,7 +33,7 @@ class ClearCartButton extends ConsumerWidget {
           onOkPressed: () {
             ref
                 .read(
-                  pendingTransferRequestStateControllerProvider(
+                  cartProductsStateControllerProvider(
                     DraftKey(
                       requestTypeCode: insertProductsPage.requestTypeCode,
                       enterpriseOrigin: insertProductsPage.enterpriseOriginCode,

@@ -14,7 +14,7 @@ class CartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAsync = ref.watch(
-      pendingTransferRequestStateControllerProvider(
+      cartProductsStateControllerProvider(
         DraftKey(
           requestTypeCode: insertProductsPage.requestTypeCode,
           enterpriseOrigin: insertProductsPage.enterpriseOriginCode,

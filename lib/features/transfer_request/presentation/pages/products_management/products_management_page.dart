@@ -117,7 +117,7 @@ class _ProductsManagementPageState
   void removeProductItem(TransferRequestProductItemEntity productItem) {
     ref
         .read(
-          pendingTransferRequestStateControllerProvider(
+          cartProductsStateControllerProvider(
             DraftKey(
               requestTypeCode: widget.requestTypeCode,
               enterpriseOrigin: widget.enterpriseOriginCode,
@@ -131,7 +131,7 @@ class _ProductsManagementPageState
   @override
   Widget build(BuildContext context) {
     final pendingAsync = ref.watch(
-      pendingTransferRequestStateControllerProvider(
+      cartProductsStateControllerProvider(
         DraftKey(
           requestTypeCode: widget.requestTypeCode,
           enterpriseOrigin: widget.enterpriseOriginCode,
