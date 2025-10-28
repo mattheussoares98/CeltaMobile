@@ -1,10 +1,12 @@
 import 'package:celta_intelligence/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
@@ -162,8 +164,28 @@ class _ProductsManagementPageState
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
+    final totalPrice =
+        pendingAsync.value?.fold(0.0, (p, e) => p + (e.value * e.quantity)) ??
+        0.0;
+
     return Scaffold(
-      appBar: AppBar(title: Text(appBarTitles[currentIndex])),
+      appBar: AppBar(
+        title: Text(appBarTitles[currentIndex]),
+        actionsPadding: EdgeInsets.all(Sizes.p8),
+        actions: [
+          QuantityBadge(
+            quantity: pendingAsync.value?.length,
+            materialIcon: Icons.shopping_cart,
+            cupertinoIcon: CupertinoIcons.shopping_cart,
+            isSelected: false,
+            offset: Offset(3, -3),
+            subtitle: Text(
+              'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
+              style: TextStyle(fontSize: 9),
+            ),
+          ),
+        ],
+      ),
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
