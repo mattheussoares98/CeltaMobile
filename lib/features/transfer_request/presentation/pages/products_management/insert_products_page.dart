@@ -102,6 +102,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
             data: (products) {
               return Expanded(
                 child: ProductsItems(
+                  showClearCart: false,
                   products: products,
                   selectedIndex: widget.selectedProductIndex,
                   onTap: widget.onTapProductItem,

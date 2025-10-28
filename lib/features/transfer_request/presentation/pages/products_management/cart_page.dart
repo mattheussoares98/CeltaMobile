@@ -23,14 +23,16 @@ class CartPage extends ConsumerWidget {
       ),
     );
 
+    final products = pendingAsync.value?.map((e) => e.product).toList() ?? [];
+
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
         children: [
           Expanded(
             child: ProductsItems(
-              products:
-                  pendingAsync.value?.map((e) => e.product).toList() ?? [],
+              showClearCart: products.length > 2,
+              products: products,
               selectedIndex: insertProductsPage.selectedProductIndex,
               onTap: insertProductsPage.onTapProductItem,
               removeItem: insertProductsPage.removeProductItem,
