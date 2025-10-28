@@ -30,6 +30,7 @@ class InsertProductsPage extends ConsumerStatefulWidget {
   final bool requestTypeAllowChangePrice;
   final void Function(TransferRequestProductItemEntity productItem)
   removeProductItem;
+  final void Function(int? index) changeSelectedIndex;
   const InsertProductsPage({
     super.key,
     required this.enterpriseOriginCode,
@@ -45,6 +46,7 @@ class InsertProductsPage extends ConsumerStatefulWidget {
     required this.selectedProductIndex,
     required this.requestTypeAllowChangePrice,
     required this.removeProductItem,
+    required this.changeSelectedIndex,
   });
 
   @override

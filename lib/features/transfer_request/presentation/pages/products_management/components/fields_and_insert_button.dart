@@ -75,7 +75,7 @@ class _QuantityFieldAndInsertButtonState
           ),
         );
 
-    widget.insertProductsPage.quantityController.text = '1';
+    widget.insertProductsPage.changeSelectedIndex(null);
   }
 
   @override

@@ -154,6 +154,8 @@ class _ProductsManagementPageState
       removeProductItem: removeProductItem,
       requestTypeAllowChangePrice: requestTypeAllowChangePrice,
       selectedProductIndex: selectedProductIndex,
+      changeSelectedIndex: (index) =>
+          setState(() => selectedProductIndex = index),
     );
     final pages = [
       insertProductsPage,
