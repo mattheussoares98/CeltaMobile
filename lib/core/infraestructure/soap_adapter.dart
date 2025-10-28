@@ -81,7 +81,9 @@ class SoapAdapter implements contracts.SoapRequest {
     Map<String, dynamic> responseBody,
     String? typeOfResult,
   ) {
-    if (typeOfResult == null) {
+    if (responseBody.containsKey('status') && typeOfResult == null) {
+      return responseBody['status'];
+    } else if (typeOfResult == null) {
       return 'Sucesso'.hardcoded;
     } else if (responseBody[typeOfResult] != null) {
       if (_isValidResponse(responseBody, typeOfResult)) {
