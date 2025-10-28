@@ -8,6 +8,7 @@ import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
+import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -82,6 +83,20 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
     }
   }
 
+  void removeItem(TransferRequestProductItemEntity productItem) {
+    ref
+        .read(
+          pendingTransferRequestStateControllerProvider(
+            DraftKey(
+              requestTypeCode: widget.requestTypeCode,
+              enterpriseOrigin: widget.enterpriseOriginCode,
+              enterpriseDestinyCode: widget.enterpriseDestinyCode,
+            ),
+          ).notifier,
+        )
+        .removeItem(productItem);
+  }
+
   @override
   Widget build(BuildContext context) {
     final productsAsync = ref.watch(
@@ -105,6 +120,16 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
     );
     final requests = ref.watch(
       requestTypeStateControllerProvider(Modules.transferRequest),
+    );
+
+    final pendingTransfer = ref.watch(
+      pendingTransferRequestStateControllerProvider(
+        DraftKey(
+          requestTypeCode: widget.requestTypeCode,
+          enterpriseOrigin: widget.enterpriseOriginCode,
+          enterpriseDestinyCode: widget.enterpriseDestinyCode,
+        ),
+      ),
     );
 
     return ResponsiveScrollableWidget(
@@ -138,6 +163,17 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                   itemBuilder: (_, index) {
                     final product = products[index];
 
+                    int? transferProductItemIndex = pendingTransfer.value
+                        ?.indexWhere(
+                          (element) =>
+                              element.product.ProductPackingCode ==
+                              product.ProductPackingCode,
+                        );
+
+                    bool hasInCart =
+                        transferProductItemIndex != null &&
+                        transferProductItemIndex != -1;
+
                     return ProductItemWidget(
                       product: product,
                       routine: BsRoutine.transferRequest,
@@ -148,10 +184,24 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                         product: product,
                         requests: requests.value,
                       ),
+                      onDelete: hasInCart == true
+                          ? () {
+                              removeItem(
+                                pendingTransfer
+                                    .value![transferProductItemIndex!],
+                              );
+                            }
+                          : null,
+
                       notClickableBottom: selectedIndex == index
                           ? QuantityFieldAndInsertButton(
                               quantityController: widget.quantityController,
                               quantityFocusNode: widget.quantityFocusNode,
+                              product: product,
+                              enterpriseDestinyCode:
+                                  widget.enterpriseDestinyCode,
+                              enterpriseOriginCode: widget.enterpriseOriginCode,
+                              requestTypeCode: widget.requestTypeCode,
                             )
                           : null,
                     );
