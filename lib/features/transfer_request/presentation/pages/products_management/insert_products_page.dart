@@ -207,7 +207,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                         product: product,
                         requests: requests.value,
                         transferRequestProductItem:
-                            transferProductItemIndex == null
+                            transferProductItemIndex == null || !hasInCart
                             ? null
                             : pendingTransfer.value?[transferProductItemIndex],
                       ),
