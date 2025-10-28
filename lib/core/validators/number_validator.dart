@@ -8,7 +8,7 @@ class NumberValidator implements StringValidator {
 
   NumberValidator({
     required this.allowDecimal,
-    this.maxDecimalHouses,
+    this.maxDecimalHouses = 2,
     this.needsBeGreaterThanZero = true,
   });
 
