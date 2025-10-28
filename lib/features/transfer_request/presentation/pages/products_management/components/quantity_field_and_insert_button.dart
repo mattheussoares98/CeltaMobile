@@ -69,7 +69,7 @@ class _QuantityFieldAndInsertButtonState
           ),
         );
 
-    widget.quantityController.clear();
+    widget.quantityController.text = '1';
   }
 
   @override
