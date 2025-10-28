@@ -95,16 +95,8 @@ class ProductsItems extends ConsumerWidget {
               : null,
           notClickableBottom: selectedIndex == index
               ? FieldsAndInsertButton(
-                  requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-                  priceController: insertProductsPage.priceController,
-                  priceFocusNode: insertProductsPage.priceFocusNode,
-                  quantityController: insertProductsPage.quantityController,
-                  quantityFocusNode: insertProductsPage.quantityFocusNode,
                   product: product,
-                  enterpriseDestinyCode:
-                      insertProductsPage.enterpriseDestinyCode,
-                  enterpriseOriginCode: insertProductsPage.enterpriseOriginCode,
-                  requestTypeCode: insertProductsPage.requestTypeCode,
+                  insertProductsPage: insertProductsPage,
                 )
               : null,
         );
