@@ -19,7 +19,9 @@ class InsertProductsPage extends ConsumerStatefulWidget {
   final TextEditingController searchValueController;
   final FocusNode searchValueFocusNode;
   final TextEditingController quantityController;
+  final TextEditingController priceController;
   final FocusNode quantityFocusNode;
+  final FocusNode priceFocusNode;
   const InsertProductsPage({
     super.key,
     required this.enterpriseOriginCode,
@@ -28,7 +30,9 @@ class InsertProductsPage extends ConsumerStatefulWidget {
     required this.searchValueController,
     required this.searchValueFocusNode,
     required this.quantityController,
+    required this.priceController,
     required this.quantityFocusNode,
+    required this.priceFocusNode,
   });
 
   @override
@@ -38,16 +42,40 @@ class InsertProductsPage extends ConsumerStatefulWidget {
 
 class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
   int? selectedIndex;
+  bool requestTypeAllowChangePrice = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ref
+        .read(
+          requestTypeStateControllerProvider(Modules.transferRequest).future,
+        )
+        .then((value) {
+          setState(() {
+            final requestIndex = value?.indexWhere(
+              (e) => e.Code == widget.requestTypeCode,
+            );
+            if (requestIndex == null || requestIndex == -1) {
+              return;
+            }
+
+            requestTypeAllowChangePrice =
+                value![requestIndex].AllowAlterCostOrSalePrice;
+          });
+        });
+  }
 
   void onTap({
     required int index,
     required ProductEntity product,
     required List<RequestTypeEntity>? requests,
   }) {
-    final selectedRequestType = requests?.indexWhere(
+    final selectedRequestIndex = requests?.indexWhere(
       (e) => e.Code == widget.requestTypeCode,
     );
-    if (selectedRequestType == null || selectedRequestType == -1) {
+    if (selectedRequestIndex == null || selectedRequestIndex == -1) {
       showSnackBarMessage(
         context,
         'Erro não esperado. Chame o suporte técnico'.hardcoded,
@@ -58,7 +86,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       });
       return;
     } else if (product.Value == 0 &&
-        !requests![selectedRequestType].AllowAlterCostOrSalePrice) {
+        !requests![selectedRequestIndex].AllowAlterCostOrSalePrice) {
       showSnackBarMessage(
         context,
         'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
@@ -201,10 +229,16 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                           ? CartQuantityAndTotal(
                               item: pendingTransfer
                                   .value![transferProductItemIndex],
+                              requestTypeAllowChangePrice:
+                                  requestTypeAllowChangePrice,
                             )
                           : null,
                       notClickableBottom: selectedIndex == index
-                          ? QuantityFieldAndInsertButton(
+                          ? FieldsAndInsertButton(
+                              requestTypeAllowChangePrice:
+                                  requestTypeAllowChangePrice,
+                              priceController: widget.priceController,
+                              priceFocusNode: widget.priceFocusNode,
                               quantityController: widget.quantityController,
                               quantityFocusNode: widget.quantityFocusNode,
                               product: product,

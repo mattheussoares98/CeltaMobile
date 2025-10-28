@@ -11,22 +11,28 @@ import '../../../../../../core/validators/validators.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 
-class QuantityFieldAndInsertButton extends ConsumerStatefulWidget {
+class FieldsAndInsertButton extends ConsumerStatefulWidget {
   final TextEditingController quantityController;
+  final TextEditingController priceController;
   final FocusNode quantityFocusNode;
+  final FocusNode priceFocusNode;
   final ProductEntity product;
   final int requestTypeCode;
   final int enterpriseOriginCode;
   final int enterpriseDestinyCode;
+  final bool requestTypeAllowChangePrice;
 
-  const QuantityFieldAndInsertButton({
+  const FieldsAndInsertButton({
     super.key,
     required this.quantityController,
+    required this.priceController,
     required this.quantityFocusNode,
+    required this.priceFocusNode,
     required this.product,
     required this.requestTypeCode,
     required this.enterpriseOriginCode,
     required this.enterpriseDestinyCode,
+    required this.requestTypeAllowChangePrice,
   });
 
   @override
@@ -35,7 +41,7 @@ class QuantityFieldAndInsertButton extends ConsumerStatefulWidget {
 }
 
 class _QuantityFieldAndInsertButtonState
-    extends ConsumerState<QuantityFieldAndInsertButton> {
+    extends ConsumerState<FieldsAndInsertButton> {
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -63,9 +69,8 @@ class _QuantityFieldAndInsertButtonState
           TransferRequestProductItemEntity(
             product: widget.product,
             quantity: widget.quantityController.text.toDouble() ?? 0,
-            value: widget
-                .product
-                .Value, //TODO enable to change the price when the sale request allows
+            value:
+                widget.priceController.text.toDouble() ?? widget.product.Value,
           ),
         );
 
@@ -83,25 +88,60 @@ class _QuantityFieldAndInsertButtonState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: DefaultTextFormField(
-              controller: widget.quantityController,
-              focusNode: widget.quantityFocusNode,
-              labelText: 'Quantidade'.hardcoded,
-              hintText: 'Quantidade'.hardcoded,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              onFieldSubmitted: (_) => insertProduct(),
-              maxLength: 13,
-              onTap: () {
-                widget.quantityController.selection = TextSelection(
-                  baseOffset: 0,
-                  extentOffset: widget.quantityController.text.length,
-                );
-              },
-              validator: FormValidators.compose([
-                NonEmptyValidator(),
-                NumberValidator(allowDecimal: true),
-              ]),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+            child: Column(
+              children: [
+                DefaultTextFormField(
+                  controller: widget.quantityController,
+                  focusNode: widget.quantityFocusNode,
+                  labelText: 'Quantidade'.hardcoded,
+                  hintText: 'Quantidade'.hardcoded,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onFieldSubmitted: (_) {
+                    if (widget.requestTypeAllowChangePrice) {
+                      widget.priceFocusNode.requestFocus();
+                    } else {
+                      insertProduct();
+                    }
+                  },
+                  maxLength: 13,
+                  onTap: () {
+                    widget.quantityController.selection = TextSelection(
+                      baseOffset: 0,
+                      extentOffset: widget.quantityController.text.length,
+                    );
+                  },
+                  validator: FormValidators.compose([
+                    NonEmptyValidator(),
+                    NumberValidator(allowDecimal: true),
+                  ]),
+                  keyboardType: TextInputType.numberWithOptions(
+                    decimal: true,
+                  ), //TODO test in iOS
+                ),
+                if (widget.requestTypeAllowChangePrice)
+                  DefaultTextFormField(
+                    controller: widget.priceController,
+                    focusNode: widget.priceFocusNode,
+                    labelText: 'Novo preço'.hardcoded,
+                    hintText: 'Novo preço'.hardcoded,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onFieldSubmitted: (_) => insertProduct(),
+                    maxLength: 13,
+                    onTap: () {
+                      widget.priceController.selection = TextSelection(
+                        baseOffset: 0,
+                        extentOffset: widget.priceController.text.length,
+                      );
+                    },
+                    validator: FormValidators.compose([
+                      NonEmptyValidator(),
+                      NumberValidator(allowDecimal: true),
+                    ]),
+                    keyboardType: TextInputType.numberWithOptions(
+                      decimal: true,
+                    ), //TODO test in iOS
+                  ),
+              ],
             ),
           ),
           gapW8,
@@ -114,7 +154,10 @@ class _QuantityFieldAndInsertButtonState
                     valueListenable: widget.quantityController,
                     builder: (context, value, child) {
                       final quantity = value.text.toDouble() ?? 0;
-                      final total = widget.product.Value * quantity;
+                      final price =
+                          widget.priceController.text.toDouble() ??
+                          widget.product.Value;
+                      final total = price * quantity;
 
                       return TitleAndSubTitle(
                         title: 'Total'.hardcoded,

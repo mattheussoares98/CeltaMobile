@@ -27,14 +27,18 @@ class _ProductsManagementPageState
   int currentIndex = 0;
   final searchValueController = TextEditingController();
   final quantityController = TextEditingController();
+  final priceController = TextEditingController();
   final searchValueFocusNode = FocusNode();
+  final priceFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
 
   @override
   void dispose() {
     searchValueController.dispose();
     quantityController.dispose();
+    priceController.dispose();
     searchValueFocusNode.dispose();
+    priceFocusNode.dispose();
     quantityFocusNode.dispose();
     super.dispose();
   }
@@ -50,6 +54,8 @@ class _ProductsManagementPageState
         searchValueFocusNode: searchValueFocusNode,
         quantityController: quantityController,
         quantityFocusNode: quantityFocusNode,
+        priceFocusNode: priceFocusNode,
+        priceController: priceController,
       ),
       CartPage(),
     ];
