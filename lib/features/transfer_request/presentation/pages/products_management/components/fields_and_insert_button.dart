@@ -120,6 +120,9 @@ class _QuantityFieldAndInsertButtonState
                       },
                       maxLength: 13,
                       onTap: () {
+                        if (widget.quantityFocusNode.hasFocus) {
+                          return;
+                        }
                         widget.quantityController.selection = TextSelection(
                           baseOffset: 0,
                           extentOffset: widget.quantityController.text.length,
@@ -149,6 +152,9 @@ class _QuantityFieldAndInsertButtonState
                         onFieldSubmitted: (_) => insertProduct(),
                         maxLength: 13,
                         onTap: () {
+                          if (widget.priceFocusNode.hasFocus) {
+                            return;
+                          }
                           widget.priceController.selection = TextSelection(
                             baseOffset: 0,
                             extentOffset: widget.priceController.text.length,
