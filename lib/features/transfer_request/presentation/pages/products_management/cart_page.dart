@@ -25,14 +25,22 @@ class CartPage extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
-      child: ProductsItems(
-        products: pendingAsync.value?.map((e) => e.product).toList() ?? [],
-        selectedIndex: insertProductsPage.selectedProductIndex,
-        onTap: insertProductsPage.onTapProductItem,
-        removeItem: insertProductsPage.removeProductItem,
-        requestTypeAllowChangePrice:
-            insertProductsPage.requestTypeAllowChangePrice,
-        insertProductsPage: insertProductsPage,
+      child: Column(
+        children: [
+          Expanded(
+            child: ProductsItems(
+              products:
+                  pendingAsync.value?.map((e) => e.product).toList() ?? [],
+              selectedIndex: insertProductsPage.selectedProductIndex,
+              onTap: insertProductsPage.onTapProductItem,
+              removeItem: insertProductsPage.removeProductItem,
+              requestTypeAllowChangePrice:
+                  insertProductsPage.requestTypeAllowChangePrice,
+              insertProductsPage: insertProductsPage,
+            ),
+          ),
+          Footer(insertProductsPage: insertProductsPage),
+        ],
       ),
     );
   }
