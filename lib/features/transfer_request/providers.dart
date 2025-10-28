@@ -49,3 +49,17 @@ ILocalCartDatasource localCartDatasource(Ref ref) {
 ILocalCartRepository localCartRepository(Ref ref) {
   return LocalCartRepositoryImpl(ref.watch(localCartDatasourceProvider));
 }
+
+@riverpod
+ILocalLastSavedNumberDatasource localLastSavedNumberDatasource(Ref ref) {
+  return LocalLastSavedNumberDatasource(
+    ref.watch(hiveBoxTransferRequestProvider),
+  );
+}
+
+@riverpod
+ILocalLastSavedNumberRepository localLastSavedNumberRepository(Ref ref) {
+  return LocalLastSavedNumberRepositoryImpl(
+    ref.watch(localLastSavedNumberDatasourceProvider),
+  );
+}
