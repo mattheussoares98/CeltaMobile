@@ -7,7 +7,7 @@ import 'datasource.dart';
 
 class LocalCartDatasource implements ILocalCartDatasource {
   final Box box;
-  static final _draftsKey = DatabaseConstants.transferRequestCart.name;
+  static final _draftsKey = DatabaseConstants.transferRequest.name;
 
   LocalCartDatasource(this.box);
 

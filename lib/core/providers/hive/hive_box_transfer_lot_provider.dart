@@ -8,5 +8,5 @@ part 'hive_box_transfer_lot_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Box hiveBoxTransferLot(Ref ref) {
-  return Hive.box(DatabaseConstants.transferLot.name);
+  return Hive.box(DatabaseConstants.transferBetweenStocks.name);
 }

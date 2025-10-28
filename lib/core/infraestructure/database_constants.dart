@@ -7,38 +7,19 @@ class DatabaseConstants {
     appSettings,
     buyRequest,
     userSession,
-    transferLot,
+    transferBetweenStocks,
+    transferRequest,
   ];
 
-  static final appSettings = _HiveBoxConfig(
-    name: 'app_settings',
-    keys: ['search_type_preference', 'continuous_scan_preference'],
-  );
-
-  static final userSession = _HiveBoxConfig(
-    name: 'user_session',
-    keys: ['current_user_session'],
-  );
-
-  static final buyRequest = _HiveBoxConfig(
-    name: 'buyRequest',
-    keys: ['pending_buy_request'],
-  );
-
-  static final transferLot = _HiveBoxConfig(
-    name: 'transfer_lot_items',
-    keys: [], //use dynamic keys according to change the lot
-  );
-
-  static final transferRequestCart = _HiveBoxConfig(
-    name: 'transfer_request_cart',
-    keys: [], //use dynamic keys
-  );
+  static const appSettings = _HiveBoxConfig('app_settings');
+  static const userSession = _HiveBoxConfig('user_session');
+  static const buyRequest = _HiveBoxConfig('buyRequest');
+  static const transferBetweenStocks = _HiveBoxConfig('transfer_lot_items');
+  static const transferRequest = _HiveBoxConfig('transfer_request');
 }
 
 class _HiveBoxConfig {
   final String name;
-  final List<String> keys;
 
-  const _HiveBoxConfig({required this.name, required this.keys});
+  const _HiveBoxConfig(this.name);
 }

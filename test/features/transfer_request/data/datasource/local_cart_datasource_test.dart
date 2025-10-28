@@ -15,7 +15,7 @@ void main() {
   late List<TransferRequestProductItemModel> fakeItems;
 
   // Use the public key from your SUT
-  final draftsKey = DatabaseConstants.transferRequestCart.name;
+  final draftsKey = DatabaseConstants.transferRequest.name;
 
   setUp(() {
     mockBox = MockBox();

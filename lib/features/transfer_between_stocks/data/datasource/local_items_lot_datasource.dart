@@ -5,7 +5,7 @@ import 'datasource.dart';
 
 class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
   final Box box;
-  final _lotKey = DatabaseConstants.transferLot.name;
+  final _lotKey = DatabaseConstants.transferBetweenStocks.name;
 
   LocalItemsLotDatasource(this.box);
 

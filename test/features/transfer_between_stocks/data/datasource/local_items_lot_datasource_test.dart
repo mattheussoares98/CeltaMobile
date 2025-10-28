@@ -34,7 +34,7 @@ void main() {
     );
   });
 
-  final lotKey = DatabaseConstants.transferLot.name;
+  final lotKey = DatabaseConstants.transferBetweenStocks.name;
 
   group('load', () {
     test('should return a list of items for the correct enterprise', () async {
