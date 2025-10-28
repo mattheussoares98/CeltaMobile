@@ -11,9 +11,9 @@ class SupplierModel extends Equatable {
   final String SupplierType;
   final String SupplierRegimeType;
   final String Date;
-  final List? Emails; //TODO check if needs to create a model
-  final List? Telephones; //TODO check if needs to create a model
-  final List? Addresses; //TODO check if needs to create a model
+  final List? Emails;
+  final List? Telephones;
+  final List? Addresses;
 
   const SupplierModel({
     required this.Code,
