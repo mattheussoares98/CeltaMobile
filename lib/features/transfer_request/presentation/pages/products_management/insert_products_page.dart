@@ -155,8 +155,8 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       ),
     );
 
-    return ResponsiveScrollableWidget(
-      isSliverPage: true,
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
         children: [
           DefaultSearchProducts(
@@ -181,7 +181,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
             tryAgain: null,
             data: (products) {
               return Expanded(
-                child: ListView.builder(
+                child: ResponsiveListFlow(
                   itemCount: products.length,
                   itemBuilder: (_, index) {
                     final product = products[index];
