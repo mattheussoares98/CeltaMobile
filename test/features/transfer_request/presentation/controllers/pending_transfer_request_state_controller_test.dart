@@ -10,11 +10,10 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 // 1. Create a Mock for the repository dependency
-class MockLocalTransferRequestRepository extends Mock
-    implements ILocalTransferRequestRepository {}
+class MockLocalCartRepository extends Mock implements ILocalCartRepository {}
 
 void main() {
-  late MockLocalTransferRequestRepository mockRepository;
+  late MockLocalCartRepository mockRepository;
   late DraftKey fakeDraftKey;
   late List<TransferRequestProductItemEntity> fakeItems;
 
@@ -37,7 +36,7 @@ void main() {
   });
 
   setUp(() {
-    mockRepository = MockLocalTransferRequestRepository();
+    mockRepository = MockLocalCartRepository();
     fakeDraftKey = const DraftKey(
       requestTypeCode: 1,
       enterpriseOrigin: 1,
@@ -60,9 +59,7 @@ void main() {
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
       overrides: [
-        localTransferRequestRepositoryProvider.overrideWithValue(
-          mockRepository,
-        ),
+        localCartRepositoryProvider.overrideWithValue(mockRepository),
       ],
     );
   }

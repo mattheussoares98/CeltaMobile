@@ -6,10 +6,9 @@ import '../../data/datasource/datasource.dart';
 import '../../data/models/models.dart';
 import 'repositories.dart';
 
-class LocalTransferRequestRepositoryImpl
-    implements ILocalTransferRequestRepository {
-  final ILocalTransferRequestDatasource datasource;
-  LocalTransferRequestRepositoryImpl(this.datasource);
+class LocalCartRepositoryImpl implements ILocalCartRepository {
+  final ILocalCartDatasource datasource;
+  LocalCartRepositoryImpl(this.datasource);
 
   @override
   Future<void> addItem(

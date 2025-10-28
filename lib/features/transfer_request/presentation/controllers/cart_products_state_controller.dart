@@ -10,11 +10,11 @@ part 'cart_products_state_controller.g.dart';
 class CartProductsStateController extends _$CartProductsStateController {
   @override
   Future<List<TransferRequestProductItemEntity>> build(DraftKey draftKey) {
-    return ref.watch(localTransferRequestRepositoryProvider).load(draftKey);
+    return ref.watch(localCartRepositoryProvider).load(draftKey);
   }
 
   Future<void> addItem(TransferRequestProductItemEntity item) async {
-    final repository = ref.read(localTransferRequestRepositoryProvider);
+    final repository = ref.read(localCartRepositoryProvider);
 
     final currentItemIndex = state.value?.indexWhere(
       (i) => i.product.ProductPackingCode == item.product.ProductPackingCode,
@@ -37,14 +37,14 @@ class CartProductsStateController extends _$CartProductsStateController {
   }
 
   Future<void> removeItem(TransferRequestProductItemEntity item) async {
-    final repository = ref.read(localTransferRequestRepositoryProvider);
+    final repository = ref.read(localCartRepositoryProvider);
     await repository.removeItem(draftKey, item);
     ref.invalidateSelf();
     await future;
   }
 
   Future<void> clearLot() async {
-    final repository = ref.read(localTransferRequestRepositoryProvider);
+    final repository = ref.read(localCartRepositoryProvider);
     await repository.clear(draftKey);
     ref.invalidateSelf();
     await future;

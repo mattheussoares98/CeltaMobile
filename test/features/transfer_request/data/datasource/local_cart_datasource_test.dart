@@ -9,17 +9,17 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late ILocalTransferRequestDatasource sut;
+  late ILocalCartDatasource sut;
   late MockBox mockBox;
   late DraftKey fakeDraftKey;
   late List<TransferRequestProductItemModel> fakeItems;
 
   // Use the public key from your SUT
-  final draftsKey = DatabaseConstants.transferRequest.name;
+  final draftsKey = DatabaseConstants.transferRequestCart.name;
 
   setUp(() {
     mockBox = MockBox();
-    sut = LocalTransferRequestDatasource(mockBox);
+    sut = LocalCartDatasource(mockBox);
 
     fakeDraftKey = DraftKey(
       requestTypeCode: faker.randomGenerator.integer(100),

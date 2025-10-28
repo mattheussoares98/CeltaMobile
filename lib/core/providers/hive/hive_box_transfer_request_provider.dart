@@ -8,5 +8,5 @@ part 'hive_box_transfer_request_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Box hiveBoxTransferRequest(Ref ref) {
-  return Hive.box(DatabaseConstants.transferRequest.name);
+  return Hive.box(DatabaseConstants.transferRequestCart.name);
 }

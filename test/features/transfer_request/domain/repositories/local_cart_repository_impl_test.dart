@@ -9,12 +9,11 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 // 1. Create a Mock for the datasource dependency
-class MockLocalTransferRequestDatasource extends Mock
-    implements ILocalTransferRequestDatasource {}
+class MockLocalCartDatasource extends Mock implements ILocalCartDatasource {}
 
 void main() {
-  late ILocalTransferRequestRepository sut;
-  late MockLocalTransferRequestDatasource mockDatasource;
+  late ILocalCartRepository sut;
+  late MockLocalCartDatasource mockDatasource;
   late DraftKey fakeDraftKey;
   late TransferRequestProductItemEntity fakeEntity;
 
@@ -39,8 +38,8 @@ void main() {
   });
 
   setUp(() {
-    mockDatasource = MockLocalTransferRequestDatasource();
-    sut = LocalTransferRequestRepositoryImpl(mockDatasource);
+    mockDatasource = MockLocalCartDatasource();
+    sut = LocalCartRepositoryImpl(mockDatasource);
 
     // Create fake data
     fakeDraftKey = const DraftKey(

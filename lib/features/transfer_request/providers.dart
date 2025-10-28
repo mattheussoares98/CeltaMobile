@@ -41,15 +41,11 @@ ISoapLoadProductByRequestTypeRepository soapLoadProductByRequestTypeRepository(
 }
 
 @riverpod
-ILocalTransferRequestDatasource localTransferRequestDatasource(Ref ref) {
-  return LocalTransferRequestDatasource(
-    ref.watch(hiveBoxTransferRequestProvider),
-  );
+ILocalCartDatasource localCartDatasource(Ref ref) {
+  return LocalCartDatasource(ref.watch(hiveBoxTransferRequestProvider));
 }
 
 @riverpod
-ILocalTransferRequestRepository localTransferRequestRepository(Ref ref) {
-  return LocalTransferRequestRepositoryImpl(
-    ref.watch(localTransferRequestDatasourceProvider),
-  );
+ILocalCartRepository localCartRepository(Ref ref) {
+  return LocalCartRepositoryImpl(ref.watch(localCartDatasourceProvider));
 }

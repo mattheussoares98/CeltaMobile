@@ -5,12 +5,11 @@ import '../../domain/entities/entities.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
-class LocalTransferRequestDatasource
-    implements ILocalTransferRequestDatasource {
+class LocalCartDatasource implements ILocalCartDatasource {
   final Box box;
-  static final _draftsKey = DatabaseConstants.transferRequest.name;
+  static final _draftsKey = DatabaseConstants.transferRequestCart.name;
 
-  LocalTransferRequestDatasource(this.box);
+  LocalCartDatasource(this.box);
 
   // Helper to get the main map of all drafts
   Future<Map<String, dynamic>> _getAllDrafts() async {
