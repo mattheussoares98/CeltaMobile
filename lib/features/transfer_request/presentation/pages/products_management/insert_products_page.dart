@@ -71,22 +71,9 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
     required int index,
     required ProductEntity product,
     required List<RequestTypeEntity>? requests,
+    required TransferRequestProductItemEntity? transferRequestProductItem,
   }) {
-    final selectedRequestIndex = requests?.indexWhere(
-      (e) => e.Code == widget.requestTypeCode,
-    );
-    if (selectedRequestIndex == null || selectedRequestIndex == -1) {
-      showSnackBarMessage(
-        context,
-        'Erro não esperado. Chame o suporte técnico'.hardcoded,
-        backgroundColor: Colors.red,
-      );
-      setState(() {
-        selectedIndex = null;
-      });
-      return;
-    } else if (product.Value == 0 &&
-        !requests![selectedRequestIndex].AllowAlterCostOrSalePrice) {
+    if (product.Value == 0 && !requestTypeAllowChangePrice) {
       showSnackBarMessage(
         context,
         'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
@@ -106,6 +93,9 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
     } else {
       setState(() => selectedIndex = index);
       widget.quantityController.text = '1';
+      widget.priceController.text =
+          transferRequestProductItem?.value.toString() ??
+          product.Value.toString();
       Future.delayed(Duration(milliseconds: 100), () {
         widget.quantityController.selection = TextSelection(
           baseOffset: 0,
@@ -216,6 +206,10 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                         index: index,
                         product: product,
                         requests: requests.value,
+                        transferRequestProductItem:
+                            transferProductItemIndex == null
+                            ? null
+                            : pendingTransfer.value?[transferProductItemIndex],
                       ),
                       onDelete: hasInCart == true
                           ? () {

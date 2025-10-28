@@ -94,102 +94,120 @@ class _QuantityFieldAndInsertButtonState
 
     return Form(
       key: formKey,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                DefaultTextFormField(
-                  controller: widget.quantityController,
-                  focusNode: widget.quantityFocusNode,
-                  labelText: 'Quantidade'.hardcoded,
-                  hintText: 'Quantidade'.hardcoded,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  onFieldSubmitted: (_) {
-                    if (widget.requestTypeAllowChangePrice) {
-                      widget.priceFocusNode.requestFocus();
-                    } else {
-                      insertProduct();
-                    }
-                  },
-                  maxLength: 13,
-                  onTap: () {
-                    widget.quantityController.selection = TextSelection(
-                      baseOffset: 0,
-                      extentOffset: widget.quantityController.text.length,
-                    );
-                  },
-                  validator: FormValidators.compose([
-                    NonEmptyValidator(),
-                    NumberValidator(allowDecimal: true),
-                  ]),
-                  keyboardType: TextInputType.numberWithOptions(
-                    decimal: true,
-                  ), //TODO test in iOS
-                ),
-                if (widget.requestTypeAllowChangePrice)
-                  DefaultTextFormField(
-                    controller: widget.priceController,
-                    focusNode: widget.priceFocusNode,
-                    labelText: 'Novo preço'.hardcoded,
-                    hintText: 'Novo preço'.hardcoded,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    onFieldSubmitted: (_) => insertProduct(),
-                    maxLength: 13,
-                    onTap: () {
-                      widget.priceController.selection = TextSelection(
-                        baseOffset: 0,
-                        extentOffset: widget.priceController.text.length,
-                      );
-                    },
-                    validator: FormValidators.compose([
-                      NonEmptyValidator(),
-                      NumberValidator(allowDecimal: true),
-                    ]),
-                    keyboardType: TextInputType.numberWithOptions(
-                      decimal: true,
-                    ), //TODO test in iOS
+      child: FocusTraversalGroup(
+        descendantsAreTraversable: true,
+        policy: OrderedTraversalPolicy(),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  FocusTraversalOrder(
+                    order: NumericFocusOrder(1),
+                    child: DefaultTextFormField(
+                      controller: widget.quantityController,
+                      focusNode: widget.quantityFocusNode,
+                      labelText: 'Quantidade'.hardcoded,
+                      hintText: 'Quantidade'.hardcoded,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onFieldSubmitted: (_) {
+                        if (widget.requestTypeAllowChangePrice) {
+                          widget.priceFocusNode.requestFocus();
+                        } else {
+                          insertProduct();
+                        }
+                      },
+                      maxLength: 13,
+                      onTap: () {
+                        widget.quantityController.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: widget.quantityController.text.length,
+                        );
+                      },
+                      validator: FormValidators.compose([
+                        NonEmptyValidator(),
+                        NumberValidator(
+                          allowDecimal: true,
+                          maxDecimalHouses: 3,
+                        ),
+                      ]),
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ), //TODO test in iOS
+                    ),
                   ),
-              ],
+                  if (widget.requestTypeAllowChangePrice)
+                    FocusTraversalOrder(
+                      order: NumericFocusOrder(2),
+                      child: DefaultTextFormField(
+                        controller: widget.priceController,
+                        focusNode: widget.priceFocusNode,
+                        labelText: 'Novo preço'.hardcoded,
+                        hintText: 'Novo preço'.hardcoded,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onFieldSubmitted: (_) => insertProduct(),
+                        maxLength: 13,
+                        onTap: () {
+                          widget.priceController.selection = TextSelection(
+                            baseOffset: 0,
+                            extentOffset: widget.priceController.text.length,
+                          );
+                        },
+                        validator: FormValidators.compose([
+                          NonEmptyValidator(),
+                          NumberValidator(
+                            allowDecimal: true,
+                            maxDecimalHouses: 2,
+                          ),
+                        ]),
+                        keyboardType: TextInputType.numberWithOptions(
+                          decimal: true,
+                        ), //TODO test in iOS
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-          gapW8,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: AnimatedBuilder(
-                    // Listen to the merged controller
-                    animation: _mergedListenable,
-                    builder: (context, child) {
-                      final quantity =
-                          widget.quantityController.text.toDouble() ?? 0;
-                      final price =
-                          widget.priceController.text.toDouble() ??
-                          widget.product.Value;
-                      final total = price * quantity;
+            gapW8,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: AnimatedBuilder(
+                      // Listen to the merged controller
+                      animation: _mergedListenable,
+                      builder: (context, child) {
+                        final quantity =
+                            widget.quantityController.text.toDouble() ?? 0;
+                        final price =
+                            widget.priceController.text.toDouble() ??
+                            widget.product.Value;
+                        final total = price * quantity;
 
-                      return TitleAndSubTitle(
-                        title: 'Total'.hardcoded,
-                        subTitle: total.toString().toBrazilianNumber(),
-                        subTitleIsPrice: true,
-                      );
-                    },
+                        return TitleAndSubTitle(
+                          title: 'Total'.hardcoded,
+                          subTitle: total.toString().toBrazilianNumber(),
+                          subTitleIsPrice: true,
+                        );
+                      },
+                    ),
                   ),
-                ),
-                PrimaryButton(
-                  text: 'Adicionar'.hardcoded,
-                  onPressed: () => insertProduct(),
-                  icon: Icon(
-                    isIOS ? CupertinoIcons.shopping_cart : Icons.shopping_cart,
+                  PrimaryButton(
+                    text: 'Adicionar'.hardcoded,
+                    onPressed: () => insertProduct(),
+                    icon: Icon(
+                      isIOS
+                          ? CupertinoIcons.shopping_cart
+                          : Icons.shopping_cart,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
