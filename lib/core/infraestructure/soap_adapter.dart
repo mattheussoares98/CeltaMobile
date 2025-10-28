@@ -99,8 +99,15 @@ class SoapAdapter implements contracts.SoapRequest {
     String typeOfResult,
   ) {
     try {
-      return responseBody[typeOfResult]?["diffgr:diffgram"]?["NewDataSet"] !=
-          null;
+      if (responseBody[typeOfResult] != Map) {
+        return false;
+      } else if (responseBody[typeOfResult]?["diffgr:diffgram"] != Map) {
+        return false;
+      } else if (responseBody[typeOfResult]?["diffgr:diffgram"]?["NewDataSet"] !=
+          Map) {
+        return false;
+      }
+      return true;
     } catch (e) {
       return false;
     }
