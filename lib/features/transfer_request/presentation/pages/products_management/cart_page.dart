@@ -25,10 +25,14 @@ class CartPage extends ConsumerWidget {
 
     final products = pendingAsync.value?.map((e) => e.product).toList() ?? [];
 
+    final lastSavedAsync = ref.watch(lastSavedNumberStateControllerProvider);
+
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
         children: [
+          if (lastSavedAsync.value != null)
+            LastSavedNumber(number: lastSavedAsync.value!),
           Expanded(
             child: ProductsItems(
               showClearCart: products.length > 2,
