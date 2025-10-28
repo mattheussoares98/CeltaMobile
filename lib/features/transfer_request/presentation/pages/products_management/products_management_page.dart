@@ -1,9 +1,11 @@
+import 'package:celta_intelligence/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../domain/entities/entities.dart';
 import 'products_management.dart';
 
 class ProductsManagementPage extends ConsumerStatefulWidget {
@@ -45,6 +47,16 @@ class _ProductsManagementPageState
 
   @override
   Widget build(BuildContext context) {
+    final pendingAsync = ref.watch(
+      pendingTransferRequestStateControllerProvider(
+        DraftKey(
+          requestTypeCode: widget.requestTypeCode,
+          enterpriseOrigin: widget.enterpriseOriginCode,
+          enterpriseDestinyCode: widget.enterpriseDestinyCode,
+        ),
+      ),
+    );
+
     final pages = [
       InsertProductsPage(
         enterpriseOriginCode: widget.enterpriseOriginCode,
@@ -82,7 +94,7 @@ class _ProductsManagementPageState
           BottomNavigationBarItem(
             label: 'Carrinho'.hardcoded,
             icon: QuantityBadge(
-              quantity: 0,
+              quantity: pendingAsync.value?.length,
               materialIcon: Icons.shopping_cart,
               cupertinoIcon: CupertinoIcons.shopping_cart,
               isSelected: currentIndex == 1,
