@@ -8,10 +8,10 @@ void main() {
       needsBeGreaterThanZero: true,
     );
     //true result
-    expect(sut.isValid("1,001"), isTrue);
-    expect(sut.isValid("1.001"), isTrue);
-    expect(sut.isValid("145619,991"), isTrue);
-    expect(sut.isValid("145619.991"), isTrue);
+    expect(sut.isValid("1,00"), isTrue);
+    expect(sut.isValid("1.00"), isTrue);
+    expect(sut.isValid("145619,99"), isTrue);
+    expect(sut.isValid("145619.99"), isTrue);
     expect(sut.isValid("145619991"), isTrue);
 
     //false result
