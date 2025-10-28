@@ -43,6 +43,16 @@ class FieldsAndInsertButton extends ConsumerStatefulWidget {
 class _QuantityFieldAndInsertButtonState
     extends ConsumerState<FieldsAndInsertButton> {
   final formKey = GlobalKey<FormState>();
+  late final Listenable _mergedListenable;
+
+  @override
+  void initState() {
+    super.initState();
+    _mergedListenable = Listenable.merge([
+      widget.quantityController,
+      widget.priceController,
+    ]);
+  }
 
   @override
   void dispose() {
@@ -150,10 +160,12 @@ class _QuantityFieldAndInsertButtonState
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Center(
-                  child: ValueListenableBuilder<TextEditingValue>(
-                    valueListenable: widget.quantityController,
-                    builder: (context, value, child) {
-                      final quantity = value.text.toDouble() ?? 0;
+                  child: AnimatedBuilder(
+                    // Listen to the merged controller
+                    animation: _mergedListenable,
+                    builder: (context, child) {
+                      final quantity =
+                          widget.quantityController.text.toDouble() ?? 0;
                       final price =
                           widget.priceController.text.toDouble() ??
                           widget.product.Value;
