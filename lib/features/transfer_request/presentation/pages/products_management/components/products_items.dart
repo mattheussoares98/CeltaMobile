@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../commom_widgets/responsive_sliver_list_flow.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../../enterprise_manager/domain/entities/modules.dart';
@@ -23,7 +24,6 @@ class ProductsItems extends ConsumerWidget {
   final void Function(TransferRequestProductItemEntity productItem) removeItem;
   final bool requestTypeAllowChangePrice;
   final InsertProductsPage insertProductsPage;
-  final bool showClearCart;
   const ProductsItems({
     super.key,
     required this.products,
@@ -32,7 +32,6 @@ class ProductsItems extends ConsumerWidget {
     required this.removeItem,
     required this.requestTypeAllowChangePrice,
     required this.insertProductsPage,
-    required this.showClearCart,
   });
 
   @override
@@ -51,13 +50,9 @@ class ProductsItems extends ConsumerWidget {
       requestTypeStateControllerProvider(Modules.transferRequest),
     );
 
-    return ResponsiveListFlow(
-      itemCount: showClearCart ? products.length + 1 : products.length,
+    return ResponsiveListSliverFlow(
+      itemCount: products.length,
       itemBuilder: (_, index) {
-        if (showClearCart && index == products.length) {
-          return ClearCartButton(insertProductsPage: insertProductsPage);
-        }
-
         final product = products[index];
 
         int? transferProductItemIndex = pendingAsync.value?.indexWhere(

@@ -17,35 +17,38 @@ class ClearCartButton extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return PrimaryTextButton(
-      text: 'Limpar carrinho'.hardcoded,
-      color: Colors.red,
-      icon: Icon(
-        isIOS ? CupertinoIcons.delete : Icons.delete,
+    return SliverToBoxAdapter(
+      child: PrimaryTextButton(
+        text: 'Limpar carrinho'.hardcoded,
         color: Colors.red,
+        icon: Icon(
+          isIOS ? CupertinoIcons.delete : Icons.delete,
+          color: Colors.red,
+        ),
+        onPressed: () {
+          showAlertDialog(
+            context: context,
+            title: 'Limpar carrinho?'.hardcoded,
+            defaultActionText: 'Limpar'.hardcoded,
+            cancelActionText: 'Cancelar'.hardcoded,
+            onOkPressed: () {
+              ref
+                  .read(
+                    cartProductsStateControllerProvider(
+                      DraftKey(
+                        requestTypeCode: insertProductsPage.requestTypeCode,
+                        enterpriseOrigin:
+                            insertProductsPage.enterpriseOriginCode,
+                        enterpriseDestinyCode:
+                            insertProductsPage.enterpriseDestinyCode,
+                      ),
+                    ).notifier,
+                  )
+                  .clearLot();
+            },
+          );
+        },
       ),
-      onPressed: () {
-        showAlertDialog(
-          context: context,
-          title: 'Limpar carrinho?'.hardcoded,
-          defaultActionText: 'Limpar'.hardcoded,
-          cancelActionText: 'Cancelar'.hardcoded,
-          onOkPressed: () {
-            ref
-                .read(
-                  cartProductsStateControllerProvider(
-                    DraftKey(
-                      requestTypeCode: insertProductsPage.requestTypeCode,
-                      enterpriseOrigin: insertProductsPage.enterpriseOriginCode,
-                      enterpriseDestinyCode:
-                          insertProductsPage.enterpriseDestinyCode,
-                    ),
-                  ).notifier,
-                )
-                .clearLot();
-          },
-        );
-      },
     );
   }
 }

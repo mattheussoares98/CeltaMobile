@@ -13,13 +13,17 @@ class LastSavedNumber extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.all(Sizes.p8),
-      child: TitleAndSubTitle(
-        title: 'Último pedido salvo'.hardcoded,
-        subTitle: RegExp(r'\((.*?)\)').firstMatch(number)?.group(1),
-        subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-          color: theme.colorScheme.secondary,
+    return SliverToBoxAdapter(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: TitleAndSubTitle(
+            title: 'Último pedido salvo'.hardcoded,
+            subTitle: RegExp(r'\((.*?)\)').firstMatch(number)?.group(1),
+            subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+              color: theme.primaryColor,
+            ),
+          ),
         ),
       ),
     );

@@ -49,19 +49,25 @@ class CartPage extends ConsumerWidget {
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
         children: [
-          if (lastSavedAsync.value != null)
-            LastSavedNumber(number: lastSavedAsync.value!),
-          //TODO change to a sliver page to avoid show the LastSavedNumber fixed
           Expanded(
-            child: ProductsItems(
-              showClearCart: products.length > 2,
-              products: products,
-              selectedIndex: insertProductsPage.selectedProductIndex,
-              onTap: insertProductsPage.onTapProductItem,
-              removeItem: insertProductsPage.removeProductItem,
-              requestTypeAllowChangePrice:
-                  insertProductsPage.requestTypeAllowChangePrice,
-              insertProductsPage: insertProductsPage,
+            child: CustomScrollView(
+              slivers: [
+                if (lastSavedAsync.value != null)
+                  LastSavedNumber(number: lastSavedAsync.value!),
+                ProductsItems(
+                  products: products,
+                  selectedIndex: insertProductsPage.selectedProductIndex,
+                  onTap: insertProductsPage.onTapProductItem,
+                  removeItem: insertProductsPage.removeProductItem,
+                  requestTypeAllowChangePrice:
+                      insertProductsPage.requestTypeAllowChangePrice,
+                  insertProductsPage: insertProductsPage,
+                ),
+                if (products.length > 2) ...[
+                  ClearCartButton(insertProductsPage: insertProductsPage),
+                  gapSliverH16,
+                ],
+              ],
             ),
           ),
           Footer(insertProductsPage: insertProductsPage),

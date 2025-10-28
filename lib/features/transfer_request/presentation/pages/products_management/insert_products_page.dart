@@ -98,23 +98,26 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
             searchValueController: widget.searchValueController,
           ),
           gapH8,
-          AsyncValueWidget(
-            value: productsAsync,
-            tryAgain: null,
-            data: (products) {
-              return Expanded(
-                child: ProductsItems(
-                  showClearCart: false,
-                  products: products,
-                  selectedIndex: widget.selectedProductIndex,
-                  onTap: widget.onTapProductItem,
-                  removeItem: widget.removeProductItem,
-                  requestTypeAllowChangePrice:
-                      widget.requestTypeAllowChangePrice,
-                  insertProductsPage: widget,
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                AsyncValueSliverWidget(
+                  value: productsAsync,
+                  tryAgain: null,
+                  data: (products) {
+                    return ProductsItems(
+                      products: products,
+                      selectedIndex: widget.selectedProductIndex,
+                      onTap: widget.onTapProductItem,
+                      removeItem: widget.removeProductItem,
+                      requestTypeAllowChangePrice:
+                          widget.requestTypeAllowChangePrice,
+                      insertProductsPage: widget,
+                    );
+                  },
                 ),
-              );
-            },
+              ],
+            ),
           ),
         ],
       ),
