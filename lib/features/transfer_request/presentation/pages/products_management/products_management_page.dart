@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/request_type/request_type.dart';
+import '../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
 import 'products_management.dart';
 
@@ -33,6 +36,31 @@ class _ProductsManagementPageState
   final searchValueFocusNode = FocusNode();
   final priceFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
+  int? selectedProductIndex;
+  bool requestTypeAllowChangePrice = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ref
+        .read(
+          requestTypeStateControllerProvider(Modules.transferRequest).future,
+        )
+        .then((value) {
+          setState(() {
+            final requestIndex = value?.indexWhere(
+              (e) => e.Code == widget.requestTypeCode,
+            );
+            if (requestIndex == null || requestIndex == -1) {
+              return;
+            }
+
+            requestTypeAllowChangePrice =
+                value![requestIndex].AllowAlterCostOrSalePrice;
+          });
+        });
+  }
 
   @override
   void dispose() {
@@ -43,6 +71,59 @@ class _ProductsManagementPageState
     priceFocusNode.dispose();
     quantityFocusNode.dispose();
     super.dispose();
+  }
+
+  void onTapProductItem({
+    required int index,
+    required ProductEntity product,
+    required List<RequestTypeEntity>? requests,
+    required TransferRequestProductItemEntity? transferRequestProductItem,
+  }) {
+    if (product.Value == 0 && !requestTypeAllowChangePrice) {
+      showSnackBarMessage(
+        context,
+        'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
+            .hardcoded,
+        backgroundColor: Colors.red,
+      );
+      setState(() {
+        selectedProductIndex = null;
+      });
+      return;
+    }
+
+    if (selectedProductIndex == index) {
+      setState(() {
+        selectedProductIndex = null;
+      });
+    } else {
+      setState(() => selectedProductIndex = index);
+      quantityController.text = '1';
+      priceController.text =
+          transferRequestProductItem?.value.toString() ??
+          product.Value.toString();
+      Future.delayed(Duration(milliseconds: 100), () {
+        quantityController.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: quantityController.text.length,
+        );
+        quantityFocusNode.requestFocus();
+      });
+    }
+  }
+
+  void removeProductItem(TransferRequestProductItemEntity productItem) {
+    ref
+        .read(
+          pendingTransferRequestStateControllerProvider(
+            DraftKey(
+              requestTypeCode: widget.requestTypeCode,
+              enterpriseOrigin: widget.enterpriseOriginCode,
+              enterpriseDestinyCode: widget.enterpriseDestinyCode,
+            ),
+          ).notifier,
+        )
+        .removeItem(productItem);
   }
 
   @override
@@ -68,6 +149,10 @@ class _ProductsManagementPageState
         quantityFocusNode: quantityFocusNode,
         priceFocusNode: priceFocusNode,
         priceController: priceController,
+        onTapProductItem: onTapProductItem,
+        removeProductItem: removeProductItem,
+        requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+        selectedProductIndex: selectedProductIndex,
       ),
       CartPage(),
     ];
@@ -81,7 +166,12 @@ class _ProductsManagementPageState
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
-        onTap: (index) => setState(() => currentIndex = index),
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+            selectedProductIndex = null;
+          });
+        },
         items: [
           BottomNavigationBarItem(
             label: 'Inserir'.hardcoded,
