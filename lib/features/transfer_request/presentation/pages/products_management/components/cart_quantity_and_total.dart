@@ -27,9 +27,8 @@ class CartQuantityAndTotal extends StatelessWidget {
         ),
         TitleAndSubTitle(
           title: 'Total'.hardcoded,
-          subTitle: '${item.quantity * item.value}'
-              .toBrazilianNumber()
-              .addBrazilianCoin(),
+          subTitle: '${item.quantity * item.value}'.toBrazilianNumber(),
+          subTitleIsPrice: true,
           titleStyle: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.secondary,
           ),

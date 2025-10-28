@@ -116,8 +116,10 @@ class _QuantityFieldAndInsertButtonState
                       final quantity = value.text.toDouble() ?? 0;
                       final total = widget.product.Value * quantity;
 
-                      return Text(
-                        '${'Total'.hardcoded} ${total.toString().toBrazilianNumber().addBrazilianCoin()}',
+                      return TitleAndSubTitle(
+                        title: 'Total'.hardcoded,
+                        subTitle: total.toString().toBrazilianNumber(),
+                        subTitleIsPrice: true,
                       );
                     },
                   ),
