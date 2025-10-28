@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +10,7 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 import 'products_management.dart';
 
 class ProductsManagementPage extends ConsumerStatefulWidget {
@@ -139,6 +139,15 @@ class _ProductsManagementPageState
         ),
       ),
     );
+    final insertAsync = ref.watch(
+      insertTransferRequestControllerProvider(
+        DraftKey(
+          requestTypeCode: widget.requestTypeCode,
+          enterpriseOrigin: widget.enterpriseOriginCode,
+          enterpriseDestinyCode: widget.enterpriseDestinyCode,
+        ),
+      ),
+    );
 
     final insertProductsPage = InsertProductsPage(
       enterpriseOriginCode: widget.enterpriseOriginCode,
@@ -170,53 +179,58 @@ class _ProductsManagementPageState
         pendingAsync.value?.fold(0.0, (p, e) => p + (e.value * e.quantity)) ??
         0.0;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(appBarTitles[currentIndex]),
-        actionsPadding: EdgeInsets.all(Sizes.p8),
-        actions: [
-          QuantityBadge(
-            quantity: pendingAsync.value?.length,
-            materialIcon: Icons.shopping_cart,
-            cupertinoIcon: CupertinoIcons.shopping_cart,
-            isSelected: false,
-            offset: Offset(3, -3),
-            subtitle: Text(
-              'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
-              style: TextStyle(fontSize: 9),
-            ),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(appBarTitles[currentIndex]),
+            actionsPadding: EdgeInsets.all(Sizes.p8),
+            actions: [
+              QuantityBadge(
+                quantity: pendingAsync.value?.length,
+                materialIcon: Icons.shopping_cart,
+                cupertinoIcon: CupertinoIcons.shopping_cart,
+                isSelected: false,
+                offset: Offset(3, -3),
+                subtitle: Text(
+                  'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
+                  style: TextStyle(fontSize: 9),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: pages[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-            selectedProductIndex = null;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            label: 'Inserir'.hardcoded,
-            icon: Icon(
-              isIOS
-                  ? CupertinoIcons.cart_badge_plus
-                  : Icons.add_shopping_cart_outlined,
-            ),
+          body: pages[currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: currentIndex,
+            onTap: (index) {
+              setState(() {
+                currentIndex = index;
+                selectedProductIndex = null;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                label: 'Inserir'.hardcoded,
+                icon: Icon(
+                  isIOS
+                      ? CupertinoIcons.cart_badge_plus
+                      : Icons.add_shopping_cart_outlined,
+                ),
+              ),
+              BottomNavigationBarItem(
+                label: 'Carrinho'.hardcoded,
+                icon: QuantityBadge(
+                  quantity: pendingAsync.value?.length,
+                  materialIcon: Icons.shopping_cart,
+                  cupertinoIcon: CupertinoIcons.shopping_cart,
+                  isSelected: currentIndex == 1,
+                ),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            label: 'Carrinho'.hardcoded,
-            icon: QuantityBadge(
-              quantity: pendingAsync.value?.length,
-              materialIcon: Icons.shopping_cart,
-              cupertinoIcon: CupertinoIcons.shopping_cart,
-              isSelected: currentIndex == 1,
-            ),
-          ),
-        ],
-      ),
+        ),
+        if (insertAsync.isLoading) LoadingPage(),
+      ],
     );
   }
 }

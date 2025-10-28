@@ -60,18 +60,20 @@ class Footer extends ConsumerWidget {
                         cancelActionText: 'Cancelar'.hardcoded,
                         defaultActionText: 'Sim'.hardcoded,
                         onOkPressed: () {
-                          ref.read(
-                            cartProductsStateControllerProvider(
-                              DraftKey(
-                                requestTypeCode:
-                                    insertProductsPage.requestTypeCode,
-                                enterpriseOrigin:
-                                    insertProductsPage.enterpriseOriginCode,
-                                enterpriseDestinyCode:
-                                    insertProductsPage.enterpriseDestinyCode,
-                              ),
-                            ).notifier,
-                          ); //TODO create save method
+                          ref
+                              .read(
+                                insertTransferRequestControllerProvider(
+                                  DraftKey(
+                                    requestTypeCode:
+                                        insertProductsPage.requestTypeCode,
+                                    enterpriseOrigin:
+                                        insertProductsPage.enterpriseOriginCode,
+                                    enterpriseDestinyCode: insertProductsPage
+                                        .enterpriseDestinyCode,
+                                  ),
+                                ).notifier,
+                              )
+                              .insert();
                         },
                       );
                     },

@@ -13,28 +13,35 @@ part 'insert_transfer_request_controller.g.dart';
 class InsertTransferRequestController
     extends _$InsertTransferRequestController {
   @override
-  Future<void> build(DraftKey draftKey) async {
-    final validatedUser = await ref.watch(validatedUserSessionProvider.future);
-    final products = await ref.read(
-      cartProductsStateControllerProvider(draftKey).future,
-    );
+  Future<void> build(DraftKey draftKey) async {}
 
-    final response = await ref
-        .read(soapInsertTransferRequestRepositoryProvider)
-        .save(
-          baseUrl: validatedUser!.enterprise!.baseUrl!,
-          crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
-          enterpriseOriginCode: draftKey.enterpriseOrigin,
-          enterpriseDestinyCode: draftKey.enterpriseDestinyCode,
-          requestTypeCode: draftKey.requestTypeCode,
-          products: products,
-        );
+  Future<void> insert() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final validatedUser = await ref.watch(
+        validatedUserSessionProvider.future,
+      );
+      final products = await ref.read(
+        cartProductsStateControllerProvider(draftKey).future,
+      );
 
-    await ref
-        .read(lastSavedNumberStateControllerProvider.notifier)
-        .save(response);
-    await ref
-        .read(cartProductsStateControllerProvider(draftKey).notifier)
-        .clearLot();
+      final response = await ref
+          .read(soapInsertTransferRequestRepositoryProvider)
+          .save(
+            baseUrl: validatedUser!.enterprise!.baseUrl!,
+            crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
+            enterpriseOriginCode: draftKey.enterpriseOrigin,
+            enterpriseDestinyCode: draftKey.enterpriseDestinyCode,
+            requestTypeCode: draftKey.requestTypeCode,
+            products: products,
+          );
+
+      await ref
+          .read(lastSavedNumberStateControllerProvider.notifier)
+          .save(response);
+      await ref
+          .read(cartProductsStateControllerProvider(draftKey).notifier)
+          .clearLot();
+    });
   }
 }
