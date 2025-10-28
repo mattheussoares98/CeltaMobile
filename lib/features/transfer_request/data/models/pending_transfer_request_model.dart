@@ -4,64 +4,46 @@ import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class PendingTransferRequestModel extends Equatable {
-  final Map<DraftKey, TransferRequestProductItemModel>? products;
+  final List<TransferRequestProductItemModel>? products;
+  final String? lastSavedRequestNumber;
 
-  const PendingTransferRequestModel({required this.products});
+  const PendingTransferRequestModel({
+    required this.products,
+    required this.lastSavedRequestNumber,
+  });
 
   @override
   List<Object?> get props => [products];
 
   factory PendingTransferRequestModel.fromJson(Map json) {
     return PendingTransferRequestModel(
-      products: json['products'] == null
-          ? null
-          : Map.fromEntries(
-              (json['products'] as Map).entries.map(
-                (entry) => MapEntry(
-                  DraftKey.fromMapKey(entry.key),
-                  TransferRequestProductItemModel.fromJson(entry.value),
-                ),
-              ),
-            ),
+      products: json['products']
+          ?.map((e) => TransferRequestProductItemModel.fromJson(e))
+          .toList(),
+      lastSavedRequestNumber: json['lastSavedRequestNumber'],
     );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'products': products == null
-        ? null
-        : Map.fromEntries(
-            products!.entries.map(
-              (entry) => MapEntry(entry.key.toMapKey(), entry.value.toJson()),
-            ),
-          ),
+    'products': products?.map((e) => e.toJson()).toList(),
+    'lastSavedRequestNumber': lastSavedRequestNumber,
   };
 
   factory PendingTransferRequestModel.fromEntity(
     PendingTransferRequestEntity entity,
   ) {
     return PendingTransferRequestModel(
-      products: entity.products == null
-          ? null
-          : Map.fromEntries(
-              entity.products!.entries.map(
-                (entry) => MapEntry(
-                  entry.key,
-                  TransferRequestProductItemModel.fromEntity(entry.value),
-                ),
-              ),
-            ),
+      products: entity.products
+          ?.map((e) => TransferRequestProductItemModel.fromEntity(e))
+          .toList(),
+      lastSavedRequestNumber: entity.lastSavedRequestNumber,
     );
   }
 
   PendingTransferRequestEntity toEntity() {
     return PendingTransferRequestEntity(
-      products: products == null
-          ? {}
-          : Map.fromEntries(
-              products!.entries.map(
-                (entry) => MapEntry(entry.key, entry.value.toEntity()),
-              ),
-            ),
+      products: products?.map((e) => e.toEntity()).toList(),
+      lastSavedRequestNumber: lastSavedRequestNumber,
     );
   }
 }

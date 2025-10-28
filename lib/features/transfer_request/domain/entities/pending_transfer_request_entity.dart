@@ -3,16 +3,25 @@ import 'package:equatable/equatable.dart';
 import 'entities.dart';
 
 class PendingTransferRequestEntity extends Equatable {
-  final Map<DraftKey, TransferRequestProductItemEntity>? products;
+  final List<TransferRequestProductItemEntity>? products;
+  final String? lastSavedRequestNumber;
 
-  const PendingTransferRequestEntity({required this.products});
+  const PendingTransferRequestEntity({
+    required this.products,
+    required this.lastSavedRequestNumber,
+  });
 
   @override
   List<Object?> get props => [products];
 
   PendingTransferRequestEntity copyWith({
-    Map<DraftKey, TransferRequestProductItemEntity>? products,
+    List<TransferRequestProductItemEntity>? products,
+    String? lastSavedRequestNumber,
   }) {
-    return PendingTransferRequestEntity(products: products ?? this.products);
+    return PendingTransferRequestEntity(
+      products: products ?? this.products,
+      lastSavedRequestNumber:
+          lastSavedRequestNumber ?? this.lastSavedRequestNumber,
+    );
   }
 }
