@@ -77,7 +77,12 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       });
     } else {
       setState(() => selectedIndex = index);
+      widget.quantityController.text = '1';
       Future.delayed(Duration(milliseconds: 100), () {
+        widget.quantityController.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: widget.quantityController.text.length,
+        );
         widget.quantityFocusNode.requestFocus();
       });
     }
@@ -192,7 +197,12 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                               );
                             }
                           : null,
-
+                      clickableBottom: hasInCart
+                          ? CartQuantityAndTotal(
+                              item: pendingTransfer
+                                  .value![transferProductItemIndex],
+                            )
+                          : null,
                       notClickableBottom: selectedIndex == index
                           ? QuantityFieldAndInsertButton(
                               quantityController: widget.quantityController,
