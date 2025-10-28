@@ -6,12 +6,12 @@ import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../../enterprise_manager/domain/entities/modules.dart';
 import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 import '../../pages.dart';
 import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final List<ProductEntity> products;
-  final AsyncValue<List<TransferRequestProductItemEntity>> pendingTransfer;
   final int? selectedIndex;
   final void Function({
     required int index,
@@ -26,7 +26,6 @@ class ProductsItems extends ConsumerWidget {
   const ProductsItems({
     super.key,
     required this.products,
-    required this.pendingTransfer,
     required this.selectedIndex,
     required this.onTap,
     required this.removeItem,
@@ -36,6 +35,16 @@ class ProductsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pendingAsync = ref.watch(
+      pendingTransferRequestStateControllerProvider(
+        DraftKey(
+          requestTypeCode: insertProductsPage.requestTypeCode,
+          enterpriseOrigin: insertProductsPage.enterpriseOriginCode,
+          enterpriseDestinyCode: insertProductsPage.enterpriseDestinyCode,
+        ),
+      ),
+    );
+
     final requests = ref.watch(
       requestTypeStateControllerProvider(Modules.transferRequest),
     );
@@ -45,7 +54,7 @@ class ProductsItems extends ConsumerWidget {
       itemBuilder: (_, index) {
         final product = products[index];
 
-        int? transferProductItemIndex = pendingTransfer.value?.indexWhere(
+        int? transferProductItemIndex = pendingAsync.value?.indexWhere(
           (element) =>
               element.product.ProductPackingCode == product.ProductPackingCode,
         );
@@ -65,16 +74,16 @@ class ProductsItems extends ConsumerWidget {
             transferRequestProductItem:
                 transferProductItemIndex == null || !hasInCart
                 ? null
-                : pendingTransfer.value?[transferProductItemIndex],
+                : pendingAsync.value?[transferProductItemIndex],
           ),
           onDelete: hasInCart == true
               ? () {
-                  removeItem(pendingTransfer.value![transferProductItemIndex!]);
+                  removeItem(pendingAsync.value![transferProductItemIndex!]);
                 }
               : null,
           clickableBottom: hasInCart
               ? CartQuantityAndTotal(
-                  item: pendingTransfer.value![transferProductItemIndex],
+                  item: pendingAsync.value![transferProductItemIndex],
                   requestTypeAllowChangePrice: requestTypeAllowChangePrice,
                 )
               : null,

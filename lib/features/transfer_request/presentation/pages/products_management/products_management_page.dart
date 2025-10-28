@@ -138,23 +138,24 @@ class _ProductsManagementPageState
       ),
     );
 
+    final insertProductsPage = InsertProductsPage(
+      enterpriseOriginCode: widget.enterpriseOriginCode,
+      enterpriseDestinyCode: widget.enterpriseDestinyCode,
+      requestTypeCode: widget.requestTypeCode,
+      searchValueController: searchValueController,
+      searchValueFocusNode: searchValueFocusNode,
+      quantityController: quantityController,
+      quantityFocusNode: quantityFocusNode,
+      priceFocusNode: priceFocusNode,
+      priceController: priceController,
+      onTapProductItem: onTapProductItem,
+      removeProductItem: removeProductItem,
+      requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+      selectedProductIndex: selectedProductIndex,
+    );
     final pages = [
-      InsertProductsPage(
-        enterpriseOriginCode: widget.enterpriseOriginCode,
-        enterpriseDestinyCode: widget.enterpriseDestinyCode,
-        requestTypeCode: widget.requestTypeCode,
-        searchValueController: searchValueController,
-        searchValueFocusNode: searchValueFocusNode,
-        quantityController: quantityController,
-        quantityFocusNode: quantityFocusNode,
-        priceFocusNode: priceFocusNode,
-        priceController: priceController,
-        onTapProductItem: onTapProductItem,
-        removeProductItem: removeProductItem,
-        requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-        selectedProductIndex: selectedProductIndex,
-      ),
-      CartPage(),
+      insertProductsPage,
+      CartPage(insertProductsPage: insertProductsPage),
     ];
     final appBarTitles = ['Inserir produtos'.hardcoded, 'Carrinho'.hardcoded];
 

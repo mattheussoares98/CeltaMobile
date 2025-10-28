@@ -75,16 +75,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       },
     );
 
-    final pendingTransfer = ref.watch(
-      pendingTransferRequestStateControllerProvider(
-        DraftKey(
-          requestTypeCode: widget.requestTypeCode,
-          enterpriseOrigin: widget.enterpriseOriginCode,
-          enterpriseDestinyCode: widget.enterpriseDestinyCode,
-        ),
-      ),
-    );
-
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
@@ -113,7 +103,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
               return Expanded(
                 child: ProductsItems(
                   products: products,
-                  pendingTransfer: pendingTransfer,
                   selectedIndex: widget.selectedProductIndex,
                   onTap: widget.onTapProductItem,
                   removeItem: widget.removeProductItem,
