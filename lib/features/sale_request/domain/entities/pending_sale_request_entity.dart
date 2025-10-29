@@ -12,4 +12,15 @@ class PendingSaleRequestEntity extends Equatable {
 
   @override
   List<Object?> get props => [cart, customer];
+
+  factory PendingSaleRequestEntity.empty() =>
+      const PendingSaleRequestEntity(cart: {}, customer: null);
+
+  PendingSaleRequestEntity copyWith({
+    Map<ProductPackingCode, ProductEntity>? cart,
+    CustomerEntity? customer,
+  }) => PendingSaleRequestEntity(
+    cart: cart ?? this.cart,
+    customer: customer ?? this.customer,
+  );
 }
