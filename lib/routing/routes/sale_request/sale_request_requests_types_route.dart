@@ -4,9 +4,11 @@ import '../../../features/sale_request/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase saleRequestRequestsTypesRoute() => GoRoute(
-  path: 'sale-request',
+  path: ':enterpriseCode/sale-request',
   name: Routes.saleRequestRequestsTypes.name,
   builder: (context, state) {
-    return RequestsTypePage();
+    final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
+
+    return RequestsTypePage(enterpriseCode: enterpriseCode);
   },
 );

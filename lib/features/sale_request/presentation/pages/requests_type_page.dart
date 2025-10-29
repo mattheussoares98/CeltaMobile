@@ -8,7 +8,8 @@ import '../../../../core/presentation/controllers/request_type/request_type.dart
 import '../../../enterprise_manager/domain/entities/entities.dart';
 
 class RequestsTypePage extends ConsumerWidget {
-  const RequestsTypePage({super.key});
+  final int enterpriseCode;
+  const RequestsTypePage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

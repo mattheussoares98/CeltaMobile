@@ -91,6 +91,12 @@ class ModulesWidget extends ConsumerWidget {
         route: Routes.transferRequestRequestsTypes,
         module: Modules.transferRequest,
       ),
+      DefaultModuleButton(
+        enabledModulesByEnterpriseAsync: enabledModulesByEnterpriseAsync,
+        selectedEnterprise: selectedEnterprise,
+        route: Routes.saleRequestRequestsTypes,
+        module: Modules.saleRequest,
+      ),
     ];
 
     buttons.sort((a, b) => a.route.module.compareTo(b.route.module));
