@@ -1,4 +1,5 @@
 export './addresses.dart';
+export './cart_item_summary.dart';
 export './costs.dart';
 export './default_title.dart';
 export './finish_offer_button.dart';

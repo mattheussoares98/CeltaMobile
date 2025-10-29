@@ -19,6 +19,7 @@ class ProductItemWidget extends ConsumerWidget {
   final bool? showDropIcon;
   final bool? isSelected;
   final Widget? itemBeforeProductName;
+  final CartItemSummary? cartItemSummary;
   const ProductItemWidget({
     super.key,
     required this.product,
@@ -30,6 +31,7 @@ class ProductItemWidget extends ConsumerWidget {
     this.showDropIcon,
     this.isSelected,
     this.itemBeforeProductName,
+    this.cartItemSummary,
   });
 
   double _getStockQuantityByName(List<StockEntity>? stocks, String name) {
@@ -179,6 +181,7 @@ class ProductItemWidget extends ConsumerWidget {
                           ),
                         ),
                       ],
+                      ?cartItemSummary,
                       ?clickableBottom,
                     ],
                   ),

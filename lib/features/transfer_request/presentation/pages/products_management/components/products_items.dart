@@ -82,10 +82,13 @@ class ProductsItems extends ConsumerWidget {
                   removeItem(pendingAsync.value![transferProductItemIndex!]);
                 }
               : null,
-          clickableBottom: hasInCart
-              ? CartQuantityAndTotal(
-                  item: pendingAsync.value![transferProductItemIndex],
-                  requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+          cartItemSummary: hasInCart
+              ? CartItemSummary(
+                  cartQuantity:
+                      pendingAsync.value![transferProductItemIndex].quantity,
+                  cartValue:
+                      pendingAsync.value![transferProductItemIndex].value,
+                  product: product,
                 )
               : null,
           notClickableBottom: selectedIndex == index

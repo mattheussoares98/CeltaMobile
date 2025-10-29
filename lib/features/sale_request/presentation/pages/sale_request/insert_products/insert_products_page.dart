@@ -13,6 +13,7 @@ class InsertProductsPage extends ConsumerWidget {
   final int? selectedProductIndex;
   final void Function(int? index, ProductEntity product) onTapProduct;
   final VoidCallback removeSelectedIndex;
+  final bool requestTypeAllowChangePrice;
   const InsertProductsPage({
     super.key,
     required this.enterpriseCode,
@@ -22,6 +23,7 @@ class InsertProductsPage extends ConsumerWidget {
     required this.selectedProductIndex,
     required this.onTapProduct,
     required this.removeSelectedIndex,
+    required this.requestTypeAllowChangePrice,
   });
 
   @override
@@ -43,6 +45,7 @@ class InsertProductsPage extends ConsumerWidget {
               quantityController: quantityController,
               quantityFocusNode: quantityFocusNode,
               removeSelectedIndex: removeSelectedIndex,
+              requestTypeAllowChangePrice: requestTypeAllowChangePrice,
             ),
           ),
         ],

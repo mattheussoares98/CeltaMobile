@@ -113,6 +113,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
             selectedProductIndex = null;
           });
         },
+        requestTypeAllowChangePrice: requestTypeAllowChangePrice,
       ),
       CustomerPage(),
       CartPage(),

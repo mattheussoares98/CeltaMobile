@@ -12,7 +12,6 @@ import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
-import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
@@ -21,6 +20,7 @@ class ProductsItems extends ConsumerWidget {
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final VoidCallback removeSelectedIndex;
+  final bool requestTypeAllowChangePrice;
   const ProductsItems({
     super.key,
     required this.enterpriseCode,
@@ -29,6 +29,7 @@ class ProductsItems extends ConsumerWidget {
     required this.quantityController,
     required this.quantityFocusNode,
     required this.removeSelectedIndex,
+    required this.requestTypeAllowChangePrice,
   });
 
   static final _formKey = GlobalKey<FormState>();
@@ -109,9 +110,13 @@ class ProductsItems extends ConsumerWidget {
                 showDropIcon: true,
                 isSelected: index == selectedProductIndex,
                 onTap: () => onTapProduct(index, product),
-                clickableBottom: cartProduct == null
+                cartItemSummary: cartProduct == null
                     ? null
-                    : CartItemSummary(cartProduct: cartProduct),
+                    : CartItemSummary(
+                        cartQuantity: cartProduct.Quantity,
+                        cartValue: cartProduct.Value,
+                        product: product,
+                      ),
                 onDelete: cartProduct == null
                     ? null
                     : () {
