@@ -606,13 +606,33 @@ class EntityFactory {
     cost: faker.randomGenerator.decimal(),
   );
 
-  static PendingSaleRequestEntity makePendingSaleRequestEntity() =>
-      PendingSaleRequestEntity(
-        cart: {
-          faker.randomGenerator.integer(100): EntityFactory.makeProductEntity(),
-          faker.randomGenerator.integer(100): EntityFactory.makeProductEntity(),
-          faker.randomGenerator.integer(100): EntityFactory.makeProductEntity(),
-        },
-        customer: makeCustomerEntity(),
-      );
+  static PendingSaleRequestEntity
+  makePendingSaleRequestEntity() => PendingSaleRequestEntity(
+    cart: {
+      faker.randomGenerator.integer(100): EntityFactory.makeCartProductEntity(),
+      faker.randomGenerator.integer(100): EntityFactory.makeCartProductEntity(),
+      faker.randomGenerator.integer(100): EntityFactory.makeCartProductEntity(),
+    },
+    customer: makeCustomerEntity(),
+  );
+
+  static CartProductEntity makeCartProductEntity() {
+    final bool isPercentage = faker.randomGenerator.boolean();
+
+    return CartProductEntity(
+      ProductPackingCode: faker.randomGenerator.integer(100),
+      Quantity: faker.randomGenerator.decimal(),
+      Value: faker.randomGenerator.decimal(),
+      TotalLiquid: faker.randomGenerator.decimal(),
+      IncrementPercentageOrValue: isPercentage ? "%" : "R\$",
+      IncrementValue: faker.randomGenerator.decimal(),
+      DiscountPercentageOrValue: isPercentage ? "%" : "R\$",
+      DiscountValue: faker.randomGenerator.decimal(),
+      DiscountDescription: faker.lorem.word(),
+      AutomaticDiscountPercentageOrValue: isPercentage ? "%" : "R\$",
+      AutomaticDiscountValue: faker.randomGenerator.decimal(),
+      ExpectedDeliveryDate: faker.date.dateTime(),
+      Observations: faker.lorem.word(),
+    );
+  }
 }

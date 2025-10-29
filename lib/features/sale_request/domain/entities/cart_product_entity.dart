@@ -5,12 +5,12 @@ class CartProductEntity extends Equatable {
   final double Quantity;
   final double Value;
   final double TotalLiquid;
-  final String? IncrementPercentageOrValue;
+  final String? IncrementPercentageOrValue; //"R$"" ou "%"
   final double? IncrementValue;
-  final String? DiscountPercentageOrValue;
+  final String? DiscountPercentageOrValue; //"R$"" ou "%"
   final double? DiscountValue;
   final String? DiscountDescription;
-  final String? AutomaticDiscountPercentageOrValue;
+  final String? AutomaticDiscountPercentageOrValue; //"R$"" ou "%"
   final double? AutomaticDiscountValue;
   final DateTime? ExpectedDeliveryDate;
   final String? Observations;

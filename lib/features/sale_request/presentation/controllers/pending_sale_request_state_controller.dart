@@ -30,7 +30,7 @@ class PendingSaleRequestStateController
     });
   }
 
-  Future<void> addProduct(ProductEntity item) async {
+  Future<void> addProduct(CartProductEntity item) async {
     if (state.value == null) return;
 
     final newCart = Map.of(state.value!.cart);
@@ -40,7 +40,7 @@ class PendingSaleRequestStateController
     await _updateAndSave(state.value!.copyWith(cart: newCart));
   }
 
-  Future<void> removeProduct(ProductEntity product) async {
+  Future<void> removeProduct(CartProductEntity product) async {
     if (state.value == null) return;
 
     final newCart = Map.of(state.value!.cart);

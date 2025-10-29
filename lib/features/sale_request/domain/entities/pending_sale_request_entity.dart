@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/domain/entities/entities.dart';
+import 'entities.dart';
 
 typedef ProductPackingCode = int;
 
 class PendingSaleRequestEntity extends Equatable {
-  final Map<ProductPackingCode, ProductEntity> cart;
+  final Map<ProductPackingCode, CartProductEntity> cart;
   final CustomerEntity? customer;
 
   const PendingSaleRequestEntity({required this.cart, required this.customer});
@@ -17,7 +18,7 @@ class PendingSaleRequestEntity extends Equatable {
       const PendingSaleRequestEntity(cart: {}, customer: null);
 
   PendingSaleRequestEntity copyWith({
-    Map<ProductPackingCode, ProductEntity>? cart,
+    Map<ProductPackingCode, CartProductEntity>? cart,
     CustomerEntity? customer,
   }) => PendingSaleRequestEntity(
     cart: cart ?? this.cart,

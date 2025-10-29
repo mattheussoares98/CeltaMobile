@@ -20,7 +20,7 @@ void main() {
   late MockLocalPendingSaleRequestRepository mockRepository;
   late UserSessionModel fakeSession;
   late PendingSaleRequestEntity fakeDraft;
-  late ProductEntity fakeProduct;
+  late CartProductEntity fakeProduct;
   late CustomerEntity fakeCustomer;
   late int fakeEnterpriseCode;
 
@@ -35,7 +35,7 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeDraft = EntityFactory.makePendingSaleRequestEntity();
-    fakeProduct = EntityFactory.makeProductEntity();
+    fakeProduct = EntityFactory.makeCartProductEntity();
     fakeCustomer = EntityFactory.makeCustomerEntity();
     fakeEnterpriseCode = faker.randomGenerator.integer(100);
   });

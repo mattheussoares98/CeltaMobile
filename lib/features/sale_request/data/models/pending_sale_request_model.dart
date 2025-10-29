@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/data/models/customer/customer.dart';
-import '../../../../core/data/models/models.dart';
 import '../../domain/entities/entities.dart';
+import 'models.dart';
 
 class PendingSaleRequestModel extends Equatable {
-  final Map<ProductPackingCode, ProductModel> cart;
+  final Map<ProductPackingCode, CartProductModel> cart;
   final CustomerModel? customer;
 
   const PendingSaleRequestModel({required this.cart, required this.customer});
@@ -15,8 +15,8 @@ class PendingSaleRequestModel extends Equatable {
 
   Map<String, dynamic> toJson() => {
     'cart': cart.map(
-      (packingCode, productModel) =>
-          MapEntry(packingCode.toString(), productModel.toJson()),
+      (packingCode, cartProductModel) =>
+          MapEntry(packingCode.toString(), cartProductModel.toJson()),
     ),
     'customer': customer?.toJson(),
   };
@@ -26,7 +26,7 @@ class PendingSaleRequestModel extends Equatable {
         cart: (json['cart'] as Map).map(
           (key, value) => MapEntry(
             int.parse(key.toString()),
-            ProductModel.fromJson(value as Map<String, dynamic>),
+            CartProductModel.fromJson(value as Map<String, dynamic>),
           ),
         ),
         customer: json['customer'] == null
@@ -36,8 +36,8 @@ class PendingSaleRequestModel extends Equatable {
 
   PendingSaleRequestEntity toEntity() => PendingSaleRequestEntity(
     cart: cart.map(
-      (packingCode, productModel) =>
-          MapEntry(packingCode, productModel.toEntity()),
+      (packingCode, cartProductModel) =>
+          MapEntry(packingCode, cartProductModel.toEntity()),
     ),
     customer: customer?.toEntity(),
   );
@@ -45,8 +45,10 @@ class PendingSaleRequestModel extends Equatable {
   static PendingSaleRequestModel fromEntity(PendingSaleRequestEntity entity) =>
       PendingSaleRequestModel(
         cart: entity.cart.map(
-          (packingCode, productEntity) =>
-              MapEntry(packingCode, ProductModel.fromEntity(productEntity)),
+          (packingCode, cartProductEntity) => MapEntry(
+            packingCode,
+            CartProductModel.fromEntity(cartProductEntity),
+          ),
         ),
         customer: entity.customer == null
             ? null

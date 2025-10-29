@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/sale_request/data/models/models.dart';
 import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
@@ -14,9 +13,9 @@ void main() {
   late MockBox hive;
 
   late PendingSaleRequestEntity entity;
-  late ProductEntity firstProduct;
-  late ProductEntity secondProduct;
-  late ProductEntity thirdProduct;
+  late CartProductEntity firstProduct;
+  late CartProductEntity secondProduct;
+  late CartProductEntity thirdProduct;
   late int enterpriseCode;
 
   void initSut() {
@@ -35,18 +34,12 @@ void main() {
   }
 
   void initEntities() {
-    firstProduct = EntityFactory.makeProductEntity(
-      productPackingCode: faker.randomGenerator.integer(100),
-    );
-    secondProduct = EntityFactory.makeProductEntity(
-      productPackingCode: faker.randomGenerator.integer(201, min: 101),
-    );
-    thirdProduct = EntityFactory.makeProductEntity(
-      productPackingCode: faker.randomGenerator.integer(300, min: 201),
-    );
+    firstProduct = EntityFactory.makeCartProductEntity();
+    secondProduct = EntityFactory.makeCartProductEntity();
+    thirdProduct = EntityFactory.makeCartProductEntity();
     enterpriseCode = faker.randomGenerator.integer(300, min: 201);
     entity = PendingSaleRequestEntity(
-      cart: <ProductPackingCode, ProductEntity>{
+      cart: <ProductPackingCode, CartProductEntity>{
         firstProduct.ProductPackingCode: firstProduct,
         secondProduct.ProductPackingCode: secondProduct,
         thirdProduct.ProductPackingCode: thirdProduct,
