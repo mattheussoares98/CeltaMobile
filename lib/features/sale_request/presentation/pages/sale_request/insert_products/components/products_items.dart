@@ -17,9 +17,10 @@ import 'components.dart';
 class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
   final int? selectedProductIndex;
-  final void Function(int? index) onTapProduct;
+  final void Function(int? index, ProductEntity product) onTapProduct;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
+  final VoidCallback removeSelectedIndex;
   const ProductsItems({
     super.key,
     required this.enterpriseCode,
@@ -27,6 +28,7 @@ class ProductsItems extends ConsumerWidget {
     required this.onTapProduct,
     required this.quantityController,
     required this.quantityFocusNode,
+    required this.removeSelectedIndex,
   });
 
   static final _formKey = GlobalKey<FormState>();
@@ -76,7 +78,7 @@ class ProductsItems extends ConsumerWidget {
           );
 
       quantityController.clear();
-      onTapProduct(null);
+      removeSelectedIndex();
     }
 
     return Form(
@@ -106,7 +108,7 @@ class ProductsItems extends ConsumerWidget {
                 routine: BsRoutine.saleRequest,
                 showDropIcon: true,
                 isSelected: index == selectedProductIndex,
-                onTap: () => onTapProduct(index),
+                onTap: () => onTapProduct(index, product),
                 clickableBottom: cartProduct == null
                     ? null
                     : CartItemSummary(cartProduct: cartProduct),

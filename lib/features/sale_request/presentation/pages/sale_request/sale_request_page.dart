@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/domain/entities/entities.dart';
 import 'sale_request.dart';
 
 class SaleRequestPage extends ConsumerStatefulWidget {
@@ -42,8 +43,16 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     quantityFocusNode.dispose();
   }
 
-  void onTapProduct(int? index) {
-    if (index == selectedProductIndex) {
+  void onTapProduct(int? index, ProductEntity product) {
+    if (product.Value == 0 && product.RetailPracticedPrice == 0) {
+      //TODO treat if the request type allow change the price or not
+      showSnackBarMessage(
+        context,
+        'Esse produto está com o preço zerado e o modelo não permite alterar o preço'
+            .hardcoded,
+        backgroundColor: Colors.red,
+      );
+    } else if (index == selectedProductIndex) {
       setState(() {
         selectedProductIndex = null;
       });
@@ -71,6 +80,11 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
         selectedProductIndex: selectedProductIndex,
         quantityController: quantityController,
         quantityFocusNode: quantityFocusNode,
+        removeSelectedIndex: () {
+          setState(() {
+            selectedProductIndex = null;
+          });
+        },
       ),
       CustomerPage(),
       CartPage(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import 'components/components.dart';
 
 class InsertProductsPage extends ConsumerWidget {
@@ -10,7 +11,8 @@ class InsertProductsPage extends ConsumerWidget {
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final int? selectedProductIndex;
-  final void Function(int? index) onTapProduct;
+  final void Function(int? index, ProductEntity product) onTapProduct;
+  final VoidCallback removeSelectedIndex;
   const InsertProductsPage({
     super.key,
     required this.enterpriseCode,
@@ -19,6 +21,7 @@ class InsertProductsPage extends ConsumerWidget {
     required this.quantityFocusNode,
     required this.selectedProductIndex,
     required this.onTapProduct,
+    required this.removeSelectedIndex,
   });
 
   @override
@@ -39,6 +42,7 @@ class InsertProductsPage extends ConsumerWidget {
               onTapProduct: onTapProduct,
               quantityController: quantityController,
               quantityFocusNode: quantityFocusNode,
+              removeSelectedIndex: removeSelectedIndex,
             ),
           ),
         ],
