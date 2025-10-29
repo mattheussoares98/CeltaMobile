@@ -1,0 +1,73 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../constants/constants.dart';
+import '../../../../core/presentation/controllers/request_type/request_type.dart';
+import '../../../enterprise_manager/domain/entities/entities.dart';
+
+class RequestsTypePage extends ConsumerWidget {
+  const RequestsTypePage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final requestsAsync = ref.watch(
+      requestTypeStateControllerProvider(Modules.saleRequest),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: FittedBox(child: Text('Modelos de pedido'.hardcoded)),
+      ),
+      body: AsyncValueWidget(
+        value: requestsAsync,
+        tryAgain: () {
+          ref.invalidate(
+            requestTypeStateControllerProvider(Modules.saleRequest),
+          );
+        },
+        data: (requests) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(
+                requestTypeStateControllerProvider(Modules.saleRequest),
+              );
+            },
+            child: ListView.builder(
+              itemCount: requests?.length,
+              itemBuilder: (_, index) {
+                final request = requests![index];
+                return Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(Sizes.p8),
+                      child: Column(
+                        children: [
+                          TitleAndSubTitle(
+                            title: 'Código'.hardcoded,
+                            subTitle: 'doesnt has this property yet',
+                          ),
+                          TitleAndSubTitle(
+                            title: 'Nome'.hardcoded,
+                            subTitle: request.Name,
+                          ),
+                          TitleAndSubTitle(
+                            title: 'Tipo preço'.hardcoded,
+                            subTitle: request.OperationTypeString,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
