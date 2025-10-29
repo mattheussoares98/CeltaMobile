@@ -101,9 +101,12 @@ class _ProductsManagementPageState
     } else {
       setState(() => selectedProductIndex = index);
       quantityController.text = '1';
-      priceController.text =
-          transferRequestProductItem?.value.toString() ??
-          product.Value.toString();
+
+      if (product.Value > 0 || transferRequestProductItem?.value != null) {
+        priceController.text =
+            transferRequestProductItem?.value.toString() ??
+            product.Value.toString();
+      }
       Future.delayed(Duration(milliseconds: 100), () {
         quantityController.selection = TextSelection(
           baseOffset: 0,
