@@ -55,7 +55,7 @@ GoRouter goRouter(Ref ref) {
             destinyEnterprisesRoute([productsManagementRoute()]),
           ]),
         ]),
-        saleRequestRequestsTypesRoute(),
+        saleRequestRequestsTypesRoute([saleRequestRoute()]),
         searchProductsRoute(),
         transferBetweenStocksRoute(),
       ]),
