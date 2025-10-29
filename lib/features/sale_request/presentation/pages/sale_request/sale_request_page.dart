@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/request_type/request_type.dart';
+import '../../../../enterprise_manager/domain/entities/entities.dart';
 import 'sale_request.dart';
 
 class SaleRequestPage extends ConsumerStatefulWidget {
@@ -28,12 +30,31 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
   final quantityFocusNode = FocusNode();
   int currentIndex = 0;
   int? selectedProductIndex;
+  bool requestTypeAllowChangePrice = false;
 
-  final appBarTitles = [
-    'Inserir produtos'.hardcoded,
-    'Cliente'.hardcoded,
-    'Carrinho'.hardcoded,
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ref
+            .read(
+              requestTypeStateControllerProvider(Modules.saleRequest).future,
+            )
+            .then((requests) {
+              int? requestIndex = requests?.indexWhere(
+                (e) => e.Code == widget.requestCode,
+              );
+              if (requestIndex != null && requestIndex != -1) {
+                setState(() {
+                  requestTypeAllowChangePrice =
+                      requests![requestIndex].AllowAlterCostOrSalePrice == true;
+                });
+              }
+            });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -43,8 +64,15 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     quantityFocusNode.dispose();
   }
 
+  final appBarTitles = [
+    'Inserir produtos'.hardcoded,
+    'Cliente'.hardcoded,
+    'Carrinho'.hardcoded,
+  ];
   void onTapProduct(int? index, ProductEntity product) {
-    if (product.Value == 0 && product.RetailPracticedPrice == 0) {
+    if (product.Value == 0 &&
+        product.RetailPracticedPrice == 0 &&
+        !requestTypeAllowChangePrice) {
       //TODO treat if the request type allow change the price or not
       showSnackBarMessage(
         context,
