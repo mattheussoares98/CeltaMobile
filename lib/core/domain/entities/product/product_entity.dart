@@ -220,4 +220,12 @@ class ProductEntity extends Equatable {
       LastBuyEntrances: LastBuyEntrances ?? this.LastBuyEntrances,
     );
   }
+
+  double get getPrice {
+    if (Value > 0) {
+      return Value;
+    }
+
+    return RetailPracticedPrice;
+  }
 }
