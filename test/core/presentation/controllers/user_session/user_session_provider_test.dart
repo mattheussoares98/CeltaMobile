@@ -37,7 +37,9 @@ void main() {
         ),
         hiveBoxAppSettingsProvider.overrideWithValue(mockAppSettingsBox),
         hiveBoxBuyRequestProvider.overrideWithValue(mockBuyRequestBox),
-        hiveBoxTransferLotProvider.overrideWithValue(mockTransferLotBox),
+        hiveBoxTransferRequestLastSavedNumberProvider.overrideWithValue(
+          mockTransferLotBox,
+        ),
       ],
     );
   }

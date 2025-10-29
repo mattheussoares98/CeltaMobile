@@ -9,7 +9,9 @@ part 'providers.g.dart';
 
 @riverpod
 ILocalItemsLotDatasource localItemsLotDatasource(Ref ref) {
-  return LocalItemsLotDatasource(ref.watch(hiveBoxTransferLotProvider));
+  return LocalItemsLotDatasource(
+    ref.watch(hiveBoxTransferRequestLastSavedNumberProvider),
+  );
 }
 
 @riverpod

@@ -28,7 +28,7 @@ class UserSession extends _$UserSession {
       await ref.read(localUserSessionRepositoryProvider).logout();
       ref.read(hiveBoxAppSettingsProvider).clear();
       ref.read(hiveBoxBuyRequestProvider).clear();
-      ref.read(hiveBoxTransferLotProvider).clear();
+      ref.read(hiveBoxTransferBetweenStocksProvider).clear();
       return null;
     });
   }
