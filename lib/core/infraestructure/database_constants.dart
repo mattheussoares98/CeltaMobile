@@ -7,6 +7,7 @@ class DatabaseConstants {
     appSettings,
     buyRequest,
     userSession,
+    saleRequest,
     transferBetweenStocks,
     transferRequest,
     transferRequestLastSavedNumber,
