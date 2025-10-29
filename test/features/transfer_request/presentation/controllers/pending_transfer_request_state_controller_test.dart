@@ -121,12 +121,7 @@ void main() {
         // ASSERT
         // Verify the repository methods were called
         verify(
-          () => mockRepository.addItem(
-            fakeDraftKey,
-            fakeItems[1].copyWith(
-              quantity: fakeItems[1].quantity + fakeItems[1].quantity,
-            ),
-          ),
+          () => mockRepository.addItem(fakeDraftKey, fakeItems[1]),
         ).called(1);
         verify(
           () => mockRepository.load(fakeDraftKey),

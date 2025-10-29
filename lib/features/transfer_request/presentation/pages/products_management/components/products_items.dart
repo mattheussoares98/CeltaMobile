@@ -95,6 +95,9 @@ class ProductsItems extends ConsumerWidget {
               ? FieldsAndInsertButton(
                   product: product,
                   insertProductsPage: insertProductsPage,
+                  cartItem: hasInCart
+                      ? pendingAsync.value![transferProductItemIndex]
+                      : null,
                 )
               : null,
         );

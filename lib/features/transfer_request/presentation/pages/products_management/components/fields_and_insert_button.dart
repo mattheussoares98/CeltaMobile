@@ -15,11 +15,13 @@ import '../../pages.dart';
 class FieldsAndInsertButton extends ConsumerStatefulWidget {
   final InsertProductsPage insertProductsPage;
   final ProductEntity product;
+  final TransferRequestProductItemEntity? cartItem;
 
   const FieldsAndInsertButton({
     super.key,
     required this.product,
     required this.insertProductsPage,
+    required this.cartItem,
   });
 
   @override
@@ -52,6 +54,13 @@ class _QuantityFieldAndInsertButtonState
       return;
     }
 
+    final writtenQuantity =
+        widget.insertProductsPage.quantityController.text.toDouble() ?? 0;
+    final newQuantity = (widget.cartItem?.quantity ?? 0) + writtenQuantity;
+    final value =
+        widget.insertProductsPage.priceController.text.toDouble() ??
+        widget.product.Value;
+
     ref
         .read(
           cartProductsStateControllerProvider(
@@ -66,12 +75,8 @@ class _QuantityFieldAndInsertButtonState
         .addItem(
           TransferRequestProductItemEntity(
             product: widget.product,
-            quantity:
-                widget.insertProductsPage.quantityController.text.toDouble() ??
-                0,
-            value:
-                widget.insertProductsPage.priceController.text.toDouble() ??
-                widget.product.Value,
+            quantity: newQuantity,
+            value: value,
           ),
         );
 
