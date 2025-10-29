@@ -2,6 +2,7 @@ export 'adjust_sale_price/adjust_sale_price.dart';
 export 'buy_quotation/buy_quotation.dart';
 export 'expedition_conference/expedition_conference.dart';
 export 'inventory/inventory.dart';
+export 'sale_request/sale_request.dart';
 export 'transfer_request/transfer_request.dart';
 
 export 'adjust_stocks_route.dart';
