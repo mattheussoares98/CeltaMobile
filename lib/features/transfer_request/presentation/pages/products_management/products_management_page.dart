@@ -81,6 +81,8 @@ class _ProductsManagementPageState
     required List<RequestTypeEntity>? requests,
     required TransferRequestProductItemEntity? transferRequestProductItem,
   }) {
+    priceController.clear();
+
     if (product.Value == 0 && !requestTypeAllowChangePrice) {
       showSnackBarMessage(
         context,
