@@ -89,6 +89,19 @@ class RequestsTypePage extends ConsumerWidget {
                             title: 'Tipo preço'.hardcoded,
                             subTitle: request.UnitValueTypeString,
                           ),
+                          TitleAndSubTitle(
+                            title: null,
+                            subTitle: request.AllowAlterCostOrSalePrice == true
+                                ? 'Permite alterar o preço'.hardcoded
+                                : 'Não permite alterar o preço'.hardcoded,
+                            subTitleStyle: theme.textTheme.titleMedium
+                                ?.copyWith(
+                                  color:
+                                      request.AllowAlterCostOrSalePrice == true
+                                      ? theme.primaryColor
+                                      : theme.colorScheme.error,
+                                ),
+                          ),
                         ],
                       ),
                     ),

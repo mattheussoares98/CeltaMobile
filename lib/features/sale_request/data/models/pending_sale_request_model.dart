@@ -21,18 +21,17 @@ class PendingSaleRequestModel extends Equatable {
     'customer': customer?.toJson(),
   };
 
-  factory PendingSaleRequestModel.fromJson(Map<String, dynamic> json) =>
-      PendingSaleRequestModel(
-        cart: (json['cart'] as Map).map(
-          (key, value) => MapEntry(
-            int.parse(key.toString()),
-            CartProductModel.fromJson(value as Map<String, dynamic>),
-          ),
-        ),
-        customer: json['customer'] == null
-            ? null
-            : CustomerModel.fromJson(json['customer'] as Map<String, dynamic>),
-      );
+  factory PendingSaleRequestModel.fromJson(Map json) => PendingSaleRequestModel(
+    cart: (json['cart'] as Map).map(
+      (key, value) => MapEntry(
+        int.parse(key.toString()),
+        CartProductModel.fromJson(value as Map),
+      ),
+    ),
+    customer: json['customer'] == null
+        ? null
+        : CustomerModel.fromJson(json['customer'] as Map),
+  );
 
   PendingSaleRequestEntity toEntity() => PendingSaleRequestEntity(
     cart: cart.map(
