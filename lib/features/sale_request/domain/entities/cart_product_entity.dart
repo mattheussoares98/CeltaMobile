@@ -84,4 +84,18 @@ class CartProductEntity extends Equatable {
       Observations: Observations ?? this.Observations,
     );
   }
+
+  double get valueLiquid {
+    double value = Value;
+    if (IncrementValue != null) value += IncrementValue! * Quantity;
+    if (DiscountValue != null) value -= DiscountValue! * Quantity;
+    if (AutomaticDiscountValue != null) {
+      value -= AutomaticDiscountValue! * Quantity;
+    }
+    return value;
+  }
+
+  double get totalLiquid {
+    return Quantity * valueLiquid;
+  }
 }
