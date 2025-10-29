@@ -48,15 +48,17 @@ class InsertProductsPage extends ConsumerWidget {
               );
             },
             data: (products) {
-              return ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (_, index) {
-                  final product = products[index];
-                  return ProductItemWidget(
-                    product: product,
-                    routine: BsRoutine.saleRequest,
-                  );
-                },
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (_, index) {
+                    final product = products[index];
+                    return ProductItemWidget(
+                      product: product,
+                      routine: BsRoutine.saleRequest,
+                    );
+                  },
+                ),
               );
             },
           ),

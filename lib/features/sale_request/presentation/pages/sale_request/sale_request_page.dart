@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import 'sale_request.dart';
 
 class SaleRequestPage extends ConsumerStatefulWidget {
@@ -41,17 +42,23 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     final pages = [
-      CartPage(),
-      CustomerPage(),
       InsertProductsPage(
         enterpriseCode: widget.enterpriseCode,
         searchProductsController: searchProductsController,
       ),
+      CustomerPage(),
+      CartPage(),
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text(appBarTitles[currentIndex])),
+        actionsPadding: const EdgeInsets.fromLTRB(
+          0,
+          Sizes.p8,
+          Sizes.p12,
+          Sizes.p8,
+        ),
         actions: [
           QuantityBadge(
             quantity: null, //TODO fix
@@ -59,13 +66,17 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
             cupertinoIcon: CupertinoIcons.shopping_cart,
             isSelected: false,
             offset: const Offset(3, -3),
-            subtitle: Text('R\$ 0,00'.hardcoded), //TODO fix
+            subtitle: Text(
+              'R\$ 0,00'.hardcoded,
+              style: TextStyle(fontSize: 9),
+            ), //TODO fix
           ),
         ],
       ),
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => setState(() => currentIndex = index),
+        currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(
             label: 'Inserir produtos'.hardcoded,
