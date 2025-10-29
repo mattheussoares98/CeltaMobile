@@ -35,3 +35,14 @@ Box hiveBoxTransferRequest(Ref ref) {
 Box hiveBoxUserSession(Ref ref) {
   return Hive.box(DatabaseConstants.userSession.name);
 }
+
+@riverpod
+List<Box> boxesToClearOnLogout(Ref ref) {
+  return [
+    ref.watch(hiveBoxAppSettingsProvider),
+    ref.watch(hiveBoxBuyRequestProvider),
+    ref.watch(hiveBoxTransferBetweenStocksProvider),
+    ref.watch(hiveBoxTransferRequestLastSavedNumberProvider),
+    ref.watch(hiveBoxTransferRequestProvider),
+  ];
+}
