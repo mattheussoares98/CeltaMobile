@@ -1,0 +1,66 @@
+import 'package:celta_intelligence/features/sale_request/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/sale_request/data/models/models.dart';
+import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/sale_request/domain/repository/repository.dart';
+import 'package:faker/faker.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+class LocalPendingSaleRequestDatasourceSpy extends Mock
+    implements ILocalPendingSaleRequestDatasource {
+  LocalPendingSaleRequestDatasourceSpy() {
+    when(() => this.save(any(), any())).thenAnswer((_) async {});
+  }
+
+  void mockLoad(PendingSaleRequestModel? response) =>
+      when(() => this.load(any())).thenAnswer((_) async => response);
+}
+
+void main() {
+  late ILocalPendingSaleRequestRepository sut;
+  late LocalPendingSaleRequestDatasourceSpy mockDatasource;
+
+  late PendingSaleRequestEntity pendingSaleRequestEntity;
+  late int enterpriseCode;
+
+  setUp(() {
+    mockDatasource = LocalPendingSaleRequestDatasourceSpy();
+    sut = LocalPendingSaleRequestRepositoryImpl(mockDatasource);
+
+    pendingSaleRequestEntity = EntityFactory.makePendingSaleRequestEntity();
+    enterpriseCode = faker.randomGenerator.integer(100);
+
+    mockDatasource.mockLoad(
+      PendingSaleRequestModel.fromEntity(pendingSaleRequestEntity),
+    );
+  });
+
+  setUpAll(() {
+    registerFallbackValue(
+      PendingSaleRequestModel.fromEntity(
+        EntityFactory.makePendingSaleRequestEntity(),
+      ),
+    );
+  });
+
+  test('should behave correctly on save', () async {
+    await sut.save(pendingSaleRequestEntity, enterpriseCode);
+
+    verify(
+      () => mockDatasource.save(
+        PendingSaleRequestModel.fromEntity(pendingSaleRequestEntity),
+        enterpriseCode,
+      ),
+    ).called(1);
+  });
+
+  test('should behave correctly on load', () async {
+    final response = await sut.load(enterpriseCode);
+
+    expect(response, pendingSaleRequestEntity);
+
+    verify(() => mockDatasource.load(enterpriseCode)).called(1);
+  });
+}

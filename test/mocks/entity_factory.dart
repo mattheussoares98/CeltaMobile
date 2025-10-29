@@ -6,6 +6,7 @@ import 'package:celta_intelligence/features/customer_register/domain/entities/en
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 
@@ -604,4 +605,14 @@ class EntityFactory {
     quantity: faker.randomGenerator.decimal(),
     cost: faker.randomGenerator.decimal(),
   );
+
+  static PendingSaleRequestEntity makePendingSaleRequestEntity() =>
+      PendingSaleRequestEntity(
+        cart: {
+          faker.randomGenerator.integer(100): EntityFactory.makeProductEntity(),
+          faker.randomGenerator.integer(100): EntityFactory.makeProductEntity(),
+          faker.randomGenerator.integer(100): EntityFactory.makeProductEntity(),
+        },
+        customer: makeCustomerEntity(),
+      );
 }
