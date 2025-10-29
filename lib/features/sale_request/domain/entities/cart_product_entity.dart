@@ -12,7 +12,7 @@ class CartProductEntity extends Equatable {
   final String? DiscountDescription;
   final String? AutomaticDiscountPercentageOrValue;
   final double? AutomaticDiscountValue;
-  final String? ExpectedDeliveryDate;
+  final DateTime? ExpectedDeliveryDate;
   final String? Observations;
 
   const CartProductEntity({
@@ -60,7 +60,7 @@ class CartProductEntity extends Equatable {
     String? DiscountDescription,
     String? AutomaticDiscountPercentageOrValue,
     double? AutomaticDiscountValue,
-    String? ExpectedDeliveryDate,
+    DateTime? ExpectedDeliveryDate,
     String? Observations,
   }) {
     return CartProductEntity(
