@@ -187,7 +187,12 @@ class _ProductsManagementPageState
         Scaffold(
           appBar: AppBar(
             title: Text(appBarTitles[currentIndex]),
-            actionsPadding: EdgeInsets.all(Sizes.p8),
+            actionsPadding: const EdgeInsets.fromLTRB(
+              0,
+              Sizes.p8,
+              Sizes.p12,
+              Sizes.p8,
+            ),
             actions: [
               QuantityBadge(
                 quantity: pendingAsync.value?.length,

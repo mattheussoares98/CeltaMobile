@@ -189,7 +189,12 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         Scaffold(
           appBar: AppBar(
             title: FittedBox(child: Text(appBarTitles[currentIndex])),
-            actionsPadding: const EdgeInsets.all(Sizes.p8),
+            actionsPadding: const EdgeInsets.fromLTRB(
+              0,
+              Sizes.p8,
+              Sizes.p12,
+              Sizes.p8,
+            ),
             actions: [
               CartPriceIcon(
                 onTap: () {
