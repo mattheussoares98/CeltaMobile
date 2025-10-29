@@ -11,18 +11,15 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late LocalUserSessionDatasourceSpy localUserSessionDatasource;
   late UserSessionModel userSession;
-  late MockBox mockAppSettingsBox;
-  late MockBox mockBuyRequestBox;
-  late MockBox mockTransferLotBox;
+  late List<MockBox> mockBoxesToClearOnLogout;
 
   setUp(() {
     localUserSessionDatasource = LocalUserSessionDatasourceSpy();
     userSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
-    mockTransferLotBox = MockBox();
-    mockAppSettingsBox = MockBox();
-    mockBuyRequestBox = MockBox();
+
+    mockBoxesToClearOnLogout = [MockBox(), MockBox(), MockBox()];
 
     registerFallbackValue(userSession);
 
@@ -35,10 +32,8 @@ void main() {
         localUserSessionDatasourceProvider.overrideWithValue(
           localUserSessionDatasource,
         ),
-        hiveBoxAppSettingsProvider.overrideWithValue(mockAppSettingsBox),
-        hiveBoxBuyRequestProvider.overrideWithValue(mockBuyRequestBox),
-        hiveBoxTransferRequestLastSavedNumberProvider.overrideWithValue(
-          mockTransferLotBox,
+        boxesToClearOnLogoutProvider.overrideWithValue(
+          mockBoxesToClearOnLogout,
         ),
       ],
     );
@@ -132,9 +127,10 @@ void main() {
             isA<AsyncData<UserSessionModel?>>(),
           ]);
           verify(() => localUserSessionDatasource.logout()).called(1);
-          verify(() => mockAppSettingsBox.clear()).called(1);
-          verify(() => mockBuyRequestBox.clear()).called(1);
-          verify(() => mockTransferLotBox.clear()).called(1);
+
+          for (var box in mockBoxesToClearOnLogout) {
+            verify(() => box.clear()).called(1);
+          }
         },
       );
     });

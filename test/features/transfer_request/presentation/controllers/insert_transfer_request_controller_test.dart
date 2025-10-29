@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_request/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/transfer_request/presentation/controllers/controllers.dart';
@@ -125,9 +124,12 @@ void main() {
         addTearDown(container.dispose);
 
         // ACT: Reading the future triggers the build method
-        await container.read(
-          insertTransferRequestControllerProvider(fakeDraftKey).future,
-        );
+
+        await container
+            .read(
+              insertTransferRequestControllerProvider(fakeDraftKey).notifier,
+            )
+            .insert();
 
         // ASSERT
         // 1. Verify the repository was called
@@ -155,13 +157,25 @@ void main() {
         final container = makeProviderContainer(session: null);
         addTearDown(container.dispose);
 
-        // ACT & ASSERT
-        await expectLater(
-          container.read(
-            insertTransferRequestControllerProvider(fakeDraftKey).future,
-          ),
-          throwsA(isA<AppException>()),
+        await container.read(
+          insertTransferRequestControllerProvider(fakeDraftKey).future,
+        ); // Wait for initial build
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          insertTransferRequestControllerProvider(fakeDraftKey),
+          (_, next) => states.add(next),
         );
+
+        // ACT & ASSERT
+
+        await container
+            .read(
+              insertTransferRequestControllerProvider(fakeDraftKey).notifier,
+            )
+            .insert();
+
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
 
         // Verify no methods were called
         verifyNever(
