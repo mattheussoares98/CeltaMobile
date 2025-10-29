@@ -14,7 +14,8 @@ class DatabaseConstants {
 
   static const appSettings = _HiveBoxConfig('app_settings');
   static const userSession = _HiveBoxConfig('user_session');
-  static const buyRequest = _HiveBoxConfig('buyRequest');
+  static const buyRequest = _HiveBoxConfig('buy_request');
+  static const saleRequest = _HiveBoxConfig('sale_request');
   static const transferBetweenStocks = _HiveBoxConfig(
     'transfer_between_stocks',
   );
