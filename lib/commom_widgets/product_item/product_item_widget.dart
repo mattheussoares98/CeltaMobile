@@ -108,7 +108,7 @@ class ProductItemWidget extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(Sizes.p8),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ?itemBeforeProductName,
                       TitleAndSubTitle(
@@ -118,43 +118,50 @@ class ProductItemWidget extends ConsumerWidget {
                         titleStyle: theme.textTheme.titleMedium,
                         subTitleStyle: theme.textTheme.bodyMedium,
                       ),
-                      Row(
+                      Stack(
                         children: [
-                          Expanded(
-                            child: TitleAndSubTitle(
-                              title: "PLU ",
-                              subTitle: product.PLU,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleAndSubTitle(
+                                title: "PLU ",
+                                subTitle: product.PLU,
+                              ),
+                              if (routine != BsRoutine.adjustStock) ...[
+                                if (routine != BsRoutine.buyRequest) ...[
+                                  TitleAndSubTitle(
+                                    title: "Preço ",
+                                    emptyMessage: 'Sem preço'.hardcoded,
+                                    subTitle:
+                                        routine == BsRoutine.transferRequest
+                                        ? product.Value
+                                        : (product.Value > 0
+                                              ? product.Value
+                                              : product.RetailPracticedPrice),
+                                    subTitleIsPrice: true,
+                                  ),
+                                ],
+                                if (routine != BsRoutine.transferRequest) ...[
+                                  TitleAndSubTitle(
+                                    title: "Custo líquido ",
+                                    subTitle: product.LiquidCost,
+                                    emptyMessage: 'Sem custo líquido'.hardcoded,
+                                    subTitleIsPrice: true,
+                                  ),
+                                ],
+                              ],
+                            ],
                           ),
-                          InfoButton(
-                            product: product,
-                            enterpriseCode: product.EnterpriseCode,
-                            routine: routine,
+                          Positioned(
+                            right: 0,
+                            child: InfoButton(
+                              product: product,
+                              enterpriseCode: product.EnterpriseCode,
+                              routine: routine,
+                            ),
                           ),
                         ],
                       ),
-                      if (routine != BsRoutine.adjustStock) ...[
-                        if (routine != BsRoutine.buyRequest) ...[
-                          TitleAndSubTitle(
-                            title: "Preço ",
-                            emptyMessage: 'Sem preço'.hardcoded,
-                            subTitle: routine == BsRoutine.transferRequest
-                                ? product.Value
-                                : (product.Value > 0
-                                      ? product.Value
-                                      : product.RetailPracticedPrice),
-                            subTitleIsPrice: true,
-                          ),
-                        ],
-                        if (routine != BsRoutine.transferRequest) ...[
-                          TitleAndSubTitle(
-                            title: "Custo líquido ",
-                            subTitle: product.LiquidCost,
-                            emptyMessage: 'Sem custo líquido'.hardcoded,
-                            subTitleIsPrice: true,
-                          ),
-                        ],
-                      ],
                       if (routine != BsRoutine.adjustSalePrice) ...[
                         TitleAndSubTitle(
                           title: "Estoque atual ",
