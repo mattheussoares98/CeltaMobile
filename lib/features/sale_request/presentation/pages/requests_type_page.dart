@@ -1,10 +1,12 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/presentation/controllers/request_type/request_type.dart';
+import '../../../../routing/routing.dart';
 import '../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
 
@@ -52,7 +54,15 @@ class RequestsTypePage extends ConsumerWidget {
                       ? theme.primaryColorLight
                       : null,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.goNamed(
+                        Routes.saleRequest.name,
+                        pathParameters: {
+                          'enterpriseCode': enterpriseCode.toString(),
+                          'requestCode': request.Code.toString(),
+                        },
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(Sizes.p8),
                       child: Column(

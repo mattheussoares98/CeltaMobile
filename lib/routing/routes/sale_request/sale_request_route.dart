@@ -4,11 +4,15 @@ import '../../../features/sale_request/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase saleRequestRoute() => GoRoute(
-  path: 'sale-request',
-  name: Routes.saleRequestRequestsTypes.name,
+  path: ':requestCode/sale-request',
+  name: Routes.saleRequest.name,
   builder: (context, state) {
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
+    final requestCode = int.parse(state.pathParameters['requestCode']!);
 
-    return SaleRequestPage(enterpriseCode: enterpriseCode);
+    return SaleRequestPage(
+      enterpriseCode: enterpriseCode,
+      requestCode: requestCode,
+    );
   },
 );

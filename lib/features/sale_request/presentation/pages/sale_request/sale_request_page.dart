@@ -8,7 +8,12 @@ import 'sale_request.dart';
 
 class SaleRequestPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  const SaleRequestPage({super.key, required this.enterpriseCode});
+  final int requestCode;
+  const SaleRequestPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.requestCode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
