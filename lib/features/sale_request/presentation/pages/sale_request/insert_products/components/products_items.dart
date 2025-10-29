@@ -112,6 +112,17 @@ class ProductsItems extends ConsumerWidget {
                 clickableBottom: cartProduct == null
                     ? null
                     : CartItemSummary(cartProduct: cartProduct),
+                onDelete: cartProduct == null
+                    ? null
+                    : () {
+                        ref
+                            .read(
+                              pendingSaleRequestStateControllerProvider(
+                                enterpriseCode,
+                              ).notifier,
+                            )
+                            .removeProduct(cartProduct);
+                      },
                 notClickableBottom: index == selectedProductIndex
                     ? Row(
                         children: [
