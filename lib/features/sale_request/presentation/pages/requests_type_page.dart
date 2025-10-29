@@ -46,10 +46,11 @@ class RequestsTypePage extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(Sizes.p8),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TitleAndSubTitle(
                             title: 'Código'.hardcoded,
-                            subTitle: 'doesnt has this property yet',
+                            subTitle: request.PersonalizedCode,
                           ),
                           TitleAndSubTitle(
                             title: 'Nome'.hardcoded,
@@ -57,7 +58,7 @@ class RequestsTypePage extends ConsumerWidget {
                           ),
                           TitleAndSubTitle(
                             title: 'Tipo preço'.hardcoded,
-                            subTitle: request.OperationTypeString,
+                            subTitle: request.UnitValueTypeString,
                           ),
                         ],
                       ),
