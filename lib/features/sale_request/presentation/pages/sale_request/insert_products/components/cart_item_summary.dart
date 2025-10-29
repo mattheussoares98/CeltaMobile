@@ -27,14 +27,14 @@ class CartItemSummary extends StatelessWidget {
         ),
         TitleAndSubTitle(
           title: 'Preço'.hardcoded,
-          subTitle: cartProduct.valueLiquid.toString().toBrazilianNumber(),
+          subTitle: cartProduct.getValueLiquid.toString().toBrazilianNumber(),
           subTitleIsPrice: true,
           titleStyle: style,
           subTitleStyle: style,
         ),
         TitleAndSubTitle(
           title: 'Total'.hardcoded,
-          subTitle: cartProduct.valueLiquid.toString().toBrazilianNumber(),
+          subTitle: cartProduct.getTotalLiquid.toString().toBrazilianNumber(),
           subTitleIsPrice: true,
           titleStyle: style,
           subTitleStyle: style,

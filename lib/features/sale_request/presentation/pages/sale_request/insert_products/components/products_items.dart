@@ -58,6 +58,10 @@ class ProductsItems extends ConsumerWidget {
         quantity += cartProduct.Quantity;
       }
 
+      double value = product.Value > 0
+          ? product.Value
+          : product.RetailPracticedPrice;
+
       ref
           .read(
             pendingSaleRequestStateControllerProvider(enterpriseCode).notifier,
@@ -66,8 +70,8 @@ class ProductsItems extends ConsumerWidget {
             CartProductEntity(
               ProductPackingCode: product.ProductPackingCode,
               Quantity: quantity,
-              Value: product.Value,
-              TotalLiquid: quantity * product.Value,
+              Value: value,
+              TotalLiquid: quantity * value,
             ),
           );
 
