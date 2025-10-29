@@ -59,7 +59,7 @@ class _ProductsManagementPageState
             }
 
             requestTypeAllowChangePrice =
-                value![requestIndex].AllowAlterCostOrSalePrice;
+                value![requestIndex].AllowAlterCostOrSalePrice == true;
           });
         });
   }

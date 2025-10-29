@@ -12,8 +12,8 @@ class RequestTypeEntity extends Equatable {
   final String UseWholePriceString;
   final String UnitValueTypeString;
   final String TransferUnitValueTypeString;
-  final bool AllowDiscount;
-  final bool AllowAlterCostOrSalePrice;
+  final bool? AllowDiscount;
+  final bool? AllowAlterCostOrSalePrice;
 
   const RequestTypeEntity({
     required this.Code,

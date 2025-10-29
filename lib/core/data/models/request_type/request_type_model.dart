@@ -14,8 +14,8 @@ class RequestTypeModel extends Equatable {
   final String UnitValueTypeString;
   final int TransferUnitValueType;
   final String TransferUnitValueTypeString;
-  final bool AllowDiscount;
-  final bool AllowAlterCostOrSalePrice;
+  final bool? AllowDiscount;
+  final bool? AllowAlterCostOrSalePrice;
 
   const RequestTypeModel({
     required this.Code,
@@ -62,8 +62,8 @@ class RequestTypeModel extends Equatable {
     UnitValueTypeString: json['UnitValueTypeString'] as String,
     TransferUnitValueType: json['TransferUnitValueType'] as int,
     TransferUnitValueTypeString: json['TransferUnitValueTypeString'] as String,
-    AllowDiscount: json['AllowDiscount'] as bool,
-    AllowAlterCostOrSalePrice: json['AllowAlterCostOrSalePrice'] as bool,
+    AllowDiscount: json['AllowDiscount'] as bool?,
+    AllowAlterCostOrSalePrice: json['AllowAlterCostOrSalePrice'] as bool?,
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
