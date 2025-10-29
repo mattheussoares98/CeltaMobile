@@ -23,7 +23,11 @@ class SaleRequestPage extends ConsumerStatefulWidget {
 
 class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
   final searchProductsController = TextEditingController();
+  final quantityController = TextEditingController();
+  final quantityFocusNode = FocusNode();
   int currentIndex = 0;
+  int? selectedProductIndex;
+
   final appBarTitles = [
     'Inserir produtos'.hardcoded,
     'Cliente'.hardcoded,
@@ -34,6 +38,24 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
   void dispose() {
     super.dispose();
     searchProductsController.dispose();
+    quantityController.dispose();
+    quantityFocusNode.dispose();
+  }
+
+  void onTapProduct(int? index) {
+    if (index == selectedProductIndex) {
+      setState(() {
+        selectedProductIndex = null;
+      });
+    } else {
+      setState(() {
+        selectedProductIndex = index;
+      });
+      quantityController.text = '1';
+      Future.delayed(Duration(milliseconds: 100), () {
+        quantityFocusNode.requestFocus();
+      });
+    }
   }
 
   @override
@@ -45,6 +67,10 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
       InsertProductsPage(
         enterpriseCode: widget.enterpriseCode,
         searchProductsController: searchProductsController,
+        onTapProduct: onTapProduct,
+        selectedProductIndex: selectedProductIndex,
+        quantityController: quantityController,
+        quantityFocusNode: quantityFocusNode,
       ),
       CustomerPage(),
       CartPage(),
