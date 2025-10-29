@@ -6,6 +6,7 @@ import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../enterprise_manager/domain/entities/entities.dart';
+import '../../../enterprises/presentation/controllers/controllers.dart';
 
 class RequestsTypePage extends ConsumerWidget {
   final int enterpriseCode;
@@ -16,6 +17,11 @@ class RequestsTypePage extends ConsumerWidget {
     final requestsAsync = ref.watch(
       requestTypeStateControllerProvider(Modules.saleRequest),
     );
+    final selectedEnterprise = ref.watch(
+      selectedEnterpriseStateControllerProvider,
+    );
+
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -39,8 +45,12 @@ class RequestsTypePage extends ConsumerWidget {
               itemCount: requests?.length,
               itemBuilder: (_, index) {
                 final request = requests![index];
+
                 return Card(
                   clipBehavior: Clip.antiAlias,
+                  color: selectedEnterprise?.SaleRequestTypeCode == request.Code
+                      ? theme.primaryColorLight
+                      : null,
                   child: InkWell(
                     onTap: () {},
                     child: Padding(
@@ -48,6 +58,15 @@ class RequestsTypePage extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          if (selectedEnterprise?.SaleRequestTypeCode ==
+                              request.Code)
+                            Text(
+                              'Modelo padrão'.hardcoded,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: theme.primaryColorDark,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
                           TitleAndSubTitle(
                             title: 'Código'.hardcoded,
                             subTitle: request.PersonalizedCode,
