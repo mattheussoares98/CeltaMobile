@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,6 +23,19 @@ class SearchProducts extends ConsumerWidget {
         BsRoutine.saleRequest,
         Modules.saleRequest,
       ),
+    );
+
+    ref.listen(
+      searchProductsStateControllerProvider(
+        enterpriseCode,
+        BsRoutine.saleRequest,
+        Modules.saleRequest,
+      ),
+      (p, n) {
+        n.doOnSuccess(p, () {
+          searchProductsController.clear();
+        });
+      },
     );
 
     return DefaultSearchProducts(
