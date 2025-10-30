@@ -25,6 +25,8 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
   final searchProductsController = TextEditingController();
   final quantityController = TextEditingController();
   final quantityFocusNode = FocusNode();
+  final priceController = TextEditingController();
+  final priceFocusNode = FocusNode();
   int? selectedIndex;
 
   @override
@@ -33,6 +35,8 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
     searchProductsController.dispose();
     quantityController.dispose();
     quantityFocusNode.dispose();
+    priceController.dispose();
+    priceFocusNode.dispose();
   }
 
   void onTapProduct(int? index, ProductEntity product) {
@@ -78,6 +82,8 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
               onTapProduct: onTapProduct,
               quantityController: quantityController,
               quantityFocusNode: quantityFocusNode,
+              priceController: priceController,
+              priceFocusNode: priceFocusNode,
               removeSelectedIndex: () {
                 setState(() {
                   selectedIndex = null;

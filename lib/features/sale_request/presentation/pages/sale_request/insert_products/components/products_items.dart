@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/string_modifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +7,10 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
+import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
@@ -19,6 +18,8 @@ class ProductsItems extends ConsumerWidget {
   final void Function(int? index, ProductEntity product) onTapProduct;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
+  final TextEditingController priceController;
+  final FocusNode priceFocusNode;
   final VoidCallback removeSelectedIndex;
   final bool requestTypeAllowChangePrice;
   const ProductsItems({
@@ -30,15 +31,14 @@ class ProductsItems extends ConsumerWidget {
     required this.quantityFocusNode,
     required this.removeSelectedIndex,
     required this.requestTypeAllowChangePrice,
+    required this.priceController,
+    required this.priceFocusNode,
   });
 
   static final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     final searchAsync = ref.watch(
       searchProductsStateControllerProvider(
         enterpriseCode,
@@ -61,9 +61,7 @@ class ProductsItems extends ConsumerWidget {
         quantity += cartProduct.Quantity;
       }
 
-      double value = product.Value > 0
-          ? product.Value
-          : product.RetailPracticedPrice;
+      double value = priceController.text.toDouble() ?? product.getPrice;
 
       ref
           .read(
@@ -96,7 +94,7 @@ class ProductsItems extends ConsumerWidget {
           );
         },
         data: (products) {
-          return ListView.builder(
+          return ResponsiveListFlow(
             itemCount: products.length,
             itemBuilder: (_, index) {
               final product = products[index];
@@ -132,39 +130,42 @@ class ProductsItems extends ConsumerWidget {
                     ? Row(
                         children: [
                           Expanded(
-                            child: DefaultTextFormField(
-                              labelText: 'Quantidade'.hardcoded,
-                              hintText: 'Quantidade'.hardcoded,
-                              maxLength: 13,
-                              controller: quantityController,
-                              focusNode: quantityFocusNode,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              onFieldSubmitted: (_) {
-                                insertProduct(product, cartProduct);
-                              },
-                              validator: FormValidators.compose([
-                                NonEmptyValidator(),
-                                NumberValidator(allowDecimal: true),
-                              ]),
-                              onTap: () {
-                                if (quantityFocusNode.hasFocus) {
-                                  return;
-                                }
-
-                                quantityController.selection = TextSelection(
-                                  baseOffset: 0,
-                                  extentOffset: quantityController.text.length,
-                                );
-                              },
+                            flex: 65,
+                            child: Column(
+                              children: [
+                                QuantityField(
+                                  requestTypeAllowChangePrice:
+                                      requestTypeAllowChangePrice,
+                                  quantityFocusNode: quantityFocusNode,
+                                  quantityController: quantityController,
+                                  priceFocusNode: priceFocusNode,
+                                  insertProduct: () =>
+                                      insertProduct(product, cartProduct),
+                                ),
+                                if (requestTypeAllowChangePrice) ...[
+                                  gapH4,
+                                  PriceField(
+                                    priceController: priceController,
+                                    priceFocusNode: priceFocusNode,
+                                    insertProduct: () =>
+                                        insertProduct(product, cartProduct),
+                                  ),
+                                ],
+                              ],
                             ),
                           ),
-                          gapW8,
-                          PrimaryButton(
-                            text: 'Adicionar'.hardcoded,
-                            onPressed: () =>
-                                insertProduct(product, cartProduct),
-                            icon: Icon(isIOS ? CupertinoIcons.add : Icons.add),
+                          gapW4,
+                          Expanded(
+                            flex: 35,
+                            child: TotalPriceAndInsertButton(
+                              insertProduct: () =>
+                                  insertProduct(product, cartProduct),
+                              priceController: priceController,
+                              quantityController: quantityController,
+                              requestTypeAllowChangePrice:
+                                  requestTypeAllowChangePrice,
+                              product: product,
+                            ),
                           ),
                         ],
                       )
