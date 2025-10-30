@@ -9,4 +9,8 @@ abstract class IEnterpriseRepository {
     int? enterpriseOriginCode,
     int? requestTypeCode,
   });
+
+  Future<List<EnabledModulesByCnpjEntity>> getEnabledModulesByEnterpriseName(
+    String enterpriseName,
+  );
 }

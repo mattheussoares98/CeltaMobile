@@ -1,6 +1,6 @@
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/enterprises/enterprises.dart';
-import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/enterprise_manager/providers.dart';
+import 'package:celta_intelligence/core/providers/enterprise/enterprise.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,12 +9,12 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late EnterpriseManagerRepositorySpy mockRepository;
+  late EnterpriseRepositorySpy mockRepository;
   late String fakeEnterpriseName;
   late List<EnabledModulesByCnpjEntity> fakePermissions;
 
   setUp(() {
-    mockRepository = EnterpriseManagerRepositorySpy();
+    mockRepository = EnterpriseRepositorySpy();
     fakeEnterpriseName = faker.company.name();
     fakePermissions = [EntityFactory.makeEnabledModulesByCnpjEntity()];
   });
@@ -22,7 +22,7 @@ void main() {
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
       overrides: [
-        enterpriseManagerRepositoryProvider.overrideWithValue(mockRepository),
+        enterpriseRepositoryProvider.overrideWithValue(mockRepository),
       ],
     );
   }

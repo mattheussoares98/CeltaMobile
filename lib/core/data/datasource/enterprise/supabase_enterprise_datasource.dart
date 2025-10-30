@@ -22,4 +22,21 @@ class SupabaseEnterpriseDatasource implements ISupabaseEnterpriseDatasource {
 
     return SupabaseEnterpriseModel.fromJson(response);
   }
+
+  @override
+  Future<List<EnabledModulesByCnpjModel>> getEnabledModulesByEnterpriseName(
+    String enterpriseName,
+  ) async {
+    final response = await _supabase.rpc(
+      'get_enabled_modules_for_enterprise',
+      params: {'p_enterprise_name': enterpriseName},
+    );
+
+    if (response is List && response.isNotEmpty) {
+      return response
+          .map((e) => EnabledModulesByCnpjModel.fromJson(e))
+          .toList();
+    }
+    return [];
+  }
 }

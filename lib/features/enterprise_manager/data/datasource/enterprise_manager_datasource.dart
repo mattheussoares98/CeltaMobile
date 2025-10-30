@@ -64,21 +64,4 @@ class EnterpriseManagerDatasource implements IEnterpriseManagerDatasource {
       },
     );
   }
-
-  @override
-  Future<List<EnabledModulesByCnpjModel>> getEnabledModulesByEnterpriseName(
-    String enterpriseName,
-  ) async {
-    final response = await supabase.rpc(
-      'get_enabled_modules_for_enterprise',
-      params: {'p_enterprise_name': enterpriseName},
-    );
-
-    if (response is List && response.isNotEmpty) {
-      return response
-          .map((e) => EnabledModulesByCnpjModel.fromJson(e))
-          .toList();
-    }
-    return [];
-  }
 }

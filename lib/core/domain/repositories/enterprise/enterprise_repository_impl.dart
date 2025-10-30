@@ -32,4 +32,14 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
 
     return models.map((e) => e.toEntity()).toList();
   }
+
+  @override
+  Future<List<EnabledModulesByCnpjEntity>> getEnabledModulesByEnterpriseName(
+    String enterpriseName,
+  ) async {
+    final enterprises = await supabaseEnterpriseDatasource
+        .getEnabledModulesByEnterpriseName(enterpriseName);
+
+    return enterprises.map((e) => e.toEntity()).toList();
+  }
 }

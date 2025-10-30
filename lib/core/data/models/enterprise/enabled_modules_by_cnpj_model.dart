@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import '../../../../features/enterprise_manager/domain/entities/entities.dart';
+import '../../../domain/entities/entities.dart';
 
 class EnabledModulesByCnpjModel extends Equatable {
   final int idFromErp;

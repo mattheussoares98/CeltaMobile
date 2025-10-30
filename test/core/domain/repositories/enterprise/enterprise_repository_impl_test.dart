@@ -19,6 +19,7 @@ void main() {
   late String crossIdentity;
   late int? requestTypeCode;
   late int? enterpriseOriginCode;
+  late List<EnabledModulesByCnpjEntity> enabledModulesByCnpjEntities;
 
   void initSut() {
     sut = EnterpriseRepositoryImpl(
@@ -39,6 +40,11 @@ void main() {
     supabaseEnterpriseDatasource.mockGetEnterpriseByName(
       SupabaseEnterpriseModel.fromEntity(enterpriseEntities.first),
     );
+    supabaseEnterpriseDatasource.mockGetEnabledModulesByEnterpriseName(
+      enabledModulesByCnpjEntities
+          .map((e) => EnabledModulesByCnpjModel.fromEntity(e))
+          .toList(),
+    );
   }
 
   void initEntities() {
@@ -56,6 +62,11 @@ void main() {
     enterpriseOriginCode = faker.randomGenerator.boolean() == true
         ? faker.randomGenerator.integer(100)
         : null;
+    enabledModulesByCnpjEntities = [
+      EntityFactory.makeEnabledModulesByCnpjEntity(),
+      EntityFactory.makeEnabledModulesByCnpjEntity(),
+      EntityFactory.makeEnabledModulesByCnpjEntity(),
+    ];
   }
 
   setUp(() {
@@ -99,5 +110,21 @@ void main() {
         enterpriseOriginCode: any(named: "enterpriseOriginCode"),
       ),
     ).called(1);
+  });
+
+  group('Get enabled modules by enterprise name', () {
+    test('should behave correctly on success', () async {
+      final response = await sut.getEnabledModulesByEnterpriseName(
+        enterpriseName,
+      );
+
+      expect(response, enabledModulesByCnpjEntities);
+      verify(
+        () => supabaseEnterpriseDatasource.getEnabledModulesByEnterpriseName(
+          enterpriseName,
+        ),
+      );
+      verifyNoMoreInteractions(supabaseEnterpriseDatasource);
+    });
   });
 }
