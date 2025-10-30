@@ -15,7 +15,7 @@ import '../../../../controllers/controllers.dart';
 
 class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
-  final int? selectedProductIndex;
+  final int? selectedIndex;
   final void Function(int? index, ProductEntity product) onTapProduct;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
@@ -24,7 +24,7 @@ class ProductsItems extends ConsumerWidget {
   const ProductsItems({
     super.key,
     required this.enterpriseCode,
-    required this.selectedProductIndex,
+    required this.selectedIndex,
     required this.onTapProduct,
     required this.quantityController,
     required this.quantityFocusNode,
@@ -108,7 +108,7 @@ class ProductsItems extends ConsumerWidget {
                 product: product,
                 routine: BsRoutine.saleRequest,
                 showDropIcon: true,
-                isSelected: index == selectedProductIndex,
+                isSelected: index == selectedIndex,
                 onTap: () => onTapProduct(index, product),
                 cartItemSummary: cartProduct == null
                     ? null
@@ -128,7 +128,7 @@ class ProductsItems extends ConsumerWidget {
                             )
                             .removeProduct(cartProduct);
                       },
-                notClickableBottom: index == selectedProductIndex
+                notClickableBottom: index == selectedIndex
                     ? Row(
                         children: [
                           Expanded(

@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
 import 'sale_request.dart';
@@ -25,9 +24,6 @@ class SaleRequestPage extends ConsumerStatefulWidget {
 }
 
 class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
-  final searchProductsController = TextEditingController();
-  final quantityController = TextEditingController();
-  final quantityFocusNode = FocusNode();
   int currentIndex = 0;
   int? selectedProductIndex;
   bool requestTypeAllowChangePrice = false;
@@ -56,68 +52,16 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    searchProductsController.dispose();
-    quantityController.dispose();
-    quantityFocusNode.dispose();
-  }
-
   final appBarTitles = [
     'Inserir produtos'.hardcoded,
     'Cliente'.hardcoded,
     'Carrinho'.hardcoded,
   ];
-  void onTapProduct(int? index, ProductEntity product) {
-    if (product.Value == 0 &&
-        product.RetailPracticedPrice == 0 &&
-        !requestTypeAllowChangePrice) {
-      //TODO treat if the request type allow change the price or not
-      showSnackBarMessage(
-        context,
-        'Esse produto está com o preço zerado e o modelo não permite alterar o preço'
-            .hardcoded,
-        backgroundColor: Colors.red,
-      );
-    } else if (index == selectedProductIndex) {
-      setState(() {
-        selectedProductIndex = null;
-      });
-    } else {
-      setState(() {
-        selectedProductIndex = index;
-      });
-      quantityController.text = '1';
-      Future.delayed(Duration(milliseconds: 100), () {
-        quantityFocusNode.requestFocus();
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-
-    final pages = [
-      InsertProductsPage(
-        enterpriseCode: widget.enterpriseCode,
-        searchProductsController: searchProductsController,
-        onTapProduct: onTapProduct,
-        selectedProductIndex: selectedProductIndex,
-        quantityController: quantityController,
-        quantityFocusNode: quantityFocusNode,
-        removeSelectedIndex: () {
-          setState(() {
-            selectedProductIndex = null;
-          });
-        },
-        requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-      ),
-      CustomerPage(),
-      CartPage(),
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -142,7 +86,17 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
           ),
         ],
       ),
-      body: pages[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: [
+          InsertProductsPage(
+            enterpriseCode: widget.enterpriseCode,
+            requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+          ),
+          CustomerPage(),
+          CartPage(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => setState(() => currentIndex = index),
         currentIndex: currentIndex,

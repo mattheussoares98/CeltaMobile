@@ -1,51 +1,89 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import 'components/components.dart';
 
-class InsertProductsPage extends ConsumerWidget {
+class InsertProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final TextEditingController searchProductsController;
-  final TextEditingController quantityController;
-  final FocusNode quantityFocusNode;
-  final int? selectedProductIndex;
-  final void Function(int? index, ProductEntity product) onTapProduct;
-  final VoidCallback removeSelectedIndex;
   final bool requestTypeAllowChangePrice;
   const InsertProductsPage({
     super.key,
     required this.enterpriseCode,
-    required this.searchProductsController,
-    required this.quantityController,
-    required this.quantityFocusNode,
-    required this.selectedProductIndex,
-    required this.onTapProduct,
-    required this.removeSelectedIndex,
     required this.requestTypeAllowChangePrice,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _InsertProductsPageState();
+}
+
+class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
+  final searchProductsController = TextEditingController();
+  final quantityController = TextEditingController();
+  final quantityFocusNode = FocusNode();
+  int? selectedIndex;
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchProductsController.dispose();
+    quantityController.dispose();
+    quantityFocusNode.dispose();
+  }
+
+  void onTapProduct(int? index, ProductEntity product) {
+    if (product.Value == 0 &&
+        product.RetailPracticedPrice == 0 &&
+        !widget.requestTypeAllowChangePrice) {
+      showSnackBarMessage(
+        context,
+        'Esse produto está com o preço zerado e o modelo não permite alterar o preço'
+            .hardcoded,
+        backgroundColor: Colors.red,
+      );
+    } else if (index == selectedIndex || index == null) {
+      setState(() {
+        selectedIndex = null;
+      });
+    } else {
+      setState(() {
+        selectedIndex = index;
+      });
+      quantityController.text = '1';
+      Future.delayed(Duration(milliseconds: 100), () {
+        quantityFocusNode.requestFocus();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(Sizes.p8),
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       child: Column(
         children: [
           SearchProducts(
-            enterpriseCode: enterpriseCode,
+            enterpriseCode: widget.enterpriseCode,
             searchProductsController: searchProductsController,
           ),
           gapH8,
           Expanded(
             child: ProductsItems(
-              enterpriseCode: enterpriseCode,
-              selectedProductIndex: selectedProductIndex,
+              enterpriseCode: widget.enterpriseCode,
+              selectedIndex: selectedIndex,
               onTapProduct: onTapProduct,
               quantityController: quantityController,
               quantityFocusNode: quantityFocusNode,
-              removeSelectedIndex: removeSelectedIndex,
-              requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+              removeSelectedIndex: () {
+                setState(() {
+                  selectedIndex = null;
+                });
+              },
+              requestTypeAllowChangePrice: widget.requestTypeAllowChangePrice,
             ),
           ),
         ],
