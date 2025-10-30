@@ -1,11 +1,11 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
 import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/sale_request/domain/repository/repository.dart';
 import 'package:celta_intelligence/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/sale_request/providers.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -22,7 +22,7 @@ void main() {
   late PendingSaleRequestEntity fakeDraft;
   late CartProductEntity fakeProduct;
   late CustomerEntity fakeCustomer;
-  late int fakeEnterpriseCode;
+  late EnterpriseEntity enterpriseEntity;
 
   setUpAll(() {
     // Register fallback values
@@ -37,7 +37,7 @@ void main() {
     fakeDraft = EntityFactory.makePendingSaleRequestEntity();
     fakeProduct = EntityFactory.makeCartProductEntity();
     fakeCustomer = EntityFactory.makeCustomerEntity();
-    fakeEnterpriseCode = faker.randomGenerator.integer(100);
+    enterpriseEntity = EntityFactory.makeEnterpriseEntity();
   });
 
   ProviderContainer makeProviderContainer() {
@@ -48,6 +48,9 @@ void main() {
         ),
         // We must override the userSessionProvider as it's watched in the build method
         userSessionProvider.overrideWith(() => FakeUserSession(fakeSession)),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(enterpriseEntity),
+        ),
       ],
     );
   }
@@ -65,12 +68,12 @@ void main() {
 
         // ACT
         final result = await container.read(
-          pendingSaleRequestStateControllerProvider(fakeEnterpriseCode).future,
+          pendingSaleRequestStateControllerProvider.future,
         );
 
         // ASSERT
         expect(result, fakeDraft);
-        verify(() => mockRepository.load(fakeEnterpriseCode)).called(1);
+        verify(() => mockRepository.load(enterpriseEntity.Code!)).called(1);
       });
 
       test(
@@ -84,9 +87,7 @@ void main() {
 
           // ACT
           final result = await container.read(
-            pendingSaleRequestStateControllerProvider(
-              fakeEnterpriseCode,
-            ).future,
+            pendingSaleRequestStateControllerProvider.future,
           );
 
           // ASSERT
@@ -110,24 +111,18 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider(
-              fakeEnterpriseCode,
-            ).future,
+            pendingSaleRequestStateControllerProvider.future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider(fakeEnterpriseCode),
+            pendingSaleRequestStateControllerProvider,
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(
-                pendingSaleRequestStateControllerProvider(
-                  fakeEnterpriseCode,
-                ).notifier,
-              )
+              .read(pendingSaleRequestStateControllerProvider.notifier)
               .addProduct(fakeProduct);
 
           // ASSERT
@@ -139,7 +134,7 @@ void main() {
 
           // Verify that save was called with the new state
           final captured = verify(
-            () => mockRepository.save(captureAny(), fakeEnterpriseCode),
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
           ).captured;
           expect(captured.first, isA<PendingSaleRequestEntity>());
           expect(
@@ -169,24 +164,18 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider(
-              fakeEnterpriseCode,
-            ).future,
+            pendingSaleRequestStateControllerProvider.future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider(fakeEnterpriseCode),
+            pendingSaleRequestStateControllerProvider,
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(
-                pendingSaleRequestStateControllerProvider(
-                  fakeEnterpriseCode,
-                ).notifier,
-              )
+              .read(pendingSaleRequestStateControllerProvider.notifier)
               .removeProduct(fakeProduct);
 
           // ASSERT
@@ -194,7 +183,7 @@ void main() {
           expect(states.last.value?.cart.isEmpty, isTrue);
 
           final captured = verify(
-            () => mockRepository.save(captureAny(), fakeEnterpriseCode),
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
           ).captured;
           expect(captured.first.cart.isEmpty, isTrue);
         },
@@ -216,24 +205,18 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider(
-              fakeEnterpriseCode,
-            ).future,
+            pendingSaleRequestStateControllerProvider.future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider(fakeEnterpriseCode),
+            pendingSaleRequestStateControllerProvider,
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(
-                pendingSaleRequestStateControllerProvider(
-                  fakeEnterpriseCode,
-                ).notifier,
-              )
+              .read(pendingSaleRequestStateControllerProvider.notifier)
               .changeCustomer(fakeCustomer);
 
           // ASSERT
@@ -241,7 +224,7 @@ void main() {
           expect(states.last.value?.customer, fakeCustomer);
 
           final captured = verify(
-            () => mockRepository.save(captureAny(), fakeEnterpriseCode),
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
           ).captured;
           expect(captured.first.customer, fakeCustomer);
         },

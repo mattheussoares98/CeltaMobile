@@ -46,9 +46,7 @@ class ProductsItems extends ConsumerWidget {
       ),
     );
 
-    final pendingAsync = ref.watch(
-      pendingSaleRequestStateControllerProvider(enterpriseCode),
-    );
+    final pendingAsync = ref.watch(pendingSaleRequestStateControllerProvider);
 
     void insertProduct(ProductEntity product, CartProductEntity? cartProduct) {
       if (_formKey.currentState?.validate() != true) {
@@ -63,9 +61,7 @@ class ProductsItems extends ConsumerWidget {
       double value = priceController.text.toDouble() ?? product.getPrice;
 
       ref
-          .read(
-            pendingSaleRequestStateControllerProvider(enterpriseCode).notifier,
-          )
+          .read(pendingSaleRequestStateControllerProvider.notifier)
           .addProduct(
             CartProductEntity(
               ProductPackingCode: product.ProductPackingCode,
@@ -119,9 +115,8 @@ class ProductsItems extends ConsumerWidget {
                     : () {
                         ref
                             .read(
-                              pendingSaleRequestStateControllerProvider(
-                                enterpriseCode,
-                              ).notifier,
+                              pendingSaleRequestStateControllerProvider
+                                  .notifier,
                             )
                             .removeProduct(cartProduct);
                       },

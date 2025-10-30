@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
@@ -11,10 +12,11 @@ part 'pending_sale_request_state_controller.g.dart';
 class PendingSaleRequestStateController
     extends _$PendingSaleRequestStateController {
   @override
-  Future<PendingSaleRequestEntity> build(int enterpriseCode) async {
+  Future<PendingSaleRequestEntity> build() async {
     final repository = ref.watch(localPendingSaleRequestRepositoryProvider);
-
-    final localData = await repository.load(enterpriseCode);
+    final localData = await repository.load(
+      ref.watch(selectedEnterpriseStateControllerProvider)!.Code!,
+    );
 
     return localData ?? PendingSaleRequestEntity.empty();
   }
@@ -25,7 +27,10 @@ class PendingSaleRequestStateController
   Future<void> _updateAndSave(PendingSaleRequestEntity newState) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await _repository.save(newState, enterpriseCode);
+      await _repository.save(
+        newState,
+        ref.watch(selectedEnterpriseStateControllerProvider)!.Code!,
+      );
       return newState;
     });
   }
