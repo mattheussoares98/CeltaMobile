@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 
@@ -22,6 +23,23 @@ class EnterpriseItem extends ConsumerWidget {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     void changeSelectedEnterprise(EnterpriseEntity enterprise) async {
+      final moduleIsEnabled = await ref.read(
+        moduleIsEnabledControllerProvider(
+          Modules.buyRequest,
+          enterprise.CnpjNumber!,
+        ).future,
+      );
+
+      if (!moduleIsEnabled) {
+        showAlertDialog(
+          context: context,
+          title: 'Módulo desabilitado'.hardcoded,
+          content:
+              'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo',
+        );
+        return;
+      }
+
       final isSelected =
           pendingAsync.value?.selectedEnterprises?.contains(enterprise) ??
           false;
