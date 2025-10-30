@@ -14,6 +14,7 @@ part 'products_state_controller.g.dart';
 class ProductsStateController extends _$ProductsStateController {
   @override
   Future<List<ProductEntity>> build({
+    //TODO change param to draftKey
     required int enterpriseOriginCode,
     required int enterpriseDestinyCode,
     required int requestTypeCode,
