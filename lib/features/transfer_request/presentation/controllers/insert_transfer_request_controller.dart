@@ -13,7 +13,7 @@ part 'insert_transfer_request_controller.g.dart';
 class InsertTransferRequestController
     extends _$InsertTransferRequestController {
   @override
-  Future<void> build(DraftKey draftKey) async {}
+  FutureOr<void> build(DraftKey draftKey) {}
 
   Future<void> insert() async {
     state = const AsyncValue.loading();

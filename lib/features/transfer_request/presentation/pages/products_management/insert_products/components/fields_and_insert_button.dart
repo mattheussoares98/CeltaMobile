@@ -4,87 +4,67 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../core/validators/validators.dart';
-import '../../../../domain/entities/entities.dart';
-import '../../../controllers/controllers.dart';
-import '../../pages.dart';
+import '../../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../../constants/constants.dart';
+import '../../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../../core/validators/validators.dart';
+import '../../../../../domain/entities/entities.dart';
+import '../../../../controllers/controllers.dart';
 
-class FieldsAndInsertButton extends ConsumerStatefulWidget {
-  final InsertProductsPage insertProductsPage;
+class FieldsAndInsertButton extends ConsumerWidget {
   final ProductEntity product;
   final TransferRequestProductItemEntity? cartItem;
+  final TextEditingController quantityController;
+  final TextEditingController priceController;
+  final FocusNode quantityFocusNode;
+  final FocusNode priceFocusNode;
+  final DraftKey draftKey;
+  final void Function(int? index) changeSelectedIndex;
+  final bool requestTypeAllowChangePrice;
 
   const FieldsAndInsertButton({
     super.key,
     required this.product,
-    required this.insertProductsPage,
     required this.cartItem,
+    required this.quantityController,
+    required this.priceController,
+    required this.draftKey,
+    required this.changeSelectedIndex,
+    required this.quantityFocusNode,
+    required this.priceFocusNode,
+    required this.requestTypeAllowChangePrice,
   });
 
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _QuantityFieldAndInsertButtonState();
-}
-
-class _QuantityFieldAndInsertButtonState
-    extends ConsumerState<FieldsAndInsertButton> {
-  final formKey = GlobalKey<FormState>();
-  late final Listenable _mergedListenable;
+  static final formKey = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    super.initState();
-    _mergedListenable = Listenable.merge([
-      widget.insertProductsPage.quantityController,
-      widget.insertProductsPage.priceController,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mergedListenable = Listenable.merge([
+      quantityController,
+      priceController,
     ]);
-  }
+    void insertProduct() {
+      if (formKey.currentState?.validate() != true) {
+        return;
+      }
 
-  @override
-  void dispose() {
-    super.dispose();
-    formKey.currentState?.dispose();
-  }
+      final writtenQuantity = quantityController.text.toDouble() ?? 0;
+      final newQuantity = (cartItem?.quantity ?? 0) + writtenQuantity;
+      final value = priceController.text.toDouble() ?? product.Value;
 
-  void insertProduct() {
-    if (formKey.currentState?.validate() != true) {
-      return;
+      ref
+          .read(cartProductsStateControllerProvider(draftKey).notifier)
+          .addItem(
+            TransferRequestProductItemEntity(
+              product: product,
+              quantity: newQuantity,
+              value: value,
+            ),
+          );
+
+      changeSelectedIndex(null);
     }
 
-    final writtenQuantity =
-        widget.insertProductsPage.quantityController.text.toDouble() ?? 0;
-    final newQuantity = (widget.cartItem?.quantity ?? 0) + writtenQuantity;
-    final value =
-        widget.insertProductsPage.priceController.text.toDouble() ??
-        widget.product.Value;
-
-    ref
-        .read(
-          cartProductsStateControllerProvider(
-            DraftKey(
-              requestTypeCode: widget.insertProductsPage.requestTypeCode,
-              enterpriseOrigin: widget.insertProductsPage.enterpriseOriginCode,
-              enterpriseDestinyCode:
-                  widget.insertProductsPage.enterpriseDestinyCode,
-            ),
-          ).notifier,
-        )
-        .addItem(
-          TransferRequestProductItemEntity(
-            product: widget.product,
-            quantity: newQuantity,
-            value: value,
-          ),
-        );
-
-    widget.insertProductsPage.changeSelectedIndex(null);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
@@ -102,38 +82,27 @@ class _QuantityFieldAndInsertButtonState
                   FocusTraversalOrder(
                     order: NumericFocusOrder(1),
                     child: DefaultTextFormField(
-                      controller: widget.insertProductsPage.quantityController,
-                      focusNode: widget.insertProductsPage.quantityFocusNode,
+                      controller: quantityController,
+                      focusNode: quantityFocusNode,
                       labelText: 'Quantidade'.hardcoded,
                       hintText: 'Quantidade'.hardcoded,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       onFieldSubmitted: (_) {
-                        if (widget
-                            .insertProductsPage
-                            .requestTypeAllowChangePrice) {
-                          widget.insertProductsPage.priceFocusNode
-                              .requestFocus();
+                        if (requestTypeAllowChangePrice) {
+                          priceFocusNode.requestFocus();
                         } else {
                           insertProduct();
                         }
                       },
                       maxLength: 13,
                       onTap: () {
-                        if (widget
-                            .insertProductsPage
-                            .quantityFocusNode
-                            .hasFocus) {
+                        if (quantityFocusNode.hasFocus) {
                           return;
                         }
-                        widget.insertProductsPage.quantityController.selection =
-                            TextSelection(
-                              baseOffset: 0,
-                              extentOffset: widget
-                                  .insertProductsPage
-                                  .quantityController
-                                  .text
-                                  .length,
-                            );
+                        quantityController.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: quantityController.text.length,
+                        );
                       },
                       validator: FormValidators.compose([
                         NonEmptyValidator(),
@@ -147,33 +116,25 @@ class _QuantityFieldAndInsertButtonState
                       ), //TODO test in iOS
                     ),
                   ),
-                  if (widget.insertProductsPage.requestTypeAllowChangePrice)
+                  if (requestTypeAllowChangePrice)
                     FocusTraversalOrder(
                       order: NumericFocusOrder(2),
                       child: DefaultTextFormField(
-                        controller: widget.insertProductsPage.priceController,
-                        focusNode: widget.insertProductsPage.priceFocusNode,
+                        controller: priceController,
+                        focusNode: priceFocusNode,
                         labelText: 'Novo preço'.hardcoded,
                         hintText: 'Novo preço'.hardcoded,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         onFieldSubmitted: (_) => insertProduct(),
                         maxLength: 13,
                         onTap: () {
-                          if (widget
-                              .insertProductsPage
-                              .priceFocusNode
-                              .hasFocus) {
+                          if (priceFocusNode.hasFocus) {
                             return;
                           }
-                          widget.insertProductsPage.priceController.selection =
-                              TextSelection(
-                                baseOffset: 0,
-                                extentOffset: widget
-                                    .insertProductsPage
-                                    .priceController
-                                    .text
-                                    .length,
-                              );
+                          priceController.selection = TextSelection(
+                            baseOffset: 0,
+                            extentOffset: priceController.text.length,
+                          );
                         },
                         validator: FormValidators.compose([
                           NonEmptyValidator(),
@@ -198,16 +159,12 @@ class _QuantityFieldAndInsertButtonState
                   Center(
                     child: AnimatedBuilder(
                       // Listen to the merged controller
-                      animation: _mergedListenable,
+                      animation: mergedListenable,
                       builder: (context, child) {
                         final quantity =
-                            widget.insertProductsPage.quantityController.text
-                                .toDouble() ??
-                            0;
+                            quantityController.text.toDouble() ?? 0;
                         final price =
-                            widget.insertProductsPage.priceController.text
-                                .toDouble() ??
-                            widget.product.Value;
+                            priceController.text.toDouble() ?? product.Value;
                         final total = price * quantity;
 
                         return TitleAndSubTitle(

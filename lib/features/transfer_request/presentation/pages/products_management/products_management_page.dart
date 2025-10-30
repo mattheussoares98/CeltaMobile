@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
@@ -32,13 +31,6 @@ class ProductsManagementPage extends ConsumerStatefulWidget {
 class _ProductsManagementPageState
     extends ConsumerState<ProductsManagementPage> {
   int currentIndex = 0;
-  final searchValueController = TextEditingController();
-  final quantityController = TextEditingController();
-  final priceController = TextEditingController();
-  final searchValueFocusNode = FocusNode();
-  final priceFocusNode = FocusNode();
-  final quantityFocusNode = FocusNode();
-  int? selectedProductIndex;
   bool requestTypeAllowChangePrice = false;
 
   @override
@@ -65,70 +57,6 @@ class _ProductsManagementPageState
   }
 
   @override
-  void dispose() {
-    searchValueController.dispose();
-    quantityController.dispose();
-    priceController.dispose();
-    searchValueFocusNode.dispose();
-    priceFocusNode.dispose();
-    quantityFocusNode.dispose();
-    super.dispose();
-  }
-
-  void onTapProductItem({
-    required int index,
-    required ProductEntity product,
-    required List<RequestTypeEntity>? requests,
-    required TransferRequestProductItemEntity? transferRequestProductItem,
-  }) {
-    priceController.clear();
-
-    if (product.Value == 0 && !requestTypeAllowChangePrice) {
-      showSnackBarMessage(
-        context,
-        'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
-            .hardcoded,
-        backgroundColor: Colors.red,
-      );
-      setState(() {
-        selectedProductIndex = null;
-      });
-      return;
-    }
-
-    if (selectedProductIndex == index) {
-      setState(() {
-        selectedProductIndex = null;
-      });
-    } else {
-      setState(() => selectedProductIndex = index);
-      quantityController.text = '1';
-
-      if (product.Value > 0 || transferRequestProductItem?.value != null) {
-        priceController.text =
-            transferRequestProductItem?.value.toString() ??
-            product.Value.toString();
-      }
-      Future.delayed(Duration(milliseconds: 100), () {
-        quantityController.selection = TextSelection(
-          baseOffset: 0,
-          extentOffset: quantityController.text.length,
-        );
-        quantityFocusNode.requestFocus();
-      });
-    }
-  }
-
-  void removeProductItem(
-    TransferRequestProductItemEntity productItem,
-    DraftKey draftKey,
-  ) {
-    ref
-        .read(cartProductsStateControllerProvider(draftKey).notifier)
-        .removeItem(productItem);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final draftKey = DraftKey(
       requestTypeCode: widget.requestTypeCode,
@@ -142,24 +70,16 @@ class _ProductsManagementPageState
       insertTransferRequestControllerProvider(draftKey),
     );
 
+    ref.listen(insertTransferRequestControllerProvider(draftKey), (p, n) {
+      n.doOnSuccess(p, () {
+        showSnackBarMessage(context, 'Pedido salvo com sucesso'.hardcoded);
+      });
+    });
+
     final pages = [
       InsertProductsPage(
-        //TODO move these properties below to the own page
-        enterpriseOriginCode: widget.enterpriseOriginCode,
-        enterpriseDestinyCode: widget.enterpriseDestinyCode,
-        requestTypeCode: widget.requestTypeCode,
-        searchValueController: searchValueController,
-        searchValueFocusNode: searchValueFocusNode,
-        quantityController: quantityController,
-        quantityFocusNode: quantityFocusNode,
-        priceFocusNode: priceFocusNode,
-        priceController: priceController,
-        onTapProductItem: onTapProductItem,
-        removeProductItem: (item) => removeProductItem(item, draftKey),
+        draftKey: draftKey,
         requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-        selectedProductIndex: selectedProductIndex,
-        changeSelectedIndex: (index) =>
-            setState(() => selectedProductIndex = index),
       ),
       CartPage(
         draftKey: draftKey,
@@ -200,13 +120,12 @@ class _ProductsManagementPageState
               ),
             ],
           ),
-          body: pages[currentIndex],
+          body: IndexedStack(index: currentIndex, children: pages),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: currentIndex,
             onTap: (index) {
               setState(() {
                 currentIndex = index;
-                selectedProductIndex = null;
               });
             },
             items: [
