@@ -3,7 +3,6 @@ import 'package:celta_intelligence/core/presentation/controllers/enterprises/ent
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 

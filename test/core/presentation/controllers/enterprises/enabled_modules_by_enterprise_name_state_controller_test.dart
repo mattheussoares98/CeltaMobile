@@ -1,5 +1,5 @@
+import 'package:celta_intelligence/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/enterprise_manager/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

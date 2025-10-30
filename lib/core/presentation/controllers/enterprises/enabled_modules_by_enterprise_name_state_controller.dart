@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../domain/entities/entities.dart';
-import '../../providers.dart';
+import '../../../../features/enterprise_manager/domain/entities/entities.dart';
+import '../../../../features/enterprise_manager/providers.dart';
 
 part 'enabled_modules_by_enterprise_name_state_controller.g.dart';
 

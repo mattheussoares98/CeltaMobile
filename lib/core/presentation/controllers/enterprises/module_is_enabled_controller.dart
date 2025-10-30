@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../features/enterprise_manager/domain/entities/entities.dart';
-import '../../../../features/enterprise_manager/presentation/controllers/controllers.dart';
 import '../user_session/user_session.dart';
+import 'enterprises.dart';
 
 part 'module_is_enabled_controller.g.dart';
 
