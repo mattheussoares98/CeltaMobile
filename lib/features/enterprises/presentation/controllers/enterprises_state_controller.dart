@@ -6,7 +6,6 @@ import '../../../../core/presentation/controllers/user_session/user_session.dart
 import '../../../../core/providers/enterprise/enterprise.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
-import '../../../enterprise_manager/domain/entities/entities.dart';
 
 part 'enterprises_state_controller.g.dart';
 

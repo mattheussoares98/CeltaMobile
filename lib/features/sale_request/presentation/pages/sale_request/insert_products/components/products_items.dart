@@ -7,7 +7,6 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../../enterprise_manager/domain/entities/entities.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 import 'components.dart';

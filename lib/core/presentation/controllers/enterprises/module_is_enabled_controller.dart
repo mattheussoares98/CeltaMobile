@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../features/enterprise_manager/domain/entities/entities.dart';
+import '../../../domain/entities/entities.dart';
 import '../user_session/user_session.dart';
 import 'enterprises.dart';
 

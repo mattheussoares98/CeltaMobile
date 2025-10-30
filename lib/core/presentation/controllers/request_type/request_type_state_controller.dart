@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../domain/entities/entities.dart';
 import '../user_session/user_session.dart';
 import '../../../providers/request_type/request_type.dart';
-import '../../../../features/enterprise_manager/domain/entities/entities.dart';
 
 part 'request_type_state_controller.g.dart';
 

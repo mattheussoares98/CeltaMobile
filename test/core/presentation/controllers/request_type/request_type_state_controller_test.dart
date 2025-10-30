@@ -5,7 +5,6 @@ import 'package:celta_intelligence/core/presentation/controllers/request_type/re
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/core/providers/request_type/request_type.dart';
 import 'package:celta_intelligence/exceptions/app_exception.dart';
-import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

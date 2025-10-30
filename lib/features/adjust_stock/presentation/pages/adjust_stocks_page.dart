@@ -9,7 +9,6 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
-import '../../../enterprise_manager/domain/entities/entities.dart';
 import 'components/components.dart';
 
 class AdjustStocksPage extends ConsumerStatefulWidget {

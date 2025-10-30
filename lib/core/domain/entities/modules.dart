@@ -12,4 +12,3 @@ enum Modules {
   reports,
   searchProducts,
 }
-//TODO move to core path

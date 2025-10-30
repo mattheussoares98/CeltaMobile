@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../features/enterprise_manager/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
 
 class EnabledModulesByCnpjModel extends Equatable {

@@ -6,7 +6,6 @@ import 'package:riverpod/riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../routing/routing.dart';
-import '../../../../enterprise_manager/domain/entities/entities.dart';
 
 class DefaultModuleButton extends StatelessWidget {
   final EnterpriseEntity? selectedEnterprise;
