@@ -38,6 +38,7 @@ class QuantityBadge extends StatelessWidget {
         ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Icon(
             isIOS ? cupertinoIcon : materialIcon,
