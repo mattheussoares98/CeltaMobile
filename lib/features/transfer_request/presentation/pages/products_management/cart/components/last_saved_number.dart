@@ -2,8 +2,8 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
+import '../../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../../constants/constants.dart';
 
 class LastSavedNumber extends ConsumerWidget {
   final String number;
