@@ -119,61 +119,52 @@ class _ProductsManagementPageState
     }
   }
 
-  void removeProductItem(TransferRequestProductItemEntity productItem) {
+  void removeProductItem(
+    TransferRequestProductItemEntity productItem,
+    DraftKey draftKey,
+  ) {
     ref
-        .read(
-          cartProductsStateControllerProvider(
-            DraftKey(
-              requestTypeCode: widget.requestTypeCode,
-              enterpriseOrigin: widget.enterpriseOriginCode,
-              enterpriseDestinyCode: widget.enterpriseDestinyCode,
-            ),
-          ).notifier,
-        )
+        .read(cartProductsStateControllerProvider(draftKey).notifier)
         .removeItem(productItem);
   }
 
   @override
   Widget build(BuildContext context) {
+    final draftKey = DraftKey(
+      requestTypeCode: widget.requestTypeCode,
+      enterpriseOrigin: widget.enterpriseOriginCode,
+      enterpriseDestinyCode: widget.enterpriseDestinyCode,
+    );
     final pendingAsync = ref.watch(
-      cartProductsStateControllerProvider(
-        DraftKey(
-          requestTypeCode: widget.requestTypeCode,
-          enterpriseOrigin: widget.enterpriseOriginCode,
-          enterpriseDestinyCode: widget.enterpriseDestinyCode,
-        ),
-      ),
+      cartProductsStateControllerProvider(draftKey),
     );
     final insertAsync = ref.watch(
-      insertTransferRequestControllerProvider(
-        DraftKey(
-          requestTypeCode: widget.requestTypeCode,
-          enterpriseOrigin: widget.enterpriseOriginCode,
-          enterpriseDestinyCode: widget.enterpriseDestinyCode,
-        ),
-      ),
+      insertTransferRequestControllerProvider(draftKey),
     );
 
-    final insertProductsPage = InsertProductsPage(
-      enterpriseOriginCode: widget.enterpriseOriginCode,
-      enterpriseDestinyCode: widget.enterpriseDestinyCode,
-      requestTypeCode: widget.requestTypeCode,
-      searchValueController: searchValueController,
-      searchValueFocusNode: searchValueFocusNode,
-      quantityController: quantityController,
-      quantityFocusNode: quantityFocusNode,
-      priceFocusNode: priceFocusNode,
-      priceController: priceController,
-      onTapProductItem: onTapProductItem,
-      removeProductItem: removeProductItem,
-      requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-      selectedProductIndex: selectedProductIndex,
-      changeSelectedIndex: (index) =>
-          setState(() => selectedProductIndex = index),
-    );
     final pages = [
-      insertProductsPage,
-      CartPage(insertProductsPage: insertProductsPage),
+      InsertProductsPage(
+        //TODO move these properties below to the own page
+        enterpriseOriginCode: widget.enterpriseOriginCode,
+        enterpriseDestinyCode: widget.enterpriseDestinyCode,
+        requestTypeCode: widget.requestTypeCode,
+        searchValueController: searchValueController,
+        searchValueFocusNode: searchValueFocusNode,
+        quantityController: quantityController,
+        quantityFocusNode: quantityFocusNode,
+        priceFocusNode: priceFocusNode,
+        priceController: priceController,
+        onTapProductItem: onTapProductItem,
+        removeProductItem: (item) => removeProductItem(item, draftKey),
+        requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+        selectedProductIndex: selectedProductIndex,
+        changeSelectedIndex: (index) =>
+            setState(() => selectedProductIndex = index),
+      ),
+      CartPage(
+        draftKey: draftKey,
+        requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+      ),
     ];
     final appBarTitles = ['Inserir produtos'.hardcoded, 'Carrinho'.hardcoded];
 

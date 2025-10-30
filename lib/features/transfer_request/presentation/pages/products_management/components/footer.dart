@@ -6,23 +6,16 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
-import '../../pages.dart';
 
 class Footer extends ConsumerWidget {
-  final InsertProductsPage insertProductsPage;
-  const Footer({super.key, required this.insertProductsPage});
+  final DraftKey draftKey;
+  const Footer({super.key, required this.draftKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final pendingAsync = ref.watch(
-      cartProductsStateControllerProvider(
-        DraftKey(
-          requestTypeCode: insertProductsPage.requestTypeCode,
-          enterpriseOrigin: insertProductsPage.enterpriseOriginCode,
-          enterpriseDestinyCode: insertProductsPage.enterpriseDestinyCode,
-        ),
-      ),
+      cartProductsStateControllerProvider(draftKey),
     );
 
     final total =
@@ -63,14 +56,7 @@ class Footer extends ConsumerWidget {
                           ref
                               .read(
                                 insertTransferRequestControllerProvider(
-                                  DraftKey(
-                                    requestTypeCode:
-                                        insertProductsPage.requestTypeCode,
-                                    enterpriseOrigin:
-                                        insertProductsPage.enterpriseOriginCode,
-                                    enterpriseDestinyCode: insertProductsPage
-                                        .enterpriseDestinyCode,
-                                  ),
+                                  draftKey,
                                 ).notifier,
                               )
                               .insert();

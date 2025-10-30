@@ -6,11 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
-import '../../pages.dart';
 
 class ClearCartButton extends ConsumerWidget {
-  final InsertProductsPage insertProductsPage;
-  const ClearCartButton({super.key, required this.insertProductsPage});
+  final DraftKey draftKey;
+  const ClearCartButton({super.key, required this.draftKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,17 +32,7 @@ class ClearCartButton extends ConsumerWidget {
             cancelActionText: 'Cancelar'.hardcoded,
             onOkPressed: () {
               ref
-                  .read(
-                    cartProductsStateControllerProvider(
-                      DraftKey(
-                        requestTypeCode: insertProductsPage.requestTypeCode,
-                        enterpriseOrigin:
-                            insertProductsPage.enterpriseOriginCode,
-                        enterpriseDestinyCode:
-                            insertProductsPage.enterpriseDestinyCode,
-                      ),
-                    ).notifier,
-                  )
+                  .read(cartProductsStateControllerProvider(draftKey).notifier)
                   .clearLot();
             },
           );
