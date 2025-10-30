@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../routing/routing.dart';
+import '../../../enterprise_manager/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -40,7 +42,25 @@ class DestinyEnterprisesPage extends ConsumerWidget {
         data: (enterprises) {
           return EnterpriseItems(
             enterprises: enterprises,
-            onTap: (enterprise) {
+            onTap: (enterprise) async {
+              bool moduleIsEnabled = await ref.read(
+                moduleIsEnabledControllerProvider(
+                  Modules.transferRequest,
+                  enterprise.CnpjNumber!,
+                ).future,
+              );
+
+              if (!moduleIsEnabled) {
+                showAlertDialog(
+                  context: context,
+                  title: 'Módulo desabilitado'.hardcoded,
+                  content:
+                      'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo'
+                          .hardcoded,
+                );
+                return;
+              }
+
               context.goNamed(
                 Routes.transferRequestProductsManagement.name,
                 pathParameters: {
