@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
+import '../../../../controllers/controllers.dart';
 
 class CustomerItem extends ConsumerWidget {
   final CustomerEntity customer;
@@ -19,15 +20,24 @@ class CustomerItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
+    final selectedCustomer = ref
+        .watch(pendingSaleRequestStateControllerProvider)
+        .value
+        ?.customer;
+
+    void changeSelectedCustomer() {
+      ref
+          .read(pendingSaleRequestStateControllerProvider.notifier)
+          .changeCustomer(customer);
+    }
+
     return Card(
       margin: EdgeInsets.all(0),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
           InkWell(
-            onTap: () {
-              //TODO change selected customer in pending sale request
-            },
+            onTap: changeSelectedCustomer,
             child: Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: Row(
@@ -57,15 +67,16 @@ class CustomerItem extends ConsumerWidget {
                     ),
                   ),
                   RadioGroup<CustomerEntity>(
-                    groupValue: null,
-                    onChanged: (value) {},
-                    child: Radio(value: null),
+                    groupValue: selectedCustomer,
+                    onChanged: (_) => changeSelectedCustomer(),
+                    child: Radio(value: customer, toggleable: true),
                   ),
                 ],
               ),
             ),
           ),
-          if (customer.CustomerCovenants != null &&
+          if (customer == selectedCustomer &&
+              customer.CustomerCovenants != null &&
               customer.CustomerCovenants!.isNotEmpty) ...[
             Padding(
               padding: const EdgeInsets.all(Sizes.p8),
