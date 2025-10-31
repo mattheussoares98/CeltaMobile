@@ -73,6 +73,10 @@ class PendingSaleRequestStateController
   Future<void> changeCustomer(CustomerEntity newCustomer) async {
     if (state.value == null) return;
 
-    await _updateAndSave(state.value!.copyWith(customer: newCustomer));
+    if (newCustomer.Code == state.value!.customer?.Code) {
+      await _updateAndSave(state.value!.annulValues(customer: true));
+    } else {
+      await _updateAndSave(state.value!.copyWith(customer: newCustomer));
+    }
   }
 }

@@ -229,6 +229,38 @@ void main() {
           expect(captured.first.customer, fakeCustomer);
         },
       );
+      test('should annul customer when set the same customer', () async {
+        // ARRANGE
+        when(
+          () => mockRepository.load(any()),
+        ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+        when(() => mockRepository.save(any(), any())).thenAnswer((_) async {});
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        await container.read(pendingSaleRequestStateControllerProvider.future);
+
+        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        container.listen(
+          pendingSaleRequestStateControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .changeCustomer(fakeCustomer);
+        await container
+            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .changeCustomer(fakeCustomer);
+
+        expect(states.last.value?.customer, null);
+
+        final captured = verify(
+          () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+        ).captured;
+        expect(captured.last.customer, null);
+      });
     });
   });
 }
