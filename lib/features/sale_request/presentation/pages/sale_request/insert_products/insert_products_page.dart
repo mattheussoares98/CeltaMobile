@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../domain/entities/entities.dart';
 import 'components/components.dart';
 
 class InsertProductsPage extends ConsumerStatefulWidget {
@@ -39,7 +40,11 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
     priceFocusNode.dispose();
   }
 
-  void onTapProduct(int? index, ProductEntity product) {
+  void onTapProduct(
+    int? index,
+    ProductEntity product,
+    CartProductEntity? cartProduct,
+  ) {
     if (product.Value == 0 &&
         product.RetailPracticedPrice == 0 &&
         !widget.requestTypeAllowChangePrice) {
@@ -57,7 +62,18 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       setState(() {
         selectedIndex = index;
       });
+
+      final cartProductPrice = (cartProduct?.getValueLiquid ?? 0);
+      final productPrice = product.getPrice;
+      double? price = cartProductPrice == 0 ? productPrice : cartProductPrice;
+
+      if (price > 0) {
+        priceController.text = price.toString().replaceAll(RegExp(r'\.'), ',');
+      } else {
+        priceController.clear();
+      }
       quantityController.text = '1';
+
       Future.delayed(Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });

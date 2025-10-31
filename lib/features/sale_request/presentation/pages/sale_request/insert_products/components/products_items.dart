@@ -14,7 +14,12 @@ import 'components.dart';
 class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
   final int? selectedIndex;
-  final void Function(int? index, ProductEntity product) onTapProduct;
+  final void Function(
+    int? index,
+    ProductEntity product,
+    CartProductEntity? cartProduct,
+  )
+  onTapProduct;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final TextEditingController priceController;
@@ -102,7 +107,7 @@ class ProductsItems extends ConsumerWidget {
                 routine: BsRoutine.saleRequest,
                 showDropIcon: true,
                 isSelected: index == selectedIndex,
-                onTap: () => onTapProduct(index, product),
+                onTap: () => onTapProduct(index, product, cartProduct),
                 cartItemSummary: cartProduct == null
                     ? null
                     : CartItemSummary(
