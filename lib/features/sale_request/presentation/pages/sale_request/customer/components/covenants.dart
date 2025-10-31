@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../core/domain/entities/entities.dart';
+import '../../../../controllers/controllers.dart';
 import 'components.dart';
 
 class Covenants extends ConsumerWidget {
@@ -13,6 +15,15 @@ class Covenants extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final selectedCovenant = ref
+        .watch(pendingSaleRequestStateControllerProvider)
+        .value
+        ?.covenant;
+
+    void onTapCovenant() {
+      ref.read(pendingSaleRequestStateControllerProvider.notifier);
+    }
+
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: ListView.builder(
@@ -30,14 +41,44 @@ class Covenants extends ConsumerWidget {
                     color: theme.primaryColor,
                   ),
                 ),
-                gapH4,
               ],
             );
           }
           final covenant = customerItem.customer.CustomerCovenants![index - 1];
-          return TitleAndSubTitle(
-            title: covenant.covenant?.Name ?? '',
-            subTitle: covenant.covenant?.Code.toString(),
+          return Card(
+            clipBehavior: Clip.antiAlias,
+            margin: EdgeInsets.only(top: Sizes.p8),
+            child: InkWell(
+              onTap: onTapCovenant,
+              child: RadioGroup<CustomerCovenantEntity>(
+                groupValue: selectedCovenant,
+                onChanged: (_) => onTapCovenant(),
+                child: Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            TitleAndSubTitle(
+                              title: null,
+                              subTitle: covenant.covenant?.Name,
+                            ),
+                            if (covenant.LimitOfPurchase != null)
+                              TitleAndSubTitle(
+                                title: 'Limite'.hardcoded,
+                                subTitle: covenant.LimitOfPurchase,
+                                subTitleIsPrice: true,
+                              ),
+                          ],
+                        ),
+                      ),
+                      Radio(value: covenant, toggleable: true),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         },
       ),
