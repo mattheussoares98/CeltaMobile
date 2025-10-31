@@ -142,6 +142,11 @@ class ProductsItems extends ConsumerWidget {
                                         insertProduct(product, cartProduct),
                                   ),
                                 ],
+                                if (selectedRequest.AllowDiscount == true) ...[
+                                  gapH4,
+                                  Text('Esse permite dar desconto'),
+                                  //TODO create discount fields
+                                ],
                               ],
                             ),
                           ),
