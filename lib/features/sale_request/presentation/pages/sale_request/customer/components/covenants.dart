@@ -20,8 +20,10 @@ class Covenants extends ConsumerWidget {
         .value
         ?.covenant;
 
-    void onTapCovenant() {
-      ref.read(pendingSaleRequestStateControllerProvider.notifier);
+    void onTapCovenant(CustomerCovenantEntity covenant) {
+      ref
+          .read(pendingSaleRequestStateControllerProvider.notifier)
+          .changeCovenant(covenant);
     }
 
     return Padding(
@@ -49,10 +51,10 @@ class Covenants extends ConsumerWidget {
             clipBehavior: Clip.antiAlias,
             margin: EdgeInsets.only(top: Sizes.p8),
             child: InkWell(
-              onTap: onTapCovenant,
+              onTap: () => onTapCovenant(covenant),
               child: RadioGroup<CustomerCovenantEntity>(
                 groupValue: selectedCovenant,
-                onChanged: (_) => onTapCovenant(),
+                onChanged: (_) => onTapCovenant(covenant),
                 child: Padding(
                   padding: const EdgeInsets.all(Sizes.p8),
                   child: Row(
