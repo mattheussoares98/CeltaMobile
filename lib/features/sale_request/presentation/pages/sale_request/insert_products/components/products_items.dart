@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/string_modifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +6,6 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../../../core/validators/validators.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 import 'components.dart';
@@ -50,7 +48,35 @@ class ProductsItems extends ConsumerStatefulWidget {
 
 class _ProductsItemsState extends ConsumerState<ProductsItems> {
   final formKey = GlobalKey<FormState>();
-  PercentageOrValue discountType = PercentageOrValue.value;
+  PercentageOrValue? discountType;
+
+  void insertProduct(ProductEntity product, CartProductEntity? cartProduct) {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    double quantity = widget.quantityController.text.toDouble() ?? 0;
+    if (cartProduct != null) {
+      quantity += cartProduct.Quantity;
+    }
+
+    double value = widget.priceController.text.toDouble() ?? product.getPrice;
+
+    ref
+        .read(pendingSaleRequestStateControllerProvider.notifier)
+        .addProduct(
+          CartProductEntity(
+            ProductPackingCode: product.ProductPackingCode,
+            Quantity: quantity,
+            Value: value,
+            TotalLiquid: quantity * value,
+          ),
+        );
+
+    widget.quantityController.clear();
+    widget.removeSelectedIndex();
+    widget.discountController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,34 +89,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     );
 
     final pendingAsync = ref.watch(pendingSaleRequestStateControllerProvider);
-
-    void insertProduct(ProductEntity product, CartProductEntity? cartProduct) {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      }
-
-      double quantity = widget.quantityController.text.toDouble() ?? 0;
-      if (cartProduct != null) {
-        quantity += cartProduct.Quantity;
-      }
-
-      double value = widget.priceController.text.toDouble() ?? product.getPrice;
-
-      ref
-          .read(pendingSaleRequestStateControllerProvider.notifier)
-          .addProduct(
-            CartProductEntity(
-              ProductPackingCode: product.ProductPackingCode,
-              Quantity: quantity,
-              Value: value,
-              TotalLiquid: quantity * value,
-            ),
-          );
-
-      widget.quantityController.clear();
-      widget.removeSelectedIndex();
-      widget.discountController.clear();
-    }
 
     return Form(
       key: formKey,
@@ -172,78 +170,16 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                           ),
                           if (widget.selectedRequest.AllowDiscount == true) ...[
                             gapH4,
-                            //TODO create new components
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 65,
-                                  child: DefaultTextFormField(
-                                    hintText: 'Desconto'.hardcoded,
-                                    labelText: 'Desconto'.hardcoded,
-                                    controller: widget.discountController,
-                                    focusNode: widget.discountFocusNode,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    maxLength: 13,
-                                    onFieldSubmitted: (_) {
-                                      insertProduct(product, cartProduct);
-                                    },
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(
-                                          decimal: true, //TODO test in IOS
-                                        ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return null;
-                                      }
-
-                                      final numberValidator = NumberValidator(
-                                        allowDecimal: true,
-                                      );
-
-                                      final isValid = numberValidator.isValid(
-                                        value,
-                                      );
-
-                                      if (isValid) {
-                                        return null;
-                                      } else {
-                                        return numberValidator.errorMessage;
-                                      }
-                                    },
-                                  ),
-                                ),
-                                gapW8,
-                                Flexible(
-                                  flex: 35,
-                                  child:
-                                      DefaultSimpleDropDown<PercentageOrValue>(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            discountType = value!;
-                                          });
-                                        },
-                                        value: discountType,
-                                        hint: 'Tipo',
-                                        items: [
-                                          DropdownMenuItem(
-                                            value: PercentageOrValue.percentage,
-                                            child: Text(
-                                              PercentageOrValue
-                                                  .percentage
-                                                  .symbol,
-                                            ),
-                                          ),
-                                          DropdownMenuItem(
-                                            value: PercentageOrValue.value,
-                                            child: Text(
-                                              PercentageOrValue.value.symbol,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                ),
-                              ],
+                            DiscountFieldAndTypeDropdown(
+                              productsItems: widget,
+                              insertProduct: () =>
+                                  insertProduct(product, cartProduct),
+                              discountType: discountType,
+                              changeDiscountType: (value) {
+                                setState(() {
+                                  discountType = value;
+                                });
+                              },
                             ),
                           ],
                         ],
