@@ -10,11 +10,11 @@ import 'components/components.dart';
 
 class InsertProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final bool requestTypeAllowChangePrice;
+  final RequestTypeEntity selectedRequest;
   const InsertProductsPage({
     super.key,
     required this.enterpriseCode,
-    required this.requestTypeAllowChangePrice,
+    required this.selectedRequest,
   });
 
   @override
@@ -47,7 +47,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
   ) {
     if (product.Value == 0 &&
         product.RetailPracticedPrice == 0 &&
-        !widget.requestTypeAllowChangePrice) {
+        widget.selectedRequest.AllowAlterCostOrSalePrice != true) {
       showSnackBarMessage(
         context,
         'Esse produto está com o preço zerado e o modelo não permite alterar o preço'
@@ -105,7 +105,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                   selectedIndex = null;
                 });
               },
-              requestTypeAllowChangePrice: widget.requestTypeAllowChangePrice,
+              selectedRequest: widget.selectedRequest,
             ),
           ),
         ],

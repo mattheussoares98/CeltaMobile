@@ -10,14 +10,14 @@ class TotalPriceAndInsertButton extends StatelessWidget {
   final VoidCallback insertProduct;
   final TextEditingController priceController;
   final TextEditingController quantityController;
-  final bool requestTypeAllowChangePrice;
+  final RequestTypeEntity selectedRequest;
   final ProductEntity product;
   const TotalPriceAndInsertButton({
     super.key,
     required this.insertProduct,
     required this.priceController,
     required this.quantityController,
-    required this.requestTypeAllowChangePrice,
+    required this.selectedRequest,
     required this.product,
   });
 
@@ -33,7 +33,9 @@ class TotalPriceAndInsertButton extends StatelessWidget {
         final quantity = quantityController.text.toDouble() ?? 0;
 
         final totalPrice =
-            (requestTypeAllowChangePrice ? writtenPrice : productPrice) *
+            (selectedRequest.AllowAlterCostOrSalePrice == true
+                ? writtenPrice
+                : productPrice) *
             quantity;
         return Column(
           children: [

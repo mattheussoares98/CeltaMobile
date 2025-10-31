@@ -25,7 +25,7 @@ class ProductsItems extends ConsumerWidget {
   final TextEditingController priceController;
   final FocusNode priceFocusNode;
   final VoidCallback removeSelectedIndex;
-  final bool requestTypeAllowChangePrice;
+  final RequestTypeEntity selectedRequest;
   const ProductsItems({
     super.key,
     required this.enterpriseCode,
@@ -34,7 +34,7 @@ class ProductsItems extends ConsumerWidget {
     required this.quantityController,
     required this.quantityFocusNode,
     required this.removeSelectedIndex,
-    required this.requestTypeAllowChangePrice,
+    required this.selectedRequest,
     required this.priceController,
     required this.priceFocusNode,
   });
@@ -133,15 +133,15 @@ class ProductsItems extends ConsumerWidget {
                             child: Column(
                               children: [
                                 QuantityField(
-                                  requestTypeAllowChangePrice:
-                                      requestTypeAllowChangePrice,
+                                  selectedRequest: selectedRequest,
                                   quantityFocusNode: quantityFocusNode,
                                   quantityController: quantityController,
                                   priceFocusNode: priceFocusNode,
                                   insertProduct: () =>
                                       insertProduct(product, cartProduct),
                                 ),
-                                if (requestTypeAllowChangePrice) ...[
+                                if (selectedRequest.AllowAlterCostOrSalePrice ==
+                                    true) ...[
                                   gapH4,
                                   PriceField(
                                     priceController: priceController,
@@ -161,8 +161,7 @@ class ProductsItems extends ConsumerWidget {
                                   insertProduct(product, cartProduct),
                               priceController: priceController,
                               quantityController: quantityController,
-                              requestTypeAllowChangePrice:
-                                  requestTypeAllowChangePrice,
+                              selectedRequest: selectedRequest,
                               product: product,
                             ),
                           ),

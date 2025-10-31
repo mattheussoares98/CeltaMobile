@@ -2,17 +2,18 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/validators/validators.dart';
 
 class QuantityField extends StatelessWidget {
-  final bool requestTypeAllowChangePrice;
+  final RequestTypeEntity selectedRequest;
   final FocusNode quantityFocusNode;
   final TextEditingController quantityController;
   final FocusNode priceFocusNode;
   final VoidCallback insertProduct;
   const QuantityField({
     super.key,
-    required this.requestTypeAllowChangePrice,
+    required this.selectedRequest,
     required this.quantityFocusNode,
     required this.quantityController,
     required this.priceFocusNode,
@@ -29,7 +30,7 @@ class QuantityField extends StatelessWidget {
       focusNode: quantityFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
-        if (requestTypeAllowChangePrice) {
+        if (selectedRequest.AllowAlterCostOrSalePrice == true) {
           priceFocusNode.requestFocus();
         } else {
           insertProduct();

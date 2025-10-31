@@ -28,31 +28,6 @@ class SaleRequestPage extends ConsumerStatefulWidget {
 class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
   int currentIndex = 0;
   int? selectedProductIndex;
-  bool requestTypeAllowChangePrice = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        ref
-            .read(
-              requestTypeStateControllerProvider(Modules.saleRequest).future,
-            )
-            .then((requests) {
-              int? requestIndex = requests?.indexWhere(
-                (e) => e.Code == widget.requestCode,
-              );
-              if (requestIndex != null && requestIndex != -1) {
-                setState(() {
-                  requestTypeAllowChangePrice =
-                      requests![requestIndex].AllowAlterCostOrSalePrice == true;
-                });
-              }
-            });
-      }
-    });
-  }
 
   final appBarTitles = [
     'Inserir produtos'.hardcoded,
@@ -66,6 +41,9 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     final pendingAsync = ref.watch(pendingSaleRequestStateControllerProvider);
+    final requestsState = ref.watch(
+      requestTypeStateControllerProvider(Modules.saleRequest),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -95,16 +73,30 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
           ),
         ],
       ),
-      body: IndexedStack(
-        index: currentIndex,
-        children: [
-          InsertProductsPage(
-            enterpriseCode: widget.enterpriseCode,
-            requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-          ),
-          CustomerPage(),
-          CartPage(),
-        ],
+      body: AsyncValueWidget(
+        value: requestsState,
+        tryAgain: () {
+          ref.invalidate(
+            requestTypeStateControllerProvider(Modules.saleRequest),
+          );
+        },
+        data: (requests) {
+          final selectedRequest = requests!.firstWhere(
+            (e) => e.Code == widget.requestCode,
+          );
+
+          return IndexedStack(
+            index: currentIndex,
+            children: [
+              InsertProductsPage(
+                enterpriseCode: widget.enterpriseCode,
+                selectedRequest: selectedRequest,
+              ),
+              CustomerPage(),
+              CartPage(),
+            ],
+          );
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => setState(() => currentIndex = index),
