@@ -131,7 +131,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                     ? Column(
                         children: [
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
                                 flex: 65,
