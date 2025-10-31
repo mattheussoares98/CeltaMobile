@@ -1,5 +1,5 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/string_modifier.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,11 +7,12 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../../../core/validators/validators.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 import 'components.dart';
 
-class ProductsItems extends ConsumerWidget {
+class ProductsItems extends ConsumerStatefulWidget {
   final int enterpriseCode;
   final int? selectedIndex;
   final void Function(
@@ -21,9 +22,11 @@ class ProductsItems extends ConsumerWidget {
   )
   onTapProduct;
   final TextEditingController quantityController;
-  final FocusNode quantityFocusNode;
   final TextEditingController priceController;
+  final TextEditingController discountController;
+  final FocusNode quantityFocusNode;
   final FocusNode priceFocusNode;
+  final FocusNode discountFocusNode;
   final VoidCallback removeSelectedIndex;
   final RequestTypeEntity selectedRequest;
   const ProductsItems({
@@ -32,20 +35,28 @@ class ProductsItems extends ConsumerWidget {
     required this.selectedIndex,
     required this.onTapProduct,
     required this.quantityController,
+    required this.priceController,
+    required this.discountController,
     required this.quantityFocusNode,
+    required this.priceFocusNode,
+    required this.discountFocusNode,
     required this.removeSelectedIndex,
     required this.selectedRequest,
-    required this.priceController,
-    required this.priceFocusNode,
   });
 
-  static final _formKey = GlobalKey<FormState>();
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
+}
+
+class _ProductsItemsState extends ConsumerState<ProductsItems> {
+  final formKey = GlobalKey<FormState>();
+  PercentageOrValue discountType = PercentageOrValue.value;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final searchAsync = ref.watch(
       searchProductsStateControllerProvider(
-        enterpriseCode,
+        widget.enterpriseCode,
         BsRoutine.saleRequest,
         Modules.saleRequest,
       ),
@@ -54,16 +65,16 @@ class ProductsItems extends ConsumerWidget {
     final pendingAsync = ref.watch(pendingSaleRequestStateControllerProvider);
 
     void insertProduct(ProductEntity product, CartProductEntity? cartProduct) {
-      if (_formKey.currentState?.validate() != true) {
+      if (formKey.currentState?.validate() != true) {
         return;
       }
 
-      double quantity = quantityController.text.toDouble() ?? 0;
+      double quantity = widget.quantityController.text.toDouble() ?? 0;
       if (cartProduct != null) {
         quantity += cartProduct.Quantity;
       }
 
-      double value = priceController.text.toDouble() ?? product.getPrice;
+      double value = widget.priceController.text.toDouble() ?? product.getPrice;
 
       ref
           .read(pendingSaleRequestStateControllerProvider.notifier)
@@ -76,12 +87,13 @@ class ProductsItems extends ConsumerWidget {
             ),
           );
 
-      quantityController.clear();
-      removeSelectedIndex();
+      widget.quantityController.clear();
+      widget.removeSelectedIndex();
+      widget.discountController.clear();
     }
 
     return Form(
-      key: _formKey,
+      key: formKey,
       child: AsyncValueWidget(
         value: searchAsync,
         tryAgain: null,
@@ -98,8 +110,8 @@ class ProductsItems extends ConsumerWidget {
                 product: product,
                 routine: BsRoutine.saleRequest,
                 showDropIcon: true,
-                isSelected: index == selectedIndex,
-                onTap: () => onTapProduct(index, product, cartProduct),
+                isSelected: index == widget.selectedIndex,
+                onTap: () => widget.onTapProduct(index, product, cartProduct),
                 cartItemSummary: cartProduct == null
                     ? null
                     : CartItemSummary(
@@ -117,51 +129,135 @@ class ProductsItems extends ConsumerWidget {
                             )
                             .removeProduct(cartProduct);
                       },
-                notClickableBottom: index == selectedIndex
-                    ? Row(
+                notClickableBottom: index == widget.selectedIndex
+                    ? Column(
                         children: [
-                          Expanded(
-                            flex: 65,
-                            child: Column(
-                              children: [
-                                QuantityField(
-                                  selectedRequest: selectedRequest,
-                                  quantityFocusNode: quantityFocusNode,
-                                  quantityController: quantityController,
-                                  priceFocusNode: priceFocusNode,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 65,
+                                child: Column(
+                                  children: [
+                                    QuantityField(
+                                      selectedRequest: widget.selectedRequest,
+                                      quantityFocusNode:
+                                          widget.quantityFocusNode,
+                                      quantityController:
+                                          widget.quantityController,
+                                      priceFocusNode: widget.priceFocusNode,
+                                      insertProduct: () =>
+                                          insertProduct(product, cartProduct),
+                                    ),
+                                    if (widget
+                                            .selectedRequest
+                                            .AllowAlterCostOrSalePrice ==
+                                        true) ...[
+                                      gapH4,
+                                      PriceField(
+                                        priceController: widget.priceController,
+                                        priceFocusNode: widget.priceFocusNode,
+                                        discountFocusNode:
+                                            widget.discountFocusNode,
+                                        selectedRequest: widget.selectedRequest,
+                                        insertProduct: () =>
+                                            insertProduct(product, cartProduct),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                              gapW4,
+                              Expanded(
+                                flex: 35,
+                                child: TotalPriceAndInsertButton(
                                   insertProduct: () =>
                                       insertProduct(product, cartProduct),
+                                  priceController: widget.priceController,
+                                  quantityController: widget.quantityController,
+                                  discountController: widget.discountController,
+                                  selectedRequest: widget.selectedRequest,
+                                  product: product,
                                 ),
-                                if (selectedRequest.AllowAlterCostOrSalePrice ==
-                                    true) ...[
-                                  gapH4,
-                                  PriceField(
-                                    priceController: priceController,
-                                    priceFocusNode: priceFocusNode,
-                                    insertProduct: () =>
-                                        insertProduct(product, cartProduct),
+                              ),
+                            ],
+                          ),
+                          if (widget.selectedRequest.AllowDiscount == true) ...[
+                            gapH4,
+                            //TODO create new components
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 65,
+                                  child: DefaultTextFormField(
+                                    hintText: 'Desconto'.hardcoded,
+                                    labelText: 'Desconto'.hardcoded,
+                                    controller: widget.discountController,
+                                    focusNode: widget.discountFocusNode,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    maxLength: 13,
+                                    onFieldSubmitted: (_) {
+                                      insertProduct(product, cartProduct);
+                                    },
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                          decimal: true, //TODO test in IOS
+                                        ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return null;
+                                      }
+
+                                      final numberValidator = NumberValidator(
+                                        allowDecimal: true,
+                                      );
+
+                                      final isValid = numberValidator.isValid(
+                                        value,
+                                      );
+
+                                      if (isValid) {
+                                        return null;
+                                      } else {
+                                        return numberValidator.errorMessage;
+                                      }
+                                    },
                                   ),
-                                ],
-                                if (selectedRequest.AllowDiscount == true) ...[
-                                  gapH4,
-                                  Text('Esse permite dar desconto'),
-                                  //TODO create discount fields
-                                ],
+                                ),
+                                gapW8,
+                                Flexible(
+                                  flex: 35,
+                                  child:
+                                      DefaultSimpleDropDown<PercentageOrValue>(
+                                        onChanged: (value) {
+                                          setState(() {
+                                            discountType = value!;
+                                          });
+                                        },
+                                        value: discountType,
+                                        hint: 'Tipo',
+                                        items: [
+                                          DropdownMenuItem(
+                                            value: PercentageOrValue.percentage,
+                                            child: Text(
+                                              PercentageOrValue
+                                                  .percentage
+                                                  .symbol,
+                                            ),
+                                          ),
+                                          DropdownMenuItem(
+                                            value: PercentageOrValue.value,
+                                            child: Text(
+                                              PercentageOrValue.value.symbol,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                ),
                               ],
                             ),
-                          ),
-                          gapW4,
-                          Expanded(
-                            flex: 35,
-                            child: TotalPriceAndInsertButton(
-                              insertProduct: () =>
-                                  insertProduct(product, cartProduct),
-                              priceController: priceController,
-                              quantityController: quantityController,
-                              selectedRequest: selectedRequest,
-                              product: product,
-                            ),
-                          ),
+                          ],
                         ],
                       )
                     : null,

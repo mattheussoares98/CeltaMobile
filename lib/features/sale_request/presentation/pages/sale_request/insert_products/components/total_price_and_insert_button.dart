@@ -10,6 +10,7 @@ class TotalPriceAndInsertButton extends StatelessWidget {
   final VoidCallback insertProduct;
   final TextEditingController priceController;
   final TextEditingController quantityController;
+  final TextEditingController discountController;
   final RequestTypeEntity selectedRequest;
   final ProductEntity product;
   const TotalPriceAndInsertButton({
@@ -17,6 +18,7 @@ class TotalPriceAndInsertButton extends StatelessWidget {
     required this.insertProduct,
     required this.priceController,
     required this.quantityController,
+    required this.discountController,
     required this.selectedRequest,
     required this.product,
   });
@@ -26,8 +28,13 @@ class TotalPriceAndInsertButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     return AnimatedBuilder(
-      animation: Listenable.merge([priceController, quantityController]),
+      animation: Listenable.merge([
+        priceController,
+        quantityController,
+        discountController,
+      ]),
       builder: (_, _) {
+        //TODO calculate correctly
         final productPrice = product.getPrice;
         final writtenPrice = priceController.text.toDouble() ?? 0;
         final quantity = quantityController.text.toDouble() ?? 0;
