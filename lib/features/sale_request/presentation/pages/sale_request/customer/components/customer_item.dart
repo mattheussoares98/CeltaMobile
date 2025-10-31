@@ -6,6 +6,7 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
+import 'components.dart';
 
 class CustomerItem extends ConsumerWidget {
   final CustomerEntity customer;
@@ -25,55 +26,14 @@ class CustomerItem extends ConsumerWidget {
         .value
         ?.customer;
 
-    void changeSelectedCustomer() {
-      ref
-          .read(pendingSaleRequestStateControllerProvider.notifier)
-          .changeCustomer(customer);
-    }
-
     return Card(
       margin: EdgeInsets.all(0),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          InkWell(
-            onTap: changeSelectedCustomer,
-            child: Padding(
-              padding: const EdgeInsets.all(Sizes.p8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleAndSubTitle(title: null, subTitle: customer.Name!),
-                        if (!isConsumerCustomer) ...[
-                          if (customer.Code != null)
-                            TitleAndSubTitle(
-                              title: 'Código'.hardcoded,
-                              subTitle: customer.Code.toString(),
-                            ),
-                          if (customer.PersonalizedCode != null)
-                            TitleAndSubTitle(
-                              title: 'Código personalizado'.hardcoded,
-                              subTitle: customer.PersonalizedCode,
-                            ),
-                          TitleAndSubTitle(
-                            title: 'CPF/CNPJ'.hardcoded,
-                            subTitle: customer.CpfCnpjNumber,
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  RadioGroup<CustomerEntity>(
-                    groupValue: selectedCustomer,
-                    onChanged: (_) => changeSelectedCustomer(),
-                    child: Radio(value: customer, toggleable: true),
-                  ),
-                ],
-              ),
-            ),
+          CustomerInfoAndRadio(
+            customerItem: this,
+            selectedCustomer: selectedCustomer,
           ),
           if (customer == selectedCustomer &&
               customer.CustomerCovenants != null &&
