@@ -90,8 +90,8 @@ void main() {
 
         // ACT
         await container
-            .read(customersStateControllerProvider(false).notifier)
-            .loadCustomer(searchValue);
+            .read(customersStateControllerProvider.notifier)
+            .loadCustomer(searchValue, false);
 
         // ASSERT
         verify(
@@ -120,8 +120,8 @@ void main() {
 
         // ACT: Note the `true` in the provider call
         await container
-            .read(customersStateControllerProvider(true).notifier)
-            .loadCustomer(searchValue);
+            .read(customersStateControllerProvider.notifier)
+            .loadCustomer(searchValue, true);
 
         // ASSERT
         verify(
@@ -150,8 +150,8 @@ void main() {
 
         // ACT
         await container
-            .read(customersStateControllerProvider(false).notifier)
-            .loadCustomer(searchValue);
+            .read(customersStateControllerProvider.notifier)
+            .loadCustomer(searchValue, false);
 
         // ASSERT
         verify(
@@ -180,8 +180,8 @@ void main() {
 
         // ACT
         await container
-            .read(customersStateControllerProvider(false).notifier)
-            .loadCustomer(searchValue);
+            .read(customersStateControllerProvider.notifier)
+            .loadCustomer(searchValue, false);
 
         // ASSERT
         verify(
@@ -206,14 +206,14 @@ void main() {
 
       final states = <AsyncValue<List<CustomerEntity>>>[];
       container.listen(
-        customersStateControllerProvider(false),
+        customersStateControllerProvider,
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(customersStateControllerProvider(false).notifier)
-          .loadCustomer('Test');
+          .read(customersStateControllerProvider.notifier)
+          .loadCustomer('Test', false);
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

@@ -14,7 +14,7 @@ part 'customers_state_controller.g.dart';
 @riverpod
 class CustomersStateController extends _$CustomersStateController {
   @override
-  FutureOr<List<CustomerEntity>> build(bool searchByPersonalizedCode) {
+  FutureOr<List<CustomerEntity>> build() {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -32,7 +32,7 @@ class CustomersStateController extends _$CustomersStateController {
     return [];
   }
 
-  Future<void> loadCustomer(String value) async {
+  Future<void> loadCustomer(String value, bool searchByPersonalizedCode) async {
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
