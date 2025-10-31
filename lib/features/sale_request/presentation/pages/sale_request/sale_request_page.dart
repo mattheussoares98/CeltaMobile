@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,7 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
+import '../../controllers/controllers.dart';
 import 'sale_request.dart';
 
 class SaleRequestPage extends ConsumerStatefulWidget {
@@ -63,6 +65,8 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
+    final pendingAsync = ref.watch(pendingSaleRequestStateControllerProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text(appBarTitles[currentIndex])),
@@ -74,15 +78,20 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
         ),
         actions: [
           QuantityBadge(
-            quantity: null, //TODO fix
+            quantity: pendingAsync.value?.cart.entries.length,
             materialIcon: Icons.shopping_cart,
             cupertinoIcon: CupertinoIcons.shopping_cart,
             isSelected: false,
             offset: const Offset(3, -3),
             subtitle: Text(
-              'R\$ 0,00'.hardcoded,
+              (pendingAsync.value?.cart.entries.fold<double>(0.0, (p, e) {
+                        return p + e.value.TotalLiquid;
+                      }).toString() ??
+                      '0')
+                  .toBrazilianNumber()
+                  .addBrazilianCoin(),
               style: TextStyle(fontSize: 9),
-            ), //TODO fix
+            ),
           ),
         ],
       ),
@@ -114,7 +123,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
           BottomNavigationBarItem(
             label: 'Carrinho'.hardcoded,
             icon: QuantityBadge(
-              quantity: null, //TODO fix
+              quantity: pendingAsync.value?.cart.entries.length,
               materialIcon: Icons.shopping_cart,
               cupertinoIcon: CupertinoIcons.shopping_cart,
               isSelected: currentIndex == 2,
