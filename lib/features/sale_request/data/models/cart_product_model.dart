@@ -7,12 +7,12 @@ class CartProductModel extends Equatable {
   final double Quantity;
   final double Value;
   final double TotalLiquid;
-  final String? IncrementPercentageOrValue;
+  final PercentageOrValue? IncrementPercentageOrValue;
   final double? IncrementValue;
-  final String? DiscountPercentageOrValue;
+  final PercentageOrValue? DiscountPercentageOrValue;
   final double? DiscountValue;
   final String? DiscountDescription;
-  final String? AutomaticDiscountPercentageOrValue;
+  final PercentageOrValue? AutomaticDiscountPercentageOrValue;
   final double? AutomaticDiscountValue;
   final DateTime? ExpectedDeliveryDate;
   final String? Observations;
@@ -55,13 +55,25 @@ class CartProductModel extends Equatable {
     Quantity: json["Quantity"],
     Value: json["Value"],
     TotalLiquid: json["TotalLiquid"],
-    IncrementPercentageOrValue: json["IncrementPercentageOrValue"],
+    IncrementPercentageOrValue: json["IncrementPercentageOrValue"] == null
+        ? null
+        : PercentageOrValue.values.firstWhere(
+            (e) => e.symbol == json["IncrementPercentageOrValue"],
+          ),
     IncrementValue: json["IncrementValue"],
-    DiscountPercentageOrValue: json["DiscountPercentageOrValue"],
+    DiscountPercentageOrValue: json["DiscountPercentageOrValue"] == null
+        ? null
+        : PercentageOrValue.values.firstWhere(
+            (e) => e.symbol == json["DiscountPercentageOrValue"],
+          ),
     DiscountValue: json["DiscountValue"],
     DiscountDescription: json["DiscountDescription"],
     AutomaticDiscountPercentageOrValue:
-        json["AutomaticDiscountPercentageOrValue"],
+        json["AutomaticDiscountPercentageOrValue"] == null
+        ? null
+        : PercentageOrValue.values.firstWhere(
+            (e) => e.symbol == json["AutomaticDiscountPercentageOrValue"],
+          ),
     AutomaticDiscountValue: json["AutomaticDiscountValue"],
     ExpectedDeliveryDate: json["ExpectedDeliveryDate"] == null
         ? null
@@ -74,12 +86,13 @@ class CartProductModel extends Equatable {
     'Quantity': Quantity,
     'Value': Value,
     'TotalLiquid': TotalLiquid,
-    'IncrementPercentageOrValue': IncrementPercentageOrValue,
+    'IncrementPercentageOrValue': IncrementPercentageOrValue?.symbol,
     'IncrementValue': IncrementValue,
-    'DiscountPercentageOrValue': DiscountPercentageOrValue,
+    'DiscountPercentageOrValue': DiscountPercentageOrValue?.symbol,
     'DiscountValue': DiscountValue,
     'DiscountDescription': DiscountDescription,
-    'AutomaticDiscountPercentageOrValue': AutomaticDiscountPercentageOrValue,
+    'AutomaticDiscountPercentageOrValue':
+        AutomaticDiscountPercentageOrValue?.symbol,
     'AutomaticDiscountValue': AutomaticDiscountValue,
     'ExpectedDeliveryDate': ExpectedDeliveryDate?.toIso8601String(),
     'Observations': Observations,

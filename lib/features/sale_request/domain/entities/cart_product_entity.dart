@@ -1,16 +1,18 @@
 import 'package:equatable/equatable.dart';
 
+import 'entities.dart';
+
 class CartProductEntity extends Equatable {
   final int ProductPackingCode;
   final double Quantity;
   final double Value;
   final double TotalLiquid;
-  final String? IncrementPercentageOrValue; //"R$"" ou "%"
+  final PercentageOrValue? IncrementPercentageOrValue; //"R$"" ou "%"
   final double? IncrementValue;
-  final String? DiscountPercentageOrValue; //"R$"" ou "%"
+  final PercentageOrValue? DiscountPercentageOrValue; //"R$"" ou "%"
   final double? DiscountValue;
   final String? DiscountDescription;
-  final String? AutomaticDiscountPercentageOrValue; //"R$"" ou "%"
+  final PercentageOrValue? AutomaticDiscountPercentageOrValue; //"R$"" ou "%"
   final double? AutomaticDiscountValue;
   final DateTime? ExpectedDeliveryDate;
   final String? Observations;
@@ -53,12 +55,12 @@ class CartProductEntity extends Equatable {
     double? Quantity,
     double? Value,
     double? TotalLiquid,
-    String? IncrementPercentageOrValue,
+    PercentageOrValue? IncrementPercentageOrValue,
     double? IncrementValue,
-    String? DiscountPercentageOrValue,
+    PercentageOrValue? DiscountPercentageOrValue,
     double? DiscountValue,
     String? DiscountDescription,
-    String? AutomaticDiscountPercentageOrValue,
+    PercentageOrValue? AutomaticDiscountPercentageOrValue,
     double? AutomaticDiscountValue,
     DateTime? ExpectedDeliveryDate,
     String? Observations,

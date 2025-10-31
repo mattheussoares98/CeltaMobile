@@ -619,18 +619,21 @@ class EntityFactory {
 
   static CartProductEntity makeCartProductEntity() {
     final bool isPercentage = faker.randomGenerator.boolean();
+    final percentageOrValue = isPercentage
+        ? PercentageOrValue.percentage
+        : PercentageOrValue.value;
 
     return CartProductEntity(
       ProductPackingCode: faker.randomGenerator.integer(100),
       Quantity: faker.randomGenerator.decimal(),
       Value: faker.randomGenerator.decimal(),
       TotalLiquid: faker.randomGenerator.decimal(),
-      IncrementPercentageOrValue: isPercentage ? "%" : "R\$",
+      IncrementPercentageOrValue: percentageOrValue,
       IncrementValue: faker.randomGenerator.decimal(),
-      DiscountPercentageOrValue: isPercentage ? "%" : "R\$",
+      DiscountPercentageOrValue: percentageOrValue,
       DiscountValue: faker.randomGenerator.decimal(),
       DiscountDescription: faker.lorem.word(),
-      AutomaticDiscountPercentageOrValue: isPercentage ? "%" : "R\$",
+      AutomaticDiscountPercentageOrValue: percentageOrValue,
       AutomaticDiscountValue: faker.randomGenerator.decimal(),
       ExpectedDeliveryDate: faker.date.dateTime(),
       Observations: faker.lorem.word(),
