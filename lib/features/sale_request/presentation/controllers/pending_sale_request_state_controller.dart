@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,11 +10,25 @@ import '../../providers.dart';
 
 part 'pending_sale_request_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class PendingSaleRequestStateController
     extends _$PendingSaleRequestStateController {
   @override
   Future<PendingSaleRequestEntity> build() async {
+    Timer? timer;
+    final link = ref.keepAlive();
+    ref.onCancel(() {
+      timer = Timer(const Duration(seconds: 20), () {
+        link.close();
+      });
+    });
+    ref.onResume(() {
+      timer?.cancel();
+    });
+    ref.onDispose(() {
+      timer?.cancel();
+    });
+
     final repository = ref.watch(localPendingSaleRequestRepositoryProvider);
     final localData = await repository.load(
       ref.watch(selectedEnterpriseStateControllerProvider)!.Code!,
