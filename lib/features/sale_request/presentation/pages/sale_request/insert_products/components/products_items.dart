@@ -84,15 +84,7 @@ class ProductsItems extends ConsumerWidget {
       key: _formKey,
       child: AsyncValueWidget(
         value: searchAsync,
-        tryAgain: () {
-          ref.invalidate(
-            searchProductsStateControllerProvider(
-              enterpriseCode,
-              BsRoutine.saleRequest,
-              Modules.saleRequest,
-            ),
-          );
-        },
+        tryAgain: null,
         data: (products) {
           return ResponsiveListFlow(
             itemCount: products.length,
