@@ -102,6 +102,18 @@ class RequestsTypePage extends ConsumerWidget {
                                       : theme.colorScheme.error,
                                 ),
                           ),
+                          TitleAndSubTitle(
+                            title: null,
+                            subTitle: request.AllowDiscount == true
+                                ? 'Permite desconto manual'.hardcoded
+                                : 'Não permite desconto manual'.hardcoded,
+                            subTitleStyle: theme.textTheme.titleMedium
+                                ?.copyWith(
+                                  color: request.AllowDiscount == true
+                                      ? theme.primaryColor
+                                      : theme.colorScheme.error,
+                                ),
+                          ),
                         ],
                       ),
                     ),
