@@ -114,8 +114,10 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                             ? theme.disabledColor
                             : null,
                       )
-                    else if (widget.isLoading)
-                      LoadingWidget(),
+                    else if (widget.isLoading) ...[
+                      LoadingWidget(padding: 0, size: Sizes.p16),
+                      gapW12,
+                    ],
                     if (theme.platform == TargetPlatform.iOS ||
                         theme.platform == TargetPlatform.android)
                       _DefaultIcon(
