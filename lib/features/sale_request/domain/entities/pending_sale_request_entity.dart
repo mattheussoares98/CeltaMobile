@@ -24,4 +24,10 @@ class PendingSaleRequestEntity extends Equatable {
     cart: cart ?? this.cart,
     customer: customer ?? this.customer,
   );
+
+  PendingSaleRequestEntity annulValues({bool? cart, bool? customer}) =>
+      PendingSaleRequestEntity(
+        cart: cart == true ? {} : this.cart,
+        customer: customer == true ? null : this.customer,
+      );
 }
