@@ -140,12 +140,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                                 child: Column(
                                   children: [
                                     QuantityField(
-                                      selectedRequest: widget.selectedRequest,
-                                      quantityFocusNode:
-                                          widget.quantityFocusNode,
-                                      quantityController:
-                                          widget.quantityController,
-                                      priceFocusNode: widget.priceFocusNode,
+                                      productsItems: widget,
                                       insertProduct: () =>
                                           insertProduct(product, cartProduct),
                                     ),
@@ -155,11 +150,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                                         true) ...[
                                       gapH4,
                                       PriceField(
-                                        priceController: widget.priceController,
-                                        priceFocusNode: widget.priceFocusNode,
-                                        discountFocusNode:
-                                            widget.discountFocusNode,
-                                        selectedRequest: widget.selectedRequest,
+                                        productsItems: widget,
                                         insertProduct: () =>
                                             insertProduct(product, cartProduct),
                                       ),
@@ -173,10 +164,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                                 child: TotalPriceAndInsertButton(
                                   insertProduct: () =>
                                       insertProduct(product, cartProduct),
-                                  priceController: widget.priceController,
-                                  quantityController: widget.quantityController,
-                                  discountController: widget.discountController,
-                                  selectedRequest: widget.selectedRequest,
+                                  productsItems: widget,
                                   product: product,
                                 ),
                               ),

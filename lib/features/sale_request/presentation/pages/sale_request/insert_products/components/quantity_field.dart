@@ -2,22 +2,16 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/validators/validators.dart';
+import 'components.dart';
 
 class QuantityField extends StatelessWidget {
-  final RequestTypeEntity selectedRequest;
-  final FocusNode quantityFocusNode;
-  final TextEditingController quantityController;
-  final FocusNode priceFocusNode;
   final VoidCallback insertProduct;
+  final ProductsItems productsItems;
   const QuantityField({
     super.key,
-    required this.selectedRequest,
-    required this.quantityFocusNode,
-    required this.quantityController,
-    required this.priceFocusNode,
     required this.insertProduct,
+    required this.productsItems,
   });
 
   @override
@@ -26,12 +20,12 @@ class QuantityField extends StatelessWidget {
       labelText: 'Quantidade'.hardcoded,
       hintText: 'Quantidade'.hardcoded,
       maxLength: 13,
-      controller: quantityController,
-      focusNode: quantityFocusNode,
+      controller: productsItems.quantityController,
+      focusNode: productsItems.quantityFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
-        if (selectedRequest.AllowAlterCostOrSalePrice == true) {
-          priceFocusNode.requestFocus();
+        if (productsItems.selectedRequest.AllowAlterCostOrSalePrice == true) {
+          productsItems.priceFocusNode.requestFocus();
         } else {
           insertProduct();
         }

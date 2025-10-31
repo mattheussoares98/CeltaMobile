@@ -5,22 +5,17 @@ import 'package:flutter/material.dart';
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
+import 'components.dart';
 
 class TotalPriceAndInsertButton extends StatelessWidget {
   final VoidCallback insertProduct;
-  final TextEditingController priceController;
-  final TextEditingController quantityController;
-  final TextEditingController discountController;
-  final RequestTypeEntity selectedRequest;
   final ProductEntity product;
+  final ProductsItems productsItems;
   const TotalPriceAndInsertButton({
     super.key,
     required this.insertProduct,
-    required this.priceController,
-    required this.quantityController,
-    required this.discountController,
-    required this.selectedRequest,
     required this.product,
+    required this.productsItems,
   });
 
   @override
@@ -29,18 +24,18 @@ class TotalPriceAndInsertButton extends StatelessWidget {
 
     return AnimatedBuilder(
       animation: Listenable.merge([
-        priceController,
-        quantityController,
-        discountController,
+        productsItems.priceController,
+        productsItems.quantityController,
+        productsItems.discountController,
       ]),
       builder: (_, _) {
         //TODO calculate correctly
         final productPrice = product.getPrice;
-        final writtenPrice = priceController.text.toDouble() ?? 0;
-        final quantity = quantityController.text.toDouble() ?? 0;
+        final writtenPrice = productsItems.priceController.text.toDouble() ?? 0;
+        final quantity = productsItems.quantityController.text.toDouble() ?? 0;
 
         final totalPrice =
-            (selectedRequest.AllowAlterCostOrSalePrice == true
+            (productsItems.selectedRequest.AllowAlterCostOrSalePrice == true
                 ? writtenPrice
                 : productPrice) *
             quantity;
