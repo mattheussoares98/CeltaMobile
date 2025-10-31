@@ -74,13 +74,13 @@ class PendingSaleRequestStateController
     if (state.value == null) return;
 
     if (newCustomer.Code == state.value!.customer?.Code) {
-      await _updateAndSave(state.value!.annulValues(customer: true));
+      await _updateAndSave(
+        state.value!.annulValues(customer: true, covenant: true),
+      );
     } else {
       await _updateAndSave(
         state.value!
-            .annulValues(
-              covenant: true,
-            ) //TODO add test to check if is working correctly
+            .annulValues(covenant: true)
             .copyWith(customer: newCustomer),
       );
     }

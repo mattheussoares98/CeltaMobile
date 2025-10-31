@@ -229,38 +229,97 @@ void main() {
           expect(captured.first.customer, fakeCustomer);
         },
       );
-      test('should annul customer when set the same customer', () async {
-        // ARRANGE
-        when(
-          () => mockRepository.load(any()),
-        ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
-        when(() => mockRepository.save(any(), any())).thenAnswer((_) async {});
+      test(
+        'should annul customer and covenant when set the same customer',
+        () async {
+          // ARRANGE
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          when(
+            () => mockRepository.save(any(), any()),
+          ).thenAnswer((_) async {});
 
-        final container = makeProviderContainer();
-        addTearDown(container.dispose);
-        await container.read(pendingSaleRequestStateControllerProvider.future);
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(
+            pendingSaleRequestStateControllerProvider.future,
+          );
 
-        final states = <AsyncValue<PendingSaleRequestEntity>>[];
-        container.listen(
-          pendingSaleRequestStateControllerProvider,
-          (_, next) => states.add(next),
-        );
+          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          container.listen(
+            pendingSaleRequestStateControllerProvider,
+            (_, next) => states.add(next),
+          );
 
-        // ACT
-        await container
-            .read(pendingSaleRequestStateControllerProvider.notifier)
-            .changeCustomer(fakeCustomer);
-        await container
-            .read(pendingSaleRequestStateControllerProvider.notifier)
-            .changeCustomer(fakeCustomer);
+          // ACT
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .changeCustomer(fakeCustomer);
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .changeCovenant(fakeCustomer.CustomerCovenants!.first);
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .changeCustomer(fakeCustomer);
 
-        expect(states.last.value?.customer, null);
+          expect(states.last.value?.customer, null);
+          expect(states.last.value?.covenant, null);
 
-        final captured = verify(
-          () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
-        ).captured;
-        expect(captured.last.customer, null);
-      });
+          final captured = verify(
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+          ).captured;
+          expect(captured.last.customer, null);
+          expect(captured.last.covenant, null);
+        },
+      );
+
+      test(
+        'should remove selected covenant when change the selected customer',
+        () async {
+          // ARRANGE
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          when(
+            () => mockRepository.save(any(), any()),
+          ).thenAnswer((_) async {});
+
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(
+            pendingSaleRequestStateControllerProvider.future,
+          );
+
+          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          container.listen(
+            pendingSaleRequestStateControllerProvider,
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .changeCustomer(fakeCustomer);
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .changeCovenant(fakeCustomer.CustomerCovenants!.first);
+
+          final newCustomer = EntityFactory.makeCustomerEntity();
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .changeCustomer(newCustomer);
+
+          expect(states.last.value?.customer, newCustomer);
+          expect(states.last.value?.covenant, null);
+
+          final captured = verify(
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+          ).captured;
+          expect(captured.last.customer, newCustomer);
+          expect(captured.last.covenant, null);
+        },
+      );
     });
 
     group('changeCovenant', () {
