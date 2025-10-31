@@ -44,7 +44,10 @@ class DiscountFieldAndTypeDropdown extends StatelessWidget {
                 return null;
               }
 
-              final numberValidator = NumberValidator(allowDecimal: true);
+              final numberValidator = NumberValidator(
+                allowDecimal: true,
+                needsBeGreaterThanZero: false,
+              );
 
               final isValid = numberValidator.isValid(value);
 
@@ -63,6 +66,15 @@ class DiscountFieldAndTypeDropdown extends StatelessWidget {
             onChanged: changeDiscountType,
             value: discountType,
             hint: 'Tipo',
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) {
+              if (discountType == null &&
+                  productsItems.discountController.text.isNotEmpty) {
+                return 'Campo obrigatório'.hardcoded;
+              }
+
+              return null;
+            },
             items: [
               DropdownMenuItem(
                 value: PercentageOrValue.percentage,
