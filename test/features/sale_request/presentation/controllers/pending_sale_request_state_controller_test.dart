@@ -262,5 +262,128 @@ void main() {
         expect(captured.last.customer, null);
       });
     });
+
+    group('changeCovenant', () {
+      test('should do nothing if customer is null', () async {
+        // ARRANGE
+        // 1. Initial state has no customer
+        final initialDraft = PendingSaleRequestEntity.empty();
+        when(
+          () => mockRepository.load(any()),
+        ).thenAnswer((_) async => initialDraft);
+        when(() => mockRepository.save(any(), any())).thenAnswer((_) async {});
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        await container.read(pendingSaleRequestStateControllerProvider.future);
+
+        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        container.listen(
+          pendingSaleRequestStateControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .changeCovenant(fakeCustomer.CustomerCovenants!.first);
+
+        // ASSERT
+        // The state should not change, no loading, no data
+        expect(states, isEmpty);
+        // The save method should never be called
+        verifyNever(() => mockRepository.save(any(), any()));
+      });
+
+      test(
+        'should set covenant to null if the same covenant is passed',
+        () async {
+          // ARRANGE
+          // 1. Initial state already has the covenant selected
+          final initialDraft = PendingSaleRequestEntity.empty().copyWith(
+            customer: fakeCustomer,
+            covenant: fakeCustomer.CustomerCovenants!.first,
+          );
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => initialDraft);
+          when(() => mockRepository.save(any(), any())).thenAnswer((_) async {
+            await Future.delayed(Duration.zero);
+          });
+
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(
+            pendingSaleRequestStateControllerProvider.future,
+          );
+
+          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          container.listen(
+            pendingSaleRequestStateControllerProvider,
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .changeCovenant(
+                fakeCustomer.CustomerCovenants!.first,
+              ); // Pass in the *same* covenant
+
+          // ASSERT
+          expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+          // The final state should have a null covenant
+          expect(states.last.value?.covenant, isNull);
+
+          // Verify the save call
+          final captured = verify(
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+          ).captured;
+          expect(captured.first.covenant, isNull);
+        },
+      );
+
+      test('should change the covenant if a new one is selected', () async {
+        // ARRANGE
+        // 1. Initial state has the first covenant
+        final initialDraft = PendingSaleRequestEntity.empty().copyWith(
+          customer: fakeCustomer,
+          covenant: fakeCustomer.CustomerCovenants!.first,
+        );
+        when(
+          () => mockRepository.load(any()),
+        ).thenAnswer((_) async => initialDraft);
+        when(() => mockRepository.save(any(), any())).thenAnswer((_) async {
+          await Future.delayed(Duration.zero);
+        });
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        await container.read(pendingSaleRequestStateControllerProvider.future);
+
+        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        container.listen(
+          pendingSaleRequestStateControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .changeCovenant(
+              fakeCustomer.CustomerCovenants![1],
+            ); // Pass in the *new* covenant
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        // The final state should have the new covenant
+        expect(states.last.value?.covenant, fakeCustomer.CustomerCovenants![1]);
+
+        final captured = verify(
+          () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+        ).captured;
+        expect(captured.first.covenant, fakeCustomer.CustomerCovenants![1]);
+      });
+    });
   });
 }

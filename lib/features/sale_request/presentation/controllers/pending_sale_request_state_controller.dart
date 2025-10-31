@@ -76,7 +76,23 @@ class PendingSaleRequestStateController
     if (newCustomer.Code == state.value!.customer?.Code) {
       await _updateAndSave(state.value!.annulValues(customer: true));
     } else {
-      await _updateAndSave(state.value!.copyWith(customer: newCustomer));
+      await _updateAndSave(
+        state.value!
+            .annulValues(
+              covenant: true,
+            ) //TODO add test to check if is working correctly
+            .copyWith(customer: newCustomer),
+      );
+    }
+  }
+
+  Future<void> changeCovenant(CustomerCovenantEntity newCovenant) async {
+    if (state.value?.customer == null) return;
+
+    if (newCovenant.covenant?.Code == state.value!.covenant?.covenant?.Code) {
+      await _updateAndSave(state.value!.annulValues(covenant: true));
+    } else {
+      await _updateAndSave(state.value!.copyWith(covenant: newCovenant));
     }
   }
 }
