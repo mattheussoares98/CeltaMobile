@@ -614,6 +614,7 @@ class EntityFactory {
       faker.randomGenerator.integer(100): EntityFactory.makeCartProductEntity(),
     },
     customer: makeCustomerEntity(),
+    covenant: makeCustomerCovenantEntity(),
   );
 
   static CartProductEntity makeCartProductEntity() {

@@ -45,6 +45,7 @@ void main() {
         thirdProduct.ProductPackingCode: thirdProduct,
       },
       customer: EntityFactory.makeCustomerEntity(),
+      covenant: EntityFactory.makeCustomerCovenantEntity(),
     );
   }
 

@@ -7,8 +7,13 @@ import 'models.dart';
 class PendingSaleRequestModel extends Equatable {
   final Map<ProductPackingCode, CartProductModel> cart;
   final CustomerModel? customer;
+  final CustomerCovenantModel? covenant;
 
-  const PendingSaleRequestModel({required this.cart, required this.customer});
+  const PendingSaleRequestModel({
+    required this.cart,
+    required this.customer,
+    required this.covenant,
+  });
 
   @override
   List<Object?> get props => [cart, customer];
@@ -19,6 +24,7 @@ class PendingSaleRequestModel extends Equatable {
           MapEntry(packingCode.toString(), cartProductModel.toJson()),
     ),
     'customer': customer?.toJson(),
+    'covenant': covenant?.toJson(),
   };
 
   factory PendingSaleRequestModel.fromJson(Map json) => PendingSaleRequestModel(
@@ -31,6 +37,9 @@ class PendingSaleRequestModel extends Equatable {
     customer: json['customer'] == null
         ? null
         : CustomerModel.fromJson(json['customer'] as Map),
+    covenant: json['covenant'] == null
+        ? null
+        : CustomerCovenantModel.fromJson(json['covenant'] as Map),
   );
 
   PendingSaleRequestEntity toEntity() => PendingSaleRequestEntity(
@@ -39,6 +48,7 @@ class PendingSaleRequestModel extends Equatable {
           MapEntry(packingCode, cartProductModel.toEntity()),
     ),
     customer: customer?.toEntity(),
+    covenant: covenant?.toEntity(),
   );
 
   static PendingSaleRequestModel fromEntity(PendingSaleRequestEntity entity) =>
@@ -52,5 +62,8 @@ class PendingSaleRequestModel extends Equatable {
         customer: entity.customer == null
             ? null
             : CustomerModel.fromEntity(entity.customer!),
+        covenant: entity.covenant == null
+            ? null
+            : CustomerCovenantModel.fromEntity(entity.covenant!),
       );
 }
