@@ -8,7 +8,6 @@ import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
-import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import 'components/components.dart';
 
 class AdjustStocksPage extends ConsumerStatefulWidget {
@@ -86,6 +85,31 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     ]);
   }
 
+  void onChangeJustification(TransferJustificationEntity? value) async {
+    setState(() {
+      selectedJustification = value;
+    });
+
+    final stocks = await ref.read(
+      stockTypeStateControllerProvider(widget.enterpriseCode).future,
+    );
+
+    if (value?.CodigoInterno_TipoEstoque != null) {
+      setState(() {
+        selectedStockType = stocks.firstWhere(
+          (e) =>
+              e.CodigoInterno_TipoEstoque == value?.CodigoInterno_TipoEstoque,
+        );
+      });
+    }
+  }
+
+  void onChangeStock(StockTypeEntity? value) {
+    setState(() {
+      selectedStockType = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(
@@ -114,7 +138,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
         });
       });
     });
-
     return Stack(
       children: [
         Scaffold(
@@ -127,73 +150,14 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
               padding: const EdgeInsets.all(Sizes.p4),
               child: Column(
                 children: [
-                  Consumer(
-                    builder: (_, ref, _) {
-                      final stocksAsync = ref.watch(
-                        stockTypeStateControllerProvider(widget.enterpriseCode),
-                      );
-
-                      final justificationsAsync = ref.watch(
-                        transferJustificationStateControllerProvider(
-                          widget.enterpriseCode,
-                          TransferJustificationType.adjustStock,
-                        ),
-                      );
-
-                      return Column(
-                        children: [
-                          DefaultSearchProducts(
-                            searchValueController: searchValueController,
-                            isLoading: ref
-                                .watch(
-                                  searchProductsStateControllerProvider(
-                                    widget.enterpriseCode,
-                                    BsRoutine.adjustStock,
-                                    Modules.adjustStock,
-                                  ),
-                                )
-                                .isLoading,
-                            searchProducts: _searchProducts,
-                          ),
-                          gapH8,
-                          JustificationsDropdown(
-                            selectedJustification: selectedJustification,
-                            asyncValue: justificationsAsync,
-                            enterpriseCode: widget.enterpriseCode,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedJustification = value;
-                              });
-
-                              if (value?.CodigoInterno_TipoEstoque != null &&
-                                  stocksAsync.value != null) {
-                                setState(() {
-                                  selectedStockType = stocksAsync.value!
-                                      .firstWhere(
-                                        (e) =>
-                                            e.CodigoInterno_TipoEstoque ==
-                                            value?.CodigoInterno_TipoEstoque,
-                                      );
-                                });
-                              }
-                            },
-                          ),
-                          gapH8,
-                          StocksDropdown(
-                            asyncValue: stocksAsync,
-                            enterpriseCode: widget.enterpriseCode,
-                            selectedJustification: selectedJustification,
-                            selectedStockType: selectedStockType,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedStockType = value;
-                              });
-                            },
-                          ),
-                          gapH8,
-                        ],
-                      );
-                    },
+                  HeaderFilters(
+                    enterpriseCode: widget.enterpriseCode,
+                    searchProducts: _searchProducts,
+                    searchValueController: searchValueController,
+                    selectedJustification: selectedJustification,
+                    selectedStockType: selectedStockType,
+                    onChangeJustification: onChangeJustification,
+                    onChangeStockType: onChangeStock,
                   ),
                   Expanded(
                     child: Consumer(
