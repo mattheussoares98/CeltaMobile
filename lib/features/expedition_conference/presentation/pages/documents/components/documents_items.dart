@@ -45,7 +45,7 @@ class DocumentsItems extends StatelessWidget {
                 );
               },
               child: Padding(
-                padding: EdgeInsets.all(Sizes.p8),
+                padding: const EdgeInsets.all(Sizes.p8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

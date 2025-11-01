@@ -73,7 +73,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       setState(() {
         selectedIndex = index;
       });
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       quantityFocusNode.requestFocus();
     } else {
       setState(() {

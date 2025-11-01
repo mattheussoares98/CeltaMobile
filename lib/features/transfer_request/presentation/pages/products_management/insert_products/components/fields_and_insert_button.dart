@@ -80,7 +80,7 @@ class FieldsAndInsertButton extends ConsumerWidget {
               child: Column(
                 children: [
                   FocusTraversalOrder(
-                    order: NumericFocusOrder(1),
+                    order: const NumericFocusOrder(1),
                     child: DefaultTextFormField(
                       controller: quantityController,
                       focusNode: quantityFocusNode,
@@ -111,14 +111,14 @@ class FieldsAndInsertButton extends ConsumerWidget {
                           maxDecimalHouses: 3,
                         ),
                       ]),
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ), //TODO test in iOS
                     ),
                   ),
                   if (requestTypeAllowChangePrice)
                     FocusTraversalOrder(
-                      order: NumericFocusOrder(2),
+                      order: const NumericFocusOrder(2),
                       child: DefaultTextFormField(
                         controller: priceController,
                         focusNode: priceFocusNode,
@@ -143,7 +143,7 @@ class FieldsAndInsertButton extends ConsumerWidget {
                             maxDecimalHouses: 2,
                           ),
                         ]),
-                        keyboardType: TextInputType.numberWithOptions(
+                        keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ), //TODO test in iOS
                       ),

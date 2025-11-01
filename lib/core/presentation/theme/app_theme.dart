@@ -4,12 +4,12 @@ class AppTheme {
   AppTheme._();
 
   static ThemeData themeData(ThemeData theme) {
-    final disabledColor = Colors.grey;
-    final primaryColor = Colors.green;
-    final primaryColorLight = Colors.lightGreenAccent;
+    const disabledColor = Colors.grey;
+    const primaryColor = Colors.green;
+    const primaryColorLight = Colors.lightGreenAccent;
     final primaryColorDark = Colors.green[900]!;
-    final secondaryColor = Colors.blueAccent;
-    final scaffoldBackgroundColor = Colors.white;
+    const secondaryColor = Colors.blueAccent;
+    const scaffoldBackgroundColor = Colors.white;
 
     return ThemeData(
       // * Use this to toggle Material 3 (defaults to true since Flutter 3.16)
@@ -19,7 +19,7 @@ class AppTheme {
       primaryColorLight: primaryColorLight,
       primaryColorDark: primaryColorDark,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: true,
         backgroundColor: scaffoldBackgroundColor,
@@ -32,7 +32,7 @@ class AppTheme {
         secondary: secondaryColor,
         error: Colors.red,
       ),
-      progressIndicatorTheme: ProgressIndicatorThemeData(
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: disabledColor,
         strokeWidth: 2,
       ),
@@ -59,7 +59,7 @@ class AppTheme {
           foregroundColor: Colors.white, // foreground (text) color
         ),
       ),
-      iconTheme: IconThemeData(color: primaryColor),
+      iconTheme: const IconThemeData(color: primaryColor),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
           foregroundColor: primaryColor,

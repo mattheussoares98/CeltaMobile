@@ -95,10 +95,8 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                         ),
                       ),
                       if (size.width > 300)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Sizes.p16,
-                          ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: Sizes.p16),
                           child: Icon(CupertinoIcons.chevron_down),
                         ),
                     ],
@@ -127,10 +125,10 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         color: theme.disabledColor.withAlpha(50),
         borderRadius: BorderRadius.circular(Sizes.p8),
       ),
-      padding: EdgeInsets.symmetric(horizontal: Sizes.p16),
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
       height: widget.dropdownHeight,
       child: DropdownButtonFormField<T>(
-        decoration: InputDecoration(border: InputBorder.none),
+        decoration: const InputDecoration(border: InputBorder.none),
         isDense: true,
         dropdownColor: Colors.white,
         validator: widget.validator,

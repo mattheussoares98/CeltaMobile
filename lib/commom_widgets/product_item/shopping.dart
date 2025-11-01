@@ -40,7 +40,7 @@ class Shopping extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Divider(),
+                const Divider(),
                 TitleAndSubTitle(
                   title: 'Fornecedor'.hardcoded,
                   subTitle: buy.Supplier,

@@ -13,7 +13,7 @@ class CompleteDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
-    final exitHeight = 40.0;
+    const exitHeight = 40.0;
 
     final userSession = ref.watch(userSessionProvider);
 
@@ -28,7 +28,7 @@ class CompleteDrawer extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CeltaImage(),
+                  const CeltaImage(),
                   DrawerItem(
                     message: userSession.value?.user.name ?? "",
                     materialIcon: Icons.person,

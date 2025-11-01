@@ -130,7 +130,8 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
             ),
           ),
           gapH8,
-          if (widget.suppliersState.isLoading) Center(child: LoadingWidget()),
+          if (widget.suppliersState.isLoading)
+            const Center(child: LoadingWidget()),
         ],
       ),
     );

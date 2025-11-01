@@ -39,7 +39,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
       setState(() {
         selectedIndex = index;
       });
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         widget.limitFocusNode.requestFocus();
       });
     }

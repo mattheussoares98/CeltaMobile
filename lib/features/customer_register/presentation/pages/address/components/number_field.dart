@@ -27,7 +27,7 @@ class NumberField extends StatelessWidget {
       onFieldSubmitted: (_) {
         page.complementFocusNode.requestFocus();
       },
-      keyboardType: TextInputType.numberWithOptions(
+      keyboardType: const TextInputType.numberWithOptions(
         decimal: false,
       ), //TODO test in iOS
     );

@@ -77,7 +77,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
         final price = transferRequestProductItem?.value ?? product.Value;
         priceController.text = price.toString().replaceAll(RegExp(r'\.'), ',');
       }
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });
     }

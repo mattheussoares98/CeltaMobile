@@ -43,7 +43,7 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
       pendingQuantities: {
         for (var p in initialProducts) p.ProductPackingCode: p.Quantity,
       },
-      scannedQuantities: {},
+      scannedQuantities: const {},
     );
   }
 

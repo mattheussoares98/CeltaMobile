@@ -39,7 +39,7 @@ class StartAndEndDates extends StatelessWidget {
               },
             ),
           ),
-          VerticalDivider(),
+          const VerticalDivider(),
           Expanded(
             child: _GetDateItem(
               enabled: enableEndDate,
@@ -92,7 +92,7 @@ class _GetDateItem extends StatelessWidget {
                         currentSelectedDate: currentSelectedDate,
                         insertHoursAndMinutes: true,
                         minimumDate: now,
-                        maximumDate: now.add(Duration(days: 365)),
+                        maximumDate: now.add(const Duration(days: 365)),
                       );
                       onDateChanged(selectedDate);
                     },

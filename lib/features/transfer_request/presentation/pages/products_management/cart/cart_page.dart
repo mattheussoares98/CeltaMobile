@@ -55,7 +55,7 @@ class _CartPageState extends ConsumerState<CartPage> {
           ',',
         );
       }
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });
     }

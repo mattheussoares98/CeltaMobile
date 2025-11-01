@@ -35,7 +35,7 @@ class PriceFieldAndConfirmButton extends ConsumerWidget {
               onFieldSubmitted: (_) {
                 onPressed?.call();
               },
-              keyboardType: TextInputType.numberWithOptions(
+              keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
                 //TODO test in iOS
               ),

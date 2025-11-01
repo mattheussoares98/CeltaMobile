@@ -34,7 +34,7 @@ class PrimaryButton extends StatelessWidget {
           return CupertinoButton.filled(
             onPressed: isLoading ? null : onPressed,
             sizeStyle: CupertinoButtonSize.small,
-            padding: EdgeInsets.all(0),
+            padding: const EdgeInsets.all(0),
             color: onPressed == null
                 ? theme.disabledColor
                 : backgroundColor ?? theme.primaryColor,
@@ -65,7 +65,7 @@ class PrimaryButton extends StatelessWidget {
         icon: icon,
         iconAlignment: iconAlignment,
         style: ButtonStyle(
-          padding: WidgetStateProperty.all(EdgeInsets.all(Sizes.p12)),
+          padding: WidgetStateProperty.all(const EdgeInsets.all(Sizes.p12)),
           backgroundColor: WidgetStateProperty.all(
             onPressed == null
                 ? theme.disabledColor
@@ -73,10 +73,10 @@ class PrimaryButton extends StatelessWidget {
           ),
         ),
         label: isLoading
-            ? SizedBox(
+            ? const SizedBox(
                 height: Sizes.p24,
                 width: Sizes.p24,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               )
             : FittedBox(
                 child: Text(

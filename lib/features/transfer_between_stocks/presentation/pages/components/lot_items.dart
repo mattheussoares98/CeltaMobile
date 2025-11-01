@@ -96,7 +96,7 @@ class LotItems extends ConsumerWidget {
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     keyboardType:
-                                        TextInputType.numberWithOptions(
+                                        const TextInputType.numberWithOptions(
                                           decimal: true,
                                           //TODO test in iOS
                                         ),

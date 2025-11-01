@@ -23,12 +23,12 @@ class AsyncValueWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     if (value.isLoading) {
-      return Center(child: LoadingWidget());
+      return const Center(child: LoadingWidget());
     }
 
     return value.when(
       data: data,
-      loading: () => Center(child: LoadingWidget()),
+      loading: () => const Center(child: LoadingWidget()),
       error: (e, st) => Padding(
         padding: const EdgeInsets.all(Sizes.p8),
         child: Column(
@@ -38,7 +38,7 @@ class AsyncValueWidget<T> extends StatelessWidget {
             Text(
               parseErrorMessage(e),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.red,
                 fontStyle: FontStyle.italic,
                 fontSize: 12,
@@ -90,7 +90,7 @@ class AsyncValueSliverWidget<T> extends StatelessWidget {
               Text(
                 parseErrorMessage(e),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.red,
                   fontStyle: FontStyle.italic,
                 ),

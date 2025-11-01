@@ -22,7 +22,7 @@ class InformedAddressess extends ConsumerWidget {
 
     return Column(
       children: [
-        DefaultDivider('Endereços informados'),
+        const DefaultDivider('Endereços informados'),
         ListView.builder(
           shrinkWrap: true,
           itemCount: customer?.Addresses?.length,

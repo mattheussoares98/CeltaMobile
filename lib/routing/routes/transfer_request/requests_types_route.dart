@@ -8,6 +8,6 @@ RouteBase transferRequestRquestsTypesRoute(List<RouteBase> routes) => GoRoute(
   name: Routes.transferRequestRequestsTypes.name,
   routes: routes,
   builder: (context, state) {
-    return TransferRequestRequestsTypesPage();
+    return const TransferRequestRequestsTypesPage();
   },
 );

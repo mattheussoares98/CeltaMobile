@@ -43,7 +43,7 @@ class ZipField extends StatelessWidget {
         ),
       ),
       suffixIcon: isLoading
-          ? LoadingWidget(size: Sizes.p16)
+          ? const LoadingWidget(size: Sizes.p16)
           : PrimaryTextButton(
               text: 'Pesquisar CEP'.hardcoded,
               onPressed: seekAddress,
@@ -53,7 +53,7 @@ class ZipField extends StatelessWidget {
           seekAddress();
         }
       },
-      keyboardType: TextInputType.numberWithOptions(
+      keyboardType: const TextInputType.numberWithOptions(
         decimal: false,
       ), //TODO test in iOS
       onFieldSubmitted: (_) {

@@ -89,7 +89,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                   : _DefaultIcon(
                       onPress: () {
                         widget.searchValueController.clear();
-                        Future.delayed(Duration(milliseconds: 100), () {
+                        Future.delayed(const Duration(milliseconds: 100), () {
                           widget.focusNode?.requestFocus();
                         });
                       },
@@ -115,7 +115,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                             : null,
                       )
                     else if (widget.isLoading) ...[
-                      LoadingWidget(padding: 0, size: Sizes.p16),
+                      const LoadingWidget(padding: 0, size: Sizes.p16),
                       gapW12,
                     ],
                     if (theme.platform == TargetPlatform.iOS ||
@@ -138,7 +138,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                       ),
                     _DefaultIcon(
                       onPress: () {
-                        showModalPage(SettingsPage(), context);
+                        showModalPage(const SettingsPage(), context);
                       },
                       materialIcon: Icons.settings,
                       cupertinoIcon: CupertinoIcons.settings,

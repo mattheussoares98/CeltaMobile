@@ -130,7 +130,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       setState(() {
         selectedProductIndex = index;
       });
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });
     } else {
@@ -176,7 +176,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         identificationFormKey: identificationFormKey,
         suppliers: suppliers,
       ),
-      EnterprisesPage(),
+      const EnterprisesPage(),
       productsPage,
       ConfirmationPage(
         productsPage: productsPage,
@@ -260,7 +260,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             },
           ),
         ),
-        if (insertAsync.isLoading) LoadingPage(),
+        if (insertAsync.isLoading) const LoadingPage(),
       ],
     );
   }

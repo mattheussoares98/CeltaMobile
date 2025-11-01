@@ -101,7 +101,7 @@ class _TransferBetweenStocksPageState
             .clearLot(widget.enterpriseCode);
         pageController.animateToPage(
           0,
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           curve: Curves.linear,
         );
       });
@@ -129,7 +129,7 @@ class _TransferBetweenStocksPageState
             onTap: (index) {
               pageController.animateToPage(
                 index,
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 curve: Curves.linear,
               );
               setState(() {
@@ -176,7 +176,7 @@ class _TransferBetweenStocksPageState
                                         .length
                                         .toString() ??
                                     '0',
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -190,7 +190,7 @@ class _TransferBetweenStocksPageState
             ],
           ),
         ),
-        if (confirmAdjustStockAsync.isLoading) LoadingPage(),
+        if (confirmAdjustStockAsync.isLoading) const LoadingPage(),
       ],
     );
   }

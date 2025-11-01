@@ -37,7 +37,7 @@ mixin SearchProductsListenerMixin {
                 )
                 .scanProduct(n.value!.first.ProductPackingCode, stepCode);
 
-            Future.delayed(Duration(milliseconds: 100), () {
+            Future.delayed(const Duration(milliseconds: 100), () {
               focusNode.requestFocus();
             });
           } else if (n.value != null && n.value!.length > 1) {

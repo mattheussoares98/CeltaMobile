@@ -7,6 +7,6 @@ RouteBase customerRegisterRoute() => GoRoute(
   path: 'customer-register',
   name: Routes.customerRegister.name,
   builder: (context, state) {
-    return CustomerRegisterPage();
+    return const CustomerRegisterPage();
   },
 );

@@ -22,7 +22,7 @@ class CustomerItem extends ConsumerWidget {
         ?.customer;
 
     return Card(
-      margin: EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [

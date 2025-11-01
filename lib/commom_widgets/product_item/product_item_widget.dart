@@ -100,7 +100,7 @@ class ProductItemWidget extends ConsumerWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.only(bottom: Sizes.p8),
+      margin: const EdgeInsets.only(bottom: Sizes.p8),
       child: Column(
         children: [
           Stack(

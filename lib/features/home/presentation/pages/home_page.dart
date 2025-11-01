@@ -28,7 +28,7 @@ class HomePage extends ConsumerWidget {
     );
 
     return Scaffold(
-      drawer: CompleteDrawer(),
+      drawer: const CompleteDrawer(),
       appBar: AppBar(
         leadingWidth: 40,
         title: AsyncValueWidget(
@@ -44,8 +44,8 @@ class HomePage extends ConsumerWidget {
       ),
 
       body: enterprisesAsync.isLoading
-          ? Center(child: LoadingWidget())
-          : ModulesWidget(),
+          ? const Center(child: LoadingWidget())
+          : const ModulesWidget(),
     );
   }
 }

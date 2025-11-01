@@ -58,7 +58,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       setState(() {
         selectedIndex = index;
       });
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       quantityFocusNode.requestFocus();
     } else {
       setState(() {
@@ -213,7 +213,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
             ),
           ),
         ),
-        if (confirmAdjustStockAsync.isLoading) LoadingPage(),
+        if (confirmAdjustStockAsync.isLoading) const LoadingPage(),
       ],
     );
   }

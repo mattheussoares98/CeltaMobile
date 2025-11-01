@@ -126,7 +126,7 @@ void main() {
         ? faker.randomGenerator.integer(100)
         : null;
 
-    final balanceFormat = "2014456854692";
+    const balanceFormat = "2014456854692";
 
     final products = await sut.getProductsJson(
       baseUrl: baseUrl,

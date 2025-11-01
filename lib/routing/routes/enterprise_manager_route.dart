@@ -50,7 +50,7 @@ RouteBase enterpriseManagerRoute(Bridge<Object?> mgrBridge) => GoRoute(
         GoRoute(
           path: 'createEnterprise',
           name: Routes.createEnterprise.name,
-          builder: (context, state) => CreateEnterprisePage(),
+          builder: (context, state) => const CreateEnterprisePage(),
         ),
       ],
     ),

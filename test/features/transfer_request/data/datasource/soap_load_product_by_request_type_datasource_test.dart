@@ -104,7 +104,7 @@ void main() {
     ).called(1);
   });
   test('should call again with balance format', () async {
-    final balanceFormat = "2014456854692";
+    const balanceFormat = "2014456854692";
 
     final products = await sut.load(
       baseUrl: baseUrl,

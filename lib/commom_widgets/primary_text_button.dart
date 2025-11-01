@@ -32,7 +32,7 @@ class PrimaryTextButton extends StatelessWidget {
       return CupertinoButton(
         onPressed: isLoading ? null : onPressed,
         sizeStyle: CupertinoButtonSize.small,
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         child: isLoading
             ? CupertinoActivityIndicator(color: theme.disabledColor)
             : Row(
@@ -59,10 +59,10 @@ class PrimaryTextButton extends StatelessWidget {
         icon: icon,
         iconAlignment: iconAlignment,
         label: isLoading
-            ? SizedBox(
+            ? const SizedBox(
                 height: Sizes.p24,
                 width: Sizes.p24,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               )
             : FittedBox(
                 child: Text(

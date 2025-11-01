@@ -33,7 +33,7 @@ class ExpeditionConferenceState extends Equatable {
       pendingQuantities: {
         for (var p in products) p.ProductPackingCode: p.Quantity,
       },
-      scannedQuantities: {},
+      scannedQuantities: const {},
     );
   }
 

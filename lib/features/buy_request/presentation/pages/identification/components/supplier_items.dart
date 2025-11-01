@@ -20,7 +20,7 @@ class SupplierItems extends ConsumerWidget {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     if (pendingAsync.isLoading) {
-      return SliverToBoxAdapter(child: LoadingWidget());
+      return const SliverToBoxAdapter(child: LoadingWidget());
     }
 
     return SliverList.builder(

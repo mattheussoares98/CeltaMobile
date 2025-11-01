@@ -45,7 +45,7 @@ class ConfirmationPage extends ConsumerWidget {
                     observationsController: observationsController,
                   ),
                   if (pendingAsync.value?.lastSavedRequestNumber != null) ...[
-                    LastSavedRequestsNumbers(),
+                    const LastSavedRequestsNumbers(),
                     gapSliverH8,
                   ],
                   SliverToBoxAdapter(
@@ -57,9 +57,9 @@ class ConfirmationPage extends ConsumerWidget {
                     ),
                   ),
                   gapSliverH8,
-                  BuyersDropdown(),
+                  const BuyersDropdown(),
                   gapSliverH8,
-                  RequestTypeDropdown(),
+                  const RequestTypeDropdown(),
                   gapSliverH8,
                   if (pendingAsync.value?.selectedSupplier != null) ...[
                     SliverToBoxAdapter(

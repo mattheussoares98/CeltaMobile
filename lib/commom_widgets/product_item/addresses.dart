@@ -52,7 +52,7 @@ class Addresses extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Divider(),
+                  const Divider(),
                   TitleAndSubTitle(
                     title: 'Empresa'.hardcoded,
                     subTitle: stock.Enterprise,

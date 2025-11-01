@@ -25,7 +25,7 @@ class PriceField extends StatelessWidget {
       onFieldSubmitted: (_) => update(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       maxLength: 13,
-      keyboardType: TextInputType.numberWithOptions(
+      keyboardType: const TextInputType.numberWithOptions(
         decimal: true,
         //TODO test in iOS
       ),

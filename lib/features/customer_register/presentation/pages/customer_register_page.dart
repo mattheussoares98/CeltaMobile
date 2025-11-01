@@ -308,7 +308,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           ),
         ),
         if (customerAsync.isLoading || insertUpdateAsync.isLoading)
-          LoadingPage(),
+          const LoadingPage(),
       ],
     );
   }

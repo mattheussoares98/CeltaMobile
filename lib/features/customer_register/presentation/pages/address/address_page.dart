@@ -178,7 +178,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         } else {
           state = BrazilStates.values[stateIndex];
         }
-        Future.delayed(Duration(milliseconds: 100), () {
+        Future.delayed(const Duration(milliseconds: 100), () {
           widget.numberFocusNode.requestFocus();
         });
       });

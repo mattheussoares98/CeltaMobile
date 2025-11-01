@@ -19,7 +19,7 @@ class ProductKey extends Equatable {
   factory ProductKey.fromMapKey(String key) {
     final parts = key.split('-');
     if (parts.length != 2) {
-      throw FormatException('Invalid ProductKey format');
+      throw const FormatException('Invalid ProductKey format');
     }
     return ProductKey(
       enterpriseCode: int.parse(parts[0]),

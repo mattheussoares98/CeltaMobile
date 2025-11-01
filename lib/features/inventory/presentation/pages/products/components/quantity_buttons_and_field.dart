@@ -132,7 +132,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
                         NonEmptyValidator(),
                         NumberValidator(allowDecimal: true),
                       ]),
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                         //TODO test in iOS
                       ),
@@ -143,7 +143,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
                     ),
                   )
                 else
-                  Expanded(flex: 2, child: SizedBox.shrink()),
+                  const Expanded(flex: 2, child: SizedBox.shrink()),
               ],
             ),
           ],

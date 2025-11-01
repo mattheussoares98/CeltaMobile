@@ -7,6 +7,6 @@ RouteBase buyRequestRoute() => GoRoute(
   path: 'buy-request',
   name: Routes.buyRequest.name,
   builder: (context, state) {
-    return BuyRequestPage();
+    return const BuyRequestPage();
   },
 );

@@ -63,7 +63,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
         onTap: (index) {
           scrollController.animateToPage(
             index,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.linear,
           );
           setState(() {

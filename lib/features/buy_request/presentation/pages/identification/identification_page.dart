@@ -45,9 +45,9 @@ class _IdentificationPageState extends ConsumerState<IdentificationPage> {
           isSliverPage: true,
           child: CustomScrollView(
             slivers: [
-              BuyersDropdown(),
+              const BuyersDropdown(),
               gapSliverH8,
-              RequestTypeDropdown(),
+              const RequestTypeDropdown(),
               gapSliverH8,
               SupplierSearcher(
                 supplierController: widget.supplierController,

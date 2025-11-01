@@ -36,7 +36,7 @@ class Covenants extends ConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Divider(height: 0),
+                const Divider(height: 0),
                 Text(
                   'Convênios'.hardcoded,
                   style: theme.textTheme.titleMedium?.copyWith(
@@ -49,7 +49,7 @@ class Covenants extends ConsumerWidget {
           final covenant = customerItem.customer.CustomerCovenants![index - 1];
           return Card(
             clipBehavior: Clip.antiAlias,
-            margin: EdgeInsets.only(top: Sizes.p8),
+            margin: const EdgeInsets.only(top: Sizes.p8),
             child: InkWell(
               onTap: () => onTapCovenant(covenant),
               child: RadioGroup<CustomerCovenantEntity>(

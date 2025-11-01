@@ -28,7 +28,7 @@ class QuantityField extends StatelessWidget {
       focusNode: quantityFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       maxLength: 13,
-      keyboardType: TextInputType.numberWithOptions(
+      keyboardType: const TextInputType.numberWithOptions(
         decimal: true,
         //TODO test in iOS
       ),

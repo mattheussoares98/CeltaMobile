@@ -17,13 +17,13 @@ class SettingsPage extends ConsumerWidget {
       appBar: AppBar(
         title: Center(child: Text('Configurações'.hardcoded)),
         leadingWidth: 0,
-        leading: SizedBox.shrink(),
+        leading: const SizedBox.shrink(),
       ),
       body: ResponsiveScrollableWidget(
         child: Column(
           children: [
             if (asyncValue.hasError)
-              ReloadSettings()
+              const ReloadSettings()
             else ...[
               ProductSearchTypeWidget(asyncValue: asyncValue),
               //TODO add autoScan in according to add the modules, like inventory

@@ -86,7 +86,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CeltaImage(),
+              const CeltaImage(),
               EnterpriseField(
                 isLoading: loginAsync.isLoading,
                 enterpriseController: enterpriseController,

@@ -25,7 +25,7 @@ class DraftKey extends Equatable {
   factory DraftKey.fromMapKey(String key) {
     final parts = key.split('-');
     if (parts.length != 3) {
-      throw FormatException('Invalid ProductKey format');
+      throw const FormatException('Invalid ProductKey format');
     }
     return DraftKey(
       requestTypeCode: int.parse(parts[0]),

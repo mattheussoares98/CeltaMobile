@@ -62,7 +62,7 @@ class SupplierItem extends ConsumerWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.only(top: Sizes.p8),
+      margin: const EdgeInsets.only(top: Sizes.p8),
       child: InkWell(
         onTap: enabled == false ? null : onTap,
         child: RadioGroup<SupplierEntity>(

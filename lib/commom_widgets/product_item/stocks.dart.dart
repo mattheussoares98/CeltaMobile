@@ -48,7 +48,7 @@ class Stocks extends StatelessWidget {
                 ),
                 backgroundColor: theme.primaryColorLight.withAlpha(120),
                 collapsedBackgroundColor: theme.primaryColorLight.withAlpha(60),
-                childrenPadding: EdgeInsets.all(Sizes.p8),
+                childrenPadding: const EdgeInsets.all(Sizes.p8),
                 iconColor: theme.primaryColorDark,
                 collapsedIconColor: theme.primaryColor,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,

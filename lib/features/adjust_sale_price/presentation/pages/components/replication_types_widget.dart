@@ -36,7 +36,7 @@ class ReplicationTypesWidget extends StatelessWidget {
             );
           } else {
             return CheckboxListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: Sizes.p8),
+              contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
               title: Text(replication.name, style: theme.textTheme.bodyMedium),
               value: selectedReplications.contains(replication),
               onChanged: (_) => onChanged(replication),

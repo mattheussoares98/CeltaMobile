@@ -85,7 +85,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       setState(() {
         selectedIndex = index;
       });
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });
     }
@@ -118,7 +118,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           }
           searchProductsController.clear();
           if (insertIndividually) {
-            Future.delayed(Duration(milliseconds: 100), () {
+            Future.delayed(const Duration(milliseconds: 100), () {
               searchProductsFocusNode.requestFocus();
             });
           }
@@ -213,7 +213,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ),
           ),
         ),
-        if (entryQuantityAsync.isLoading) LoadingPage(),
+        if (entryQuantityAsync.isLoading) const LoadingPage(),
       ],
     );
   }

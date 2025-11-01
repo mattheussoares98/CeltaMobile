@@ -30,7 +30,7 @@ class _LotPageState extends ConsumerState<LotPage> {
       setState(() {
         selectedIndex = index;
       });
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
         quantityController.text = quantity.toString().toBrazilianNumber();
         quantityController.selection = TextSelection.fromPosition(

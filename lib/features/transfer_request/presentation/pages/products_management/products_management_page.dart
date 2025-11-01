@@ -112,10 +112,10 @@ class _ProductsManagementPageState
                 materialIcon: Icons.shopping_cart,
                 cupertinoIcon: CupertinoIcons.shopping_cart,
                 isSelected: false,
-                offset: Offset(3, -3),
+                offset: const Offset(3, -3),
                 subtitle: Text(
                   'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
-                  style: TextStyle(fontSize: 9),
+                  style: const TextStyle(fontSize: 9),
                 ),
               ),
             ],
@@ -149,7 +149,7 @@ class _ProductsManagementPageState
             ],
           ),
         ),
-        if (insertAsync.isLoading) LoadingPage(),
+        if (insertAsync.isLoading) const LoadingPage(),
       ],
     );
   }

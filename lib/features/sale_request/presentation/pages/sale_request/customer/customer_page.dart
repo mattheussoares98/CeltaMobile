@@ -26,7 +26,10 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ResponsiveScrollableWidget(padding: 0, child: SearchFieldAndSwitch()),
+          const ResponsiveScrollableWidget(
+            padding: 0,
+            child: SearchFieldAndSwitch(),
+          ),
           Expanded(
             child: CustomScrollView(
               slivers: [

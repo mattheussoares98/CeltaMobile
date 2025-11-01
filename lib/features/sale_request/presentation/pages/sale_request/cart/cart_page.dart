@@ -6,6 +6,6 @@ class CartPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Placeholder();
+    return const Placeholder();
   }
 }

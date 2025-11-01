@@ -60,7 +60,7 @@ class ProductInformations extends StatelessWidget {
                         ? null
                         : 'Qtd contata'.hardcoded,
                     subTitleStyle: product.quantidadeInvContProEmb == null
-                        ? TextStyle(color: Colors.red)
+                        ? const TextStyle(color: Colors.red)
                         : null,
                     subTitle: product.quantidadeInvContProEmb == null
                         ? 'Sem quantidade contada'.hardcoded

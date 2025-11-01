@@ -68,7 +68,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
                       '0')
                   .toBrazilianNumber()
                   .addBrazilianCoin(),
-              style: TextStyle(fontSize: 9),
+              style: const TextStyle(fontSize: 9),
             ),
           ),
         ],
@@ -92,8 +92,8 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
                 enterpriseCode: widget.enterpriseCode,
                 selectedRequest: selectedRequest,
               ),
-              CustomerPage(),
-              CartPage(),
+              const CustomerPage(),
+              const CartPage(),
             ],
           );
         },

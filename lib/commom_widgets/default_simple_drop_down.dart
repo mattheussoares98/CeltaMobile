@@ -35,13 +35,13 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
         onTap: onChanged == null ? null : () {},
         child: DropdownButtonFormField<T>(
           onTap: onTap == null ? null : () => onTap!(value),
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: InputBorder.none,
             errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
             focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide.none),
           ),
           initialValue: value,
-          padding: EdgeInsets.symmetric(horizontal: Sizes.p16),
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
           items: items,
           alignment: Alignment.center,
           isExpanded: true,
@@ -54,7 +54,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
             padding: const EdgeInsets.only(right: Sizes.p8),
             child: SizedBox(
               child: isLoading == true
-                  ? LoadingWidget(size: Sizes.p16, padding: Sizes.p4)
+                  ? const LoadingWidget(size: Sizes.p16, padding: Sizes.p4)
                   : _IconWidget(),
             ),
           ),

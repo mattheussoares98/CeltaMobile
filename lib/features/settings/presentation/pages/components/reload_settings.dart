@@ -13,7 +13,7 @@ class ReloadSettings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        Text('Não foi possível carregar as configurações'),
+        const Text('Não foi possível carregar as configurações'),
         gapH32,
         PrimaryButton(
           text: 'Tentar novamente'.hardcoded,

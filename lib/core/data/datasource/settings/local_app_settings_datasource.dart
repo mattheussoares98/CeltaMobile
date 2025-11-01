@@ -18,7 +18,7 @@ class LocalAppSettingsDatasource implements IAppSettingsDatasource {
   Future<AppSettingsModel?> loadSettings() async {
     final value = await box.get(DatabaseConstants.appSettings.name);
     if (value == null) {
-      return AppSettingsModel(
+      return const AppSettingsModel(
         searchPreference: SearchProductTypePreference.dynamic,
         isContinuousScanEnabledInInventory: false,
       );

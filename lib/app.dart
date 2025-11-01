@@ -23,8 +23,8 @@ class MyApp extends ConsumerWidget {
         routerConfig: goRouter,
         debugShowCheckedModeBanner: false,
         restorationScopeId: 'app',
-        supportedLocales: [const Locale('pt', 'BR')],
-        localizationsDelegates: [
+        supportedLocales: const [Locale('pt', 'BR')],
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

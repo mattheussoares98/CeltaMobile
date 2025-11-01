@@ -128,7 +128,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
             currentIndex: currentIndex,
           ),
         ),
-        if (confirmAsync.isLoading) LoadingPage(),
+        if (confirmAsync.isLoading) const LoadingPage(),
       ],
     );
   }

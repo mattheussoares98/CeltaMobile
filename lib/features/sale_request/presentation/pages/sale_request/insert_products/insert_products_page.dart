@@ -78,7 +78,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       }
       quantityController.text = '1';
 
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });
     }

@@ -285,7 +285,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
             ],
           ),
         ),
-        if (confirmAdjustAsync.isLoading) LoadingPage(),
+        if (confirmAdjustAsync.isLoading) const LoadingPage(),
       ],
     );
   }
@@ -294,6 +294,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
 class _DefaultDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Divider(height: Sizes.p8);
+    return const Divider(height: Sizes.p8);
   }
 }

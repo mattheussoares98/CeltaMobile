@@ -12,7 +12,7 @@ class DefaultDivider extends StatelessWidget {
     return Column(
       children: [
         gapH16,
-        Divider(thickness: 0.5),
+        const Divider(thickness: 0.5),
         DefaultTitle(title: title),
         gapH8,
       ],

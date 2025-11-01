@@ -84,7 +84,7 @@ void main() {
             enterprise: SupabaseEnterpriseModel(
               id: faker.randomGenerator.integer(100),
               name: faker.company.name(),
-              subEnterprises: [],
+              subEnterprises: const [],
               baseUrl: null,
             ),
           ),
@@ -111,7 +111,7 @@ void main() {
             enterprise: SupabaseEnterpriseModel(
               id: faker.randomGenerator.integer(100),
               name: faker.company.name(),
-              subEnterprises: [],
+              subEnterprises: const [],
               baseUrl: faker.internet.httpUrl(),
             ),
           ),
@@ -140,7 +140,7 @@ void main() {
               enterprise: SupabaseEnterpriseModel(
                 id: faker.randomGenerator.integer(100),
                 name: faker.company.name(),
-                subEnterprises: [],
+                subEnterprises: const [],
                 baseUrl: faker.internet.httpUrl(),
               ),
             ),

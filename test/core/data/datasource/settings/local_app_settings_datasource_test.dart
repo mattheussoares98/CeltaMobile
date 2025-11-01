@@ -67,7 +67,7 @@ void main() {
 
       expect(
         await sut.loadSettings(),
-        AppSettingsModel(
+        const AppSettingsModel(
           searchPreference: SearchProductTypePreference.dynamic,
           isContinuousScanEnabledInInventory: false,
         ),

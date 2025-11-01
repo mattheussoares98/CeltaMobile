@@ -13,10 +13,10 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: Sizes.p8),
+      margin: const EdgeInsets.only(top: Sizes.p8),
       clipBehavior: Clip.antiAlias,
       child: Padding(
-        padding: EdgeInsets.all(Sizes.p8),
+        padding: const EdgeInsets.all(Sizes.p8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

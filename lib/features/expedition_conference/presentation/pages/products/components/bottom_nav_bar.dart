@@ -32,7 +32,7 @@ class BottomNavBar extends StatelessWidget {
               pendingProductsAsync.value?.pendingProducts.length.toString() ??
                   '0',
             ),
-            offset: Offset(8, -6),
+            offset: const Offset(8, -6),
             child: Icon(
               isIOS ? CupertinoIcons.exclamationmark_triangle : Icons.error,
             ),
@@ -45,7 +45,7 @@ class BottomNavBar extends StatelessWidget {
               pendingProductsAsync.value?.scannedProducts.length.toString() ??
                   '0',
             ),
-            offset: Offset(8, -6),
+            offset: const Offset(8, -6),
             child: Icon(
               isIOS ? CupertinoIcons.checkmark_seal : Icons.verified_rounded,
             ),

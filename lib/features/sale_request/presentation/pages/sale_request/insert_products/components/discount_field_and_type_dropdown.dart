@@ -36,7 +36,7 @@ class DiscountFieldAndTypeDropdown extends StatelessWidget {
             onFieldSubmitted: (_) {
               insertProduct();
             },
-            keyboardType: TextInputType.numberWithOptions(
+            keyboardType: const TextInputType.numberWithOptions(
               decimal: true, //TODO test in IOS
             ),
             validator: (value) {

@@ -39,7 +39,7 @@ class InformedPhones extends ConsumerWidget {
 
             return Card(
               child: Padding(
-                padding: EdgeInsets.only(left: Sizes.p8),
+                padding: const EdgeInsets.only(left: Sizes.p8),
                 child: Row(
                   children: [
                     Expanded(
