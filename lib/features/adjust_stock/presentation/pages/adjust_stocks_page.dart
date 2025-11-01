@@ -96,29 +96,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       });
     });
 
-    final productsState = ref.watch(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.adjustStock,
-        Modules.adjustStock,
-      ),
-    );
-
-    final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(widget.enterpriseCode),
-    );
-
-    final justificationsAsync = ref.watch(
-      transferJustificationStateControllerProvider(
-        widget.enterpriseCode,
-        TransferJustificationType.adjustStock,
-      ),
-    );
-
-    final confirmAdjustStockAsync = ref.watch(
-      confirmAdjustStockControllerProvider,
-    );
-
     return Stack(
       children: [
         Scaffold(
@@ -131,77 +108,115 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
               padding: const EdgeInsets.all(Sizes.p4),
               child: Column(
                 children: [
-                  DefaultSearchProducts(
-                    searchValueController: searchValueController,
-                    isLoading: productsState.isLoading,
-                    searchProducts: _searchProducts,
-                  ),
-                  gapH8,
-                  JustificationsDropdown(
-                    selectedJustification: selectedJustification,
-                    asyncValue: justificationsAsync,
-                    enterpriseCode: widget.enterpriseCode,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedJustification = value;
-                      });
+                  Consumer(
+                    builder: (_, ref, _) {
+                      final stocksAsync = ref.watch(
+                        stockTypeStateControllerProvider(widget.enterpriseCode),
+                      );
 
-                      if (value?.CodigoInterno_TipoEstoque != null &&
-                          stocksAsync.value != null) {
-                        setState(() {
-                          selectedStockType = stocksAsync.value!.firstWhere(
-                            (e) =>
-                                e.CodigoInterno_TipoEstoque ==
-                                value?.CodigoInterno_TipoEstoque,
-                          );
-                        });
-                      }
+                      final justificationsAsync = ref.watch(
+                        transferJustificationStateControllerProvider(
+                          widget.enterpriseCode,
+                          TransferJustificationType.adjustStock,
+                        ),
+                      );
+
+                      return Column(
+                        children: [
+                          DefaultSearchProducts(
+                            searchValueController: searchValueController,
+                            isLoading: ref
+                                .watch(
+                                  searchProductsStateControllerProvider(
+                                    widget.enterpriseCode,
+                                    BsRoutine.adjustStock,
+                                    Modules.adjustStock,
+                                  ),
+                                )
+                                .isLoading,
+                            searchProducts: _searchProducts,
+                          ),
+                          gapH8,
+                          JustificationsDropdown(
+                            selectedJustification: selectedJustification,
+                            asyncValue: justificationsAsync,
+                            enterpriseCode: widget.enterpriseCode,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedJustification = value;
+                              });
+
+                              if (value?.CodigoInterno_TipoEstoque != null &&
+                                  stocksAsync.value != null) {
+                                setState(() {
+                                  selectedStockType = stocksAsync.value!
+                                      .firstWhere(
+                                        (e) =>
+                                            e.CodigoInterno_TipoEstoque ==
+                                            value?.CodigoInterno_TipoEstoque,
+                                      );
+                                });
+                              }
+                            },
+                          ),
+                          gapH8,
+                          StocksDropdown(
+                            asyncValue: stocksAsync,
+                            enterpriseCode: widget.enterpriseCode,
+                            selectedJustification: selectedJustification,
+                            selectedStockType: selectedStockType,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedStockType = value;
+                              });
+                            },
+                          ),
+                          gapH8,
+                        ],
+                      );
                     },
                   ),
-                  gapH8,
-                  StocksDropdown(
-                    asyncValue: stocksAsync,
-                    enterpriseCode: widget.enterpriseCode,
-                    selectedJustification: selectedJustification,
-                    selectedStockType: selectedStockType,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedStockType = value;
-                      });
-                    },
-                  ),
-                  gapH8,
                   Expanded(
-                    child: AsyncValueWidget(
-                      value: productsState,
-                      tryAgain: null,
-                      data: (products) {
-                        return ResponsiveListFlow(
-                          itemCount: products.length,
-                          itemBuilder: (_, index) {
-                            final product = products[index];
-                            return ProductItemWidget(
-                              product: product,
-                              routine: BsRoutine.adjustStock,
-                              onTap: () {
-                                changeSelectedIndex(index);
+                    child: Consumer(
+                      builder: (_, ref, _) {
+                        final productsState = ref.watch(
+                          searchProductsStateControllerProvider(
+                            widget.enterpriseCode,
+                            BsRoutine.adjustStock,
+                            Modules.adjustStock,
+                          ),
+                        );
+                        return AsyncValueWidget(
+                          value: productsState,
+                          tryAgain: null,
+                          data: (products) {
+                            return ResponsiveListFlow(
+                              itemCount: products.length,
+                              itemBuilder: (_, index) {
+                                final product = products[index];
+                                return ProductItemWidget(
+                                  product: product,
+                                  routine: BsRoutine.adjustStock,
+                                  onTap: () {
+                                    changeSelectedIndex(index);
+                                  },
+                                  showDropIcon: true,
+                                  isSelected: selectedIndex == index,
+                                  notClickableBottom: selectedIndex == index
+                                      ? ConfirmAdjustStock(
+                                          product: product,
+                                          formKey: formKey,
+                                          enterpriseCode: widget.enterpriseCode,
+                                          selectedJustification:
+                                              selectedJustification,
+                                          selectedStockType: selectedStockType,
+                                          quantityController:
+                                              quantityController,
+                                          quantityFocusNode: quantityFocusNode,
+                                        )
+                                      : null,
+                                );
                               },
-                              showDropIcon: true,
-                              isSelected: selectedIndex == index,
-                              notClickableBottom: selectedIndex == index
-                                  ? ConfirmAdjustStock(
-                                      product: product,
-                                      formKey: formKey,
-                                      enterpriseCode: widget.enterpriseCode,
-                                      selectedJustification:
-                                          selectedJustification,
-                                      selectedStockType: selectedStockType,
-                                      quantityController: quantityController,
-                                      isLoading:
-                                          confirmAdjustStockAsync.isLoading,
-                                      quantityFocusNode: quantityFocusNode,
-                                    )
-                                  : null,
                             );
                           },
                         );
@@ -213,7 +228,17 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
             ),
           ),
         ),
-        if (confirmAdjustStockAsync.isLoading) const LoadingPage(),
+        Consumer(
+          builder: (context, ref, _) {
+            final confirmAdjustStockAsync = ref.watch(
+              confirmAdjustStockControllerProvider,
+            );
+            if (confirmAdjustStockAsync.isLoading) {
+              return const LoadingPage();
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ],
     );
   }

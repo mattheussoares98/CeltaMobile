@@ -14,7 +14,6 @@ class ConfirmAdjustStock extends ConsumerWidget {
   final TransferJustificationEntity? selectedJustification;
   final StockTypeEntity? selectedStockType;
   final TextEditingController quantityController;
-  final bool isLoading;
   final FocusNode quantityFocusNode;
   final int enterpriseCode;
   final GlobalKey<FormState> formKey;
@@ -25,13 +24,16 @@ class ConfirmAdjustStock extends ConsumerWidget {
     required this.selectedStockType,
     required this.quantityController,
     required this.quantityFocusNode,
-    required this.isLoading,
     required this.enterpriseCode,
     required this.formKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final confirmAdjustStockAsync = ref.watch(
+      confirmAdjustStockControllerProvider,
+    );
+
     Future<void> confirmAdjust() async {
       if (formKey.currentState?.validate() != true) {
         return;
@@ -79,7 +81,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
           child: PrimaryButton(
             text: 'Confirmar'.hardcoded,
             onPressed: confirmAdjust,
-            isLoading: isLoading,
+            isLoading: confirmAdjustStockAsync.isLoading,
           ),
         ),
       ],
