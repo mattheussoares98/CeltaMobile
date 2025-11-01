@@ -67,6 +67,25 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     }
   }
 
+  Future<void> confirmAdjust(ProductEntity product) async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    await ref.read(confirmAdjustStockControllerProvider.notifier).confirm([
+      AdjustStockItemEntity(
+        EnterpriseCode: widget.enterpriseCode,
+        ProductCode: product.ProductCode,
+        ProductPackingCode: product.ProductPackingCode,
+        JustificationCode: selectedJustification!.CodigoInterno_JustMov,
+        StockTypeCode: selectedStockType!.CodigoInterno_TipoEstoque!,
+        StockTypeRecipientCode: null,
+        IsPendingAdjust: false,
+        Quantity: quantityController.text.toDouble() ?? 0,
+      ),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(
@@ -204,12 +223,8 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                                   isSelected: selectedIndex == index,
                                   notClickableBottom: selectedIndex == index
                                       ? ConfirmAdjustStock(
-                                          product: product,
-                                          formKey: formKey,
-                                          enterpriseCode: widget.enterpriseCode,
-                                          selectedJustification:
-                                              selectedJustification,
-                                          selectedStockType: selectedStockType,
+                                          onConfirm: () =>
+                                              confirmAdjust(product),
                                           quantityController:
                                               quantityController,
                                           quantityFocusNode: quantityFocusNode,

@@ -1,31 +1,21 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../../core/validators/validators.dart';
 
 class ConfirmAdjustStock extends ConsumerWidget {
-  final ProductEntity product;
-  final TransferJustificationEntity? selectedJustification;
-  final StockTypeEntity? selectedStockType;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
-  final int enterpriseCode;
-  final GlobalKey<FormState> formKey;
+  final VoidCallback onConfirm;
   const ConfirmAdjustStock({
     super.key,
-    required this.product,
-    required this.selectedJustification,
-    required this.selectedStockType,
     required this.quantityController,
     required this.quantityFocusNode,
-    required this.enterpriseCode,
-    required this.formKey,
+    required this.onConfirm,
   });
 
   @override
@@ -33,25 +23,6 @@ class ConfirmAdjustStock extends ConsumerWidget {
     final confirmAdjustStockAsync = ref.watch(
       confirmAdjustStockControllerProvider,
     );
-
-    Future<void> confirmAdjust() async {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      }
-
-      await ref.read(confirmAdjustStockControllerProvider.notifier).confirm([
-        AdjustStockItemEntity(
-          EnterpriseCode: enterpriseCode,
-          ProductCode: product.ProductCode,
-          ProductPackingCode: product.ProductPackingCode,
-          JustificationCode: selectedJustification!.CodigoInterno_JustMov,
-          StockTypeCode: selectedStockType!.CodigoInterno_TipoEstoque!,
-          StockTypeRecipientCode: null,
-          IsPendingAdjust: false,
-          Quantity: quantityController.text.toDouble() ?? 0,
-        ),
-      ]);
-    }
 
     return Row(
       children: [
@@ -66,7 +37,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
               decimal: true,
             ), //TODO test in iOS
             onFieldSubmitted: (_) {
-              confirmAdjust();
+              onConfirm();
             },
             hintText: "Quantidade".hardcoded,
             labelText: "Quantidade".hardcoded,
@@ -80,7 +51,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
         Expanded(
           child: PrimaryButton(
             text: 'Confirmar'.hardcoded,
-            onPressed: confirmAdjust,
+            onPressed: onConfirm,
             isLoading: confirmAdjustStockAsync.isLoading,
           ),
         ),
