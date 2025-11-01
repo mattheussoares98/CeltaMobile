@@ -1,5 +1,6 @@
 export './discount_field_and_type_dropdown.dart';
 export './price_field.dart';
+export './product_item.dart';
 export './products_items.dart';
 export './quantity_field.dart';
 export './search_products.dart';
