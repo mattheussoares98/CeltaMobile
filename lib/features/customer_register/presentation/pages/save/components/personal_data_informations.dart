@@ -1,23 +1,18 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
-class PersonalDataInformations extends StatelessWidget {
-  const PersonalDataInformations({
-    super.key,
-    required this.customer,
-    required this.passwordController,
-  });
-
-  final CustomerEntity? customer;
-  final TextEditingController passwordController;
+class PersonalDataInformations extends ConsumerWidget {
+  const PersonalDataInformations({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final customer = ref.watch(customerStateControllerProvider).value;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -51,11 +46,11 @@ class PersonalDataInformations extends StatelessWidget {
                   'dd/MM/yyyy',
                 ).format(customer!.DateOfBirth!),
               ),
-            if (passwordController.text.isNotEmpty)
+            if (customer?.Password != null && customer!.Password!.isNotEmpty)
               TitleAndSubTitle(
                 title: 'Senha '.hardcoded,
                 subTitle: List.generate(
-                  passwordController.text.length,
+                  customer.Password!.length,
                   (index) => '*',
                 ).join(),
               ),

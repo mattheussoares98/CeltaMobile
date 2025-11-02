@@ -3,24 +3,30 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/validators/validators.dart';
-import '../personal_data.dart';
 import 'components.dart';
 
 class PasswordField extends StatelessWidget {
-  final PersonalDataPage personalDataPage;
-  const PasswordField(this.personalDataPage, {super.key});
+  final TextEditingController passwordController;
+  final FocusNode passwordFocusNode;
+  final FocusNode passwordConfirmationFocusNode;
+  const PasswordField({
+    super.key,
+    required this.passwordController,
+    required this.passwordFocusNode,
+    required this.passwordConfirmationFocusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextFormField(
-      controller: personalDataPage.passwordController,
+      controller: passwordController,
       maxLength: 20,
       hintText: 'Senha'.hardcoded,
       labelText: 'Senha'.hardcoded,
       obscureText: true,
-      focusNode: personalDataPage.passwordFocusNode,
+      focusNode: passwordFocusNode,
       onFieldSubmitted: (_) {
-        personalDataPage.passwordConfirmationFocusNode.requestFocus();
+        passwordConfirmationFocusNode.requestFocus();
       },
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
@@ -32,9 +38,7 @@ class PasswordField extends StatelessWidget {
 
         return MinLengthValidator(3).errorMessage;
       },
-      suffixIcon: DefaultDeleteIcon(
-        controller: personalDataPage.passwordController,
-      ),
+      suffixIcon: DefaultDeleteIcon(controller: passwordController),
     );
   }
 }

@@ -8,57 +8,69 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class PhonePage extends ConsumerWidget {
-  final TextEditingController dddController;
-  final TextEditingController phoneController;
-  final FocusNode phoneFocusNode;
-  final CustomerEntity? customer;
-  const PhonePage({
-    super.key,
-    required this.dddController,
-    required this.phoneController,
-    required this.phoneFocusNode,
-    required this.customer,
-  });
-
-  static final dddFormKey = GlobalKey<FormState>();
-  static final phoneFormKey = GlobalKey<FormState>();
+class PhonePage extends ConsumerStatefulWidget {
+  const PhonePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    void addPhone() {
-      if (phoneFormKey.currentState?.validate() != true) {
-        return;
-      } else if (customer?.Telephones?.any(
-            (e) =>
-                e.PhoneNumber == phoneController.text &&
-                e.AreaCode == dddController.text,
-          ) ??
-          false) {
-        showSnackBarMessage(
-          context,
-          'Esse telefone já foi adicionado'.hardcoded,
-          backgroundColor: Colors.red,
-        );
-        return;
-      }
+  ConsumerState<ConsumerStatefulWidget> createState() => _PhonePageState();
+}
 
-      ref
-          .read(customerStateControllerProvider.notifier)
-          .updateCustomer(
-            customer!.copyWith(
-              Telephones: (customer?.Telephones ?? [])
-                ..add(
-                  CustomerTelephoneEntity(
-                    AreaCode: dddController.text,
-                    PhoneNumber: phoneController.text,
-                  ),
-                ),
-            ),
-          );
-      phoneController.clear();
-      dddController.clear();
+class _PhonePageState extends ConsumerState<PhonePage> {
+  final dddFormKey = GlobalKey<FormState>();
+  final phoneFormKey = GlobalKey<FormState>();
+  final dddController = TextEditingController();
+  final phoneController = TextEditingController();
+  final phoneFocusNode = FocusNode();
+  final dddFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    dddController.dispose();
+    phoneController.dispose();
+    phoneFocusNode.dispose();
+    dddFocusNode.dispose();
+  }
+
+  void addPhone() async {
+    final customer = await ref.read(customerStateControllerProvider.future);
+    if (phoneFormKey.currentState?.validate() != true) {
+      return;
+    } else if (customer?.Telephones?.any(
+          (e) =>
+              e.PhoneNumber == phoneController.text &&
+              e.AreaCode == dddController.text,
+        ) ??
+        false) {
+      showSnackBarMessage(
+        context,
+        'Esse telefone já foi adicionado'.hardcoded,
+        backgroundColor: Colors.red,
+      );
+      return;
     }
+
+    ref
+        .read(customerStateControllerProvider.notifier)
+        .updateCustomer(
+          customer!.copyWith(
+            Telephones: (customer.Telephones ?? [])
+              ..add(
+                CustomerTelephoneEntity(
+                  AreaCode: dddController.text,
+                  PhoneNumber: phoneController.text,
+                ),
+              ),
+          ),
+        );
+    phoneController.clear();
+    dddController.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final customer = ref.watch(customerStateControllerProvider).value;
 
     return Scaffold(
       appBar: AppBar(title: Text('Telefones'.hardcoded)),
@@ -101,7 +113,7 @@ class PhonePage extends ConsumerWidget {
               ),
               if (customer?.Telephones != null &&
                   customer!.Telephones!.isNotEmpty)
-                InformedPhones(customer: customer),
+                const InformedPhones(),
             ],
           ),
         ),

@@ -10,17 +10,7 @@ import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class CovenantsPage extends ConsumerStatefulWidget {
-  final AsyncValue<List<CovenantEntity>?> covenantsAsync;
-  final TextEditingController limitController;
-  final FocusNode limitFocusNode;
-  final CustomerEntity? customer;
-  const CovenantsPage({
-    super.key,
-    required this.covenantsAsync,
-    required this.limitController,
-    required this.limitFocusNode,
-    required this.customer,
-  });
+  const CovenantsPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CovenantsPageState();
@@ -29,6 +19,16 @@ class CovenantsPage extends ConsumerStatefulWidget {
 class _CovenantsPageState extends ConsumerState<CovenantsPage> {
   int? selectedIndex;
   final formKey = GlobalKey<FormState>();
+  final limitController = TextEditingController();
+  final limitFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    limitController.dispose();
+    limitFocusNode.dispose();
+  }
 
   void changeSelectedIndex(int? index) {
     if (selectedIndex == index || index == null) {
@@ -40,13 +40,15 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
         selectedIndex = index;
       });
       Future.delayed(const Duration(milliseconds: 100), () {
-        widget.limitFocusNode.requestFocus();
+        limitFocusNode.requestFocus();
       });
     }
   }
 
-  void bindCovenant(CovenantEntity covenant) {
-    if (widget.customer == null) {
+  void bindCovenant(CovenantEntity covenant) async {
+    final customer = await ref.read(customerStateControllerProvider.future);
+
+    if (customer == null) {
       return;
     }
 
@@ -57,38 +59,41 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
     ref
         .read(customerStateControllerProvider.notifier)
         .updateCustomer(
-          widget.customer!.copyWith(
+          customer.copyWith(
             CustomerCovenants: [
-              ...?widget.customer?.CustomerCovenants,
+              ...?customer.CustomerCovenants,
               CustomerCovenantEntity(
                 covenant: CovenantInfoEntity(
                   Code: covenant.Codigo_Convenio?.toInt() ?? 0,
                   PersonalizedCode: covenant.CodigoLegado_Convenio.toString(),
                   Name: covenant.Nome_Convenio ?? '',
                 ),
-                LimitOfPurchase: double.tryParse(widget.limitController.text),
+                LimitOfPurchase: double.tryParse(limitController.text),
                 Matriculate: '',
               ),
             ],
           ),
         );
 
-    widget.limitController.clear();
+    limitController.clear();
     changeSelectedIndex(null);
   }
 
   @override
   Widget build(BuildContext context) {
+    final customer = ref.watch(customerStateControllerProvider).value;
+    final covenantsAsync = ref.watch(covenantsStateControllerProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text('Convênios'.hardcoded)),
       body: AsyncValueWidget(
-        value: widget.covenantsAsync,
+        value: covenantsAsync,
         tryAgain: () => ref.invalidate(covenantsStateControllerProvider),
         data: (covenants) {
           final notBindedCovenants = covenants!
               .where(
                 (e) =>
-                    widget.customer?.CustomerCovenants
+                    customer?.CustomerCovenants
                         ?.where(
                           (x) => e.Codigo_Convenio?.toInt() == x.covenant?.Code,
                         )
@@ -108,15 +113,12 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
                     changeSelectedIndex: changeSelectedIndex,
                     selectedIndex: selectedIndex,
                     bindCovenant: bindCovenant,
-                    limitController: widget.limitController,
-                    limitFocusNode: widget.limitFocusNode,
+                    limitController: limitController,
+                    limitFocusNode: limitFocusNode,
                   ),
-                if (widget.customer?.CustomerCovenants != null &&
-                    widget.customer!.CustomerCovenants!.isNotEmpty)
-                  BindedCovenants(
-                    changeSelectedIndex: changeSelectedIndex,
-                    customer: widget.customer,
-                  ),
+                if (customer?.CustomerCovenants != null &&
+                    customer!.CustomerCovenants!.isNotEmpty)
+                  const BindedCovenants(),
               ],
             ),
           );

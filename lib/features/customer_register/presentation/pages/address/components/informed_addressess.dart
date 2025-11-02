@@ -5,20 +5,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
-import '../address.dart';
 
 class InformedAddressess extends ConsumerWidget {
-  final AddressPage page;
-  final CustomerEntity? customer;
-  const InformedAddressess(this.page, this.customer, {super.key});
+  const InformedAddressess({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    final customer = ref.watch(customerStateControllerProvider).value;
+
+    if (customer?.Addresses == null || customer?.Addresses?.isEmpty == true) {
+      return const SizedBox.shrink();
+    }
 
     return Column(
       children: [
@@ -53,8 +55,8 @@ class InformedAddressess extends ConsumerWidget {
                                       customerStateControllerProvider.notifier,
                                     )
                                     .updateCustomer(
-                                      customer!.copyWith(
-                                        Addresses: [...?customer!.Addresses]
+                                      customer.copyWith(
+                                        Addresses: [...?customer.Addresses]
                                           ..remove(address),
                                       ),
                                     );

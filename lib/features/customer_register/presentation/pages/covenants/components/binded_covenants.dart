@@ -6,21 +6,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class BindedCovenants extends ConsumerWidget {
-  final CustomerEntity? customer;
-  final void Function(int? index)? changeSelectedIndex;
-  const BindedCovenants({
-    super.key,
-    required this.customer,
-    required this.changeSelectedIndex,
-  });
+  const BindedCovenants({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final customer = ref.watch(customerStateControllerProvider).value;
+    if (customer?.CustomerCovenants == null ||
+        customer!.CustomerCovenants!.isEmpty) {
+      return const SizedBox.shrink();
+    }
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
@@ -29,9 +27,9 @@ class BindedCovenants extends ConsumerWidget {
         DefaultDivider('Convênios vinculados'.hardcoded),
         ListView.builder(
           shrinkWrap: true,
-          itemCount: customer!.CustomerCovenants!.length,
+          itemCount: customer.CustomerCovenants!.length,
           itemBuilder: (_, index) {
-            final covenant = customer!.CustomerCovenants![index];
+            final covenant = customer.CustomerCovenants![index];
             return Card(
               child: Padding(
                 padding: const EdgeInsets.all(Sizes.p8),
@@ -69,14 +67,13 @@ class BindedCovenants extends ConsumerWidget {
                                       customerStateControllerProvider.notifier,
                                     )
                                     .updateCustomer(
-                                      customer!.copyWith(
+                                      customer.copyWith(
                                         CustomerCovenants: [
-                                          ...customer!.CustomerCovenants!
+                                          ...customer.CustomerCovenants!
                                             ..removeAt(index),
                                         ],
                                       ),
                                     );
-                                changeSelectedIndex?.call(null);
                               },
                               cancelActionText: 'Não'.hardcoded,
                               defaultActionText: 'Sim'.hardcoded,

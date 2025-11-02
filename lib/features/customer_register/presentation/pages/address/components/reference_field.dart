@@ -2,24 +2,24 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../address.dart';
 
 class ReferenceField extends StatelessWidget {
+  final bool isLoading;
+  final FocusNode referenceFocusNode;
+  final TextEditingController referenceController;
   const ReferenceField({
     super.key,
-    required this.page,
     required this.isLoading,
+    required this.referenceFocusNode,
+    required this.referenceController,
   });
-
-  final AddressPage page;
-  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextFormField(
-      focusNode: page.referenceFocusNode,
+      focusNode: referenceFocusNode,
       enabled: !isLoading,
-      controller: page.referenceController,
+      controller: referenceController,
       labelText: 'Referência'.hardcoded,
       hintText: 'Referência'.hardcoded,
     );

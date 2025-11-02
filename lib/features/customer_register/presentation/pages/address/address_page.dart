@@ -10,34 +10,7 @@ import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class AddressPage extends ConsumerStatefulWidget {
-  final TextEditingController zipController;
-  final TextEditingController numberController;
-  final TextEditingController addressController;
-  final TextEditingController districtController;
-  final TextEditingController cityController;
-  final TextEditingController complementController;
-  final TextEditingController referenceController;
-  final FocusNode numberFocusNode;
-  final FocusNode complementFocusNode;
-  final FocusNode referenceFocusNode;
-  final FocusNode zipFocusNode;
-  final CustomerEntity? customer;
-
-  const AddressPage({
-    super.key,
-    required this.zipController,
-    required this.numberController,
-    required this.addressController,
-    required this.districtController,
-    required this.cityController,
-    required this.complementController,
-    required this.referenceController,
-    required this.numberFocusNode,
-    required this.complementFocusNode,
-    required this.referenceFocusNode,
-    required this.zipFocusNode,
-    required this.customer,
-  });
+  const AddressPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddressPageState();
@@ -46,8 +19,38 @@ class AddressPage extends ConsumerStatefulWidget {
 class _AddressPageState extends ConsumerState<AddressPage> {
   final formKey = GlobalKey<FormState>();
   final zipFormKey = GlobalKey<FormState>();
+
+  final zipController = TextEditingController();
+  final numberController = TextEditingController();
+  final addressController = TextEditingController();
+  final districtController = TextEditingController();
+  final cityController = TextEditingController();
+  final complementController = TextEditingController();
+  final referenceController = TextEditingController();
+  final numberFocusNode = FocusNode();
+  final complementFocusNode = FocusNode();
+  final referenceFocusNode = FocusNode();
+  final zipFocusNode = FocusNode();
+
   bool showAllFields = false;
   BrazilStates? state;
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    zipController.dispose();
+    numberController.dispose();
+    addressController.dispose();
+    districtController.dispose();
+    cityController.dispose();
+    complementController.dispose();
+    referenceController.dispose();
+    numberFocusNode.dispose();
+    complementFocusNode.dispose();
+    referenceFocusNode.dispose();
+    zipFocusNode.dispose();
+  }
 
   @override
   void initState() {
@@ -60,11 +63,11 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         );
         if (address != null) {
           setState(() => showAllFields = true);
-          widget.addressController.text = address.Address;
-          widget.districtController.text = address.District;
-          widget.cityController.text = address.City;
-          widget.complementController.text = address.Complement ?? '';
-          widget.referenceController.text = address.Reference ?? '';
+          addressController.text = address.Address;
+          districtController.text = address.District;
+          cityController.text = address.City;
+          complementController.text = address.Complement ?? '';
+          referenceController.text = address.Reference ?? '';
 
           final stateIndex = BrazilStates.values.indexWhere(
             (e) => e.name == address.State?.name,
@@ -83,35 +86,36 @@ class _AddressPageState extends ConsumerState<AddressPage> {
     if (zipFormKey.currentState?.validate() != true) return;
     ref
         .read(getAddressByCepControllerProvider.notifier)
-        .getAddress(widget.zipController.text);
+        .getAddress(zipController.text);
   }
 
   void clearFields({required bool clearZip}) {
     if (clearZip) {
-      widget.zipController.clear();
+      zipController.clear();
     }
-    widget.addressController.clear();
-    widget.districtController.clear();
-    widget.cityController.clear();
+    addressController.clear();
+    districtController.clear();
+    cityController.clear();
     state = null;
-    widget.numberController.clear();
-    widget.referenceController.clear();
-    widget.complementController.clear();
+    numberController.clear();
+    referenceController.clear();
+    complementController.clear();
 
     setState(() {
       showAllFields = false;
     });
   }
 
-  void addAddress() {
-    if (formKey.currentState?.validate() != true || widget.customer == null) {
+  void addAddress() async {
+    final customer = await ref.read(customerStateControllerProvider.future);
+
+    if (formKey.currentState?.validate() != true || customer == null) {
       return;
     }
 
-    if (widget.customer!.Addresses?.any(
+    if (customer.Addresses?.any(
           (e) =>
-              e.Zip == widget.zipController.text &&
-              e.Number == widget.numberController.text,
+              e.Zip == zipController.text && e.Number == numberController.text,
         ) ??
         false) {
       showSnackBarMessage(
@@ -126,18 +130,18 @@ class _AddressPageState extends ConsumerState<AddressPage> {
     ref
         .read(customerStateControllerProvider.notifier)
         .updateCustomer(
-          widget.customer!.copyWith(
+          customer.copyWith(
             Addresses: [
-              ...?widget.customer!.Addresses,
+              ...?customer.Addresses,
               AddressEntity(
-                Zip: widget.zipController.text,
-                Address: widget.addressController.text,
-                Number: widget.numberController.text,
-                District: widget.districtController.text,
-                City: widget.cityController.text,
+                Zip: zipController.text,
+                Address: addressController.text,
+                Number: numberController.text,
+                District: districtController.text,
+                City: cityController.text,
                 State: state,
-                Complement: widget.complementController.text,
-                Reference: widget.referenceController.text,
+                Complement: complementController.text,
+                Reference: referenceController.text,
               ),
             ],
           ),
@@ -165,9 +169,9 @@ class _AddressPageState extends ConsumerState<AddressPage> {
           return;
         }
         setState(() => showAllFields = true);
-        widget.addressController.text = n.value?.Address ?? '';
-        widget.districtController.text = n.value?.District ?? '';
-        widget.cityController.text = n.value?.City ?? '';
+        addressController.text = n.value?.Address ?? '';
+        districtController.text = n.value?.District ?? '';
+        cityController.text = n.value?.City ?? '';
 
         final stateIndex = BrazilStates.values.indexWhere(
           (e) => e.name == n.value?.State?.name,
@@ -179,12 +183,11 @@ class _AddressPageState extends ConsumerState<AddressPage> {
           state = BrazilStates.values[stateIndex];
         }
         Future.delayed(const Duration(milliseconds: 100), () {
-          widget.numberFocusNode.requestFocus();
+          numberFocusNode.requestFocus();
         });
       });
     });
-
-    final getAddressAsync = ref.watch(getAddressByCepControllerProvider);
+    final isLoading = ref.watch(getAddressByCepControllerProvider).isLoading;
 
     return Scaffold(
       appBar: AppBar(title: Text('Endereços'.hardcoded)),
@@ -198,8 +201,9 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                   Form(
                     key: zipFormKey,
                     child: ZipField(
-                      page: widget,
-                      isLoading: getAddressAsync.isLoading,
+                      isLoading: isLoading,
+                      zipController: zipController,
+                      zipFocusNode: zipFocusNode,
                       seekAddress: seekAddress,
                       changeShowAllFields: (value) =>
                           setState(() => showAllFields = value),
@@ -207,13 +211,19 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                   ),
                   if (showAllFields) ...[
                     gapH8,
-                    AddressField(widget),
+                    AddressField(addressController: addressController),
                     gapH8,
                     Row(
                       children: [
-                        Expanded(child: DistrictField(widget)),
+                        Expanded(
+                          child: DistrictField(
+                            districtController: districtController,
+                          ),
+                        ),
                         gapW8,
-                        Expanded(child: CityField(widget)),
+                        Expanded(
+                          child: CityField(cityController: cityController),
+                        ),
                       ],
                     ),
                     gapH8,
@@ -222,7 +232,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                         Expanded(
                           flex: 60,
                           child: StatesDropDown(
-                            isLoading: getAddressAsync.isLoading,
+                            isLoading: isLoading,
                             onChangeState: (state) =>
                                 setState(() => this.state = state),
                             state: state,
@@ -232,8 +242,10 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                         Expanded(
                           flex: 40,
                           child: NumberField(
-                            isLoading: getAddressAsync.isLoading,
-                            page: widget,
+                            isLoading: isLoading,
+                            numberController: numberController,
+                            numberFocusNode: numberFocusNode,
+                            complementFocusNode: complementFocusNode,
                           ),
                         ),
                       ],
@@ -243,15 +255,18 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                       children: [
                         Expanded(
                           child: ComplementField(
-                            isLoading: getAddressAsync.isLoading,
-                            page: widget,
+                            isLoading: isLoading,
+                            complementController: complementController,
+                            complementFocusNode: complementFocusNode,
+                            referenceFocusNode: referenceFocusNode,
                           ),
                         ),
                         gapW8,
                         Expanded(
                           child: ReferenceField(
-                            page: widget,
-                            isLoading: getAddressAsync.isLoading,
+                            isLoading: isLoading,
+                            referenceFocusNode: referenceFocusNode,
+                            referenceController: referenceController,
                           ),
                         ),
                       ],
@@ -264,10 +279,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
                   ],
                 ],
               ),
-              if (widget.customer?.Addresses != null &&
-                  widget.customer!.Addresses!.isNotEmpty) ...[
-                InformedAddressess(widget, widget.customer),
-              ],
+              const InformedAddressess(),
             ],
           ),
         ),

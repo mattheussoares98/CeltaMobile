@@ -5,26 +5,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/validators/validators.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class EmailPage extends ConsumerWidget {
-  final CustomerEntity? customer;
-  final TextEditingController emailController;
-  final GlobalKey<FormState> formKey;
-  const EmailPage({
-    super.key,
-    required this.emailController,
-    required this.formKey,
-    required this.customer,
-  });
+class EmailPage extends ConsumerStatefulWidget {
+  const EmailPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _EmailPageState();
+}
+
+class _EmailPageState extends ConsumerState<EmailPage> {
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    emailController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    final customer = ref.watch(customerStateControllerProvider).value;
 
     void insertEmail() {
       if (formKey.currentState?.validate() != true) {
@@ -43,7 +51,7 @@ class EmailPage extends ConsumerWidget {
           .read(customerStateControllerProvider.notifier)
           .updateCustomer(
             customer!.copyWith(
-              Emails: (customer?.Emails ?? [])..add(emailController.text),
+              Emails: (customer.Emails ?? [])..add(emailController.text),
             ),
           );
       emailController.clear();
@@ -84,7 +92,7 @@ class EmailPage extends ConsumerWidget {
                 onPressed: insertEmail,
               ),
               if (customer?.Emails != null && customer!.Emails!.isNotEmpty)
-                InformedEmails(customer: customer),
+                const InformedEmails(),
             ],
           ),
         ),

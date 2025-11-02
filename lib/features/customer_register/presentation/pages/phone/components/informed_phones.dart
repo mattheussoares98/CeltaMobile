@@ -5,22 +5,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class InformedPhones extends ConsumerWidget {
-  final CustomerEntity? customer;
-  const InformedPhones({super.key, required this.customer});
+  const InformedPhones({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final customer = ref.watch(customerStateControllerProvider).value;
+
+    if (customer?.Telephones == null || customer!.Telephones!.isEmpty) {
+      return const SizedBox.shrink();
+    }
     void removeTelephone(int index) {
       ref
           .read(customerStateControllerProvider.notifier)
           .updateCustomer(
-            customer!.copyWith(
-              Telephones: [...customer!.Telephones!..removeAt(index)],
+            customer.copyWith(
+              Telephones: [...customer.Telephones!..removeAt(index)],
             ),
           );
     }
@@ -33,9 +36,9 @@ class InformedPhones extends ConsumerWidget {
         DefaultDivider('Telefones informados'.hardcoded),
         ListView.builder(
           shrinkWrap: true,
-          itemCount: customer?.Telephones?.length,
+          itemCount: customer.Telephones?.length,
           itemBuilder: (_, index) {
-            final phone = customer!.Telephones![index];
+            final phone = customer.Telephones![index];
 
             return Card(
               child: Padding(

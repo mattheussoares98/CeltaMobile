@@ -1,41 +1,43 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/validators/validators.dart';
-import '../address.dart';
 
-class ZipField extends StatelessWidget {
-  final AddressPage page;
-  final bool isLoading;
+class ZipField extends ConsumerWidget {
   final VoidCallback seekAddress;
   final void Function(bool value) changeShowAllFields;
+  final TextEditingController zipController;
+  final FocusNode zipFocusNode;
+  final bool isLoading;
   const ZipField({
     super.key,
-    required this.page,
-    required this.isLoading,
     required this.seekAddress,
     required this.changeShowAllFields,
+    required this.zipController,
+    required this.zipFocusNode,
+    required this.isLoading,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return DefaultTextFormField(
-      controller: page.zipController,
+      controller: zipController,
       enabled: !isLoading,
-      focusNode: page.zipFocusNode,
+      focusNode: zipFocusNode,
       maxLength: 8,
       labelText: 'CEP'.hardcoded,
       hintText: 'CEP'.hardcoded,
       prefixIcon: IconButton(
         onPressed: () {
           changeShowAllFields(false);
-          page.zipController.clear();
+          zipController.clear();
         },
         icon: Icon(
           isIOS ? CupertinoIcons.delete : Icons.delete,

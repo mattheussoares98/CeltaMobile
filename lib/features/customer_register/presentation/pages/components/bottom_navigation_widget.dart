@@ -1,23 +1,24 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 
-class BottomNavigationWidget extends StatelessWidget {
+class BottomNavigationWidget extends ConsumerWidget {
   final int selectedIndex;
   final void Function(int index) onTapItem;
-  final CustomerEntity? customer;
   const BottomNavigationWidget({
     super.key,
     required this.selectedIndex,
     required this.onTapItem,
-    required this.customer,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final customer = ref.watch(customerStateControllerProvider).value;
+
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     return BottomNavigationBar(

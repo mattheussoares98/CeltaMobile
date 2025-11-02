@@ -3,20 +3,26 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/validators/validators.dart';
-import '../address.dart';
 
 class NumberField extends StatelessWidget {
-  const NumberField({super.key, required this.isLoading, required this.page});
-
   final bool isLoading;
-  final AddressPage page;
+  final TextEditingController numberController;
+  final FocusNode numberFocusNode;
+  final FocusNode complementFocusNode;
+  const NumberField({
+    super.key,
+    required this.isLoading,
+    required this.numberController,
+    required this.numberFocusNode,
+    required this.complementFocusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextFormField(
       enabled: !isLoading,
-      controller: page.numberController,
-      focusNode: page.numberFocusNode,
+      controller: numberController,
+      focusNode: numberFocusNode,
       labelText: 'Número'.hardcoded,
       hintText: 'Número'.hardcoded,
       validator: FormValidators.compose([
@@ -25,7 +31,7 @@ class NumberField extends StatelessWidget {
         NumberValidator(allowDecimal: false),
       ]),
       onFieldSubmitted: (_) {
-        page.complementFocusNode.requestFocus();
+        complementFocusNode.requestFocus();
       },
       keyboardType: const TextInputType.numberWithOptions(
         decimal: false,

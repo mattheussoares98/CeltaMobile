@@ -37,8 +37,7 @@ class PhoneField extends ConsumerWidget {
       },
       validator: FormValidators.compose([
         NonEmptyValidator(),
-        MinLengthValidator(8),
-        NumberValidator(allowDecimal: false),
+        MinLengthValidator(9),
       ]),
     );
   }

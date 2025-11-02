@@ -3,18 +3,22 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
-import '../personal_data.dart';
 
 class SexDropDown extends StatelessWidget {
-  final PersonalDataPage personalDataPage;
-  const SexDropDown(this.personalDataPage, {super.key});
+  final Function(CustomerSexType? value) onChangeSex;
+  final CustomerSexType? selectedSex;
+  const SexDropDown({
+    super.key,
+    required this.onChangeSex,
+    required this.selectedSex,
+  });
 
   @override
   Widget build(BuildContext context) {
     return DefaultSimpleDropDown<CustomerSexType?>(
-      value: personalDataPage.selectedSex,
+      value: selectedSex,
       hint: 'Sexo'.hardcoded,
-      onChanged: personalDataPage.onChangeSex,
+      onChanged: onChangeSex,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (sex) {
         if (sex == null) {

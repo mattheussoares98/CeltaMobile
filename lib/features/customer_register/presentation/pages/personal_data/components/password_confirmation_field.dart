@@ -2,36 +2,41 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../personal_data.dart';
 import 'components.dart';
 
 class PasswordConfirmationField extends StatelessWidget {
-  final PersonalDataPage personalDataPage;
-  const PasswordConfirmationField(this.personalDataPage, {super.key});
+  final TextEditingController passwordConfirmationController;
+  final FocusNode passwordConfirmationFocusNode;
+  final TextEditingController passwordController;
+
+  const PasswordConfirmationField({
+    super.key,
+    required this.passwordController,
+    required this.passwordConfirmationController,
+    required this.passwordConfirmationFocusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextFormField(
-      controller: personalDataPage.passwordConfirmationController,
+      controller: passwordConfirmationController,
       maxLength: 20,
       hintText: 'Confirmar senha'.hardcoded,
       labelText: 'Confirmar senha'.hardcoded,
       obscureText: true,
-      focusNode: personalDataPage.passwordConfirmationFocusNode,
+      focusNode: passwordConfirmationFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
-        if (personalDataPage.passwordController.text.isEmpty &&
-            personalDataPage.passwordConfirmationController.text.isEmpty) {
+        if (passwordController.text.isEmpty &&
+            passwordConfirmationController.text.isEmpty) {
           return null;
-        } else if (personalDataPage.passwordController.text == value) {
+        } else if (passwordController.text == value) {
           return null;
         }
 
         return 'As senhas não conferem'.hardcoded;
       },
-      suffixIcon: DefaultDeleteIcon(
-        controller: personalDataPage.passwordConfirmationController,
-      ),
+      suffixIcon: DefaultDeleteIcon(controller: passwordConfirmationController),
     );
   }
 }
