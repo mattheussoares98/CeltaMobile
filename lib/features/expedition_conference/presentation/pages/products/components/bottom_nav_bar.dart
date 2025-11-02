@@ -1,25 +1,29 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
-class BottomNavBar extends StatelessWidget {
-  final AsyncValue<ExpeditionConferenceState> pendingProductsAsync;
+class BottomNavBar extends ConsumerWidget {
   final void Function(int) onTap;
   final int currentIndex;
+  final int expeditionControlCode;
   const BottomNavBar({
     super.key,
-    required this.pendingProductsAsync,
     required this.onTap,
     required this.currentIndex,
+    required this.expeditionControlCode,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    final pendingProductsAsync = ref.watch(
+      expeditionConferenceControllerProvider(expeditionControlCode),
+    );
 
     return BottomNavigationBar(
       currentIndex: currentIndex,

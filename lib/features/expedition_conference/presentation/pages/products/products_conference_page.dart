@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../controllers/controllers.dart';
 import '../mixins/mixins.dart';
 import 'components/components.dart';
@@ -56,23 +54,11 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       enterpriseCode: widget.enterpriseCode,
     );
 
-    final pendingProductsAsync = ref.watch(
-      expeditionConferenceControllerProvider(widget.expeditionControlCode),
-    );
-
     ref.listen(
       expeditionConferenceControllerProvider(widget.expeditionControlCode),
       (p, n) {
         n.showAlertDialogOnError(context);
       },
-    );
-
-    final searchProductsAsync = ref.watch(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.generic,
-        Modules.expeditionConference,
-      ),
     );
 
     ref.listen(confirmConferenceControllerProvider, (p, n) {
@@ -85,21 +71,10 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       n.showAlertDialogOnError(context);
     });
 
-    final confirmAsync = ref.watch(confirmConferenceControllerProvider);
+    final confirmHasError = ref
+        .watch(confirmConferenceControllerProvider)
+        .hasError;
 
-    final pages = [
-      PendingProductsPage(
-        focusNode: focusNode,
-        searchValueController: searchValueController,
-        enterpriseCode: widget.enterpriseCode,
-        pendingProductsAsync: pendingProductsAsync,
-        searchProductsAsync: searchProductsAsync,
-        expeditionControlCode: widget.expeditionControlCode,
-      ),
-      ConferedProductsPage(
-        scannedProducts: pendingProductsAsync.value?.scannedProducts,
-      ),
-    ];
     return Stack(
       children: [
         Scaffold(
@@ -111,15 +86,27 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
               ),
             ),
           ),
-          body: confirmAsync.hasError
+          body: confirmHasError
               ? TryConfirmAgain(
-                  confirmAsync: confirmAsync,
                   expeditionControlCode: widget.expeditionControlCode,
                   stepCode: widget.stepCode,
                 )
-              : pages[currentIndex],
+              : IndexedStack(
+                  index: currentIndex,
+                  children: [
+                    PendingProductsPage(
+                      focusNode: focusNode,
+                      searchValueController: searchValueController,
+                      enterpriseCode: widget.enterpriseCode,
+                      expeditionControlCode: widget.expeditionControlCode,
+                    ),
+                    ConferedProductsPage(
+                      expeditionControlCode: widget.expeditionControlCode,
+                    ),
+                  ],
+                ),
           bottomNavigationBar: BottomNavBar(
-            pendingProductsAsync: pendingProductsAsync,
+            expeditionControlCode: widget.expeditionControlCode,
             onTap: (index) {
               setState(() {
                 currentIndex = index;
@@ -128,7 +115,18 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
             currentIndex: currentIndex,
           ),
         ),
-        if (confirmAsync.isLoading) const LoadingPage(),
+        Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref
+                .watch(confirmConferenceControllerProvider)
+                .isLoading;
+            if (isLoading) {
+              return const LoadingPage();
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ],
     );
   }

@@ -6,18 +6,18 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../controllers/controllers.dart';
 
 class TryConfirmAgain extends ConsumerWidget {
-  final AsyncValue<void> confirmAsync;
   final int expeditionControlCode;
   final int stepCode;
   const TryConfirmAgain({
     super.key,
-    required this.confirmAsync,
     required this.expeditionControlCode,
     required this.stepCode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final confirmAsync = ref.watch(confirmConferenceControllerProvider);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

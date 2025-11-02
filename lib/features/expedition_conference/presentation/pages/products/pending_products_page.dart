@@ -5,7 +5,6 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -13,21 +12,28 @@ class PendingProductsPage extends ConsumerWidget {
   final int enterpriseCode;
   final FocusNode focusNode;
   final TextEditingController searchValueController;
-  final AsyncValue<ExpeditionConferenceState> pendingProductsAsync;
-  final AsyncValue<List<ProductEntity>> searchProductsAsync;
   final int expeditionControlCode;
   const PendingProductsPage({
     super.key,
     required this.enterpriseCode,
     required this.focusNode,
     required this.searchValueController,
-    required this.pendingProductsAsync,
-    required this.searchProductsAsync,
     required this.expeditionControlCode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pendingProductsAsync = ref.watch(
+      expeditionConferenceControllerProvider(expeditionControlCode),
+    );
+    final searchProductsAsync = ref.watch(
+      searchProductsStateControllerProvider(
+        enterpriseCode,
+        BsRoutine.generic,
+        Modules.expeditionConference,
+      ),
+    );
+
     void searchProducts() {
       ref
           .read(
@@ -71,9 +77,7 @@ class PendingProductsPage extends ConsumerWidget {
               ),
             ),
           ),
-          PendingProductsItems(
-            products: pendingProductsAsync.value!.pendingProducts,
-          ),
+          PendingProductsItems(expeditionControlCode: expeditionControlCode),
         ],
       ),
     );
