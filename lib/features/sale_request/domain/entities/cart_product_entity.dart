@@ -89,10 +89,10 @@ class CartProductEntity extends Equatable {
 
   double get getValueLiquid {
     double value = Value;
-    if (IncrementValue != null) value += IncrementValue! * Quantity;
-    if (DiscountValue != null) value -= DiscountValue! * Quantity;
+    if (IncrementValue != null) value += IncrementValue!;
+    if (DiscountValue != null) value -= DiscountValue!;
     if (AutomaticDiscountValue != null) {
-      value -= AutomaticDiscountValue! * Quantity;
+      value -= AutomaticDiscountValue!;
     }
     return value;
   }
