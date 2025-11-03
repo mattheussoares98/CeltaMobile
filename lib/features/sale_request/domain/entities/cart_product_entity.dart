@@ -91,11 +91,19 @@ class CartProductEntity extends Equatable {
     required int productPackingCode,
     required double quantity,
     required double price,
-    double?
-    totalDiscount, //needs to be the sum of item discount and item quantity because when process the cart returns this way
+    double? discountByItem,
     PercentageOrValue? discountType,
   }) {
     final double baseTotal = price * quantity;
+
+    double? totalDiscount;
+    if (discountByItem != null && discountType != null) {
+      if (discountType == PercentageOrValue.percentage) {
+        totalDiscount = price * (discountByItem / 100) * quantity;
+      } else {
+        totalDiscount = discountByItem * quantity;
+      }
+    }
 
     return CartProductEntity(
       ProductPackingCode: productPackingCode,
@@ -104,7 +112,7 @@ class CartProductEntity extends Equatable {
       TotalLiquid: baseTotal - (totalDiscount ?? 0),
       DiscountValue: totalDiscount,
       DiscountPercentageOrValue: discountType,
-      DiscountDescription: totalDiscount != null && discountType != null
+      DiscountDescription: discountByItem != null && discountType != null
           ? 'Desconto manual'
           : null,
     );
@@ -122,5 +130,15 @@ class CartProductEntity extends Equatable {
 
   double get getTotalLiquid {
     return Quantity * getValueLiquid;
+  }
+
+  double? get getValueOrPercentageDiscount {
+    if (DiscountValue == null || DiscountPercentageOrValue == null) {
+      return null;
+    } else if (DiscountPercentageOrValue == PercentageOrValue.percentage) {
+      return DiscountValue! / (Quantity * Value) * 100;
+    } else {
+      return DiscountValue! / Quantity;
+    }
   }
 }
