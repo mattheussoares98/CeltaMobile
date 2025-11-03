@@ -40,6 +40,26 @@ class __ProductItemState extends ConsumerState<ProductItem> {
   PercentageOrValue? discountType;
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        setState(() {
+          discountType = ref
+              .read(
+                pendingSaleRequestStateControllerProvider.select(
+                  (state) =>
+                      state.value?.cart[widget.product.ProductPackingCode],
+                ),
+              )
+              ?.DiscountPercentageOrValue;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cartProduct = ref.watch(
       pendingSaleRequestStateControllerProvider.select(
