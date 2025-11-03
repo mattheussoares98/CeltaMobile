@@ -76,6 +76,14 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       } else {
         priceController.clear();
       }
+      if (cartProduct?.DiscountValue != null) {
+        discountController.text = cartProduct!.getValueOrPercentageDiscount
+            .toString()
+            .replaceAll(RegExp(r'\.'), ',');
+      } else {
+        discountController.clear();
+      }
+
       quantityController.text = '1';
 
       Future.delayed(const Duration(milliseconds: 100), () {
