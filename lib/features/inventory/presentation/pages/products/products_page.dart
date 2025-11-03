@@ -85,6 +85,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       setState(() {
         selectedIndex = index;
       });
+      quantityController.clear();
       Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });
@@ -93,13 +94,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final productsState = ref.watch(
-      inventoryProductsStateControllerProvider(
-        widget.enterpriseCode,
-        widget.codigoInternoInventario,
-        widget.codigoInternoInvCont,
-      ),
-    );
     ref.listen(
       inventoryProductsStateControllerProvider(
         widget.enterpriseCode,
@@ -153,13 +147,13 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             padding: const EdgeInsets.all(Sizes.p8),
             child: CustomScrollView(
               slivers: [
-                SliverToBoxAdapter(
-                  child: DefaultSearchProducts(
-                    focusNode: searchProductsFocusNode,
-                    isLoading: productsState.isLoading,
-                    searchProducts: _searchProducts,
-                    searchValueController: searchProductsController,
-                  ),
+                SearchProducts(
+                  searchProducts: _searchProducts,
+                  searchProductsController: searchProductsController,
+                  searchProductsFocusNode: searchProductsFocusNode,
+                  enterpriseCode: widget.enterpriseCode,
+                  codigoInternoInventario: widget.codigoInternoInventario,
+                  codigoInternoInvCont: widget.codigoInternoInvCont,
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
@@ -175,37 +169,50 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     ),
                   ),
                 ),
-                SliverList.builder(
-                  itemCount: productsState.value?.length ?? 0,
-                  itemBuilder: (_, index) {
-                    final product = productsState.value![index];
-
-                    return Card(
-                      margin: const EdgeInsets.only(top: Sizes.p8),
-                      clipBehavior: Clip.antiAlias,
-                      child: Column(
-                        children: [
-                          ProductInformations(
-                            onChangeSelectedIndex: () =>
-                                changeSelectedIndex(index),
-                            product: product,
-                            isSelected: selectedIndex == index,
-                            entryQuantityAsync: entryQuantityAsync,
-                          ),
-                          if (selectedIndex == index) ...[
-                            QuantityButtonsAndField(
-                              insertIndividually: insertIndividually,
-                              quantityFocusNode: quantityFocusNode,
-                              quantityController: quantityController,
-                              codigoInternoInvCont: widget.codigoInternoInvCont,
-                              codigoInternoProEmb: product.codigoInternoProEmb,
-                              enterpriseCode: widget.enterpriseCode,
-                              codigoInternoInventario:
-                                  widget.codigoInternoInventario,
-                            ),
-                          ],
-                        ],
+                Consumer(
+                  builder: (_, ref, _) {
+                    final productsState = ref.watch(
+                      inventoryProductsStateControllerProvider(
+                        widget.enterpriseCode,
+                        widget.codigoInternoInventario,
+                        widget.codigoInternoInvCont,
                       ),
+                    );
+                    return SliverList.builder(
+                      itemCount: productsState.value?.length ?? 0,
+                      itemBuilder: (_, index) {
+                        final product = productsState.value![index];
+
+                        return Card(
+                          margin: const EdgeInsets.only(top: Sizes.p8),
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
+                            children: [
+                              ProductInformations(
+                                onChangeSelectedIndex: () =>
+                                    changeSelectedIndex(index),
+                                product: product,
+                                isSelected: selectedIndex == index,
+                                entryQuantityAsync: entryQuantityAsync,
+                              ),
+                              if (selectedIndex == index) ...[
+                                QuantityButtonsAndField(
+                                  insertIndividually: insertIndividually,
+                                  quantityFocusNode: quantityFocusNode,
+                                  quantityController: quantityController,
+                                  codigoInternoInvCont:
+                                      widget.codigoInternoInvCont,
+                                  codigoInternoProEmb:
+                                      product.codigoInternoProEmb,
+                                  enterpriseCode: widget.enterpriseCode,
+                                  codigoInternoInventario:
+                                      widget.codigoInternoInventario,
+                                ),
+                              ],
+                            ],
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
