@@ -28,6 +28,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   final quantityController = TextEditingController();
   final searchProductsFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
+  final formKeyQuantity = GlobalKey<FormState>();
   int? selectedIndex;
   bool insertIndividually = false;
 
@@ -90,6 +91,30 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         quantityFocusNode.requestFocus();
       });
     }
+  }
+
+  void entry(bool isSubtract, int codigoInternoProEmb) {
+    if (formKeyQuantity.currentState?.validate() != true) {
+      if (!quantityFocusNode.hasFocus) {
+        quantityFocusNode.requestFocus();
+      }
+      return;
+    }
+    ref
+        .read(
+          entryQuantityStateControllerProvider(
+            widget.codigoInternoInvCont,
+          ).notifier,
+        )
+        .entry(
+          codigoInternoInventario: widget.codigoInternoInventario,
+          enterpriseCode: widget.enterpriseCode,
+          codigoInternoProEmb: codigoInternoProEmb,
+          quantity: insertIndividually
+              ? 1
+              : quantityController.text.toDouble()!,
+          isSubtract: isSubtract,
+        );
   }
 
   @override
@@ -204,6 +229,11 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                                   enterpriseCode: widget.enterpriseCode,
                                   codigoInternoInventario:
                                       widget.codigoInternoInventario,
+                                  entryQuantity: (isSubtract) => entry(
+                                    isSubtract,
+                                    product.codigoInternoProEmb,
+                                  ),
+                                  formKey: formKeyQuantity,
                                 ),
                               ],
                             ],
