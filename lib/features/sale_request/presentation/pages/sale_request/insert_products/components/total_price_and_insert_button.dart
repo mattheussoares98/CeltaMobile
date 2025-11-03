@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
+import '../../../../../domain/entities/entities.dart';
 import 'components.dart';
 
 class TotalPriceAndInsertButton extends StatelessWidget {
   final VoidCallback insertProduct;
   final ProductEntity product;
   final ProductsItems productsItems;
+  final PercentageOrValue? discountType;
   const TotalPriceAndInsertButton({
     super.key,
     required this.insertProduct,
     required this.product,
     required this.productsItems,
+    required this.discountType,
   });
 
   @override
@@ -30,15 +33,13 @@ class TotalPriceAndInsertButton extends StatelessWidget {
       ]),
       builder: (_, _) {
         //TODO calculate correctly
-        final productPrice = product.getPrice;
-        final writtenPrice = productsItems.priceController.text.toDouble() ?? 0;
-        final quantity = productsItems.quantityController.text.toDouble() ?? 0;
-
-        final totalPrice =
-            (productsItems.selectedRequest.AllowAlterCostOrSalePrice == true
-                ? writtenPrice
-                : productPrice) *
-            quantity;
+        final newItem = CartProductEntity.create(
+          productPackingCode: product.ProductPackingCode,
+          quantity: productsItems.quantityController.text.toDouble() ?? 0,
+          price: productsItems.priceController.text.toDouble() ?? 0,
+          discount: productsItems.discountController.text.toDouble() ?? 0,
+          discountType: discountType,
+        );
         return Column(
           children: [
             Text('Total'.hardcoded, style: theme.textTheme.titleSmall),
@@ -50,7 +51,10 @@ class TotalPriceAndInsertButton extends StatelessWidget {
                     style: theme.textTheme.titleSmall?.copyWith(fontSize: 10),
                   ),
                   TextSpan(
-                    text: totalPrice.toString().toBrazilianNumber().hardcoded,
+                    text: newItem.getTotalLiquid
+                        .toString()
+                        .toBrazilianNumber()
+                        .hardcoded,
                     style: theme.textTheme.titleSmall,
                   ),
                 ],

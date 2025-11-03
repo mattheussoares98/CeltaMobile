@@ -13,7 +13,12 @@ class ProductItem extends ConsumerStatefulWidget {
   final int index;
   final int? selectedIndex;
   final void Function(int?, ProductEntity, CartProductEntity?) onTapProduct;
-  final void Function(ProductEntity, CartProductEntity?) insertProduct;
+  final void Function(
+    ProductEntity,
+    CartProductEntity?,
+    PercentageOrValue? discountType,
+  )
+  insertProduct;
   final RequestTypeEntity selectedRequest;
   final ProductsItems productsItemsWidget;
   const ProductItem({
@@ -52,7 +57,7 @@ class __ProductItemState extends ConsumerState<ProductItem> {
           ? null
           : CartItemSummary(
               cartQuantity: cartProduct.Quantity,
-              cartValue: cartProduct.Value,
+              cartValue: cartProduct.getValueLiquid,
               product: widget.product,
             ),
       onDelete: cartProduct == null
@@ -77,6 +82,7 @@ class __ProductItemState extends ConsumerState<ProductItem> {
                             insertProduct: () => widget.insertProduct(
                               widget.product,
                               cartProduct,
+                              discountType,
                             ),
                           ),
                           if (widget
@@ -89,6 +95,7 @@ class __ProductItemState extends ConsumerState<ProductItem> {
                               insertProduct: () => widget.insertProduct(
                                 widget.product,
                                 cartProduct,
+                                discountType,
                               ),
                             ),
                           ],
@@ -99,8 +106,12 @@ class __ProductItemState extends ConsumerState<ProductItem> {
                     Expanded(
                       flex: 35,
                       child: TotalPriceAndInsertButton(
-                        insertProduct: () =>
-                            widget.insertProduct(widget.product, cartProduct),
+                        discountType: discountType,
+                        insertProduct: () => widget.insertProduct(
+                          widget.product,
+                          cartProduct,
+                          discountType,
+                        ),
                         productsItems: widget.productsItemsWidget,
                         product: widget.product,
                       ),
@@ -111,8 +122,11 @@ class __ProductItemState extends ConsumerState<ProductItem> {
                   gapH4,
                   DiscountFieldAndTypeDropdown(
                     productsItems: widget.productsItemsWidget,
-                    insertProduct: () =>
-                        widget.insertProduct(widget.product, cartProduct),
+                    insertProduct: () => widget.insertProduct(
+                      widget.product,
+                      cartProduct,
+                      discountType,
+                    ),
                     discountType: discountType,
                     changeDiscountType: (value) {
                       setState(() {

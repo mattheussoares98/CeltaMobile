@@ -47,7 +47,11 @@ class ProductsItems extends ConsumerStatefulWidget {
 
 class _ProductsItemsState extends ConsumerState<ProductsItems> {
   final formKey = GlobalKey<FormState>();
-  void insertProduct(ProductEntity product, CartProductEntity? cartProduct) {
+  void insertProduct(
+    ProductEntity product,
+    CartProductEntity? cartProduct,
+    PercentageOrValue? discountType,
+  ) {
     if (formKey.currentState?.validate() != true) {
       return;
     }
@@ -58,15 +62,17 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     }
 
     double value = widget.priceController.text.toDouble() ?? product.getPrice;
+    double? discount = widget.discountController.text.toDouble();
 
     ref
         .read(pendingSaleRequestStateControllerProvider.notifier)
         .addProduct(
-          CartProductEntity(
-            ProductPackingCode: product.ProductPackingCode,
-            Quantity: quantity,
-            Value: value,
-            TotalLiquid: quantity * value,
+          CartProductEntity.create(
+            productPackingCode: product.ProductPackingCode,
+            quantity: quantity,
+            price: value,
+            discount: discount,
+            discountType: discountType,
           ),
         );
 
