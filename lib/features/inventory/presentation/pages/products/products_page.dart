@@ -125,10 +125,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       },
     );
 
-    final entryQuantityAsync = ref.watch(
-      entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
-    );
-
     ref.listen(
       entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
       (p, n) {
@@ -193,7 +189,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                                     changeSelectedIndex(index),
                                 product: product,
                                 isSelected: selectedIndex == index,
-                                entryQuantityAsync: entryQuantityAsync,
+                                codigoInternoInvCont:
+                                    widget.codigoInternoInvCont,
                               ),
                               if (selectedIndex == index) ...[
                                 QuantityButtonsAndField(
@@ -220,7 +217,21 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ),
           ),
         ),
-        if (entryQuantityAsync.isLoading) const LoadingPage(),
+        Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref.watch(
+              entryQuantityStateControllerProvider(
+                widget.codigoInternoInvCont,
+              ).select((state) => state.isLoading),
+            );
+
+            if (isLoading) {
+              return const LoadingPage();
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ],
     );
   }

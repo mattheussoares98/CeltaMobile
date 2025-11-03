@@ -1,29 +1,32 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/string_modifier.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
-class ProductInformations extends StatelessWidget {
+class ProductInformations extends ConsumerWidget {
   final VoidCallback onChangeSelectedIndex;
   final InventoryProductEntity product;
   final bool isSelected;
-  final AsyncValue<LastChangedProductEntity?> entryQuantityAsync;
+  final int codigoInternoInvCont;
   const ProductInformations({
     super.key,
     required this.onChangeSelectedIndex,
     required this.product,
     required this.isSelected,
-    required this.entryQuantityAsync,
+    required this.codigoInternoInvCont,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final lastChangedProduct = entryQuantityAsync.value;
+    final lastChangedProduct = ref
+        .watch(entryQuantityStateControllerProvider(codigoInternoInvCont))
+        .value;
 
     return InkWell(
       onTap: onChangeSelectedIndex,
