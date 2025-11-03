@@ -71,10 +71,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       n.showAlertDialogOnError(context);
     });
 
-    final confirmHasError = ref
-        .watch(confirmConferenceControllerProvider)
-        .hasError;
-
     return Stack(
       children: [
         Scaffold(
@@ -86,7 +82,12 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
               ),
             ),
           ),
-          body: confirmHasError
+          body:
+              ref.watch(
+                confirmConferenceControllerProvider.select(
+                  (state) => state.hasError,
+                ),
+              )
               ? TryConfirmAgain(
                   expeditionControlCode: widget.expeditionControlCode,
                   stepCode: widget.stepCode,

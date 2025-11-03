@@ -14,15 +14,14 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final requestsAsync = ref.watch(
-      requestTypeStateControllerProvider(Modules.transferRequest),
-    );
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(title: Text('Modelos de pedido'.hardcoded)),
       body: AsyncValueWidget(
-        value: requestsAsync,
+        value: ref.watch(
+          requestTypeStateControllerProvider(Modules.transferRequest),
+        ),
         tryAgain: () {
           ref.invalidate(
             requestTypeStateControllerProvider(Modules.transferRequest),

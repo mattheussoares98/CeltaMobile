@@ -41,9 +41,6 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     final pendingAsync = ref.watch(pendingSaleRequestStateControllerProvider);
-    final requestsState = ref.watch(
-      requestTypeStateControllerProvider(Modules.saleRequest),
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +71,9 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
         ],
       ),
       body: AsyncValueWidget(
-        value: requestsState,
+        value: ref.watch(
+          requestTypeStateControllerProvider(Modules.saleRequest),
+        ),
         tryAgain: () {
           ref.invalidate(
             requestTypeStateControllerProvider(Modules.saleRequest),

@@ -19,12 +19,12 @@ class SaveButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    final updatePermissionsState = ref.watch(
-      updatePermissionsControllerProvider,
+    final isLoading = ref.watch(
+      updatePermissionsControllerProvider.select((value) => value.isLoading),
     );
 
     return IconButton(
-      onPressed: updatePermissionsState.isLoading
+      onPressed: isLoading
           ? null
           : () {
               ref

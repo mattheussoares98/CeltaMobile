@@ -59,8 +59,6 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       },
     );
 
-    final sendToPrintAsync = ref.watch(sendToPrintControllerProvider);
-
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
@@ -123,7 +121,11 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
                                   ? Colors.red
                                   : null,
                               isLoading:
-                                  sendToPrintAsync.isLoading &&
+                                  ref.watch(
+                                    sendToPrintControllerProvider.select(
+                                      (state) => state.isLoading,
+                                    ),
+                                  ) &&
                                   index == lastChangedIndex,
                               onPressed: () async {
                                 setState(() {

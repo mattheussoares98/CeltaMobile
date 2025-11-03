@@ -77,14 +77,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
   @override
   Widget build(BuildContext context) {
-    final searchAsync = ref.watch(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.saleRequest,
-        Modules.saleRequest,
-      ),
-    );
-
     ref.listen(
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
@@ -101,7 +93,13 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     return Form(
       key: formKey,
       child: AsyncValueWidget(
-        value: searchAsync,
+        value: ref.watch(
+          searchProductsStateControllerProvider(
+            widget.enterpriseCode,
+            BsRoutine.saleRequest,
+            Modules.saleRequest,
+          ),
+        ),
         tryAgain: null,
         data: (products) {
           return ResponsiveListFlow(

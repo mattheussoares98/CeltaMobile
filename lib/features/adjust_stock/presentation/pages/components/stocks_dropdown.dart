@@ -7,14 +7,12 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/stock/stock.dart';
 
 class StocksDropdown extends ConsumerWidget {
-  final AsyncValue<List<StockTypeEntity>> asyncValue;
   final int enterpriseCode;
   final TransferJustificationEntity? selectedJustification;
   final StockTypeEntity? selectedStockType;
   final void Function(StockTypeEntity? value) onChanged;
   const StocksDropdown({
     super.key,
-    required this.asyncValue,
     required this.enterpriseCode,
     required this.selectedJustification,
     required this.selectedStockType,
@@ -23,14 +21,18 @@ class StocksDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final stocksAsync = ref.watch(
+      stockTypeStateControllerProvider(enterpriseCode),
+    );
+
     return AsyncValueWidget(
-      value: asyncValue,
+      value: stocksAsync,
       tryAgain: () {
         ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
       },
       data: (stocks) {
         return DefaultSimpleDropDown<StockTypeEntity?>(
-          isLoading: asyncValue.isLoading,
+          isLoading: stocksAsync.isLoading,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: selectedJustification?.CodigoInterno_TipoEstoque != null
               ? null

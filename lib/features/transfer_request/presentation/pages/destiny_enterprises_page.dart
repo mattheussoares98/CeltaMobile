@@ -21,16 +21,15 @@ class DestinyEnterprisesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final destinyAsync = ref.watch(
-      destinyEnterprisesStateControllerProvider(
-        enterpriseOriginCode: enterpriseOriginCode,
-        requestTypeCode: requestTypeCode,
-      ),
-    );
     return Scaffold(
       appBar: AppBar(title: Text('Empresa de destino'.hardcoded)),
       body: AsyncValueWidget(
-        value: destinyAsync,
+        value: ref.watch(
+          destinyEnterprisesStateControllerProvider(
+            enterpriseOriginCode: enterpriseOriginCode,
+            requestTypeCode: requestTypeCode,
+          ),
+        ),
         tryAgain: () {
           ref.invalidate(
             destinyEnterprisesStateControllerProvider(

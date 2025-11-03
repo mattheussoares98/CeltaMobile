@@ -16,11 +16,6 @@ class CustomerPage extends ConsumerStatefulWidget {
 class _CustomerPageState extends ConsumerState<CustomerPage> {
   @override
   Widget build(BuildContext context) {
-    final customersAsync = ref.watch(customersStateControllerProvider);
-    final consumerCustomerAsync = ref.watch(
-      consumerCustomerStasteControllerProvider,
-    );
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -34,7 +29,7 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
             child: CustomScrollView(
               slivers: [
                 AsyncValueSliverWidget(
-                  value: consumerCustomerAsync,
+                  value: ref.watch(consumerCustomerStasteControllerProvider),
                   tryAgain: () =>
                       ref.invalidate(consumerCustomerStasteControllerProvider),
                   data: (customer) {
@@ -48,7 +43,7 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                 ),
                 gapSliverH8,
                 AsyncValueSliverWidget(
-                  value: customersAsync,
+                  value: ref.watch(customersStateControllerProvider),
                   tryAgain: null,
                   data: (customers) {
                     return ResponsiveListFlow(

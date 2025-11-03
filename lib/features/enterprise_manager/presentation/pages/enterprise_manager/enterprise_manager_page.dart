@@ -54,7 +54,6 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final enterprisesAsync = ref.watch(enterpriseManagerControllerProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -72,7 +71,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
         ),
       ),
       body: AsyncValueWidget(
-        value: enterprisesAsync,
+        value: ref.watch(enterpriseManagerControllerProvider),
         tryAgain: () => ref.invalidate(enterpriseManagerControllerProvider),
         data: (enterprises) {
           if (enterprises.isEmpty) {

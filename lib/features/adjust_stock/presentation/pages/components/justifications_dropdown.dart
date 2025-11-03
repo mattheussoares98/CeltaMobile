@@ -8,21 +8,25 @@ import '../../../../../core/presentation/controllers/transfer_justification/tran
 
 class JustificationsDropdown extends ConsumerWidget {
   final TransferJustificationEntity? selectedJustification;
-  final AsyncValue<List<TransferJustificationEntity>> asyncValue;
   final int enterpriseCode;
   final void Function(TransferJustificationEntity? value) onChanged;
   const JustificationsDropdown({
     super.key,
     required this.selectedJustification,
-    required this.asyncValue,
     required this.enterpriseCode,
     required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final justificationsAsync = ref.watch(
+      transferJustificationStateControllerProvider(
+        enterpriseCode,
+        TransferJustificationType.adjustStock,
+      ),
+    );
     return AsyncValueWidget(
-      value: asyncValue,
+      value: justificationsAsync,
       tryAgain: () {
         ref.invalidate(
           transferJustificationStateControllerProvider(
@@ -33,7 +37,7 @@ class JustificationsDropdown extends ConsumerWidget {
       },
       data: (justifications) {
         return DefaultSimpleDropDown<TransferJustificationEntity?>(
-          isLoading: asyncValue.isLoading,
+          isLoading: justificationsAsync.isLoading,
           onChanged: onChanged,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {

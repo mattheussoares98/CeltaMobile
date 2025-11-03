@@ -52,7 +52,9 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
 
   @override
   Widget build(BuildContext context) {
-    final createEnterpriseAsync = ref.watch(createEnterpriseControllerProvider);
+    final isLoading = ref.watch(
+      createEnterpriseControllerProvider.select((value) => value.isLoading),
+    );
     ref.listen(createEnterpriseControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.showSnackbarOnSuccess(
@@ -71,7 +73,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             EnterpriseNameField(
-              isLoading: createEnterpriseAsync.isLoading,
+              isLoading: isLoading,
               enterpriseNameController: enterpriseNameController,
               urlFocusNode: urlFocusNode,
             ),
@@ -79,19 +81,19 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
             UrlField(
               urlController: urlController,
               urlFocusNode: urlFocusNode,
-              isLoading: createEnterpriseAsync.isLoading,
+              isLoading: isLoading,
               userNameFocusNode: userNameFocusNode,
             ),
             gapH8,
             UserNameField(
               userNameController: userNameController,
               userNameFocusNode: userNameFocusNode,
-              isLoading: createEnterpriseAsync.isLoading,
+              isLoading: isLoading,
               passwordFocusNode: passwordFocusNode,
             ),
             gapH8,
             PasswordField(
-              isLoading: createEnterpriseAsync.isLoading,
+              isLoading: isLoading,
               passwordController: passwordController,
               passwordFocusNode: passwordFocusNode,
               onSubmit: onSubmit,
@@ -100,7 +102,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
             PrimaryButton(
               text: "Adicionar".hardcoded,
               onPressed: onSubmit,
-              isLoading: createEnterpriseAsync.isLoading,
+              isLoading: isLoading,
             ),
           ],
         ),

@@ -6,8 +6,6 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../core/presentation/controllers/stock/stock.dart';
-import '../../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
 
 class HeaderFilters extends ConsumerWidget {
   final int enterpriseCode;
@@ -30,16 +28,6 @@ class HeaderFilters extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(enterpriseCode),
-    );
-
-    final justificationsAsync = ref.watch(
-      transferJustificationStateControllerProvider(
-        enterpriseCode,
-        TransferJustificationType.adjustStock,
-      ),
-    );
     return Column(
       children: [
         DefaultSearchProducts(
@@ -56,13 +44,11 @@ class HeaderFilters extends ConsumerWidget {
         gapH8,
         JustificationsDropdown(
           selectedJustification: selectedJustification,
-          asyncValue: justificationsAsync,
           enterpriseCode: enterpriseCode,
           onChanged: onChangeJustification,
         ),
         gapH8,
         StocksDropdown(
-          asyncValue: stocksAsync,
           enterpriseCode: enterpriseCode,
           selectedJustification: selectedJustification,
           selectedStockType: selectedStockType,

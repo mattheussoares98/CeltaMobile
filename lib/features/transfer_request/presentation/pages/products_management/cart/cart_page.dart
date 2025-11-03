@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
@@ -63,11 +64,10 @@ class _CartPageState extends ConsumerState<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+    final lastSavedAsync = ref.watch(lastSavedNumberStateControllerProvider);
     final pendingAsync = ref.watch(
       cartProductsStateControllerProvider(widget.draftKey),
     );
-
-    final lastSavedAsync = ref.watch(lastSavedNumberStateControllerProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
@@ -78,24 +78,32 @@ class _CartPageState extends ConsumerState<CartPage> {
               slivers: [
                 if (lastSavedAsync.value != null)
                   LastSavedNumber(number: lastSavedAsync.value!),
-                SliverList.builder(
-                  itemCount: pendingAsync.value?.length ?? 0,
-                  itemBuilder: (_, index) {
-                    final item = pendingAsync.value![index];
+                AsyncValueSliverWidget(
+                  value: pendingAsync,
+                  tryAgain: () => ref.invalidate(
+                    cartProductsStateControllerProvider(widget.draftKey),
+                  ),
+                  data: (items) {
+                    return SliverList.builder(
+                      itemCount: items.length,
+                      itemBuilder: (_, index) {
+                        final item = items[index];
 
-                    return ProductItem(
-                      item: item,
-                      index: index,
-                      changeSelectedIndex: (index) =>
-                          changeSelectedIndex(index, item),
-                      draftKey: widget.draftKey,
-                      selectedIndex: selectedIndex,
-                      requestTypeAllowChangePrice:
-                          widget.requestTypeAllowChangePrice,
-                      priceController: priceController,
-                      priceFocusNode: priceFocusNode,
-                      quantityController: quantityController,
-                      quantityFocusNode: quantityFocusNode,
+                        return ProductItem(
+                          item: item,
+                          index: index,
+                          changeSelectedIndex: (index) =>
+                              changeSelectedIndex(index, item),
+                          draftKey: widget.draftKey,
+                          selectedIndex: selectedIndex,
+                          requestTypeAllowChangePrice:
+                              widget.requestTypeAllowChangePrice,
+                          priceController: priceController,
+                          priceFocusNode: priceFocusNode,
+                          quantityController: quantityController,
+                          quantityFocusNode: quantityFocusNode,
+                        );
+                      },
                     );
                   },
                 ),

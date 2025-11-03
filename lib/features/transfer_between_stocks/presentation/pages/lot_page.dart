@@ -49,12 +49,8 @@ class _LotPageState extends ConsumerState<LotPage> {
 
   @override
   Widget build(BuildContext context) {
-    final lotAsync = ref.watch(
-      lotStateControllerProvider(widget.enterpriseCode),
-    );
-
     return AsyncValueWidget(
-      value: lotAsync,
+      value: ref.watch(lotStateControllerProvider(widget.enterpriseCode)),
       tryAgain: () {
         ref.invalidate(lotStateControllerProvider(widget.enterpriseCode));
       },

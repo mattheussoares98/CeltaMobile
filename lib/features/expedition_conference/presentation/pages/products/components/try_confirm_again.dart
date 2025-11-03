@@ -16,15 +16,16 @@ class TryConfirmAgain extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final confirmAsync = ref.watch(confirmConferenceControllerProvider);
+    final error = ref.watch(
+      confirmConferenceControllerProvider.select((value) => value.error),
+    );
 
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Houve um erro ao tentar confirmar a conferência: ${confirmAsync.error}'
-                .hardcoded,
+            'Houve um erro ao tentar confirmar a conferência: $error'.hardcoded,
             textAlign: TextAlign.center,
           ),
           PrimaryTextButton(

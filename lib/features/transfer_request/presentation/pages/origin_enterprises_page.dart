@@ -16,14 +16,12 @@ class OriginEnterprisesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enterprisesAsync = ref.watch(
-      enterprisesStateControllerProvider(module: Modules.transferRequest),
-    );
-
     return Scaffold(
       appBar: AppBar(title: Text('Empresa de origem'.hardcoded)),
       body: AsyncValueWidget(
-        value: enterprisesAsync,
+        value: ref.watch(
+          enterprisesStateControllerProvider(module: Modules.transferRequest),
+        ),
         tryAgain: () {
           ref.invalidate(
             enterprisesStateControllerProvider(module: Modules.transferRequest),
