@@ -57,8 +57,9 @@ class __ProductItemState extends ConsumerState<ProductItem> {
           ? null
           : CartItemSummary(
               cartQuantity: cartProduct.Quantity,
-              cartValue: cartProduct.getValueLiquid,
+              cartValue: cartProduct.Value,
               product: widget.product,
+              totalDiscount: cartProduct.DiscountValue,
             ),
       onDelete: cartProduct == null
           ? null
