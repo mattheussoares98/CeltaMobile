@@ -91,41 +91,31 @@ class CartProductEntity extends Equatable {
     required int productPackingCode,
     required double quantity,
     required double price,
-    double? discount,
+    double?
+    totalDiscount, //needs to be the sum of item discount and item quantity because when process the cart returns this way
     PercentageOrValue? discountType,
   }) {
     final double baseTotal = price * quantity;
-    double finalDiscountValue = 0.0;
 
-    // Calculate the discount
-    if (discount != null && discountType != null) {
-      if (discountType == PercentageOrValue.percentage) {
-        // Calculate discount as a percentage of the total
-        finalDiscountValue = baseTotal * (discount / 100);
-      } else {
-        // Apply discount as a flat value
-        finalDiscountValue = discount;
-      }
-    }
-
-    final totalLiquid = baseTotal - finalDiscountValue;
-
-    // Return the new, fully calculated entity
     return CartProductEntity(
       ProductPackingCode: productPackingCode,
       Quantity: quantity,
       Value: price,
-      TotalLiquid: totalLiquid,
-      DiscountValue: finalDiscountValue,
+      TotalLiquid: baseTotal - (totalDiscount ?? 0),
+      DiscountValue: totalDiscount,
+      DiscountPercentageOrValue: discountType,
+      DiscountDescription: totalDiscount != null && discountType != null
+          ? 'Desconto manual'
+          : null,
     );
   }
 
   double get getValueLiquid {
     double value = Value;
-    if (IncrementValue != null) value += IncrementValue!;
-    if (DiscountValue != null) value -= DiscountValue!;
+    if (IncrementValue != null) value += IncrementValue! / Quantity;
+    if (DiscountValue != null) value -= DiscountValue! / Quantity;
     if (AutomaticDiscountValue != null) {
-      value -= AutomaticDiscountValue!;
+      value -= AutomaticDiscountValue! / Quantity;
     }
     return value;
   }
