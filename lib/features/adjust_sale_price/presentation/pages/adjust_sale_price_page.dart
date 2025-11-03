@@ -285,7 +285,21 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
             ],
           ),
         ),
-        if (confirmAdjustAsync.isLoading) const LoadingPage(),
+        Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref.watch(
+              confirmAdjustControllerProvider.select(
+                (value) => value.isLoading,
+              ),
+            );
+
+            if (isLoading) {
+              return const LoadingPage();
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ],
     );
   }

@@ -66,9 +66,6 @@ class _ProductsManagementPageState
     final pendingAsync = ref.watch(
       cartProductsStateControllerProvider(draftKey),
     );
-    final insertAsync = ref.watch(
-      insertTransferRequestControllerProvider(draftKey),
-    );
 
     ref.listen(insertTransferRequestControllerProvider(draftKey), (p, n) {
       n.doOnSuccess(p, () {
@@ -149,7 +146,20 @@ class _ProductsManagementPageState
             ],
           ),
         ),
-        if (insertAsync.isLoading) const LoadingPage(),
+        Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref.watch(
+              insertTransferRequestControllerProvider(
+                draftKey,
+              ).select((value) => value.isLoading),
+            );
+            if (isLoading) {
+              return const LoadingPage();
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ],
     );
   }

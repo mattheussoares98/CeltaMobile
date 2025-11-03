@@ -6,6 +6,8 @@ import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
+import '../../../../core/presentation/controllers/stock/stock.dart';
+import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart.dart';
@@ -18,8 +20,6 @@ class ProductsPage extends ConsumerStatefulWidget {
   final void Function(TransferJustificationEntity? value) changeJustification;
   final void Function(StockTypeEntity? value) changeOriginStock;
   final void Function(StockTypeEntity? value) changeDestinyStock;
-  final AsyncValue<List<StockTypeEntity>> stocksAsync;
-  final AsyncValue<List<TransferJustificationEntity>> justificationsAsync;
   const ProductsPage({
     super.key,
     required this.enterpriseCode,
@@ -29,8 +29,6 @@ class ProductsPage extends ConsumerStatefulWidget {
     required this.changeJustification,
     required this.changeOriginStock,
     required this.changeDestinyStock,
-    required this.stocksAsync,
-    required this.justificationsAsync,
   });
 
   @override
@@ -120,8 +118,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       },
     );
 
-    final lotAsync = ref.watch(
-      lotStateControllerProvider(widget.enterpriseCode),
+    final stocksAsync = ref.watch(
+      stockTypeStateControllerProvider(widget.enterpriseCode),
     );
 
     final theme = Theme.of(context);
@@ -146,15 +144,20 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             gapH8,
             JustificationsDropdown(
               selectedJustification: widget.selectedJustification,
-              asyncValue: widget.justificationsAsync,
+              asyncValue: ref.watch(
+                transferJustificationStateControllerProvider(
+                  widget.enterpriseCode,
+                  TransferJustificationType.transferBetweenStocks,
+                ),
+              ),
               enterpriseCode: widget.enterpriseCode,
               onChanged: (value) {
                 widget.changeJustification(value);
 
                 if (value?.CodigoInterno_TipoEstoque != null &&
-                    widget.stocksAsync.value != null) {
+                    stocksAsync.value != null) {
                   widget.changeOriginStock(
-                    widget.stocksAsync.value!.firstWhere(
+                    stocksAsync.value!.firstWhere(
                       (e) =>
                           e.CodigoInterno_TipoEstoque ==
                           value?.CodigoInterno_TipoEstoque,
@@ -165,7 +168,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ),
             gapH8,
             OriginStocksDropdown(
-              asyncValue: widget.stocksAsync,
+              asyncValue: stocksAsync,
               enterpriseCode: widget.enterpriseCode,
               selectedJustification: widget.selectedJustification,
               selectedOriginStock: widget.selectedOriginStock,
@@ -173,7 +176,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ),
             gapH8,
             DestinyStocksDropdown(
-              asyncValue: widget.stocksAsync,
+              asyncValue: stocksAsync,
               enterpriseCode: widget.enterpriseCode,
               selectedDestinyStock: widget.selectedDestinyStock,
               selectedOriginStock: widget.selectedOriginStock,
@@ -194,52 +197,60 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     value: productsState,
                     tryAgain: null,
                     data: (products) {
-                      return ResponsiveListFlow(
-                        maxItemWidth: 380,
-                        itemCount: products.length,
-                        itemBuilder: (_, index) {
-                          final product = products[index];
-
-                          final productInLotIndex = lotAsync.value?.indexWhere(
-                            (e) =>
-                                e.product.ProductPackingCode ==
-                                product.ProductPackingCode,
+                      return Consumer(
+                        builder: (_, ref, _) {
+                          final lotAsync = ref.watch(
+                            lotStateControllerProvider(widget.enterpriseCode),
                           );
-                          ProductLotInfoEntity? lotItem;
-                          if (productInLotIndex != -1 &&
-                              productInLotIndex != null) {
-                            lotItem = lotAsync.value?[productInLotIndex];
-                          }
+                          return ResponsiveListFlow(
+                            maxItemWidth: 380,
+                            itemCount: products.length,
+                            itemBuilder: (_, index) {
+                              final product = products[index];
 
-                          return ProductItemWidget(
-                            product: product,
-                            routine: BsRoutine.adjustStock,
-                            onTap: () {
-                              changeSelectedIndex(index);
+                              final productInLotIndex = lotAsync.value
+                                  ?.indexWhere(
+                                    (e) =>
+                                        e.product.ProductPackingCode ==
+                                        product.ProductPackingCode,
+                                  );
+                              ProductLotInfoEntity? lotItem;
+                              if (productInLotIndex != -1 &&
+                                  productInLotIndex != null) {
+                                lotItem = lotAsync.value?[productInLotIndex];
+                              }
+
+                              return ProductItemWidget(
+                                product: product,
+                                routine: BsRoutine.adjustStock,
+                                onTap: () {
+                                  changeSelectedIndex(index);
+                                },
+                                showDropIcon: true,
+                                isSelected: selectedIndex == index,
+                                clickableBottom: lotItem == null
+                                    ? null
+                                    : Text(
+                                        '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
+                                        textAlign: TextAlign.start,
+                                        style: theme.textTheme.titleSmall
+                                            ?.copyWith(color: Colors.blue),
+                                      ),
+                                notClickableBottom: selectedIndex == index
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: Sizes.p8,
+                                        ),
+                                        child: AddInLot(
+                                          addInLot: () => addInLot(product),
+                                          quantityController:
+                                              quantityController,
+                                          quantityFocusNode: quantityFocusNode,
+                                        ),
+                                      )
+                                    : null,
+                              );
                             },
-                            showDropIcon: true,
-                            isSelected: selectedIndex == index,
-                            clickableBottom: lotItem == null
-                                ? null
-                                : Text(
-                                    '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
-                                    textAlign: TextAlign.start,
-                                    style: theme.textTheme.titleSmall?.copyWith(
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                            notClickableBottom: selectedIndex == index
-                                ? Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: Sizes.p8,
-                                    ),
-                                    child: AddInLot(
-                                      addInLot: () => addInLot(product),
-                                      quantityController: quantityController,
-                                      quantityFocusNode: quantityFocusNode,
-                                    ),
-                                  )
-                                : null,
                           );
                         },
                       );

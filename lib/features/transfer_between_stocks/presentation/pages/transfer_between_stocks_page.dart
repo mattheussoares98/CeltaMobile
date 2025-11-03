@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
-import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
-import '../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import '../controllers/controllers.dart';
 import 'pages.dart';
 
@@ -43,51 +41,6 @@ class _TransferBetweenStocksPageState
     final theme = Theme.of(context);
     final isIos = theme.platform == TargetPlatform.iOS;
 
-    final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(widget.enterpriseCode),
-    );
-
-    final justificationsAsync = ref.watch(
-      transferJustificationStateControllerProvider(
-        widget.enterpriseCode,
-        TransferJustificationType.transferBetweenStocks,
-      ),
-    );
-
-    final pages = [
-      ProductsPage(
-        enterpriseCode: widget.enterpriseCode,
-        selectedJustification: selectedJustification,
-        selectedOriginStock: selectedOriginStock,
-        selectedDestinyStock: selectedDestinyStock,
-        stocksAsync: stocksAsync,
-        justificationsAsync: justificationsAsync,
-        changeJustification: (value) {
-          setState(() {
-            selectedJustification = value;
-          });
-        },
-        changeOriginStock: (value) {
-          setState(() {
-            selectedOriginStock = value;
-          });
-        },
-        changeDestinyStock: (value) {
-          setState(() {
-            selectedDestinyStock = value;
-          });
-        },
-      ),
-      LotPage(enterpriseCode: widget.enterpriseCode),
-    ];
-
-    final lotAsync = ref.watch(
-      lotStateControllerProvider(widget.enterpriseCode),
-    );
-
-    final confirmAdjustStockAsync = ref.watch(
-      confirmAdjustStockControllerProvider,
-    );
     ref.listen(confirmAdjustStockControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
       n.showSnackbarOnSuccess(
@@ -117,7 +70,30 @@ class _TransferBetweenStocksPageState
           ),
           body: PageView(
             controller: pageController,
-            children: pages,
+            children: [
+              ProductsPage(
+                enterpriseCode: widget.enterpriseCode,
+                selectedJustification: selectedJustification,
+                selectedOriginStock: selectedOriginStock,
+                selectedDestinyStock: selectedDestinyStock,
+                changeJustification: (value) {
+                  setState(() {
+                    selectedJustification = value;
+                  });
+                },
+                changeOriginStock: (value) {
+                  setState(() {
+                    selectedOriginStock = value;
+                  });
+                },
+                changeDestinyStock: (value) {
+                  setState(() {
+                    selectedDestinyStock = value;
+                  });
+                },
+              ),
+              LotPage(enterpriseCode: widget.enterpriseCode),
+            ],
             onPageChanged: (value) {
               setState(() {
                 currentIndex = value;
@@ -142,55 +118,47 @@ class _TransferBetweenStocksPageState
                 label: 'Produtos'.hardcoded,
               ),
               BottomNavigationBarItem(
-                icon: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        right: Sizes.p8,
-                        top: Sizes.p8,
-                      ),
-                      child: Icon(
-                        isIos
-                            ? CupertinoIcons.shopping_cart
-                            : Icons.shopping_cart,
-                      ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.red,
-                        radius: 8,
-                        child: Padding(
-                          padding: const EdgeInsets.all(1),
-                          child: Center(
-                            child: FittedBox(
-                              child: Text(
-                                lotAsync.value
-                                        ?.where(
-                                          (e) =>
-                                              e.product.EnterpriseCode ==
-                                              widget.enterpriseCode,
-                                        )
-                                        .toList()
-                                        .length
-                                        .toString() ??
-                                    '0',
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                icon: Consumer(
+                  builder: (_, ref, _) {
+                    final lotAsync = ref.watch(
+                      lotStateControllerProvider(widget.enterpriseCode),
+                    );
+
+                    return QuantityBadge(
+                      quantity: lotAsync.value
+                          ?.where(
+                            (e) =>
+                                e.product.EnterpriseCode ==
+                                widget.enterpriseCode,
+                          )
+                          .toList()
+                          .length,
+                      materialIcon: Icons.shopping_cart,
+                      cupertinoIcon: CupertinoIcons.shopping_cart,
+                      isSelected: currentIndex == 1,
+                    );
+                  },
                 ),
                 label: 'Lote'.hardcoded,
               ),
             ],
           ),
         ),
-        if (confirmAdjustStockAsync.isLoading) const LoadingPage(),
+        Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref.watch(
+              confirmAdjustStockControllerProvider.select(
+                (value) => value.isLoading,
+              ),
+            );
+
+            if (isLoading) {
+              return const LoadingPage();
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ],
     );
   }

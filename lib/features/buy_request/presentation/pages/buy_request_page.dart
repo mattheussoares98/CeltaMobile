@@ -150,7 +150,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   @override
   Widget build(BuildContext context) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
-    final insertAsync = ref.watch(insertBuyRequestControllerProvider);
 
     final productsPage = ProductsPage(
       searchProductController: searchProductController,
@@ -260,7 +259,21 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             },
           ),
         ),
-        if (insertAsync.isLoading) const LoadingPage(),
+        Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref.watch(
+              insertBuyRequestControllerProvider.select(
+                (value) => value.isLoading,
+              ),
+            );
+
+            if (isLoading) {
+              return const LoadingPage();
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ],
     );
   }
