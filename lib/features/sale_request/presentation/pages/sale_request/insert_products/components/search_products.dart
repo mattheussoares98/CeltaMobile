@@ -17,14 +17,6 @@ class SearchProducts extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchAsync = ref.watch(
-      searchProductsStateControllerProvider(
-        enterpriseCode,
-        BsRoutine.saleRequest,
-        Modules.saleRequest,
-      ),
-    );
-
     ref.listen(
       searchProductsStateControllerProvider(
         enterpriseCode,
@@ -39,7 +31,13 @@ class SearchProducts extends ConsumerWidget {
     );
 
     return DefaultSearchProducts(
-      isLoading: searchAsync.isLoading,
+      isLoading: ref.watch(
+        searchProductsStateControllerProvider(
+          enterpriseCode,
+          BsRoutine.saleRequest,
+          Modules.saleRequest,
+        ).select((state) => state.isLoading),
+      ),
       searchValueController: searchProductsController,
       searchProducts: () {
         ref

@@ -75,14 +75,6 @@ class ProductsPage extends ConsumerWidget {
       },
     );
 
-    final productsState = ref.watch(
-      searchProductsStateControllerProvider(
-        0,
-        BsRoutine.buyRequest,
-        Modules.buyRequest,
-      ),
-    );
-
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     return Scaffold(
@@ -92,31 +84,49 @@ class ProductsPage extends ConsumerWidget {
           slivers: [
             SliverToBoxAdapter(
               child: DefaultSearchProducts(
-                isLoading: productsState.isLoading,
+                isLoading: ref.watch(
+                  searchProductsStateControllerProvider(
+                    0,
+                    BsRoutine.buyRequest,
+                    Modules.buyRequest,
+                  ).select((state) => state.isLoading),
+                ),
                 searchProducts: () => searchProducts(pendingAsync),
                 searchValueController: searchProductController,
               ),
             ),
             gapSliverH8,
-            AsyncValueSliverWidget(
-              value: productsState,
-              tryAgain: null,
-              data: (products) {
-                final filteredProducts =
-                    products
-                        .where(
-                          (e) =>
-                              pendingAsync.value?.selectedEnterprises
-                                  ?.map((e) => e.Code)
-                                  .contains(e.EnterpriseCode) ==
-                              true,
-                        )
-                        .toList()
-                      ..sort((e1, e2) => e1.Name.compareTo(e2.Name));
+            Consumer(
+              builder: (_, ref, _) {
+                final productsState = ref.watch(
+                  searchProductsStateControllerProvider(
+                    0,
+                    BsRoutine.buyRequest,
+                    Modules.buyRequest,
+                  ),
+                );
 
-                return ProductsItems(
-                  productsPage: this,
-                  products: filteredProducts,
+                return AsyncValueSliverWidget(
+                  value: productsState,
+                  tryAgain: null,
+                  data: (products) {
+                    final filteredProducts =
+                        products
+                            .where(
+                              (e) =>
+                                  pendingAsync.value?.selectedEnterprises
+                                      ?.map((e) => e.Code)
+                                      .contains(e.EnterpriseCode) ==
+                                  true,
+                            )
+                            .toList()
+                          ..sort((e1, e2) => e1.Name.compareTo(e2.Name));
+
+                    return ProductsItems(
+                      productsPage: this,
+                      products: filteredProducts,
+                    );
+                  },
                 );
               },
             ),

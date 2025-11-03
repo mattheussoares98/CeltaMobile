@@ -44,15 +44,13 @@ class HeaderFilters extends ConsumerWidget {
       children: [
         DefaultSearchProducts(
           searchValueController: searchValueController,
-          isLoading: ref
-              .watch(
-                searchProductsStateControllerProvider(
-                  enterpriseCode,
-                  BsRoutine.adjustStock,
-                  Modules.adjustStock,
-                ),
-              )
-              .isLoading,
+          isLoading: ref.watch(
+            searchProductsStateControllerProvider(
+              enterpriseCode,
+              BsRoutine.adjustStock,
+              Modules.adjustStock,
+            ).select((state) => state.isLoading),
+          ),
           searchProducts: searchProducts,
         ),
         gapH8,

@@ -46,14 +46,6 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final productsState = ref.watch(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.priceConference,
-        Modules.searchProducts,
-      ),
-    );
-
     ref.listen(
       searchProductsStateControllerProvider(
         widget.enterpriseCode,
@@ -80,57 +72,78 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
           children: [
             DefaultSearchProducts(
               searchValueController: searchValueController,
-              isLoading: productsState.isLoading,
+              isLoading: ref.watch(
+                searchProductsStateControllerProvider(
+                  widget.enterpriseCode,
+                  BsRoutine.priceConference,
+                  Modules.searchProducts,
+                ).select((state) => state.isLoading),
+              ),
               searchProducts: searchProducts,
             ),
             gapH8,
             Expanded(
-              child: AsyncValueWidget(
-                value: productsState,
-                tryAgain: null,
-                data: (products) {
-                  return ResponsiveListFlow(
-                    itemCount: products.length,
-                    itemBuilder: (_, index) {
-                      final product = products[index];
-                      return ProductItemWidget(
-                        product: product,
-                        routine: BsRoutine.priceConference,
-                        notClickableBottom: PrimaryTextButton(
-                          text: product.PendantPrintLabel
-                              ? 'Desmarcar para impressão'.hardcoded
-                              : 'Marcar para impressão'.hardcoded,
-                          icon: Icon(
-                            product.PendantPrintLabel
-                                ? (isIOS
-                                      ? CupertinoIcons.printer_fill
-                                      : Icons.print_disabled)
-                                : isIOS
-                                ? CupertinoIcons.printer
-                                : Icons.print,
-                            color: product.PendantPrintLabel
-                                ? Colors.red
-                                : null,
-                          ),
-                          color: product.PendantPrintLabel ? Colors.red : null,
-                          isLoading:
-                              sendToPrintAsync.isLoading &&
-                              index == lastChangedIndex,
-                          onPressed: () async {
-                            setState(() {
-                              lastChangedIndex = index;
-                            });
-                            await ref
-                                .read(sendToPrintControllerProvider.notifier)
-                                .send(
-                                  productPackingCode:
-                                      product.ProductPackingCode,
-                                  newValue: !product.PendantPrintLabel,
-                                  enterpriseCode: widget.enterpriseCode,
-                                  routine: BsRoutine.priceConference,
-                                );
-                          },
-                        ),
+              child: Consumer(
+                builder: (_, ref, _) {
+                  final productsState = ref.watch(
+                    searchProductsStateControllerProvider(
+                      widget.enterpriseCode,
+                      BsRoutine.priceConference,
+                      Modules.searchProducts,
+                    ),
+                  );
+                  return AsyncValueWidget(
+                    value: productsState,
+                    tryAgain: null,
+                    data: (products) {
+                      return ResponsiveListFlow(
+                        itemCount: products.length,
+                        itemBuilder: (_, index) {
+                          final product = products[index];
+                          return ProductItemWidget(
+                            product: product,
+                            routine: BsRoutine.priceConference,
+                            notClickableBottom: PrimaryTextButton(
+                              text: product.PendantPrintLabel
+                                  ? 'Desmarcar para impressão'.hardcoded
+                                  : 'Marcar para impressão'.hardcoded,
+                              icon: Icon(
+                                product.PendantPrintLabel
+                                    ? (isIOS
+                                          ? CupertinoIcons.printer_fill
+                                          : Icons.print_disabled)
+                                    : isIOS
+                                    ? CupertinoIcons.printer
+                                    : Icons.print,
+                                color: product.PendantPrintLabel
+                                    ? Colors.red
+                                    : null,
+                              ),
+                              color: product.PendantPrintLabel
+                                  ? Colors.red
+                                  : null,
+                              isLoading:
+                                  sendToPrintAsync.isLoading &&
+                                  index == lastChangedIndex,
+                              onPressed: () async {
+                                setState(() {
+                                  lastChangedIndex = index;
+                                });
+                                await ref
+                                    .read(
+                                      sendToPrintControllerProvider.notifier,
+                                    )
+                                    .send(
+                                      productPackingCode:
+                                          product.ProductPackingCode,
+                                      newValue: !product.PendantPrintLabel,
+                                      enterpriseCode: widget.enterpriseCode,
+                                      routine: BsRoutine.priceConference,
+                                    );
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
                   );

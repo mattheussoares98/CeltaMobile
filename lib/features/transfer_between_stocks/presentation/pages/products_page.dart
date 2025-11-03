@@ -120,14 +120,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       },
     );
 
-    final productsState = ref.watch(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.adjustStock,
-        Modules.transferBetweenStocks,
-      ),
-    );
-
     final lotAsync = ref.watch(
       lotStateControllerProvider(widget.enterpriseCode),
     );
@@ -142,7 +134,13 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           children: [
             DefaultSearchProducts(
               searchValueController: searchValueController,
-              isLoading: productsState.isLoading,
+              isLoading: ref.watch(
+                searchProductsStateControllerProvider(
+                  widget.enterpriseCode,
+                  BsRoutine.adjustStock,
+                  Modules.transferBetweenStocks,
+                ).select((state) => state.isLoading),
+              ),
               searchProducts: _searchProducts,
             ),
             gapH8,
@@ -183,54 +181,67 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ),
             gapH8,
             Flexible(
-              child: AsyncValueWidget(
-                value: productsState,
-                tryAgain: null,
-                data: (products) {
-                  return ResponsiveListFlow(
-                    maxItemWidth: 380,
-                    itemCount: products.length,
-                    itemBuilder: (_, index) {
-                      final product = products[index];
+              child: Consumer(
+                builder: (_, ref, _) {
+                  final productsState = ref.watch(
+                    searchProductsStateControllerProvider(
+                      widget.enterpriseCode,
+                      BsRoutine.adjustStock,
+                      Modules.transferBetweenStocks,
+                    ),
+                  );
+                  return AsyncValueWidget(
+                    value: productsState,
+                    tryAgain: null,
+                    data: (products) {
+                      return ResponsiveListFlow(
+                        maxItemWidth: 380,
+                        itemCount: products.length,
+                        itemBuilder: (_, index) {
+                          final product = products[index];
 
-                      final productInLotIndex = lotAsync.value?.indexWhere(
-                        (e) =>
-                            e.product.ProductPackingCode ==
-                            product.ProductPackingCode,
-                      );
-                      ProductLotInfoEntity? lotItem;
-                      if (productInLotIndex != -1 &&
-                          productInLotIndex != null) {
-                        lotItem = lotAsync.value?[productInLotIndex];
-                      }
+                          final productInLotIndex = lotAsync.value?.indexWhere(
+                            (e) =>
+                                e.product.ProductPackingCode ==
+                                product.ProductPackingCode,
+                          );
+                          ProductLotInfoEntity? lotItem;
+                          if (productInLotIndex != -1 &&
+                              productInLotIndex != null) {
+                            lotItem = lotAsync.value?[productInLotIndex];
+                          }
 
-                      return ProductItemWidget(
-                        product: product,
-                        routine: BsRoutine.adjustStock,
-                        onTap: () {
-                          changeSelectedIndex(index);
+                          return ProductItemWidget(
+                            product: product,
+                            routine: BsRoutine.adjustStock,
+                            onTap: () {
+                              changeSelectedIndex(index);
+                            },
+                            showDropIcon: true,
+                            isSelected: selectedIndex == index,
+                            clickableBottom: lotItem == null
+                                ? null
+                                : Text(
+                                    '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
+                                    textAlign: TextAlign.start,
+                                    style: theme.textTheme.titleSmall?.copyWith(
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                            notClickableBottom: selectedIndex == index
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: Sizes.p8,
+                                    ),
+                                    child: AddInLot(
+                                      addInLot: () => addInLot(product),
+                                      quantityController: quantityController,
+                                      quantityFocusNode: quantityFocusNode,
+                                    ),
+                                  )
+                                : null,
+                          );
                         },
-                        showDropIcon: true,
-                        isSelected: selectedIndex == index,
-                        clickableBottom: lotItem == null
-                            ? null
-                            : Text(
-                                '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
-                                textAlign: TextAlign.start,
-                                style: theme.textTheme.titleSmall?.copyWith(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                        notClickableBottom: selectedIndex == index
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: Sizes.p8),
-                                child: AddInLot(
-                                  addInLot: () => addInLot(product),
-                                  quantityController: quantityController,
-                                  quantityFocusNode: quantityFocusNode,
-                                ),
-                              )
-                            : null,
                       );
                     },
                   );

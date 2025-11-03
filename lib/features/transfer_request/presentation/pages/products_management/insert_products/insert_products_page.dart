@@ -94,13 +94,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final productsAsync = ref.watch(
-      productsStateControllerProvider(
-        enterpriseOriginCode: widget.draftKey.enterpriseOrigin,
-        enterpriseDestinyCode: widget.draftKey.enterpriseDestinyCode,
-        requestTypeCode: widget.draftKey.requestTypeCode,
-      ),
-    );
     ref.listen(
       productsStateControllerProvider(
         enterpriseOriginCode: widget.draftKey.enterpriseOrigin,
@@ -119,7 +112,13 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       child: Column(
         children: [
           DefaultSearchProducts(
-            isLoading: productsAsync.isLoading,
+            isLoading: ref.watch(
+              productsStateControllerProvider(
+                enterpriseOriginCode: widget.draftKey.enterpriseOrigin,
+                enterpriseDestinyCode: widget.draftKey.enterpriseDestinyCode,
+                requestTypeCode: widget.draftKey.requestTypeCode,
+              ).select((value) => value.isLoading),
+            ),
             focusNode: searchValueFocusNode,
             searchProducts: () {
               ref
@@ -139,26 +138,38 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
           Expanded(
             child: CustomScrollView(
               slivers: [
-                AsyncValueSliverWidget(
-                  value: productsAsync,
-                  tryAgain: null,
-                  data: (products) {
-                    return ProductsItems(
-                      products: products,
-                      selectedIndex: selectedIndex,
-                      onTap: onTapProductItem,
-                      removeItem: (item) =>
-                          removeProductItem(item, widget.draftKey),
-                      requestTypeAllowChangePrice:
-                          widget.requestTypeAllowChangePrice,
-                      draftKey: widget.draftKey,
-                      quantityController: quantityController,
-                      priceController: priceController,
-                      quantityFocusNode: quantityFocusNode,
-                      priceFocusNode: priceFocusNode,
-                      changeSelectedIndex: (index) => setState(() {
-                        selectedIndex = index;
-                      }),
+                Consumer(
+                  builder: (_, ref, _) {
+                    final productsAsync = ref.watch(
+                      productsStateControllerProvider(
+                        enterpriseOriginCode: widget.draftKey.enterpriseOrigin,
+                        enterpriseDestinyCode:
+                            widget.draftKey.enterpriseDestinyCode,
+                        requestTypeCode: widget.draftKey.requestTypeCode,
+                      ),
+                    );
+                    return AsyncValueSliverWidget(
+                      value: productsAsync,
+                      tryAgain: null,
+                      data: (products) {
+                        return ProductsItems(
+                          products: products,
+                          selectedIndex: selectedIndex,
+                          onTap: onTapProductItem,
+                          removeItem: (item) =>
+                              removeProductItem(item, widget.draftKey),
+                          requestTypeAllowChangePrice:
+                              widget.requestTypeAllowChangePrice,
+                          draftKey: widget.draftKey,
+                          quantityController: quantityController,
+                          priceController: priceController,
+                          quantityFocusNode: quantityFocusNode,
+                          priceFocusNode: priceFocusNode,
+                          changeSelectedIndex: (index) => setState(() {
+                            selectedIndex = index;
+                          }),
+                        );
+                      },
                     );
                   },
                 ),

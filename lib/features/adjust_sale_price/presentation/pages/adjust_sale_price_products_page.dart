@@ -61,14 +61,6 @@ class _AdjustSalePriceProductsPageState
       },
     );
 
-    final productsState = ref.watch(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.adjustSalePrice,
-        Modules.adjustPrice,
-      ),
-    );
-
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -81,51 +73,70 @@ class _AdjustSalePriceProductsPageState
           children: [
             DefaultSearchProducts(
               searchValueController: searchValueController,
-              isLoading: productsState.isLoading,
+              isLoading: ref.watch(
+                searchProductsStateControllerProvider(
+                  widget.enterpriseCode,
+                  BsRoutine.adjustSalePrice,
+                  Modules.adjustPrice,
+                ).select((state) => state.isLoading),
+              ),
               searchProducts: _searchProducts,
             ),
             gapH8,
             Expanded(
-              child: AsyncValueWidget(
-                value: productsState,
-                tryAgain: null,
-                data: (products) {
-                  return ResponsiveListFlow(
-                    itemCount: products.length,
-                    itemBuilder: (_, index) {
-                      final product = products[index];
-                      return ProductItemWidget(
-                        product: product,
-                        routine: BsRoutine.adjustSalePrice,
-                        notClickableBottom: Padding(
-                          padding: const EdgeInsets.only(top: Sizes.p8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Flexible(
-                                child: PrimaryButton(
-                                  text: 'Alterar preços'.hardcoded,
-                                  icon: Icon(
-                                    theme.platform == TargetPlatform.iOS
-                                        ? CupertinoIcons.pencil
-                                        : Icons.edit,
-                                  ),
-                                  iconAlignment: IconAlignment.end,
-                                  onPressed: () {
-                                    context.goNamed(
-                                      Routes.adjustSalePrice.name,
-                                      pathParameters: {
-                                        'enterpriseCode': widget.enterpriseCode
-                                            .toString(),
-                                        'plu': product.PLU,
+              child: Consumer(
+                builder: (_, ref, _) {
+                  final productsState = ref.watch(
+                    searchProductsStateControllerProvider(
+                      widget.enterpriseCode,
+                      BsRoutine.adjustSalePrice,
+                      Modules.adjustPrice,
+                    ),
+                  );
+
+                  return AsyncValueWidget(
+                    value: productsState,
+                    tryAgain: null,
+                    data: (products) {
+                      return ResponsiveListFlow(
+                        itemCount: products.length,
+                        itemBuilder: (_, index) {
+                          final product = products[index];
+                          return ProductItemWidget(
+                            product: product,
+                            routine: BsRoutine.adjustSalePrice,
+                            notClickableBottom: Padding(
+                              padding: const EdgeInsets.only(top: Sizes.p8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Flexible(
+                                    child: PrimaryButton(
+                                      text: 'Alterar preços'.hardcoded,
+                                      icon: Icon(
+                                        theme.platform == TargetPlatform.iOS
+                                            ? CupertinoIcons.pencil
+                                            : Icons.edit,
+                                      ),
+                                      iconAlignment: IconAlignment.end,
+                                      onPressed: () {
+                                        context.goNamed(
+                                          Routes.adjustSalePrice.name,
+                                          pathParameters: {
+                                            'enterpriseCode': widget
+                                                .enterpriseCode
+                                                .toString(),
+                                            'plu': product.PLU,
+                                          },
+                                        );
                                       },
-                                    );
-                                  },
-                                ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       );
                     },
                   );

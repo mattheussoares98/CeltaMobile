@@ -26,13 +26,6 @@ class PendingProductsPage extends ConsumerWidget {
     final pendingProductsAsync = ref.watch(
       expeditionConferenceControllerProvider(expeditionControlCode),
     );
-    final searchProductsAsync = ref.watch(
-      searchProductsStateControllerProvider(
-        enterpriseCode,
-        BsRoutine.generic,
-        Modules.expeditionConference,
-      ),
-    );
 
     void searchProducts() {
       ref
@@ -69,8 +62,18 @@ class PendingProductsPage extends ConsumerWidget {
               padding: const EdgeInsets.only(top: Sizes.p4),
               child: DefaultSearchProducts(
                 isLoading:
-                    pendingProductsAsync.isLoading ||
-                    searchProductsAsync.isLoading,
+                    ref.watch(
+                      expeditionConferenceControllerProvider(
+                        expeditionControlCode,
+                      ).select((state) => state.isLoading),
+                    ) ||
+                    ref.watch(
+                      searchProductsStateControllerProvider(
+                        enterpriseCode,
+                        BsRoutine.generic,
+                        Modules.expeditionConference,
+                      ).select((state) => state.isLoading),
+                    ),
                 focusNode: focusNode,
                 searchProducts: searchProducts,
                 searchValueController: searchValueController,
