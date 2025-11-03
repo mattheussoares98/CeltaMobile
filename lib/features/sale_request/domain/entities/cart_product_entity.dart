@@ -87,6 +87,39 @@ class CartProductEntity extends Equatable {
     );
   }
 
+  factory CartProductEntity.create({
+    required int productPackingCode,
+    required double quantity,
+    required double price,
+    double? discount,
+    PercentageOrValue? discountType,
+  }) {
+    final double baseTotal = price * quantity;
+    double finalDiscountValue = 0.0;
+
+    // Calculate the discount
+    if (discount != null && discountType != null) {
+      if (discountType == PercentageOrValue.percentage) {
+        // Calculate discount as a percentage of the total
+        finalDiscountValue = baseTotal * (discount / 100);
+      } else {
+        // Apply discount as a flat value
+        finalDiscountValue = discount;
+      }
+    }
+
+    final totalLiquid = baseTotal - finalDiscountValue;
+
+    // Return the new, fully calculated entity
+    return CartProductEntity(
+      ProductPackingCode: productPackingCode,
+      Quantity: quantity,
+      Value: price,
+      TotalLiquid: totalLiquid,
+      DiscountValue: finalDiscountValue,
+    );
+  }
+
   double get getValueLiquid {
     double value = Value;
     if (IncrementValue != null) value += IncrementValue!;
