@@ -67,7 +67,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
         selectedIndex = index;
       });
 
-      final cartProductPrice = (cartProduct?.getValueLiquid ?? 0);
+      final cartProductPrice = (cartProduct?.Value ?? 0);
       final productPrice = product.getPrice;
       double? price = cartProductPrice == 0 ? productPrice : cartProductPrice;
 
