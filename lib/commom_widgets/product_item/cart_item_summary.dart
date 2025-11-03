@@ -9,11 +9,13 @@ class CartItemSummary extends StatelessWidget {
   final double cartQuantity;
   final double? cartValue;
   final ProductEntity product;
+  final double? totalDiscount;
   const CartItemSummary({
     super.key,
     required this.cartQuantity,
     required this.cartValue,
     required this.product,
+    this.totalDiscount,
   });
 
   bool get changedPrice {
@@ -26,6 +28,14 @@ class CartItemSummary extends StatelessWidget {
     }
 
     return product.getPrice;
+  }
+
+  double get totalPrice {
+    if (totalDiscount != null) {
+      return (itemPrice * cartQuantity) - totalDiscount!;
+    } else {
+      return itemPrice * cartQuantity;
+    }
   }
 
   @override
@@ -55,9 +65,17 @@ class CartItemSummary extends StatelessWidget {
             titleStyle: titleStyle,
             subTitleStyle: subtitleStyle,
           ),
+        if (totalDiscount != null)
+          TitleAndSubTitle(
+            title: 'Desconto'.hardcoded,
+            subTitle: totalDiscount.toString().toBrazilianNumber(),
+            subTitleIsPrice: true,
+            titleStyle: titleStyle,
+            subTitleStyle: subtitleStyle,
+          ),
         TitleAndSubTitle(
           title: 'Total'.hardcoded,
-          subTitle: (itemPrice * cartQuantity).toString().toBrazilianNumber(),
+          subTitle: totalPrice.toString().toBrazilianNumber(),
           subTitleIsPrice: true,
           titleStyle: titleStyle,
           subTitleStyle: subtitleStyle,
