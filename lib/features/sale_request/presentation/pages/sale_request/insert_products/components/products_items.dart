@@ -57,12 +57,16 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     }
 
     double quantity = widget.quantityController.text.toDouble() ?? 0;
+    double? discount = widget.discountController.text.toDouble();
     if (cartProduct != null) {
       quantity += cartProduct.Quantity;
+
+      if (discount != null && cartProduct.DiscountValue != null) {
+        discount += cartProduct.DiscountValue ?? 0;
+      }
     }
 
     double value = widget.priceController.text.toDouble() ?? product.getPrice;
-    double? discount = widget.discountController.text.toDouble();
 
     ref
         .read(pendingSaleRequestStateControllerProvider.notifier)
