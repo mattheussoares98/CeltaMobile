@@ -97,11 +97,11 @@ class CartProductEntity extends Equatable {
     final double baseTotal = price * quantity;
 
     double? totalDiscount;
-    if (discountByItem != null && discountType != null) {
+    if ((discountByItem ?? 0) > 0 && discountType != null) {
       if (discountType == PercentageOrValue.percentage) {
-        totalDiscount = price * (discountByItem / 100) * quantity;
+        totalDiscount = price * (discountByItem! / 100) * quantity;
       } else {
-        totalDiscount = discountByItem * quantity;
+        totalDiscount = discountByItem! * quantity;
       }
     }
 
@@ -111,7 +111,9 @@ class CartProductEntity extends Equatable {
       Value: price,
       TotalLiquid: baseTotal - (totalDiscount ?? 0),
       DiscountValue: totalDiscount,
-      DiscountPercentageOrValue: discountType,
+      DiscountPercentageOrValue: (totalDiscount ?? 0) <= 0
+          ? null
+          : discountType,
       DiscountDescription: discountByItem != null && discountType != null
           ? 'Desconto manual'
           : null,
