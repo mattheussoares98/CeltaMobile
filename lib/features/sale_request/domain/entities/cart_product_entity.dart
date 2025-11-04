@@ -17,7 +17,8 @@ class CartProductEntity extends Equatable {
   final DateTime? ExpectedDeliveryDate;
   final String? Observations;
   final String? Name;
-  final int? Plu;
+  final String? Plu;
+  final String? PackingQuantity;
 
   const CartProductEntity({
     required this.ProductPackingCode,
@@ -35,6 +36,7 @@ class CartProductEntity extends Equatable {
     this.Observations,
     this.Name,
     this.Plu,
+    this.PackingQuantity,
   });
 
   @override
@@ -54,6 +56,7 @@ class CartProductEntity extends Equatable {
     Observations,
     Name,
     Plu,
+    PackingQuantity,
   ];
 
   CartProductEntity copyWith({
@@ -71,7 +74,8 @@ class CartProductEntity extends Equatable {
     DateTime? ExpectedDeliveryDate,
     String? Observations,
     String? Name,
-    int? Plu,
+    String? Plu,
+    String? PackingQuantity,
   }) {
     return CartProductEntity(
       ProductPackingCode: ProductPackingCode ?? this.ProductPackingCode,
@@ -94,6 +98,7 @@ class CartProductEntity extends Equatable {
       Observations: Observations ?? this.Observations,
       Name: Name ?? this.Name,
       Plu: Plu ?? this.Plu,
+      PackingQuantity: PackingQuantity ?? this.PackingQuantity,
     );
   }
 

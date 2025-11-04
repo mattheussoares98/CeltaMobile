@@ -16,6 +16,9 @@ class CartProductModel extends Equatable {
   final double? AutomaticDiscountValue;
   final DateTime? ExpectedDeliveryDate;
   final String? Observations;
+  final String? Name;
+  final String? Plu;
+  final String? PackingQuantity;
 
   const CartProductModel({
     required this.ProductPackingCode,
@@ -31,6 +34,9 @@ class CartProductModel extends Equatable {
     required this.AutomaticDiscountValue,
     required this.ExpectedDeliveryDate,
     required this.Observations,
+    required this.Name,
+    required this.Plu,
+    required this.PackingQuantity,
   });
 
   @override
@@ -48,6 +54,9 @@ class CartProductModel extends Equatable {
     AutomaticDiscountValue,
     ExpectedDeliveryDate,
     Observations,
+    Name,
+    Plu,
+    PackingQuantity,
   ];
 
   factory CartProductModel.fromJson(Map json) => CartProductModel(
@@ -79,6 +88,9 @@ class CartProductModel extends Equatable {
         ? null
         : DateTime.parse(json["ExpectedDeliveryDate"]),
     Observations: json["Observations"],
+    Name: json["Name"],
+    Plu: json["Plu"],
+    PackingQuantity: json["PackingQuantity"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -96,6 +108,9 @@ class CartProductModel extends Equatable {
     'AutomaticDiscountValue': AutomaticDiscountValue,
     'ExpectedDeliveryDate': ExpectedDeliveryDate?.toIso8601String(),
     'Observations': Observations,
+    'Name': Name,
+    'Plu': Plu,
+    'PackingQuantity': PackingQuantity,
   };
 
   factory CartProductModel.fromEntity(CartProductEntity entity) =>
@@ -114,6 +129,9 @@ class CartProductModel extends Equatable {
         AutomaticDiscountValue: entity.AutomaticDiscountValue,
         ExpectedDeliveryDate: entity.ExpectedDeliveryDate,
         Observations: entity.Observations,
+        Name: entity.Name,
+        Plu: entity.Plu,
+        PackingQuantity: entity.PackingQuantity,
       );
 
   CartProductEntity toEntity() => CartProductEntity(
@@ -130,5 +148,8 @@ class CartProductModel extends Equatable {
     AutomaticDiscountValue: AutomaticDiscountValue,
     ExpectedDeliveryDate: ExpectedDeliveryDate,
     Observations: Observations,
+    Name: Name,
+    Plu: Plu,
+    PackingQuantity: PackingQuantity,
   );
 }
