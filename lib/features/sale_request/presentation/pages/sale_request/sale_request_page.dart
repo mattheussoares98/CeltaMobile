@@ -92,7 +92,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
                 selectedRequest: selectedRequest,
               ),
               const CustomerPage(),
-              const CartPage(),
+              CartPage(selectedRequest: selectedRequest),
             ],
           );
         },

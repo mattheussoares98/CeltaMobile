@@ -7,14 +7,8 @@ import '../../../../../domain/entities/entities.dart';
 
 class Values extends StatelessWidget {
   final CartProductEntity product;
-  final int index;
-  final int? selectedIndex;
-  const Values({
-    super.key,
-    required this.product,
-    required this.index,
-    required this.selectedIndex,
-  });
+  final bool isSelected;
+  const Values({super.key, required this.product, required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +39,7 @@ class Values extends StatelessWidget {
               value: product.getTotalLiquid,
               valueIsPrice: true,
             ),
-            SelectedIconIndicator(selected: selectedIndex == index),
+            SelectedIconIndicator(selected: isSelected),
           ],
         ),
       ],
