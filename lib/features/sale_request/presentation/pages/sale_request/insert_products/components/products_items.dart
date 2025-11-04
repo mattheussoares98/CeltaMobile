@@ -68,14 +68,11 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
         .read(pendingSaleRequestStateControllerProvider.notifier)
         .addProduct(
           CartProductEntity.create(
-            productPackingCode: product.ProductPackingCode,
             quantity: quantity,
             price: value,
             discountByItem: discount,
             discountType: discountType,
-            name: product.Name,
-            plu: product.PLU,
-            packingQuantity: product.PackingQuantity,
+            product: product,
           ),
         );
 

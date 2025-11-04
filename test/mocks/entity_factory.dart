@@ -637,6 +637,7 @@ class EntityFactory {
       AutomaticDiscountValue: faker.randomGenerator.decimal(),
       ExpectedDeliveryDate: faker.date.dateTime(),
       Observations: faker.lorem.word(),
+      product: makeProductEntity(),
     );
   }
 }

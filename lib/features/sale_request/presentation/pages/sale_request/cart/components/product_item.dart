@@ -8,7 +8,7 @@ import '../../components/components.dart';
 import 'components.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
-  final CartProductEntity product;
+  final CartProductEntity cartProduct;
   final VoidCallback onTap;
   final bool isSelected;
   final void Function(
@@ -23,9 +23,10 @@ class ProductItem extends ConsumerStatefulWidget {
   final FocusNode discountFocusNode;
   final FocusNode priceFocusNode;
   final RequestTypeEntity selectedRequest;
+  final GlobalKey<FormState> formKey;
   const ProductItem({
     super.key,
-    required this.product,
+    required this.cartProduct,
     required this.onTap,
     required this.isSelected,
     required this.updateProduct,
@@ -36,6 +37,7 @@ class ProductItem extends ConsumerStatefulWidget {
     required this.discountFocusNode,
     required this.priceFocusNode,
     required this.selectedRequest,
+    required this.formKey,
   });
 
   @override
@@ -44,14 +46,13 @@ class ProductItem extends ConsumerStatefulWidget {
 
 class _ProductItemState extends ConsumerState<ProductItem> {
   PercentageOrValue? discountType;
-  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        discountType = widget.product.DiscountPercentageOrValue;
+        discountType = widget.cartProduct.DiscountPercentageOrValue;
       }
     });
   }
@@ -73,10 +74,10 @@ class _ProductItemState extends ConsumerState<ProductItem> {
               ),
               child: Column(
                 children: [
-                  NamePluAndDeleteButton(product: widget.product),
+                  NamePluAndDeleteButton(cartProduct: widget.cartProduct),
                   gapH4,
                   Values(
-                    product: widget.product,
+                    product: widget.cartProduct,
                     isSelected: widget.isSelected,
                   ),
                 ],
@@ -87,10 +88,10 @@ class _ProductItemState extends ConsumerState<ProductItem> {
             Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: Form(
-                key: formKey,
+                key: widget.formKey,
                 child: QuantityPriceDiscountFieldsAndInsertButton(
                   insertProduct: () =>
-                      widget.updateProduct(widget.product, discountType),
+                      widget.updateProduct(widget.cartProduct, discountType),
                   quantityController: widget.quantityController,
                   priceController: widget.priceController,
                   discountController: widget.discountController,
@@ -98,7 +99,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                   discountFocusNode: widget.discountFocusNode,
                   priceFocusNode: widget.priceFocusNode,
                   selectedRequest: widget.selectedRequest,
-                  productPackingCode: widget.product.ProductPackingCode,
+                  product: widget.cartProduct.product!,
                   discountType: discountType,
                   changeDiscountType: (value) {
                     setState(() {

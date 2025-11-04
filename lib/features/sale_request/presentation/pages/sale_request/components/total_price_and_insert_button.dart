@@ -4,23 +4,24 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
 
 class TotalPriceAndInsertButton extends StatelessWidget {
   final VoidCallback insertProduct;
-  final int productPackingCode;
   final PercentageOrValue? discountType;
   final TextEditingController priceController;
   final TextEditingController quantityController;
   final TextEditingController discountController;
+  final ProductEntity product;
   const TotalPriceAndInsertButton({
     super.key,
     required this.insertProduct,
-    required this.productPackingCode,
     required this.discountType,
     required this.priceController,
     required this.quantityController,
     required this.discountController,
+    required this.product,
   });
 
   @override
@@ -35,11 +36,11 @@ class TotalPriceAndInsertButton extends StatelessWidget {
       ]),
       builder: (_, _) {
         final newItem = CartProductEntity.create(
-          productPackingCode: productPackingCode,
           quantity: quantityController.text.toDouble() ?? 0,
           price: priceController.text.toDouble() ?? 0,
           discountByItem: discountController.text.toDouble(),
           discountType: discountType,
+          product: product,
         );
         return Column(
           children: [

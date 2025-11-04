@@ -90,6 +90,7 @@ class __ProductItemState extends ConsumerState<ProductItem> {
             },
       notClickableBottom: widget.index == widget.selectedIndex
           ? QuantityPriceDiscountFieldsAndInsertButton(
+              product: widget.product,
               insertProduct: () => widget.insertProduct(
                 widget.product,
                 cartProduct,
@@ -108,7 +109,6 @@ class __ProductItemState extends ConsumerState<ProductItem> {
               discountFocusNode: widget.productsItemsWidget.discountFocusNode,
               priceFocusNode: widget.productsItemsWidget.priceFocusNode,
               selectedRequest: widget.productsItemsWidget.selectedRequest,
-              productPackingCode: widget.product.ProductPackingCode,
             )
           : null,
     );

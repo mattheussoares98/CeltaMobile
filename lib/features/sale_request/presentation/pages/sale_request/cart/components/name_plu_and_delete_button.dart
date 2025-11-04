@@ -9,8 +9,8 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class NamePluAndDeleteButton extends ConsumerWidget {
-  final CartProductEntity product;
-  const NamePluAndDeleteButton({super.key, required this.product});
+  final CartProductEntity cartProduct;
+  const NamePluAndDeleteButton({super.key, required this.cartProduct});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,14 +24,15 @@ class NamePluAndDeleteButton extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleAndSubTitle(
-                title: product.Name,
-                subTitle: " (${product.PackingQuantity?.formattedPacking()})",
+                title: cartProduct.product!.Name,
+                subTitle:
+                    " (${cartProduct.product!.PackingQuantity.formattedPacking()})",
                 titleStyle: theme.textTheme.titleMedium,
                 subTitleStyle: theme.textTheme.bodyMedium,
               ),
               TitleAndSubTitle(
                 title: 'PLU'.hardcoded,
-                subTitle: product.Plu,
+                subTitle: cartProduct.product!.PLU,
                 titleStyle: theme.textTheme.titleMedium,
                 subTitleStyle: theme.textTheme.bodyMedium,
               ),
@@ -52,7 +53,7 @@ class NamePluAndDeleteButton extends ConsumerWidget {
                         .read(
                           pendingSaleRequestStateControllerProvider.notifier,
                         )
-                        .removeProduct(product);
+                        .removeProduct(cartProduct);
                   },
                 );
               },

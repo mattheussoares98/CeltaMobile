@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/domain/entities/entities.dart';
 import 'entities.dart';
 
 class CartProductEntity extends Equatable {
@@ -16,15 +17,14 @@ class CartProductEntity extends Equatable {
   final double? AutomaticDiscountValue;
   final DateTime? ExpectedDeliveryDate;
   final String? Observations;
-  final String? Name;
-  final String? Plu;
-  final String? PackingQuantity;
+  final ProductEntity? product;
 
   const CartProductEntity({
     required this.ProductPackingCode,
     required this.Quantity,
     required this.Value,
     required this.TotalLiquid,
+    required this.product,
     this.IncrementPercentageOrValue,
     this.IncrementValue,
     this.DiscountPercentageOrValue,
@@ -34,9 +34,6 @@ class CartProductEntity extends Equatable {
     this.AutomaticDiscountValue,
     this.ExpectedDeliveryDate,
     this.Observations,
-    this.Name,
-    this.Plu,
-    this.PackingQuantity,
   });
 
   @override
@@ -54,9 +51,7 @@ class CartProductEntity extends Equatable {
     AutomaticDiscountValue,
     ExpectedDeliveryDate,
     Observations,
-    Name,
-    Plu,
-    PackingQuantity,
+    product,
   ];
 
   CartProductEntity copyWith({
@@ -73,9 +68,7 @@ class CartProductEntity extends Equatable {
     double? AutomaticDiscountValue,
     DateTime? ExpectedDeliveryDate,
     String? Observations,
-    String? Name,
-    String? Plu,
-    String? PackingQuantity,
+    ProductEntity? product,
   }) {
     return CartProductEntity(
       ProductPackingCode: ProductPackingCode ?? this.ProductPackingCode,
@@ -96,19 +89,14 @@ class CartProductEntity extends Equatable {
           AutomaticDiscountValue ?? this.AutomaticDiscountValue,
       ExpectedDeliveryDate: ExpectedDeliveryDate ?? this.ExpectedDeliveryDate,
       Observations: Observations ?? this.Observations,
-      Name: Name ?? this.Name,
-      Plu: Plu ?? this.Plu,
-      PackingQuantity: PackingQuantity ?? this.PackingQuantity,
+      product: product ?? this.product,
     );
   }
 
   factory CartProductEntity.create({
-    required int productPackingCode,
     required double quantity,
     required double price,
-    String? name,
-    String? plu,
-    String? packingQuantity,
+    required ProductEntity product,
     double? discountByItem,
     PercentageOrValue? discountType,
   }) {
@@ -124,10 +112,8 @@ class CartProductEntity extends Equatable {
     }
 
     return CartProductEntity(
-      ProductPackingCode: productPackingCode,
-      Name: name,
-      Plu: plu,
-      PackingQuantity: packingQuantity,
+      ProductPackingCode: product.ProductPackingCode,
+      product: product,
       Quantity: quantity,
       Value: price,
       TotalLiquid: baseTotal - (totalDiscount ?? 0),

@@ -95,15 +95,18 @@ class _CartPageState extends ConsumerState<CartPage> {
     ref
         .read(pendingSaleRequestStateControllerProvider.notifier)
         .addProduct(
-          CartProductEntity.create(
-            discountByItem: discount,
-            discountType: discountType,
-            productPackingCode: cartProduct.ProductPackingCode,
-            quantity: quantity,
-            price: value,
-            name: cartProduct.Name,
-            plu: cartProduct.Plu,
-            packingQuantity: cartProduct.PackingQuantity,
+          cartProduct.copyWith(
+            DiscountValue: CartProductEntity.create(
+              discountByItem: discount,
+              discountType: discountType,
+              quantity: quantity,
+              price: value,
+              product: cartProduct.product!,
+            ).DiscountValue,
+            DiscountPercentageOrValue: discountType,
+            ProductPackingCode: cartProduct.ProductPackingCode,
+            Quantity: quantity,
+            Value: value,
           ),
         );
 
@@ -120,24 +123,25 @@ class _CartPageState extends ConsumerState<CartPage> {
       value: ref.watch(pendingSaleRequestStateControllerProvider),
       tryAgain: null,
       data: (data) {
-        final products = ref.watch(
+        final cartProducts = ref.watch(
           pendingSaleRequestStateControllerProvider.select(
             (state) => state.value?.cart.values.toList() ?? [],
           ),
         );
 
-        if (products.isEmpty) {
+        if (cartProducts.isEmpty) {
           return Center(child: Text('Nenhum item no carrinho'.hardcoded));
         }
 
         return ResponsiveListFlow(
-          itemCount: products.length,
+          itemCount: cartProducts.length,
           itemBuilder: (_, index) {
-            final product = products[index];
+            final cartProduct = cartProducts[index];
 
             return ProductItem(
-              product: product,
-              onTap: () => changeSelectedIndex(index, product),
+              cartProduct: cartProduct,
+              formKey: formKey,
+              onTap: () => changeSelectedIndex(index, cartProduct),
               isSelected: selectedIndex == index,
               updateProduct: updateProduct,
               quantityController: quantityController,
