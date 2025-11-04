@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/exceptions/exceptions.dart';
 import 'package:celta_intelligence/features/customer_register/data/datasource/datasource.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -48,10 +49,25 @@ void main() {
     mockSuccess();
   });
 
-  test('should call with correct params', () async {
+  test('should work corretly in success', () async {
     final result = await sut.get(cep);
 
     expect(result, AddressModel.fromViaCep(address));
+
+    verify(
+      () => httpClient.request(
+        url: 'https://viacep.com.br/ws/$cep/json/',
+        method: 'get',
+      ),
+    ).called(1);
+  });
+
+  test('should work corretly when doesnt find address', () async {
+    httpClient.mockRequest({'erro': true});
+
+    final result = sut.get(cep);
+
+    expect(result, throwsA(isA<AppException>()));
 
     verify(
       () => httpClient.request(
