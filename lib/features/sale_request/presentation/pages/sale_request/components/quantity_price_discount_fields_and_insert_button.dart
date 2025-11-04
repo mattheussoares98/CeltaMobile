@@ -17,6 +17,8 @@ class QuantityPriceDiscountFieldsAndInsertButton extends StatelessWidget {
   final ProductEntity product;
   final PercentageOrValue? discountType;
   final void Function(PercentageOrValue? value) changeDiscountType;
+  final CartProductEntity? cartProduct;
+  final bool isCartPage;
 
   const QuantityPriceDiscountFieldsAndInsertButton({
     super.key,
@@ -31,6 +33,8 @@ class QuantityPriceDiscountFieldsAndInsertButton extends StatelessWidget {
     required this.product,
     required this.discountType,
     required this.changeDiscountType,
+    required this.cartProduct,
+    required this.isCartPage,
   });
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,11 @@ class QuantityPriceDiscountFieldsAndInsertButton extends StatelessWidget {
                   if (selectedRequest.AllowAlterCostOrSalePrice == true) ...[
                     gapH4,
                     PriceField(
+                      isCartPage: isCartPage,
+                      cartProduct: cartProduct,
+                      product: product,
                       insertProduct: insertProduct,
+                      quantityController: quantityController,
                       priceController: priceController,
                       discountFocusNode: discountFocusNode,
                       priceFocusNode: priceFocusNode,

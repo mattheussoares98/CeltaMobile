@@ -90,6 +90,8 @@ class _ProductItemState extends ConsumerState<ProductItem> {
               child: Form(
                 key: widget.formKey,
                 child: QuantityPriceDiscountFieldsAndInsertButton(
+                  cartProduct: widget.cartProduct,
+                  isCartPage: true,
                   insertProduct: () =>
                       widget.updateProduct(widget.cartProduct, discountType),
                   quantityController: widget.quantityController,

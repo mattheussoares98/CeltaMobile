@@ -90,7 +90,9 @@ class __ProductItemState extends ConsumerState<ProductItem> {
             },
       notClickableBottom: widget.index == widget.selectedIndex
           ? QuantityPriceDiscountFieldsAndInsertButton(
+              isCartPage: false,
               product: widget.product,
+              cartProduct: cartProduct,
               insertProduct: () => widget.insertProduct(
                 widget.product,
                 cartProduct,
