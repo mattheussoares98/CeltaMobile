@@ -32,6 +32,7 @@ class Prices extends ConsumerWidget {
     );
 
     return ResponsiveScrollableWidget(
+      padding: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

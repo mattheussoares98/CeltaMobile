@@ -2,6 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
 import 'product_item.dart';
 
@@ -46,7 +47,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
     final isIOS = theme.platform == TargetPlatform.iOS;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(Sizes.p8),
         child: PageView(
           controller: scrollController,
           onPageChanged: (index) {

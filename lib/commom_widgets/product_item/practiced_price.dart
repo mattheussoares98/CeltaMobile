@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,11 +53,31 @@ class PracticedPrice extends ConsumerWidget {
       children: [
         Expanded(
           flex: 60,
-          child: TitleAndSubTitle(
-            title: '${saleType.name} ${(offerPrice) > 0 ? '(oferta) ' : ''}'
-                .hardcoded,
-            subTitle: salePrice,
-            subTitleIsPrice: true,
+          child: RichText(
+            text: TextSpan(
+              style: theme.textTheme.bodyMedium,
+              children: [
+                TextSpan(text: saleType.name),
+                if (saleType == SaleType.whole &&
+                    product.MinimumWholeQuantity > 0)
+                  TextSpan(
+                    text:
+                        ' (min ${product.MinimumWholeQuantity.toString().toBrazilianNumber(2, true)})',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.secondary,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                if (offerPrice > 0)
+                  TextSpan(
+                    text: ' (oferta) '.hardcoded,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.red,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
         if (offerPrice > 0)
