@@ -106,6 +106,9 @@ class CartProductEntity extends Equatable {
     required int productPackingCode,
     required double quantity,
     required double price,
+    String? name,
+    String? plu,
+    String? packingQuantity,
     double? discountByItem,
     PercentageOrValue? discountType,
   }) {
@@ -122,6 +125,9 @@ class CartProductEntity extends Equatable {
 
     return CartProductEntity(
       ProductPackingCode: productPackingCode,
+      Name: name,
+      Plu: plu,
+      PackingQuantity: packingQuantity,
       Quantity: quantity,
       Value: price,
       TotalLiquid: baseTotal - (totalDiscount ?? 0),

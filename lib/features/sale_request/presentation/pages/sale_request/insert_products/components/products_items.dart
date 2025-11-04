@@ -73,6 +73,9 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
             price: value,
             discountByItem: discount,
             discountType: discountType,
+            name: product.Name,
+            plu: product.PLU,
+            packingQuantity: product.PackingQuantity,
           ),
         );
 
