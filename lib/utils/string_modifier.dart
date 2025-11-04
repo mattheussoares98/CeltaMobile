@@ -78,4 +78,28 @@ extension StringModifier on String {
 
     return newValue;
   }
+
+  String? formattedPacking() {
+    final firstDigitMatch = RegExp(r'\d').firstMatch(this);
+
+    if (firstDigitMatch == null) {
+      return this;
+    }
+
+    final index = firstDigitMatch.start;
+    final textPart = this.substring(0, index);
+    var numberPart = this.substring(index);
+
+    if (numberPart.contains('.')) {
+      while (numberPart.endsWith('0')) {
+        numberPart = numberPart.substring(0, numberPart.length - 1);
+      }
+
+      if (numberPart.endsWith('.')) {
+        numberPart = numberPart.substring(0, numberPart.length - 1);
+      }
+    }
+
+    return '$textPart$numberPart'.replaceAll(RegExp(r'\.'), ',');
+  }
 }
