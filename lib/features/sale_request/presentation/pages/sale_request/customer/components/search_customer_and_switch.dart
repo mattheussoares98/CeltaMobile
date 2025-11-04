@@ -10,7 +10,13 @@ import '../../../../../../../core/validators/validators.dart';
 import '../../../../controllers/controllers.dart';
 
 class SearchFieldAndSwitch extends ConsumerStatefulWidget {
-  const SearchFieldAndSwitch({super.key});
+  final GlobalKey<FormState> formKey;
+  final TextEditingController searchController;
+  const SearchFieldAndSwitch({
+    super.key,
+    required this.formKey,
+    required this.searchController,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -18,15 +24,7 @@ class SearchFieldAndSwitch extends ConsumerStatefulWidget {
 }
 
 class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
-  final searchCustomerController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
   bool searchByPersonalizedCode = false;
-
-  @override
-  void dispose() {
-    searchCustomerController.dispose();
-    super.dispose();
-  }
 
   void onTapSwitch() {
     setState(() {
@@ -35,12 +33,12 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
   }
 
   void searchCustomer() {
-    if (formKey.currentState?.validate() != true) {
+    if (widget.formKey.currentState?.validate() != true) {
       return;
     }
     ref
         .read(customersStateControllerProvider.notifier)
-        .loadCustomer(searchCustomerController.text, searchByPersonalizedCode);
+        .loadCustomer(widget.searchController.text, searchByPersonalizedCode);
   }
 
   @override
@@ -50,16 +48,16 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
 
     ref.listen(customersStateControllerProvider, (p, n) {
       n.doOnSuccess(p, () {
-        searchCustomerController.clear();
+        widget.searchController.clear();
       });
     });
 
     return Column(
       children: [
         Form(
-          key: formKey,
+          key: widget.formKey,
           child: DefaultTextFormField(
-            controller: searchCustomerController,
+            controller: widget.searchController,
             labelText: searchByPersonalizedCode
                 ? 'Cód personalizado'
                 : 'Nome | CPF | CNPJ | Código'.hardcoded,
@@ -71,7 +69,7 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
             validator: FormValidators.compose([NonEmptyValidator()]),
             onFieldSubmitted: (_) => searchCustomer(),
             prefixIcon: IconButton(
-              onPressed: searchCustomerController.clear,
+              onPressed: widget.searchController.clear,
               icon: Icon(
                 isIOS ? CupertinoIcons.delete : Icons.delete,
                 color: Colors.red,

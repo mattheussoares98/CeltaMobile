@@ -6,19 +6,36 @@ import '../../../../../../constants/constants.dart';
 import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class CustomerPage extends ConsumerWidget {
+class CustomerPage extends ConsumerStatefulWidget {
   const CustomerPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _CustomerPageState();
+}
+
+class _CustomerPageState extends ConsumerState<CustomerPage> {
+  final searchCustomerController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    searchCustomerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const ResponsiveScrollableWidget(
+          ResponsiveScrollableWidget(
             padding: 0,
-            child: SearchFieldAndSwitch(),
+            child: SearchFieldAndSwitch(
+              formKey: formKey,
+              searchController: searchCustomerController,
+            ),
           ),
           Expanded(
             child: CustomScrollView(
