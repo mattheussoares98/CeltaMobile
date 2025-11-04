@@ -119,40 +119,33 @@ class _CartPageState extends ConsumerState<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AsyncValueWidget(
-      value: ref.watch(pendingSaleRequestStateControllerProvider),
-      tryAgain: null,
-      data: (data) {
-        final cartProducts = ref.watch(
-          pendingSaleRequestStateControllerProvider.select(
-            (state) => state.value?.cart.values.toList() ?? [],
-          ),
-        );
+    final cartProducts = ref.watch(
+      pendingSaleRequestStateControllerProvider.select(
+        (state) => state.value?.cart.values.toList() ?? [],
+      ),
+    );
+    return ResponsiveListFlow(
+      itemCount: cartProducts.length,
+      itemBuilder: (_, index) {
+        final cartProduct = cartProducts[index];
 
         if (cartProducts.isEmpty) {
           return Center(child: Text('Nenhum item no carrinho'.hardcoded));
         }
 
-        return ResponsiveListFlow(
-          itemCount: cartProducts.length,
-          itemBuilder: (_, index) {
-            final cartProduct = cartProducts[index];
-
-            return ProductItem(
-              cartProduct: cartProduct,
-              formKey: formKey,
-              onTap: () => changeSelectedIndex(index, cartProduct),
-              isSelected: selectedIndex == index,
-              updateProduct: updateProduct,
-              quantityController: quantityController,
-              priceController: priceController,
-              discountController: discountController,
-              quantityFocusNode: quantityFocusNode,
-              discountFocusNode: discountFocusNode,
-              priceFocusNode: priceFocusNode,
-              selectedRequest: widget.selectedRequest,
-            );
-          },
+        return ProductItem(
+          cartProduct: cartProduct,
+          formKey: formKey,
+          onTap: () => changeSelectedIndex(index, cartProduct),
+          isSelected: selectedIndex == index,
+          updateProduct: updateProduct,
+          quantityController: quantityController,
+          priceController: priceController,
+          discountController: discountController,
+          quantityFocusNode: quantityFocusNode,
+          discountFocusNode: discountFocusNode,
+          priceFocusNode: priceFocusNode,
+          selectedRequest: widget.selectedRequest,
         );
       },
     );
