@@ -68,7 +68,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
       p,
       n,
     ) {
-      n.showSnackbarOnError(context, previous: p, message: n.error);
+      n.showSnackbarOnError(context, p);
       n.doOnSuccess(p, () {
         widget.supplierController.clear();
       });

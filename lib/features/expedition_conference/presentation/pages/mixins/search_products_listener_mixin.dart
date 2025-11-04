@@ -25,7 +25,7 @@ mixin SearchProductsListenerMixin {
         Modules.expeditionConference,
       ),
       (p, n) {
-        n.showSnackbarOnError(context, previous: p, message: n.error);
+        n.showSnackbarOnError(context,  p);
 
         n.doOnSuccess(p, () {
           if (n.value != null && n.value!.length == 1) {

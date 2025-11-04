@@ -142,11 +142,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             });
           }
         });
-        next.showSnackbarOnError(
-          context,
-          previous: previous,
-          message: next.error,
-        );
+        next.showSnackbarOnError(context, previous);
       },
     );
 

@@ -159,11 +159,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
       if (n.hasError) {
         clearFields(clearZip: false);
       }
-      n.showSnackbarOnError(
-        context,
-        previous: p,
-        message: 'Ocorreu um erro não esperado. Tente novamente'.hardcoded,
-      );
+      n.showSnackbarOnError(context, p);
       n.doOnSuccess(p, () {
         if (n.value == null) {
           return;
