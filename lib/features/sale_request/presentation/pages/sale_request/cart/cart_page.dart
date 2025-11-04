@@ -60,7 +60,10 @@ class _CartPageState extends ConsumerState<CartPage> {
             .toString()
             .toBrazilianNumber()
             .replaceAll(RegExp(r'\.'), '');
+      } else {
+        discountController.clear();
       }
+
       if (product.DiscountPercentageOrValue != null) {
         setState(() {
           discountType = product.DiscountPercentageOrValue;
