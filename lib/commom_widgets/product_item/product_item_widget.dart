@@ -119,6 +119,15 @@ class ProductItemWidget extends ConsumerWidget {
                                     subTitleIsPrice: true,
                                   ),
                                 ],
+                                if (routine == BsRoutine.saleRequest) ...[
+                                  if (product.WholePracticedPrice > 0)
+                                    TitleAndSubTitle(
+                                      title:
+                                          'Preço atacado ${product.MinimumWholeQuantity > 0 ? 'mín (${product.MinimumWholeQuantity.toString().toBrazilianNumber(2, true)}) ' : ''}',
+                                      subTitle: product.WholePracticedPrice,
+                                      subTitleIsPrice: true,
+                                    ),
+                                ],
                                 if (routine != BsRoutine.transferRequest) ...[
                                   TitleAndSubTitle(
                                     title: "Custo líquido ",
