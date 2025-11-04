@@ -109,7 +109,18 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
           ),
           BottomNavigationBarItem(
             label: 'Cliente'.hardcoded,
-            icon: Icon(isIOS ? CupertinoIcons.person : Icons.person),
+            icon: ValidatedBadge(
+              isSelected: currentIndex == 1,
+              isValid:
+                  ref.watch(
+                    pendingSaleRequestStateControllerProvider.select(
+                      (state) => state.value?.customer,
+                    ),
+                  ) !=
+                  null,
+              materialIcon: Icons.person,
+              cupertinoIcon: CupertinoIcons.person,
+            ),
           ),
           BottomNavigationBarItem(
             label: 'Carrinho'.hardcoded,
