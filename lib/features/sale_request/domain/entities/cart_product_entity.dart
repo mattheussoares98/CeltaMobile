@@ -134,7 +134,7 @@ class CartProductEntity extends Equatable {
     if (AutomaticDiscountValue != null) {
       value -= AutomaticDiscountValue! / Quantity;
     }
-    return value;
+    return value > 0 ? value : 0;
   }
 
   double get getTotalLiquid {
