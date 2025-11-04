@@ -3,30 +3,35 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
-import 'components.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 
-class PriceField extends StatelessWidget {
+class QuantityField extends StatelessWidget {
   final VoidCallback insertProduct;
-  final ProductsItems productsItems;
-
-  const PriceField({
+  final TextEditingController quantityController;
+  final FocusNode quantityFocusNode;
+  final FocusNode priceFocusNode;
+  final RequestTypeEntity selectedRequest;
+  const QuantityField({
     super.key,
-    required this.productsItems,
     required this.insertProduct,
+    required this.quantityController,
+    required this.quantityFocusNode,
+    required this.priceFocusNode,
+    required this.selectedRequest,
   });
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextFormField(
-      labelText: 'Preço'.hardcoded,
-      hintText: 'Preço'.hardcoded,
+      labelText: 'Quantidade'.hardcoded,
+      hintText: 'Quantidade'.hardcoded,
       maxLength: 13,
-      controller: productsItems.priceController,
-      focusNode: productsItems.priceFocusNode,
+      controller: quantityController,
+      focusNode: quantityFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
-        if (productsItems.selectedRequest.AllowDiscount == true) {
-          productsItems.discountFocusNode.requestFocus();
+        if (selectedRequest.AllowAlterCostOrSalePrice == true) {
+          priceFocusNode.requestFocus();
         } else {
           insertProduct();
         }

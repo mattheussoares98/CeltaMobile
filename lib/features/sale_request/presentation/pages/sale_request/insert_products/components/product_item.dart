@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
+import '../../components/components.dart';
 import 'components.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
@@ -89,74 +89,26 @@ class __ProductItemState extends ConsumerState<ProductItem> {
                   .removeProduct(cartProduct);
             },
       notClickableBottom: widget.index == widget.selectedIndex
-          ? Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 65,
-                      child: Column(
-                        children: [
-                          QuantityField(
-                            productsItems: widget.productsItemsWidget,
-                            insertProduct: () => widget.insertProduct(
-                              widget.product,
-                              cartProduct,
-                              discountType,
-                            ),
-                          ),
-                          if (widget
-                                  .selectedRequest
-                                  .AllowAlterCostOrSalePrice ==
-                              true) ...[
-                            gapH4,
-                            PriceField(
-                              productsItems: widget.productsItemsWidget,
-                              insertProduct: () => widget.insertProduct(
-                                widget.product,
-                                cartProduct,
-                                discountType,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                    gapW4,
-                    Expanded(
-                      flex: 35,
-                      child: TotalPriceAndInsertButton(
-                        discountType: discountType,
-                        insertProduct: () => widget.insertProduct(
-                          widget.product,
-                          cartProduct,
-                          discountType,
-                        ),
-                        productsItems: widget.productsItemsWidget,
-                        product: widget.product,
-                      ),
-                    ),
-                  ],
-                ),
-                if (widget.selectedRequest.AllowDiscount == true) ...[
-                  gapH4,
-                  DiscountFieldAndTypeDropdown(
-                    productsItems: widget.productsItemsWidget,
-                    insertProduct: () => widget.insertProduct(
-                      widget.product,
-                      cartProduct,
-                      discountType,
-                    ),
-                    discountType: discountType,
-                    changeDiscountType: (value) {
-                      setState(() {
-                        discountType = value;
-                      });
-                    },
-                  ),
-                ],
-              ],
+          ? QuantityPriceDiscountFieldsAndInsertButton(
+              insertProduct: () => widget.insertProduct(
+                widget.product,
+                cartProduct,
+                discountType,
+              ),
+              changeDiscountType: (value) {
+                setState(() {
+                  discountType = value;
+                });
+              },
+              discountType: discountType,
+              quantityController: widget.productsItemsWidget.quantityController,
+              priceController: widget.productsItemsWidget.priceController,
+              discountController: widget.productsItemsWidget.discountController,
+              quantityFocusNode: widget.productsItemsWidget.quantityFocusNode,
+              discountFocusNode: widget.productsItemsWidget.discountFocusNode,
+              priceFocusNode: widget.productsItemsWidget.priceFocusNode,
+              selectedRequest: widget.productsItemsWidget.selectedRequest,
+              productPackingCode: widget.product.ProductPackingCode,
             )
           : null,
     );

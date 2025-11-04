@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/validators/validators.dart';
-import '../../../../../domain/entities/entities.dart';
-import 'components.dart';
+import '../../../../domain/entities/entities.dart';
 
 class DiscountFieldAndTypeDropdown extends StatelessWidget {
-  final ProductsItems productsItems;
   final VoidCallback insertProduct;
   final PercentageOrValue? discountType;
   final void Function(PercentageOrValue? discountType) changeDiscountType;
+  final TextEditingController discountController;
+  final FocusNode discountFocusNode;
   const DiscountFieldAndTypeDropdown({
     super.key,
-    required this.productsItems,
     required this.insertProduct,
     required this.discountType,
     required this.changeDiscountType,
+    required this.discountController,
+    required this.discountFocusNode,
   });
 
   @override
@@ -29,8 +30,8 @@ class DiscountFieldAndTypeDropdown extends StatelessWidget {
           child: DefaultTextFormField(
             hintText: 'Desconto'.hardcoded,
             labelText: 'Desconto'.hardcoded,
-            controller: productsItems.discountController,
-            focusNode: productsItems.discountFocusNode,
+            controller: discountController,
+            focusNode: discountFocusNode,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLength: 13,
             onFieldSubmitted: (_) {
@@ -68,8 +69,7 @@ class DiscountFieldAndTypeDropdown extends StatelessWidget {
             hint: 'Tipo',
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
-              if (discountType == null &&
-                  productsItems.discountController.text.isNotEmpty) {
+              if (discountType == null && discountController.text.isNotEmpty) {
                 return 'Campo obrigatório'.hardcoded;
               }
 
