@@ -11,37 +11,13 @@ class ProductInformations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formatPacking(String value) {
-      final firstDigitMatch = RegExp(r'\d').firstMatch(value);
-
-      if (firstDigitMatch == null) {
-        return value;
-      }
-
-      final index = firstDigitMatch.start;
-      final textPart = value.substring(0, index);
-      var numberPart = value.substring(index);
-
-      if (numberPart.contains('.')) {
-        while (numberPart.endsWith('0')) {
-          numberPart = numberPart.substring(0, numberPart.length - 1);
-        }
-
-        if (numberPart.endsWith('.')) {
-          numberPart = numberPart.substring(0, numberPart.length - 1);
-        }
-      }
-
-      return '$textPart$numberPart'.replaceAll(RegExp(r'\.'), ',');
-    }
-
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TitleAndSubTitle(
           title: item.product.Name,
-          subTitle: " (${formatPacking(item.product.PackingQuantity)})",
+          subTitle: " (${item.product.PackingQuantity.formattedPacking()})",
           titleStyle: theme.textTheme.titleMedium,
           subTitleStyle: theme.textTheme.bodyMedium,
         ),

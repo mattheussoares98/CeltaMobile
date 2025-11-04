@@ -52,30 +52,6 @@ class ProductItemWidget extends ConsumerWidget {
     }
   }
 
-  String _formatPacking(String value) {
-    final firstDigitMatch = RegExp(r'\d').firstMatch(value);
-
-    if (firstDigitMatch == null) {
-      return value;
-    }
-
-    final index = firstDigitMatch.start;
-    final textPart = value.substring(0, index);
-    var numberPart = value.substring(index);
-
-    if (numberPart.contains('.')) {
-      while (numberPart.endsWith('0')) {
-        numberPart = numberPart.substring(0, numberPart.length - 1);
-      }
-
-      if (numberPart.endsWith('.')) {
-        numberPart = numberPart.substring(0, numberPart.length - 1);
-      }
-    }
-
-    return '$textPart$numberPart'.replaceAll(RegExp(r'\.'), ',');
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(finishOfferControllerProvider, (p, n) {
@@ -116,7 +92,7 @@ class ProductItemWidget extends ConsumerWidget {
                       TitleAndSubTitle(
                         title: product.Name,
                         subTitle:
-                            " (${_formatPacking(product.PackingQuantity)})",
+                            " (${product.PackingQuantity.formattedPacking()})",
                         titleStyle: theme.textTheme.titleMedium,
                         subTitleStyle: theme.textTheme.bodyMedium,
                       ),
