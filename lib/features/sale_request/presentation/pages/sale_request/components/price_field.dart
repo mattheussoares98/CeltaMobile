@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
@@ -22,6 +23,9 @@ class PriceField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     return DefaultTextFormField(
       labelText: 'Preço'.hardcoded,
       hintText: 'Preço'.hardcoded,
@@ -29,6 +33,18 @@ class PriceField extends StatelessWidget {
       controller: priceController,
       focusNode: priceFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      suffixIcon: IconButton(
+        onPressed: () {
+          showAlertDialog(
+            context: context,
+            title: 'Atenção!'.hardcoded,
+            content:
+                'Esse campo está habilitado porque o modelo de pedido permite alterar o preço'
+                    .hardcoded,
+          );
+        },
+        icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+      ),
       onFieldSubmitted: (_) {
         if (selectedRequest.AllowDiscount == true) {
           discountFocusNode.requestFocus();

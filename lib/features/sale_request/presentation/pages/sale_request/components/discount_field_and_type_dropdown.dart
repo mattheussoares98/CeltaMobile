@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
@@ -23,6 +24,8 @@ class DiscountFieldAndTypeDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
     return Row(
       children: [
         Expanded(
@@ -34,6 +37,18 @@ class DiscountFieldAndTypeDropdown extends StatelessWidget {
             focusNode: discountFocusNode,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLength: 13,
+            suffixIcon: IconButton(
+              onPressed: () {
+                showAlertDialog(
+                  context: context,
+                  title: 'Atenção!'.hardcoded,
+                  content:
+                      'Esse campo está habilitado porque o modelo de pedido permite inserir desconto'
+                          .hardcoded,
+                );
+              },
+              icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+            ),
             onFieldSubmitted: (_) {
               insertProduct();
             },
