@@ -31,7 +31,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
   final priceFocusNode = FocusNode();
   final discountController = TextEditingController();
   final discountFocusNode = FocusNode();
-  int? selectedIndex;
 
   @override
   void dispose() {
@@ -45,11 +44,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
     discountFocusNode.dispose();
   }
 
-  void onTapProduct(
-    int? index,
-    ProductEntity product,
-    CartProductEntity? cartProduct,
-  ) {
+  void onTapProduct(ProductEntity product, CartProductEntity? cartProduct) {
     if (product.Value == 0 &&
         product.RetailPracticedPrice == 0 &&
         widget.selectedRequest.AllowAlterCostOrSalePrice != true) {
@@ -59,15 +54,18 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
             .hardcoded,
         backgroundColor: Colors.red,
       );
-    } else if (index == selectedIndex || index == null) {
-      setState(() {
-        selectedIndex = null;
-      });
-    } else {
-      setState(() {
-        selectedIndex = index;
-      });
+    }
+    ref
+        .read(selectedProductPackingCodeControllerProvider(false).notifier)
+        .updateSelectedCode(product.ProductPackingCode);
+    ref
+        .read(selectedDiscountTypeControllerProvider.notifier)
+        .updateSelectedDiscountType(cartProduct?.DiscountPercentageOrValue);
 
+    final selectedPackingCode = ref
+        .read(selectedProductPackingCodeControllerProvider(false))
+        .value;
+    if (selectedPackingCode != null) {
       final cartProductPrice = (cartProduct?.Value ?? 0);
       final productPrice = product.getPrice;
       double? price = cartProductPrice == 0 ? productPrice : cartProductPrice;
@@ -78,9 +76,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
         priceController.clear();
       }
 
-      ref
-          .read(selectedDiscountTypeControllerProvider.notifier)
-          .updateSelectedDiscountType(cartProduct?.DiscountPercentageOrValue);
       if ((cartProduct?.DiscountValue ?? 0) > 0) {
         discountController.text = cartProduct!.getValueOrPercentageDiscount
             .toString()
@@ -111,7 +106,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
           Expanded(
             child: ProductsItems(
               enterpriseCode: widget.enterpriseCode,
-              selectedIndex: selectedIndex,
               onTapProduct: onTapProduct,
               quantityController: quantityController,
               quantityFocusNode: quantityFocusNode,
@@ -119,11 +113,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
               priceFocusNode: priceFocusNode,
               discountController: discountController,
               discountFocusNode: discountFocusNode,
-              removeSelectedIndex: () {
-                setState(() {
-                  selectedIndex = null;
-                });
-              },
               selectedRequest: widget.selectedRequest,
             ),
           ),

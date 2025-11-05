@@ -10,17 +10,13 @@ import 'components.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
   final ProductEntity product;
-  final int index;
-  final int? selectedIndex;
-  final void Function(int?, ProductEntity, CartProductEntity?) onTapProduct;
+  final void Function(ProductEntity, CartProductEntity?) onTapProduct;
   final void Function(ProductEntity, CartProductEntity?) insertProduct;
   final RequestTypeEntity selectedRequest;
   final ProductsItems productsItemsWidget;
   const ProductItem({
     super.key,
     required this.product,
-    required this.index,
-    required this.selectedIndex,
     required this.onTapProduct,
     required this.insertProduct,
     required this.selectedRequest,
@@ -40,13 +36,15 @@ class __ProductItemState extends ConsumerState<ProductItem> {
         (state) => state.value?.cart[widget.product.ProductPackingCode],
       ),
     );
+    final selectedPackingCode = ref
+        .watch(selectedProductPackingCodeControllerProvider(false))
+        .value;
     return ProductItemWidget(
       product: widget.product,
       routine: BsRoutine.saleRequest,
       showDropIcon: true,
-      isSelected: widget.index == widget.selectedIndex,
-      onTap: () =>
-          widget.onTapProduct(widget.index, widget.product, cartProduct),
+      isSelected: selectedPackingCode == widget.product.ProductPackingCode,
+      onTap: () => widget.onTapProduct(widget.product, cartProduct),
       cartItemSummary: cartProduct == null
           ? null
           : CartItemSummary(
@@ -62,7 +60,8 @@ class __ProductItemState extends ConsumerState<ProductItem> {
                   .read(pendingSaleRequestStateControllerProvider.notifier)
                   .removeProduct(cartProduct);
             },
-      notClickableBottom: widget.index == widget.selectedIndex
+      notClickableBottom:
+          selectedPackingCode == widget.product.ProductPackingCode
           ? QuantityPriceDiscountFieldsAndInsertButton(
               isCartPage: false,
               product: widget.product,

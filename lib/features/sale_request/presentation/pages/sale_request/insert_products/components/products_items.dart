@@ -11,12 +11,7 @@ import 'components.dart';
 
 class ProductsItems extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final int? selectedIndex;
-  final void Function(
-    int? index,
-    ProductEntity product,
-    CartProductEntity? cartProduct,
-  )
+  final void Function(ProductEntity product, CartProductEntity? cartProduct)
   onTapProduct;
   final TextEditingController quantityController;
   final TextEditingController priceController;
@@ -24,12 +19,10 @@ class ProductsItems extends ConsumerStatefulWidget {
   final FocusNode quantityFocusNode;
   final FocusNode priceFocusNode;
   final FocusNode discountFocusNode;
-  final VoidCallback removeSelectedIndex;
   final RequestTypeEntity selectedRequest;
   const ProductsItems({
     super.key,
     required this.enterpriseCode,
-    required this.selectedIndex,
     required this.onTapProduct,
     required this.quantityController,
     required this.priceController,
@@ -37,7 +30,6 @@ class ProductsItems extends ConsumerStatefulWidget {
     required this.quantityFocusNode,
     required this.priceFocusNode,
     required this.discountFocusNode,
-    required this.removeSelectedIndex,
     required this.selectedRequest,
   });
 
@@ -79,25 +71,16 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     if (!updated) return;
 
     widget.quantityController.clear();
-    widget.removeSelectedIndex();
     widget.discountController.clear();
+    ref
+        .read(selectedProductPackingCodeControllerProvider(false).notifier)
+        .updateSelectedCode(
+          null,
+        ); //TODO change this to the controller that add the product and create test
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.saleRequest,
-        Modules.saleRequest,
-      ),
-      (p, n) {
-        n.doOnSuccess(p, () {
-          widget.removeSelectedIndex();
-        });
-      },
-    );
-
     return Form(
       key: formKey,
       child: AsyncValueWidget(
@@ -117,8 +100,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
               return ProductItem(
                 product: product,
-                index: index,
-                selectedIndex: widget.selectedIndex,
                 onTapProduct: widget.onTapProduct,
                 insertProduct: insertProduct,
                 selectedRequest: widget.selectedRequest,
