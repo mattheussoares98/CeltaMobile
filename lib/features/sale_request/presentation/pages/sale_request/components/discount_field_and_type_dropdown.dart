@@ -1,108 +1,129 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
-class DiscountFieldAndTypeDropdown extends StatelessWidget {
+class DiscountFieldAndTypeDropdown extends ConsumerStatefulWidget {
   final VoidCallback insertProduct;
-  final PercentageOrValue? discountType;
-  final void Function(PercentageOrValue? discountType) changeDiscountType;
   final TextEditingController discountController;
   final FocusNode discountFocusNode;
+  final CartProductEntity? cartProduct;
   const DiscountFieldAndTypeDropdown({
     super.key,
     required this.insertProduct,
-    required this.discountType,
-    required this.changeDiscountType,
     required this.discountController,
     required this.discountFocusNode,
+    required this.cartProduct,
   });
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DiscountFieldAndTypeDropdownState();
+}
+
+class _DiscountFieldAndTypeDropdownState
+    extends ConsumerState<DiscountFieldAndTypeDropdown> {
+  //TODO change to stateless
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-    return Row(
-      children: [
-        Expanded(
-          flex: 65,
-          child: DefaultTextFormField(
-            hintText: 'Desconto'.hardcoded,
-            labelText: 'Desconto'.hardcoded,
-            controller: discountController,
-            focusNode: discountFocusNode,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            maxLength: 13,
-            suffixIcon: IconButton(
-              onPressed: () {
-                showAlertDialog(
-                  context: context,
-                  title: 'Atenção!'.hardcoded,
-                  content:
-                      'Esse campo está habilitado porque o modelo de pedido permite inserir desconto'
-                          .hardcoded,
-                );
-              },
-              icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
-            ),
-            onFieldSubmitted: (_) {
-              insertProduct();
-            },
-            keyboardType: const TextInputType.numberWithOptions(
-              decimal: true, //TODO test in IOS
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return null;
-              }
 
-              final numberValidator = NumberValidator(
-                allowDecimal: true,
-                needsBeGreaterThanZero: false,
-              );
+    return AsyncValueWidget(
+      value: ref.watch(selectedDiscountTypeControllerProvider),
+      tryAgain: null,
+      data: (discountType) {
+        return Row(
+          children: [
+            Expanded(
+              flex: 65,
+              child: DefaultTextFormField(
+                hintText: 'Desconto'.hardcoded,
+                labelText: 'Desconto'.hardcoded,
+                controller: widget.discountController,
+                focusNode: widget.discountFocusNode,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                maxLength: 13,
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Atenção!'.hardcoded,
+                      content:
+                          'Esse campo está habilitado porque o modelo de pedido permite inserir desconto'
+                              .hardcoded,
+                    );
+                  },
+                  icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+                ),
+                onFieldSubmitted: (_) {
+                  widget.insertProduct();
+                },
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true, //TODO test in IOS
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return null;
+                  }
 
-              final isValid = numberValidator.isValid(value);
+                  final numberValidator = NumberValidator(
+                    allowDecimal: true,
+                    needsBeGreaterThanZero: false,
+                  );
 
-              if (isValid) {
-                return null;
-              } else {
-                return numberValidator.errorMessage;
-              }
-            },
-          ),
-        ),
-        gapW8,
-        Flexible(
-          flex: 35,
-          child: DefaultSimpleDropDown<PercentageOrValue?>(
-            onChanged: changeDiscountType,
-            value: discountType,
-            hint: 'Tipo',
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) {
-              if (discountType == null && discountController.text.isNotEmpty) {
-                return 'Campo obrigatório'.hardcoded;
-              }
+                  final isValid = numberValidator.isValid(value);
 
-              return null;
-            },
-            items: [
-              DropdownMenuItem(
-                value: PercentageOrValue.percentage,
-                child: Text(PercentageOrValue.percentage.symbol),
+                  if (isValid) {
+                    return null;
+                  } else {
+                    return numberValidator.errorMessage;
+                  }
+                },
               ),
-              DropdownMenuItem(
-                value: PercentageOrValue.value,
-                child: Text(PercentageOrValue.value.symbol),
+            ),
+            gapW8,
+            Flexible(
+              flex: 35,
+              child: DefaultSimpleDropDown<PercentageOrValue?>(
+                onChanged: (value) {
+                  ref
+                      .read(selectedDiscountTypeControllerProvider.notifier)
+                      .updateSelectedDiscountType(value);
+                },
+                value: discountType,
+                hint: 'Tipo',
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (discountType == null &&
+                      widget.discountController.text.isNotEmpty) {
+                    return 'Campo obrigatório'.hardcoded;
+                  }
+
+                  return null;
+                },
+                items: [
+                  DropdownMenuItem(
+                    value: PercentageOrValue.percentage,
+                    child: Text(PercentageOrValue.percentage.symbol),
+                  ),
+                  DropdownMenuItem(
+                    value: PercentageOrValue.value,
+                    child: Text(PercentageOrValue.value.symbol),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

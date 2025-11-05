@@ -19,7 +19,6 @@ class CartPage extends ConsumerStatefulWidget {
 
 class _CartPageState extends ConsumerState<CartPage> {
   int? selectedIndex;
-  PercentageOrValue? discountType;
   final quantityController = TextEditingController();
   final discountController = TextEditingController();
   final priceController = TextEditingController();
@@ -65,9 +64,9 @@ class _CartPageState extends ConsumerState<CartPage> {
       }
 
       if (product.DiscountPercentageOrValue != null) {
-        setState(() {
-          discountType = product.DiscountPercentageOrValue;
-        });
+        ref
+            .read(selectedDiscountTypeControllerProvider.notifier)
+            .updateSelectedDiscountType(product.DiscountPercentageOrValue);
       }
 
       Future.delayed(const Duration(milliseconds: 100), () {
@@ -80,10 +79,7 @@ class _CartPageState extends ConsumerState<CartPage> {
     }
   }
 
-  void updateProduct(
-    CartProductEntity cartProduct,
-    PercentageOrValue? discountType,
-  ) {
+  void updateProduct(CartProductEntity cartProduct) {
     if (formKey.currentState?.validate() != true) {
       return;
     }
@@ -91,6 +87,7 @@ class _CartPageState extends ConsumerState<CartPage> {
     double quantity = quantityController.text.toDouble()!;
     double? discount = discountController.text.toDouble();
     double value = priceController.text.toDouble()!;
+    final discountType = ref.read(selectedDiscountTypeControllerProvider).value;
 
     ref
         .read(pendingSaleRequestStateControllerProvider.notifier)

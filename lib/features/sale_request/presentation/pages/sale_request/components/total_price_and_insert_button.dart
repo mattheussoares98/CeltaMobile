@@ -1,15 +1,16 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
-class TotalPriceAndInsertButton extends StatelessWidget {
+class TotalPriceAndInsertButton extends ConsumerWidget {
   final VoidCallback insertProduct;
-  final PercentageOrValue? discountType;
   final TextEditingController priceController;
   final TextEditingController quantityController;
   final TextEditingController discountController;
@@ -17,7 +18,6 @@ class TotalPriceAndInsertButton extends StatelessWidget {
   const TotalPriceAndInsertButton({
     super.key,
     required this.insertProduct,
-    required this.discountType,
     required this.priceController,
     required this.quantityController,
     required this.discountController,
@@ -25,8 +25,12 @@ class TotalPriceAndInsertButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+
+    final discountType = ref
+        .watch(selectedDiscountTypeControllerProvider)
+        .value;
 
     return AnimatedBuilder(
       animation: Listenable.merge([

@@ -11,11 +11,7 @@ class ProductItem extends ConsumerStatefulWidget {
   final CartProductEntity cartProduct;
   final VoidCallback onTap;
   final bool isSelected;
-  final void Function(
-    CartProductEntity product,
-    PercentageOrValue? discountType,
-  )
-  updateProduct;
+  final void Function(CartProductEntity product) updateProduct;
   final TextEditingController quantityController;
   final TextEditingController priceController;
   final TextEditingController discountController;
@@ -45,17 +41,7 @@ class ProductItem extends ConsumerStatefulWidget {
 }
 
 class _ProductItemState extends ConsumerState<ProductItem> {
-  PercentageOrValue? discountType;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        discountType = widget.cartProduct.DiscountPercentageOrValue;
-      }
-    });
-  }
+  //TODO change to stateless
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +78,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                 child: QuantityPriceDiscountFieldsAndInsertButton(
                   cartProduct: widget.cartProduct,
                   isCartPage: true,
-                  insertProduct: () =>
-                      widget.updateProduct(widget.cartProduct, discountType),
+                  insertProduct: () => widget.updateProduct(widget.cartProduct),
                   quantityController: widget.quantityController,
                   priceController: widget.priceController,
                   discountController: widget.discountController,
@@ -102,12 +87,6 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                   priceFocusNode: widget.priceFocusNode,
                   selectedRequest: widget.selectedRequest,
                   product: widget.cartProduct.product!,
-                  discountType: discountType,
-                  changeDiscountType: (value) {
-                    setState(() {
-                      discountType = value;
-                    });
-                  },
                 ),
               ),
             ),

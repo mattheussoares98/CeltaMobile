@@ -6,6 +6,7 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class InsertProductsPage extends ConsumerStatefulWidget {
@@ -76,6 +77,10 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       } else {
         priceController.clear();
       }
+
+      ref
+          .read(selectedDiscountTypeControllerProvider.notifier)
+          .updateSelectedDiscountType(cartProduct?.DiscountPercentageOrValue);
       if ((cartProduct?.DiscountValue ?? 0) > 0) {
         discountController.text = cartProduct!.getValueOrPercentageDiscount
             .toString()

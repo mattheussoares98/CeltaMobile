@@ -13,12 +13,7 @@ class ProductItem extends ConsumerStatefulWidget {
   final int index;
   final int? selectedIndex;
   final void Function(int?, ProductEntity, CartProductEntity?) onTapProduct;
-  final void Function(
-    ProductEntity,
-    CartProductEntity?,
-    PercentageOrValue? discountType,
-  )
-  insertProduct;
+  final void Function(ProductEntity, CartProductEntity?) insertProduct;
   final RequestTypeEntity selectedRequest;
   final ProductsItems productsItemsWidget;
   const ProductItem({
@@ -37,28 +32,7 @@ class ProductItem extends ConsumerStatefulWidget {
 }
 
 class __ProductItemState extends ConsumerState<ProductItem> {
-  PercentageOrValue? discountType;
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        setState(() {
-          discountType = ref
-              .read(
-                pendingSaleRequestStateControllerProvider.select(
-                  (state) =>
-                      state.value?.cart[widget.product.ProductPackingCode],
-                ),
-              )
-              ?.DiscountPercentageOrValue;
-        });
-      }
-    });
-  }
-
+  //TODO change to stateless
   @override
   Widget build(BuildContext context) {
     final cartProduct = ref.watch(
@@ -93,17 +67,8 @@ class __ProductItemState extends ConsumerState<ProductItem> {
               isCartPage: false,
               product: widget.product,
               cartProduct: cartProduct,
-              insertProduct: () => widget.insertProduct(
-                widget.product,
-                cartProduct,
-                discountType,
-              ),
-              changeDiscountType: (value) {
-                setState(() {
-                  discountType = value;
-                });
-              },
-              discountType: discountType,
+              insertProduct: () =>
+                  widget.insertProduct(widget.product, cartProduct),
               quantityController: widget.productsItemsWidget.quantityController,
               priceController: widget.productsItemsWidget.priceController,
               discountController: widget.productsItemsWidget.discountController,

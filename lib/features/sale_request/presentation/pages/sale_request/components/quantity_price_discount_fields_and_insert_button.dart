@@ -15,8 +15,6 @@ class QuantityPriceDiscountFieldsAndInsertButton extends StatelessWidget {
   final FocusNode priceFocusNode;
   final RequestTypeEntity selectedRequest;
   final ProductEntity product;
-  final PercentageOrValue? discountType;
-  final void Function(PercentageOrValue? value) changeDiscountType;
   final CartProductEntity? cartProduct;
   final bool isCartPage;
 
@@ -31,8 +29,6 @@ class QuantityPriceDiscountFieldsAndInsertButton extends StatelessWidget {
     required this.priceFocusNode,
     required this.selectedRequest,
     required this.product,
-    required this.discountType,
-    required this.changeDiscountType,
     required this.cartProduct,
     required this.isCartPage,
   });
@@ -76,7 +72,6 @@ class QuantityPriceDiscountFieldsAndInsertButton extends StatelessWidget {
               flex: 35,
               child: TotalPriceAndInsertButton(
                 insertProduct: insertProduct,
-                discountType: discountType,
                 priceController: priceController,
                 quantityController: quantityController,
                 discountController: discountController,
@@ -89,10 +84,9 @@ class QuantityPriceDiscountFieldsAndInsertButton extends StatelessWidget {
           gapH4,
           DiscountFieldAndTypeDropdown(
             insertProduct: insertProduct,
-            discountType: discountType,
+            cartProduct: cartProduct,
             discountController: discountController,
             discountFocusNode: discountFocusNode,
-            changeDiscountType: changeDiscountType,
           ),
         ],
       ],

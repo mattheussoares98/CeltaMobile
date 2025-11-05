@@ -50,7 +50,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
   void insertProduct(
     ProductEntity product,
     CartProductEntity? cartProduct,
-    PercentageOrValue? discountType,
   ) async {
     if (formKey.currentState?.validate() != true) {
       return;
@@ -63,6 +62,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     }
 
     double value = widget.priceController.text.toDouble() ?? product.getPrice;
+    final discountType = ref.read(selectedDiscountTypeControllerProvider).value;
 
     final updated = await ref
         .read(pendingSaleRequestStateControllerProvider.notifier)
