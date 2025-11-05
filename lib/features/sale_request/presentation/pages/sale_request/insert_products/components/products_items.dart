@@ -51,7 +51,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     ProductEntity product,
     CartProductEntity? cartProduct,
     PercentageOrValue? discountType,
-  ) {
+  ) async {
     if (formKey.currentState?.validate() != true) {
       return;
     }
@@ -64,7 +64,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
     double value = widget.priceController.text.toDouble() ?? product.getPrice;
 
-    ref
+    final updated = await ref
         .read(pendingSaleRequestStateControllerProvider.notifier)
         .addProduct(
           CartProductEntity.create(
@@ -75,6 +75,8 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
             product: product,
           ),
         );
+
+    if (!updated) return;
 
     widget.quantityController.clear();
     widget.removeSelectedIndex();

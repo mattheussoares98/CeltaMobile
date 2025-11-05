@@ -42,6 +42,10 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
 
     final pendingAsync = ref.watch(pendingSaleRequestStateControllerProvider);
 
+    ref.listen(pendingSaleRequestStateControllerProvider, (p, n) {
+      n.showSnackbarOnError(context, p);
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text(appBarTitles[currentIndex])),

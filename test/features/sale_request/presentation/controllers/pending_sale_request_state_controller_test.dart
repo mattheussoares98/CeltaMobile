@@ -121,12 +121,15 @@ void main() {
           );
 
           // ACT
-          await container
+          final updated = await container
               .read(pendingSaleRequestStateControllerProvider.notifier)
               .addProduct(fakeProduct);
 
+          expect(updated, isTrue);
+
           // ASSERT
-          expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+          expect(states, contains(isA<AsyncLoading>()));
+          expect(states, contains(isA<AsyncData>()));
           expect(
             states.last.value?.cart[fakeProduct.ProductPackingCode],
             fakeProduct,
@@ -140,6 +143,46 @@ void main() {
           expect(
             captured.first.cart.containsKey(fakeProduct.ProductPackingCode),
             isTrue,
+          );
+        },
+      );
+      test(
+        'should emit [loading, error] when the product has value liquid equal to zero',
+        () async {
+          // ARRANGE
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          when(
+            () => mockRepository.save(any(), any()),
+          ).thenAnswer((_) async {});
+
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(
+            pendingSaleRequestStateControllerProvider.future,
+          );
+
+          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          container.listen(
+            pendingSaleRequestStateControllerProvider,
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          final updated = await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .addProduct(fakeProduct.copyWith(Value: 0, Quantity: 0));
+
+          expect(updated, isFalse);
+
+          // ASSERT
+          expect(states, contains(isA<AsyncLoading>()));
+          expect(states, contains(isA<AsyncError>()));
+          expect(states.last.value?.cart[fakeProduct.ProductPackingCode], null);
+
+          verifyNever(
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
           );
         },
       );

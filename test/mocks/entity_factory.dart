@@ -626,7 +626,7 @@ class EntityFactory {
     return CartProductEntity(
       ProductPackingCode: faker.randomGenerator.integer(100),
       Quantity: faker.randomGenerator.decimal(),
-      Value: faker.randomGenerator.decimal(),
+      Value: faker.randomGenerator.decimal() * 100,
       TotalLiquid: faker.randomGenerator.decimal(),
       IncrementPercentageOrValue: percentageOrValue,
       IncrementValue: faker.randomGenerator.decimal(),

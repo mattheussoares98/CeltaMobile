@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -51,14 +52,24 @@ class PendingSaleRequestStateController
     });
   }
 
-  Future<void> addProduct(CartProductEntity item) async {
-    if (state.value == null) return;
+  Future<bool> addProduct(CartProductEntity item) async {
+    if (state.value == null) return false;
 
-    final newCart = Map.of(state.value!.cart);
+    bool updated = false;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      if (item.getValueLiquid <= 0) {
+        throw AppException('O preço do produto precisa ser maior que zero');
+      }
+      final newCart = Map.of(state.value!.cart);
 
-    newCart[item.ProductPackingCode] = item;
+      newCart[item.ProductPackingCode] = item;
 
-    await _updateAndSave(state.value!.copyWith(cart: newCart));
+      await _updateAndSave(state.value!.copyWith(cart: newCart));
+      updated = true;
+      return state.value!;
+    });
+    return updated;
   }
 
   Future<void> removeProduct(CartProductEntity product) async {
