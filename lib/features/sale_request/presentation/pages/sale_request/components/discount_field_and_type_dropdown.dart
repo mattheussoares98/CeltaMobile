@@ -45,17 +45,20 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
             focusNode: discountFocusNode,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLength: 13,
-            suffixIcon: IconButton(
-              onPressed: () {
-                showAlertDialog(
-                  context: context,
-                  title: 'Atenção!'.hardcoded,
-                  content:
-                      'Esse campo está habilitado porque o modelo de pedido permite inserir desconto'
-                          .hardcoded,
-                );
-              },
-              icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+            suffixIcon: FocusTraversalGroup(
+              descendantsAreFocusable: false,
+              child: IconButton(
+                onPressed: () {
+                  showAlertDialog(
+                    context: context,
+                    title: 'Atenção!'.hardcoded,
+                    content:
+                        'Esse campo está habilitado porque o modelo de pedido permite inserir desconto'
+                            .hardcoded,
+                  );
+                },
+                icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+              ),
             ),
             onFieldSubmitted: (_) {
               insertProduct();
@@ -86,36 +89,40 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
         gapW8,
         Flexible(
           flex: 35,
-          child: DefaultSimpleDropDown<PercentageOrValue?>(
-            onChanged: (value) {
-              ref
-                  .read(
-                    selectedItemUIControllerProvider(
-                      isCartPage: isCartPage,
-                    ).notifier,
-                  )
-                  .updateDiscountType(value);
-            },
-            value: discountType,
-            hint: 'Tipo',
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) {
-              if (discountType == null && discountController.text.isNotEmpty) {
-                return 'Campo obrigatório'.hardcoded;
-              }
+          child: FocusTraversalGroup(
+            descendantsAreFocusable: false,
+            child: DefaultSimpleDropDown<PercentageOrValue?>(
+              onChanged: (value) {
+                ref
+                    .read(
+                      selectedItemUIControllerProvider(
+                        isCartPage: isCartPage,
+                      ).notifier,
+                    )
+                    .updateDiscountType(value);
+              },
+              value: discountType,
+              hint: 'Tipo',
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (discountType == null &&
+                    discountController.text.isNotEmpty) {
+                  return 'Campo obrigatório'.hardcoded;
+                }
 
-              return null;
-            },
-            items: [
-              DropdownMenuItem(
-                value: PercentageOrValue.percentage,
-                child: Text(PercentageOrValue.percentage.symbol),
-              ),
-              DropdownMenuItem(
-                value: PercentageOrValue.value,
-                child: Text(PercentageOrValue.value.symbol),
-              ),
-            ],
+                return null;
+              },
+              items: [
+                DropdownMenuItem(
+                  value: PercentageOrValue.percentage,
+                  child: Text(PercentageOrValue.percentage.symbol),
+                ),
+                DropdownMenuItem(
+                  value: PercentageOrValue.value,
+                  child: Text(PercentageOrValue.value.symbol),
+                ),
+              ],
+            ),
           ),
         ),
       ],

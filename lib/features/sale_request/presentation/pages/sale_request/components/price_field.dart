@@ -69,17 +69,20 @@ class PriceField extends StatelessWidget {
           controller: priceController,
           focusNode: priceFocusNode,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          suffixIcon: IconButton(
-            onPressed: () {
-              showAlertDialog(
-                context: context,
-                title: 'Atenção!'.hardcoded,
-                content:
-                    'Esse campo está habilitado porque o modelo de pedido permite alterar o preço'
-                        .hardcoded,
-              );
-            },
-            icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+          suffixIcon: FocusTraversalGroup(
+            descendantsAreFocusable: false,
+            child: IconButton(
+              onPressed: () {
+                showAlertDialog(
+                  context: context,
+                  title: 'Atenção!'.hardcoded,
+                  content:
+                      'Esse campo está habilitado porque o modelo de pedido permite alterar o preço'
+                          .hardcoded,
+                );
+              },
+              icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+            ),
           ),
           onFieldSubmitted: (_) {
             if (selectedRequest.AllowDiscount == true) {

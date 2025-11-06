@@ -89,65 +89,81 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 65,
-                child: Column(
-                  children: [
-                    QuantityField(
-                      insertProduct: insertUpdateProduct,
-                      quantityController: widget.quantityController,
-                      quantityFocusNode: widget.quantityFocusNode,
-                      priceFocusNode: widget.priceFocusNode,
-                      selectedRequest: widget.selectedRequest,
-                    ),
-                    if (widget.selectedRequest.AllowAlterCostOrSalePrice ==
-                        true) ...[
-                      gapH4,
-                      PriceField(
-                        isCartPage: widget.isCartPage,
-                        cartProduct: widget.cartProduct,
-                        product: widget.product,
-                        insertProduct: insertUpdateProduct,
-                        quantityController: widget.quantityController,
-                        priceController: widget.priceController,
-                        discountFocusNode: widget.discountFocusNode,
-                        priceFocusNode: widget.priceFocusNode,
-                        selectedRequest: widget.selectedRequest,
+      child: FocusTraversalGroup(
+        policy: OrderedTraversalPolicy(),
+        descendantsAreTraversable: true,
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 65,
+                  child: Column(
+                    children: [
+                      FocusTraversalOrder(
+                        order: const NumericFocusOrder(1),
+                        child: QuantityField(
+                          insertProduct: insertUpdateProduct,
+                          quantityController: widget.quantityController,
+                          quantityFocusNode: widget.quantityFocusNode,
+                          priceFocusNode: widget.priceFocusNode,
+                          selectedRequest: widget.selectedRequest,
+                        ),
                       ),
+                      if (widget.selectedRequest.AllowAlterCostOrSalePrice ==
+                          true) ...[
+                        gapH4,
+                        FocusTraversalOrder(
+                          order: const NumericFocusOrder(2),
+                          child: PriceField(
+                            isCartPage: widget.isCartPage,
+                            cartProduct: widget.cartProduct,
+                            product: widget.product,
+                            insertProduct: insertUpdateProduct,
+                            quantityController: widget.quantityController,
+                            priceController: widget.priceController,
+                            discountFocusNode: widget.discountFocusNode,
+                            priceFocusNode: widget.priceFocusNode,
+                            selectedRequest: widget.selectedRequest,
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
-              gapW4,
-              Expanded(
-                flex: 35,
-                child: TotalPriceAndInsertButton(
+                gapW4,
+                Expanded(
+                  flex: 35,
+                  child: FocusTraversalOrder(
+                    order: const NumericFocusOrder(4),
+                    child: TotalPriceAndInsertButton(
+                      insertProduct: insertUpdateProduct,
+                      priceController: widget.priceController,
+                      quantityController: widget.quantityController,
+                      discountController: widget.discountController,
+                      product: widget.product,
+                      isCartPage: widget.isCartPage,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (widget.selectedRequest.AllowDiscount == true) ...[
+              gapH4,
+              FocusTraversalOrder(
+                order: const NumericFocusOrder(3),
+                child: DiscountFieldAndTypeDropdown(
                   insertProduct: insertUpdateProduct,
-                  priceController: widget.priceController,
-                  quantityController: widget.quantityController,
+                  cartProduct: widget.cartProduct,
                   discountController: widget.discountController,
-                  product: widget.product,
+                  discountFocusNode: widget.discountFocusNode,
                   isCartPage: widget.isCartPage,
                 ),
               ),
             ],
-          ),
-          if (widget.selectedRequest.AllowDiscount == true) ...[
-            gapH4,
-            DiscountFieldAndTypeDropdown(
-              insertProduct: insertUpdateProduct,
-              cartProduct: widget.cartProduct,
-              discountController: widget.discountController,
-              discountFocusNode: widget.discountFocusNode,
-              isCartPage: widget.isCartPage,
-            ),
           ],
-        ],
+        ),
       ),
     );
   }
