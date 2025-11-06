@@ -25,6 +25,7 @@ class _CartPageState extends ConsumerState<CartPage> {
   final discountController = TextEditingController();
   final priceController = TextEditingController();
   final quantityFocusNode = FocusNode();
+  final observationsFocusNode = FocusNode();
   final instructionsFocusNode = FocusNode();
   final discountFocusNode = FocusNode();
   final priceFocusNode = FocusNode();
@@ -38,9 +39,32 @@ class _CartPageState extends ConsumerState<CartPage> {
     discountController.dispose();
     priceController.dispose();
     quantityFocusNode.dispose();
+    observationsFocusNode.dispose();
     instructionsFocusNode.dispose();
     discountFocusNode.dispose();
     priceFocusNode.dispose();
+
+    observationsFocusNode.removeListener(_onObservationsFocusChange);
+    instructionsFocusNode.removeListener(_onInstructionsFocusChange);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    observationsFocusNode.addListener(_onObservationsFocusChange);
+    instructionsFocusNode.addListener(_onInstructionsFocusChange);
+  }
+
+  void _onObservationsFocusChange() {
+    if (!observationsFocusNode.hasFocus) {
+      debugPrint("//TODO save observations in pending request controller");
+    }
+  }
+
+  void _onInstructionsFocusChange() {
+    if (!instructionsFocusNode.hasFocus) {
+      debugPrint("//TODO save instructions in pending request controller");
+    }
   }
 
   void changeSelectedIndex(int? index, CartProductEntity product) {
@@ -97,6 +121,7 @@ class _CartPageState extends ConsumerState<CartPage> {
             hintText: 'Observações'.hardcoded,
             maxLines: 3,
             maxLength: 300,
+            focusNode: observationsFocusNode,
             controller: observationsController,
             onFieldSubmitted: (_) {
               instructionsFocusNode.requestFocus();
