@@ -8,7 +8,7 @@ import '../../../../controllers/controllers.dart';
 import '../../components/components.dart';
 import 'components.dart';
 
-class ProductItem extends ConsumerStatefulWidget {
+class ProductItem extends ConsumerWidget {
   final ProductEntity product;
   final void Function(ProductEntity, CartProductEntity?) onTapProduct;
   final RequestTypeEntity selectedRequest;
@@ -20,18 +20,11 @@ class ProductItem extends ConsumerStatefulWidget {
     required this.selectedRequest,
     required this.productsItemsWidget,
   });
-
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => __ProductItemState();
-}
-
-class __ProductItemState extends ConsumerState<ProductItem> {
-  //TODO change to stateless
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cartProduct = ref.watch(
       pendingSaleRequestStateControllerProvider.select(
-        (state) => state.value?.cart[widget.product.ProductPackingCode],
+        (state) => state.value?.cart[product.ProductPackingCode],
       ),
     );
     final selectedPackingCode = ref.watch(
@@ -41,17 +34,17 @@ class __ProductItemState extends ConsumerState<ProductItem> {
     );
 
     return ProductItemWidget(
-      product: widget.product,
+      product: product,
       routine: BsRoutine.saleRequest,
       showDropIcon: true,
-      isSelected: selectedPackingCode == widget.product.ProductPackingCode,
-      onTap: () => widget.onTapProduct(widget.product, cartProduct),
+      isSelected: selectedPackingCode == product.ProductPackingCode,
+      onTap: () => onTapProduct(product, cartProduct),
       cartItemSummary: cartProduct == null
           ? null
           : CartItemSummary(
               cartQuantity: cartProduct.Quantity,
               cartValue: cartProduct.Value,
-              product: widget.product,
+              product: product,
               totalDiscount: cartProduct.DiscountValue,
             ),
       onDelete: cartProduct == null
@@ -61,19 +54,18 @@ class __ProductItemState extends ConsumerState<ProductItem> {
                   .read(pendingSaleRequestStateControllerProvider.notifier)
                   .removeProduct(cartProduct);
             },
-      notClickableBottom:
-          selectedPackingCode == widget.product.ProductPackingCode
+      notClickableBottom: selectedPackingCode == product.ProductPackingCode
           ? QuantityPriceDiscountFieldsAndInsertButton(
               isCartPage: false,
-              product: widget.product,
+              product: product,
               cartProduct: cartProduct,
-              quantityController: widget.productsItemsWidget.quantityController,
-              priceController: widget.productsItemsWidget.priceController,
-              discountController: widget.productsItemsWidget.discountController,
-              quantityFocusNode: widget.productsItemsWidget.quantityFocusNode,
-              discountFocusNode: widget.productsItemsWidget.discountFocusNode,
-              priceFocusNode: widget.productsItemsWidget.priceFocusNode,
-              selectedRequest: widget.productsItemsWidget.selectedRequest,
+              quantityController: productsItemsWidget.quantityController,
+              priceController: productsItemsWidget.priceController,
+              discountController: productsItemsWidget.discountController,
+              quantityFocusNode: productsItemsWidget.quantityFocusNode,
+              discountFocusNode: productsItemsWidget.discountFocusNode,
+              priceFocusNode: productsItemsWidget.priceFocusNode,
+              selectedRequest: productsItemsWidget.selectedRequest,
             )
           : null,
     );

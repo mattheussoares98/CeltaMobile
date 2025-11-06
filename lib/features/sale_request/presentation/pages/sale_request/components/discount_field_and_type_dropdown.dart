@@ -9,7 +9,7 @@ import '../../../../../../../core/validators/validators.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 
-class DiscountFieldAndTypeDropdown extends ConsumerStatefulWidget {
+class DiscountFieldAndTypeDropdown extends ConsumerWidget {
   final VoidCallback insertProduct;
   final TextEditingController discountController;
   final FocusNode discountFocusNode;
@@ -23,24 +23,14 @@ class DiscountFieldAndTypeDropdown extends ConsumerStatefulWidget {
     required this.cartProduct,
     required this.isCartPage,
   });
-
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DiscountFieldAndTypeDropdownState();
-}
-
-class _DiscountFieldAndTypeDropdownState
-    extends ConsumerState<DiscountFieldAndTypeDropdown> {
-  //TODO change to stateless
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     final discountType = ref.watch(
       selectedItemUIControllerProvider(
-        isCartPage: widget.isCartPage,
+        isCartPage: isCartPage,
       ).select((state) => state.discountType),
     );
 
@@ -51,8 +41,8 @@ class _DiscountFieldAndTypeDropdownState
           child: DefaultTextFormField(
             hintText: 'Desconto unitário'.hardcoded,
             labelText: 'Desconto unitário'.hardcoded,
-            controller: widget.discountController,
-            focusNode: widget.discountFocusNode,
+            controller: discountController,
+            focusNode: discountFocusNode,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLength: 13,
             suffixIcon: IconButton(
@@ -68,7 +58,7 @@ class _DiscountFieldAndTypeDropdownState
               icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
             ),
             onFieldSubmitted: (_) {
-              widget.insertProduct();
+              insertProduct();
             },
             keyboardType: const TextInputType.numberWithOptions(
               decimal: true, //TODO test in IOS
@@ -101,7 +91,7 @@ class _DiscountFieldAndTypeDropdownState
               ref
                   .read(
                     selectedItemUIControllerProvider(
-                      isCartPage: widget.isCartPage,
+                      isCartPage: isCartPage,
                     ).notifier,
                   )
                   .updateDiscountType(value);
@@ -110,8 +100,7 @@ class _DiscountFieldAndTypeDropdownState
             hint: 'Tipo',
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
-              if (discountType == null &&
-                  widget.discountController.text.isNotEmpty) {
+              if (discountType == null && discountController.text.isNotEmpty) {
                 return 'Campo obrigatório'.hardcoded;
               }
 

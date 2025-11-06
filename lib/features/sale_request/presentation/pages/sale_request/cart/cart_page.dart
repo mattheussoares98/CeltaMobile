@@ -24,7 +24,6 @@ class _CartPageState extends ConsumerState<CartPage> {
   final quantityFocusNode = FocusNode();
   final discountFocusNode = FocusNode();
   final priceFocusNode = FocusNode();
-  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -93,7 +92,6 @@ class _CartPageState extends ConsumerState<CartPage> {
 
         return ProductItem(
           cartProduct: cartProduct,
-          formKey: formKey,
           onTap: () => changeSelectedIndex(index, cartProduct),
           quantityController: quantityController,
           priceController: priceController,
