@@ -51,19 +51,34 @@ class _CartPageState extends ConsumerState<CartPage> {
   @override
   void initState() {
     super.initState();
+
     observationsFocusNode.addListener(_onObservationsFocusChange);
     instructionsFocusNode.addListener(_onInstructionsFocusChange);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final value = await ref.read(
+          pendingSaleRequestStateControllerProvider.future,
+        );
+        observationsController.text = value.observations ?? '';
+        instructionsController.text = value.instructions ?? '';
+      }
+    });
   }
 
   void _onObservationsFocusChange() {
     if (!observationsFocusNode.hasFocus) {
-      debugPrint("//TODO save observations in pending request controller");
+      ref
+          .read(pendingSaleRequestStateControllerProvider.notifier)
+          .changeObservations(observationsController.text);
     }
   }
 
   void _onInstructionsFocusChange() {
     if (!instructionsFocusNode.hasFocus) {
-      debugPrint("//TODO save instructions in pending request controller");
+      ref
+          .read(pendingSaleRequestStateControllerProvider.notifier)
+          .changeInstructions(instructionsController.text);
     }
   }
 
