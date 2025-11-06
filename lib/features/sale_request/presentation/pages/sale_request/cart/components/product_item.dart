@@ -41,6 +41,7 @@ class ProductItem extends ConsumerWidget {
         cartProduct.ProductPackingCode;
 
     return Card(
+      margin: const EdgeInsets.only(bottom: Sizes.p4),
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

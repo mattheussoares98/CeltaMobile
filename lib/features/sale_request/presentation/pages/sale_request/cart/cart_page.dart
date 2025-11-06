@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
@@ -19,9 +20,12 @@ class CartPage extends ConsumerStatefulWidget {
 
 class _CartPageState extends ConsumerState<CartPage> {
   final quantityController = TextEditingController();
+  final observationsController = TextEditingController();
+  final instructionsController = TextEditingController();
   final discountController = TextEditingController();
   final priceController = TextEditingController();
   final quantityFocusNode = FocusNode();
+  final instructionsFocusNode = FocusNode();
   final discountFocusNode = FocusNode();
   final priceFocusNode = FocusNode();
 
@@ -29,9 +33,12 @@ class _CartPageState extends ConsumerState<CartPage> {
   void dispose() {
     super.dispose();
     quantityController.dispose();
+    observationsController.dispose();
+    instructionsController.dispose();
     discountController.dispose();
     priceController.dispose();
     quantityFocusNode.dispose();
+    instructionsFocusNode.dispose();
     discountFocusNode.dispose();
     priceFocusNode.dispose();
   }
@@ -81,27 +88,58 @@ class _CartPageState extends ConsumerState<CartPage> {
       ),
     );
 
-    return ResponsiveListFlow(
-      itemCount: cartProducts.length,
-      itemBuilder: (_, index) {
-        final cartProduct = cartProducts[index];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+      child: Column(
+        children: [
+          DefaultTextFormField(
+            labelText: 'Observações'.hardcoded,
+            hintText: 'Observações'.hardcoded,
+            maxLines: 3,
+            maxLength: 300,
+            controller: observationsController,
+            onFieldSubmitted: (_) {
+              instructionsFocusNode.requestFocus();
+            },
+          ),
+          gapH4,
+          DefaultTextFormField(
+            labelText: 'Instruções'.hardcoded,
+            hintText: 'Instruções'.hardcoded,
+            maxLines: 3,
+            maxLength: 300,
+            controller: instructionsController,
+            focusNode: instructionsFocusNode,
+          ),
+          gapH8,
+          Expanded(
+            child: ResponsiveListFlow(
+              itemCount: cartProducts.length,
+              itemBuilder: (_, index) {
+                final cartProduct = cartProducts[index];
 
-        if (cartProducts.isEmpty) {
-          return Center(child: Text('Nenhum item no carrinho'.hardcoded));
-        }
+                if (cartProducts.isEmpty) {
+                  return Center(
+                    child: Text('Nenhum item no carrinho'.hardcoded),
+                  );
+                }
 
-        return ProductItem(
-          cartProduct: cartProduct,
-          onTap: () => changeSelectedIndex(index, cartProduct),
-          quantityController: quantityController,
-          priceController: priceController,
-          discountController: discountController,
-          quantityFocusNode: quantityFocusNode,
-          discountFocusNode: discountFocusNode,
-          priceFocusNode: priceFocusNode,
-          selectedRequest: widget.selectedRequest,
-        );
-      },
+                return ProductItem(
+                  cartProduct: cartProduct,
+                  onTap: () => changeSelectedIndex(index, cartProduct),
+                  quantityController: quantityController,
+                  priceController: priceController,
+                  discountController: discountController,
+                  quantityFocusNode: quantityFocusNode,
+                  discountFocusNode: discountFocusNode,
+                  priceFocusNode: priceFocusNode,
+                  selectedRequest: widget.selectedRequest,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
