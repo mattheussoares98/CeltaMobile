@@ -86,7 +86,14 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       discountController.clear();
     }
 
-    quantityController.text = '1';
+    if ((cartProduct?.Quantity ?? 0) > 0) {
+      quantityController.text = cartProduct!.Quantity.toString().replaceAll(
+        RegExp(r'\.'),
+        ',',
+      );
+    } else {
+      quantityController.text = '1';
+    }
 
     Future.delayed(const Duration(milliseconds: 100), () {
       quantityFocusNode.requestFocus();
