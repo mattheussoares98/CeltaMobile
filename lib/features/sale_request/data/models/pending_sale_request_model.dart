@@ -8,15 +8,19 @@ class PendingSaleRequestModel extends Equatable {
   final Map<ProductPackingCode, CartProductModel> cart;
   final CustomerModel? customer;
   final CustomerCovenantModel? covenant;
+  final String? observations;
+  final String? instructions;
 
   const PendingSaleRequestModel({
     required this.cart,
     required this.customer,
     required this.covenant,
+    required this.observations,
+    required this.instructions,
   });
 
   @override
-  List<Object?> get props => [cart, customer];
+  List<Object?> get props => [cart, customer, observations, instructions];
 
   Map<String, dynamic> toJson() => {
     'cart': cart.map(
@@ -25,6 +29,8 @@ class PendingSaleRequestModel extends Equatable {
     ),
     'customer': customer?.toJson(),
     'covenant': covenant?.toJson(),
+    'observations': observations,
+    'instructions': instructions,
   };
 
   factory PendingSaleRequestModel.fromJson(Map json) => PendingSaleRequestModel(
@@ -40,6 +46,8 @@ class PendingSaleRequestModel extends Equatable {
     covenant: json['covenant'] == null
         ? null
         : CustomerCovenantModel.fromJson(json['covenant'] as Map),
+    observations: json['observations'],
+    instructions: json['instructions'],
   );
 
   PendingSaleRequestEntity toEntity() => PendingSaleRequestEntity(
@@ -49,6 +57,8 @@ class PendingSaleRequestModel extends Equatable {
     ),
     customer: customer?.toEntity(),
     covenant: covenant?.toEntity(),
+    observations: observations,
+    instructions: instructions,
   );
 
   static PendingSaleRequestModel fromEntity(PendingSaleRequestEntity entity) =>
@@ -65,5 +75,7 @@ class PendingSaleRequestModel extends Equatable {
         covenant: entity.covenant == null
             ? null
             : CustomerCovenantModel.fromEntity(entity.covenant!),
+        observations: entity.observations,
+        instructions: entity.instructions,
       );
 }

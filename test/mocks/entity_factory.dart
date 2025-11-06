@@ -615,6 +615,8 @@ class EntityFactory {
     },
     customer: makeCustomerEntity(),
     covenant: makeCustomerCovenantEntity(),
+    observations: faker.lorem.sentence(),
+    instructions: faker.lorem.sentence(),
   );
 
   static CartProductEntity makeCartProductEntity({

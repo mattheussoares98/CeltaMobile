@@ -46,6 +46,8 @@ void main() {
       },
       customer: EntityFactory.makeCustomerEntity(),
       covenant: EntityFactory.makeCustomerCovenantEntity(),
+      observations: faker.lorem.sentence(),
+      instructions: faker.lorem.sentence(),
     );
   }
 
