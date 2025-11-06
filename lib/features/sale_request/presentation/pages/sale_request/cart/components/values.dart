@@ -10,6 +10,16 @@ class Values extends StatelessWidget {
   final bool isSelected;
   const Values({super.key, required this.product, required this.isSelected});
 
+  bool get priceIsManual {
+    final minimumWholeQuantity = product.product?.MinimumWholeQuantity ?? 0;
+
+    if (minimumWholeQuantity > 0 && product.Quantity >= minimumWholeQuantity) {
+      return product.getValueLiquid != product.product?.WholePracticedPrice;
+    } else {
+      return product.getValueLiquid != product.product?.RetailPracticedPrice;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -24,7 +34,9 @@ class Values extends StatelessWidget {
               valueIsPrice: false,
             ),
             _ColumnValues(
-              title: 'Preço'.hardcoded,
+              title:
+                  'Preço ${priceIsManual ? 'manual'.hardcoded : ''.hardcoded}'
+                      .hardcoded,
               value: product.Value,
               valueIsPrice: true,
             ),
@@ -66,6 +78,7 @@ class _ColumnValues extends StatelessWidget {
         children: [
           Text(
             title.hardcoded,
+            textAlign: TextAlign.center,
             style: theme.textTheme.titleSmall?.copyWith(
               color: Colors.grey[600],
             ),
