@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
 import '../../features/adjust_sale_price/domain/entities/entities.dart';
 import '../../features/adjust_sale_price/presentation/controllers/controllers.dart';
@@ -49,76 +50,86 @@ class PracticedPrice extends ConsumerWidget {
 
     final finishOfferAsync = ref.watch(finishOfferControllerProvider);
 
-    return Row(
-      children: [
-        Expanded(
-          flex: 60,
-          child: RichText(
-            text: TextSpan(
-              style: theme.textTheme.bodyMedium,
-              children: [
-                TextSpan(text: saleType.name),
-                if (saleType == SaleType.whole &&
-                    product.MinimumWholeQuantity > 0)
-                  TextSpan(
-                    text:
-                        ' (min ${product.MinimumWholeQuantity.toString().toBrazilianNumber(2, true)})',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.secondary,
-                      fontStyle: FontStyle.italic,
-                    ),
+    return Card(
+      margin: const EdgeInsets.only(bottom: Sizes.p8),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(Sizes.p8, Sizes.p8, 0, Sizes.p8),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 60,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TitleAndSubTitle(
+                    title: saleType.name,
+                    subTitle: salePrice,
+                    subTitleIsPrice: true,
                   ),
-                if (offerPrice > 0)
-                  TextSpan(
-                    text: ' (oferta) '.hardcoded,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.red,
-                      fontStyle: FontStyle.italic,
+                  if (offerPrice > 0)
+                    TitleAndSubTitle(
+                      title: null,
+                      subTitle: 'Em oferta'.hardcoded,
+                      subTitleStyle: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.red,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
-                  ),
-              ],
+                  if (saleType == SaleType.whole &&
+                      product.MinimumWholeQuantity > 0)
+                    TitleAndSubTitle(
+                      title: 'Qtd mín atacado'.hardcoded,
+                      subTitle: product.MinimumWholeQuantity.toString()
+                          .toBrazilianNumber(2, true),
+                      subTitleStyle: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.secondary,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-        ),
-        if (offerPrice > 0)
-          Expanded(
-            flex: 40,
-            child: PrimaryTextButton(
-              text: 'Encerrar'.hardcoded,
-              color: Colors.red,
-              isLoading: finishOfferAsync.isLoading,
-              icon: mediaQuery.size.width < 300
-                  ? null
-                  : Icon(
-                      theme.platform != TargetPlatform.iOS
-                          ? CupertinoIcons.clear
-                          : Icons.close,
-                      color: Colors.red,
-                    ),
-              onPressed: () {
-                showAlertDialog(
-                  context: context,
-                  title: 'Encerrar oferta ${saleType.name.toUpperCase()}'
-                      .hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Sim'.hardcoded,
-                  content:
-                      'Tem certeza que deseja encerrar a oferta ${saleType.name.toUpperCase()}?'
+            if (offerPrice > 0)
+              Expanded(
+                flex: 40,
+                child: PrimaryTextButton(
+                  text: 'Encerrar'.hardcoded,
+                  color: Colors.red,
+                  isLoading: finishOfferAsync.isLoading,
+                  icon: mediaQuery.size.width < 300
+                      ? null
+                      : Icon(
+                          theme.platform != TargetPlatform.iOS
+                              ? CupertinoIcons.clear
+                              : Icons.close,
+                          color: Colors.red,
+                        ),
+                  onPressed: () {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Encerrar oferta ${saleType.name.toUpperCase()}'
                           .hardcoded,
-                  onOkPressed: () {
-                    ref
-                        .read(finishOfferControllerProvider.notifier)
-                        .finish(
-                          product: product,
-                          saleType: saleType,
-                          now: DateTime.now(),
-                        );
+                      cancelActionText: 'Cancelar'.hardcoded,
+                      defaultActionText: 'Sim'.hardcoded,
+                      content:
+                          'Tem certeza que deseja encerrar a oferta ${saleType.name.toUpperCase()}?'
+                              .hardcoded,
+                      onOkPressed: () {
+                        ref
+                            .read(finishOfferControllerProvider.notifier)
+                            .finish(
+                              product: product,
+                              saleType: saleType,
+                              now: DateTime.now(),
+                            );
+                      },
+                    );
                   },
-                );
-              },
-            ),
-          ),
-      ],
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
