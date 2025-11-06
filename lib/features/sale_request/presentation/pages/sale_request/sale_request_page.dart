@@ -40,7 +40,11 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final pendingAsync = ref.watch(pendingSaleRequestStateControllerProvider);
+    final products = ref.watch(
+      pendingSaleRequestStateControllerProvider.select(
+        (s) => s.value?.cart.values,
+      ),
+    );
 
     ref.listen(pendingSaleRequestStateControllerProvider, (p, n) {
       n.showSnackbarOnError(context, p);
@@ -57,14 +61,14 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
         ),
         actions: [
           QuantityBadge(
-            quantity: pendingAsync.value?.cart.entries.length,
+            quantity: products?.length ?? 0,
             materialIcon: Icons.shopping_cart,
             cupertinoIcon: CupertinoIcons.shopping_cart,
             isSelected: false,
             offset: const Offset(3, -3),
             subtitle: Text(
-              (pendingAsync.value?.cart.entries.fold<double>(0.0, (p, e) {
-                        return p + e.value.TotalLiquid;
+              (products?.fold<double>(0.0, (p, e) {
+                        return p + e.TotalLiquid;
                       }).toString() ??
                       '0')
                   .toBrazilianNumber()
@@ -129,7 +133,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
           BottomNavigationBarItem(
             label: 'Carrinho'.hardcoded,
             icon: QuantityBadge(
-              quantity: pendingAsync.value?.cart.entries.length,
+              quantity: products?.length ?? 0,
               materialIcon: Icons.shopping_cart,
               cupertinoIcon: CupertinoIcons.shopping_cart,
               isSelected: currentIndex == 2,
