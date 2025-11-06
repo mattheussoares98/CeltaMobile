@@ -11,14 +11,12 @@ import 'components.dart';
 class ProductItem extends ConsumerStatefulWidget {
   final ProductEntity product;
   final void Function(ProductEntity, CartProductEntity?) onTapProduct;
-  final void Function(ProductEntity, CartProductEntity?) insertProduct;
   final RequestTypeEntity selectedRequest;
   final ProductsItems productsItemsWidget;
   const ProductItem({
     super.key,
     required this.product,
     required this.onTapProduct,
-    required this.insertProduct,
     required this.selectedRequest,
     required this.productsItemsWidget,
   });
@@ -69,8 +67,6 @@ class __ProductItemState extends ConsumerState<ProductItem> {
               isCartPage: false,
               product: widget.product,
               cartProduct: cartProduct,
-              insertProduct: () =>
-                  widget.insertProduct(widget.product, cartProduct),
               quantityController: widget.productsItemsWidget.quantityController,
               priceController: widget.productsItemsWidget.priceController,
               discountController: widget.productsItemsWidget.discountController,

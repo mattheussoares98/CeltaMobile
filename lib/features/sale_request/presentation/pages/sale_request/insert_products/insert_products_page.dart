@@ -45,8 +45,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
   }
 
   void onTapProduct(ProductEntity product, CartProductEntity? cartProduct) {
-    if (product.Value == 0 &&
-        product.RetailPracticedPrice == 0 &&
+    if (product.getPrice == 0 &&
         widget.selectedRequest.AllowAlterCostOrSalePrice != true) {
       showSnackBarMessage(
         context,

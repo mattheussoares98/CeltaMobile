@@ -74,43 +74,6 @@ class _CartPageState extends ConsumerState<CartPage> {
     });
   }
 
-  void updateProduct(CartProductEntity cartProduct) {
-    if (formKey.currentState?.validate() != true) {
-      return;
-    }
-
-    double quantity = quantityController.text.toDouble()!;
-    double? discount = discountController.text.toDouble();
-    double value = priceController.text.toDouble()!;
-    final discountType = ref
-        .read(selectedItemUIControllerProvider(isCartPage: true))
-        .discountType;
-
-    ref
-        .read(pendingSaleRequestStateControllerProvider.notifier)
-        .addProduct(
-          cartProduct.copyWith(
-            DiscountValue: CartProductEntity.create(
-              discountByItem: discount,
-              discountType: discountType,
-              quantity: quantity,
-              price: value,
-              product: cartProduct.product!,
-            ).DiscountValue,
-            DiscountPercentageOrValue: discountType,
-            ProductPackingCode: cartProduct.ProductPackingCode,
-            Quantity: quantity,
-            Value: value,
-          ),
-        );
-
-    quantityController.clear();
-    discountController.clear();
-    ref
-        .read(selectedItemUIControllerProvider(isCartPage: true).notifier)
-        .selectProduct(null, null);
-  }
-
   @override
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(
@@ -118,9 +81,6 @@ class _CartPageState extends ConsumerState<CartPage> {
         (state) => state.value?.cart.values.toList() ?? [],
       ),
     );
-    final selectedPackingCode = ref
-        .watch(selectedItemUIControllerProvider(isCartPage: true))
-        .productPackingCode;
 
     return ResponsiveListFlow(
       itemCount: cartProducts.length,
@@ -135,8 +95,6 @@ class _CartPageState extends ConsumerState<CartPage> {
           cartProduct: cartProduct,
           formKey: formKey,
           onTap: () => changeSelectedIndex(index, cartProduct),
-          isSelected: selectedPackingCode == cartProduct.ProductPackingCode,
-          updateProduct: updateProduct,
           quantityController: quantityController,
           priceController: priceController,
           discountController: discountController,

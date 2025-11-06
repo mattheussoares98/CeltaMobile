@@ -4,14 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../domain/entities/entities.dart';
+import '../../../../controllers/controllers.dart';
 import '../../components/components.dart';
 import 'components.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
   final CartProductEntity cartProduct;
   final VoidCallback onTap;
-  final bool isSelected;
-  final void Function(CartProductEntity product) updateProduct;
   final TextEditingController quantityController;
   final TextEditingController priceController;
   final TextEditingController discountController;
@@ -24,8 +23,6 @@ class ProductItem extends ConsumerStatefulWidget {
     super.key,
     required this.cartProduct,
     required this.onTap,
-    required this.isSelected,
-    required this.updateProduct,
     required this.quantityController,
     required this.priceController,
     required this.discountController,
@@ -45,6 +42,14 @@ class _ProductItemState extends ConsumerState<ProductItem> {
 
   @override
   Widget build(BuildContext context) {
+    final isSelected =
+        ref.watch(
+          selectedItemUIControllerProvider(
+            isCartPage: true,
+          ).select((s) => s.productPackingCode),
+        ) ==
+        widget.cartProduct.ProductPackingCode;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -62,15 +67,12 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                 children: [
                   NamePluAndDeleteButton(cartProduct: widget.cartProduct),
                   gapH4,
-                  Values(
-                    product: widget.cartProduct,
-                    isSelected: widget.isSelected,
-                  ),
+                  Values(product: widget.cartProduct, isSelected: isSelected),
                 ],
               ),
             ),
           ),
-          if (widget.isSelected)
+          if (isSelected)
             Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: Form(
@@ -78,7 +80,6 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                 child: QuantityPriceDiscountFieldsAndInsertButton(
                   cartProduct: widget.cartProduct,
                   isCartPage: true,
-                  insertProduct: () => widget.updateProduct(widget.cartProduct),
                   quantityController: widget.quantityController,
                   priceController: widget.priceController,
                   discountController: widget.discountController,
