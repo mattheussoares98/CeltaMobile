@@ -43,6 +43,7 @@ class ProductItem extends ConsumerWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
             onTap: onTap,
@@ -62,7 +63,8 @@ class ProductItem extends ConsumerWidget {
               ),
             ),
           ),
-          if (isSelected)
+          if (isSelected) ...[
+            BsPricesAndMinimumWholeQuantity(cartProduct: cartProduct),
             Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: QuantityPriceDiscountFieldsAndInsertButton(
@@ -78,6 +80,7 @@ class ProductItem extends ConsumerWidget {
                 product: cartProduct.product!,
               ),
             ),
+          ],
         ],
       ),
     );
