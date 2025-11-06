@@ -106,4 +106,16 @@ class PendingSaleRequestStateController
       await _updateAndSave(state.value!.copyWith(covenant: newCovenant));
     }
   }
+
+  Future<void> changeObservations(String observations) async {
+    if (state.value == null) return;
+
+    await _updateAndSave(state.value!.copyWith(observations: observations));
+  }
+
+  Future<void> changeInstructions(String instructions) async {
+    if (state.value == null) return;
+
+    await _updateAndSave(state.value!.copyWith(instructions: instructions));
+  }
 }

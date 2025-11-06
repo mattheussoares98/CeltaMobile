@@ -6,6 +6,7 @@ import 'package:celta_intelligence/features/sale_request/domain/entities/entitie
 import 'package:celta_intelligence/features/sale_request/domain/repository/repository.dart';
 import 'package:celta_intelligence/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/sale_request/providers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -23,6 +24,8 @@ void main() {
   late CartProductEntity fakeProduct;
   late CustomerEntity fakeCustomer;
   late EnterpriseEntity enterpriseEntity;
+  late String fakeObservations;
+  late String fakeInstructions;
 
   setUpAll(() {
     // Register fallback values
@@ -38,6 +41,8 @@ void main() {
     fakeProduct = EntityFactory.makeCartProductEntity();
     fakeCustomer = EntityFactory.makeCustomerEntity();
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
+    fakeObservations = faker.lorem.sentence();
+    fakeInstructions = faker.lorem.sentence();
   });
 
   ProviderContainer makeProviderContainer() {
@@ -485,6 +490,73 @@ void main() {
           () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
         ).captured;
         expect(captured.first.covenant, fakeCustomer.CustomerCovenants![1]);
+      });
+    });
+
+    group('change observations', () {
+      test('should emit [loading, data] and save the observations', () async {
+        // ARRANGE
+        when(
+          () => mockRepository.load(any()),
+        ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+        when(() => mockRepository.save(any(), any())).thenAnswer((_) async {});
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        await container.read(pendingSaleRequestStateControllerProvider.future);
+
+        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        container.listen(
+          pendingSaleRequestStateControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .changeObservations(fakeObservations);
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        expect(states.last.value?.observations, fakeObservations);
+
+        final captured = verify(
+          () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+        ).captured;
+        expect(captured.first.observations, fakeObservations);
+      });
+    });
+    group('change instructions', () {
+      test('should emit [loading, data] and save the instructions', () async {
+        // ARRANGE
+        when(
+          () => mockRepository.load(any()),
+        ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+        when(() => mockRepository.save(any(), any())).thenAnswer((_) async {});
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        await container.read(pendingSaleRequestStateControllerProvider.future);
+
+        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        container.listen(
+          pendingSaleRequestStateControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .changeInstructions(fakeInstructions);
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        expect(states.last.value?.instructions, fakeInstructions);
+
+        final captured = verify(
+          () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+        ).captured;
+        expect(captured.first.instructions, fakeInstructions);
       });
     });
   });
