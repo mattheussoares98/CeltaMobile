@@ -100,7 +100,9 @@ class _DiscountFieldAndTypeDropdownState
             onChanged: (value) {
               ref
                   .read(
-                    selectedItemUIControllerProvider(isCartPage: true).notifier,
+                    selectedItemUIControllerProvider(
+                      isCartPage: widget.isCartPage,
+                    ).notifier,
                   )
                   .updateDiscountType(value);
             },
