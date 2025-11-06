@@ -617,20 +617,24 @@ class EntityFactory {
     covenant: makeCustomerCovenantEntity(),
   );
 
-  static CartProductEntity makeCartProductEntity() {
+  static CartProductEntity makeCartProductEntity({
+    int? productPackingCode,
+    PercentageOrValue? discountType,
+  }) {
     final bool isPercentage = faker.randomGenerator.boolean();
     final percentageOrValue = isPercentage
         ? PercentageOrValue.percentage
         : PercentageOrValue.value;
 
     return CartProductEntity(
-      ProductPackingCode: faker.randomGenerator.integer(100),
+      ProductPackingCode:
+          productPackingCode ?? faker.randomGenerator.integer(100),
       Quantity: faker.randomGenerator.decimal(),
       Value: faker.randomGenerator.decimal() * 100,
       TotalLiquid: faker.randomGenerator.decimal(),
       IncrementPercentageOrValue: percentageOrValue,
       IncrementValue: faker.randomGenerator.decimal(),
-      DiscountPercentageOrValue: percentageOrValue,
+      DiscountPercentageOrValue: discountType ?? percentageOrValue,
       DiscountValue: faker.randomGenerator.decimal(),
       DiscountDescription: faker.lorem.word(),
       AutomaticDiscountPercentageOrValue: percentageOrValue,
