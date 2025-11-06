@@ -36,9 +36,12 @@ class __ProductItemState extends ConsumerState<ProductItem> {
         (state) => state.value?.cart[widget.product.ProductPackingCode],
       ),
     );
-    final selectedPackingCode = ref
-        .watch(selectedProductPackingCodeControllerProvider(false))
-        .value;
+    final selectedPackingCode = ref.watch(
+      selectedItemUIControllerProvider(
+        isCartPage: false,
+      ).select((s) => s.productPackingCode),
+    );
+
     return ProductItemWidget(
       product: widget.product,
       routine: BsRoutine.saleRequest,

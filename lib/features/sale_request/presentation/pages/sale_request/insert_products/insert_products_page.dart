@@ -54,42 +54,43 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
             .hardcoded,
         backgroundColor: Colors.red,
       );
+      return;
     }
     ref
-        .read(selectedProductPackingCodeControllerProvider(false).notifier)
-        .updateSelectedCode(product.ProductPackingCode);
-    ref
-        .read(selectedDiscountTypeControllerProvider.notifier)
-        .updateSelectedDiscountType(cartProduct?.DiscountPercentageOrValue);
+        .read(selectedItemUIControllerProvider(isCartPage: false).notifier)
+        .selectProduct(product.ProductPackingCode, cartProduct);
 
-    final selectedPackingCode = ref
-        .read(selectedProductPackingCodeControllerProvider(false))
-        .value;
-    if (selectedPackingCode != null) {
-      final cartProductPrice = (cartProduct?.Value ?? 0);
-      final productPrice = product.getPrice;
-      double? price = cartProductPrice == 0 ? productPrice : cartProductPrice;
-
-      if (price > 0) {
-        priceController.text = price.toString().replaceAll(RegExp(r'\.'), ',');
-      } else {
-        priceController.clear();
-      }
-
-      if ((cartProduct?.DiscountValue ?? 0) > 0) {
-        discountController.text = cartProduct!.getValueOrPercentageDiscount
-            .toString()
-            .replaceAll(RegExp(r'\.'), ',');
-      } else {
-        discountController.clear();
-      }
-
-      quantityController.text = '1';
-
-      Future.delayed(const Duration(milliseconds: 100), () {
-        quantityFocusNode.requestFocus();
-      });
+    if (ref
+            .read(selectedItemUIControllerProvider(isCartPage: false))
+            .productPackingCode ==
+        null) {
+      //selected item is null
+      return;
     }
+
+    final cartProductPrice = (cartProduct?.Value ?? 0);
+    final productPrice = product.getPrice;
+    double? price = cartProductPrice == 0 ? productPrice : cartProductPrice;
+
+    if (price > 0) {
+      priceController.text = price.toString().replaceAll(RegExp(r'\.'), ',');
+    } else {
+      priceController.clear();
+    }
+
+    if ((cartProduct?.DiscountValue ?? 0) > 0) {
+      discountController.text = cartProduct!.getValueOrPercentageDiscount
+          .toString()
+          .replaceAll(RegExp(r'\.'), ',');
+    } else {
+      discountController.clear();
+    }
+
+    quantityController.text = '1';
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      quantityFocusNode.requestFocus();
+    });
   }
 
   @override

@@ -18,7 +18,7 @@ class CartPage extends ConsumerStatefulWidget {
 }
 
 class _CartPageState extends ConsumerState<CartPage> {
-  int? selectedIndex;
+  int? selectedIndex; //TODO remove this
   final quantityController = TextEditingController();
   final discountController = TextEditingController();
   final priceController = TextEditingController();
@@ -39,6 +39,10 @@ class _CartPageState extends ConsumerState<CartPage> {
   }
 
   void changeSelectedIndex(int? index, CartProductEntity product) {
+    ref
+        .read(selectedItemUIControllerProvider(isCartPage: true).notifier)
+        .selectProduct(product.ProductPackingCode, product);
+
     if (selectedIndex == index) {
       setState(() {
         selectedIndex = null;
@@ -63,12 +67,6 @@ class _CartPageState extends ConsumerState<CartPage> {
         discountController.clear();
       }
 
-      if (product.DiscountPercentageOrValue != null) {
-        ref
-            .read(selectedDiscountTypeControllerProvider.notifier)
-            .updateSelectedDiscountType(product.DiscountPercentageOrValue);
-      }
-
       Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
         quantityController.selection = TextSelection(
@@ -87,7 +85,9 @@ class _CartPageState extends ConsumerState<CartPage> {
     double quantity = quantityController.text.toDouble()!;
     double? discount = discountController.text.toDouble();
     double value = priceController.text.toDouble()!;
-    final discountType = ref.read(selectedDiscountTypeControllerProvider).value;
+    final discountType = ref
+        .read(selectedItemUIControllerProvider(isCartPage: true))
+        .discountType;
 
     ref
         .read(pendingSaleRequestStateControllerProvider.notifier)

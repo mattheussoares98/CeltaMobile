@@ -15,6 +15,7 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
   final TextEditingController quantityController;
   final TextEditingController discountController;
   final ProductEntity product;
+  final bool isCartPage;
   const TotalPriceAndInsertButton({
     super.key,
     required this.insertProduct,
@@ -22,15 +23,18 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
     required this.quantityController,
     required this.discountController,
     required this.product,
+    required this.isCartPage,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    final discountType = ref
-        .watch(selectedDiscountTypeControllerProvider)
-        .value;
+    final discountType = ref.watch(
+      selectedItemUIControllerProvider(
+        isCartPage: isCartPage,
+      ).select((state) => state.discountType),
+    );
 
     return AnimatedBuilder(
       animation: Listenable.merge([

@@ -54,7 +54,11 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     }
 
     double value = widget.priceController.text.toDouble() ?? product.getPrice;
-    final discountType = ref.read(selectedDiscountTypeControllerProvider).value;
+    final discountType = ref.read(
+      selectedItemUIControllerProvider(
+        isCartPage: false,
+      ).select((state) => state.discountType),
+    );
 
     final updated = await ref
         .read(pendingSaleRequestStateControllerProvider.notifier)
@@ -73,10 +77,8 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     widget.quantityController.clear();
     widget.discountController.clear();
     ref
-        .read(selectedProductPackingCodeControllerProvider(false).notifier)
-        .updateSelectedCode(
-          null,
-        ); //TODO change this to the controller that add the product and create test
+        .read(selectedItemUIControllerProvider(isCartPage: false).notifier)
+        .selectProduct(null, cartProduct);
   }
 
   @override
