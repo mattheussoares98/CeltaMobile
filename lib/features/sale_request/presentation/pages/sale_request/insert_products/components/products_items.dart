@@ -7,7 +7,7 @@ import '../../../../../../../core/presentation/controllers/products/products.dar
 import '../../../../../domain/entities/entities.dart';
 import 'components.dart';
 
-class ProductsItems extends ConsumerStatefulWidget {
+class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
   final void Function(ProductEntity product, CartProductEntity? cartProduct)
   onTapProduct;
@@ -32,16 +32,11 @@ class ProductsItems extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
-}
-
-class _ProductsItemsState extends ConsumerState<ProductsItems> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
       value: ref.watch(
         searchProductsStateControllerProvider(
-          widget.enterpriseCode,
+          enterpriseCode,
           BsRoutine.saleRequest,
           Modules.saleRequest,
         ),
@@ -55,9 +50,9 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
             return ProductItem(
               product: product,
-              onTapProduct: widget.onTapProduct,
-              selectedRequest: widget.selectedRequest,
-              productsItemsWidget: widget,
+              onTapProduct: onTapProduct,
+              selectedRequest: selectedRequest,
+              productsItemsWidget: this,
             );
           },
         );
