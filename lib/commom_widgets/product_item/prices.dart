@@ -17,11 +17,14 @@ class Prices extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final retailSuggestion =
-        widget.product.PriceCost.RetailSuggestionPrice ?? 0;
-    final wholeSuggestion = widget.product.PriceCost.WholeSuggestionPrice ?? 0;
-    final ecommerceSuggestion =
-        widget.product.PriceCost.ECommerceSuggestionPrice ?? 0;
+    final cost = widget.product.PriceCost;
+    final retailSuggestion = cost.RetailSuggestionPrice ?? 0;
+    final wholeSuggestion = cost.WholeSuggestionPrice ?? 0;
+    final ecommerceSuggestion = cost.ECommerceSuggestionPrice ?? 0;
+
+    final retailMinimum = cost.RetailMinimumPrice ?? 0;
+    final wholeMinimum = cost.WholeMinimumPrice ?? 0;
+    final ecommerceMinimum = cost.ECommerceMinimumPrice ?? 0;
 
     final canAdjustSalePrice = ref.watch(
       canAccessResourceStateControllerProvider(
@@ -86,6 +89,31 @@ class Prices extends ConsumerWidget {
               TitleAndSubTitle(
                 title: 'Ecommerce '.hardcoded,
                 subTitle: ecommerceSuggestion,
+                subTitleIsPrice: true,
+              ),
+          ],
+          if (wholeMinimum > 0 ||
+              retailMinimum > 0 ||
+              ecommerceMinimum > 0) ...[
+            gapH32,
+            DefaultTitle(title: 'Preços mínimos'.hardcoded),
+            gapH8,
+            if (retailMinimum > 0)
+              TitleAndSubTitle(
+                title: 'Venda '.hardcoded,
+                subTitle: retailMinimum,
+                subTitleIsPrice: true,
+              ),
+            if (wholeMinimum > 0)
+              TitleAndSubTitle(
+                title: 'Atacado '.hardcoded,
+                subTitle: wholeMinimum,
+                subTitleIsPrice: true,
+              ),
+            if (ecommerceMinimum > 0)
+              TitleAndSubTitle(
+                title: 'Ecommerce '.hardcoded,
+                subTitle: ecommerceMinimum,
                 subTitleIsPrice: true,
               ),
           ],
