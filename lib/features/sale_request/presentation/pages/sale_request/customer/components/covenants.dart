@@ -15,10 +15,11 @@ class Covenants extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final selectedCovenant = ref
-        .watch(pendingSaleRequestStateControllerProvider)
-        .value
-        ?.covenant;
+    final selectedCovenant = ref.watch(
+      pendingSaleRequestStateControllerProvider.select(
+        (s) => s.value?.covenant,
+      ),
+    );
 
     void onTapCovenant(CustomerCovenantEntity covenant) {
       ref

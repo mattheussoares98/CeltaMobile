@@ -8,18 +8,21 @@ import 'components.dart';
 class CustomerItem extends ConsumerWidget {
   final CustomerEntity customer;
   final bool isConsumerCustomer;
+  final VoidCallback changeSelectedCustomer;
   const CustomerItem({
     super.key,
     required this.customer,
+    required this.changeSelectedCustomer,
     this.isConsumerCustomer = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedCustomer = ref
-        .watch(pendingSaleRequestStateControllerProvider)
-        .value
-        ?.customer;
+    final selectedCustomer = ref.watch(
+      pendingSaleRequestStateControllerProvider.select(
+        (s) => s.value?.customer,
+      ),
+    );
 
     return Card(
       margin: const EdgeInsets.all(0),
@@ -28,7 +31,7 @@ class CustomerItem extends ConsumerWidget {
         children: [
           CustomerInfoAndRadio(
             customerItem: this,
-            selectedCustomer: selectedCustomer,
+            changeSelectedCustomer: changeSelectedCustomer,
           ),
           if (customer == selectedCustomer &&
               customer.CustomerCovenants != null &&

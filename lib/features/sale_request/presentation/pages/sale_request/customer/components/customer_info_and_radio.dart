@@ -10,20 +10,20 @@ import 'components.dart';
 
 class CustomerInfoAndRadio extends ConsumerWidget {
   final CustomerItem customerItem;
-  final CustomerEntity? selectedCustomer;
+  final VoidCallback changeSelectedCustomer;
   const CustomerInfoAndRadio({
     super.key,
     required this.customerItem,
-    required this.selectedCustomer,
+    required this.changeSelectedCustomer,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void changeSelectedCustomer() {
-      ref
-          .read(pendingSaleRequestStateControllerProvider.notifier)
-          .changeCustomer(customerItem.customer);
-    }
+    final selectedCustomer = ref.watch(
+      pendingSaleRequestStateControllerProvider.select(
+        (s) => s.value?.customer,
+      ),
+    );
 
     return InkWell(
       onTap: changeSelectedCustomer,

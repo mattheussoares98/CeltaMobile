@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -21,6 +22,12 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
   void dispose() {
     searchCustomerController.dispose();
     super.dispose();
+  }
+
+  void changeSelectedCustomer(CustomerEntity customer) {
+    ref
+        .read(pendingSaleRequestStateControllerProvider.notifier)
+        .changeCustomer(customer);
   }
 
   @override
@@ -49,6 +56,8 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                       child: CustomerItem(
                         customer: customer!,
                         isConsumerCustomer: true,
+                        changeSelectedCustomer: () =>
+                            changeSelectedCustomer(customer),
                       ),
                     );
                   },
@@ -62,10 +71,15 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                       isSliver: true,
                       itemCount: customers.length,
                       itemBuilder: (_, index) {
+                        final customer = customers[index];
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            CustomerItem(customer: customers[index]),
+                            CustomerItem(
+                              customer: customer,
+                              changeSelectedCustomer: () =>
+                                  changeSelectedCustomer(customer),
+                            ),
                             gapH8,
                           ],
                         );
