@@ -49,8 +49,8 @@ class _DiscountFieldAndTypeDropdownState
         Expanded(
           flex: 65,
           child: DefaultTextFormField(
-            hintText: 'Desconto'.hardcoded,
-            labelText: 'Desconto'.hardcoded,
+            hintText: 'Desconto unitário'.hardcoded,
+            labelText: 'Desconto unitário'.hardcoded,
             controller: widget.discountController,
             focusNode: widget.discountFocusNode,
             autovalidateMode: AutovalidateMode.onUserInteraction,

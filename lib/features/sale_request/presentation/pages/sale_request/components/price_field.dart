@@ -63,8 +63,8 @@ class PriceField extends StatelessWidget {
               .replaceAll(RegExp(r'\.'), '');
         });
         return DefaultTextFormField(
-          labelText: 'Preço'.hardcoded,
-          hintText: 'Preço'.hardcoded,
+          labelText: 'Preço unitário'.hardcoded,
+          hintText: 'Preço unitário'.hardcoded,
           maxLength: 13,
           controller: priceController,
           focusNode: priceFocusNode,
