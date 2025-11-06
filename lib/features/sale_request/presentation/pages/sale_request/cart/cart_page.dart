@@ -18,7 +18,6 @@ class CartPage extends ConsumerStatefulWidget {
 }
 
 class _CartPageState extends ConsumerState<CartPage> {
-  int? selectedIndex; //TODO remove this
   final quantityController = TextEditingController();
   final discountController = TextEditingController();
   final priceController = TextEditingController();
@@ -43,38 +42,36 @@ class _CartPageState extends ConsumerState<CartPage> {
         .read(selectedItemUIControllerProvider(isCartPage: true).notifier)
         .selectProduct(product.ProductPackingCode, product);
 
-    if (selectedIndex == index) {
-      setState(() {
-        selectedIndex = null;
-      });
-    } else {
-      setState(() {
-        selectedIndex = index;
-      });
+    final selectedPackingCode = ref
+        .read(selectedItemUIControllerProvider(isCartPage: true))
+        .productPackingCode;
 
-      quantityController.text = product.Quantity.toString()
-          .toBrazilianNumber(3, true)
-          .replaceAll(RegExp(r'\.'), '');
-      priceController.text = product.Value.toString()
-          .toBrazilianNumber(2, true)
-          .replaceAll(RegExp(r'\.'), '');
-      if ((product.DiscountValue ?? 0) > 0) {
-        discountController.text = product.getValueOrPercentageDiscount
-            .toString()
-            .toBrazilianNumber()
-            .replaceAll(RegExp(r'\.'), '');
-      } else {
-        discountController.clear();
-      }
-
-      Future.delayed(const Duration(milliseconds: 100), () {
-        quantityFocusNode.requestFocus();
-        quantityController.selection = TextSelection(
-          baseOffset: 0,
-          extentOffset: quantityController.text.length,
-        );
-      });
+    if (selectedPackingCode == null) {
+      return;
     }
+
+    quantityController.text = product.Quantity.toString()
+        .toBrazilianNumber(3, true)
+        .replaceAll(RegExp(r'\.'), '');
+    priceController.text = product.Value.toString()
+        .toBrazilianNumber(2, true)
+        .replaceAll(RegExp(r'\.'), '');
+    if ((product.DiscountValue ?? 0) > 0) {
+      discountController.text = product.getValueOrPercentageDiscount
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
+    } else {
+      discountController.clear();
+    }
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      quantityFocusNode.requestFocus();
+      quantityController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: quantityController.text.length,
+      );
+    });
   }
 
   void updateProduct(CartProductEntity cartProduct) {
@@ -109,9 +106,9 @@ class _CartPageState extends ConsumerState<CartPage> {
 
     quantityController.clear();
     discountController.clear();
-    setState(() {
-      selectedIndex = null;
-    });
+    ref
+        .read(selectedItemUIControllerProvider(isCartPage: true).notifier)
+        .selectProduct(null, null);
   }
 
   @override
@@ -121,6 +118,10 @@ class _CartPageState extends ConsumerState<CartPage> {
         (state) => state.value?.cart.values.toList() ?? [],
       ),
     );
+    final selectedPackingCode = ref
+        .watch(selectedItemUIControllerProvider(isCartPage: true))
+        .productPackingCode;
+
     return ResponsiveListFlow(
       itemCount: cartProducts.length,
       itemBuilder: (_, index) {
@@ -134,7 +135,7 @@ class _CartPageState extends ConsumerState<CartPage> {
           cartProduct: cartProduct,
           formKey: formKey,
           onTap: () => changeSelectedIndex(index, cartProduct),
-          isSelected: selectedIndex == index,
+          isSelected: selectedPackingCode == cartProduct.ProductPackingCode,
           updateProduct: updateProduct,
           quantityController: quantityController,
           priceController: priceController,
