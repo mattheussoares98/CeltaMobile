@@ -79,8 +79,8 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
     }
 
     if ((cartProduct?.DiscountValue ?? 0) > 0) {
-      discountController.text = cartProduct!.getValueOrPercentageDiscount
-          .toString()
+      discountController.text = cartProduct!.getValueOrPercentageDiscount!
+          .toStringAsFixed(2)
           .replaceAll(RegExp(r'\.'), ',');
     } else {
       discountController.clear();
