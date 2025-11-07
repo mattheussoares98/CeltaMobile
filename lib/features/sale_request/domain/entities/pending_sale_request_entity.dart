@@ -11,6 +11,7 @@ class PendingSaleRequestEntity extends Equatable {
   final CustomerCovenantEntity? covenant;
   final String? observations;
   final String? instructions;
+  final bool? needProcessCart;
 
   const PendingSaleRequestEntity({
     required this.cart,
@@ -18,10 +19,17 @@ class PendingSaleRequestEntity extends Equatable {
     required this.covenant,
     required this.observations,
     required this.instructions,
+    required this.needProcessCart,
   });
 
   @override
-  List<Object?> get props => [cart, customer, observations, instructions];
+  List<Object?> get props => [
+    cart,
+    customer,
+    observations,
+    instructions,
+    needProcessCart,
+  ];
 
   factory PendingSaleRequestEntity.empty() => const PendingSaleRequestEntity(
     cart: {},
@@ -29,6 +37,7 @@ class PendingSaleRequestEntity extends Equatable {
     covenant: null,
     observations: null,
     instructions: null,
+    needProcessCart: null,
   );
 
   PendingSaleRequestEntity copyWith({
@@ -37,12 +46,14 @@ class PendingSaleRequestEntity extends Equatable {
     CustomerCovenantEntity? covenant,
     String? observations,
     String? instructions,
+    bool? needProcessCart,
   }) => PendingSaleRequestEntity(
     cart: cart ?? this.cart,
     customer: customer ?? this.customer,
     covenant: covenant ?? this.covenant,
     observations: observations ?? this.observations,
     instructions: instructions ?? this.instructions,
+    needProcessCart: needProcessCart ?? this.needProcessCart,
   );
 
   PendingSaleRequestEntity annulValues({
@@ -51,11 +62,13 @@ class PendingSaleRequestEntity extends Equatable {
     bool? covenant,
     bool? observations,
     bool? instructions,
+    bool? needProcessCart,
   }) => PendingSaleRequestEntity(
     cart: cart == true ? {} : this.cart,
     customer: customer == true ? null : this.customer,
     covenant: covenant == true ? null : this.covenant,
     observations: observations == true ? null : this.observations,
     instructions: instructions == true ? null : this.instructions,
+    needProcessCart: needProcessCart == true ? null : this.needProcessCart,
   );
 }

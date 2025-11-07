@@ -48,6 +48,7 @@ void main() {
       covenant: EntityFactory.makeCustomerCovenantEntity(),
       observations: faker.lorem.sentence(),
       instructions: faker.lorem.sentence(),
+      needProcessCart: faker.randomGenerator.boolean(),
     );
   }
 

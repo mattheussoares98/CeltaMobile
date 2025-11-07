@@ -617,6 +617,7 @@ class EntityFactory {
     covenant: makeCustomerCovenantEntity(),
     observations: faker.lorem.sentence(),
     instructions: faker.lorem.sentence(),
+    needProcessCart: faker.randomGenerator.boolean(),
   );
 
   static CartProductEntity makeCartProductEntity({
