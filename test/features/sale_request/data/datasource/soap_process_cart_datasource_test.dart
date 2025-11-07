@@ -128,7 +128,17 @@ void main() {
               "RequestTypeCode": requestTypeCode,
               "CovenantCode": 0,
               "CustomerCode": customerCode,
-              "Products": products.map((e) => e.toJson()).toList(),
+              "Products": products
+                  .map(
+                    (e) => CartProductModel.fromEntity(
+                      e.toEntity().copyWith(
+                        DiscountValue: e.DiscountValue != null
+                            ? e.DiscountValue! / e.Quantity
+                            : null,
+                      ),
+                    ).toJson()..remove("product"),
+                  )
+                  .toList(),
             }),
           },
         ),

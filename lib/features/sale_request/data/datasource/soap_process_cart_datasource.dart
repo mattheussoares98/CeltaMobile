@@ -1,10 +1,7 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/features/sale_request/data/models/cart_product_model.dart';
-
-import 'package:celta_intelligence/features/sale_request/data/models/processed_cart_model.dart';
-
 import '../../../../core/domain/contracts/contracts.dart';
+import '../models/models.dart';
 import 'datasource.dart';
 
 class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
@@ -21,22 +18,34 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
     required int? covenantCode,
     required List<CartProductModel> products,
   }) async {
+    final parameters = {
+      "crossIdentity": crossId,
+      "json": json.encode({
+        "EnterpriseCode": enterpriseCode,
+        "RequestTypeCode": requestTypeCode,
+        "CovenantCode": covenantCode ?? 0,
+        "CustomerCode": customerCode,
+        "Products": products
+            .map(
+              (e) => CartProductModel.fromEntity(
+                e.toEntity().copyWith(
+                  DiscountValue: e.DiscountValue != null
+                      ? e.DiscountValue! / e.Quantity
+                      : null,
+                ),
+              ).toJson()..remove("product"),
+            )
+            .toList(),
+      }),
+    };
+
     final response = await soapRequest.post(
       url: baseUrl,
       typeOfResponse: "ProcessCartResponse",
       soapAction: "ProcessCart",
       serviceASMX: "CeltaSaleRequestService.asmx",
       typeOfResult: "ProcessCartResult",
-      parameters: {
-        "crossIdentity": crossId,
-        "json": json.encode({
-          "EnterpriseCode": enterpriseCode,
-          "RequestTypeCode": requestTypeCode,
-          "CovenantCode": covenantCode ?? 0,
-          "CustomerCode": customerCode,
-          "Products": products.map((e) => e.toJson()).toList(),
-        }),
-      },
+      parameters: parameters,
     );
 
     return ProcessedCartModel.fromJson(json.decode(response));
