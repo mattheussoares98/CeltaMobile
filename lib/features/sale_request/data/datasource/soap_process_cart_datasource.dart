@@ -32,7 +32,7 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
         "json": json.encode({
           "EnterpriseCode": enterpriseCode,
           "RequestTypeCode": requestTypeCode,
-          "CovenantCode": covenantCode,
+          "CovenantCode": covenantCode ?? 0,
           "CustomerCode": customerCode,
           "Products": products.map((e) => e.toJson()).toList(),
         }),

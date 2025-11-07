@@ -99,4 +99,40 @@ void main() {
       ),
     ).called(1);
   });
+  test(
+    'should call covenantCode with zero number when pass null value',
+    () async {
+      final result = await sut.process(
+        crossId: crossId,
+        baseUrl: baseUrl,
+        enterpriseCode: enterpriseCode,
+        requestTypeCode: requestTypeCode,
+        customerCode: customerCode,
+        covenantCode: null,
+        products: products,
+      );
+
+      expect(result, processedCart);
+
+      verify(
+        () => soapRequest.post(
+          url: baseUrl,
+          typeOfResponse: "ProcessCartResponse",
+          soapAction: "ProcessCart",
+          serviceASMX: "CeltaSaleRequestService.asmx",
+          typeOfResult: "ProcessCartResult",
+          parameters: {
+            "crossIdentity": crossId,
+            "json": json.encode({
+              "EnterpriseCode": enterpriseCode,
+              "RequestTypeCode": requestTypeCode,
+              "CovenantCode": 0,
+              "CustomerCode": customerCode,
+              "Products": products.map((e) => e.toJson()).toList(),
+            }),
+          },
+        ),
+      ).called(1);
+    },
+  );
 }
