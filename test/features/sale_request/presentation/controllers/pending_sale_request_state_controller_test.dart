@@ -44,7 +44,9 @@ void main() {
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     fakeObservations = faker.lorem.sentence();
     fakeInstructions = faker.lorem.sentence();
-    fakeProcessedCart = EntityFactory.makeProcessedCartEntity();
+    fakeProcessedCart = EntityFactory.makeProcessedCartEntity(
+      products: [fakeProduct],
+    );
   });
 
   ProviderContainer makeProviderContainer() {
@@ -591,6 +593,9 @@ void main() {
           // ACT
           await container
               .read(pendingSaleRequestStateControllerProvider.notifier)
+              .addProduct(fakeProduct);
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
               .updateProductsFromProcessedCart(fakeProcessedCart);
 
           // ASSERT
@@ -598,7 +603,10 @@ void main() {
           expect(states, contains(isA<AsyncData>()));
           expect(states.last.value?.cart, {
             for (final item in fakeProcessedCart.Products!)
-              item.ProductPackingCode: item,
+              item.ProductPackingCode: item.copyWith(
+                product:
+                    states.last.value!.cart[item.ProductPackingCode]!.product,
+              ),
           });
           expect(states.last.value?.needProcessCart, isTrue);
 

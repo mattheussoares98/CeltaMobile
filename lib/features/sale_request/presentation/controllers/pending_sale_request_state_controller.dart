@@ -129,7 +129,9 @@ class PendingSaleRequestStateController
       state.value!.copyWith(
         cart: {
           for (final product in processedCart.Products ?? <CartProductEntity>[])
-            product.ProductPackingCode: product,
+            product.ProductPackingCode: product.copyWith(
+              product: state.value!.cart[product.ProductPackingCode]!.product,
+            ),
         },
       ),
     );

@@ -649,7 +649,9 @@ class EntityFactory {
     );
   }
 
-  static ProcessedCartEntity makeProcessedCartEntity() => ProcessedCartEntity(
+  static ProcessedCartEntity makeProcessedCartEntity({
+    List<CartProductEntity>? products,
+  }) => ProcessedCartEntity(
     crossId: faker.guid.guid(),
     EnterpriseCode: faker.randomGenerator.integer(100),
     RequestTypeCode: faker.randomGenerator.integer(100),
@@ -658,10 +660,12 @@ class EntityFactory {
     CustomerCode: faker.randomGenerator.integer(100),
     Instructions: faker.lorem.sentence(),
     Observations: faker.lorem.sentence(),
-    Products: [
-      makeCartProductEntity(),
-      makeCartProductEntity(),
-      makeCartProductEntity(),
-    ],
+    Products:
+        products ??
+        [
+          makeCartProductEntity(),
+          makeCartProductEntity(),
+          makeCartProductEntity(),
+        ],
   );
 }
