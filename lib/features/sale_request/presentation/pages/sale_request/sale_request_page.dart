@@ -50,97 +50,110 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
       n.showSnackbarOnError(context, p);
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(child: Text(appBarTitles[currentIndex])),
-        actionsPadding: const EdgeInsets.fromLTRB(
-          0,
-          Sizes.p8,
-          Sizes.p12,
-          Sizes.p8,
-        ),
-        actions: [
-          QuantityBadge(
-            quantity: products?.length ?? 0,
-            materialIcon: Icons.shopping_cart,
-            cupertinoIcon: CupertinoIcons.shopping_cart,
-            isSelected: false,
-            offset: const Offset(3, -3),
-            subtitle: Text(
-              (products?.fold<double>(0.0, (p, e) {
-                        return p + e.TotalLiquid;
-                      }).toString() ??
-                      '0')
-                  .toBrazilianNumber()
-                  .addBrazilianCoin(),
-              style: const TextStyle(fontSize: 9),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: FittedBox(child: Text(appBarTitles[currentIndex])),
+            actionsPadding: const EdgeInsets.fromLTRB(
+              0,
+              Sizes.p8,
+              Sizes.p12,
+              Sizes.p8,
             ),
-          ),
-        ],
-      ),
-      body: AsyncValueWidget(
-        value: ref.watch(
-          requestTypeStateControllerProvider(Modules.saleRequest),
-        ),
-        tryAgain: () {
-          ref.invalidate(
-            requestTypeStateControllerProvider(Modules.saleRequest),
-          );
-        },
-        data: (requests) {
-          final selectedRequest = requests!.firstWhere(
-            (e) => e.Code == widget.requestCode,
-          );
-
-          return IndexedStack(
-            index: currentIndex,
-            children: [
-              InsertProductsPage(
-                enterpriseCode: widget.enterpriseCode,
-                selectedRequest: selectedRequest,
+            actions: [
+              QuantityBadge(
+                quantity: products?.length ?? 0,
+                materialIcon: Icons.shopping_cart,
+                cupertinoIcon: CupertinoIcons.shopping_cart,
+                isSelected: false,
+                offset: const Offset(3, -3),
+                subtitle: Text(
+                  (products?.fold<double>(0.0, (p, e) {
+                            return p + e.TotalLiquid;
+                          }).toString() ??
+                          '0')
+                      .toBrazilianNumber()
+                      .addBrazilianCoin(),
+                  style: const TextStyle(fontSize: 9),
+                ),
               ),
-              const CustomerPage(),
-              CartPage(selectedRequest: selectedRequest),
             ],
-          );
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) => setState(() => currentIndex = index),
-        currentIndex: currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            label: 'Inserir produtos'.hardcoded,
-            icon: Icon(
-              isIOS ? CupertinoIcons.cart_fill : Icons.add_shopping_cart,
-            ),
           ),
-          BottomNavigationBarItem(
-            label: 'Cliente'.hardcoded,
-            icon: ValidatedBadge(
-              isSelected: currentIndex == 1,
-              isValid:
-                  ref.watch(
-                    pendingSaleRequestStateControllerProvider.select(
-                      (state) => state.value?.customer,
-                    ),
-                  ) !=
-                  null,
-              materialIcon: Icons.person,
-              cupertinoIcon: CupertinoIcons.person,
+          body: AsyncValueWidget(
+            value: ref.watch(
+              requestTypeStateControllerProvider(Modules.saleRequest),
             ),
+            tryAgain: () {
+              ref.invalidate(
+                requestTypeStateControllerProvider(Modules.saleRequest),
+              );
+            },
+            data: (requests) {
+              final selectedRequest = requests!.firstWhere(
+                (e) => e.Code == widget.requestCode,
+              );
+
+              return IndexedStack(
+                index: currentIndex,
+                children: [
+                  InsertProductsPage(
+                    enterpriseCode: widget.enterpriseCode,
+                    selectedRequest: selectedRequest,
+                  ),
+                  const CustomerPage(),
+                  CartPage(selectedRequest: selectedRequest),
+                ],
+              );
+            },
           ),
-          BottomNavigationBarItem(
-            label: 'Carrinho'.hardcoded,
-            icon: QuantityBadge(
-              quantity: products?.length ?? 0,
-              materialIcon: Icons.shopping_cart,
-              cupertinoIcon: CupertinoIcons.shopping_cart,
-              isSelected: currentIndex == 2,
-            ),
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index) => setState(() => currentIndex = index),
+            currentIndex: currentIndex,
+            items: [
+              BottomNavigationBarItem(
+                label: 'Inserir produtos'.hardcoded,
+                icon: Icon(
+                  isIOS ? CupertinoIcons.cart_fill : Icons.add_shopping_cart,
+                ),
+              ),
+              BottomNavigationBarItem(
+                label: 'Cliente'.hardcoded,
+                icon: ValidatedBadge(
+                  isSelected: currentIndex == 1,
+                  isValid:
+                      ref.watch(
+                        pendingSaleRequestStateControllerProvider.select(
+                          (state) => state.value?.customer,
+                        ),
+                      ) !=
+                      null,
+                  materialIcon: Icons.person,
+                  cupertinoIcon: CupertinoIcons.person,
+                ),
+              ),
+              BottomNavigationBarItem(
+                label: 'Carrinho'.hardcoded,
+                icon: QuantityBadge(
+                  quantity: products?.length ?? 0,
+                  materialIcon: Icons.shopping_cart,
+                  cupertinoIcon: CupertinoIcons.shopping_cart,
+                  isSelected: currentIndex == 2,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref.watch(
+              processCartControllerProvider.select((s) => s.isLoading),
+            );
+
+            return isLoading ? const LoadingPage() : const SizedBox.shrink();
+          },
+        ),
+      ],
     );
   }
 }
