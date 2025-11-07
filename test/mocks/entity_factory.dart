@@ -606,14 +606,15 @@ class EntityFactory {
     cost: faker.randomGenerator.decimal(),
   );
 
-  static PendingSaleRequestEntity
-  makePendingSaleRequestEntity() => PendingSaleRequestEntity(
+  static PendingSaleRequestEntity makePendingSaleRequestEntity({
+    CustomerEntity? customer,
+  }) => PendingSaleRequestEntity(
     cart: {
       faker.randomGenerator.integer(100): EntityFactory.makeCartProductEntity(),
       faker.randomGenerator.integer(100): EntityFactory.makeCartProductEntity(),
       faker.randomGenerator.integer(100): EntityFactory.makeCartProductEntity(),
     },
-    customer: makeCustomerEntity(),
+    customer: customer ?? makeCustomerEntity(),
     covenant: makeCustomerCovenantEntity(),
     observations: faker.lorem.sentence(),
     instructions: faker.lorem.sentence(),
