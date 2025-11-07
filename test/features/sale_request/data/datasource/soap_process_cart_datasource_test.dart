@@ -1,0 +1,102 @@
+import 'dart:convert';
+
+import 'package:celta_intelligence/features/sale_request/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/sale_request/data/models/models.dart';
+import 'package:faker/faker.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+void main() {
+  late ISoapProcessCartDatasource sut;
+
+  late SoapRequestSpy soapRequest;
+
+  late String crossId;
+  late String baseUrl;
+  late int enterpriseCode;
+  late int requestTypeCode;
+  late int customerCode;
+  late int? covenantCode;
+  late List<CartProductModel> products;
+  late ProcessedCartModel processedCart;
+
+  void initSut() {
+    sut = SoapProcessCartDatasource(soapRequest);
+  }
+
+  void initInjections() {
+    soapRequest = SoapRequestSpy();
+  }
+
+  void mockSuccess() {
+    soapRequest.mockPost(json.encode(processedCart));
+  }
+
+  void initEntities() {
+    baseUrl = faker.internet.httpsUrl();
+    enterpriseCode = faker.randomGenerator.integer(1000);
+    requestTypeCode = faker.randomGenerator.integer(1000);
+    customerCode = faker.randomGenerator.integer(1000);
+    covenantCode = faker.randomGenerator.integer(1000);
+    crossId = faker.guid.guid();
+    products = [
+      EntityFactory.makeCartProductEntity(),
+      EntityFactory.makeCartProductEntity(),
+      EntityFactory.makeCartProductEntity(),
+    ].map((e) => CartProductModel.fromEntity(e)).toList();
+    processedCart = ProcessedCartModel(
+      crossId: crossId,
+      EnterpriseCode: enterpriseCode,
+      RequestTypeCode: requestTypeCode,
+      SellerCode: faker.randomGenerator.integer(100),
+      CovenantCode: covenantCode,
+      CustomerCode: customerCode,
+      Products: products,
+      Instructions: faker.lorem.sentence(),
+      Observations: faker.lorem.sentence(),
+    );
+  }
+
+  setUp(() {
+    initEntities();
+    initInjections();
+    initSut();
+    mockSuccess();
+  });
+
+  test('should call with correct params', () async {
+    final result = await sut.process(
+      crossId: crossId,
+      baseUrl: baseUrl,
+      enterpriseCode: enterpriseCode,
+      requestTypeCode: requestTypeCode,
+      customerCode: customerCode,
+      covenantCode: covenantCode,
+      products: products,
+    );
+
+    expect(result, processedCart);
+
+    verify(
+      () => soapRequest.post(
+        url: baseUrl,
+        typeOfResponse: "ProcessCartResponse",
+        soapAction: "ProcessCart",
+        serviceASMX: "CeltaSaleRequestService.asmx",
+        typeOfResult: "ProcessCartResult",
+        parameters: {
+          "crossIdentity": crossId,
+          "json": json.encode({
+            "EnterpriseCode": enterpriseCode,
+            "RequestTypeCode": requestTypeCode,
+            "CovenantCode": covenantCode,
+            "CustomerCode": customerCode,
+            "Products": products.map((e) => e.toJson()).toList(),
+          }),
+        },
+      ),
+    ).called(1);
+  });
+}
