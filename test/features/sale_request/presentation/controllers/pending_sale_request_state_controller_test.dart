@@ -139,6 +139,7 @@ void main() {
             states.last.value?.cart[fakeProduct.ProductPackingCode],
             fakeProduct,
           );
+          expect(states.last.value?.needProcessCart, isTrue);
 
           // Verify that save was called with the new state
           final captured = verify(
@@ -149,6 +150,7 @@ void main() {
             captured.first.cart.containsKey(fakeProduct.ProductPackingCode),
             isTrue,
           );
+          expect(captured.first.needProcessCart, isTrue);
         },
       );
       test(

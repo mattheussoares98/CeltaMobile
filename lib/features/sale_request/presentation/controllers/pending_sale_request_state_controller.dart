@@ -43,6 +43,7 @@ class PendingSaleRequestStateController
 
   Future<void> _updateAndSave(PendingSaleRequestEntity newState) async {
     state = const AsyncValue.loading();
+    newState = newState.copyWith(needProcessCart: true);
     state = await AsyncValue.guard(() async {
       await _repository.save(
         newState,
