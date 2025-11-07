@@ -127,6 +127,10 @@ class _CartPageState extends ConsumerState<CartPage> {
       ),
     );
 
+    ref.listen(processCartControllerProvider, (p, n) {
+      n.showSnackbarOnError(context, p);
+    });
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       child: Column(
@@ -182,7 +186,28 @@ class _CartPageState extends ConsumerState<CartPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      PrimaryButton(text: 'Calcular preços'.hardcoded),
+                      PrimaryButton(
+                        text: 'Calcular preços'.hardcoded,
+                        onPressed: () {
+                          //TODO show this only if the user has permission to change the prices, or has any manual price
+                          showAlertDialog(
+                            context: context,
+                            title: 'Calcular preços?'.hardcoded,
+                            cancelActionText: 'Cancelar'.hardcoded,
+                            content:
+                                'Ao calcular os preços, serão obtidos os preços calculados pelo BS de acordo com promoções, negociações de vendas, oferta, atacado de acordo com a quantidade mínima, etc'
+                                    .hardcoded,
+                            onOkPressed: () {
+                              ref
+                                  .read(processCartControllerProvider.notifier)
+                                  .process(
+                                    requestTypeCode:
+                                        widget.selectedRequest.Code,
+                                  );
+                            },
+                          );
+                        },
+                      ),
                       gapH4,
                       PrimaryButton(text: 'Salvar pedido'.hardcoded),
                     ],
