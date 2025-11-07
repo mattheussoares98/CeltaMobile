@@ -168,6 +168,29 @@ class _CartPageState extends ConsumerState<CartPage> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Expanded(
+                  flex: 3,
+                  child: Column(children: [Text('Total'), Text('x')]),
+                ),
+                Expanded(
+                  flex: 7,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      PrimaryButton(text: 'Calcular preços'.hardcoded),
+                      gapH4,
+                      PrimaryButton(text: 'Salvar pedido'.hardcoded),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
