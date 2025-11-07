@@ -131,25 +131,15 @@ class _CartPageState extends ConsumerState<CartPage> {
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       child: Column(
         children: [
-          DefaultTextFormField(
-            labelText: 'Observações'.hardcoded,
-            hintText: 'Observações'.hardcoded,
-            maxLines: 3,
-            maxLength: 300,
-            focusNode: observationsFocusNode,
-            controller: observationsController,
-            onFieldSubmitted: (_) {
-              instructionsFocusNode.requestFocus();
-            },
+          ObservationsField(
+            observationsFocusNode: observationsFocusNode,
+            observationsController: observationsController,
+            instructionsFocusNode: instructionsFocusNode,
           ),
           gapH4,
-          DefaultTextFormField(
-            labelText: 'Instruções'.hardcoded,
-            hintText: 'Instruções'.hardcoded,
-            maxLines: 3,
-            maxLength: 300,
-            controller: instructionsController,
-            focusNode: instructionsFocusNode,
+          InstructionsField(
+            instructionsFocusNode: instructionsFocusNode,
+            instructionsController: instructionsController,
           ),
           gapH8,
           Expanded(
