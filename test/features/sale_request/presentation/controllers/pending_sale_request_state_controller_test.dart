@@ -26,6 +26,7 @@ void main() {
   late EnterpriseEntity enterpriseEntity;
   late String fakeObservations;
   late String fakeInstructions;
+  late ProcessedCartEntity fakeProcessedCart;
 
   setUpAll(() {
     // Register fallback values
@@ -43,6 +44,7 @@ void main() {
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     fakeObservations = faker.lorem.sentence();
     fakeInstructions = faker.lorem.sentence();
+    fakeProcessedCart = EntityFactory.makeProcessedCartEntity();
   });
 
   ProviderContainer makeProviderContainer() {
@@ -560,6 +562,54 @@ void main() {
         ).captured;
         expect(captured.first.instructions, fakeInstructions);
       });
+    });
+
+    group('update products from processed cart', () {
+      test(
+        'should emit [loading, data] and save the updated product list',
+        () async {
+          // ARRANGE
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          when(
+            () => mockRepository.save(any(), any()),
+          ).thenAnswer((_) async {});
+
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(
+            pendingSaleRequestStateControllerProvider.future,
+          );
+
+          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          container.listen(
+            pendingSaleRequestStateControllerProvider,
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .updateProductsFromProcessedCart(fakeProcessedCart);
+
+          // ASSERT
+          expect(states, contains(isA<AsyncLoading>()));
+          expect(states, contains(isA<AsyncData>()));
+          expect(states.last.value?.cart, {
+            for (final item in fakeProcessedCart.Products!)
+              item.ProductPackingCode: item,
+          });
+          expect(states.last.value?.needProcessCart, isTrue);
+
+          // Verify that save was called with the new state
+          final captured = verify(
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+          ).captured;
+          expect(captured.first, isA<PendingSaleRequestEntity>());
+          expect(captured.first.needProcessCart, isTrue);
+        },
+      );
     });
   });
 }

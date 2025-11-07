@@ -119,4 +119,19 @@ class PendingSaleRequestStateController
 
     await _updateAndSave(state.value!.copyWith(instructions: instructions));
   }
+
+  Future<void> updateProductsFromProcessedCart(
+    ProcessedCartEntity processedCart,
+  ) async {
+    if (state.value == null) return;
+
+    await _updateAndSave(
+      state.value!.copyWith(
+        cart: {
+          for (final product in processedCart.Products ?? <CartProductEntity>[])
+            product.ProductPackingCode: product,
+        },
+      ),
+    );
+  }
 }
