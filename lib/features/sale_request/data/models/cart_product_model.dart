@@ -94,14 +94,15 @@ class CartProductModel extends Equatable {
     'Value': Value,
     'TotalLiquid': TotalLiquid,
     'IncrementPercentageOrValue': IncrementPercentageOrValue?.symbol,
-    'IncrementValue': IncrementValue,
+    'IncrementValue': IncrementValue ?? 0,
     'DiscountPercentageOrValue': DiscountPercentageOrValue?.symbol,
-    'DiscountValue': DiscountValue,
+    'DiscountValue': DiscountValue ?? 0,
     'DiscountDescription': DiscountDescription,
     'AutomaticDiscountPercentageOrValue':
         AutomaticDiscountPercentageOrValue?.symbol,
-    'AutomaticDiscountValue': AutomaticDiscountValue,
-    'ExpectedDeliveryDate': ExpectedDeliveryDate?.toIso8601String(),
+    'AutomaticDiscountValue': AutomaticDiscountValue ?? 0,
+    'ExpectedDeliveryDate': (ExpectedDeliveryDate ?? DateTime.now())
+        .toIso8601String(),
     'Observations': Observations,
     'product': product?.toJson(),
   };
