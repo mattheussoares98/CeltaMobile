@@ -121,7 +121,7 @@ class CartProductEntity extends Equatable {
       DiscountPercentageOrValue: (totalDiscount ?? 0) <= 0
           ? null
           : discountType,
-      DiscountDescription: discountByItem != null && discountType != null
+      DiscountDescription: (discountByItem ?? 0) > 0 && discountType != null
           ? 'Desconto manual'
           : null,
     );
