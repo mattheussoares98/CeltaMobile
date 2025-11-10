@@ -34,17 +34,33 @@ class AppDecorations {
       borderSide: BorderSide(color: colorScheme.error, width: 1),
     );
 
+    final disabledBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(Sizes.p12),
+      borderSide: BorderSide(
+        color: colorScheme.onSurface.withAlpha(50),
+        width: 1,
+      ),
+    );
+
+    final fillColor = enabled
+        ? colorScheme.surfaceContainerHighest.withAlpha(125)
+        : colorScheme.onSurface.withAlpha(25);
+
     return InputDecoration(
       labelText: labelText,
       hintText: hintText,
       errorText: errorText,
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: TextStyle(
-        color: colorScheme.onSurface.withAlpha(200),
+        color: enabled
+            ? colorScheme.onSurface.withAlpha(200)
+            : colorScheme.onSurface.withAlpha(100),
         fontSize: 12,
       ),
       hintStyle: TextStyle(
-        color: colorScheme.onSurface.withAlpha(125),
+        color: enabled
+            ? colorScheme.onSurface.withAlpha(125)
+            : colorScheme.onSurface.withAlpha(100),
         fontSize: 12,
       ),
       enabled: enabled,
@@ -53,7 +69,7 @@ class AppDecorations {
       focusedBorder: focusedBorder,
       errorBorder: errorBorder,
       focusedErrorBorder: errorBorder,
-      disabledBorder: border,
+      disabledBorder: disabledBorder,
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
       contentPadding: EdgeInsets.only(
@@ -62,7 +78,7 @@ class AppDecorations {
         left: Sizes.p8,
       ),
       filled: true,
-      fillColor: colorScheme.surfaceContainerHighest.withAlpha(125),
+      fillColor: fillColor,
       alignLabelWithHint: isMultiLine,
     );
   }
