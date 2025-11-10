@@ -96,17 +96,11 @@ class _CartPageState extends ConsumerState<CartPage> {
     }
 
     priceController.clear();
+    discountController.clear();
+
     quantityController.text = product.Quantity.toString()
         .toBrazilianNumber(3, true)
         .replaceAll(RegExp(r'\.'), '');
-    if ((product.DiscountValue ?? 0) > 0) {
-      discountController.text = product.getValueOrPercentageDiscount
-          .toString()
-          .toBrazilianNumber()
-          .replaceAll(RegExp(r'\.'), '');
-    } else {
-      discountController.clear();
-    }
 
     Future.delayed(const Duration(milliseconds: 100), () {
       quantityFocusNode.requestFocus();
