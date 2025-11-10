@@ -17,7 +17,7 @@ class SelectedItemUIController extends _$SelectedItemUIController {
     } else {
       state = SelectedItemUIState(
         productPackingCode: productPackingCode,
-        discountType: cartProduct?.DiscountPercentageOrValue,
+        discountType: null,
       );
     }
   }

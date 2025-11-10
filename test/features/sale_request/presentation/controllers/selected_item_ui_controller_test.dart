@@ -74,7 +74,7 @@ void main() {
           // ASSERT
           const expectedState = SelectedItemUIState(
             productPackingCode: testPackingCode,
-            discountType: testDiscountType,
+            discountType: null,
           );
 
           expect(states, [expectedState]);
