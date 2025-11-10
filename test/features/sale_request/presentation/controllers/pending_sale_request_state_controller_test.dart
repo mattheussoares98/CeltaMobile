@@ -656,7 +656,7 @@ void main() {
                     states.last.value!.cart[item.ProductPackingCode]!.product,
               ),
           });
-          expect(states.last.value?.needProcessCart, isTrue);
+          expect(states.last.value?.needProcessCart, isFalse);
 
           // Verify that save was called with the new state
           final captured = verify(

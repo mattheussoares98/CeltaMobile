@@ -42,9 +42,12 @@ class PendingSaleRequestStateController
   ILocalPendingSaleRequestRepository get _repository =>
       ref.read(localPendingSaleRequestRepositoryProvider);
 
-  Future<void> _updateAndSave(PendingSaleRequestEntity newState) async {
+  Future<void> _updateAndSave(
+    PendingSaleRequestEntity newState, {
+    required bool needProcessCart,
+  }) async {
     state = const AsyncValue.loading();
-    newState = newState.copyWith(needProcessCart: true);
+    newState = newState.copyWith(needProcessCart: needProcessCart);
     state = await AsyncValue.guard(() async {
       await _repository.save(
         newState,
@@ -74,7 +77,10 @@ class PendingSaleRequestStateController
 
       newCart[item.ProductPackingCode] = item;
 
-      await _updateAndSave(state.value!.copyWith(cart: newCart));
+      await _updateAndSave(
+        state.value!.copyWith(cart: newCart),
+        needProcessCart: true,
+      );
       updated = true;
       return state.value!;
     });
@@ -87,7 +93,10 @@ class PendingSaleRequestStateController
     final newCart = Map.of(state.value!.cart);
     newCart.remove(product.ProductPackingCode);
 
-    await _updateAndSave(state.value!.copyWith(cart: newCart));
+    await _updateAndSave(
+      state.value!.copyWith(cart: newCart),
+      needProcessCart: true,
+    );
   }
 
   Future<void> changeCustomer(CustomerEntity newCustomer) async {
@@ -96,12 +105,14 @@ class PendingSaleRequestStateController
     if (newCustomer.Code == state.value!.customer?.Code) {
       await _updateAndSave(
         state.value!.annulValues(customer: true, covenant: true),
+        needProcessCart: true,
       );
     } else {
       await _updateAndSave(
         state.value!
             .annulValues(covenant: true)
             .copyWith(customer: newCustomer),
+        needProcessCart: true,
       );
     }
   }
@@ -110,22 +121,34 @@ class PendingSaleRequestStateController
     if (state.value?.customer == null) return;
 
     if (newCovenant.covenant?.Code == state.value!.covenant?.covenant?.Code) {
-      await _updateAndSave(state.value!.annulValues(covenant: true));
+      await _updateAndSave(
+        state.value!.annulValues(covenant: true),
+        needProcessCart: true,
+      );
     } else {
-      await _updateAndSave(state.value!.copyWith(covenant: newCovenant));
+      await _updateAndSave(
+        state.value!.copyWith(covenant: newCovenant),
+        needProcessCart: true,
+      );
     }
   }
 
   Future<void> changeObservations(String observations) async {
     if (state.value == null) return;
 
-    await _updateAndSave(state.value!.copyWith(observations: observations));
+    await _updateAndSave(
+      state.value!.copyWith(observations: observations),
+      needProcessCart: false,
+    );
   }
 
   Future<void> changeInstructions(String instructions) async {
     if (state.value == null) return;
 
-    await _updateAndSave(state.value!.copyWith(instructions: instructions));
+    await _updateAndSave(
+      state.value!.copyWith(instructions: instructions),
+      needProcessCart: false,
+    );
   }
 
   Future<void> updateProductsFromProcessedCart(
@@ -142,6 +165,7 @@ class PendingSaleRequestStateController
             ),
         },
       ),
+      needProcessCart: false,
     );
   }
 }
