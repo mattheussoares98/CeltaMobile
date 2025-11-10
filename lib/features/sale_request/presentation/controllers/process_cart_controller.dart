@@ -42,7 +42,9 @@ class ProcessCartController extends _$ProcessCartController {
             requestTypeCode: requestTypeCode,
             customerCode: pending.customer!.Code!,
             covenantCode: pending.covenant?.covenant?.Code,
-            products: pending.cart.values.toList(),
+            products: pending.cart.values
+                .map((e) => e.copyWith(DiscountValue: 0))
+                .toList(),
           );
 
       await ref
