@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../domain/entities/entities.dart';
@@ -39,6 +40,7 @@ class ProductItem extends ConsumerWidget {
           ).select((s) => s.productPackingCode),
         ) ==
         cartProduct.ProductPackingCode;
+    final theme = Theme.of(context);
 
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p4),
@@ -56,9 +58,18 @@ class ProductItem extends ConsumerWidget {
                 Sizes.p8,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   NamePluAndDeleteButton(cartProduct: cartProduct),
                   gapH4,
+                  if (cartProduct.DiscountDescription != null)
+                    TitleAndSubTitle(
+                      title: null,
+                      subTitle: cartProduct.DiscountDescription,
+                      subTitleStyle: theme.textTheme.titleSmall?.copyWith(
+                        color: theme.colorScheme.secondary,
+                      ),
+                    ),
                   Values(product: cartProduct, isSelected: isSelected),
                 ],
               ),

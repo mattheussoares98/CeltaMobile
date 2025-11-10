@@ -46,6 +46,7 @@ class Values extends StatelessWidget {
                 title: 'Desconto'.hardcoded,
                 value: product.AutomaticDiscountValue ?? product.DiscountValue!,
                 valueIsPrice: true,
+                isDiscount: true,
               ),
             _ColumnValues(
               title: 'Total'.hardcoded,
@@ -64,10 +65,12 @@ class _ColumnValues extends StatelessWidget {
   final String title;
   final double value;
   final bool valueIsPrice;
+  final bool? isDiscount;
   const _ColumnValues({
     required this.title,
     required this.value,
     required this.valueIsPrice,
+    this.isDiscount,
   });
 
   @override
@@ -81,7 +84,9 @@ class _ColumnValues extends StatelessWidget {
             title.hardcoded,
             textAlign: TextAlign.center,
             style: theme.textTheme.titleSmall?.copyWith(
-              color: Colors.grey[600],
+              color: isDiscount == true
+                  ? theme.colorScheme.secondary
+                  : Colors.grey[600],
             ),
           ),
           TitleAndSubTitle(
@@ -91,7 +96,9 @@ class _ColumnValues extends StatelessWidget {
               !valueIsPrice,
             ),
             subTitleStyle: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.grey,
+              color: isDiscount == true
+                  ? theme.colorScheme.secondary
+                  : Colors.grey,
             ),
             subTitleIsPrice: valueIsPrice,
           ),
