@@ -19,6 +19,10 @@ class CartItemSummary extends StatelessWidget {
   });
 
   bool get changedPrice {
+    if (cartQuantity > product.MinimumWholeQuantity &&
+        product.WholePracticedPrice > 0) {
+      return cartValue != null && cartValue != product.WholePracticedPrice;
+    }
     return cartValue != null && cartValue != product.getPrice;
   }
 
