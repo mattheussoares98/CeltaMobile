@@ -67,15 +67,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       return;
     }
 
-    final cartProductPrice = (cartProduct?.Value ?? 0);
-    final productPrice = product.getPrice;
-    double? price = cartProductPrice == 0 ? productPrice : cartProductPrice;
-
-    if (price > 0) {
-      priceController.text = price.toString().replaceAll(RegExp(r'\.'), ',');
-    } else {
-      priceController.clear();
-    }
+    priceController.clear();
 
     if ((cartProduct?.DiscountValue ?? 0) > 0) {
       discountController.text = cartProduct!.getValueOrPercentageDiscount!

@@ -95,11 +95,9 @@ class _CartPageState extends ConsumerState<CartPage> {
       return;
     }
 
+    priceController.clear();
     quantityController.text = product.Quantity.toString()
         .toBrazilianNumber(3, true)
-        .replaceAll(RegExp(r'\.'), '');
-    priceController.text = product.Value.toString()
-        .toBrazilianNumber(2, true)
         .replaceAll(RegExp(r'\.'), '');
     if ((product.DiscountValue ?? 0) > 0) {
       discountController.text = product.getValueOrPercentageDiscount
