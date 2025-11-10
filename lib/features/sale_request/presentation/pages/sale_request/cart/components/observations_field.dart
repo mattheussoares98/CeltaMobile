@@ -16,16 +16,18 @@ class ObservationsField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTextFormField(
-      labelText: 'Observações'.hardcoded,
-      hintText: 'Observações'.hardcoded,
-      maxLines: 3,
-      maxLength: 300,
-      focusNode: observationsFocusNode,
-      controller: observationsController,
-      onFieldSubmitted: (_) {
-        instructionsFocusNode.requestFocus();
-      },
+    return SliverToBoxAdapter(
+      child: DefaultTextFormField(
+        labelText: 'Observações'.hardcoded,
+        hintText: 'Observações'.hardcoded,
+        maxLines: 3,
+        maxLength: 300,
+        focusNode: observationsFocusNode,
+        controller: observationsController,
+        onFieldSubmitted: (_) {
+          instructionsFocusNode.requestFocus();
+        },
+      ),
     );
   }
 }

@@ -126,42 +126,48 @@ class _CartPageState extends ConsumerState<CartPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ObservationsField(
-            observationsFocusNode: observationsFocusNode,
-            observationsController: observationsController,
-            instructionsFocusNode: instructionsFocusNode,
-          ),
-          gapH4,
-          InstructionsField(
-            instructionsFocusNode: instructionsFocusNode,
-            instructionsController: instructionsController,
-          ),
-          gapH8,
           Expanded(
-            child: ResponsiveListFlow(
-              itemCount: cartProducts.length,
-              itemBuilder: (_, index) {
-                final cartProduct = cartProducts[index];
+            child: CustomScrollView(
+              slivers: [
+                ObservationsField(
+                  observationsFocusNode: observationsFocusNode,
+                  observationsController: observationsController,
+                  instructionsFocusNode: instructionsFocusNode,
+                ),
+                gapSliverH4,
+                InstructionsField(
+                  instructionsFocusNode: instructionsFocusNode,
+                  instructionsController: instructionsController,
+                ),
+                gapSliverH8,
+                ResponsiveListFlow(
+                  isSliver: true,
+                  itemCount: cartProducts.length,
+                  itemBuilder: (_, index) {
+                    final cartProduct = cartProducts[index];
 
-                if (cartProducts.isEmpty) {
-                  return Center(
-                    child: Text('Nenhum item no carrinho'.hardcoded),
-                  );
-                }
+                    if (cartProducts.isEmpty) {
+                      return Center(
+                        child: Text('Nenhum item no carrinho'.hardcoded),
+                      );
+                    }
 
-                return ProductItem(
-                  cartProduct: cartProduct,
-                  onTap: () => changeSelectedIndex(index, cartProduct),
-                  quantityController: quantityController,
-                  priceController: priceController,
-                  discountController: discountController,
-                  quantityFocusNode: quantityFocusNode,
-                  discountFocusNode: discountFocusNode,
-                  priceFocusNode: priceFocusNode,
-                  selectedRequest: widget.selectedRequest,
-                );
-              },
+                    return ProductItem(
+                      cartProduct: cartProduct,
+                      onTap: () => changeSelectedIndex(index, cartProduct),
+                      quantityController: quantityController,
+                      priceController: priceController,
+                      discountController: discountController,
+                      quantityFocusNode: quantityFocusNode,
+                      discountFocusNode: discountFocusNode,
+                      priceFocusNode: priceFocusNode,
+                      selectedRequest: widget.selectedRequest,
+                    );
+                  },
+                ),
+              ],
             ),
           ),
           Padding(

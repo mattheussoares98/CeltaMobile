@@ -14,13 +14,15 @@ class InstructionsField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTextFormField(
-      labelText: 'Instruções'.hardcoded,
-      hintText: 'Instruções'.hardcoded,
-      maxLines: 3,
-      maxLength: 300,
-      controller: instructionsController,
-      focusNode: instructionsFocusNode,
+    return SliverToBoxAdapter(
+      child: DefaultTextFormField(
+        labelText: 'Instruções'.hardcoded,
+        hintText: 'Instruções'.hardcoded,
+        maxLines: 3,
+        maxLength: 300,
+        controller: instructionsController,
+        focusNode: instructionsFocusNode,
+      ),
     );
   }
 }
