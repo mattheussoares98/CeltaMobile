@@ -46,15 +46,22 @@ class TotalCalculateAndSave extends ConsumerWidget {
           ),
           Expanded(
             flex: 7,
-            child: Consumer(
-              builder: (_, ref, _) {
-                final userCanChangePrices = ref.watch(
+            child: AsyncValueWidget(
+              value: ref.watch(
+                CanAccessResourceStateControllerProvider(
+                  BsRoutine.generic,
+                  BsResource.saleRequestChangeTPrice,
+                ),
+              ),
+              tryAgain: () {
+                ref.invalidate(
                   CanAccessResourceStateControllerProvider(
                     BsRoutine.generic,
                     BsResource.saleRequestChangeTPrice,
                   ),
                 );
-
+              },
+              data: (canAccess) {
                 final needProcessCart = ref.watch(
                   pendingSaleRequestStateControllerProvider.select(
                     (s) => s.value?.needProcessCart == true,
@@ -64,7 +71,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (needProcessCart && userCanChangePrices.value != true)
+                    if (needProcessCart && canAccess != true)
                       //TODO test if is working correctly
                       PrimaryButton(
                         text: 'Calcular preços'.hardcoded,

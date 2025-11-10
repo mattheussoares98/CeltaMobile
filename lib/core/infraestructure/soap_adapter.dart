@@ -69,6 +69,9 @@ class SoapAdapter implements contracts.SoapRequest {
         return _handleSuccessResponse(responseBody, typeOfResult);
       } else if (responseBody["status"].contains("sucesso")) {
         return _handleSuccessResponse(responseBody, typeOfResult);
+      } else if (serviceASMX.toLowerCase() ==
+          'CeltaSecurityService.asmx'.toLowerCase()) {
+        return _handleSuccessResponse(responseBody, typeOfResult);
       } else {
         throw BsError(responseBody["status"]);
       }
