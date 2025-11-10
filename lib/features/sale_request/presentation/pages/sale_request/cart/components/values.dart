@@ -40,10 +40,11 @@ class Values extends StatelessWidget {
               value: product.Value,
               valueIsPrice: true,
             ),
-            if ((product.DiscountValue ?? 0) > 0)
+            if ((product.AutomaticDiscountValue ?? product.DiscountValue ?? 0) >
+                0)
               _ColumnValues(
                 title: 'Desconto'.hardcoded,
-                value: product.DiscountValue!,
+                value: product.AutomaticDiscountValue ?? product.DiscountValue!,
                 valueIsPrice: true,
               ),
             _ColumnValues(
