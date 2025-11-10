@@ -20,7 +20,7 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (cartProduct.getValueLiquid != retailPrice)
+          if (retailPrice > 0)
             TitleAndSubTitle(
               title: 'Preço venda (BS)'.hardcoded,
               subTitle: retailPrice,
