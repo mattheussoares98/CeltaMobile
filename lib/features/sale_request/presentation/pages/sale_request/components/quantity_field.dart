@@ -6,7 +6,7 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
 import 'components.dart';
 
-class QuantityField extends StatelessWidget {
+class QuantityField extends StatefulWidget {
   final VoidCallback insertProduct;
   final QuantityPriceDiscountFieldsAndInsertButton widget;
   const QuantityField({
@@ -15,18 +15,42 @@ class QuantityField extends StatelessWidget {
     required this.widget,
   });
 
-  double get practicedPrice {
-    final totalQuantity = widget.quantityController.text.toDouble() ?? 0;
+  @override
+  State<QuantityField> createState() => _QuantityFieldState();
+}
 
-    if (widget.product.MinimumWholeQuantity > 0 &&
-        totalQuantity >= widget.product.MinimumWholeQuantity &&
-        widget.product.WholePracticedPrice > 0) {
-      return widget.product.WholePracticedPrice;
-    } else if (widget.product.getPrice == 0 &&
-        (widget.cartProduct?.Value ?? 0) > 0) {
-      return widget.cartProduct!.Value;
+class _QuantityFieldState extends State<QuantityField> {
+  double get practicedPrice {
+    final totalQuantity = widget.widget.quantityController.text.toDouble() ?? 0;
+
+    if (widget.widget.product.MinimumWholeQuantity > 0 &&
+        totalQuantity >= widget.widget.product.MinimumWholeQuantity &&
+        widget.widget.product.WholePracticedPrice > 0) {
+      return widget.widget.product.WholePracticedPrice;
+    } else if (widget.widget.product.getPrice == 0 &&
+        (widget.widget.cartProduct?.Value ?? 0) > 0) {
+      return widget.widget.cartProduct!.Value;
     }
-    return widget.product.getPrice;
+    return widget.widget.product.getPrice;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        updatePrice();
+      }
+    });
+  }
+
+  void updatePrice() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      widget.widget.priceController.text = practicedPrice
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
+    });
   }
 
   @override
@@ -35,22 +59,15 @@ class QuantityField extends StatelessWidget {
       labelText: 'Quantidade'.hardcoded,
       hintText: 'Quantidade'.hardcoded,
       maxLength: 13,
-      controller: widget.quantityController,
-      focusNode: widget.quantityFocusNode,
+      controller: widget.widget.quantityController,
+      focusNode: widget.widget.quantityFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      onChanged: (_) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          widget.priceController.text = practicedPrice
-              .toString()
-              .toBrazilianNumber()
-              .replaceAll(RegExp(r'\.'), '');
-        });
-      },
+      onChanged: (_) => updatePrice(),
       onFieldSubmitted: (_) {
-        if (widget.selectedRequest.AllowAlterCostOrSalePrice == true) {
-          widget.priceFocusNode.requestFocus();
+        if (widget.widget.selectedRequest.AllowAlterCostOrSalePrice == true) {
+          widget.widget.priceFocusNode.requestFocus();
         } else {
-          insertProduct();
+          widget.insertProduct();
         }
       },
       validator: FormValidators.compose([
