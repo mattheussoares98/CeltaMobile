@@ -39,7 +39,8 @@ class PriceField extends StatelessWidget {
   }
 
   double get practicedPrice {
-    if (totalQuantity >= product.MinimumWholeQuantity &&
+    if (product.MinimumWholeQuantity > 0 &&
+        totalQuantity >= product.MinimumWholeQuantity &&
         product.WholePracticedPrice > 0) {
       return product.WholePracticedPrice;
     } else if (product.getPrice == 0 && (cartProduct?.Value ?? 0) > 0) {
