@@ -43,7 +43,9 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final dtf = widget.defaultTextFormField;
+    final bool isEnabled = dtf.enabled ?? true;
 
     return FormField<String>(
       key: ValueKey(Random().nextDouble()),
@@ -53,6 +55,16 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
       autovalidateMode: dtf.autovalidateMode,
       builder: (state) {
         _formFieldState = state;
+
+        final fillColor = isEnabled
+            ? CupertinoColors.tertiarySystemFill.resolveFrom(context)
+            : colorScheme.onSurface.withAlpha(25);
+
+        final Border? border = state.hasError
+            ? Border.all(color: CupertinoColors.destructiveRed)
+            : !isEnabled
+            ? Border.all(color: colorScheme.onSurface.withAlpha(50))
+            : null;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,8 +77,12 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
                 ),
                 child: Text(
                   dtf.labelText!,
-                  style: CupertinoTheme.of(context).textTheme.textStyle
-                      .copyWith(color: theme.disabledColor, fontSize: 12),
+                  style: TextStyle(
+                    color: isEnabled
+                        ? colorScheme.onSurface.withAlpha(200)
+                        : colorScheme.onSurface.withAlpha(100),
+                    fontSize: 12,
+                  ),
                 ),
               ),
             CupertinoTextField(
@@ -75,10 +91,18 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
               controller: dtf.controller,
               minLines: 1,
               maxLines: dtf.maxLines ?? 1,
-              placeholder: dtf.labelText ?? dtf.hintText,
-              placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.disabledColor,
+              placeholder: dtf.hintText,
+              style: TextStyle(
+                color: isEnabled ? null : colorScheme.onSurface.withAlpha(100),
               ),
+              placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
+                color: isEnabled
+                    ? colorScheme.onSurface.withAlpha(125)
+                    : colorScheme.onSurface.withAlpha(100),
+                fontSize: 12,
+              ),
+              textAlignVertical: TextAlignVertical.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               obscureText: dtf.obscureText,
               onSubmitted: dtf.onFieldSubmitted,
               enabled: dtf.enabled == true,
@@ -90,12 +114,11 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
                 state.didChange(value);
               },
               decoration: BoxDecoration(
-                color: CupertinoColors.tertiarySystemFill.resolveFrom(context),
+                color: fillColor,
                 borderRadius: BorderRadius.circular(Sizes.p8),
-                border: state.hasError
-                    ? Border.all(color: CupertinoColors.destructiveRed)
-                    : null,
+                border: border,
               ),
+              keyboardType: dtf.keyboardType,
               prefix: dtf.prefixIcon != null
                   ? Padding(
                       padding: EdgeInsets.only(
@@ -105,12 +128,10 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
                     )
                   : null,
               suffix: dtf.suffixIcon,
-              padding: EdgeInsets.all(
-                dtf.prefixIcon is Icon ||
-                        dtf.suffixIcon is Icon ||
-                        dtf.suffixIcon == null
-                    ? Sizes.p12
-                    : 0,
+              padding: EdgeInsets.only(
+                left: Sizes.p8,
+                bottom: dtf.prefixIcon != null ? Sizes.p12 : Sizes.p16,
+                top: dtf.prefixIcon != null ? 0 : Sizes.p8,
               ),
             ),
 
