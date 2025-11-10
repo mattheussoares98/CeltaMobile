@@ -170,50 +170,7 @@ class _CartPageState extends ConsumerState<CartPage> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Expanded(
-                  flex: 3,
-                  child: Column(children: [Text('Total'), Text('x')]),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      PrimaryButton(
-                        text: 'Calcular preços'.hardcoded,
-                        onPressed: () {
-                          //TODO show this only if the user has permission to change the prices, or has any manual price
-                          showAlertDialog(
-                            context: context,
-                            title: 'Calcular preços?'.hardcoded,
-                            cancelActionText: 'Cancelar'.hardcoded,
-                            content:
-                                'Ao calcular os preços, serão obtidos os preços calculados pelo BS de acordo com promoções, negociações de vendas, oferta, atacado de acordo com a quantidade mínima, etc'
-                                    .hardcoded,
-                            onOkPressed: () {
-                              ref
-                                  .read(processCartControllerProvider.notifier)
-                                  .process(
-                                    requestTypeCode:
-                                        widget.selectedRequest.Code,
-                                  );
-                            },
-                          );
-                        },
-                      ),
-                      gapH4,
-                      PrimaryButton(text: 'Salvar pedido'.hardcoded),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          TotalCalculateAndSave(selectedRequest: widget.selectedRequest),
         ],
       ),
     );
