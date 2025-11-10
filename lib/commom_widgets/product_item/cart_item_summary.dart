@@ -69,7 +69,7 @@ class CartItemSummary extends StatelessWidget {
             titleStyle: titleStyle,
             subTitleStyle: subtitleStyle,
           ),
-        if (totalDiscount != null)
+        if ((totalDiscount ?? 0) > 0)
           TitleAndSubTitle(
             title: 'Desconto'.hardcoded,
             subTitle: totalDiscount.toString().toBrazilianNumber(),
