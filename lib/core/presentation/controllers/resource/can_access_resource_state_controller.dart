@@ -10,11 +10,7 @@ part 'can_access_resource_state_controller.g.dart';
 class CanAccessResourceStateController
     extends _$CanAccessResourceStateController {
   @override
-  Future<bool> build(
-    BsRoutine routine,
-    BsResource resource,
-    int enterpriseCode,
-  ) async {
+  Future<bool> build(BsRoutine routine, BsResource resource) async {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
     final baseUrl = userSession!.enterprise!.baseUrl!;

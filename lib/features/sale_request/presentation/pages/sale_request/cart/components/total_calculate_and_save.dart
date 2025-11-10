@@ -6,7 +6,6 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/resource/resource.dart';
-import '../../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../controllers/controllers.dart';
 
 class TotalCalculateAndSave extends ConsumerWidget {
@@ -53,9 +52,6 @@ class TotalCalculateAndSave extends ConsumerWidget {
                   CanAccessResourceStateControllerProvider(
                     BsRoutine.saleRequest,
                     BsResource.saleRequest,
-                    ref
-                        .read(selectedEnterpriseStateControllerProvider)!
-                        .Code!, //TODO remove this unecessary param from the controller
                   ),
                 );
 

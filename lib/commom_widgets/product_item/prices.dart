@@ -30,7 +30,6 @@ class Prices extends ConsumerWidget {
       canAccessResourceStateControllerProvider(
         BsRoutine.adjustSalePrice,
         BsResource.adjustSalePrice,
-        enterpriseCode,
       ),
     );
 
