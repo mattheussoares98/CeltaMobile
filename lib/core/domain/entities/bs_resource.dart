@@ -14,6 +14,11 @@ enum BsResource {
   priceConference(611, "Pesquisa de preços", _Type.module),
   researchOfPrice(585, "Preços concorrentes", _Type.module),
   saleRequest(739, "Pedido de vendas", _Type.module),
+  saleRequestChangeTPrice(
+    666,
+    "Pedido de vendas (alterar preços)",
+    _Type.action,
+  ),
   transferRequest(582, "Pedido de transferência", _Type.module);
 
   final int code;

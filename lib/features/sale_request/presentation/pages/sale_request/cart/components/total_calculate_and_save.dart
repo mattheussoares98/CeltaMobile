@@ -50,8 +50,8 @@ class TotalCalculateAndSave extends ConsumerWidget {
               builder: (_, ref, _) {
                 final userCanChangePrices = ref.watch(
                   CanAccessResourceStateControllerProvider(
-                    BsRoutine.saleRequest,
-                    BsResource.saleRequest,
+                    BsRoutine.generic,
+                    BsResource.saleRequestChangeTPrice,
                   ),
                 );
 
