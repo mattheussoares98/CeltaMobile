@@ -95,6 +95,8 @@ class EntityFactory {
   static ProductEntity makeProductEntity({
     int? enterpriseCode,
     int? productPackingCode,
+    double? MinimumWholeQuantity,
+    double? RetailPracticedPrice,
   }) => ProductEntity(
     EnterpriseCode: enterpriseCode ?? faker.randomGenerator.integer(100),
     ProductCode: faker.randomGenerator.integer(100),
@@ -107,7 +109,8 @@ class EntityFactory {
     StorageAreaAddress: faker.guid.guid(),
     Value: faker.randomGenerator.decimal(),
     BalanceLabelQuantity: faker.randomGenerator.decimal(),
-    RetailPracticedPrice: faker.randomGenerator.decimal(),
+    RetailPracticedPrice:
+        RetailPracticedPrice ?? faker.randomGenerator.decimal(),
     RetailSalePrice: faker.randomGenerator.decimal(),
     RetailOfferPrice: faker.randomGenerator.decimal(),
     WholePracticedPrice: faker.randomGenerator.decimal(),
@@ -116,7 +119,8 @@ class EntityFactory {
     ECommercePracticedPrice: faker.randomGenerator.decimal(),
     ECommerceSalePrice: faker.randomGenerator.decimal(),
     ECommerceOfferPrice: faker.randomGenerator.decimal(),
-    MinimumWholeQuantity: faker.randomGenerator.decimal(),
+    MinimumWholeQuantity:
+        MinimumWholeQuantity ?? faker.randomGenerator.decimal(),
     OperationalCost: faker.randomGenerator.decimal(),
     ReplacementCost: faker.randomGenerator.decimal(),
     ReplacementCostMidle: faker.randomGenerator.decimal(),
@@ -624,17 +628,22 @@ class EntityFactory {
   static CartProductEntity makeCartProductEntity({
     int? productPackingCode,
     PercentageOrValue? discountType,
+    double? MinimumWholeQuantity,
+    double? Quantity,
+    double? Value,
+    double? DiscountValue,
   }) {
     final bool isPercentage = faker.randomGenerator.boolean();
     final percentageOrValue = isPercentage
         ? PercentageOrValue.percentage
         : PercentageOrValue.value;
+    final defaultValue = faker.randomGenerator.decimal() * 100;
 
     return CartProductEntity(
       ProductPackingCode:
           productPackingCode ?? faker.randomGenerator.integer(100),
-      Quantity: faker.randomGenerator.decimal(),
-      Value: faker.randomGenerator.decimal() * 100,
+      Quantity: Quantity ?? faker.randomGenerator.decimal(),
+      Value: Value ?? defaultValue,
       TotalLiquid: faker.randomGenerator.decimal(),
       IncrementPercentageOrValue: percentageOrValue,
       IncrementValue: faker.randomGenerator.decimal(),
@@ -645,7 +654,10 @@ class EntityFactory {
       AutomaticDiscountValue: faker.randomGenerator.decimal(),
       ExpectedDeliveryDate: faker.date.dateTime(),
       Observations: faker.lorem.word(),
-      product: makeProductEntity(),
+      product: makeProductEntity(
+        MinimumWholeQuantity: MinimumWholeQuantity,
+        RetailPracticedPrice: defaultValue,
+      ),
     );
   }
 

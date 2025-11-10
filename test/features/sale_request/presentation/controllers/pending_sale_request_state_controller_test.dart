@@ -39,7 +39,10 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeDraft = EntityFactory.makePendingSaleRequestEntity();
-    fakeProduct = EntityFactory.makeCartProductEntity();
+    fakeProduct = EntityFactory.makeCartProductEntity(
+      MinimumWholeQuantity: faker.randomGenerator.integer(100).toDouble(),
+      Quantity: faker.randomGenerator.decimal(),
+    );
     fakeCustomer = EntityFactory.makeCustomerEntity();
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     fakeObservations = faker.lorem.sentence();
@@ -184,6 +187,51 @@ void main() {
           final updated = await container
               .read(pendingSaleRequestStateControllerProvider.notifier)
               .addProduct(fakeProduct.copyWith(Value: 0, Quantity: 0));
+
+          expect(updated, isFalse);
+
+          // ASSERT
+          expect(states, contains(isA<AsyncLoading>()));
+          expect(states, contains(isA<AsyncError>()));
+          expect(states.last.value?.cart[fakeProduct.ProductPackingCode], null);
+
+          verifyNever(
+            () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
+          );
+        },
+      );
+
+      test(
+        'should emit [loading, error] when has manual price and manual discount',
+        () async {
+          // ARRANGE
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          when(
+            () => mockRepository.save(any(), any()),
+          ).thenAnswer((_) async {});
+
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(
+            pendingSaleRequestStateControllerProvider.future,
+          );
+
+          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          container.listen(
+            pendingSaleRequestStateControllerProvider,
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          final updated = await container
+              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .addProduct(
+                EntityFactory.makeCartProductEntity(
+                  Value: faker.randomGenerator.decimal(),
+                ),
+              );
 
           expect(updated, isFalse);
 

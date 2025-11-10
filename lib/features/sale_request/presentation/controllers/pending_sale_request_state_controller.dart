@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
@@ -60,7 +61,14 @@ class PendingSaleRequestStateController
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       if (item.getValueLiquid <= 0) {
-        throw AppException('O preço do produto precisa ser maior que zero');
+        throw AppException(
+          'O preço do produto precisa ser maior que zero'.hardcoded,
+        );
+      } else if (item.getPriceIsManual && (item.DiscountValue ?? 0) > 0) {
+        throw AppException(
+          'Não é permitido inserir preço manual e desconto manual. Insira somente um'
+              .hardcoded,
+        );
       }
       final newCart = Map.of(state.value!.cart);
 
