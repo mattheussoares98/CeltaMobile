@@ -14,9 +14,9 @@ class Values extends StatelessWidget {
     final minimumWholeQuantity = product.product?.MinimumWholeQuantity ?? 0;
 
     if (minimumWholeQuantity > 0 && product.Quantity >= minimumWholeQuantity) {
-      return product.getValueLiquid != product.product?.WholePracticedPrice;
+      return product.Value != product.product?.WholePracticedPrice;
     } else {
-      return product.getValueLiquid != product.product?.RetailPracticedPrice;
+      return product.Value != product.product?.RetailPracticedPrice;
     }
   }
 
