@@ -105,10 +105,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
                         order: const NumericFocusOrder(1),
                         child: QuantityField(
                           insertProduct: insertUpdateProduct,
-                          quantityController: widget.quantityController,
-                          quantityFocusNode: widget.quantityFocusNode,
-                          priceFocusNode: widget.priceFocusNode,
-                          selectedRequest: widget.selectedRequest,
+                          widget: widget,
                         ),
                       ),
                       if (widget.selectedRequest.AllowAlterCostOrSalePrice ==

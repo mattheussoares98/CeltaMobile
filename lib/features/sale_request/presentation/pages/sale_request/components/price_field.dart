@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/string_modifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,80 +30,50 @@ class PriceField extends StatelessWidget {
     required this.isCartPage,
   });
 
-  double get totalQuantity {
-    final writtenQuantity = quantityController.text.toDouble() ?? 0;
-    final cartQuantity = cartProduct?.Quantity ?? 0;
-
-    return isCartPage ? writtenQuantity : cartQuantity + writtenQuantity;
-  }
-
-  double get practicedPrice {
-    if (product.MinimumWholeQuantity > 0 &&
-        totalQuantity >= product.MinimumWholeQuantity &&
-        product.WholePracticedPrice > 0) {
-      return product.WholePracticedPrice;
-    } else if (product.getPrice == 0 && (cartProduct?.Value ?? 0) > 0) {
-      return cartProduct!.Value;
-    }
-    return product.getPrice;
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return AnimatedBuilder(
-      animation: Listenable.merge([quantityController]),
-      builder: (_, _) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          priceController.text = practicedPrice
-              .toString()
-              .toBrazilianNumber()
-              .replaceAll(RegExp(r'\.'), '');
-        });
-
-        return Row(
-          children: [
-            Expanded(
-              child: DefaultTextFormField(
-                labelText: 'Preço unitário'.hardcoded,
-                hintText: 'Preço unitário'.hardcoded,
-                maxLength: 13,
-                controller: priceController,
-                focusNode: priceFocusNode,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                onFieldSubmitted: (_) {
-                  if (selectedRequest.AllowDiscount == true) {
-                    discountFocusNode.requestFocus();
-                  } else {
-                    insertProduct();
-                  }
-                },
-                validator: FormValidators.compose([
-                  NonEmptyValidator(),
-                  NumberValidator(allowDecimal: true),
-                ]),
-              ),
-            ),
-            FocusTraversalGroup(
-              descendantsAreFocusable: false,
-              child: IconButton(
-                onPressed: () {
-                  showAlertDialog(
-                    context: context,
-                    title: 'Atenção!'.hardcoded,
-                    content:
-                        'Esse campo fica habilitado quando o modelo de pedido permite alterar o preço e não foi informado um desconto manualmente'
-                            .hardcoded,
-                  );
-                },
-                icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
-              ),
-            ),
-          ],
-        );
-      },
+    return Row(
+      children: [
+        Expanded(
+          child: DefaultTextFormField(
+            labelText: 'Preço unitário'.hardcoded,
+            hintText: 'Preço unitário'.hardcoded,
+            maxLength: 13,
+            controller: priceController,
+            focusNode: priceFocusNode,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onFieldSubmitted: (_) {
+              if (selectedRequest.AllowDiscount == true) {
+                discountFocusNode.requestFocus();
+              } else {
+                insertProduct();
+              }
+            },
+            validator: FormValidators.compose([
+              NonEmptyValidator(),
+              NumberValidator(allowDecimal: true),
+            ]),
+          ),
+        ),
+        FocusTraversalGroup(
+          descendantsAreFocusable: false,
+          child: IconButton(
+            onPressed: () {
+              showAlertDialog(
+                context: context,
+                title: 'Atenção!'.hardcoded,
+                content:
+                    'Esse campo fica habilitado quando o modelo de pedido permite alterar o preço e não foi informado um desconto manualmente'
+                        .hardcoded,
+              );
+            },
+            icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+          ),
+        ),
+      ],
     );
   }
 }
