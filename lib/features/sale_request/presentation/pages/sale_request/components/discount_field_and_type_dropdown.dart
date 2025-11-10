@@ -38,52 +38,58 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
       children: [
         Expanded(
           flex: 65,
-          child: DefaultTextFormField(
-            hintText: 'Desconto unitário'.hardcoded,
-            labelText: 'Desconto unitário'.hardcoded,
-            controller: discountController,
-            focusNode: discountFocusNode,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            maxLength: 13,
-            suffixIcon: FocusTraversalGroup(
-              descendantsAreFocusable: false,
-              child: IconButton(
-                onPressed: () {
-                  showAlertDialog(
-                    context: context,
-                    title: 'Atenção!'.hardcoded,
-                    content:
-                        'Esse campo está habilitado porque o modelo de pedido permite inserir desconto'
-                            .hardcoded,
-                  );
-                },
-                icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+          child: Row(
+            children: [
+              Expanded(
+                child: DefaultTextFormField(
+                  hintText: 'Desconto unitário'.hardcoded,
+                  labelText: 'Desconto unitário'.hardcoded,
+                  controller: discountController,
+                  focusNode: discountFocusNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  maxLength: 13,
+                  onFieldSubmitted: (_) {
+                    insertProduct();
+                  },
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true, //TODO test in IOS
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return null;
+                    }
+
+                    final numberValidator = NumberValidator(
+                      allowDecimal: true,
+                      needsBeGreaterThanZero: false,
+                    );
+
+                    final isValid = numberValidator.isValid(value);
+
+                    if (isValid) {
+                      return null;
+                    } else {
+                      return numberValidator.errorMessage;
+                    }
+                  },
+                ),
               ),
-            ),
-            onFieldSubmitted: (_) {
-              insertProduct();
-            },
-            keyboardType: const TextInputType.numberWithOptions(
-              decimal: true, //TODO test in IOS
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return null;
-              }
-
-              final numberValidator = NumberValidator(
-                allowDecimal: true,
-                needsBeGreaterThanZero: false,
-              );
-
-              final isValid = numberValidator.isValid(value);
-
-              if (isValid) {
-                return null;
-              } else {
-                return numberValidator.errorMessage;
-              }
-            },
+              FocusTraversalGroup(
+                descendantsAreFocusable: false,
+                child: IconButton(
+                  onPressed: () {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Atenção!'.hardcoded,
+                      content:
+                          'Esse campo fica habilitado quando o modelo de pedido permite aplicar desconto e não foi informado um preço manualmente'
+                              .hardcoded,
+                    );
+                  },
+                  icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+                ),
+              ),
+            ],
           ),
         ),
         gapW8,
