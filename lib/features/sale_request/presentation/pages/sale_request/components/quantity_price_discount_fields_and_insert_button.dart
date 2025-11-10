@@ -115,15 +115,8 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
                           order: const NumericFocusOrder(2),
                           child: PriceField(
                             //TODO cant insert the price if the discount is settled
-                            isCartPage: widget.isCartPage,
-                            cartProduct: widget.cartProduct,
-                            product: widget.product,
                             insertProduct: insertUpdateProduct,
-                            quantityController: widget.quantityController,
-                            priceController: widget.priceController,
-                            discountFocusNode: widget.discountFocusNode,
-                            priceFocusNode: widget.priceFocusNode,
-                            selectedRequest: widget.selectedRequest,
+                            widget: widget,
                           ),
                         ),
                       ],
@@ -137,11 +130,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
                     order: const NumericFocusOrder(4),
                     child: TotalPriceAndInsertButton(
                       insertProduct: insertUpdateProduct,
-                      priceController: widget.priceController,
-                      quantityController: widget.quantityController,
-                      discountController: widget.discountController,
-                      product: widget.product,
-                      isCartPage: widget.isCartPage,
+                      widget: widget,
                     ),
                   ),
                 ),
@@ -154,10 +143,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
                 child: DiscountFieldAndTypeDropdown(
                   //TODO cant insert the discount if the price is settled
                   insertProduct: insertUpdateProduct,
-                  cartProduct: widget.cartProduct,
-                  discountController: widget.discountController,
-                  discountFocusNode: widget.discountFocusNode,
-                  isCartPage: widget.isCartPage,
+                  widget: widget,
                 ),
               ),
             ],

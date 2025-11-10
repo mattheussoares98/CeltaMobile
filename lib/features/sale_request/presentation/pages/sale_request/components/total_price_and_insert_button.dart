@@ -5,25 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import 'components.dart';
 
 class TotalPriceAndInsertButton extends ConsumerWidget {
   final VoidCallback insertProduct;
-  final TextEditingController priceController;
-  final TextEditingController quantityController;
-  final TextEditingController discountController;
-  final ProductEntity product;
-  final bool isCartPage;
+  final QuantityPriceDiscountFieldsAndInsertButton widget;
   const TotalPriceAndInsertButton({
     super.key,
     required this.insertProduct,
-    required this.priceController,
-    required this.quantityController,
-    required this.discountController,
-    required this.product,
-    required this.isCartPage,
+    required this.widget,
   });
 
   @override
@@ -32,29 +24,29 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
 
     final discountType = ref.watch(
       selectedItemUIControllerProvider(
-        isCartPage: isCartPage,
+        isCartPage: widget.isCartPage,
       ).select((state) => state.discountType),
     );
 
     final correspondentProduct = ref.watch(
       pendingSaleRequestStateControllerProvider.select(
-        (state) => state.value?.cart[product.ProductPackingCode],
+        (state) => state.value?.cart[widget.product.ProductPackingCode],
       ),
     );
 
     return AnimatedBuilder(
       animation: Listenable.merge([
-        priceController,
-        quantityController,
-        discountController,
+        widget.priceController,
+        widget.quantityController,
+        widget.discountController,
       ]),
       builder: (_, _) {
         final newItem = CartProductEntity.create(
-          quantity: quantityController.text.toDouble() ?? 0,
-          price: priceController.text.toDouble() ?? 0,
-          discountByItem: discountController.text.toDouble(),
+          quantity: widget.quantityController.text.toDouble() ?? 0,
+          price: widget.priceController.text.toDouble() ?? 0,
+          discountByItem: widget.discountController.text.toDouble(),
           discountType: discountType,
-          product: product,
+          product: widget.product,
         );
         return Column(
           children: [
@@ -78,7 +70,7 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
             ),
             gapH4,
             PrimaryButton(
-              text: isCartPage || correspondentProduct != null
+              text: widget.isCartPage || correspondentProduct != null
                   ? 'Atualizar'.hardcoded
                   : 'Adicionar'.hardcoded,
               onPressed: insertProduct,

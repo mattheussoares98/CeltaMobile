@@ -4,30 +4,15 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../domain/entities/entities.dart';
+import 'components.dart';
 
 class PriceField extends StatelessWidget {
   final VoidCallback insertProduct;
-  final TextEditingController priceController;
-  final TextEditingController quantityController;
-  final FocusNode priceFocusNode;
-  final FocusNode discountFocusNode;
-  final RequestTypeEntity selectedRequest;
-  final ProductEntity product;
-  final CartProductEntity? cartProduct;
-  final bool isCartPage;
+  final QuantityPriceDiscountFieldsAndInsertButton widget;
   const PriceField({
     super.key,
     required this.insertProduct,
-    required this.priceController,
-    required this.quantityController,
-    required this.priceFocusNode,
-    required this.discountFocusNode,
-    required this.selectedRequest,
-    required this.product,
-    required this.cartProduct,
-    required this.isCartPage,
+    required this.widget,
   });
 
   @override
@@ -42,12 +27,12 @@ class PriceField extends StatelessWidget {
             labelText: 'Preço unitário'.hardcoded,
             hintText: 'Preço unitário'.hardcoded,
             maxLength: 13,
-            controller: priceController,
-            focusNode: priceFocusNode,
+            controller: widget.priceController,
+            focusNode: widget.priceFocusNode,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onFieldSubmitted: (_) {
-              if (selectedRequest.AllowDiscount == true) {
-                discountFocusNode.requestFocus();
+              if (widget.selectedRequest.AllowDiscount == true) {
+                widget.discountFocusNode.requestFocus();
               } else {
                 insertProduct();
               }

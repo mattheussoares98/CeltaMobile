@@ -8,20 +8,15 @@ import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import 'components.dart';
 
 class DiscountFieldAndTypeDropdown extends ConsumerWidget {
   final VoidCallback insertProduct;
-  final TextEditingController discountController;
-  final FocusNode discountFocusNode;
-  final CartProductEntity? cartProduct;
-  final bool isCartPage;
+  final QuantityPriceDiscountFieldsAndInsertButton widget;
   const DiscountFieldAndTypeDropdown({
     super.key,
     required this.insertProduct,
-    required this.discountController,
-    required this.discountFocusNode,
-    required this.cartProduct,
-    required this.isCartPage,
+    required this.widget,
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,7 +25,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
 
     final discountType = ref.watch(
       selectedItemUIControllerProvider(
-        isCartPage: isCartPage,
+        isCartPage: widget.isCartPage,
       ).select((state) => state.discountType),
     );
 
@@ -44,8 +39,8 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                 child: DefaultTextFormField(
                   hintText: 'Desconto unitário'.hardcoded,
                   labelText: 'Desconto unitário'.hardcoded,
-                  controller: discountController,
-                  focusNode: discountFocusNode,
+                  controller: widget.discountController,
+                  focusNode: widget.discountFocusNode,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   maxLength: 13,
                   onFieldSubmitted: (_) {
@@ -102,7 +97,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                 ref
                     .read(
                       selectedItemUIControllerProvider(
-                        isCartPage: isCartPage,
+                        isCartPage: widget.isCartPage,
                       ).notifier,
                     )
                     .updateDiscountType(value);
@@ -112,7 +107,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (value) {
                 if (discountType == null &&
-                    discountController.text.isNotEmpty) {
+                    widget.discountController.text.isNotEmpty) {
                   return 'Campo obrigatório'.hardcoded;
                 }
 
