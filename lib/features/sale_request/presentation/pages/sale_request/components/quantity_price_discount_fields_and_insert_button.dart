@@ -96,6 +96,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BsPricesAndMinimumWholeQuantity(widget: widget),
+            gapH8,
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

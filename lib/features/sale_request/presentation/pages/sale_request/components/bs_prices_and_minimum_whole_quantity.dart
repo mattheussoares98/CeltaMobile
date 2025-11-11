@@ -39,6 +39,10 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
                 subTitle: practicedPriceType.name,
                 subTitleStyle: theme.textTheme.titleMedium?.copyWith(
                   color: theme.primaryColor,
+                  fontStyle: FontStyle.italic,
+                ),
+                titleStyle: theme.textTheme.bodyMedium?.copyWith(
+                  fontStyle: FontStyle.italic,
                 ),
               ),
             ],
