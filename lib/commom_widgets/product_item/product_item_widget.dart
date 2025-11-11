@@ -120,13 +120,17 @@ class ProductItemWidget extends ConsumerWidget {
                                   ),
                                 ],
                                 if (routine == BsRoutine.saleRequest) ...[
-                                  if (product.WholePracticedPrice > 0)
+                                  if (product.WholePracticedPrice > 0) ...[
                                     TitleAndSubTitle(
-                                      title:
-                                          'Preço atacado ${product.MinimumWholeQuantity > 0 ? 'mín (${product.MinimumWholeQuantity.toString().toBrazilianNumber(2, true)}) ' : ''}',
+                                      title: 'Preço atacado',
                                       subTitle: product.WholePracticedPrice,
                                       subTitleIsPrice: true,
                                     ),
+                                    TitleAndSubTitle(
+                                      title: 'Qtd mín p/ atacado',
+                                      subTitle: product.MinimumWholeQuantity,
+                                    ),
+                                  ],
                                 ],
                                 if (routine != BsRoutine.transferRequest) ...[
                                   TitleAndSubTitle(
