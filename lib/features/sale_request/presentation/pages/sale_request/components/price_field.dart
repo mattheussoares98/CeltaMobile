@@ -36,7 +36,8 @@ class PriceField extends StatelessWidget {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 enabled: enabled,
                 onFieldSubmitted: (_) {
-                  if (widget.selectedRequest.AllowDiscount == true) {
+                  if (widget.selectedRequest.AllowDiscount == true &&
+                      widget.priceController.text.isEmpty) {
                     widget.discountFocusNode.requestFocus();
                   } else {
                     insertProduct();

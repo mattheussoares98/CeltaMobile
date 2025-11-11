@@ -24,7 +24,8 @@ class QuantityField extends StatelessWidget {
       focusNode: widget.quantityFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
-        if (widget.selectedRequest.AllowAlterCostOrSalePrice == true) {
+        if (widget.selectedRequest.AllowAlterCostOrSalePrice == true &&
+            widget.discountController.text.isEmpty) {
           widget.priceFocusNode.requestFocus();
         } else {
           insertProduct();
