@@ -20,44 +20,51 @@ class PriceField extends StatelessWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return Row(
-      children: [
-        Expanded(
-          child: DefaultTextFormField(
-            labelText: 'Preço unitário'.hardcoded,
-            hintText: 'Preço unitário'.hardcoded,
-            maxLength: 13,
-            controller: widget.priceController,
-            focusNode: widget.priceFocusNode,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            onFieldSubmitted: (_) {
-              if (widget.selectedRequest.AllowDiscount == true) {
-                widget.discountFocusNode.requestFocus();
-              } else {
-                insertProduct();
-              }
-            },
-            validator: FormValidators.compose([
-              NumberValidator(allowDecimal: true, allowEmptyValue: true),
-            ]),
-          ),
-        ),
-        FocusTraversalGroup(
-          descendantsAreFocusable: false,
-          child: IconButton(
-            onPressed: () {
-              showAlertDialog(
-                context: context,
-                title: 'Atenção!'.hardcoded,
-                content:
-                    'Esse campo fica habilitado quando o modelo de pedido permite alterar o preço e não foi informado um desconto manualmente'
-                        .hardcoded,
-              );
-            },
-            icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
-          ),
-        ),
-      ],
+    return AnimatedBuilder(
+      animation: widget.discountController,
+      builder: (_, _) {
+        bool enabled = widget.discountController.text.isEmpty;
+        return Row(
+          children: [
+            Expanded(
+              child: DefaultTextFormField(
+                labelText: 'Preço unitário'.hardcoded,
+                hintText: 'Preço unitário'.hardcoded,
+                maxLength: 13,
+                controller: widget.priceController,
+                focusNode: widget.priceFocusNode,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                enabled: enabled,
+                onFieldSubmitted: (_) {
+                  if (widget.selectedRequest.AllowDiscount == true) {
+                    widget.discountFocusNode.requestFocus();
+                  } else {
+                    insertProduct();
+                  }
+                },
+                validator: FormValidators.compose([
+                  NumberValidator(allowDecimal: true, allowEmptyValue: true),
+                ]),
+              ),
+            ),
+            FocusTraversalGroup(
+              descendantsAreFocusable: false,
+              child: IconButton(
+                onPressed: () {
+                  showAlertDialog(
+                    context: context,
+                    title: 'Atenção!'.hardcoded,
+                    content:
+                        'Esse campo fica habilitado quando o modelo de pedido permite alterar o preço e não foi informado um desconto manualmente'
+                            .hardcoded,
+                  );
+                },
+                icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
