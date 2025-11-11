@@ -5,11 +5,13 @@ class NumberValidator implements StringValidator {
   final bool allowDecimal;
   final int? maxDecimalHouses;
   final bool needsBeGreaterThanZero;
+  final bool? allowEmptyValue;
 
   NumberValidator({
     required this.allowDecimal,
     this.maxDecimalHouses = 2,
     this.needsBeGreaterThanZero = true,
+    this.allowEmptyValue,
   });
 
   String? _errorMessage;
@@ -19,6 +21,10 @@ class NumberValidator implements StringValidator {
 
   @override
   bool isValid(String? value) {
+    if (allowEmptyValue == true && (value == null || value.trim().isEmpty)) {
+      return true;
+    }
+
     if (value == null || value.trim().isEmpty) {
       _errorMessage = 'Campo obrigatório'.hardcoded;
       return false;

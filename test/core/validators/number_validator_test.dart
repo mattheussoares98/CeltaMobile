@@ -66,4 +66,9 @@ void main() {
     );
     expect(sut.isValid("0"), isTrue);
   });
+  test('Allow empty value', () {
+    final sut = NumberValidator(allowDecimal: true, allowEmptyValue: true);
+
+    expect(sut.isValid(""), isTrue);
+  });
 }
