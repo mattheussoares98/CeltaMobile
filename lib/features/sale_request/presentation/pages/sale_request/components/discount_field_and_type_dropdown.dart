@@ -36,36 +36,33 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
           child: Row(
             children: [
               Expanded(
-                child: DefaultTextFormField(
-                  hintText: 'Desconto unitário'.hardcoded,
-                  labelText: 'Desconto unitário'.hardcoded,
-                  controller: widget.discountController,
-                  focusNode: widget.discountFocusNode,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  maxLength: 13,
-                  onFieldSubmitted: (_) {
-                    insertProduct();
-                  },
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true, //TODO test in IOS
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return null;
-                    }
+                child: AnimatedBuilder(
+                  animation: widget.priceController,
+                  builder: (_, _) {
+                    final bool enabled = widget.priceController.text.isEmpty;
 
-                    final numberValidator = NumberValidator(
-                      allowDecimal: true,
-                      needsBeGreaterThanZero: false,
+                    return DefaultTextFormField(
+                      hintText: 'Desconto unitário'.hardcoded,
+                      labelText: 'Desconto unitário'.hardcoded,
+                      controller: widget.discountController,
+                      focusNode: widget.discountFocusNode,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      maxLength: 13,
+                      enabled: enabled,
+                      onFieldSubmitted: (_) {
+                        insertProduct();
+                      },
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true, //TODO test in IOS
+                      ),
+                      validator: FormValidators.compose([
+                        NumberValidator(
+                          allowDecimal: true,
+                          needsBeGreaterThanZero: false,
+                          allowEmptyValue: true,
+                        ),
+                      ]),
                     );
-
-                    final isValid = numberValidator.isValid(value);
-
-                    if (isValid) {
-                      return null;
-                    } else {
-                      return numberValidator.errorMessage;
-                    }
                   },
                 ),
               ),
