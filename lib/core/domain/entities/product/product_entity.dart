@@ -233,7 +233,9 @@ class ProductEntity extends Equatable {
     required double quantity,
     required double? manualPrice,
   }) {
-    if (manualPrice == getPrice) {
+    if (getPrice == 0 && (manualPrice ?? 0) == 0) {
+      return PracticedPriceType.notDefined;
+    } else if (manualPrice == getPrice) {
       return PracticedPriceType.retail;
     } else if (manualPrice == WholePracticedPrice && WholePracticedPrice > 0) {
       return PracticedPriceType.whole;
@@ -254,6 +256,8 @@ class ProductEntity extends Equatable {
     );
 
     switch (type) {
+      case PracticedPriceType.notDefined:
+        return manualPrice ?? 0;
       case PracticedPriceType.retail:
         return getPrice;
       case PracticedPriceType.whole:
@@ -265,9 +269,10 @@ class ProductEntity extends Equatable {
 }
 
 enum PracticedPriceType {
+  manual('Manual'),
+  notDefined('Não definido'),
   retail('Varejo'),
-  whole('Atacado'),
-  manual('Manual');
+  whole('Atacado');
 
   final String name;
   const PracticedPriceType(this.name);
