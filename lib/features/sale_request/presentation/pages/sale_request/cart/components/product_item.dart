@@ -76,7 +76,6 @@ class ProductItem extends ConsumerWidget {
             ),
           ),
           if (isSelected) ...[
-            BsPricesAndMinimumWholeQuantity(cartProduct: cartProduct),
             Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: QuantityPriceDiscountFieldsAndInsertButton(

@@ -1,9 +1,9 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
-import '../../../../../domain/entities/entities.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
+import '../../../../domain/entities/entities.dart';
 
 class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
   final CartProductEntity cartProduct;
