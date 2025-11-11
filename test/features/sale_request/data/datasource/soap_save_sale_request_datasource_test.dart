@@ -1,0 +1,139 @@
+import 'dart:convert';
+
+import 'package:celta_intelligence/features/sale_request/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/sale_request/data/models/models.dart';
+import 'package:faker/faker.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+void main() {
+  late ISoapSaveSaleRequestDatasource sut;
+
+  late SoapRequestSpy soapRequest;
+
+  late String baseUrl;
+  late String crossIdentity;
+  late int enterpriseCode;
+  late int requestTypeCode;
+  late PendingSaleRequestModel saleRequest;
+  late String response;
+
+  void initSut() {
+    sut = SoapSaveSaleRequestDatasource(soapRequest);
+  }
+
+  void initInjections() {
+    soapRequest = SoapRequestSpy();
+  }
+
+  void mockSuccess() {
+    soapRequest.mockPost(response);
+  }
+
+  void initEntities() {
+    baseUrl = faker.internet.httpsUrl();
+    enterpriseCode = faker.randomGenerator.integer(1000);
+    requestTypeCode = faker.randomGenerator.integer(1000);
+    crossIdentity = faker.guid.guid();
+    saleRequest = PendingSaleRequestModel.fromEntity(
+      EntityFactory.makePendingSaleRequestEntity(),
+    );
+    response = faker.randomGenerator.integer(100).toString();
+  }
+
+  setUp(() {
+    initEntities();
+    initInjections();
+    initSut();
+    mockSuccess();
+  });
+
+  test('should call with correct params', () async {
+    final result = await sut.save(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      enterpriseCode: enterpriseCode,
+      requestTypeCode: requestTypeCode,
+      saleRequest: saleRequest,
+    );
+
+    expect(result, response);
+
+    verify(
+      () => soapRequest.post(
+        url: baseUrl,
+        typeOfResult: null,
+        typeOfResponse: "InsertResponse",
+        soapAction: "Insert",
+        serviceASMX: "CeltaSaleRequestService.asmx",
+        parameters: {
+          "crossIdentity": crossIdentity,
+          "json": json.encode({
+            "crossId": crossIdentity,
+            "EnterpriseCode": enterpriseCode,
+            "RequestTypeCode": requestTypeCode,
+            "SellerCode":
+                0, //bind to the same seller that is linked in the user register that is saving the sale request
+            "CovenantCode": saleRequest.covenant?.covenant?.Code ?? 0,
+            "CustomerCode": saleRequest.customer?.Code ?? 0,
+            "Instructions": saleRequest.instructions,
+            "Observations": saleRequest.observations,
+            "Products": saleRequest.cart.values
+                .map((e) => e.toJson()..remove('product'))
+                .toList(),
+          }),
+          "printerName": "",
+        },
+      ),
+    ).called(1);
+  });
+  test(
+    'should call covenant and customer with zero number when pass null value',
+    () async {
+      final result = await sut.save(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        enterpriseCode: enterpriseCode,
+        requestTypeCode: requestTypeCode,
+        saleRequest: saleRequest.toEntity().copyWith(
+          customer: EntityFactory.makeCustomerEntity().copyWith(Code: 0),
+          covenant: EntityFactory.makeCovenantEntity().copyWith(cov),
+        ),
+      );
+
+      expect(result, response);
+
+      verify(
+        () => soapRequest.post(
+          url: baseUrl,
+          typeOfResponse: "ProcessCartResponse",
+          soapAction: "ProcessCart",
+          serviceASMX: "CeltaSaleRequestService.asmx",
+          typeOfResult: "ProcessCartResult",
+          parameters: {
+            "crossIdentity": crossId,
+            "json": json.encode({
+              "EnterpriseCode": enterpriseCode,
+              "RequestTypeCode": requestTypeCode,
+              "CovenantCode": 0,
+              "CustomerCode": customerCode,
+              "Products": products
+                  .map(
+                    (e) => CartProductModel.fromEntity(
+                      e.toEntity().copyWith(
+                        DiscountValue: e.DiscountValue != null
+                            ? e.DiscountValue! / e.Quantity
+                            : null,
+                      ),
+                    ).toJson()..remove("product"),
+                  )
+                  .toList(),
+            }),
+          },
+        ),
+      ).called(1);
+    },
+  );
+}
