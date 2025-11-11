@@ -47,7 +47,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     );
 
     ref.listen(pendingSaleRequestStateControllerProvider, (p, n) {
-      n.showSnackbarOnError(context, p);
+      n.showAlertDialogOnError(context);
     });
 
     return Stack(
