@@ -228,4 +228,34 @@ class ProductEntity extends Equatable {
 
     return RetailPracticedPrice;
   }
+
+  PracticedPriceType getPracticedPriceType({
+    required double quantity,
+    required double? manualPrice,
+  }) {
+    if (manualPrice != null && manualPrice > 0) {
+      return PracticedPriceType.manual;
+    } else if (WholePracticedPrice > 0 && quantity >= MinimumWholeQuantity) {
+      return PracticedPriceType.whole;
+    }
+    return PracticedPriceType.retail;
+  }
+
+  double getPracticedPrice({required double quantity, double? manualPrice}) {
+    final type = getPracticedPriceType(
+      quantity: quantity,
+      manualPrice: manualPrice,
+    );
+
+    switch (type) {
+      case PracticedPriceType.retail:
+        return RetailPracticedPrice;
+      case PracticedPriceType.whole:
+        return WholePracticedPrice;
+      case PracticedPriceType.manual:
+        return manualPrice ?? 0;
+    }
+  }
 }
+
+enum PracticedPriceType { retail, whole, manual }
