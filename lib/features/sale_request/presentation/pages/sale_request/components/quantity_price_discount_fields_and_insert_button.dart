@@ -52,8 +52,11 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
     double quantity = widget.quantityController.text.toDouble() ?? 0;
     double? discount = widget.discountController.text.toDouble();
 
-    double price =
-        widget.priceController.text.toDouble() ?? widget.product.getPrice;
+    final price = widget.product.getPracticedPrice(
+      quantity: quantity,
+      manualPrice: widget.priceController.text.toDouble(),
+    );
+
     final discountType = ref.read(
       selectedItemUIControllerProvider(
         isCartPage: widget.isCartPage,
