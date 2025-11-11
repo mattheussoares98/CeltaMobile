@@ -78,10 +78,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (needProcessCart &&
-                        canAccess != true &&
-                        selectedCustomer != null)
-                      //TODO test if is working correctly
+                    if (selectedCustomer != null)
                       PrimaryButton(
                         text: 'Calcular preços'.hardcoded,
                         onPressed: () {
@@ -103,11 +100,13 @@ class TotalCalculateAndSave extends ConsumerWidget {
                         },
                       ),
                     gapH4,
-                    PrimaryButton(
-                      text: selectedCustomer == null
-                          ? 'Informe o cliente'.hardcoded
-                          : 'Salvar pedido'.hardcoded,
-                    ),
+                    if (needProcessCart && canAccess == true)
+                      PrimaryButton(
+                        text: selectedCustomer == null
+                            ? 'Selecione o cliente'.hardcoded
+                            : 'Salvar pedido'.hardcoded,
+                        onPressed: selectedCustomer == null ? null : () {},
+                      ),
                   ],
                 );
               },
