@@ -28,8 +28,8 @@ class PriceField extends StatelessWidget {
           children: [
             Expanded(
               child: DefaultTextFormField(
-                labelText: 'Preço unitário'.hardcoded,
-                hintText: 'Preço unitário'.hardcoded,
+                labelText: 'Preço manual'.hardcoded,
+                hintText: 'Preço manual'.hardcoded,
                 maxLength: 13,
                 controller: widget.priceController,
                 focusNode: widget.priceFocusNode,
