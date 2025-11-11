@@ -93,7 +93,13 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
         policy: OrderedTraversalPolicy(),
         descendantsAreTraversable: true,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            BsPricesAndMinimumWholeQuantity(
+              product: widget.product,
+              manualPrice: widget.priceController.text.toDouble(),
+              quantity: widget.quantityController.text.toDouble() ?? 0,
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
