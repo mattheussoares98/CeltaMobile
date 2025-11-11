@@ -39,7 +39,9 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                 child: AnimatedBuilder(
                   animation: widget.priceController,
                   builder: (_, _) {
-                    final bool enabled = widget.priceController.text.isEmpty;
+                    final bool enabled =
+                        widget.priceController.text.isEmpty &&
+                        widget.product.getPrice > 0;
 
                     return DefaultTextFormField(
                       hintText: 'Desconto unitário'.hardcoded,
@@ -74,7 +76,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                       context: context,
                       title: 'Atenção!'.hardcoded,
                       content:
-                          'Esse campo fica habilitado quando o modelo de pedido permite aplicar desconto e não foi informado um preço manualmente'
+                          'Esse campo fica habilitado quando o modelo de pedido permite aplicar desconto, não foi informado um preço manualmente e o produto possui um preço de varejo definido'
                               .hardcoded,
                     );
                   },
