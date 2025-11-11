@@ -258,4 +258,11 @@ class ProductEntity extends Equatable {
   }
 }
 
-enum PracticedPriceType { retail, whole, manual }
+enum PracticedPriceType {
+  retail('Varejo'),
+  whole('Atacado'),
+  manual('Manual');
+
+  final String name;
+  const PracticedPriceType(this.name);
+}
