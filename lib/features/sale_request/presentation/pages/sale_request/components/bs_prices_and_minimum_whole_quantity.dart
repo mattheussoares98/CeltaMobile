@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import 'components.dart';
 
 class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
@@ -17,6 +18,16 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final titleStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: theme.primaryColor,
+    );
+    final subtitleSelected = theme.textTheme.titleMedium?.copyWith(
+      color: theme.primaryColor,
+    );
+    final subtitleNotSelected = theme.textTheme.titleMedium?.copyWith(
+      color: Colors.black,
+    );
 
     return AnimatedBuilder(
       animation: Listenable.merge([
@@ -34,6 +45,52 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (widget.isCartPage) ...[
+                TitleAndSubTitle(
+                  title: 'Preço varejo'.hardcoded,
+                  subTitle: widget.product.getPrice
+                      .toString()
+                      .toBrazilianNumber(2),
+                  subTitleIsPrice: true,
+                  titleStyle: practicedPriceType == PracticedPriceType.retail
+                      ? titleStyle
+                      : null,
+                  subTitleStyle: practicedPriceType == PracticedPriceType.retail
+                      ? subtitleSelected
+                      : subtitleNotSelected,
+                ),
+                if (widget.product.WholePracticedPrice > 0) ...[
+                  TitleAndSubTitle(
+                    title: 'Preço atacado'.hardcoded,
+                    subTitle: widget.product.WholePracticedPrice
+                        .toString()
+                        .toBrazilianNumber(2),
+                    subTitleIsPrice: true,
+                    titleStyle: practicedPriceType == PracticedPriceType.whole
+                        ? titleStyle
+                        : null,
+                    subTitleStyle:
+                        practicedPriceType == PracticedPriceType.whole
+                        ? subtitleSelected
+                        : subtitleNotSelected,
+                  ),
+                  TitleAndSubTitle(
+                    title: 'Qtd mín atacado'.hardcoded,
+                    subTitle: widget.product.MinimumWholeQuantity
+                        .toString()
+                        .toBrazilianNumber(2),
+                    emptyMessage:
+                        'Não foi definido qtd mín p/ atacado'.hardcoded,
+                    titleStyle: practicedPriceType == PracticedPriceType.whole
+                        ? titleStyle
+                        : null,
+                    subTitleStyle:
+                        practicedPriceType == PracticedPriceType.whole
+                        ? subtitleSelected
+                        : subtitleNotSelected,
+                  ),
+                ],
+              ],
               TitleAndSubTitle(
                 title: 'Preço praticado ='.hardcoded,
                 subTitle: practicedPriceType.name,
