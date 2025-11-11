@@ -1,74 +1,92 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
-
-enum _PriceType { retail, whole, manual }
+import 'components.dart';
 
 class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
-  final ProductEntity product;
-  final double? manualPrice;
-  final double quantity;
-  const BsPricesAndMinimumWholeQuantity({
-    super.key,
-    required this.product,
-    required this.manualPrice,
-    required this.quantity,
-  });
+  final QuantityPriceDiscountFieldsAndInsertButton widget;
+  const BsPricesAndMinimumWholeQuantity({super.key, required this.widget});
 
-  double get retailPrice => product.RetailPracticedPrice;
-  double get minimumWholeQuantity => product.MinimumWholeQuantity;
-  double get wholePrice => product.WholePracticedPrice;
-
-  _PriceType get practicedPrice {
-    if (manualPrice != null) {
-      return _PriceType.manual;
-    } else if (quantity >= minimumWholeQuantity) {
-      return _PriceType.whole;
-    }
-
-    return _PriceType.retail;
-  }
-
-  double get getValueLiquid {
-    switch (practicedPrice) {
-      case _PriceType.retail:
-        return retailPrice;
-      case _PriceType.whole:
-        return wholePrice;
-      case _PriceType.manual:
-        return manualPrice ?? 0;
-    }
-  }
+  double get retailPrice => widget.product.RetailPracticedPrice;
+  double get minimumWholeQuantity => widget.product.MinimumWholeQuantity;
+  double get wholePrice => widget.product.WholePracticedPrice;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: Sizes.p8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TitleAndSubTitle(
-            title: 'Preço venda (BS)'.hardcoded,
-            subTitle: retailPrice,
-            subTitleIsPrice: true,
-          ),
-          if (minimumWholeQuantity > 0 && wholePrice > 0) ...[
-            if (getValueLiquid != wholePrice)
+    final theme = Theme.of(context);
+
+    final titleStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: theme.primaryColor,
+    );
+    final subTitle = theme.textTheme.titleMedium?.copyWith(
+      color: theme.primaryColor,
+    );
+
+    return AnimatedBuilder(
+      animation: Listenable.merge([
+        widget.priceController,
+        widget.quantityController,
+      ]),
+      builder: (_, _) {
+        final practicedPriceType = widget.product.getPracticedPriceType(
+          manualPrice: widget.priceController.text.toDouble(),
+          quantity: widget.quantityController.text.toDouble() ?? 0,
+        );
+
+        return Padding(
+          padding: const EdgeInsets.only(left: Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               TitleAndSubTitle(
-                title: 'Preço atacado (BS)'.hardcoded,
-                subTitle: product.WholePracticedPrice,
+                title: 'Preço venda (BS)'.hardcoded,
+                emptyMessage: 'Sem preço de venda (BS)',
+                subTitle: retailPrice.toString().toBrazilianNumber(2),
                 subTitleIsPrice: true,
+                titleStyle: practicedPriceType == PracticedPriceType.retail
+                    ? titleStyle
+                    : null,
+                subTitleStyle: practicedPriceType == PracticedPriceType.retail
+                    ? subTitle
+                    : null,
               ),
-            TitleAndSubTitle(
-              title: 'Qtd mín atacado'.hardcoded,
-              subTitle: product.MinimumWholeQuantity,
-            ),
-          ],
-        ],
-      ),
+              if (minimumWholeQuantity > 0 && wholePrice > 0) ...[
+                // if (getValueLiquid != wholePrice)
+                TitleAndSubTitle(
+                  title: 'Preço atacado (BS)'.hardcoded,
+                  emptyMessage: 'Sem preço de atacado (BS)',
+                  subTitle: widget.product.WholePracticedPrice
+                      .toString()
+                      .toBrazilianNumber(2),
+                  subTitleIsPrice: true,
+                  titleStyle: practicedPriceType == PracticedPriceType.whole
+                      ? titleStyle
+                      : null,
+                  subTitleStyle: practicedPriceType == PracticedPriceType.whole
+                      ? subTitle
+                      : null,
+                ),
+                TitleAndSubTitle(
+                  title: 'Qtd mín atacado'.hardcoded,
+                  subTitle: widget.product.MinimumWholeQuantity
+                      .toString()
+                      .toBrazilianNumber(3, true),
+                  titleStyle: practicedPriceType == PracticedPriceType.whole
+                      ? titleStyle
+                      : null,
+                  subTitleStyle: practicedPriceType == PracticedPriceType.whole
+                      ? subTitle
+                      : null,
+                ),
+              ],
+            ],
+          ),
+        );
+      },
     );
   }
 }

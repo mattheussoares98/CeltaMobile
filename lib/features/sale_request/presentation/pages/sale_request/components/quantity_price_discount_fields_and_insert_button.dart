@@ -95,11 +95,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BsPricesAndMinimumWholeQuantity(
-              product: widget.product,
-              manualPrice: widget.priceController.text.toDouble(),
-              quantity: widget.quantityController.text.toDouble() ?? 0,
-            ),
+            BsPricesAndMinimumWholeQuantity(widget: widget),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
