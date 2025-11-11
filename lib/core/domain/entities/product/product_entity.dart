@@ -255,7 +255,7 @@ class ProductEntity extends Equatable {
 
     switch (type) {
       case PracticedPriceType.retail:
-        return RetailPracticedPrice;
+        return getPrice;
       case PracticedPriceType.whole:
         return WholePracticedPrice;
       case PracticedPriceType.manual:
