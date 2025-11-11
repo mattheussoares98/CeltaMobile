@@ -38,8 +38,7 @@ class PriceField extends StatelessWidget {
               }
             },
             validator: FormValidators.compose([
-              NonEmptyValidator(),
-              NumberValidator(allowDecimal: true),
+              NumberValidator(allowDecimal: true, allowEmptyValue: true),
             ]),
           ),
         ),
