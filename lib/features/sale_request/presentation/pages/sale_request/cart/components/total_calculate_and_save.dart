@@ -105,7 +105,20 @@ class TotalCalculateAndSave extends ConsumerWidget {
                         text: selectedCustomer == null
                             ? 'Selecione o cliente'.hardcoded
                             : 'Salvar pedido'.hardcoded,
-                        onPressed: selectedCustomer == null ? null : () {},
+                        onPressed: selectedCustomer == null
+                            ? null
+                            : () async {
+                                showAlertDialog(
+                                  context: context,
+                                  title: 'Atenção!'.hardcoded,
+                                  content: needProcessCart
+                                      ? 'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, etc!. Deseja salvar mesmo assim?'
+                                            .hardcoded
+                                      : 'Salvar pedido?'.hardcoded,
+                                  defaultActionText: 'Sim'.hardcoded,
+                                  cancelActionText: 'Cancelar'.hardcoded,
+                                );
+                              },
                       ),
                   ],
                 );
