@@ -78,7 +78,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (selectedCustomer != null)
+                    if (selectedCustomer != null && needProcessCart)
                       PrimaryButton(
                         text: 'Calcular preços'.hardcoded,
                         onPressed: () {
@@ -100,7 +100,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                         },
                       ),
                     gapH4,
-                    if (needProcessCart && canAccess == true)
+                    if (canAccess == true)
                       PrimaryButton(
                         text: selectedCustomer == null
                             ? 'Selecione o cliente'.hardcoded
