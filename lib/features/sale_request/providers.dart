@@ -45,3 +45,21 @@ ISoapSaveSaleRequestRepository soapSaveSaleRequestRepository(Ref ref) {
     ref.watch(soapSaveSaleRequestDatasourceProvider),
   );
 }
+
+@riverpod
+ILocalLastSavedSaleRequestDatasource localLastSavedSaleRequestDatasource(
+  Ref ref,
+) {
+  return LocalLastSavedSaleRequestDatasource(
+    ref.watch(hiveBoxSaleRequestProvider),
+  );
+}
+
+@riverpod
+ILocalLastSavedSaleRequestRepository localLastSavedSaleRequestRepository(
+  Ref ref,
+) {
+  return LocalLastSavedSaleRequestRepositoryImpl(
+    ref.watch(localLastSavedSaleRequestDatasourceProvider),
+  );
+}
