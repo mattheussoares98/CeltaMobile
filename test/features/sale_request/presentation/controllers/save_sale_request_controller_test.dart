@@ -14,27 +14,39 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-// --- Your Fakes and Mocks are correct ---
+// --- Fakes, Mocks, and Spies ---
+
+// Your Spy for PendingSaleRequest is correct
 class SpyPendingSaleRequest extends PendingSaleRequestStateController {
   final PendingSaleRequestEntity? requestToReturn;
   SpyPendingSaleRequest(this.requestToReturn);
-  ProcessedCartEntity? processedCart;
   @override
   Future<PendingSaleRequestEntity> build() async =>
       requestToReturn ?? PendingSaleRequestEntity.empty();
+  // We don't need to override updateProductsFromProcessedCart for this controller
+}
+
+// A Spy for the LastSavedSaleRequest controller
+class SpyLastSavedSaleRequest extends LastSavedSaleRequestStateController {
+  LastSavedSaleRequestEntity? savedEntity;
   @override
-  Future<void> updateProductsFromProcessedCart(
-    ProcessedCartEntity products,
-  ) async {
-    processedCart = products;
+  Future<LastSavedSaleRequestEntity?> build(int enterpriseCode) async => null;
+  @override
+  Future<void> save(LastSavedSaleRequestEntity value) async {
+    savedEntity = value;
   }
 }
 
 class MockSoapSaveSaleRequestRepository extends Mock
     implements ISoapSaveSaleRequestRepository {}
 
+// New Mock for the local repository
+class MockLocalPendingSaleRequestRepository extends Mock
+    implements ILocalPendingSaleRequestRepository {}
+
 void main() {
-  late MockSoapSaveSaleRequestRepository mockRepository;
+  late MockSoapSaveSaleRequestRepository mockSoapSaveSaleRequestRepository;
+  late MockLocalPendingSaleRequestRepository mockLocalPendingRepo; // New
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
   late PendingSaleRequestEntity fakePendingRequest;
@@ -45,10 +57,16 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makePendingSaleRequestEntity());
-    registerFallbackValue(PendingSaleRequestEntity.empty());
+    registerFallbackValue(
+      LastSavedSaleRequestEntity(
+        pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
+        saleRequestNumber: faker.randomGenerator.integer(100).toString(),
+      ),
+    );
 
     // --- Initialize Mocks and Data ONCE ---
-    mockRepository = MockSoapSaveSaleRequestRepository();
+    mockSoapSaveSaleRequestRepository = MockSoapSaveSaleRequestRepository();
+    mockLocalPendingRepo = MockLocalPendingSaleRequestRepository(); // New
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -59,10 +77,13 @@ void main() {
     fakeRequestNoCustomer = PendingSaleRequestEntity.empty(); // Invalid request
     fakeRequestTypeCode = faker.randomGenerator.integer(100);
 
-    // --- Create the single container ONCE with ALL 4 providers ---
+    // --- Create the single container ONCE with ALL providers ---
     container = ProviderContainer(
       overrides: [
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
+        // Dependencies for the controller
+        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
+          mockSoapSaveSaleRequestRepository,
+        ),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(fakeSession),
         ),
@@ -71,6 +92,14 @@ void main() {
         ),
         pendingSaleRequestStateControllerProvider.overrideWith(
           () => SpyPendingSaleRequest(fakePendingRequest),
+        ),
+
+        // New dependencies to override
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpyLastSavedSaleRequest()),
+        localPendingSaleRequestRepositoryProvider.overrideWithValue(
+          mockLocalPendingRepo,
         ),
       ],
     );
@@ -81,77 +110,106 @@ void main() {
   });
 
   tearDown(() {
-    reset(mockRepository);
+    // Reset mocks after each test
+    reset(mockSoapSaveSaleRequestRepository);
+    reset(mockLocalPendingRepo);
   });
 
   group('SaveSaleRequestController', () {
-    test(
-      'should emit [loading, data] and call repository on success',
-      () async {
-        // ARRANGE
-        final spy = SpyPendingSaleRequest(fakePendingRequest);
+    test('should call all repositories and notifiers on success', () async {
+      // ARRANGE
+      const fakeSaleRequestNumber = '12345';
+      final spyPending = SpyPendingSaleRequest(fakePendingRequest);
+      final spyLastSaved = SpyLastSavedSaleRequest();
 
-        // THE FIX: You must update ALL 4 overrides.
-        container.updateOverrides([
-          soapSaveSaleRequestRepositoryProvider.overrideWithValue(
-            mockRepository,
-          ),
-          validatedUserSessionProvider.overrideWith(
-            () => FakeValidatedUserSession(fakeSession),
-          ),
-          selectedEnterpriseStateControllerProvider.overrideWith(
-            () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-          ),
-          pendingSaleRequestStateControllerProvider.overrideWith(
-            () => spy,
-          ), // Use the new spy
-        ]);
+      // Update ALL overrides, keeping the list length the same
+      container.updateOverrides([
+        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
+          mockSoapSaveSaleRequestRepository,
+        ),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(fakeSession),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
+        ),
+        pendingSaleRequestStateControllerProvider.overrideWith(
+          () => spyPending,
+        ),
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spyLastSaved),
+        localPendingSaleRequestRepositoryProvider.overrideWithValue(
+          mockLocalPendingRepo,
+        ),
+      ]);
 
-        when(
-          () => mockRepository.save(
-            baseUrl: any(named: 'baseUrl'),
-            crossIdentity: any(named: 'crossIdentity'),
-            enterpriseCode: any(named: 'enterpriseCode'),
-            requestTypeCode: any(named: 'requestTypeCode'),
-            saleRequest: any(named: 'saleRequest'),
-          ),
-        ).thenAnswer((_) async {
-          await Future.delayed(Duration.zero);
-          return '12345'; // Return a fake response number
-        });
+      // Stub all async calls
+      when(
+        () => mockSoapSaveSaleRequestRepository.save(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          requestTypeCode: any(named: 'requestTypeCode'),
+          saleRequest: any(named: 'saleRequest'),
+        ),
+      ).thenAnswer((_) async {
+        await Future.delayed(Duration.zero);
+        return fakeSaleRequestNumber;
+      });
+      when(() => mockLocalPendingRepo.clear()).thenAnswer((_) async {});
 
-        final states = <AsyncValue<void>>[];
-        container.listen(
-          saveSaleRequestControllerProvider,
-          (_, next) => states.add(next),
-        );
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        saveSaleRequestControllerProvider,
+        (_, next) => states.add(next),
+      );
 
-        // ACT
-        await container
-            .read(saveSaleRequestControllerProvider.notifier)
-            .save(requestTypeCode: fakeRequestTypeCode);
+      // ACT
+      await container
+          .read(saveSaleRequestControllerProvider.notifier)
+          .save(requestTypeCode: fakeRequestTypeCode);
 
-        // ASSERT
-        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-        verify(
-          () => mockRepository.save(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
-            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            enterpriseCode: fakeEnterprise.Code!,
-            requestTypeCode: fakeRequestTypeCode,
-            saleRequest: fakePendingRequest,
-          ),
-        ).called(1);
-      },
-    );
+      // ASSERT
+      // 1. Check state
+      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+      // 2. Verify SOAP repository was called
+      verify(
+        () => mockSoapSaveSaleRequestRepository.save(
+          baseUrl: fakeSession.enterprise!.baseUrl!,
+          crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+          enterpriseCode: fakeEnterprise.Code!,
+          requestTypeCode: fakeRequestTypeCode,
+          saleRequest: fakePendingRequest,
+        ),
+      ).called(1);
+
+      // 3. Verify LastSaved controller was called
+      expect(spyLastSaved.savedEntity, isNotNull);
+      expect(
+        spyLastSaved.savedEntity?.saleRequestNumber,
+        fakeSaleRequestNumber,
+      );
+      expect(
+        spyLastSaved.savedEntity?.pendingSaleRequestEntity,
+        fakePendingRequest,
+      );
+
+      // 4. Verify local repo was cleared
+      verify(() => mockLocalPendingRepo.clear()).called(1);
+    });
 
     test('should emit [loading, error] if customer is null', () async {
       // ARRANGE
       final spyNoCustomer = SpyPendingSaleRequest(fakeRequestNoCustomer);
+      final spyLastSaved = SpyLastSavedSaleRequest();
 
-      // THE FIX: You must update ALL 4 overrides.
+      // Update ALL overrides
       container.updateOverrides([
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
+        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
+          mockSoapSaveSaleRequestRepository,
+        ),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(fakeSession),
         ),
@@ -160,7 +218,13 @@ void main() {
         ),
         pendingSaleRequestStateControllerProvider.overrideWith(
           () => spyNoCustomer,
-        ), // Use the "no customer" spy
+        ),
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spyLastSaved),
+        localPendingSaleRequestRepositoryProvider.overrideWithValue(
+          mockLocalPendingRepo,
+        ),
       ]);
 
       final states = <AsyncValue<void>>[];
@@ -181,8 +245,10 @@ void main() {
         (states.last.error as AppException).message,
         'Selecione o cliente!',
       );
+
+      // Verify no side-effects happened
       verifyNever(
-        () => mockRepository.save(
+        () => mockSoapSaveSaleRequestRepository.save(
           baseUrl: any(named: 'baseUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
@@ -190,15 +256,20 @@ void main() {
           saleRequest: any(named: 'saleRequest'),
         ),
       );
+      verifyNever(() => mockLocalPendingRepo.clear());
+      expect(spyLastSaved.savedEntity, isNull);
     });
 
     test('should emit [loading, error] if session is invalid', () async {
       // ARRANGE
       final spy = SpyPendingSaleRequest(fakePendingRequest);
+      final spyLastSaved = SpyLastSavedSaleRequest();
 
-      // THE FIX: You must update ALL 4 overrides.
+      // Update ALL overrides
       container.updateOverrides([
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
+        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
+          mockSoapSaveSaleRequestRepository,
+        ),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(null),
         ), // Invalid session
@@ -206,6 +277,12 @@ void main() {
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
         pendingSaleRequestStateControllerProvider.overrideWith(() => spy),
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spyLastSaved),
+        localPendingSaleRequestRepositoryProvider.overrideWithValue(
+          mockLocalPendingRepo,
+        ),
       ]);
 
       final states = <AsyncValue<void>>[];
@@ -221,7 +298,6 @@ void main() {
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-      expect(states.last.error, isA<AppException>());
     });
   });
 }

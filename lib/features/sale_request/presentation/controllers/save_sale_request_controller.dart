@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
+import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 import 'controllers.dart';
 
@@ -33,7 +34,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         throw AppException('Selecione o cliente!'.hardcoded);
       }
 
-      await ref
+      final saleRequestNumber = await ref
           .read(soapSaveSaleRequestRepositoryProvider)
           .save(
             baseUrl: validateduser!.enterprise!.baseUrl!,
@@ -43,7 +44,20 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
             saleRequest: pending,
           );
 
-      //TODO after create the lastSavedSaleRequestContoller, save the pending there
+      await ref
+          .read(
+            lastSavedSaleRequestStateControllerProvider(
+              selectedEnterprise.Code!,
+            ).notifier,
+          )
+          .save(
+            LastSavedSaleRequestEntity(
+              pendingSaleRequestEntity: pending,
+              saleRequestNumber: saleRequestNumber!,
+            ),
+          );
+
+      await ref.read(localPendingSaleRequestRepositoryProvider).clear();
     });
   }
 }
