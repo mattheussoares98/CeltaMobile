@@ -58,7 +58,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
           );
 
       await ref.read(localPendingSaleRequestRepositoryProvider).clear();
-      ref.invalidate(pendingSaleRequestStateControllerProvider);
+      ref.invalidate(localPendingSaleRequestRepositoryProvider);
     });
   }
 }
