@@ -18,7 +18,8 @@ class CartPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _CartPageState();
 }
 
-class _CartPageState extends ConsumerState<CartPage> {
+class _CartPageState extends ConsumerState<CartPage>
+    with WidgetsBindingObserver {
   final quantityController = TextEditingController();
   final observationsController = TextEditingController();
   final instructionsController = TextEditingController();
@@ -43,17 +44,13 @@ class _CartPageState extends ConsumerState<CartPage> {
     instructionsFocusNode.dispose();
     discountFocusNode.dispose();
     priceFocusNode.dispose();
-
-    observationsFocusNode.removeListener(_onObservationsFocusChange);
-    instructionsFocusNode.removeListener(_onInstructionsFocusChange);
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
   void initState() {
     super.initState();
-
-    observationsFocusNode.addListener(_onObservationsFocusChange);
-    instructionsFocusNode.addListener(_onInstructionsFocusChange);
+    WidgetsBinding.instance.addObserver(this);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
@@ -66,23 +63,26 @@ class _CartPageState extends ConsumerState<CartPage> {
     });
   }
 
-  void _onObservationsFocusChange() {
-    if (!observationsFocusNode.hasFocus) {
-      ref
-          .read(pendingSaleRequestStateControllerProvider.notifier)
-          .changeObservations(observationsController.text);
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    debugPrint(state.toString());
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      saveInstructionsAndObservations();
     }
   }
 
-  void _onInstructionsFocusChange() {
-    if (!instructionsFocusNode.hasFocus) {
-      ref
-          .read(pendingSaleRequestStateControllerProvider.notifier)
-          .changeInstructions(instructionsController.text);
-    }
+  void saveInstructionsAndObservations() {
+    final notifier = ref.read(
+      pendingSaleRequestStateControllerProvider.notifier,
+    );
+    notifier.changeObservations(observationsController.text);
+    notifier.changeInstructions(instructionsController.text);
   }
 
-  void changeSelectedIndex(int? index, CartProductEntity product) {
+  void changeSelectedIndex(CartProductEntity product) {
     ref
         .read(selectedItemUIControllerProvider(isCartPage: true).notifier)
         .selectProduct(product.ProductPackingCode, product);
@@ -115,7 +115,7 @@ class _CartPageState extends ConsumerState<CartPage> {
   Widget build(BuildContext context) {
     final cart = ref.watch(
       pendingSaleRequestStateControllerProvider.select(
-        (state) => state.value?.cart ?? const {}, // Select an immutable value
+        (state) => state.value?.cart ?? const {},
       ),
     );
     final cartProducts = cart.values.toList();
@@ -165,7 +165,7 @@ class _CartPageState extends ConsumerState<CartPage> {
 
                     return ProductItem(
                       cartProduct: cartProduct,
-                      onTap: () => changeSelectedIndex(index, cartProduct),
+                      onTap: () => changeSelectedIndex(cartProduct),
                       quantityController: quantityController,
                       priceController: priceController,
                       discountController: discountController,
