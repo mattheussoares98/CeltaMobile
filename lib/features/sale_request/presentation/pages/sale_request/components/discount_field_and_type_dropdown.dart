@@ -91,37 +91,44 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
           flex: 35,
           child: FocusTraversalGroup(
             descendantsAreFocusable: false,
-            child: DefaultSimpleDropDown<PercentageOrValue?>(
-              onChanged: (value) {
-                ref
-                    .read(
-                      selectedItemUIControllerProvider(
-                        isCartPage: widget.isCartPage,
-                      ).notifier,
-                    )
-                    .updateDiscountType(value);
-              },
-              value: discountType,
-              hint: 'Tipo',
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) {
-                if (discountType == null &&
-                    widget.discountController.text.isNotEmpty) {
-                  return 'Campo obrigatório'.hardcoded;
-                }
+            child: AnimatedBuilder(
+              animation: widget.priceController,
+              builder: (_, _) {
+                return DefaultSimpleDropDown<PercentageOrValue?>(
+                  onChanged: widget.priceController.text.isNotEmpty
+                      ? null
+                      : (value) {
+                          ref
+                              .read(
+                                selectedItemUIControllerProvider(
+                                  isCartPage: widget.isCartPage,
+                                ).notifier,
+                              )
+                              .updateDiscountType(value);
+                        },
+                  value: discountType,
+                  hint: 'Tipo',
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (discountType == null &&
+                        widget.discountController.text.isNotEmpty) {
+                      return 'Campo obrigatório'.hardcoded;
+                    }
 
-                return null;
+                    return null;
+                  },
+                  items: [
+                    DropdownMenuItem(
+                      value: PercentageOrValue.percentage,
+                      child: Text(PercentageOrValue.percentage.symbol),
+                    ),
+                    DropdownMenuItem(
+                      value: PercentageOrValue.value,
+                      child: Text(PercentageOrValue.value.symbol),
+                    ),
+                  ],
+                );
               },
-              items: [
-                DropdownMenuItem(
-                  value: PercentageOrValue.percentage,
-                  child: Text(PercentageOrValue.percentage.symbol),
-                ),
-                DropdownMenuItem(
-                  value: PercentageOrValue.value,
-                  child: Text(PercentageOrValue.value.symbol),
-                ),
-              ],
             ),
           ),
         ),
