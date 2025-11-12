@@ -40,7 +40,9 @@ Future<bool?> showAlertDialog({
             ),
         ],
       ),
-      content: content != null ? Text(content) : null,
+      content: content != null
+          ? SingleChildScrollView(child: Text(content))
+          : null,
       // * Use [TextButton] or [CupertinoDialogAction] depending on the platform
       // https://codewithandrea.com/tips/default-target-platform/
       actions:
