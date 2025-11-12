@@ -41,11 +41,17 @@ Box hiveBoxUserSession(Ref ref) {
   return Hive.box(DatabaseConstants.userSession.name);
 }
 
+@Riverpod(keepAlive: true)
+Box hiveBoxLastSavedSaleRequest(Ref ref) {
+  return Hive.box(DatabaseConstants.lastSavedSaleRequest.name);
+}
+
 @riverpod
 List<Box> boxesToClearOnLogout(Ref ref) {
   return [
     ref.watch(hiveBoxAppSettingsProvider),
     ref.watch(hiveBoxBuyRequestProvider),
+    ref.watch(hiveBoxLastSavedSaleRequestProvider),
     ref.watch(hiveBoxSaleRequestProvider),
     ref.watch(hiveBoxTransferBetweenStocksProvider),
     ref.watch(hiveBoxTransferRequestLastSavedNumberProvider),
