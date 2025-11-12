@@ -33,3 +33,15 @@ ISoapProcessCartRepository soapProcessCartRepository(Ref ref) {
     ref.watch(soapProcessCartDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapSaveSaleRequestDatasource soapSaveSaleRequestDatasource(Ref ref) {
+  return SoapSaveSaleRequestDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapSaveSaleRequestRepository soapSaveSaleRequestRepository(Ref ref) {
+  return SoapSaveSaleRequestRepositoryImpl(
+    ref.watch(soapSaveSaleRequestDatasourceProvider),
+  );
+}
