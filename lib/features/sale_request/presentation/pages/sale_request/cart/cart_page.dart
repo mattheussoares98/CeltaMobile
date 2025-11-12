@@ -120,7 +120,11 @@ class _CartPageState extends ConsumerState<CartPage> {
     );
 
     ref.listen(processCartControllerProvider, (p, n) {
-      n.showSnackbarOnError(context, p);
+      n.showAlertDialogOnError(context);
+    });
+
+    ref.listen(saveSaleRequestControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
     });
 
     return Padding(
