@@ -14,6 +14,12 @@ class TotalCalculateAndSave extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final products = ref.watch(
+      pendingSaleRequestStateControllerProvider.select(
+        (s) => s.value?.cart.values,
+      ),
+    );
+
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Row(
@@ -24,22 +30,12 @@ class TotalCalculateAndSave extends ConsumerWidget {
             child: Column(
               children: [
                 Text('Total'.hardcoded),
-                Consumer(
-                  builder: (_, ref, _) {
-                    final products = ref.watch(
-                      pendingSaleRequestStateControllerProvider.select(
-                        (s) => s.value?.cart.values,
-                      ),
-                    );
-
-                    return TitleAndSubTitle(
-                      title: null,
-                      subTitle: (products?.fold<double>(0.0, (p, e) {
-                        return p + e.TotalLiquid;
-                      })),
-                      subTitleIsPrice: true,
-                    );
-                  },
+                TitleAndSubTitle(
+                  title: null,
+                  subTitle: (products?.fold<double>(0.0, (p, e) {
+                    return p + e.TotalLiquid;
+                  })),
+                  subTitleIsPrice: true,
                 ),
               ],
             ),
@@ -62,7 +58,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                   ),
                 );
               },
-              data: (canAccess) {
+              data: (canChangePrice) {
                 final needProcessCart = ref.watch(
                   pendingSaleRequestStateControllerProvider.select(
                     (s) => s.value?.needProcessCart == true,
@@ -78,7 +74,10 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (selectedCustomer != null && needProcessCart)
+                    if (selectedCustomer != null &&
+                        needProcessCart &&
+                        products != null &&
+                        products.isNotEmpty)
                       PrimaryButton(
                         text: 'Calcular preços'.hardcoded,
                         onPressed: () {
@@ -100,26 +99,42 @@ class TotalCalculateAndSave extends ConsumerWidget {
                         },
                       ),
                     gapH4,
-                    if (canAccess == true)
-                      PrimaryButton(
-                        text: selectedCustomer == null
-                            ? 'Selecione o cliente'.hardcoded
-                            : 'Salvar pedido'.hardcoded,
-                        onPressed: selectedCustomer == null
-                            ? null
-                            : () async {
-                                showAlertDialog(
-                                  context: context,
-                                  title: 'Atenção!'.hardcoded,
-                                  content: needProcessCart
-                                      ? 'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, etc!. Deseja salvar mesmo assim?'
-                                            .hardcoded
-                                      : 'Salvar pedido?'.hardcoded,
-                                  defaultActionText: 'Sim'.hardcoded,
-                                  cancelActionText: 'Cancelar'.hardcoded,
-                                );
-                              },
-                      ),
+                    PrimaryButton(
+                      text: products == null || products.isEmpty
+                          ? 'Adicione produtos'.hardcoded
+                          : selectedCustomer == null
+                          ? 'Selecione o cliente'.hardcoded
+                          : 'Salvar pedido'.hardcoded,
+                      onPressed:
+                          selectedCustomer == null ||
+                              products == null ||
+                              products.isEmpty
+                          ? null
+                          : () async {
+                              showAlertDialog(
+                                context: context,
+                                title: needProcessCart
+                                    ? 'Atenção!'.hardcoded
+                                    : 'Salvar pedido?'.hardcoded,
+                                content: needProcessCart
+                                    ? 'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, etc!. Deseja salvar mesmo assim?'
+                                          .hardcoded
+                                    : null,
+                                defaultActionText: 'Salvar'.hardcoded,
+                                cancelActionText: 'Cancelar'.hardcoded,
+                                onOkPressed: () {
+                                  ref
+                                      .read(
+                                        saveSaleRequestControllerProvider
+                                            .notifier,
+                                      )
+                                      .save(
+                                        requestTypeCode: selectedRequest.Code,
+                                      );
+                                },
+                              );
+                            },
+                    ),
                   ],
                 );
               },
