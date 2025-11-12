@@ -113,11 +113,12 @@ class _CartPageState extends ConsumerState<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    final cartProducts = ref.watch(
+    final cart = ref.watch(
       pendingSaleRequestStateControllerProvider.select(
-        (state) => state.value?.cart.values.toList() ?? [],
+        (state) => state.value?.cart ?? const {}, // Select an immutable value
       ),
     );
+    final cartProducts = cart.values.toList();
 
     ref.listen(processCartControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
