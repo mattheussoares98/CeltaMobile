@@ -14,7 +14,8 @@ class MockLocalLastSavedSaleRequestRepository extends Mock
     implements ILocalLastSavedSaleRequestRepository {}
 
 void main() {
-  late MockLocalLastSavedSaleRequestRepository mockRepository;
+  late MockLocalLastSavedSaleRequestRepository
+  mockLocalLastSavedSaleRequestRepository;
   late LastSavedSaleRequestEntity fakeRequest;
   late int fakeEnterpriseCode;
 
@@ -30,7 +31,8 @@ void main() {
     );
 
     // 3. Initialize mocks and data
-    mockRepository = MockLocalLastSavedSaleRequestRepository();
+    mockLocalLastSavedSaleRequestRepository =
+        MockLocalLastSavedSaleRequestRepository();
     fakeRequest = LastSavedSaleRequestEntity(
       pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
       saleRequestNumber: faker.randomGenerator.integer(100).toString(),
@@ -41,7 +43,7 @@ void main() {
     container = ProviderContainer(
       overrides: [
         localLastSavedSaleRequestRepositoryProvider.overrideWithValue(
-          mockRepository,
+          mockLocalLastSavedSaleRequestRepository,
         ),
       ],
     );
@@ -54,7 +56,7 @@ void main() {
 
   tearDown(() {
     // 6. Reset the mock's call history after each test
-    reset(mockRepository);
+    reset(mockLocalLastSavedSaleRequestRepository);
   });
 
   group('LastSavedSaleRequestStateController', () {
@@ -63,12 +65,23 @@ void main() {
         // ARRANGE
         // Set up the mock for this test
         when(
-          () => mockRepository.load(any()),
-        ).thenAnswer((_) async => fakeRequest);
+          () => mockLocalLastSavedSaleRequestRepository.load(any()),
+        ).thenAnswer((_) async {
+          await Future.delayed(Duration.zero);
+          return fakeRequest;
+        });
 
         // Invalidate to force a re-run with the new mock setup
+
         container.invalidate(
           lastSavedSaleRequestStateControllerProvider(fakeEnterpriseCode),
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          lastSavedSaleRequestStateControllerProvider(fakeEnterpriseCode),
+          (_, next) => states.add(next),
+          fireImmediately: true, //capture all states
         );
 
         // ACT
@@ -79,13 +92,21 @@ void main() {
         );
 
         // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
         expect(result, fakeRequest);
-        verify(() => mockRepository.load(fakeEnterpriseCode)).called(1);
+        verify(
+          () =>
+              mockLocalLastSavedSaleRequestRepository.load(fakeEnterpriseCode),
+        ).called(1);
       });
 
       test('should return null if repository returns null', () async {
         // ARRANGE
-        when(() => mockRepository.load(any())).thenAnswer((_) async => null);
+        when(
+          () => mockLocalLastSavedSaleRequestRepository.load(any()),
+        ).thenAnswer((_) async => null);
+
+        // Invalidate to force a re-run with the new mock setup
 
         container.invalidate(
           lastSavedSaleRequestStateControllerProvider(fakeEnterpriseCode),
@@ -108,10 +129,10 @@ void main() {
         // ARRANGE
         // Set up mocks for this test
         when(
-          () => mockRepository.load(any()),
+          () => mockLocalLastSavedSaleRequestRepository.load(any()),
         ).thenAnswer((_) async => null); // For the build
         when(
-          () => mockRepository.save(
+          () => mockLocalLastSavedSaleRequestRepository.save(
             value: any(named: 'value'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),
@@ -137,7 +158,7 @@ void main() {
 
         // ASSERT
         verify(
-          () => mockRepository.save(
+          () => mockLocalLastSavedSaleRequestRepository.save(
             value: fakeRequest,
             enterpriseCode: fakeEnterpriseCode,
           ),
@@ -148,10 +169,10 @@ void main() {
         // ARRANGE
         final exception = Exception('Failed to save');
         when(
-          () => mockRepository.load(any()),
+          () => mockLocalLastSavedSaleRequestRepository.load(any()),
         ).thenAnswer((_) async => null); // For the build
         when(
-          () => mockRepository.save(
+          () => mockLocalLastSavedSaleRequestRepository.save(
             value: any(named: 'value'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),

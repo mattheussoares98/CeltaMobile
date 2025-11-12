@@ -16,8 +16,14 @@ class LastSavedSaleRequestStateController
   }
 
   Future<void> save(LastSavedSaleRequestEntity value) async {
-    await ref
-        .read(localLastSavedSaleRequestRepositoryProvider)
-        .save(value: value, enterpriseCode: enterpriseCode);
+    state = const AsyncValue.loading();
+
+    state = await AsyncValue.guard(() async {
+      await ref
+          .read(localLastSavedSaleRequestRepositoryProvider)
+          .save(value: value, enterpriseCode: enterpriseCode);
+
+      return value;
+    });
   }
 }
