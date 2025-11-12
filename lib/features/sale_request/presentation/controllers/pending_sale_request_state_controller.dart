@@ -17,6 +17,7 @@ class PendingSaleRequestStateController
     extends _$PendingSaleRequestStateController {
   @override
   Future<PendingSaleRequestEntity> build() async {
+    //TODO change the pending according to the enterprise
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
