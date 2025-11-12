@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/sale_request/data/models/models.dart';
 import 'package:faker/faker.dart';
@@ -97,9 +98,11 @@ void main() {
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,
-        saleRequest: saleRequest.toEntity().copyWith(
-          customer: EntityFactory.makeCustomerEntity().copyWith(Code: 0),
-          covenant: EntityFactory.makeCovenantEntity().copyWith(cov),
+        saleRequest: PendingSaleRequestModel.fromEntity(
+          saleRequest.toEntity().copyWith(
+            customer: CustomerEntity.empty(),
+            covenant: CustomerCovenantEntity.empty(),
+          ),
         ),
       );
 
@@ -108,29 +111,27 @@ void main() {
       verify(
         () => soapRequest.post(
           url: baseUrl,
-          typeOfResponse: "ProcessCartResponse",
-          soapAction: "ProcessCart",
+          typeOfResult: null,
+          typeOfResponse: "InsertResponse",
+          soapAction: "Insert",
           serviceASMX: "CeltaSaleRequestService.asmx",
-          typeOfResult: "ProcessCartResult",
           parameters: {
-            "crossIdentity": crossId,
+            "crossIdentity": crossIdentity,
             "json": json.encode({
+              "crossId": crossIdentity,
               "EnterpriseCode": enterpriseCode,
               "RequestTypeCode": requestTypeCode,
+              "SellerCode":
+                  0, //bind to the same seller that is linked in the user register that is saving the sale request
               "CovenantCode": 0,
-              "CustomerCode": customerCode,
-              "Products": products
-                  .map(
-                    (e) => CartProductModel.fromEntity(
-                      e.toEntity().copyWith(
-                        DiscountValue: e.DiscountValue != null
-                            ? e.DiscountValue! / e.Quantity
-                            : null,
-                      ),
-                    ).toJson()..remove("product"),
-                  )
+              "CustomerCode": 0,
+              "Instructions": saleRequest.instructions,
+              "Observations": saleRequest.observations,
+              "Products": saleRequest.cart.values
+                  .map((e) => e.toJson()..remove('product'))
                   .toList(),
             }),
+            "printerName": "",
           },
         ),
       ).called(1);

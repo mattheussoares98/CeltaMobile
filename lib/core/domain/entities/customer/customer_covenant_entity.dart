@@ -15,4 +15,10 @@ class CustomerCovenantEntity extends Equatable {
 
   @override
   List<Object?> get props => [covenant, Matriculate, LimitOfPurchase];
+
+  factory CustomerCovenantEntity.empty() => const CustomerCovenantEntity(
+    covenant: null,
+    Matriculate: null,
+    LimitOfPurchase: null,
+  );
 }
