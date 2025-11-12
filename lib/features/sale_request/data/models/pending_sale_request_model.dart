@@ -43,12 +43,14 @@ class PendingSaleRequestModel extends Equatable {
   };
 
   factory PendingSaleRequestModel.fromJson(Map json) => PendingSaleRequestModel(
-    cart: (json['cart'] as Map).map(
-      (key, value) => MapEntry(
-        int.parse(key.toString()),
-        CartProductModel.fromJson(value as Map),
-      ),
-    ),
+    cart: json['cart'] == null
+        ? {}
+        : (json['cart'] as Map).map(
+            (key, value) => MapEntry(
+              int.parse(key.toString()),
+              CartProductModel.fromJson(value as Map),
+            ),
+          ),
     customer: json['customer'] == null
         ? null
         : CustomerModel.fromJson(json['customer'] as Map),

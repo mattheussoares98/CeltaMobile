@@ -51,7 +51,7 @@ ILocalLastSavedSaleRequestDatasource localLastSavedSaleRequestDatasource(
   Ref ref,
 ) {
   return LocalLastSavedSaleRequestDatasource(
-    ref.watch(hiveBoxSaleRequestProvider),
+    ref.watch(hiveBoxLastSavedSaleRequestProvider),
   );
 }
 

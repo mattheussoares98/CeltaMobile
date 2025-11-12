@@ -49,6 +49,13 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
     ref.listen(pendingSaleRequestStateControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
+    ref.listen(saveSaleRequestControllerProvider, (p, n) {
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'O pedido foi salvo com sucesso'.hardcoded,
+      );
+    });
 
     return Stack(
       children: [
