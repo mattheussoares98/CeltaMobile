@@ -1,0 +1,79 @@
+import 'package:celta_intelligence/features/sale_request/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/sale_request/data/models/models.dart';
+import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
+import 'package:faker/faker.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+void main() {
+  late ILocalLastSavedSaleRequestDatasource sut;
+
+  late MockBox hive;
+
+  late LastSavedSaleRequestEntity entity;
+  late int enterpriseCode;
+
+  void initSut() {
+    sut = LocalLastSavedSaleRequestDatasource(hive);
+  }
+
+  void initInjections() {
+    hive = MockBox();
+  }
+
+  void mockSuccess() {
+    hive.mockGet(
+      enterpriseCode,
+      LastSavedSaleRequestModel.fromEntity(entity).toJson(),
+    );
+  }
+
+  void initEntities() {
+    enterpriseCode = faker.randomGenerator.integer(100);
+    entity = LastSavedSaleRequestEntity(
+      pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
+      saleRequestNumber: faker.randomGenerator.integer(100).toString(),
+    );
+  }
+
+  setUp(() {
+    initEntities();
+    initInjections();
+    initSut();
+    mockSuccess();
+  });
+
+  group('Save', () {
+    test('Should behave correctly', () async {
+      await sut.save(
+        value: LastSavedSaleRequestModel.fromEntity(entity),
+        enterpriseCode: enterpriseCode,
+      );
+
+      verify(
+        () => hive.put(
+          enterpriseCode,
+          LastSavedSaleRequestModel.fromEntity(entity).toJson(),
+        ),
+      ).called(1);
+    });
+  });
+  group('Get', () {
+    test('Should return correct value when is not null', () async {
+      expect(
+        await sut.load(enterpriseCode),
+        LastSavedSaleRequestModel.fromEntity(entity),
+      );
+
+      verify(() => hive.get(enterpriseCode)).called(1);
+    });
+
+    test('Should return correct value when returns null', () async {
+      hive.mockGet(enterpriseCode, null);
+
+      expect(await sut.load(enterpriseCode), null);
+    });
+  });
+}
