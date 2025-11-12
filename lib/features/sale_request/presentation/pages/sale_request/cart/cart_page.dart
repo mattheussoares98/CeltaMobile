@@ -125,6 +125,10 @@ class _CartPageState extends ConsumerState<CartPage> {
 
     ref.listen(saveSaleRequestControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
+      n.doOnSuccess(p, () {
+        instructionsController.clear();
+        observationsController.clear();
+      });
     });
 
     return Padding(
