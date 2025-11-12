@@ -90,4 +90,11 @@ void main() {
       expect(await sut.load(enterpriseCode), null);
     });
   });
+  group('Clear', () {
+    test('Should behave correctly on success', () async {
+      await sut.clear();
+
+      verify(() => hive.clear()).called(1);
+    });
+  });
 }

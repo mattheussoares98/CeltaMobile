@@ -63,4 +63,9 @@ void main() {
 
     verify(() => mockDatasource.load(enterpriseCode)).called(1);
   });
+  test('should behave correctly on clear', () async {
+    await sut.clear();
+
+    verify(() => mockDatasource.clear()).called(1);
+  });
 }

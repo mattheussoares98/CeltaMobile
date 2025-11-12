@@ -22,4 +22,9 @@ class LocalPendingSaleRequestRepositoryImpl
       enterpriseCode,
     );
   }
+
+  @override
+  Future<void> clear() async {
+    await datasource.clear();
+  }
 }

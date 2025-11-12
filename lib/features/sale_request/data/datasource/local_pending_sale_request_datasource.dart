@@ -22,4 +22,9 @@ class LocalPendingSaleRequestDatasource
   Future<void> save(PendingSaleRequestModel value, int enterpriseCode) async {
     await hiveBox.put(enterpriseCode, value.toJson());
   }
+
+  @override
+  Future<void> clear() async {
+    hiveBox.clear();
+  }
 }
