@@ -21,7 +21,21 @@ class SoapSaveSaleRequestRepositoryImpl
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,
-      saleRequest: PendingSaleRequestModel.fromEntity(saleRequest),
+      saleRequest: PendingSaleRequestModel.fromEntity(
+        saleRequest.copyWith(
+          cart: saleRequest.cart.map(
+            (key, value) => MapEntry(
+              key,
+              value.copyWith(
+                DiscountValue: value.DiscountValue == null
+                    ? null
+                    : (value.DiscountValue ?? 0) / value.Quantity,
+                DiscountPercentageOrValue: PercentageOrValue.value,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
