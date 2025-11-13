@@ -67,19 +67,19 @@ class _CartPageState extends ConsumerState<CartPage>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    debugPrint(state.toString());
+    debugPrint(state.toString()); //TODO test this in phones
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
       saveInstructionsAndObservations();
     }
   }
 
-  void saveInstructionsAndObservations() {
+  void saveInstructionsAndObservations() async {
     final notifier = ref.read(
       pendingSaleRequestStateControllerProvider.notifier,
     );
-    notifier.changeObservations(observationsController.text);
-    notifier.changeInstructions(instructionsController.text);
+    await notifier.changeObservations(observationsController.text);
+    await notifier.changeInstructions(instructionsController.text);
   }
 
   void changeSelectedIndex(CartProductEntity product) {
@@ -132,58 +132,63 @@ class _CartPageState extends ConsumerState<CartPage>
       });
     });
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (cartProducts.isNotEmpty) ...[
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  ObservationsField(
-                    observationsFocusNode: observationsFocusNode,
-                    observationsController: observationsController,
-                    instructionsFocusNode: instructionsFocusNode,
-                  ),
-                  gapSliverH4,
-                  InstructionsField(
-                    instructionsFocusNode: instructionsFocusNode,
-                    instructionsController: instructionsController,
-                  ),
-                  gapSliverH8,
-                  ResponsiveListFlow(
-                    isSliver: true,
-                    itemCount: cartProducts.length,
-                    itemBuilder: (_, index) {
-                      final cartProduct = cartProducts[index];
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        saveInstructionsAndObservations();
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (cartProducts.isNotEmpty) ...[
+              Expanded(
+                child: CustomScrollView(
+                  slivers: [
+                    ObservationsField(
+                      observationsFocusNode: observationsFocusNode,
+                      observationsController: observationsController,
+                      instructionsFocusNode: instructionsFocusNode,
+                    ),
+                    gapSliverH4,
+                    InstructionsField(
+                      instructionsFocusNode: instructionsFocusNode,
+                      instructionsController: instructionsController,
+                    ),
+                    gapSliverH8,
+                    ResponsiveListFlow(
+                      isSliver: true,
+                      itemCount: cartProducts.length,
+                      itemBuilder: (_, index) {
+                        final cartProduct = cartProducts[index];
 
-                      if (cartProducts.isEmpty) {
-                        return Center(
-                          child: Text('Nenhum item no carrinho'.hardcoded),
+                        if (cartProducts.isEmpty) {
+                          return Center(
+                            child: Text('Nenhum item no carrinho'.hardcoded),
+                          );
+                        }
+
+                        return ProductItem(
+                          cartProduct: cartProduct,
+                          onTap: () => changeSelectedIndex(cartProduct),
+                          quantityController: quantityController,
+                          priceController: priceController,
+                          discountController: discountController,
+                          quantityFocusNode: quantityFocusNode,
+                          discountFocusNode: discountFocusNode,
+                          priceFocusNode: priceFocusNode,
+                          selectedRequest: widget.selectedRequest,
                         );
-                      }
-
-                      return ProductItem(
-                        cartProduct: cartProduct,
-                        onTap: () => changeSelectedIndex(cartProduct),
-                        quantityController: quantityController,
-                        priceController: priceController,
-                        discountController: discountController,
-                        quantityFocusNode: quantityFocusNode,
-                        discountFocusNode: discountFocusNode,
-                        priceFocusNode: priceFocusNode,
-                        selectedRequest: widget.selectedRequest,
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ] else
-            const Expanded(child: InsertProductsInCart()),
-          TotalCalculateAndSave(selectedRequest: widget.selectedRequest),
-        ],
+            ] else
+              const Expanded(child: InsertProductsInCart()),
+            TotalCalculateAndSave(selectedRequest: widget.selectedRequest),
+          ],
+        ),
       ),
     );
   }
