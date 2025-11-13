@@ -32,7 +32,7 @@ class PendingSaleRequestStateController
 
   Future<void> _updateAndSave(
     PendingSaleRequestEntity newState, {
-    required bool needProcessCart,
+    bool? needProcessCart,
   }) async {
     state = const AsyncValue.loading();
     newState = newState.copyWith(needProcessCart: needProcessCart);
@@ -124,19 +124,13 @@ class PendingSaleRequestStateController
   Future<void> changeObservations(String observations) async {
     if (state.value == null) return;
 
-    await _updateAndSave(
-      state.value!.copyWith(observations: observations),
-      needProcessCart: false,
-    );
+    await _updateAndSave(state.value!.copyWith(observations: observations));
   }
 
   Future<void> changeInstructions(String instructions) async {
     if (state.value == null) return;
 
-    await _updateAndSave(
-      state.value!.copyWith(instructions: instructions),
-      needProcessCart: false,
-    );
+    await _updateAndSave(state.value!.copyWith(instructions: instructions));
   }
 
   Future<void> updateProductsFromProcessedCart(
