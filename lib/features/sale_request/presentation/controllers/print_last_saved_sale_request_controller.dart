@@ -53,7 +53,8 @@ class PrintLastSavedSaleRequestController
 
       if (!printed) {
         throw AppException(
-          'Não foi possível realizar a impressão do pedido'.hardcoded,
+          'Não foi possível realizar a impressão do pedido. Confirme se o IP da impressora está correto, se ela está com bobina e se ela está ligada. Caso não resolva, reinicie ela e tente novamente.'
+              .hardcoded,
         );
       }
     });
