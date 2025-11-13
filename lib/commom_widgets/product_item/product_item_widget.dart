@@ -119,7 +119,8 @@ class ProductItemWidget extends ConsumerWidget {
                                     subTitleIsPrice: true,
                                   ),
                                 ],
-                                if (routine == BsRoutine.saleRequest) ...[
+                                if (routine == BsRoutine.saleRequest ||
+                                    routine == BsRoutine.adjustSalePrice) ...[
                                   if (product.WholePracticedPrice > 0) ...[
                                     TitleAndSubTitle(
                                       title: 'Preço atacado',
