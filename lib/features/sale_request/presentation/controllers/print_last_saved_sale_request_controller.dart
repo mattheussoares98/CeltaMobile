@@ -17,7 +17,8 @@ class PrintLastSavedSaleRequestController
   @override
   FutureOr<void> build() {}
 
-  Future<void> print(String ip) async {
+  Future<bool> print(String ip) async {
+    bool printed = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validateduser = await ref.watch(
@@ -42,7 +43,7 @@ class PrintLastSavedSaleRequestController
           .read(ipPrintSaleRequestControllerProvider.notifier)
           .updateIp(ip);
 
-      await ref
+      printed = await ref
           .read(printLastSavedSaleRequestRepositoryProvider)
           .print(
             saleRequest: lastSavedSaleRequest,
@@ -50,5 +51,7 @@ class PrintLastSavedSaleRequestController
             userName: validateduser!.user.name!,
           );
     });
+
+    return printed;
   }
 }

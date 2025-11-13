@@ -92,7 +92,7 @@ void main() {
 
   group('PrintLastSavedSaleRequestController', () {
     test(
-      'should call repository and update IP controller on success',
+      'should call repository, return true and update IP controller on success',
       () async {
         // ARRANGE
         final spyIpPrint = SpyIpPrintSaleRequest();
@@ -132,11 +132,12 @@ void main() {
         );
 
         // ACT
-        await container
+        final printed = await container
             .read(printLastSavedSaleRequestControllerProvider.notifier)
             .print(fakeIp);
 
         // ASSERT
+        expect(printed, isTrue);
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
 
         // 1. Verify repository was called
@@ -182,11 +183,12 @@ void main() {
         );
 
         // ACT
-        await container
+        final printed = await container
             .read(printLastSavedSaleRequestControllerProvider.notifier)
             .print(fakeIp);
 
         // ASSERT
+        expect(printed, isFalse);
         expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
         expect(states.last.error, isA<AppException>());
         expect(
@@ -233,11 +235,12 @@ void main() {
       );
 
       // ACT
-      await container
+      final printed = await container
           .read(printLastSavedSaleRequestControllerProvider.notifier)
           .print(fakeIp);
 
       // ASSERT
+      expect(printed, isFalse);
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
   });
