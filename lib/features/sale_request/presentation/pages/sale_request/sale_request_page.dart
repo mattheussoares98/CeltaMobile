@@ -69,6 +69,16 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
               Sizes.p8,
             ),
             actions: [
+              IconButton(
+                onPressed: null,
+                icon: Icon(
+                  isIOS ? CupertinoIcons.doc_text_search : Icons.receipt_long,
+                ),
+              ),
+              IconButton(
+                onPressed: null,
+                icon: Icon(isIOS ? CupertinoIcons.printer : Icons.print),
+              ),
               QuantityBadge(
                 quantity: products?.length ?? 0,
                 materialIcon: Icons.shopping_cart,
