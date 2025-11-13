@@ -17,7 +17,11 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
   @override
   FutureOr<void> build() {}
 
-  Future<void> save({required int requestTypeCode}) async {
+  Future<void> save({
+    required int requestTypeCode,
+    required String observations,
+    required String instructions,
+  }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validateduser = await ref.watch(
@@ -41,7 +45,10 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
             crossIdentity: validateduser.user.CrossIdentity_Usuario!,
             enterpriseCode: selectedEnterprise!.Code!,
             requestTypeCode: requestTypeCode,
-            saleRequest: pending,
+            saleRequest: pending.copyWith(
+              observations: observations,
+              instructions: instructions,
+            ),
           );
 
       await ref

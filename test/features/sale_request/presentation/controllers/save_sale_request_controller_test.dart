@@ -52,6 +52,8 @@ void main() {
   late PendingSaleRequestEntity fakePendingRequest;
   late PendingSaleRequestEntity fakeRequestNoCustomer;
   late int fakeRequestTypeCode;
+  late String instructions;
+  late String observations;
 
   late ProviderContainer container;
 
@@ -76,6 +78,8 @@ void main() {
     );
     fakeRequestNoCustomer = PendingSaleRequestEntity.empty(); // Invalid request
     fakeRequestTypeCode = faker.randomGenerator.integer(100);
+    instructions = faker.lorem.sentence();
+    observations = faker.lorem.sentence();
 
     // --- Create the single container ONCE with ALL providers ---
     container = ProviderContainer(
@@ -168,7 +172,11 @@ void main() {
       // ACT
       await container
           .read(saveSaleRequestControllerProvider.notifier)
-          .save(requestTypeCode: fakeRequestTypeCode);
+          .save(
+            requestTypeCode: fakeRequestTypeCode,
+            observations: observations,
+            instructions: instructions,
+          );
 
       // ASSERT
       // 1. Check state
@@ -181,7 +189,10 @@ void main() {
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           enterpriseCode: fakeEnterprise.Code!,
           requestTypeCode: fakeRequestTypeCode,
-          saleRequest: fakePendingRequest,
+          saleRequest: fakePendingRequest.copyWith(
+            observations: observations,
+            instructions: instructions,
+          ),
         ),
       ).called(1);
 
@@ -236,7 +247,11 @@ void main() {
       // ACT
       await container
           .read(saveSaleRequestControllerProvider.notifier)
-          .save(requestTypeCode: fakeRequestTypeCode);
+          .save(
+            requestTypeCode: fakeRequestTypeCode,
+            observations: observations,
+            instructions: instructions,
+          );
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -294,7 +309,11 @@ void main() {
       // ACT
       await container
           .read(saveSaleRequestControllerProvider.notifier)
-          .save(requestTypeCode: fakeRequestTypeCode);
+          .save(
+            requestTypeCode: fakeRequestTypeCode,
+            observations: observations,
+            instructions: instructions,
+          );
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

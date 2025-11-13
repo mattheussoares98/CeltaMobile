@@ -10,7 +10,14 @@ import '../../../../controllers/controllers.dart';
 
 class TotalCalculateAndSave extends ConsumerWidget {
   final RequestTypeEntity selectedRequest;
-  const TotalCalculateAndSave({super.key, required this.selectedRequest});
+  final TextEditingController instructionsController;
+  final TextEditingController observationsController;
+  const TotalCalculateAndSave({
+    super.key,
+    required this.selectedRequest,
+    required this.instructionsController,
+    required this.observationsController,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -130,6 +137,10 @@ class TotalCalculateAndSave extends ConsumerWidget {
                                       )
                                       .save(
                                         requestTypeCode: selectedRequest.Code,
+                                        instructions:
+                                            instructionsController.text,
+                                        observations:
+                                            observationsController.text,
                                       );
                                 },
                               );

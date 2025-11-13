@@ -186,7 +186,11 @@ class _CartPageState extends ConsumerState<CartPage>
               ),
             ] else
               const Expanded(child: InsertProductsInCart()),
-            TotalCalculateAndSave(selectedRequest: widget.selectedRequest),
+            TotalCalculateAndSave(
+              selectedRequest: widget.selectedRequest,
+              instructionsController: instructionsController,
+              observationsController: observationsController,
+            ),
           ],
         ),
       ),
