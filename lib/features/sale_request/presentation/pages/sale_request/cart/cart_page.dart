@@ -137,48 +137,51 @@ class _CartPageState extends ConsumerState<CartPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                ObservationsField(
-                  observationsFocusNode: observationsFocusNode,
-                  observationsController: observationsController,
-                  instructionsFocusNode: instructionsFocusNode,
-                ),
-                gapSliverH4,
-                InstructionsField(
-                  instructionsFocusNode: instructionsFocusNode,
-                  instructionsController: instructionsController,
-                ),
-                gapSliverH8,
-                ResponsiveListFlow(
-                  isSliver: true,
-                  itemCount: cartProducts.length,
-                  itemBuilder: (_, index) {
-                    final cartProduct = cartProducts[index];
+          if (cartProducts.isNotEmpty) ...[
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  ObservationsField(
+                    observationsFocusNode: observationsFocusNode,
+                    observationsController: observationsController,
+                    instructionsFocusNode: instructionsFocusNode,
+                  ),
+                  gapSliverH4,
+                  InstructionsField(
+                    instructionsFocusNode: instructionsFocusNode,
+                    instructionsController: instructionsController,
+                  ),
+                  gapSliverH8,
+                  ResponsiveListFlow(
+                    isSliver: true,
+                    itemCount: cartProducts.length,
+                    itemBuilder: (_, index) {
+                      final cartProduct = cartProducts[index];
 
-                    if (cartProducts.isEmpty) {
-                      return Center(
-                        child: Text('Nenhum item no carrinho'.hardcoded),
+                      if (cartProducts.isEmpty) {
+                        return Center(
+                          child: Text('Nenhum item no carrinho'.hardcoded),
+                        );
+                      }
+
+                      return ProductItem(
+                        cartProduct: cartProduct,
+                        onTap: () => changeSelectedIndex(cartProduct),
+                        quantityController: quantityController,
+                        priceController: priceController,
+                        discountController: discountController,
+                        quantityFocusNode: quantityFocusNode,
+                        discountFocusNode: discountFocusNode,
+                        priceFocusNode: priceFocusNode,
+                        selectedRequest: widget.selectedRequest,
                       );
-                    }
-
-                    return ProductItem(
-                      cartProduct: cartProduct,
-                      onTap: () => changeSelectedIndex(cartProduct),
-                      quantityController: quantityController,
-                      priceController: priceController,
-                      discountController: discountController,
-                      quantityFocusNode: quantityFocusNode,
-                      discountFocusNode: discountFocusNode,
-                      priceFocusNode: priceFocusNode,
-                      selectedRequest: widget.selectedRequest,
-                    );
-                  },
-                ),
-              ],
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
+          ] else
+            const Expanded(child: InsertProductsInCart()),
           TotalCalculateAndSave(selectedRequest: widget.selectedRequest),
         ],
       ),
