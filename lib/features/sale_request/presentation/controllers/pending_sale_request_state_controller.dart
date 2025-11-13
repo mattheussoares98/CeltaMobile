@@ -17,27 +17,14 @@ class PendingSaleRequestStateController
     extends _$PendingSaleRequestStateController {
   @override
   Future<PendingSaleRequestEntity> build() async {
-    //TODO change the pending according to the enterprise
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
-
     final repository = ref.watch(localPendingSaleRequestRepositoryProvider);
     final localData = await repository.load(
       ref.watch(selectedEnterpriseStateControllerProvider)!.Code!,
     );
 
-    return localData ?? PendingSaleRequestEntity.empty();
+    return (localData ?? PendingSaleRequestEntity.empty()).copyWith(
+      needProcessCart: true,
+    );
   }
 
   ILocalPendingSaleRequestRepository get _repository =>

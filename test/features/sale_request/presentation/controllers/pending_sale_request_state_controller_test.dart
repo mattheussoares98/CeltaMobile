@@ -84,7 +84,7 @@ void main() {
         );
 
         // ASSERT
-        expect(result, fakeDraft);
+        expect(result, fakeDraft.copyWith(needProcessCart: true));
         verify(() => mockRepository.load(enterpriseEntity.Code!)).called(1);
       });
 
@@ -103,7 +103,10 @@ void main() {
           );
 
           // ASSERT
-          expect(result, PendingSaleRequestEntity.empty());
+          expect(
+            result,
+            PendingSaleRequestEntity.empty().copyWith(needProcessCart: true),
+          );
         },
       );
     });
