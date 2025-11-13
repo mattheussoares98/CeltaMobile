@@ -43,6 +43,7 @@ class ProductModel extends Equatable {
   final List<StockByEnterpriseAssociatedModel>? StockByEnterpriseAssociateds;
   final List<StockModel>? Stocks;
   final List<LastBuyEntranceModel>? LastBuyEntrances;
+  final List<String>? EANs;
 
   const ProductModel({
     required this.EnterpriseCode,
@@ -84,6 +85,7 @@ class ProductModel extends Equatable {
     required this.StockByEnterpriseAssociateds,
     required this.Stocks,
     required this.LastBuyEntrances,
+    required this.EANs,
   });
 
   @override
@@ -127,6 +129,7 @@ class ProductModel extends Equatable {
     StockByEnterpriseAssociateds,
     Stocks,
     LastBuyEntrances,
+    EANs,
   ];
 
   factory ProductModel.fromJson(Map json) {
@@ -184,6 +187,7 @@ class ProductModel extends Equatable {
           : (json['LastBuyEntrances'] as List)
                 .map((e) => LastBuyEntranceModel.fromJson(e))
                 .toList(),
+      EANs: json['EANs'].cast<String>(),
     );
   }
 
@@ -230,6 +234,7 @@ class ProductModel extends Equatable {
     ).toList(),
     'Stocks': Stocks?.map((e) => e.toJson()).toList(),
     'LastBuyEntrances': LastBuyEntrances?.map((e) => e.toJson()).toList(),
+    'EANs': EANs,
   };
 
   factory ProductModel.fromEntity(ProductEntity entity) {
@@ -280,6 +285,7 @@ class ProductModel extends Equatable {
       LastBuyEntrances: entity.LastBuyEntrances?.map(
         (e) => LastBuyEntranceModel.fromEntity(e),
       ).toList(),
+      EANs: entity.EANs,
     );
   }
 
@@ -326,5 +332,6 @@ class ProductModel extends Equatable {
     ).toList(),
     Stocks: Stocks?.map((e) => e.toEntity()).toList(),
     LastBuyEntrances: LastBuyEntrances?.map((e) => e.toEntity()).toList(),
+    EANs: EANs,
   );
 }

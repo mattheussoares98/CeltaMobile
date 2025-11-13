@@ -46,6 +46,7 @@ class ProductEntity extends Equatable {
   final List<StockEntity>?
   Stocks; //TODO test when the user doesnt has permission
   final List<LastBuyEntranceEntity>? LastBuyEntrances;
+  final List<String>? EANs;
 
   const ProductEntity({
     required this.EnterpriseCode,
@@ -87,6 +88,7 @@ class ProductEntity extends Equatable {
     required this.StockByEnterpriseAssociateds,
     required this.Stocks,
     required this.LastBuyEntrances,
+    required this.EANs,
   });
 
   @override
@@ -130,6 +132,7 @@ class ProductEntity extends Equatable {
     StockByEnterpriseAssociateds,
     Stocks,
     LastBuyEntrances,
+    EANs,
   ];
 
   ProductEntity copyWith({
@@ -172,6 +175,7 @@ class ProductEntity extends Equatable {
     List<StockByEnterpriseAssociatedEntity>? StockByEnterpriseAssociateds,
     List<StockEntity>? Stocks,
     List<LastBuyEntranceEntity>? LastBuyEntrances,
+    List<String>? EANs,
   }) {
     return ProductEntity(
       EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
@@ -218,6 +222,7 @@ class ProductEntity extends Equatable {
           StockByEnterpriseAssociateds ?? this.StockByEnterpriseAssociateds,
       Stocks: Stocks ?? this.Stocks,
       LastBuyEntrances: LastBuyEntrances ?? this.LastBuyEntrances,
+      EANs: EANs ?? this.EANs,
     );
   }
 
