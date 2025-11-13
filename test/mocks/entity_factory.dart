@@ -98,6 +98,11 @@ class EntityFactory {
     double? MinimumWholeQuantity,
     double? RetailPracticedPrice,
   }) => ProductEntity(
+    EANs: [
+      faker.randomGenerator.integer(100).toString(),
+      faker.randomGenerator.integer(100).toString(),
+      faker.randomGenerator.integer(100).toString(),
+    ],
     EnterpriseCode: enterpriseCode ?? faker.randomGenerator.integer(100),
     ProductCode: faker.randomGenerator.integer(100),
     ProductPackingCode:
