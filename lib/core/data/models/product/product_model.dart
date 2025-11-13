@@ -187,7 +187,7 @@ class ProductModel extends Equatable {
           : (json['LastBuyEntrances'] as List)
                 .map((e) => LastBuyEntranceModel.fromJson(e))
                 .toList(),
-      EANs: json['EANs'].cast<String>(),
+      EANs: json['EANs']?.cast<String>(),
     );
   }
 
