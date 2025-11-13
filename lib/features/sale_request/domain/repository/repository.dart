@@ -1,8 +1,11 @@
+export './i_local_ip_print_sale_request_repository.dart';
 export './i_local_last_saved_sale_request_repository.dart';
 export './i_local_pending_sale_request_repository.dart';
 export 'i_print_last_saved_sale_request_repository.dart';
 export './i_soap_process_cart_repository.dart';
 export './i_soap_save_sale_request_repository.dart';
+
+export './local_ip_print_sale_request_repository_impl.dart';
 export './local_last_saved_sale_request_repository_impl.dart';
 export './local_pending_sale_request_repository_impl.dart';
 export './print_last_saved_sale_request_repository_impl.dart';
