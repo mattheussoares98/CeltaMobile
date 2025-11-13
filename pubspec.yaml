@@ -53,6 +53,7 @@ dependencies:
   collection: ^1.19.1
   flutter_esc_pos_network: ^1.0.3
   esc_pos_utils_plus: ^2.0.4
+  pdf: ^3.11.3
 
 dev_dependencies:
   flutter_test:
