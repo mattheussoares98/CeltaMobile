@@ -124,8 +124,10 @@ class TotalCalculateAndSave extends ConsumerWidget {
                                     ? 'Atenção!'.hardcoded
                                     : 'Salvar pedido?'.hardcoded,
                                 content: needProcessCart
-                                    ? 'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, etc!. Deseja salvar mesmo assim?'
-                                          .hardcoded
+                                    ? 'Pode ser que o pedido seja salvo no BS com um preço diferente!\n\n'
+                                              .toUpperCase() +
+                                          'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc! Dependendo das regras do BS, o pedido pode ser salvo com preços diferentes do que estão no aplicativo\n\n Deseja salvar mesmo assim?'
+                                              .hardcoded
                                     : null,
                                 defaultActionText: 'Salvar'.hardcoded,
                                 cancelActionText: 'Cancelar'.hardcoded,
