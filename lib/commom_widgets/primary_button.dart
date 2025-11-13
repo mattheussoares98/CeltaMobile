@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '/constants/app_sizes.dart';
+import 'commom_widgets.dart';
 
 /// Primary button based on [ElevatedButton].
 /// Useful for CTAs in the app.
@@ -35,11 +36,11 @@ class PrimaryButton extends StatelessWidget {
             onPressed: isLoading ? null : onPressed,
             sizeStyle: CupertinoButtonSize.small,
             padding: const EdgeInsets.all(0),
-            color: onPressed == null
+            color: onPressed == null || isLoading
                 ? theme.disabledColor
                 : backgroundColor ?? theme.primaryColor,
             child: isLoading
-                ? CupertinoActivityIndicator(color: theme.disabledColor)
+                ? const LoadingWidget(padding: 0)
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -61,23 +62,19 @@ class PrimaryButton extends StatelessWidget {
     return SizedBox(
       height: Sizes.p32,
       child: ElevatedButton.icon(
-        onPressed: onPressed,
+        onPressed: isLoading ? null : onPressed,
         icon: icon,
         iconAlignment: iconAlignment,
         style: ButtonStyle(
           padding: WidgetStateProperty.all(const EdgeInsets.all(Sizes.p12)),
           backgroundColor: WidgetStateProperty.all(
-            onPressed == null
-                ? theme.disabledColor
+            onPressed == null || isLoading
+                ? theme.disabledColor.withAlpha(30)
                 : backgroundColor ?? theme.primaryColor,
           ),
         ),
         label: isLoading
-            ? const SizedBox(
-                height: Sizes.p24,
-                width: Sizes.p24,
-                child: CircularProgressIndicator(),
-              )
+            ? const FittedBox(child: LoadingWidget(padding: 0))
             : FittedBox(
                 child: Text(
                   text,
