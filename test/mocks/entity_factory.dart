@@ -685,4 +685,10 @@ class EntityFactory {
           makeCartProductEntity(),
         ],
   );
+
+  static LastSavedSaleRequestEntity makeLastSavedSaleRequestEntity() =>
+      LastSavedSaleRequestEntity(
+        saleRequestNumber: faker.lorem.word(),
+        pendingSaleRequestEntity: makePendingSaleRequestEntity(),
+      );
 }

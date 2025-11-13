@@ -17,7 +17,7 @@ class PrintLastSavedSaleRequestController
   @override
   FutureOr<void> build() {}
 
-  Future<void> print() async {
+  Future<void> print(String ip) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validateduser = await ref.watch(
@@ -39,11 +39,14 @@ class PrintLastSavedSaleRequestController
       }
 
       await ref
+          .read(ipPrintSaleRequestControllerProvider.notifier)
+          .updateIp(ip);
+
+      await ref
           .read(printLastSavedSaleRequestRepositoryProvider)
           .print(
             saleRequest: lastSavedSaleRequest,
-            ip: '//TODO create a new controller to manage the IP and get here',
-            //TODO create tests
+            ip: ip,
             userName: validateduser!.user.name!,
           );
     });
