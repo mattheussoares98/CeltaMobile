@@ -27,11 +27,6 @@ Box hiveBoxTransferBetweenStocks(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
-Box hiveBoxTransferRequestLastSavedNumber(Ref ref) {
-  return Hive.box(DatabaseConstants.transferRequestLastSavedNumber.name);
-}
-
-@Riverpod(keepAlive: true)
 Box hiveBoxTransferRequest(Ref ref) {
   return Hive.box(DatabaseConstants.transferRequest.name);
 }
@@ -48,7 +43,6 @@ List<Box> boxesToClearOnLogout(Ref ref) {
     ref.watch(hiveBoxBuyRequestProvider),
     ref.watch(hiveBoxSaleRequestProvider),
     ref.watch(hiveBoxTransferBetweenStocksProvider),
-    ref.watch(hiveBoxTransferRequestLastSavedNumberProvider),
     ref.watch(hiveBoxTransferRequestProvider),
   ];
 }

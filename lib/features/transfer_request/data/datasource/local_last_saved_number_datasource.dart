@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 
-import '../../../../core/infraestructure/infrastructure.dart';
 import 'datasource.dart';
 
 class LocalLastSavedNumberDatasource
@@ -8,7 +7,7 @@ class LocalLastSavedNumberDatasource
   final Box box;
   LocalLastSavedNumberDatasource(this.box);
 
-  static final _key = DatabaseConstants.transferRequestLastSavedNumber.name;
+  static const _key = 'transferRequestLastSavedNumber';
 
   @override
   Future<String?> load() async {

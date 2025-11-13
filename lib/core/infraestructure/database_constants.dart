@@ -9,7 +9,6 @@ class DatabaseConstants {
     saleRequest,
     transferBetweenStocks,
     transferRequest,
-    transferRequestLastSavedNumber,
     userSession,
   ];
 
@@ -20,9 +19,6 @@ class DatabaseConstants {
     'transfer_between_stocks',
   );
   static const transferRequest = _HiveBoxConfig('transfer_request');
-  static const transferRequestLastSavedNumber = _HiveBoxConfig(
-    'transfer_request_last_saved_number',
-  );
   static const userSession = _HiveBoxConfig('user_session');
 }
 
