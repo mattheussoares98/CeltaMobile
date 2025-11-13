@@ -3,6 +3,7 @@ export './date_validator.dart';
 export './ddd_validator.dart';
 export 'email_validator.dart';
 export './form_validators.dart';
+export './ip_validator.dart';
 export './min_length_validator.dart';
 export './non_empty_validator.dart';
 export './number_validator.dart';
