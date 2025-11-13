@@ -12,6 +12,7 @@ class LocalPendingSaleRequestDatasourceSpy extends Mock
     implements ILocalPendingSaleRequestDatasource {
   LocalPendingSaleRequestDatasourceSpy() {
     when(() => this.save(any(), any())).thenAnswer((_) async {});
+    when(() => this.clear(any())).thenAnswer((_) async {});
   }
 
   void mockLoad(PendingSaleRequestModel? response) =>
@@ -64,8 +65,8 @@ void main() {
     verify(() => mockDatasource.load(enterpriseCode)).called(1);
   });
   test('should behave correctly on clear', () async {
-    await sut.clear();
+    await sut.clear(enterpriseCode);
 
-    verify(() => mockDatasource.clear()).called(1);
+    verify(() => mockDatasource.clear(enterpriseCode)).called(1);
   });
 }

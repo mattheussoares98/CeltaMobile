@@ -8,9 +8,11 @@ class LocalPendingSaleRequestDatasource
   final Box hiveBox;
   LocalPendingSaleRequestDatasource(this.hiveBox);
 
+  static const String _keyPrefix = 'pending_sale_request_';
+
   @override
   Future<PendingSaleRequestModel?> load(int enterpriseCode) async {
-    final value = await hiveBox.get(enterpriseCode);
+    final value = await hiveBox.get('$_keyPrefix$enterpriseCode');
     if (value == null) {
       return null;
     }
@@ -20,11 +22,11 @@ class LocalPendingSaleRequestDatasource
 
   @override
   Future<void> save(PendingSaleRequestModel value, int enterpriseCode) async {
-    await hiveBox.put(enterpriseCode, value.toJson());
+    await hiveBox.put('$_keyPrefix$enterpriseCode', value.toJson());
   }
 
   @override
-  Future<void> clear() async {
-    await hiveBox.clear();
+  Future<void> clear(int enterpriseCode) async {
+    await hiveBox.delete('$_keyPrefix$enterpriseCode');
   }
 }

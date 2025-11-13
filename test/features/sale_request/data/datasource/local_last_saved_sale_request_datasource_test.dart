@@ -14,6 +14,7 @@ void main() {
 
   late LastSavedSaleRequestEntity entity;
   late int enterpriseCode;
+  const String keyPrefix = 'last_saved_sale_request_';
 
   void initSut() {
     sut = LocalLastSavedSaleRequestDatasource(hive);
@@ -25,7 +26,7 @@ void main() {
 
   void mockSuccess() {
     hive.mockGet(
-      enterpriseCode,
+      '$keyPrefix$enterpriseCode',
       LastSavedSaleRequestModel.fromEntity(entity).toJson(),
     );
   }
@@ -54,7 +55,7 @@ void main() {
 
       verify(
         () => hive.put(
-          enterpriseCode,
+          '$keyPrefix$enterpriseCode',
           LastSavedSaleRequestModel.fromEntity(entity).toJson(),
         ),
       ).called(1);
@@ -67,11 +68,11 @@ void main() {
         LastSavedSaleRequestModel.fromEntity(entity),
       );
 
-      verify(() => hive.get(enterpriseCode)).called(1);
+      verify(() => hive.get('$keyPrefix$enterpriseCode')).called(1);
     });
 
     test('Should return correct value when returns null', () async {
-      hive.mockGet(enterpriseCode, null);
+      hive.mockGet('$keyPrefix$enterpriseCode', null);
 
       expect(await sut.load(enterpriseCode), null);
     });

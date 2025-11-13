@@ -8,9 +8,11 @@ class LocalLastSavedSaleRequestDatasource
   final Box hiveBox;
   LocalLastSavedSaleRequestDatasource(this.hiveBox);
 
+  static const String _keyPrefix = 'last_saved_sale_request_';
+
   @override
   Future<LastSavedSaleRequestModel?> load(int enterpriseCode) async {
-    final response = await hiveBox.get(enterpriseCode);
+    final response = await hiveBox.get('$_keyPrefix$enterpriseCode');
 
     return response != null
         ? LastSavedSaleRequestModel.fromJson(response)
@@ -22,6 +24,6 @@ class LocalLastSavedSaleRequestDatasource
     required LastSavedSaleRequestModel value,
     required int enterpriseCode,
   }) async {
-    await hiveBox.put(enterpriseCode, value.toJson());
+    await hiveBox.put('$_keyPrefix$enterpriseCode', value.toJson());
   }
 }

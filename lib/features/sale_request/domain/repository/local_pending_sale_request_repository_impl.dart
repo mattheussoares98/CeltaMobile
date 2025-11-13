@@ -24,7 +24,7 @@ class LocalPendingSaleRequestRepositoryImpl
   }
 
   @override
-  Future<void> clear() async {
-    await datasource.clear();
+  Future<void> clear(int enterpriseCode) async {
+    await datasource.clear(enterpriseCode);
   }
 }

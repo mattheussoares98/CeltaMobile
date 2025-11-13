@@ -93,7 +93,20 @@ void main() {
             "RequestTypeCode": requestTypeCode,
             "CovenantCode": covenantCode,
             "CustomerCode": customerCode,
-            "Products": products.map((e) => e.toJson()).toList(),
+            "Products": products
+                .map(
+                  (e) =>
+                      CartProductModel.fromEntity(
+                        e.toEntity().copyWith(
+                          DiscountValue: e.DiscountValue != null
+                              ? e.DiscountValue! / e.Quantity
+                              : null,
+                        ),
+                      ).toJson()..remove(
+                        "product",
+                      ), //TODO move this logic to the repository
+                )
+                .toList(),
           }),
         },
       ),

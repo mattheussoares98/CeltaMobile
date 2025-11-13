@@ -161,7 +161,7 @@ void main() {
         await Future.delayed(Duration.zero);
         return fakeSaleRequestNumber;
       });
-      when(() => mockLocalPendingRepo.clear()).thenAnswer((_) async {});
+      when(() => mockLocalPendingRepo.clear(any())).thenAnswer((_) async {});
 
       final states = <AsyncValue<void>>[];
       container.listen(
@@ -208,7 +208,7 @@ void main() {
       );
 
       // 4. Verify local repo was cleared
-      verify(() => mockLocalPendingRepo.clear()).called(1);
+      verify(() => mockLocalPendingRepo.clear(fakeEnterprise.Code!)).called(1);
     });
 
     test('should emit [loading, error] if customer is null', () async {
@@ -271,7 +271,7 @@ void main() {
           saleRequest: any(named: 'saleRequest'),
         ),
       );
-      verifyNever(() => mockLocalPendingRepo.clear());
+      verifyNever(() => mockLocalPendingRepo.clear(any()));
       expect(spyLastSaved.savedEntity, isNull);
     });
 

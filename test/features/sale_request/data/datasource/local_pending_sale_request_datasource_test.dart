@@ -18,6 +18,8 @@ void main() {
   late CartProductEntity thirdProduct;
   late int enterpriseCode;
 
+  late String databaseKey;
+
   void initSut() {
     sut = LocalPendingSaleRequestDatasource(hive);
   }
@@ -28,7 +30,7 @@ void main() {
 
   void mockSuccess() {
     hive.mockGet(
-      enterpriseCode,
+      databaseKey,
       PendingSaleRequestModel.fromEntity(entity).toJson(),
     );
   }
@@ -50,6 +52,7 @@ void main() {
       instructions: faker.lorem.sentence(),
       needProcessCart: faker.randomGenerator.boolean(),
     );
+    databaseKey = 'pending_sale_request_$enterpriseCode';
   }
 
   setUp(() {
@@ -68,7 +71,7 @@ void main() {
 
       verify(
         () => hive.put(
-          enterpriseCode,
+          databaseKey,
           PendingSaleRequestModel.fromEntity(entity).toJson(),
         ),
       ).called(1);
@@ -81,20 +84,20 @@ void main() {
         PendingSaleRequestModel.fromEntity(entity),
       );
 
-      verify(() => hive.get(enterpriseCode)).called(1);
+      verify(() => hive.get(databaseKey)).called(1);
     });
 
     test('Should return correct value when returns null', () async {
-      hive.mockGet(enterpriseCode, null);
+      hive.mockGet(databaseKey, null);
 
       expect(await sut.load(enterpriseCode), null);
     });
   });
   group('Clear', () {
     test('Should behave correctly on success', () async {
-      await sut.clear();
+      await sut.clear(enterpriseCode);
 
-      verify(() => hive.clear()).called(1);
+      verify(() => hive.delete(databaseKey)).called(1);
     });
   });
 }

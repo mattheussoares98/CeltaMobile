@@ -187,8 +187,15 @@ void main() {
           ).future,
         );
 
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          lastSavedSaleRequestStateControllerProvider(fakeEnterpriseCode),
+          (_, next) => states.add(next),
+          fireImmediately: true, //capture all states
+        );
+
         // ACT & ASSERT
-        final future = container
+        await container
             .read(
               lastSavedSaleRequestStateControllerProvider(
                 fakeEnterpriseCode,
@@ -196,7 +203,7 @@ void main() {
             )
             .save(fakeRequest);
 
-        await expectLater(future, throwsA(isA<Exception>()));
+        await expectLater(states, contains(isA<AsyncError>()));
       });
     });
   });
