@@ -51,7 +51,9 @@ ILocalLastSavedSaleRequestDatasource localLastSavedSaleRequestDatasource(
   Ref ref,
 ) {
   return LocalLastSavedSaleRequestDatasource(
-    ref.watch(hiveBoxLastSavedSaleRequestProvider),
+    ref.watch(
+      hiveBoxLastSavedSaleRequestProvider,
+    ), //TODO remove this provider because can use the sale request directly and only change the key
   );
 }
 
@@ -77,5 +79,19 @@ IPrintLastSavedSaleRequestRepository printLastSavedSaleRequestRepository(
 ) {
   return PrintLastSavedSaleRequestRepositoryImpl(
     ref.watch(printLastSavedSaleRequestDatasourceProvider),
+  );
+}
+
+@riverpod
+ILocalIpPrintSaleRequestDatasource localIpPrintSaleRequestDatasource(Ref ref) {
+  return LocalIpPrintSaleRequestDatasource(
+    ref.watch(hiveBoxSaleRequestProvider),
+  );
+}
+
+@riverpod
+ILocalIpPrintSaleRequestRepository localIpPrintSaleRequestRepository(Ref ref) {
+  return LocalIpPrintSaleRequestRepositoryImpl(
+    ref.watch(localIpPrintSaleRequestDatasourceProvider),
   );
 }
