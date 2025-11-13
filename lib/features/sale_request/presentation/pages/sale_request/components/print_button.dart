@@ -80,17 +80,23 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
               ? null
               : () {
                   showModalPage(
-                    Form(
-                      key: formKey,
-                      child: Stack(
-                        children: [
-                          Padding(
+                    Consumer(
+                      builder: (_, ref, _) {
+                        final isLoading = ref.watch(
+                          printLastSavedSaleRequestControllerProvider.select(
+                            (s) => s.isLoading,
+                          ),
+                        );
+
+                        return Form(
+                          key: formKey,
+                          child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
-                                  'Imprimir último pedido salvo para esta empresa?'
+                                  'Imprimir último pedido salvo na empresa'
                                       .hardcoded,
                                 ),
                                 const SizedBox(height: Sizes.p16),
@@ -99,6 +105,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
                                   hintText: '192.168.0.1',
                                   maxLength: 15,
                                   controller: ipController,
+                                  enabled: !isLoading,
                                   onFieldSubmitted: (_) => print(),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -115,25 +122,16 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
                                   keyboardType: TextInputType.datetime,
                                 ),
                                 const SizedBox(height: Sizes.p32),
-                                Consumer(
-                                  builder: (_, ref, _) {
-                                    final isLoading = ref.watch(
-                                      printLastSavedSaleRequestControllerProvider
-                                          .select((s) => s.isLoading),
-                                    );
-
-                                    return PrimaryButton(
-                                      text: 'Imprimir'.hardcoded,
-                                      isLoading: isLoading,
-                                      onPressed: print,
-                                    );
-                                  },
+                                PrimaryButton(
+                                  text: 'Imprimir'.hardcoded,
+                                  isLoading: isLoading,
+                                  onPressed: print,
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                     context,
                   );
