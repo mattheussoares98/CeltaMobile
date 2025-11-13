@@ -243,5 +243,52 @@ void main() {
       expect(printed, isFalse);
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
+    test('should emit [loading, error] if print fails', () async {
+      when(
+        () => mockRepository.print(
+          saleRequest: any(named: 'saleRequest'),
+          ip: any(named: 'ip'),
+          userName: any(named: 'userName'),
+        ),
+      ).thenAnswer((_) async {
+        await Future.delayed(Duration.zero);
+        //simulate error to print
+        return false;
+      });
+
+      // ARRANGE
+      container.updateOverrides([
+        printLastSavedSaleRequestRepositoryProvider.overrideWithValue(
+          mockRepository,
+        ),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(fakeSession),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
+        ),
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => FakeLastSavedSaleRequest(fakeLastSavedRequest)),
+        ipPrintSaleRequestControllerProvider.overrideWith(
+          () => SpyIpPrintSaleRequest(),
+        ),
+      ]);
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        printLastSavedSaleRequestControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      final printed = await container
+          .read(printLastSavedSaleRequestControllerProvider.notifier)
+          .print(fakeIp);
+
+      // ASSERT
+      expect(printed, isFalse);
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+    });
   });
 }

@@ -50,6 +50,12 @@ class PrintLastSavedSaleRequestController
             ip: ip,
             userName: validateduser!.user.name!,
           );
+
+      if (!printed) {
+        throw AppException(
+          'Não foi possível realizar a impressão do pedido'.hardcoded,
+        );
+      }
     });
 
     return printed;
