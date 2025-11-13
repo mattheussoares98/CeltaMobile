@@ -63,3 +63,19 @@ ILocalLastSavedSaleRequestRepository localLastSavedSaleRequestRepository(
     ref.watch(localLastSavedSaleRequestDatasourceProvider),
   );
 }
+
+@riverpod
+IPrintLastSavedSaleRequestDatasource printLastSavedSaleRequestDatasource(
+  Ref ref,
+) {
+  return PrintLastSavedSaleRequestDatasource();
+}
+
+@riverpod
+IPrintLastSavedSaleRequestRepository printLastSavedSaleRequestRepository(
+  Ref ref,
+) {
+  return PrintLastSavedSaleRequestRepositoryImpl(
+    ref.watch(printLastSavedSaleRequestDatasourceProvider),
+  );
+}
