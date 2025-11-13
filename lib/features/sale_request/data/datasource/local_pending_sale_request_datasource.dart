@@ -25,6 +25,6 @@ class LocalPendingSaleRequestDatasource
 
   @override
   Future<void> clear() async {
-    hiveBox.clear();
+    await hiveBox.clear();
   }
 }
