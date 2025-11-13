@@ -9,6 +9,7 @@ import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../controllers/controllers.dart';
+import 'components/components.dart';
 import 'sale_request.dart';
 
 class SaleRequestPage extends ConsumerStatefulWidget {
@@ -57,6 +58,10 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
       );
     });
 
+    ref.listen(printLastSavedSaleRequestControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
+
     return Stack(
       children: [
         Scaffold(
@@ -69,16 +74,32 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
               Sizes.p8,
             ),
             actions: [
-              IconButton(
-                onPressed: null,
-                icon: Icon(
-                  isIOS ? CupertinoIcons.doc_text_search : Icons.receipt_long,
-                ),
+              Consumer(
+                //TODO create another wiget for both icons buttons
+                builder: (_, ref, _) {
+                  final lastSavedSaleRequest = ref
+                      .watch(
+                        lastSavedSaleRequestStateControllerProvider(
+                          widget.enterpriseCode,
+                        ),
+                      )
+                      .value;
+
+                  return Row(
+                    children: [
+                      IconButton(
+                        onPressed: lastSavedSaleRequest == null ? null : () {},
+                        icon: Icon(
+                          isIOS
+                              ? CupertinoIcons.doc_text_search
+                              : Icons.receipt_long,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-              IconButton(
-                onPressed: null,
-                icon: Icon(isIOS ? CupertinoIcons.printer : Icons.print),
-              ),
+              const PrintButton(),
               QuantityBadge(
                 quantity: products?.length ?? 0,
                 materialIcon: Icons.shopping_cart,
