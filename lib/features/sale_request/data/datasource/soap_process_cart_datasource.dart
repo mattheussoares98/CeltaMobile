@@ -47,6 +47,8 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
       typeOfResult: "ProcessCartResult",
       parameters: parameters,
     );
+    //TODO when try to process the cart using ecommerce practiced price type and any product doesnt has a price, throw an error
+    //necessary open a ticket to fix this in backend
 
     return ProcessedCartModel.fromJson(json.decode(response));
   }
