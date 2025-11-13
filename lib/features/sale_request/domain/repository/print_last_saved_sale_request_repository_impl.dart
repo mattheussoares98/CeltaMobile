@@ -9,7 +9,7 @@ class PrintLastSavedSaleRequestRepositoryImpl
   PrintLastSavedSaleRequestRepositoryImpl(this.datasource);
 
   @override
-  Future<bool> printReceiptDirectly({
+  Future<bool> print({
     required LastSavedSaleRequestEntity saleRequest,
     required String ip,
     required String userName,
