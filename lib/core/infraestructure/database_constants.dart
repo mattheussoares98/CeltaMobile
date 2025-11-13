@@ -6,7 +6,6 @@ class DatabaseConstants {
   static List<_HiveBoxConfig> get values => <_HiveBoxConfig>[
     appSettings,
     buyRequest,
-    lastSavedSaleRequest,
     saleRequest,
     transferBetweenStocks,
     transferRequest,
@@ -16,7 +15,6 @@ class DatabaseConstants {
 
   static const appSettings = _HiveBoxConfig('app_settings');
   static const buyRequest = _HiveBoxConfig('buy_request');
-  static const lastSavedSaleRequest = _HiveBoxConfig('last_saved_sale_request');
   static const saleRequest = _HiveBoxConfig('sale_request');
   static const transferBetweenStocks = _HiveBoxConfig(
     'transfer_between_stocks',

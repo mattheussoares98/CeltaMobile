@@ -51,9 +51,7 @@ ILocalLastSavedSaleRequestDatasource localLastSavedSaleRequestDatasource(
   Ref ref,
 ) {
   return LocalLastSavedSaleRequestDatasource(
-    ref.watch(
-      hiveBoxLastSavedSaleRequestProvider,
-    ), //TODO remove this provider because can use the sale request directly and only change the key
+    ref.watch(hiveBoxSaleRequestProvider),
   );
 }
 
