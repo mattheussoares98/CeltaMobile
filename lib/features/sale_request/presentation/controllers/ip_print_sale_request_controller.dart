@@ -13,7 +13,7 @@ class IpPrintSaleRequestController extends _$IpPrintSaleRequestController {
     return await ref.watch(localIpPrintSaleRequestRepositoryProvider).load();
   }
 
-  Future<void> udpate(String ip) async {
+  Future<void> updateIp(String ip) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(localIpPrintSaleRequestRepositoryProvider).save(ip);

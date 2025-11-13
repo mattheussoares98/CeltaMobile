@@ -94,7 +94,7 @@ void main() {
           // ACT
           await container
               .read(ipPrintSaleRequestControllerProvider.notifier)
-              .udpate(fakeIp);
+              .updateIp(fakeIp);
 
           // ASSERT
           // Check for the correct state transitions
@@ -126,7 +126,7 @@ void main() {
         // ACT
         await container
             .read(ipPrintSaleRequestControllerProvider.notifier)
-            .udpate(fakeIp);
+            .updateIp(fakeIp);
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
