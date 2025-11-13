@@ -51,6 +51,8 @@ dependencies:
   http: ^1.5.0
   flutter_barcode_scanner_plus: ^3.0.8
   collection: ^1.19.1
+  flutter_esc_pos_network: ^1.0.3
+  esc_pos_utils_plus: ^2.0.4
 
 dev_dependencies:
   flutter_test:
