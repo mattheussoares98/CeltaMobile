@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/core/infraestructure/database_constants.dart';
 import 'package:celta_intelligence/features/transfer_request/data/datasource/datasource.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,7 +10,7 @@ void main() {
   late MockBox mockBox;
   late String lastSavedNumber;
 
-  final key = DatabaseConstants.transferRequestLastSavedNumber.name;
+  const key = 'transferRequestLastSavedNumber';
 
   setUp(() {
     mockBox = MockBox();
