@@ -242,6 +242,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                                           top: Sizes.p8,
                                         ),
                                         child: AddInLot(
+                                          productIsAlreadyInLot:
+                                              lotItem != null,
                                           addInLot: () => addInLot(product),
                                           quantityController:
                                               quantityController,

@@ -11,11 +11,13 @@ class AddInLot extends ConsumerWidget {
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final VoidCallback addInLot;
+  final bool productIsAlreadyInLot;
   const AddInLot({
     super.key,
     required this.quantityController,
     required this.quantityFocusNode,
     required this.addInLot,
+    required this.productIsAlreadyInLot,
   });
 
   @override
@@ -49,7 +51,9 @@ class AddInLot extends ConsumerWidget {
         gapW8,
         Expanded(
           child: PrimaryButton(
-            text: 'Lote'.hardcoded,
+            text: productIsAlreadyInLot
+                ? 'Alterar'.hardcoded
+                : 'Lote'.hardcoded,
             icon: mediaQuery.size.width < 300
                 ? null
                 : Icon(
