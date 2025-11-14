@@ -12,10 +12,8 @@ part 'enterprises_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class EnterprisesStateController extends _$EnterprisesStateController {
   @override
-  Future<List<EnterpriseEntity>> build({
-    int? enterpriseCode,
-    Modules? module,
-  }) async {
+  Future<List<EnterpriseEntity>> build({int? enterpriseCode}) async {
+    //TODO continue this change that removes the module
     // Timer? timer;
     // final link = ref.keepAlive();
     // ref.onCancel(() {
