@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:flutter/services.dart' show rootBundle;
 
 import '../models/models.dart';
 import 'datasource.dart';
@@ -12,8 +13,22 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
   Future<Uint8List> generate(LastSavedSaleRequestModel saleRequest) async {
     final pdf = pw.Document();
 
+    final fontData = await rootBundle.load(
+      "lib/core/assets/images/fonts/Roboto-Regular.ttf",
+    );
+    final boldFontData = await rootBundle.load(
+      "lib/core/assets/images/fonts/Roboto-Bold.ttf",
+    );
+
+    final ttfFont = pw.Font.ttf(fontData);
+    final ttfBoldFont = pw.Font.ttf(boldFontData);
+
+    // 2. Create a base theme using your new fonts
+    final baseTheme = pw.ThemeData.withFont(base: ttfFont, bold: ttfBoldFont);
+
     pdf.addPage(
       pw.MultiPage(
+        theme: baseTheme,
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(20),
         header: (context) => _buildHeader(saleRequest),
