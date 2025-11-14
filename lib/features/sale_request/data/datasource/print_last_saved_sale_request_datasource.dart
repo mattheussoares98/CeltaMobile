@@ -11,7 +11,7 @@ import 'datasource.dart';
 class PrintLastSavedSaleRequestDatasource
     implements IPrintLastSavedSaleRequestDatasource {
   @override
-  Future<bool> print({
+  Future<void> print({
     required LastSavedSaleRequestModel saleRequest,
     required String ip,
     required String userName,
@@ -219,6 +219,5 @@ class PrintLastSavedSaleRequestDatasource
 
     await printer.printTicket(bytes);
     await printer.disconnect();
-    return true;
   }
 }

@@ -9,12 +9,12 @@ class PrintLastSavedSaleRequestRepositoryImpl
   PrintLastSavedSaleRequestRepositoryImpl(this.datasource);
 
   @override
-  Future<bool> print({
+  Future<void> print({
     required LastSavedSaleRequestEntity saleRequest,
     required String ip,
     required String userName,
   }) async {
-    return await datasource.print(
+    await datasource.print(
       saleRequest: LastSavedSaleRequestModel.fromEntity(saleRequest),
       ip: ip,
       userName: userName,

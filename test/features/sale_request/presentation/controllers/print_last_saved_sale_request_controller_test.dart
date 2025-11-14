@@ -122,7 +122,6 @@ void main() {
           ),
         ).thenAnswer((_) async {
           await Future.delayed(Duration.zero);
-          return true;
         });
 
         final states = <AsyncValue<void>>[];
@@ -250,11 +249,7 @@ void main() {
           ip: any(named: 'ip'),
           userName: any(named: 'userName'),
         ),
-      ).thenAnswer((_) async {
-        await Future.delayed(Duration.zero);
-        //simulate error to print
-        return false;
-      });
+      ).thenThrow(Exception());
 
       // ARRANGE
       container.updateOverrides([

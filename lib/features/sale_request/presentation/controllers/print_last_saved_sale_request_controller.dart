@@ -43,21 +43,15 @@ class PrintLastSavedSaleRequestController
           .read(ipPrintSaleRequestControllerProvider.notifier)
           .updateIp(ip);
 
-      printed = await ref
+      await ref
           .read(printLastSavedSaleRequestRepositoryProvider)
           .print(
-            //TODO dont need to return a true value because now is trowing on error
             saleRequest: lastSavedSaleRequest,
             ip: ip,
             userName: validateduser!.user.name!,
           );
 
-      if (!printed) {
-        throw AppException(
-          'Não foi possível realizar a impressão do pedido. Confirme se o IP da impressora está correto, se ela está com bobina e se ela está ligada. Caso não resolva, reinicie ela e tente novamente.'
-              .hardcoded,
-        );
-      }
+      printed = true;
     });
 
     return printed;

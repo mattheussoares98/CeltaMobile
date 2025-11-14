@@ -55,13 +55,7 @@ void main() {
   });
 
   test('should behave correctly on print', () async {
-    final response = await sut.print(
-      saleRequest: saleRequest,
-      ip: ip,
-      userName: userName,
-    );
-
-    expect(response, printed);
+    await sut.print(saleRequest: saleRequest, ip: ip, userName: userName);
 
     verify(
       () => mockDatasource.print(
