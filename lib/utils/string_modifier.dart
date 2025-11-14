@@ -102,4 +102,22 @@ extension StringModifier on String {
 
     return '$textPart$numberPart'.replaceAll(RegExp(r'\.'), ',');
   }
+
+  String removeAccents() {
+    const withDiacritics =
+        'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+    const withoutDiacritics =
+        'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
+
+    String str = this;
+    for (int i = 0; i < withDiacritics.length; i++) {
+      str = str.replaceAll(withDiacritics[i], withoutDiacritics[i]);
+    }
+
+    // After replacing known characters, we also remove any
+    // remaining non-ASCII characters that the printer can't handle.
+    str = str.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
+
+    return str;
+  }
 }
