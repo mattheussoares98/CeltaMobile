@@ -58,6 +58,7 @@ GoRouter goRouter(Ref ref) {
         saleRequestRequestsTypesRoute([saleRequestRoute()]),
         searchProductsRoute(),
         transferBetweenStocksRoute(),
+        pdfViewerRoute(),
       ]),
       splashRoute(),
     ],

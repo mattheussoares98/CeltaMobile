@@ -11,6 +11,7 @@ export './buy_request_route.dart';
 export './customer_register_route.dart';
 export './enterprise_manager_route.dart';
 export './home_route.dart';
+export './pdf_viewer_route.dart';
 export './search_products_route.dart';
 export './splash_route.dart';
 export './transfer_between_stocks_route.dart';

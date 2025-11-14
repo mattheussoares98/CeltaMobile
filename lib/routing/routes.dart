@@ -18,6 +18,7 @@ enum Routes {
   inventoryFrozenProcesses('Inventário'),
   inventoryProducts('Inventário (produtos)'),
   home('Home'),
+  pdfViewer('Visualizador de PDF'),
   saleRequest('Pedido de vendas'),
   saleRequestRequestsTypes('Pedido de vendas'),
   searchProducts('Pesquisar produtos'),
