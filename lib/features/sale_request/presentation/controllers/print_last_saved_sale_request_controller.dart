@@ -46,6 +46,7 @@ class PrintLastSavedSaleRequestController
       printed = await ref
           .read(printLastSavedSaleRequestRepositoryProvider)
           .print(
+            //TODO dont need to return a true value because now is trowing on error
             saleRequest: lastSavedSaleRequest,
             ip: ip,
             userName: validateduser!.user.name!,
