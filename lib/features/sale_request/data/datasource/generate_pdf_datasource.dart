@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:celta_intelligence/utils/utils.dart';
-import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -166,13 +165,29 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
   }
 
   /// Formats a nullable double value into a currency string.
-  static String _formatCurrency(double? value) {
-    if (value == null) return 'R\$ 0,00';
-    final format = NumberFormat.currency(
-      locale: 'pt_BR',
-      symbol: 'R\$',
-      decimalDigits: 2,
+  static pw.Widget _formatCurrency(double? value) {
+    // Set a default or use the provided value
+    final double a = value ?? 0;
+
+    // Use your existing .toBrazilianNumber extension to format the number
+    final String formattedValue = a.toString().toBrazilianNumber(2, false);
+
+    return pw.Row(
+      mainAxisAlignment: pw.MainAxisAlignment.end,
+      children: [
+        pw.Text(
+          'R\$ ',
+          style: const pw.TextStyle(
+            fontSize: 7, // Smaller font size
+            color: PdfColors.grey600, // Lighter color
+          ),
+        ),
+        // 2. The main currency value
+        pw.Text(
+          formattedValue,
+          style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+        ),
+      ],
     );
-    return format.format(value);
   }
 }
