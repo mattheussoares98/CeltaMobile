@@ -67,9 +67,9 @@ class _CartPageState extends ConsumerState<CartPage>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    debugPrint(state.toString()); //TODO test this in phones
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
+      //TODO test this in phones
       saveInstructionsAndObservations();
     }
   }
