@@ -2,8 +2,10 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../routing/routing.dart';
 import '../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../controllers/controllers.dart';
 
@@ -48,7 +50,14 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
                       'Não foi possível gerar o PDF. Tente novamente'.hardcoded,
                 );
               } else {
-                //TODO open PDF viewer page
+                context.pushNamed(
+                  Routes.pdfViewer.name,
+                  extra: <String, dynamic>{
+                    'bytes': bytes,
+                    'fileName': lastSavedSaleRequest.saleRequestNumber
+                        .replaceAll(RegExp(r'\D'), ''),
+                  },
+                );
               }
               setState(() {
                 isLoading = false;
