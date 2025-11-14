@@ -74,31 +74,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
               Sizes.p8,
             ),
             actions: [
-              Consumer(
-                //TODO create another wiget for both icons buttons
-                builder: (_, ref, _) {
-                  final lastSavedSaleRequest = ref
-                      .watch(
-                        lastSavedSaleRequestStateControllerProvider(
-                          widget.enterpriseCode,
-                        ),
-                      )
-                      .value;
-
-                  return Row(
-                    children: [
-                      IconButton(
-                        onPressed: lastSavedSaleRequest == null ? null : () {},
-                        icon: Icon(
-                          isIOS
-                              ? CupertinoIcons.doc_text_search
-                              : Icons.receipt_long,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+              const ShowPdfButton(),
               const PrintButton(),
               QuantityBadge(
                 quantity: products?.length ?? 0,
