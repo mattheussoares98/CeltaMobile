@@ -93,3 +93,13 @@ ILocalIpPrintSaleRequestRepository localIpPrintSaleRequestRepository(Ref ref) {
     ref.watch(localIpPrintSaleRequestDatasourceProvider),
   );
 }
+
+@riverpod
+IGeneratePdfDatasource generatePdfDatasource(Ref ref) {
+  return GeneratePdfDatasource();
+}
+
+@riverpod
+IGeneratePdfRepository GeneratePdfRepository(Ref ref) {
+  return GeneratePdfRepositoryImpl(ref.watch(generatePdfDatasourceProvider));
+}
