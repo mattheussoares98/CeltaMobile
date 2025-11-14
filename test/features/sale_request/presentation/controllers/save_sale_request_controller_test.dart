@@ -204,7 +204,10 @@ void main() {
       );
       expect(
         spyLastSaved.savedEntity?.pendingSaleRequestEntity,
-        fakePendingRequest,
+        fakePendingRequest.copyWith(
+          observations: observations,
+          instructions: instructions,
+        ),
       );
 
       // 4. Verify local repo was cleared

@@ -59,7 +59,10 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
           )
           .save(
             LastSavedSaleRequestEntity(
-              pendingSaleRequestEntity: pending,
+              pendingSaleRequestEntity: pending.copyWith(
+                observations: observations,
+                instructions: instructions,
+              ),
               saleRequestNumber: saleRequestNumber!,
             ),
           );
