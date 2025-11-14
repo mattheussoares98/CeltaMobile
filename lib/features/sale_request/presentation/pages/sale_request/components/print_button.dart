@@ -53,6 +53,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
 
     if (printed) {
       context.pop();
+      showSnackBarMessage(context, 'Impressão eviada com sucesso'.hardcoded);
     }
   }
 
