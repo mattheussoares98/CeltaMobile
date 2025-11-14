@@ -76,8 +76,21 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
       },
       data: (lastSavedSaleRequest) {
         return IconButton(
+          icon: Icon(
+            isIOS ? CupertinoIcons.printer : Icons.print,
+            color: lastSavedSaleRequest == null ? theme.disabledColor : null,
+          ),
           onPressed: lastSavedSaleRequest == null
-              ? null
+              ? () {
+                  showAlertDialog(
+                    context: context,
+                    title: 'Nenhum pedido salvo encontrado'.hardcoded,
+                    content:
+                        'Só é possível imprimir o último pedido salvo, mas não foram encontrados pedidos salvos para esta empresa'
+                            .hardcoded,
+                    defaultActionText: 'Ok'.hardcoded,
+                  );
+                }
               : () {
                   showModalPage(
                     Consumer(
@@ -136,7 +149,6 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
                     context,
                   );
                 },
-          icon: Icon(isIOS ? CupertinoIcons.printer : Icons.print),
         );
       },
     );
