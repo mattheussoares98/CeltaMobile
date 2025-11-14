@@ -49,7 +49,7 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
           //   ),
           // ),
           pw.Text(
-            'Pedido Nº: ${saleRequest.saleRequestNumber}',
+            'Pedido Nº: ${saleRequest.saleRequestNumber.replaceAll(RegExp(r'\D'), '')}',
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
           ),
         ],
@@ -116,7 +116,16 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
   }
 
   static pw.Widget _buildProductTable(List<CartProductModel> cartProducts) {
-    final headers = ['Produto', 'Qtd', 'Preço unit', 'Desconto', 'Total'];
+    final atLeastOneHasDiscount = cartProducts.any(
+      (p) => p.DiscountValue != null && p.DiscountValue! > 0,
+    );
+    final headers = [
+      'Produto',
+      'Qtd',
+      'Preço unit',
+      if (atLeastOneHasDiscount) 'Desconto',
+      'Total',
+    ];
 
     double totalDiscount = 0;
     double totalLiquid = 0;
@@ -132,13 +141,13 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
             cartProduct.product?.Name ?? 'N/A',
             cartProduct.Quantity.toString().toBrazilianNumber(2, true),
             _formatCurrency(cartProduct.Value),
-            _formatCurrency(productDiscount),
+            if (atLeastOneHasDiscount) _formatCurrency(productDiscount),
             _formatCurrency(cartProduct.toEntity().getValueLiquid),
           ];
         }).toList()..add([
           "",
           "",
-          "",
+          if (atLeastOneHasDiscount) "",
           _formatCurrency(totalDiscount),
           _formatCurrency(totalLiquid),
         ]);
@@ -152,12 +161,12 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
         color: PdfColors.white,
       ),
       headerDecoration: const pw.BoxDecoration(color: PdfColors.blueGrey),
-      cellHeight: 30,
+      cellHeight: 25,
       cellAlignments: {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerRight,
         2: pw.Alignment.centerRight,
-        3: pw.Alignment.centerRight,
+        if (atLeastOneHasDiscount) 3: pw.Alignment.centerRight,
         4: pw.Alignment.centerRight,
       },
       cellPadding: const pw.EdgeInsets.symmetric(horizontal: 4, vertical: 4),
@@ -174,6 +183,7 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
 
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.end,
+      crossAxisAlignment: pw.CrossAxisAlignment.center,
       children: [
         pw.Text(
           'R\$ ',
@@ -182,6 +192,7 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
             color: PdfColors.grey600, // Lighter color
           ),
         ),
+        pw.SizedBox(width: 2), // Small space between currency symbol and value
         // 2. The main currency value
         pw.Text(
           formattedValue,
