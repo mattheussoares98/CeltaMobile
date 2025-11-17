@@ -13,20 +13,6 @@ part 'researchs_state_controller.g.dart';
 class ResearchsStateController extends _$ResearchsStateController {
   @override
   FutureOr<List<ResearchEntity>> build() async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
-
     return await _load(null);
   }
 
