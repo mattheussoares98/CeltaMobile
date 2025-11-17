@@ -1,1 +1,1 @@
-export './researchs_page.dart';
+export 'cometing_prices_researchs.dart';

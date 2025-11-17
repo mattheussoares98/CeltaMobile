@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../localization/string_hardcoded.dart';
 
-class CompetingPricesPage extends ConsumerWidget {
-  const CompetingPricesPage({super.key});
+class CompetingPricesResearchs extends ConsumerWidget {
+  const CompetingPricesResearchs({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
