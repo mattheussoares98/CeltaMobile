@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_intelligence/exceptions/app_exception.dart';
+import 'package:celta_intelligence/exceptions/exceptions.dart';
 import 'package:celta_intelligence/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/competing_prices/domain/repository/repository.dart';
 import 'package:celta_intelligence/features/competing_prices/presentation/controllers/controllers.dart';
@@ -65,24 +65,43 @@ void main() {
   }
 
   group('ResearchsStateController', () {
-    test('build should return an empty list as initial data', () async {
-      // ARRANGE
+    test('build should load without filter searchValue', () async {
+      when(
+        () => mockRepository.load(
+          crossIdentity: any(named: 'crossIdentity'),
+          baseUrl: any(named: 'baseUrl'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          searchValue: any(named: 'searchValue'),
+        ),
+      ).thenAnswer((_) async {
+        await Future.delayed(Duration.zero);
+        return fakeResearchs;
+      });
+
       final container = makeProviderContainer(
         session: fakeSession,
         enterprise: fakeEnterprise,
       );
+      // Wait for the initial build to complete
 
-      // ACT: Wait for the build method to complete
       final result = await container.read(
         researchsStateControllerProvider.future,
       );
 
       // ASSERT
-      expect(result, isEmpty);
-      expectLater(
-        await container.read(researchsStateControllerProvider.future),
-        const [],
-      );
+      expect(result, fakeResearchs);
+      // expectLater(
+      //   await container.read(researchsStateControllerProvider.future),
+      //   const [],
+      // );
+      verify(
+        () => mockRepository.load(
+          crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+          baseUrl: fakeSession.enterprise!.baseUrl!,
+          enterpriseCode: fakeEnterprise.Code!,
+          searchValue: fakeSearchValue,
+        ),
+      ).called(1);
     });
 
     group('load', () {
@@ -137,29 +156,17 @@ void main() {
       );
 
       test('should emit [loading, error] when session is invalid', () async {
-        // ARRANGE: Pass a null session
+        // ARRANGE: Pass a null enterprise
         final container = makeProviderContainer(
           session: null,
           enterprise: fakeEnterprise,
         );
-        await container.read(researchsStateControllerProvider.future);
 
-        final states = <AsyncValue<List<ResearchEntity>>>[];
-        container.listen(
-          researchsStateControllerProvider,
-          (_, next) => states.add(next),
+        final response = container.read(
+          researchsStateControllerProvider.future,
         );
 
-        // ACT
-        await container
-            .read(researchsStateControllerProvider.notifier)
-            .load(fakeSearchValue);
-
-        // ASSERT
-        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-        expect(states.last.error, isA<AppException>());
-
-        // Verify the repository was never called
+        expect(response, throwsA(isA<AppException>()));
         verifyNever(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
@@ -178,23 +185,11 @@ void main() {
             session: fakeSession,
             enterprise: null,
           );
-          await container.read(researchsStateControllerProvider.future);
 
-          final states = <AsyncValue<List<ResearchEntity>>>[];
-          container.listen(
-            researchsStateControllerProvider,
-            (_, next) => states.add(next),
+          expect(
+            container.read(researchsStateControllerProvider.future),
+            throwsA(isA<Error>()),
           );
-
-          // ACT
-          await container
-              .read(researchsStateControllerProvider.notifier)
-              .load(fakeSearchValue);
-
-          // ASSERT
-          expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-          // This will be a null check error because of `selectedEnterprise!.Code!`
-          expect(states.last.error, isA<Error>());
           verifyNever(
             () => mockRepository.load(
               crossIdentity: any(named: 'crossIdentity'),

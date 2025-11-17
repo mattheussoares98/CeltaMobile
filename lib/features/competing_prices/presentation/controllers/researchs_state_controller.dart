@@ -27,28 +27,32 @@ class ResearchsStateController extends _$ResearchsStateController {
       timer?.cancel();
     });
 
-    return [];
+    return await _load(null);
   }
 
   Future<void> load(String? searchValue) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final repository = ref.read(soapLoadResearchsRepositoryProvider);
-      final validatedUserSession = await ref.watch(
-        validatedUserSessionProvider.future,
-      );
-      final selectedEnterprise = ref.watch(
-        selectedEnterpriseStateControllerProvider,
-      );
-
-      final researchs = await repository.load(
-        crossIdentity: validatedUserSession!.user.CrossIdentity_Usuario!,
-        baseUrl: validatedUserSession.enterprise!.baseUrl!,
-        enterpriseCode: selectedEnterprise!.Code!,
-        searchValue: searchValue,
-      );
-
-      return researchs;
+      return await _load(searchValue);
     });
+  }
+
+  Future<List<ResearchEntity>> _load(String? searchValue) async {
+    final repository = ref.read(soapLoadResearchsRepositoryProvider);
+    final validatedUserSession = await ref.watch(
+      validatedUserSessionProvider.future,
+    );
+    final selectedEnterprise = ref.watch(
+      selectedEnterpriseStateControllerProvider,
+    );
+
+    final researchs = await repository.load(
+      crossIdentity: validatedUserSession!.user.CrossIdentity_Usuario!,
+      baseUrl: validatedUserSession.enterprise!.baseUrl!,
+      enterpriseCode: selectedEnterprise!.Code!,
+      searchValue: searchValue,
+    );
+
+    return researchs;
   }
 }
