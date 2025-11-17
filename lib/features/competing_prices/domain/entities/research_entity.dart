@@ -11,7 +11,7 @@ class ResearchEntity extends Equatable {
   final String? Name;
   final bool RestrictProducts;
   final bool IsAssociatingConcurrents;
-  final List<ConcurrentEntity> Concurrents;
+  final List<ConcurrentEntity>? Concurrents;
   final List? Products;
 
   const ResearchEntity({
@@ -19,9 +19,9 @@ class ResearchEntity extends Equatable {
     required this.IsAssociatingConcurrents,
     required this.EnterpriseName,
     required this.EnterpriseCode,
-    this.Name,
     required this.CreationDate,
-    this.Observation,
+    required this.Name,
+    required this.Observation,
     required this.Concurrents,
     required this.Products,
     required this.RestrictProducts,

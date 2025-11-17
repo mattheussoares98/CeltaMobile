@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/data/models/models.dart';
+import '../../domain/entities/entities.dart';
 
 class ConcurrentModel extends Equatable {
   final int? ConcurrentCode;
@@ -14,6 +15,9 @@ class ConcurrentModel extends Equatable {
     required this.Observation,
     required this.Address,
   });
+
+  @override
+  List<Object?> get props => [ConcurrentCode, Name, Observation, Address];
 
   factory ConcurrentModel.fromJson(Map json) {
     return ConcurrentModel(
@@ -33,6 +37,23 @@ class ConcurrentModel extends Equatable {
     };
   }
 
-  @override
-  List<Object?> get props => [ConcurrentCode, Name, Observation, Address];
+  factory ConcurrentModel.fromEntity(ConcurrentEntity entity) {
+    return ConcurrentModel(
+      ConcurrentCode: entity.ConcurrentCode,
+      Name: entity.Name,
+      Observation: entity.Observation,
+      Address: entity.Address != null
+          ? AddressModel.fromEntity(entity.Address!)
+          : null,
+    );
+  }
+
+  ConcurrentEntity toEntity() {
+    return ConcurrentEntity(
+      ConcurrentCode: ConcurrentCode,
+      Name: Name,
+      Observation: Observation,
+      Address: Address?.toEntity(),
+    );
+  }
 }
