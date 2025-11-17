@@ -2,6 +2,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
 import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
@@ -691,4 +692,27 @@ class EntityFactory {
         saleRequestNumber: faker.lorem.word(),
         pendingSaleRequestEntity: makePendingSaleRequestEntity(),
       );
+
+  static ResearchEntity makeResearchEntity() => ResearchEntity(
+    EnterpriseCode: faker.randomGenerator.integer(100),
+    EnterpriseName: faker.company.name(),
+    Code: faker.randomGenerator.integer(100),
+    CreationDate: DateTime.now(),
+    Observation: faker.lorem.sentence(),
+    Name: faker.lorem.word(),
+    RestrictProducts: faker.randomGenerator.boolean(),
+    IsAssociatingConcurrents: faker.randomGenerator.boolean(),
+    Concurrents: [
+      makeConcurrentEntity(),
+      makeConcurrentEntity(),
+      makeConcurrentEntity(),
+    ],
+    Products: [makeProductEntity(), makeProductEntity(), makeProductEntity()],
+  );
+  static ConcurrentEntity makeConcurrentEntity() => ConcurrentEntity(
+    ConcurrentCode: faker.randomGenerator.integer(100),
+    Name: faker.company.name(),
+    Observation: faker.lorem.sentence(),
+    Address: makeAddressEntity(),
+  );
 }

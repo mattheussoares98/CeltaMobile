@@ -1,8 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../../core/data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import 'models.dart';
 
-class ResearchModel {
+class ResearchModel extends Equatable {
   final int Code;
   final DateTime CreationDate;
   final String EnterpriseName;
@@ -14,7 +16,7 @@ class ResearchModel {
   final List<ConcurrentModel>? Concurrents;
   final List<ProductModel>? Products;
 
-  ResearchModel({
+  const ResearchModel({
     required this.Code,
     required this.IsAssociatingConcurrents,
     required this.EnterpriseName,
@@ -26,6 +28,20 @@ class ResearchModel {
     required this.Products,
     required this.RestrictProducts,
   });
+
+  @override
+  List<Object?> get props => [
+    Code,
+    CreationDate,
+    EnterpriseName,
+    EnterpriseCode,
+    Observation,
+    Name,
+    RestrictProducts,
+    IsAssociatingConcurrents,
+    Concurrents,
+    Products,
+  ];
 
   factory ResearchModel.fromJson(Map<String, dynamic> json) {
     return ResearchModel(
@@ -40,7 +56,9 @@ class ResearchModel {
       Concurrents: (json["Concurrents"] as List?)
           ?.map((e) => ConcurrentModel.fromJson(e))
           .toList(),
-      Products: json["Products"],
+      Products: (json["Products"] as List?)
+          ?.map((e) => ProductModel.fromJson(e))
+          .toList(),
     );
   }
 
