@@ -4,10 +4,13 @@ import '../../../features/competing_prices/presentation/pages/cometing_prices_re
 import '../../routing.dart';
 
 RouteBase competingPricesResearchsRoute(List<RouteBase> routes) => GoRoute(
-  path: 'competing-prices-researchs',
+  path: 'competing-prices-researchs/:enterpriseCode',
   name: Routes.competingPricesResearchs.name,
   routes: routes,
   builder: (context, state) {
-    return const CompetingPricesResearchs();
+    final enterpriseCode = int.parse(
+      state.pathParameters['enterpriseCode'].toString(),
+    );
+    return CompetingPricesResearchs(enterpriseCode: enterpriseCode);
   },
 );
