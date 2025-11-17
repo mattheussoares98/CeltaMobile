@@ -3,6 +3,7 @@ enum Modules {
   adjustStock,
   buyQuotation,
   buyRequest,
+  competingPrices,
   customerRegister,
   expeditionConference,
   inventory,
