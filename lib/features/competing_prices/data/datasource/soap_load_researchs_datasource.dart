@@ -34,8 +34,8 @@ class SoapLoadResearchsDatasource implements ISoapLoadResearchsDatasource {
       },
     );
 
-    return (response as List)
-        .map((e) => ResearchModel.fromJson(json.decode(e)))
+    return (json.decode(response) as List)
+        .map((e) => ResearchModel.fromJson(e))
         .toList();
   }
 }

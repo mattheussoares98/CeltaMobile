@@ -29,7 +29,7 @@ void main() {
 
   void mockSuccess() {
     soapRequest.mockPost(
-      researchsModels.map((e) => json.encode(e.toJson())).toList(),
+      json.encode(researchsModels.map((e) => e.toJson()).toList()),
     );
   }
 
