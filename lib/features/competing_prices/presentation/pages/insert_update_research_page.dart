@@ -6,6 +6,7 @@ import '../../../../constants/constants.dart';
 import '../../../../core/validators/validators.dart';
 import '../../../../localization/string_hardcoded.dart';
 import '../../domain/entities/entities.dart';
+import '../controllers/controllers.dart';
 
 class InsertUpdateResearchPage extends ConsumerStatefulWidget {
   final ResearchEntity? research; //if is null, is inserting
@@ -45,9 +46,27 @@ class _InsertUpdateResearchPageState
     });
   }
 
+  void submit() async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    await ref
+        .read(insertUpdateResearchControllerProvider.notifier)
+        .insertUpdate(
+          name: nameController.text,
+          observations: observarionsController.text,
+          researchCode: widget.research?.Code,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    bool isLoading = ref.watch(
+      insertUpdateResearchControllerProvider.select((s) => s.isLoading),
+    );
+
     return Form(
       key: formKey,
       child: Padding(
@@ -80,16 +99,18 @@ class _InsertUpdateResearchPageState
               hintText: 'Observações'.hardcoded,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               maxLength: 300,
-              onFieldSubmitted: (_) {
-                //TODO insertUpdate
-              },
+              onFieldSubmitted: (_) => submit(),
             ),
             gapH32,
-            PrimaryButton(
-              text: widget.research == null
-                  ? 'Inserir'.hardcoded
-                  : 'Editar'.hardcoded,
-              onPressed: () {},
+            SizedBox(
+              width: 200,
+              child: PrimaryButton(
+                text: widget.research == null
+                    ? 'Inserir'.hardcoded
+                    : 'Editar'.hardcoded,
+                onPressed: submit,
+                isLoading: isLoading,
+              ),
             ),
           ],
         ),
