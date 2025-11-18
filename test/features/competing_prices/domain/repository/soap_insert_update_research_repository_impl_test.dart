@@ -1,0 +1,114 @@
+import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
+import 'package:celta_intelligence/features/competing_prices/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/competing_prices/domain/repository/repository.dart';
+import 'package:faker/faker.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../mocks/mocks.dart';
+
+class SoapInsertUpdateResearchDatasourceSpy extends Mock
+    implements ISoapInsertUpdateResearchDatasource {
+  SoapInsertUpdateResearchDatasourceSpy() {
+    when(
+      () => this.insertUpdate(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        name: any(named: 'name'),
+        observations: any(named: 'observations'),
+        researchCode: any(named: 'researchCode'),
+      ),
+    ).thenAnswer((_) async {});
+  }
+}
+
+void main() {
+  late ISoapInsertUpdateResearchRepository sut;
+
+  late SoapInsertUpdateResearchDatasourceSpy datasource;
+
+  late String baseUrl;
+  late String crossIdentity;
+  late int enterpriseCode;
+  late String name;
+  late int? researchCode;
+  late String? observations;
+
+  void initSut() {
+    sut = SoapInsertUpdateResearchRepositoryImpl(datasource);
+  }
+
+  void initInjections() {
+    datasource = SoapInsertUpdateResearchDatasourceSpy();
+  }
+
+  void mockSuccess() {}
+
+  void initEntities() {
+    name = faker.lorem.word();
+    researchCode = faker.randomGenerator.integer(100);
+    observations = faker.lorem.word();
+    crossIdentity = faker.guid.guid();
+    baseUrl = faker.internet.httpUrl();
+    enterpriseCode = faker.randomGenerator.integer(1000);
+  }
+
+  setUp(() {
+    initEntities();
+    initInjections();
+    initSut();
+    mockSuccess();
+  });
+
+  setUpAll(() {
+    registerFallbackValue(
+      PendingBuyRequestModel.fromEntity(
+        EntityFactory.makePendingBuyRequestEntity(),
+      ),
+    );
+  });
+
+  test('should call with correct values when pass all params', () async {
+    await sut.insertUpdate(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      enterpriseCode: enterpriseCode,
+      name: name,
+      observations: observations,
+      researchCode: researchCode,
+    );
+
+    verify(
+      () => datasource.insertUpdate(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        enterpriseCode: enterpriseCode,
+        name: name,
+        observations: observations,
+        researchCode: researchCode,
+      ),
+    ).called(1);
+
+    verifyNoMoreInteractions(datasource);
+  });
+  test('should call with correct values when DOESNT pass all params', () async {
+    await sut.insertUpdate(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      enterpriseCode: enterpriseCode,
+      name: name,
+    );
+
+    verify(
+      () => datasource.insertUpdate(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        enterpriseCode: enterpriseCode,
+        name: name,
+      ),
+    ).called(1);
+
+    verifyNoMoreInteractions(datasource);
+  });
+}
