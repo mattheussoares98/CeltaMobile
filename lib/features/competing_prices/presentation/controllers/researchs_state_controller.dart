@@ -12,7 +12,7 @@ part 'researchs_state_controller.g.dart';
 @riverpod
 class ResearchsStateController extends _$ResearchsStateController {
   @override
-  FutureOr<List<ResearchEntity>> build() async {
+  Future<List<ResearchEntity>> build() async {
     return await _load(null);
   }
 
@@ -40,5 +40,24 @@ class ResearchsStateController extends _$ResearchsStateController {
     );
 
     return researchs;
+  }
+
+  void updateResearchLocally({
+    required int code,
+    required String name,
+    required String? observations,
+  }) {
+    final currentState = state.valueOrNull;
+    if (currentState == null) return;
+
+    final index = currentState.indexWhere((e) => e.Code == code);
+    if (index != -1) {
+      final updatedList = List<ResearchEntity>.from(currentState);
+      updatedList[index] = updatedList[index].copyWith(
+        Name: name,
+        Observation: observations,
+      );
+      state = AsyncData(updatedList);
+    }
   }
 }

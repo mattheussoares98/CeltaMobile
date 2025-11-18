@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import 'entities.dart';
@@ -40,4 +41,31 @@ class ResearchEntity extends Equatable {
     Concurrents,
     Products,
   ];
+
+  ResearchEntity copyWith({
+    int? Code,
+    DateTime? CreationDate,
+    String? EnterpriseName,
+    int? EnterpriseCode,
+    String? Observation,
+    String? Name,
+    bool? RestrictProducts,
+    bool? IsAssociatingConcurrents,
+    List<ConcurrentEntity>? Concurrents,
+    List? Products,
+  }) {
+    return ResearchEntity(
+      Code: Code ?? this.Code,
+      CreationDate: CreationDate ?? this.CreationDate,
+      EnterpriseName: EnterpriseName ?? this.EnterpriseName,
+      EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
+      Observation: Observation ?? this.Observation,
+      Name: Name ?? this.Name,
+      RestrictProducts: RestrictProducts ?? this.RestrictProducts,
+      IsAssociatingConcurrents:
+          IsAssociatingConcurrents ?? this.IsAssociatingConcurrents,
+      Concurrents: Concurrents ?? this.Concurrents,
+      Products: Products ?? this.Products,
+    );
+  }
 }

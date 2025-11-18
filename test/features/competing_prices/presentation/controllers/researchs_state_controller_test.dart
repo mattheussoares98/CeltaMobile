@@ -201,5 +201,99 @@ void main() {
         },
       );
     });
+
+    group('updateResearchLocally', () {
+      test('should update the entity in the list if code matches', () async {
+        // ARRANGE
+        final initialResearch = fakeResearchs.first;
+        const newName = 'Updated Name';
+        const newObservations = 'Updated Obs';
+
+        // 1. Stub the repository to return the data for the initial load
+        when(
+          () => mockRepository.load(
+            crossIdentity: any(named: 'crossIdentity'),
+            baseUrl: any(named: 'baseUrl'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            searchValue: any(named: 'searchValue'),
+          ),
+        ).thenAnswer((_) async => fakeResearchs);
+
+        final container = makeProviderContainer(
+          session: fakeSession,
+          enterprise: fakeEnterprise,
+        );
+        addTearDown(container.dispose);
+
+        // 2. Load the initial state (build method) and wait for it to populate AsyncData
+        await container.read(researchsStateControllerProvider.future);
+
+        // ACT
+        // Since the build method finished, the state.value is guaranteed to be the list.
+        container
+            .read(researchsStateControllerProvider.notifier)
+            .updateResearchLocally(
+              code: initialResearch.Code,
+              name: newName,
+              observations: newObservations,
+            );
+
+        // ASSERT
+        // 3. Read the final state synchronously (no future needed for state.value)
+        final state = container.read(researchsStateControllerProvider);
+
+        // Ensure the state is AsyncData and not null
+        expect(state.value, isNotNull);
+
+        final updatedItem = state.value!.firstWhere(
+          (e) => e.Code == initialResearch.Code,
+        );
+
+        // Verify changes
+        expect(updatedItem.Name, newName);
+        expect(updatedItem.Observation, newObservations);
+
+        // Ensure the list size did not change
+        expect(state.value!.length, 1);
+      });
+      test('should not update if code does not match any entity', () async {
+        // ARRANGE
+        when(
+          () => mockRepository.load(
+            crossIdentity: any(named: 'crossIdentity'),
+            baseUrl: any(named: 'baseUrl'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            searchValue: any(named: 'searchValue'),
+          ),
+        ).thenAnswer((_) async => fakeResearchs);
+
+        final container = makeProviderContainer(
+          session: fakeSession,
+          enterprise: fakeEnterprise,
+        );
+        addTearDown(container.dispose);
+
+        await container.read(researchsStateControllerProvider.future);
+
+        final nonExistentCode = fakeResearchs.first.Code + 9999;
+        final initialStateValue = container
+            .read(researchsStateControllerProvider)
+            .value!;
+
+        // ACT
+        container
+            .read(researchsStateControllerProvider.notifier)
+            .updateResearchLocally(
+              code: nonExistentCode,
+              name: 'New Name',
+              observations: 'New Obs',
+            );
+
+        // ASSERT
+        final state = container.read(researchsStateControllerProvider);
+        // Ensure the list content is the original list object
+        expect(state.value, initialStateValue);
+      });
+    });
   });
 }
