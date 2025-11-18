@@ -1,0 +1,59 @@
+import 'package:equatable/equatable.dart';
+
+import '../../../../core/data/models/models.dart';
+import '../../domain/entities/entities.dart';
+
+class ConcurrentModel extends Equatable {
+  final int? ConcurrentCode;
+  final String? Name;
+  final String? Observation;
+  final AddressModel? Address;
+
+  const ConcurrentModel({
+    required this.ConcurrentCode,
+    required this.Name,
+    required this.Observation,
+    required this.Address,
+  });
+
+  @override
+  List<Object?> get props => [ConcurrentCode, Name, Observation, Address];
+
+  factory ConcurrentModel.fromJson(Map json) {
+    return ConcurrentModel(
+      ConcurrentCode: json["ConcurrentCode"],
+      Name: json["Name"],
+      Observation: json["Observation"],
+      Address: AddressModel.fromJson(json["Address"]),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "ConcurrentCode": ConcurrentCode,
+      "Name": Name,
+      "Observation": Observation,
+      "Address": Address?.toJson(),
+    };
+  }
+
+  factory ConcurrentModel.fromEntity(ConcurrentEntity entity) {
+    return ConcurrentModel(
+      ConcurrentCode: entity.ConcurrentCode,
+      Name: entity.Name,
+      Observation: entity.Observation,
+      Address: entity.Address != null
+          ? AddressModel.fromEntity(entity.Address!)
+          : null,
+    );
+  }
+
+  ConcurrentEntity toEntity() {
+    return ConcurrentEntity(
+      ConcurrentCode: ConcurrentCode,
+      Name: Name,
+      Observation: Observation,
+      Address: Address?.toEntity(),
+    );
+  }
+}

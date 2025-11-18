@@ -5,6 +5,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 
+import '../../../../constants/constants.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
@@ -57,12 +58,17 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.end,
         children: [
-          // pw.Text(
-          //   'Código da Empresa: ${saleRequest.enterpriseCode}',
-          //   style: pw.TextStyle(
-          //     fontWeight: pw.FontWeight.bold,
-          //   ),
-          // ),
+          if (saleRequest.pendingSaleRequestModel.needProcessCart == true) ...[
+            pw.Text(
+              'Nesse pedido, não calculou os preços de acordo com as regras do BS',
+              style: pw.TextStyle(
+                // fontWeight: pw.FontWeight.,
+                fontStyle: pw.FontStyle.italic,
+                color: PdfColors.red,
+              ),
+            ),
+            pw.SizedBox(height: Sizes.p4),
+          ],
           pw.Text(
             'Pedido Nº: ${saleRequest.saleRequestNumber.replaceAll(RegExp(r'\D'), '')}',
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
@@ -138,7 +144,7 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
       'Produto',
       'Qtd',
       'Preço unit',
-      if (atLeastOneHasDiscount) 'Desconto',
+      if (atLeastOneHasDiscount) 'Desc total',
       'Total',
     ];
 
@@ -146,18 +152,16 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
     double totalLiquid = 0;
     final data =
         cartProducts.map((cartProduct) {
-          final productDiscount =
-              cartProduct.toEntity().getValueOrPercentageDiscount ?? 0;
-          final productTotalLiquid = cartProduct.toEntity().getValueLiquid;
+          final productDiscount = cartProduct.toEntity().DiscountValue ?? 0;
           totalDiscount += productDiscount;
-          totalLiquid += productTotalLiquid;
+          totalLiquid += cartProduct.TotalLiquid;
 
           return [
             cartProduct.product?.Name ?? 'N/A',
             cartProduct.Quantity.toString().toBrazilianNumber(2, true),
             _formatCurrency(cartProduct.Value),
             if (atLeastOneHasDiscount) _formatCurrency(productDiscount),
-            _formatCurrency(cartProduct.toEntity().getValueLiquid),
+            _formatCurrency(cartProduct.toEntity().TotalLiquid),
           ];
         }).toList()..add([
           "",
