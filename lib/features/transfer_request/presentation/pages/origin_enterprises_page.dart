@@ -19,13 +19,9 @@ class OriginEnterprisesPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Empresa de origem'.hardcoded)),
       body: AsyncValueWidget(
-        value: ref.watch(
-          enterprisesStateControllerProvider(module: Modules.transferRequest),
-        ),
+        value: ref.watch(enterprisesStateControllerProvider()),
         tryAgain: () {
-          ref.invalidate(
-            enterprisesStateControllerProvider(module: Modules.transferRequest),
-          );
+          ref.invalidate(enterprisesStateControllerProvider());
         },
         data: (enterprises) {
           return EnterpriseItems(
@@ -57,11 +53,7 @@ class OriginEnterprisesPage extends ConsumerWidget {
               );
             },
             onRefresh: () {
-              ref.invalidate(
-                enterprisesStateControllerProvider(
-                  module: Modules.transferRequest,
-                ),
-              );
+              ref.invalidate(enterprisesStateControllerProvider());
             },
           );
         },
