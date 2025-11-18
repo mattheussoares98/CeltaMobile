@@ -18,3 +18,19 @@ ISoapLoadResearchsRepository soapLoadResearchsRepository(Ref ref) {
     ref.watch(soapLoadResearchsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInsertUpdateResearchDatasource soapInsertUpdateResearchDatasource(
+  Ref ref,
+) {
+  return SoapInsertUpdateResearchDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapInsertUpdateResearchRepository soapInsertUpdateResearchRepository(
+  Ref ref,
+) {
+  return SoapInsertUpdateResearchRepositoryImpl(
+    ref.watch(soapInsertUpdateResearchDatasourceProvider),
+  );
+}
