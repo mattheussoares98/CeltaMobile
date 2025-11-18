@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../features/competing_prices/presentation/pages/researchs_page.dart';
+import '../../../features/competing_prices/presentation/pages/researchs/researchs_page.dart';
 import '../../routing.dart';
 
 RouteBase competingPricesResearchsRoute(List<RouteBase> routes) => GoRoute(
