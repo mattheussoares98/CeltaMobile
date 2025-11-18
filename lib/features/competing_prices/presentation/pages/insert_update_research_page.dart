@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/validators/validators.dart';
 import '../../../../localization/string_hardcoded.dart';
+import '../../../../utils/utils.dart';
 import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 
@@ -66,6 +68,18 @@ class _InsertUpdateResearchPageState
     bool isLoading = ref.watch(
       insertUpdateResearchControllerProvider.select((s) => s.isLoading),
     );
+
+    ref.listen(insertUpdateResearchControllerProvider, (p, n) {
+      n.doOnSuccess(p, () {
+        context.pop();
+        showSnackBarMessage(
+          context,
+          'Pesquisa ${widget.research == null ? 'inserida' : 'alterada'} com sucesso'
+              .hardcoded,
+        );
+      });
+      n.showAlertDialogOnError(context);
+    });
 
     return Form(
       key: formKey,
