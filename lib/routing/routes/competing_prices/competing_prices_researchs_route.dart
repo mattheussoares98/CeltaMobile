@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../features/competing_prices/presentation/pages/cometing_prices_researchs.dart';
+import '../../../features/competing_prices/presentation/pages/researchs_page.dart';
 import '../../routing.dart';
 
 RouteBase competingPricesResearchsRoute(List<RouteBase> routes) => GoRoute(
@@ -11,6 +11,6 @@ RouteBase competingPricesResearchsRoute(List<RouteBase> routes) => GoRoute(
     final enterpriseCode = int.parse(
       state.pathParameters['enterpriseCode'].toString(),
     );
-    return CompetingPricesResearchs(enterpriseCode: enterpriseCode);
+    return ResearchsPage(enterpriseCode: enterpriseCode);
   },
 );

@@ -7,9 +7,9 @@ import '../../../../constants/constants.dart';
 import '../../../../localization/string_hardcoded.dart';
 import '../controllers/controllers.dart';
 
-class CompetingPricesResearchs extends ConsumerWidget {
+class ResearchsPage extends ConsumerWidget {
   final int enterpriseCode;
-  const CompetingPricesResearchs({super.key, required this.enterpriseCode});
+  const ResearchsPage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
