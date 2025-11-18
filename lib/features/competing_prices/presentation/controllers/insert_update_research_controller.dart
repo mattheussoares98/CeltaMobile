@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../../providers/providers.dart';
+import 'controllers.dart';
 
 part 'insert_update_research_controller.g.dart';
 
@@ -35,6 +36,18 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
         observations: observations,
         researchCode: researchCode,
       );
+
+      if (researchCode != null) {
+        ref
+            .read(researchsStateControllerProvider.notifier)
+            .updateResearchLocally(
+              code: researchCode,
+              name: name,
+              observations: observations,
+            );
+      } else {
+        ref.invalidate(researchsStateControllerProvider);
+      }
     });
   }
 }

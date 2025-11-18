@@ -2,6 +2,7 @@ import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/app_exception.dart';
+import 'package:celta_intelligence/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/competing_prices/domain/repository/repository.dart';
 import 'package:celta_intelligence/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/competing_prices/providers/providers.dart';
@@ -17,6 +18,24 @@ import '../../../../mocks/mocks.dart';
 
 class MockSoapInsertUpdateResearchRepository extends Mock
     implements ISoapInsertUpdateResearchRepository {}
+
+class SpyResearchsStateController extends ResearchsStateController {
+  bool updateCalled = false;
+  int? updatedCode;
+
+  @override
+  Future<List<ResearchEntity>> build() async => [];
+
+  @override
+  void updateResearchLocally({
+    required int code,
+    required String name,
+    required String? observations,
+  }) {
+    updateCalled = true;
+    updatedCode = code;
+  }
+}
 
 void main() {
   late MockSoapInsertUpdateResearchRepository mockRepository;
@@ -42,6 +61,7 @@ void main() {
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
     EnterpriseEntity? enterprise,
+    required SpyResearchsStateController spyResearchs,
   }) {
     return ProviderContainer(
       overrides: [
@@ -54,6 +74,7 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterprise),
         ),
+        researchsStateControllerProvider.overrideWith(() => spyResearchs),
       ],
     );
   }
@@ -73,10 +94,12 @@ void main() {
             researchCode: any(named: 'researchCode'),
           ),
         ).thenAnswer((_) async {});
+        final spyResearchs = SpyResearchsStateController();
 
         final container = makeProviderContainer(
           session: fakeSession,
           enterprise: fakeEnterprise,
+          spyResearchs: spyResearchs,
         );
         addTearDown(container.dispose);
 
@@ -113,9 +136,11 @@ void main() {
 
     test('should emit [loading, error] when session is invalid', () async {
       // ARRANGE
+      final spyResearchs = SpyResearchsStateController();
       final container = makeProviderContainer(
         session: null, // Invalid session
         enterprise: fakeEnterprise,
+        spyResearchs: spyResearchs,
       );
       addTearDown(container.dispose);
 
@@ -154,9 +179,11 @@ void main() {
       'should emit [loading, error] when selected enterprise is null',
       () async {
         // ARRANGE
+        final spyResearchs = SpyResearchsStateController();
         final container = makeProviderContainer(
           session: fakeSession,
           enterprise: null, // No enterprise selected
+          spyResearchs: spyResearchs,
         );
         addTearDown(container.dispose);
 
@@ -206,9 +233,11 @@ void main() {
         ),
       ).thenAnswer((_) async {});
 
+      final spyResearchs = SpyResearchsStateController();
       final container = makeProviderContainer(
         session: fakeSession,
         enterprise: fakeEnterprise,
+        spyResearchs: spyResearchs,
       );
       addTearDown(container.dispose);
 
@@ -233,5 +262,74 @@ void main() {
         ),
       ).called(1);
     });
+
+    test('Should update locally when pass the research code', () async {
+      // ARRANGE
+      when(
+        () => mockRepository.insertUpdate(
+          crossIdentity: any(named: 'crossIdentity'),
+          baseUrl: any(named: 'baseUrl'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          name: any(named: 'name'),
+          observations: any(named: 'observations'),
+          researchCode: any(named: 'researchCode'),
+        ),
+      ).thenAnswer((_) async {});
+      final spyResearchs = SpyResearchsStateController();
+
+      final container = makeProviderContainer(
+        session: fakeSession,
+        enterprise: fakeEnterprise,
+        spyResearchs: spyResearchs,
+      );
+      addTearDown(container.dispose);
+
+      // ACT
+      await container
+          .read(insertUpdateResearchControllerProvider.notifier)
+          .insertUpdate(
+            name: fakeName,
+            observations: fakeObservations,
+            researchCode: fakeResearchCode,
+          );
+
+      expect(spyResearchs.updateCalled, isTrue);
+      expect(spyResearchs.updatedCode, fakeResearchCode);
+    });
+    test(
+      'Should NOT update locally when DONT pass the research code',
+      () async {
+        // ARRANGE
+        when(
+          () => mockRepository.insertUpdate(
+            crossIdentity: any(named: 'crossIdentity'),
+            baseUrl: any(named: 'baseUrl'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            name: any(named: 'name'),
+            observations: any(named: 'observations'),
+            researchCode: any(named: 'researchCode'),
+          ),
+        ).thenAnswer((_) async {});
+        final spyResearchs = SpyResearchsStateController();
+
+        final container = makeProviderContainer(
+          session: fakeSession,
+          enterprise: fakeEnterprise,
+          spyResearchs: spyResearchs,
+        );
+        addTearDown(container.dispose);
+
+        // ACT
+        await container
+            .read(insertUpdateResearchControllerProvider.notifier)
+            .insertUpdate(
+              name: fakeName,
+              observations: fakeObservations,
+              researchCode: null,
+            );
+
+        expect(spyResearchs.updateCalled, isFalse);
+      },
+    );
   });
 }
