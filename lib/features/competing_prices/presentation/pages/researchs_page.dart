@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,17 @@ class ResearchsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text('Pesquisas cadastradas'.hardcoded)),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalPage(
+                const InsertUpdateResearchPage(research: null),
+                context,
+              );
+            },
+            icon: Icon(isIOS ? CupertinoIcons.add : Icons.add),
+          ),
+        ],
       ),
       body: AsyncValueWidget(
         tryAgain: () => ref.invalidate(researchsStateControllerProvider),
