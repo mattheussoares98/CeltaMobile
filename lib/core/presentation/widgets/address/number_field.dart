@@ -1,8 +1,8 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/validators/validators.dart';
+import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../validators/validators.dart';
 
 class NumberField extends StatelessWidget {
   final bool isLoading;

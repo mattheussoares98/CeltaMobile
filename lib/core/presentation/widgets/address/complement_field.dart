@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../commom_widgets/commom_widgets.dart';
 
 class ComplementField extends StatelessWidget {
   final TextEditingController complementController;

@@ -1,8 +1,8 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../domain/entities/entities.dart';
 
 class StatesDropDown extends StatelessWidget {
   const StatesDropDown({

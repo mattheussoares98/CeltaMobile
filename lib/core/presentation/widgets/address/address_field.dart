@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../commom_widgets/commom_widgets.dart';
 
 class AddressField extends StatelessWidget {
   final TextEditingController addressController;

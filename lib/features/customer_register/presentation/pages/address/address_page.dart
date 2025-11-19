@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/address/address.dart';
+import '../../../../../core/presentation/widgets/address/address.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -18,21 +18,6 @@ class AddressPage extends ConsumerStatefulWidget {
 }
 
 class _AddressPageState extends ConsumerState<AddressPage> {
-  final formKey = GlobalKey<FormState>();
-  final zipFormKey = GlobalKey<FormState>();
-
-  final zipController = TextEditingController();
-  final numberController = TextEditingController();
-  final addressController = TextEditingController();
-  final districtController = TextEditingController();
-  final cityController = TextEditingController();
-  final complementController = TextEditingController();
-  final referenceController = TextEditingController();
-  final numberFocusNode = FocusNode();
-  final complementFocusNode = FocusNode();
-  final referenceFocusNode = FocusNode();
-  final zipFocusNode = FocusNode();
-
   bool showAllFields = false;
   BrazilStates? state;
 
@@ -189,101 +174,16 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         });
       });
     });
-    final isLoading = ref
-        .watch(getAddressByCepControllerProvider(Modules.customerRegister))
-        .isLoading;
 
     return Scaffold(
       appBar: AppBar(title: Text('Endereços'.hardcoded)),
       body: Form(
         key: formKey,
-        child: ResponsiveScrollableWidget(
+        child: const ResponsiveScrollableWidget(
           child: Column(
             children: [
-              Column(
-                children: [
-                  Form(
-                    key: zipFormKey,
-                    child: ZipField(
-                      isLoading: isLoading,
-                      zipController: zipController,
-                      zipFocusNode: zipFocusNode,
-                      seekAddress: seekAddress,
-                      changeShowAllFields: (value) =>
-                          setState(() => showAllFields = value),
-                    ),
-                  ),
-                  if (showAllFields) ...[
-                    gapH8,
-                    AddressField(addressController: addressController),
-                    gapH8,
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DistrictField(
-                            districtController: districtController,
-                          ),
-                        ),
-                        gapW8,
-                        Expanded(
-                          child: CityField(cityController: cityController),
-                        ),
-                      ],
-                    ),
-                    gapH8,
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 60,
-                          child: StatesDropDown(
-                            isLoading: isLoading,
-                            onChangeState: (state) =>
-                                setState(() => this.state = state),
-                            state: state,
-                          ),
-                        ),
-                        gapW8,
-                        Expanded(
-                          flex: 40,
-                          child: NumberField(
-                            isLoading: isLoading,
-                            numberController: numberController,
-                            numberFocusNode: numberFocusNode,
-                            complementFocusNode: complementFocusNode,
-                          ),
-                        ),
-                      ],
-                    ),
-                    gapH8,
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ComplementField(
-                            isLoading: isLoading,
-                            complementController: complementController,
-                            complementFocusNode: complementFocusNode,
-                            referenceFocusNode: referenceFocusNode,
-                          ),
-                        ),
-                        gapW8,
-                        Expanded(
-                          child: ReferenceField(
-                            isLoading: isLoading,
-                            referenceFocusNode: referenceFocusNode,
-                            referenceController: referenceController,
-                          ),
-                        ),
-                      ],
-                    ),
-                    gapH32,
-                    PrimaryButton(
-                      text: 'Adicionar endereço'.hardcoded,
-                      onPressed: addAddress,
-                    ),
-                  ],
-                ],
-              ),
-              const InformedAddressess(),
+              AddressForm(module: Modules.customerRegister),
+              InformedAddressess(),
             ],
           ),
         ),
