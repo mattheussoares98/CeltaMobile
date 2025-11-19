@@ -34,3 +34,15 @@ ISoapInsertUpdateResearchRepository soapInsertUpdateResearchRepository(
     ref.watch(soapInsertUpdateResearchDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapLoadConcurrentsDatasource soapLoadConcurrentsDatasource(Ref ref) {
+  return SoapLoadConcurrentsDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapLoadConcurrentsRepository soapLoadConcurrentsRepository(Ref ref) {
+  return SoapLoadConcurrentsRepositoryImpl(
+    ref.watch(soapLoadConcurrentsDatasourceProvider),
+  );
+}
