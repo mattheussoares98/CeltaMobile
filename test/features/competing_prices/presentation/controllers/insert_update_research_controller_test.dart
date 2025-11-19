@@ -31,6 +31,7 @@ class SpyResearchsStateController extends ResearchsStateController {
     required int code,
     required String name,
     required String? observations,
+    ConcurrentEntity? newConcurrent,
   }) {
     updateCalled = true;
     updatedCode = code;
@@ -86,6 +87,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.insertUpdate(
+            concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: any(named: 'crossIdentity'),
             baseUrl: any(named: 'baseUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
@@ -123,6 +125,7 @@ void main() {
 
         verify(
           () => mockRepository.insertUpdate(
+            concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             baseUrl: fakeSession.enterprise!.baseUrl!,
             enterpriseCode: fakeEnterprise.Code!,
@@ -165,6 +168,7 @@ void main() {
 
       verifyNever(
         () => mockRepository.insertUpdate(
+          concurrentToAssociate: any(named: 'concurrentToAssociate'),
           crossIdentity: any(named: 'crossIdentity'),
           baseUrl: any(named: 'baseUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
@@ -209,6 +213,7 @@ void main() {
 
         verifyNever(
           () => mockRepository.insertUpdate(
+            concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: any(named: 'crossIdentity'),
             baseUrl: any(named: 'baseUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
@@ -224,6 +229,7 @@ void main() {
       // ARRANGE
       when(
         () => mockRepository.insertUpdate(
+          concurrentToAssociate: any(named: 'concurrentToAssociate'),
           crossIdentity: any(named: 'crossIdentity'),
           baseUrl: any(named: 'baseUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
@@ -253,6 +259,7 @@ void main() {
       // ASSERT
       verify(
         () => mockRepository.insertUpdate(
+          concurrentToAssociate: any(named: 'concurrentToAssociate'),
           crossIdentity: any(named: 'crossIdentity'),
           baseUrl: any(named: 'baseUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
@@ -267,6 +274,7 @@ void main() {
       // ARRANGE
       when(
         () => mockRepository.insertUpdate(
+          concurrentToAssociate: any(named: 'concurrentToAssociate'),
           crossIdentity: any(named: 'crossIdentity'),
           baseUrl: any(named: 'baseUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
@@ -302,6 +310,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.insertUpdate(
+            concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: any(named: 'crossIdentity'),
             baseUrl: any(named: 'baseUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),

@@ -46,6 +46,7 @@ class ResearchsStateController extends _$ResearchsStateController {
     required int code,
     required String name,
     required String? observations,
+    ConcurrentEntity? newConcurrent,
   }) {
     final currentState = state.valueOrNull;
     if (currentState == null) return;
@@ -53,9 +54,11 @@ class ResearchsStateController extends _$ResearchsStateController {
     final index = currentState.indexWhere((e) => e.Code == code);
     if (index != -1) {
       final updatedList = List<ResearchEntity>.from(currentState);
-      updatedList[index] = updatedList[index].copyWith(
+      final oldValue = updatedList[index];
+      updatedList[index] = oldValue.copyWith(
         Name: name,
         Observation: observations,
+        Concurrents: [...?oldValue.Concurrents, ?newConcurrent],
       );
       state = AsyncData(updatedList);
     }

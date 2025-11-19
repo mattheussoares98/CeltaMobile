@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
+import '../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
 import 'controllers.dart';
 
@@ -18,6 +19,7 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
     required String name,
     required String? observations,
     required int? researchCode,
+    ConcurrentEntity? concurrentToAssociate,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -35,6 +37,7 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
         name: name,
         observations: observations,
         researchCode: researchCode,
+        concurrentToAssociate: concurrentToAssociate,
       );
 
       if (researchCode != null) {
@@ -44,6 +47,7 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
               code: researchCode,
               name: name,
               observations: observations,
+              newConcurrent: concurrentToAssociate,
             );
       } else {
         ref.invalidate(researchsStateControllerProvider);
