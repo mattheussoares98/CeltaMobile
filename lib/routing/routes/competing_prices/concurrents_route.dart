@@ -4,7 +4,7 @@ import '../../../features/competing_prices/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase concurrentsRoute(List<RouteBase> routes) => GoRoute(
-  path: 'concurrents/:researchCode',
+  path: ':researchCode/concurrents',
   name: Routes.competingPricesConcurrents.name,
   routes: routes,
   builder: (context, state) {

@@ -9,6 +9,9 @@ class ConcurrentsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(body: Center(child: Text('Concorrentes'.hardcoded)));
+    return Scaffold(
+      appBar: AppBar(title: Text('Concorrentes'.hardcoded)),
+      body: Center(child: Text('Concorrentes'.hardcoded)),
+    );
   }
 }
