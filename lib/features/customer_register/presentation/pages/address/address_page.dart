@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/address/address.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -59,7 +60,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final address = await ref.read(
-          getAddressByCepControllerProvider.future,
+          getAddressByCepControllerProvider(Modules.customerRegister).future,
         );
         if (address != null) {
           setState(() => showAllFields = true);
@@ -85,7 +86,9 @@ class _AddressPageState extends ConsumerState<AddressPage> {
   Future<void> seekAddress() async {
     if (zipFormKey.currentState?.validate() != true) return;
     ref
-        .read(getAddressByCepControllerProvider.notifier)
+        .read(
+          getAddressByCepControllerProvider(Modules.customerRegister).notifier,
+        )
         .getAddress(zipController.text);
   }
 
@@ -149,13 +152,16 @@ class _AddressPageState extends ConsumerState<AddressPage> {
     setState(() {
       showAllFields = false;
     });
-    ref.invalidate(getAddressByCepControllerProvider);
+    ref.invalidate(getAddressByCepControllerProvider(Modules.customerRegister));
     clearFields(clearZip: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(getAddressByCepControllerProvider, (p, n) {
+    ref.listen(getAddressByCepControllerProvider(Modules.customerRegister), (
+      p,
+      n,
+    ) {
       if (n.hasError) {
         clearFields(clearZip: false);
       }
@@ -183,7 +189,9 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         });
       });
     });
-    final isLoading = ref.watch(getAddressByCepControllerProvider).isLoading;
+    final isLoading = ref
+        .watch(getAddressByCepControllerProvider(Modules.customerRegister))
+        .isLoading;
 
     return Scaffold(
       appBar: AppBar(title: Text('Endereços'.hardcoded)),

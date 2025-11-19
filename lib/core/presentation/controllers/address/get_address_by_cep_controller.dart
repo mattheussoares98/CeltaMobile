@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/providers/address/address.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../providers/address/address.dart';
 
 part 'get_address_by_cep_controller.g.dart';
 
 @riverpod
 class GetAddressByCepController extends _$GetAddressByCepController {
   @override
-  FutureOr<AddressEntity?> build() async {
+  FutureOr<AddressEntity?> build(Modules module) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {

@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/repositories/address/address.dart';
+import 'package:celta_intelligence/core/presentation/controllers/address/address.dart';
 import 'package:celta_intelligence/core/providers/address/address.dart';
-import 'package:celta_intelligence/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,16 +44,22 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
 
-        await container.read(getAddressByCepControllerProvider.future);
+        await container.read(
+          getAddressByCepControllerProvider(Modules.customerRegister).future,
+        );
         final states = <AsyncValue<AddressEntity?>>[];
         container.listen(
-          getAddressByCepControllerProvider,
+          getAddressByCepControllerProvider(Modules.customerRegister),
           (_, next) => states.add(next),
         );
 
         // ACT: Call the action method on the notifier
         await container
-            .read(getAddressByCepControllerProvider.notifier)
+            .read(
+              getAddressByCepControllerProvider(
+                Modules.customerRegister,
+              ).notifier,
+            )
             .getAddress(fakeCep);
 
         // ASSERT
@@ -71,16 +77,22 @@ void main() {
       final container = makeProviderContainer();
       addTearDown(container.dispose);
 
-      await container.read(getAddressByCepControllerProvider.future);
+      await container.read(
+        getAddressByCepControllerProvider(Modules.customerRegister).future,
+      );
       final states = <AsyncValue<AddressEntity?>>[];
       container.listen(
-        getAddressByCepControllerProvider,
+        getAddressByCepControllerProvider(Modules.customerRegister),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(getAddressByCepControllerProvider.notifier)
+          .read(
+            getAddressByCepControllerProvider(
+              Modules.customerRegister,
+            ).notifier,
+          )
           .getAddress(fakeCep);
 
       // ASSERT
