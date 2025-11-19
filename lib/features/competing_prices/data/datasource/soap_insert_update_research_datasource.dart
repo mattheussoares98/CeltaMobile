@@ -26,7 +26,7 @@ class SoapInsertUpdateResearchDatasource
       parameters: {
         "json": json.encode({
           "CrossIdentity": crossIdentity,
-          "Code": researchCode ?? 0, //0 add a new
+          "Code": researchCode,
           "EnterpriseCode": enterpriseCode,
           "Name": name,
           "Observation": observations,

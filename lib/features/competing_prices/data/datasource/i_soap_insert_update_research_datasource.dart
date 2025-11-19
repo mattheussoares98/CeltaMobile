@@ -4,7 +4,7 @@ abstract class ISoapInsertUpdateResearchDatasource {
     required String crossIdentity,
     required int enterpriseCode,
     required String name,
-    int? researchCode,
+    required int researchCode,
     String? observations,
   });
 }

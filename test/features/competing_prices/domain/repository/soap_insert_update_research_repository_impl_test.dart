@@ -32,7 +32,7 @@ void main() {
   late String crossIdentity;
   late int enterpriseCode;
   late String name;
-  late int? researchCode;
+  late int researchCode;
   late String? observations;
 
   void initSut() {
@@ -92,23 +92,27 @@ void main() {
 
     verifyNoMoreInteractions(datasource);
   });
-  test('should call with correct values when DOESNT pass all params', () async {
-    await sut.insertUpdate(
-      baseUrl: baseUrl,
-      crossIdentity: crossIdentity,
-      enterpriseCode: enterpriseCode,
-      name: name,
-    );
-
-    verify(
-      () => datasource.insertUpdate(
+  test(
+    'should call with correct values when DOESNT pass researchCode params',
+    () async {
+      await sut.insertUpdate(
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         name: name,
-      ),
-    ).called(1);
+      );
 
-    verifyNoMoreInteractions(datasource);
-  });
+      verify(
+        () => datasource.insertUpdate(
+          baseUrl: baseUrl,
+          crossIdentity: crossIdentity,
+          enterpriseCode: enterpriseCode,
+          name: name,
+          researchCode: 0,
+        ),
+      ).called(1);
+
+      verifyNoMoreInteractions(datasource);
+    },
+  );
 }

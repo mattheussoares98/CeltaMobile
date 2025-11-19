@@ -21,7 +21,7 @@ class SoapInsertUpdateResearchRepositoryImpl
       enterpriseCode: enterpriseCode,
       name: name,
       observations: observations,
-      researchCode: researchCode,
+      researchCode: researchCode ?? 0, //0 is adding new research
     );
   }
 }

@@ -74,34 +74,4 @@ void main() {
       ),
     ).called(1);
   });
-  test(
-    'Should call with correct values when doesnt pass the observations and research code',
-    () async {
-      await sut.insertUpdate(
-        baseUrl: baseUrl,
-        crossIdentity: crossIdentity,
-        enterpriseCode: enterpriseCode,
-        name: name,
-      );
-
-      verify(
-        () => soapRequest.post(
-          url: baseUrl,
-          typeOfResponse: "InsertUpdateResearchOfPriceResponse",
-          soapAction: "InsertUpdateResearchOfPrice",
-          serviceASMX: "CeltaResearchOfPriceService.asmx",
-          typeOfResult: "InsertUpdateResearchOfPriceResult",
-          parameters: {
-            "json": json.encode({
-              "CrossIdentity": crossIdentity,
-              "Code": 0,
-              "EnterpriseCode": enterpriseCode,
-              "Name": name,
-              "Observation": null,
-            }),
-          },
-        ),
-      ).called(1);
-    },
-  );
 }
