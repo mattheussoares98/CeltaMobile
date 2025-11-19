@@ -41,7 +41,7 @@ class AddressModel extends Equatable {
       Number: json["Number"],
       District: json["District"],
       City: json["City"],
-      State: json["State"] == null
+      State: json["State"] == null || json["State"] == ''
           ? null
           : BrazilStates.values.firstWhere((e) => e.uf == json["State"]),
       Complement: json["Complement"],
