@@ -144,21 +144,7 @@ class _TransferBetweenStocksPageState
             ],
           ),
         ),
-        Consumer(
-          builder: (_, ref, _) {
-            final isLoading = ref.watch(
-              confirmAdjustStockControllerProvider.select(
-                (value) => value.isLoading,
-              ),
-            );
-
-            if (isLoading) {
-              return const LoadingPage();
-            }
-
-            return const SizedBox.shrink();
-          },
-        ),
+        LoadingPage(providers: [confirmAdjustStockControllerProvider]),
       ],
     );
   }

@@ -116,18 +116,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
             currentIndex: currentIndex,
           ),
         ),
-        Consumer(
-          builder: (_, ref, _) {
-            final isLoading = ref
-                .watch(confirmConferenceControllerProvider)
-                .isLoading;
-            if (isLoading) {
-              return const LoadingPage();
-            }
-
-            return const SizedBox.shrink();
-          },
-        ),
+        LoadingPage(providers: [confirmConferenceControllerProvider]),
       ],
     );
   }

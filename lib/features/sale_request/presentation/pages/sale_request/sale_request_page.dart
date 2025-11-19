@@ -158,19 +158,11 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
             ],
           ),
         ),
-        Consumer(
-          builder: (_, ref, _) {
-            final isProcessingCart = ref.watch(
-              processCartControllerProvider.select((s) => s.isLoading),
-            );
-            final isSavingSaleRequest = ref.watch(
-              saveSaleRequestControllerProvider.select((s) => s.isLoading),
-            );
-
-            return isProcessingCart || isSavingSaleRequest
-                ? const LoadingPage()
-                : const SizedBox.shrink();
-          },
+        LoadingPage(
+          providers: [
+            processCartControllerProvider,
+            saveSaleRequestControllerProvider,
+          ],
         ),
       ],
     );

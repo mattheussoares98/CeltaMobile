@@ -207,17 +207,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
             ),
           ),
         ),
-        Consumer(
-          builder: (context, ref, _) {
-            final confirmAdjustStockAsync = ref.watch(
-              confirmAdjustStockControllerProvider,
-            );
-            if (confirmAdjustStockAsync.isLoading) {
-              return const LoadingPage();
-            }
-            return const SizedBox.shrink();
-          },
-        ),
+        LoadingPage(providers: [confirmAdjustStockControllerProvider]),
       ],
     );
   }

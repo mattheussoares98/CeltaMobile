@@ -259,21 +259,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             },
           ),
         ),
-        Consumer(
-          builder: (_, ref, _) {
-            final isLoading = ref.watch(
-              insertBuyRequestControllerProvider.select(
-                (value) => value.isLoading,
-              ),
-            );
-
-            if (isLoading) {
-              return const LoadingPage();
-            }
-
-            return const SizedBox.shrink();
-          },
-        ),
+        LoadingPage(providers: [insertBuyRequestControllerProvider]),
       ],
     );
   }

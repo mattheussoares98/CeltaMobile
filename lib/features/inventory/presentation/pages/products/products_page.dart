@@ -243,20 +243,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ),
           ),
         ),
-        Consumer(
-          builder: (_, ref, _) {
-            final isLoading = ref.watch(
-              entryQuantityStateControllerProvider(
-                widget.codigoInternoInvCont,
-              ).select((state) => state.isLoading),
-            );
-
-            if (isLoading) {
-              return const LoadingPage();
-            }
-
-            return const SizedBox.shrink();
-          },
+        LoadingPage(
+          providers: [
+            entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
+          ],
         ),
       ],
     );

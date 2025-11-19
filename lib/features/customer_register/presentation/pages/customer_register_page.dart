@@ -85,18 +85,11 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
             ),
           ),
         ),
-        Consumer(
-          builder: (_, ref, _) {
-            final isLoading =
-                ref.watch(customerStateControllerProvider).isLoading ||
-                ref.watch(insertUpdateCustomerControllerProvider).isLoading;
-
-            if (isLoading) {
-              return const LoadingPage();
-            }
-
-            return const SizedBox.shrink();
-          },
+        LoadingPage(
+          providers: [
+            customerStateControllerProvider,
+            insertUpdateCustomerControllerProvider,
+          ],
         ),
       ],
     );

@@ -146,19 +146,8 @@ class _ProductsManagementPageState
             ],
           ),
         ),
-        Consumer(
-          builder: (_, ref, _) {
-            final isLoading = ref.watch(
-              insertTransferRequestControllerProvider(
-                draftKey,
-              ).select((value) => value.isLoading),
-            );
-            if (isLoading) {
-              return const LoadingPage();
-            }
-
-            return const SizedBox.shrink();
-          },
+        LoadingPage(
+          providers: [insertTransferRequestControllerProvider(draftKey)],
         ),
       ],
     );
