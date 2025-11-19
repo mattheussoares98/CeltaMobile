@@ -89,8 +89,8 @@ class _InsertUpdateResearchPageState
           children: [
             Text(
               widget.research == null
-                  ? 'Inserindo Pesquisa'.hardcoded
-                  : 'Editando Pesquisa'.hardcoded,
+                  ? 'Inserindo pesquisa'.hardcoded
+                  : 'Editando pesquisa'.hardcoded,
               style: theme.textTheme.titleLarge,
             ),
             gapH32,
