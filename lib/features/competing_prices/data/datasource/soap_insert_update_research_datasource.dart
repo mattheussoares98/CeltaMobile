@@ -14,7 +14,8 @@ class SoapInsertUpdateResearchDatasource
     required String crossIdentity,
     required int enterpriseCode,
     required String name,
-    int? researchCode,
+    required int researchCode,
+    required Map<String, dynamic> associateConcurrentParams,
     String? observations,
   }) async {
     await soapRequest.post(
@@ -30,6 +31,7 @@ class SoapInsertUpdateResearchDatasource
           "EnterpriseCode": enterpriseCode,
           "Name": name,
           "Observation": observations,
+          ...associateConcurrentParams,
         }),
       },
     );

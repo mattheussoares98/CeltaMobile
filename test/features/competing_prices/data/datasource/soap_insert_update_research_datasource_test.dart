@@ -18,6 +18,7 @@ void main() {
   late String observations;
   late String name;
   late int researchCode;
+  late Map<String, dynamic> associatingConcurrentParams;
 
   void initSut() {
     sut = SoapInsertUpdateResearchDatasource(soapRequest);
@@ -36,6 +37,7 @@ void main() {
     observations = faker.lorem.sentence();
     name = faker.lorem.word();
     researchCode = faker.randomGenerator.integer(100);
+    associatingConcurrentParams = {};
   }
 
   setUp(() {
@@ -53,6 +55,7 @@ void main() {
       name: name,
       observations: observations,
       researchCode: researchCode,
+      associateConcurrentParams: associatingConcurrentParams,
     );
 
     verify(
@@ -69,6 +72,7 @@ void main() {
             "EnterpriseCode": enterpriseCode,
             "Name": name,
             "Observation": observations,
+            ...associatingConcurrentParams,
           }),
         },
       ),

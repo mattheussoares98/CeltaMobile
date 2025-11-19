@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
 import 'package:celta_intelligence/features/competing_prices/data/datasource/datasource.dart';
+import 'package:celta_intelligence/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/competing_prices/domain/repository/repository.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,6 +19,7 @@ class SoapInsertUpdateResearchDatasourceSpy extends Mock
         name: any(named: 'name'),
         observations: any(named: 'observations'),
         researchCode: any(named: 'researchCode'),
+        associateConcurrentParams: any(named: 'associateConcurrentParams'),
       ),
     ).thenAnswer((_) async {});
   }
@@ -34,6 +36,7 @@ void main() {
   late String name;
   late int researchCode;
   late String? observations;
+  late ConcurrentEntity concurrentToAssociate;
 
   void initSut() {
     sut = SoapInsertUpdateResearchRepositoryImpl(datasource);
@@ -52,6 +55,7 @@ void main() {
     crossIdentity = faker.guid.guid();
     baseUrl = faker.internet.httpUrl();
     enterpriseCode = faker.randomGenerator.integer(1000);
+    concurrentToAssociate = EntityFactory.makeConcurrentEntity();
   }
 
   setUp(() {
@@ -77,6 +81,7 @@ void main() {
       name: name,
       observations: observations,
       researchCode: researchCode,
+      concurrentToAssociate: concurrentToAssociate,
     );
 
     verify(
@@ -87,6 +92,16 @@ void main() {
         name: name,
         observations: observations,
         researchCode: researchCode,
+        associateConcurrentParams: {
+          "IsAssociatingConcurrents": true,
+          "Concurrents": [
+            {
+              "ResearchOfPriceCode": researchCode,
+              "ConcurrentCode": concurrentToAssociate.ConcurrentCode,
+              "Observation": concurrentToAssociate.Observation,
+            },
+          ],
+        },
       ),
     ).called(1);
 
@@ -109,6 +124,7 @@ void main() {
           enterpriseCode: enterpriseCode,
           name: name,
           researchCode: 0,
+          associateConcurrentParams: {},
         ),
       ).called(1);
 

@@ -1,4 +1,8 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+
+import '../../../../exceptions/exceptions.dart';
 import '../../data/datasource/datasource.dart';
+import '../entities/entities.dart';
 import 'repository.dart';
 
 class SoapInsertUpdateResearchRepositoryImpl
@@ -12,15 +16,36 @@ class SoapInsertUpdateResearchRepositoryImpl
     required String crossIdentity,
     required int enterpriseCode,
     required String name,
+    ConcurrentEntity? concurrentToAssociate,
     int? researchCode,
     String? observations,
   }) async {
+    final associateConcurrentParams = <String, dynamic>{};
+    if (concurrentToAssociate != null) {
+      if (researchCode == null) {
+        throw AppException(
+          'Para alterar o concorrente é necessário informar o código da pesquisa'
+              .hardcoded,
+        );
+      }
+
+      associateConcurrentParams["IsAssociatingConcurrents"] = true;
+      associateConcurrentParams["Concurrents"] = [
+        {
+          "ResearchOfPriceCode": researchCode,
+          "ConcurrentCode": concurrentToAssociate.ConcurrentCode,
+          "Observation": concurrentToAssociate.Observation,
+        },
+      ];
+    }
+
     await datasource.insertUpdate(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       name: name,
       observations: observations,
+      associateConcurrentParams: associateConcurrentParams,
       researchCode: researchCode ?? 0, //0 is adding new research
     );
   }
