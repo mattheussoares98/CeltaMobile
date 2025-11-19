@@ -1,7 +1,7 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/customer_register/domain/repositories/repositories.dart';
+import 'package:celta_intelligence/core/domain/repositories/address/address.dart';
+import 'package:celta_intelligence/core/providers/address/address.dart';
 import 'package:celta_intelligence/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/customer_register/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

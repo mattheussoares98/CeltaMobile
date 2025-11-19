@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
-import '../../providers.dart';
+import '../../../../core/providers/address/address.dart';
 
 part 'get_address_by_cep_controller.g.dart';
 
