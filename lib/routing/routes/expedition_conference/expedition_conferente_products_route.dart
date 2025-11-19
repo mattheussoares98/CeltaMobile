@@ -5,7 +5,7 @@ import '../../../features/expedition_conference/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase expeditionConferenceProductsRoute() => GoRoute(
-  path: 'products-conference/:stepCode/:expeditionControlCode/:documentNumber',
+  path: '/:stepCode/:expeditionControlCode/:documentNumber/products-conference',
   name: Routes.expeditionConferenceProducts.name,
   builder: (context, state) {
     final expeditionControlCode = state.pathParameters['expeditionControlCode']!

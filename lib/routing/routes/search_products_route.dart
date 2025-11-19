@@ -4,7 +4,7 @@ import '../../features/search_products/presentation/pages/pages.dart';
 import '../routing.dart';
 
 RouteBase searchProductsRoute() => GoRoute(
-  path: 'search-products/:enterpriseCode',
+  path: ':enterpriseCode/search-products',
   name: Routes.searchProducts.name,
   builder: (context, state) {
     return SearchProductsPage(

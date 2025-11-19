@@ -4,7 +4,7 @@ import '../../../features/inventory/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase inventoryProductsRoute() => GoRoute(
-  path: 'products/:codigoInternoInvCont/:codigoInternoInventario',
+  path: ':codigoInternoInvCont/:codigoInternoInventario/products',
   name: Routes.inventoryProducts.name,
   builder: (context, state) {
     final codigoInternoInvCont = int.parse(

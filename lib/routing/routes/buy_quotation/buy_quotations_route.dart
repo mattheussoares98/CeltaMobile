@@ -4,7 +4,7 @@ import '../../../features/buy_quotation/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase buyQuotationsRoute(List<RouteBase> routes) => GoRoute(
-  path: 'buy-quotations/:enterpriseCode',
+  path: ':enterpriseCode/buy-quotations',
   name: Routes.buyQuotations.name,
   routes: routes,
   builder: (context, state) {
