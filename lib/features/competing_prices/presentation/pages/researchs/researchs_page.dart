@@ -21,6 +21,8 @@ class ResearchsPage extends ConsumerWidget {
         tryAgain: () => ref.invalidate(researchsStateControllerProvider),
         value: ref.watch(researchsStateControllerProvider),
         data: (researchs) {
+          researchs.sort((a, b) => a.Code.compareTo(b.Code));
+
           return RefreshIndicator(
             onRefresh: () async {
               ref.invalidate(
