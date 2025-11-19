@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../localization/string_hardcoded.dart';
 
 class ConcurrentsPage extends ConsumerWidget {
-  const ConcurrentsPage({super.key});
+  final int researchCode;
+  const ConcurrentsPage({super.key, required this.researchCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

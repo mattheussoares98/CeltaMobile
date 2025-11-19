@@ -19,6 +19,7 @@ enum Routes {
   inventoryProducts('Inventário (produtos)'),
   home('Home'),
   pdfViewer('Visualizador de PDF'),
+  competingPricesConcurrents('Concorrentes'),
   competingPricesResearchs('Preços concorrentes'),
   saleRequest('Pedido de vendas'),
   saleRequestRequestsTypes('Pedido de vendas'),
