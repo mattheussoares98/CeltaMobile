@@ -31,13 +31,15 @@ class TitleAndSubTitle extends StatelessWidget {
       if ((subTitle as double) == 0) {
         showErrorMessage = true;
       }
+    } else if (subTitle == null && emptyMessage != null) {
+      showErrorMessage = true;
     }
 
     String? getSubtitleText() {
-      if (subTitle == null) {
-        return null;
-      } else if (showErrorMessage) {
+      if (subTitle == null && emptyMessage != null) {
         return emptyMessage!;
+      } else if (subTitle == null) {
+        return null;
       } else if (subTitleIsNumber) {
         return subTitle.toString().toBrazilianNumber();
       } else {
