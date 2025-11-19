@@ -111,29 +111,32 @@ class ConcurrentsItems extends ConsumerWidget {
                             title: 'Observação'.hardcoded,
                             subTitle: concurrent.Observation.toString(),
                           ),
-                        if (concurrent.Address != null &&
-                            concurrent.Address!.Address.isNotEmpty)
-                          Builder(
-                            builder: (context) {
-                              final address = StringBuffer();
-                              address.write(concurrent.Address!.Address);
-                              address.write(', ');
-                              address.write(concurrent.Address!.District);
-                              address.write(', ');
-                              address.write(concurrent.Address!.City);
-                              address.write(', ');
-                              address.write(concurrent.Address!.Number);
-                              address.write(', ');
-                              address.write(concurrent.Address!.State?.name);
-                              address.write('. CEP ');
-                              address.write(concurrent.Address!.Zip);
+                        Builder(
+                          builder: (context) {
+                            final hasAddress =
+                                concurrent.Address != null &&
+                                concurrent.Address!.Address.isNotEmpty;
 
-                              return TitleAndSubTitle(
-                                title: 'Endereço'.hardcoded,
-                                subTitle: address,
-                              );
-                            },
-                          ),
+                            final address = StringBuffer();
+                            address.write(concurrent.Address!.Address);
+                            address.write(', ');
+                            address.write(concurrent.Address!.District);
+                            address.write(', ');
+                            address.write(concurrent.Address!.City);
+                            address.write(', ');
+                            address.write(concurrent.Address!.Number);
+                            address.write(', ');
+                            address.write(concurrent.Address!.State?.name);
+                            address.write('. CEP ');
+                            address.write(concurrent.Address!.Zip);
+
+                            return TitleAndSubTitle(
+                              title: 'Endereço'.hardcoded,
+                              subTitle: hasAddress ? address : null,
+                              emptyMessage: 'Sem endereço cadastrado'.hardcoded,
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
