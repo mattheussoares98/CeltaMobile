@@ -1,9 +1,9 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 
-import '../../../../core/data/models/address/address_model.dart';
-import '../../../../core/domain/contracts/contracts.dart';
+import '../../models/address/address_model.dart';
+import '../../../domain/contracts/contracts.dart';
 import '../../../../exceptions/exceptions.dart';
-import 'datasource.dart';
+import 'address.dart';
 
 class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
   final HttpClient httpClient;

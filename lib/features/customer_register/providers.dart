@@ -1,17 +1,12 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/http/http.dart';
+import '../../core/providers/address/address.dart';
 import '../../core/providers/soap/soap.dart';
 import 'data/datasource/datasource.dart';
 import 'domain/repositories/repositories.dart';
 
 part 'providers.g.dart';
-
-@riverpod
-ILoadAddressByCepDatasource loadAddressByCepDatasource(Ref ref) {
-  return HttpLoadAddressByCepDatasource(ref.watch(httpClientProvider));
-}
 
 @riverpod
 ILoadAddressByCepRepository loadAddressByCepRepository(Ref ref) {

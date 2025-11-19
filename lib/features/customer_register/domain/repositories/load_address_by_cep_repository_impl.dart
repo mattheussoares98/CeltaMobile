@@ -1,6 +1,6 @@
 import 'package:celta_intelligence/core/domain/entities/address/address_entity.dart';
 
-import '../../data/datasource/datasource.dart';
+import '../../../../core/data/datasource/address/address.dart';
 import 'repositories.dart';
 
 class LoadAddressByCepRepositoryImpl implements ILoadAddressByCepRepository {
