@@ -9,6 +9,7 @@ import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import '../../insert_update_concurrent/insert_update_concurrent.dart';
 
 class ConcurrentsItems extends ConsumerWidget {
   final ResearchEntity selectedResearch;
@@ -77,7 +78,12 @@ class ConcurrentsItems extends ConsumerWidget {
                               child: PrimaryTextButton(
                                 text: 'Alterar concorrente'.hardcoded,
                                 onPressed: () {
-                                  //TODO open showModalPage to anable the user to change
+                                  showModalPage(
+                                    InsertUpdateConcurrentPage(
+                                      concurrentUpdating: concurrent,
+                                    ),
+                                    context,
+                                  );
                                 },
                                 icon: mediaQuery.size.width < 300
                                     ? null

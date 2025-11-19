@@ -27,7 +27,8 @@ class ConcurrentsPage extends ConsumerWidget {
             title: FittedBox(
               child: Text('Concorrentes (pesquisa $researchCode)'.hardcoded),
             ),
-          ), //TODO add action button to add a new concurrent
+            actions: const [InsertConcurrentButton()],
+          ),
           body: AsyncValueWidget(
             value: ref.watch(researchsStateControllerProvider),
             tryAgain: () => ref.invalidate(researchsStateControllerProvider),
