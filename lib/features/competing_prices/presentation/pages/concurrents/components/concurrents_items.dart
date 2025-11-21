@@ -136,6 +136,17 @@ class ConcurrentsItems extends ConsumerWidget {
                             address.write('. CEP ');
                             address.write(concurrent.Address!.Zip);
 
+                            if (concurrent.Address?.Complement != null &&
+                                concurrent.Address!.Complement!.isNotEmpty) {
+                              address.write('. ');
+                              address.write(concurrent.Address!.Complement);
+                            }
+                            if (concurrent.Address?.Reference != null &&
+                                concurrent.Address!.Reference!.isNotEmpty) {
+                              address.write(', ');
+                              address.write(concurrent.Address!.Reference);
+                            }
+
                             return TitleAndSubTitle(
                               title: 'Endereço'.hardcoded,
                               subTitle: hasAddress ? address : null,
