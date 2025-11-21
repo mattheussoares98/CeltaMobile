@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
@@ -15,11 +16,51 @@ class ConcurrentsStateController extends _$ConcurrentsStateController {
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
     return await ref
-        .read(soapLoadConcurrentsRepositoryProvider)
+        .read(soapConcurrentsRepositoryProvider)
         .load(
           crossIdentity: validatedUser!.user.CrossIdentity_Usuario!,
           baseUrl: validatedUser.enterprise!.baseUrl!,
           searchValue: null,
         );
+  }
+
+  Future<void> insertUpdate({
+    required int? concurrentCode,
+    required String name,
+    required String observation,
+    required AddressEntity? address,
+  }) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(soapConcurrentsRepositoryProvider);
+      final validatedUser = await ref.watch(
+        validatedUserSessionProvider.future,
+      );
+
+      await repository.insertUpdate(
+        crossIdentity: validatedUser!.user.CrossIdentity_Usuario!,
+        baseUrl: validatedUser.enterprise!.baseUrl!,
+        concurrentCode: concurrentCode,
+        concurrentName: name,
+        observation: observation,
+        address: address,
+      );
+
+      if (concurrentCode != null) {
+        final concurrentUpdated = state.value!
+            .firstWhere((e) => e.ConcurrentCode == concurrentCode)
+            .copyWith(Name: name, Observation: observation, Address: address);
+
+        final updatedList = List<ConcurrentEntity>.from(state.value!);
+        final index = updatedList.indexWhere(
+          (e) => e.ConcurrentCode == concurrentCode,
+        );
+        updatedList[index] = concurrentUpdated;
+        return updatedList;
+      } else {
+        ref.invalidateSelf();
+        return [];
+      }
+    });
   }
 }

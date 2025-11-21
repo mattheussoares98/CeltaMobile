@@ -41,7 +41,7 @@ ISoapConcurrentsDatasource soapConcurrentsDatasource(Ref ref) {
 }
 
 @riverpod
-ISoapConcurrentsRepository soapLoadConcurrentsRepository(Ref ref) {
+ISoapConcurrentsRepository soapConcurrentsRepository(Ref ref) {
   return SoapConcurrentsRepositoryImpl(
     ref.watch(soapConcurrentsDatasourceProvider),
   );
