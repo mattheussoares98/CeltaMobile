@@ -4,13 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../localization/string_hardcoded.dart';
+import '../../../../utils/utils.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/address/address.dart';
 import 'address.dart';
 
 class AddressForm extends ConsumerStatefulWidget {
   final Modules module;
-  final void Function(AddressEntity newAddress) addAddress;
+  final Future<bool> Function(AddressEntity newAddress) addAddress;
   const AddressForm({
     super.key,
     required this.module,
@@ -95,11 +96,12 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   }
 
   void addAddress() async {
-    if (formKey.currentState?.validate() != true) {
+    if (formKey.currentState?.validate() != true ||
+        zipFormKey.currentState?.validate() != true) {
       return;
     }
 
-    widget.addAddress(
+    bool added = await widget.addAddress(
       AddressEntity(
         Zip: zipController.text,
         Address: addressController.text,
@@ -112,11 +114,32 @@ class _AddressFormState extends ConsumerState<AddressForm> {
       ),
     );
 
+    if (!added) {
+      return;
+    }
+
     setState(() {
       showAllFields = false;
     });
     ref.invalidate(getAddressByCepControllerProvider(widget.module));
     clearFields(clearZip: true);
+  }
+
+  void clearFields({required bool clearZip}) {
+    if (clearZip) {
+      zipController.clear();
+    }
+    addressController.clear();
+    districtController.clear();
+    cityController.clear();
+    state = null;
+    numberController.clear();
+    referenceController.clear();
+    complementController.clear();
+
+    setState(() {
+      showAllFields = false;
+    });
   }
 
   @override
@@ -127,83 +150,116 @@ class _AddressFormState extends ConsumerState<AddressForm> {
       ).select((s) => s.isLoading),
     );
 
-    return Column(
-      children: [
-        Form(
-          key: zipFormKey,
-          child: ZipField(
-            isLoading: isLoading,
-            zipController: zipController,
-            zipFocusNode: zipFocusNode,
-            seekAddress: seekAddress,
-            changeShowAllFields: (value) =>
-                setState(() => showAllFields = value),
+    ref.listen(getAddressByCepControllerProvider(widget.module), (p, n) {
+      if (n.hasError) {
+        clearFields(clearZip: false);
+      }
+      n.showSnackbarOnError(context, p);
+      n.doOnSuccess(p, () {
+        if (n.value == null) {
+          return;
+        }
+        setState(() => showAllFields = true);
+        addressController.text = n.value?.Address ?? '';
+        districtController.text = n.value?.District ?? '';
+        cityController.text = n.value?.City ?? '';
+
+        final stateIndex = BrazilStates.values.indexWhere(
+          (e) => e.name == n.value?.State?.name,
+        );
+
+        if (stateIndex == -1) {
+          return;
+        } else {
+          state = BrazilStates.values[stateIndex];
+        }
+        Future.delayed(const Duration(milliseconds: 100), () {
+          numberFocusNode.requestFocus();
+        });
+      });
+    });
+
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          Form(
+            key: zipFormKey,
+            child: ZipField(
+              isLoading: isLoading,
+              zipController: zipController,
+              zipFocusNode: zipFocusNode,
+              seekAddress: seekAddress,
+              changeShowAllFields: (value) =>
+                  setState(() => showAllFields = value),
+            ),
           ),
-        ),
-        if (showAllFields) ...[
-          gapH8,
-          AddressField(addressController: addressController),
-          gapH8,
-          Row(
-            children: [
-              Expanded(
-                child: DistrictField(districtController: districtController),
-              ),
-              gapW8,
-              Expanded(child: CityField(cityController: cityController)),
-            ],
-          ),
-          gapH8,
-          Row(
-            children: [
-              Expanded(
-                flex: 60,
-                child: StatesDropDown(
-                  isLoading: isLoading,
-                  onChangeState: (state) => setState(() => this.state = state),
-                  state: state,
+          if (showAllFields) ...[
+            gapH8,
+            AddressField(addressController: addressController),
+            gapH8,
+            Row(
+              children: [
+                Expanded(
+                  child: DistrictField(districtController: districtController),
                 ),
-              ),
-              gapW8,
-              Expanded(
-                flex: 40,
-                child: NumberField(
-                  isLoading: isLoading,
-                  numberController: numberController,
-                  numberFocusNode: numberFocusNode,
-                  complementFocusNode: complementFocusNode,
+                gapW8,
+                Expanded(child: CityField(cityController: cityController)),
+              ],
+            ),
+            gapH8,
+            Row(
+              children: [
+                Expanded(
+                  flex: 60,
+                  child: StatesDropDown(
+                    isLoading: isLoading,
+                    onChangeState: (state) =>
+                        setState(() => this.state = state),
+                    state: state,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          gapH8,
-          Row(
-            children: [
-              Expanded(
-                child: ComplementField(
-                  isLoading: isLoading,
-                  complementController: complementController,
-                  complementFocusNode: complementFocusNode,
-                  referenceFocusNode: referenceFocusNode,
+                gapW8,
+                Expanded(
+                  flex: 40,
+                  child: NumberField(
+                    isLoading: isLoading,
+                    numberController: numberController,
+                    numberFocusNode: numberFocusNode,
+                    complementFocusNode: complementFocusNode,
+                  ),
                 ),
-              ),
-              gapW8,
-              Expanded(
-                child: ReferenceField(
-                  isLoading: isLoading,
-                  referenceFocusNode: referenceFocusNode,
-                  referenceController: referenceController,
+              ],
+            ),
+            gapH8,
+            Row(
+              children: [
+                Expanded(
+                  child: ComplementField(
+                    isLoading: isLoading,
+                    complementController: complementController,
+                    complementFocusNode: complementFocusNode,
+                    referenceFocusNode: referenceFocusNode,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          gapH32,
-          PrimaryButton(
-            text: 'Adicionar endereço'.hardcoded,
-            onPressed: addAddress,
-          ),
+                gapW8,
+                Expanded(
+                  child: ReferenceField(
+                    isLoading: isLoading,
+                    referenceFocusNode: referenceFocusNode,
+                    referenceController: referenceController,
+                  ),
+                ),
+              ],
+            ),
+            gapH32,
+            PrimaryButton(
+              text: 'Adicionar endereço'.hardcoded,
+              onPressed: addAddress,
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }
