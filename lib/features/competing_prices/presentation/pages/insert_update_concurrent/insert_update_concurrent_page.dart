@@ -1,9 +1,15 @@
+import 'package:celta_intelligence/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/widgets/address/address.dart';
+import '../../../../../core/validators/validators.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../utils/utils.dart';
 import '../../../domain/entities/entities.dart';
 
 class InsertUpdateConcurrentPage extends ConsumerStatefulWidget {
@@ -23,6 +29,8 @@ class _UpdateConcurrentPageState
   final nameController = TextEditingController();
   final observationController = TextEditingController();
   final observationFocusNode = FocusNode();
+  final formKey = GlobalKey<FormState>();
+  AddressEntity? newAddress;
 
   @override
   void initState() {
@@ -33,6 +41,7 @@ class _UpdateConcurrentPageState
           nameController.text = widget.concurrentUpdating!.Name!;
           observationController.text =
               widget.concurrentUpdating!.Observation ?? '';
+          newAddress = widget.concurrentUpdating!.Address;
         }
       }
     });
@@ -46,48 +55,138 @@ class _UpdateConcurrentPageState
     observationFocusNode.dispose();
   }
 
+  Future<void> insertUpdate() async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    await ref
+        .read(concurrentsStateControllerProvider.notifier)
+        .insertUpdate(
+          concurrentCode: widget.concurrentUpdating?.ConcurrentCode,
+          name: nameController.text,
+          observation: observationController.text,
+          address: newAddress,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(concurrentsStateControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+      n.doOnSuccess(p, () {
+        context.pop();
+        showSnackBarMessage(
+          context,
+          'Concorrente ${widget.concurrentUpdating == null ? 'inserido' : 'alterado'} com sucesso'
+              .hardcoded,
+        );
+      });
+    });
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
-      child: Column(
-        children: [
-          DefaultTitle(
-            title: widget.concurrentUpdating == null
-                ? 'Inserindo concorrente'.hardcoded
-                : 'Alterando concorrente'.hardcoded,
+      child: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              DefaultTitle(
+                title: widget.concurrentUpdating == null
+                    ? 'Inserindo concorrente'.hardcoded
+                    : 'Alterando concorrente'.hardcoded,
+              ),
+              gapH16,
+              DefaultTextFormField(
+                controller: nameController,
+                labelText: 'Nome'.hardcoded,
+                hintText: 'Nome'.hardcoded,
+                onFieldSubmitted: (_) => observationFocusNode.requestFocus(),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                maxLength: 50,
+                validator: FormValidators.compose([NonEmptyValidator()]),
+              ),
+              gapH8,
+              DefaultTextFormField(
+                controller: observationController,
+                focusNode: observationFocusNode,
+                labelText: 'Observações'.hardcoded,
+                hintText: 'Observações'.hardcoded,
+                onFieldSubmitted: (_) => insertUpdate(),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                maxLength: 200,
+              ),
+
+              if (newAddress?.Address != null && newAddress!.Address.isNotEmpty)
+                Builder(
+                  builder: (context) {
+                    final address = StringBuffer();
+                    address.write(newAddress!.Address);
+                    address.write(', ');
+                    address.write(newAddress!.District);
+                    address.write(', ');
+                    address.write(newAddress!.City);
+                    address.write(', ');
+                    address.write(newAddress!.Number);
+                    address.write(', ');
+                    address.write(newAddress!.State?.name);
+                    address.write('. CEP ');
+                    address.write(newAddress!.Zip);
+                    if (newAddress?.Complement != null &&
+                        newAddress!.Complement!.isNotEmpty) {
+                      address.write('. ');
+                      address.write(newAddress!.Complement);
+                    }
+                    if (newAddress?.Reference != null &&
+                        newAddress!.Reference!.isNotEmpty) {
+                      address.write(', ');
+                      address.write(newAddress!.Reference);
+                    }
+
+                    return TitleAndSubTitle(
+                      title: 'Endereço'.hardcoded,
+                      subTitle: address,
+                    );
+                  },
+                ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: Column(
+                    children: [
+                      DefaultTitle(title: 'Endereço'.hardcoded),
+                      gapH8,
+                      AddressForm(
+                        module: Modules.competingPrices,
+                        cleanStateOnDispose: false,
+                        addAddress: (value) async {
+                          setState(() {
+                            newAddress = value;
+                          });
+                          return true;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              gapH32,
+              SizedBox(
+                width: 200,
+                child: PrimaryButton(
+                  text: widget.concurrentUpdating == null
+                      ? 'Inserir'.hardcoded
+                      : 'Alterar'.hardcoded,
+                  onPressed: insertUpdate,
+                  isLoading: ref.watch(
+                    concurrentsStateControllerProvider.select(
+                      (s) => s.isLoading,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          gapH16,
-          DefaultTextFormField(
-            controller: nameController,
-            labelText: 'Nome'.hardcoded,
-            hintText: 'Nome'.hardcoded,
-            onFieldSubmitted: (_) => observationFocusNode.requestFocus(),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            maxLength: 50,
-          ),
-          gapH8,
-          DefaultTextFormField(
-            controller: observationController,
-            focusNode: observationFocusNode,
-            labelText: 'Observações'.hardcoded,
-            hintText: 'Observações'.hardcoded,
-            onFieldSubmitted: (_) {
-              //TODO try to update. In success close the page and show snackbar and in error show alertDialog
-            },
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            maxLength: 200,
-          ),
-          gapH32,
-          SizedBox(
-            width: 200,
-            child: PrimaryButton(
-              text: widget.concurrentUpdating == null
-                  ? 'Inserir'.hardcoded
-                  : 'Alterar'.hardcoded,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
