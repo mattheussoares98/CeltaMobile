@@ -45,18 +45,18 @@ void main() {
         addTearDown(container.dispose);
 
         await container.read(
-          getAddressByCepControllerProvider(Modules.customerRegister).future,
+          addressByCepStateControllerProvider(Modules.customerRegister).future,
         );
         final states = <AsyncValue<AddressEntity?>>[];
         container.listen(
-          getAddressByCepControllerProvider(Modules.customerRegister),
+          addressByCepStateControllerProvider(Modules.customerRegister),
           (_, next) => states.add(next),
         );
 
         // ACT: Call the action method on the notifier
         await container
             .read(
-              getAddressByCepControllerProvider(
+              addressByCepStateControllerProvider(
                 Modules.customerRegister,
               ).notifier,
             )
@@ -78,18 +78,18 @@ void main() {
       addTearDown(container.dispose);
 
       await container.read(
-        getAddressByCepControllerProvider(Modules.customerRegister).future,
+        addressByCepStateControllerProvider(Modules.customerRegister).future,
       );
       final states = <AsyncValue<AddressEntity?>>[];
       container.listen(
-        getAddressByCepControllerProvider(Modules.customerRegister),
+        addressByCepStateControllerProvider(Modules.customerRegister),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
           .read(
-            getAddressByCepControllerProvider(
+            addressByCepStateControllerProvider(
               Modules.customerRegister,
             ).notifier,
           )

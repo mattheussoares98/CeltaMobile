@@ -65,7 +65,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final address = await ref.read(
-          getAddressByCepControllerProvider(widget.module).future,
+          addressByCepStateControllerProvider(widget.module).future,
         );
         if (address != null) {
           setState(() => showAllFields = true);
@@ -91,7 +91,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   Future<void> seekAddress() async {
     if (zipFormKey.currentState?.validate() != true) return;
     ref
-        .read(getAddressByCepControllerProvider(widget.module).notifier)
+        .read(addressByCepStateControllerProvider(widget.module).notifier)
         .getAddress(zipController.text);
   }
 
@@ -121,7 +121,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
     setState(() {
       showAllFields = false;
     });
-    ref.invalidate(getAddressByCepControllerProvider(widget.module));
+    ref.invalidate(addressByCepStateControllerProvider(widget.module));
     clearFields(clearZip: true);
   }
 
@@ -145,12 +145,12 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(
-      getAddressByCepControllerProvider(
+      addressByCepStateControllerProvider(
         widget.module,
       ).select((s) => s.isLoading),
     );
 
-    ref.listen(getAddressByCepControllerProvider(widget.module), (p, n) {
+    ref.listen(addressByCepStateControllerProvider(widget.module), (p, n) {
       if (n.hasError) {
         clearFields(clearZip: false);
       }

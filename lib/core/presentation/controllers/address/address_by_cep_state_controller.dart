@@ -5,10 +5,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../providers/address/address.dart';
 
-part 'get_address_by_cep_controller.g.dart';
+part 'address_by_cep_state_controller.g.dart';
 
 @riverpod
-class GetAddressByCepController extends _$GetAddressByCepController {
+class AddressByCepStateController extends _$AddressByCepStateController {
   @override
   FutureOr<AddressEntity?> build(Modules module) async {
     Timer? timer;
