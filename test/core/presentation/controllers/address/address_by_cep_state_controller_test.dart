@@ -17,11 +17,20 @@ void main() {
   late MockLoadAddressByCepRepository mockRepository;
   late String fakeCep;
   late AddressEntity fakeAddress;
+  late Modules module;
 
   setUp(() {
     mockRepository = MockLoadAddressByCepRepository();
     fakeCep = faker.randomGenerator.string(8, min: 8);
     fakeAddress = EntityFactory.makeAddressEntity();
+    module =
+        Modules.values[faker.randomGenerator.integer(Modules.values.length)];
+  });
+
+  setUpAll(() {
+    for (var value in Modules.values) {
+      registerFallbackValue(value);
+    }
   });
 
   ProviderContainer makeProviderContainer() {
@@ -45,21 +54,17 @@ void main() {
         addTearDown(container.dispose);
 
         await container.read(
-          addressByCepStateControllerProvider(Modules.customerRegister).future,
+          addressByCepStateControllerProvider(module).future,
         );
         final states = <AsyncValue<AddressEntity?>>[];
         container.listen(
-          addressByCepStateControllerProvider(Modules.customerRegister),
+          addressByCepStateControllerProvider(module),
           (_, next) => states.add(next),
         );
 
         // ACT: Call the action method on the notifier
         await container
-            .read(
-              addressByCepStateControllerProvider(
-                Modules.customerRegister,
-              ).notifier,
-            )
+            .read(addressByCepStateControllerProvider(module).notifier)
             .getAddress(fakeCep);
 
         // ASSERT
@@ -77,26 +82,43 @@ void main() {
       final container = makeProviderContainer();
       addTearDown(container.dispose);
 
-      await container.read(
-        addressByCepStateControllerProvider(Modules.customerRegister).future,
-      );
+      await container.read(addressByCepStateControllerProvider(module).future);
       final states = <AsyncValue<AddressEntity?>>[];
       container.listen(
-        addressByCepStateControllerProvider(Modules.customerRegister),
+        addressByCepStateControllerProvider(module),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(
-            addressByCepStateControllerProvider(
-              Modules.customerRegister,
-            ).notifier,
-          )
+          .read(addressByCepStateControllerProvider(module).notifier)
           .getAddress(fakeCep);
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+    });
+
+    test('should update the address correctly', () async {
+      // ARRANGE
+      final newAddress = EntityFactory.makeAddressEntity();
+
+      final container = makeProviderContainer();
+      addTearDown(container.dispose);
+
+      await container.read(addressByCepStateControllerProvider(module).future);
+      final states = <AsyncValue<AddressEntity?>>[];
+      container.listen(
+        addressByCepStateControllerProvider(module),
+        (_, next) => states.add(next),
+      );
+
+      // ACT: read an address
+      container
+          .read(addressByCepStateControllerProvider(module).notifier)
+          .updateAddress(newAddress);
+
+      // ASSERT
+      expect(states.last.value, newAddress);
     });
   });
 }

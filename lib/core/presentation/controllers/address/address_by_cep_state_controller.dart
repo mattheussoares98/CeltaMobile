@@ -33,4 +33,8 @@ class AddressByCepStateController extends _$AddressByCepStateController {
       return await ref.read(loadAddressByCepRepositoryProvider).get(cep);
     });
   }
+
+  void updateAddress(AddressEntity address) {
+    state = AsyncData(address);
+  }
 }
