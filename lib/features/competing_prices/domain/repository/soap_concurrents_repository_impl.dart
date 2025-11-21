@@ -1,4 +1,6 @@
 import '../../data/datasource/datasource.dart';
+import '../../../../core/domain/entities/entities.dart';
+import '../../data/models/models.dart';
 import '../entities/entities.dart';
 import 'repository.dart';
 
@@ -24,5 +26,28 @@ class SoapConcurrentsRepositoryImpl implements ISoapConcurrentsRepository {
     );
 
     return response.map((e) => e.toEntity()).toList();
+  }
+
+  @override
+  Future<void> insertUpdate({
+    required String crossIdentity,
+    required String baseUrl,
+    required int? concurrentCode,
+    required String concurrentName,
+    required String observation,
+    required AddressEntity? address,
+  }) async {
+    await datasource.insertUpdate(
+      crossIdentity: crossIdentity,
+      baseUrl: baseUrl,
+      concurrent: ConcurrentModel.fromEntity(
+        ConcurrentEntity(
+          ConcurrentCode: concurrentCode ?? 0,
+          Name: concurrentName,
+          Observation: observation,
+          Address: address,
+        ),
+      ),
+    );
   }
 }
