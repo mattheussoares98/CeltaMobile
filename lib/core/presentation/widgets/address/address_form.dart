@@ -74,6 +74,8 @@ class _AddressFormState extends ConsumerState<AddressForm> {
           cityController.text = address.City;
           complementController.text = address.Complement ?? '';
           referenceController.text = address.Reference ?? '';
+          numberController.text = address.Number ?? '';
+          zipController.text = address.Zip;
 
           final stateIndex = BrazilStates.values.indexWhere(
             (e) => e.name == address.State?.name,
@@ -179,86 +181,106 @@ class _AddressFormState extends ConsumerState<AddressForm> {
       });
     });
 
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          Form(
-            key: zipFormKey,
-            child: ZipField(
-              isLoading: isLoading,
-              zipController: zipController,
-              zipFocusNode: zipFocusNode,
-              seekAddress: seekAddress,
-              changeShowAllFields: (value) =>
-                  setState(() => showAllFields = value),
+    return PopScope(
+      onPopInvokedWithResult: (_, _) {
+        ref
+            .read(addressByCepStateControllerProvider(widget.module).notifier)
+            .updateAddress(
+              AddressEntity(
+                Zip: zipController.text,
+                Address: addressController.text,
+                Number: numberController.text,
+                District: districtController.text,
+                City: cityController.text,
+                State: state,
+                Complement: complementController.text,
+                Reference: referenceController.text,
+              ),
+            );
+      },
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            Form(
+              key: zipFormKey,
+              child: ZipField(
+                isLoading: isLoading,
+                zipController: zipController,
+                zipFocusNode: zipFocusNode,
+                seekAddress: seekAddress,
+                changeShowAllFields: (value) =>
+                    setState(() => showAllFields = value),
+              ),
             ),
-          ),
-          if (showAllFields) ...[
-            gapH8,
-            AddressField(addressController: addressController),
-            gapH8,
-            Row(
-              children: [
-                Expanded(
-                  child: DistrictField(districtController: districtController),
-                ),
-                gapW8,
-                Expanded(child: CityField(cityController: cityController)),
-              ],
-            ),
-            gapH8,
-            Row(
-              children: [
-                Expanded(
-                  flex: 60,
-                  child: StatesDropDown(
-                    isLoading: isLoading,
-                    onChangeState: (state) =>
-                        setState(() => this.state = state),
-                    state: state,
+            if (showAllFields) ...[
+              gapH8,
+              AddressField(addressController: addressController),
+              gapH8,
+              Row(
+                children: [
+                  Expanded(
+                    child: DistrictField(
+                      districtController: districtController,
+                    ),
                   ),
-                ),
-                gapW8,
-                Expanded(
-                  flex: 40,
-                  child: NumberField(
-                    isLoading: isLoading,
-                    numberController: numberController,
-                    numberFocusNode: numberFocusNode,
-                    complementFocusNode: complementFocusNode,
+                  gapW8,
+                  Expanded(child: CityField(cityController: cityController)),
+                ],
+              ),
+              gapH8,
+              Row(
+                children: [
+                  Expanded(
+                    flex: 60,
+                    child: StatesDropDown(
+                      isLoading: isLoading,
+                      onChangeState: (state) =>
+                          setState(() => this.state = state),
+                      state: state,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            gapH8,
-            Row(
-              children: [
-                Expanded(
-                  child: ComplementField(
-                    isLoading: isLoading,
-                    complementController: complementController,
-                    complementFocusNode: complementFocusNode,
-                    referenceFocusNode: referenceFocusNode,
+                  gapW8,
+                  Expanded(
+                    flex: 40,
+                    child: NumberField(
+                      isLoading: isLoading,
+                      numberController: numberController,
+                      numberFocusNode: numberFocusNode,
+                      complementFocusNode: complementFocusNode,
+                    ),
                   ),
-                ),
-                gapW8,
-                Expanded(
-                  child: ReferenceField(
-                    isLoading: isLoading,
-                    referenceFocusNode: referenceFocusNode,
-                    referenceController: referenceController,
+                ],
+              ),
+              gapH8,
+              Row(
+                children: [
+                  Expanded(
+                    child: ComplementField(
+                      isLoading: isLoading,
+                      complementController: complementController,
+                      complementFocusNode: complementFocusNode,
+                      referenceFocusNode: referenceFocusNode,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            gapH32,
-            PrimaryButton(
-              text: 'Adicionar endereço'.hardcoded,
-              onPressed: addAddress,
-            ),
+                  gapW8,
+                  Expanded(
+                    child: ReferenceField(
+                      isLoading: isLoading,
+                      referenceFocusNode: referenceFocusNode,
+                      referenceController: referenceController,
+                    ),
+                  ),
+                ],
+              ),
+              gapH32,
+              PrimaryButton(
+                text: 'Adicionar endereço'.hardcoded,
+                onPressed: addAddress,
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
