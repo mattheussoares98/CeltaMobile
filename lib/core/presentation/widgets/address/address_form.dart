@@ -12,10 +12,12 @@ import 'address.dart';
 class AddressForm extends ConsumerStatefulWidget {
   final Modules module;
   final Future<bool> Function(AddressEntity newAddress) addAddress;
+  final bool cleanStateOnDispose;
   const AddressForm({
     super.key,
     required this.module,
     required this.addAddress,
+    required this.cleanStateOnDispose,
   });
 
   @override
@@ -67,7 +69,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
         final address = await ref.read(
           addressByCepStateControllerProvider(widget.module).future,
         );
-        if (address != null) {
+        if (address?.Address != null && address!.Address.isNotEmpty) {
           setState(() => showAllFields = true);
           addressController.text = address.Address;
           districtController.text = address.District;
@@ -183,20 +185,24 @@ class _AddressFormState extends ConsumerState<AddressForm> {
 
     return PopScope(
       onPopInvokedWithResult: (_, _) {
-        ref
-            .read(addressByCepStateControllerProvider(widget.module).notifier)
-            .updateAddress(
-              AddressEntity(
-                Zip: zipController.text,
-                Address: addressController.text,
-                Number: numberController.text,
-                District: districtController.text,
-                City: cityController.text,
-                State: state,
-                Complement: complementController.text,
-                Reference: referenceController.text,
-              ),
-            );
+        if (widget.cleanStateOnDispose) {
+          ref.invalidate(addressByCepStateControllerProvider(widget.module));
+        } else {
+          ref
+              .read(addressByCepStateControllerProvider(widget.module).notifier)
+              .updateAddress(
+                AddressEntity(
+                  Zip: zipController.text,
+                  Address: addressController.text,
+                  Number: numberController.text,
+                  District: districtController.text,
+                  City: cityController.text,
+                  State: state,
+                  Complement: complementController.text,
+                  Reference: referenceController.text,
+                ),
+              );
+        }
       },
       child: Form(
         key: formKey,

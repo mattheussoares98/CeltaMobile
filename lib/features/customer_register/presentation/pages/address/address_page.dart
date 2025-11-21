@@ -51,6 +51,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
             AddressForm(
               module: Modules.customerRegister,
               addAddress: addAddress,
+              cleanStateOnDispose: false,
             ),
             const InformedAddressess(),
           ],
