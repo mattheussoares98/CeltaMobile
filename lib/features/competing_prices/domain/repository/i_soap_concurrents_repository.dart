@@ -1,6 +1,6 @@
 import '../../domain/entities/entities.dart';
 
-abstract class ISoapLoadConcurrentsRepository {
+abstract class ISoapConcurrentsRepository {
   Future<List<ConcurrentEntity>> load({
     required String crossIdentity,
     required String baseUrl,

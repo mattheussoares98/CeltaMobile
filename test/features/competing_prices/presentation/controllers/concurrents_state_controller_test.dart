@@ -14,7 +14,7 @@ import '../../../../mocks/mocks.dart';
 // --- Fakes and Mocks for Dependencies ---
 
 class MockSoapLoadConcurrentsRepository extends Mock
-    implements ISoapLoadConcurrentsRepository {}
+    implements ISoapConcurrentsRepository {}
 
 void main() {
   late MockSoapLoadConcurrentsRepository mockRepository;

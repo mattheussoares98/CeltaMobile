@@ -10,7 +10,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late ISoapLoadConcurrentsDatasource sut;
+  late ISoapConcurrentsDatasource sut;
 
   late SoapRequestSpy soapRequest;
 
@@ -21,7 +21,7 @@ void main() {
   late SearchConcurrentType searchConcurrentType;
 
   void initSut() {
-    sut = SoapLoadConcurrentsDatasource(soapRequest);
+    sut = SoapConcurrentsDatasource(soapRequest);
   }
 
   void initInjections() {

@@ -5,9 +5,9 @@ import '../../domain/entities/entities.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
-class SoapLoadConcurrentsDatasource implements ISoapLoadConcurrentsDatasource {
+class SoapConcurrentsDatasource implements ISoapConcurrentsDatasource {
   final SoapRequest soapRequest;
-  SoapLoadConcurrentsDatasource(this.soapRequest);
+  SoapConcurrentsDatasource(this.soapRequest);
 
   @override
   Future<List<ConcurrentModel>> load({

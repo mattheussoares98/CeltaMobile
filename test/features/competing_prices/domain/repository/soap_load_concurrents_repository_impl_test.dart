@@ -9,7 +9,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class SoapLoadConcurrentsDatasourceSpy extends Mock
-    implements ISoapLoadConcurrentsDatasource {
+    implements ISoapConcurrentsDatasource {
   void mockLoad(List<ConcurrentModel> response) {
     when(
       () => this.load(
@@ -23,7 +23,7 @@ class SoapLoadConcurrentsDatasourceSpy extends Mock
 }
 
 void main() {
-  late ISoapLoadConcurrentsRepository sut;
+  late ISoapConcurrentsRepository sut;
 
   late SoapLoadConcurrentsDatasourceSpy datasource;
 
@@ -32,7 +32,7 @@ void main() {
   late List<ConcurrentEntity> concurrentsEntities;
 
   void initSut() {
-    sut = SoapLoadConcurrentsRepositoryImpl(datasource);
+    sut = SoapConcurrentsRepositoryImpl(datasource);
   }
 
   void initInjections() {

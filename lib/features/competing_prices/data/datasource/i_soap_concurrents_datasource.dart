@@ -1,7 +1,7 @@
 import '../../domain/entities/entities.dart';
 import '../models/models.dart';
 
-abstract class ISoapLoadConcurrentsDatasource {
+abstract class ISoapConcurrentsDatasource {
   Future<List<ConcurrentModel>> load({
     required String crossIdentity,
     required String baseUrl,

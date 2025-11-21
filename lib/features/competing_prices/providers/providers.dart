@@ -36,13 +36,13 @@ ISoapInsertUpdateResearchRepository soapInsertUpdateResearchRepository(
 }
 
 @riverpod
-ISoapLoadConcurrentsDatasource soapLoadConcurrentsDatasource(Ref ref) {
-  return SoapLoadConcurrentsDatasource(ref.watch(soapRequestProvider));
+ISoapConcurrentsDatasource soapConcurrentsDatasource(Ref ref) {
+  return SoapConcurrentsDatasource(ref.watch(soapRequestProvider));
 }
 
 @riverpod
-ISoapLoadConcurrentsRepository soapLoadConcurrentsRepository(Ref ref) {
-  return SoapLoadConcurrentsRepositoryImpl(
-    ref.watch(soapLoadConcurrentsDatasourceProvider),
+ISoapConcurrentsRepository soapLoadConcurrentsRepository(Ref ref) {
+  return SoapConcurrentsRepositoryImpl(
+    ref.watch(soapConcurrentsDatasourceProvider),
   );
 }
