@@ -8,4 +8,10 @@ abstract class ISoapConcurrentsDatasource {
     required SearchConcurrentType searchType,
     required String searchValue,
   });
+
+  Future<void> insertUpdate({
+    required String crossIdentity,
+    required String baseUrl,
+    required ConcurrentModel concurrent,
+  });
 }

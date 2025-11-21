@@ -35,4 +35,28 @@ class SoapConcurrentsDatasource implements ISoapConcurrentsDatasource {
         .map((e) => ConcurrentModel.fromJson(e))
         .toList();
   }
+
+  @override
+  Future<void> insertUpdate({
+    required String crossIdentity,
+    required String baseUrl,
+    required ConcurrentModel concurrent,
+  }) async {
+    await soapRequest.post(
+      url: baseUrl,
+      typeOfResponse: "InsertUpdateConcurrentJsonResponse",
+      soapAction: "InsertUpdateConcurrentJson",
+      serviceASMX: "CeltaResearchOfPriceService.asmx",
+      typeOfResult: "InsertUpdateConcurrentJsonResult",
+      parameters: {
+        "json": json.encode({
+          "ConcurrentCode": concurrent.ConcurrentCode,
+          "CrossIdentity": crossIdentity,
+          "Name": concurrent.Name,
+          "Observation": concurrent.Observation,
+          "Address": concurrent.Address?.toJson(),
+        }),
+      },
+    );
+  }
 }

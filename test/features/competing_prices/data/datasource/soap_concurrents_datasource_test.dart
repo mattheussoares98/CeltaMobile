@@ -62,31 +62,62 @@ void main() {
     }
   });
 
-  test('Should behave correctly on success', () async {
-    final response = await sut.load(
-      crossIdentity: crossIdentity,
-      baseUrl: baseUrl,
-      searchValue: searchValue,
-      searchType: searchConcurrentType,
-    );
+  group('Load', () {
+    test('Should behave correctly on success', () async {
+      final response = await sut.load(
+        crossIdentity: crossIdentity,
+        baseUrl: baseUrl,
+        searchValue: searchValue,
+        searchType: searchConcurrentType,
+      );
 
-    expect(response, concurrentModels);
+      expect(response, concurrentModels);
 
-    verify(
-      () => soapRequest.post(
-        url: baseUrl,
-        soapAction: "GetConcurrentJson",
-        typeOfResponse: "GetConcurrentJsonResponse",
-        serviceASMX: "CeltaResearchOfPriceService.asmx",
-        typeOfResult: "GetConcurrentJsonResult",
-        parameters: {
-          "json": json.encode({
-            "CrossIdentity": crossIdentity,
-            "SearchValue": searchValue,
-            "SearchTypeInt": searchConcurrentType.code,
-          }),
-        },
-      ),
-    ).called(1);
+      verify(
+        () => soapRequest.post(
+          url: baseUrl,
+          soapAction: "GetConcurrentJson",
+          typeOfResponse: "GetConcurrentJsonResponse",
+          serviceASMX: "CeltaResearchOfPriceService.asmx",
+          typeOfResult: "GetConcurrentJsonResult",
+          parameters: {
+            "json": json.encode({
+              "CrossIdentity": crossIdentity,
+              "SearchValue": searchValue,
+              "SearchTypeInt": searchConcurrentType.code,
+            }),
+          },
+        ),
+      ).called(1);
+    });
+  });
+
+  group('Insert update', () {
+    test('Should call soap with correct params', () async {
+      await sut.insertUpdate(
+        crossIdentity: crossIdentity,
+        baseUrl: baseUrl,
+        concurrent: concurrentModels.first,
+      );
+
+      verify(
+        () => soapRequest.post(
+          url: baseUrl,
+          typeOfResponse: "InsertUpdateConcurrentJsonResponse",
+          soapAction: "InsertUpdateConcurrentJson",
+          serviceASMX: "CeltaResearchOfPriceService.asmx",
+          typeOfResult: "InsertUpdateConcurrentJsonResult",
+          parameters: {
+            "json": json.encode({
+              "ConcurrentCode": concurrentModels.first.ConcurrentCode,
+              "CrossIdentity": crossIdentity,
+              "Name": concurrentModels.first.Name,
+              "Observation": concurrentModels.first.Observation,
+              "Address": concurrentModels.first.Address?.toJson(),
+            }),
+          },
+        ),
+      ).called(1);
+    });
   });
 }
