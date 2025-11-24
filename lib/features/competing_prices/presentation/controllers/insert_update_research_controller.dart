@@ -15,13 +15,14 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
   @override
   FutureOr<void> build() {}
 
-  Future<void> insertUpdate({
+  Future<bool> insertUpdate({
     required String name,
     required String? observations,
     required int? researchCode,
     ConcurrentEntity? concurrentToAssociate,
   }) async {
     state = const AsyncValue.loading();
+    bool succeeds = false;
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
         validatedUserSessionProvider.future,
@@ -40,6 +41,7 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
         concurrentToAssociate: concurrentToAssociate,
       );
 
+      succeeds = true;
       if (researchCode != null) {
         ref
             .read(researchsStateControllerProvider.notifier)
@@ -53,5 +55,6 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
         ref.invalidate(researchsStateControllerProvider);
       }
     });
+    return succeeds;
   }
 }

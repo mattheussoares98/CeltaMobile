@@ -82,7 +82,7 @@ void main() {
 
   group('InsertUpdateResearchController', () {
     test(
-      'should emit [loading, data] and call repository on success',
+      'should emit [loading, data], call repository on success and return true',
       () async {
         // ARRANGE
         when(
@@ -112,7 +112,7 @@ void main() {
         );
 
         // ACT
-        await container
+        final succeeds = await container
             .read(insertUpdateResearchControllerProvider.notifier)
             .insertUpdate(
               name: fakeName,
@@ -121,6 +121,7 @@ void main() {
             );
 
         // ASSERT
+        expect(succeeds, isTrue);
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
 
         verify(
@@ -137,47 +138,51 @@ void main() {
       },
     );
 
-    test('should emit [loading, error] when session is invalid', () async {
-      // ARRANGE
-      final spyResearchs = SpyResearchsStateController();
-      final container = makeProviderContainer(
-        session: null, // Invalid session
-        enterprise: fakeEnterprise,
-        spyResearchs: spyResearchs,
-      );
-      addTearDown(container.dispose);
+    test(
+      'should emit [loading, error] when session is invalid and return false',
+      () async {
+        // ARRANGE
+        final spyResearchs = SpyResearchsStateController();
+        final container = makeProviderContainer(
+          session: null, // Invalid session
+          enterprise: fakeEnterprise,
+          spyResearchs: spyResearchs,
+        );
+        addTearDown(container.dispose);
 
-      final states = <AsyncValue<void>>[];
-      container.listen(
-        insertUpdateResearchControllerProvider,
-        (_, next) => states.add(next),
-      );
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          insertUpdateResearchControllerProvider,
+          (_, next) => states.add(next),
+        );
 
-      // ACT
-      await container
-          .read(insertUpdateResearchControllerProvider.notifier)
-          .insertUpdate(
-            name: fakeName,
-            observations: fakeObservations,
-            researchCode: fakeResearchCode,
-          );
+        // ACT
+        final succeeds = await container
+            .read(insertUpdateResearchControllerProvider.notifier)
+            .insertUpdate(
+              name: fakeName,
+              observations: fakeObservations,
+              researchCode: fakeResearchCode,
+            );
 
-      // ASSERT
-      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-      expect(states.last.error, isA<AppException>());
+        // ASSERT
+        expect(succeeds, isFalse);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+        expect(states.last.error, isA<AppException>());
 
-      verifyNever(
-        () => mockRepository.insertUpdate(
-          concurrentToAssociate: any(named: 'concurrentToAssociate'),
-          crossIdentity: any(named: 'crossIdentity'),
-          baseUrl: any(named: 'baseUrl'),
-          enterpriseCode: any(named: 'enterpriseCode'),
-          name: any(named: 'name'),
-          observations: any(named: 'observations'),
-          researchCode: any(named: 'researchCode'),
-        ),
-      );
-    });
+        verifyNever(
+          () => mockRepository.insertUpdate(
+            concurrentToAssociate: any(named: 'concurrentToAssociate'),
+            crossIdentity: any(named: 'crossIdentity'),
+            baseUrl: any(named: 'baseUrl'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            name: any(named: 'name'),
+            observations: any(named: 'observations'),
+            researchCode: any(named: 'researchCode'),
+          ),
+        );
+      },
+    );
 
     test(
       'should emit [loading, error] when selected enterprise is null',
