@@ -31,8 +31,8 @@ class FinishOfferController extends _$FinishOfferController {
             baseUrl: userSession!.enterprise!.baseUrl!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             enterpriseCode: selectedEnterprise!.Code!,
-            productCode: product.ProductCode,
-            productPackingCode: product.ProductPackingCode,
+            productCode: product.ProductCode!,
+            productPackingCode: product.ProductPackingCode!,
             saleType: saleType,
             replications: [],
             offerParams: OfferParams(

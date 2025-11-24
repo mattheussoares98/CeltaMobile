@@ -26,7 +26,7 @@ class NamePluAndDeleteButton extends ConsumerWidget {
               TitleAndSubTitle(
                 title: cartProduct.product!.Name,
                 subTitle:
-                    " (${cartProduct.product!.PackingQuantity.formattedPacking()})",
+                    " (${cartProduct.product!.PackingQuantity!.formattedPacking()})",
                 titleStyle: theme.textTheme.titleMedium,
                 subTitleStyle: theme.textTheme.bodyMedium,
               ),

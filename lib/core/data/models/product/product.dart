@@ -1,3 +1,4 @@
+export './competing_price_product_model.dart';
 export 'last_buy_entrance_model.dart';
 export 'price_cost_model.dart';
 export 'product_model.dart';

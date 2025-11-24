@@ -8,12 +8,10 @@ import 'product_item.dart';
 
 class ProductInfoModal extends StatefulWidget {
   final ProductEntity product;
-  final int enterpriseCode;
   final BsRoutine routine;
   const ProductInfoModal({
     super.key,
     required this.product,
-    required this.enterpriseCode,
     required this.routine,
   });
 
@@ -35,7 +33,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
   Widget build(BuildContext context) {
     final pages = [
       //TODO check in all modules, if load the data from each page. Because if is necessary, needs to hide depending on the module
-      Prices(widget: widget, enterpriseCode: widget.enterpriseCode),
+      Prices(widget: widget),
       Stocks(widget: widget),
       Addresses(widget: widget),
       Shopping(widget: widget),

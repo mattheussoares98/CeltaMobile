@@ -4,44 +4,44 @@ import '../../../domain/entities/entities.dart';
 import 'product.dart';
 
 class ProductModel extends Equatable {
-  final int EnterpriseCode;
-  final int ProductCode;
-  final int ProductPackingCode;
+  final int? EnterpriseCode;
+  final int? ProductCode;
+  final int? ProductPackingCode;
   final int? ResearchOfPriceCode;
   final int? ConcurrentCode;
-  final String PLU;
-  final String Name;
-  final String PackingQuantity;
-  final String BalanceLabelType;
+  final String? PLU;
+  final String? Name;
+  final String? PackingQuantity;
+  final String? BalanceLabelType;
   final String? StorageAreaAddress;
-  final double Value;
-  final double BalanceLabelQuantity;
-  final double RetailPracticedPrice;
-  final double RetailSalePrice;
-  final double RetailOfferPrice;
-  final double WholePracticedPrice;
-  final double WholeSalePrice;
-  final double WholeOfferPrice;
-  final double ECommercePracticedPrice;
-  final double ECommerceSalePrice;
-  final double ECommerceOfferPrice;
-  final double MinimumWholeQuantity;
-  final double OperationalCost;
-  final double ReplacementCost;
-  final double ReplacementCostMidle;
-  final double LiquidCost;
-  final double LiquidCostMidle;
-  final double RealCost;
-  final double RealLiquidCost;
-  final double FiscalCost;
-  final double FiscalLiquidCost;
-  final bool PendantPrintLabel;
-  final bool AlterationPriceForAllPackings;
-  final bool IsFatherOfGrate;
-  final bool IsChildOfGrate;
-  final bool InClass;
-  final bool MarkUpdateClassInAdjustSalePriceIndividual;
-  final PriceCostModel PriceCost;
+  final double? Value;
+  final double? BalanceLabelQuantity;
+  final double? RetailPracticedPrice;
+  final double? RetailSalePrice;
+  final double? RetailOfferPrice;
+  final double? WholePracticedPrice;
+  final double? WholeSalePrice;
+  final double? WholeOfferPrice;
+  final double? ECommercePracticedPrice;
+  final double? ECommerceSalePrice;
+  final double? ECommerceOfferPrice;
+  final double? MinimumWholeQuantity;
+  final double? OperationalCost;
+  final double? ReplacementCost;
+  final double? ReplacementCostMidle;
+  final double? LiquidCost;
+  final double? LiquidCostMidle;
+  final double? RealCost;
+  final double? RealLiquidCost;
+  final double? FiscalCost;
+  final double? FiscalLiquidCost;
+  final bool? PendantPrintLabel;
+  final bool? AlterationPriceForAllPackings;
+  final bool? IsFatherOfGrate;
+  final bool? IsChildOfGrate;
+  final bool? InClass;
+  final bool? MarkUpdateClassInAdjustSalePriceIndividual;
+  final PriceCostModel? PriceCost;
   final List<StockByEnterpriseAssociatedModel>? StockByEnterpriseAssociateds;
   final List<StockModel>? Stocks;
   final List<LastBuyEntranceModel>? LastBuyEntrances;
@@ -236,7 +236,7 @@ class ProductModel extends Equatable {
     'InClass': InClass,
     'MarkUpdateClassInAdjustSalePriceIndividual':
         MarkUpdateClassInAdjustSalePriceIndividual,
-    'PriceCost': PriceCost.toJson(),
+    'PriceCost': PriceCost?.toJson(),
     'StockByEnterpriseAssociateds': StockByEnterpriseAssociateds?.map(
       (e) => e.toJson(),
     ).toList(),
@@ -287,7 +287,9 @@ class ProductModel extends Equatable {
       InClass: entity.InClass,
       MarkUpdateClassInAdjustSalePriceIndividual:
           entity.MarkUpdateClassInAdjustSalePriceIndividual,
-      PriceCost: PriceCostModel.fromEntity(entity.PriceCost),
+      PriceCost: entity.PriceCost == null
+          ? null
+          : PriceCostModel.fromEntity(entity.PriceCost!),
       StockByEnterpriseAssociateds: entity.StockByEnterpriseAssociateds?.map((
         e,
       ) {
@@ -340,7 +342,7 @@ class ProductModel extends Equatable {
     InClass: InClass,
     MarkUpdateClassInAdjustSalePriceIndividual:
         MarkUpdateClassInAdjustSalePriceIndividual,
-    PriceCost: PriceCost.toEntity(),
+    PriceCost: PriceCost?.toEntity(),
     StockByEnterpriseAssociateds: StockByEnterpriseAssociateds?.map(
       (e) => e.toEntity(),
     ).toList(),

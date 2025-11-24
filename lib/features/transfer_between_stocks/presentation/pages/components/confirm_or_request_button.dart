@@ -37,9 +37,9 @@ class ConfirmOrRequestButton extends ConsumerWidget {
                   items
                       .map(
                         (e) => AdjustStockItemEntity(
-                          EnterpriseCode: e.product.EnterpriseCode,
-                          ProductCode: e.product.ProductCode,
-                          ProductPackingCode: e.product.ProductPackingCode,
+                          EnterpriseCode: e.product.EnterpriseCode!,
+                          ProductCode: e.product.ProductCode!,
+                          ProductPackingCode: e.product.ProductPackingCode!,
                           JustificationCode:
                               e.selectedJustification.CodigoInterno_JustMov,
                           StockTypeCode:

@@ -99,8 +99,8 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     final products = pendingAsync.value?.products ?? {};
     products.addAll({
       ProductKey(
-        enterpriseCode: product.EnterpriseCode,
-        productPackingCode: product.ProductPackingCode,
+        enterpriseCode: product.EnterpriseCode!,
+        productPackingCode: product.ProductPackingCode!,
       ): BuyRequestProductItemEntity(
         product: product,
         quantity: quantityController.text.toDouble()!,
@@ -122,8 +122,8 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     costController.clear();
 
     if (selectedProductIndex != index) {
-      if ((product.PriceCost.LiquidCost ?? 0) > 0) {
-        costController.text = product.PriceCost.LiquidCost
+      if ((product.PriceCost!.LiquidCost ?? 0) > 0) {
+        costController.text = product.PriceCost!.LiquidCost
             .toString()
             .toBrazilianNumber(4);
       }

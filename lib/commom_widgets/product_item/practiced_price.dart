@@ -13,33 +13,31 @@ import '../commom_widgets.dart';
 class PracticedPrice extends ConsumerWidget {
   final SaleType saleType;
   final ProductEntity product;
-  final int enterpriseCode;
   const PracticedPrice({
     super.key,
     required this.saleType,
     required this.product,
-    required this.enterpriseCode,
   });
 
   double get salePrice {
     switch (saleType) {
       case SaleType.retail:
-        return product.RetailPracticedPrice;
+        return (product.RetailPracticedPrice ?? 0);
       case SaleType.whole:
-        return product.WholePracticedPrice;
+        return (product.WholePracticedPrice ?? 0);
       case SaleType.ecommerce:
-        return product.ECommercePracticedPrice;
+        return (product.ECommercePracticedPrice ?? 0);
     }
   }
 
   double get offerPrice {
     switch (saleType) {
       case SaleType.retail:
-        return product.RetailOfferPrice;
+        return (product.RetailOfferPrice ?? 0);
       case SaleType.whole:
-        return product.WholeOfferPrice;
+        return (product.WholeOfferPrice ?? 0);
       case SaleType.ecommerce:
-        return product.ECommerceOfferPrice;
+        return (product.ECommerceOfferPrice ?? 0);
     }
   }
 
@@ -76,7 +74,7 @@ class PracticedPrice extends ConsumerWidget {
                       ),
                     ),
                   if (saleType == SaleType.whole &&
-                      product.MinimumWholeQuantity > 0)
+                      (product.MinimumWholeQuantity ?? 0) > 0)
                     TitleAndSubTitle(
                       title: 'Qtd mín atacado'.hardcoded,
                       subTitle: product.MinimumWholeQuantity.toString()

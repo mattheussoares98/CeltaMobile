@@ -58,7 +58,7 @@ class FieldsAndInsertButton extends ConsumerWidget {
             TransferRequestProductItemEntity(
               product: product,
               quantity: newQuantity,
-              value: value,
+              value: value!,
             ),
           );
 
@@ -165,7 +165,7 @@ class FieldsAndInsertButton extends ConsumerWidget {
                             quantityController.text.toDouble() ?? 0;
                         final price =
                             priceController.text.toDouble() ?? product.Value;
-                        final total = price * quantity;
+                        final total = price! * quantity;
 
                         return TitleAndSubTitle(
                           title: 'Total'.hardcoded,

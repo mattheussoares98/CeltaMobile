@@ -102,22 +102,22 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
                             product: product,
                             routine: BsRoutine.priceConference,
                             notClickableBottom: PrimaryTextButton(
-                              text: product.PendantPrintLabel
+                              text: product.PendantPrintLabel!
                                   ? 'Desmarcar para impressão'.hardcoded
                                   : 'Marcar para impressão'.hardcoded,
                               icon: Icon(
-                                product.PendantPrintLabel
+                                product.PendantPrintLabel!
                                     ? (isIOS
                                           ? CupertinoIcons.printer_fill
                                           : Icons.print_disabled)
                                     : isIOS
                                     ? CupertinoIcons.printer
                                     : Icons.print,
-                                color: product.PendantPrintLabel
+                                color: product.PendantPrintLabel!
                                     ? Colors.red
                                     : null,
                               ),
-                              color: product.PendantPrintLabel
+                              color: product.PendantPrintLabel!
                                   ? Colors.red
                                   : null,
                               isLoading:
@@ -137,8 +137,8 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
                                     )
                                     .send(
                                       productPackingCode:
-                                          product.ProductPackingCode,
-                                      newValue: !product.PendantPrintLabel,
+                                          product.ProductPackingCode!,
+                                      newValue: !product.PendantPrintLabel!,
                                       enterpriseCode: widget.enterpriseCode,
                                       routine: BsRoutine.priceConference,
                                     );

@@ -4,44 +4,44 @@ import 'package:equatable/equatable.dart';
 import 'product.dart';
 
 class ProductEntity extends Equatable {
-  final int EnterpriseCode;
-  final int ProductCode;
-  final int ProductPackingCode;
-  final String PLU;
-  final String Name;
-  final String PackingQuantity;
-  final String BalanceLabelType;
+  final int? EnterpriseCode;
+  final int? ProductCode;
+  final int? ProductPackingCode;
+  final String? PLU;
+  final String? Name;
+  final String? PackingQuantity;
+  final String? BalanceLabelType;
   final String? StorageAreaAddress;
-  final double Value;
-  final double BalanceLabelQuantity;
-  final double RetailPracticedPrice;
-  final double RetailSalePrice;
-  final double RetailOfferPrice;
-  final double WholePracticedPrice;
-  final double WholeSalePrice;
-  final double WholeOfferPrice;
-  final double ECommercePracticedPrice;
-  final double ECommerceSalePrice;
-  final double ECommerceOfferPrice;
-  final double MinimumWholeQuantity;
-  final double OperationalCost;
-  final double ReplacementCost;
-  final double ReplacementCostMidle;
-  final double LiquidCost;
-  final double LiquidCostMidle;
-  final double RealCost;
-  final double RealLiquidCost;
-  final double FiscalCost;
-  final double FiscalLiquidCost;
-  final bool PendantPrintLabel;
-  final bool AlterationPriceForAllPackings;
-  final bool IsFatherOfGrate;
-  final bool IsChildOfGrate;
-  final bool InClass;
-  final bool MarkUpdateClassInAdjustSalePriceIndividual;
+  final double? Value;
+  final double? BalanceLabelQuantity;
+  final double? RetailPracticedPrice;
+  final double? RetailSalePrice;
+  final double? RetailOfferPrice;
+  final double? WholePracticedPrice;
+  final double? WholeSalePrice;
+  final double? WholeOfferPrice;
+  final double? ECommercePracticedPrice;
+  final double? ECommerceSalePrice;
+  final double? ECommerceOfferPrice;
+  final double? MinimumWholeQuantity;
+  final double? OperationalCost;
+  final double? ReplacementCost;
+  final double? ReplacementCostMidle;
+  final double? LiquidCost;
+  final double? LiquidCostMidle;
+  final double? RealCost;
+  final double? RealLiquidCost;
+  final double? FiscalCost;
+  final double? FiscalLiquidCost;
+  final bool? PendantPrintLabel;
+  final bool? AlterationPriceForAllPackings;
+  final bool? IsFatherOfGrate;
+  final bool? IsChildOfGrate;
+  final bool? InClass;
+  final bool? MarkUpdateClassInAdjustSalePriceIndividual;
   final int? ResearchOfPriceCode;
   final int? ConcurrentCode;
-  final PriceCostEntity
+  final PriceCostEntity?
   PriceCost; //TODO test when the user doesnt has permission
   final List<StockByEnterpriseAssociatedEntity>?
   StockByEnterpriseAssociateds; //TODO test when the user doesnt has permission
@@ -237,11 +237,11 @@ class ProductEntity extends Equatable {
   }
 
   double get getPrice {
-    if (Value > 0) {
-      return Value;
+    if ((Value ?? 0) > 0) {
+      return Value ?? 0;
     }
 
-    return RetailPracticedPrice;
+    return RetailPracticedPrice ?? 0;
   }
 
   PracticedPriceType getPracticedPriceType({
@@ -252,13 +252,14 @@ class ProductEntity extends Equatable {
       return PracticedPriceType.notDefined;
     } else if (manualPrice == getPrice) {
       return PracticedPriceType.retail;
-    } else if (manualPrice == WholePracticedPrice && WholePracticedPrice > 0) {
+    } else if (manualPrice == WholePracticedPrice &&
+        (WholePracticedPrice ?? 0) > 0) {
       return PracticedPriceType.whole;
     } else if (manualPrice != null && manualPrice > 0) {
       return PracticedPriceType.manual;
-    } else if (MinimumWholeQuantity > 0 &&
-        WholePracticedPrice > 0 &&
-        quantity >= MinimumWholeQuantity) {
+    } else if ((MinimumWholeQuantity ?? 0) > 0 &&
+        (WholePracticedPrice ?? 0) > 0 &&
+        quantity >= (MinimumWholeQuantity ?? 0)) {
       return PracticedPriceType.whole;
     }
     return PracticedPriceType.retail;
@@ -276,11 +277,56 @@ class ProductEntity extends Equatable {
       case PracticedPriceType.retail:
         return getPrice;
       case PracticedPriceType.whole:
-        return WholePracticedPrice;
+        return (WholePracticedPrice ?? 0);
       case PracticedPriceType.manual:
         return manualPrice ?? 0;
     }
   }
+
+  factory ProductEntity.empty() => const ProductEntity(
+    EnterpriseCode: null,
+    ProductCode: null,
+    ProductPackingCode: null,
+    PLU: null,
+    Name: null,
+    PackingQuantity: null,
+    BalanceLabelType: null,
+    StorageAreaAddress: null,
+    Value: null,
+    BalanceLabelQuantity: null,
+    RetailPracticedPrice: null,
+    RetailSalePrice: null,
+    RetailOfferPrice: null,
+    WholePracticedPrice: null,
+    WholeSalePrice: null,
+    WholeOfferPrice: null,
+    ECommercePracticedPrice: null,
+    ECommerceSalePrice: null,
+    ECommerceOfferPrice: null,
+    MinimumWholeQuantity: null,
+    OperationalCost: null,
+    ReplacementCost: null,
+    ReplacementCostMidle: null,
+    LiquidCost: null,
+    LiquidCostMidle: null,
+    RealCost: null,
+    RealLiquidCost: null,
+    FiscalCost: null,
+    FiscalLiquidCost: null,
+    PendantPrintLabel: null,
+    AlterationPriceForAllPackings: null,
+    IsFatherOfGrate: null,
+    IsChildOfGrate: null,
+    InClass: null,
+    MarkUpdateClassInAdjustSalePriceIndividual: null,
+    PriceCost: null,
+    StockByEnterpriseAssociateds: null,
+    Stocks: null,
+    LastBuyEntrances: null,
+    EANs: null,
+    ResearchOfPriceCode: null,
+    ConcurrentCode: null,
+  );
 }
 
 enum PracticedPriceType {

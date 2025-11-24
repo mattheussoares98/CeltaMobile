@@ -120,7 +120,7 @@ class ProductsPage extends ConsumerWidget {
                                   true,
                             )
                             .toList()
-                          ..sort((e1, e2) => e1.Name.compareTo(e2.Name));
+                          ..sort((a, b) => a.Name!.compareTo(b.Name!));
 
                     return ProductsItems(
                       productsPage: this,

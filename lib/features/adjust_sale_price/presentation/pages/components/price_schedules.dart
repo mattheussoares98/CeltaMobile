@@ -26,22 +26,22 @@ class PriceSchedules extends ConsumerWidget {
           .read(
             priceSchedulesStateControllerProvider(
               enterpriseCode,
-              product.PLU,
+              product.PLU!,
             ).notifier,
           )
           .getPriceSchedules(
             enterpriseCode: enterpriseCode,
-            productCode: product.ProductCode,
-            productPackingCode: product.ProductPackingCode,
+            productCode: product.ProductCode!,
+            productPackingCode: product.ProductPackingCode!,
           );
     }
 
     final value = ref.watch(
-      priceSchedulesStateControllerProvider(enterpriseCode, product.PLU),
+      priceSchedulesStateControllerProvider(enterpriseCode, product.PLU!),
     );
 
     ref.listen(
-      priceSchedulesStateControllerProvider(enterpriseCode, product.PLU),
+      priceSchedulesStateControllerProvider(enterpriseCode, product.PLU!),
       (previous, next) {
         next.showAlertDialogOnError(context);
       },

@@ -73,7 +73,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       setState(() => selectedIndex = index);
       quantityController.text = '1';
 
-      if (product.Value > 0 || transferRequestProductItem?.value != null) {
+      if (product.Value! > 0 || transferRequestProductItem?.value != null) {
         final price = transferRequestProductItem?.value ?? product.Value;
         priceController.text = price.toString().replaceAll(RegExp(r'\.'), ',');
       }

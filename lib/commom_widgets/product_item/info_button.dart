@@ -5,13 +5,7 @@ import '../../core/domain/entities/entities.dart';
 import '../commom_widgets.dart';
 
 class InfoButton extends StatelessWidget {
-  const InfoButton({
-    super.key,
-    required this.product,
-    required this.enterpriseCode,
-    required this.routine,
-  });
-  final int enterpriseCode;
+  const InfoButton({super.key, required this.product, required this.routine});
   final ProductEntity product;
   final BsRoutine routine;
 
@@ -28,11 +22,7 @@ class InfoButton extends StatelessWidget {
       ),
       onPressed: () {
         showModalPage(
-          ProductInfoModal(
-            product: product,
-            enterpriseCode: enterpriseCode,
-            routine: routine,
-          ),
+          ProductInfoModal(product: product, routine: routine),
           context,
         );
       },

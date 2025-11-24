@@ -66,7 +66,7 @@ void main() {
         container.listen(
           selectedProductStateControllerProvider(
             enterpriseCode,
-            productEntity.PLU,
+            productEntity.PLU!,
           ),
           (_, next) => states.add(next),
         );
@@ -74,7 +74,7 @@ void main() {
         final result = await container.read(
           selectedProductStateControllerProvider(
             enterpriseCode,
-            productEntity.PLU,
+            productEntity.PLU!,
           ).future,
         );
 
@@ -83,7 +83,7 @@ void main() {
         await container.read(
           selectedProductStateControllerProvider(
             enterpriseCode,
-            productEntity.PLU,
+            productEntity.PLU!,
           ).future,
         );
 
@@ -110,7 +110,7 @@ void main() {
         container.listen(
           selectedProductStateControllerProvider(
             enterpriseCode,
-            productEntity.PLU,
+            productEntity.PLU!,
           ),
           (_, next) => states.add(next),
         );
@@ -118,7 +118,7 @@ void main() {
         await container.read(
           selectedProductStateControllerProvider(
             enterpriseCode,
-            productEntity.PLU,
+            productEntity.PLU!,
           ).future,
         );
 
@@ -128,7 +128,7 @@ void main() {
         verify(
           () => mockSoapProductsRepository.getProductsJson(
             baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
-            searchValue: productEntity.PLU,
+            searchValue: productEntity.PLU!,
             routine: BsRoutine.adjustSalePrice,
             searchType: SearchType.dynamic,
             enterpriseCodes: [enterpriseCode],

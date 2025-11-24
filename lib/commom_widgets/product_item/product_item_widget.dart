@@ -92,7 +92,7 @@ class ProductItemWidget extends ConsumerWidget {
                       TitleAndSubTitle(
                         title: product.Name,
                         subTitle:
-                            " (${product.PackingQuantity.formattedPacking()})",
+                            " (${product.PackingQuantity.toString().formattedPacking()})",
                         titleStyle: theme.textTheme.titleMedium,
                         subTitleStyle: theme.textTheme.bodyMedium,
                       ),
@@ -113,7 +113,7 @@ class ProductItemWidget extends ConsumerWidget {
                                     subTitle:
                                         routine == BsRoutine.transferRequest
                                         ? product.Value
-                                        : (product.Value > 0
+                                        : ((product.Value ?? 0) > 0
                                               ? product.Value
                                               : product.RetailPracticedPrice),
                                     subTitleIsPrice: true,
@@ -121,7 +121,8 @@ class ProductItemWidget extends ConsumerWidget {
                                 ],
                                 if (routine == BsRoutine.saleRequest ||
                                     routine == BsRoutine.adjustSalePrice) ...[
-                                  if (product.WholePracticedPrice > 0) ...[
+                                  if ((product.WholePracticedPrice ?? 0) >
+                                      0) ...[
                                     TitleAndSubTitle(
                                       title: 'Preço atacado',
                                       subTitle: product.WholePracticedPrice,
@@ -148,7 +149,6 @@ class ProductItemWidget extends ConsumerWidget {
                             right: 0,
                             child: InfoButton(
                               product: product,
-                              enterpriseCode: product.EnterpriseCode,
                               routine: routine,
                             ),
                           ),

@@ -11,9 +11,9 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
   final QuantityPriceDiscountFieldsAndInsertButton widget;
   const BsPricesAndMinimumWholeQuantity({super.key, required this.widget});
 
-  double get retailPrice => widget.product.RetailPracticedPrice;
-  double get minimumWholeQuantity => widget.product.MinimumWholeQuantity;
-  double get wholePrice => widget.product.WholePracticedPrice;
+  double get retailPrice => widget.product.RetailPracticedPrice!;
+  double get minimumWholeQuantity => widget.product.MinimumWholeQuantity!;
+  double get wholePrice => widget.product.WholePracticedPrice!;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
                       ? subtitleSelected
                       : subtitleNotSelected,
                 ),
-                if (widget.product.WholePracticedPrice > 0) ...[
+                if (widget.product.WholePracticedPrice! > 0) ...[
                   TitleAndSubTitle(
                     title: 'Preço atacado'.hardcoded,
                     subTitle: widget.product.WholePracticedPrice

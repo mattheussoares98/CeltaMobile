@@ -17,7 +17,7 @@ class ProductInformations extends StatelessWidget {
       children: [
         TitleAndSubTitle(
           title: item.product.Name,
-          subTitle: " (${item.product.PackingQuantity.formattedPacking()})",
+          subTitle: " (${item.product.PackingQuantity!.formattedPacking()})",
           titleStyle: theme.textTheme.titleMedium,
           subTitleStyle: theme.textTheme.bodyMedium,
         ),

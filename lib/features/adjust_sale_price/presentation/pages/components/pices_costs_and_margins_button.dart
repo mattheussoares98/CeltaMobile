@@ -25,7 +25,6 @@ class PricesCostsAndMarginsButton extends StatelessWidget {
         showModalPage(
           ProductInfoModal(
             product: product,
-            enterpriseCode: enterpriseCode,
             routine: BsRoutine.adjustSalePrice,
           ),
           context,

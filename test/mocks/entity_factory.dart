@@ -99,6 +99,8 @@ class EntityFactory {
     double? MinimumWholeQuantity,
     double? RetailPracticedPrice,
   }) => ProductEntity(
+    ConcurrentCode: faker.randomGenerator.integer(100),
+    ResearchOfPriceCode: faker.randomGenerator.integer(100),
     EANs: [
       faker.randomGenerator.integer(100).toString(),
       faker.randomGenerator.integer(100).toString(),

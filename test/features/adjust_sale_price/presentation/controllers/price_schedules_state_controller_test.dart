@@ -56,7 +56,7 @@ void main() {
       container.listen(
         priceSchedulesStateControllerProvider(
           enterpriseEntity.Code!,
-          productEntity.PLU,
+          productEntity.PLU!,
         ),
         (_, next) => states.add(next),
       );
@@ -65,10 +65,10 @@ void main() {
           .read(
             priceSchedulesStateControllerProvider(
               enterpriseEntity.Code!,
-              productEntity.PLU,
+              productEntity.PLU!,
             ).notifier,
           )
-          .build(enterpriseEntity.Code!, productEntity.PLU);
+          .build(enterpriseEntity.Code!, productEntity.PLU!);
 
       expect(value, isNull);
     });
@@ -81,7 +81,7 @@ void main() {
       container.listen(
         priceSchedulesStateControllerProvider(
           enterpriseEntity.Code!,
-          productEntity.PLU,
+          productEntity.PLU!,
         ),
         (_, next) => states.add(next),
       );
@@ -90,13 +90,13 @@ void main() {
           .read(
             priceSchedulesStateControllerProvider(
               enterpriseEntity.Code!,
-              productEntity.PLU,
+              productEntity.PLU!,
             ).notifier,
           )
           .getPriceSchedules(
             enterpriseCode: enterpriseEntity.Code!,
-            productCode: productEntity.ProductCode,
-            productPackingCode: productEntity.ProductPackingCode,
+            productCode: productEntity.ProductCode!,
+            productPackingCode: productEntity.ProductPackingCode!,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -106,8 +106,8 @@ void main() {
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseEntity.Code!,
-          productCode: productEntity.ProductCode,
-          productPackingCode: productEntity.ProductPackingCode,
+          productCode: productEntity.ProductCode!,
+          productPackingCode: productEntity.ProductPackingCode!,
         ),
       ).called(1);
     });
@@ -121,7 +121,7 @@ void main() {
       container.listen(
         priceSchedulesStateControllerProvider(
           enterpriseEntity.Code!,
-          productEntity.PLU,
+          productEntity.PLU!,
         ),
         (_, next) => states.add(next),
       );
@@ -130,13 +130,13 @@ void main() {
           .read(
             priceSchedulesStateControllerProvider(
               enterpriseEntity.Code!,
-              productEntity.PLU,
+              productEntity.PLU!,
             ).notifier,
           )
           .getPriceSchedules(
             enterpriseCode: enterpriseEntity.Code!,
-            productCode: productEntity.ProductCode,
-            productPackingCode: productEntity.ProductPackingCode,
+            productCode: productEntity.ProductCode!,
+            productPackingCode: productEntity.ProductPackingCode!,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

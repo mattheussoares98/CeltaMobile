@@ -66,8 +66,8 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
         .read(confirmAdjustControllerProvider.notifier)
         .confirm(
           enterpriseCode: widget.enterpriseCode,
-          productCode: product.ProductCode,
-          productPackingCode: product.ProductPackingCode,
+          productCode: product.ProductCode!,
+          productPackingCode: product.ProductPackingCode!,
           saleType: selectedSaleType!,
           replications: _selectedReplications.toList(),
           now: DateTime.now(),

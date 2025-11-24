@@ -74,8 +74,8 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     await ref.read(confirmAdjustStockControllerProvider.notifier).confirm([
       AdjustStockItemEntity(
         EnterpriseCode: widget.enterpriseCode,
-        ProductCode: product.ProductCode,
-        ProductPackingCode: product.ProductPackingCode,
+        ProductCode: product.ProductCode!,
+        ProductPackingCode: product.ProductPackingCode!,
         JustificationCode: selectedJustification!.CodigoInterno_JustMov,
         StockTypeCode: selectedStockType!.CodigoInterno_TipoEstoque!,
         StockTypeRecipientCode: null,

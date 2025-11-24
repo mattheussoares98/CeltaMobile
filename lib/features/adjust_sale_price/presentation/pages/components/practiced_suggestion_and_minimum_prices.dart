@@ -19,11 +19,11 @@ class PracticedSuggestionAndMinimumPrices extends StatelessWidget {
   double? get suggestion {
     switch (selectedSaleType) {
       case SaleType.retail:
-        return product.PriceCost.RetailSuggestionPrice;
+        return product.PriceCost!.RetailSuggestionPrice;
       case SaleType.whole:
-        return product.PriceCost.WholeSuggestionPrice;
+        return product.PriceCost!.WholeSuggestionPrice;
       case SaleType.ecommerce:
-        return product.PriceCost.ECommerceSuggestionPrice;
+        return product.PriceCost!.ECommerceSuggestionPrice;
       default:
         return null;
     }
@@ -32,11 +32,11 @@ class PracticedSuggestionAndMinimumPrices extends StatelessWidget {
   double? get minimumPrice {
     switch (selectedSaleType) {
       case SaleType.retail:
-        return product.PriceCost.RetailMinimumPrice;
+        return product.PriceCost!.RetailMinimumPrice;
       case SaleType.whole:
-        return product.PriceCost.WholeMinimumPrice;
+        return product.PriceCost!.WholeMinimumPrice;
       case SaleType.ecommerce:
-        return product.PriceCost.ECommerceMinimumPrice;
+        return product.PriceCost!.ECommerceMinimumPrice;
       default:
         return null;
     }

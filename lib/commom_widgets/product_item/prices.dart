@@ -10,21 +10,19 @@ import '../../features/adjust_sale_price/domain/entities/entities.dart';
 import '../commom_widgets.dart';
 
 class Prices extends ConsumerWidget {
-  const Prices({super.key, required this.widget, required this.enterpriseCode});
-
-  final int enterpriseCode;
+  const Prices({super.key, required this.widget});
   final ProductInfoModal widget;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cost = widget.product.PriceCost;
-    final retailSuggestion = cost.RetailSuggestionPrice ?? 0;
-    final wholeSuggestion = cost.WholeSuggestionPrice ?? 0;
-    final ecommerceSuggestion = cost.ECommerceSuggestionPrice ?? 0;
+    final retailSuggestion = cost?.RetailSuggestionPrice ?? 0;
+    final wholeSuggestion = cost?.WholeSuggestionPrice ?? 0;
+    final ecommerceSuggestion = cost?.ECommerceSuggestionPrice ?? 0;
 
-    final retailMinimum = cost.RetailMinimumPrice ?? 0;
-    final wholeMinimum = cost.WholeMinimumPrice ?? 0;
-    final ecommerceMinimum = cost.ECommerceMinimumPrice ?? 0;
+    final retailMinimum = cost?.RetailMinimumPrice ?? 0;
+    final wholeMinimum = cost?.WholeMinimumPrice ?? 0;
+    final ecommerceMinimum = cost?.ECommerceMinimumPrice ?? 0;
 
     final canAdjustSalePrice = ref.watch(
       canAccessResourceStateControllerProvider(
@@ -51,21 +49,9 @@ class Prices extends ConsumerWidget {
               ),
             ),
           gapH8,
-          PracticedPrice(
-            saleType: SaleType.retail,
-            product: widget.product,
-            enterpriseCode: enterpriseCode,
-          ),
-          PracticedPrice(
-            saleType: SaleType.whole,
-            product: widget.product,
-            enterpriseCode: enterpriseCode,
-          ),
-          PracticedPrice(
-            saleType: SaleType.ecommerce,
-            product: widget.product,
-            enterpriseCode: enterpriseCode,
-          ),
+          PracticedPrice(saleType: SaleType.retail, product: widget.product),
+          PracticedPrice(saleType: SaleType.whole, product: widget.product),
+          PracticedPrice(saleType: SaleType.ecommerce, product: widget.product),
           if (retailSuggestion > 0 ||
               wholeSuggestion > 0 ||
               ecommerceSuggestion > 0) ...[

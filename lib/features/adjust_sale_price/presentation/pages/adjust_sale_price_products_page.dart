@@ -126,7 +126,7 @@ class _AdjustSalePriceProductsPageState
                                             'enterpriseCode': widget
                                                 .enterpriseCode
                                                 .toString(),
-                                            'plu': product.PLU,
+                                            'plu': product.PLU!,
                                           },
                                         );
                                       },

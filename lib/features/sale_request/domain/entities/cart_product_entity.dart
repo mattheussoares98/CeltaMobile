@@ -112,7 +112,7 @@ class CartProductEntity extends Equatable {
     }
 
     return CartProductEntity(
-      ProductPackingCode: product.ProductPackingCode,
+      ProductPackingCode: product.ProductPackingCode!,
       product: product,
       Quantity: quantity,
       Value: price,

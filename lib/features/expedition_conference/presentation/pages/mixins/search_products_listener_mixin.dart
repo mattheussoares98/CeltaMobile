@@ -25,7 +25,7 @@ mixin SearchProductsListenerMixin {
         Modules.expeditionConference,
       ),
       (p, n) {
-        n.showSnackbarOnError(context,  p);
+        n.showSnackbarOnError(context, p);
 
         n.doOnSuccess(p, () {
           if (n.value != null && n.value!.length == 1) {
@@ -35,7 +35,7 @@ mixin SearchProductsListenerMixin {
                     expeditionControlCode,
                   ).notifier,
                 )
-                .scanProduct(n.value!.first.ProductPackingCode, stepCode);
+                .scanProduct(n.value!.first.ProductPackingCode!, stepCode);
 
             Future.delayed(const Duration(milliseconds: 100), () {
               focusNode.requestFocus();

@@ -32,8 +32,8 @@ class ProductsItems extends ConsumerWidget {
       products?.removeWhere((key, value) {
         return key ==
             ProductKey(
-              enterpriseCode: product.EnterpriseCode,
-              productPackingCode: product.ProductPackingCode,
+              enterpriseCode: product.EnterpriseCode!,
+              productPackingCode: product.ProductPackingCode!,
             );
       });
 
@@ -48,8 +48,8 @@ class ProductsItems extends ConsumerWidget {
         final product = products[index];
 
         final productKey = ProductKey(
-          enterpriseCode: product.EnterpriseCode,
-          productPackingCode: product.ProductPackingCode,
+          enterpriseCode: product.EnterpriseCode!,
+          productPackingCode: product.ProductPackingCode!,
         );
 
         BuyRequestProductItemEntity? insertedItem =
