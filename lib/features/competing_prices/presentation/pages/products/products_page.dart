@@ -65,7 +65,11 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               selectedResearch?.RestrictProducts == true
                   ? 'Produtos restringidos'
                   : 'Produtos não restringidos',
-              style: theme.textTheme.bodySmall,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: selectedResearch?.RestrictProducts == true
+                    ? theme.primaryColor
+                    : Colors.red,
+              ),
             ),
           ],
         ),

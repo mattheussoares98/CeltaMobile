@@ -80,6 +80,11 @@ class ResearchItem extends ConsumerWidget {
                 subTitle: research.RestrictProducts
                     ? 'Produtos restringidos'.hardcoded
                     : 'Produtos NÃO restringidos'.hardcoded,
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: research.RestrictProducts
+                      ? theme.primaryColor
+                      : Colors.red,
+                ),
               ),
               TitleAndSubTitle(
                 title: 'Data de criação',
