@@ -23,6 +23,7 @@ void main() {
   late List<int> enterpriseCodes;
   late EnterpriseEntity enterpriseEntity;
   late BuyRequestFilters buyRequestFilters;
+  late CompetingPricesFilters competingPricesFilters;
 
   void initSut() {
     sut = SoapProductsDatasource(soapAdapter);
@@ -66,6 +67,15 @@ void main() {
       requestTypeCode: faker.randomGenerator.integer(100),
       supplierCode: faker.randomGenerator.integer(100),
     );
+    competingPricesFilters = CompetingPricesFilters(
+      ResearchOfPriceCode: faker.randomGenerator.integer(100),
+      ConcurrentCode: faker.randomGenerator.integer(100),
+      OnlyAssociated: faker.randomGenerator.boolean(),
+      searchType:
+          SearchProductCompetingPriceType.values[faker.randomGenerator.integer(
+            SearchProductCompetingPriceType.values.length,
+          )],
+    );
   }
 
   setUp(() {
@@ -73,6 +83,12 @@ void main() {
     initInjections();
     initSut();
     mockSuccess();
+  });
+
+  setUpAll(() {
+    for (var value in SearchProductCompetingPriceType.values) {
+      registerFallbackValue(value);
+    }
   });
 
   test('should call soap adapter with correct values', () async {
@@ -91,6 +107,7 @@ void main() {
       enterpriseEntity: enterpriseEntity,
       lastBuyEntranceQuantity: lastBuyEntranceQuantity,
       buyRequestFilters: buyRequestFilters,
+      competingPricesFilters: competingPricesFilters,
     );
 
     expect(
@@ -115,6 +132,12 @@ void main() {
             "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
             "RequestTypeCode": buyRequestFilters.requestTypeCode,
             "SupplierCode": buyRequestFilters.supplierCode,
+            "ResearchOfPriceFilters": {
+              "ResearchOfPriceCode": competingPricesFilters.ResearchOfPriceCode,
+              "ConcurrentCode": competingPricesFilters.ConcurrentCode,
+              "OnlyAssociated": competingPricesFilters.OnlyAssociated,
+              "InformedPrices": competingPricesFilters.searchType.value,
+            },
           }),
         },
       ),

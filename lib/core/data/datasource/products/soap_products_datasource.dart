@@ -19,6 +19,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
     required List<int> enterpriseCodes,
     required int? lastBuyEntranceQuantity,
     required BuyRequestFilters? buyRequestFilters,
+    required CompetingPricesFilters? competingPricesFilters,
   }) async {
     try {
       final parameters = {
@@ -34,6 +35,17 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
         parameters.addAll({
           "RequestTypeCode": buyRequestFilters.requestTypeCode,
           "SupplierCode": buyRequestFilters.supplierCode,
+        });
+      }
+
+      if (competingPricesFilters != null) {
+        parameters.addAll({
+          "ResearchOfPriceFilters": {
+            "ResearchOfPriceCode": competingPricesFilters.ResearchOfPriceCode,
+            "ConcurrentCode": competingPricesFilters.ConcurrentCode,
+            "OnlyAssociated": competingPricesFilters.OnlyAssociated,
+            "InformedPrices": competingPricesFilters.searchType.value,
+          },
         });
       }
       return await soapRequest.post(
@@ -76,6 +88,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
     required EnterpriseEntity enterpriseEntity,
     int? lastBuyEntranceQuantity,
     BuyRequestFilters? buyRequestFilters,
+    CompetingPricesFilters? competingPricesFilters,
   }) async {
     bool isBalanceFormat = _getIsBalanceFormat(searchValue);
 
@@ -89,6 +102,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
         enterpriseCodes: enterpriseCodes,
         lastBuyEntranceQuantity: lastBuyEntranceQuantity,
         buyRequestFilters: buyRequestFilters,
+        competingPricesFilters: competingPricesFilters,
       );
 
       // throw Exception();
@@ -115,6 +129,7 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
         enterpriseCodes: enterpriseCodes,
         lastBuyEntranceQuantity: lastBuyEntranceQuantity,
         buyRequestFilters: buyRequestFilters,
+        competingPricesFilters: competingPricesFilters,
       );
 
       return (json.decode(response) as List)

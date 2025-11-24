@@ -23,6 +23,7 @@ void main() {
   late EnterpriseEntity enterpriseEntity;
   late int lastBuyEntranceQuantity;
   late BuyRequestFilters? buyRequestFilters;
+  late CompetingPricesFilters? competingPricesFilters;
 
   void initSut() {
     sut = SoapProductsRepositoryImpl(soapProductsDatasource);
@@ -64,6 +65,16 @@ void main() {
             requestTypeCode: faker.randomGenerator.integer(100),
             supplierCode: faker.randomGenerator.integer(100),
           );
+    competingPricesFilters = faker.randomGenerator.boolean()
+        ? CompetingPricesFilters(
+            ResearchOfPriceCode: faker.randomGenerator.integer(100),
+            ConcurrentCode: faker.randomGenerator.integer(100),
+            OnlyAssociated: faker.randomGenerator.boolean(),
+            searchType:
+                SearchProductCompetingPriceType.values[faker.randomGenerator
+                    .integer(SearchProductCompetingPriceType.values.length)],
+          )
+        : null;
   }
 
   setUp(() {
@@ -79,6 +90,9 @@ void main() {
     for (var searchType in SearchType.values) {
       registerFallbackValue(searchType);
     }
+    for (var value in SearchProductCompetingPriceType.values) {
+      registerFallbackValue(value);
+    }
     registerFallbackValue(EntityFactory.makeEnterpriseEntity());
   });
 
@@ -93,6 +107,7 @@ void main() {
       enterpriseEntity: enterpriseEntity,
       lastBuyEntranceQuantity: lastBuyEntranceQuantity,
       buyRequestFilters: buyRequestFilters,
+      competingPricesFilters: competingPricesFilters,
     );
 
     verify(
@@ -106,6 +121,7 @@ void main() {
         enterpriseEntity: enterpriseEntity,
         lastBuyEntranceQuantity: lastBuyEntranceQuantity,
         buyRequestFilters: buyRequestFilters,
+        competingPricesFilters: competingPricesFilters,
       ),
     ).called(1);
   });

@@ -394,6 +394,7 @@ class SoapProductsDatasourceSpy extends Mock
         enterpriseEntity: any(named: "enterpriseEntity"),
         lastBuyEntranceQuantity: any(named: "lastBuyEntranceQuantity"),
         buyRequestFilters: any(named: "buyRequestFilters"),
+        competingPricesFilters: any(named: "competingPricesFilters"),
       ),
     ).thenAnswer((_) async => response);
   }

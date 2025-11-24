@@ -14,6 +14,7 @@ abstract class ISoapProductsDatasource {
     required EnterpriseEntity enterpriseEntity,
     required int? lastBuyEntranceQuantity,
     required BuyRequestFilters? buyRequestFilters,
+    required CompetingPricesFilters? competingPricesFilters,
   });
 }
 
@@ -27,4 +28,24 @@ class BuyRequestFilters extends Equatable {
 
   @override
   List<Object?> get props => [requestTypeCode, supplierCode];
+}
+
+class CompetingPricesFilters extends Equatable {
+  final int ResearchOfPriceCode;
+  final int ConcurrentCode;
+  final bool OnlyAssociated;
+  final SearchProductCompetingPriceType searchType;
+  const CompetingPricesFilters({
+    required this.ResearchOfPriceCode,
+    required this.ConcurrentCode,
+    required this.OnlyAssociated,
+    required this.searchType,
+  });
+  @override
+  List<Object?> get props => [
+    ResearchOfPriceCode,
+    ConcurrentCode,
+    OnlyAssociated,
+    searchType,
+  ];
 }
