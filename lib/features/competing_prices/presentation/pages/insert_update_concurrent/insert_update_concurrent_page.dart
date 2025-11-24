@@ -109,13 +109,15 @@ class _UpdateConcurrentPageState
                 observationController: observationController,
                 insertUpdate: insertUpdate,
               ),
+              gapH8,
               AddressDetails(address: newAddress),
+              const Divider(),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(Sizes.p8),
                   child: Column(
                     children: [
-                      DefaultTitle(title: 'Endereço'.hardcoded),
+                      DefaultTitle(title: 'Inserir/alterar endereço'.hardcoded),
                       gapH8,
                       AddressForm(
                         module: Modules.competingPrices,
