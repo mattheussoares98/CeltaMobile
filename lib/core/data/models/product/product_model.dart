@@ -7,6 +7,8 @@ class ProductModel extends Equatable {
   final int EnterpriseCode;
   final int ProductCode;
   final int ProductPackingCode;
+  final int? ResearchOfPriceCode;
+  final int? ConcurrentCode;
   final String PLU;
   final String Name;
   final String PackingQuantity;
@@ -46,6 +48,8 @@ class ProductModel extends Equatable {
   final List<String>? EANs;
 
   const ProductModel({
+    required this.ResearchOfPriceCode,
+    required this.ConcurrentCode,
     required this.EnterpriseCode,
     required this.ProductCode,
     required this.ProductPackingCode,
@@ -130,10 +134,14 @@ class ProductModel extends Equatable {
     Stocks,
     LastBuyEntrances,
     EANs,
+    ResearchOfPriceCode,
+    ConcurrentCode,
   ];
 
   factory ProductModel.fromJson(Map json) {
     return ProductModel(
+      ResearchOfPriceCode: null, //get this property only in the other model
+      ConcurrentCode: null, //get this property only in the other model
       EnterpriseCode: json['EnterpriseCode'] as int,
       ProductCode: json['ProductCode'] as int,
       ProductPackingCode: json['ProductPackingCode'] as int,
@@ -235,11 +243,15 @@ class ProductModel extends Equatable {
     'Stocks': Stocks?.map((e) => e.toJson()).toList(),
     'LastBuyEntrances': LastBuyEntrances?.map((e) => e.toJson()).toList(),
     'EANs': EANs,
+    'ResearchOfPriceCode': ResearchOfPriceCode,
+    'ConcurrentCode': ConcurrentCode,
   };
 
   factory ProductModel.fromEntity(ProductEntity entity) {
     return ProductModel(
       EnterpriseCode: entity.EnterpriseCode,
+      ResearchOfPriceCode: entity.ResearchOfPriceCode,
+      ConcurrentCode: entity.ConcurrentCode,
       ProductCode: entity.ProductCode,
       ProductPackingCode: entity.ProductPackingCode,
       PLU: entity.PLU,
@@ -290,6 +302,8 @@ class ProductModel extends Equatable {
   }
 
   ProductEntity toEntity() => ProductEntity(
+    ResearchOfPriceCode: ResearchOfPriceCode,
+    ConcurrentCode: ConcurrentCode,
     EnterpriseCode: EnterpriseCode,
     ProductCode: ProductCode,
     ProductPackingCode: ProductPackingCode,

@@ -39,6 +39,8 @@ class ProductEntity extends Equatable {
   final bool IsChildOfGrate;
   final bool InClass;
   final bool MarkUpdateClassInAdjustSalePriceIndividual;
+  final int? ResearchOfPriceCode;
+  final int? ConcurrentCode;
   final PriceCostEntity
   PriceCost; //TODO test when the user doesnt has permission
   final List<StockByEnterpriseAssociatedEntity>?
@@ -89,6 +91,8 @@ class ProductEntity extends Equatable {
     required this.Stocks,
     required this.LastBuyEntrances,
     required this.EANs,
+    required this.ResearchOfPriceCode,
+    required this.ConcurrentCode,
   });
 
   @override
@@ -133,6 +137,8 @@ class ProductEntity extends Equatable {
     Stocks,
     LastBuyEntrances,
     EANs,
+    ResearchOfPriceCode,
+    ConcurrentCode,
   ];
 
   ProductEntity copyWith({
@@ -176,6 +182,8 @@ class ProductEntity extends Equatable {
     List<StockEntity>? Stocks,
     List<LastBuyEntranceEntity>? LastBuyEntrances,
     List<String>? EANs,
+    int? ResearchOfPriceCode,
+    int? ConcurrentCode,
   }) {
     return ProductEntity(
       EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
@@ -223,6 +231,8 @@ class ProductEntity extends Equatable {
       Stocks: Stocks ?? this.Stocks,
       LastBuyEntrances: LastBuyEntrances ?? this.LastBuyEntrances,
       EANs: EANs ?? this.EANs,
+      ResearchOfPriceCode: ResearchOfPriceCode ?? this.ResearchOfPriceCode,
+      ConcurrentCode: ConcurrentCode ?? this.ConcurrentCode,
     );
   }
 
