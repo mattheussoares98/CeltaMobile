@@ -26,6 +26,11 @@ class ConcurrentsItems extends ConsumerWidget {
       value: ref.watch(concurrentsStateControllerProvider),
       tryAgain: () => ref.invalidate(concurrentsStateControllerProvider),
       data: (concurrents) {
+        concurrents.sort(
+          (a, b) => a.ConcurrentCode.toString().compareTo(
+            b.ConcurrentCode.toString(),
+          ),
+        );
         return RefreshIndicator(
           onRefresh: () async =>
               ref.invalidate(concurrentsStateControllerProvider), //TODO test
