@@ -42,7 +42,9 @@ GoRouter goRouter(Ref ref) {
         adjustStocksRoute(),
         buyQuotationsRoute([]),
         buyRequestRoute(),
-        competingPricesResearchsRoute([concurrentsRoute([])]),
+        competingPricesResearchsRoute([
+          concurrentsRoute([competingPricesProductsRoute()]),
+        ]),
         customerRegisterRoute(),
         expeditionConferenceDocumentsRoute([
           expeditionConferenceProductsRoute(),
