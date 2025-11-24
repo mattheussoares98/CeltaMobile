@@ -5,20 +5,29 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/data/datasource/products/products.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../controllers/controllers.dart';
 
 class SearchProductsField extends ConsumerWidget {
   final int enterpriseCode;
-  final CompetingPricesFilters competingPricesFilters;
   final TextEditingController searchValueController;
+  final int researchCode;
+  final int concurrentCode;
+  final bool restrictProducts;
   const SearchProductsField({
     super.key,
     required this.enterpriseCode,
-    required this.competingPricesFilters,
     required this.searchValueController,
+    required this.researchCode,
+    required this.concurrentCode,
+    required this.restrictProducts,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searchType = ref.watch(
+      selectedItemUIControllerProvider.select((s) => s.searchType),
+    );
+
     return DefaultSearchProducts(
       isLoading: ref.watch(
         searchProductsStateControllerProvider(
@@ -39,7 +48,12 @@ class SearchProductsField extends ConsumerWidget {
             .loadProducts(
               searchValue: searchValueController.text,
               enterpriseCodes: [enterpriseCode],
-              competingPricesFilters: competingPricesFilters,
+              competingPricesFilters: CompetingPricesFilters(
+                ResearchOfPriceCode: researchCode,
+                ConcurrentCode: concurrentCode,
+                OnlyAssociated: restrictProducts,
+                searchType: searchType,
+              ),
             );
       },
       searchValueController: searchValueController,

@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../controllers/controllers.dart';
 
-class SearchTypeSegmentedButtons extends StatelessWidget {
-  final SearchProductCompetingPriceType searchType;
-  final void Function(SearchProductCompetingPriceType) onChange;
-  const SearchTypeSegmentedButtons({
-    super.key,
-    required this.searchType,
-    required this.onChange,
-  });
+class SearchTypeSegmentedButtons extends ConsumerWidget {
+  const SearchTypeSegmentedButtons({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedItem = ref.watch(selectedItemUIControllerProvider);
+
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,8 +26,12 @@ class SearchTypeSegmentedButtons extends StatelessWidget {
         ),
         gapH4,
         DefaultSegmentedButtons<SearchProductCompetingPriceType>(
-          selectedValue: searchType,
-          onChanged: onChange,
+          selectedValue: selectedItem.searchType,
+          onChanged: (value) {
+            ref
+                .read(selectedItemUIControllerProvider.notifier)
+                .update(selectedItem.copyWith(searchType: value));
+          },
           items: SearchProductCompetingPriceType.values,
         ),
       ],

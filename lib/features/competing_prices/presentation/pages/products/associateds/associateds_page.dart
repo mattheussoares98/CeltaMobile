@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/data/datasource/products/products.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../utils/utils.dart';
@@ -28,8 +27,6 @@ class AssociatedsPage extends ConsumerStatefulWidget {
 
 class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
   final searchValueController = TextEditingController();
-  var searchType =
-      SearchProductCompetingPriceType.all; //TODO create a controller for this
 
   @override
   void dispose() {
@@ -60,23 +57,13 @@ class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
           children: [
             SearchProductsField(
               enterpriseCode: widget.enterpriseCode,
-              competingPricesFilters: CompetingPricesFilters(
-                ResearchOfPriceCode: widget.researchCode,
-                ConcurrentCode: widget.concurrentCode,
-                OnlyAssociated: widget.restrictProducts,
-                searchType: searchType,
-              ),
+              researchCode: widget.researchCode,
+              concurrentCode: widget.concurrentCode,
+              restrictProducts: widget.restrictProducts,
               searchValueController: searchValueController,
             ),
             gapH8,
-            SearchTypeSegmentedButtons(
-              searchType: searchType,
-              onChange: (value) {
-                setState(() {
-                  searchType = value;
-                });
-              },
-            ),
+            const SearchTypeSegmentedButtons(),
             gapH8,
             ProductsItems(enterpriseCode: widget.enterpriseCode),
           ],

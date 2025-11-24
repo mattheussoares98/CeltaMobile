@@ -4,7 +4,7 @@ import '../../../../core/domain/entities/entities.dart';
 
 class SelectedItemUIState extends Equatable {
   final int? selectedIndex;
-  final SearchProductCompetingPriceType? searchType;
+  final SearchProductCompetingPriceType searchType;
 
   const SelectedItemUIState({
     required this.selectedIndex,
@@ -15,7 +15,10 @@ class SelectedItemUIState extends Equatable {
   List<Object?> get props => [selectedIndex, searchType];
 
   factory SelectedItemUIState.empty() {
-    return const SelectedItemUIState(selectedIndex: null, searchType: null);
+    return const SelectedItemUIState(
+      selectedIndex: null,
+      searchType: SearchProductCompetingPriceType.all,
+    );
   }
 
   SelectedItemUIState copyWith({
