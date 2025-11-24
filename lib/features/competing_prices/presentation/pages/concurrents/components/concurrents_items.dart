@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/presentation/widgets/address/address.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
@@ -48,6 +49,7 @@ class ConcurrentsItems extends ConsumerWidget {
                         'navigate to the new page because is already binded',
                       );
                     } else {
+                      //in the page is listening this controller to navigate to the next page when succeeds
                       ref
                           .read(insertUpdateResearchControllerProvider.notifier)
                           .insertUpdate(
@@ -117,43 +119,7 @@ class ConcurrentsItems extends ConsumerWidget {
                             title: 'Observação'.hardcoded,
                             subTitle: concurrent.Observation.toString(),
                           ),
-                        Builder(
-                          builder: (context) {
-                            final hasAddress =
-                                concurrent.Address != null &&
-                                concurrent.Address!.Address.isNotEmpty;
-
-                            final address = StringBuffer();
-                            address.write(concurrent.Address!.Address);
-                            address.write(', ');
-                            address.write(concurrent.Address!.District);
-                            address.write(', ');
-                            address.write(concurrent.Address!.City);
-                            address.write(', ');
-                            address.write(concurrent.Address!.Number);
-                            address.write(', ');
-                            address.write(concurrent.Address!.State?.name);
-                            address.write('. CEP ');
-                            address.write(concurrent.Address!.Zip);
-
-                            if (concurrent.Address?.Complement != null &&
-                                concurrent.Address!.Complement!.isNotEmpty) {
-                              address.write('. ');
-                              address.write(concurrent.Address!.Complement);
-                            }
-                            if (concurrent.Address?.Reference != null &&
-                                concurrent.Address!.Reference!.isNotEmpty) {
-                              address.write(', ');
-                              address.write(concurrent.Address!.Reference);
-                            }
-
-                            return TitleAndSubTitle(
-                              title: 'Endereço'.hardcoded,
-                              subTitle: hasAddress ? address : null,
-                              emptyMessage: 'Sem endereço cadastrado'.hardcoded,
-                            );
-                          },
-                        ),
+                        AddressDetails(address: concurrent.Address),
                       ],
                     ),
                   ),

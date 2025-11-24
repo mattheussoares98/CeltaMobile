@@ -41,7 +41,10 @@ class _UpdateConcurrentPageState
           nameController.text = widget.concurrentUpdating!.Name!;
           observationController.text =
               widget.concurrentUpdating!.Observation ?? '';
-          newAddress = widget.concurrentUpdating!.Address;
+
+          setState(() {
+            newAddress = widget.concurrentUpdating!.Address;
+          });
         }
       }
     });
