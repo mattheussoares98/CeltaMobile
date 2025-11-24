@@ -91,8 +91,9 @@ class ProductItemWidget extends ConsumerWidget {
                       ?itemBeforeProductName,
                       TitleAndSubTitle(
                         title: product.Name,
-                        subTitle:
-                            " (${product.PackingQuantity.toString().formattedPacking()})",
+                        subTitle: product.PackingQuantity == null
+                            ? null
+                            : " (${product.PackingQuantity.toString().formattedPacking()})",
                         titleStyle: theme.textTheme.titleMedium,
                         subTitleStyle: theme.textTheme.bodyMedium,
                       ),
@@ -105,7 +106,8 @@ class ProductItemWidget extends ConsumerWidget {
                                 title: "PLU ",
                                 subTitle: product.PLU,
                               ),
-                              if (routine != BsRoutine.adjustStock) ...[
+                              if (routine != BsRoutine.adjustStock &&
+                                  routine != BsRoutine.researchOfPrice) ...[
                                 if (routine != BsRoutine.buyRequest) ...[
                                   TitleAndSubTitle(
                                     title: "Preço ",
@@ -145,16 +147,18 @@ class ProductItemWidget extends ConsumerWidget {
                               ],
                             ],
                           ),
-                          Positioned(
-                            right: 0,
-                            child: InfoButton(
-                              product: product,
-                              routine: routine,
+                          if (routine != BsRoutine.researchOfPrice)
+                            Positioned(
+                              right: 0,
+                              child: InfoButton(
+                                product: product,
+                                routine: routine,
+                              ),
                             ),
-                          ),
                         ],
                       ),
-                      if (routine != BsRoutine.adjustSalePrice) ...[
+                      if (routine != BsRoutine.adjustSalePrice &&
+                          routine != BsRoutine.researchOfPrice) ...[
                         TitleAndSubTitle(
                           title: "Estoque atual ",
                           emptyMessage: currentStockQuantity == -1
