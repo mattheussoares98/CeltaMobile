@@ -101,7 +101,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
 
   void updateReplicationsSelectesByDefault(
     ProductEntity? product,
-    EnterpriseEntity? selectedEnterprise,
     List<ReplicationTypes> availableReplications,
   ) {
     if (product?.AlterationPriceForAllPackings == true) {
@@ -171,7 +170,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
 
                   updateReplicationsSelectesByDefault(
                     product,
-                    selectedEnterprise,
                     availableReplications,
                   );
 
