@@ -194,7 +194,7 @@ void main() {
                     competingPricesFilters.ResearchOfPriceCode,
                 "ConcurrentCode": competingPricesFilters.ConcurrentCode,
                 "OnlyAssociated": competingPricesFilters.OnlyAssociated,
-                "InformedPrices": competingPricesFilters.searchType.value,
+                "InformedPrices": competingPricesFilters.searchType.code,
               },
             }),
           },

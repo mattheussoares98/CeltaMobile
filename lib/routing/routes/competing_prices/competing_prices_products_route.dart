@@ -13,9 +13,13 @@ RouteBase competingPricesProductsRoute() => GoRoute(
     final researchCode = int.parse(
       state.pathParameters['researchCode'].toString(),
     );
+    final enterpriseCode = int.parse(
+      state.pathParameters['enterpriseCode'].toString(),
+    );
     return ProductsPage(
       researchCode: researchCode,
       concurrentCode: concurrentCode,
+      enterpriseCode: enterpriseCode,
     );
   },
 );

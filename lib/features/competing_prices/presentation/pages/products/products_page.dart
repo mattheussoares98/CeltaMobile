@@ -11,10 +11,12 @@ import 'not_associateds/not_associateds.dart';
 class ProductsPage extends ConsumerStatefulWidget {
   final int researchCode;
   final int concurrentCode;
+  final int enterpriseCode;
   const ProductsPage({
     super.key,
     required this.researchCode,
     required this.concurrentCode,
+    required this.enterpriseCode,
   });
 
   @override
@@ -44,7 +46,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      const AssociatedsPage(),
+      AssociatedsPage(
+        enterpriseCode: widget.enterpriseCode,
+        researchCode: widget.researchCode,
+        concurrentCode: widget.concurrentCode,
+        restrictProducts: selectedResearch?.RestrictProducts == true,
+      ),
       if (selectedResearch?.RestrictProducts == true)
         const NotAssociatedsPage(),
     ];
@@ -57,6 +64,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FittedBox(
+              //TODO use researchName and concurrentCode instead
               child: Text(
                 'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
               ),
@@ -74,7 +82,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           ],
         ),
       ),
-      body: pages[currentIndex],
+      body: IndexedStack(index: currentIndex, children: pages),
       bottomNavigationBar: selectedResearch?.RestrictProducts == true
           ? null
           : BottomNavigationBar(

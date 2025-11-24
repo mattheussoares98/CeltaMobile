@@ -98,11 +98,12 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
 
       if (competingPricesFilters != null) {
         parameters.addAll({
+          "SearchTypeInt": searchType.code,
           "ResearchOfPriceFilters": {
             "ResearchOfPriceCode": competingPricesFilters.ResearchOfPriceCode,
             "ConcurrentCode": competingPricesFilters.ConcurrentCode,
             "OnlyAssociated": competingPricesFilters.OnlyAssociated,
-            "InformedPrices": competingPricesFilters.searchType.value,
+            "InformedPrices": competingPricesFilters.searchType.code,
           },
         });
       }
