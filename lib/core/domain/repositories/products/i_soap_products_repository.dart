@@ -12,5 +12,6 @@ abstract class ISoapProductsRepository {
     required EnterpriseEntity enterpriseEntity,
     required int? lastBuyEntranceQuantity,
     BuyRequestFilters? buyRequestFilters,
+    CompetingPricesFilters? competingPricesFilters,
   });
 }

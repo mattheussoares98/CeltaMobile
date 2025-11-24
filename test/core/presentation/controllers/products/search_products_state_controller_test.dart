@@ -27,6 +27,7 @@ void main() {
   late List<ProductEntity> productsEntities;
   late Modules module;
   late BuyRequestFilters? buyRequestFilters;
+  late CompetingPricesFilters? competingPricesFilters;
 
   setUpAll(() {
     for (var routine in BsRoutine.values) {
@@ -62,6 +63,16 @@ void main() {
             supplierCode: faker.randomGenerator.integer(100),
           )
         : null;
+    competingPricesFilters = faker.randomGenerator.boolean()
+        ? CompetingPricesFilters(
+            ResearchOfPriceCode: faker.randomGenerator.integer(100),
+            ConcurrentCode: faker.randomGenerator.integer(100),
+            OnlyAssociated: faker.randomGenerator.boolean(),
+            searchType:
+                SearchProductCompetingPriceType.values[faker.randomGenerator
+                    .integer(SearchProductCompetingPriceType.values.length)],
+          )
+        : null;
   }
 
   void initSut() {
@@ -86,8 +97,11 @@ void main() {
   });
 
   setUpAll(() {
-    for (var routine in BsRoutine.values) {
-      registerFallbackValue(routine);
+    for (var value in BsRoutine.values) {
+      registerFallbackValue(value);
+    }
+    for (var value in SearchProductCompetingPriceType.values) {
+      registerFallbackValue(value);
     }
   });
 
@@ -170,6 +184,7 @@ void main() {
       ]);
       verify(
         () => sut.getProductsJson(
+          competingPricesFilters: competingPricesFilters,
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
           searchValue: searchValue,
@@ -221,6 +236,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => sut.getProductsJson(
+          competingPricesFilters: competingPricesFilters,
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
           searchValue: searchValue,
@@ -272,6 +288,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => sut.getProductsJson(
+          competingPricesFilters: competingPricesFilters,
           lastBuyEntranceQuantity: lastBuyEntranceQuantity,
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
           searchValue: searchValue,

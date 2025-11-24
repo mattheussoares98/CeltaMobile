@@ -41,6 +41,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
     required List<int> enterpriseCodes,
     int? lastBuyEntranceQuantity = 5,
     BuyRequestFilters? buyRequestFilters,
+    CompetingPricesFilters? competingPricesFilters,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -70,6 +71,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             enterpriseEntity: selectedEnterprise!,
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             buyRequestFilters: buyRequestFilters,
+            competingPricesFilters: competingPricesFilters,
           );
 
       return products;
