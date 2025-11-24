@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../localization/string_hardcoded.dart';
+import '../../controllers/controllers.dart';
 import 'associateds/associateds.dart';
 import 'not_associateds/not_associateds.dart';
 
-class ProductsPage extends StatefulWidget {
+class ProductsPage extends ConsumerStatefulWidget {
   final int researchCode;
   final int concurrentCode;
   const ProductsPage({
@@ -15,10 +17,10 @@ class ProductsPage extends StatefulWidget {
   });
 
   @override
-  State<ProductsPage> createState() => _ProductsPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
 }
 
-class _ProductsPageState extends State<ProductsPage> {
+class _ProductsPageState extends ConsumerState<ProductsPage> {
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,29 @@ class _ProductsPageState extends State<ProductsPage> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
+    final selectedResearch = ref.watch(
+      researchsStateControllerProvider.select(
+        (s) => s.value?.firstWhere((e) => e.Code == widget.researchCode),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Pesq ${widget.researchCode} - conc ${widget.concurrentCode}',
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FittedBox(
+              child: Text(
+                'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
+              ),
+            ),
+            Text(
+              selectedResearch?.RestrictProducts == true
+                  ? 'Produtos restringidos'
+                  : 'Produtos não restringidos',
+              style: theme.textTheme.bodySmall,
+            ),
+          ],
         ),
       ),
       body: pages[currentIndex],
