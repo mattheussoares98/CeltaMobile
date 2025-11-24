@@ -1,3 +1,4 @@
+export './address_details.dart';
 export 'address_field.dart';
 export 'address_form.dart';
 export 'city_field.dart';
