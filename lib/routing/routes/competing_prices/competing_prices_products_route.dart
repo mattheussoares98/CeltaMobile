@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../features/competing_prices/presentation/pages/pages.dart';
+import '../../../features/competing_prices/presentation/pages/products/products_page.dart';
 import '../../routing.dart';
 
 RouteBase competingPricesProductsRoute() => GoRoute(
@@ -11,6 +10,12 @@ RouteBase competingPricesProductsRoute() => GoRoute(
     final concurrentCode = int.parse(
       state.pathParameters['concurrentCode'].toString(),
     );
-    return const SizedBox();
+    final researchCode = int.parse(
+      state.pathParameters['researchCode'].toString(),
+    );
+    return ProductsPage(
+      researchCode: researchCode,
+      concurrentCode: concurrentCode,
+    );
   },
 );

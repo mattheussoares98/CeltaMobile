@@ -3,18 +3,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/presentation/widgets/address/address.dart';
 import '../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../routing/routing.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../insert_update_concurrent/insert_update_concurrent.dart';
 
 class ConcurrentsItems extends ConsumerWidget {
   final ResearchEntity selectedResearch;
-  const ConcurrentsItems({super.key, required this.selectedResearch});
+  final int enterpriseCode;
+  const ConcurrentsItems({
+    super.key,
+    required this.selectedResearch,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,12 +56,17 @@ class ConcurrentsItems extends ConsumerWidget {
                 child: InkWell(
                   onTap: () {
                     if (concurrentBindedInResearch == true) {
-                      //TODO simple go to the new page
-                      debugPrint(
-                        'navigate to the new page because is already binded',
+                      context.goNamed(
+                        Routes.competingPricesProducts.name,
+                        pathParameters: {
+                          'concurrentCode':
+                              concurrent.ConcurrentCode.toString(),
+                          'researchCode': selectedResearch.Code.toString(),
+                          'enterpriseCode': enterpriseCode.toString(),
+                        },
                       );
                     } else {
-                      //in the page is listening this controller to navigate to the next page when succeeds
+                      //TODO return true/false value and navigate to the next page on success
                       ref
                           .read(insertUpdateResearchControllerProvider.notifier)
                           .insertUpdate(

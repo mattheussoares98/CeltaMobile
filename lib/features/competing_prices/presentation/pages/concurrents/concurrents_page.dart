@@ -9,15 +9,17 @@ import 'components/components.dart';
 
 class ConcurrentsPage extends ConsumerWidget {
   final int researchCode;
-  const ConcurrentsPage({super.key, required this.researchCode});
+  final int enterpriseCode;
+  const ConcurrentsPage({
+    super.key,
+    required this.researchCode,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(insertUpdateResearchControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
-      n.doOnSuccess(p, () {
-        // context.pushNamed(Route.competingPrices.name);//TODO add the new page and navigate to it
-      });
     });
 
     return Stack(
@@ -37,7 +39,10 @@ class ConcurrentsPage extends ConsumerWidget {
                 (research) => research.Code == researchCode,
               );
 
-              return ConcurrentsItems(selectedResearch: selectedResearch);
+              return ConcurrentsItems(
+                selectedResearch: selectedResearch,
+                enterpriseCode: enterpriseCode,
+              );
             },
           ),
         ),

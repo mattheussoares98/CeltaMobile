@@ -11,6 +11,13 @@ RouteBase concurrentsRoute(List<RouteBase> routes) => GoRoute(
     final researchCode = int.parse(
       state.pathParameters['researchCode'].toString(),
     );
-    return ConcurrentsPage(researchCode: researchCode);
+    final enterpriseCode = int.parse(
+      state.pathParameters['enterpriseCode'].toString(),
+    );
+
+    return ConcurrentsPage(
+      researchCode: researchCode,
+      enterpriseCode: enterpriseCode,
+    );
   },
 );
