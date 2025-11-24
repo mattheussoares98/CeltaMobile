@@ -42,7 +42,12 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
                         ),
                       ),
                     ),
-                    Expanded(child: body),
+                    Expanded(
+                      child: Scaffold(
+                        backgroundColor: Colors.transparent,
+                        body: body,
+                      ),
+                    ),
                   ],
                 ),
               );
