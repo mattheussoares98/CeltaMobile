@@ -22,12 +22,15 @@ class ProductsItems extends ConsumerWidget {
       tryAgain: null,
       data: (products) {
         return Expanded(
-          child: ListView.builder(
+          child: ResponsiveListFlow(
             itemCount: products.length,
             itemBuilder: (_, index) {
               final product = products[index];
 
-              return Text(product.Name!);
+              return ProductItemWidget(
+                product: product,
+                routine: BsRoutine.researchOfPrice,
+              );
             },
           ),
         );

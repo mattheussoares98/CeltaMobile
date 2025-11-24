@@ -29,6 +29,7 @@ class SearchProductsField extends ConsumerWidget {
     );
 
     return DefaultSearchProducts(
+      allowEmptySearchValue: true,
       isLoading: ref.watch(
         searchProductsStateControllerProvider(
           enterpriseCode,
@@ -46,7 +47,9 @@ class SearchProductsField extends ConsumerWidget {
               ).notifier,
             )
             .loadProducts(
-              searchValue: searchValueController.text,
+              searchValue: searchValueController.text.isEmpty
+                  ? '%'
+                  : searchValueController.text,
               enterpriseCodes: [enterpriseCode],
               competingPricesFilters: CompetingPricesFilters(
                 ResearchOfPriceCode: researchCode,

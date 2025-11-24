@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
@@ -52,19 +53,31 @@ class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
+        padding: const EdgeInsets.all(Sizes.p8),
         child: Column(
           children: [
-            SearchProductsField(
-              enterpriseCode: widget.enterpriseCode,
-              researchCode: widget.researchCode,
-              concurrentCode: widget.concurrentCode,
-              restrictProducts: widget.restrictProducts,
-              searchValueController: searchValueController,
+            ResponsiveScrollableWidget(
+              padding: 0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SearchTypeSegmentedButtons(
+                    enterpriseCode: widget.enterpriseCode,
+                    researchCode: widget.researchCode,
+                    concurrentCode: widget.concurrentCode,
+                    restrictProducts: widget.restrictProducts,
+                  ),
+                  SearchProductsField(
+                    enterpriseCode: widget.enterpriseCode,
+                    researchCode: widget.researchCode,
+                    concurrentCode: widget.concurrentCode,
+                    restrictProducts: widget.restrictProducts,
+                    searchValueController: searchValueController,
+                  ),
+                  gapH8,
+                ],
+              ),
             ),
-            gapH8,
-            const SearchTypeSegmentedButtons(),
-            gapH8,
             ProductsItems(enterpriseCode: widget.enterpriseCode),
           ],
         ),
