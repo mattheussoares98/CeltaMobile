@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,10 +6,11 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/widgets/address/address.dart';
-import '../../../../../core/validators/validators.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../../../utils/utils.dart';
 import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
+import 'components/components.dart';
 
 class InsertUpdateConcurrentPage extends ConsumerStatefulWidget {
   final ConcurrentEntity? concurrentUpdating;
@@ -96,58 +96,17 @@ class _UpdateConcurrentPageState
                     : 'Alterando concorrente'.hardcoded,
               ),
               gapH16,
-              DefaultTextFormField(
-                controller: nameController,
-                labelText: 'Nome'.hardcoded,
-                hintText: 'Nome'.hardcoded,
-                onFieldSubmitted: (_) => observationFocusNode.requestFocus(),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                maxLength: 50,
-                validator: FormValidators.compose([NonEmptyValidator()]),
+              NameField(
+                nameController: nameController,
+                observationFocusNode: observationFocusNode,
               ),
               gapH8,
-              DefaultTextFormField(
-                controller: observationController,
-                focusNode: observationFocusNode,
-                labelText: 'Observações'.hardcoded,
-                hintText: 'Observações'.hardcoded,
-                onFieldSubmitted: (_) => insertUpdate(),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                maxLength: 200,
+              ObservationsField(
+                observationFocusNode: observationFocusNode,
+                observationController: observationController,
+                insertUpdate: insertUpdate,
               ),
-
-              if (newAddress?.Address != null && newAddress!.Address.isNotEmpty)
-                Builder(
-                  builder: (context) {
-                    final address = StringBuffer();
-                    address.write(newAddress!.Address);
-                    address.write(', ');
-                    address.write(newAddress!.District);
-                    address.write(', ');
-                    address.write(newAddress!.City);
-                    address.write(', ');
-                    address.write(newAddress!.Number);
-                    address.write(', ');
-                    address.write(newAddress!.State?.name);
-                    address.write('. CEP ');
-                    address.write(newAddress!.Zip);
-                    if (newAddress?.Complement != null &&
-                        newAddress!.Complement!.isNotEmpty) {
-                      address.write('. ');
-                      address.write(newAddress!.Complement);
-                    }
-                    if (newAddress?.Reference != null &&
-                        newAddress!.Reference!.isNotEmpty) {
-                      address.write(', ');
-                      address.write(newAddress!.Reference);
-                    }
-
-                    return TitleAndSubTitle(
-                      title: 'Endereço'.hardcoded,
-                      subTitle: address,
-                    );
-                  },
-                ),
+              AddressDetails(address: newAddress),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(Sizes.p8),
