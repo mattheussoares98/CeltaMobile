@@ -21,14 +21,13 @@ void main() {
   });
 
   group('SelectedItemUIController', () {
-    test('build should have an initial state of selectedIndex: 0', () {
+    test('build start the state with correct initial state', () {
       // ARRANGE / ACT: Read the initial state. Since build is synchronous,
       // we read the provider directly, not the future.
       final state = container.read(selectedItemUIControllerProvider);
 
       // ASSERT
-      expect(state.selectedIndex, 0);
-      expect(state, const SelectedItemUIState(selectedIndex: 0));
+      expect(state, const SelectedItemUIState());
     });
 
     test('update should replace the state with the new provided value', () {

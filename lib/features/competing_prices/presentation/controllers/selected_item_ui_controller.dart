@@ -8,7 +8,7 @@ part 'selected_item_ui_controller.g.dart';
 class SelectedItemUIController extends _$SelectedItemUIController {
   @override
   SelectedItemUIState build() {
-    return const SelectedItemUIState(selectedIndex: 0);
+    return const SelectedItemUIState();
   }
 
   void update(SelectedItemUIState value) {

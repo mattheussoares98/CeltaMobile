@@ -7,7 +7,7 @@ class SelectedItemUIState extends Equatable {
   final SearchProductCompetingPriceType searchType;
 
   const SelectedItemUIState({
-    required this.selectedIndex,
+    this.selectedIndex,
     this.searchType = SearchProductCompetingPriceType.all,
   });
 
