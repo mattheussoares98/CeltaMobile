@@ -1,14 +1,72 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/core/data/models/product/product_model.dart';
-
 import '../../../domain/contracts/contracts.dart';
 import '../../../domain/entities/entities.dart';
+import '../../models/models.dart';
 import 'products.dart';
 
 class SoapProductsDatasource implements ISoapProductsDatasource {
   final SoapRequest soapRequest;
   SoapProductsDatasource(this.soapRequest);
+
+  @override
+  Future<List<ProductModelType>> getProductsJson({
+    required String baseUrl,
+    required String searchValue,
+    required BsRoutine routine,
+    required SearchType searchType,
+    required String crossIdentity,
+    required List<int> enterpriseCodes,
+    required EnterpriseEntity enterpriseEntity,
+    int? lastBuyEntranceQuantity,
+    BuyRequestFilters? buyRequestFilters,
+    CompetingPricesFilters? competingPricesFilters,
+  }) async {
+    bool isBalanceFormat = _getIsBalanceFormat(searchValue);
+
+    try {
+      final response = await _executeRequest(
+        baseUrl: baseUrl,
+        searchValue: searchValue,
+        routine: routine,
+        searchType: searchType,
+        crossIdentity: crossIdentity,
+        enterpriseCodes: enterpriseCodes,
+        lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+        buyRequestFilters: buyRequestFilters,
+        competingPricesFilters: competingPricesFilters,
+      );
+
+      // throw Exception();
+
+      return _treatResponse(response, competingPricesFilters);
+    } catch (e) {
+      if (!isBalanceFormat) {
+        rethrow;
+      }
+    }
+
+    try {
+      final response = await _executeRequest(
+        baseUrl: baseUrl,
+        searchValue: _extractPluFromEan(
+          searchValue: searchValue,
+          enterprise: enterpriseEntity,
+        ),
+        routine: routine,
+        searchType: SearchType.dynamic,
+        crossIdentity: crossIdentity,
+        enterpriseCodes: enterpriseCodes,
+        lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+        buyRequestFilters: buyRequestFilters,
+        competingPricesFilters: competingPricesFilters,
+      );
+
+      return _treatResponse(response, competingPricesFilters);
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   Future<dynamic> _executeRequest({
     required String baseUrl,
@@ -77,66 +135,17 @@ class SoapProductsDatasource implements ISoapProductsDatasource {
         );
   }
 
-  @override
-  Future<List<ProductModel>> getProductsJson({
-    required String baseUrl,
-    required String searchValue,
-    required BsRoutine routine,
-    required SearchType searchType,
-    required String crossIdentity,
-    required List<int> enterpriseCodes,
-    required EnterpriseEntity enterpriseEntity,
-    int? lastBuyEntranceQuantity,
-    BuyRequestFilters? buyRequestFilters,
+  List<ProductModelType> _treatResponse(
+    dynamic response,
     CompetingPricesFilters? competingPricesFilters,
-  }) async {
-    bool isBalanceFormat = _getIsBalanceFormat(searchValue);
-
-    try {
-      final response = await _executeRequest(
-        baseUrl: baseUrl,
-        searchValue: searchValue,
-        routine: routine,
-        searchType: searchType,
-        crossIdentity: crossIdentity,
-        enterpriseCodes: enterpriseCodes,
-        lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-        buyRequestFilters: buyRequestFilters,
-        competingPricesFilters: competingPricesFilters,
-      );
-
-      // throw Exception();
-
-      return (json.decode(response) as List)
-          .map((e) => ProductModel.fromJson(e))
-          .toList();
-    } catch (e) {
-      if (!isBalanceFormat) {
-        rethrow;
-      }
-    }
-
-    try {
-      final response = await _executeRequest(
-        baseUrl: baseUrl,
-        searchValue: _extractPluFromEan(
-          searchValue: searchValue,
-          enterprise: enterpriseEntity,
-        ),
-        routine: routine,
-        searchType: SearchType.dynamic,
-        crossIdentity: crossIdentity,
-        enterpriseCodes: enterpriseCodes,
-        lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-        buyRequestFilters: buyRequestFilters,
-        competingPricesFilters: competingPricesFilters,
-      );
-
-      return (json.decode(response) as List)
-          .map((e) => ProductModel.fromJson(e))
-          .toList();
-    } catch (e) {
-      rethrow;
-    }
+  ) {
+    return (json.decode(response) as List)
+        .map(
+          (e) => competingPricesFilters == null
+              ? ProductModel.fromJson(e)
+              : CompetingPriceProductModel.fromJson(e),
+        )
+        .toList()
+        .cast();
   }
 }

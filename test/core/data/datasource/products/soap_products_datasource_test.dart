@@ -107,7 +107,6 @@ void main() {
       enterpriseEntity: enterpriseEntity,
       lastBuyEntranceQuantity: lastBuyEntranceQuantity,
       buyRequestFilters: buyRequestFilters,
-      competingPricesFilters: competingPricesFilters,
     );
 
     expect(
@@ -132,17 +131,77 @@ void main() {
             "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
             "RequestTypeCode": buyRequestFilters.requestTypeCode,
             "SupplierCode": buyRequestFilters.supplierCode,
-            "ResearchOfPriceFilters": {
-              "ResearchOfPriceCode": competingPricesFilters.ResearchOfPriceCode,
-              "ConcurrentCode": competingPricesFilters.ConcurrentCode,
-              "OnlyAssociated": competingPricesFilters.OnlyAssociated,
-              "InformedPrices": competingPricesFilters.searchType.value,
-            },
           }),
         },
       ),
     ).called(1);
   });
+  test(
+    'should call soap adapter with correct values when use competing prices filters',
+    () async {
+      soapAdapter.mockPost(
+        json.encode(
+          productsEntities
+              .map((e) => CompetingPriceProductModel.fromEntity(e).toJson())
+              .toList(),
+        ),
+      );
+
+      bool generateLastBuyEntrance = faker.randomGenerator.boolean();
+      int? lastBuyEntranceQuantity = generateLastBuyEntrance
+          ? faker.randomGenerator.integer(100)
+          : null;
+
+      final products = await sut.getProductsJson(
+        baseUrl: baseUrl,
+        searchValue: searchValue,
+        routine: routine,
+        searchType: searchType,
+        crossIdentity: crossIdentity,
+        enterpriseCodes: enterpriseCodes,
+        enterpriseEntity: enterpriseEntity,
+        lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+        buyRequestFilters: buyRequestFilters,
+        competingPricesFilters: competingPricesFilters,
+      );
+
+      expect(
+        products,
+        productsEntities
+            .map((e) => CompetingPriceProductModel.fromEntity(e))
+            .toList(),
+      );
+
+      verify(
+        () => soapAdapter.post(
+          url: baseUrl,
+          typeOfResponse: "GetProductsJsonResponse",
+          typeOfResult: "GetProductsJsonResult",
+          soapAction: "GetProductsJson",
+          serviceASMX: "CeltaProductService.asmx",
+          parameters: {
+            "filters": json.encode({
+              "CrossIdentity": crossIdentity,
+              "EnterpriseCodes": enterpriseCodes,
+              "SearchValue": searchValue,
+              "SearchType": searchType.code,
+              "RoutineInt": routine.code,
+              "LastBuyEntranceQuantity": lastBuyEntranceQuantity ?? 5,
+              "RequestTypeCode": buyRequestFilters.requestTypeCode,
+              "SupplierCode": buyRequestFilters.supplierCode,
+              "ResearchOfPriceFilters": {
+                "ResearchOfPriceCode":
+                    competingPricesFilters.ResearchOfPriceCode,
+                "ConcurrentCode": competingPricesFilters.ConcurrentCode,
+                "OnlyAssociated": competingPricesFilters.OnlyAssociated,
+                "InformedPrices": competingPricesFilters.searchType.value,
+              },
+            }),
+          },
+        ),
+      ).called(1);
+    },
+  );
   test('should call again with balance format', () async {
     bool generateLastBuyEntrance = faker.randomGenerator.boolean();
     int? lastBuyEntranceQuantity = generateLastBuyEntrance

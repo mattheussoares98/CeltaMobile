@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
-import '../../models/models.dart';
+import 'products.dart';
 
 abstract class ISoapProductsDatasource {
-  Future<List<ProductModel>> getProductsJson({
+  Future<List<ProductModelType>> getProductsJson({
     required String baseUrl,
     required String searchValue,
     required BsRoutine routine,

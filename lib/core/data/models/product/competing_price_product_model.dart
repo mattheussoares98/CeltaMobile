@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../datasource/products/products.dart';
 
-class CompetingPriceProductModel extends Equatable {
+class CompetingPriceProductModel extends Equatable implements ProductModelType {
   final int ResearchOfPriceCode; /* 1014 */
   final int ConcurrentCode; /* 1006 */
   final int ProductPackingCode; /* 82 */
@@ -60,6 +61,7 @@ class CompetingPriceProductModel extends Equatable {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() => <String, dynamic>{
     'ResearchOfPriceCode': ResearchOfPriceCode,
     'ConcurrentCode': ConcurrentCode,
@@ -90,6 +92,7 @@ class CompetingPriceProductModel extends Equatable {
     );
   }
 
+  @override
   ProductEntity toEntity() => ProductEntity.empty().copyWith(
     ResearchOfPriceCode: ResearchOfPriceCode,
     ConcurrentCode: ConcurrentCode,

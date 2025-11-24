@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../datasource/products/products.dart';
 import 'product.dart';
 
-class ProductModel extends Equatable {
+class ProductModel extends Equatable implements ProductModelType {
   final int? EnterpriseCode;
   final int? ProductCode;
   final int? ProductPackingCode;
@@ -140,8 +141,10 @@ class ProductModel extends Equatable {
 
   factory ProductModel.fromJson(Map json) {
     return ProductModel(
-      ResearchOfPriceCode: null, //get this property only in the other model
-      ConcurrentCode: null, //get this property only in the other model
+      ResearchOfPriceCode:
+          json['ResearchOfPriceCode'], //get this property only in the other model
+      ConcurrentCode:
+          json['ConcurrentCode'], //get this property only in the other model
       EnterpriseCode: json['EnterpriseCode'] as int,
       ProductCode: json['ProductCode'] as int,
       ProductPackingCode: json['ProductPackingCode'] as int,
@@ -199,6 +202,7 @@ class ProductModel extends Equatable {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() => <String, dynamic>{
     'EnterpriseCode': EnterpriseCode,
     'ProductCode': ProductCode,
@@ -303,6 +307,7 @@ class ProductModel extends Equatable {
     );
   }
 
+  @override
   ProductEntity toEntity() => ProductEntity(
     ResearchOfPriceCode: ResearchOfPriceCode,
     ConcurrentCode: ConcurrentCode,
