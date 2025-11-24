@@ -23,9 +23,6 @@ class HomePage extends ConsumerWidget {
     });
 
     final enterprisesAsync = ref.watch(enterprisesStateControllerProvider());
-    final selectedEnterprise = ref.watch(
-      selectedEnterpriseStateControllerProvider,
-    );
 
     return Scaffold(
       drawer: const CompleteDrawer(),
@@ -35,10 +32,7 @@ class HomePage extends ConsumerWidget {
           value: enterprisesAsync,
           tryAgain: () => ref.invalidate(enterpriseRepositoryProvider),
           data: (enterprises) {
-            return SelectEnterpriseDropDown(
-              selectedEnterprise: selectedEnterprise,
-              enterprises: enterprises,
-            );
+            return SelectEnterpriseDropDown(enterprises: enterprises);
           },
         ),
       ),

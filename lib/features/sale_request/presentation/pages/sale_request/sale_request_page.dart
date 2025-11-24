@@ -74,8 +74,8 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
               Sizes.p8,
             ),
             actions: [
-              const ShowPdfButton(),
-              const PrintButton(),
+              ShowPdfButton(enterpriseCode: widget.enterpriseCode),
+              PrintButton(enterpriseCode: widget.enterpriseCode),
               QuantityBadge(
                 quantity: products?.length ?? 0,
                 materialIcon: Icons.shopping_cart,

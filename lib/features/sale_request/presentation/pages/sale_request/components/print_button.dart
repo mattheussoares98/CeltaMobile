@@ -8,11 +8,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/validators/validators.dart';
-import '../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../controllers/controllers.dart';
 
 class PrintButton extends ConsumerStatefulWidget {
-  const PrintButton({super.key});
+  final int enterpriseCode;
+  const PrintButton({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -59,20 +59,16 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
 
   @override
   Widget build(BuildContext context) {
-    final enterpriseCode = ref
-        .watch(selectedEnterpriseStateControllerProvider)!
-        .Code!;
-
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return AsyncValueWidget(
       value: ref.watch(
-        lastSavedSaleRequestStateControllerProvider(enterpriseCode),
+        lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode),
       ),
       tryAgain: () {
         ref.invalidate(
-          lastSavedSaleRequestStateControllerProvider(enterpriseCode),
+          lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode),
         );
       },
       data: (lastSavedSaleRequest) {

@@ -8,13 +8,17 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../routing/routing.dart';
-import '../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../pages.dart';
 
 class ResearchItem extends ConsumerWidget {
   final ResearchEntity research;
-  const ResearchItem({super.key, required this.research});
+  final int enterpriseCode;
+  const ResearchItem({
+    super.key,
+    required this.research,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,10 +34,7 @@ class ResearchItem extends ConsumerWidget {
             Routes.competingPricesConcurrents.name,
             pathParameters: {
               'researchCode': research.Code.toString(),
-              'enterpriseCode': ref
-                  .read(selectedEnterpriseStateControllerProvider)!
-                  .Code
-                  .toString(),
+              'enterpriseCode': enterpriseCode.toString(),
             },
           );
         },

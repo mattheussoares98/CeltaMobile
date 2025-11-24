@@ -8,21 +8,20 @@ import '../../../../enterprises/presentation/controllers/controllers.dart';
 
 class SelectEnterpriseDropDown extends ConsumerWidget {
   final List<EnterpriseEntity> enterprises;
-  final EnterpriseEntity? selectedEnterprise;
-  const SelectEnterpriseDropDown({
-    super.key,
-    required this.selectedEnterprise,
-    required this.enterprises,
-  });
+  const SelectEnterpriseDropDown({super.key, required this.enterprises});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final selectedEnterprise = ref.watch(
+      selectedEnterpriseStateControllerProvider,
+    );
+
     return DefaultDropDown<EnterpriseEntity>(
       hint: Text('Selecione a empresa'.hardcoded),
       selectedItem: selectedEnterprise,
       label: selectedEnterprise != null
-          ? '${selectedEnterprise!.PersonalizedCode} - ${selectedEnterprise!.name}'
+          ? '${selectedEnterprise.PersonalizedCode} - ${selectedEnterprise.name}'
           : null,
       onChanged: (enterprise) {
         ref

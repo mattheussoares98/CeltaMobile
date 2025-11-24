@@ -6,11 +6,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../routing/routing.dart';
-import '../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../controllers/controllers.dart';
 
 class ShowPdfButton extends ConsumerStatefulWidget {
-  const ShowPdfButton({super.key});
+  final int enterpriseCode;
+  const ShowPdfButton({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ShowPdfButtonState();
@@ -24,12 +24,10 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final enterpriseCode = ref
-        .watch(selectedEnterpriseStateControllerProvider)!
-        .Code!;
-
     final lastSavedSaleRequest = ref
-        .watch(lastSavedSaleRequestStateControllerProvider(enterpriseCode))
+        .watch(
+          lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode),
+        )
         .value;
 
     return IconButton(

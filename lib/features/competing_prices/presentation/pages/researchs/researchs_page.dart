@@ -33,7 +33,10 @@ class ResearchsPage extends ConsumerWidget {
               itemCount: researchs.length,
               itemBuilder: (context, index) {
                 final research = researchs[index];
-                return ResearchItem(research: research);
+                return ResearchItem(
+                  research: research,
+                  enterpriseCode: enterpriseCode,
+                );
               },
             ),
           );
