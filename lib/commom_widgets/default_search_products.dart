@@ -16,12 +16,14 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
   final VoidCallback searchProducts;
   final TextEditingController searchValueController;
   final FocusNode? focusNode;
+  final bool? allowEmptySearchValue;
   const DefaultSearchProducts({
     super.key,
     required this.isLoading,
     required this.searchProducts,
     required this.searchValueController,
     this.focusNode,
+    this.allowEmptySearchValue,
   });
 
   @override
@@ -80,7 +82,9 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
               enabled: !widget.isLoading,
               controller: widget.searchValueController,
               focusNode: widget.focusNode,
-              validator: FormValidators.compose([NonEmptyValidator()]),
+              validator: FormValidators.compose([
+                if (widget.allowEmptySearchValue != true) NonEmptyValidator(),
+              ]),
               onFieldSubmitted: (_) {
                 searchProducts();
               },
@@ -147,7 +151,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                   ],
                 ),
               ),
-              labelText: hintText,
+              labelText: 'Consultar produtos'.hardcoded,
               hintText: hintText,
             ),
           ),
