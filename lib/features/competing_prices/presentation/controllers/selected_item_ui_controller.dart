@@ -12,6 +12,10 @@ class SelectedItemUIController extends _$SelectedItemUIController {
   }
 
   void update(SelectedItemUIState value) {
-    state = value;
+    if (state.selectedIndex == value.selectedIndex) {
+      state = SelectedItemUIState(searchType: value.searchType);
+    } else {
+      state = value;
+    }
   }
 }

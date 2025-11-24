@@ -60,5 +60,43 @@ void main() {
       // 2. Verify the final state value
       expect(container.read(selectedItemUIControllerProvider), updatedState);
     });
+    test('update clean the selected index when select the same', () {
+      // ARRANGE
+      final notifier = container.read(
+        selectedItemUIControllerProvider.notifier,
+      );
+
+      final updatedState = SelectedItemUIState(
+        selectedIndex: faker.randomGenerator.integer(100),
+        searchType:
+            SearchProductCompetingPriceType.values[faker.randomGenerator
+                .integer(SearchProductCompetingPriceType.values.length)],
+      );
+
+      final states = <SelectedItemUIState>[];
+      // Listen to capture the state change
+      container.listen(
+        selectedItemUIControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      notifier.update(updatedState);
+      //change again
+      notifier.update(updatedState);
+
+      // ASSERT
+      // 1. Verify the state transition list
+      expect(states, [
+        updatedState,
+        SelectedItemUIState(searchType: updatedState.searchType),
+      ]);
+
+      // 2. Verify the final state value
+      expect(
+        container.read(selectedItemUIControllerProvider),
+        SelectedItemUIState(searchType: updatedState.searchType),
+      );
+    });
   });
 }

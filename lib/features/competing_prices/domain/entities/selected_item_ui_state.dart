@@ -22,11 +22,11 @@ class SelectedItemUIState extends Equatable {
   }
 
   SelectedItemUIState copyWith({
-    int? productPackingCode,
+    int? selectedIndex,
     SearchProductCompetingPriceType? searchType,
   }) {
     return SelectedItemUIState(
-      selectedIndex: productPackingCode ?? this.selectedIndex,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
       searchType: searchType ?? this.searchType,
     );
   }

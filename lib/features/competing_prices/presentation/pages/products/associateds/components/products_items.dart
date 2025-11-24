@@ -13,6 +13,8 @@ class ProductsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedItemAsync = ref.watch(selectedItemUIControllerProvider);
+
     return AsyncValueWidget(
       value: ref.watch(
         searchProductsStateControllerProvider(
@@ -33,6 +35,11 @@ class ProductsItems extends ConsumerWidget {
                 product: product,
                 routine: BsRoutine.researchOfPrice,
                 showDropIcon: true,
+                onTap: () {
+                  ref
+                      .read(selectedItemUIControllerProvider.notifier)
+                      .update(selectedItemAsync.copyWith(selectedIndex: index));
+                },
                 clickableBottom: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
