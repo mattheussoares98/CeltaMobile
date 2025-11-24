@@ -29,6 +29,39 @@ class ConcurrentsItems extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
     final mediaQuery = MediaQuery.of(context);
 
+    void onTap({
+      required ConcurrentEntity concurrent,
+      required bool? concurrentBindedInResearch,
+    }) async {
+      void navigate() {
+        context.goNamed(
+          Routes.competingPricesProducts.name,
+          pathParameters: {
+            'concurrentCode': concurrent.ConcurrentCode.toString(),
+            'researchCode': selectedResearch.Code.toString(),
+            'enterpriseCode': enterpriseCode.toString(),
+          },
+        );
+      }
+
+      if (concurrentBindedInResearch == true) {
+        navigate();
+      } else {
+        final succeeds = await ref
+            .read(insertUpdateResearchControllerProvider.notifier)
+            .insertUpdate(
+              name: selectedResearch.Name!,
+              observations: selectedResearch.Observation,
+              researchCode: selectedResearch.Code,
+              concurrentToAssociate: concurrent,
+            );
+
+        if (succeeds) {
+          navigate();
+        }
+      }
+    }
+
     return AsyncValueWidget(
       value: ref.watch(concurrentsStateControllerProvider),
       tryAgain: () => ref.invalidate(concurrentsStateControllerProvider),
@@ -54,29 +87,10 @@ class ConcurrentsItems extends ConsumerWidget {
               return Card(
                 clipBehavior: Clip.antiAlias,
                 child: InkWell(
-                  onTap: () {
-                    if (concurrentBindedInResearch == true) {
-                      context.goNamed(
-                        Routes.competingPricesProducts.name,
-                        pathParameters: {
-                          'concurrentCode':
-                              concurrent.ConcurrentCode.toString(),
-                          'researchCode': selectedResearch.Code.toString(),
-                          'enterpriseCode': enterpriseCode.toString(),
-                        },
-                      );
-                    } else {
-                      //TODO return true/false value and navigate to the next page on success
-                      ref
-                          .read(insertUpdateResearchControllerProvider.notifier)
-                          .insertUpdate(
-                            name: selectedResearch.Name!,
-                            observations: selectedResearch.Observation,
-                            researchCode: selectedResearch.Code,
-                            concurrentToAssociate: concurrent,
-                          );
-                    }
-                  },
+                  onTap: () => onTap(
+                    concurrent: concurrent,
+                    concurrentBindedInResearch: concurrentBindedInResearch,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),
                     child: Column(
