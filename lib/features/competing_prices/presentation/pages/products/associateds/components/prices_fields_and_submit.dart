@@ -38,7 +38,6 @@ class _PricesFieldsAndSubmitState extends State<PricesFieldsAndSubmit> {
             offerFocusNode: widget.widget.retailOfferFocusNode,
             priceType: 'Venda',
             onSubmit: widget.widget.wholeFocusNode.requestFocus,
-            autoFocusFirstField: true,
           ),
           DefaultRowFields(
             controller: widget.widget.wholeController,
@@ -144,7 +143,6 @@ class DefaultRowFields extends StatelessWidget {
   final FocusNode focusNode;
   final FocusNode offerFocusNode;
   final String priceType;
-  final bool? autoFocusFirstField;
   final VoidCallback onSubmit;
 
   const DefaultRowFields({
@@ -155,7 +153,6 @@ class DefaultRowFields extends StatelessWidget {
     required this.offerFocusNode,
     required this.priceType,
     required this.onSubmit,
-    this.autoFocusFirstField = false,
   });
 
   @override
@@ -164,7 +161,6 @@ class DefaultRowFields extends StatelessWidget {
       children: [
         Expanded(
           child: DefaultTextFormField(
-            autofocus: autoFocusFirstField,
             controller: controller,
             focusNode: focusNode,
             labelText: priceType,
