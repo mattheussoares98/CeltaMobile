@@ -6,12 +6,11 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../controllers/controllers.dart';
+import '../products.dart';
 import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
-  final int enterpriseCode;
-  final int researchCode;
-  final int concurrentCode;
+  final ProductsPage widget;
   final TextEditingController retailController;
   final TextEditingController retailOfferController;
   final TextEditingController wholeController;
@@ -26,9 +25,7 @@ class ProductsItems extends ConsumerWidget {
   final FocusNode ecommerceOfferFocusNode;
   const ProductsItems({
     super.key,
-    required this.enterpriseCode,
-    required this.researchCode,
-    required this.concurrentCode,
+    required this.widget,
     required this.retailController,
     required this.retailOfferController,
     required this.wholeController,
@@ -50,7 +47,7 @@ class ProductsItems extends ConsumerWidget {
       onPopInvokedWithResult: (_, _) {
         ref.invalidate(
           searchProductsStateControllerProvider(
-            enterpriseCode,
+            widget.enterpriseCode,
             BsRoutine.researchOfPrice,
             Modules.competingPrices,
           ),
@@ -59,7 +56,7 @@ class ProductsItems extends ConsumerWidget {
       child: AsyncValueWidget(
         value: ref.watch(
           searchProductsStateControllerProvider(
-            enterpriseCode,
+            widget.enterpriseCode,
             BsRoutine.researchOfPrice,
             Modules.competingPrices,
           ),

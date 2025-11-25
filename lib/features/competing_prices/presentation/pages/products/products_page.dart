@@ -91,44 +91,11 @@ class _AssociatedsPageState extends ConsumerState<ProductsPage> {
         message: 'Preços alterados com sucesso'.hardcoded,
       );
     });
-    final restrictProducts = ref.watch(
-      researchsStateControllerProvider.select(
-        (s) =>
-            s.value
-                ?.firstWhere((e) => e.Code == widget.researchCode)
-                .RestrictProducts ??
-            false,
-      ),
-    );
-
-    final theme = Theme.of(context);
 
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FittedBox(
-                  //TODO use researchName and concurrentCode instead
-                  child: Text(
-                    'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
-                  ),
-                ),
-                Text(
-                  restrictProducts == true
-                      ? 'Produtos restringidos'
-                      : 'Produtos não restringidos',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: restrictProducts == true
-                        ? theme.primaryColor
-                        : Colors.red,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          appBar: AppBar(title: AppBarTitle(widget: widget)),
           body: Padding(
             padding: const EdgeInsets.all(Sizes.p8),
             child: Column(
@@ -138,16 +105,9 @@ class _AssociatedsPageState extends ConsumerState<ProductsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Filters(
-                        enterpriseCode: widget.enterpriseCode,
-                        researchCode: widget.researchCode,
-                        concurrentCode: widget.concurrentCode,
-                      ),
+                      Filters(widget: widget),
                       SearchProductsField(
-                        enterpriseCode: widget.enterpriseCode,
-                        researchCode: widget.researchCode,
-                        concurrentCode: widget.concurrentCode,
-                        restrictProducts: restrictProducts,
+                        widget: widget,
                         searchValueController: searchValueController,
                       ),
                       gapH8,
@@ -155,7 +115,6 @@ class _AssociatedsPageState extends ConsumerState<ProductsPage> {
                   ),
                 ),
                 ProductsItems(
-                  enterpriseCode: widget.enterpriseCode,
                   retailController: retailController,
                   retailOfferController: retailOfferController,
                   wholeController: wholeController,
@@ -168,8 +127,7 @@ class _AssociatedsPageState extends ConsumerState<ProductsPage> {
                   wholeOfferFocusNode: wholeOfferFocusNode,
                   ecommerceFocusNode: ecommerceFocusNode,
                   ecommerceOfferFocusNode: ecommerceOfferFocusNode,
-                  researchCode: widget.researchCode,
-                  concurrentCode: widget.concurrentCode,
+                  widget: widget,
                 ),
               ],
             ),

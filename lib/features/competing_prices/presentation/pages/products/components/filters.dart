@@ -9,17 +9,11 @@ import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
+import '../products.dart';
 
 class Filters extends ConsumerWidget {
-  final int enterpriseCode;
-  final int researchCode;
-  final int concurrentCode;
-  const Filters({
-    super.key,
-    required this.enterpriseCode,
-    required this.researchCode,
-    required this.concurrentCode,
-  });
+  final ProductsPage widget;
+  const Filters({super.key, required this.widget});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +26,7 @@ class Filters extends ConsumerWidget {
       researchsStateControllerProvider.select(
         (s) =>
             s.value
-                ?.firstWhere((e) => e.Code == researchCode)
+                ?.firstWhere((e) => e.Code == widget.researchCode)
                 .RestrictProducts ??
             false,
       ),
@@ -93,17 +87,17 @@ class Filters extends ConsumerWidget {
                   ref
                       .read(
                         searchProductsStateControllerProvider(
-                          enterpriseCode,
+                          widget.enterpriseCode,
                           BsRoutine.researchOfPrice,
                           Modules.competingPrices,
                         ).notifier,
                       )
                       .loadProducts(
                         searchValue: '%',
-                        enterpriseCodes: [enterpriseCode],
+                        enterpriseCodes: [widget.enterpriseCode],
                         competingPricesFilters: CompetingPricesFilters(
-                          ResearchOfPriceCode: researchCode,
-                          ConcurrentCode: concurrentCode,
+                          ResearchOfPriceCode: widget.researchCode,
+                          ConcurrentCode: widget.concurrentCode,
                           OnlyAssociated: restrictProducts,
                           searchType: selectedItem.searchType,
                         ),

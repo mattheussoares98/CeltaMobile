@@ -6,20 +6,15 @@ import '../../../../../../core/data/datasource/products/products.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../controllers/controllers.dart';
+import '../products.dart';
 
 class SearchProductsField extends ConsumerWidget {
-  final int enterpriseCode;
   final TextEditingController searchValueController;
-  final int researchCode;
-  final int concurrentCode;
-  final bool restrictProducts;
+  final ProductsPage widget;
   const SearchProductsField({
     super.key,
-    required this.enterpriseCode,
     required this.searchValueController,
-    required this.researchCode,
-    required this.concurrentCode,
-    required this.restrictProducts,
+    required this.widget,
   });
 
   @override
@@ -28,11 +23,21 @@ class SearchProductsField extends ConsumerWidget {
       selectedItemUIControllerProvider.select((s) => s.searchType),
     );
 
+    final restrictProducts = ref.watch(
+      researchsStateControllerProvider.select(
+        (s) =>
+            s.value
+                ?.firstWhere((e) => e.Code == widget.researchCode)
+                .RestrictProducts ??
+            false,
+      ),
+    );
+
     return DefaultSearchProducts(
       allowEmptySearchValue: true,
       isLoading: ref.watch(
         searchProductsStateControllerProvider(
-          enterpriseCode,
+          widget.enterpriseCode,
           BsRoutine.researchOfPrice,
           Modules.competingPrices,
         ).select((s) => s.isLoading),
@@ -41,7 +46,7 @@ class SearchProductsField extends ConsumerWidget {
         ref
             .read(
               searchProductsStateControllerProvider(
-                enterpriseCode,
+                widget.enterpriseCode,
                 BsRoutine.researchOfPrice,
                 Modules.competingPrices,
               ).notifier,
@@ -50,10 +55,10 @@ class SearchProductsField extends ConsumerWidget {
               searchValue: searchValueController.text.isEmpty
                   ? '%'
                   : searchValueController.text,
-              enterpriseCodes: [enterpriseCode],
+              enterpriseCodes: [widget.enterpriseCode],
               competingPricesFilters: CompetingPricesFilters(
-                ResearchOfPriceCode: researchCode,
-                ConcurrentCode: concurrentCode,
+                ResearchOfPriceCode: widget.researchCode,
+                ConcurrentCode: widget.concurrentCode,
                 OnlyAssociated: restrictProducts,
                 searchType: searchType,
               ),

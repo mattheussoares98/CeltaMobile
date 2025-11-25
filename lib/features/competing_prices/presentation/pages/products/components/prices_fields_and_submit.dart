@@ -41,9 +41,9 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
         ref
             .read(updatePricesControllerProvider.notifier)
             .insertUpdate(
-              enterpriseCode: widget.widget.enterpriseCode,
-              researchCode: widget.widget.researchCode,
-              concurrentCode: widget.widget.concurrentCode,
+              enterpriseCode: widget.widget.widget.enterpriseCode,
+              researchCode: widget.widget.widget.researchCode,
+              concurrentCode: widget.widget.widget.concurrentCode,
               priceRetail: widget.widget.retailController.text.toDouble() ?? 0,
               offerRetail:
                   widget.widget.retailOfferController.text.toDouble() ?? 0,
