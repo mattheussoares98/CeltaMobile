@@ -10,6 +10,8 @@ import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
+  final int researchCode;
+  final int concurrentCode;
   final TextEditingController retailController;
   final TextEditingController retailOfferController;
   final TextEditingController wholeController;
@@ -25,6 +27,8 @@ class ProductsItems extends ConsumerWidget {
   const ProductsItems({
     super.key,
     required this.enterpriseCode,
+    required this.researchCode,
+    required this.concurrentCode,
     required this.retailController,
     required this.retailOfferController,
     required this.wholeController,

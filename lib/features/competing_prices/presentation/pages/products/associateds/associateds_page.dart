@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,6 +7,7 @@ import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../utils/utils.dart';
+import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class AssociatedsPage extends ConsumerStatefulWidget {
@@ -75,6 +77,23 @@ class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
       },
     );
 
+    ref.listen(updatePricesControllerProvider, (p, n) {
+      n.doOnSuccess(p, () {
+        final currentValue = ref.read(selectedItemUIControllerProvider);
+        ref
+            .read(selectedItemUIControllerProvider.notifier)
+            .update(
+              currentValue,
+            ); //remove the selected index when is equal the previous
+      });
+      n.showAlertDialogOnError(context);
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'Preços alterados com sucesso'.hardcoded,
+      );
+    });
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -116,6 +135,8 @@ class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
               wholeOfferFocusNode: wholeOfferFocusNode,
               ecommerceFocusNode: ecommerceFocusNode,
               ecommerceOfferFocusNode: ecommerceOfferFocusNode,
+              researchCode: widget.researchCode,
+              concurrentCode: widget.concurrentCode,
             ),
           ],
         ),

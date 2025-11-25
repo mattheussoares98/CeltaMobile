@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../../controllers/controllers.dart';
 import 'components.dart';
 
-class PricesFieldsAndSubmit extends StatefulWidget {
+class PricesFieldsAndSubmit extends ConsumerStatefulWidget {
   final ProductsItems widget;
   final ProductEntity product;
   const PricesFieldsAndSubmit({
@@ -19,11 +20,43 @@ class PricesFieldsAndSubmit extends StatefulWidget {
   });
 
   @override
-  State<PricesFieldsAndSubmit> createState() => _PricesFieldsAndSubmitState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _PricesFieldsAndSubmitState();
 }
 
-class _PricesFieldsAndSubmitState extends State<PricesFieldsAndSubmit> {
+class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
   final formKey = GlobalKey<FormState>();
+
+  void insertUpdate() async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    showAlertDialog(
+      context: context,
+      title: 'Salvar alterações?'.hardcoded,
+      defaultActionText: 'Sim'.hardcoded,
+      cancelActionText: 'Cancelar'.hardcoded,
+      onOkPressed: () {
+        ref
+            .read(updatePricesControllerProvider.notifier)
+            .insertUpdate(
+              researchCode: widget.widget.researchCode,
+              concurrentCode: widget.widget.concurrentCode,
+              productPackingCode: widget.product.ProductPackingCode!,
+              priceLookUp: widget.product.PLU!,
+              priceRetail: widget.widget.retailController.text.toDouble(),
+              offerRetail: widget.widget.retailOfferController.text.toDouble(),
+              priceWhole: widget.widget.wholeController.text.toDouble(),
+              offerWhole: widget.widget.wholeOfferController.text.toDouble(),
+              priceECommerce: widget.widget.ecommerceController.text.toDouble(),
+              offerECommerce: widget.widget.ecommerceOfferController.text
+                  .toDouble(),
+            );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -53,9 +86,7 @@ class _PricesFieldsAndSubmitState extends State<PricesFieldsAndSubmit> {
             focusNode: widget.widget.ecommerceFocusNode,
             offerFocusNode: widget.widget.ecommerceOfferFocusNode,
             priceType: 'Ecommerce',
-            onSubmit: () {
-              //TODO submit
-            },
+            onSubmit: insertUpdate,
           ),
           gapH8,
           AnimatedBuilder(
@@ -97,100 +128,12 @@ class _PricesFieldsAndSubmitState extends State<PricesFieldsAndSubmit> {
 
               return PrimaryButton(
                 text: 'Confirmar alterações'.hardcoded,
-                onPressed: isValid
-                    ? () {
-                        //TODO think in a way to enable click only when change was made
-                      }
-                    : null,
+                onPressed: isValid ? insertUpdate : null,
               );
             },
           ),
         ],
       ),
-    );
-  }
-}
-
-class _DefaultDeleteIcon extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  const _DefaultDeleteIcon(this.controller, this.focusNode);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    return IconButton(
-      focusNode: FocusNode(skipTraversal: true),
-      onPressed: () {
-        controller.clear();
-        if (!focusNode.hasFocus) {
-          debugPrint('requested focus');
-          focusNode.requestFocus();
-        }
-      },
-      icon: Icon(
-        isIOS ? CupertinoIcons.delete : Icons.delete,
-        color: Colors.red,
-      ),
-    );
-  }
-}
-
-class DefaultRowFields extends StatelessWidget {
-  final TextEditingController controller;
-  final TextEditingController offerController;
-  final FocusNode focusNode;
-  final FocusNode offerFocusNode;
-  final String priceType;
-  final VoidCallback onSubmit;
-
-  const DefaultRowFields({
-    super.key,
-    required this.controller,
-    required this.offerController,
-    required this.focusNode,
-    required this.offerFocusNode,
-    required this.priceType,
-    required this.onSubmit,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: DefaultTextFormField(
-            controller: controller,
-            focusNode: focusNode,
-            labelText: priceType,
-            hintText: priceType,
-            maxLength: 13,
-            suffixIcon: _DefaultDeleteIcon(controller, focusNode),
-            onFieldSubmitted: (_) => offerFocusNode.requestFocus(),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: FormValidators.compose([
-              NumberValidator(allowDecimal: true, allowEmptyValue: true),
-            ]),
-          ),
-        ),
-        gapW4,
-        Expanded(
-          child: DefaultTextFormField(
-            controller: offerController,
-            focusNode: offerFocusNode,
-            onFieldSubmitted: (_) => onSubmit(),
-            labelText: '$priceType (oferta)'.hardcoded,
-            hintText: '$priceType (oferta)'.hardcoded,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            maxLength: 13,
-            suffixIcon: _DefaultDeleteIcon(offerController, offerFocusNode),
-            validator: FormValidators.compose([
-              NumberValidator(allowDecimal: true, allowEmptyValue: true),
-            ]),
-          ),
-        ),
-      ],
     );
   }
 }
