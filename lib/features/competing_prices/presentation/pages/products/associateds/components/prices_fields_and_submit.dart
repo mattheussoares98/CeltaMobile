@@ -3,13 +3,20 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../../utils/utils.dart';
 import 'components.dart';
 
 class PricesFieldsAndSubmit extends StatefulWidget {
   final ProductsItems widget;
-  const PricesFieldsAndSubmit({super.key, required this.widget});
+  final ProductEntity product;
+  const PricesFieldsAndSubmit({
+    super.key,
+    required this.widget,
+    required this.product,
+  });
 
   @override
   State<PricesFieldsAndSubmit> createState() => _PricesFieldsAndSubmitState();
@@ -51,10 +58,51 @@ class _PricesFieldsAndSubmitState extends State<PricesFieldsAndSubmit> {
             },
           ),
           gapH8,
-          PrimaryButton(
-            text: 'Confirmar alterações'.hardcoded,
-            onPressed: () {
-              //TODO think in a way to enable click only when change was made
+          AnimatedBuilder(
+            animation: Listenable.merge([
+              widget.widget.retailController,
+              widget.widget.retailOfferController,
+              widget.widget.wholeController,
+              widget.widget.wholeOfferController,
+              widget.widget.ecommerceController,
+              widget.widget.ecommerceOfferController,
+            ]),
+            builder: (_, _) {
+              bool isValid = false;
+
+              if ((widget.widget.retailController.text.toDouble() ?? 0) !=
+                  widget.product.RetailPracticedPrice) {
+                isValid = true;
+              } else if ((widget.widget.retailOfferController.text.toDouble() ??
+                      0) !=
+                  widget.product.RetailOfferPrice) {
+                isValid = true;
+              } else if ((widget.widget.wholeController.text.toDouble() ?? 0) !=
+                  widget.product.WholePracticedPrice) {
+                isValid = true;
+              } else if ((widget.widget.wholeOfferController.text.toDouble() ??
+                      0) !=
+                  widget.product.WholeOfferPrice) {
+                isValid = true;
+              } else if ((widget.widget.ecommerceController.text.toDouble() ??
+                      0) !=
+                  widget.product.ECommercePracticedPrice) {
+                isValid = true;
+              } else if ((widget.widget.ecommerceOfferController.text
+                          .toDouble() ??
+                      0) !=
+                  widget.product.ECommerceOfferPrice) {
+                isValid = true;
+              }
+
+              return PrimaryButton(
+                text: 'Confirmar alterações'.hardcoded,
+                onPressed: isValid
+                    ? () {
+                        //TODO think in a way to enable click only when change was made
+                      }
+                    : null,
+              );
             },
           ),
         ],
@@ -120,8 +168,10 @@ class DefaultRowFields extends StatelessWidget {
             focusNode: focusNode,
             labelText: priceType,
             hintText: priceType,
+            maxLength: 13,
             suffixIcon: _DefaultDeleteIcon(controller, focusNode),
             onFieldSubmitted: (_) => offerFocusNode.requestFocus(),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: FormValidators.compose([
               NumberValidator(allowDecimal: true, allowEmptyValue: true),
             ]),
@@ -135,6 +185,8 @@ class DefaultRowFields extends StatelessWidget {
             onFieldSubmitted: (_) => onSubmit(),
             labelText: '$priceType (oferta)'.hardcoded,
             hintText: '$priceType (oferta)'.hardcoded,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            maxLength: 13,
             suffixIcon: _DefaultDeleteIcon(offerController, offerFocusNode),
             validator: FormValidators.compose([
               NumberValidator(allowDecimal: true, allowEmptyValue: true),

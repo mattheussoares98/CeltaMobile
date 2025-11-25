@@ -73,7 +73,7 @@ class ProductsItems extends ConsumerWidget {
                   routine: BsRoutine.researchOfPrice,
                   showDropIcon: true,
                   notClickableBottom: selectedItemAsync.selectedIndex == index
-                      ? PricesFieldsAndSubmit(widget: this)
+                      ? PricesFieldsAndSubmit(widget: this, product: product)
                       : null,
                   onTap: () {
                     ref
@@ -81,6 +81,25 @@ class ProductsItems extends ConsumerWidget {
                         .update(
                           selectedItemAsync.copyWith(selectedIndex: index),
                         );
+                    retailController.text =
+                        (product.RetailPracticedPrice?.toStringAsFixed(2) ?? '')
+                            .replaceAll(RegExp(r'\.'), ',');
+                    retailOfferController.text =
+                        (product.RetailOfferPrice?.toStringAsFixed(2) ?? '')
+                            .replaceAll(RegExp(r'\.'), ',');
+                    wholeController.text =
+                        (product.WholePracticedPrice?.toStringAsFixed(2) ?? '')
+                            .replaceAll(RegExp(r'\.'), ',');
+                    wholeOfferController.text =
+                        (product.WholeOfferPrice?.toStringAsFixed(2) ?? '')
+                            .replaceAll(RegExp(r'\.'), ',');
+                    ecommerceController.text =
+                        (product.ECommercePracticedPrice?.toStringAsFixed(2) ??
+                                '')
+                            .replaceAll(RegExp(r'\.'), ',');
+                    ecommerceOfferController.text =
+                        (product.ECommerceOfferPrice?.toStringAsFixed(2) ?? '')
+                            .replaceAll(RegExp(r'\.'), ',');
                   },
                   clickableBottom: AppliedPrices(product: product),
                   isSelected: ref.watch(
