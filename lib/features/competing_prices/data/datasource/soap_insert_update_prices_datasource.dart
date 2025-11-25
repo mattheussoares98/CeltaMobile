@@ -1,10 +1,10 @@
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';
 
-class SoapInsertConcurrentProductPricesDatasource
-    implements ISoapInsertConcurrentProductPricesDatasource {
+class SoapInsertUpdatePricesDatasource
+    implements ISoapInsertUpdatePricesDatasource {
   final SoapRequest soapRequest;
-  SoapInsertConcurrentProductPricesDatasource(this.soapRequest);
+  SoapInsertUpdatePricesDatasource(this.soapRequest);
 
   @override
   Future<void> insert({

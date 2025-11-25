@@ -6,7 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late ISoapInsertConcurrentProductPricesDatasource sut;
+  late ISoapInsertUpdatePricesDatasource sut;
 
   late SoapRequestSpy soapRequest;
 
@@ -24,7 +24,7 @@ void main() {
   late double? offerECommerce;
 
   void initSut() {
-    sut = SoapInsertConcurrentProductPricesDatasource(soapRequest);
+    sut = SoapInsertUpdatePricesDatasource(soapRequest);
   }
 
   void initInjections() {

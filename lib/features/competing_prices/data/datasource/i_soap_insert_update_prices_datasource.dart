@@ -1,4 +1,4 @@
-abstract class ISoapInsertConcurrentProductPricesDatasource {
+abstract class ISoapInsertUpdatePricesDatasource {
   Future<void> insert({
     required String baseUrl,
     required String crossIdentity,

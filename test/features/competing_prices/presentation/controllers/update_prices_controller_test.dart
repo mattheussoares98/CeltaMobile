@@ -11,11 +11,11 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class MockSoapInsertConcurrentProductPricesDatasource extends Mock
-    implements ISoapInsertConcurrentProductPricesDatasource {}
+class MockSoapInsertUpdatePricesDatasource extends Mock
+    implements ISoapInsertUpdatePricesDatasource {}
 
 void main() {
-  late MockSoapInsertConcurrentProductPricesDatasource mockDatasource;
+  late MockSoapInsertUpdatePricesDatasource mockDatasource;
   late UserSessionModel fakeSession;
 
   // Test data variables
@@ -37,7 +37,7 @@ void main() {
   });
 
   setUp(() {
-    mockDatasource = MockSoapInsertConcurrentProductPricesDatasource();
+    mockDatasource = MockSoapInsertUpdatePricesDatasource();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -58,7 +58,7 @@ void main() {
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
       overrides: [
-        soapInsertConcurrentProductPricesDatasourceProvider.overrideWithValue(
+        soapInsertUpdatePricesDatasourceProvider.overrideWithValue(
           mockDatasource,
         ),
         validatedUserSessionProvider.overrideWith(
