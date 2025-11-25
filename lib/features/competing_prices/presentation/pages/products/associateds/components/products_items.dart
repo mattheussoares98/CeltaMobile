@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,11 +6,38 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../controllers/controllers.dart';
+import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
-  const ProductsItems({super.key, required this.enterpriseCode});
-
+  final TextEditingController retailController;
+  final TextEditingController retailOfferController;
+  final TextEditingController wholeController;
+  final TextEditingController wholeOfferController;
+  final TextEditingController ecommerceController;
+  final TextEditingController ecommerceOfferController;
+  final FocusNode retailFocusNode;
+  final FocusNode retailOfferFocusNode;
+  final FocusNode wholeFocusNode;
+  final FocusNode wholeOfferFocusNode;
+  final FocusNode ecommerceFocusNode;
+  final FocusNode ecommerceOfferFocusNode;
+  const ProductsItems({
+    super.key,
+    required this.enterpriseCode,
+    required this.retailController,
+    required this.retailOfferController,
+    required this.wholeController,
+    required this.wholeOfferController,
+    required this.ecommerceController,
+    required this.ecommerceOfferController,
+    required this.retailFocusNode,
+    required this.retailOfferFocusNode,
+    required this.wholeFocusNode,
+    required this.wholeOfferFocusNode,
+    required this.ecommerceFocusNode,
+    required this.ecommerceOfferFocusNode,
+  });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedItemAsync = ref.watch(selectedItemUIControllerProvider);
@@ -35,52 +62,15 @@ class ProductsItems extends ConsumerWidget {
                 product: product,
                 routine: BsRoutine.researchOfPrice,
                 showDropIcon: true,
+                notClickableBottom: selectedItemAsync.selectedIndex == index
+                    ? PricesFieldsAndSubmit(widget: this)
+                    : null,
                 onTap: () {
                   ref
                       .read(selectedItemUIControllerProvider.notifier)
                       .update(selectedItemAsync.copyWith(selectedIndex: index));
                 },
-                clickableBottom: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if ((product.RetailPracticedPrice ?? 0) > 0)
-                      TitleAndSubTitle(
-                        title: 'Venda'.hardcoded,
-                        subTitle: product.RetailPracticedPrice,
-                        subTitleIsPrice: true,
-                      ),
-                    if ((product.RetailOfferPrice ?? 0) > 0)
-                      TitleAndSubTitle(
-                        title: 'Venda (oferta)'.hardcoded,
-                        subTitle: product.RetailOfferPrice,
-                        subTitleIsPrice: true,
-                      ),
-                    if ((product.WholePracticedPrice ?? 0) > 0)
-                      TitleAndSubTitle(
-                        title: 'Atacado'.hardcoded,
-                        subTitle: product.WholePracticedPrice,
-                        subTitleIsPrice: true,
-                      ),
-                    if ((product.WholeOfferPrice ?? 0) > 0)
-                      TitleAndSubTitle(
-                        title: 'Atacado (oferta)'.hardcoded,
-                        subTitle: product.WholeOfferPrice,
-                        subTitleIsPrice: true,
-                      ),
-                    if ((product.ECommercePracticedPrice ?? 0) > 0)
-                      TitleAndSubTitle(
-                        title: 'Ecommerce'.hardcoded,
-                        subTitle: product.ECommercePracticedPrice,
-                        subTitleIsPrice: true,
-                      ),
-                    if ((product.ECommerceOfferPrice ?? 0) > 0)
-                      TitleAndSubTitle(
-                        title: 'Ecommerce (oferta)'.hardcoded,
-                        subTitle: product.ECommerceOfferPrice,
-                        subTitleIsPrice: true,
-                      ),
-                  ],
-                ),
+                clickableBottom: AppliedPrices(product: product),
                 isSelected: ref.watch(
                   selectedItemUIControllerProvider.select(
                     (s) => s.selectedIndex == index,

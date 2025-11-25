@@ -28,12 +28,36 @@ class AssociatedsPage extends ConsumerStatefulWidget {
 
 class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
   final searchValueController = TextEditingController();
+  final retailController = TextEditingController();
+  final retailOfferController = TextEditingController();
+  final wholeController = TextEditingController();
+  final wholeOfferController = TextEditingController();
+  final ecommerceController = TextEditingController();
+  final ecommerceOfferController = TextEditingController();
+  final retailFocusNode = FocusNode();
+  final retailOfferFocusNode = FocusNode();
+  final wholeFocusNode = FocusNode();
+  final wholeOfferFocusNode = FocusNode();
+  final ecommerceFocusNode = FocusNode();
+  final ecommerceOfferFocusNode = FocusNode();
 
   @override
   void dispose() {
     super.dispose();
 
     searchValueController.dispose();
+    retailController.dispose();
+    retailOfferController.dispose();
+    wholeController.dispose();
+    wholeOfferController.dispose();
+    ecommerceController.dispose();
+    ecommerceOfferController.dispose();
+    retailFocusNode.dispose();
+    retailOfferFocusNode.dispose();
+    wholeFocusNode.dispose();
+    wholeOfferFocusNode.dispose();
+    ecommerceFocusNode.dispose();
+    ecommerceOfferFocusNode.dispose();
   }
 
   @override
@@ -78,7 +102,21 @@ class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
                 ],
               ),
             ),
-            ProductsItems(enterpriseCode: widget.enterpriseCode),
+            ProductsItems(
+              enterpriseCode: widget.enterpriseCode,
+              retailController: retailController,
+              retailOfferController: retailOfferController,
+              wholeController: wholeController,
+              wholeOfferController: wholeOfferController,
+              ecommerceController: ecommerceController,
+              ecommerceOfferController: ecommerceOfferController,
+              retailFocusNode: retailFocusNode,
+              retailOfferFocusNode: retailOfferFocusNode,
+              wholeFocusNode: wholeFocusNode,
+              wholeOfferFocusNode: wholeOfferFocusNode,
+              ecommerceFocusNode: ecommerceFocusNode,
+              ecommerceOfferFocusNode: ecommerceOfferFocusNode,
+            ),
           ],
         ),
       ),
