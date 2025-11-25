@@ -44,8 +44,6 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
               enterpriseCode: widget.widget.enterpriseCode,
               researchCode: widget.widget.researchCode,
               concurrentCode: widget.widget.concurrentCode,
-              productPackingCode: widget.product.ProductPackingCode!,
-              priceLookUp: widget.product.PLU!,
               priceRetail: widget.widget.retailController.text.toDouble(),
               offerRetail: widget.widget.retailOfferController.text.toDouble(),
               priceWhole: widget.widget.wholeController.text.toDouble(),
@@ -53,6 +51,7 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
               priceECommerce: widget.widget.ecommerceController.text.toDouble(),
               offerECommerce: widget.widget.ecommerceOfferController.text
                   .toDouble(),
+              product: widget.product,
             );
       },
     );

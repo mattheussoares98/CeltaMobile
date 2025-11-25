@@ -18,14 +18,13 @@ class UpdatePricesController extends _$UpdatePricesController {
     required int enterpriseCode,
     required int researchCode,
     required int concurrentCode,
-    required int productPackingCode,
-    required String priceLookUp,
     required double? priceRetail,
     required double? offerRetail,
     required double? priceWhole,
     required double? offerWhole,
     required double? priceECommerce,
     required double? offerECommerce,
+    required ProductEntity product,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -40,8 +39,8 @@ class UpdatePricesController extends _$UpdatePricesController {
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             researchCode: researchCode,
             concurrentCode: concurrentCode,
-            productPackingCode: productPackingCode,
-            priceLookUp: priceLookUp,
+            productPackingCode: product.ProductPackingCode!,
+            priceLookUp: product.PLU!,
             priceRetail: priceRetail,
             offerRetail: offerRetail,
             priceWhole: priceWhole,
@@ -59,10 +58,10 @@ class UpdatePricesController extends _$UpdatePricesController {
             ).notifier,
           )
           .updateProduct(
-            ProductEntity.empty().copyWith(
+            product.copyWith(
               ConcurrentCode: concurrentCode,
-              ProductPackingCode: productPackingCode,
-              PLU: priceLookUp,
+              ProductPackingCode: product.ProductPackingCode,
+              PLU: product.PLU,
               RetailPracticedPrice: priceRetail,
               RetailOfferPrice: offerRetail,
               WholePracticedPrice: priceWhole,

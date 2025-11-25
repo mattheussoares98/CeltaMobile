@@ -37,8 +37,6 @@ void main() {
   // Test data variables
   late int researchCode;
   late int concurrentCode;
-  late int productPackingCode;
-  late String priceLookUp;
   late double priceRetail;
   late double offerRetail;
   late double priceWhole;
@@ -47,6 +45,7 @@ void main() {
   late double offerECommerce;
   late int enterpriseCode;
   late Map<String, double> pricesMap;
+  late ProductEntity product;
 
   const BsRoutine fakeRoutine = BsRoutine.researchOfPrice;
   const Modules fakeModule = Modules.competingPrices;
@@ -66,9 +65,7 @@ void main() {
     // Initialize test data using faker
     researchCode = faker.randomGenerator.integer(100);
     concurrentCode = faker.randomGenerator.integer(100);
-    productPackingCode = faker.randomGenerator.integer(100);
     enterpriseCode = faker.randomGenerator.integer(100);
-    priceLookUp = faker.lorem.word();
     priceRetail = faker.randomGenerator.decimal();
     offerRetail = faker.randomGenerator.decimal();
     priceWhole = faker.randomGenerator.decimal();
@@ -83,6 +80,7 @@ void main() {
       'PriceECommerce': priceECommerce,
       'OfferECommerce': offerECommerce,
     };
+    product = EntityFactory.makeProductEntity(enterpriseCode: enterpriseCode);
   });
 
   ProviderContainer makeProviderContainer({
@@ -143,14 +141,13 @@ void main() {
               enterpriseCode: enterpriseCode,
               researchCode: researchCode,
               concurrentCode: concurrentCode,
-              productPackingCode: productPackingCode,
-              priceLookUp: priceLookUp,
               priceRetail: priceRetail,
               offerRetail: offerRetail,
               priceWhole: priceWhole,
               offerWhole: offerWhole,
               priceECommerce: priceECommerce,
               offerECommerce: offerECommerce,
+              product: product,
             );
 
         // ASSERT
@@ -163,8 +160,8 @@ void main() {
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             researchCode: researchCode,
             concurrentCode: concurrentCode,
-            productPackingCode: productPackingCode,
-            priceLookUp: priceLookUp,
+            productPackingCode: product.ProductPackingCode!,
+            priceLookUp: product.PLU!,
             pricesMap: pricesMap,
           ),
         ).called(1);
@@ -172,15 +169,16 @@ void main() {
         expect(spySearchProducts.capturedProduct, isNotNull);
 
         final capturedProduct = spySearchProducts.capturedProduct!;
-        expect(capturedProduct.ProductPackingCode, productPackingCode);
+        expect(capturedProduct.ProductPackingCode, product.ProductPackingCode);
         expect(capturedProduct.ConcurrentCode, concurrentCode);
-        expect(capturedProduct.PLU, priceLookUp);
+        expect(capturedProduct.PLU, product.PLU);
         expect(capturedProduct.RetailPracticedPrice, priceRetail);
         expect(capturedProduct.RetailOfferPrice, offerRetail);
         expect(capturedProduct.WholePracticedPrice, priceWhole);
         expect(capturedProduct.WholeOfferPrice, offerWhole);
         expect(capturedProduct.ECommercePracticedPrice, priceECommerce);
         expect(capturedProduct.ECommerceOfferPrice, offerECommerce);
+        expect(capturedProduct.Name, product.Name);
       },
     );
 
@@ -206,14 +204,13 @@ void main() {
             enterpriseCode: enterpriseCode,
             researchCode: researchCode,
             concurrentCode: concurrentCode,
-            productPackingCode: productPackingCode,
-            priceLookUp: priceLookUp,
             priceRetail: priceRetail,
             offerRetail: offerRetail,
             priceWhole: null,
             offerWhole: null,
             priceECommerce: null,
             offerECommerce: null,
+            product: product,
           );
 
       // ASSERT
