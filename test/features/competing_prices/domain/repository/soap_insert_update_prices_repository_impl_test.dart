@@ -35,12 +35,12 @@ void main() {
   late int concurrentCode;
   late int productPackingCode;
   late String priceLookUp;
-  late double? priceRetail;
-  late double? offerRetail;
-  late double? priceWhole;
-  late double? offerWhole;
-  late double? priceECommerce;
-  late double? offerECommerce;
+  late double priceRetail;
+  late double offerRetail;
+  late double priceWhole;
+  late double offerWhole;
+  late double priceECommerce;
+  late double offerECommerce;
 
   void initSut() {
     sut = SoapInsertUpdatePricesRepositoryImpl(datasource);
@@ -59,24 +59,12 @@ void main() {
     concurrentCode = faker.randomGenerator.integer(100);
     productPackingCode = faker.randomGenerator.integer(100);
     priceLookUp = faker.guid.guid();
-    priceRetail = faker.randomGenerator.boolean()
-        ? faker.randomGenerator.decimal()
-        : null;
-    offerRetail = faker.randomGenerator.boolean()
-        ? faker.randomGenerator.decimal()
-        : null;
-    priceWhole = faker.randomGenerator.boolean()
-        ? faker.randomGenerator.decimal()
-        : null;
-    offerWhole = faker.randomGenerator.boolean()
-        ? faker.randomGenerator.decimal()
-        : null;
-    priceECommerce = faker.randomGenerator.boolean()
-        ? faker.randomGenerator.decimal()
-        : null;
-    offerECommerce = faker.randomGenerator.boolean()
-        ? faker.randomGenerator.decimal()
-        : null;
+    priceRetail = faker.randomGenerator.decimal();
+    offerRetail = faker.randomGenerator.decimal();
+    priceWhole = faker.randomGenerator.decimal();
+    offerWhole = faker.randomGenerator.decimal();
+    priceECommerce = faker.randomGenerator.decimal();
+    offerECommerce = faker.randomGenerator.decimal();
   }
 
   setUp(() {
@@ -119,12 +107,12 @@ void main() {
         productPackingCode: productPackingCode,
         priceLookUp: priceLookUp,
         pricesMap: {
-          if (priceRetail != null) "PriceRetail": priceRetail!,
-          if (offerRetail != null) "OfferRetail": offerRetail!,
-          if (priceWhole != null) "PriceWhole": priceWhole!,
-          if (offerWhole != null) "OfferWhole": offerWhole!,
-          if (priceECommerce != null) "PriceECommerce": priceECommerce!,
-          if (offerECommerce != null) "OfferECommerce": offerECommerce!,
+          "PriceRetail": priceRetail,
+          "OfferRetail": offerRetail,
+          "PriceWhole": priceWhole,
+          "OfferWhole": offerWhole,
+          "PriceECommerce": priceECommerce,
+          "OfferECommerce": offerECommerce,
         },
       ),
     ).called(1);

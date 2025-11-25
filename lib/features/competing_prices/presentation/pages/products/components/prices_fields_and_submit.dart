@@ -44,13 +44,16 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
               enterpriseCode: widget.widget.enterpriseCode,
               researchCode: widget.widget.researchCode,
               concurrentCode: widget.widget.concurrentCode,
-              priceRetail: widget.widget.retailController.text.toDouble(),
-              offerRetail: widget.widget.retailOfferController.text.toDouble(),
-              priceWhole: widget.widget.wholeController.text.toDouble(),
-              offerWhole: widget.widget.wholeOfferController.text.toDouble(),
-              priceECommerce: widget.widget.ecommerceController.text.toDouble(),
-              offerECommerce: widget.widget.ecommerceOfferController.text
-                  .toDouble(),
+              priceRetail: widget.widget.retailController.text.toDouble() ?? 0,
+              offerRetail:
+                  widget.widget.retailOfferController.text.toDouble() ?? 0,
+              priceWhole: widget.widget.wholeController.text.toDouble() ?? 0,
+              offerWhole:
+                  widget.widget.wholeOfferController.text.toDouble() ?? 0,
+              priceECommerce:
+                  widget.widget.ecommerceController.text.toDouble() ?? 0,
+              offerECommerce:
+                  widget.widget.ecommerceOfferController.text.toDouble() ?? 0,
               product: widget.product,
             );
       },
@@ -101,7 +104,7 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
             builder: (_, _) {
               bool isValid = false;
 
-              if ((widget.widget.retailController.text.toDouble() ?? 0) !=
+              if ((widget.widget.retailController.text.toDouble()) !=
                   widget.product.RetailPracticedPrice) {
                 isValid = true;
               } else if ((widget.widget.retailOfferController.text.toDouble() ??

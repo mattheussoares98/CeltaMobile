@@ -14,12 +14,12 @@ class SoapInsertUpdatePricesRepositoryImpl
     required int concurrentCode,
     required int productPackingCode,
     required String priceLookUp,
-    required double? priceRetail,
-    required double? offerRetail,
-    required double? priceWhole,
-    required double? offerWhole,
-    required double? priceECommerce,
-    required double? offerECommerce,
+    required double priceRetail,
+    required double offerRetail,
+    required double priceWhole,
+    required double offerWhole,
+    required double priceECommerce,
+    required double offerECommerce,
   }) async {
     await datasource.insert(
       baseUrl: baseUrl,
@@ -29,12 +29,12 @@ class SoapInsertUpdatePricesRepositoryImpl
       productPackingCode: productPackingCode,
       priceLookUp: priceLookUp,
       pricesMap: {
-        if (priceRetail != null) "PriceRetail": priceRetail,
-        if (offerRetail != null) "OfferRetail": offerRetail,
-        if (priceWhole != null) "PriceWhole": priceWhole,
-        if (offerWhole != null) "OfferWhole": offerWhole,
-        if (priceECommerce != null) "PriceECommerce": priceECommerce,
-        if (offerECommerce != null) "OfferECommerce": offerECommerce,
+        "PriceRetail": priceRetail,
+        "OfferRetail": offerRetail,
+        "PriceWhole": priceWhole,
+        "OfferWhole": offerWhole,
+        "PriceECommerce": priceECommerce,
+        "OfferECommerce": offerECommerce,
       },
     );
   }

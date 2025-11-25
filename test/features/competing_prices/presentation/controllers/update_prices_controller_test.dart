@@ -206,10 +206,10 @@ void main() {
             concurrentCode: concurrentCode,
             priceRetail: priceRetail,
             offerRetail: offerRetail,
-            priceWhole: null,
-            offerWhole: null,
-            priceECommerce: null,
-            offerECommerce: null,
+            priceWhole: priceWhole,
+            offerWhole: offerWhole,
+            priceECommerce: priceECommerce,
+            offerECommerce: offerECommerce,
             product: product,
           );
 
