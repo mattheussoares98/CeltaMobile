@@ -66,12 +66,14 @@ void main() {
       concurrentCode: concurrentCode,
       productPackingCode: productPackingCode,
       priceLookUp: priceLookUp,
-      priceRetail: priceRetail,
-      offerRetail: offerRetail,
-      priceWhole: priceWhole,
-      offerWhole: offerWhole,
-      priceECommerce: priceECommerce,
-      offerECommerce: offerECommerce,
+      pricesMap: {
+        'PriceRetail': priceRetail!,
+        'OfferRetail': offerRetail!,
+        'PriceWhole': priceWhole!,
+        'OfferWhole': offerWhole!,
+        'PriceECommerce': priceECommerce!,
+        'OfferECommerce': offerECommerce!,
+      },
     );
 
     verify(

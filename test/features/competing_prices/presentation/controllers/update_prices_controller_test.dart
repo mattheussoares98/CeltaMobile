@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
@@ -48,6 +46,7 @@ void main() {
   late double priceECommerce;
   late double offerECommerce;
   late int enterpriseCode;
+  late Map<String, double> pricesMap;
 
   const BsRoutine fakeRoutine = BsRoutine.researchOfPrice;
   const Modules fakeModule = Modules.competingPrices;
@@ -76,6 +75,14 @@ void main() {
     offerWhole = faker.randomGenerator.decimal();
     priceECommerce = faker.randomGenerator.decimal();
     offerECommerce = faker.randomGenerator.decimal();
+    pricesMap = {
+      'PriceRetail': priceRetail,
+      'OfferRetail': offerRetail,
+      'PriceWhole': priceWhole,
+      'OfferWhole': offerWhole,
+      'PriceECommerce': priceECommerce,
+      'OfferECommerce': offerECommerce,
+    };
   });
 
   ProviderContainer makeProviderContainer({
@@ -112,12 +119,7 @@ void main() {
             concurrentCode: any(named: 'concurrentCode'),
             productPackingCode: any(named: 'productPackingCode'),
             priceLookUp: any(named: 'priceLookUp'),
-            priceRetail: any(named: 'priceRetail'),
-            offerRetail: any(named: 'offerRetail'),
-            priceWhole: any(named: 'priceWhole'),
-            offerWhole: any(named: 'offerWhole'),
-            priceECommerce: any(named: 'priceECommerce'),
-            offerECommerce: any(named: 'offerECommerce'),
+            pricesMap: any(named: 'pricesMap'),
           ),
         ).thenAnswer((_) async {});
         final spySearchProducts = SpySearchProductsStateController();
@@ -163,12 +165,7 @@ void main() {
             concurrentCode: concurrentCode,
             productPackingCode: productPackingCode,
             priceLookUp: priceLookUp,
-            priceRetail: priceRetail,
-            offerRetail: offerRetail,
-            priceWhole: priceWhole,
-            offerWhole: offerWhole,
-            priceECommerce: priceECommerce,
-            offerECommerce: offerECommerce,
+            pricesMap: pricesMap,
           ),
         ).called(1);
 
@@ -232,12 +229,7 @@ void main() {
           concurrentCode: any(named: 'concurrentCode'),
           productPackingCode: any(named: 'productPackingCode'),
           priceLookUp: any(named: 'priceLookUp'),
-          priceRetail: any(named: 'priceRetail'),
-          offerRetail: any(named: 'offerRetail'),
-          priceWhole: any(named: 'priceWhole'),
-          offerWhole: any(named: 'offerWhole'),
-          priceECommerce: any(named: 'priceECommerce'),
-          offerECommerce: any(named: 'offerECommerce'),
+          pricesMap: any(named: 'pricesMap'),
         ),
       );
     });
