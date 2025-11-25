@@ -5,9 +5,11 @@ import '../../../../core/domain/entities/entities.dart';
 class SelectedItemUIState extends Equatable {
   final int? selectedIndex;
   final SearchProductCompetingPriceType searchType;
+  final bool onlyAssociateds;
 
   const SelectedItemUIState({
     this.selectedIndex,
+    this.onlyAssociateds = true,
     this.searchType = SearchProductCompetingPriceType.all,
   });
 
@@ -18,16 +20,19 @@ class SelectedItemUIState extends Equatable {
     return const SelectedItemUIState(
       selectedIndex: null,
       searchType: SearchProductCompetingPriceType.all,
+      onlyAssociateds: true,
     );
   }
 
   SelectedItemUIState copyWith({
     int? selectedIndex,
     SearchProductCompetingPriceType? searchType,
+    bool? onlyAssociateds,
   }) {
     return SelectedItemUIState(
       selectedIndex: selectedIndex ?? this.selectedIndex,
       searchType: searchType ?? this.searchType,
+      onlyAssociateds: onlyAssociateds ?? this.onlyAssociateds,
     );
   }
 }
