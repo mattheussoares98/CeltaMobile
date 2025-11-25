@@ -60,7 +60,7 @@ void main() {
       // 2. Verify the final state value
       expect(container.read(selectedItemUIControllerProvider), updatedState);
     });
-    test('update clean the selected index when select the same', () {
+    test('clean the selected index when select the same', () {
       // ARRANGE
       final notifier = container.read(
         selectedItemUIControllerProvider.notifier,
@@ -96,6 +96,40 @@ void main() {
       expect(
         container.read(selectedItemUIControllerProvider),
         SelectedItemUIState(searchType: updatedState.searchType),
+      );
+    });
+    test('Should update correctly when both indexes are null', () {
+      // ARRANGE
+      final notifier = container.read(
+        selectedItemUIControllerProvider.notifier,
+      );
+
+      final updatedState = SelectedItemUIState(
+        selectedIndex: null,
+        searchType:
+            SearchProductCompetingPriceType.values[faker.randomGenerator
+                .integer(SearchProductCompetingPriceType.values.length)],
+        onlyAssociateds: false,
+      );
+
+      final states = <SelectedItemUIState>[];
+      // Listen to capture the state change
+      container.listen(
+        selectedItemUIControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      notifier.update(updatedState);
+
+      // ASSERT
+      // 1. Verify the state transition list
+      expect(states, [updatedState]);
+
+      // 2. Verify the final state value
+      expect(
+        container.read(selectedItemUIControllerProvider).onlyAssociateds,
+        isFalse,
       );
     });
   });

@@ -106,7 +106,7 @@ class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SearchTypeSegmentedButtons(
+                      Filters(
                         enterpriseCode: widget.enterpriseCode,
                         researchCode: widget.researchCode,
                         concurrentCode: widget.concurrentCode,
