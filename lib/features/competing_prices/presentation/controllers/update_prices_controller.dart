@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../providers/providers.dart';
 
@@ -13,6 +15,7 @@ class UpdatePricesController extends _$UpdatePricesController {
   FutureOr<void> build() {}
 
   Future<void> insertUpdate({
+    required int enterpriseCode,
     required int researchCode,
     required int concurrentCode,
     required int productPackingCode,
@@ -45,6 +48,28 @@ class UpdatePricesController extends _$UpdatePricesController {
             offerWhole: offerWhole,
             priceECommerce: priceECommerce,
             offerECommerce: offerECommerce,
+          );
+
+      ref
+          .read(
+            searchProductsStateControllerProvider(
+              enterpriseCode,
+              BsRoutine.researchOfPrice,
+              Modules.competingPrices,
+            ).notifier,
+          )
+          .updateProduct(
+            ProductEntity.empty().copyWith(
+              ConcurrentCode: concurrentCode,
+              ProductPackingCode: productPackingCode,
+              PLU: priceLookUp,
+              RetailPracticedPrice: priceRetail,
+              RetailOfferPrice: offerRetail,
+              WholePracticedPrice: priceWhole,
+              WholeOfferPrice: offerWhole,
+              ECommercePracticedPrice: priceECommerce,
+              ECommerceOfferPrice: offerECommerce,
+            ),
           );
     });
   }

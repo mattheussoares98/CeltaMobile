@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/competing_prices/data/datasource/datasource.dart';
@@ -13,6 +17,20 @@ import '../../../../mocks/mocks.dart';
 
 class MockSoapInsertUpdatePricesDatasource extends Mock
     implements ISoapInsertUpdatePricesDatasource {}
+
+class SpySearchProductsStateController extends SearchProductsStateController {
+  ProductEntity? capturedProduct;
+
+  // The build method is required by the base class
+  @override
+  Future<List<ProductEntity>> build(int a, BsRoutine b, Modules c) async => [];
+
+  // This is the method we spy on
+  @override
+  void updateProduct(ProductEntity updatedProduct) {
+    capturedProduct = updatedProduct;
+  }
+}
 
 void main() {
   late MockSoapInsertUpdatePricesDatasource mockDatasource;
@@ -29,6 +47,10 @@ void main() {
   late double offerWhole;
   late double priceECommerce;
   late double offerECommerce;
+  late int enterpriseCode;
+
+  const BsRoutine fakeRoutine = BsRoutine.researchOfPrice;
+  const Modules fakeModule = Modules.competingPrices;
 
   setUpAll(() {
     // Register nullable doubles for mocktail
@@ -46,6 +68,7 @@ void main() {
     researchCode = faker.randomGenerator.integer(100);
     concurrentCode = faker.randomGenerator.integer(100);
     productPackingCode = faker.randomGenerator.integer(100);
+    enterpriseCode = faker.randomGenerator.integer(100);
     priceLookUp = faker.lorem.word();
     priceRetail = faker.randomGenerator.decimal();
     offerRetail = faker.randomGenerator.decimal();
@@ -55,7 +78,10 @@ void main() {
     offerECommerce = faker.randomGenerator.decimal();
   });
 
-  ProviderContainer makeProviderContainer({UserSessionModel? session}) {
+  ProviderContainer makeProviderContainer({
+    UserSessionModel? session,
+    required SpySearchProductsStateController spySearchProducts,
+  }) {
     return ProviderContainer(
       overrides: [
         soapInsertUpdatePricesDatasourceProvider.overrideWithValue(
@@ -64,6 +90,11 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        searchProductsStateControllerProvider(
+          enterpriseCode,
+          fakeRoutine,
+          fakeModule,
+        ).overrideWith(() => spySearchProducts),
       ],
     );
   }
@@ -89,8 +120,12 @@ void main() {
             offerECommerce: any(named: 'offerECommerce'),
           ),
         ).thenAnswer((_) async {});
+        final spySearchProducts = SpySearchProductsStateController();
 
-        final container = makeProviderContainer(session: fakeSession);
+        final container = makeProviderContainer(
+          session: fakeSession,
+          spySearchProducts: spySearchProducts,
+        );
         addTearDown(container.dispose);
 
         final states = <AsyncValue<void>>[];
@@ -103,6 +138,7 @@ void main() {
         await container
             .read(updatePricesControllerProvider.notifier)
             .insertUpdate(
+              enterpriseCode: enterpriseCode,
               researchCode: researchCode,
               concurrentCode: concurrentCode,
               productPackingCode: productPackingCode,
@@ -135,12 +171,29 @@ void main() {
             offerECommerce: offerECommerce,
           ),
         ).called(1);
+
+        expect(spySearchProducts.capturedProduct, isNotNull);
+
+        final capturedProduct = spySearchProducts.capturedProduct!;
+        expect(capturedProduct.ProductPackingCode, productPackingCode);
+        expect(capturedProduct.ConcurrentCode, concurrentCode);
+        expect(capturedProduct.PLU, priceLookUp);
+        expect(capturedProduct.RetailPracticedPrice, priceRetail);
+        expect(capturedProduct.RetailOfferPrice, offerRetail);
+        expect(capturedProduct.WholePracticedPrice, priceWhole);
+        expect(capturedProduct.WholeOfferPrice, offerWhole);
+        expect(capturedProduct.ECommercePracticedPrice, priceECommerce);
+        expect(capturedProduct.ECommerceOfferPrice, offerECommerce);
       },
     );
 
     test('should emit [loading, error] when session is invalid', () async {
       // ARRANGE
-      final container = makeProviderContainer(session: null); // Invalid session
+      final spySearchProducts = SpySearchProductsStateController();
+      final container = makeProviderContainer(
+        session: null,
+        spySearchProducts: spySearchProducts,
+      ); // Invalid session
       addTearDown(container.dispose);
 
       final states = <AsyncValue<void>>[];
@@ -153,6 +206,7 @@ void main() {
       await container
           .read(updatePricesControllerProvider.notifier)
           .insertUpdate(
+            enterpriseCode: enterpriseCode,
             researchCode: researchCode,
             concurrentCode: concurrentCode,
             productPackingCode: productPackingCode,
