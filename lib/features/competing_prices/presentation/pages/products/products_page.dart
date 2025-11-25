@@ -142,7 +142,6 @@ class _AssociatedsPageState extends ConsumerState<ProductsPage> {
                         enterpriseCode: widget.enterpriseCode,
                         researchCode: widget.researchCode,
                         concurrentCode: widget.concurrentCode,
-                        restrictProducts: restrictProducts,
                       ),
                       SearchProductsField(
                         enterpriseCode: widget.enterpriseCode,

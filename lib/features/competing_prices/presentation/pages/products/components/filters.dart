@@ -14,13 +14,11 @@ class Filters extends ConsumerWidget {
   final int enterpriseCode;
   final int researchCode;
   final int concurrentCode;
-  final bool restrictProducts;
   const Filters({
     super.key,
     required this.enterpriseCode,
     required this.researchCode,
     required this.concurrentCode,
-    required this.restrictProducts,
   });
 
   @override
@@ -29,6 +27,16 @@ class Filters extends ConsumerWidget {
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    final restrictProducts = ref.watch(
+      researchsStateControllerProvider.select(
+        (s) =>
+            s.value
+                ?.firstWhere((e) => e.Code == researchCode)
+                .RestrictProducts ??
+            false,
+      ),
+    );
 
     return ExpansionTile(
       shape: RoundedRectangleBorder(
