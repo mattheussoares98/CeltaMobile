@@ -14,11 +14,15 @@ class ProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
   final int researchCode;
   final int concurrentCode;
+  final String? researchName;
+  final String? concurrentName;
   const ProductsPage({
     super.key,
     required this.enterpriseCode,
     required this.researchCode,
     required this.concurrentCode,
+    required this.researchName,
+    required this.concurrentName,
   });
 
   @override
@@ -95,7 +99,13 @@ class _AssociatedsPageState extends ConsumerState<ProductsPage> {
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(title: AppBarTitle(widget: widget)),
+          appBar: AppBar(
+            title: AppBarTitle(widget: widget),
+            toolbarHeight:
+                widget.researchName != null && widget.concurrentName != null
+                ? 66
+                : null,
+          ),
           body: Padding(
             padding: const EdgeInsets.all(Sizes.p8),
             child: Column(

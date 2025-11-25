@@ -41,6 +41,10 @@ class ConcurrentsItems extends ConsumerWidget {
             'researchCode': selectedResearch.Code.toString(),
             'enterpriseCode': enterpriseCode.toString(),
           },
+          extra: {
+            'researchName': selectedResearch.Name,
+            'concurrentName': concurrent.Name,
+          },
         );
       }
 

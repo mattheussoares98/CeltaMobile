@@ -24,14 +24,26 @@ class AppBarTitle extends ConsumerWidget {
         );
 
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FittedBox(
-              //TODO use researchName and concurrentCode instead
-              child: Text(
-                'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
+            if (widget.researchName == null || widget.concurrentName == null)
+              FittedBox(
+                //TODO use researchName and concurrentCode instead
+                child: Text(
+                  'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
+                ),
+              )
+            else
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.researchName!, style: theme.textTheme.titleSmall),
+                  Text(
+                    widget.concurrentName!,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                ],
               ),
-            ),
             Text(
               restrictProducts == true
                   ? 'Produtos restringidos'
