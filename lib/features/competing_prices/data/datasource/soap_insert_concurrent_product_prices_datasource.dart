@@ -1,0 +1,45 @@
+import '../../../../core/domain/contracts/contracts.dart';
+import 'datasource.dart';
+
+class SoapInsertConcurrentProductPricesDatasource
+    implements ISoapInsertConcurrentProductPricesDatasource {
+  final SoapRequest soapRequest;
+  SoapInsertConcurrentProductPricesDatasource(this.soapRequest);
+
+  @override
+  Future<void> insert({
+    required String baseUrl,
+    required String crossIdentity,
+    required int researchCode,
+    required int concurrentCode,
+    required int productPackingCode,
+    required String priceLookUp,
+    required double? priceRetail,
+    required double? offerRetail,
+    required double? priceWhole,
+    required double? offerWhole,
+    required double? priceECommerce,
+    required double? offerECommerce,
+  }) async {
+    await soapRequest.post(
+      url: baseUrl,
+      typeOfResponse: "InsertConcurrentProductResponse",
+      soapAction: "InsertConcurrentProduct",
+      serviceASMX: "CeltaResearchOfPriceService.asmx",
+      typeOfResult: null,
+      parameters: {
+        "CrossIdentity": crossIdentity,
+        "ResearchOfPriceCode": researchCode,
+        "ConcurrentCode": concurrentCode,
+        "ProductPackingCode": productPackingCode,
+        "PriceLookUp": priceLookUp,
+        "PriceRetail": priceRetail,
+        "OfferRetail": offerRetail,
+        "PriceWhole": priceWhole,
+        "OfferWhole": offerWhole,
+        "PriceECommerce": priceECommerce,
+        "OfferECommerce": offerECommerce,
+      },
+    );
+  }
+}
