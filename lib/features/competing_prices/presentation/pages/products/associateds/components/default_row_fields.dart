@@ -39,7 +39,11 @@ class DefaultRowFields extends StatelessWidget {
             onFieldSubmitted: (_) => offerFocusNode.requestFocus(),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: FormValidators.compose([
-              NumberValidator(allowDecimal: true, allowEmptyValue: true),
+              NumberValidator(
+                allowDecimal: true,
+                allowEmptyValue: true,
+                needsBeGreaterThanZero: false,
+              ),
             ]),
           ),
         ),
@@ -55,7 +59,11 @@ class DefaultRowFields extends StatelessWidget {
             maxLength: 13,
             suffixIcon: DefaultDeleteIcon(offerController, offerFocusNode),
             validator: FormValidators.compose([
-              NumberValidator(allowDecimal: true, allowEmptyValue: true),
+              NumberValidator(
+                allowDecimal: true,
+                allowEmptyValue: true,
+                needsBeGreaterThanZero: false,
+              ),
             ]),
           ),
         ),
