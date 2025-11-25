@@ -25,6 +25,7 @@ class DefaultTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final VoidCallback? onTap;
   final int? maxLines;
+  final bool? autofocus;
   const DefaultTextFormField({
     super.key,
     this.maxLength,
@@ -45,6 +46,7 @@ class DefaultTextFormField extends StatelessWidget {
     this.onTap,
     this.maxLines,
     this.obscureText = false,
+    this.autofocus = false,
   });
 
   @override
@@ -75,6 +77,7 @@ class DefaultTextFormField extends StatelessWidget {
         maxLength: maxLength,
         onChanged: onChanged,
         onTap: onTap,
+        autofocus: autofocus == true,
         buildCounter:
             (
               context, {

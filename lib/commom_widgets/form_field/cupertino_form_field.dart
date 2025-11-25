@@ -92,6 +92,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
               minLines: 1,
               maxLines: dtf.maxLines ?? 1,
               placeholder: dtf.hintText,
+              autofocus: dtf.autofocus == true,
               style: TextStyle(
                 color: isEnabled ? null : colorScheme.onSurface.withAlpha(100),
               ),
