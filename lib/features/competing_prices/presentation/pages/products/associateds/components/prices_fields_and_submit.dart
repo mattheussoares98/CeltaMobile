@@ -38,6 +38,7 @@ class _PricesFieldsAndSubmitState extends State<PricesFieldsAndSubmit> {
             offerFocusNode: widget.widget.retailOfferFocusNode,
             priceType: 'Venda',
             onSubmit: widget.widget.wholeFocusNode.requestFocus,
+            autoFocusFirstField: true,
           ),
           DefaultRowFields(
             controller: widget.widget.wholeController,

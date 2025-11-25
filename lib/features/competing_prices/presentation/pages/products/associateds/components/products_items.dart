@@ -81,25 +81,32 @@ class ProductsItems extends ConsumerWidget {
                         .update(
                           selectedItemAsync.copyWith(selectedIndex: index),
                         );
-                    retailController.text =
-                        (product.RetailPracticedPrice?.toStringAsFixed(2) ?? '')
-                            .replaceAll(RegExp(r'\.'), ',');
-                    retailOfferController.text =
-                        (product.RetailOfferPrice?.toStringAsFixed(2) ?? '')
-                            .replaceAll(RegExp(r'\.'), ',');
-                    wholeController.text =
-                        (product.WholePracticedPrice?.toStringAsFixed(2) ?? '')
-                            .replaceAll(RegExp(r'\.'), ',');
-                    wholeOfferController.text =
-                        (product.WholeOfferPrice?.toStringAsFixed(2) ?? '')
-                            .replaceAll(RegExp(r'\.'), ',');
-                    ecommerceController.text =
-                        (product.ECommercePracticedPrice?.toStringAsFixed(2) ??
-                                '')
-                            .replaceAll(RegExp(r'\.'), ',');
-                    ecommerceOfferController.text =
-                        (product.ECommerceOfferPrice?.toStringAsFixed(2) ?? '')
-                            .replaceAll(RegExp(r'\.'), ',');
+                    String getNewValue(double? price) {
+                      return price == null || price == 0
+                          ? ''
+                          : price
+                                .toStringAsFixed(2)
+                                .replaceAll(RegExp(r'\.'), ',');
+                    }
+
+                    retailController.text = getNewValue(
+                      product.RetailPracticedPrice,
+                    );
+                    retailOfferController.text = getNewValue(
+                      product.RetailOfferPrice,
+                    );
+                    wholeController.text = getNewValue(
+                      product.WholePracticedPrice,
+                    );
+                    wholeOfferController.text = getNewValue(
+                      product.WholeOfferPrice,
+                    );
+                    ecommerceController.text = getNewValue(
+                      product.ECommercePracticedPrice,
+                    );
+                    ecommerceOfferController.text = getNewValue(
+                      product.ECommerceOfferPrice,
+                    );
                   },
                   clickableBottom: AppliedPrices(product: product),
                   isSelected: ref.watch(
