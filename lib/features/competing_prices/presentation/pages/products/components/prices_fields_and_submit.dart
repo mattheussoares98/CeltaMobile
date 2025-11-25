@@ -104,7 +104,7 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
             builder: (_, _) {
               bool isValid = false;
 
-              if ((widget.widget.retailController.text.toDouble()) !=
+              if ((widget.widget.retailController.text.toDouble() ?? 0) !=
                   widget.product.RetailPracticedPrice) {
                 isValid = true;
               } else if ((widget.widget.retailOfferController.text.toDouble() ??
