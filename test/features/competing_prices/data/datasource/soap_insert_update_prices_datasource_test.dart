@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_intelligence/features/competing_prices/data/datasource/datasource.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -80,17 +82,21 @@ void main() {
         serviceASMX: "CeltaResearchOfPriceService.asmx",
         typeOfResult: null,
         parameters: {
-          "CrossIdentity": crossIdentity,
-          "ResearchOfPriceCode": researchCode,
-          "ConcurrentCode": concurrentCode,
-          "ProductPackingCode": productPackingCode,
-          "PriceLookUp": priceLookUp,
-          "PriceRetail": priceRetail,
-          "OfferRetail": offerRetail,
-          "PriceWhole": priceWhole,
-          "OfferWhole": offerWhole,
-          "PriceECommerce": priceECommerce,
-          "OfferECommerce": offerECommerce,
+          "json": [
+            json.encode({
+              "CrossIdentity": crossIdentity,
+              "ResearchOfPriceCode": researchCode,
+              "ConcurrentCode": concurrentCode,
+              "ProductPackingCode": productPackingCode,
+              "PriceLookUp": priceLookUp,
+              "PriceRetail": priceRetail,
+              "OfferRetail": offerRetail,
+              "PriceWhole": priceWhole,
+              "OfferWhole": offerWhole,
+              "PriceECommerce": priceECommerce,
+              "OfferECommerce": offerECommerce,
+            }),
+          ],
         },
       ),
     ).called(1);

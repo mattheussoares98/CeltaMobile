@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';
 
@@ -28,17 +30,21 @@ class SoapInsertUpdatePricesDatasource
       serviceASMX: "CeltaResearchOfPriceService.asmx",
       typeOfResult: null,
       parameters: {
-        "CrossIdentity": crossIdentity,
-        "ResearchOfPriceCode": researchCode,
-        "ConcurrentCode": concurrentCode,
-        "ProductPackingCode": productPackingCode,
-        "PriceLookUp": priceLookUp,
-        "PriceRetail": priceRetail,
-        "OfferRetail": offerRetail,
-        "PriceWhole": priceWhole,
-        "OfferWhole": offerWhole,
-        "PriceECommerce": priceECommerce,
-        "OfferECommerce": offerECommerce,
+        "json": [
+          json.encode({
+            "CrossIdentity": crossIdentity,
+            "ResearchOfPriceCode": researchCode,
+            "ConcurrentCode": concurrentCode,
+            "ProductPackingCode": productPackingCode,
+            "PriceLookUp": priceLookUp,
+            "PriceRetail": priceRetail,
+            "OfferRetail": offerRetail,
+            "PriceWhole": priceWhole,
+            "OfferWhole": offerWhole,
+            "PriceECommerce": priceECommerce,
+            "OfferECommerce": offerECommerce,
+          }),
+        ],
       },
     );
   }
