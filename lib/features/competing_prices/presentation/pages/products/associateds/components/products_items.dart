@@ -42,45 +42,58 @@ class ProductsItems extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedItemAsync = ref.watch(selectedItemUIControllerProvider);
 
-    return AsyncValueWidget(
-      value: ref.watch(
-        searchProductsStateControllerProvider(
-          enterpriseCode,
-          BsRoutine.researchOfPrice,
-          Modules.competingPrices,
-        ),
-      ),
-      tryAgain: null,
-      data: (products) {
-        return Expanded(
-          child: ResponsiveListFlow(
-            itemCount: products.length,
-            itemBuilder: (_, index) {
-              final product = products[index];
-
-              return ProductItemWidget(
-                product: product,
-                routine: BsRoutine.researchOfPrice,
-                showDropIcon: true,
-                notClickableBottom: selectedItemAsync.selectedIndex == index
-                    ? PricesFieldsAndSubmit(widget: this)
-                    : null,
-                onTap: () {
-                  ref
-                      .read(selectedItemUIControllerProvider.notifier)
-                      .update(selectedItemAsync.copyWith(selectedIndex: index));
-                },
-                clickableBottom: AppliedPrices(product: product),
-                isSelected: ref.watch(
-                  selectedItemUIControllerProvider.select(
-                    (s) => s.selectedIndex == index,
-                  ),
-                ),
-              );
-            },
+    return PopScope(
+      onPopInvokedWithResult: (_, _) {
+        ref.invalidate(
+          searchProductsStateControllerProvider(
+            enterpriseCode,
+            BsRoutine.researchOfPrice,
+            Modules.competingPrices,
           ),
         );
       },
+      child: AsyncValueWidget(
+        value: ref.watch(
+          searchProductsStateControllerProvider(
+            enterpriseCode,
+            BsRoutine.researchOfPrice,
+            Modules.competingPrices,
+          ),
+        ),
+        tryAgain: null,
+        data: (products) {
+          return Expanded(
+            child: ResponsiveListFlow(
+              itemCount: products.length,
+              itemBuilder: (_, index) {
+                final product = products[index];
+
+                return ProductItemWidget(
+                  product: product,
+                  routine: BsRoutine.researchOfPrice,
+                  showDropIcon: true,
+                  notClickableBottom: selectedItemAsync.selectedIndex == index
+                      ? PricesFieldsAndSubmit(widget: this)
+                      : null,
+                  onTap: () {
+                    ref
+                        .read(selectedItemUIControllerProvider.notifier)
+                        .update(
+                          selectedItemAsync.copyWith(selectedIndex: index),
+                        );
+                  },
+                  clickableBottom: AppliedPrices(product: product),
+                  isSelected: ref.watch(
+                    selectedItemUIControllerProvider.select(
+                      (s) => s.selectedIndex == index,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

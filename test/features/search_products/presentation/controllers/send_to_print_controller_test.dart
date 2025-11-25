@@ -28,8 +28,9 @@ class FakeSearchProductsStateController extends SearchProductsStateController {
   Future<List<ProductEntity>> build(
     int enterpriseCode,
     BsRoutine routine,
-    Modules module,
-  ) async => initialState;
+    Modules module, {
+    int millisecondsToKeepAlive = 20000,
+  }) async => initialState;
 
   @override
   Future<void> updateProduct(ProductEntity product) async {
