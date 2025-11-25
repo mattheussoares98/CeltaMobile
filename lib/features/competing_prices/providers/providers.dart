@@ -46,3 +46,11 @@ ISoapConcurrentsRepository soapConcurrentsRepository(Ref ref) {
     ref.watch(soapConcurrentsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInsertConcurrentProductPricesDatasource
+soapInsertConcurrentProductPricesDatasource(Ref ref) {
+  return SoapInsertConcurrentProductPricesDatasource(
+    ref.watch(soapRequestProvider),
+  );
+}
