@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../localization/string_hardcoded.dart';
 
 class AppliedPrices extends StatelessWidget {
   final ProductEntity product;

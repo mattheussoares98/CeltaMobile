@@ -1,104 +1,183 @@
-import 'package:flutter/cupertino.dart';
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../localization/string_hardcoded.dart';
-import '../../../domain/entities/entities.dart';
+import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
+import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../utils/utils.dart';
 import '../../controllers/controllers.dart';
-import 'associateds/associateds.dart';
-import 'not_associateds/not_associateds.dart';
+import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
+  final int enterpriseCode;
   final int researchCode;
   final int concurrentCode;
-  final int enterpriseCode;
   const ProductsPage({
     super.key,
+    required this.enterpriseCode,
     required this.researchCode,
     required this.concurrentCode,
-    required this.enterpriseCode,
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AssociatedsPageState();
 }
 
-class _ProductsPageState extends ConsumerState<ProductsPage> {
-  int currentIndex = 0;
-  ResearchEntity? selectedResearch;
+class _AssociatedsPageState extends ConsumerState<ProductsPage> {
+  final searchValueController = TextEditingController();
+  final retailController = TextEditingController();
+  final retailOfferController = TextEditingController();
+  final wholeController = TextEditingController();
+  final wholeOfferController = TextEditingController();
+  final ecommerceController = TextEditingController();
+  final ecommerceOfferController = TextEditingController();
+  final retailFocusNode = FocusNode();
+  final retailOfferFocusNode = FocusNode();
+  final wholeFocusNode = FocusNode();
+  final wholeOfferFocusNode = FocusNode();
+  final ecommerceFocusNode = FocusNode();
+  final ecommerceOfferFocusNode = FocusNode();
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    super.dispose();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        selectedResearch = await ref.read(
-          researchsStateControllerProvider.select(
-            (s) => s.value?.firstWhere((e) => e.Code == widget.researchCode),
-          ),
-        );
-        setState(() {});
-      }
-    });
+    searchValueController.dispose();
+    retailController.dispose();
+    retailOfferController.dispose();
+    wholeController.dispose();
+    wholeOfferController.dispose();
+    ecommerceController.dispose();
+    ecommerceOfferController.dispose();
+    retailFocusNode.dispose();
+    retailOfferFocusNode.dispose();
+    wholeFocusNode.dispose();
+    wholeOfferFocusNode.dispose();
+    ecommerceFocusNode.dispose();
+    ecommerceOfferFocusNode.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      AssociatedsPage(
-        enterpriseCode: widget.enterpriseCode,
-        researchCode: widget.researchCode,
-        concurrentCode: widget.concurrentCode,
-        restrictProducts: selectedResearch?.RestrictProducts == true,
+    ref.listen(
+      searchProductsStateControllerProvider(
+        widget.enterpriseCode,
+        BsRoutine.researchOfPrice,
+        Modules.competingPrices,
       ),
-      if (selectedResearch?.RestrictProducts == true)
-        const NotAssociatedsPage(),
-    ];
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+      (p, n) {
+        n.doOnSuccess(p, () {
+          searchValueController.clear();
+        });
+      },
+    );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FittedBox(
-              //TODO use researchName and concurrentCode instead
-              child: Text(
-                'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
-              ),
-            ),
-            Text(
-              selectedResearch?.RestrictProducts == true
-                  ? 'Produtos restringidos'
-                  : 'Produtos não restringidos',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: selectedResearch?.RestrictProducts == true
-                    ? theme.primaryColor
-                    : Colors.red,
-              ),
-            ),
-          ],
-        ),
+    ref.listen(updatePricesControllerProvider, (p, n) {
+      n.doOnSuccess(p, () {
+        final currentValue = ref.read(selectedItemUIControllerProvider);
+        ref
+            .read(selectedItemUIControllerProvider.notifier)
+            .update(
+              currentValue,
+            ); //remove the selected index when is equal the previous
+      });
+      n.showAlertDialogOnError(context);
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'Preços alterados com sucesso'.hardcoded,
+      );
+    });
+    final restrictProducts = ref.watch(
+      researchsStateControllerProvider.select(
+        (s) =>
+            s.value
+                ?.firstWhere((e) => e.Code == widget.researchCode)
+                .RestrictProducts ??
+            false,
       ),
-      body: IndexedStack(index: currentIndex, children: pages),
-      bottomNavigationBar: selectedResearch?.RestrictProducts == true
-          ? null
-          : BottomNavigationBar(
-              currentIndex: currentIndex,
-              onTap: (index) => setState(() => currentIndex = index),
-              items: [
-                BottomNavigationBarItem(
-                  label: 'Associados'.hardcoded,
-                  icon: Icon(isIOS ? CupertinoIcons.list_bullet : Icons.list),
+    );
+
+    final theme = Theme.of(context);
+
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  //TODO use researchName and concurrentCode instead
+                  child: Text(
+                    'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
+                  ),
                 ),
-                BottomNavigationBarItem(
-                  label: 'Não associados'.hardcoded,
-                  icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+                Text(
+                  restrictProducts == true
+                      ? 'Produtos restringidos'
+                      : 'Produtos não restringidos',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: restrictProducts == true
+                        ? theme.primaryColor
+                        : Colors.red,
+                  ),
                 ),
               ],
             ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              children: [
+                ResponsiveScrollableWidget(
+                  padding: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Filters(
+                        enterpriseCode: widget.enterpriseCode,
+                        researchCode: widget.researchCode,
+                        concurrentCode: widget.concurrentCode,
+                        restrictProducts: restrictProducts,
+                      ),
+                      SearchProductsField(
+                        enterpriseCode: widget.enterpriseCode,
+                        researchCode: widget.researchCode,
+                        concurrentCode: widget.concurrentCode,
+                        restrictProducts: restrictProducts,
+                        searchValueController: searchValueController,
+                      ),
+                      gapH8,
+                    ],
+                  ),
+                ),
+                ProductsItems(
+                  enterpriseCode: widget.enterpriseCode,
+                  retailController: retailController,
+                  retailOfferController: retailOfferController,
+                  wholeController: wholeController,
+                  wholeOfferController: wholeOfferController,
+                  ecommerceController: ecommerceController,
+                  ecommerceOfferController: ecommerceOfferController,
+                  retailFocusNode: retailFocusNode,
+                  retailOfferFocusNode: retailOfferFocusNode,
+                  wholeFocusNode: wholeFocusNode,
+                  wholeOfferFocusNode: wholeOfferFocusNode,
+                  ecommerceFocusNode: ecommerceFocusNode,
+                  ecommerceOfferFocusNode: ecommerceOfferFocusNode,
+                  researchCode: widget.researchCode,
+                  concurrentCode: widget.concurrentCode,
+                ),
+              ],
+            ),
+          ),
+        ),
+        LoadingPage(providers: [updatePricesControllerProvider]),
+      ],
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
-import '../../../../../../../core/validators/validators.dart';
-import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
+import '../../../../../../core/validators/validators.dart';
+import '../../../../../../localization/string_hardcoded.dart';
 import 'components.dart';
 
 class DefaultRowFields extends StatelessWidget {
