@@ -94,53 +94,58 @@ class _AssociatedsPageState extends ConsumerState<AssociatedsPage> {
       );
     });
 
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: Column(
-          children: [
-            ResponsiveScrollableWidget(
-              padding: 0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SearchTypeSegmentedButtons(
-                    enterpriseCode: widget.enterpriseCode,
-                    researchCode: widget.researchCode,
-                    concurrentCode: widget.concurrentCode,
-                    restrictProducts: widget.restrictProducts,
+    return Stack(
+      children: [
+        Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              children: [
+                ResponsiveScrollableWidget(
+                  padding: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SearchTypeSegmentedButtons(
+                        enterpriseCode: widget.enterpriseCode,
+                        researchCode: widget.researchCode,
+                        concurrentCode: widget.concurrentCode,
+                        restrictProducts: widget.restrictProducts,
+                      ),
+                      SearchProductsField(
+                        enterpriseCode: widget.enterpriseCode,
+                        researchCode: widget.researchCode,
+                        concurrentCode: widget.concurrentCode,
+                        restrictProducts: widget.restrictProducts,
+                        searchValueController: searchValueController,
+                      ),
+                      gapH8,
+                    ],
                   ),
-                  SearchProductsField(
-                    enterpriseCode: widget.enterpriseCode,
-                    researchCode: widget.researchCode,
-                    concurrentCode: widget.concurrentCode,
-                    restrictProducts: widget.restrictProducts,
-                    searchValueController: searchValueController,
-                  ),
-                  gapH8,
-                ],
-              ),
+                ),
+                ProductsItems(
+                  enterpriseCode: widget.enterpriseCode,
+                  retailController: retailController,
+                  retailOfferController: retailOfferController,
+                  wholeController: wholeController,
+                  wholeOfferController: wholeOfferController,
+                  ecommerceController: ecommerceController,
+                  ecommerceOfferController: ecommerceOfferController,
+                  retailFocusNode: retailFocusNode,
+                  retailOfferFocusNode: retailOfferFocusNode,
+                  wholeFocusNode: wholeFocusNode,
+                  wholeOfferFocusNode: wholeOfferFocusNode,
+                  ecommerceFocusNode: ecommerceFocusNode,
+                  ecommerceOfferFocusNode: ecommerceOfferFocusNode,
+                  researchCode: widget.researchCode,
+                  concurrentCode: widget.concurrentCode,
+                ),
+              ],
             ),
-            ProductsItems(
-              enterpriseCode: widget.enterpriseCode,
-              retailController: retailController,
-              retailOfferController: retailOfferController,
-              wholeController: wholeController,
-              wholeOfferController: wholeOfferController,
-              ecommerceController: ecommerceController,
-              ecommerceOfferController: ecommerceOfferController,
-              retailFocusNode: retailFocusNode,
-              retailOfferFocusNode: retailOfferFocusNode,
-              wholeFocusNode: wholeFocusNode,
-              wholeOfferFocusNode: wholeOfferFocusNode,
-              ecommerceFocusNode: ecommerceFocusNode,
-              ecommerceOfferFocusNode: ecommerceOfferFocusNode,
-              researchCode: widget.researchCode,
-              concurrentCode: widget.concurrentCode,
-            ),
-          ],
+          ),
         ),
-      ),
+        LoadingPage(providers: [updatePricesControllerProvider]),
+      ],
     );
   }
 }
