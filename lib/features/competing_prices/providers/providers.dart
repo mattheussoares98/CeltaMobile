@@ -51,10 +51,3 @@ ISoapConcurrentsRepository soapConcurrentsRepository(Ref ref) {
 ISoapInsertUpdatePricesDatasource soapInsertUpdatePricesDatasource(Ref ref) {
   return SoapInsertUpdatePricesDatasource(ref.watch(soapRequestProvider));
 }
-
-@riverpod
-ISoapInsertUpdatePricesRepository soapInsertUpdatePricesRepository(Ref ref) {
-  return SoapInsertUpdatePricesRepositoryImpl(
-    ref.watch(soapInsertUpdatePricesDatasourceProvider),
-  );
-}

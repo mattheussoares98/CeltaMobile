@@ -16,7 +16,12 @@ class SoapInsertUpdatePricesDatasource
     required int concurrentCode,
     required int productPackingCode,
     required String priceLookUp,
-    required Map<String, double> pricesMap,
+    required double priceRetail,
+    required double offerRetail,
+    required double priceWhole,
+    required double offerWhole,
+    required double priceECommerce,
+    required double offerECommerce,
   }) async {
     await soapRequest.post(
       url: baseUrl,
@@ -26,15 +31,19 @@ class SoapInsertUpdatePricesDatasource
       typeOfResult: null,
       parameters: {
         "json": [
-          json.encode(
-            {
-              "CrossIdentity": crossIdentity,
-              "ResearchOfPriceCode": researchCode,
-              "ConcurrentCode": concurrentCode,
-              "ProductPackingCode": productPackingCode,
-              "PriceLookUp": priceLookUp,
-            }..addAll(pricesMap),
-          ),
+          json.encode({
+            "CrossIdentity": crossIdentity,
+            "ResearchOfPriceCode": researchCode,
+            "ConcurrentCode": concurrentCode,
+            "ProductPackingCode": productPackingCode,
+            "PriceLookUp": priceLookUp,
+            "PriceRetail": priceRetail,
+            "OfferRetail": offerRetail,
+            "PriceWhole": priceWhole,
+            "OfferWhole": offerWhole,
+            "PriceECommerce": priceECommerce,
+            "OfferECommerce": offerECommerce,
+          }),
         ],
       },
     );

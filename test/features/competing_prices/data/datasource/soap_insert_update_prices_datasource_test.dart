@@ -18,12 +18,12 @@ void main() {
   late int concurrentCode;
   late int productPackingCode;
   late String priceLookUp;
-  late double? priceRetail;
-  late double? offerRetail;
-  late double? priceWhole;
-  late double? offerWhole;
-  late double? priceECommerce;
-  late double? offerECommerce;
+  late double priceRetail;
+  late double offerRetail;
+  late double priceWhole;
+  late double offerWhole;
+  late double priceECommerce;
+  late double offerECommerce;
 
   void initSut() {
     sut = SoapInsertUpdatePricesDatasource(soapRequest);
@@ -66,14 +66,12 @@ void main() {
       concurrentCode: concurrentCode,
       productPackingCode: productPackingCode,
       priceLookUp: priceLookUp,
-      pricesMap: {
-        'PriceRetail': priceRetail!,
-        'OfferRetail': offerRetail!,
-        'PriceWhole': priceWhole!,
-        'OfferWhole': offerWhole!,
-        'PriceECommerce': priceECommerce!,
-        'OfferECommerce': offerECommerce!,
-      },
+      priceRetail: priceRetail,
+      offerRetail: offerRetail,
+      priceWhole: priceWhole,
+      offerWhole: offerWhole,
+      priceECommerce: priceECommerce,
+      offerECommerce: offerECommerce,
     );
 
     verify(

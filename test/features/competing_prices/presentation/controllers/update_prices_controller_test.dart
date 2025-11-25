@@ -44,7 +44,6 @@ void main() {
   late double priceECommerce;
   late double offerECommerce;
   late int enterpriseCode;
-  late Map<String, double> pricesMap;
   late ProductEntity product;
 
   const BsRoutine fakeRoutine = BsRoutine.researchOfPrice;
@@ -72,14 +71,6 @@ void main() {
     offerWhole = faker.randomGenerator.decimal();
     priceECommerce = faker.randomGenerator.decimal();
     offerECommerce = faker.randomGenerator.decimal();
-    pricesMap = {
-      'PriceRetail': priceRetail,
-      'OfferRetail': offerRetail,
-      'PriceWhole': priceWhole,
-      'OfferWhole': offerWhole,
-      'PriceECommerce': priceECommerce,
-      'OfferECommerce': offerECommerce,
-    };
     product = EntityFactory.makeProductEntity(enterpriseCode: enterpriseCode);
   });
 
@@ -117,7 +108,12 @@ void main() {
             concurrentCode: any(named: 'concurrentCode'),
             productPackingCode: any(named: 'productPackingCode'),
             priceLookUp: any(named: 'priceLookUp'),
-            pricesMap: any(named: 'pricesMap'),
+            priceRetail: any(named: 'priceRetail'),
+            offerRetail: any(named: 'offerRetail'),
+            priceWhole: any(named: 'priceWhole'),
+            offerWhole: any(named: 'offerWhole'),
+            priceECommerce: any(named: 'priceECommerce'),
+            offerECommerce: any(named: 'offerECommerce'),
           ),
         ).thenAnswer((_) async {});
         final spySearchProducts = SpySearchProductsStateController();
@@ -156,13 +152,18 @@ void main() {
         // Verify datasource call
         verify(
           () => mockDatasource.insert(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
-            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            researchCode: researchCode,
-            concurrentCode: concurrentCode,
-            productPackingCode: product.ProductPackingCode!,
-            priceLookUp: product.PLU!,
-            pricesMap: pricesMap,
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            researchCode: any(named: 'researchCode'),
+            concurrentCode: any(named: 'concurrentCode'),
+            productPackingCode: any(named: 'productPackingCode'),
+            priceLookUp: any(named: 'priceLookUp'),
+            priceRetail: any(named: 'priceRetail'),
+            offerRetail: any(named: 'offerRetail'),
+            priceWhole: any(named: 'priceWhole'),
+            offerWhole: any(named: 'offerWhole'),
+            priceECommerce: any(named: 'priceECommerce'),
+            offerECommerce: any(named: 'offerECommerce'),
           ),
         ).called(1);
 
@@ -226,7 +227,12 @@ void main() {
           concurrentCode: any(named: 'concurrentCode'),
           productPackingCode: any(named: 'productPackingCode'),
           priceLookUp: any(named: 'priceLookUp'),
-          pricesMap: any(named: 'pricesMap'),
+          priceRetail: any(named: 'priceRetail'),
+          offerRetail: any(named: 'offerRetail'),
+          priceWhole: any(named: 'priceWhole'),
+          offerWhole: any(named: 'offerWhole'),
+          priceECommerce: any(named: 'priceECommerce'),
+          offerECommerce: any(named: 'offerECommerce'),
         ),
       );
     });

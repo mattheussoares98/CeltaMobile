@@ -6,6 +6,11 @@ abstract class ISoapInsertUpdatePricesDatasource {
     required int concurrentCode,
     required int productPackingCode,
     required String priceLookUp,
-    required Map<String, double> pricesMap,
+    required double priceRetail,
+    required double offerRetail,
+    required double priceWhole,
+    required double offerWhole,
+    required double priceECommerce,
+    required double offerECommerce,
   });
 }
