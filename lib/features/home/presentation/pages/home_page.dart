@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../core/providers/enterprise/enterprise.dart';
 import '../../../../utils/utils.dart';
@@ -37,9 +38,21 @@ class HomePage extends ConsumerWidget {
         ),
       ),
 
-      body: enterprisesAsync.isLoading
-          ? const Center(child: LoadingWidget())
-          : const ModulesWidget(),
+      body: enterprisesAsync.hasValue
+          ? AsyncValueWidget(
+              value: ref.watch(
+                enabledModulesByEnterpriseNameStateControllerProvider(
+                  selectedEnterpriseStateControllerProvider.name!,
+                ),
+              ),
+              tryAgain: () => ref.invalidate(
+                enabledModulesByEnterpriseNameStateControllerProvider(
+                  selectedEnterpriseStateControllerProvider.name!,
+                ),
+              ),
+              data: (_) => const ModulesWidget(),
+            )
+          : null,
     );
   }
 }

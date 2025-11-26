@@ -13,29 +13,10 @@ part 'enterprises_state_controller.g.dart';
 class EnterprisesStateController extends _$EnterprisesStateController {
   @override
   Future<List<EnterpriseEntity>> build({int? enterpriseCode}) async {
-    //TODO continue this change that removes the module
-    // Timer? timer;
-    // final link = ref.keepAlive();
-    // ref.onCancel(() {
-    //   timer = Timer(const Duration(seconds: 10), () {
-    //     link.close();
-    //   });
-    // });
-    // ref.onResume(() {
-    //   timer?.cancel();
-    // });
-    // ref.onDispose(() {
-    //   timer?.cancel();
-    // });
+    final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
-    final sessionAsync = ref.watch(validatedUserSessionProvider);
-
-    if (sessionAsync.isLoading) {
-      return [];
-    }
-
-    final baseUrl = sessionAsync.value!.enterprise!.baseUrl!;
-    final crossIdentity = sessionAsync.value!.user.CrossIdentity_Usuario!;
+    final baseUrl = validatedUser!.enterprise!.baseUrl!;
+    final crossIdentity = validatedUser.user.CrossIdentity_Usuario!;
 
     final enterprises = await ref
         .watch(enterpriseRepositoryProvider)
