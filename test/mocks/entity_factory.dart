@@ -7,6 +7,7 @@ import 'package:celta_intelligence/features/customer_register/domain/entities/en
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/reports/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
@@ -717,4 +718,24 @@ class EntityFactory {
     Observation: faker.lorem.sentence(),
     Address: makeAddressEntity(),
   );
+
+  static ReportScheduleEntity makeReportScheduleEntity() =>
+      ReportScheduleEntity(
+        Name: faker.lorem.word(),
+        Type: faker.lorem.word(),
+        CategoryName: faker.lorem.word(),
+        SubCategoryName: faker.lorem.word(),
+        ReportName: faker.lorem.word(),
+        ReportModelName: faker.lorem.word(),
+        IsExecuting: faker.randomGenerator.boolean(),
+        ExecutionStatus: faker.randomGenerator.boolean(),
+        LastExecutionContainsData: faker.randomGenerator.boolean(),
+        Code: faker.randomGenerator.integer(100),
+        CategoryCode: faker.randomGenerator.integer(100),
+        SubCategoryCode: faker.randomGenerator.integer(100),
+        ReportCode: faker.randomGenerator.integer(100),
+        ReportModelCode: faker.randomGenerator.integer(100),
+        LastExecutionDate: faker.date.dateTime(),
+        LastExecutionStartDateTime: faker.date.dateTime(),
+      );
 }

@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/entities.dart';
 
-class ReportScheduleModel {
+class ReportScheduleModel extends Equatable {
   final String Name;
   final String Type;
   final String CategoryName;
@@ -18,7 +20,7 @@ class ReportScheduleModel {
   final DateTime? LastExecutionDate;
   final DateTime? LastExecutionStartDateTime;
 
-  ReportScheduleModel({
+  const ReportScheduleModel({
     required this.Name,
     required this.Type,
     required this.CategoryName,
@@ -122,4 +124,24 @@ class ReportScheduleModel {
       LastExecutionDate: LastExecutionDate,
     );
   }
+
+  @override
+  List<Object?> get props => [
+    Name,
+    Type,
+    CategoryName,
+    SubCategoryName,
+    ReportName,
+    ReportModelName,
+    IsExecuting,
+    ExecutionStatus,
+    LastExecutionContainsData,
+    Code,
+    CategoryCode,
+    SubCategoryCode,
+    ReportCode,
+    ReportModelCode,
+    LastExecutionDate,
+    LastExecutionStartDateTime,
+  ];
 }

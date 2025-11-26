@@ -1,4 +1,6 @@
-class ReportScheduleEntity {
+import 'package:equatable/equatable.dart';
+
+class ReportScheduleEntity extends Equatable {
   final String Name;
   final String Type;
   final String CategoryName;
@@ -16,7 +18,7 @@ class ReportScheduleEntity {
   final DateTime? LastExecutionDate;
   final DateTime? LastExecutionStartDateTime;
 
-  ReportScheduleEntity({
+  const ReportScheduleEntity({
     required this.Name,
     required this.Type,
     required this.CategoryName,
@@ -34,4 +36,24 @@ class ReportScheduleEntity {
     required this.LastExecutionDate,
     required this.LastExecutionStartDateTime,
   });
+
+  @override
+  List<Object?> get props => [
+    Name,
+    Type,
+    CategoryName,
+    SubCategoryName,
+    ReportName,
+    ReportModelName,
+    IsExecuting,
+    ExecutionStatus,
+    LastExecutionContainsData,
+    Code,
+    CategoryCode,
+    SubCategoryCode,
+    ReportCode,
+    ReportModelCode,
+    LastExecutionDate,
+    LastExecutionStartDateTime,
+  ];
 }
