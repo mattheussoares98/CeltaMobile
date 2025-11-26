@@ -54,7 +54,7 @@ class ReportScheduleModel extends Equatable {
       ReportModelName: json["ReportModelName"],
       ExecutionStatus: json["ExecutionStatus"],
       IsExecuting: json["IsExecuting"],
-      LastExecutionContainsData: json["LastExecutionContainsData"],
+      LastExecutionContainsData: json["LastExecutionContainsData"] == true,
       LastExecutionStartDateTime: json["LastExecutionStartDateTime"] != null
           ? DateTime.parse(json["LastExecutionStartDateTime"])
           : null,
