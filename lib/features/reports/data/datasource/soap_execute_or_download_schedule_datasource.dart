@@ -11,7 +11,7 @@ class SoapExecuteOrDownloadScheduleDatasource
   SoapExecuteOrDownloadScheduleDatasource(this.soapRequest);
 
   @override
-  Future<List<ReportScheduleExecutionsModel>> executeOrDownloadSchedule({
+  Future<List<ScheduleExecutionsModel>> executeOrDownloadSchedule({
     required String baseUrl,
     required String crossIdentity,
     required int reportScheduleCode,
@@ -41,7 +41,7 @@ class SoapExecuteOrDownloadScheduleDatasource
     );
 
     return (json.decode(response) as List)
-        .map((e) => ReportScheduleExecutionsModel.fromJson(e))
+        .map((e) => ScheduleExecutionsModel.fromJson(e))
         .toList();
   }
 }

@@ -9,7 +9,7 @@ import '../../../../mocks/mocks.dart';
 
 class SoapExecuteOrDownloadScheduleDatasourceSpy extends Mock
     implements ISoapExecuteOrDownloadScheduleDatasource {
-  void mockLoad(List<ReportScheduleExecutionsModel> response) => when(
+  void mockLoad(List<ScheduleExecutionsModel> response) => when(
     () => this.executeOrDownloadSchedule(
       baseUrl: any(named: 'baseUrl'),
       crossIdentity: any(named: 'crossIdentity'),
@@ -27,11 +27,12 @@ void main() {
 
   late String baseUrl;
   late String crossIdentity;
-  late List<ReportScheduleExecutionsModel> reportScheduleExecutionsModels;
+  late List<ScheduleExecutionsModel> reportScheduleExecutionsModels;
   late int reportScheduleCode;
   late bool execute;
   late bool sendEmailOnExecution;
-  late DownloadParams downloadParams;
+  late bool downloadPdf;
+  late bool downloadXlsx;
 
   setUp(() {
     mockDatasource = SoapExecuteOrDownloadScheduleDatasourceSpy();
@@ -41,18 +42,15 @@ void main() {
       EntityFactory.makeReportScheduleExecutionsEntity(),
       EntityFactory.makeReportScheduleExecutionsEntity(),
       EntityFactory.makeReportScheduleExecutionsEntity(),
-    ].map((e) => ReportScheduleExecutionsModel.fromEntity(e)).toList();
+    ].map((e) => ScheduleExecutionsModel.fromEntity(e)).toList();
 
     baseUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     reportScheduleCode = faker.randomGenerator.integer(100);
     execute = faker.randomGenerator.boolean();
     sendEmailOnExecution = faker.randomGenerator.boolean();
-    downloadParams = DownloadParams(
-      DownloadLastExecution: faker.randomGenerator.boolean(),
-      DownloadPdf: faker.randomGenerator.boolean(),
-      DownloadXlsx: faker.randomGenerator.boolean(),
-    );
+    downloadPdf = faker.randomGenerator.boolean();
+    downloadXlsx = faker.randomGenerator.boolean();
 
     mockDatasource.mockLoad(reportScheduleExecutionsModels);
   });
@@ -74,7 +72,8 @@ void main() {
       reportScheduleCode: reportScheduleCode,
       execute: execute,
       sendEmailOnExecution: sendEmailOnExecution,
-      downloadParams: downloadParams,
+      downloadPdf: downloadPdf,
+      downloadXlsx: downloadXlsx,
     );
 
     expect(
@@ -90,10 +89,9 @@ void main() {
         execute: execute,
         sendEmailOnExecution: sendEmailOnExecution,
         downloadParams: DownloadParams(
-          DownloadLastExecution:
-              downloadParams.DownloadPdf || downloadParams.DownloadXlsx,
-          DownloadPdf: downloadParams.DownloadPdf,
-          DownloadXlsx: downloadParams.DownloadXlsx,
+          DownloadLastExecution: downloadPdf || downloadXlsx,
+          DownloadPdf: downloadPdf,
+          DownloadXlsx: downloadXlsx,
         ),
       ),
     ).called(1);

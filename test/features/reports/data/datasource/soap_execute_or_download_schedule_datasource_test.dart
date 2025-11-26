@@ -20,7 +20,7 @@ void main() {
   late bool sendEmailOnExecution;
   late DownloadParams downloadParams;
 
-  late List<ReportScheduleExecutionsModel> reportScheduleExecutionsModels;
+  late List<ScheduleExecutionsModel> reportScheduleExecutionsModels;
 
   void initSut() {
     sut = SoapExecuteOrDownloadScheduleDatasource(soapRequest);
@@ -53,7 +53,7 @@ void main() {
       EntityFactory.makeReportScheduleExecutionsEntity(),
       EntityFactory.makeReportScheduleExecutionsEntity(),
       EntityFactory.makeReportScheduleExecutionsEntity(),
-    ].map((e) => ReportScheduleExecutionsModel.fromEntity(e)).toList();
+    ].map((e) => ScheduleExecutionsModel.fromEntity(e)).toList();
   }
 
   setUp(() {

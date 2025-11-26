@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../models/models.dart';
 
 abstract class ISoapExecuteOrDownloadScheduleDatasource {
-  Future<List<ReportScheduleExecutionsModel>> executeOrDownloadSchedule({
+  Future<List<ScheduleExecutionsModel>> executeOrDownloadSchedule({
     required String baseUrl,
     required String crossIdentity,
     required int reportScheduleCode,

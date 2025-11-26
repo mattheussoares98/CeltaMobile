@@ -8,13 +8,14 @@ class SoapExecuteOrDownloadScheduleRepositoryImpl
   SoapExecuteOrDownloadScheduleRepositoryImpl(this.datasource);
 
   @override
-  Future<List<ReportScheduleExecutionsEntity>> executeOrDownloadSchedule({
+  Future<List<ScheduleExecutionsEntity>> executeOrDownloadSchedule({
     required String baseUrl,
     required String crossIdentity,
     required int reportScheduleCode,
     required bool execute,
     required bool sendEmailOnExecution,
-    required DownloadParams downloadParams,
+    required bool downloadPdf,
+    required bool downloadXlsx,
   }) async {
     final response = await datasource.executeOrDownloadSchedule(
       baseUrl: baseUrl,
@@ -23,10 +24,9 @@ class SoapExecuteOrDownloadScheduleRepositoryImpl
       execute: execute,
       sendEmailOnExecution: sendEmailOnExecution,
       downloadParams: DownloadParams(
-        DownloadLastExecution:
-            downloadParams.DownloadPdf || downloadParams.DownloadXlsx,
-        DownloadPdf: downloadParams.DownloadPdf,
-        DownloadXlsx: downloadParams.DownloadXlsx,
+        DownloadLastExecution: downloadPdf || downloadXlsx,
+        DownloadPdf: downloadPdf,
+        DownloadXlsx: downloadXlsx,
       ),
     );
 
