@@ -73,9 +73,9 @@ void main() {
       addTearDown(container.dispose);
 
       final result = await container.read(
-        schedulesStateControllerProvider.future,
+        schedulesStateControllerProvider(fakeReportScheduleCode).future,
       );
-      expect(result, isEmpty);
+      expect(result, isNull);
     });
 
     group('execute', () {
@@ -105,22 +105,25 @@ void main() {
           addTearDown(container.dispose);
 
           // Wait for initial build
-          await container.read(schedulesStateControllerProvider.future);
+          await container.read(
+            schedulesStateControllerProvider(fakeReportScheduleCode).future,
+          );
 
           // FIX: Initialize states list and attach listener
-          final states = <AsyncValue<Map<int, ScheduleExecutionsEntity>>?>[];
+          final states = <AsyncValue<ScheduleExecutionsEntity?>>[];
           container.listen(
-            schedulesStateControllerProvider,
+            schedulesStateControllerProvider(fakeReportScheduleCode),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(schedulesStateControllerProvider.notifier)
-              .execute(
-                reportScheduleCode: fakeReportScheduleCode,
-                sendEmailOnExecution: true,
-              );
+              .read(
+                schedulesStateControllerProvider(
+                  fakeReportScheduleCode,
+                ).notifier,
+              )
+              .execute(sendEmailOnExecution: true);
 
           // ASSERT
           // 1. Verify state changes (Initial Data -> Loading -> Data)
@@ -166,23 +169,25 @@ void main() {
             enterprise: fakeEnterprise,
           );
           addTearDown(container.dispose);
-          await container.read(schedulesStateControllerProvider.future);
+          await container.read(
+            schedulesStateControllerProvider(fakeReportScheduleCode).future,
+          );
 
           // FIX: Initialize states list and attach listener
-          final states = <AsyncValue<Map<int, ScheduleExecutionsEntity>>?>[];
+          final states = <AsyncValue<ScheduleExecutionsEntity?>>[];
           container.listen(
-            schedulesStateControllerProvider,
+            schedulesStateControllerProvider(fakeReportScheduleCode),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(schedulesStateControllerProvider.notifier)
-              .download(
-                reportScheduleCode: fakeReportScheduleCode,
-                downloadPdf: true,
-                downloadXlsx: false,
-              );
+              .read(
+                schedulesStateControllerProvider(
+                  fakeReportScheduleCode,
+                ).notifier,
+              )
+              .download(downloadPdf: true, downloadXlsx: false);
 
           // ASSERT
           // 1. Verify state transitions
@@ -203,13 +208,9 @@ void main() {
 
           // 3. Verify state update: Map should contain the new entity
           final finalState = container
-              .read(schedulesStateControllerProvider)
+              .read(schedulesStateControllerProvider(fakeReportScheduleCode))
               .value;
-          expect(finalState, isA<Map>());
-          expect(
-            finalState,
-            containsPair(fakeReportScheduleCode, fakeExecutionResult),
-          );
+          expect(finalState, fakeExecutionResult);
         },
       );
 
@@ -222,23 +223,23 @@ void main() {
         addTearDown(container.dispose);
 
         // Wait for initial build
-        await container.read(schedulesStateControllerProvider.future);
+        await container.read(
+          schedulesStateControllerProvider(fakeReportScheduleCode).future,
+        );
 
         // FIX: Initialize states list and attach listener
-        final states = <AsyncValue<Map<int, ScheduleExecutionsEntity>>?>[];
+        final states = <AsyncValue<ScheduleExecutionsEntity?>>[];
         container.listen(
-          schedulesStateControllerProvider,
+          schedulesStateControllerProvider(fakeReportScheduleCode),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(schedulesStateControllerProvider.notifier)
-            .download(
-              reportScheduleCode: fakeReportScheduleCode,
-              downloadPdf: true,
-              downloadXlsx: false,
-            );
+            .read(
+              schedulesStateControllerProvider(fakeReportScheduleCode).notifier,
+            )
+            .download(downloadPdf: true, downloadXlsx: false);
 
         // ASSERT
 

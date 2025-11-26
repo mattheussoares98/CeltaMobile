@@ -9,14 +9,11 @@ part 'schedules_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class SchedulesStateController extends _$SchedulesStateController {
   @override
-  FutureOr<Map<int, ScheduleExecutionsEntity>> build() async {
-    return {};
+  FutureOr<ScheduleExecutionsEntity?> build(int reportScheduleCode) {
+    return null;
   }
 
-  Future<void> execute({
-    required int reportScheduleCode,
-    required bool sendEmailOnExecution,
-  }) async {
+  Future<void> execute({required bool sendEmailOnExecution}) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
@@ -36,12 +33,11 @@ class SchedulesStateController extends _$SchedulesStateController {
 
       //TODO update the last execution date in reports
 
-      return state.value ?? {};
+      return state.value;
     });
   }
 
   Future<void> download({
-    required int reportScheduleCode,
     required bool downloadPdf,
     required bool downloadXlsx,
   }) async {
@@ -61,12 +57,8 @@ class SchedulesStateController extends _$SchedulesStateController {
             downloadPdf: downloadPdf,
             downloadXlsx: downloadXlsx,
           );
-      final newState = state.value ?? {};
-      newState.putIfAbsent(reportScheduleCode, () {
-        return response.first;
-      });
 
-      return newState;
+      return response.first;
     });
   }
 }
