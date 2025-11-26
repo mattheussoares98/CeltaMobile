@@ -1,31 +1,41 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:riverpod/riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/enterprises/enterprises.dart';
+import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../../routing/routing.dart';
+import '../../../../enterprises/presentation/controllers/controllers.dart';
 
-class DefaultModuleButton extends StatelessWidget {
-  final EnterpriseEntity? selectedEnterprise;
+class DefaultModuleButton extends ConsumerWidget {
   final Routes route;
   final Modules module;
-  final AsyncValue<List<EnabledModulesByCnpjEntity>>
-  enabledModulesByEnterpriseAsync;
   final bool passEnterpriseToNextRoute;
 
   const DefaultModuleButton({
     super.key,
-    required this.selectedEnterprise,
     required this.route,
-    required this.enabledModulesByEnterpriseAsync,
     required this.module,
     this.passEnterpriseToNextRoute = true,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedEnterprise = ref.watch(
+      selectedEnterpriseStateControllerProvider,
+    );
+
+    final enterpriseName = ref.watch(
+      validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
+    );
+
+    final enabledModulesByEnterpriseAsync = ref.watch(
+      enabledModulesByEnterpriseNameStateControllerProvider(enterpriseName),
+    );
+
     void showDisabledModuleMessage() {
       showAlertDialog(
         context: context,
@@ -43,7 +53,7 @@ class DefaultModuleButton extends StatelessWidget {
           : () {
               final enterpriseIndex = enabledModulesByEnterpriseAsync.value
                   ?.indexWhere(
-                    (e) => e.cnpjNumber == selectedEnterprise!.CnpjNumber,
+                    (e) => e.cnpjNumber == selectedEnterprise.CnpjNumber,
                   );
               if (enterpriseIndex == null || enterpriseIndex == -1) {
                 showDisabledModuleMessage();
@@ -64,7 +74,7 @@ class DefaultModuleButton extends StatelessWidget {
               context.goNamed(
                 route.name,
                 pathParameters: passEnterpriseToNextRoute
-                    ? {'enterpriseCode': selectedEnterprise!.Code.toString()}
+                    ? {'enterpriseCode': selectedEnterprise.Code.toString()}
                     : {},
               );
             },
