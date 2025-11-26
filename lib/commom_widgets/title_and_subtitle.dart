@@ -38,7 +38,7 @@ class TitleAndSubTitle extends StatelessWidget {
     String? getSubtitleText() {
       if (subTitle == null && emptyMessage != null) {
         return emptyMessage!;
-      } else if (subTitle == null) {
+      } else if (subTitle == null || subTitle!.isEmpty) {
         return null;
       } else if (subTitleIsNumber) {
         return subTitle.toString().toBrazilianNumber();
@@ -60,6 +60,8 @@ class TitleAndSubTitle extends StatelessWidget {
 
     final subtitleColor = getSubtitleColor();
     final subtitleText = getSubtitleText();
+
+    if (title == null && subtitleText == null) return const SizedBox.shrink();
 
     return RichText(
       textHeightBehavior: const TextHeightBehavior(
