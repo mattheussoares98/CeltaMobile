@@ -23,8 +23,9 @@ String parseErrorMessage(Object? error) {
 
   final lowerMessage = message.toLowerCase();
 
-  if (lowerMessage.contains('timed out') ||
-      lowerMessage.contains('failed host')) {
+  if (lowerMessage.contains('timed out') || lowerMessage.contains('timeout')) {
+    return 'Tempo limite atingido. Por favor, tente novamente.'.hardcoded;
+  } else if (lowerMessage.contains('failed host')) {
     return 'Erro de conexão. Verifique a sua internet.'.hardcoded;
   } else if (lowerMessage.contains('invalid login credentials')) {
     return 'Credenciais de login inválidas. Por favor, verifique seu e-mail e senha.'
