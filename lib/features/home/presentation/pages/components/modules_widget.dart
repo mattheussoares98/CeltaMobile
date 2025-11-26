@@ -68,6 +68,11 @@ class ModulesWidget extends ConsumerWidget {
         route: Routes.competingPricesResearchs,
         module: Modules.competingPrices,
       ),
+      const DefaultModuleButton(
+        route: Routes.reports,
+        module: Modules.reports,
+        passEnterpriseToNextRoute: false,
+      ),
     ];
 
     buttons.sort((a, b) => a.route.module.compareTo(b.route.module));
