@@ -1,0 +1,47 @@
+import 'dart:convert';
+
+import 'package:celta_intelligence/features/reports/data/models/schedule_executions_model.dart';
+
+import '../../../../core/domain/contracts/contracts.dart';
+import 'datasource.dart';
+
+class SoapExecuteOrDownloadScheduleDatasource
+    implements ISoapExecuteOrDownloadScheduleDatasource {
+  final SoapRequest soapRequest;
+  SoapExecuteOrDownloadScheduleDatasource(this.soapRequest);
+
+  @override
+  Future<List<ReportScheduleExecutionsModel>> executeOrDownloadSchedule({
+    required String baseUrl,
+    required String crossIdentity,
+    required int reportScheduleCode,
+    required bool execute,
+    required bool sendEmailOnExecution,
+    required DownloadParams downloadParams,
+  }) async {
+    final response = await soapRequest.post(
+      url: baseUrl,
+      typeOfResponse: "GetReportScheduleExecutionsResponse",
+      soapAction: "GetReportScheduleExecutions",
+      serviceASMX: "CeltaReportService.asmx",
+      typeOfResult: "GetReportScheduleExecutionsResult",
+      parameters: {
+        "json": json.encode({
+          "CrossIdentity": crossIdentity,
+          "ReportScheduleCode": [reportScheduleCode],
+          "Execute": execute,
+          "SendEmailOnExecution": sendEmailOnExecution,
+          "Download": {
+            "DownloadLastExecution": downloadParams.DownloadLastExecution,
+            "Pdf": downloadParams.DownloadPdf,
+            "Xlsx": downloadParams.DownloadXlsx,
+          },
+        }),
+      },
+    );
+
+    return (json.decode(response) as List)
+        .map((e) => ReportScheduleExecutionsModel.fromJson(e))
+        .toList();
+  }
+}

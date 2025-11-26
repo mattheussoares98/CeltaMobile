@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
@@ -738,4 +740,30 @@ class EntityFactory {
         LastExecutionDate: faker.date.dateTime(),
         LastExecutionStartDateTime: faker.date.dateTime(),
       );
+
+  static ReportScheduleExecutionsEntity makeReportScheduleExecutionsEntity() =>
+      ReportScheduleExecutionsEntity(
+        ReportScheduleCode: faker.randomGenerator.integer(100),
+        LastExecutionStatus: faker.lorem.word(),
+        Executions: [
+          makeExecutionsEntity(),
+          makeExecutionsEntity(),
+          makeExecutionsEntity(),
+        ],
+      );
+
+  static ExecutionsEntity makeExecutionsEntity() => ExecutionsEntity(
+    ExecutionDate: faker.date.dateTime(),
+    Attachments: [
+      makeAttachmentsEntity(),
+      makeAttachmentsEntity(),
+      makeAttachmentsEntity(),
+    ],
+    ContainsData: faker.randomGenerator.boolean(),
+  );
+
+  static AttachmentsEntity makeAttachmentsEntity() => AttachmentsEntity(
+    FileExtension: faker.lorem.word(),
+    AttachmentBase64: Uint8List(faker.randomGenerator.integer(100)),
+  );
 }
