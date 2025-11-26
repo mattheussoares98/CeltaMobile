@@ -13,37 +13,46 @@ class DownloadButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    final scheduleAsync = ref.watch(
-      schedulesStateControllerProvider(report.Code),
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        PrimaryTextButton(
-          text: 'Baixar PDF',
-          isLoading: scheduleAsync.isLoading,
-          icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
-          onPressed: () {
-            ref
-                .read(schedulesStateControllerProvider(report.Code).notifier)
-                .download(downloadPdf: true, downloadXlsx: false);
-          },
-        ),
+        _DefaultButton(DownloadType.pdf, report),
         gapH8,
-        PrimaryTextButton(
-          text: 'Baixar planilha',
-          isLoading: scheduleAsync.isLoading,
-          icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
-          onPressed: () {
-            ref
-                .read(schedulesStateControllerProvider(report.Code).notifier)
-                .download(downloadPdf: false, downloadXlsx: true);
-          },
-        ),
+        _DefaultButton(DownloadType.xlsx, report),
       ],
+    );
+  }
+}
+
+class _DefaultButton extends ConsumerWidget {
+  final DownloadType downloadType;
+  final ReportScheduleEntity report;
+  const _DefaultButton(this.downloadType, this.report);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    return PrimaryTextButton(
+      text: downloadType == DownloadType.pdf ? 'Baixar PDF' : 'Baixar planilha',
+      isLoading: ref.watch(
+        downloadStateControllerProvider(
+          report.Code,
+          downloadType,
+        ).select((s) => s.isLoading),
+      ),
+      icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
+      onPressed: () {
+        ref
+            .read(
+              downloadStateControllerProvider(
+                report.Code,
+                downloadType,
+              ).notifier,
+            )
+            .download();
+      },
     );
   }
 }

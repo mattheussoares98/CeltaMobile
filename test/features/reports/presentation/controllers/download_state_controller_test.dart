@@ -23,8 +23,8 @@ void main() {
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
   late ScheduleExecutionsEntity fakeExecutionResult;
-
   late int fakeReportScheduleCode;
+  late DownloadType downloadType;
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeScheduleExecutionsEntity());
@@ -43,6 +43,14 @@ void main() {
     fakeExecutionResult = EntityFactory.makeScheduleExecutionsEntity(
       reportScheduleCode: fakeReportScheduleCode,
     );
+    downloadType = DownloadType
+        .values[faker.randomGenerator.integer(DownloadType.values.length)];
+  });
+
+  setUpAll(() {
+    for (var value in DownloadType.values) {
+      registerFallbackValue(value);
+    }
   });
 
   ProviderContainer makeProviderContainer({
@@ -64,7 +72,7 @@ void main() {
     );
   }
 
-  group('SchedulesStateController', () {
+  group('DownloadStateController', () {
     test('build should return an initial empty map', () async {
       final container = makeProviderContainer(
         session: fakeSession,
@@ -73,7 +81,10 @@ void main() {
       addTearDown(container.dispose);
 
       final result = await container.read(
-        schedulesStateControllerProvider(fakeReportScheduleCode).future,
+        downloadStateControllerProvider(
+          fakeReportScheduleCode,
+          downloadType,
+        ).future,
       );
       expect(result, isNull);
     });
@@ -88,10 +99,10 @@ void main() {
               baseUrl: any(named: 'baseUrl'),
               crossIdentity: any(named: 'crossIdentity'),
               reportScheduleCode: any(named: 'reportScheduleCode'),
-              execute: false,
-              sendEmailOnExecution: false,
-              downloadPdf: true,
-              downloadXlsx: false,
+              execute: any(named: 'execute'),
+              sendEmailOnExecution: any(named: 'sendEmailOnExecution'),
+              downloadPdf: any(named: 'downloadPdf'),
+              downloadXlsx: any(named: 'downloadXlsx'),
             ),
           ).thenAnswer((_) async {
             await Future.delayed(Duration.zero);
@@ -104,24 +115,31 @@ void main() {
           );
           addTearDown(container.dispose);
           await container.read(
-            schedulesStateControllerProvider(fakeReportScheduleCode).future,
+            downloadStateControllerProvider(
+              fakeReportScheduleCode,
+              downloadType,
+            ).future,
           );
 
           // FIX: Initialize states list and attach listener
           final states = <AsyncValue<ScheduleExecutionsEntity?>>[];
           container.listen(
-            schedulesStateControllerProvider(fakeReportScheduleCode),
+            downloadStateControllerProvider(
+              fakeReportScheduleCode,
+              downloadType,
+            ),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
               .read(
-                schedulesStateControllerProvider(
+                downloadStateControllerProvider(
                   fakeReportScheduleCode,
+                  downloadType,
                 ).notifier,
               )
-              .download(downloadPdf: true, downloadXlsx: false);
+              .download();
 
           // ASSERT
           // 1. Verify state transitions
@@ -133,8 +151,8 @@ void main() {
               reportScheduleCode: fakeReportScheduleCode,
               execute: false,
               sendEmailOnExecution: false,
-              downloadPdf: true,
-              downloadXlsx: false,
+              downloadPdf: downloadType == DownloadType.pdf,
+              downloadXlsx: downloadType == DownloadType.xlsx,
               baseUrl: fakeSession.enterprise!.baseUrl!,
               crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             ),
@@ -142,7 +160,12 @@ void main() {
 
           // 3. Verify state update: Map should contain the new entity
           final finalState = container
-              .read(schedulesStateControllerProvider(fakeReportScheduleCode))
+              .read(
+                downloadStateControllerProvider(
+                  fakeReportScheduleCode,
+                  downloadType,
+                ),
+              )
               .value;
           expect(finalState, fakeExecutionResult);
         },
@@ -158,22 +181,28 @@ void main() {
 
         // Wait for initial build
         await container.read(
-          schedulesStateControllerProvider(fakeReportScheduleCode).future,
+          downloadStateControllerProvider(
+            fakeReportScheduleCode,
+            downloadType,
+          ).future,
         );
 
         // FIX: Initialize states list and attach listener
         final states = <AsyncValue<ScheduleExecutionsEntity?>>[];
         container.listen(
-          schedulesStateControllerProvider(fakeReportScheduleCode),
+          downloadStateControllerProvider(fakeReportScheduleCode, downloadType),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
             .read(
-              schedulesStateControllerProvider(fakeReportScheduleCode).notifier,
+              downloadStateControllerProvider(
+                fakeReportScheduleCode,
+                downloadType,
+              ).notifier,
             )
-            .download(downloadPdf: true, downloadXlsx: false);
+            .download();
 
         // ASSERT
 
