@@ -13,30 +13,6 @@ class SchedulesStateController extends _$SchedulesStateController {
     return null;
   }
 
-  Future<void> execute({required bool sendEmailOnExecution}) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.watch(
-        validatedUserSessionProvider.future,
-      );
-      await ref
-          .read(soapExecuteOrDownloadScheduleRepositoryProvider)
-          .executeOrDownloadSchedule(
-            baseUrl: validatedUser!.enterprise!.baseUrl!,
-            crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
-            reportScheduleCode: reportScheduleCode,
-            execute: true,
-            sendEmailOnExecution: sendEmailOnExecution,
-            downloadPdf: false,
-            downloadXlsx: false,
-          );
-
-      //TODO update the last execution date in reports
-
-      return state.value;
-    });
-  }
-
   Future<void> download({
     required bool downloadPdf,
     required bool downloadXlsx,
