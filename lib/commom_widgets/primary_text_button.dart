@@ -55,7 +55,7 @@ class PrimaryTextButton extends StatelessWidget {
     return SizedBox(
       height: Sizes.p24,
       child: TextButton.icon(
-        onPressed: onPressed,
+        onPressed: isLoading ? null : onPressed,
         icon: icon,
         iconAlignment: iconAlignment,
         label: isLoading
