@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
@@ -11,6 +12,8 @@ class ReportsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(title: Text('Relatórios'.hardcoded)),
       body: AsyncValueWidget(
@@ -44,6 +47,22 @@ class ReportsPage extends ConsumerWidget {
                           title: 'Relatório'.hardcoded,
                           subTitle: report.ReportModelName,
                         ),
+                        if (report.LastExecutionDate != null)
+                          TitleAndSubTitle(
+                            title: 'Última execução'.hardcoded,
+                            subTitle: DateFormat(
+                              'dd/MM/yyyy HH:mm',
+                            ).format(report.LastExecutionDate!),
+                          ),
+                        if (report.LastExecutionContainsData == false)
+                          Text(
+                            'Relatório SEM DADOS para exibir'.hardcoded,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.disabledColor,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        gapH8,
                         Row(
                           children: [
                             const Spacer(),
