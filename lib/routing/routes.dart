@@ -22,6 +22,7 @@ enum Routes {
   inventoryProducts('Inventário (produtos)'),
   home('Home'),
   pdfViewer('Visualizador de PDF'),
+  reports('Relatórios'),
   saleRequest('Pedido de vendas'),
   saleRequestRequestsTypes('Pedido de vendas'),
   searchProducts('Pesquisar produtos'),
