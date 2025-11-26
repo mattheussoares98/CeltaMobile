@@ -18,3 +18,19 @@ ISoapLoadReportsRepository soapLoadReportsRepository(Ref ref) {
     ref.watch(soapLoadReportsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapExecuteOrDownloadScheduleDatasource
+soapExecuteOrDownloadScheduleDatasource(Ref ref) {
+  return SoapExecuteOrDownloadScheduleDatasource(
+    ref.watch(soapRequestProvider),
+  );
+}
+
+@riverpod
+ISoapExecuteOrDownloadScheduleRepository
+soapExecuteOrDownloadScheduleRepository(Ref ref) {
+  return SoapExecuteOrDownloadScheduleRepositoryImpl(
+    ref.watch(soapExecuteOrDownloadScheduleDatasourceProvider),
+  );
+}
