@@ -28,7 +28,6 @@ class AppBarTitle extends ConsumerWidget {
           children: [
             if (widget.researchName == null || widget.concurrentName == null)
               FittedBox(
-                //TODO use researchName and concurrentCode instead
                 child: Text(
                   'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
                 ),
@@ -37,9 +36,12 @@ class AppBarTitle extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.researchName!, style: theme.textTheme.titleSmall),
                   Text(
-                    widget.concurrentName!,
+                    "${widget.researchName!} (${widget.researchCode})",
+                    style: theme.textTheme.titleSmall,
+                  ),
+                  Text(
+                    "${widget.concurrentName!} (${widget.concurrentCode})",
                     style: theme.textTheme.titleSmall,
                   ),
                 ],
