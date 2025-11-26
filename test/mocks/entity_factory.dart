@@ -741,16 +741,18 @@ class EntityFactory {
         LastExecutionStartDateTime: faker.date.dateTime(),
       );
 
-  static ScheduleExecutionsEntity makeReportScheduleExecutionsEntity() =>
-      ScheduleExecutionsEntity(
-        ReportScheduleCode: faker.randomGenerator.integer(100),
-        LastExecutionStatus: faker.lorem.word(),
-        Executions: [
-          makeExecutionsEntity(),
-          makeExecutionsEntity(),
-          makeExecutionsEntity(),
-        ],
-      );
+  static ScheduleExecutionsEntity makeScheduleExecutionsEntity({
+    int? reportScheduleCode,
+  }) => ScheduleExecutionsEntity(
+    ReportScheduleCode:
+        reportScheduleCode ?? faker.randomGenerator.integer(100),
+    LastExecutionStatus: faker.lorem.word(),
+    Executions: [
+      makeExecutionsEntity(),
+      makeExecutionsEntity(),
+      makeExecutionsEntity(),
+    ],
+  );
 
   static ExecutionsEntity makeExecutionsEntity() => ExecutionsEntity(
     ExecutionDate: faker.date.dateTime(),

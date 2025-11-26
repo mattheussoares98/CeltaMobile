@@ -39,9 +39,9 @@ void main() {
     sut = SoapExecuteOrDownloadScheduleRepositoryImpl(mockDatasource);
 
     reportScheduleExecutionsModels = [
-      EntityFactory.makeReportScheduleExecutionsEntity(),
-      EntityFactory.makeReportScheduleExecutionsEntity(),
-      EntityFactory.makeReportScheduleExecutionsEntity(),
+      EntityFactory.makeScheduleExecutionsEntity(),
+      EntityFactory.makeScheduleExecutionsEntity(),
+      EntityFactory.makeScheduleExecutionsEntity(),
     ].map((e) => ScheduleExecutionsModel.fromEntity(e)).toList();
 
     baseUrl = faker.internet.httpUrl();

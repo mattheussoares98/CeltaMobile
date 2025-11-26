@@ -50,9 +50,9 @@ void main() {
       DownloadXlsx: faker.randomGenerator.boolean(),
     );
     reportScheduleExecutionsModels = [
-      EntityFactory.makeReportScheduleExecutionsEntity(),
-      EntityFactory.makeReportScheduleExecutionsEntity(),
-      EntityFactory.makeReportScheduleExecutionsEntity(),
+      EntityFactory.makeScheduleExecutionsEntity(),
+      EntityFactory.makeScheduleExecutionsEntity(),
+      EntityFactory.makeScheduleExecutionsEntity(),
     ].map((e) => ScheduleExecutionsModel.fromEntity(e)).toList();
   }
 
