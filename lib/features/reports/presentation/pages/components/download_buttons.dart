@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../routing/routing.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
@@ -39,7 +41,7 @@ class _DefaultButton extends ConsumerWidget {
     );
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
           flex: 6,
@@ -73,8 +75,32 @@ class _DefaultButton extends ConsumerWidget {
               ),
             ),
           ),
+        ] else if (asyncValue.value != null &&
+            downloadType == DownloadType.pdf) ...[
+          //TODO should treat if the value in asyncValue is from pdf
+          Row(
+            children: [
+              gapW8,
+              IconButton(
+                onPressed: () {
+                  context.pushNamed(
+                    Routes.pdfViewer.name,
+                    extra: <String, dynamic>{
+                      'bytes': asyncValue.value!.Executions.first.Attachments
+                          .firstWhere((e) => e.FileExtension == 'pdf')
+                          .AttachmentBase64,
+                      'fileName': report.ReportModelName,
+                    },
+                  );
+                }, //TODO organize better
+                icon: Icon(
+                  isIOS ? CupertinoIcons.eye : Icons.remove_red_eye,
+                  color: theme.primaryColor,
+                ),
+              ),
+            ],
+          ),
         ],
-        const Spacer(),
       ],
     );
   }
