@@ -42,12 +42,39 @@ class Filters extends ConsumerWidget {
       backgroundColor: theme.primaryColorLight.withAlpha(20),
       collapsedBackgroundColor: theme.primaryColorLight.withAlpha(60),
       childrenPadding: const EdgeInsets.all(Sizes.p8),
+      tilePadding: const EdgeInsets.all(Sizes.p8),
       iconColor: theme.primaryColorDark,
       collapsedIconColor: theme.primaryColor,
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
-      title: Text(
-        'Filtrar produtos'.hardcoded,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+      title: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: 'Filtrar produtos   '.hardcoded,
+              style: theme.textTheme.titleMedium,
+            ),
+            if (!restrictProducts)
+              TextSpan(
+                text: selectedItem.onlyAssociateds
+                    ? '(associados)'.hardcoded
+                    : '(não associados)'.hardcoded,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: selectedItem.onlyAssociateds
+                      ? Colors.green
+                      : Colors.red,
+                ),
+              ),
+            if (selectedItem.onlyAssociateds &&
+                selectedItem.searchType != SearchProductCompetingPriceType.all)
+              TextSpan(
+                text: ' (${selectedItem.searchType.name})'.toLowerCase(),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+          ],
+        ),
       ),
       initiallyExpanded: true,
       children: [
