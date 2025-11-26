@@ -1,0 +1,13 @@
+import '../../data/datasource/datasource.dart';
+import '../entities/entities.dart';
+
+abstract class ISoapExecuteOrDownloadScheduleRepository {
+  Future<List<ReportScheduleExecutionsEntity>> executeOrDownloadSchedule({
+    required String baseUrl,
+    required String crossIdentity,
+    required int reportScheduleCode,
+    required bool execute,
+    required bool sendEmailOnExecution,
+    required DownloadParams downloadParams,
+  });
+}
