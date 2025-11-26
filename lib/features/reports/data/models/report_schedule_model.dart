@@ -39,7 +39,7 @@ class ReportScheduleModel extends Equatable {
     required this.LastExecutionStartDateTime,
   });
 
-  factory ReportScheduleModel.fromJson(Map<String, dynamic> json) {
+  factory ReportScheduleModel.fromJson(Map json) {
     return ReportScheduleModel(
       Code: json["Code"],
       Name: json["Name"],
@@ -64,7 +64,7 @@ class ReportScheduleModel extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map toJson() => {
     'Name': Name,
     'Type': Type,
     'CategoryName': CategoryName,
