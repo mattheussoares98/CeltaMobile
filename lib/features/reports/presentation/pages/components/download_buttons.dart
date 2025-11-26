@@ -34,25 +34,48 @@ class _DefaultButton extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return PrimaryTextButton(
-      text: downloadType == DownloadType.pdf ? 'Baixar PDF' : 'Baixar planilha',
-      isLoading: ref.watch(
-        downloadStateControllerProvider(
-          report.Code,
-          downloadType,
-        ).select((s) => s.isLoading),
-      ),
-      icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
-      onPressed: () {
-        ref
-            .read(
-              downloadStateControllerProvider(
-                report.Code,
-                downloadType,
-              ).notifier,
-            )
-            .download();
-      },
+    final asyncValue = ref.watch(
+      downloadStateControllerProvider(report.Code, downloadType),
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 6,
+          child: PrimaryTextButton(
+            text: downloadType == DownloadType.pdf
+                ? 'Baixar PDF'
+                : 'Baixar planilha',
+            isLoading: asyncValue.isLoading,
+            icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
+            onPressed: () {
+              ref
+                  .read(
+                    downloadStateControllerProvider(
+                      report.Code,
+                      downloadType,
+                    ).notifier,
+                  )
+                  .download();
+            },
+          ),
+        ),
+        if (asyncValue.hasError) ...[
+          gapW8,
+          Expanded(
+            flex: 6,
+            child: Text(
+              asyncValue.hasError ? asyncValue.error.toString() : '',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Colors.red,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+        ],
+        const Spacer(),
+      ],
     );
   }
 }

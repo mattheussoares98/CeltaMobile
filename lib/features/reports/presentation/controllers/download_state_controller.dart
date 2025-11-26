@@ -22,6 +22,7 @@ class DownloadStateController extends _$DownloadStateController {
       final validatedUser = await ref.watch(
         validatedUserSessionProvider.future,
       );
+      await Future.delayed(const Duration(seconds: 3));
       final response = await ref
           .read(soapExecuteOrDownloadScheduleRepositoryProvider)
           .executeOrDownloadSchedule(
