@@ -21,7 +21,7 @@ class ReportsPage extends ConsumerWidget {
           return RefreshIndicator(
             onRefresh: () async =>
                 ref.invalidate(reportsStateControllerProvider), //TODO test
-            child: ListView.builder(
+            child: ResponsiveListFlow(
               itemCount: reports.length,
               itemBuilder: (_, index) {
                 final report = reports[index];
