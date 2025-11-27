@@ -54,24 +54,26 @@ class _DefaultButton extends ConsumerWidget {
         false;
 
     void openExcelFile(bool showDialog) async {
-      final controller = await ref.read(
-        downloadStateControllerProvider(report.Code, downloadType).future,
+      final filePath = ref.read(
+        downloadStateControllerProvider(
+          report.Code,
+          downloadType,
+        ).select((s) => s.value?.xlsxFilePath),
       );
 
-      if (controller?.xlsxFilePath != null && showDialog) {
+      if (filePath != null && showDialog) {
         showAlertDialog(
           context: context,
           title: 'Planilha baixada'.hardcoded,
-          content:
-              'Planilha baixada em "${controller?.xlsxFilePath}"'.hardcoded,
+          content: 'Planilha baixada em "$filePath"'.hardcoded,
           defaultActionText: 'Abrir arquivo'.hardcoded,
           cancelActionText: 'Ok'.hardcoded,
           onOkPressed: () {
-            OpenFile.open(controller?.xlsxFilePath);
+            OpenFile.open(filePath);
           },
         );
-      } else if (controller?.xlsxFilePath != null) {
-        OpenFile.open(controller?.xlsxFilePath);
+      } else if (filePath != null) {
+        OpenFile.open(filePath);
       }
     }
 
