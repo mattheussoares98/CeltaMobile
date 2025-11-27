@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,44 +40,77 @@ class _DefaultButton extends ConsumerWidget {
   final ReportScheduleEntity report;
   const _DefaultButton(this.downloadType, this.report);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+  Uint8List? _extractBytes(AsyncValue<DownloadExecutionEntity?> asyncValue) {
+    return asyncValue.value?.executionResult.Executions
+        .firstWhereOrNull((e) => e.Attachments.isNotEmpty)
+        ?.Attachments
+        .firstWhereOrNull((e) => e.FileExtension == downloadType.name)
+        ?.AttachmentBase64;
+  }
 
-    final asyncValue = ref.watch(
-      downloadStateControllerProvider(report.Code, downloadType),
-    );
-
-    bool downloadedLastExecution =
-        asyncValue.value?.executionResult.Executions.any(
-          (e) => e.Attachments.any((e) => e.FileExtension == downloadType.name),
-        ) ??
-        false;
-
-    void openExcelFile(bool showDialog) async {
+  void _onTap(
+    BuildContext context,
+    Uint8List? bytes,
+    bool isXlsx,
+    String modelName,
+    WidgetRef ref,
+    bool showDialog,
+  ) {
+    //TODO test this feature in all platforms
+    if (isXlsx) {
+      // Logic for opening the Excel file
       final filePath = ref.read(
         downloadStateControllerProvider(
           report.Code,
           downloadType,
         ).select((s) => s.value?.xlsxFilePath),
       );
-
-      if (filePath != null && showDialog) {
-        showAlertDialog(
-          context: context,
-          title: 'Planilha baixada'.hardcoded,
-          content: 'Planilha baixada em "$filePath"'.hardcoded,
-          defaultActionText: 'Abrir arquivo'.hardcoded,
-          cancelActionText: 'Ok'.hardcoded,
-          onOkPressed: () {
-            OpenFile.open(filePath);
-          },
-        );
-      } else if (filePath != null) {
-        OpenFile.open(filePath);
+      if (filePath != null) {
+        // Show dialog and then open file
+        if (showDialog) {
+          showAlertDialog(
+            context: context,
+            title: 'Planilha baixada'.hardcoded,
+            content: 'Planilha baixada em "$filePath"'.hardcoded,
+            defaultActionText: 'Abrir arquivo'.hardcoded,
+            cancelActionText: 'Ok'.hardcoded,
+            onOkPressed: () => OpenFile.open(filePath),
+          );
+        } else {
+          OpenFile.open(filePath);
+        }
       }
+    } else {
+      // Logic for viewing the PDF
+      context.pushNamed(
+        Routes.pdfViewer.name,
+        extra: <String, dynamic>{'bytes': bytes, 'fileName': modelName},
+      );
     }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isXlsx = downloadType == DownloadType.xlsx;
+
+    final asyncValue = ref.watch(
+      downloadStateControllerProvider(report.Code, downloadType),
+    );
+
+    final hasAttachment =
+        asyncValue.value?.executionResult.Executions.any(
+          (e) => e.Attachments.any((x) => x.FileExtension == downloadType.name),
+        ) ==
+        true;
+    final Uint8List? fileBytes = _extractBytes(asyncValue);
+
+    bool downloadedLastExecution =
+        asyncValue.value?.executionResult.Executions.any(
+          (e) => e.Attachments.any((e) => e.FileExtension == downloadType.name),
+        ) ??
+        false;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,16 +119,14 @@ class _DefaultButton extends ConsumerWidget {
           flex: 6,
           child: PrimaryTextButton(
             color: downloadedLastExecution ? theme.disabledColor : null,
-            text: downloadedLastExecution
-                ? downloadType == DownloadType.pdf
-                      ? 'PDF baixado'
-                      : 'Planilha baixada'
-                : downloadType == DownloadType.pdf
-                ? 'Baixar PDF'.hardcoded
-                : 'Baixar planilha'.hardcoded,
+            text: hasAttachment
+                ? (isXlsx ? 'Planilha baixada' : 'PDF baixado')
+                : (isXlsx
+                      ? 'Baixar planilha'.hardcoded
+                      : 'Baixar PDF'.hardcoded),
             isLoading: asyncValue.isLoading,
             icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
-            onPressed: downloadedLastExecution
+            onPressed: hasAttachment
                 ? null
                 : () async {
                     await ref
@@ -104,8 +137,17 @@ class _DefaultButton extends ConsumerWidget {
                           ).notifier,
                         )
                         .download(theme.platform, report.ReportModelName);
-
-                    openExcelFile(true);
+                    // After successful download, open the dialog/file
+                    if (isXlsx) {
+                      _onTap(
+                        context,
+                        fileBytes,
+                        isXlsx,
+                        report.ReportModelName,
+                        ref,
+                        true,
+                      );
+                    }
                   },
           ),
         ),
@@ -122,53 +164,33 @@ class _DefaultButton extends ConsumerWidget {
             ),
           ),
         ],
-        Builder(
-          builder: (context) {
-            if (asyncValue.value?.executionResult.Executions.any(
-                  (e) => e.Attachments.any(
-                    (x) => x.FileExtension == downloadType.name,
-                  ),
-                ) !=
-                true) {
+        Consumer(
+          builder: (_, ref, _) {
+            if (!hasAttachment || fileBytes == null) {
               return const SizedBox.shrink();
             }
 
-            final executions = asyncValue.value!.executionResult.Executions;
-            final attachments = executions.first.Attachments;
-            final pdfBytes = attachments
-                .firstWhereOrNull((e) => e.FileExtension == downloadType.name)!
-                .AttachmentBase64;
-
-            void onTap() {
-              if (downloadType == DownloadType.pdf) {
-                context.pushNamed(
-                  Routes.pdfViewer.name,
-                  extra: <String, dynamic>{
-                    'bytes': pdfBytes,
-                    'fileName': report.ReportModelName,
-                  },
-                );
-              } else {
-                openExcelFile(false);
-              }
-            }
-
             return InkWell(
-              onTap: onTap,
+              onTap: () => _onTap(
+                context,
+                fileBytes,
+                isXlsx,
+                report.ReportModelName,
+                ref,
+                false,
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(Sizes.p4),
                 child: Row(
                   children: [
-                    if (executions.first.ExecutionDate != null) ...[
-                      gapW4,
-                      Text(
-                        'Visualizar'.hardcoded,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.primaryColor,
-                          fontStyle: FontStyle.italic,
-                        ),
+                    gapW4,
+                    Text(
+                      'Visualizar'.hardcoded,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.primaryColor,
+                        fontStyle: FontStyle.italic,
                       ),
-                    ],
+                    ),
                     gapW8,
                     Icon(
                       isIOS ? CupertinoIcons.eye : Icons.remove_red_eye,
