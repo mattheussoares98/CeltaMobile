@@ -70,14 +70,24 @@ class _DefaultButton extends ConsumerWidget {
             icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
             onPressed: downloadedLastExecution
                 ? null
-                : () => ref
-                      .read(
-                        downloadStateControllerProvider(
-                          report.Code,
-                          downloadType,
-                        ).notifier,
-                      )
-                      .download(),
+                : () async {
+                    final filePath = await ref
+                        .read(
+                          downloadStateControllerProvider(
+                            report.Code,
+                            downloadType,
+                          ).notifier,
+                        )
+                        .download(theme.platform, report.ReportModelName);
+
+                    if (filePath != null) {
+                      showAlertDialog(
+                        context: context,
+                        title: 'Planilha baixada'.hardcoded,
+                        content: 'Planilha baixada em "$filePath"'.hardcoded,
+                      );
+                    }
+                  },
           ),
         ),
         if (asyncValue.hasError) ...[

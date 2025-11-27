@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/data/datasource/share_download/share_download.dart';
+import '../../../../core/presentation/controllers/share_download/share_download.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
@@ -16,13 +19,15 @@ class DownloadStateController extends _$DownloadStateController {
     return null;
   }
 
-  Future<void> download() async {
+  Future<String?> download(TargetPlatform platform, String modelName) async {
     state = const AsyncValue.loading();
+    String? xlsxFilePath;
+
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
         validatedUserSessionProvider.future,
       );
-      await Future.delayed(const Duration(seconds: 3));
+
       final response = await ref
           .read(soapExecuteOrDownloadScheduleRepositoryProvider)
           .executeOrDownloadSchedule(
@@ -35,7 +40,30 @@ class DownloadStateController extends _$DownloadStateController {
             downloadXlsx: downloadType == DownloadType.xlsx,
           );
 
+      if (platform != TargetPlatform.android &&
+          platform != TargetPlatform.iOS &&
+          downloadType == DownloadType.xlsx) {
+        xlsxFilePath = await ref
+            .read(shareDownloadControllerProvider.notifier)
+            .shareOrDownload(
+              FileProperties(
+                name: modelName,
+                bytes: response.first.Executions.first.Attachments
+                    .firstWhere(
+                      (e) => e.FileExtension == DownloadType.xlsx.name,
+                    )
+                    .AttachmentBase64,
+                extension: '.xlsx',
+                mimeType:
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+              ),
+              platform,
+            );
+      }
+
       return response.first;
     });
+
+    return xlsxFilePath;
   }
 }

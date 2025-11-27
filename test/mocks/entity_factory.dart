@@ -743,29 +743,33 @@ class EntityFactory {
 
   static ScheduleExecutionsEntity makeScheduleExecutionsEntity({
     int? reportScheduleCode,
+    DownloadType? downloadType,
   }) => ScheduleExecutionsEntity(
     ReportScheduleCode:
         reportScheduleCode ?? faker.randomGenerator.integer(100),
     LastExecutionStatus: faker.lorem.word(),
     Executions: [
-      makeExecutionsEntity(),
-      makeExecutionsEntity(),
-      makeExecutionsEntity(),
+      makeExecutionsEntity(downloadType: downloadType),
+      makeExecutionsEntity(downloadType: downloadType),
+      makeExecutionsEntity(downloadType: downloadType),
     ],
   );
 
-  static ExecutionsEntity makeExecutionsEntity() => ExecutionsEntity(
-    ExecutionDate: faker.date.dateTime(),
-    Attachments: [
-      makeAttachmentsEntity(),
-      makeAttachmentsEntity(),
-      makeAttachmentsEntity(),
-    ],
-    ContainsData: faker.randomGenerator.boolean(),
-  );
+  static ExecutionsEntity makeExecutionsEntity({DownloadType? downloadType}) =>
+      ExecutionsEntity(
+        ExecutionDate: faker.date.dateTime(),
+        Attachments: [
+          makeAttachmentsEntity(downloadType: downloadType),
+          makeAttachmentsEntity(downloadType: downloadType),
+          makeAttachmentsEntity(downloadType: downloadType),
+        ],
+        ContainsData: faker.randomGenerator.boolean(),
+      );
 
-  static AttachmentsEntity makeAttachmentsEntity() => AttachmentsEntity(
-    FileExtension: faker.lorem.word(),
+  static AttachmentsEntity makeAttachmentsEntity({
+    DownloadType? downloadType,
+  }) => AttachmentsEntity(
+    FileExtension: downloadType?.name ?? faker.lorem.word(),
     AttachmentBase64: Uint8List(faker.randomGenerator.integer(100)),
   );
 }
