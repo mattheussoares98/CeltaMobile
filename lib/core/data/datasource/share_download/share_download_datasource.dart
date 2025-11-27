@@ -8,12 +8,18 @@ import 'share_download.dart';
 
 class ShareDownloadDatasource implements IShareDownloadDatasource {
   @override
-  Future<void> download(FileProperties file, bool isWeb) async {
+  Future<String?> download(FileProperties file, bool isWeb) async {
     //TODO test if works in web platform
 
-    final tempDir = await getTemporaryDirectory();
+    final tempDir =
+        await getDownloadsDirectory() ??
+        await getApplicationDocumentsDirectory();
 
-    await File('${tempDir.path}/${file.name}').writeAsBytes(file.bytes);
+    await File(
+      '${tempDir.path}/${file.name}${file.extension ?? ''}',
+    ).writeAsBytes(file.bytes);
+
+    return tempDir.path;
   }
 
   @override
