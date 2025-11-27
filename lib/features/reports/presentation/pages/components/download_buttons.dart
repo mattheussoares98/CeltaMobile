@@ -122,25 +122,20 @@ class _DefaultButton extends ConsumerWidget {
         ],
         Builder(
           builder: (context) {
-            if (asyncValue.value == null) {
-              return const SizedBox.shrink();
-            } else if (asyncValue.value!.executionResult.Executions.isEmpty) {
-              return const SizedBox.shrink();
-            } else if (asyncValue
-                .value!
-                .executionResult
-                .Executions
-                .first
-                .Attachments
-                .isEmpty) {
+            if (asyncValue.value?.executionResult.Executions.any(
+                  (e) => e.Attachments.any(
+                    (x) => x.FileExtension == downloadType.name,
+                  ),
+                ) !=
+                true) {
               return const SizedBox.shrink();
             }
 
             final executions = asyncValue.value!.executionResult.Executions;
             final attachments = executions.first.Attachments;
             final pdfBytes = attachments
-                .firstWhereOrNull((e) => e.FileExtension == downloadType.name)
-                ?.AttachmentBase64;
+                .firstWhereOrNull((e) => e.FileExtension == downloadType.name)!
+                .AttachmentBase64;
 
             void onTap() {
               if (downloadType == DownloadType.pdf) {
