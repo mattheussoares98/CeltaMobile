@@ -43,7 +43,7 @@ class DownloadStateController extends _$DownloadStateController {
       if (platform != TargetPlatform.android &&
           platform != TargetPlatform.iOS &&
           downloadType == DownloadType.xlsx) {
-        xlsxFilePath = await ref
+        final filePath = await ref
             .read(shareDownloadControllerProvider.notifier)
             .shareOrDownload(
               FileProperties(
@@ -59,6 +59,7 @@ class DownloadStateController extends _$DownloadStateController {
               ),
               platform,
             );
+        xlsxFilePath = '$filePath\\$modelName.xlsx';
       }
 
       return response.first;
