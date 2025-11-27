@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_file_plus/open_file_plus.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
@@ -85,6 +86,11 @@ class _DefaultButton extends ConsumerWidget {
                         context: context,
                         title: 'Planilha baixada'.hardcoded,
                         content: 'Planilha baixada em "$filePath"'.hardcoded,
+                        defaultActionText: 'Abrir arquivo'.hardcoded,
+                        cancelActionText: 'Ok'.hardcoded,
+                        onOkPressed: () {
+                          OpenFile.open(filePath);
+                        },
                       );
                     }
                   },
