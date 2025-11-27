@@ -41,11 +41,16 @@ class _DefaultButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-    final isMobilePlatform = isIOS || theme.platform == TargetPlatform.android;
 
     final asyncValue = ref.watch(
       downloadStateControllerProvider(report.Code, downloadType),
     );
+
+    bool downloadedLastExecution =
+        asyncValue.value?.Executions.any(
+          (e) => e.Attachments.any((e) => e.FileExtension == downloadType.name),
+        ) ??
+        false;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,19 +58,26 @@ class _DefaultButton extends ConsumerWidget {
         Flexible(
           flex: 6,
           child: PrimaryTextButton(
-            text: downloadType == DownloadType.pdf
-                ? 'Baixar PDF'
-                : 'Baixar planilha',
+            color: downloadedLastExecution ? theme.disabledColor : null,
+            text: downloadedLastExecution
+                ? downloadType == DownloadType.pdf
+                      ? 'PDF baixado'
+                      : 'Planilha baixada'
+                : downloadType == DownloadType.pdf
+                ? 'Baixar PDF'.hardcoded
+                : 'Baixar planilha'.hardcoded,
             isLoading: asyncValue.isLoading,
             icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
-            onPressed: () => ref
-                .read(
-                  downloadStateControllerProvider(
-                    report.Code,
-                    downloadType,
-                  ).notifier,
-                )
-                .download(),
+            onPressed: downloadedLastExecution
+                ? null
+                : () => ref
+                      .read(
+                        downloadStateControllerProvider(
+                          report.Code,
+                          downloadType,
+                        ).notifier,
+                      )
+                      .download(),
           ),
         ),
         if (asyncValue.hasError) ...[
@@ -120,9 +132,7 @@ class _DefaultButton extends ConsumerWidget {
                     if (executions.first.ExecutionDate != null) ...[
                       gapW4,
                       Text(
-                        downloadType == DownloadType.pdf
-                            ? 'Visualizar'
-                            : 'Baixar'.hardcoded,
+                        'Visualizar'.hardcoded,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.primaryColor,
                           fontStyle: FontStyle.italic,
@@ -131,13 +141,7 @@ class _DefaultButton extends ConsumerWidget {
                     ],
                     gapW8,
                     Icon(
-                      downloadType == DownloadType.pdf
-                          ? (isIOS ? CupertinoIcons.eye : Icons.remove_red_eye)
-                          : isMobilePlatform
-                          ? (isIOS ? CupertinoIcons.share : Icons.share)
-                          : (isIOS
-                                ? CupertinoIcons.cloud_download
-                                : Icons.download),
+                      isIOS ? CupertinoIcons.eye : Icons.remove_red_eye,
                       color: theme.primaryColor,
                     ),
                   ],
