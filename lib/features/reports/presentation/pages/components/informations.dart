@@ -31,8 +31,8 @@ class Informations extends StatelessWidget {
         if (report.LastExecutionContainsData == false)
           Text(
             'Relatório SEM DADOS para exibir'.hardcoded,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.disabledColor,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: Colors.red,
               fontStyle: FontStyle.italic,
             ),
           ),
