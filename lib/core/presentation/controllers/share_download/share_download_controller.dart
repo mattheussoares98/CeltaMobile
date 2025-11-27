@@ -11,14 +11,17 @@ class ShareDownloadController extends _$ShareDownloadController {
   @override
   FutureOr<void> build() async {}
 
-  Future<void> shareOrDownload(
+  Future<String?> shareOrDownload(
     FileProperties file,
     TargetPlatform platform,
   ) async {
     if (platform == TargetPlatform.android || platform == TargetPlatform.iOS) {
       await ref.read(shareDownloadDatasourceProvider).share(file);
+      return null;
     } else {
-      await ref.read(shareDownloadDatasourceProvider).download(file, kIsWeb);
+      return await ref
+          .read(shareDownloadDatasourceProvider)
+          .download(file, kIsWeb);
     }
   }
 }
