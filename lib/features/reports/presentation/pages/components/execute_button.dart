@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 
 class ExecuteButton extends ConsumerWidget {
   final ReportScheduleEntity report;
@@ -16,7 +17,26 @@ class ExecuteButton extends ConsumerWidget {
 
     return Row(
       children: [
-        PrimaryButton(text: 'Executar'.hardcoded),
+        PrimaryButton(
+          text: 'Executar'.hardcoded,
+          isLoading: ref.watch(
+            executeScheduleControllerProvider.select((s) => s.isLoading),
+          ),
+          onPressed: () async {
+            bool? value = await showAlertDialog(
+              context: context,
+              title: 'Enviar por e-mail?',
+              defaultActionText: 'Sim'.hardcoded,
+              cancelActionText: 'Não'.hardcoded,
+            );
+            ref
+                .read(executeScheduleControllerProvider.notifier)
+                .execute(
+                  sendEmailOnExecution: value == true,
+                  reportScheduleCode: report.Code,
+                );
+          },
+        ),
         if (report.LastExecutionDate != null)
           Expanded(
             child: Column(

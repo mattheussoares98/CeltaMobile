@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../localization/string_hardcoded.dart';
+import '../../../../utils/utils.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -12,6 +13,18 @@ class ReportsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(executeScheduleControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+      n.doOnSuccess(p, () {
+        showAlertDialog(
+          context: context,
+          title: 'Atenção!'.hardcoded,
+          content:
+              'Alguns relaótios demoram para serem executados. Por isso, aguarde alguns instantes e consulte os relatórios novamente para verificar se a data da última execução foi alterada'
+                  .hardcoded,
+        );
+      });
+    });
     return Scaffold(
       appBar: AppBar(title: Text('Relatórios'.hardcoded)),
       body: AsyncValueWidget(
