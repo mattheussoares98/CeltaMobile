@@ -1,9 +1,9 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
@@ -41,6 +41,7 @@ class _DefaultButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final isMobilePlatform = isIOS || theme.platform == TargetPlatform.android;
 
     final asyncValue = ref.watch(
       downloadStateControllerProvider(report.Code, downloadType),
@@ -112,31 +113,35 @@ class _DefaultButton extends ConsumerWidget {
 
             return InkWell(
               onTap: onTap,
-              child: Row(
-                children: [
-                  if (executions.first.ExecutionDate != null) ...[
-                    gapW4,
-                    Text(
-                      DateFormat(
-                        'dd/MM/yyyy HH:mm',
-                      ).format(executions.first.ExecutionDate!),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: theme.primaryColor,
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.p4),
+                child: Row(
+                  children: [
+                    if (executions.first.ExecutionDate != null) ...[
+                      gapW4,
+                      Text(
+                        downloadType == DownloadType.pdf
+                            ? 'Visualizar'
+                            : 'Baixar'.hardcoded,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.primaryColor,
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
-                    ),
-                  ],
-                  gapW8,
-                  IconButton(
-                    onPressed: onTap,
-                    icon: Icon(
+                    ],
+                    gapW8,
+                    Icon(
                       downloadType == DownloadType.pdf
-                          ? (!isIOS ? CupertinoIcons.eye : Icons.remove_red_eye)
-                          : (!isIOS ? CupertinoIcons.share : Icons.share),
+                          ? (isIOS ? CupertinoIcons.eye : Icons.remove_red_eye)
+                          : isMobilePlatform
+                          ? (isIOS ? CupertinoIcons.share : Icons.share)
+                          : (isIOS
+                                ? CupertinoIcons.cloud_download
+                                : Icons.download),
                       color: theme.primaryColor,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
