@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 
 abstract class IShareDownloadDatasource {
-  Future<void> share(List<FileProperties> files);
+  Future<void> share(FileProperties files);
   Future<void> download(FileProperties file, bool isWeb);
 }
 

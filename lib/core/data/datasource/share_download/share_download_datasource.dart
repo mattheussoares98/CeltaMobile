@@ -17,12 +17,12 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
   }
 
   @override
-  Future<void> share(List<FileProperties> files) async {
+  Future<void> share(FileProperties file) async {
     await SharePlus.instance.share(
       ShareParams(
-        files: files.map((e) => XFile.fromData(e.bytes, name: e.name)).toList(),
+        files: [XFile.fromData(file.bytes, name: file.name)],
         text: "Aqui estão os dados gerados pelo CeltaMobile...".hardcoded,
-        fileNameOverrides: files.map((e) => e.name).toList(),
+        fileNameOverrides: [file.name],
       ),
     );
   }
