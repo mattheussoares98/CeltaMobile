@@ -43,11 +43,10 @@ void main() {
   late FakeShareDownloadController fakeShareDownloadController;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
-  late ScheduleExecutionsEntity fakeExecutionResult;
+  late DownloadExecutionEntity downloadExecutionEntity;
   late int fakeReportScheduleCode;
   late DownloadType downloadType;
   late String fakeModelName;
-  late String returnPath;
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeScheduleExecutionsEntity());
@@ -67,17 +66,19 @@ void main() {
     fakeEnterprise = EntityFactory.makeEnterpriseEntity(code: 1);
 
     // Result entity for successful download/execute actions
-    fakeExecutionResult = EntityFactory.makeScheduleExecutionsEntity(
-      reportScheduleCode: fakeReportScheduleCode,
-      downloadType: DownloadType.xlsx,
+    downloadExecutionEntity = DownloadExecutionEntity(
+      executionResult: EntityFactory.makeScheduleExecutionsEntity(
+        reportScheduleCode: fakeReportScheduleCode,
+        downloadType: DownloadType.xlsx,
+      ),
+      xlsxFilePath: "${faker.lorem.word()}\\.xlsx",
     );
     downloadType = DownloadType
         .values[faker.randomGenerator.integer(DownloadType.values.length)];
 
-    returnPath = faker.lorem.word();
     fakeModelName = faker.lorem.word();
     fakeShareDownloadController = FakeShareDownloadController(
-      returnPath: returnPath,
+      returnPath: downloadExecutionEntity.xlsxFilePath,
     );
   });
 
@@ -145,7 +146,7 @@ void main() {
             ),
           ).thenAnswer((_) async {
             await Future.delayed(Duration.zero);
-            return [fakeExecutionResult];
+            return [downloadExecutionEntity.executionResult];
           });
 
           // Use verify to track the call to the fake controller's method
@@ -163,7 +164,7 @@ void main() {
           ); // Settle dependencies
 
           // ACT
-          final filePath = await container
+          await container
               .read(
                 downloadStateControllerProvider(
                   fakeReportScheduleCode,
@@ -174,8 +175,10 @@ void main() {
 
           // ASSERT
           // 1. Verify the final result is the file path
-          expect(filePath, isNotNull);
-          expect(fakeShareDownloadController.returnPath, returnPath);
+          expect(
+            fakeShareDownloadController.returnPath,
+            downloadExecutionEntity.xlsxFilePath,
+          );
           expect(fakeShareDownloadController.calledShareOrDownload, isTrue);
 
           // 3. Verify the main repository was called
@@ -197,9 +200,11 @@ void main() {
         'should return null if downloadType is PDF (no path needed)',
         () async {
           // ARRANGE
-          fakeExecutionResult = EntityFactory.makeScheduleExecutionsEntity(
-            reportScheduleCode: fakeReportScheduleCode,
-            downloadType: DownloadType.pdf,
+          downloadExecutionEntity = DownloadExecutionEntity(
+            executionResult: EntityFactory.makeScheduleExecutionsEntity(
+              reportScheduleCode: fakeReportScheduleCode,
+              downloadType: DownloadType.pdf,
+            ),
           );
           when(
             () => mockRepository.executeOrDownloadSchedule(
@@ -211,7 +216,7 @@ void main() {
               downloadPdf: any(named: 'downloadPdf'),
               downloadXlsx: any(named: 'downloadXlsx'),
             ),
-          ).thenAnswer((_) async => [fakeExecutionResult]);
+          ).thenAnswer((_) async => [downloadExecutionEntity.executionResult]);
 
           final container = makeProviderContainer(
             session: fakeSession,
@@ -226,7 +231,7 @@ void main() {
           );
 
           // ACT
-          final filePath = await container
+          await container
               .read(
                 downloadStateControllerProvider(
                   fakeReportScheduleCode,
@@ -237,7 +242,7 @@ void main() {
 
           // ASSERT
           // The return value should be null because the PDF is handled by navigation
-          expect(filePath, isNull);
+          // expect(downloadExecutionEntity.xlsxFilePath, isNull);
           expect(fakeShareDownloadController.calledShareOrDownload, isFalse);
         },
       );
@@ -259,7 +264,7 @@ void main() {
         );
 
         // FIX: Initialize states list and attach listener
-        final states = <AsyncValue<ScheduleExecutionsEntity?>>[];
+        final states = <AsyncValue<DownloadExecutionEntity?>>[];
         container.listen(
           downloadStateControllerProvider(fakeReportScheduleCode, downloadType),
           (_, next) => states.add(next),

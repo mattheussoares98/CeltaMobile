@@ -12,17 +12,15 @@ part 'download_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class DownloadStateController extends _$DownloadStateController {
   @override
-  FutureOr<ScheduleExecutionsEntity?> build(
+  FutureOr<DownloadExecutionEntity?> build(
     int reportScheduleCode,
     DownloadType downloadType,
   ) {
     return null;
   }
 
-  Future<String?> download(TargetPlatform platform, String modelName) async {
+  Future<void> download(TargetPlatform platform, String modelName) async {
     state = const AsyncValue.loading();
-    String? xlsxFilePath;
-
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
         validatedUserSessionProvider.future,
@@ -59,12 +57,13 @@ class DownloadStateController extends _$DownloadStateController {
               ),
               platform,
             );
-        xlsxFilePath = '$filePath\\$modelName.xlsx';
+        return DownloadExecutionEntity(
+          executionResult: response.first,
+          xlsxFilePath: '$filePath\\$modelName.xlsx',
+        );
       }
 
-      return response.first;
+      return DownloadExecutionEntity(executionResult: response.first);
     });
-
-    return xlsxFilePath;
   }
 }

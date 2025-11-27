@@ -48,10 +48,32 @@ class _DefaultButton extends ConsumerWidget {
     );
 
     bool downloadedLastExecution =
-        asyncValue.value?.Executions.any(
+        asyncValue.value?.executionResult.Executions.any(
           (e) => e.Attachments.any((e) => e.FileExtension == downloadType.name),
         ) ??
         false;
+
+    void openExcelFile(bool showDialog) async {
+      final controller = await ref.read(
+        downloadStateControllerProvider(report.Code, downloadType).future,
+      );
+
+      if (controller?.xlsxFilePath != null && showDialog) {
+        showAlertDialog(
+          context: context,
+          title: 'Planilha baixada'.hardcoded,
+          content:
+              'Planilha baixada em "${controller?.xlsxFilePath}"'.hardcoded,
+          defaultActionText: 'Abrir arquivo'.hardcoded,
+          cancelActionText: 'Ok'.hardcoded,
+          onOkPressed: () {
+            OpenFile.open(controller?.xlsxFilePath);
+          },
+        );
+      } else if (controller?.xlsxFilePath != null) {
+        OpenFile.open(controller?.xlsxFilePath);
+      }
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,7 +94,7 @@ class _DefaultButton extends ConsumerWidget {
             onPressed: downloadedLastExecution
                 ? null
                 : () async {
-                    final filePath = await ref
+                    await ref
                         .read(
                           downloadStateControllerProvider(
                             report.Code,
@@ -81,18 +103,7 @@ class _DefaultButton extends ConsumerWidget {
                         )
                         .download(theme.platform, report.ReportModelName);
 
-                    if (filePath != null) {
-                      showAlertDialog(
-                        context: context,
-                        title: 'Planilha baixada'.hardcoded,
-                        content: 'Planilha baixada em "$filePath"'.hardcoded,
-                        defaultActionText: 'Abrir arquivo'.hardcoded,
-                        cancelActionText: 'Ok'.hardcoded,
-                        onOkPressed: () {
-                          OpenFile.open(filePath);
-                        },
-                      );
-                    }
+                    openExcelFile(true);
                   },
           ),
         ),
@@ -113,13 +124,19 @@ class _DefaultButton extends ConsumerWidget {
           builder: (context) {
             if (asyncValue.value == null) {
               return const SizedBox.shrink();
-            } else if (asyncValue.value!.Executions.isEmpty) {
+            } else if (asyncValue.value!.executionResult.Executions.isEmpty) {
               return const SizedBox.shrink();
-            } else if (asyncValue.value!.Executions.first.Attachments.isEmpty) {
+            } else if (asyncValue
+                .value!
+                .executionResult
+                .Executions
+                .first
+                .Attachments
+                .isEmpty) {
               return const SizedBox.shrink();
             }
 
-            final executions = asyncValue.value!.Executions;
+            final executions = asyncValue.value!.executionResult.Executions;
             final attachments = executions.first.Attachments;
             final pdfBytes = attachments
                 .firstWhereOrNull((e) => e.FileExtension == downloadType.name)
@@ -135,7 +152,7 @@ class _DefaultButton extends ConsumerWidget {
                   },
                 );
               } else {
-                //TODO share
+                openExcelFile(false);
               }
             }
 
