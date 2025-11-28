@@ -106,6 +106,10 @@ class _DefaultButton extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     final isXlsx = downloadType == DownloadType.xlsx;
+    final isMobilePlatform =
+        theme.platform != TargetPlatform.macOS &&
+        theme.platform != TargetPlatform.windows &&
+        !kIsWeb;
 
     final asyncValue = ref.watch(
       downloadStateControllerProvider(report.Code, downloadType),
@@ -141,9 +145,7 @@ class _DefaultButton extends ConsumerWidget {
             onPressed: hasAttachment
                 ? null
                 : () async {
-                    if (theme.platform == TargetPlatform.macOS ||
-                        theme.platform == TargetPlatform.windows ||
-                        kIsWeb) {
+                    if (!isMobilePlatform) {
                       await showAlertDialog(
                         context: context,
                         title: 'Atenção'.hardcoded,
@@ -192,35 +194,65 @@ class _DefaultButton extends ConsumerWidget {
               return const SizedBox.shrink();
             }
 
-            return InkWell(
-              onTap: () => _onTap(
-                context,
-                fileBytes,
-                isXlsx,
-                report.ReportModelName,
-                ref,
-                false,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p4),
-                child: Row(
-                  children: [
-                    gapW4,
-                    Text(
-                      'Visualizar'.hardcoded,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.primaryColor,
-                        fontStyle: FontStyle.italic,
+            return Column(
+              children: [
+                InkWell(
+                  onTap: () => _onTap(
+                    context,
+                    fileBytes,
+                    isXlsx,
+                    report.ReportModelName,
+                    ref,
+                    false,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(Sizes.p4),
+                    child: Row(
+                      children: [
+                        gapW4,
+                        Text(
+                          'Visualizar'.hardcoded,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.primaryColor,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        gapW8,
+                        Icon(
+                          isIOS ? CupertinoIcons.eye : Icons.remove_red_eye,
+                          color: theme.primaryColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                if (!isMobilePlatform)
+                  InkWell(
+                    onTap: () {
+                      //TODO share
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(Sizes.p4),
+                      child: Row(
+                        children: [
+                          gapW4,
+                          Text(
+                            'Compartilhar'.hardcoded,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.primaryColor,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                          gapW8,
+                          Icon(
+                            isIOS ? CupertinoIcons.share : Icons.share,
+                            color: theme.primaryColor,
+                          ),
+                        ],
                       ),
                     ),
-                    gapW8,
-                    Icon(
-                      isIOS ? CupertinoIcons.eye : Icons.remove_red_eye,
-                      color: theme.primaryColor,
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+              ],
             );
           },
         ),
