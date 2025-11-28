@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:share_plus/share_plus.dart';
 
-import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../utils/utils.dart';
+import '../../../data/datasource/share_download/share_download.dart';
+import '../../controllers/share_download/share_download.dart';
 
-class AppBarWithTitle extends StatelessWidget implements PreferredSizeWidget {
+class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(35);
 
@@ -20,38 +22,12 @@ class AppBarWithTitle extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    Future<void> sharePdf() async {
-      try {
-        final pdfFile = XFile.fromData(
-          bytes,
-          name: fileName,
-          mimeType: 'application/pdf',
-        );
-
-        await SharePlus.instance.share(
-          ShareParams(
-            files: [pdfFile],
-            text: "Compartilhar PDF",
-            downloadFallbackEnabled: true,
-            title: fileName,
-            previewThumbnail: pdfFile,
-            mailToFallbackEnabled: true,
-            fileNameOverrides: ['$fileName.pdf'],
-          ),
-        );
-      } catch (e) {
-        debugPrint("❌ An error occurred while sharing the PDF: $e");
-        if (context.mounted) {
-          showSnackBarMessage(
-            context,
-            'Não foi possível compartilhar o arquivo: $e',
-          );
-        }
-      }
-    }
+    ref.listen(shareDownloadControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
 
     return AppBar(
       leading: IconButton(
@@ -66,7 +42,17 @@ class AppBarWithTitle extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.share),
-          onPressed: sharePdf,
+          onPressed: () async {
+            await ref
+                .read(shareDownloadControllerProvider.notifier)
+                .share(
+                  FileProperties(
+                    name: fileName,
+                    bytes: bytes,
+                    extension: '.pdf',
+                  ),
+                );
+          },
           tooltip: 'Compartilhar',
         ),
         IconButton(
