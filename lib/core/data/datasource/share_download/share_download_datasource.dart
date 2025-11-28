@@ -35,7 +35,9 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
   Future<void> share(FileProperties file) async {
     await SharePlus.instance.share(
       ShareParams(
-        files: [XFile.fromData(file.bytes, name: file.name)],
+        files: file.filePath != null
+            ? [XFile(file.filePath!)]
+            : [XFile.fromData(file.bytes, name: file.name)],
         text: "Aqui estão os dados gerados pelo CeltaMobile...".hardcoded,
         fileNameOverrides: [file.name],
       ),

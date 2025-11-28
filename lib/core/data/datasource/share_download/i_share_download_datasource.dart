@@ -11,14 +11,16 @@ class FileProperties extends Equatable {
   final Uint8List bytes;
   final String? mimeType; // need use when is a xlsx file
   final String? extension;
+  final String? filePath;
 
   const FileProperties({
     required this.name,
     required this.bytes,
     required this.extension,
     this.mimeType,
+    this.filePath,
   });
 
   @override
-  List<Object?> get props => [name, bytes, mimeType, extension];
+  List<Object?> get props => [name, bytes, mimeType, extension, filePath];
 }
