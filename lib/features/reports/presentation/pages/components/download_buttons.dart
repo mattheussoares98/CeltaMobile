@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -138,6 +139,16 @@ class _DefaultButton extends ConsumerWidget {
             onPressed: hasAttachment
                 ? null
                 : () async {
+                    if (theme.platform == TargetPlatform.macOS ||
+                        theme.platform == TargetPlatform.windows ||
+                        kIsWeb) {
+                      await showAlertDialog(
+                        context: context,
+                        title: 'Atenção'.hardcoded,
+                        content: 'Selecione a pasta que deseja salvar o arquivo'
+                            .hardcoded,
+                      );
+                    }
                     await ref
                         .read(
                           downloadStateControllerProvider(
