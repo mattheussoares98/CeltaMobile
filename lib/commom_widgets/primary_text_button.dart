@@ -18,6 +18,7 @@ class PrimaryTextButton extends StatelessWidget {
     this.icon,
     this.iconAlignment = IconAlignment.end,
     this.color,
+    this.textAlign = TextAlign.center,
   });
   final String text;
   final bool isLoading;
@@ -25,6 +26,7 @@ class PrimaryTextButton extends StatelessWidget {
   final Widget? icon;
   final IconAlignment? iconAlignment;
   final Color? color;
+  final TextAlign? textAlign;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -39,7 +41,7 @@ class PrimaryTextButton extends StatelessWidget {
 
     final textWidget = Text(
       text,
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
       style: theme.textTheme.titleMedium?.copyWith(color: textColor),
     );
     final iconWidget = icon == null
