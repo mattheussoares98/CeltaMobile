@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -59,7 +61,7 @@ class DownloadStateController extends _$DownloadStateController {
             );
         return DownloadExecutionEntity(
           executionResult: response.first,
-          xlsxFilePath: '$filePath\\$modelName.xlsx',
+          xlsxFilePath: '$filePath${Platform.pathSeparator}$modelName.xlsx',
         );
       }
 
