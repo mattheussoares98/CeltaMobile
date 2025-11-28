@@ -28,63 +28,80 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
-    if (theme.platform == TargetPlatform.iOS) {
+    final textWidget = Text(
+      text,
+      textAlign: TextAlign.center,
+      style: theme.textTheme.titleMedium?.copyWith(
+        color: isLoading ? Colors.transparent : Colors.white,
+      ),
+    );
+
+    const minimumIconSize = 150;
+
+    final buttonColor = onPressed == null || isLoading
+        ? theme.disabledColor.withAlpha(30)
+        : backgroundColor ?? theme.primaryColor;
+
+    const loadingWidget = Positioned.fill(child: LoadingWidget(padding: 0));
+
+    if (isIOS) {
       return LayoutBuilder(
         builder: (context, constraints) {
+          final canShowIcon = constraints.maxWidth > minimumIconSize;
+
           return CupertinoButton.filled(
             onPressed: isLoading ? null : onPressed,
             sizeStyle: CupertinoButtonSize.small,
             padding: const EdgeInsets.all(0),
-            color: onPressed == null || isLoading
-                ? theme.disabledColor
-                : backgroundColor ?? theme.primaryColor,
-            child: isLoading
-                ? const LoadingWidget(padding: 0)
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(child: Text(text, textAlign: TextAlign.center)),
-                      if (icon != null && constraints.maxWidth > 220)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Sizes.p8,
-                          ),
-                          child: icon!,
+            color: buttonColor,
+            child: Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: textWidget),
+                    if (icon != null && canShowIcon)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.p8,
                         ),
-                    ],
-                  ),
+                        child: icon!,
+                      ),
+                  ],
+                ),
+                if (isLoading) loadingWidget,
+              ],
+            ),
           );
         },
       );
     }
 
-    return SizedBox(
-      height: Sizes.p32,
-      child: ElevatedButton.icon(
-        onPressed: isLoading ? null : onPressed,
-        icon: icon,
-        iconAlignment: iconAlignment,
-        style: ButtonStyle(
-          padding: WidgetStateProperty.all(const EdgeInsets.all(Sizes.p12)),
-          backgroundColor: WidgetStateProperty.all(
-            onPressed == null || isLoading
-                ? theme.disabledColor.withAlpha(30)
-                : backgroundColor ?? theme.primaryColor,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final canShowIcon = constraints.maxWidth > minimumIconSize;
+
+        return SizedBox(
+          height: Sizes.p32,
+          child: ElevatedButton.icon(
+            onPressed: isLoading ? null : onPressed,
+            icon: canShowIcon ? icon : null,
+            iconAlignment: iconAlignment,
+            style: ButtonStyle(
+              padding: WidgetStateProperty.all(const EdgeInsets.all(Sizes.p12)),
+              backgroundColor: WidgetStateProperty.all(buttonColor),
+            ),
+            label: Stack(
+              children: [
+                FittedBox(child: textWidget),
+                if (isLoading) loadingWidget,
+              ],
+            ),
           ),
-        ),
-        label: isLoading
-            ? const FittedBox(child: LoadingWidget(padding: 0))
-            : FittedBox(
-                child: Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(color: Colors.white),
-                ),
-              ),
-      ),
+        );
+      },
     );
   }
 }
