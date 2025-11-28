@@ -16,8 +16,6 @@ void main() {
   late String baseUrl;
   late String crossIdentity;
   late int reportScheduleCode;
-  late bool execute;
-  late bool sendEmailOnExecution;
   late DownloadParams downloadParams;
 
   late List<ScheduleExecutionsModel> reportScheduleExecutionsModels;
@@ -42,8 +40,6 @@ void main() {
     baseUrl = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     reportScheduleCode = faker.randomGenerator.integer(100);
-    execute = faker.randomGenerator.boolean();
-    sendEmailOnExecution = faker.randomGenerator.boolean();
     downloadParams = DownloadParams(
       DownloadLastExecution: faker.randomGenerator.boolean(),
       DownloadPdf: faker.randomGenerator.boolean(),
@@ -63,13 +59,13 @@ void main() {
     mockSuccess();
   });
 
-  test('should behave correctly in success', () async {
+  test('should behave correctly in success and is not executing', () async {
     final response = await sut.executeOrDownloadSchedule(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       reportScheduleCode: reportScheduleCode,
-      execute: execute,
-      sendEmailOnExecution: sendEmailOnExecution,
+      execute: false,
+      sendEmailOnExecution: false,
       downloadParams: downloadParams,
     );
 
@@ -86,7 +82,43 @@ void main() {
           "json": json.encode({
             "CrossIdentity": crossIdentity,
             "ReportScheduleCode": [reportScheduleCode],
-            "Execute": execute,
+            "Execute": false,
+            "SendEmailOnExecution": false,
+            "Download": {
+              "DownloadLastExecution": downloadParams.DownloadLastExecution,
+              "Pdf": downloadParams.DownloadPdf,
+              "Xlsx": downloadParams.DownloadXlsx,
+            },
+          }),
+        },
+      ),
+    ).called(1);
+  });
+  test('should behave correctly in success and is executing', () async {
+    final sendEmailOnExecution = faker.randomGenerator.boolean();
+    final response = await sut.executeOrDownloadSchedule(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      reportScheduleCode: reportScheduleCode,
+      execute: true,
+      sendEmailOnExecution: sendEmailOnExecution,
+      downloadParams: downloadParams,
+    );
+
+    expect(response, []);
+
+    verify(
+      () => soapRequest.post(
+        url: baseUrl,
+        typeOfResponse: "GetReportScheduleExecutionsResponse",
+        soapAction: "GetReportScheduleExecutions",
+        serviceASMX: "CeltaReportService.asmx",
+        typeOfResult: "GetReportScheduleExecutionsResult",
+        parameters: {
+          "json": json.encode({
+            "CrossIdentity": crossIdentity,
+            "ReportScheduleCode": [reportScheduleCode],
+            "Execute": true,
             "SendEmailOnExecution": sendEmailOnExecution,
             "Download": {
               "DownloadLastExecution": downloadParams.DownloadLastExecution,

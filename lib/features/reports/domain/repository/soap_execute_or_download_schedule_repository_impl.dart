@@ -30,6 +30,11 @@ class SoapExecuteOrDownloadScheduleRepositoryImpl
       ),
     );
 
+    if (execute) {
+      //doesnt return any response
+      return [];
+    }
+
     return response.map((e) => e.toEntity()).toList();
   }
 }

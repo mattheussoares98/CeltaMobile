@@ -40,6 +40,10 @@ class SoapExecuteOrDownloadScheduleDatasource
       },
     );
 
+    if (execute) {
+      return [];
+    }
+
     return (json.decode(response) as List)
         .map((e) => ScheduleExecutionsModel.fromJson(e))
         .toList();

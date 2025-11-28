@@ -29,8 +29,6 @@ void main() {
   late String crossIdentity;
   late List<ScheduleExecutionsModel> reportScheduleExecutionsModels;
   late int reportScheduleCode;
-  late bool execute;
-  late bool sendEmailOnExecution;
   late bool downloadPdf;
   late bool downloadXlsx;
 
@@ -47,8 +45,6 @@ void main() {
     baseUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     reportScheduleCode = faker.randomGenerator.integer(100);
-    execute = faker.randomGenerator.boolean();
-    sendEmailOnExecution = faker.randomGenerator.boolean();
     downloadPdf = faker.randomGenerator.boolean();
     downloadXlsx = faker.randomGenerator.boolean();
 
@@ -65,13 +61,13 @@ void main() {
     );
   });
 
-  test('should behave correctly on success', () async {
+  test('should behave correctly on success when is not executing', () async {
     final response = await sut.executeOrDownloadSchedule(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       reportScheduleCode: reportScheduleCode,
-      execute: execute,
-      sendEmailOnExecution: sendEmailOnExecution,
+      execute: false,
+      sendEmailOnExecution: false,
       downloadPdf: downloadPdf,
       downloadXlsx: downloadXlsx,
     );
@@ -86,7 +82,37 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         reportScheduleCode: reportScheduleCode,
-        execute: execute,
+        execute: false,
+        sendEmailOnExecution: false,
+        downloadParams: DownloadParams(
+          DownloadLastExecution: downloadPdf || downloadXlsx,
+          DownloadPdf: downloadPdf,
+          DownloadXlsx: downloadXlsx,
+        ),
+      ),
+    ).called(1);
+  });
+  test('should behave correctly on success when is executing', () async {
+    final sendEmailOnExecution = faker.randomGenerator.boolean();
+
+    final response = await sut.executeOrDownloadSchedule(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      reportScheduleCode: reportScheduleCode,
+      execute: true,
+      sendEmailOnExecution: sendEmailOnExecution,
+      downloadPdf: downloadPdf,
+      downloadXlsx: downloadXlsx,
+    );
+
+    expect(response, []);
+
+    verify(
+      () => mockDatasource.executeOrDownloadSchedule(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        reportScheduleCode: reportScheduleCode,
+        execute: true,
         sendEmailOnExecution: sendEmailOnExecution,
         downloadParams: DownloadParams(
           DownloadLastExecution: downloadPdf || downloadXlsx,

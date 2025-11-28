@@ -95,6 +95,8 @@ class SoapAdapter implements contracts.SoapRequest {
       return responseBody[typeOfResult].toString();
     } else if (responseBody.toString().contains("sucesso")) {
       return responseBody["status"][typeOfResult];
+    } else if (responseBody.toString().toLowerCase().contains('ok')) {
+      return null; //only return that has worked
     }
     throw BsError('Estrutura da resposta inválida');
   }
