@@ -45,7 +45,7 @@ class DownloadStateController extends _$DownloadStateController {
           downloadType == DownloadType.xlsx) {
         final filePath = await ref
             .read(shareDownloadControllerProvider.notifier)
-            .shareOrDownload(
+            .download(
               FileProperties(
                 name: modelName,
                 bytes: response.first.Executions.first.Attachments

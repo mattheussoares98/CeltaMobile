@@ -9,6 +9,8 @@ import 'package:open_file_plus/open_file_plus.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/data/datasource/share_download/share_download.dart';
+import '../../../../../core/presentation/controllers/share_download/share_download.dart';
 import '../../../../../routing/routing.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
@@ -145,7 +147,7 @@ class _DefaultButton extends ConsumerWidget {
             onPressed: hasAttachment
                 ? null
                 : () async {
-                    if (!isMobilePlatform) {
+                    if (!isMobilePlatform && isXlsx) {
                       await showAlertDialog(
                         context: context,
                         title: 'Atenção'.hardcoded,
@@ -161,7 +163,6 @@ class _DefaultButton extends ConsumerWidget {
                           ).notifier,
                         )
                         .download(theme.platform, report.ReportModelName);
-                    // After successful download, open the dialog/file
                     if (isXlsx) {
                       _onTap(
                         context,
@@ -226,10 +227,18 @@ class _DefaultButton extends ConsumerWidget {
                     ),
                   ),
                 ),
-                if (!isMobilePlatform)
+                if (!isMobilePlatform && isXlsx)
                   InkWell(
                     onTap: () {
-                      //TODO share
+                      ref
+                          .read(shareDownloadControllerProvider.notifier)
+                          .share(
+                            FileProperties(
+                              name: report.ReportModelName,
+                              bytes: fileBytes,
+                              extension: DownloadType.xlsx.name,
+                            ),
+                          );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(Sizes.p4),

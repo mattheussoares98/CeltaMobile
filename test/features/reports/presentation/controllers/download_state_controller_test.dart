@@ -28,12 +28,13 @@ class FakeShareDownloadController extends ShareDownloadController {
   FakeShareDownloadController({required this.returnPath});
 
   @override
-  Future<String?> shareOrDownload(
-    FileProperties file,
-    TargetPlatform platform,
-  ) async {
+  Future<void> share(FileProperties file) async {
     _calledShareOrDownload = true;
+  }
 
+  @override
+  Future<String?> download(FileProperties file, TargetPlatform platform) async {
+    _calledShareOrDownload = true;
     return returnPath;
   }
 }
@@ -129,7 +130,7 @@ void main() {
 
     group('download', () {
       test(
-        'should call shareOrDownload and return file path on success (xlsx/desktop)',
+        'should call download and return file path on success (xlsx/desktop)',
         () async {
           // ARRANGE
           // 1. Mock repository to return the data with attachments
