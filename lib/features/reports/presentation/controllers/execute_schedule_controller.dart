@@ -8,12 +8,9 @@ part 'execute_schedule_controller.g.dart';
 @riverpod
 class ExecuteScheduleController extends _$ExecuteScheduleController {
   @override
-  FutureOr<void> build() {}
+  FutureOr<void> build(int reportScheduleCode) {}
 
-  Future<void> execute({
-    required bool sendEmailOnExecution,
-    required int reportScheduleCode,
-  }) async {
+  Future<void> execute(bool sendEmailOnExecution) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(

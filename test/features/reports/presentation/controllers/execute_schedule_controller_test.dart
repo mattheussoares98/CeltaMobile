@@ -84,17 +84,18 @@ void main() {
 
         final states = <AsyncValue<void>>[];
         container.listen(
-          executeScheduleControllerProvider,
+          executeScheduleControllerProvider(fakeReportScheduleCode),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(executeScheduleControllerProvider.notifier)
-            .execute(
-              reportScheduleCode: fakeReportScheduleCode,
-              sendEmailOnExecution: sendEmailOnExecution,
-            );
+            .read(
+              executeScheduleControllerProvider(
+                fakeReportScheduleCode,
+              ).notifier,
+            )
+            .execute(sendEmailOnExecution);
 
         // ASSERT
         // 1. Verify state changes (Loading -> Data)
@@ -127,17 +128,18 @@ void main() {
 
         final states = <AsyncValue<void>>[];
         container.listen(
-          executeScheduleControllerProvider,
+          executeScheduleControllerProvider(fakeReportScheduleCode),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(executeScheduleControllerProvider.notifier)
-            .execute(
-              reportScheduleCode: fakeReportScheduleCode,
-              sendEmailOnExecution: sendEmailOnExecution,
-            );
+            .read(
+              executeScheduleControllerProvider(
+                fakeReportScheduleCode,
+              ).notifier,
+            )
+            .execute(sendEmailOnExecution);
 
         // ASSERT
         // 1. Verify state transitions to Error
@@ -182,13 +184,14 @@ void main() {
 
       // ACT & ASSERT
       await container
-          .read(executeScheduleControllerProvider.notifier)
-          .execute(
-            reportScheduleCode: fakeReportScheduleCode,
-            sendEmailOnExecution: sendEmailOnExecution,
-          );
+          .read(
+            executeScheduleControllerProvider(fakeReportScheduleCode).notifier,
+          )
+          .execute(sendEmailOnExecution);
 
-      final finalState = container.read(executeScheduleControllerProvider);
+      final finalState = container.read(
+        executeScheduleControllerProvider(fakeReportScheduleCode),
+      );
       expect(finalState.hasError, isTrue);
     });
   });

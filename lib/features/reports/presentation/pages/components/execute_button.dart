@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../utils/utils.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
@@ -15,26 +16,38 @@ class ExecuteButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
+    ref.listen(executeScheduleControllerProvider(report.Code), (p, n) {
+      n.showAlertDialogOnError(context);
+      n.doOnSuccess(p, () {
+        showAlertDialog(
+          context: context,
+          title: 'Atenção!'.hardcoded,
+          content:
+              'O relatório está sendo gerado novamente.\n\nAlguns relatórios demoram para serem gerados. Por isso, aguarde alguns instantes e consulte os relatórios novamente para verificar se a data da última geração foi alterada'
+                  .hardcoded,
+        );
+      });
+    });
+
     return Row(
       children: [
         PrimaryButton(
-          text: 'Executar'.hardcoded,
+          text: 'Gerar'.hardcoded,
           isLoading: ref.watch(
-            executeScheduleControllerProvider.select((s) => s.isLoading),
+            executeScheduleControllerProvider(
+              report.Code,
+            ).select((s) => s.isLoading),
           ),
           onPressed: () async {
             bool? value = await showAlertDialog(
               context: context,
-              title: 'Enviar por e-mail?',
+              title: 'Enviar por e-mail?'.hardcoded,
               defaultActionText: 'Sim'.hardcoded,
               cancelActionText: 'Não'.hardcoded,
             );
             ref
-                .read(executeScheduleControllerProvider.notifier)
-                .execute(
-                  sendEmailOnExecution: value == true,
-                  reportScheduleCode: report.Code,
-                );
+                .read(executeScheduleControllerProvider(report.Code).notifier)
+                .execute(value == true);
           },
         ),
         if (report.LastExecutionDate != null)
@@ -42,7 +55,7 @@ class ExecuteButton extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text('Última execução'),
+                Text('Última geração'.hardcoded),
                 Text(
                   DateFormat(
                     'dd/MM/yyyy HH:mm',
