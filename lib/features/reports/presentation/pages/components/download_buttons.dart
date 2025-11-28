@@ -131,9 +131,10 @@ class _DefaultButton extends ConsumerWidget {
         false;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          flex: 5,
+          flex: isXlsx ? 3 : 2,
           child: PrimaryTextButton(
             color: downloadedLastExecution ? theme.disabledColor : null,
             textAlign: TextAlign.start,
@@ -189,88 +190,86 @@ class _DefaultButton extends ConsumerWidget {
             ),
           ),
         ],
-        Expanded(
-          flex: 6,
-          child: Consumer(
-            builder: (_, ref, _) {
-              if (!hasAttachment || fileBytes == null) {
-                return const SizedBox.shrink();
-              }
+        const Spacer(),
+        Consumer(
+          builder: (_, ref, _) {
+            if (!hasAttachment || fileBytes == null) {
+              return const SizedBox.shrink();
+            }
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  if (!isXlsx || !isMobilePlatform)
-                    InkWell(
-                      onTap: () => _onTap(
-                        context,
-                        fileBytes,
-                        isXlsx,
-                        report.ReportModelName,
-                        ref,
-                        false,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(Sizes.p4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            gapW4,
-                            Text(
-                              'Visualizar'.hardcoded,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.primaryColor,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                            gapW8,
-                            Icon(
-                              isIOS ? CupertinoIcons.eye : Icons.remove_red_eye,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (!isXlsx || !isMobilePlatform)
+                  InkWell(
+                    onTap: () => _onTap(
+                      context,
+                      fileBytes,
+                      isXlsx,
+                      report.ReportModelName,
+                      ref,
+                      false,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(Sizes.p4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          gapW4,
+                          Text(
+                            'Visualizar'.hardcoded,
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.primaryColor,
+                              fontStyle: FontStyle.italic,
                             ),
-                          ],
-                        ),
+                          ),
+                          gapW8,
+                          Icon(
+                            isIOS ? CupertinoIcons.eye : Icons.remove_red_eye,
+                            color: theme.primaryColor,
+                          ),
+                        ],
                       ),
                     ),
-                  if (isXlsx)
-                    InkWell(
-                      onTap: () {
-                        ref
-                            .read(shareDownloadControllerProvider.notifier)
-                            .share(
-                              FileProperties(
-                                name: report.ReportModelName,
-                                bytes: fileBytes,
-                                extension: DownloadType.xlsx.name,
-                              ),
-                            );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(Sizes.p4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            gapW4,
-                            Text(
-                              'Compartilhar'.hardcoded,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.primaryColor,
-                                fontStyle: FontStyle.italic,
-                              ),
+                  ),
+                if (isXlsx)
+                  InkWell(
+                    onTap: () {
+                      ref
+                          .read(shareDownloadControllerProvider.notifier)
+                          .share(
+                            FileProperties(
+                              name: report.ReportModelName,
+                              bytes: fileBytes,
+                              extension: DownloadType.xlsx.name,
                             ),
-                            gapW8,
-                            Icon(
-                              isIOS ? CupertinoIcons.share : Icons.share,
+                          );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(Sizes.p4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          gapW4,
+                          Text(
+                            'Compartilhar'.hardcoded,
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.primaryColor,
+                              fontStyle: FontStyle.italic,
                             ),
-                          ],
-                        ),
+                          ),
+                          gapW8,
+                          Icon(
+                            isIOS ? CupertinoIcons.share : Icons.share,
+                            color: theme.primaryColor,
+                          ),
+                        ],
                       ),
                     ),
-                ],
-              );
-            },
-          ),
+                  ),
+              ],
+            );
+          },
         ),
       ],
     );

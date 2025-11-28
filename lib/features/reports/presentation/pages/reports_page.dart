@@ -30,7 +30,7 @@ class ReportsPage extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Informations(report: report),
                         gapH8,
