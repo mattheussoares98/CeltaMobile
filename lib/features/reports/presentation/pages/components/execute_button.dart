@@ -30,30 +30,12 @@ class ExecuteButton extends ConsumerWidget {
     });
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        PrimaryButton(
-          text: 'Gerar'.hardcoded,
-          isLoading: ref.watch(
-            executeScheduleControllerProvider(
-              report.Code,
-            ).select((s) => s.isLoading),
-          ),
-          onPressed: () async {
-            bool? value = await showAlertDialog(
-              context: context,
-              title: 'Enviar por e-mail?'.hardcoded,
-              defaultActionText: 'Sim'.hardcoded,
-              cancelActionText: 'Não'.hardcoded,
-            );
-            ref
-                .read(executeScheduleControllerProvider(report.Code).notifier)
-                .execute(value == true);
-          },
-        ),
         if (report.LastExecutionDate != null)
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Última geração'.hardcoded),
                 Text(
@@ -65,6 +47,28 @@ class ExecuteButton extends ConsumerWidget {
               ],
             ),
           ),
+
+        Flexible(
+          child: PrimaryButton(
+            text: 'Gerar'.hardcoded,
+            isLoading: ref.watch(
+              executeScheduleControllerProvider(
+                report.Code,
+              ).select((s) => s.isLoading),
+            ),
+            onPressed: () async {
+              bool? value = await showAlertDialog(
+                context: context,
+                title: 'Enviar por e-mail?'.hardcoded,
+                defaultActionText: 'Sim'.hardcoded,
+                cancelActionText: 'Não'.hardcoded,
+              );
+              ref
+                  .read(executeScheduleControllerProvider(report.Code).notifier)
+                  .execute(value == true);
+            },
+          ),
+        ),
       ],
     );
   }
