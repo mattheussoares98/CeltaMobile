@@ -19,16 +19,14 @@ class CompleteDrawer extends ConsumerWidget {
 
     return Drawer(
       width: min(mediaQuery.size.width * 0.85, 400),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              //to put the exit button in the end
-              height: max(mediaQuery.size.height - exitHeight, exitHeight * 2),
+      child: Column(
+        children: [
+          const CeltaImage(),
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CeltaImage(),
                   DrawerItem(
                     message: userSession.value?.user.name ?? "",
                     materialIcon: Icons.person,
@@ -38,14 +36,15 @@ class CompleteDrawer extends ConsumerWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: exitHeight,
-              child: ExitDrawerItem(
-                logout: ref.read(userSessionProvider.notifier).logout,
-              ),
+          ),
+          Container(
+            height: exitHeight + mediaQuery.padding.bottom,
+            padding: EdgeInsets.only(bottom: mediaQuery.padding.bottom),
+            child: ExitDrawerItem(
+              logout: ref.read(userSessionProvider.notifier).logout,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
