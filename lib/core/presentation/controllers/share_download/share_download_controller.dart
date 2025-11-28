@@ -21,7 +21,7 @@ class ShareDownloadController extends _$ShareDownloadController {
     } else {
       return await ref
           .read(shareDownloadDatasourceProvider)
-          .download(file, kIsWeb);
+          .download(file, platform);
     }
   }
 }
