@@ -1,25 +1,34 @@
-import 'dart:io';
-
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../exceptions/exceptions.dart';
 import 'share_download.dart';
 
 class ShareDownloadDatasource implements IShareDownloadDatasource {
   @override
-  Future<String?> download(FileProperties file, bool isWeb) async {
+  Future<String?> download(FileProperties file, TargetPlatform platform) async {
     //TODO test if works in web platform
 
-    final tempDir =
-        await getDownloadsDirectory() ??
-        await getApplicationDocumentsDirectory();
+    if (platform != TargetPlatform.windows &&
+        platform != TargetPlatform.macOS &&
+        kIsWeb) {
+      throw AppException(
+        'Não deveria cair nesse trecho do código. Acione o suporte técnico'
+            .hardcoded,
+      );
+    }
 
-    await File(
-      '${tempDir.path}/${file.name}${file.extension ?? ''}',
-    ).writeAsBytes(file.bytes);
+    final response = await FilePicker.platform.getDirectoryPath();
 
-    return tempDir.path;
+    if (response == null) {
+      throw AppException(
+        'Você precisa selecionar uma pasta para salvar o arquivo'.hardcoded,
+      );
+    }
+
+    return response;
   }
 
   @override

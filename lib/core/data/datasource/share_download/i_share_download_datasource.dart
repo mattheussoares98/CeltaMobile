@@ -1,10 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class IShareDownloadDatasource {
   Future<void> share(FileProperties files);
-  Future<String?> download(FileProperties file, bool isWeb);
+  Future<String?> download(FileProperties file, TargetPlatform platform);
 }
 
 class FileProperties extends Equatable {
