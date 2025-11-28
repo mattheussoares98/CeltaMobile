@@ -134,7 +134,11 @@ class _DefaultButton extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          flex: isXlsx ? 3 : 2,
+          flex: downloadedLastExecution
+              ? isXlsx
+                    ? 3
+                    : 2
+              : 1,
           child: PrimaryTextButton(
             color: downloadedLastExecution ? theme.disabledColor : null,
             textAlign: TextAlign.start,
