@@ -55,7 +55,7 @@ class _DefaultButton extends ConsumerWidget {
     String modelName,
     WidgetRef ref,
     bool showDialog,
-  ) {
+  ) async {
     //TODO test this feature in all platforms
     if (isXlsx) {
       // Logic for opening the Excel file
@@ -77,7 +77,16 @@ class _DefaultButton extends ConsumerWidget {
             onOkPressed: () => OpenFile.open(filePath),
           );
         } else {
-          OpenFile.open(filePath);
+          final response = await OpenFile.open(filePath);
+          if (response.type == ResultType.error) {
+            showAlertDialog(
+              context: context,
+              title: 'Erro!'.hardcoded,
+              content:
+                  'Não foi possível abrir o arquivo. Confirme se você possui um aplicativo padrão instalado para abrir esse tipo de arquivos de planilha'
+                      .hardcoded,
+            );
+          }
         }
       }
     } else {
