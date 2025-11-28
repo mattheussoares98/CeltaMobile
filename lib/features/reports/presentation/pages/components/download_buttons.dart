@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,6 +47,19 @@ class _DefaultButton extends ConsumerWidget {
         ?.AttachmentBase64;
   }
 
+  void _openFile(BuildContext context, String filePath) async {
+    final response = await OpenFile.open(filePath);
+    if (response.type == ResultType.error) {
+      showAlertDialog(
+        context: context,
+        title: 'Erro!'.hardcoded,
+        content:
+            'Não foi possível abrir o arquivo. Confirme se você possui um aplicativo padrão instalado para abrir esse tipo de arquivos de planilha'
+                .hardcoded,
+      );
+    }
+  }
+
   void _onTap(
     BuildContext context,
     Uint8List? bytes,
@@ -75,19 +86,10 @@ class _DefaultButton extends ConsumerWidget {
             content: 'Planilha baixada em "$filePath"'.hardcoded,
             defaultActionText: 'Abrir arquivo'.hardcoded,
             cancelActionText: 'Ok'.hardcoded,
-            onOkPressed: () => OpenFile.open(filePath),
+            onOkPressed: () => _openFile(context, filePath),
           );
         } else {
-          final response = await OpenFile.open(filePath);
-          if (response.type == ResultType.error) {
-            showAlertDialog(
-              context: context,
-              title: 'Erro!'.hardcoded,
-              content:
-                  'Não foi possível abrir o arquivo. Confirme se você possui um aplicativo padrão instalado para abrir esse tipo de arquivos de planilha'
-                      .hardcoded,
-            );
-          }
+          _openFile(context, filePath);
         }
       }
     } else {
