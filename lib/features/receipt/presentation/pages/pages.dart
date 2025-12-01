@@ -1,0 +1,1 @@
+export 'receipts/receipts.dart';
