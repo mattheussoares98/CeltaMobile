@@ -39,18 +39,25 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
               receiptsStateControllerProvider(widget.enterpriseCode),
             ),
             data: (receipts) {
-              return ResponsiveListFlow(
-                itemCount: receipts.length,
-                itemBuilder: (_, index) {
-                  final receipt = receipts[index];
-
-                  return ReceiptItem(
-                    receipt: receipt,
-                    index: index,
-                    enterpriseCode: widget.enterpriseCode,
-                    observationsController: observationsController,
+              return RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(
+                    receiptsStateControllerProvider(widget.enterpriseCode),
                   );
                 },
+                child: ResponsiveListFlow(
+                  itemCount: receipts.length,
+                  itemBuilder: (_, index) {
+                    final receipt = receipts[index];
+
+                    return ReceiptItem(
+                      receipt: receipt,
+                      index: index,
+                      enterpriseCode: widget.enterpriseCode,
+                      observationsController: observationsController,
+                    );
+                  },
+                ),
               );
             },
           ),
