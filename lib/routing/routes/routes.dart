@@ -3,6 +3,7 @@ export 'buy_quotation/buy_quotation.dart';
 export 'competing_prices/competing_prices.dart';
 export 'expedition_conference/expedition_conference.dart';
 export 'inventory/inventory.dart';
+export 'receipts/receipts.dart';
 export 'sale_request/sale_request.dart';
 export 'transfer_request/transfer_request.dart';
 

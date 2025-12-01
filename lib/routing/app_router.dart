@@ -58,6 +58,7 @@ GoRouter goRouter(Ref ref) {
             destinyEnterprisesRoute([productsManagementRoute()]),
           ]),
         ]),
+        receiptsRoute([productsReceiptRoute()]),
         reportsRoute(),
         saleRequestRequestsTypesRoute([saleRequestRoute()]),
         searchProductsRoute(),
