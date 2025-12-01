@@ -29,29 +29,36 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
       receiptsStateControllerProvider(widget.enterpriseCode),
     );
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Recebimentos'.hardcoded)),
-      body: AsyncValueWidget(
-        value: asyncValue,
-        tryAgain: () => ref.invalidate(
-          receiptsStateControllerProvider(widget.enterpriseCode),
-        ),
-        data: (receipts) {
-          return ResponsiveListFlow(
-            itemCount: receipts.length,
-            itemBuilder: (_, index) {
-              final receipt = receipts[index];
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(title: Text('Recebimentos'.hardcoded)),
+          body: AsyncValueWidget(
+            value: asyncValue,
+            tryAgain: () => ref.invalidate(
+              receiptsStateControllerProvider(widget.enterpriseCode),
+            ),
+            data: (receipts) {
+              return ResponsiveListFlow(
+                itemCount: receipts.length,
+                itemBuilder: (_, index) {
+                  final receipt = receipts[index];
 
-              return ReceiptItem(
-                receipt: receipt,
-                index: index,
-                enterpriseCode: widget.enterpriseCode,
-                observationsController: observationsController,
+                  return ReceiptItem(
+                    receipt: receipt,
+                    index: index,
+                    enterpriseCode: widget.enterpriseCode,
+                    observationsController: observationsController,
+                  );
+                },
               );
             },
-          );
-        },
-      ),
+          ),
+        ),
+        LoadingPage(
+          providers: [selectedIndexUpdateCommnentStateControllerProvider],
+        ),
+      ],
     );
   }
 }

@@ -35,10 +35,11 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
     }
 
     ref
-        .read(receiptsStateControllerProvider(widget.enterpriseCode).notifier)
-        .updateObservationsLocally(
-          widget.observationsController.text,
-          widget.receipt.CodigoInterno_ProcRecebDoc,
+        .read(selectedIndexUpdateCommnentStateControllerProvider.notifier)
+        .updateObservations(
+          enterpriseCode: widget.enterpriseCode,
+          observations: widget.observationsController.text,
+          CodigoInterno_ProcRecebDoc: widget.receipt.CodigoInterno_ProcRecebDoc,
         );
   }
 
@@ -46,7 +47,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final selectedIndex = ref.watch(
-      selectedIndexUpdateCommnentStateControllerProvider,
+      selectedIndexUpdateCommnentStateControllerProvider.select((s) => s.value),
     );
 
     return Card(
