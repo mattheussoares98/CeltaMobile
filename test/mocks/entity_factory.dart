@@ -774,14 +774,17 @@ class EntityFactory {
     AttachmentBase64: Uint8List(faker.randomGenerator.integer(100)),
   );
 
-  static ReceiptEntity makeReceiptEntity() => ReceiptEntity(
-    CodigoInterno_ProcRecebDoc: faker.randomGenerator.integer(100),
-    CodigoInterno_Empresa: faker.randomGenerator.integer(100),
-    Numero_ProcRecebDoc: faker.randomGenerator.integer(100),
-    EmitterName: faker.company.name(),
-    Grupo: faker.company.name(),
-    Observacoes_ProcRecebDoc: faker.lorem.sentence(),
-    DefaultObservations: faker.lorem.sentence(),
-    status: Status.values[faker.randomGenerator.integer(Status.values.length)],
-  );
+  static ReceiptEntity makeReceiptEntity({int? CodigoInterno_ProcRecebDoc}) =>
+      ReceiptEntity(
+        CodigoInterno_ProcRecebDoc:
+            CodigoInterno_ProcRecebDoc ?? faker.randomGenerator.integer(100),
+        CodigoInterno_Empresa: faker.randomGenerator.integer(100),
+        Numero_ProcRecebDoc: faker.randomGenerator.integer(100),
+        EmitterName: faker.company.name(),
+        Grupo: faker.company.name(),
+        Observacoes_ProcRecebDoc: faker.lorem.sentence(),
+        DefaultObservations: faker.lorem.sentence(),
+        status:
+            Status.values[faker.randomGenerator.integer(Status.values.length)],
+      );
 }
