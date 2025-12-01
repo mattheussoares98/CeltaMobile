@@ -1,0 +1,20 @@
+import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../core/providers/soap/soap.dart';
+import 'data/datasource/datasource.dart';
+import 'domain/repository/repository.dart';
+
+part 'providers.g.dart';
+
+@riverpod
+ISoapLoadReceiptsDatasource soapLoadReceiptsDatasource(Ref ref) {
+  return SoapLoadReceiptsDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapLoadReceiptsRepository soapLoadReceiptsRepository(Ref ref) {
+  return SoapLoadReceiptsRepositoryImpl(
+    ref.watch(soapLoadReceiptsDatasourceProvider),
+  );
+}
