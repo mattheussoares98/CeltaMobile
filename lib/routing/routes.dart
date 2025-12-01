@@ -23,6 +23,7 @@ enum Routes {
   home('Home'),
   pdfViewer('Visualizador de PDF'),
   reports('Relatórios'),
+  receipt('Recebimento'),
   saleRequest('Pedido de vendas'),
   saleRequestRequestsTypes('Pedido de vendas'),
   searchProducts('Pesquisar produtos'),

@@ -64,10 +64,7 @@ class ModulesWidget extends ConsumerWidget {
         route: Routes.competingPricesResearchs,
         module: Modules.competingPrices,
       ),
-      const DefaultModuleButton(
-        route: Routes.competingPricesResearchs,
-        module: Modules.competingPrices,
-      ),
+      const DefaultModuleButton(route: Routes.receipt, module: Modules.receipt),
       const DefaultModuleButton(
         route: Routes.reports,
         module: Modules.reports,

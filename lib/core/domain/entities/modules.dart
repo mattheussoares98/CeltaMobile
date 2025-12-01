@@ -7,9 +7,10 @@ enum Modules {
   customerRegister,
   expeditionConference,
   inventory,
+  receipt,
+  reports,
   saleRequest,
+  searchProducts,
   transferBetweenStocks,
   transferRequest,
-  reports,
-  searchProducts,
 }
