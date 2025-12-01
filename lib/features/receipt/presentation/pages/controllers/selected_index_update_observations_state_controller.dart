@@ -4,11 +4,11 @@ import '../../../../../core/presentation/controllers/user_session/user_session.d
 import '../../../providers.dart';
 import 'controllers.dart';
 
-part 'selected_index_update_commnent_state_controller.g.dart';
+part 'selected_index_update_observations_state_controller.g.dart';
 
 @riverpod
-class SelectedIndexUpdateCommnentStateController
-    extends _$SelectedIndexUpdateCommnentStateController {
+class SelectedIndexUpdateObservationsStateController
+    extends _$SelectedIndexUpdateObservationsStateController {
   @override
   FutureOr<int?> build() async {
     return null;

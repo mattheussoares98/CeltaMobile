@@ -26,7 +26,8 @@ class CancelAndConfirmUpdateObservationButtons extends ConsumerWidget {
             onPressed: () {
               ref
                   .read(
-                    selectedIndexUpdateCommnentStateControllerProvider.notifier,
+                    selectedIndexUpdateObservationsStateControllerProvider
+                        .notifier,
                   )
                   .updateSelectedIndex(index);
 

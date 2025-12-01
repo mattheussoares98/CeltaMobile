@@ -56,7 +56,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
           ),
         ),
         LoadingPage(
-          providers: [selectedIndexUpdateCommnentStateControllerProvider],
+          providers: [selectedIndexUpdateObservationsStateControllerProvider],
         ),
       ],
     );

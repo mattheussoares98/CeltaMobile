@@ -90,7 +90,7 @@ void main() {
       // ARRANGE / ACT
       // Since build is synchronous, we read the current value (or default).
       final state = container.read(
-        selectedIndexUpdateCommnentStateControllerProvider,
+        selectedIndexUpdateObservationsStateControllerProvider,
       );
 
       // ASSERT
@@ -101,13 +101,13 @@ void main() {
       // ARRANGE
       final newIndex = faker.randomGenerator.integer(100);
       final notifier = container.read(
-        selectedIndexUpdateCommnentStateControllerProvider.notifier,
+        selectedIndexUpdateObservationsStateControllerProvider.notifier,
       );
 
       final states = <int?>[];
       // Listen to capture the state change
       container.listen(
-        selectedIndexUpdateCommnentStateControllerProvider,
+        selectedIndexUpdateObservationsStateControllerProvider,
         (_, next) => states.add(next.value),
       );
 
@@ -120,7 +120,7 @@ void main() {
 
       // 2. Verify the final state value
       expect(
-        container.read(selectedIndexUpdateCommnentStateControllerProvider),
+        container.read(selectedIndexUpdateObservationsStateControllerProvider),
         newIndex,
       );
     });
@@ -131,7 +131,7 @@ void main() {
         // ARRANGE
         const indexToToggle = 10;
         final notifier = container.read(
-          selectedIndexUpdateCommnentStateControllerProvider.notifier,
+          selectedIndexUpdateObservationsStateControllerProvider.notifier,
         );
 
         // Set the initial selection (pre-condition)
@@ -139,7 +139,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedIndexUpdateCommnentStateControllerProvider,
+          selectedIndexUpdateObservationsStateControllerProvider,
           (_, next) => states.add(next.value),
         );
 
@@ -150,7 +150,9 @@ void main() {
         // The state transitions from 10 back to null
         expect(states, [isNull]);
         expect(
-          container.read(selectedIndexUpdateCommnentStateControllerProvider),
+          container.read(
+            selectedIndexUpdateObservationsStateControllerProvider,
+          ),
           isNull,
         );
       },
@@ -163,7 +165,7 @@ void main() {
         const initialIndex = 1;
         const newIndex = 2;
         final notifier = container.read(
-          selectedIndexUpdateCommnentStateControllerProvider.notifier,
+          selectedIndexUpdateObservationsStateControllerProvider.notifier,
         );
 
         // Set initial selection
@@ -171,7 +173,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedIndexUpdateCommnentStateControllerProvider,
+          selectedIndexUpdateObservationsStateControllerProvider,
           (_, next) => states.add(next.value),
         );
 
@@ -182,7 +184,9 @@ void main() {
         // State transitions from 1 to 2
         expect(states, [newIndex]);
         expect(
-          container.read(selectedIndexUpdateCommnentStateControllerProvider),
+          container.read(
+            selectedIndexUpdateObservationsStateControllerProvider,
+          ),
           newIndex,
         );
       },
@@ -209,18 +213,20 @@ void main() {
           addTearDown(container.dispose);
 
           await container.read(
-            selectedIndexUpdateCommnentStateControllerProvider.future,
+            selectedIndexUpdateObservationsStateControllerProvider.future,
           );
 
           final states = <AsyncValue<void>>[];
           container.listen(
-            selectedIndexUpdateCommnentStateControllerProvider,
+            selectedIndexUpdateObservationsStateControllerProvider,
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(selectedIndexUpdateCommnentStateControllerProvider.notifier)
+              .read(
+                selectedIndexUpdateObservationsStateControllerProvider.notifier,
+              )
               .updateObservations(
                 enterpriseCode: fakeEnterpriseCode,
                 observations: fakeObservations,
@@ -253,18 +259,20 @@ void main() {
         addTearDown(container.dispose);
 
         await container.read(
-          selectedIndexUpdateCommnentStateControllerProvider.future,
+          selectedIndexUpdateObservationsStateControllerProvider.future,
         );
 
         final states = <AsyncValue<void>>[];
         container.listen(
-          selectedIndexUpdateCommnentStateControllerProvider,
+          selectedIndexUpdateObservationsStateControllerProvider,
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(selectedIndexUpdateCommnentStateControllerProvider.notifier)
+            .read(
+              selectedIndexUpdateObservationsStateControllerProvider.notifier,
+            )
             .updateObservations(
               enterpriseCode: fakeEnterpriseCode,
               observations: fakeObservations,

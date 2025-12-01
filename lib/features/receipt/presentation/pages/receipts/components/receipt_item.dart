@@ -35,7 +35,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
     }
 
     ref
-        .read(selectedIndexUpdateCommnentStateControllerProvider.notifier)
+        .read(selectedIndexUpdateObservationsStateControllerProvider.notifier)
         .updateObservations(
           enterpriseCode: widget.enterpriseCode,
           observations: widget.observationsController.text,
@@ -47,7 +47,9 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final selectedIndex = ref.watch(
-      selectedIndexUpdateCommnentStateControllerProvider.select((s) => s.value),
+      selectedIndexUpdateObservationsStateControllerProvider.select(
+        (s) => s.value,
+      ),
     );
 
     return Card(
