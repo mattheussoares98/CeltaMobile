@@ -10,7 +10,7 @@ class ReceiptModel extends Equatable {
   final String? Grupo;
   final String? Observacoes_ProcRecebDoc;
   final String? DefaultObservations;
-  final int Status;
+  final Status status;
 
   const ReceiptModel({
     required this.CodigoInterno_ProcRecebDoc,
@@ -20,7 +20,7 @@ class ReceiptModel extends Equatable {
     required this.Grupo,
     required this.Observacoes_ProcRecebDoc,
     required this.DefaultObservations,
-    required this.Status,
+    required this.status,
   });
 
   @override
@@ -32,7 +32,7 @@ class ReceiptModel extends Equatable {
     Grupo,
     Observacoes_ProcRecebDoc,
     DefaultObservations,
-    Status,
+    status,
   ];
 
   factory ReceiptModel.fromJson(Map map) => ReceiptModel(
@@ -41,7 +41,7 @@ class ReceiptModel extends Equatable {
     Numero_ProcRecebDoc: int.parse(map["Numero_ProcRecebDoc"]),
     EmitterName: map["EmitterName"],
     Grupo: map["Grupo"],
-    Status: int.parse(map["Status"]),
+    status: Status.fromCode(int.parse(map["Status"])),
     Observacoes_ProcRecebDoc: map["Observacoes_ProcRecebDoc"],
     DefaultObservations: map["DefaultObservations"],
   );
@@ -52,7 +52,7 @@ class ReceiptModel extends Equatable {
     "Numero_ProcRecebDoc": Numero_ProcRecebDoc.toString(),
     "EmitterName": EmitterName,
     "Grupo": Grupo,
-    "Status": Status.toString(),
+    "Status": status.codes.first.toString(),
     "Observacoes_ProcRecebDoc": Observacoes_ProcRecebDoc,
     "DefaultObservations": DefaultObservations,
   };
@@ -63,7 +63,7 @@ class ReceiptModel extends Equatable {
     Numero_ProcRecebDoc: entity.Numero_ProcRecebDoc,
     EmitterName: entity.EmitterName,
     Grupo: entity.Grupo,
-    Status: entity.Status,
+    status: entity.status,
     Observacoes_ProcRecebDoc: entity.Observacoes_ProcRecebDoc,
     DefaultObservations: entity.DefaultObservations,
   );
@@ -74,7 +74,7 @@ class ReceiptModel extends Equatable {
     Numero_ProcRecebDoc: Numero_ProcRecebDoc,
     EmitterName: EmitterName,
     Grupo: Grupo,
-    Status: Status,
+    status: status,
     Observacoes_ProcRecebDoc: Observacoes_ProcRecebDoc,
     DefaultObservations: DefaultObservations,
   );

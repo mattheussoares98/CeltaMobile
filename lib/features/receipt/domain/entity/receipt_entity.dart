@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'entity.dart';
+
 class ReceiptEntity extends Equatable {
   final int CodigoInterno_ProcRecebDoc;
   final int CodigoInterno_Empresa;
@@ -8,7 +10,7 @@ class ReceiptEntity extends Equatable {
   final String? Grupo;
   final String? Observacoes_ProcRecebDoc;
   final String? DefaultObservations;
-  final int Status;
+  final Status status;
 
   const ReceiptEntity({
     required this.CodigoInterno_ProcRecebDoc,
@@ -18,7 +20,7 @@ class ReceiptEntity extends Equatable {
     required this.Grupo,
     required this.Observacoes_ProcRecebDoc,
     required this.DefaultObservations,
-    required this.Status,
+    required this.status,
   });
 
   @override
@@ -30,6 +32,6 @@ class ReceiptEntity extends Equatable {
     Grupo,
     Observacoes_ProcRecebDoc,
     DefaultObservations,
-    Status,
+    status,
   ];
 }

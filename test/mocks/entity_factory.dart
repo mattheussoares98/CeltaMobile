@@ -782,6 +782,6 @@ class EntityFactory {
     Grupo: faker.company.name(),
     Observacoes_ProcRecebDoc: faker.lorem.sentence(),
     DefaultObservations: faker.lorem.sentence(),
-    Status: faker.randomGenerator.integer(100),
+    status: Status.values[faker.randomGenerator.integer(Status.values.length)],
   );
 }
