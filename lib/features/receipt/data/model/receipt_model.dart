@@ -5,7 +5,7 @@ import '../../domain/entity/entity.dart';
 class ReceiptModel extends Equatable {
   final int CodigoInterno_ProcRecebDoc;
   final int CodigoInterno_Empresa;
-  final String Numero_ProcRecebDoc;
+  final int Numero_ProcRecebDoc;
   final String? EmitterName;
   final String? Grupo;
   final String? Observacoes_ProcRecebDoc;
@@ -38,7 +38,7 @@ class ReceiptModel extends Equatable {
   factory ReceiptModel.fromJson(Map map) => ReceiptModel(
     CodigoInterno_ProcRecebDoc: int.parse(map["CodigoInterno_ProcRecebDoc"]),
     CodigoInterno_Empresa: int.parse(map["CodigoInterno_Empresa"]),
-    Numero_ProcRecebDoc: map["Numero_ProcRecebDoc"],
+    Numero_ProcRecebDoc: int.parse(map["Numero_ProcRecebDoc"]),
     EmitterName: map["EmitterName"],
     Grupo: map["Grupo"],
     Status: map["Status"],
@@ -47,9 +47,9 @@ class ReceiptModel extends Equatable {
   );
 
   Map<String, dynamic> toJson() => {
-    "CodigoInterno_ProcRecebDoc": CodigoInterno_ProcRecebDoc,
-    "CodigoInterno_Empresa": CodigoInterno_Empresa,
-    "Numero_ProcRecebDoc": Numero_ProcRecebDoc,
+    "CodigoInterno_ProcRecebDoc": CodigoInterno_ProcRecebDoc.toString(),
+    "CodigoInterno_Empresa": CodigoInterno_Empresa.toString(),
+    "Numero_ProcRecebDoc": Numero_ProcRecebDoc.toString(),
     "EmitterName": EmitterName,
     "Grupo": Grupo,
     "Status": Status,

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class ReceiptEntity extends Equatable {
   final int CodigoInterno_ProcRecebDoc;
   final int CodigoInterno_Empresa;
-  final String Numero_ProcRecebDoc;
+  final int Numero_ProcRecebDoc;
   final String? EmitterName;
   final String? Grupo;
   final String? Observacoes_ProcRecebDoc;

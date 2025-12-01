@@ -9,6 +9,7 @@ import 'package:celta_intelligence/features/customer_register/domain/entities/en
 import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/receipt/domain/entity/entity.dart';
 import 'package:celta_intelligence/features/reports/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
@@ -771,5 +772,16 @@ class EntityFactory {
   }) => AttachmentsEntity(
     FileExtension: downloadType?.name ?? faker.lorem.word(),
     AttachmentBase64: Uint8List(faker.randomGenerator.integer(100)),
+  );
+
+  static ReceiptEntity makeReceiptEntity() => ReceiptEntity(
+    CodigoInterno_ProcRecebDoc: faker.randomGenerator.integer(100),
+    CodigoInterno_Empresa: faker.randomGenerator.integer(100),
+    Numero_ProcRecebDoc: faker.randomGenerator.integer(100),
+    EmitterName: faker.company.name(),
+    Grupo: faker.company.name(),
+    Observacoes_ProcRecebDoc: faker.lorem.sentence(),
+    DefaultObservations: faker.lorem.sentence(),
+    Status: faker.randomGenerator.integer(100),
   );
 }
