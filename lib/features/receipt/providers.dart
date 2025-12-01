@@ -18,3 +18,8 @@ ISoapLoadReceiptsRepository soapLoadReceiptsRepository(Ref ref) {
     ref.watch(soapLoadReceiptsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapUpdateObservationsDatasource soapUpdateObservationsDatasource(Ref ref) {
+  return SoapUpdateObservationsDatasource(ref.watch(soapRequestProvider));
+}

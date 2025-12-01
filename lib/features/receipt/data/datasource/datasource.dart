@@ -1,2 +1,4 @@
 export 'i_soap_load_receipts_datasource.dart';
+export './i_soap_update_observations_datasource.dart';
 export './soap_load_receipts_datasource.dart';
+export './soap_update_observations_datasource.dart';
