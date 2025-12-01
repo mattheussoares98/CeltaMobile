@@ -81,21 +81,26 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                       title: 'Emitente'.hardcoded,
                       subTitle: widget.receipt.EmitterName,
                     ),
-                  if (selectedIndex != widget.index)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  if (selectedIndex != widget.index) ...[
+                    gapH4,
+                    Stack(
                       children: [
-                        Expanded(
-                          child: CurrentObservations(receipt: widget.receipt),
-                        ),
-                        ToggleUpdateObservationButton(
-                          receipt: widget.receipt,
-                          enterpriseCode: widget.enterpriseCode,
-                          index: widget.index,
-                          observationsController: widget.observationsController,
+                        gapH8,
+                        CurrentObservations(receipt: widget.receipt),
+                        Positioned(
+                          top: -5,
+                          right: 0,
+                          child: ToggleUpdateObservationButton(
+                            receipt: widget.receipt,
+                            enterpriseCode: widget.enterpriseCode,
+                            index: widget.index,
+                            observationsController:
+                                widget.observationsController,
+                          ),
                         ),
                       ],
                     ),
+                  ],
                 ],
               ),
             ),

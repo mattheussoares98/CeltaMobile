@@ -26,7 +26,7 @@ class ToggleUpdateObservationButton extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return PrimaryTextButton(
-      text: 'Alterar'.hardcoded,
+      text: 'Alterar obs'.hardcoded,
       isLoading: ref.watch(
         receiptsStateControllerProvider(
           enterpriseCode,
