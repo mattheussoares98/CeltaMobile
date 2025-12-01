@@ -41,7 +41,7 @@ class ReceiptModel extends Equatable {
     Numero_ProcRecebDoc: int.parse(map["Numero_ProcRecebDoc"]),
     EmitterName: map["EmitterName"],
     Grupo: map["Grupo"],
-    Status: map["Status"],
+    Status: int.parse(map["Status"]),
     Observacoes_ProcRecebDoc: map["Observacoes_ProcRecebDoc"],
     DefaultObservations: map["DefaultObservations"],
   );
@@ -52,7 +52,7 @@ class ReceiptModel extends Equatable {
     "Numero_ProcRecebDoc": Numero_ProcRecebDoc.toString(),
     "EmitterName": EmitterName,
     "Grupo": Grupo,
-    "Status": Status,
+    "Status": Status.toString(),
     "Observacoes_ProcRecebDoc": Observacoes_ProcRecebDoc,
     "DefaultObservations": DefaultObservations,
   };
