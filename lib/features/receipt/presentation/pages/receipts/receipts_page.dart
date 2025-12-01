@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,11 +14,16 @@ class ReceiptsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    final asyncValue = ref.watch(
+      receiptsStateControllerProvider(enterpriseCode),
+    );
 
     return Scaffold(
       appBar: AppBar(title: Text('Recebimentos'.hardcoded)),
       body: AsyncValueWidget(
-        value: ref.watch(receiptsStateControllerProvider(enterpriseCode)),
+        value: asyncValue,
         tryAgain: () =>
             ref.invalidate(receiptsStateControllerProvider(enterpriseCode)),
         data: (receipts) {
@@ -41,6 +47,13 @@ class ReceiptsPage extends ConsumerWidget {
                           title: 'Recebimento'.hardcoded,
                           subTitle: receipt.Numero_ProcRecebDoc.toString(),
                         ),
+                        TitleAndSubTitle(
+                          title: null,
+                          subTitle: receipt.status.description,
+                          subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                            color: receipt.status.color,
+                          ),
+                        ),
                         if (receipt.EmitterName != null)
                           TitleAndSubTitle(
                             title: 'Emitente'.hardcoded,
@@ -55,26 +68,34 @@ class ReceiptsPage extends ConsumerWidget {
                                 ?.replaceAll(RegExp(r'\\r\\'), '')
                                 .replaceAll(RegExp(r'\\n'), '\n')
                                 .replaceAll(RegExp(r'\\'), '');
-                            return TitleAndSubTitle(
-                              title:
-                                  receipt.Observacoes_ProcRecebDoc == null &&
-                                      receipt.DefaultObservations != null
-                                  ? 'Observação padrão'.hardcoded
-                                  : 'Observações',
-                              subTitle: observations == null
-                                  ? null
-                                  : '\n$observationsWithoutBreaklines',
-                              emptyMessage: 'Sem observações'.hardcoded,
-                              //TODO test in a enterprise that doesnt has default observations
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: TitleAndSubTitle(
+                                    title:
+                                        receipt.Observacoes_ProcRecebDoc ==
+                                                null &&
+                                            receipt.DefaultObservations != null
+                                        ? 'Observação padrão'.hardcoded
+                                        : 'Observações',
+                                    subTitle: observations == null
+                                        ? null
+                                        : '\n$observationsWithoutBreaklines',
+                                    emptyMessage: 'Sem observações'.hardcoded,
+                                    //TODO test in a enterprise that doesnt has default observations
+                                  ),
+                                ),
+                                PrimaryTextButton(
+                                  text: 'Alterar'.hardcoded,
+                                  isLoading: asyncValue.isLoading,
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    isIOS ? CupertinoIcons.pencil : Icons.edit,
+                                  ),
+                                ),
+                              ],
                             );
                           },
-                        ),
-                        TitleAndSubTitle(
-                          title: null,
-                          subTitle: receipt.status.description,
-                          subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                            color: receipt.status.color,
-                          ),
                         ),
                       ],
                     ),
