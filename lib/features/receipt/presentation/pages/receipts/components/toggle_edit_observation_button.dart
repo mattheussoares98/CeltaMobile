@@ -35,7 +35,7 @@ class ToggleUpdateObservationButton extends ConsumerWidget {
       onPressed: () {
         ref
             .read(selectedIndexUpdateCommnentStateControllerProvider.notifier)
-            .update(index);
+            .updateSelectedIndex(index);
 
         observationsController.text =
             (receipt.Observacoes_ProcRecebDoc ??

@@ -37,26 +37,12 @@ class ReceiptsStateController extends _$ReceiptsStateController {
         );
   }
 
-  Future<void> updateObservations(
+  Future<void> updateObservationsLocally(
     String observations,
     int CodigoInterno_ProcRecebDoc,
   ) async {
     if (state.value == null || state.value!.isEmpty) return;
-    state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.watch(
-        validatedUserSessionProvider.future,
-      );
-
-      await ref
-          .read(soapUpdateObservationsDatasourceProvider)
-          .update(
-            baseUrl: validatedUser!.enterprise!.baseUrl!,
-            crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
-            CodigoInterno_ProcRecebDoc: CodigoInterno_ProcRecebDoc,
-            observations: observations,
-          );
-
       final receiptIndex = state.value!.indexWhere(
         (e) => e.CodigoInterno_ProcRecebDoc == CodigoInterno_ProcRecebDoc,
       );

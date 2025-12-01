@@ -129,81 +129,76 @@ void main() {
   });
 
   group('ReceiptsStateController updateObservations', () {
-    test(
-      'should update local list optimistically and call remote datasource',
-      () async {
-        // ARRANGE
-        final newObservations = faker.lorem.sentence();
+    test('should update local list optimistically', () async {
+      // ARRANGE
+      final newObservations = faker.lorem.sentence();
 
-        // 1. Stub the LOAD method to return the initial list
-        when(
-          () => mockRepository.loadReceipts(
-            baseUrl: any(named: 'baseUrl'),
-            crossIdentity: any(named: 'crossIdentity'),
-            enterpriseCode: any(named: 'enterpriseCode'),
-          ),
-        ).thenAnswer((_) async => fakeReceipts);
+      // 1. Stub the LOAD method to return the initial list
+      when(
+        () => mockRepository.loadReceipts(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+        ),
+      ).thenAnswer((_) async => fakeReceipts);
 
-        // 2. Stub the UPDATE method to simulate success
-        when(
-          () => mockUpdateDatasource.update(
-            baseUrl: any(named: 'baseUrl'),
-            crossIdentity: any(named: 'crossIdentity'),
-            CodigoInterno_ProcRecebDoc: any(
-              named: 'CodigoInterno_ProcRecebDoc',
-            ),
-            observations: any(named: 'observations'),
-          ),
-        ).thenAnswer((_) async {});
+      // 2. Stub the UPDATE method to simulate success
+      when(
+        () => mockUpdateDatasource.update(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          CodigoInterno_ProcRecebDoc: any(named: 'CodigoInterno_ProcRecebDoc'),
+          observations: any(named: 'observations'),
+        ),
+      ).thenAnswer((_) async {});
 
-        final container = makeProviderContainer(session: fakeSession);
-        addTearDown(container.dispose);
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
 
-        // Wait for build to load initial state
-        await container.read(
-          receiptsStateControllerProvider(enterpriseCode).future,
-        );
+      // Wait for build to load initial state
+      await container.read(
+        receiptsStateControllerProvider(enterpriseCode).future,
+      );
 
-        final states = <AsyncValue<List<ReceiptEntity>>>[];
-        container.listen(
-          receiptsStateControllerProvider(enterpriseCode),
-          (_, next) => states.add(next),
-        );
+      final states = <AsyncValue<List<ReceiptEntity>>>[];
+      container.listen(
+        receiptsStateControllerProvider(enterpriseCode),
+        (_, next) => states.add(next),
+      );
 
-        // ACT
-        await container
-            .read(receiptsStateControllerProvider(enterpriseCode).notifier)
-            .updateObservations(newObservations, targetDocCode);
+      // ACT
+      await container
+          .read(receiptsStateControllerProvider(enterpriseCode).notifier)
+          .updateObservationsLocally(newObservations, targetDocCode);
 
-        // ASSERT
-        // 1. Check state transitions (Loading -> Data)
-        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+      // ASSERT
+      // 1. Check state transitions (Loading -> Data)
+      expect(states, [isA<AsyncData>()]);
 
-        // 2. Verify remote datasource was called
-        verify(
-          () => mockUpdateDatasource.update(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
-            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            CodigoInterno_ProcRecebDoc: targetDocCode,
-            observations: newObservations,
-          ),
-        ).called(1);
+      // 2. Verify remote datasource was called
+      verifyNever(
+        () => mockUpdateDatasource.update(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          CodigoInterno_ProcRecebDoc: any(named: 'CodigoInterno_ProcRecebDoc'),
+          observations: any(named: 'observations'),
+        ),
+      );
 
-        // 3. Verify local update (optimistic change)
-        final finalState = container
-            .read(receiptsStateControllerProvider(enterpriseCode))
-            .value!;
-        final updatedReceipt = finalState.firstWhere(
-          (e) => e.CodigoInterno_ProcRecebDoc == targetDocCode,
-        );
+      // 3. Verify local update (optimistic change)
+      final finalState = container
+          .read(receiptsStateControllerProvider(enterpriseCode))
+          .value!;
+      final updatedReceipt = finalState.firstWhere(
+        (e) => e.CodigoInterno_ProcRecebDoc == targetDocCode,
+      );
 
-        expect(updatedReceipt.Observacoes_ProcRecebDoc, newObservations);
-        expect(
-          finalState.length,
-          fakeReceipts.length,
-        ); // Ensure list size is preserved
-      },
-    );
+      expect(updatedReceipt.Observacoes_ProcRecebDoc, newObservations);
+      expect(
+        finalState.length,
+        fakeReceipts.length,
+      ); // Ensure list size is preserved
+    });
 
     test(
       'should return without saving if list is empty or null initially',
@@ -228,7 +223,7 @@ void main() {
         // ACT
         await container
             .read(receiptsStateControllerProvider(enterpriseCode).notifier)
-            .updateObservations('New Obs', targetDocCode);
+            .updateObservationsLocally('New Obs', targetDocCode);
 
         // ASSERT
         // 1. Verify remote datasource was never called
@@ -250,57 +245,5 @@ void main() {
         expect(finalState.value, isEmpty);
       },
     );
-
-    test('should emit [loading, error] if remote update fails', () async {
-      // ARRANGE
-      final exception = Exception('Update failed');
-      when(
-        () => mockRepository.loadReceipts(
-          baseUrl: any(named: 'baseUrl'),
-          crossIdentity: any(named: 'crossIdentity'),
-          enterpriseCode: any(named: 'enterpriseCode'),
-        ),
-      ).thenAnswer((_) async => fakeReceipts);
-      when(
-        () => mockUpdateDatasource.update(
-          baseUrl: any(named: 'baseUrl'),
-          crossIdentity: any(named: 'crossIdentity'),
-          CodigoInterno_ProcRecebDoc: any(named: 'CodigoInterno_ProcRecebDoc'),
-          observations: any(named: 'observations'),
-        ),
-      ).thenThrow(exception); // Remote fails
-
-      final container = makeProviderContainer(session: fakeSession);
-      addTearDown(container.dispose);
-      await container.read(
-        receiptsStateControllerProvider(enterpriseCode).future,
-      );
-
-      final states = <AsyncValue<List<ReceiptEntity>>>[];
-      container.listen(
-        receiptsStateControllerProvider(enterpriseCode),
-        (_, next) => states.add(next),
-      );
-
-      final initialObservations = fakeReceipts.first.Observacoes_ProcRecebDoc;
-
-      // ACT
-      await container
-          .read(receiptsStateControllerProvider(enterpriseCode).notifier)
-          .updateObservations('Test', targetDocCode);
-
-      // ASSERT
-      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-      expect(states.last.error, isA<Exception>());
-
-      // Verify that the list was NOT updated
-      final finalState = container.read(
-        receiptsStateControllerProvider(enterpriseCode),
-      );
-      expect(
-        initialObservations,
-        finalState.value!.first.Observacoes_ProcRecebDoc,
-      );
-    });
   });
 }

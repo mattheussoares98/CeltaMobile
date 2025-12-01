@@ -36,7 +36,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
 
     ref
         .read(receiptsStateControllerProvider(widget.enterpriseCode).notifier)
-        .updateObservations(
+        .updateObservationsLocally(
           widget.observationsController.text,
           widget.receipt.CodigoInterno_ProcRecebDoc,
         );
