@@ -11,7 +11,7 @@ enum Status {
   inProcessOfAuthorization("Em processo de autorização", Colors.blue, [4, 7]),
   awaitingMaintenanceOfProducts(
     "Aguardando manutenção de produtos",
-    Colors.amber,
+    Colors.purple,
     [5, 6],
   ),
   awaitingEntryLiberation("Aguardando liberação para entrada", Colors.black, [
