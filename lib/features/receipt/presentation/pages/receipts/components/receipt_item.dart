@@ -118,7 +118,9 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                       controller: widget.observationsController,
                       hintText: 'Nova observação'.hardcoded,
                       labelText: 'Nova observação'.hardcoded,
-                      validator: FormValidators.compose([NonEmptyValidator()]),
+                      validator: shouldInsertObservations
+                          ? FormValidators.compose([NonEmptyValidator()])
+                          : null,
                     ),
                   ),
                   gapH8,
