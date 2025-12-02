@@ -155,7 +155,7 @@ void main() {
   });
 
   test(
-    'should call soap adapter with correct values when buyRequestFilters is null',
+    'should call soap adapter with correct values when buyRequestParams is null',
     () async {
       final products = await sut.load(
         baseUrl: baseUrl,

@@ -37,16 +37,20 @@ class SelectedProductStateController extends _$SelectedProductStateController {
     );
     final enterpriseEntity = enterprises.first;
     final products = await ref
-        .read(soapProductsRepositoryProvider)
-        .getProductsJson(
+        .read(soapLoadProductsRepositoryProvider)
+        .load(
           baseUrl: userSession!.enterprise!.baseUrl!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
-          searchValue: plu,
-          routine: BsRoutine.adjustSalePrice,
-          searchType: SearchType.dynamic,
-          enterpriseCodes: [enterpriseCode],
           enterpriseEntity: enterpriseEntity,
-          lastBuyEntranceQuantity: null,
+          getProductsJsonParams: GetProductsJsonParams(
+            searchValue: plu,
+            routine: BsRoutine.adjustSalePrice,
+            searchType: SearchType.dynamic,
+            EnterpriseCodes: [enterpriseCode],
+            LastBuyEntranceQuantity: null,
+            buyRequestParams: null,
+            competingPricesParams: null,
+          ),
         );
 
     return products.first;

@@ -381,39 +381,27 @@ class LocalUserSessionDatasourceSpy extends Mock
 }
 
 class SoapProductsDatasourceSpy extends Mock
-    implements ISoapProductsDatasource {
+    implements ISoapGetProductsJsonDatasource {
   void mockGetProductsJson(List<ProductModel> response) {
     when(
-      () => this.getProductsJson(
-        baseUrl: any(named: "baseUrl"),
-        searchValue: any(named: "searchValue"),
-        routine: any(named: "routine"),
-        searchType: any(named: "searchType"),
-        crossIdentity: any(named: "crossIdentity"),
-        enterpriseCodes: any(named: "enterpriseCodes"),
-        enterpriseEntity: any(named: "enterpriseEntity"),
-        lastBuyEntranceQuantity: any(named: "lastBuyEntranceQuantity"),
-        buyRequestFilters: any(named: "buyRequestFilters"),
-        competingPricesFilters: any(named: "competingPricesFilters"),
+      () => this.get(
+        baseUrl: any(named: 'baseUrl'),
+        parametersPayload: any(named: 'parametersPayload'),
+        isCompetingPrices: any(named: 'isCompetingPrices'),
       ),
     ).thenAnswer((_) async => response);
   }
 }
 
 class SoapProductsRepositorySpy extends Mock
-    implements ISoapProductsRepository {
+    implements ISoapLoadProductsRepository {
   void mockGetProductsJson(List<ProductEntity> response) {
     when(
-      () => this.getProductsJson(
-        baseUrl: any(named: "baseUrl"),
-        searchValue: any(named: "searchValue"),
-        routine: any(named: "routine"),
-        searchType: any(named: "searchType"),
-        crossIdentity: any(named: "crossIdentity"),
-        enterpriseCodes: any(named: "enterpriseCodes"),
-        enterpriseEntity: any(named: "enterpriseEntity"),
-        lastBuyEntranceQuantity: any(named: "lastBuyEntranceQuantity"),
-        buyRequestFilters: any(named: "buyRequestFilters"),
+      () => this.load(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        enterpriseEntity: any(named: 'enterpriseEntity'),
+        getProductsJsonParams: any(named: 'getProductsJsonParams'),
       ),
     ).thenAnswer((_) async => response);
   }

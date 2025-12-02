@@ -86,11 +86,11 @@ void main() {
   }
 
   group('SelectedIndexUpdateCommnentStateController', () {
-    test('build should have an initial state of null', () {
+    test('build should have an initial state of null', () async {
       // ARRANGE / ACT
       // Since build is synchronous, we read the current value (or default).
-      final state = container.read(
-        selectedIndexUpdateObservationsStateControllerProvider,
+      final state = await container.read(
+        selectedIndexUpdateObservationsStateControllerProvider.future,
       );
 
       // ASSERT
@@ -120,7 +120,9 @@ void main() {
 
       // 2. Verify the final state value
       expect(
-        container.read(selectedIndexUpdateObservationsStateControllerProvider),
+        container
+            .read(selectedIndexUpdateObservationsStateControllerProvider)
+            .value,
         newIndex,
       );
     });
@@ -150,9 +152,9 @@ void main() {
         // The state transitions from 10 back to null
         expect(states, [isNull]);
         expect(
-          container.read(
-            selectedIndexUpdateObservationsStateControllerProvider,
-          ),
+          container
+              .read(selectedIndexUpdateObservationsStateControllerProvider)
+              .value,
           isNull,
         );
       },
@@ -184,9 +186,9 @@ void main() {
         // State transitions from 1 to 2
         expect(states, [newIndex]);
         expect(
-          container.read(
-            selectedIndexUpdateObservationsStateControllerProvider,
-          ),
+          container
+              .read(selectedIndexUpdateObservationsStateControllerProvider)
+              .value,
           newIndex,
         );
       },

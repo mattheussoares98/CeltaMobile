@@ -7,6 +7,7 @@ import 'package:celta_intelligence/features/sale_request/domain/repository/repos
 import 'package:celta_intelligence/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/sale_request/providers.dart';
 import 'package:faker/faker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -141,6 +142,7 @@ void main() {
               .addProduct(fakeProduct);
 
           expect(updated, isTrue);
+          debugPrint('updated: $updated');
 
           // ASSERT
           expect(states, contains(isA<AsyncLoading>()));
@@ -150,6 +152,7 @@ void main() {
             fakeProduct,
           );
           expect(states.last.value?.needProcessCart, isTrue);
+          debugPrint('needProcessCart: ${states.last.value?.needProcessCart}');
 
           // Verify that save was called with the new state
           final captured = verify(
@@ -160,7 +163,11 @@ void main() {
             captured.first.cart.containsKey(fakeProduct.ProductPackingCode),
             isTrue,
           );
+          debugPrint(
+            'contains: ${captured.first.cart.containsKey(fakeProduct.ProductPackingCode)}',
+          );
           expect(captured.first.needProcessCart, isTrue);
+          debugPrint('needProcessCart: ${captured.first.needProcessCart}');
         },
       );
       test(

@@ -6,7 +6,6 @@ import '../../../../../core/providers/products/products.dart';
 import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../features/settings/presentation/controllers/controllers.dart';
-import '../../../data/datasource/products/products.dart';
 import '../user_session/user_session.dart';
 
 part 'search_products_state_controller.g.dart';
@@ -40,8 +39,8 @@ class SearchProductsStateController extends _$SearchProductsStateController {
     required String searchValue,
     required List<int> enterpriseCodes,
     int? lastBuyEntranceQuantity = 5,
-    BuyRequestFilters? buyRequestFilters,
-    CompetingPricesFilters? competingPricesFilters,
+    BuyRequestParams? buyRequestParams,
+    CompetingPricesParams? competingPricesParams,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -60,18 +59,20 @@ class SearchProductsStateController extends _$SearchProductsStateController {
           settings?.searchPreference.searchType ?? SearchType.dynamic;
 
       final products = await ref
-          .read(soapProductsRepositoryProvider)
-          .getProductsJson(
+          .read(soapLoadProductsRepositoryProvider)
+          .load(
             baseUrl: baseUrl,
-            searchValue: searchValue,
             crossIdentity: crossIdentity,
-            routine: routine,
-            searchType: searchType,
-            enterpriseCodes: enterpriseCodes,
             enterpriseEntity: selectedEnterprise!,
-            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-            buyRequestFilters: buyRequestFilters,
-            competingPricesFilters: competingPricesFilters,
+            getProductsJsonParams: GetProductsJsonParams(
+              EnterpriseCodes: enterpriseCodes,
+              searchType: searchType,
+              routine: routine,
+              searchValue: searchValue,
+              LastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              buyRequestParams: buyRequestParams,
+              competingPricesParams: competingPricesParams,
+            ),
           );
 
       return products;

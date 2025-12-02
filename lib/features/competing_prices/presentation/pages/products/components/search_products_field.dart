@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/data/datasource/products/products.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../controllers/controllers.dart';
@@ -56,7 +55,7 @@ class SearchProductsField extends ConsumerWidget {
                   ? '%'
                   : searchValueController.text,
               enterpriseCodes: [widget.enterpriseCode],
-              competingPricesFilters: CompetingPricesFilters(
+              competingPricesParams: CompetingPricesParams(
                 ResearchOfPriceCode: widget.researchCode,
                 ConcurrentCode: widget.concurrentCode,
                 OnlyAssociated: restrictProducts,

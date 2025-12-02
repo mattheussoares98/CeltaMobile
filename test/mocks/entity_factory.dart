@@ -787,4 +787,31 @@ class EntityFactory {
         status:
             Status.values[faker.randomGenerator.integer(Status.values.length)],
       );
+
+  static GetProductsJsonParams makeGetProductsJsonParams() =>
+      GetProductsJsonParams(
+        EnterpriseCodes: [
+          faker.randomGenerator.integer(100),
+          faker.randomGenerator.integer(200, min: 101),
+          faker.randomGenerator.integer(300, min: 201),
+        ],
+        searchType: SearchType
+            .values[faker.randomGenerator.integer(SearchType.values.length)],
+        routine: BsRoutine
+            .values[faker.randomGenerator.integer(BsRoutine.values.length)],
+        searchValue: faker.lorem.word(),
+        LastBuyEntranceQuantity: faker.randomGenerator.integer(100),
+        buyRequestParams: BuyRequestParams(
+          requestTypeCode: faker.randomGenerator.integer(100),
+          supplierCode: faker.randomGenerator.integer(100),
+        ),
+        competingPricesParams: CompetingPricesParams(
+          ResearchOfPriceCode: faker.randomGenerator.integer(100),
+          ConcurrentCode: faker.randomGenerator.integer(100),
+          OnlyAssociated: faker.randomGenerator.boolean(),
+          searchType:
+              SearchProductCompetingPriceType.values[faker.randomGenerator
+                  .integer(SearchProductCompetingPriceType.values.length)],
+        ),
+      );
 }

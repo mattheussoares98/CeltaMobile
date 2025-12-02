@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/core/data/datasource/products/products.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
@@ -26,8 +25,8 @@ void main() {
   late BsRoutine bsRoutine;
   late List<ProductEntity> productsEntities;
   late Modules module;
-  late BuyRequestFilters? buyRequestFilters;
-  late CompetingPricesFilters? competingPricesFilters;
+  late BuyRequestParams? buyRequestParams;
+  late CompetingPricesParams? competingPricesParams;
 
   setUpAll(() {
     for (var routine in BsRoutine.values) {
@@ -57,14 +56,14 @@ void main() {
     ];
     module =
         Modules.values[faker.randomGenerator.integer(Modules.values.length)];
-    buyRequestFilters = faker.randomGenerator.boolean() == true
-        ? BuyRequestFilters(
+    buyRequestParams = faker.randomGenerator.boolean() == true
+        ? BuyRequestParams(
             requestTypeCode: faker.randomGenerator.integer(100),
             supplierCode: faker.randomGenerator.integer(100),
           )
         : null;
-    competingPricesFilters = faker.randomGenerator.boolean()
-        ? CompetingPricesFilters(
+    competingPricesParams = faker.randomGenerator.boolean()
+        ? CompetingPricesParams(
             ResearchOfPriceCode: faker.randomGenerator.integer(100),
             ConcurrentCode: faker.randomGenerator.integer(100),
             OnlyAssociated: faker.randomGenerator.boolean(),
@@ -103,6 +102,8 @@ void main() {
     for (var value in SearchProductCompetingPriceType.values) {
       registerFallbackValue(value);
     }
+
+    registerFallbackValue(EntityFactory.makeGetProductsJsonParams());
   });
 
   ProviderContainer makeProviderContainer({
@@ -113,7 +114,7 @@ void main() {
   }) {
     final container = ProviderContainer(
       overrides: [
-        soapProductsRepositoryProvider.overrideWithValue(sut),
+        soapLoadProductsRepositoryProvider.overrideWithValue(sut),
         if (mockSession == true)
           validatedUserSessionProvider.overrideWith(
             () => FakeValidatedUserSession(
@@ -175,7 +176,7 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCodes: [enterpriseEntity.Code!],
-            buyRequestFilters: buyRequestFilters,
+            buyRequestParams: buyRequestParams,
           );
 
       expect(states, [
@@ -183,17 +184,19 @@ void main() {
         isA<AsyncData<List<ProductEntity>>>(),
       ]);
       verify(
-        () => sut.getProductsJson(
-          competingPricesFilters: competingPricesFilters,
-          lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+        () => sut.load(
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
-          searchValue: searchValue,
-          routine: bsRoutine,
-          searchType: appSettingsEntity.searchPreference.searchType,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
-          enterpriseCodes: [enterpriseEntity.Code!],
           enterpriseEntity: enterpriseEntity,
-          buyRequestFilters: buyRequestFilters,
+          getProductsJsonParams: GetProductsJsonParams(
+            EnterpriseCodes: [enterpriseEntity.Code!],
+            searchType: appSettingsEntity.searchPreference.searchType,
+            routine: bsRoutine,
+            searchValue: searchValue,
+            LastBuyEntranceQuantity: lastBuyEntranceQuantity,
+            buyRequestParams: buyRequestParams,
+            competingPricesParams: competingPricesParams,
+          ),
         ),
       ).called(1);
     });
@@ -230,22 +233,16 @@ void main() {
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             searchValue: searchValue,
             enterpriseCodes: [enterpriseEntity.Code!],
-            buyRequestFilters: buyRequestFilters,
+            buyRequestParams: buyRequestParams,
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
-        () => sut.getProductsJson(
-          competingPricesFilters: competingPricesFilters,
-          lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
-          searchValue: searchValue,
-          routine: bsRoutine,
-          searchType: appSettingsEntity.searchPreference.searchType,
-          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
-          enterpriseCodes: [enterpriseEntity.Code!],
-          enterpriseEntity: enterpriseEntity,
-          buyRequestFilters: buyRequestFilters,
+        () => sut.load(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseEntity: any(named: 'enterpriseEntity'),
+          getProductsJsonParams: any(named: 'getProductsJsonParams'),
         ),
       );
     });
@@ -287,16 +284,11 @@ void main() {
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
-        () => sut.getProductsJson(
-          competingPricesFilters: competingPricesFilters,
-          lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
-          searchValue: searchValue,
-          routine: bsRoutine,
-          searchType: appSettingsEntity.searchPreference.searchType,
-          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
-          enterpriseCodes: [enterpriseEntity.Code!],
-          enterpriseEntity: enterpriseEntity,
+        () => sut.load(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseEntity: any(named: 'enterpriseEntity'),
+          getProductsJsonParams: any(named: 'getProductsJsonParams'),
         ),
       );
     });

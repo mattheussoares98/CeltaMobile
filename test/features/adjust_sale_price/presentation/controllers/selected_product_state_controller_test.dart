@@ -33,12 +33,13 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeEnterpriseEntity());
+    registerFallbackValue(EntityFactory.makeGetProductsJsonParams());
   });
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
       overrides: [
-        soapProductsRepositoryProvider.overrideWithValue(
+        soapLoadProductsRepositoryProvider.overrideWithValue(
           mockSoapProductsRepository,
         ),
         validatedUserSessionProvider.overrideWith(
@@ -88,15 +89,11 @@ void main() {
         );
 
         verify(
-          () => mockSoapProductsRepository.getProductsJson(
+          () => mockSoapProductsRepository.load(
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
-            searchValue: any(named: 'searchValue'),
-            routine: any(named: 'routine'),
-            searchType: any(named: 'searchType'),
-            enterpriseCodes: any(named: 'enterpriseCodes'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
-            lastBuyEntranceQuantity: any(named: 'lastBuyEntranceQuantity'),
+            getProductsJsonParams: any(named: 'getProductsJsonParams'),
           ),
         ).called(1);
       },
@@ -126,15 +123,19 @@ void main() {
         expect(states.last.value, productEntity);
 
         verify(
-          () => mockSoapProductsRepository.getProductsJson(
+          () => mockSoapProductsRepository.load(
             baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
-            searchValue: productEntity.PLU!,
-            routine: BsRoutine.adjustSalePrice,
-            searchType: SearchType.dynamic,
-            enterpriseCodes: [enterpriseCode],
-            enterpriseEntity: userSessionEntity.supabaseEnterprise!,
-            lastBuyEntranceQuantity: null,
             crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
+            enterpriseEntity: userSessionEntity.supabaseEnterprise!,
+            getProductsJsonParams: GetProductsJsonParams(
+              EnterpriseCodes: [enterpriseCode],
+              searchType: SearchType.dynamic,
+              routine: BsRoutine.adjustSalePrice,
+              searchValue: productEntity.PLU!,
+              LastBuyEntranceQuantity: null,
+              buyRequestParams: null,
+              competingPricesParams: null,
+            ),
           ),
         ).called(1);
       },

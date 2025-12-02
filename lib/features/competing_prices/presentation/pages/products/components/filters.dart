@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/data/datasource/products/products.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../localization/string_hardcoded.dart';
@@ -122,7 +121,7 @@ class Filters extends ConsumerWidget {
                       .loadProducts(
                         searchValue: '%',
                         enterpriseCodes: [widget.enterpriseCode],
-                        competingPricesFilters: CompetingPricesFilters(
+                        competingPricesParams: CompetingPricesParams(
                           ResearchOfPriceCode: widget.researchCode,
                           ConcurrentCode: widget.concurrentCode,
                           OnlyAssociated: restrictProducts,
