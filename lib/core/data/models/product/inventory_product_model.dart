@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/data/models/models.dart';
-import '../../domain/entities/entities.dart';
+import '../models.dart';
+import '../../../domain/entities/entities.dart';
 
-//TODO move to core path
+//TODO create different folders here and in entities to separate inventory, params and getJson
 class InventoryProductModel extends Equatable implements ProductModelType {
   final String productName;
   final int codigoInternoProEmb;

@@ -2,6 +2,7 @@ import 'package:celta_intelligence/features/inventory/presentation/controllers/i
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../domain/entities/entities.dart';

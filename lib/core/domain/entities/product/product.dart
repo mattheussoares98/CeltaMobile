@@ -3,6 +3,7 @@ export 'competing_prices_params.dart';
 export './get_products_default_params.dart';
 export './get_products_inventory_params.dart';
 export './get_products_json_params.dart';
+export './inventory_product_entity.dart';
 export './last_buy_entrance_entity.dart';
 export './price_cost_entity.dart';
 export './product_entity_type.dart';

@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/domain/entities/entities.dart';
+import '../entities.dart';
 
 class InventoryProductEntity extends Equatable implements ProductEntityType {
-  //TODO move to core path
   final String productName;
   final int codigoInternoProEmb;
   final String plu;

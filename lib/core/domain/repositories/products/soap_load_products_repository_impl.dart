@@ -1,4 +1,3 @@
-import '../../../../features/inventory/domain/entities/entities.dart';
 import '../../../data/datasource/products/products.dart';
 import '../../entities/entities.dart';
 import 'products.dart';

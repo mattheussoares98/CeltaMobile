@@ -46,7 +46,6 @@ import 'package:celta_intelligence/features/expedition_conference/data/datasourc
 import 'package:celta_intelligence/features/expedition_conference/data/models/models.dart';
 import 'package:celta_intelligence/features/inventory/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/inventory/data/models/models.dart';
-import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/inventory/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/search_products/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';

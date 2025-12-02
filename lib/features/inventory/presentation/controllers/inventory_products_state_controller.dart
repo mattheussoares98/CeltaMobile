@@ -6,7 +6,6 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../settings/presentation/controllers/controllers.dart';
-import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
 part 'inventory_products_state_controller.g.dart';

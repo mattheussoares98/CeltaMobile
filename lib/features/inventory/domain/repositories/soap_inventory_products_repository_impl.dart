@@ -2,7 +2,7 @@ import 'package:celta_intelligence/core/domain/entities/enterprise/enterprise_en
 
 import 'package:celta_intelligence/core/domain/entities/product/search_type.dart';
 
-import 'package:celta_intelligence/features/inventory/domain/entities/inventory_product_entity.dart';
+import 'package:celta_intelligence/core/domain/entities/product/inventory_product_entity.dart';
 
 import '../../data/datasource/datasource.dart';
 import 'repositories.dart';

@@ -1,8 +1,9 @@
+import '../../../../core/data/models/models.dart';
 import '../../../../core/domain/entities/entities.dart';
-import '../models/models.dart';
 
 abstract class ISoapInventoryProductsDatasource {
   Future<List<InventoryProductModel>> load({
+    //TODO delete this datasource
     required String baseUrl,
     required String searchValue,
     required int codigoInternoInventario,
