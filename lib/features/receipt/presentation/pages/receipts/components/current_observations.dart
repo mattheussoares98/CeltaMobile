@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../localization/string_hardcoded.dart';
@@ -17,12 +17,20 @@ class CurrentObservations extends StatelessWidget {
         .replaceAll(RegExp(r'\\n'), '\n')
         .replaceAll(RegExp(r'\\'), '');
 
+    final theme = Theme.of(context);
+
     return TitleAndSubTitle(
       title:
           (receipt.Observacoes_ProcRecebDoc == null &&
               receipt.DefaultObservations != null
           ? 'Observação padrão'.hardcoded
           : 'Observações'),
+      titleStyle: theme.textTheme.bodyMedium?.copyWith(
+        fontStyle: FontStyle.italic,
+      ),
+      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+        fontStyle: FontStyle.italic,
+      ),
       subTitle: observations == null
           ? null
           : '\n$observationsWithoutBreaklines',

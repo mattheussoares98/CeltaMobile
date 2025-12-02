@@ -56,53 +56,47 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          InkWell(
-            onTap: () {
-              //TODO navigate to products page
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(Sizes.p8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TitleAndSubTitle(
-                    title: 'Recebimento'.hardcoded,
-                    subTitle: widget.receipt.Numero_ProcRecebDoc.toString(),
+          Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TitleAndSubTitle(
+                  title: 'Recebimento'.hardcoded,
+                  subTitle: widget.receipt.Numero_ProcRecebDoc.toString(),
+                ),
+                TitleAndSubTitle(
+                  title: null,
+                  subTitle: widget.receipt.status.description,
+                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                    color: widget.receipt.status.color,
                   ),
+                ),
+                if (widget.receipt.EmitterName != null)
                   TitleAndSubTitle(
-                    title: null,
-                    subTitle: widget.receipt.status.description,
-                    subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                      color: widget.receipt.status.color,
-                    ),
+                    title: 'Emitente'.hardcoded,
+                    subTitle: widget.receipt.EmitterName,
                   ),
-                  if (widget.receipt.EmitterName != null)
-                    TitleAndSubTitle(
-                      title: 'Emitente'.hardcoded,
-                      subTitle: widget.receipt.EmitterName,
-                    ),
-                  if (selectedIndex != widget.index) ...[
-                    gapH4,
-                    Stack(
-                      children: [
-                        gapH8,
-                        CurrentObservations(receipt: widget.receipt),
-                        Positioned(
-                          top: -5,
-                          right: 0,
-                          child: ToggleUpdateObservationButton(
-                            receipt: widget.receipt,
-                            enterpriseCode: widget.enterpriseCode,
-                            index: widget.index,
-                            observationsController:
-                                widget.observationsController,
-                          ),
+                if (selectedIndex != widget.index) ...[
+                  gapH4,
+                  Stack(
+                    children: [
+                      gapH8,
+                      CurrentObservations(receipt: widget.receipt),
+                      Positioned(
+                        top: -5,
+                        right: 0,
+                        child: ToggleUpdateObservationButton(
+                          receipt: widget.receipt,
+                          enterpriseCode: widget.enterpriseCode,
+                          index: widget.index,
+                          observationsController: widget.observationsController,
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ],
-              ),
+              ],
             ),
           ),
           if (selectedIndex == widget.index) ...[
@@ -130,11 +124,22 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: Sizes.p8),
-              child: Divider(),
-            ),
           ],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
+            child: Column(
+              children: [
+                const Divider(height: Sizes.p24, thickness: 2),
+                Row(
+                  children: [
+                    Expanded(child: PrimaryButton(text: 'Liberar'.hardcoded)),
+                    gapW8,
+                    Expanded(child: PrimaryButton(text: 'Conferir'.hardcoded)),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
