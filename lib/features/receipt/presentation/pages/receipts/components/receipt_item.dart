@@ -147,14 +147,9 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                     ),
                   )
                 else
-                  Row(
-                    children: [
-                      Expanded(child: PrimaryButton(text: 'Liberar'.hardcoded)),
-                      gapW8,
-                      Expanded(
-                        child: PrimaryButton(text: 'Conferir'.hardcoded),
-                      ),
-                    ],
+                  LiberateAndConferButtons(
+                    receipt: widget.receipt,
+                    enterpriseCode: widget.enterpriseCode,
                   ),
               ],
             ),
