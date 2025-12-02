@@ -52,6 +52,12 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
       ),
     );
 
+    final shouldInsertObservations =
+        widget.receipt.DefaultObservations != null &&
+        widget.receipt.DefaultObservations!.isNotEmpty &&
+        (widget.receipt.Observacoes_ProcRecebDoc == null ||
+            widget.receipt.Observacoes_ProcRecebDoc!.isEmpty);
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -130,13 +136,24 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
             child: Column(
               children: [
                 const Divider(height: Sizes.p24, thickness: 2),
-                Row(
-                  children: [
-                    Expanded(child: PrimaryButton(text: 'Liberar'.hardcoded)),
-                    gapW8,
-                    Expanded(child: PrimaryButton(text: 'Conferir'.hardcoded)),
-                  ],
-                ),
+                if (shouldInsertObservations)
+                  Text(
+                    'Observação pendente'.hardcoded,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.red,
+                    ),
+                  )
+                else
+                  Row(
+                    children: [
+                      Expanded(child: PrimaryButton(text: 'Liberar'.hardcoded)),
+                      gapW8,
+                      Expanded(
+                        child: PrimaryButton(text: 'Conferir'.hardcoded),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
