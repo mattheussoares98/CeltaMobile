@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -16,11 +17,13 @@ class ReceiptsPage extends ConsumerStatefulWidget {
 
 class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
   final observationsController = TextEditingController();
+  final filterReceiptController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     observationsController.dispose();
+    filterReceiptController.dispose();
   }
 
   @override
@@ -45,18 +48,57 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
                     receiptsStateControllerProvider(widget.enterpriseCode),
                   );
                 },
-                child: ResponsiveListFlow(
-                  itemCount: receipts.length,
-                  itemBuilder: (_, index) {
-                    final receipt = receipts[index];
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(Sizes.p4),
+                      child: DefaultTextFormField(
+                        controller: filterReceiptController,
+                        hintText: 'Número|Emitente|Status|Observação'.hardcoded,
+                        labelText: 'Filtrar'.hardcoded,
+                      ),
+                    ),
+                    Expanded(
+                      child: AnimatedBuilder(
+                        animation: filterReceiptController,
+                        builder: (_, _) {
+                          final lowerCaseController = filterReceiptController
+                              .text
+                              .toLowerCase();
+                          final filteredReceipts = receipts
+                              .where(
+                                (e) =>
+                                    e.Numero_ProcRecebDoc.toString().contains(
+                                      lowerCaseController,
+                                    ) ||
+                                    e.status.description.toLowerCase().contains(
+                                      lowerCaseController,
+                                    ) ||
+                                    e.Observacoes_ProcRecebDoc.toString()
+                                        .toLowerCase()
+                                        .contains(lowerCaseController) ||
+                                    e.EmitterName.toString()
+                                        .toLowerCase()
+                                        .contains(lowerCaseController),
+                              )
+                              .toList();
+                          return ResponsiveListFlow(
+                            itemCount: filteredReceipts.length,
+                            itemBuilder: (_, index) {
+                              final receipt = filteredReceipts[index];
 
-                    return ReceiptItem(
-                      receipt: receipt,
-                      index: index,
-                      enterpriseCode: widget.enterpriseCode,
-                      observationsController: observationsController,
-                    );
-                  },
+                              return ReceiptItem(
+                                receipt: receipt,
+                                index: index,
+                                enterpriseCode: widget.enterpriseCode,
+                                observationsController: observationsController,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
