@@ -27,7 +27,10 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
                 getProductsJsonParams.competingPricesParams != null,
           )
           .then((products) {
-            return products.map((e) => e.toEntity()).toList();
+            return products
+                .map((e) => e.toEntity())
+                .toList()
+                .cast<ProductEntity>();
           });
     } catch (e) {
       if (!_isBalanceFormat(getProductsJsonParams.searchValue)) {
@@ -48,7 +51,10 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
               getProductsJsonParams.competingPricesParams != null,
         )
         .then((products) {
-          return products.map((e) => e.toEntity()).toList();
+          return products
+              .map((e) => e.toEntity())
+              .toList()
+              .cast<ProductEntity>();
         });
   }
 

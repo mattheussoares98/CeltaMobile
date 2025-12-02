@@ -1,8 +1,6 @@
-import '../../../domain/entities/entities.dart';
-
-abstract interface class ProductModelType {
+abstract interface class ProductModelType<T> {
   Map<String, dynamic> toJson();
-  ProductEntity toEntity();
+  T toEntity();
   // ProductModelType fromJson(Map json);
   // ProductModelType fromEntity(ProductEntity product);
 }

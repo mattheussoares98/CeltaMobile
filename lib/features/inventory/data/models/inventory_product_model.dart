@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/data/datasource/products/products.dart';
 import '../../domain/entities/entities.dart';
 
-class InventoryProductModel extends Equatable {
+class InventoryProductModel extends Equatable implements ProductModelType {
   final String productName;
   final int codigoInternoProEmb;
   final String plu;
@@ -36,6 +37,7 @@ class InventoryProductModel extends Equatable {
     ),
   );
 
+  @override
   Map<String, dynamic> toJson() => <String, dynamic>{
     'Nome_Produto': productName,
     'CodigoInterno_ProEmb': codigoInternoProEmb.toString(),
@@ -53,6 +55,7 @@ class InventoryProductModel extends Equatable {
         quantidadeInvContProEmb: entity.quantidadeInvContProEmb,
       );
 
+  @override
   InventoryProductEntity toEntity() => InventoryProductEntity(
     productName: productName,
     codigoInternoProEmb: codigoInternoProEmb,
