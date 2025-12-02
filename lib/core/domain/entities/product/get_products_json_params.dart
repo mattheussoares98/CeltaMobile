@@ -1,22 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:equatable/equatable.dart';
 
 import '../entities.dart';
 
-class GetProductsJsonParams extends Equatable {
+class GetProductsJsonParams extends GetProductsDefaultParams {
   final List<int> EnterpriseCodes;
-  final SearchType searchType;
   final BsRoutine routine;
-  final String searchValue;
   final int? LastBuyEntranceQuantity;
   final BuyRequestParams? buyRequestParams;
   final CompetingPricesParams? competingPricesParams;
 
   const GetProductsJsonParams({
+    required super.searchType,
+    required super.searchValue,
     required this.EnterpriseCodes,
-    required this.searchType,
     required this.routine,
-    required this.searchValue,
     required this.LastBuyEntranceQuantity,
     required this.buyRequestParams,
     required this.competingPricesParams,

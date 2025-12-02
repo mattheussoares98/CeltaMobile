@@ -1,16 +1,12 @@
-import 'package:equatable/equatable.dart';
-
 import '../entities.dart';
 
-class GetProductsInventoryParams extends Equatable {
-  final int searchValue;
-  final SearchType searchType;
+class GetProductsInventoryParams extends GetProductsDefaultParams {
   final int inventoryProcessCode;
   final int inventoryCountingCode;
 
   const GetProductsInventoryParams({
-    required this.searchValue,
-    required this.searchType,
+    required super.searchValue,
+    required super.searchType,
     required this.inventoryProcessCode,
     required this.inventoryCountingCode,
   });
