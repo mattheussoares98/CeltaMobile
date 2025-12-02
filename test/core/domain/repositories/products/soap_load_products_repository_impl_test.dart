@@ -2,6 +2,8 @@ import 'package:celta_intelligence/core/data/datasource/products/products.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/domain/repositories/products/products.dart';
+import 'package:celta_intelligence/features/inventory/data/models/models.dart';
+import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -27,33 +29,63 @@ class SoapGetProductsJsonDatasourceSpy extends Mock
   }
 }
 
+class SoapInventoryLoadProductsDatasourceSpy extends Mock
+    implements ISoapInventoryLoadProductsDatasource {
+  void mockGetInventoryProducts(List<InventoryProductModel> response) {
+    _mockCall().thenAnswer((_) async => response);
+  }
+
+  When _mockCall() => when(
+    () => this.get(
+      baseUrl: any(named: 'baseUrl'),
+      parametersPayload: any(named: 'parametersPayload'),
+    ),
+  );
+
+  void mockError() {
+    _mockCall().thenThrow(Exception());
+  }
+}
+
 void main() {
   late ISoapLoadProductsRepository sut;
 
   late SoapGetProductsJsonDatasourceSpy soapProductsDatasource;
+  late SoapInventoryLoadProductsDatasourceSpy soapInventoryDatasource;
 
-  late List<ProductEntity> productsEntities;
+  late List<ProductEntity> jsonProductsEntities;
+  late List<InventoryProductEntity> inventoryProductsEntities;
   late String baseUrl;
   late String crossIdentity;
   late EnterpriseEntity enterpriseEntity;
   late GetProductsJsonParams getProductsJsonParams;
+  late GetProductsInventoryParams getProductsInventoryParams;
 
   void initSut() {
-    sut = SoapLoadProductsRepositoryImpl(soapProductsDatasource);
+    sut = SoapLoadProductsRepositoryImpl(
+      soapProductsDatasource,
+      soapInventoryDatasource,
+    );
   }
 
   void initInjections() {
     soapProductsDatasource = SoapGetProductsJsonDatasourceSpy();
+    soapInventoryDatasource = SoapInventoryLoadProductsDatasourceSpy();
   }
 
   void mockSuccess() {
     soapProductsDatasource.mockGetProductsJson(
-      productsEntities.map((e) => ProductModel.fromEntity(e)).toList(),
+      jsonProductsEntities.map((e) => ProductModel.fromEntity(e)).toList(),
+    );
+    soapInventoryDatasource.mockGetInventoryProducts(
+      inventoryProductsEntities
+          .map((e) => InventoryProductModel.fromEntity(e))
+          .toList(),
     );
   }
 
   void initEntities() {
-    productsEntities = [
+    jsonProductsEntities = [
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
@@ -86,6 +118,18 @@ void main() {
     );
     crossIdentity = faker.guid.guid();
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
+    getProductsInventoryParams = GetProductsInventoryParams(
+      searchValue: faker.lorem.word(),
+      searchType: SearchType
+          .values[faker.randomGenerator.integer(SearchType.values.length)],
+      inventoryProcessCode: faker.randomGenerator.integer(100),
+      inventoryCountingCode: faker.randomGenerator.integer(100),
+    );
+    inventoryProductsEntities = [
+      EntityFactory.makeInventoryProductEntity(),
+      EntityFactory.makeInventoryProductEntity(),
+      EntityFactory.makeInventoryProductEntity(),
+    ];
   }
 
   setUp(() {
@@ -107,106 +151,21 @@ void main() {
     registerFallbackValue(EntityFactory.makeEnterpriseEntity());
   });
 
-  test("Should behave correctly when pass all params", () async {
-    final response = await sut.load(
-      baseUrl: baseUrl,
-      crossIdentity: crossIdentity,
-      enterpriseEntity: enterpriseEntity,
-      getProductsDefaultParams: getProductsJsonParams,
-    );
-
-    expect(response, productsEntities);
-
-    verify(
-      () => soapProductsDatasource.get(
-        baseUrl: baseUrl,
-        isCompetingPrices: true,
-        parametersPayload: {
-          "CrossIdentity": crossIdentity,
-          "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
-          "SearchValue": getProductsJsonParams.searchValue,
-          "SearchType": getProductsJsonParams.searchType.code,
-          "RoutineInt": getProductsJsonParams.routine.code,
-          "LastBuyEntranceQuantity":
-              getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
-          "RequestTypeCode":
-              getProductsJsonParams.buyRequestParams!.requestTypeCode,
-          "SupplierCode": getProductsJsonParams.buyRequestParams!.supplierCode,
-          "SearchTypeInt": getProductsJsonParams.searchType.code,
-          "ResearchOfPriceFilters": {
-            "ResearchOfPriceCode": getProductsJsonParams
-                .competingPricesParams!
-                .ResearchOfPriceCode,
-            "ConcurrentCode":
-                getProductsJsonParams.competingPricesParams!.ConcurrentCode,
-            "OnlyAssociated":
-                getProductsJsonParams.competingPricesParams!.OnlyAssociated,
-            "InformedPrices":
-                getProductsJsonParams.competingPricesParams!.searchType.code,
-          },
-        },
-      ),
-    ).called(1);
-  });
-  test("Should behave correctly when doesnt pass buyRequestParams", () async {
-    final response = await sut.load(
-      baseUrl: baseUrl,
-      crossIdentity: crossIdentity,
-      enterpriseEntity: enterpriseEntity,
-      getProductsDefaultParams: getProductsJsonParams.annulValues(
-        buyRequestParams: true,
-      ),
-    );
-
-    expect(response, productsEntities);
-
-    verify(
-      () => soapProductsDatasource.get(
-        baseUrl: baseUrl,
-        isCompetingPrices: true,
-        parametersPayload: {
-          "CrossIdentity": crossIdentity,
-          "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
-          "SearchValue": getProductsJsonParams.searchValue,
-          "SearchType": getProductsJsonParams.searchType.code,
-          "RoutineInt": getProductsJsonParams.routine.code,
-          "LastBuyEntranceQuantity":
-              getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
-          "SearchTypeInt": getProductsJsonParams.searchType.code,
-          "ResearchOfPriceFilters": {
-            "ResearchOfPriceCode": getProductsJsonParams
-                .competingPricesParams!
-                .ResearchOfPriceCode,
-            "ConcurrentCode":
-                getProductsJsonParams.competingPricesParams!.ConcurrentCode,
-            "OnlyAssociated":
-                getProductsJsonParams.competingPricesParams!.OnlyAssociated,
-            "InformedPrices":
-                getProductsJsonParams.competingPricesParams!.searchType.code,
-          },
-        },
-      ),
-    ).called(1);
-  });
-
-  test(
-    "Should behave correctly when doesnt pass competingPricesParams",
-    () async {
+  group("Products json datasource", () {
+    test("Should behave correctly when pass all params", () async {
       final response = await sut.load(
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
-        getProductsDefaultParams: getProductsJsonParams.annulValues(
-          competingPricesParams: true,
-        ),
+        getProductsDefaultParams: getProductsJsonParams,
       );
 
-      expect(response, productsEntities);
+      expect(response, jsonProductsEntities);
 
       verify(
         () => soapProductsDatasource.get(
           baseUrl: baseUrl,
-          isCompetingPrices: false,
+          isCompetingPrices: true,
           parametersPayload: {
             "CrossIdentity": crossIdentity,
             "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
@@ -219,104 +178,287 @@ void main() {
                 getProductsJsonParams.buyRequestParams!.requestTypeCode,
             "SupplierCode":
                 getProductsJsonParams.buyRequestParams!.supplierCode,
+            "SearchTypeInt": getProductsJsonParams.searchType.code,
+            "ResearchOfPriceFilters": {
+              "ResearchOfPriceCode": getProductsJsonParams
+                  .competingPricesParams!
+                  .ResearchOfPriceCode,
+              "ConcurrentCode":
+                  getProductsJsonParams.competingPricesParams!.ConcurrentCode,
+              "OnlyAssociated":
+                  getProductsJsonParams.competingPricesParams!.OnlyAssociated,
+              "InformedPrices":
+                  getProductsJsonParams.competingPricesParams!.searchType.code,
+            },
           },
         ),
       ).called(1);
-    },
-  );
+    });
+    test("Should behave correctly when doesnt pass buyRequestParams", () async {
+      final response = await sut.load(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        enterpriseEntity: enterpriseEntity,
+        getProductsDefaultParams: getProductsJsonParams.annulValues(
+          buyRequestParams: true,
+        ),
+      );
 
-  test(
-    "Should search again when is balance code and fails the first time",
-    () async {
-      soapProductsDatasource.mockError();
+      expect(response, jsonProductsEntities);
 
-      const balanceEan = '2000000000000';
+      verify(
+        () => soapProductsDatasource.get(
+          baseUrl: baseUrl,
+          isCompetingPrices: true,
+          parametersPayload: {
+            "CrossIdentity": crossIdentity,
+            "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+            "SearchValue": getProductsJsonParams.searchValue,
+            "SearchType": getProductsJsonParams.searchType.code,
+            "RoutineInt": getProductsJsonParams.routine.code,
+            "LastBuyEntranceQuantity":
+                getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+            "SearchTypeInt": getProductsJsonParams.searchType.code,
+            "ResearchOfPriceFilters": {
+              "ResearchOfPriceCode": getProductsJsonParams
+                  .competingPricesParams!
+                  .ResearchOfPriceCode,
+              "ConcurrentCode":
+                  getProductsJsonParams.competingPricesParams!.ConcurrentCode,
+              "OnlyAssociated":
+                  getProductsJsonParams.competingPricesParams!.OnlyAssociated,
+              "InformedPrices":
+                  getProductsJsonParams.competingPricesParams!.searchType.code,
+            },
+          },
+        ),
+      ).called(1);
+    });
 
-      try {
+    test(
+      "Should behave correctly when doesnt pass competingPricesParams",
+      () async {
         final response = await sut.load(
           baseUrl: baseUrl,
           crossIdentity: crossIdentity,
           enterpriseEntity: enterpriseEntity,
-          getProductsDefaultParams: getProductsJsonParams.copyWith(
-            searchValue: balanceEan,
+          getProductsDefaultParams: getProductsJsonParams.annulValues(
+            competingPricesParams: true,
           ),
         );
 
-        expect(response, Exception());
-      } catch (e) {
-        // ignore
-      }
+        expect(response, jsonProductsEntities);
+
+        verify(
+          () => soapProductsDatasource.get(
+            baseUrl: baseUrl,
+            isCompetingPrices: false,
+            parametersPayload: {
+              "CrossIdentity": crossIdentity,
+              "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+              "SearchValue": getProductsJsonParams.searchValue,
+              "SearchType": getProductsJsonParams.searchType.code,
+              "RoutineInt": getProductsJsonParams.routine.code,
+              "LastBuyEntranceQuantity":
+                  getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+              "RequestTypeCode":
+                  getProductsJsonParams.buyRequestParams!.requestTypeCode,
+              "SupplierCode":
+                  getProductsJsonParams.buyRequestParams!.supplierCode,
+            },
+          ),
+        ).called(1);
+      },
+    );
+
+    test(
+      "Should search again when is balance code and fails the first time",
+      () async {
+        soapProductsDatasource.mockError();
+
+        const balanceEan = '2000000000000';
+
+        try {
+          final response = await sut.load(
+            baseUrl: baseUrl,
+            crossIdentity: crossIdentity,
+            enterpriseEntity: enterpriseEntity,
+            getProductsDefaultParams: getProductsJsonParams.copyWith(
+              searchValue: balanceEan,
+            ),
+          );
+
+          expect(response, Exception());
+        } catch (e) {
+          // ignore
+        }
+
+        verify(
+          () => soapProductsDatasource.get(
+            baseUrl: baseUrl,
+            isCompetingPrices: true,
+            parametersPayload: {
+              "CrossIdentity": crossIdentity,
+              "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+              "SearchValue": balanceEan,
+              "SearchType": getProductsJsonParams.searchType.code,
+              "RoutineInt": getProductsJsonParams.routine.code,
+              "LastBuyEntranceQuantity":
+                  getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+              "RequestTypeCode":
+                  getProductsJsonParams.buyRequestParams!.requestTypeCode,
+              "SupplierCode":
+                  getProductsJsonParams.buyRequestParams!.supplierCode,
+              "SearchTypeInt": getProductsJsonParams.searchType.code,
+              "ResearchOfPriceFilters": {
+                "ResearchOfPriceCode": getProductsJsonParams
+                    .competingPricesParams!
+                    .ResearchOfPriceCode,
+                "ConcurrentCode":
+                    getProductsJsonParams.competingPricesParams!.ConcurrentCode,
+                "OnlyAssociated":
+                    getProductsJsonParams.competingPricesParams!.OnlyAssociated,
+                "InformedPrices": getProductsJsonParams
+                    .competingPricesParams!
+                    .searchType
+                    .code,
+              },
+            },
+          ),
+        ).called(1);
+        verify(
+          () => soapProductsDatasource.get(
+            baseUrl: baseUrl,
+            isCompetingPrices: true,
+            parametersPayload: {
+              "CrossIdentity": crossIdentity,
+              "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+              "SearchValue": balanceEan
+                  .replaceFirst(RegExp(r'2'), '')
+                  .replaceRange(
+                    enterpriseEntity.ProductCodeSizeOfBalanceLabel!,
+                    null,
+                    enterpriseEntity.ProductCodeWithCheckerDigit == true
+                        ? ""
+                        : ".",
+                  ),
+              "SearchType": getProductsJsonParams.searchType.code,
+              "RoutineInt": getProductsJsonParams.routine.code,
+              "LastBuyEntranceQuantity":
+                  getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+              "RequestTypeCode":
+                  getProductsJsonParams.buyRequestParams!.requestTypeCode,
+              "SupplierCode":
+                  getProductsJsonParams.buyRequestParams!.supplierCode,
+              "SearchTypeInt": getProductsJsonParams.searchType.code,
+              "ResearchOfPriceFilters": {
+                "ResearchOfPriceCode": getProductsJsonParams
+                    .competingPricesParams!
+                    .ResearchOfPriceCode,
+                "ConcurrentCode":
+                    getProductsJsonParams.competingPricesParams!.ConcurrentCode,
+                "OnlyAssociated":
+                    getProductsJsonParams.competingPricesParams!.OnlyAssociated,
+                "InformedPrices": getProductsJsonParams
+                    .competingPricesParams!
+                    .searchType
+                    .code,
+              },
+            },
+          ),
+        ).called(1);
+      },
+    );
+  });
+  group("Products inventory datasource", () {
+    test("Should behave correctly when pass all params", () async {
+      final response = await sut.load(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        enterpriseEntity: enterpriseEntity,
+        getProductsDefaultParams: getProductsInventoryParams,
+      );
+
+      expect(response, inventoryProductsEntities);
 
       verify(
-        () => soapProductsDatasource.get(
+        () => soapInventoryDatasource.get(
           baseUrl: baseUrl,
-          isCompetingPrices: true,
           parametersPayload: {
             "CrossIdentity": crossIdentity,
-            "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
-            "SearchValue": balanceEan,
-            "SearchType": getProductsJsonParams.searchType.code,
-            "RoutineInt": getProductsJsonParams.routine.code,
-            "LastBuyEntranceQuantity":
-                getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
-            "RequestTypeCode":
-                getProductsJsonParams.buyRequestParams!.requestTypeCode,
-            "SupplierCode":
-                getProductsJsonParams.buyRequestParams!.supplierCode,
-            "SearchTypeInt": getProductsJsonParams.searchType.code,
-            "ResearchOfPriceFilters": {
-              "ResearchOfPriceCode": getProductsJsonParams
-                  .competingPricesParams!
-                  .ResearchOfPriceCode,
-              "ConcurrentCode":
-                  getProductsJsonParams.competingPricesParams!.ConcurrentCode,
-              "OnlyAssociated":
-                  getProductsJsonParams.competingPricesParams!.OnlyAssociated,
-              "InformedPrices":
-                  getProductsJsonParams.competingPricesParams!.searchType.code,
-            },
+            "enterpriseCode": enterpriseEntity.Code,
+            "searchValue": getProductsInventoryParams.searchValue,
+            "searchTypeInt": getProductsInventoryParams.searchType.code,
+            "inventoryProcessCode":
+                getProductsInventoryParams.inventoryProcessCode,
+            "inventoryCountingCode":
+                getProductsInventoryParams.inventoryCountingCode,
           },
         ),
       ).called(1);
-      verify(
-        () => soapProductsDatasource.get(
-          baseUrl: baseUrl,
-          isCompetingPrices: true,
-          parametersPayload: {
-            "CrossIdentity": crossIdentity,
-            "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
-            "SearchValue": balanceEan
-                .replaceFirst(RegExp(r'2'), '')
-                .replaceRange(
-                  enterpriseEntity.ProductCodeSizeOfBalanceLabel!,
-                  null,
-                  enterpriseEntity.ProductCodeWithCheckerDigit == true
-                      ? ""
-                      : ".",
-                ),
-            "SearchType": getProductsJsonParams.searchType.code,
-            "RoutineInt": getProductsJsonParams.routine.code,
-            "LastBuyEntranceQuantity":
-                getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
-            "RequestTypeCode":
-                getProductsJsonParams.buyRequestParams!.requestTypeCode,
-            "SupplierCode":
-                getProductsJsonParams.buyRequestParams!.supplierCode,
-            "SearchTypeInt": getProductsJsonParams.searchType.code,
-            "ResearchOfPriceFilters": {
-              "ResearchOfPriceCode": getProductsJsonParams
-                  .competingPricesParams!
-                  .ResearchOfPriceCode,
-              "ConcurrentCode":
-                  getProductsJsonParams.competingPricesParams!.ConcurrentCode,
-              "OnlyAssociated":
-                  getProductsJsonParams.competingPricesParams!.OnlyAssociated,
-              "InformedPrices":
-                  getProductsJsonParams.competingPricesParams!.searchType.code,
+    });
+
+    test(
+      "Should search again when is balance code and fails the first time",
+      () async {
+        soapInventoryDatasource.mockError();
+
+        const balanceEan = '2000000000000';
+
+        try {
+          final response = await sut.load(
+            baseUrl: baseUrl,
+            crossIdentity: crossIdentity,
+            enterpriseEntity: enterpriseEntity,
+            getProductsDefaultParams: getProductsInventoryParams.copyWith(
+              searchValue: balanceEan,
+            ),
+          );
+
+          expect(response, Exception());
+        } catch (e) {
+          // ignore
+        }
+
+        verify(
+          () => soapInventoryDatasource.get(
+            baseUrl: baseUrl,
+            parametersPayload: {
+              "CrossIdentity": crossIdentity,
+              "enterpriseCode": enterpriseEntity.Code,
+              "searchValue": balanceEan,
+              "searchTypeInt": getProductsInventoryParams.searchType.code,
+              "inventoryProcessCode":
+                  getProductsInventoryParams.inventoryProcessCode,
+              "inventoryCountingCode":
+                  getProductsInventoryParams.inventoryCountingCode,
             },
-          },
-        ),
-      ).called(1);
-    },
-  );
+          ),
+        ).called(1);
+        verify(
+          () => soapInventoryDatasource.get(
+            baseUrl: baseUrl,
+            parametersPayload: {
+              "CrossIdentity": crossIdentity,
+              "enterpriseCode": enterpriseEntity.Code,
+              "searchValue": balanceEan
+                  .replaceFirst(RegExp(r'2'), '')
+                  .replaceRange(
+                    enterpriseEntity.ProductCodeSizeOfBalanceLabel!,
+                    null,
+                    enterpriseEntity.ProductCodeWithCheckerDigit == true
+                        ? ""
+                        : ".",
+                  ),
+              "searchTypeInt": getProductsInventoryParams.searchType.code,
+              "inventoryProcessCode":
+                  getProductsInventoryParams.inventoryProcessCode,
+              "inventoryCountingCode":
+                  getProductsInventoryParams.inventoryCountingCode,
+            },
+          ),
+        ).called(1);
+      },
+    );
+  });
 }

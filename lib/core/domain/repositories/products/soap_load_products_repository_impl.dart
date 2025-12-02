@@ -1,10 +1,16 @@
+import '../../../../features/inventory/domain/entities/entities.dart';
 import '../../../data/datasource/products/products.dart';
 import '../../entities/entities.dart';
 import 'products.dart';
 
 class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
   final ISoapGetProductsJsonDatasource soapGetProductsJsonDatasource;
-  SoapLoadProductsRepositoryImpl(this.soapGetProductsJsonDatasource);
+  final ISoapInventoryLoadProductsDatasource
+  soapInventoryLoadProductsDatasource;
+  SoapLoadProductsRepositoryImpl(
+    this.soapGetProductsJsonDatasource,
+    this.soapInventoryLoadProductsDatasource,
+  );
 
   @override
   Future<List<ProductEntityType>> load({
@@ -63,8 +69,22 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
                 .cast<ProductEntity>();
           });
     } else {
-      //TODO call inventory datasource
-      return [];
+      return await soapInventoryLoadProductsDatasource
+          .get(
+            baseUrl: baseUrl,
+            parametersPayload: _getParams(
+              crossIdentity: crossIdentity,
+              getProductsDefaultParams: getProductsDefaultParams,
+              enterpriseEntity: enterpriseEntity,
+              extractBalanceCode: extractBalanceCode,
+            ),
+          )
+          .then((products) {
+            return products
+                .map((e) => e.toEntity())
+                .toList()
+                .cast<InventoryProductEntity>();
+          });
     }
   }
 
@@ -91,16 +111,17 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     required bool extractBalanceCode,
   }) {
     final Map<String, dynamic> parameters = {"CrossIdentity": crossIdentity};
+    final searchValue = extractBalanceCode
+        ? _extractPluFromEan(
+            searchValue: getProductsDefaultParams.searchValue,
+            enterprise: enterpriseEntity,
+          )
+        : getProductsDefaultParams.searchValue;
 
     if (getProductsDefaultParams is GetProductsJsonParams) {
       parameters.addAll({
         "EnterpriseCodes": getProductsDefaultParams.EnterpriseCodes,
-        "SearchValue": extractBalanceCode
-            ? _extractPluFromEan(
-                searchValue: getProductsDefaultParams.searchValue,
-                enterprise: enterpriseEntity,
-              )
-            : getProductsDefaultParams.searchValue,
+        "SearchValue": searchValue,
         "SearchType": getProductsDefaultParams.searchType.code,
         "RoutineInt": getProductsDefaultParams.routine.code,
         "LastBuyEntranceQuantity":
@@ -131,6 +152,14 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
           },
         });
       }
+    } else if (getProductsDefaultParams is GetProductsInventoryParams) {
+      parameters.addAll({
+        "enterpriseCode": enterpriseEntity.Code,
+        "searchValue": searchValue,
+        "searchTypeInt": getProductsDefaultParams.searchType.code,
+        "inventoryProcessCode": getProductsDefaultParams.inventoryProcessCode,
+        "inventoryCountingCode": getProductsDefaultParams.inventoryCountingCode,
+      });
     }
     return parameters;
   }

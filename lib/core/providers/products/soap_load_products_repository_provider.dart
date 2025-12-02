@@ -10,5 +10,6 @@ part 'soap_load_products_repository_provider.g.dart';
 ISoapLoadProductsRepository soapLoadProductsRepository(Ref ref) {
   return SoapLoadProductsRepositoryImpl(
     ref.watch(soapGetProductsJsonDatasourceProvider),
+    ref.watch(soapInventoryLoadProductsDatasourceProvider),
   );
 }
