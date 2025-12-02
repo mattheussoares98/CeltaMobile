@@ -143,7 +143,9 @@ class _DefaultButton extends ConsumerWidget {
             color: downloadedLastExecution ? theme.disabledColor : null,
             textAlign: TextAlign.start,
             text: hasAttachment
-                ? (isXlsx ? 'Planilha baixada' : 'PDF baixado')
+                ? (isXlsx
+                      ? 'Planilha baixada'.hardcoded
+                      : 'PDF baixado'.hardcoded)
                 : (isXlsx
                       ? 'Baixar planilha'.hardcoded
                       : 'Baixar PDF'.hardcoded),
