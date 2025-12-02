@@ -1,5 +1,6 @@
 import '../../../../features/inventory/data/models/models.dart';
 import '../../../domain/contracts/contracts.dart';
+import '../../models/models.dart';
 import 'products.dart';
 
 class SoapInventoryLoadProductsDatasource

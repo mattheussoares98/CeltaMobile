@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/data/datasource/products/products.dart';
+import '../../../../core/data/models/models.dart';
 import '../../domain/entities/entities.dart';
 
+//TODO move to core path
 class InventoryProductModel extends Equatable implements ProductModelType {
   final String productName;
   final int codigoInternoProEmb;

@@ -1,6 +1,7 @@
 export './competing_price_product_model.dart';
 export 'last_buy_entrance_model.dart';
 export 'price_cost_model.dart';
+export './product_model_type.dart';
 export 'product_model.dart';
 export 'stock_by_enterprise_associated_model.dart';
 export 'stock_model.dart';

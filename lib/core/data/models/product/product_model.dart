@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
-import '../../datasource/products/products.dart';
 import 'product.dart';
 
 class ProductModel extends Equatable implements ProductModelType {

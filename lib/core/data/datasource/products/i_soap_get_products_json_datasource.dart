@@ -1,4 +1,4 @@
-import 'products.dart';
+import '../../models/models.dart';
 
 abstract class ISoapGetProductsJsonDatasource {
   Future<List<ProductModelType>> get({

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
-import '../../datasource/products/products.dart';
+import '../models.dart';
 
 class CompetingPriceProductModel extends Equatable implements ProductModelType {
   final int ResearchOfPriceCode; /* 1014 */
