@@ -19,17 +19,22 @@ class CurrentObservations extends StatelessWidget {
 
     final theme = Theme.of(context);
 
+    final shouldInsertObservations =
+        receipt.DefaultObservations != null &&
+        receipt.DefaultObservations!.isNotEmpty &&
+        (receipt.Observacoes_ProcRecebDoc == null ||
+            receipt.Observacoes_ProcRecebDoc!.isEmpty);
+
     return TitleAndSubTitle(
-      title:
-          (receipt.Observacoes_ProcRecebDoc == null &&
-              receipt.DefaultObservations != null
+      title: shouldInsertObservations
           ? 'Observação padrão'.hardcoded
-          : 'Observações'),
+          : 'Observações',
       titleStyle: theme.textTheme.bodyMedium?.copyWith(
         fontStyle: FontStyle.italic,
       ),
       subTitleStyle: theme.textTheme.titleMedium?.copyWith(
         fontStyle: FontStyle.italic,
+        color: shouldInsertObservations ? theme.disabledColor : Colors.black,
       ),
       subTitle: observations == null
           ? null
