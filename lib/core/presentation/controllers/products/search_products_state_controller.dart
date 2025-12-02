@@ -64,7 +64,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: selectedEnterprise!,
-            getProductsJsonParams: GetProductsJsonParams(
+            getProductsDefaultParams: GetProductsJsonParams(
               EnterpriseCodes: enterpriseCodes,
               searchType: searchType,
               routine: routine,
@@ -75,7 +75,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             ),
           );
 
-      return products;
+      return products.cast<ProductEntity>();
     });
   }
 

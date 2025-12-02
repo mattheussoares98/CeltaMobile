@@ -1,10 +1,10 @@
 import '../../entities/entities.dart';
 
 abstract class ISoapLoadProductsRepository {
-  Future<List<ProductEntity>> load({
+  Future<List<ProductEntityType>> load({
     required String baseUrl,
     required String crossIdentity,
     required EnterpriseEntity enterpriseEntity,
-    required GetProductsJsonParams getProductsJsonParams,
+    required GetProductsDefaultParams getProductsDefaultParams,
   });
 }

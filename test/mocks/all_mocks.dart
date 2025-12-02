@@ -401,7 +401,7 @@ class SoapProductsRepositorySpy extends Mock
         baseUrl: any(named: 'baseUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         enterpriseEntity: any(named: 'enterpriseEntity'),
-        getProductsJsonParams: any(named: 'getProductsJsonParams'),
+        getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
       ),
     ).thenAnswer((_) async => response);
   }

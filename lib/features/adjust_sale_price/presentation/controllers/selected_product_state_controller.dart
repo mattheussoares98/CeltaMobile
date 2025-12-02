@@ -42,7 +42,7 @@ class SelectedProductStateController extends _$SelectedProductStateController {
           baseUrl: userSession!.enterprise!.baseUrl!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
           enterpriseEntity: enterpriseEntity,
-          getProductsJsonParams: GetProductsJsonParams(
+          getProductsDefaultParams: GetProductsJsonParams(
             searchValue: plu,
             routine: BsRoutine.adjustSalePrice,
             searchType: SearchType.dynamic,
@@ -53,6 +53,6 @@ class SelectedProductStateController extends _$SelectedProductStateController {
           ),
         );
 
-    return products.first;
+    return products.first as ProductEntity;
   }
 }

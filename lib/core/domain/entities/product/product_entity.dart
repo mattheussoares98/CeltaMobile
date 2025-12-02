@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'product.dart';
 
-class ProductEntity extends Equatable {
+class ProductEntity extends Equatable implements ProductEntityType {
   final int? EnterpriseCode;
   final int? ProductCode;
   final int? ProductPackingCode;
@@ -141,6 +141,7 @@ class ProductEntity extends Equatable {
     ConcurrentCode,
   ];
 
+  @override
   ProductEntity copyWith({
     int? EnterpriseCode,
     int? ProductCode,

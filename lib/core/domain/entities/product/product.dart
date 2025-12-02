@@ -5,6 +5,7 @@ export './get_products_inventory_params.dart';
 export './get_products_json_params.dart';
 export './last_buy_entrance_entity.dart';
 export './price_cost_entity.dart';
+export './product_entity_type.dart';
 export './product_entity.dart';
 export './search_product_competing_price_type.dart';
 export './search_type.dart';

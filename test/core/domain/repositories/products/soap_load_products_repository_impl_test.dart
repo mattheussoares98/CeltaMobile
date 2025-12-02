@@ -112,7 +112,7 @@ void main() {
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       enterpriseEntity: enterpriseEntity,
-      getProductsJsonParams: getProductsJsonParams,
+      getProductsDefaultParams: getProductsJsonParams,
     );
 
     expect(response, productsEntities);
@@ -153,7 +153,7 @@ void main() {
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       enterpriseEntity: enterpriseEntity,
-      getProductsJsonParams: getProductsJsonParams.annulValues(
+      getProductsDefaultParams: getProductsJsonParams.annulValues(
         buyRequestParams: true,
       ),
     );
@@ -196,7 +196,7 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
-        getProductsJsonParams: getProductsJsonParams.annulValues(
+        getProductsDefaultParams: getProductsJsonParams.annulValues(
           competingPricesParams: true,
         ),
       );
@@ -237,7 +237,7 @@ void main() {
           baseUrl: baseUrl,
           crossIdentity: crossIdentity,
           enterpriseEntity: enterpriseEntity,
-          getProductsJsonParams: getProductsJsonParams.copyWith(
+          getProductsDefaultParams: getProductsJsonParams.copyWith(
             searchValue: balanceEan,
           ),
         );

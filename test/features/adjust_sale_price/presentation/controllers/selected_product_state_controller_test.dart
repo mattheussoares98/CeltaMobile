@@ -93,7 +93,7 @@ void main() {
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
-            getProductsJsonParams: any(named: 'getProductsJsonParams'),
+            getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
           ),
         ).called(1);
       },
@@ -127,7 +127,7 @@ void main() {
             baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
             crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
             enterpriseEntity: userSessionEntity.supabaseEnterprise!,
-            getProductsJsonParams: GetProductsJsonParams(
+            getProductsDefaultParams: GetProductsJsonParams(
               EnterpriseCodes: [enterpriseCode],
               searchType: SearchType.dynamic,
               routine: BsRoutine.adjustSalePrice,

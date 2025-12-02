@@ -188,7 +188,7 @@ void main() {
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseEntity: enterpriseEntity,
-          getProductsJsonParams: GetProductsJsonParams(
+          getProductsDefaultParams: GetProductsJsonParams(
             EnterpriseCodes: [enterpriseEntity.Code!],
             searchType: appSettingsEntity.searchPreference.searchType,
             routine: bsRoutine,
@@ -242,7 +242,7 @@ void main() {
           baseUrl: any(named: 'baseUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseEntity: any(named: 'enterpriseEntity'),
-          getProductsJsonParams: any(named: 'getProductsJsonParams'),
+          getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
         ),
       );
     });
@@ -288,7 +288,7 @@ void main() {
           baseUrl: any(named: 'baseUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseEntity: any(named: 'enterpriseEntity'),
-          getProductsJsonParams: any(named: 'getProductsJsonParams'),
+          getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
         ),
       );
     });
