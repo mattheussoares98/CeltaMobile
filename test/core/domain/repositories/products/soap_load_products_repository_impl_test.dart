@@ -383,7 +383,7 @@ void main() {
         () => soapInventoryDatasource.get(
           baseUrl: baseUrl,
           parametersPayload: {
-            "CrossIdentity": crossIdentity,
+            "crossIdentity": crossIdentity,
             "enterpriseCode": enterpriseEntity.Code,
             "searchValue": getProductsInventoryParams.searchValue,
             "searchTypeInt": getProductsInventoryParams.searchType.code,
@@ -422,7 +422,7 @@ void main() {
           () => soapInventoryDatasource.get(
             baseUrl: baseUrl,
             parametersPayload: {
-              "CrossIdentity": crossIdentity,
+              "crossIdentity": crossIdentity,
               "enterpriseCode": enterpriseEntity.Code,
               "searchValue": balanceEan,
               "searchTypeInt": getProductsInventoryParams.searchType.code,
@@ -437,7 +437,7 @@ void main() {
           () => soapInventoryDatasource.get(
             baseUrl: baseUrl,
             parametersPayload: {
-              "CrossIdentity": crossIdentity,
+              "crossIdentity": crossIdentity,
               "enterpriseCode": enterpriseEntity.Code,
               "searchValue": balanceEan
                   .replaceFirst(RegExp(r'2'), '')

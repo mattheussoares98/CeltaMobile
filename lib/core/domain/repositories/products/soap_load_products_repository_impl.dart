@@ -109,7 +109,6 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     required EnterpriseEntity enterpriseEntity,
     required bool extractBalanceCode,
   }) {
-    final Map<String, dynamic> parameters = {"CrossIdentity": crossIdentity};
     final searchValue = extractBalanceCode
         ? _extractPluFromEan(
             searchValue: getProductsDefaultParams.searchValue,
@@ -117,8 +116,10 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
           )
         : getProductsDefaultParams.searchValue;
 
+    final Map<String, dynamic> parameters = {};
     if (getProductsDefaultParams is GetProductsJsonParams) {
       parameters.addAll({
+        "CrossIdentity": crossIdentity,
         "EnterpriseCodes": getProductsDefaultParams.EnterpriseCodes,
         "SearchValue": searchValue,
         "SearchType": getProductsDefaultParams.searchType.code,
@@ -153,6 +154,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
       }
     } else if (getProductsDefaultParams is GetProductsInventoryParams) {
       parameters.addAll({
+        "crossIdentity": crossIdentity,
         "enterpriseCode": enterpriseEntity.Code,
         "searchValue": searchValue,
         "searchTypeInt": getProductsDefaultParams.searchType.code,
