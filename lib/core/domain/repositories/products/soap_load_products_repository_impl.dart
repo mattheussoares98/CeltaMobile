@@ -6,9 +6,12 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
   final ISoapGetProductsJsonDatasource soapGetProductsJsonDatasource;
   final ISoapInventoryLoadProductsDatasource
   soapInventoryLoadProductsDatasource;
+  final ISoapLoadProductByRequestTypeDatasource
+  soapLoadProductByRequestTypeDatasource;
   SoapLoadProductsRepositoryImpl(
     this.soapGetProductsJsonDatasource,
     this.soapInventoryLoadProductsDatasource,
+    this.soapLoadProductByRequestTypeDatasource,
   );
 
   @override
@@ -48,16 +51,18 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     required GetProductsDefaultParams getProductsDefaultParams,
     required bool extractBalanceCode,
   }) async {
+    final params = _getParams(
+      crossIdentity: crossIdentity,
+      getProductsDefaultParams: getProductsDefaultParams,
+      enterpriseEntity: enterpriseEntity,
+      extractBalanceCode: extractBalanceCode,
+    );
+
     if (getProductsDefaultParams is GetProductsJsonParams) {
       return await soapGetProductsJsonDatasource
           .get(
             baseUrl: baseUrl,
-            parametersPayload: _getParams(
-              crossIdentity: crossIdentity,
-              getProductsDefaultParams: getProductsDefaultParams,
-              enterpriseEntity: enterpriseEntity,
-              extractBalanceCode: extractBalanceCode,
-            ),
+            parametersPayload: params,
             isCompetingPrices:
                 getProductsDefaultParams.competingPricesParams != null,
           )
@@ -67,17 +72,18 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
                 .toList()
                 .cast<ProductEntity>();
           });
+    } else if (getProductsDefaultParams is GetProductsByRequestTypeParams) {
+      return await soapLoadProductByRequestTypeDatasource
+          .load(baseUrl: baseUrl, parametersPayload: params)
+          .then((products) {
+            return products
+                .map((e) => e.toEntity())
+                .toList()
+                .cast<ProductEntity>();
+          });
     } else {
       return await soapInventoryLoadProductsDatasource
-          .get(
-            baseUrl: baseUrl,
-            parametersPayload: _getParams(
-              crossIdentity: crossIdentity,
-              getProductsDefaultParams: getProductsDefaultParams,
-              enterpriseEntity: enterpriseEntity,
-              extractBalanceCode: extractBalanceCode,
-            ),
-          )
+          .get(baseUrl: baseUrl, parametersPayload: params)
           .then((products) {
             return products
                 .map((e) => e.toEntity())
@@ -160,6 +166,17 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
         "searchTypeInt": getProductsDefaultParams.searchType.code,
         "inventoryProcessCode": getProductsDefaultParams.inventoryProcessCode,
         "inventoryCountingCode": getProductsDefaultParams.inventoryCountingCode,
+      });
+    } else if (getProductsDefaultParams is GetProductsByRequestTypeParams) {
+      //TODO create tests
+      parameters.addAll({
+        "crossIdentity": crossIdentity,
+        "enterpriseCode": getProductsDefaultParams.enterpriseOriginCode,
+        "enterpriseDestinyCode": getProductsDefaultParams.enterpriseDestinyCode,
+        "requestTypeCode": getProductsDefaultParams.requestTypeCode,
+        "searchValue": searchValue,
+        "searchTypeInt": getProductsDefaultParams.searchType.code,
+        "routineTypeInt": BsRoutine.transferRequest.code,
       });
     }
     return parameters;

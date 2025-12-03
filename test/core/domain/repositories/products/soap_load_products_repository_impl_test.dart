@@ -45,35 +45,62 @@ class SoapInventoryLoadProductsDatasourceSpy extends Mock
   }
 }
 
+class SoapLoadProductByRequestTypeDatasourceSpy extends Mock
+    implements ISoapLoadProductByRequestTypeDatasource {
+  void mockLoad(List<ProductModel> response) {
+    _mockCall().thenAnswer((_) async => response);
+  }
+
+  When _mockCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      parametersPayload: any(named: 'parametersPayload'),
+    ),
+  );
+
+  void mockError() {
+    _mockCall().thenThrow(Exception());
+  }
+}
+
 void main() {
   late ISoapLoadProductsRepository sut;
 
   late SoapGetProductsJsonDatasourceSpy soapProductsDatasource;
   late SoapInventoryLoadProductsDatasourceSpy soapInventoryDatasource;
+  late SoapLoadProductByRequestTypeDatasourceSpy
+  soapProductByRequestTypeDatasource;
 
-  late List<ProductEntity> jsonProductsEntities;
+  late List<ProductEntity> productsEntities;
   late List<ProductEntity> inventoryProductsEntities;
   late String baseUrl;
   late String crossIdentity;
   late EnterpriseEntity enterpriseEntity;
   late GetProductsJsonParams getProductsJsonParams;
   late GetProductsInventoryParams getProductsInventoryParams;
+  late GetProductsByRequestTypeParams getProductsByRequestTypeParams;
 
   void initSut() {
     sut = SoapLoadProductsRepositoryImpl(
       soapProductsDatasource,
       soapInventoryDatasource,
+      soapProductByRequestTypeDatasource,
     );
   }
 
   void initInjections() {
     soapProductsDatasource = SoapGetProductsJsonDatasourceSpy();
     soapInventoryDatasource = SoapInventoryLoadProductsDatasourceSpy();
+    soapProductByRequestTypeDatasource =
+        SoapLoadProductByRequestTypeDatasourceSpy();
   }
 
   void mockSuccess() {
     soapProductsDatasource.mockGetProductsJson(
-      jsonProductsEntities.map((e) => ProductModel.fromEntity(e)).toList(),
+      productsEntities.map((e) => ProductModel.fromEntity(e)).toList(),
+    );
+    soapProductByRequestTypeDatasource.mockLoad(
+      productsEntities.map((e) => ProductModel.fromEntity(e)).toList(),
     );
     soapInventoryDatasource.mockGetInventoryProducts(
       inventoryProductsEntities
@@ -83,7 +110,7 @@ void main() {
   }
 
   void initEntities() {
-    jsonProductsEntities = [
+    productsEntities = [
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
@@ -128,6 +155,14 @@ void main() {
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
     ];
+    getProductsByRequestTypeParams = GetProductsByRequestTypeParams(
+      searchValue: faker.lorem.word(),
+      searchType: SearchType
+          .values[faker.randomGenerator.integer(SearchType.values.length)],
+      enterpriseOriginCode: faker.randomGenerator.integer(100),
+      enterpriseDestinyCode: faker.randomGenerator.integer(100),
+      requestTypeCode: faker.randomGenerator.integer(100),
+    );
   }
 
   setUp(() {
@@ -158,7 +193,7 @@ void main() {
         getProductsDefaultParams: getProductsJsonParams,
       );
 
-      expect(response, jsonProductsEntities);
+      expect(response, productsEntities);
 
       verify(
         () => soapProductsDatasource.get(
@@ -202,7 +237,7 @@ void main() {
         ),
       );
 
-      expect(response, jsonProductsEntities);
+      expect(response, productsEntities);
 
       verify(
         () => soapProductsDatasource.get(
@@ -245,7 +280,7 @@ void main() {
           ),
         );
 
-        expect(response, jsonProductsEntities);
+        expect(response, productsEntities);
 
         verify(
           () => soapProductsDatasource.get(
@@ -458,6 +493,106 @@ void main() {
                   getProductsInventoryParams.inventoryProcessCode,
               "inventoryCountingCode":
                   getProductsInventoryParams.inventoryCountingCode,
+            },
+          ),
+        ).called(1);
+      },
+    );
+  });
+
+  group("Products by request type", () {
+    test("Should behave correctly when pass all params", () async {
+      final response = await sut.load(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        enterpriseEntity: enterpriseEntity,
+        getProductsDefaultParams: getProductsByRequestTypeParams,
+      );
+
+      expect(
+        response,
+        productsEntities
+            .map((e) => ProductModel.fromEntity(e).toEntity())
+            .toList(),
+      );
+
+      verify(
+        () => soapInventoryDatasource.get(
+          baseUrl: baseUrl,
+          parametersPayload: {
+            "crossIdentity": crossIdentity,
+            "enterpriseCode":
+                getProductsByRequestTypeParams.enterpriseOriginCode,
+            "enterpriseDestinyCode":
+                getProductsByRequestTypeParams.enterpriseDestinyCode,
+            "requestTypeCode": getProductsByRequestTypeParams.requestTypeCode,
+            "searchValue": getProductsByRequestTypeParams.searchValue,
+            "searchTypeInt": getProductsByRequestTypeParams.searchType.code,
+            "routineTypeInt": BsRoutine.transferRequest.code,
+          },
+        ),
+      ).called(1);
+    });
+
+    test(
+      "Should search again when is balance code and fails the first time",
+      () async {
+        soapInventoryDatasource.mockError();
+
+        const balanceEan = '2000000000000';
+
+        try {
+          final response = await sut.load(
+            baseUrl: baseUrl,
+            crossIdentity: crossIdentity,
+            enterpriseEntity: enterpriseEntity,
+            getProductsDefaultParams: getProductsByRequestTypeParams.copyWith(
+              searchValue: balanceEan,
+            ),
+          );
+
+          expect(response, Exception());
+        } catch (e) {
+          // ignore
+        }
+
+        verify(
+          () => soapInventoryDatasource.get(
+            baseUrl: baseUrl,
+            parametersPayload: {
+              "crossIdentity": crossIdentity,
+              "enterpriseCode":
+                  getProductsByRequestTypeParams.enterpriseOriginCode,
+              "enterpriseDestinyCode":
+                  getProductsByRequestTypeParams.enterpriseDestinyCode,
+              "requestTypeCode": getProductsByRequestTypeParams.requestTypeCode,
+              "searchValue": getProductsByRequestTypeParams.searchValue,
+              "searchTypeInt": getProductsByRequestTypeParams.searchType.code,
+              "routineTypeInt": BsRoutine.transferRequest.code,
+            },
+          ),
+        ).called(1);
+        verify(
+          () => soapInventoryDatasource.get(
+            baseUrl: baseUrl,
+            parametersPayload: {
+              "crossIdentity": crossIdentity,
+              "enterpriseCode":
+                  getProductsByRequestTypeParams.enterpriseOriginCode,
+              "enterpriseDestinyCode":
+                  getProductsByRequestTypeParams.enterpriseDestinyCode,
+              "requestTypeCode": getProductsByRequestTypeParams.requestTypeCode,
+              "searchValue": balanceEan
+                  .replaceFirst(RegExp(r'2'), '')
+                  .replaceRange(
+                    enterpriseEntity.ProductCodeSizeOfBalanceLabel!,
+                    null,
+                    enterpriseEntity.ProductCodeWithCheckerDigit == true
+                        ? ""
+                        : ".",
+                  ),
+              "searchTypeInt": getProductsByRequestTypeParams.searchType.code,
+              "routineTypeInt": BsRoutine.transferRequest.code,
             },
           ),
         ).called(1);
