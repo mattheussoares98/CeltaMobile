@@ -1,4 +1,6 @@
-export './soap_get_products_json_datasource.dart';
 export './i_soap_inventory_load_products_datasource.dart';
 export './i_soap_get_products_json_datasource.dart';
+export './i_soap_load_product_by_request_type_datasource.dart';
+export './soap_get_products_json_datasource.dart';
 export './soap_inventory_load_products_datasource.dart';
+export './soap_load_product_by_request_type_datasource.dart';
