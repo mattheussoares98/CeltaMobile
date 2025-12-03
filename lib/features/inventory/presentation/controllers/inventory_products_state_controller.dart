@@ -4,9 +4,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../../../core/providers/products/products.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../settings/presentation/controllers/controllers.dart';
-import '../../providers.dart';
 
 part 'inventory_products_state_controller.g.dart';
 
@@ -52,17 +52,19 @@ class InventoryProductsStateController
           settings?.searchPreference.searchType ?? SearchType.dynamic;
 
       return await ref
-          .read(soapInventoryProductsRepositoryProvider)
+          .read(soapLoadProductsRepositoryProvider)
           .load(
             baseUrl: validatedUser!.enterprise!.baseUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
-            enterpriseCode: enterpriseCode,
-            searchValue: searchValue,
-            codigoInternoInventario: codigoInternoInventario,
-            searchType: searchType,
-            codigoInternoInvCont: codigoInternoInvCont,
-            selectedEnterprise: selectedEnterprise!,
-          );
+            enterpriseEntity: selectedEnterprise!,
+            getProductsDefaultParams: GetProductsInventoryParams(
+              searchValue: searchValue,
+              searchType: searchType,
+              inventoryProcessCode: codigoInternoInventario,
+              inventoryCountingCode: codigoInternoInvCont,
+            ),
+          )
+          .then((products) => products.cast<InventoryProductEntity>());
     });
   }
 

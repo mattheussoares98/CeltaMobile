@@ -1,9 +1,9 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/core/providers/products/products.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/inventory/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/inventory/providers.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,9 +13,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late SoapInventoryProductsRepositorySpy mockRepository;
-
-  late FakeUserSession fakeUserSession;
+  late SoapProductsRepositorySpy mockRepository;
 
   late UserSessionEntity userSessionEntity;
   late String searchValue;
@@ -23,7 +21,6 @@ void main() {
   late List<InventoryProductEntity> productsEntities;
   late int enterpriseCode;
   late int codigoInternoInventario;
-  late SearchType searchType;
   late int codigoInternoInvCont;
   late EnterpriseEntity selectedEnterprise;
 
@@ -31,7 +28,18 @@ void main() {
     for (var searchType in SearchType.values) {
       registerFallbackValue(searchType);
     }
+    for (var routine in BsRoutine.values) {
+      registerFallbackValue(routine);
+    }
     registerFallbackValue(EntityFactory.makeEnterpriseEntity());
+    registerFallbackValue(
+      GetProductsInventoryParams(
+        searchValue: faker.lorem.word(),
+        searchType: SearchType.values.first,
+        inventoryProcessCode: faker.randomGenerator.integer(100),
+        inventoryCountingCode: faker.randomGenerator.integer(100),
+      ),
+    );
   });
 
   void initEntities() {
@@ -46,24 +54,18 @@ void main() {
 
     enterpriseCode = faker.randomGenerator.integer(100);
     codigoInternoInventario = faker.randomGenerator.integer(100);
-    searchType = SearchType
-        .values[faker.randomGenerator.integer(SearchType.values.length)];
     codigoInternoInvCont = faker.randomGenerator.integer(100);
     selectedEnterprise = EntityFactory.makeEnterpriseEntity();
   }
 
   void initSut() {
-    mockRepository = SoapInventoryProductsRepositorySpy();
+    mockRepository = SoapProductsRepositorySpy();
   }
 
-  void initInjections() {
-    fakeUserSession = FakeUserSession(
-      UserSessionModel.fromEntity(userSessionEntity),
-    );
-  }
+  void initInjections() {}
 
   void mockSuccess() {
-    mockRepository.mockGetProducts(productsEntities);
+    mockRepository.mockGetInventoryProducts(productsEntities);
   }
 
   setUp(() {
@@ -73,12 +75,6 @@ void main() {
     mockSuccess();
   });
 
-  setUpAll(() {
-    for (var routine in BsRoutine.values) {
-      registerFallbackValue(routine);
-    }
-  });
-
   ProviderContainer makeProviderContainer({
     bool? mockSession = true,
     bool? mockAuthState = true,
@@ -86,9 +82,7 @@ void main() {
   }) {
     final container = ProviderContainer(
       overrides: [
-        soapInventoryProductsRepositoryProvider.overrideWithValue(
-          mockRepository,
-        ),
+        soapLoadProductsRepositoryProvider.overrideWithValue(mockRepository),
         if (mockSession == true)
           validatedUserSessionProvider.overrideWith(
             () => FakeValidatedUserSession(
@@ -96,7 +90,10 @@ void main() {
             ),
           ),
         if (mockAuthState == true)
-          userSessionProvider.overrideWith(() => fakeUserSession),
+          userSessionProvider.overrideWith(
+            () =>
+                FakeUserSession(UserSessionModel.fromEntity(userSessionEntity)),
+          ),
         enterprisesStateControllerProvider(
           enterpriseCode: selectedEnterprise.Code,
         ).overrideWith(
@@ -122,7 +119,7 @@ void main() {
 
       await container.read(
         inventoryProductsStateControllerProvider(
-          enterpriseCode,
+          selectedEnterprise.Code!,
           codigoInternoInventario,
           codigoInternoInvCont,
         ).future,
@@ -131,7 +128,7 @@ void main() {
       final states = <AsyncValue<void>>[];
       container.listen(
         inventoryProductsStateControllerProvider(
-          enterpriseCode,
+          selectedEnterprise.Code!,
           codigoInternoInventario,
           codigoInternoInvCont,
         ),
@@ -141,7 +138,7 @@ void main() {
       await container
           .read(
             inventoryProductsStateControllerProvider(
-              enterpriseCode,
+              selectedEnterprise.Code!,
               codigoInternoInventario,
               codigoInternoInvCont,
             ).notifier,
@@ -152,17 +149,18 @@ void main() {
         isA<AsyncLoading>(),
         isA<AsyncData<List<InventoryProductEntity>>>(),
       ]);
+
       verify(
         () => mockRepository.load(
-          baseUrl: fakeUserSession.sessionToReturn!.enterprise!.baseUrl!,
-          crossIdentity:
-              fakeUserSession.sessionToReturn!.user.CrossIdentity_Usuario!,
-          enterpriseCode: enterpriseCode,
-          searchValue: searchValue,
-          codigoInternoInventario: codigoInternoInventario,
-          searchType: appSettingsEntity.searchPreference.searchType,
-          codigoInternoInvCont: codigoInternoInvCont,
-          selectedEnterprise: selectedEnterprise,
+          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
+          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
+          enterpriseEntity: selectedEnterprise,
+          getProductsDefaultParams: GetProductsInventoryParams(
+            searchValue: searchValue,
+            searchType: appSettingsEntity.searchPreference.searchType,
+            inventoryProcessCode: codigoInternoInventario,
+            inventoryCountingCode: codigoInternoInvCont,
+          ),
         ),
       ).called(1);
     });
@@ -201,14 +199,10 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => mockRepository.load(
-          baseUrl: userSessionEntity.selectedEnterprise!.baseUrl!,
-          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
-          enterpriseCode: enterpriseCode,
-          searchValue: searchValue,
-          codigoInternoInventario: codigoInternoInventario,
-          searchType: searchType,
-          codigoInternoInvCont: codigoInternoInvCont,
-          selectedEnterprise: selectedEnterprise,
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseEntity: any(named: 'enterpriseEntity'),
+          getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
         ),
       );
     });
@@ -248,14 +242,10 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => mockRepository.load(
-          baseUrl: userSessionEntity.selectedEnterprise!.baseUrl!,
-          crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
-          enterpriseCode: enterpriseCode,
-          searchValue: searchValue,
-          codigoInternoInventario: codigoInternoInventario,
-          searchType: searchType,
-          codigoInternoInvCont: codigoInternoInvCont,
-          selectedEnterprise: selectedEnterprise,
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseEntity: any(named: 'enterpriseEntity'),
+          getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
         ),
       );
     });
@@ -264,7 +254,7 @@ void main() {
   group('updateProduct', () {
     test('should update a product in the list if it exists', () async {
       // Set up the repository mock to return the initial list
-      mockRepository.mockGetProducts(productsEntities);
+      mockRepository.mockGetInventoryProducts(productsEntities);
 
       final container = makeProviderContainer();
       addTearDown(container.dispose);
@@ -326,7 +316,7 @@ void main() {
         // Create an updated product that does NOT exist in the initial list
         final nonExistentProduct = EntityFactory.makeInventoryProductEntity();
 
-        mockRepository.mockGetProducts(productsEntities);
+        mockRepository.mockGetInventoryProducts(productsEntities);
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);

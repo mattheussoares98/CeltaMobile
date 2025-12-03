@@ -46,7 +46,6 @@ import 'package:celta_intelligence/features/expedition_conference/data/datasourc
 import 'package:celta_intelligence/features/expedition_conference/data/models/models.dart';
 import 'package:celta_intelligence/features/inventory/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/inventory/data/models/models.dart';
-import 'package:celta_intelligence/features/inventory/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/search_products/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/transfer_request/data/datasource/datasource.dart';
@@ -394,15 +393,20 @@ class SoapProductsDatasourceSpy extends Mock
 
 class SoapProductsRepositorySpy extends Mock
     implements ISoapLoadProductsRepository {
+  When _mockCall() => when(
+    () => this.load(
+      baseUrl: any(named: 'baseUrl'),
+      crossIdentity: any(named: 'crossIdentity'),
+      enterpriseEntity: any(named: 'enterpriseEntity'),
+      getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
+    ),
+  );
   void mockGetProductsJson(List<ProductEntity> response) {
-    when(
-      () => this.load(
-        baseUrl: any(named: 'baseUrl'),
-        crossIdentity: any(named: 'crossIdentity'),
-        enterpriseEntity: any(named: 'enterpriseEntity'),
-        getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
-      ),
-    ).thenAnswer((_) async => response);
+    _mockCall().thenAnswer((_) async => response);
+  }
+
+  void mockGetInventoryProducts(List<InventoryProductEntity> response) {
+    _mockCall().thenAnswer((_) async => response);
   }
 }
 
@@ -899,44 +903,6 @@ class SoapLoadInventoryDatasourceSpy extends Mock
       enterpriseCode: any(named: 'enterpriseCode'),
     ),
   );
-}
-
-class SoapInventoryProductsDatasourceSpy extends Mock
-    implements ISoapInventoryProductsDatasource {
-  void mockLoad(List<InventoryProductModel> response) {
-    _mockLoadCall().thenAnswer((_) async => response);
-  }
-
-  When _mockLoadCall() => when(
-    () => this.load(
-      baseUrl: any(named: 'baseUrl'),
-      searchValue: any(named: 'searchValue'),
-      codigoInternoInventario: any(named: 'codigoInternoInventario'),
-      searchType: any(named: 'searchType'),
-      crossIdentity: any(named: 'crossIdentity'),
-      enterpriseCode: any(named: 'enterpriseCode'),
-      codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
-      selectedEnterprise: any(named: 'selectedEnterprise'),
-    ),
-  );
-}
-
-class SoapInventoryProductsRepositorySpy extends Mock
-    implements ISoapInventoryProductsRepository {
-  void mockGetProducts(List<InventoryProductEntity> response) {
-    when(
-      () => this.load(
-        baseUrl: any(named: 'baseUrl'),
-        crossIdentity: any(named: 'crossIdentity'),
-        enterpriseCode: any(named: 'enterpriseCode'),
-        searchValue: any(named: 'searchValue'),
-        codigoInternoInventario: any(named: 'codigoInternoInventario'),
-        searchType: any(named: 'searchType'),
-        codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
-        selectedEnterprise: any(named: 'selectedEnterprise'),
-      ),
-    ).thenAnswer((_) async => response);
-  }
 }
 
 class SoapInventoryEntryQuantityDatasourceSpy extends Mock
