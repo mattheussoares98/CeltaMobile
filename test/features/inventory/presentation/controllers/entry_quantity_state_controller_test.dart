@@ -20,17 +20,16 @@ class MockSoapInventoryAnnulRepository extends Mock
 
 class SpyInventoryProductsStateController
     extends InventoryProductsStateController {
-  final List<InventoryProductEntity> initialState;
+  final List<ProductEntity> initialState;
   SpyInventoryProductsStateController(this.initialState);
 
-  InventoryProductEntity? updatedProduct;
+  ProductEntity? updatedProduct;
 
   @override
-  Future<List<InventoryProductEntity>> build(int a, int b, int c) async =>
-      initialState;
+  Future<List<ProductEntity>> build(int a, int b, int c) async => initialState;
 
   @override
-  void updateProduct(InventoryProductEntity product) {
+  void updateProduct(ProductEntity product) {
     updatedProduct = product;
   }
 }
@@ -44,7 +43,7 @@ void main() {
   late int codigoInternoInventario;
   late int enterpriseCode;
   late SpyInventoryProductsStateController spyProductsController;
-  late InventoryProductEntity fakeProduct;
+  late ProductEntity fakeProduct;
 
   setUp(() {
     mockEntryQuantityRepository = MockSoapInventoryEntryQuantityRepository();
@@ -56,7 +55,7 @@ void main() {
     isSubtract = faker.randomGenerator.boolean();
     codigoInternoInventario = faker.randomGenerator.integer(1000);
     enterpriseCode = faker.randomGenerator.integer(1000);
-    fakeProduct = EntityFactory.makeInventoryProductEntity();
+    fakeProduct = EntityFactory.makeProductEntity();
     spyProductsController = SpyInventoryProductsStateController([fakeProduct]);
   });
 
@@ -117,7 +116,7 @@ void main() {
               ).notifier,
             )
             .entry(
-              codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+              codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,
               quantity: fakeProduct.quantidadeInvContProEmb!,
               isSubtract: isSubtract,
               codigoInternoInventario: codigoInternoInventario,
@@ -129,7 +128,7 @@ void main() {
         expect(
           states.last.value,
           LastChangedProductEntity(
-            codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+            codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,
             quantity: fakeProduct.quantidadeInvContProEmb!,
             isSubtract: isSubtract,
           ),
@@ -140,7 +139,7 @@ void main() {
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
             quantity: fakeProduct.quantidadeInvContProEmb!,
-            productPackingCode: fakeProduct.codigoInternoProEmb,
+            productPackingCode: fakeProduct.codigoInternoProEmb!,
             isSubtract: isSubtract,
           ),
         ).called(1);
@@ -169,7 +168,7 @@ void main() {
           .entry(
             codigoInternoInventario: codigoInternoInventario,
             enterpriseCode: enterpriseCode,
-            codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+            codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,
             quantity: fakeProduct.quantidadeInvContProEmb!,
             isSubtract: isSubtract,
           );
@@ -215,7 +214,7 @@ void main() {
               ).notifier,
             )
             .entry(
-              codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+              codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,
               quantity: quantityToAdd,
               isSubtract: isSubtract,
               enterpriseCode:
@@ -230,7 +229,7 @@ void main() {
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
-            productPackingCode: fakeProduct.codigoInternoProEmb,
+            productPackingCode: fakeProduct.codigoInternoProEmb!,
             quantity: quantityToAdd,
             isSubtract: isSubtract,
           ),
@@ -285,7 +284,7 @@ void main() {
               ).notifier,
             )
             .entry(
-              codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+              codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,
               quantity: quantityToAdd,
               isSubtract: true,
               enterpriseCode:
@@ -349,7 +348,7 @@ void main() {
               ).notifier,
             )
             .annul(
-              fakeProduct.codigoInternoProEmb,
+              fakeProduct.codigoInternoProEmb!,
               enterpriseCode,
               codigoInternoInventario,
             );
@@ -365,7 +364,7 @@ void main() {
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
-            codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+            codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,
           ),
         ).called(1);
       },
@@ -391,7 +390,7 @@ void main() {
             entryQuantityStateControllerProvider(codigoInternoInvCont).notifier,
           )
           .annul(
-            fakeProduct.codigoInternoProEmb,
+            fakeProduct.codigoInternoProEmb!,
             enterpriseCode,
             codigoInternoInventario,
           );
@@ -438,7 +437,7 @@ void main() {
               ).notifier,
             )
             .annul(
-              fakeProduct.codigoInternoProEmb,
+              fakeProduct.codigoInternoProEmb!,
               enterpriseCode,
               codigoInternoInventario,
             );
@@ -450,7 +449,7 @@ void main() {
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
-            codigoInternoProEmb: fakeProduct.codigoInternoProEmb,
+            codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,
           ),
         ).called(1);
 

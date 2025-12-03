@@ -53,6 +53,6 @@ class SelectedProductStateController extends _$SelectedProductStateController {
           ),
         );
 
-    return products.first as ProductEntity;
+    return products.first;
   }
 }

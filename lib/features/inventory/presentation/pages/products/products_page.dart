@@ -68,7 +68,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ).notifier,
           )
           .entry(
-            codigoInternoProEmb: products.value!.first.codigoInternoProEmb,
+            codigoInternoProEmb: products.value!.first.codigoInternoProEmb!,
             quantity: 1,
             isSubtract: false,
             enterpriseCode: widget.enterpriseCode,
@@ -221,13 +221,13 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                                   codigoInternoInvCont:
                                       widget.codigoInternoInvCont,
                                   codigoInternoProEmb:
-                                      product.codigoInternoProEmb,
+                                      product.codigoInternoProEmb!,
                                   enterpriseCode: widget.enterpriseCode,
                                   codigoInternoInventario:
                                       widget.codigoInternoInventario,
                                   entryQuantity: (isSubtract) => entry(
                                     isSubtract,
-                                    product.codigoInternoProEmb,
+                                    product.codigoInternoProEmb!,
                                   ),
                                   formKey: formKeyQuantity,
                                 ),

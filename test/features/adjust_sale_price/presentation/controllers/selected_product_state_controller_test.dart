@@ -28,7 +28,7 @@ void main() {
     registerFallbackValue(BsRoutine.adjustSalePrice);
     registerFallbackValue(SearchType.dynamic);
 
-    mockSoapProductsRepository.mockGetProductsJson([productEntity]);
+    mockSoapProductsRepository.mockLoad([productEntity]);
   });
 
   setUpAll(() {

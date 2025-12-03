@@ -85,7 +85,7 @@ void main() {
   }
 
   void mockSuccess() {
-    sut.mockGetProductsJson(productsEntities);
+    sut.mockLoad(productsEntities);
   }
 
   setUp(() {
@@ -297,7 +297,7 @@ void main() {
   group('updateProduct', () {
     test('should update a product in the list if it exists', () async {
       // Set up the repository mock to return the initial list
-      sut.mockGetProductsJson(productsEntities);
+      sut.mockLoad(productsEntities);
 
       final container = makeProviderContainer();
       addTearDown(container.dispose);
@@ -363,7 +363,7 @@ void main() {
         // Create an updated product that does NOT exist in the initial list
         final nonExistentProduct = EntityFactory.makeProductEntity();
 
-        sut.mockGetProductsJson(productsEntities);
+        sut.mockLoad(productsEntities);
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);

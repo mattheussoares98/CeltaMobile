@@ -108,7 +108,9 @@ void main() {
       );
 
       expect(
-        products,
+        products.map(
+          (e) => CompetingPriceProductModel.fromEntity(e.toEntity()),
+        ),
         productsEntities
             .map((e) => CompetingPriceProductModel.fromEntity(e))
             .toList(),

@@ -401,11 +401,7 @@ class SoapProductsRepositorySpy extends Mock
       getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
     ),
   );
-  void mockGetProductsJson(List<ProductEntity> response) {
-    _mockCall().thenAnswer((_) async => response);
-  }
-
-  void mockGetInventoryProducts(List<InventoryProductEntity> response) {
+  void mockLoad(List<ProductEntity> response) {
     _mockCall().thenAnswer((_) async => response);
   }
 }

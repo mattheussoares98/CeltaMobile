@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'product.dart';
 
-class ProductEntity extends Equatable implements ProductEntityType {
+class ProductEntity extends Equatable {
   final int? EnterpriseCode;
   final int? ProductCode;
   final int? ProductPackingCode;
@@ -49,6 +49,9 @@ class ProductEntity extends Equatable implements ProductEntityType {
   Stocks; //TODO test when the user doesnt has permission
   final List<LastBuyEntranceEntity>? LastBuyEntrances;
   final List<String>? EANs;
+  final int? codigoInternoProEmb; //inventory
+  final String? codigoProEmb; //inventory
+  final double? quantidadeInvContProEmb; //inventory
 
   const ProductEntity({
     required this.EnterpriseCode,
@@ -93,6 +96,9 @@ class ProductEntity extends Equatable implements ProductEntityType {
     required this.EANs,
     required this.ResearchOfPriceCode,
     required this.ConcurrentCode,
+    required this.codigoInternoProEmb,
+    required this.codigoProEmb,
+    required this.quantidadeInvContProEmb,
   });
 
   @override
@@ -139,9 +145,11 @@ class ProductEntity extends Equatable implements ProductEntityType {
     EANs,
     ResearchOfPriceCode,
     ConcurrentCode,
+    codigoInternoProEmb,
+    codigoProEmb,
+    quantidadeInvContProEmb,
   ];
 
-  @override
   ProductEntity copyWith({
     int? EnterpriseCode,
     int? ProductCode,
@@ -185,6 +193,9 @@ class ProductEntity extends Equatable implements ProductEntityType {
     List<String>? EANs,
     int? ResearchOfPriceCode,
     int? ConcurrentCode,
+    int? codigoInternoProEmb,
+    String? codigoProEmb,
+    double? quantidadeInvContProEmb,
   }) {
     return ProductEntity(
       EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
@@ -234,6 +245,10 @@ class ProductEntity extends Equatable implements ProductEntityType {
       EANs: EANs ?? this.EANs,
       ResearchOfPriceCode: ResearchOfPriceCode ?? this.ResearchOfPriceCode,
       ConcurrentCode: ConcurrentCode ?? this.ConcurrentCode,
+      codigoInternoProEmb: codigoInternoProEmb ?? this.codigoInternoProEmb,
+      codigoProEmb: codigoProEmb ?? this.codigoProEmb,
+      quantidadeInvContProEmb:
+          quantidadeInvContProEmb ?? this.quantidadeInvContProEmb,
     );
   }
 
@@ -327,6 +342,9 @@ class ProductEntity extends Equatable implements ProductEntityType {
     EANs: null,
     ResearchOfPriceCode: null,
     ConcurrentCode: null,
+    codigoInternoProEmb: null,
+    codigoProEmb: null,
+    quantidadeInvContProEmb: null,
   );
 }
 

@@ -124,10 +124,10 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             ).notifier,
           )
           .updateProduct(
-            InventoryProductEntity(
-              productName: product.productName,
+            ProductEntity.empty().copyWith(
+              Name: product.Name,
               codigoInternoProEmb: product.codigoInternoProEmb,
-              plu: product.plu,
+              PLU: product.PLU,
               codigoProEmb: product.codigoProEmb,
               quantidadeInvContProEmb: null,
             ),

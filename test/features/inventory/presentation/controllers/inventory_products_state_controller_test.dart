@@ -18,7 +18,7 @@ void main() {
   late UserSessionEntity userSessionEntity;
   late String searchValue;
   late AppSettingsEntity appSettingsEntity;
-  late List<InventoryProductEntity> productsEntities;
+  late List<ProductEntity> productsEntities;
   late int enterpriseCode;
   late int codigoInternoInventario;
   late int codigoInternoInvCont;
@@ -47,9 +47,9 @@ void main() {
     searchValue = faker.lorem.word();
     appSettingsEntity = EntityFactory.makeAppSettingsEntity();
     productsEntities = [
-      EntityFactory.makeInventoryProductEntity(),
-      EntityFactory.makeInventoryProductEntity(),
-      EntityFactory.makeInventoryProductEntity(),
+      EntityFactory.makeProductEntity(),
+      EntityFactory.makeProductEntity(),
+      EntityFactory.makeProductEntity(),
     ];
 
     enterpriseCode = faker.randomGenerator.integer(100);
@@ -65,7 +65,7 @@ void main() {
   void initInjections() {}
 
   void mockSuccess() {
-    mockRepository.mockGetInventoryProducts(productsEntities);
+    mockRepository.mockLoad(productsEntities);
   }
 
   setUp(() {
@@ -147,7 +147,7 @@ void main() {
 
       expect(states, [
         isA<AsyncLoading>(),
-        isA<AsyncData<List<InventoryProductEntity>>>(),
+        isA<AsyncData<List<ProductEntity>>>(),
       ]);
 
       verify(
@@ -254,7 +254,7 @@ void main() {
   group('updateProduct', () {
     test('should update a product in the list if it exists', () async {
       // Set up the repository mock to return the initial list
-      mockRepository.mockGetInventoryProducts(productsEntities);
+      mockRepository.mockLoad(productsEntities);
 
       final container = makeProviderContainer();
       addTearDown(container.dispose);
@@ -280,8 +280,8 @@ void main() {
           .loadProducts(searchValue);
 
       // Create the updated version of the first product
-      final updatedProduct = EntityFactory.makeInventoryProductEntity(
-        plu: productsEntities.first.plu,
+      final updatedProduct = EntityFactory.makeProductEntity(
+        plu: productsEntities.first.PLU,
       );
       // ACT: Call the updateProduct method
       container
@@ -314,9 +314,9 @@ void main() {
       'should do nothing if the product to update is not in the list',
       () async {
         // Create an updated product that does NOT exist in the initial list
-        final nonExistentProduct = EntityFactory.makeInventoryProductEntity();
+        final nonExistentProduct = EntityFactory.makeProductEntity();
 
-        mockRepository.mockGetInventoryProducts(productsEntities);
+        mockRepository.mockLoad(productsEntities);
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);

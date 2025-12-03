@@ -6,8 +6,8 @@ import '../../../domain/entities/entities.dart';
 //TODO create different folders here and in entities to separate inventory, params and getJson
 class InventoryProductModel extends Equatable implements ProductModelType {
   final String productName;
-  final int codigoInternoProEmb;
   final String plu;
+  final int codigoInternoProEmb;
   final String codigoProEmb;
   final double? quantidadeInvContProEmb;
 
@@ -47,20 +47,20 @@ class InventoryProductModel extends Equatable implements ProductModelType {
     'Quantidade_InvContProEmb': quantidadeInvContProEmb?.toString(),
   };
 
-  factory InventoryProductModel.fromEntity(InventoryProductEntity entity) =>
+  factory InventoryProductModel.fromEntity(ProductEntity entity) =>
       InventoryProductModel(
-        productName: entity.productName,
-        codigoInternoProEmb: entity.codigoInternoProEmb,
-        plu: entity.plu,
-        codigoProEmb: entity.codigoProEmb,
+        productName: entity.Name!,
+        plu: entity.PLU!,
+        codigoInternoProEmb: entity.codigoInternoProEmb!,
+        codigoProEmb: entity.codigoProEmb!,
         quantidadeInvContProEmb: entity.quantidadeInvContProEmb,
       );
 
   @override
-  InventoryProductEntity toEntity() => InventoryProductEntity(
-    productName: productName,
+  ProductEntity toEntity() => ProductEntity.empty().copyWith(
+    Name: productName,
     codigoInternoProEmb: codigoInternoProEmb,
-    plu: plu,
+    PLU: plu,
     codigoProEmb: codigoProEmb,
     quantidadeInvContProEmb: quantidadeInvContProEmb,
   );

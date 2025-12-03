@@ -12,7 +12,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late List<InventoryProductEntity> productsEntities;
+  late List<ProductEntity> productsEntities;
   late String baseUrl;
   late Map<String, dynamic> parametersPayload;
 
@@ -34,9 +34,9 @@ void main() {
 
   void initEntities() {
     productsEntities = [
-      EntityFactory.makeInventoryProductEntity(),
-      EntityFactory.makeInventoryProductEntity(),
-      EntityFactory.makeInventoryProductEntity(),
+      EntityFactory.makeProductEntity(),
+      EntityFactory.makeProductEntity(),
+      EntityFactory.makeProductEntity(),
     ];
 
     baseUrl = faker.internet.httpUrl();

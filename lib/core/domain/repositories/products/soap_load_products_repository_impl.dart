@@ -12,7 +12,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
   );
 
   @override
-  Future<List<ProductEntityType>> load({
+  Future<List<ProductEntity>> load({
     required String baseUrl,
     required String crossIdentity,
     required EnterpriseEntity enterpriseEntity,
@@ -41,7 +41,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     );
   }
 
-  Future<List<ProductEntityType>> _makeCall({
+  Future<List<ProductEntity>> _makeCall({
     required String baseUrl,
     required String crossIdentity,
     required EnterpriseEntity enterpriseEntity,
@@ -82,7 +82,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
             return products
                 .map((e) => e.toEntity())
                 .toList()
-                .cast<InventoryProductEntity>();
+                .cast<ProductEntity>();
           });
     }
   }

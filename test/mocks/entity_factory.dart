@@ -102,6 +102,7 @@ class EntityFactory {
     int? productPackingCode,
     double? MinimumWholeQuantity,
     double? RetailPracticedPrice,
+    String? plu,
   }) => ProductEntity(
     ConcurrentCode: faker.randomGenerator.integer(100),
     ResearchOfPriceCode: faker.randomGenerator.integer(100),
@@ -114,7 +115,7 @@ class EntityFactory {
     ProductCode: faker.randomGenerator.integer(100),
     ProductPackingCode:
         productPackingCode ?? faker.randomGenerator.integer(999999),
-    PLU: faker.randomGenerator.integer(100).toString(),
+    PLU: plu ?? faker.randomGenerator.integer(100).toString(),
     Name: faker.food.dish(),
     PackingQuantity: faker.randomGenerator.integer(100).toString(),
     BalanceLabelType: faker.lorem.word(),
@@ -160,6 +161,9 @@ class EntityFactory {
       makeLastBuyEntranceEntity(),
       makeLastBuyEntranceEntity(),
     ],
+    codigoInternoProEmb: faker.randomGenerator.integer(100),
+    codigoProEmb: faker.randomGenerator.integer(100).toString(),
+    quantidadeInvContProEmb: faker.randomGenerator.decimal(),
   );
 
   static LastBuyEntranceEntity makeLastBuyEntranceEntity() =>
@@ -518,15 +522,6 @@ class EntityFactory {
     NumeroContagemInvCont: faker.randomGenerator.integer(100),
     ObsInvCont: faker.lorem.word(),
   );
-
-  static InventoryProductEntity makeInventoryProductEntity({String? plu}) =>
-      InventoryProductEntity(
-        productName: faker.food.dish(),
-        codigoInternoProEmb: faker.randomGenerator.integer(100),
-        plu: plu ?? faker.guid.guid(),
-        codigoProEmb: faker.randomGenerator.integer(100).toString(),
-        quantidadeInvContProEmb: faker.randomGenerator.decimal(),
-      );
 
   static BuyerEntity makeBuyerEntity() => BuyerEntity(
     Code: faker.randomGenerator.integer(100),

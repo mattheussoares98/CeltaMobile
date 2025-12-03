@@ -14,7 +14,7 @@ part 'inventory_products_state_controller.g.dart';
 class InventoryProductsStateController
     extends _$InventoryProductsStateController {
   @override
-  FutureOr<List<InventoryProductEntity>> build(
+  FutureOr<List<ProductEntity>> build(
     int enterpriseCode,
     int codigoInternoInventario,
     int codigoInternoInvCont,
@@ -64,28 +64,28 @@ class InventoryProductsStateController
               inventoryCountingCode: codigoInternoInvCont,
             ),
           )
-          .then((products) => products.cast<InventoryProductEntity>());
+          .then((products) => products);
     });
   }
 
-  void updateProduct(InventoryProductEntity updatedProduct) {
+  void updateProduct(ProductEntity updatedProduct) {
     // 1. Get the current state.
     final currentState = state;
     // 2. Make sure we have data to update.
-    if (currentState is! AsyncData<List<InventoryProductEntity>>) {
+    if (currentState is! AsyncData<List<ProductEntity>>) {
       // If the list isn't loaded, do nothing.
       return;
     }
 
     // 3. Find the index of the old product.
     final productIndex = currentState.value.indexWhere(
-      (p) => p.plu == updatedProduct.plu,
+      (p) => p.PLU == updatedProduct.PLU,
     );
 
     // 4. If the product exists in the list, replace it.
     if (productIndex != -1) {
       // Create a new list to ensure Riverpod detects the state change.
-      final newList = List<InventoryProductEntity>.from(currentState.value);
+      final newList = List<ProductEntity>.from(currentState.value);
       newList[productIndex] = updatedProduct;
 
       // 5. Set the new state. The UI will update instantly.

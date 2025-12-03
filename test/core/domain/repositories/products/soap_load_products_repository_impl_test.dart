@@ -52,7 +52,7 @@ void main() {
   late SoapInventoryLoadProductsDatasourceSpy soapInventoryDatasource;
 
   late List<ProductEntity> jsonProductsEntities;
-  late List<InventoryProductEntity> inventoryProductsEntities;
+  late List<ProductEntity> inventoryProductsEntities;
   late String baseUrl;
   late String crossIdentity;
   late EnterpriseEntity enterpriseEntity;
@@ -124,9 +124,9 @@ void main() {
       inventoryCountingCode: faker.randomGenerator.integer(100),
     );
     inventoryProductsEntities = [
-      EntityFactory.makeInventoryProductEntity(),
-      EntityFactory.makeInventoryProductEntity(),
-      EntityFactory.makeInventoryProductEntity(),
+      EntityFactory.makeProductEntity(),
+      EntityFactory.makeProductEntity(),
+      EntityFactory.makeProductEntity(),
     ];
   }
 
@@ -377,7 +377,12 @@ void main() {
         getProductsDefaultParams: getProductsInventoryParams,
       );
 
-      expect(response, inventoryProductsEntities);
+      expect(
+        response,
+        inventoryProductsEntities
+            .map((e) => InventoryProductModel.fromEntity(e).toEntity())
+            .toList(),
+      );
 
       verify(
         () => soapInventoryDatasource.get(

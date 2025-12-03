@@ -10,7 +10,7 @@ import '../../../controllers/controllers.dart';
 
 class ProductInformations extends ConsumerWidget {
   final VoidCallback onChangeSelectedIndex;
-  final InventoryProductEntity product;
+  final ProductEntity product;
   final bool isSelected;
   final int codigoInternoInvCont;
   const ProductInformations({
@@ -35,7 +35,7 @@ class ProductInformations extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TitleAndSubTitle(title: null, subTitle: product.productName),
+            TitleAndSubTitle(title: null, subTitle: product.Name),
             if (lastChangedProduct?.codigoInternoProEmb ==
                 product.codigoInternoProEmb)
               TitleAndSubTitle(
