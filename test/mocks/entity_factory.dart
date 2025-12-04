@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
@@ -306,7 +307,7 @@ class EntityFactory {
 
   static ProductLotInfoEntity makeProductLotInfoEntity() =>
       ProductLotInfoEntity(
-        product: makeProductEntity(),
+        product: ProductModel.fromEntity(makeProductEntity()).toEntity(),
         selectedJustification: makeTransferJustificationEntity(),
         selectedOriginStock: makeStockTypeEntity(),
         selectedDestinyStock: makeStockTypeEntity(),
@@ -594,10 +595,12 @@ class EntityFactory {
           enterpriseCode: enterpriseCode,
           productPackingCode: productPackingCode,
         ): BuyRequestProductItemEntity(
-          product: makeProductEntity(
-            productPackingCode: productPackingCode,
-            enterpriseCode: enterpriseCode,
-          ),
+          product: ProductModel.fromEntity(
+            makeProductEntity(
+              productPackingCode: productPackingCode,
+              enterpriseCode: enterpriseCode,
+            ),
+          ).toEntity(),
           quantity: faker.randomGenerator.decimal(),
           cost: faker.randomGenerator.decimal(),
         ),
@@ -665,10 +668,12 @@ class EntityFactory {
       AutomaticDiscountValue: faker.randomGenerator.decimal(),
       ExpectedDeliveryDate: faker.date.dateTime(),
       Observations: faker.lorem.word(),
-      product: makeProductEntity(
-        MinimumWholeQuantity: MinimumWholeQuantity,
-        RetailPracticedPrice: defaultValue,
-      ),
+      product: ProductModel.fromEntity(
+        makeProductEntity(
+          MinimumWholeQuantity: MinimumWholeQuantity,
+          RetailPracticedPrice: defaultValue,
+        ),
+      ).toEntity(),
     );
   }
 
