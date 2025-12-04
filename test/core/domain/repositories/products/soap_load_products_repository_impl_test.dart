@@ -517,7 +517,7 @@ void main() {
       );
 
       verify(
-        () => soapInventoryDatasource.get(
+        () => soapProductByRequestTypeDatasource.load(
           baseUrl: baseUrl,
           parametersPayload: {
             "crossIdentity": crossIdentity,
@@ -537,7 +537,7 @@ void main() {
     test(
       "Should search again when is balance code and fails the first time",
       () async {
-        soapInventoryDatasource.mockError();
+        soapProductByRequestTypeDatasource.mockError();
 
         const balanceEan = '2000000000000';
 
@@ -557,7 +557,7 @@ void main() {
         }
 
         verify(
-          () => soapInventoryDatasource.get(
+          () => soapProductByRequestTypeDatasource.load(
             baseUrl: baseUrl,
             parametersPayload: {
               "crossIdentity": crossIdentity,
@@ -566,14 +566,14 @@ void main() {
               "enterpriseDestinyCode":
                   getProductsByRequestTypeParams.enterpriseDestinyCode,
               "requestTypeCode": getProductsByRequestTypeParams.requestTypeCode,
-              "searchValue": getProductsByRequestTypeParams.searchValue,
+              "searchValue": balanceEan,
               "searchTypeInt": getProductsByRequestTypeParams.searchType.code,
               "routineTypeInt": BsRoutine.transferRequest.code,
             },
           ),
         ).called(1);
         verify(
-          () => soapInventoryDatasource.get(
+          () => soapProductByRequestTypeDatasource.load(
             baseUrl: baseUrl,
             parametersPayload: {
               "crossIdentity": crossIdentity,
