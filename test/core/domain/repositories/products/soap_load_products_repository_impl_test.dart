@@ -63,6 +63,24 @@ class SoapLoadProductByRequestTypeDatasourceSpy extends Mock
   }
 }
 
+class SoapReceiptLoadProductsDatasourceSpy extends Mock
+    implements ISoapReceiptLoadProductsDatasource {
+  void mockLoad(List<ReceiptProductModel> response) {
+    _mockCall().thenAnswer((_) async => response);
+  }
+
+  When _mockCall() => when(
+    () => this.get(
+      baseUrl: any(named: 'baseUrl'),
+      parametersPayload: any(named: 'parametersPayload'),
+    ),
+  );
+
+  void mockError() {
+    _mockCall().thenThrow(Exception());
+  }
+}
+
 void main() {
   late ISoapLoadProductsRepository sut;
 
@@ -70,6 +88,7 @@ void main() {
   late SoapInventoryLoadProductsDatasourceSpy soapInventoryDatasource;
   late SoapLoadProductByRequestTypeDatasourceSpy
   soapProductByRequestTypeDatasource;
+  late SoapReceiptLoadProductsDatasourceSpy soapReceiptLoadProductsDatasource;
 
   late List<ProductEntity> productsEntities;
   late List<ProductEntity> inventoryProductsEntities;
@@ -79,12 +98,14 @@ void main() {
   late GetProductsJsonParams getProductsJsonParams;
   late GetProductsInventoryParams getProductsInventoryParams;
   late GetProductsByRequestTypeParams getProductsByRequestTypeParams;
+  late GetProductsReceiptParams getProductsReceiptParams;
 
   void initSut() {
     sut = SoapLoadProductsRepositoryImpl(
       soapProductsDatasource,
       soapInventoryDatasource,
       soapProductByRequestTypeDatasource,
+      soapReceiptLoadProductsDatasource,
     );
   }
 
@@ -93,6 +114,7 @@ void main() {
     soapInventoryDatasource = SoapInventoryLoadProductsDatasourceSpy();
     soapProductByRequestTypeDatasource =
         SoapLoadProductByRequestTypeDatasourceSpy();
+    soapReceiptLoadProductsDatasource = SoapReceiptLoadProductsDatasourceSpy();
   }
 
   void mockSuccess() {
@@ -106,6 +128,9 @@ void main() {
       inventoryProductsEntities
           .map((e) => InventoryProductModel.fromEntity(e))
           .toList(),
+    );
+    soapReceiptLoadProductsDatasource.mockLoad(
+      productsEntities.map((e) => ReceiptProductModel.fromEntity(e)).toList(),
     );
   }
 
@@ -163,6 +188,12 @@ void main() {
       enterpriseDestinyCode: faker.randomGenerator.integer(100),
       requestTypeCode: faker.randomGenerator.integer(100),
     );
+    getProductsReceiptParams = GetProductsReceiptParams(
+      searchValue: faker.lorem.word(),
+      searchType: SearchType
+          .values[faker.randomGenerator.integer(SearchType.values.length)],
+      grDocCode: faker.randomGenerator.integer(100),
+    );
   }
 
   setUp(() {
@@ -193,7 +224,12 @@ void main() {
         getProductsDefaultParams: getProductsJsonParams,
       );
 
-      expect(response, productsEntities);
+      expect(
+        response,
+        productsEntities
+            .map((e) => ProductModel.fromEntity(e).toEntity())
+            .toList(),
+      );
 
       verify(
         () => soapProductsDatasource.get(
@@ -237,7 +273,12 @@ void main() {
         ),
       );
 
-      expect(response, productsEntities);
+      expect(
+        response,
+        productsEntities
+            .map((e) => ProductModel.fromEntity(e).toEntity())
+            .toList(),
+      );
 
       verify(
         () => soapProductsDatasource.get(
@@ -280,7 +321,12 @@ void main() {
           ),
         );
 
-        expect(response, productsEntities);
+        expect(
+          response,
+          productsEntities
+              .map((e) => ProductModel.fromEntity(e).toEntity())
+              .toList(),
+        );
 
         verify(
           () => soapProductsDatasource.get(
@@ -593,6 +639,90 @@ void main() {
                   ),
               "searchTypeInt": getProductsByRequestTypeParams.searchType.code,
               "routineTypeInt": BsRoutine.transferRequest.code,
+            },
+          ),
+        ).called(1);
+      },
+    );
+  });
+  group("Receipt products", () {
+    test("Should behave correctly when pass all params", () async {
+      final response = await sut.load(
+        baseUrl: baseUrl,
+        crossIdentity: crossIdentity,
+        enterpriseEntity: enterpriseEntity,
+        getProductsDefaultParams: getProductsReceiptParams,
+      );
+
+      expect(
+        response,
+        productsEntities
+            .map((e) => ReceiptProductModel.fromEntity(e).toEntity())
+            .toList(),
+      );
+
+      verify(
+        () => soapReceiptLoadProductsDatasource.get(
+          baseUrl: baseUrl,
+          parametersPayload: {
+            "crossIdentity": crossIdentity,
+            "grDocCode": getProductsReceiptParams.grDocCode,
+            "searchTypeInt": getProductsReceiptParams.searchType.code,
+            "searchValue": getProductsReceiptParams.searchValue,
+          },
+        ),
+      ).called(1);
+    });
+
+    test(
+      "Should search again when is balance code and fails the first time",
+      () async {
+        soapReceiptLoadProductsDatasource.mockError();
+
+        const balanceEan = '2000000000000';
+
+        try {
+          final response = await sut.load(
+            baseUrl: baseUrl,
+            crossIdentity: crossIdentity,
+            enterpriseEntity: enterpriseEntity,
+            getProductsDefaultParams: getProductsReceiptParams.copyWith(
+              searchValue: balanceEan,
+            ),
+          );
+
+          expect(response, Exception());
+        } catch (e) {
+          // ignore
+        }
+
+        verify(
+          () => soapReceiptLoadProductsDatasource.get(
+            baseUrl: baseUrl,
+            parametersPayload: {
+              "crossIdentity": crossIdentity,
+              "grDocCode": getProductsReceiptParams.grDocCode,
+              "searchTypeInt": getProductsReceiptParams.searchType.code,
+              "searchValue": balanceEan,
+            },
+          ),
+        ).called(1);
+        verify(
+          () => soapReceiptLoadProductsDatasource.get(
+            baseUrl: baseUrl,
+            parametersPayload: {
+              "crossIdentity": crossIdentity,
+              "grDocCode": getProductsReceiptParams.grDocCode,
+              "searchTypeInt": getProductsReceiptParams.searchType.code,
+              "searchValue": balanceEan
+                  .replaceFirst(RegExp(r'2'), '')
+                  .replaceRange(
+                    enterpriseEntity.ProductCodeSizeOfBalanceLabel!,
+                    null,
+                    enterpriseEntity.ProductCodeWithCheckerDigit == true
+                        ? ""
+                        : ".",
+                  ),
             },
           ),
         ).called(1);

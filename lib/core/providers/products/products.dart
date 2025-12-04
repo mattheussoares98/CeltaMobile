@@ -37,5 +37,6 @@ ISoapLoadProductsRepository soapLoadProductsRepository(Ref ref) {
     ref.watch(soapGetProductsJsonDatasourceProvider),
     ref.watch(soapInventoryLoadProductsDatasourceProvider),
     ref.watch(soapLoadProductByRequestTypeDatasourceProvider),
+    ref.watch(soapReceiptLoadProductsDatasourceProvider),
   );
 }

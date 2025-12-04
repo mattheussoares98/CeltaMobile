@@ -9,10 +9,13 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
   soapInventoryLoadProductsDatasource;
   final ISoapLoadProductByRequestTypeDatasource
   soapLoadProductByRequestTypeDatasource;
+  final ISoapReceiptLoadProductsDatasource soapReceiptLoadProductsDatasource;
+
   SoapLoadProductsRepositoryImpl(
     this.soapGetProductsJsonDatasource,
     this.soapInventoryLoadProductsDatasource,
     this.soapLoadProductByRequestTypeDatasource,
+    this.soapReceiptLoadProductsDatasource,
   );
 
   @override
@@ -70,6 +73,11 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
       );
     } else if (getProductsDefaultParams is GetProductsByRequestTypeParams) {
       response = await soapLoadProductByRequestTypeDatasource.load(
+        baseUrl: baseUrl,
+        parametersPayload: params,
+      );
+    } else if (getProductsDefaultParams is GetProductsReceiptParams) {
+      response = await soapReceiptLoadProductsDatasource.get(
         baseUrl: baseUrl,
         parametersPayload: params,
       );
@@ -158,7 +166,6 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
         "inventoryCountingCode": getProductsDefaultParams.inventoryCountingCode,
       });
     } else if (getProductsDefaultParams is GetProductsByRequestTypeParams) {
-      //TODO create tests
       parameters.addAll({
         "crossIdentity": crossIdentity,
         "enterpriseCode": getProductsDefaultParams.enterpriseOriginCode,
@@ -167,6 +174,13 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
         "searchValue": searchValue,
         "searchTypeInt": getProductsDefaultParams.searchType.code,
         "routineTypeInt": BsRoutine.transferRequest.code,
+      });
+    } else if (getProductsDefaultParams is GetProductsReceiptParams) {
+      parameters.addAll({
+        "crossIdentity": crossIdentity,
+        "grDocCode": getProductsDefaultParams.grDocCode,
+        "searchTypeInt": getProductsDefaultParams.searchType.code,
+        "searchValue": searchValue,
       });
     }
     return parameters;
