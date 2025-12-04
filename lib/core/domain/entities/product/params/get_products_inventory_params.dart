@@ -7,6 +7,7 @@ class GetProductsInventoryParams extends GetProductsDefaultParams {
 
   const GetProductsInventoryParams({
     required super.searchValue,
+    super.routine,
     required this.inventoryProcessCode,
     required this.inventoryCountingCode,
   });
@@ -14,17 +15,21 @@ class GetProductsInventoryParams extends GetProductsDefaultParams {
   @override
   List<Object?> get props => [
     searchValue,
+    routine,
     inventoryProcessCode,
     inventoryCountingCode,
   ];
 
+  @override
   GetProductsInventoryParams copyWith({
     int? inventoryProcessCode,
     int? inventoryCountingCode,
     String? searchValue,
+    BsRoutine? routine,
   }) {
     return GetProductsInventoryParams(
       searchValue: searchValue ?? this.searchValue,
+      routine: routine ?? this.routine,
       inventoryProcessCode: inventoryProcessCode ?? this.inventoryProcessCode,
       inventoryCountingCode:
           inventoryCountingCode ?? this.inventoryCountingCode,

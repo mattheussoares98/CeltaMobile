@@ -41,8 +41,11 @@ class _AdjustSalePriceProductsPageState
           ).notifier,
         )
         .loadProducts(
-          enterpriseCodes: [widget.enterpriseCode],
-          searchValue: searchValueController.text,
+          GetProductsJsonParams(
+            searchValue: searchValueController.text,
+            enterpriseCodes: [widget.enterpriseCode],
+            routine: BsRoutine.adjustSalePrice,
+          ),
         );
   }
 

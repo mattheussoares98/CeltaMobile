@@ -46,8 +46,8 @@ class SelectedProductStateController extends _$SelectedProductStateController {
           getProductsDefaultParams: GetProductsJsonParams(
             searchValue: plu,
             routine: BsRoutine.adjustSalePrice,
-            EnterpriseCodes: [enterpriseCode],
-            LastBuyEntranceQuantity: null,
+            enterpriseCodes: [enterpriseCode],
+            lastBuyEntranceQuantity: null,
             buyRequestParams: null,
             competingPricesParams: null,
           ),

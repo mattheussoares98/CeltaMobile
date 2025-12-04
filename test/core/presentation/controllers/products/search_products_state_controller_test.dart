@@ -173,10 +173,12 @@ void main() {
             ).notifier,
           )
           .loadProducts(
-            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-            searchValue: searchValue,
-            enterpriseCodes: [enterpriseEntity.Code!],
-            buyRequestParams: buyRequestParams,
+            GetProductsJsonParams(
+              searchValue: searchValue,
+              enterpriseCodes: [enterpriseEntity.Code!],
+              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              buyRequestParams: buyRequestParams,
+            ),
           );
 
       expect(states, [
@@ -190,10 +192,10 @@ void main() {
           enterpriseEntity: enterpriseEntity,
           searchType: appSettingsEntity.searchPreference.searchType,
           getProductsDefaultParams: GetProductsJsonParams(
-            EnterpriseCodes: [enterpriseEntity.Code!],
+            enterpriseCodes: [enterpriseEntity.Code!],
             routine: bsRoutine,
             searchValue: searchValue,
-            LastBuyEntranceQuantity: lastBuyEntranceQuantity,
+            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             buyRequestParams: buyRequestParams,
             competingPricesParams: competingPricesParams,
           ),
@@ -230,10 +232,12 @@ void main() {
             ).notifier,
           )
           .loadProducts(
-            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-            searchValue: searchValue,
-            enterpriseCodes: [enterpriseEntity.Code!],
-            buyRequestParams: buyRequestParams,
+            GetProductsJsonParams(
+              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              searchValue: searchValue,
+              enterpriseCodes: [enterpriseEntity.Code!],
+              buyRequestParams: buyRequestParams,
+            ),
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -278,9 +282,11 @@ void main() {
             ).notifier,
           )
           .loadProducts(
-            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-            searchValue: searchValue,
-            enterpriseCodes: [enterpriseEntity.Code!],
+            GetProductsJsonParams(
+              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              searchValue: searchValue,
+              enterpriseCodes: [enterpriseEntity.Code!],
+            ),
           );
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -323,9 +329,11 @@ void main() {
             ).notifier,
           )
           .loadProducts(
-            lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-            searchValue: searchValue,
-            enterpriseCodes: [enterpriseEntity.Code!],
+            GetProductsJsonParams(
+              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              searchValue: searchValue,
+              enterpriseCodes: [enterpriseEntity.Code!],
+            ),
           );
 
       // Create the updated version of the first product
@@ -387,9 +395,11 @@ void main() {
               ).notifier,
             )
             .loadProducts(
-              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
-              searchValue: searchValue,
-              enterpriseCodes: [enterpriseEntity.Code!],
+              GetProductsJsonParams(
+                lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+                searchValue: searchValue,
+                enterpriseCodes: [enterpriseEntity.Code!],
+              ),
             );
 
         // ACT

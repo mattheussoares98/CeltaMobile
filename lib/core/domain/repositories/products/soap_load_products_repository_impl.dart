@@ -130,12 +130,12 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     if (getProductsDefaultParams is GetProductsJsonParams) {
       parameters.addAll({
         "CrossIdentity": crossIdentity,
-        "EnterpriseCodes": getProductsDefaultParams.EnterpriseCodes,
+        "EnterpriseCodes": getProductsDefaultParams.enterpriseCodes,
         "SearchValue": searchValue,
         "SearchType": searchType.code,
-        "RoutineInt": getProductsDefaultParams.routine.code,
+        "RoutineInt": getProductsDefaultParams.routine?.code,
         "LastBuyEntranceQuantity":
-            getProductsDefaultParams.LastBuyEntranceQuantity ?? 5,
+            getProductsDefaultParams.lastBuyEntranceQuantity ?? 5,
       });
 
       if (getProductsDefaultParams.buyRequestParams != null) {

@@ -130,10 +130,10 @@ void main() {
             enterpriseEntity: userSessionEntity.supabaseEnterprise!,
             searchType: SearchType.dynamic,
             getProductsDefaultParams: GetProductsJsonParams(
-              EnterpriseCodes: [enterpriseCode],
+              enterpriseCodes: [enterpriseCode],
               routine: BsRoutine.adjustSalePrice,
               searchValue: productEntity.PLU!,
-              LastBuyEntranceQuantity: null,
+              lastBuyEntranceQuantity: null,
               buyRequestParams: null,
               competingPricesParams: null,
             ),

@@ -119,13 +119,15 @@ class Filters extends ConsumerWidget {
                         ).notifier,
                       )
                       .loadProducts(
-                        searchValue: '%',
-                        enterpriseCodes: [widget.enterpriseCode],
-                        competingPricesParams: CompetingPricesParams(
-                          ResearchOfPriceCode: widget.researchCode,
-                          ConcurrentCode: widget.concurrentCode,
-                          OnlyAssociated: restrictProducts,
-                          searchType: selectedItem.searchType,
+                        GetProductsJsonParams(
+                          enterpriseCodes: [widget.enterpriseCode],
+                          searchValue: '%',
+                          competingPricesParams: CompetingPricesParams(
+                            ResearchOfPriceCode: widget.researchCode,
+                            ConcurrentCode: widget.concurrentCode,
+                            OnlyAssociated: restrictProducts,
+                            searchType: selectedItem.searchType,
+                          ),
                         ),
                       );
                 },

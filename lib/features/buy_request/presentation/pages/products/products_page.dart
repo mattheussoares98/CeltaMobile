@@ -53,12 +53,14 @@ class ProductsPage extends ConsumerWidget {
             ).notifier,
           )
           .loadProducts(
-            enterpriseCodes:
-                pendingAsync.value?.selectedEnterprises
-                    ?.map((e) => e.Code!)
-                    .toList() ??
-                [],
-            searchValue: searchProductController.text,
+            GetProductsJsonParams(
+              enterpriseCodes:
+                  pendingAsync.value?.selectedEnterprises
+                      ?.map((e) => e.Code!)
+                      .toList() ??
+                  [],
+              searchValue: searchProductController.text,
+            ),
           );
     }
 

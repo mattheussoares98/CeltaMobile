@@ -37,8 +37,10 @@ class PendingProductsPage extends ConsumerWidget {
             ).notifier,
           )
           .loadProducts(
-            searchValue: searchValueController.text,
-            enterpriseCodes: [enterpriseCode],
+            GetProductsJsonParams(
+              searchValue: searchValueController.text,
+              enterpriseCodes: [enterpriseCode],
+            ),
           );
     }
 

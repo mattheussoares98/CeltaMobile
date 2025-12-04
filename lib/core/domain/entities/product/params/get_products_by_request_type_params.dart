@@ -8,6 +8,7 @@ class GetProductsByRequestTypeParams extends GetProductsDefaultParams {
 
   const GetProductsByRequestTypeParams({
     required super.searchValue,
+    super.routine,
     required this.enterpriseOriginCode,
     required this.enterpriseDestinyCode,
     required this.requestTypeCode,
@@ -16,19 +17,23 @@ class GetProductsByRequestTypeParams extends GetProductsDefaultParams {
   @override
   List<Object?> get props => [
     searchValue,
+    routine,
     enterpriseOriginCode,
     enterpriseDestinyCode,
     requestTypeCode,
   ];
 
+  @override
   GetProductsByRequestTypeParams copyWith({
     String? searchValue,
+    BsRoutine? routine,
     int? enterpriseOriginCode,
     int? enterpriseDestinyCode,
     int? requestTypeCode,
   }) {
     return GetProductsByRequestTypeParams(
       searchValue: searchValue ?? this.searchValue,
+      routine: routine ?? this.routine,
       enterpriseOriginCode: enterpriseOriginCode ?? this.enterpriseOriginCode,
       enterpriseDestinyCode:
           enterpriseDestinyCode ?? this.enterpriseDestinyCode,

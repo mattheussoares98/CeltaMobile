@@ -49,8 +49,10 @@ class SearchProducts extends ConsumerWidget {
               ).notifier,
             )
             .loadProducts(
-              searchValue: searchProductsController.text,
-              enterpriseCodes: [enterpriseCode],
+              GetProductsJsonParams(
+                searchValue: searchProductsController.text,
+                enterpriseCodes: [enterpriseCode],
+              ),
             );
       },
     );

@@ -74,8 +74,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       ).notifier,
                     )
                     .loadProducts(
-                      searchValue: searchValueController.text,
-                      enterpriseCodes: [widget.enterpriseCode],
+                      GetProductsJsonParams(
+                        searchValue: searchValueController.text,
+                        enterpriseCodes: [widget.enterpriseCode],
+                      ),
                     );
               },
               searchValueController: searchValueController,

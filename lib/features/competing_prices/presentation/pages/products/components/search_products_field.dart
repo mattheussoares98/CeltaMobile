@@ -51,15 +51,17 @@ class SearchProductsField extends ConsumerWidget {
               ).notifier,
             )
             .loadProducts(
-              searchValue: searchValueController.text.isEmpty
-                  ? '%'
-                  : searchValueController.text,
-              enterpriseCodes: [widget.enterpriseCode],
-              competingPricesParams: CompetingPricesParams(
-                ResearchOfPriceCode: widget.researchCode,
-                ConcurrentCode: widget.concurrentCode,
-                OnlyAssociated: restrictProducts,
-                searchType: searchType,
+              GetProductsJsonParams(
+                enterpriseCodes: [widget.enterpriseCode],
+                searchValue: searchValueController.text.isEmpty
+                    ? '%'
+                    : searchValueController.text,
+                competingPricesParams: CompetingPricesParams(
+                  ResearchOfPriceCode: widget.researchCode,
+                  ConcurrentCode: widget.concurrentCode,
+                  OnlyAssociated: restrictProducts,
+                  searchType: searchType,
+                ),
               ),
             );
       },

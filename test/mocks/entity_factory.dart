@@ -794,7 +794,7 @@ class EntityFactory {
 
   static GetProductsJsonParams makeGetProductsJsonParams() =>
       GetProductsJsonParams(
-        EnterpriseCodes: [
+        enterpriseCodes: [
           faker.randomGenerator.integer(100),
           faker.randomGenerator.integer(200, min: 101),
           faker.randomGenerator.integer(300, min: 201),
@@ -802,7 +802,7 @@ class EntityFactory {
         routine: BsRoutine
             .values[faker.randomGenerator.integer(BsRoutine.values.length)],
         searchValue: faker.lorem.word(),
-        LastBuyEntranceQuantity: faker.randomGenerator.integer(100),
+        lastBuyEntranceQuantity: faker.randomGenerator.integer(100),
         buyRequestParams: BuyRequestParams(
           requestTypeCode: faker.randomGenerator.integer(100),
           supplierCode: faker.randomGenerator.integer(100),

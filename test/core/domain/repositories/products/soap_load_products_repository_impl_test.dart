@@ -144,14 +144,14 @@ void main() {
     baseUrl = faker.internet.httpUrl();
     getProductsJsonParams = GetProductsJsonParams(
       searchValue: faker.randomGenerator.string(13),
-      EnterpriseCodes: [
+      enterpriseCodes: [
         faker.randomGenerator.integer(100, min: 0),
         faker.randomGenerator.integer(200, min: 101),
         faker.randomGenerator.integer(300, min: 201),
       ],
       routine: BsRoutine
           .values[faker.randomGenerator.integer(BsRoutine.values.length)],
-      LastBuyEntranceQuantity: faker.randomGenerator.integer(100),
+      lastBuyEntranceQuantity: faker.randomGenerator.integer(100),
       buyRequestParams: BuyRequestParams(
         requestTypeCode: faker.randomGenerator.integer(100),
         supplierCode: faker.randomGenerator.integer(100),
@@ -233,12 +233,12 @@ void main() {
           isCompetingPrices: true,
           parametersPayload: {
             "CrossIdentity": crossIdentity,
-            "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+            "EnterpriseCodes": getProductsJsonParams.enterpriseCodes,
             "SearchValue": getProductsJsonParams.searchValue,
             "SearchType": searchType.code,
-            "RoutineInt": getProductsJsonParams.routine.code,
+            "RoutineInt": getProductsJsonParams.routine?.code,
             "LastBuyEntranceQuantity":
-                getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+                getProductsJsonParams.lastBuyEntranceQuantity ?? 5,
             "RequestTypeCode":
                 getProductsJsonParams.buyRequestParams!.requestTypeCode,
             "SupplierCode":
@@ -283,12 +283,12 @@ void main() {
           isCompetingPrices: true,
           parametersPayload: {
             "CrossIdentity": crossIdentity,
-            "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+            "EnterpriseCodes": getProductsJsonParams.enterpriseCodes,
             "SearchValue": getProductsJsonParams.searchValue,
             "SearchType": searchType.code,
-            "RoutineInt": getProductsJsonParams.routine.code,
+            "RoutineInt": getProductsJsonParams.routine?.code,
             "LastBuyEntranceQuantity":
-                getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+                getProductsJsonParams.lastBuyEntranceQuantity ?? 5,
             "SearchTypeInt": searchType.code,
             "ResearchOfPriceFilters": {
               "ResearchOfPriceCode": getProductsJsonParams
@@ -332,12 +332,12 @@ void main() {
             isCompetingPrices: false,
             parametersPayload: {
               "CrossIdentity": crossIdentity,
-              "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+              "EnterpriseCodes": getProductsJsonParams.enterpriseCodes,
               "SearchValue": getProductsJsonParams.searchValue,
               "SearchType": searchType.code,
-              "RoutineInt": getProductsJsonParams.routine.code,
+              "RoutineInt": getProductsJsonParams.routine?.code,
               "LastBuyEntranceQuantity":
-                  getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+                  getProductsJsonParams.lastBuyEntranceQuantity ?? 5,
               "RequestTypeCode":
                   getProductsJsonParams.buyRequestParams!.requestTypeCode,
               "SupplierCode":
@@ -377,12 +377,12 @@ void main() {
             isCompetingPrices: true,
             parametersPayload: {
               "CrossIdentity": crossIdentity,
-              "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+              "EnterpriseCodes": getProductsJsonParams.enterpriseCodes,
               "SearchValue": balanceEan,
               "SearchType": searchType.code,
-              "RoutineInt": getProductsJsonParams.routine.code,
+              "RoutineInt": getProductsJsonParams.routine?.code,
               "LastBuyEntranceQuantity":
-                  getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+                  getProductsJsonParams.lastBuyEntranceQuantity ?? 5,
               "RequestTypeCode":
                   getProductsJsonParams.buyRequestParams!.requestTypeCode,
               "SupplierCode":
@@ -410,7 +410,7 @@ void main() {
             isCompetingPrices: true,
             parametersPayload: {
               "CrossIdentity": crossIdentity,
-              "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
+              "EnterpriseCodes": getProductsJsonParams.enterpriseCodes,
               "SearchValue": balanceEan
                   .replaceFirst(RegExp(r'2'), '')
                   .replaceRange(
@@ -421,9 +421,9 @@ void main() {
                         : ".",
                   ),
               "SearchType": searchType.code,
-              "RoutineInt": getProductsJsonParams.routine.code,
+              "RoutineInt": getProductsJsonParams.routine?.code,
               "LastBuyEntranceQuantity":
-                  getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
+                  getProductsJsonParams.lastBuyEntranceQuantity ?? 5,
               "RequestTypeCode":
                   getProductsJsonParams.buyRequestParams!.requestTypeCode,
               "SupplierCode":

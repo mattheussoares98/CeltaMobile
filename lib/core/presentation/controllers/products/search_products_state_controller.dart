@@ -35,14 +35,9 @@ class SearchProductsStateController extends _$SearchProductsStateController {
     return [];
   }
 
-  Future<void> loadProducts({
-    required String searchValue,
-    required List<int> enterpriseCodes,
-    int? lastBuyEntranceQuantity = 5,
-    BuyRequestParams? buyRequestParams,
-    CompetingPricesParams? competingPricesParams,
-    //TODO receive GetProductsDefaultParams as param instead of direct
-  }) async {
+  Future<void> loadProducts(
+    GetProductsDefaultParams getProductsDefaultParams,
+  ) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(validatedUserSessionProvider.future);
@@ -66,13 +61,8 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             crossIdentity: crossIdentity,
             enterpriseEntity: selectedEnterprise!,
             searchType: searchType,
-            getProductsDefaultParams: GetProductsJsonParams(
-              EnterpriseCodes: enterpriseCodes,
+            getProductsDefaultParams: getProductsDefaultParams.copyWith(
               routine: routine,
-              searchValue: searchValue,
-              LastBuyEntranceQuantity: lastBuyEntranceQuantity,
-              buyRequestParams: buyRequestParams,
-              competingPricesParams: competingPricesParams,
             ),
           );
 
