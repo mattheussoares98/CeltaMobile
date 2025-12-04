@@ -25,22 +25,6 @@ ISoapLoadDestinyEnterprisesRepository soapLoadDestinyEnterprisesRepository(
 }
 
 @riverpod
-ISoapLoadProductByRequestTypeDatasource soapLoadProductByRequestTypeDatasource(
-  Ref ref,
-) {
-  return SoapLoadProductByRequestTypeDatasource(ref.watch(soapRequestProvider));
-}
-
-@riverpod
-ISoapLoadProductByRequestTypeRepository soapLoadProductByRequestTypeRepository(
-  Ref ref,
-) {
-  return SoapLoadProductByRequestTypeRepositoryImpl(
-    ref.watch(soapLoadProductByRequestTypeDatasourceProvider),
-  );
-}
-
-@riverpod
 ILocalCartDatasource localCartDatasource(Ref ref) {
   return LocalCartDatasource(ref.watch(hiveBoxTransferRequestProvider));
 }

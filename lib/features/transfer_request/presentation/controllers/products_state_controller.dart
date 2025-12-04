@@ -5,8 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../../../core/providers/products/products.dart';
 import '../../../settings/presentation/controllers/controllers.dart';
-import '../../providers.dart';
 
 part 'products_state_controller.g.dart';
 
@@ -54,16 +54,18 @@ class ProductsStateController extends _$ProductsStateController {
           settings?.searchPreference.searchType ?? SearchType.dynamic;
 
       final products = await ref
-          .read(soapLoadProductByRequestTypeRepositoryProvider)
+          .read(soapLoadProductsRepositoryProvider)
           .load(
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
-            enterpriseOriginCode: enterpriseOriginCode,
-            enterpriseDestinyCode: enterpriseDestinyCode,
-            requestTypeCode: requestTypeCode,
             enterpriseEntity: selectedEnterprise!,
-            searchValue: searchValue,
-            searchType: searchType,
+            getProductsDefaultParams: GetProductsByRequestTypeParams(
+              searchValue: searchValue,
+              searchType: searchType,
+              enterpriseOriginCode: enterpriseOriginCode,
+              enterpriseDestinyCode: enterpriseDestinyCode,
+              requestTypeCode: requestTypeCode,
+            ),
           );
 
       return products;

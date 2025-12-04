@@ -1,11 +1,10 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/core/providers/products/products.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/settings/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/transfer_request/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/transfer_request/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/transfer_request/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,11 +12,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class MockSoapLoadProductByRequestTypeRepository extends Mock
-    implements ISoapLoadProductByRequestTypeRepository {}
-
 void main() {
-  late MockSoapLoadProductByRequestTypeRepository mockRepository;
+  late SoapProductsRepositorySpy mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
   late AppSettingsEntity fakeAppSettings;
@@ -32,10 +28,11 @@ void main() {
   setUpAll(() {
     registerFallbackValue(SearchType.dynamic);
     registerFallbackValue(EntityFactory.makeEnterpriseEntity());
+    registerFallbackValue(EntityFactory.makeGetProductsJsonParams());
   });
 
   setUp(() {
-    mockRepository = MockSoapLoadProductByRequestTypeRepository();
+    mockRepository = SoapProductsRepositorySpy();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -56,9 +53,7 @@ void main() {
   }) {
     return ProviderContainer(
       overrides: [
-        soapLoadProductByRequestTypeRepositoryProvider.overrideWithValue(
-          mockRepository,
-        ),
+        soapLoadProductsRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
@@ -81,12 +76,8 @@ void main() {
           () => mockRepository.load(
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
-            enterpriseOriginCode: any(named: 'enterpriseOriginCode'),
-            enterpriseDestinyCode: any(named: 'enterpriseDestinyCode'),
-            requestTypeCode: any(named: 'requestTypeCode'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
-            searchValue: any(named: 'searchValue'),
-            searchType: any(named: 'searchType'),
+            getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
           ),
         ).thenAnswer((_) async {
           await Future.delayed(Duration.zero); // Simulate async delay
@@ -137,12 +128,14 @@ void main() {
           () => mockRepository.load(
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            enterpriseOriginCode: enterpriseOriginCode,
-            enterpriseDestinyCode: enterpriseDestinyCode,
-            requestTypeCode: requestTypeCode,
             enterpriseEntity: fakeEnterprise,
-            searchValue: fakeSearchValue,
-            searchType: fakeAppSettings.searchPreference.searchType,
+            getProductsDefaultParams: GetProductsByRequestTypeParams(
+              searchValue: fakeSearchValue,
+              searchType: fakeAppSettings.searchPreference.searchType,
+              enterpriseOriginCode: enterpriseOriginCode,
+              enterpriseDestinyCode: enterpriseDestinyCode,
+              requestTypeCode: requestTypeCode,
+            ),
           ),
         ).called(1);
       },
@@ -193,12 +186,8 @@ void main() {
           () => mockRepository.load(
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
-            enterpriseOriginCode: any(named: 'enterpriseOriginCode'),
-            enterpriseDestinyCode: any(named: 'enterpriseDestinyCode'),
-            requestTypeCode: any(named: 'requestTypeCode'),
-            searchValue: any(named: 'searchValue'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
-            searchType: any(named: 'searchType'),
+            getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
           ),
         );
       },
