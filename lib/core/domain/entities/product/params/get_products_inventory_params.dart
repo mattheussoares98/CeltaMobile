@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import '../../entities.dart';
-import 'params.dart';
 
 class GetProductsInventoryParams extends GetProductsDefaultParams {
   final int inventoryProcessCode;

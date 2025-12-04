@@ -49,6 +49,7 @@ class ProductModel extends Equatable implements ProductModelType {
   final int? codigoInternoProEmb;
   final String? codigoProEmb;
   final double? quantidadeInvContProEmb;
+  final String? FormatedProduct;
 
   const ProductModel({
     required this.ResearchOfPriceCode,
@@ -96,6 +97,7 @@ class ProductModel extends Equatable implements ProductModelType {
     required this.codigoInternoProEmb,
     required this.codigoProEmb,
     required this.quantidadeInvContProEmb,
+    required this.FormatedProduct,
   });
 
   @override
@@ -145,6 +147,7 @@ class ProductModel extends Equatable implements ProductModelType {
     codigoInternoProEmb,
     codigoProEmb,
     quantidadeInvContProEmb,
+    FormatedProduct,
   ];
 
   factory ProductModel.fromJson(Map json) {
@@ -210,6 +213,7 @@ class ProductModel extends Equatable implements ProductModelType {
       codigoInternoProEmb: json['codigoInternoProEmb'],
       codigoProEmb: json['codigoProEmb'],
       quantidadeInvContProEmb: json['quantidadeInvContProEmb'],
+      FormatedProduct: json['FormatedProduct'],
     );
   }
 
@@ -263,6 +267,7 @@ class ProductModel extends Equatable implements ProductModelType {
     'codigoInternoProEmb': codigoInternoProEmb,
     'codigoProEmb': codigoProEmb,
     'quantidadeInvContProEmb': quantidadeInvContProEmb,
+    'FormatedProduct': FormatedProduct,
   };
 
   factory ProductModel.fromEntity(ProductEntity entity) {
@@ -321,6 +326,7 @@ class ProductModel extends Equatable implements ProductModelType {
       codigoInternoProEmb: entity.codigoInternoProEmb,
       codigoProEmb: entity.codigoProEmb,
       quantidadeInvContProEmb: entity.quantidadeInvContProEmb,
+      FormatedProduct: entity.FormatedProduct,
     );
   }
 
@@ -374,5 +380,6 @@ class ProductModel extends Equatable implements ProductModelType {
     codigoInternoProEmb: codigoInternoProEmb,
     codigoProEmb: codigoProEmb,
     quantidadeInvContProEmb: quantidadeInvContProEmb,
+    FormatedProduct: FormatedProduct,
   );
 }

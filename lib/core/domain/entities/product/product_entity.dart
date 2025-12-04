@@ -52,6 +52,7 @@ class ProductEntity extends Equatable {
   final int? codigoInternoProEmb; //inventory
   final String? codigoProEmb; //inventory
   final double? quantidadeInvContProEmb; //inventory
+  final String? FormatedProduct; //receipt
 
   const ProductEntity({
     required this.EnterpriseCode,
@@ -99,6 +100,7 @@ class ProductEntity extends Equatable {
     required this.codigoInternoProEmb,
     required this.codigoProEmb,
     required this.quantidadeInvContProEmb,
+    required this.FormatedProduct,
   });
 
   @override
@@ -196,6 +198,7 @@ class ProductEntity extends Equatable {
     int? codigoInternoProEmb,
     String? codigoProEmb,
     double? quantidadeInvContProEmb,
+    String? FormatedProduct,
   }) {
     return ProductEntity(
       EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
@@ -249,6 +252,7 @@ class ProductEntity extends Equatable {
       codigoProEmb: codigoProEmb ?? this.codigoProEmb,
       quantidadeInvContProEmb:
           quantidadeInvContProEmb ?? this.quantidadeInvContProEmb,
+      FormatedProduct: FormatedProduct ?? this.FormatedProduct,
     );
   }
 
@@ -345,6 +349,7 @@ class ProductEntity extends Equatable {
     codigoInternoProEmb: null,
     codigoProEmb: null,
     quantidadeInvContProEmb: null,
+    FormatedProduct: null,
   );
 }
 

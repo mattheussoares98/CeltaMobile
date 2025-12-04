@@ -164,6 +164,7 @@ class EntityFactory {
     codigoInternoProEmb: faker.randomGenerator.integer(100),
     codigoProEmb: faker.randomGenerator.integer(100).toString(),
     quantidadeInvContProEmb: faker.randomGenerator.decimal(),
+    FormatedProduct: faker.lorem.sentence(),
   );
 
   static LastBuyEntranceEntity makeLastBuyEntranceEntity() =>
