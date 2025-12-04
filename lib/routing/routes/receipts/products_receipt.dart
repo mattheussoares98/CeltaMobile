@@ -9,8 +9,13 @@ RouteBase productsReceiptRoute() => GoRoute(
   name: Routes.receiptProducts.name,
   builder: (context, state) {
     final receiptCode = int.parse(state.pathParameters['receiptCode']!);
+    final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
     final receipt = state.extra as ReceiptEntity?;
 
-    return ProductsPage(receiptCode: receiptCode, receipt: receipt);
+    return ProductsPage(
+      receiptCode: receiptCode,
+      receipt: receipt,
+      enterpriseCode: enterpriseCode,
+    );
   },
 );
