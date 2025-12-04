@@ -799,8 +799,6 @@ class EntityFactory {
           faker.randomGenerator.integer(200, min: 101),
           faker.randomGenerator.integer(300, min: 201),
         ],
-        searchType: SearchType
-            .values[faker.randomGenerator.integer(SearchType.values.length)],
         routine: BsRoutine
             .values[faker.randomGenerator.integer(BsRoutine.values.length)],
         searchValue: faker.lorem.word(),

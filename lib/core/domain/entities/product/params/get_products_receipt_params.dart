@@ -6,20 +6,14 @@ class GetProductsReceiptParams extends GetProductsDefaultParams {
 
   const GetProductsReceiptParams({
     required super.searchValue,
-    required super.searchType,
     required this.grDocCode,
   });
 
   @override
-  List<Object?> get props => [searchValue, searchType, grDocCode];
+  List<Object?> get props => [searchValue, grDocCode];
 
-  GetProductsReceiptParams copyWith({
-    int? grDocCode,
-    String? searchValue,
-    SearchType? searchType,
-  }) {
+  GetProductsReceiptParams copyWith({int? grDocCode, String? searchValue}) {
     return GetProductsReceiptParams(
-      searchType: searchType ?? this.searchType,
       searchValue: searchValue ?? this.searchValue,
       grDocCode: grDocCode ?? this.grDocCode,
     );

@@ -396,6 +396,7 @@ class SoapProductsRepositorySpy extends Mock
   When _mockCall() => when(
     () => this.load(
       baseUrl: any(named: 'baseUrl'),
+      searchType: any(named: 'searchType'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseEntity: any(named: 'enterpriseEntity'),
       getProductsDefaultParams: any(named: 'getProductsDefaultParams'),

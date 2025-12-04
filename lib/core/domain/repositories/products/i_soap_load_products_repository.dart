@@ -6,5 +6,6 @@ abstract class ISoapLoadProductsRepository {
     required String crossIdentity,
     required EnterpriseEntity enterpriseEntity,
     required GetProductsDefaultParams getProductsDefaultParams,
+    required SearchType searchType,
   });
 }

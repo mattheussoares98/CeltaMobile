@@ -10,7 +10,6 @@ class GetProductsJsonParams extends GetProductsDefaultParams {
   final CompetingPricesParams? competingPricesParams;
 
   const GetProductsJsonParams({
-    required super.searchType,
     required super.searchValue,
     required this.EnterpriseCodes,
     required this.routine,
@@ -21,7 +20,6 @@ class GetProductsJsonParams extends GetProductsDefaultParams {
   @override
   List<Object?> get props => [
     EnterpriseCodes,
-    searchType,
     routine,
     searchValue,
     LastBuyEntranceQuantity,
@@ -31,7 +29,6 @@ class GetProductsJsonParams extends GetProductsDefaultParams {
 
   GetProductsJsonParams copyWith({
     List<int>? EnterpriseCodes,
-    SearchType? searchType,
     BsRoutine? routine,
     String? searchValue,
     int? LastBuyEntranceQuantity,
@@ -40,7 +37,6 @@ class GetProductsJsonParams extends GetProductsDefaultParams {
   }) {
     return GetProductsJsonParams(
       EnterpriseCodes: EnterpriseCodes ?? this.EnterpriseCodes,
-      searchType: searchType ?? this.searchType,
       routine: routine ?? this.routine,
       searchValue: searchValue ?? this.searchValue,
       LastBuyEntranceQuantity:
@@ -58,7 +54,6 @@ class GetProductsJsonParams extends GetProductsDefaultParams {
   }) {
     return GetProductsJsonParams(
       EnterpriseCodes: this.EnterpriseCodes,
-      searchType: this.searchType,
       routine: this.routine,
       searchValue: this.searchValue,
       LastBuyEntranceQuantity: LastBuyEntranceQuantity == true

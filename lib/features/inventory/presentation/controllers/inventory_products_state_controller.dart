@@ -57,9 +57,9 @@ class InventoryProductsStateController
             baseUrl: validatedUser!.enterprise!.baseUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             enterpriseEntity: selectedEnterprise!,
+            searchType: searchType,
             getProductsDefaultParams: GetProductsInventoryParams(
               searchValue: searchValue,
-              searchType: searchType,
               inventoryProcessCode: codigoInternoInventario,
               inventoryCountingCode: codigoInternoInvCont,
             ),

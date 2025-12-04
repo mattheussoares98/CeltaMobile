@@ -8,7 +8,6 @@ class GetProductsByRequestTypeParams extends GetProductsDefaultParams {
 
   const GetProductsByRequestTypeParams({
     required super.searchValue,
-    required super.searchType,
     required this.enterpriseOriginCode,
     required this.enterpriseDestinyCode,
     required this.requestTypeCode,
@@ -17,7 +16,6 @@ class GetProductsByRequestTypeParams extends GetProductsDefaultParams {
   @override
   List<Object?> get props => [
     searchValue,
-    searchType,
     enterpriseOriginCode,
     enterpriseDestinyCode,
     requestTypeCode,
@@ -25,14 +23,12 @@ class GetProductsByRequestTypeParams extends GetProductsDefaultParams {
 
   GetProductsByRequestTypeParams copyWith({
     String? searchValue,
-    SearchType? searchType,
     int? enterpriseOriginCode,
     int? enterpriseDestinyCode,
     int? requestTypeCode,
   }) {
     return GetProductsByRequestTypeParams(
       searchValue: searchValue ?? this.searchValue,
-      searchType: searchType ?? this.searchType,
       enterpriseOriginCode: enterpriseOriginCode ?? this.enterpriseOriginCode,
       enterpriseDestinyCode:
           enterpriseDestinyCode ?? this.enterpriseDestinyCode,

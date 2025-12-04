@@ -91,6 +91,7 @@ void main() {
         verify(
           () => mockSoapProductsRepository.load(
             baseUrl: any(named: 'baseUrl'),
+            searchType: any(named: 'searchType'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
             getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
@@ -127,9 +128,9 @@ void main() {
             baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
             crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
             enterpriseEntity: userSessionEntity.supabaseEnterprise!,
+            searchType: SearchType.dynamic,
             getProductsDefaultParams: GetProductsJsonParams(
               EnterpriseCodes: [enterpriseCode],
-              searchType: SearchType.dynamic,
               routine: BsRoutine.adjustSalePrice,
               searchValue: productEntity.PLU!,
               LastBuyEntranceQuantity: null,

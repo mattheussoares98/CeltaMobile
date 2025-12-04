@@ -7,7 +7,6 @@ class GetProductsInventoryParams extends GetProductsDefaultParams {
 
   const GetProductsInventoryParams({
     required super.searchValue,
-    required super.searchType,
     required this.inventoryProcessCode,
     required this.inventoryCountingCode,
   });
@@ -15,7 +14,6 @@ class GetProductsInventoryParams extends GetProductsDefaultParams {
   @override
   List<Object?> get props => [
     searchValue,
-    searchType,
     inventoryProcessCode,
     inventoryCountingCode,
   ];
@@ -24,10 +22,8 @@ class GetProductsInventoryParams extends GetProductsDefaultParams {
     int? inventoryProcessCode,
     int? inventoryCountingCode,
     String? searchValue,
-    SearchType? searchType,
   }) {
     return GetProductsInventoryParams(
-      searchType: searchType ?? this.searchType,
       searchValue: searchValue ?? this.searchValue,
       inventoryProcessCode: inventoryProcessCode ?? this.inventoryProcessCode,
       inventoryCountingCode:

@@ -1,16 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-import '../../entities.dart';
-
 abstract class GetProductsDefaultParams extends Equatable {
   final String searchValue;
-  final SearchType searchType;
 
-  const GetProductsDefaultParams({
-    required this.searchValue,
-    required this.searchType,
-  });
+  const GetProductsDefaultParams({required this.searchValue});
 
   @override
-  List<Object?> get props => [searchValue, searchType];
+  List<Object?> get props => [searchValue];
 }

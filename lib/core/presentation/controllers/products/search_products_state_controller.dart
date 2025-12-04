@@ -65,9 +65,9 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: selectedEnterprise!,
+            searchType: searchType,
             getProductsDefaultParams: GetProductsJsonParams(
               EnterpriseCodes: enterpriseCodes,
-              searchType: searchType,
               routine: routine,
               searchValue: searchValue,
               LastBuyEntranceQuantity: lastBuyEntranceQuantity,

@@ -188,9 +188,9 @@ void main() {
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseEntity: enterpriseEntity,
+          searchType: appSettingsEntity.searchPreference.searchType,
           getProductsDefaultParams: GetProductsJsonParams(
             EnterpriseCodes: [enterpriseEntity.Code!],
-            searchType: appSettingsEntity.searchPreference.searchType,
             routine: bsRoutine,
             searchValue: searchValue,
             LastBuyEntranceQuantity: lastBuyEntranceQuantity,
@@ -239,6 +239,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => sut.load(
+          searchType: any(named: 'searchType'),
           baseUrl: any(named: 'baseUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseEntity: any(named: 'enterpriseEntity'),
@@ -285,6 +286,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => sut.load(
+          searchType: any(named: 'searchType'),
           baseUrl: any(named: 'baseUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseEntity: any(named: 'enterpriseEntity'),

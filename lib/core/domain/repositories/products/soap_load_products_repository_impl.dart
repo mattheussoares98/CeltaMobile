@@ -24,6 +24,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     required String crossIdentity,
     required EnterpriseEntity enterpriseEntity,
     required GetProductsDefaultParams getProductsDefaultParams,
+    required SearchType searchType,
   }) async {
     try {
       return await _makeCall(
@@ -32,6 +33,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
         enterpriseEntity: enterpriseEntity,
         getProductsDefaultParams: getProductsDefaultParams,
         extractBalanceCode: false,
+        searchType: searchType,
       );
     } catch (e) {
       if (!_isBalanceFormat(getProductsDefaultParams.searchValue)) {
@@ -45,6 +47,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
       enterpriseEntity: enterpriseEntity,
       getProductsDefaultParams: getProductsDefaultParams,
       extractBalanceCode: true,
+      searchType: searchType,
     );
   }
 
@@ -54,12 +57,14 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     required EnterpriseEntity enterpriseEntity,
     required GetProductsDefaultParams getProductsDefaultParams,
     required bool extractBalanceCode,
+    required SearchType searchType,
   }) async {
     final params = _getParams(
       crossIdentity: crossIdentity,
       getProductsDefaultParams: getProductsDefaultParams,
       enterpriseEntity: enterpriseEntity,
       extractBalanceCode: extractBalanceCode,
+      searchType: searchType,
     );
 
     List<ProductModelType<dynamic>> response;
@@ -112,6 +117,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     required GetProductsDefaultParams getProductsDefaultParams,
     required EnterpriseEntity enterpriseEntity,
     required bool extractBalanceCode,
+    required SearchType searchType,
   }) {
     final searchValue = extractBalanceCode
         ? _extractPluFromEan(
@@ -126,7 +132,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
         "CrossIdentity": crossIdentity,
         "EnterpriseCodes": getProductsDefaultParams.EnterpriseCodes,
         "SearchValue": searchValue,
-        "SearchType": getProductsDefaultParams.searchType.code,
+        "SearchType": searchType.code,
         "RoutineInt": getProductsDefaultParams.routine.code,
         "LastBuyEntranceQuantity":
             getProductsDefaultParams.LastBuyEntranceQuantity ?? 5,
@@ -142,7 +148,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
       }
       if (getProductsDefaultParams.competingPricesParams != null) {
         parameters.addAll({
-          "SearchTypeInt": getProductsDefaultParams.searchType.code,
+          "SearchTypeInt": searchType.code,
           "ResearchOfPriceFilters": {
             "ResearchOfPriceCode": getProductsDefaultParams
                 .competingPricesParams!
@@ -161,7 +167,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
         "crossIdentity": crossIdentity,
         "enterpriseCode": enterpriseEntity.Code,
         "searchValue": searchValue,
-        "searchTypeInt": getProductsDefaultParams.searchType.code,
+        "searchTypeInt": searchType.code,
         "inventoryProcessCode": getProductsDefaultParams.inventoryProcessCode,
         "inventoryCountingCode": getProductsDefaultParams.inventoryCountingCode,
       });
@@ -172,14 +178,14 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
         "enterpriseDestinyCode": getProductsDefaultParams.enterpriseDestinyCode,
         "requestTypeCode": getProductsDefaultParams.requestTypeCode,
         "searchValue": searchValue,
-        "searchTypeInt": getProductsDefaultParams.searchType.code,
+        "searchTypeInt": searchType.code,
         "routineTypeInt": BsRoutine.transferRequest.code,
       });
     } else if (getProductsDefaultParams is GetProductsReceiptParams) {
       parameters.addAll({
         "crossIdentity": crossIdentity,
         "grDocCode": getProductsDefaultParams.grDocCode,
-        "searchTypeInt": getProductsDefaultParams.searchType.code,
+        "searchTypeInt": searchType.code,
         "searchValue": searchValue,
       });
     }

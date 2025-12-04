@@ -42,10 +42,10 @@ class SelectedProductStateController extends _$SelectedProductStateController {
           baseUrl: userSession!.enterprise!.baseUrl!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
           enterpriseEntity: enterpriseEntity,
+          searchType: SearchType.dynamic,
           getProductsDefaultParams: GetProductsJsonParams(
             searchValue: plu,
             routine: BsRoutine.adjustSalePrice,
-            searchType: SearchType.dynamic,
             EnterpriseCodes: [enterpriseCode],
             LastBuyEntranceQuantity: null,
             buyRequestParams: null,

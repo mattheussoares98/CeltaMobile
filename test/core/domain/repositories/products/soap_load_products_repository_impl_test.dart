@@ -99,6 +99,7 @@ void main() {
   late GetProductsInventoryParams getProductsInventoryParams;
   late GetProductsByRequestTypeParams getProductsByRequestTypeParams;
   late GetProductsReceiptParams getProductsReceiptParams;
+  late SearchType searchType;
 
   void initSut() {
     sut = SoapLoadProductsRepositoryImpl(
@@ -148,8 +149,6 @@ void main() {
         faker.randomGenerator.integer(200, min: 101),
         faker.randomGenerator.integer(300, min: 201),
       ],
-      searchType: SearchType
-          .values[faker.randomGenerator.integer(SearchType.values.length)],
       routine: BsRoutine
           .values[faker.randomGenerator.integer(BsRoutine.values.length)],
       LastBuyEntranceQuantity: faker.randomGenerator.integer(100),
@@ -170,8 +169,6 @@ void main() {
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     getProductsInventoryParams = GetProductsInventoryParams(
       searchValue: faker.lorem.word(),
-      searchType: SearchType
-          .values[faker.randomGenerator.integer(SearchType.values.length)],
       inventoryProcessCode: faker.randomGenerator.integer(100),
       inventoryCountingCode: faker.randomGenerator.integer(100),
     );
@@ -182,18 +179,16 @@ void main() {
     ];
     getProductsByRequestTypeParams = GetProductsByRequestTypeParams(
       searchValue: faker.lorem.word(),
-      searchType: SearchType
-          .values[faker.randomGenerator.integer(SearchType.values.length)],
       enterpriseOriginCode: faker.randomGenerator.integer(100),
       enterpriseDestinyCode: faker.randomGenerator.integer(100),
       requestTypeCode: faker.randomGenerator.integer(100),
     );
     getProductsReceiptParams = GetProductsReceiptParams(
       searchValue: faker.lorem.word(),
-      searchType: SearchType
-          .values[faker.randomGenerator.integer(SearchType.values.length)],
       grDocCode: faker.randomGenerator.integer(100),
     );
+    searchType = SearchType
+        .values[faker.randomGenerator.integer(SearchType.values.length)];
   }
 
   setUp(() {
@@ -221,6 +216,7 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
+        searchType: searchType,
         getProductsDefaultParams: getProductsJsonParams,
       );
 
@@ -239,7 +235,7 @@ void main() {
             "CrossIdentity": crossIdentity,
             "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
             "SearchValue": getProductsJsonParams.searchValue,
-            "SearchType": getProductsJsonParams.searchType.code,
+            "SearchType": searchType.code,
             "RoutineInt": getProductsJsonParams.routine.code,
             "LastBuyEntranceQuantity":
                 getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
@@ -247,7 +243,7 @@ void main() {
                 getProductsJsonParams.buyRequestParams!.requestTypeCode,
             "SupplierCode":
                 getProductsJsonParams.buyRequestParams!.supplierCode,
-            "SearchTypeInt": getProductsJsonParams.searchType.code,
+            "SearchTypeInt": searchType.code,
             "ResearchOfPriceFilters": {
               "ResearchOfPriceCode": getProductsJsonParams
                   .competingPricesParams!
@@ -268,6 +264,7 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
+        searchType: searchType,
         getProductsDefaultParams: getProductsJsonParams.annulValues(
           buyRequestParams: true,
         ),
@@ -288,11 +285,11 @@ void main() {
             "CrossIdentity": crossIdentity,
             "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
             "SearchValue": getProductsJsonParams.searchValue,
-            "SearchType": getProductsJsonParams.searchType.code,
+            "SearchType": searchType.code,
             "RoutineInt": getProductsJsonParams.routine.code,
             "LastBuyEntranceQuantity":
                 getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
-            "SearchTypeInt": getProductsJsonParams.searchType.code,
+            "SearchTypeInt": searchType.code,
             "ResearchOfPriceFilters": {
               "ResearchOfPriceCode": getProductsJsonParams
                   .competingPricesParams!
@@ -316,6 +313,7 @@ void main() {
           baseUrl: baseUrl,
           crossIdentity: crossIdentity,
           enterpriseEntity: enterpriseEntity,
+          searchType: searchType,
           getProductsDefaultParams: getProductsJsonParams.annulValues(
             competingPricesParams: true,
           ),
@@ -336,7 +334,7 @@ void main() {
               "CrossIdentity": crossIdentity,
               "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
               "SearchValue": getProductsJsonParams.searchValue,
-              "SearchType": getProductsJsonParams.searchType.code,
+              "SearchType": searchType.code,
               "RoutineInt": getProductsJsonParams.routine.code,
               "LastBuyEntranceQuantity":
                   getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
@@ -362,6 +360,7 @@ void main() {
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: enterpriseEntity,
+            searchType: searchType,
             getProductsDefaultParams: getProductsJsonParams.copyWith(
               searchValue: balanceEan,
             ),
@@ -380,7 +379,7 @@ void main() {
               "CrossIdentity": crossIdentity,
               "EnterpriseCodes": getProductsJsonParams.EnterpriseCodes,
               "SearchValue": balanceEan,
-              "SearchType": getProductsJsonParams.searchType.code,
+              "SearchType": searchType.code,
               "RoutineInt": getProductsJsonParams.routine.code,
               "LastBuyEntranceQuantity":
                   getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
@@ -388,7 +387,7 @@ void main() {
                   getProductsJsonParams.buyRequestParams!.requestTypeCode,
               "SupplierCode":
                   getProductsJsonParams.buyRequestParams!.supplierCode,
-              "SearchTypeInt": getProductsJsonParams.searchType.code,
+              "SearchTypeInt": searchType.code,
               "ResearchOfPriceFilters": {
                 "ResearchOfPriceCode": getProductsJsonParams
                     .competingPricesParams!
@@ -421,7 +420,7 @@ void main() {
                         ? ""
                         : ".",
                   ),
-              "SearchType": getProductsJsonParams.searchType.code,
+              "SearchType": searchType.code,
               "RoutineInt": getProductsJsonParams.routine.code,
               "LastBuyEntranceQuantity":
                   getProductsJsonParams.LastBuyEntranceQuantity ?? 5,
@@ -429,7 +428,7 @@ void main() {
                   getProductsJsonParams.buyRequestParams!.requestTypeCode,
               "SupplierCode":
                   getProductsJsonParams.buyRequestParams!.supplierCode,
-              "SearchTypeInt": getProductsJsonParams.searchType.code,
+              "SearchTypeInt": searchType.code,
               "ResearchOfPriceFilters": {
                 "ResearchOfPriceCode": getProductsJsonParams
                     .competingPricesParams!
@@ -455,6 +454,7 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
+        searchType: searchType,
         getProductsDefaultParams: getProductsInventoryParams,
       );
 
@@ -472,7 +472,7 @@ void main() {
             "crossIdentity": crossIdentity,
             "enterpriseCode": enterpriseEntity.Code,
             "searchValue": getProductsInventoryParams.searchValue,
-            "searchTypeInt": getProductsInventoryParams.searchType.code,
+            "searchTypeInt": searchType.code,
             "inventoryProcessCode":
                 getProductsInventoryParams.inventoryProcessCode,
             "inventoryCountingCode":
@@ -494,6 +494,7 @@ void main() {
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: enterpriseEntity,
+            searchType: searchType,
             getProductsDefaultParams: getProductsInventoryParams.copyWith(
               searchValue: balanceEan,
             ),
@@ -511,7 +512,7 @@ void main() {
               "crossIdentity": crossIdentity,
               "enterpriseCode": enterpriseEntity.Code,
               "searchValue": balanceEan,
-              "searchTypeInt": getProductsInventoryParams.searchType.code,
+              "searchTypeInt": searchType.code,
               "inventoryProcessCode":
                   getProductsInventoryParams.inventoryProcessCode,
               "inventoryCountingCode":
@@ -534,7 +535,7 @@ void main() {
                         ? ""
                         : ".",
                   ),
-              "searchTypeInt": getProductsInventoryParams.searchType.code,
+              "searchTypeInt": searchType.code,
               "inventoryProcessCode":
                   getProductsInventoryParams.inventoryProcessCode,
               "inventoryCountingCode":
@@ -552,6 +553,7 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
+        searchType: searchType,
         getProductsDefaultParams: getProductsByRequestTypeParams,
       );
 
@@ -573,7 +575,7 @@ void main() {
                 getProductsByRequestTypeParams.enterpriseDestinyCode,
             "requestTypeCode": getProductsByRequestTypeParams.requestTypeCode,
             "searchValue": getProductsByRequestTypeParams.searchValue,
-            "searchTypeInt": getProductsByRequestTypeParams.searchType.code,
+            "searchTypeInt": searchType.code,
             "routineTypeInt": BsRoutine.transferRequest.code,
           },
         ),
@@ -592,6 +594,7 @@ void main() {
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: enterpriseEntity,
+            searchType: searchType,
             getProductsDefaultParams: getProductsByRequestTypeParams.copyWith(
               searchValue: balanceEan,
             ),
@@ -613,7 +616,7 @@ void main() {
                   getProductsByRequestTypeParams.enterpriseDestinyCode,
               "requestTypeCode": getProductsByRequestTypeParams.requestTypeCode,
               "searchValue": balanceEan,
-              "searchTypeInt": getProductsByRequestTypeParams.searchType.code,
+              "searchTypeInt": searchType.code,
               "routineTypeInt": BsRoutine.transferRequest.code,
             },
           ),
@@ -637,7 +640,7 @@ void main() {
                         ? ""
                         : ".",
                   ),
-              "searchTypeInt": getProductsByRequestTypeParams.searchType.code,
+              "searchTypeInt": searchType.code,
               "routineTypeInt": BsRoutine.transferRequest.code,
             },
           ),
@@ -651,6 +654,7 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
+        searchType: searchType,
         getProductsDefaultParams: getProductsReceiptParams,
       );
 
@@ -667,7 +671,7 @@ void main() {
           parametersPayload: {
             "crossIdentity": crossIdentity,
             "grDocCode": getProductsReceiptParams.grDocCode,
-            "searchTypeInt": getProductsReceiptParams.searchType.code,
+            "searchTypeInt": searchType.code,
             "searchValue": getProductsReceiptParams.searchValue,
           },
         ),
@@ -686,6 +690,7 @@ void main() {
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: enterpriseEntity,
+            searchType: searchType,
             getProductsDefaultParams: getProductsReceiptParams.copyWith(
               searchValue: balanceEan,
             ),
@@ -702,7 +707,7 @@ void main() {
             parametersPayload: {
               "crossIdentity": crossIdentity,
               "grDocCode": getProductsReceiptParams.grDocCode,
-              "searchTypeInt": getProductsReceiptParams.searchType.code,
+              "searchTypeInt": searchType.code,
               "searchValue": balanceEan,
             },
           ),
@@ -713,7 +718,7 @@ void main() {
             parametersPayload: {
               "crossIdentity": crossIdentity,
               "grDocCode": getProductsReceiptParams.grDocCode,
-              "searchTypeInt": getProductsReceiptParams.searchType.code,
+              "searchTypeInt": searchType.code,
               "searchValue": balanceEan
                   .replaceFirst(RegExp(r'2'), '')
                   .replaceRange(

@@ -75,6 +75,7 @@ void main() {
         when(
           () => mockRepository.load(
             baseUrl: any(named: 'baseUrl'),
+            searchType: any(named: 'searchType'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
             getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
@@ -129,9 +130,9 @@ void main() {
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseEntity: fakeEnterprise,
+            searchType: fakeAppSettings.searchPreference.searchType,
             getProductsDefaultParams: GetProductsByRequestTypeParams(
               searchValue: fakeSearchValue,
-              searchType: fakeAppSettings.searchPreference.searchType,
               enterpriseOriginCode: enterpriseOriginCode,
               enterpriseDestinyCode: enterpriseDestinyCode,
               requestTypeCode: requestTypeCode,
@@ -185,6 +186,7 @@ void main() {
         verifyNever(
           () => mockRepository.load(
             baseUrl: any(named: 'baseUrl'),
+            searchType: any(named: 'searchType'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
             getProductsDefaultParams: any(named: 'getProductsDefaultParams'),

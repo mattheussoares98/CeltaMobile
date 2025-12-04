@@ -59,9 +59,9 @@ class ProductsStateController extends _$ProductsStateController {
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: selectedEnterprise!,
+            searchType: searchType,
             getProductsDefaultParams: GetProductsByRequestTypeParams(
               searchValue: searchValue,
-              searchType: searchType,
               enterpriseOriginCode: enterpriseOriginCode,
               enterpriseDestinyCode: enterpriseDestinyCode,
               requestTypeCode: requestTypeCode,

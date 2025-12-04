@@ -35,7 +35,6 @@ void main() {
     registerFallbackValue(
       GetProductsInventoryParams(
         searchValue: faker.lorem.word(),
-        searchType: SearchType.values.first,
         inventoryProcessCode: faker.randomGenerator.integer(100),
         inventoryCountingCode: faker.randomGenerator.integer(100),
       ),
@@ -155,9 +154,9 @@ void main() {
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseEntity: selectedEnterprise,
+          searchType: appSettingsEntity.searchPreference.searchType,
           getProductsDefaultParams: GetProductsInventoryParams(
             searchValue: searchValue,
-            searchType: appSettingsEntity.searchPreference.searchType,
             inventoryProcessCode: codigoInternoInventario,
             inventoryCountingCode: codigoInternoInvCont,
           ),
@@ -200,6 +199,7 @@ void main() {
       verifyNever(
         () => mockRepository.load(
           baseUrl: any(named: 'baseUrl'),
+          searchType: any(named: 'searchType'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseEntity: any(named: 'enterpriseEntity'),
           getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
@@ -243,6 +243,7 @@ void main() {
       verifyNever(
         () => mockRepository.load(
           baseUrl: any(named: 'baseUrl'),
+          searchType: any(named: 'searchType'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseEntity: any(named: 'enterpriseEntity'),
           getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
