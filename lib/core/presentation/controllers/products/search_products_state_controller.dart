@@ -41,6 +41,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
     int? lastBuyEntranceQuantity = 5,
     BuyRequestParams? buyRequestParams,
     CompetingPricesParams? competingPricesParams,
+    //TODO receive GetProductsDefaultParams as param instead of direct
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
