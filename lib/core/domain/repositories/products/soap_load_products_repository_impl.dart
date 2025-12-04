@@ -1,4 +1,5 @@
 import '../../../data/datasource/products/products.dart';
+import '../../../data/models/models.dart';
 import '../../entities/entities.dart';
 import 'products.dart';
 
@@ -58,39 +59,28 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
       extractBalanceCode: extractBalanceCode,
     );
 
+    List<ProductModelType<dynamic>> response;
+
     if (getProductsDefaultParams is GetProductsJsonParams) {
-      return await soapGetProductsJsonDatasource
-          .get(
-            baseUrl: baseUrl,
-            parametersPayload: params,
-            isCompetingPrices:
-                getProductsDefaultParams.competingPricesParams != null,
-          )
-          .then((products) {
-            return products
-                .map((e) => e.toEntity())
-                .toList()
-                .cast<ProductEntity>();
-          });
+      response = await soapGetProductsJsonDatasource.get(
+        baseUrl: baseUrl,
+        parametersPayload: params,
+        isCompetingPrices:
+            getProductsDefaultParams.competingPricesParams != null,
+      );
     } else if (getProductsDefaultParams is GetProductsByRequestTypeParams) {
-      return await soapLoadProductByRequestTypeDatasource
-          .load(baseUrl: baseUrl, parametersPayload: params)
-          .then((products) {
-            return products
-                .map((e) => e.toEntity())
-                .toList()
-                .cast<ProductEntity>();
-          });
+      response = await soapLoadProductByRequestTypeDatasource.load(
+        baseUrl: baseUrl,
+        parametersPayload: params,
+      );
     } else {
-      return await soapInventoryLoadProductsDatasource
-          .get(baseUrl: baseUrl, parametersPayload: params)
-          .then((products) {
-            return products
-                .map((e) => e.toEntity())
-                .toList()
-                .cast<ProductEntity>();
-          });
+      response = await soapInventoryLoadProductsDatasource.get(
+        baseUrl: baseUrl,
+        parametersPayload: params,
+      );
     }
+
+    return response.map((e) => e.toEntity()).toList().cast<ProductEntity>();
   }
 
   bool _isBalanceFormat(String searchValue) =>
