@@ -46,10 +46,6 @@ class ProductModel extends Equatable implements ProductModelType {
   final List<StockModel>? Stocks;
   final List<LastBuyEntranceModel>? LastBuyEntrances;
   final List<String>? EANs;
-  final int? codigoInternoProEmb;
-  final String? codigoProEmb;
-  final double? quantidadeInvContProEmb;
-  final String? FormatedProduct;
 
   const ProductModel({
     required this.ResearchOfPriceCode,
@@ -94,10 +90,6 @@ class ProductModel extends Equatable implements ProductModelType {
     required this.Stocks,
     required this.LastBuyEntrances,
     required this.EANs,
-    required this.codigoInternoProEmb,
-    required this.codigoProEmb,
-    required this.quantidadeInvContProEmb,
-    required this.FormatedProduct,
   });
 
   @override
@@ -144,10 +136,6 @@ class ProductModel extends Equatable implements ProductModelType {
     EANs,
     ResearchOfPriceCode,
     ConcurrentCode,
-    codigoInternoProEmb,
-    codigoProEmb,
-    quantidadeInvContProEmb,
-    FormatedProduct,
   ];
 
   factory ProductModel.fromJson(Map json) {
@@ -210,10 +198,6 @@ class ProductModel extends Equatable implements ProductModelType {
                 .map((e) => LastBuyEntranceModel.fromJson(e))
                 .toList(),
       EANs: json['EANs']?.cast<String>(),
-      codigoInternoProEmb: json['codigoInternoProEmb'],
-      codigoProEmb: json['codigoProEmb'],
-      quantidadeInvContProEmb: json['quantidadeInvContProEmb'],
-      FormatedProduct: json['FormatedProduct'],
     );
   }
 
@@ -264,10 +248,6 @@ class ProductModel extends Equatable implements ProductModelType {
     'EANs': EANs,
     'ResearchOfPriceCode': ResearchOfPriceCode,
     'ConcurrentCode': ConcurrentCode,
-    'codigoInternoProEmb': codigoInternoProEmb,
-    'codigoProEmb': codigoProEmb,
-    'quantidadeInvContProEmb': quantidadeInvContProEmb,
-    'FormatedProduct': FormatedProduct,
   };
 
   factory ProductModel.fromEntity(ProductEntity entity) {
@@ -323,15 +303,11 @@ class ProductModel extends Equatable implements ProductModelType {
         (e) => LastBuyEntranceModel.fromEntity(e),
       ).toList(),
       EANs: entity.EANs,
-      codigoInternoProEmb: entity.codigoInternoProEmb,
-      codigoProEmb: entity.codigoProEmb,
-      quantidadeInvContProEmb: entity.quantidadeInvContProEmb,
-      FormatedProduct: entity.FormatedProduct,
     );
   }
 
   @override
-  ProductEntity toEntity() => ProductEntity(
+  ProductEntity toEntity() => ProductEntity.empty().copyWith(
     ResearchOfPriceCode: ResearchOfPriceCode,
     ConcurrentCode: ConcurrentCode,
     EnterpriseCode: EnterpriseCode,
@@ -377,9 +353,5 @@ class ProductModel extends Equatable implements ProductModelType {
     Stocks: Stocks?.map((e) => e.toEntity()).toList(),
     LastBuyEntrances: LastBuyEntrances?.map((e) => e.toEntity()).toList(),
     EANs: EANs,
-    codigoInternoProEmb: codigoInternoProEmb,
-    codigoProEmb: codigoProEmb,
-    quantidadeInvContProEmb: quantidadeInvContProEmb,
-    FormatedProduct: FormatedProduct,
   );
 }
