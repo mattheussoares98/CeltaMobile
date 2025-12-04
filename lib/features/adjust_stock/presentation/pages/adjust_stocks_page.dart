@@ -41,9 +41,11 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     await ref
         .read(
           searchProductsStateControllerProvider(
-            widget.enterpriseCode,
-            BsRoutine.adjustStock,
-            Modules.adjustStock,
+            SearchProductKey(
+              widget.enterpriseCode,
+              BsRoutine.adjustStock,
+              Modules.adjustStock,
+            ),
           ).notifier,
         )
         .loadProducts(
@@ -115,18 +117,19 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.adjustStock,
-        Modules.adjustStock,
-      ),
-      (previous, next) {
-        next.doOnSuccess(previous, () {
-          searchValueController.clear();
-        });
-      },
+    final searchProductKey = SearchProductKey(
+      widget.enterpriseCode,
+      BsRoutine.adjustStock,
+      Modules.adjustStock,
     );
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
+      previous,
+      next,
+    ) {
+      next.doOnSuccess(previous, () {
+        searchValueController.clear();
+      });
+    });
     ref.listen(confirmAdjustStockControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
       n.showSnackbarOnSuccess(
@@ -167,9 +170,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                       builder: (_, ref, _) {
                         final productsState = ref.watch(
                           searchProductsStateControllerProvider(
-                            widget.enterpriseCode,
-                            BsRoutine.adjustStock,
-                            Modules.adjustStock,
+                            searchProductKey,
                           ),
                         );
                         return AsyncValueWidget(

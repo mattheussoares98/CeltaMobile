@@ -20,9 +20,11 @@ mixin SearchProductsListenerMixin {
   }) {
     ref.listen(
       searchProductsStateControllerProvider(
-        enterpriseCode,
-        BsRoutine.generic,
-        Modules.expeditionConference,
+        SearchProductKey(
+          enterpriseCode,
+          BsRoutine.generic,
+          Modules.expeditionConference,
+        ),
       ),
       (p, n) {
         n.showSnackbarOnError(context, p);

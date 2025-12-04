@@ -36,9 +36,11 @@ class ProductsItems extends ConsumerWidget {
     return AsyncValueWidget(
       value: ref.watch(
         searchProductsStateControllerProvider(
-          enterpriseCode,
-          BsRoutine.saleRequest,
-          Modules.saleRequest,
+          SearchProductKey(
+            enterpriseCode,
+            BsRoutine.saleRequest,
+            Modules.saleRequest,
+          ),
         ),
       ),
       tryAgain: null,

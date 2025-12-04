@@ -68,9 +68,11 @@ class _AssociatedsPageState extends ConsumerState<ProductsPage> {
   Widget build(BuildContext context) {
     ref.listen(
       searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.researchOfPrice,
-        Modules.competingPrices,
+        SearchProductKey(
+          widget.enterpriseCode,
+          BsRoutine.researchOfPrice,
+          Modules.competingPrices,
+        ),
       ),
       (p, n) {
         n.doOnSuccess(p, () {

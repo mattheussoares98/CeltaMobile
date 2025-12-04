@@ -29,15 +29,9 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
     super.dispose();
   }
 
-  Future<void> searchProducts() async {
+  Future<void> searchProducts(SearchProductKey searchProductKey) async {
     await ref
-        .read(
-          searchProductsStateControllerProvider(
-            widget.enterpriseCode,
-            BsRoutine.priceConference,
-            Modules.searchProducts,
-          ).notifier,
-        )
+        .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
           GetProductsJsonParams(
             searchValue: searchValueController.text,
@@ -48,18 +42,16 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.priceConference,
-        Modules.searchProducts,
-      ),
-      (p, n) {
-        n.doOnSuccess(p, () {
-          searchValueController.clear();
-        });
-      },
+    final searchProductKey = SearchProductKey(
+      widget.enterpriseCode,
+      BsRoutine.priceConference,
+      Modules.searchProducts,
     );
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
+      n.doOnSuccess(p, () {
+        searchValueController.clear();
+      });
+    });
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
@@ -74,23 +66,17 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
               searchValueController: searchValueController,
               isLoading: ref.watch(
                 searchProductsStateControllerProvider(
-                  widget.enterpriseCode,
-                  BsRoutine.priceConference,
-                  Modules.searchProducts,
+                  searchProductKey,
                 ).select((state) => state.isLoading),
               ),
-              searchProducts: searchProducts,
+              searchProducts: () => searchProducts(searchProductKey),
             ),
             gapH8,
             Expanded(
               child: Consumer(
                 builder: (_, ref, _) {
                   final productsState = ref.watch(
-                    searchProductsStateControllerProvider(
-                      widget.enterpriseCode,
-                      BsRoutine.priceConference,
-                      Modules.searchProducts,
-                    ),
+                    searchProductsStateControllerProvider(searchProductKey),
                   );
                   return AsyncValueWidget(
                     value: productsState,

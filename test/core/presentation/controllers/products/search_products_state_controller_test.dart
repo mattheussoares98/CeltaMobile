@@ -22,11 +22,10 @@ void main() {
   late EnterpriseEntity enterpriseEntity;
   late int lastBuyEntranceQuantity;
   late AppSettingsEntity appSettingsEntity;
-  late BsRoutine bsRoutine;
   late List<ProductEntity> productsEntities;
-  late Modules module;
   late BuyRequestParams? buyRequestParams;
   late CompetingPricesParams? competingPricesParams;
+  late SearchProductKey searchProductKey;
 
   setUpAll(() {
     for (var routine in BsRoutine.values) {
@@ -47,15 +46,12 @@ void main() {
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     lastBuyEntranceQuantity = faker.randomGenerator.integer(100);
     appSettingsEntity = EntityFactory.makeAppSettingsEntity();
-    bsRoutine = BsRoutine
-        .values[faker.randomGenerator.integer(BsRoutine.values.length)];
     productsEntities = [
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
     ];
-    module =
-        Modules.values[faker.randomGenerator.integer(Modules.values.length)];
+
     buyRequestParams = faker.randomGenerator.boolean() == true
         ? BuyRequestParams(
             requestTypeCode: faker.randomGenerator.integer(100),
@@ -72,6 +68,11 @@ void main() {
                     .integer(SearchProductCompetingPriceType.values.length)],
           )
         : null;
+    searchProductKey = SearchProductKey(
+      enterpriseEntity.Code!,
+      BsRoutine.values[faker.randomGenerator.integer(BsRoutine.values.length)],
+      Modules.values[faker.randomGenerator.integer(Modules.values.length)],
+    );
   }
 
   void initSut() {
@@ -147,30 +148,18 @@ void main() {
       final container = makeProviderContainer();
 
       await container.read(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ).future,
+        searchProductsStateControllerProvider(searchProductKey).future,
       );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ),
+        searchProductsStateControllerProvider(searchProductKey),
         (_, next) => states.add(next),
       );
 
       await container
           .read(
-            searchProductsStateControllerProvider(
-              enterpriseEntity.Code!,
-              bsRoutine,
-              module,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
             GetProductsJsonParams(
@@ -193,7 +182,7 @@ void main() {
           searchType: appSettingsEntity.searchPreference.searchType,
           getProductsDefaultParams: GetProductsJsonParams(
             enterpriseCodes: [enterpriseEntity.Code!],
-            routine: bsRoutine,
+            routine: searchProductKey.routine,
             searchValue: searchValue,
             lastBuyEntranceQuantity: lastBuyEntranceQuantity,
             buyRequestParams: buyRequestParams,
@@ -206,30 +195,18 @@ void main() {
       final container = makeProviderContainer(mockSession: false);
 
       await container.read(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ).future,
+        searchProductsStateControllerProvider(searchProductKey).future,
       );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ),
+        searchProductsStateControllerProvider(searchProductKey),
         (_, next) => states.add(next),
       );
 
       await container
           .read(
-            searchProductsStateControllerProvider(
-              enterpriseEntity.Code!,
-              bsRoutine,
-              module,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
             GetProductsJsonParams(
@@ -256,30 +233,18 @@ void main() {
       final container = makeProviderContainer(mockAppSettingsState: false);
 
       await container.read(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ).future,
+        searchProductsStateControllerProvider(searchProductKey).future,
       );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ),
+        searchProductsStateControllerProvider(searchProductKey),
         (_, next) => states.add(next),
       );
 
       await container
           .read(
-            searchProductsStateControllerProvider(
-              enterpriseEntity.Code!,
-              bsRoutine,
-              module,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
             GetProductsJsonParams(
@@ -312,21 +277,13 @@ void main() {
 
       // Load the initial state
       await container.read(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ).future,
+        searchProductsStateControllerProvider(searchProductKey).future,
       );
 
       //loading products
       await container
           .read(
-            searchProductsStateControllerProvider(
-              enterpriseEntity.Code!,
-              bsRoutine,
-              module,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
             GetProductsJsonParams(
@@ -343,22 +300,14 @@ void main() {
       // ACT: Call the updateProduct method
       container
           .read(
-            searchProductsStateControllerProvider(
-              enterpriseEntity.Code!,
-              bsRoutine,
-              module,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .updateProduct(updatedProduct);
 
       // ASSERT
       // Read the final state of the provider
       final finalState = container.read(
-        searchProductsStateControllerProvider(
-          enterpriseEntity.Code!,
-          bsRoutine,
-          module,
-        ),
+        searchProductsStateControllerProvider(searchProductKey),
       );
 
       // Check that the list still has 2 items
@@ -378,21 +327,13 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
         await container.read(
-          searchProductsStateControllerProvider(
-            enterpriseEntity.Code!,
-            bsRoutine,
-            module,
-          ).future,
+          searchProductsStateControllerProvider(searchProductKey).future,
         );
 
         //loading products
         await container
             .read(
-              searchProductsStateControllerProvider(
-                enterpriseEntity.Code!,
-                bsRoutine,
-                module,
-              ).notifier,
+              searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
               GetProductsJsonParams(
@@ -405,22 +346,14 @@ void main() {
         // ACT
         container
             .read(
-              searchProductsStateControllerProvider(
-                enterpriseEntity.Code!,
-                bsRoutine,
-                module,
-              ).notifier,
+              searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .updateProduct(nonExistentProduct);
 
         // ASSERT
         // Check that the state is still the original list and has not changed.
         final finalState = container.read(
-          searchProductsStateControllerProvider(
-            enterpriseEntity.Code!,
-            bsRoutine,
-            module,
-          ),
+          searchProductsStateControllerProvider(searchProductKey),
         );
         expect(finalState.value, productsEntities);
         expect(finalState.value, hasLength(3));

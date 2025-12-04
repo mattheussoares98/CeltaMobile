@@ -51,15 +51,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     quantityFocusNode.dispose();
   }
 
-  Future<void> _searchProducts() async {
+  Future<void> _searchProducts(SearchProductKey searchProductKey) async {
     await ref
-        .read(
-          searchProductsStateControllerProvider(
-            widget.enterpriseCode,
-            BsRoutine.adjustStock,
-            Modules.transferBetweenStocks,
-          ).notifier,
-        )
+        .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
           GetProductsJsonParams(
             searchValue: searchValueController.text,
@@ -107,18 +101,19 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.adjustStock,
-        Modules.transferBetweenStocks,
-      ),
-      (previous, next) {
-        next.doOnSuccess(previous, () {
-          searchValueController.clear();
-        });
-      },
+    final searchProductKey = SearchProductKey(
+      widget.enterpriseCode,
+      BsRoutine.adjustStock,
+      Modules.transferBetweenStocks,
     );
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
+      previous,
+      next,
+    ) {
+      next.doOnSuccess(previous, () {
+        searchValueController.clear();
+      });
+    });
 
     final stocksAsync = ref.watch(
       stockTypeStateControllerProvider(widget.enterpriseCode),
@@ -136,12 +131,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               searchValueController: searchValueController,
               isLoading: ref.watch(
                 searchProductsStateControllerProvider(
-                  widget.enterpriseCode,
-                  BsRoutine.adjustStock,
-                  Modules.transferBetweenStocks,
+                  searchProductKey,
                 ).select((state) => state.isLoading),
               ),
-              searchProducts: _searchProducts,
+              searchProducts: () => _searchProducts(searchProductKey),
             ),
             gapH8,
             JustificationsDropdown(
@@ -189,11 +182,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               child: Consumer(
                 builder: (_, ref, _) {
                   final productsState = ref.watch(
-                    searchProductsStateControllerProvider(
-                      widget.enterpriseCode,
-                      BsRoutine.adjustStock,
-                      Modules.transferBetweenStocks,
-                    ),
+                    searchProductsStateControllerProvider(searchProductKey),
                   );
                   return AsyncValueWidget(
                     value: productsState,

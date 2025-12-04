@@ -26,15 +26,16 @@ class PendingProductsPage extends ConsumerWidget {
     final pendingProductsAsync = ref.watch(
       expeditionConferenceControllerProvider(expeditionControlCode),
     );
+    final searchProductKey = SearchProductKey(
+      enterpriseCode,
+      BsRoutine.generic,
+      Modules.expeditionConference,
+    );
 
     void searchProducts() {
       ref
           .read(
-            searchProductsStateControllerProvider(
-              enterpriseCode,
-              BsRoutine.generic,
-              Modules.expeditionConference,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
             GetProductsJsonParams(
@@ -71,9 +72,7 @@ class PendingProductsPage extends ConsumerWidget {
                     ) ||
                     ref.watch(
                       searchProductsStateControllerProvider(
-                        enterpriseCode,
-                        BsRoutine.generic,
-                        Modules.expeditionConference,
+                        searchProductKey,
                       ).select((state) => state.isLoading),
                     ),
                 focusNode: focusNode,

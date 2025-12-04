@@ -42,24 +42,19 @@ class ProductsItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedItemAsync = ref.watch(selectedItemUIControllerProvider);
+    final searchProductKey = SearchProductKey(
+      widget.enterpriseCode,
+      BsRoutine.researchOfPrice,
+      Modules.competingPrices,
+    );
 
     return PopScope(
       onPopInvokedWithResult: (_, _) {
-        ref.invalidate(
-          searchProductsStateControllerProvider(
-            widget.enterpriseCode,
-            BsRoutine.researchOfPrice,
-            Modules.competingPrices,
-          ),
-        );
+        ref.invalidate(searchProductsStateControllerProvider(searchProductKey));
       },
       child: AsyncValueWidget(
         value: ref.watch(
-          searchProductsStateControllerProvider(
-            widget.enterpriseCode,
-            BsRoutine.researchOfPrice,
-            Modules.competingPrices,
-          ),
+          searchProductsStateControllerProvider(searchProductKey),
         ),
         tryAgain: null,
         data: (products) {

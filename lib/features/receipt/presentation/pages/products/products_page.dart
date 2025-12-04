@@ -44,12 +44,14 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       }
     }
 
+    final searchProductKey = SearchProductKey(
+      widget.enterpriseCode,
+      BsRoutine.goodsReceiving,
+      Modules.receipt,
+    );
+
     final asyncValue = ref.watch(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.goodsReceiving,
-        Modules.receipt,
-      ),
+      searchProductsStateControllerProvider(searchProductKey),
     );
 
     return Scaffold(
@@ -68,9 +70,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 ref
                     .read(
                       searchProductsStateControllerProvider(
-                        widget.enterpriseCode,
-                        BsRoutine.goodsReceiving,
-                        Modules.receipt,
+                        searchProductKey,
                       ).notifier,
                     )
                     .loadProducts(
@@ -87,11 +87,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               child: AsyncValueWidget(
                 value: asyncValue,
                 tryAgain: () => ref.invalidate(
-                  searchProductsStateControllerProvider(
-                    widget.enterpriseCode,
-                    BsRoutine.goodsReceiving,
-                    Modules.receipt,
-                  ),
+                  searchProductsStateControllerProvider(searchProductKey),
                 ),
                 data: (products) {
                   return ResponsiveListFlow(

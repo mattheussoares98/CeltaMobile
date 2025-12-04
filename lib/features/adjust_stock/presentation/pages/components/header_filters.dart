@@ -34,9 +34,11 @@ class HeaderFilters extends ConsumerWidget {
           searchValueController: searchValueController,
           isLoading: ref.watch(
             searchProductsStateControllerProvider(
-              enterpriseCode,
-              BsRoutine.adjustStock,
-              Modules.adjustStock,
+              SearchProductKey(
+                enterpriseCode,
+                BsRoutine.adjustStock,
+                Modules.adjustStock,
+              ),
             ).select((state) => state.isLoading),
           ),
           searchProducts: searchProducts,

@@ -40,21 +40,19 @@ class SendToPrintController extends _$SendToPrintController {
             newValue: newValue,
           );
 
+      final searchProductKey = SearchProductKey(
+        enterpriseCode,
+        routine,
+        Modules.searchProducts,
+      );
+
       final products = await ref.read(
-        searchProductsStateControllerProvider(
-          enterpriseCode,
-          routine,
-          Modules.searchProducts,
-        ).future,
+        searchProductsStateControllerProvider(searchProductKey).future,
       );
 
       ref
           .read(
-            searchProductsStateControllerProvider(
-              enterpriseCode,
-              routine,
-              Modules.searchProducts,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .updateProduct(
             products

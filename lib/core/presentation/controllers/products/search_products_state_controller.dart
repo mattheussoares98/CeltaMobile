@@ -13,11 +13,7 @@ part 'search_products_state_controller.g.dart';
 @riverpod
 class SearchProductsStateController extends _$SearchProductsStateController {
   @override
-  Future<List<ProductEntity>> build(
-    int enterpriseCode,
-    BsRoutine routine,
-    Modules module,
-  ) async {
+  Future<List<ProductEntity>> build(SearchProductKey searchProductKey) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -62,7 +58,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             enterpriseEntity: selectedEnterprise!,
             searchType: searchType,
             getProductsDefaultParams: getProductsDefaultParams.copyWith(
-              routine: routine,
+              routine: searchProductKey.routine,
             ),
           );
 

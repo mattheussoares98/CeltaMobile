@@ -21,7 +21,8 @@ class SpySearchProductsStateController extends SearchProductsStateController {
 
   // The build method is required by the base class
   @override
-  Future<List<ProductEntity>> build(int a, BsRoutine b, Modules c) async => [];
+  Future<List<ProductEntity>> build(SearchProductKey searchProductKey) async =>
+      [];
 
   // This is the method we spy on
   @override
@@ -87,9 +88,7 @@ void main() {
           () => FakeValidatedUserSession(session),
         ),
         searchProductsStateControllerProvider(
-          enterpriseCode,
-          fakeRoutine,
-          fakeModule,
+          SearchProductKey(enterpriseCode, fakeRoutine, fakeModule),
         ).overrideWith(() => spySearchProducts),
       ],
     );

@@ -35,9 +35,11 @@ class _AdjustSalePriceProductsPageState
     await ref
         .read(
           searchProductsStateControllerProvider(
-            widget.enterpriseCode,
-            BsRoutine.adjustSalePrice,
-            Modules.adjustPrice,
+            SearchProductKey(
+              widget.enterpriseCode,
+              BsRoutine.adjustSalePrice,
+              Modules.adjustPrice,
+            ),
           ).notifier,
         )
         .loadProducts(
@@ -51,18 +53,20 @@ class _AdjustSalePriceProductsPageState
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      searchProductsStateControllerProvider(
-        widget.enterpriseCode,
-        BsRoutine.adjustSalePrice,
-        Modules.adjustPrice,
-      ),
-      (previous, next) {
-        next.doOnSuccess(previous, () {
-          searchValueController.clear();
-        });
-      },
+    final searchProductKey = SearchProductKey(
+      widget.enterpriseCode,
+      BsRoutine.adjustSalePrice,
+      Modules.adjustPrice,
     );
+
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
+      previous,
+      next,
+    ) {
+      next.doOnSuccess(previous, () {
+        searchValueController.clear();
+      });
+    });
 
     final theme = Theme.of(context);
 
@@ -78,9 +82,7 @@ class _AdjustSalePriceProductsPageState
               searchValueController: searchValueController,
               isLoading: ref.watch(
                 searchProductsStateControllerProvider(
-                  widget.enterpriseCode,
-                  BsRoutine.adjustSalePrice,
-                  Modules.adjustPrice,
+                  searchProductKey,
                 ).select((state) => state.isLoading),
               ),
               searchProducts: _searchProducts,
@@ -90,11 +92,7 @@ class _AdjustSalePriceProductsPageState
               child: Consumer(
                 builder: (_, ref, _) {
                   final productsState = ref.watch(
-                    searchProductsStateControllerProvider(
-                      widget.enterpriseCode,
-                      BsRoutine.adjustSalePrice,
-                      Modules.adjustPrice,
-                    ),
+                    searchProductsStateControllerProvider(searchProductKey),
                   );
 
                   return AsyncValueWidget(

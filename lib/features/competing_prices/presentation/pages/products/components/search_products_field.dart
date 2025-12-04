@@ -32,23 +32,23 @@ class SearchProductsField extends ConsumerWidget {
       ),
     );
 
+    final searchProductKey = SearchProductKey(
+      widget.enterpriseCode,
+      BsRoutine.researchOfPrice,
+      Modules.competingPrices,
+    );
+
     return DefaultSearchProducts(
       allowEmptySearchValue: true,
       isLoading: ref.watch(
         searchProductsStateControllerProvider(
-          widget.enterpriseCode,
-          BsRoutine.researchOfPrice,
-          Modules.competingPrices,
+          searchProductKey,
         ).select((s) => s.isLoading),
       ),
       searchProducts: () {
         ref
             .read(
-              searchProductsStateControllerProvider(
-                widget.enterpriseCode,
-                BsRoutine.researchOfPrice,
-                Modules.competingPrices,
-              ).notifier,
+              searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
               GetProductsJsonParams(

@@ -52,9 +52,11 @@ class UpdatePricesController extends _$UpdatePricesController {
       ref
           .read(
             searchProductsStateControllerProvider(
-              enterpriseCode,
-              BsRoutine.researchOfPrice,
-              Modules.competingPrices,
+              SearchProductKey(
+                enterpriseCode,
+                BsRoutine.researchOfPrice,
+                Modules.competingPrices,
+              ),
             ).notifier,
           )
           .updateProduct(

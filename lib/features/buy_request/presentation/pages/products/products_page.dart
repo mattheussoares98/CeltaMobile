@@ -40,17 +40,19 @@ class ProductsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const searchProductKey = SearchProductKey(
+      0,
+      BsRoutine.buyRequest,
+      Modules.buyRequest,
+    );
+
     Future<void> searchProducts(
       AsyncValue<PendingBuyRequestEntity> pendingAsync,
     ) async {
       changeSelectedIndex(null);
       await ref
           .read(
-            searchProductsStateControllerProvider(
-              0,
-              BsRoutine.buyRequest,
-              Modules.buyRequest,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
             GetProductsJsonParams(
@@ -64,18 +66,14 @@ class ProductsPage extends ConsumerWidget {
           );
     }
 
-    ref.listen(
-      searchProductsStateControllerProvider(
-        0,
-        BsRoutine.buyRequest,
-        Modules.buyRequest,
-      ),
-      (products, next) {
-        next.doOnSuccess(products, () {
-          searchProductController.clear();
-        });
-      },
-    );
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
+      products,
+      next,
+    ) {
+      next.doOnSuccess(products, () {
+        searchProductController.clear();
+      });
+    });
 
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
@@ -88,9 +86,7 @@ class ProductsPage extends ConsumerWidget {
               child: DefaultSearchProducts(
                 isLoading: ref.watch(
                   searchProductsStateControllerProvider(
-                    0,
-                    BsRoutine.buyRequest,
-                    Modules.buyRequest,
+                    searchProductKey,
                   ).select((state) => state.isLoading),
                 ),
                 searchProducts: () => searchProducts(pendingAsync),
@@ -101,11 +97,7 @@ class ProductsPage extends ConsumerWidget {
             Consumer(
               builder: (_, ref, _) {
                 final productsState = ref.watch(
-                  searchProductsStateControllerProvider(
-                    0,
-                    BsRoutine.buyRequest,
-                    Modules.buyRequest,
-                  ),
+                  searchProductsStateControllerProvider(searchProductKey),
                 );
 
                 return AsyncValueSliverWidget(

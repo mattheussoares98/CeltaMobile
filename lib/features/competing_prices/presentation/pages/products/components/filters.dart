@@ -113,9 +113,11 @@ class Filters extends ConsumerWidget {
                   ref
                       .read(
                         searchProductsStateControllerProvider(
-                          widget.enterpriseCode,
-                          BsRoutine.researchOfPrice,
-                          Modules.competingPrices,
+                          SearchProductKey(
+                            widget.enterpriseCode,
+                            BsRoutine.researchOfPrice,
+                            Modules.competingPrices,
+                          ),
                         ).notifier,
                       )
                       .loadProducts(

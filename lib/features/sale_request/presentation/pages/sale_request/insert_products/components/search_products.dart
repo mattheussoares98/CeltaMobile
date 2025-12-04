@@ -17,36 +17,28 @@ class SearchProducts extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(
-      searchProductsStateControllerProvider(
-        enterpriseCode,
-        BsRoutine.saleRequest,
-        Modules.saleRequest,
-      ),
-      (p, n) {
-        n.doOnSuccess(p, () {
-          searchProductsController.clear();
-        });
-      },
+    final searchProductKey = SearchProductKey(
+      enterpriseCode,
+      BsRoutine.saleRequest,
+      Modules.saleRequest,
     );
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
+      n.doOnSuccess(p, () {
+        searchProductsController.clear();
+      });
+    });
 
     return DefaultSearchProducts(
       isLoading: ref.watch(
         searchProductsStateControllerProvider(
-          enterpriseCode,
-          BsRoutine.saleRequest,
-          Modules.saleRequest,
+          searchProductKey,
         ).select((state) => state.isLoading),
       ),
       searchValueController: searchProductsController,
       searchProducts: () {
         ref
             .read(
-              searchProductsStateControllerProvider(
-                enterpriseCode,
-                BsRoutine.saleRequest,
-                Modules.saleRequest,
-              ).notifier,
+              searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
               GetProductsJsonParams(

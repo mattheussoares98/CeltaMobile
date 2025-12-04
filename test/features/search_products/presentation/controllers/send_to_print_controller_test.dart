@@ -25,12 +25,8 @@ class FakeSearchProductsStateController extends SearchProductsStateController {
   ProductEntity? updatedProduct;
 
   @override
-  Future<List<ProductEntity>> build(
-    int enterpriseCode,
-    BsRoutine routine,
-    Modules module, {
-    int millisecondsToKeepAlive = 20000,
-  }) async => initialState;
+  Future<List<ProductEntity>> build(SearchProductKey searchProductKey) async =>
+      initialState;
 
   @override
   Future<void> updateProduct(ProductEntity product) async {
@@ -83,9 +79,11 @@ void main() {
           () => FakeSelectedEnterpriseStateController(enterprise),
         ),
         searchProductsStateControllerProvider(
-          fakeEnterprise.Code!,
-          BsRoutine.priceConference,
-          Modules.searchProducts,
+          SearchProductKey(
+            fakeEnterprise.Code!,
+            BsRoutine.priceConference,
+            Modules.searchProducts,
+          ),
         ).overrideWith(() => fakeSearchProductStateController),
       ],
     );
