@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../entities.dart';
+import '../../entities.dart';
 
 abstract class GetProductsDefaultParams extends Equatable {
   final String searchValue;

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../entities.dart';
+import '../../entities.dart';
 
 class CompetingPricesParams extends Equatable {
   final int ResearchOfPriceCode;
