@@ -1,3 +1,34 @@
-export './soap_enterprise_datasource_provider.dart';
-export './supabase_enterprise_datasource_provider.dart';
-export 'enterprise_repository_provider.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../data/datasource/enterprise/enterprise.dart';
+import '../../domain/repositories/enterprise/enterprise.dart';
+import '../soap/soap.dart';
+import '../supabase/supabase.dart';
+
+part 'enterprise.g.dart';
+
+@riverpod
+ISoapEnterpriseDatasource soapEnterpriseDatasource(Ref ref) {
+  final soapAdapter = ref.watch(soapRequestProvider);
+  return SoapEnterpriseDatasource(soapAdapter: soapAdapter);
+}
+
+@riverpod
+ISupabaseEnterpriseDatasource supabaseEnterpriseDatasource(Ref ref) {
+  final supabase = ref.watch(supabaseClientProvider);
+  return SupabaseEnterpriseDatasource(supabase);
+}
+
+@riverpod
+IEnterpriseRepository enterpriseRepository(Ref ref) {
+  final supabaseEnterpriseDatasource = ref.watch(
+    supabaseEnterpriseDatasourceProvider,
+  );
+  final soapEnterpriseDatasource = ref.watch(soapEnterpriseDatasourceProvider);
+
+  return EnterpriseRepositoryImpl(
+    supabaseEnterpriseDatasource: supabaseEnterpriseDatasource,
+    soapEnterpriseDatasource: soapEnterpriseDatasource,
+  );
+}

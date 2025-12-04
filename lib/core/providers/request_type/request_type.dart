@@ -1,2 +1,20 @@
-export './soap_load_request_type_datasource_provider.dart';
-export 'soap_load_request_type_repository_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../data/datasource/request_type/request_type.dart';
+import '../../domain/repositories/request_type/request_type.dart';
+import '../soap/soap.dart';
+
+part 'request_type.g.dart';
+
+@riverpod
+ISoapLoadRequestTypeDatasource soapLoadRequestTypeDatasource(Ref ref) {
+  return SoapLoadRequestTypeDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapLoadRequestTypeRepository soapLoadRequestTypeRepository(Ref ref) {
+  return SoapLoadRequestTypeRepositoryImpl(
+    ref.watch(soapLoadRequestTypeDatasourceProvider),
+  );
+}

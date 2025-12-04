@@ -1,2 +1,18 @@
-export './soap_customer_datasource_provider.dart';
-export './soap_customer_repository_provider.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../data/datasource/customer/customer.dart';
+import '../../domain/repositories/customer/customer.dart';
+import '../soap/soap.dart';
+
+part 'customer.g.dart';
+
+@riverpod
+ISoapCustomerDatasource soapCustomerDatasource(Ref ref) {
+  return SoapCustomerDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+ISoapCustomerRepository soapCustomerRepository(Ref ref) {
+  return SoapCustomerRepositoryImpl(ref.watch(soapCustomerDatasourceProvider));
+}
