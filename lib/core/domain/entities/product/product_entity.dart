@@ -53,6 +53,9 @@ class ProductEntity extends Equatable {
   final String? codigoProEmb; //inventory
   final double? quantidadeInvContProEmb; //inventory
   final String? FormatedProduct; //receipt
+  final String? ReferenciaXml_ProcRecebDocProEmb; //receipt
+  final DateTime? DataValidade_ProcRecebDocProEmb; //receipt
+  final double? Quantidade_ProcRecebDocProEmb; //receipt
 
   const ProductEntity({
     required this.EnterpriseCode,
@@ -101,6 +104,9 @@ class ProductEntity extends Equatable {
     required this.codigoProEmb,
     required this.quantidadeInvContProEmb,
     required this.FormatedProduct,
+    required this.Quantidade_ProcRecebDocProEmb,
+    required this.ReferenciaXml_ProcRecebDocProEmb,
+    required this.DataValidade_ProcRecebDocProEmb,
   });
 
   @override
@@ -199,6 +205,9 @@ class ProductEntity extends Equatable {
     String? codigoProEmb,
     double? quantidadeInvContProEmb,
     String? FormatedProduct,
+    String? ReferenciaXml_ProcRecebDocProEmb,
+    DateTime? DataValidade_ProcRecebDocProEmb,
+    double? Quantidade_ProcRecebDocProEmb,
   }) {
     return ProductEntity(
       EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
@@ -253,6 +262,14 @@ class ProductEntity extends Equatable {
       quantidadeInvContProEmb:
           quantidadeInvContProEmb ?? this.quantidadeInvContProEmb,
       FormatedProduct: FormatedProduct ?? this.FormatedProduct,
+      Quantidade_ProcRecebDocProEmb:
+          Quantidade_ProcRecebDocProEmb ?? this.Quantidade_ProcRecebDocProEmb,
+      ReferenciaXml_ProcRecebDocProEmb:
+          ReferenciaXml_ProcRecebDocProEmb ??
+          this.ReferenciaXml_ProcRecebDocProEmb,
+      DataValidade_ProcRecebDocProEmb:
+          DataValidade_ProcRecebDocProEmb ??
+          this.DataValidade_ProcRecebDocProEmb,
     );
   }
 
@@ -350,6 +367,9 @@ class ProductEntity extends Equatable {
     codigoProEmb: null,
     quantidadeInvContProEmb: null,
     FormatedProduct: null,
+    Quantidade_ProcRecebDocProEmb: null,
+    ReferenciaXml_ProcRecebDocProEmb: null,
+    DataValidade_ProcRecebDocProEmb: null,
   );
 }
 

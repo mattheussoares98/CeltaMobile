@@ -8,7 +8,7 @@ class SoapReceiptLoadProductsDatasource
   SoapReceiptLoadProductsDatasource(this.soapRequest);
 
   @override
-  Future<List<ProductModelType<dynamic>>> get({
+  Future<List<ProductModelType>> get({
     required String baseUrl,
     required Map<String, dynamic> parametersPayload,
   }) async {
@@ -22,7 +22,7 @@ class SoapReceiptLoadProductsDatasource
     );
 
     return (response["Produtos"] as List)
-        .map((e) => ProductModel.fromJson(e)) //TODO needs to create a new model
+        .map((e) => ReceiptProductModel.fromJson(e))
         .toList();
   }
 }

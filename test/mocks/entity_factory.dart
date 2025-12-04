@@ -165,6 +165,9 @@ class EntityFactory {
     codigoProEmb: faker.randomGenerator.integer(100).toString(),
     quantidadeInvContProEmb: faker.randomGenerator.decimal(),
     FormatedProduct: faker.lorem.sentence(),
+    DataValidade_ProcRecebDocProEmb: faker.date.dateTime(),
+    Quantidade_ProcRecebDocProEmb: faker.randomGenerator.decimal(),
+    ReferenciaXml_ProcRecebDocProEmb: faker.lorem.word(),
   );
 
   static LastBuyEntranceEntity makeLastBuyEntranceEntity() =>

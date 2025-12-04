@@ -27,7 +27,7 @@ void main() {
   void mockSuccess() {
     soapAdapter.mockPost({
       'Produtos': productsEntities
-          .map((e) => ProductModel.fromEntity(e).toJson())
+          .map((e) => ReceiptProductModel.fromEntity(e).toJson())
           .toList(),
     });
   }
@@ -68,7 +68,7 @@ void main() {
 
     expect(
       products,
-      productsEntities.map((e) => ProductModel.fromEntity(e)).toList(),
+      productsEntities.map((e) => ReceiptProductModel.fromEntity(e)).toList(),
     );
 
     verify(
