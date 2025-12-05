@@ -85,45 +85,54 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               child: Text(buffer?.toString() ?? 'Produtos'.hardcoded),
             ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
-            child: Column(
-              children: [
-                SearchWeighableAndWithoutEanButtons(
-                  searchProduct: (searchType) =>
-                      searchProduct(searchProductKey, searchType: searchType),
-                ),
-                DefaultSearchProducts(
-                  isLoading: asyncValue.isLoading,
-                  searchProducts: () {
-                    searchProduct(searchProductKey);
-                  },
-                  searchValueController: searchValueController,
-                ),
-                gapH8,
-                Expanded(
-                  child: AsyncValueWidget(
-                    value: asyncValue,
-                    tryAgain: () => ref.invalidate(
-                      searchProductsStateControllerProvider(searchProductKey),
-                    ),
-                    data: (products) {
-                      return ResponsiveListFlow(
-                        itemCount: products.length,
-                        itemBuilder: (_, index) {
-                          final product = products[index];
-
-                          return ProductItemWidget(
-                            product: product,
-                            routine: BsRoutine.goodsReceiving,
-                          );
+          body: Column(
+            children: [
+              TopButtons(
+                searchProduct: (searchType) =>
+                    searchProduct(searchProductKey, searchType: searchType),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    Sizes.p8,
+                    0,
+                    Sizes.p8,
+                    Sizes.p8,
+                  ),
+                  child: Column(
+                    children: [
+                      DefaultSearchProducts(
+                        isLoading: asyncValue.isLoading,
+                        searchProducts: () {
+                          searchProduct(searchProductKey);
                         },
-                      );
-                    },
+                        searchValueController: searchValueController,
+                      ),
+                      gapH8,
+                      Expanded(
+                        child: AsyncValueWidget(
+                          value: asyncValue,
+                          tryAgain: null,
+                          data: (products) {
+                            return ResponsiveListFlow(
+                              itemCount: products.length,
+                              itemBuilder: (_, index) {
+                                final product = products[index];
+
+                                return ProductItemWidget(
+                                  product: product,
+                                  routine: BsRoutine.goodsReceiving,
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         LoadingPage(

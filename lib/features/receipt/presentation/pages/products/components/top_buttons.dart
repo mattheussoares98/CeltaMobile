@@ -5,12 +5,9 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 
-class SearchWeighableAndWithoutEanButtons extends StatelessWidget {
+class TopButtons extends StatelessWidget {
   final void Function(SearchType searchType) searchProduct;
-  const SearchWeighableAndWithoutEanButtons({
-    super.key,
-    required this.searchProduct,
-  });
+  const TopButtons({super.key, required this.searchProduct});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +17,10 @@ class SearchWeighableAndWithoutEanButtons extends StatelessWidget {
     return Row(
       children: [
         Expanded(
+          flex: 30,
           child: PrimaryTextButton(
             text: 'Pesáveis'.hardcoded,
+            isSmall: true,
             icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
             iconAlignment: IconAlignment.start,
             onPressed: () => searchProduct(
@@ -30,12 +29,26 @@ class SearchWeighableAndWithoutEanButtons extends StatelessWidget {
           ),
         ),
         Expanded(
+          flex: 30,
           child: PrimaryTextButton(
             text: 'Sem EAN'.hardcoded,
+            isSmall: true,
             icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
             iconAlignment: IconAlignment.start,
             onPressed: () =>
                 searchProduct(SearchType.allProductsFromGoodsReceiving),
+          ),
+        ),
+        Expanded(
+          flex: 40,
+          child: PrimaryTextButton(
+            text: 'Não encontrados'.hardcoded,
+            isSmall: true,
+            icon: Icon(isIOS ? CupertinoIcons.add : Icons.add),
+            iconAlignment: IconAlignment.start,
+            onPressed: () {
+              //TODO navigate to not found products
+            },
           ),
         ),
       ],
