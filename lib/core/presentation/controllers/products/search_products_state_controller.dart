@@ -76,9 +76,12 @@ class SearchProductsStateController extends _$SearchProductsStateController {
     }
 
     // 3. Find the index of the old product.
-    final productIndex = currentState.value.indexWhere(
-      (p) => p.ProductPackingCode == updatedProduct.ProductPackingCode,
-    );
+    final productIndex = currentState.value.indexWhere((p) {
+      if (searchProductKey.module == Modules.inventory) {
+        return p.codigoInternoProEmb == updatedProduct.codigoInternoProEmb;
+      }
+      return p.ProductPackingCode == updatedProduct.ProductPackingCode;
+    });
 
     // 4. If the product exists in the list, replace it.
     if (productIndex != -1) {

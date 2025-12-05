@@ -315,6 +315,66 @@ void main() {
       // Check that the product with the matching code now has the new name
       expect(finalState.value?.first, updatedProduct);
     });
+    test(
+      'should do nothing when is inventory module and doesnt find the codigoInternoProEmb property',
+      () async {
+        // Set up the repository mock to return the initial list
+        sut.mockLoad(productsEntities);
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+
+        // Load the initial state
+        final inventorySearchKey = SearchProductKey(
+          enterpriseEntity.Code!,
+          BsRoutine.generic,
+          Modules.inventory,
+        );
+        await container.read(
+          searchProductsStateControllerProvider(inventorySearchKey).future,
+        );
+
+        //loading products
+        await container
+            .read(
+              searchProductsStateControllerProvider(
+                inventorySearchKey,
+              ).notifier,
+            )
+            .loadProducts(
+              GetProductsJsonParams(
+                lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+                searchValue: searchValue,
+                enterpriseCodes: [enterpriseEntity.Code!],
+              ),
+            );
+
+        // Create the updated version of the first product
+        final updatedProduct = EntityFactory.makeProductEntity().copyWith(
+          codigoInternoProEmb: -1,
+          //make dont find the product
+        );
+        // ACT: Call the updateProduct method
+        container
+            .read(
+              searchProductsStateControllerProvider(
+                inventorySearchKey,
+              ).notifier,
+            )
+            .updateProduct(updatedProduct);
+
+        // ASSERT
+        // Read the final state of the provider
+        final finalState = container.read(
+          searchProductsStateControllerProvider(inventorySearchKey),
+        );
+
+        // Check that the list still has 2 items
+        expect(finalState.value, hasLength(3));
+        // Check that the product with the matching code now has the new name
+        expect(finalState.value, productsEntities);
+      },
+    );
 
     test(
       'should do nothing if the product to update is not in the list',
