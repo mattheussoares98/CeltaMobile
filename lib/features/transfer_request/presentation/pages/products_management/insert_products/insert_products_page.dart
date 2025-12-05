@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components/components.dart';
@@ -94,18 +95,18 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      productsStateControllerProvider(
-        enterpriseOriginCode: widget.draftKey.enterpriseOrigin,
-        enterpriseDestinyCode: widget.draftKey.enterpriseDestinyCode,
-        requestTypeCode: widget.draftKey.requestTypeCode,
-      ),
-      (p, n) {
-        n.doOnSuccess(p, () {
-          searchValueController.clear();
-        });
-      },
+    final searchProductKey = SearchProductKey(
+      widget.draftKey.enterpriseOrigin,
+      BsRoutine.transferRequest,
+      Modules.transferRequest,
+      anotherKey:
+          '${widget.draftKey.enterpriseOrigin}-${widget.draftKey.enterpriseDestinyCode}-${widget.draftKey.requestTypeCode}',
     );
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
+      n.doOnSuccess(p, () {
+        searchValueController.clear();
+      });
+    });
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
@@ -113,24 +114,27 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
         children: [
           DefaultSearchProducts(
             isLoading: ref.watch(
-              productsStateControllerProvider(
-                enterpriseOriginCode: widget.draftKey.enterpriseOrigin,
-                enterpriseDestinyCode: widget.draftKey.enterpriseDestinyCode,
-                requestTypeCode: widget.draftKey.requestTypeCode,
+              searchProductsStateControllerProvider(
+                searchProductKey,
               ).select((value) => value.isLoading),
             ),
             focusNode: searchValueFocusNode,
             searchProducts: () {
               ref
                   .read(
-                    productsStateControllerProvider(
+                    searchProductsStateControllerProvider(
+                      searchProductKey,
+                    ).notifier,
+                  )
+                  .loadProducts(
+                    GetProductsByRequestTypeParams(
+                      searchValue: searchValueController.text,
                       enterpriseOriginCode: widget.draftKey.enterpriseOrigin,
                       enterpriseDestinyCode:
                           widget.draftKey.enterpriseDestinyCode,
                       requestTypeCode: widget.draftKey.requestTypeCode,
-                    ).notifier,
-                  )
-                  .loadProducts(searchValue: searchValueController.text);
+                    ),
+                  );
             },
             searchValueController: searchValueController,
           ),
@@ -140,16 +144,10 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
               slivers: [
                 Consumer(
                   builder: (_, ref, _) {
-                    final productsAsync = ref.watch(
-                      productsStateControllerProvider(
-                        enterpriseOriginCode: widget.draftKey.enterpriseOrigin,
-                        enterpriseDestinyCode:
-                            widget.draftKey.enterpriseDestinyCode,
-                        requestTypeCode: widget.draftKey.requestTypeCode,
-                      ),
-                    );
                     return AsyncValueSliverWidget(
-                      value: productsAsync,
+                      value: ref.watch(
+                        searchProductsStateControllerProvider(searchProductKey),
+                      ),
                       tryAgain: null,
                       data: (products) {
                         return ProductsItems(
