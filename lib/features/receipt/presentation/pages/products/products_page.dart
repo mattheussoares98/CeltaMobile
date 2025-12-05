@@ -6,6 +6,7 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../utils/utils.dart';
 import '../../../domain/entity/entity.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
@@ -49,6 +50,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       BsRoutine.goodsReceiving,
       Modules.receipt,
     );
+
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
+      n.doOnSuccess(p, () {
+        searchValueController.clear();
+      });
+    });
 
     final asyncValue = ref.watch(
       searchProductsStateControllerProvider(searchProductKey),
