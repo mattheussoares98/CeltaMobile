@@ -33,3 +33,10 @@ ISoapLiberateDocumentDatasource soapLiberateDocumentDatasource(Ref ref) {
 ISoapUpdateProductDatasource soapUpdateProductDatasource(Ref ref) {
   return SoapUpdateProductDatasource(ref.watch(soapRequestProvider));
 }
+
+@riverpod
+ISoapUpdateProductRepository soapUpdateProductRepository(Ref ref) {
+  return SoapUpdateProductRepositoryImpl(
+    ref.watch(soapUpdateProductDatasourceProvider),
+  );
+}
