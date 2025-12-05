@@ -8,6 +8,7 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../utils/utils.dart';
 import '../../../domain/entity/entity.dart';
+import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int receiptCode;
@@ -26,6 +27,21 @@ class ProductsPage extends ConsumerStatefulWidget {
 
 class _ProductsPageState extends ConsumerState<ProductsPage> {
   final searchValueController = TextEditingController();
+
+  void searchProduct(
+    SearchProductKey searchProductKey, {
+    SearchType? searchType,
+  }) async {
+    ref
+        .read(searchProductsStateControllerProvider(searchProductKey).notifier)
+        .loadProducts(
+          GetProductsReceiptParams(
+            searchValue: searchValueController.text,
+            grDocCode: widget.receiptCode,
+          ),
+          specifiedSearchType: searchType,
+        );
+  }
 
   @override
   void dispose() {
@@ -61,59 +77,59 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       searchProductsStateControllerProvider(searchProductKey),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(
-          child: Text(buffer?.toString() ?? 'Produtos'.hardcoded),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: Column(
-          children: [
-            DefaultSearchProducts(
-              isLoading: asyncValue.isLoading,
-              searchProducts: () {
-                ref
-                    .read(
-                      searchProductsStateControllerProvider(
-                        searchProductKey,
-                      ).notifier,
-                    )
-                    .loadProducts(
-                      GetProductsJsonParams(
-                        searchValue: searchValueController.text,
-                        enterpriseCodes: [widget.enterpriseCode],
-                      ),
-                    );
-              },
-              searchValueController: searchValueController,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: FittedBox(
+              child: Text(buffer?.toString() ?? 'Produtos'.hardcoded),
             ),
-            gapH8,
-            Expanded(
-              child: AsyncValueWidget(
-                value: asyncValue,
-                tryAgain: () => ref.invalidate(
-                  searchProductsStateControllerProvider(searchProductKey),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
+            child: Column(
+              children: [
+                SearchWeighableAndWithoutEanButtons(
+                  searchProduct: (searchType) =>
+                      searchProduct(searchProductKey, searchType: searchType),
                 ),
-                data: (products) {
-                  return ResponsiveListFlow(
-                    itemCount: products.length,
-                    itemBuilder: (_, index) {
-                      final product = products[index];
+                DefaultSearchProducts(
+                  isLoading: asyncValue.isLoading,
+                  searchProducts: () {
+                    searchProduct(searchProductKey);
+                  },
+                  searchValueController: searchValueController,
+                ),
+                gapH8,
+                Expanded(
+                  child: AsyncValueWidget(
+                    value: asyncValue,
+                    tryAgain: () => ref.invalidate(
+                      searchProductsStateControllerProvider(searchProductKey),
+                    ),
+                    data: (products) {
+                      return ResponsiveListFlow(
+                        itemCount: products.length,
+                        itemBuilder: (_, index) {
+                          final product = products[index];
 
-                      return ProductItemWidget(
-                        product: product,
-                        routine: BsRoutine.goodsReceiving,
+                          return ProductItemWidget(
+                            product: product,
+                            routine: BsRoutine.goodsReceiving,
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        LoadingPage(
+          providers: [searchProductsStateControllerProvider(searchProductKey)],
+        ),
+      ],
     );
   }
 }
