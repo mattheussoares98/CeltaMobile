@@ -40,3 +40,8 @@ ISoapUpdateProductRepository soapUpdateProductRepository(Ref ref) {
     ref.watch(soapUpdateProductDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapAnnulQuantityDatasource soapAnnulQuantityDatasource(Ref ref) {
+  return SoapAnnulQuantityDatasource(ref.watch(soapRequestProvider));
+}
