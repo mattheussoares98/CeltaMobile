@@ -28,3 +28,8 @@ ISoapUpdateObservationsDatasource soapUpdateObservationsDatasource(Ref ref) {
 ISoapLiberateDocumentDatasource soapLiberateDocumentDatasource(Ref ref) {
   return SoapLiberateDocumentDatasource(ref.watch(soapRequestProvider));
 }
+
+@riverpod
+ISoapUpdateProductDatasource soapUpdateProductDatasource(Ref ref) {
+  return SoapUpdateProductDatasource(ref.watch(soapRequestProvider));
+}
