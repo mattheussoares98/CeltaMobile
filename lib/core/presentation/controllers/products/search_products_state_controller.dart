@@ -32,8 +32,9 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   }
 
   Future<void> loadProducts(
-    GetProductsDefaultParams getProductsDefaultParams,
-  ) async {
+    GetProductsDefaultParams getProductsDefaultParams, {
+    SearchType? specifiedSearchType,
+  }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(validatedUserSessionProvider.future);
@@ -56,7 +57,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             baseUrl: baseUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: selectedEnterprise!,
-            searchType: searchType,
+            searchType: specifiedSearchType ?? searchType,
             getProductsDefaultParams: getProductsDefaultParams.copyWith(
               routine: searchProductKey.routine,
             ),

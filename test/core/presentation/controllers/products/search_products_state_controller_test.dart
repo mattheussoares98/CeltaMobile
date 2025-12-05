@@ -265,6 +265,51 @@ void main() {
         ),
       );
     });
+
+    test(
+      'should search with correct searchType when pass in specifiedSearchType',
+      () async {
+        final container = makeProviderContainer();
+
+        await container.read(
+          searchProductsStateControllerProvider(searchProductKey).future,
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          searchProductsStateControllerProvider(searchProductKey),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(
+              searchProductsStateControllerProvider(searchProductKey).notifier,
+            )
+            .loadProducts(
+              GetProductsJsonParams(
+                searchValue: searchValue,
+                enterpriseCodes: [enterpriseEntity.Code!],
+                lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+                buyRequestParams: buyRequestParams,
+              ),
+              specifiedSearchType: SearchType.approximateLegacyCode,
+            );
+
+        expect(states, [
+          isA<AsyncLoading>(),
+          isA<AsyncData<List<ProductEntity>>>(),
+        ]);
+        verify(
+          () => sut.load(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            enterpriseEntity: any(named: 'enterpriseEntity'),
+            searchType: SearchType.approximateLegacyCode,
+            getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
+          ),
+        ).called(1);
+      },
+    );
   });
 
   group('updateProduct', () {
