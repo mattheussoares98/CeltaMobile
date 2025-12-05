@@ -3,7 +3,7 @@ abstract class ISoapUpdateProductRepository {
     required String baseUrl,
     required String crossIdentity,
     required int grDocCode,
-    required int productgCode,
+    required int productCode,
     required int productPackingCode,
     double? newQuantity,
     DateTime? newValidityDate,

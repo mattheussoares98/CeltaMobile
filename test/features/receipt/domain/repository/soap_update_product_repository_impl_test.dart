@@ -48,7 +48,7 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         grDocCode: grDocCode,
-        productgCode: productgCode,
+        productCode: productgCode,
         productPackingCode: productPackingCode,
       );
 
@@ -70,7 +70,7 @@ void main() {
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
       grDocCode: grDocCode,
-      productgCode: productgCode,
+      productCode: productgCode,
       productPackingCode: productPackingCode,
       newQuantity: newQuantity,
       newValidityDate: newValidityDate,

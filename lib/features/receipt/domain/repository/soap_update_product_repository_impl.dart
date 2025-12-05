@@ -10,7 +10,7 @@ class SoapUpdateProductRepositoryImpl implements ISoapUpdateProductRepository {
     required String baseUrl,
     required String crossIdentity,
     required int grDocCode,
-    required int productgCode,
+    required int productCode,
     required int productPackingCode,
     double? newQuantity,
     DateTime? newValidityDate,
@@ -18,7 +18,7 @@ class SoapUpdateProductRepositoryImpl implements ISoapUpdateProductRepository {
     final parametersPayload = {
       "crossIdentity": crossIdentity,
       "grDocCode": grDocCode,
-      "productgCode": productgCode,
+      "productgCode": productCode,
       "productPackingCode": productPackingCode,
       if (newQuantity != null) "quantity": newQuantity,
       if (newValidityDate != null)

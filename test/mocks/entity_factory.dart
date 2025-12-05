@@ -100,10 +100,13 @@ class EntityFactory {
 
   static ProductEntity makeProductEntity({
     int? enterpriseCode,
+    int? productCode,
     int? productPackingCode,
     double? MinimumWholeQuantity,
     double? RetailPracticedPrice,
     String? plu,
+    double? Quantidade_ProcRecebDocProEmb,
+    DateTime? DataValidade_ProcRecebDocProEmb,
   }) => ProductEntity(
     ConcurrentCode: faker.randomGenerator.integer(100),
     ResearchOfPriceCode: faker.randomGenerator.integer(100),
@@ -113,7 +116,7 @@ class EntityFactory {
       faker.randomGenerator.integer(100).toString(),
     ],
     EnterpriseCode: enterpriseCode ?? faker.randomGenerator.integer(100),
-    ProductCode: faker.randomGenerator.integer(100),
+    ProductCode: productCode ?? faker.randomGenerator.integer(100),
     ProductPackingCode:
         productPackingCode ?? faker.randomGenerator.integer(999999),
     PLU: plu ?? faker.randomGenerator.integer(100).toString(),
@@ -166,8 +169,10 @@ class EntityFactory {
     codigoProEmb: faker.randomGenerator.integer(100).toString(),
     quantidadeInvContProEmb: faker.randomGenerator.decimal(),
     FormatedProduct: faker.lorem.sentence(),
-    DataValidade_ProcRecebDocProEmb: faker.date.dateTime(),
-    Quantidade_ProcRecebDocProEmb: faker.randomGenerator.decimal(),
+    DataValidade_ProcRecebDocProEmb:
+        DataValidade_ProcRecebDocProEmb ?? faker.date.dateTime(),
+    Quantidade_ProcRecebDocProEmb:
+        Quantidade_ProcRecebDocProEmb ?? faker.randomGenerator.decimal(),
     ReferenciaXml_ProcRecebDocProEmb: faker.lorem.word(),
   );
 
