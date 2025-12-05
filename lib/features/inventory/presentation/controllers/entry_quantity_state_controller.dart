@@ -1,8 +1,9 @@
-import 'package:celta_intelligence/features/inventory/presentation/controllers/inventory_products_state_controller.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../domain/entities/entities.dart';
@@ -30,12 +31,15 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
         validatedUserSessionProvider.future,
       );
 
+      final searchProductKey = SearchProductKey(
+        enterpriseCode,
+        BsRoutine.generic,
+        Modules.inventory,
+        anotherKey: '$codigoInternoInvCont-$codigoInternoInventario',
+      );
+
       final products = await ref.read(
-        inventoryProductsStateControllerProvider(
-          enterpriseCode,
-          codigoInternoInventario,
-          codigoInternoInvCont,
-        ).future,
+        searchProductsStateControllerProvider(searchProductKey).future,
       );
 
       final product = products.firstWhere(
@@ -63,11 +67,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
 
       ref
           .read(
-            inventoryProductsStateControllerProvider(
-              enterpriseCode,
-              codigoInternoInventario,
-              codigoInternoInvCont,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .updateProduct(
             product.copyWith(quantidadeInvContProEmb: newQuantity),
@@ -92,6 +92,13 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
         validatedUserSessionProvider.future,
       );
 
+      final searchProductKey = SearchProductKey(
+        enterpriseCode,
+        BsRoutine.generic,
+        Modules.inventory,
+        anotherKey: '$codigoInternoInvCont-$codigoInternoInventario',
+      );
+
       await ref
           .read(soapInventoryAnnulRepositoryProvider)
           .annul(
@@ -102,13 +109,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
           );
 
       final product = await ref
-          .read(
-            inventoryProductsStateControllerProvider(
-              enterpriseCode,
-              codigoInternoInventario,
-              codigoInternoInvCont,
-            ).future,
-          )
+          .read(searchProductsStateControllerProvider(searchProductKey).future)
           .then((products) {
             return products.firstWhere(
               (e) => e.codigoInternoProEmb == codigoInternoProEmb,
@@ -117,11 +118,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
 
       ref
           .read(
-            inventoryProductsStateControllerProvider(
-              enterpriseCode,
-              codigoInternoInventario,
-              codigoInternoInvCont,
-            ).notifier,
+            searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .updateProduct(
             ProductEntity.empty().copyWith(

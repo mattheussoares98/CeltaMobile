@@ -1,10 +1,12 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/inventory/domain/repositories/repositories.dart';
 import 'package:celta_intelligence/features/inventory/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/inventory/providers.dart';
+import 'package:celta_intelligence/utils/utils.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,22 +20,6 @@ class MockSoapInventoryEntryQuantityRepository extends Mock
 class MockSoapInventoryAnnulRepository extends Mock
     implements ISoapInventoryAnnulRepository {}
 
-class SpyInventoryProductsStateController
-    extends InventoryProductsStateController {
-  final List<ProductEntity> initialState;
-  SpyInventoryProductsStateController(this.initialState);
-
-  ProductEntity? updatedProduct;
-
-  @override
-  Future<List<ProductEntity>> build(int a, int b, int c) async => initialState;
-
-  @override
-  void updateProduct(ProductEntity product) {
-    updatedProduct = product;
-  }
-}
-
 void main() {
   late MockSoapInventoryEntryQuantityRepository mockEntryQuantityRepository;
   late ISoapInventoryAnnulRepository mockAnnulRepository;
@@ -42,7 +28,7 @@ void main() {
   late bool isSubtract;
   late int codigoInternoInventario;
   late int enterpriseCode;
-  late SpyInventoryProductsStateController spyProductsController;
+  late FakeSearchProductsStateController spyProductsController;
   late ProductEntity fakeProduct;
 
   setUp(() {
@@ -56,7 +42,7 @@ void main() {
     codigoInternoInventario = faker.randomGenerator.integer(1000);
     enterpriseCode = faker.randomGenerator.integer(1000);
     fakeProduct = EntityFactory.makeProductEntity();
-    spyProductsController = SpyInventoryProductsStateController([fakeProduct]);
+    spyProductsController = FakeSearchProductsStateController([fakeProduct]);
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -71,10 +57,13 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        inventoryProductsStateControllerProvider(
-          enterpriseCode,
-          codigoInternoInventario,
-          codigoInternoInvCont,
+        searchProductsStateControllerProvider(
+          SearchProductKey(
+            enterpriseCode,
+            BsRoutine.generic,
+            Modules.inventory,
+            anotherKey: '$codigoInternoInvCont-$codigoInternoInventario',
+          ),
         ).overrideWith(() => spyProductsController),
       ],
     );
@@ -206,7 +195,11 @@ void main() {
         addTearDown(container.dispose);
 
         // ACT
-        final quantityToAdd = faker.randomGenerator.decimal();
+        final quantityToAdd =
+            (faker.randomGenerator.decimal() * (isSubtract ? 0.001 : 1000))
+                //this split or multiplication avoid problem to turn the new quantity less than zero
+                .toStringAsFixed(2)
+                .toDouble()!;
         await container
             .read(
               entryQuantityStateControllerProvider(
@@ -224,6 +217,7 @@ void main() {
 
         // ASSERT
         // 1. Verify the repository was called.
+
         verify(
           () => mockEntryQuantityRepository.entry(
             baseUrl: fakeSession.enterprise!.baseUrl!,

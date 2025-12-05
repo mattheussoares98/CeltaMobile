@@ -23,6 +23,7 @@ import 'package:celta_intelligence/core/domain/repositories/products/products.da
 import 'package:celta_intelligence/core/domain/repositories/resource/resource.dart';
 import 'package:celta_intelligence/core/domain/repositories/settings/settings.dart';
 import 'package:celta_intelligence/core/domain/repositories/user_session/user_session.dart';
+import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/exceptions.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/data/datasource/datasource.dart';
@@ -1032,5 +1033,23 @@ class SoapLoadDestinyEnterprisesDatasourceSpy extends Mock
         enterpriseOriginCode: any(named: 'enterpriseOriginCode'),
       ),
     ).thenAnswer((_) async => response);
+  }
+}
+
+class FakeSearchProductsStateController extends SearchProductsStateController {
+  final List<ProductEntity> initialState;
+  FakeSearchProductsStateController(this.initialState);
+
+  // This public property will store the product we want to check.
+  ProductEntity? updatedProduct;
+
+  @override
+  Future<List<ProductEntity>> build(SearchProductKey searchProductKey) async =>
+      initialState;
+
+  @override
+  Future<void> updateProduct(ProductEntity product) async {
+    // Instead of doing real work, it just saves the product to our property.
+    updatedProduct = product;
   }
 }

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -41,23 +43,19 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     super.dispose();
   }
 
-  Future<void> _searchProducts() async {
+  Future<void> _searchProducts(SearchProductKey searchProductKey) async {
     await ref
-        .read(
-          inventoryProductsStateControllerProvider(
-            widget.enterpriseCode,
-            widget.codigoInternoInventario,
-            widget.codigoInternoInvCont,
-          ).notifier,
-        )
-        .loadProducts(searchProductsController.text);
+        .read(searchProductsStateControllerProvider(searchProductKey).notifier)
+        .loadProducts(
+          GetProductsInventoryParams(
+            searchValue: searchProductsController.text,
+            inventoryProcessCode: widget.codigoInternoInventario,
+            inventoryCountingCode: widget.codigoInternoInvCont,
+          ),
+        );
 
     final products = ref.read(
-      inventoryProductsStateControllerProvider(
-        widget.enterpriseCode,
-        widget.codigoInternoInventario,
-        widget.codigoInternoInvCont,
-      ),
+      searchProductsStateControllerProvider(searchProductKey),
     );
 
     if (insertIndividually && products.value?.length == 1) {
@@ -119,32 +117,35 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      inventoryProductsStateControllerProvider(
-        widget.enterpriseCode,
-        widget.codigoInternoInventario,
-        widget.codigoInternoInvCont,
-      ),
-      (previous, next) {
-        next.doOnSuccess(previous, () {
-          setState(() {
-            selectedIndex = null;
-          });
-          if (next.value?.length == 1) {
-            setState(() {
-              selectedIndex = 0;
-            });
-          }
-          searchProductsController.clear();
-          if (insertIndividually) {
-            Future.delayed(const Duration(milliseconds: 100), () {
-              searchProductsFocusNode.requestFocus();
-            });
-          }
-        });
-        next.showSnackbarOnError(context, previous);
-      },
+    final searchProductKey = SearchProductKey(
+      widget.enterpriseCode,
+      BsRoutine.generic,
+      Modules.inventory,
+      anotherKey:
+          '${widget.codigoInternoInvCont}-${widget.codigoInternoInventario}',
     );
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
+      previous,
+      next,
+    ) {
+      next.doOnSuccess(previous, () {
+        setState(() {
+          selectedIndex = null;
+        });
+        if (next.value?.length == 1) {
+          setState(() {
+            selectedIndex = 0;
+          });
+        }
+        searchProductsController.clear();
+        if (insertIndividually) {
+          Future.delayed(const Duration(milliseconds: 100), () {
+            searchProductsFocusNode.requestFocus();
+          });
+        }
+      });
+      next.showSnackbarOnError(context, previous);
+    });
 
     ref.listen(
       entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
@@ -165,7 +166,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             child: CustomScrollView(
               slivers: [
                 SearchProducts(
-                  searchProducts: _searchProducts,
+                  searchProducts: () => _searchProducts(searchProductKey),
                   searchProductsController: searchProductsController,
                   searchProductsFocusNode: searchProductsFocusNode,
                   enterpriseCode: widget.enterpriseCode,
@@ -189,11 +190,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 Consumer(
                   builder: (_, ref, _) {
                     final productsState = ref.watch(
-                      inventoryProductsStateControllerProvider(
-                        widget.enterpriseCode,
-                        widget.codigoInternoInventario,
-                        widget.codigoInternoInvCont,
-                      ),
+                      searchProductsStateControllerProvider(searchProductKey),
                     );
                     return SliverList.builder(
                       itemCount: productsState.value?.length ?? 0,

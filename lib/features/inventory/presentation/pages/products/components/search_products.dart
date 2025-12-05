@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../controllers/controllers.dart';
+import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../core/presentation/controllers/products/products.dart';
 
 class SearchProducts extends ConsumerWidget {
   final FocusNode searchProductsFocusNode;
@@ -24,10 +25,13 @@ class SearchProducts extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(
-      inventoryProductsStateControllerProvider(
-        enterpriseCode,
-        codigoInternoInventario,
-        codigoInternoInvCont,
+      searchProductsStateControllerProvider(
+        SearchProductKey(
+          enterpriseCode,
+          BsRoutine.generic,
+          Modules.inventory,
+          anotherKey: '$codigoInternoInvCont-$codigoInternoInventario',
+        ),
       ).select((state) => state.isLoading),
     );
     return SliverToBoxAdapter(

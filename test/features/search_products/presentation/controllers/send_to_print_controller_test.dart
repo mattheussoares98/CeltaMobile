@@ -17,23 +17,6 @@ class MockSoapSendToPrintRepository extends Mock
     implements ISoapSendToPrintRepository {}
 
 // Add this new Fake class to your test file
-class FakeSearchProductsStateController extends SearchProductsStateController {
-  final List<ProductEntity> initialState;
-  FakeSearchProductsStateController(this.initialState);
-
-  // This public property will store the product we want to check.
-  ProductEntity? updatedProduct;
-
-  @override
-  Future<List<ProductEntity>> build(SearchProductKey searchProductKey) async =>
-      initialState;
-
-  @override
-  Future<void> updateProduct(ProductEntity product) async {
-    // Instead of doing real work, it just saves the product to our property.
-    updatedProduct = product;
-  }
-}
 
 void main() {
   late MockSoapSendToPrintRepository mockRepository;
