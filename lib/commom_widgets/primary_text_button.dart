@@ -18,6 +18,7 @@ class PrimaryTextButton extends StatelessWidget {
     this.icon,
     this.iconAlignment = IconAlignment.end,
     this.color,
+    this.isSmall,
     this.textAlign = TextAlign.center,
   });
   final String text;
@@ -27,6 +28,7 @@ class PrimaryTextButton extends StatelessWidget {
   final IconAlignment? iconAlignment;
   final Color? color;
   final TextAlign? textAlign;
+  final bool? isSmall;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -42,16 +44,23 @@ class PrimaryTextButton extends StatelessWidget {
     final textWidget = Text(
       text,
       textAlign: textAlign,
-      style: theme.textTheme.titleMedium?.copyWith(color: textColor),
+      style:
+          (isSmall == true
+                  ? theme.textTheme.titleSmall
+                  : theme.textTheme.titleMedium)
+              ?.copyWith(color: textColor),
     );
     final iconWidget = icon == null
         ? null
         : IconTheme(
-            data: IconThemeData(color: iconColor),
+            data: IconThemeData(
+              color: iconColor,
+              size: isSmall == true ? 16 : 24,
+            ),
             child: icon!,
           );
 
-    const minimumSizeToShowIcon = 150;
+    final minimumSizeToShowIcon = isSmall == true ? 50 : 150;
 
     if (isIOS) {
       return LayoutBuilder(
