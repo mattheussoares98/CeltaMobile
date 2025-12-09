@@ -131,7 +131,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                               .scan();
                           if (value != null) {
                             widget.searchValueController.text = value;
-                            widget.searchProducts();
+                            searchProducts();
                           }
                         },
                         materialIcon: Icons.camera_alt,
