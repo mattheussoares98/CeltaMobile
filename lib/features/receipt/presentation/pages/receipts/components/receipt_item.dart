@@ -90,7 +90,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                       gapH8,
                       CurrentObservations(receipt: widget.receipt),
                       Positioned(
-                        top: -5,
+                        top: -15,
                         right: 0,
                         child: ToggleUpdateObservationButton(
                           receipt: widget.receipt,
