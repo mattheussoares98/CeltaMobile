@@ -821,4 +821,12 @@ class EntityFactory {
                   .integer(SearchProductCompetingPriceType.values.length)],
         ),
       );
+
+  static ProductNotFoundEntity makeProductNotFoundEntity() =>
+      ProductNotFoundEntity(
+        internalCode: faker.randomGenerator.integer(100),
+        quantity: faker.randomGenerator.decimal(),
+        ean: faker.randomGenerator.integer(100).toString(),
+        observations: faker.lorem.word(),
+      );
 }
