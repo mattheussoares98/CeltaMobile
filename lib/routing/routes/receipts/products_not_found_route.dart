@@ -7,6 +7,7 @@ RouteBase productsNotFoundRoute() => GoRoute(
   path: 'products-not-found',
   name: Routes.receiptProductsNotFound.name,
   builder: (context, state) {
-    return const ProductsNotFoundPage();
+    final receiptCode = int.parse(state.pathParameters['receiptCode']!);
+    return ProductsNotFoundPage(receiptCode: receiptCode);
   },
 );
