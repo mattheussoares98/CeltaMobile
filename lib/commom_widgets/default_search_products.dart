@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/constants.dart';
 import '../core/domain/entities/entities.dart';
-import '../core/providers/scanner/scanner.dart';
+import '../core/presentation/controllers/scanner/scanner.dart';
 import '../core/validators/validators.dart';
 import '../features/settings/presentation/pages/pages.dart';
 import 'commom_widgets.dart';
@@ -40,11 +40,21 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
     formKey.currentState?.dispose();
   }
 
-  void searchProducts() async {
-    if (formKey.currentState?.validate() != true) {
-      return;
+  void searchProducts({bool? searchByCamera}) async {
+    if (searchByCamera == true) {
+      final value = await ref.read(
+        barcodeScannerStateControllerProvider.future,
+      );
+      if (value != null) {
+        widget.searchValueController.text = value;
+        widget.searchProducts();
+      }
+    } else {
+      if (formKey.currentState?.validate() != true) {
+        return;
+      }
+      widget.searchProducts();
     }
-    widget.searchProducts();
   }
 
   String getHintText(AppSettingsEntity? settings) {
@@ -125,15 +135,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                     if (theme.platform == TargetPlatform.iOS ||
                         theme.platform == TargetPlatform.android)
                       _DefaultIcon(
-                        onPress: () async {
-                          final value = await ref
-                              .read(barcodeScannerRepositoryProvider)
-                              .scan();
-                          if (value != null) {
-                            widget.searchValueController.text = value;
-                            searchProducts();
-                          }
-                        },
+                        onPress: () => searchProducts(searchByCamera: true),
                         materialIcon: Icons.camera_alt,
                         cupertinoIcon: CupertinoIcons.camera_fill,
                         iconColor: widget.isLoading
