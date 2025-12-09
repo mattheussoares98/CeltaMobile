@@ -52,3 +52,12 @@ ISoapLoadProductsNotFoundDatasource soapLoadProductsNotFoundDatasource(
 ) {
   return SoapLoadProductsNotFoundDatasource(ref.watch(soapRequestProvider));
 }
+
+@riverpod
+ISoapLoadProductsNotFoundRepository soapLoadProductsNotFoundRepository(
+  Ref ref,
+) {
+  return SoapLoadProductsNotFoundRepositoryImpl(
+    ref.watch(soapLoadProductsNotFoundDatasourceProvider),
+  );
+}
