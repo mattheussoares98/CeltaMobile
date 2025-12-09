@@ -90,7 +90,9 @@ class PrimaryButton extends StatelessWidget {
             icon: canShowIcon ? icon : null,
             iconAlignment: iconAlignment,
             style: ButtonStyle(
-              padding: WidgetStateProperty.all(const EdgeInsets.all(Sizes.p12)),
+              padding: WidgetStateProperty.all(
+                const EdgeInsets.symmetric(horizontal: Sizes.p8),
+              ),
               backgroundColor: WidgetStateProperty.all(buttonColor),
             ),
             label: Stack(

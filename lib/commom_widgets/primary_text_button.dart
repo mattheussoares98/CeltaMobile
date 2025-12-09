@@ -95,7 +95,7 @@ class PrimaryTextButton extends StatelessWidget {
         final canShowIcon = constraints.maxWidth > minimumSizeToShowIcon;
 
         return SizedBox(
-          height: Sizes.p32,
+          height: Sizes.p48,
           child: TextButton.icon(
             onPressed: isLoading ? null : onPressed,
             icon: canShowIcon ? iconWidget : null,
