@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:open_file_plus/open_file_plus.dart';
+// import 'package:open_file_plus/open_file_plus.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
@@ -50,16 +50,17 @@ class _DefaultButton extends ConsumerWidget {
   }
 
   void _openFile(BuildContext context, String filePath) async {
-    final response = await OpenFile.open(filePath);
-    if (response.type == ResultType.error) {
-      showAlertDialog(
-        context: context,
-        title: 'Erro!'.hardcoded,
-        content:
-            'Não foi possível abrir o arquivo. Confirme se você possui um aplicativo padrão instalado para abrir esse tipo de arquivos de planilha'
-                .hardcoded,
-      );
-    }
+    //TODO check what do here. Probably is better only make a download
+    // final response = await OpenFile.open(filePath);
+    // if (response.type == ResultType.error) {
+    //   showAlertDialog(
+    //     context: context,
+    //     title: 'Erro!'.hardcoded,
+    //     content:
+    //         'Não foi possível abrir o arquivo. Confirme se você possui um aplicativo padrão instalado para abrir esse tipo de arquivos de planilha'
+    //             .hardcoded,
+    //   );
+    // }
   }
 
   void _onTap(
