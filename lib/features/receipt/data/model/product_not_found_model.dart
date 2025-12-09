@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entity/entity.dart';
 
 class ProductNotFoundModel extends Equatable {
-  final int internalCode;
+  final int? internalCode;
   final double quantity;
   final String ean;
-  final String observations;
+  final String? observations;
 
   const ProductNotFoundModel({
     required this.internalCode,

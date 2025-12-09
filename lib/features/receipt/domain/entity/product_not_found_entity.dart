@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 class ProductNotFoundEntity extends Equatable {
-  final int internalCode;
+  final int? internalCode;
   final double quantity;
   final String ean;
-  final String observations;
+  final String? observations;
 
   const ProductNotFoundEntity({
     required this.internalCode,
@@ -15,4 +15,14 @@ class ProductNotFoundEntity extends Equatable {
 
   @override
   List<Object?> get props => [internalCode, quantity, ean, observations];
+
+  ProductNotFoundEntity annulValues({
+    bool? annulInternalCode,
+    bool? annulObservations,
+  }) => ProductNotFoundEntity(
+    internalCode: annulInternalCode == true ? null : internalCode,
+    observations: annulObservations == true ? null : observations,
+    quantity: quantity,
+    ean: ean,
+  );
 }

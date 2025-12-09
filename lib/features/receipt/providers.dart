@@ -61,3 +61,10 @@ ISoapLoadProductsNotFoundRepository soapLoadProductsNotFoundRepository(
     ref.watch(soapLoadProductsNotFoundDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInsertProductNotFoundDatasource soapInsertProductNotFoundDatasource(
+  Ref ref,
+) {
+  return SoapInsertProductNotFoundDatasource(ref.watch(soapRequestProvider));
+}
