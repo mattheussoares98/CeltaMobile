@@ -1,13 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../routing/routing.dart';
 
 class TopButtons extends StatelessWidget {
+  final int enterpriseCode;
+  final int receiptCode;
   final void Function(SearchType searchType) searchProduct;
-  const TopButtons({super.key, required this.searchProduct});
+  const TopButtons({
+    super.key,
+    required this.searchProduct,
+    required this.enterpriseCode,
+    required this.receiptCode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +56,13 @@ class TopButtons extends StatelessWidget {
             icon: Icon(isIOS ? CupertinoIcons.add : Icons.add),
             iconAlignment: IconAlignment.start,
             onPressed: () {
-              //TODO navigate to not found products
+              context.goNamed(
+                Routes.receiptProductsNotFound.name,
+                pathParameters: {
+                  'enterpriseCode': enterpriseCode.toString(),
+                  'receiptCode': receiptCode.toString(),
+                },
+              );
             },
           ),
         ),

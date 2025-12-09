@@ -25,6 +25,7 @@ enum Routes {
   reports('Relatórios'),
   receipts('Recebimento'),
   receiptProducts('Produtos (recebimento)'),
+  receiptProductsNotFound('Produtos não encontrados'),
   saleRequest('Pedido de vendas'),
   saleRequestRequestsTypes('Pedido de vendas'),
   searchProducts('Pesquisar produtos'),

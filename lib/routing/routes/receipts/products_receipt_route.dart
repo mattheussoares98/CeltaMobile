@@ -4,9 +4,10 @@ import '../../../features/receipt/domain/entity/entity.dart';
 import '../../../features/receipt/presentation/pages/products/products_page.dart';
 import '../../routing.dart';
 
-RouteBase productsReceiptRoute() => GoRoute(
+RouteBase productsReceiptRoute(List<RouteBase> routes) => GoRoute(
   path: ':receiptCode/products',
   name: Routes.receiptProducts.name,
+  routes: routes,
   builder: (context, state) {
     final receiptCode = int.parse(state.pathParameters['receiptCode']!);
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);

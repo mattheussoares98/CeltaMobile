@@ -90,6 +90,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               TopButtons(
                 searchProduct: (searchType) =>
                     searchProduct(searchProductKey, searchType: searchType),
+                enterpriseCode: widget.enterpriseCode,
+                receiptCode: widget.receiptCode,
               ),
               Expanded(
                 child: Padding(
