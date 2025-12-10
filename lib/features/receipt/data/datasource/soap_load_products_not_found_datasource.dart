@@ -22,8 +22,14 @@ class SoapLoadProductsNotFoundDatasource
       parameters: {"crossIdentity": crossIdentity, "grDocCode": receiptCode},
     );
 
-    return (response["ProdutosSemCadastro"] as List)
-        .map((e) => ProductNotFoundModel.fromJson(e))
-        .toList();
+    if (response["ProdutosSemCadastro"] is List) {
+      return (response["ProdutosSemCadastro"] as List)
+          .map((e) => ProductNotFoundModel.fromJson(e))
+          .toList();
+    }
+
+    return [
+      ProductNotFoundModel.fromJson(response["ProdutosSemCadastro"] as Map),
+    ];
   }
 }

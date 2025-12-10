@@ -15,6 +15,7 @@ void main() {
   late String crossIdentity;
   late int receiptCode;
   late List<ProductNotFoundModel> productsNotFoundModels;
+  late bool returnSingleProduct;
 
   void initSut() {
     sut = SoapLoadProductsNotFoundDatasource(soapRequest);
@@ -26,9 +27,9 @@ void main() {
 
   void mockSuccess() {
     soapRequest.mockPost({
-      "ProdutosSemCadastro": productsNotFoundModels
-          .map((e) => e.toJson())
-          .toList(),
+      "ProdutosSemCadastro": returnSingleProduct
+          ? productsNotFoundModels.first.toJson()
+          : productsNotFoundModels.map((e) => e.toJson()).toList(),
     });
   }
 
@@ -42,6 +43,7 @@ void main() {
       EntityFactory.makeProductNotFoundEntity(),
       EntityFactory.makeProductNotFoundEntity(),
     ].map((e) => ProductNotFoundModel.fromEntity(e)).toList();
+    returnSingleProduct = faker.randomGenerator.boolean();
   }
 
   setUp(() {
@@ -58,7 +60,12 @@ void main() {
       receiptCode: receiptCode,
     );
 
-    expect(response, productsNotFoundModels);
+    expect(
+      response,
+      returnSingleProduct
+          ? [productsNotFoundModels.first]
+          : productsNotFoundModels,
+    );
 
     verify(
       () => soapRequest.post(
