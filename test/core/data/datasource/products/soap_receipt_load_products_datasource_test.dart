@@ -82,4 +82,29 @@ void main() {
       ),
     ).called(1);
   });
+  test('should work correctly when return a single product as Map', () async {
+    soapAdapter.mockPost({
+      'Produtos': ReceiptProductModel.fromEntity(
+        productsEntities.first,
+      ).toJson(),
+    });
+
+    final products = await sut.get(
+      baseUrl: baseUrl,
+      parametersPayload: parametersPayload,
+    );
+
+    expect(products, [ReceiptProductModel.fromEntity(productsEntities.first)]);
+
+    verify(
+      () => soapAdapter.post(
+        url: baseUrl,
+        typeOfResponse: "GetProductResponse",
+        soapAction: "GetProduct",
+        serviceASMX: "CeltaGoodsReceivingService.asmx",
+        typeOfResult: "GetProductResult",
+        parameters: parametersPayload,
+      ),
+    ).called(1);
+  });
 }

@@ -21,8 +21,12 @@ class SoapReceiptLoadProductsDatasource
       parameters: parametersPayload,
     );
 
-    return (response["Produtos"] as List)
-        .map((e) => ReceiptProductModel.fromJson(e))
-        .toList();
+    if (response['Produtos'] is List) {
+      return (response["Produtos"] as List)
+          .map((e) => ReceiptProductModel.fromJson(e))
+          .toList();
+    }
+
+    return [ReceiptProductModel.fromJson(response["Produtos"] as Map)];
   }
 }
