@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
@@ -8,6 +9,7 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../utils/utils.dart';
 import '../../../domain/entity/entity.dart';
+import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
@@ -122,13 +124,34 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                             return ProductItemWidget(
                               product: product,
                               routine: BsRoutine.goodsReceiving,
+                              showDropIcon: true,
+                              isSelected:
+                                  ref.watch(
+                                    selectedProductIndeStateControllerProvider,
+                                  ) ==
+                                  index,
+                              onTap: () {
+                                ref
+                                    .read(
+                                      selectedProductIndeStateControllerProvider
+                                          .notifier,
+                                    )
+                                    .updateIndex(index);
+                              },
                               clickableBottom: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Validity(
-                                    product: product,
-                                    searchProductKey: searchProductKey,
-                                    receiptCode: widget.receiptCode,
+                                  TitleAndSubTitle(
+                                    title: 'Validade'.hardcoded,
+                                    subTitle:
+                                        product.DataValidade_ProcRecebDocProEmb ==
+                                            null
+                                        ? null
+                                        : DateFormat('dd/MM/yyyy').format(
+                                            product
+                                                .DataValidade_ProcRecebDocProEmb!,
+                                          ),
+                                    emptyMessage: 'Sem validade'.hardcoded,
                                   ),
                                   TitleAndSubTitle(
                                     title: 'Quantidade contada'.hardcoded,
