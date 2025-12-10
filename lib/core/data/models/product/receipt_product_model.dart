@@ -58,7 +58,7 @@ class ReceiptProductModel extends Equatable implements ProductModelType {
         : double.parse(json["Quantidade_ProcRecebDocProEmb"]),
     ReferenciaXml_ProcRecebDocProEmb: json["ReferenciaXml_ProcRecebDocProEmb"],
     AllEans: (json["AllEans"] as String?)
-        ?.split('\r')
+        ?.split('\\r')
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
         .toList(), //TODO search product with PLU 55 to test
