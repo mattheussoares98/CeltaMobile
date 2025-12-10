@@ -11,7 +11,12 @@ void main() {
   late SoapRequestSpy soapRequest;
 
   late String baseUrl;
-  late Map<String, dynamic> parametersPayload;
+  late String crossIdentity;
+  late int grDocCode;
+  late int productCode;
+  late int productPackingCode;
+  late double newQuantity;
+  late DateTime? newValidityDate;
 
   void initSut() {
     sut = SoapUpdateProductDatasource(soapRequest);
@@ -25,11 +30,14 @@ void main() {
 
   void initEntities() {
     baseUrl = faker.internet.httpUrl();
-    parametersPayload = {
-      faker.lorem.word(): faker.guid.guid(),
-      faker.lorem.word(): faker.randomGenerator.integer(100),
-      faker.lorem.word(): faker.lorem.sentence(),
-    };
+    crossIdentity = faker.guid.guid();
+    grDocCode = faker.randomGenerator.integer(100);
+    productCode = faker.randomGenerator.integer(100);
+    productPackingCode = faker.randomGenerator.integer(100);
+    newQuantity = faker.randomGenerator.decimal();
+    newValidityDate = faker.randomGenerator.boolean()
+        ? faker.date.dateTime()
+        : null;
   }
 
   setUp(() {
@@ -40,7 +48,15 @@ void main() {
   });
 
   test('should call soap adapter with correct values', () async {
-    await sut.update(baseUrl: baseUrl, parametersPayload: parametersPayload);
+    await sut.update(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      grDocCode: grDocCode,
+      productCode: productCode,
+      productPackingCode: productPackingCode,
+      newQuantity: newQuantity,
+      newValidityDate: newValidityDate,
+    );
 
     verify(
       () => soapRequest.post(
@@ -49,7 +65,14 @@ void main() {
         soapAction: "EntryQuantity",
         serviceASMX: "CeltaGoodsReceivingService.asmx",
         typeOfResult: null,
-        parameters: parametersPayload,
+        parameters: {
+          "crossIdentity": crossIdentity,
+          "grDocCode": grDocCode,
+          "productgCode": productCode,
+          "productPackingCode": productPackingCode,
+          "quantity": newQuantity,
+          "validityDate": newValidityDate?.toIso8601String(),
+        },
       ),
     ).called(1);
   });

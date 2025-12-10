@@ -8,7 +8,12 @@ class SoapUpdateProductDatasource implements ISoapUpdateProductDatasource {
   @override
   Future<void> update({
     required String baseUrl,
-    required Map<String, dynamic> parametersPayload,
+    required String crossIdentity,
+    required int grDocCode,
+    required int productCode,
+    required int productPackingCode,
+    required double newQuantity,
+    required DateTime? newValidityDate,
   }) async {
     await soapRequest.post(
       url: baseUrl,
@@ -16,7 +21,14 @@ class SoapUpdateProductDatasource implements ISoapUpdateProductDatasource {
       soapAction: "EntryQuantity",
       serviceASMX: "CeltaGoodsReceivingService.asmx",
       typeOfResult: null,
-      parameters: parametersPayload,
+      parameters: {
+        "crossIdentity": crossIdentity,
+        "grDocCode": grDocCode,
+        "productgCode": productCode,
+        "productPackingCode": productPackingCode,
+        "quantity": newQuantity,
+        "validityDate": newValidityDate?.toIso8601String(),
+      },
     );
   }
 }

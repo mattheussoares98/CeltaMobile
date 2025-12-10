@@ -35,13 +35,6 @@ ISoapUpdateProductDatasource soapUpdateProductDatasource(Ref ref) {
 }
 
 @riverpod
-ISoapUpdateProductRepository soapUpdateProductRepository(Ref ref) {
-  return SoapUpdateProductRepositoryImpl(
-    ref.watch(soapUpdateProductDatasourceProvider),
-  );
-}
-
-@riverpod
 ISoapAnnulQuantityDatasource soapAnnulQuantityDatasource(Ref ref) {
   return SoapAnnulQuantityDatasource(ref.watch(soapRequestProvider));
 }

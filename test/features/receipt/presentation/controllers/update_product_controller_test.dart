@@ -2,7 +2,7 @@ import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_intelligence/features/receipt/domain/repository/repository.dart';
+import 'package:celta_intelligence/features/receipt/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/receipt/providers.dart';
 import 'package:faker/faker.dart';
@@ -12,9 +12,9 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class MockSoapUpdateProductRepository extends Mock
-    implements ISoapUpdateProductRepository {
-  MockSoapUpdateProductRepository() {
+class MockSoapUpdateProductDatasource extends Mock
+    implements ISoapUpdateProductDatasource {
+  MockSoapUpdateProductDatasource() {
     when(
       () => this.update(
         baseUrl: any(named: 'baseUrl'),
@@ -30,7 +30,7 @@ class MockSoapUpdateProductRepository extends Mock
 }
 
 void main() {
-  late MockSoapUpdateProductRepository mockRepository;
+  late MockSoapUpdateProductDatasource mockDatasource;
   late UserSessionModel fakeSession;
 
   // Test data variables
@@ -52,7 +52,7 @@ void main() {
   });
 
   setUp(() {
-    mockRepository = MockSoapUpdateProductRepository();
+    mockDatasource = MockSoapUpdateProductDatasource();
 
     // Initialize required data
     fakeGrDocCode = faker.randomGenerator.integer(100);
@@ -83,7 +83,7 @@ void main() {
 
     // Stub the repository update method to succeed for all tests
     when(
-      () => mockRepository.update(
+      () => mockDatasource.update(
         baseUrl: any(named: 'baseUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         grDocCode: any(named: 'grDocCode'),
@@ -101,7 +101,7 @@ void main() {
   }) {
     return ProviderContainer(
       overrides: [
-        soapUpdateProductRepositoryProvider.overrideWithValue(mockRepository),
+        soapUpdateProductDatasourceProvider.overrideWithValue(mockDatasource),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
@@ -143,7 +143,7 @@ void main() {
         // ASSERT
         // 1. Verify remote API call (uses calculated new quantity)
         verify(
-          () => mockRepository.update(
+          () => mockDatasource.update(
             productCode: fakeProductCode,
             productPackingCode: fakeProductPackingCode,
             newQuantity: expectedNewQuantity, // Critical check
