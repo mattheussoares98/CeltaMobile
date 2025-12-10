@@ -29,6 +29,14 @@ class ProductsPage extends ConsumerStatefulWidget {
 
 class _ProductsPageState extends ConsumerState<ProductsPage> {
   final searchValueController = TextEditingController();
+  final quantityController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchValueController.dispose();
+    quantityController.dispose();
+  }
 
   void searchProduct(
     SearchProductKey searchProductKey, {
@@ -43,12 +51,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           ),
           specifiedSearchType: searchType,
         );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    searchValueController.dispose();
   }
 
   @override
@@ -70,6 +72,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     );
 
     ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
+      //TODO move this listener to the defaultSearchProducts
       n.doOnSuccess(p, () {
         searchValueController.clear();
       });
@@ -78,102 +81,118 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     final asyncValue = ref.watch(
       searchProductsStateControllerProvider(searchProductKey),
     );
+    final selectedIndex = ref.watch(selectedProductIndeStateControllerProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(
-          child: Text(buffer?.toString() ?? 'Produtos'.hardcoded),
-        ),
-      ),
-      body: Column(
-        children: [
-          TopButtons(
-            searchProduct: (searchType) =>
-                searchProduct(searchProductKey, searchType: searchType),
-            enterpriseCode: widget.enterpriseCode,
-            receiptCode: widget.receiptCode,
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sizes.p8,
-                0,
-                Sizes.p8,
-                Sizes.p8,
-              ),
-              child: Column(
-                children: [
-                  DefaultSearchProducts(
-                    isLoading: asyncValue.isLoading,
-                    searchProducts: () {
-                      searchProduct(searchProductKey);
-                    },
-                    searchValueController: searchValueController,
-                  ),
-                  gapH8,
-                  Expanded(
-                    child: AsyncValueWidget(
-                      value: asyncValue,
-                      tryAgain: null,
-                      data: (products) {
-                        return ResponsiveListFlow(
-                          itemCount: products.length,
-                          itemBuilder: (_, index) {
-                            final product = products[index];
-
-                            return ProductItemWidget(
-                              product: product,
-                              routine: BsRoutine.goodsReceiving,
-                              showDropIcon: true,
-                              isSelected:
-                                  ref.watch(
-                                    selectedProductIndeStateControllerProvider,
-                                  ) ==
-                                  index,
-                              onTap: () {
-                                ref
-                                    .read(
-                                      selectedProductIndeStateControllerProvider
-                                          .notifier,
-                                    )
-                                    .updateIndex(index);
-                              },
-                              clickableBottom: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TitleAndSubTitle(
-                                    title: 'Validade'.hardcoded,
-                                    subTitle:
-                                        product.DataValidade_ProcRecebDocProEmb ==
-                                            null
-                                        ? null
-                                        : DateFormat('dd/MM/yyyy').format(
-                                            product
-                                                .DataValidade_ProcRecebDocProEmb!,
-                                          ),
-                                    emptyMessage: 'Sem validade'.hardcoded,
-                                  ),
-                                  TitleAndSubTitle(
-                                    title: 'Quantidade contada'.hardcoded,
-                                    subTitle:
-                                        product.Quantidade_ProcRecebDocProEmb,
-                                    emptyMessage:
-                                        'Sem quantidade contada'.hardcoded,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: FittedBox(
+              child: Text(buffer?.toString() ?? 'Produtos'.hardcoded),
             ),
           ),
-        ],
-      ),
+          body: Column(
+            children: [
+              TopButtons(
+                searchProduct: (searchType) =>
+                    searchProduct(searchProductKey, searchType: searchType),
+                enterpriseCode: widget.enterpriseCode,
+                receiptCode: widget.receiptCode,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    Sizes.p8,
+                    0,
+                    Sizes.p8,
+                    Sizes.p8,
+                  ),
+                  child: Column(
+                    children: [
+                      DefaultSearchProducts(
+                        isLoading: asyncValue.isLoading,
+                        searchProducts: () {
+                          searchProduct(searchProductKey);
+                        },
+                        searchValueController: searchValueController,
+                      ),
+                      gapH8,
+                      Expanded(
+                        child: AsyncValueWidget(
+                          value: asyncValue,
+                          tryAgain: null,
+                          data: (products) {
+                            return ResponsiveListFlow(
+                              itemCount: products.length,
+                              itemBuilder: (_, index) {
+                                final product = products[index];
+
+                                return ProductItemWidget(
+                                  product: product,
+                                  routine: BsRoutine.goodsReceiving,
+                                  showDropIcon: true,
+                                  isSelected: selectedIndex == index,
+                                  onTap: () {
+                                    quantityController.clear();
+
+                                    ref
+                                        .read(
+                                          selectedProductIndeStateControllerProvider
+                                              .notifier,
+                                        )
+                                        .updateIndex(index);
+                                  },
+                                  notClickableBottom: selectedIndex == index
+                                      ? UpdateValuesWidgets(
+                                          product: product,
+                                          quantityController:
+                                              quantityController,
+                                          receiptCode: widget.receiptCode,
+                                          searchProductKey: searchProductKey,
+                                        )
+                                      : null,
+                                  clickableBottom: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TitleAndSubTitle(
+                                        title: 'Validade'.hardcoded,
+                                        subTitle:
+                                            product.DataValidade_ProcRecebDocProEmb ==
+                                                null
+                                            ? null
+                                            : DateFormat('dd/MM/yyyy').format(
+                                                product
+                                                    .DataValidade_ProcRecebDocProEmb!,
+                                              ),
+                                        emptyMessage: 'Sem validade'.hardcoded,
+                                      ),
+                                      TitleAndSubTitle(
+                                        title: 'Quantidade contada'.hardcoded,
+                                        subTitle: product
+                                            .Quantidade_ProcRecebDocProEmb,
+                                        emptyMessage:
+                                            'Sem quantidade contada'.hardcoded,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        LoadingPage(
+          providers: [updateProductControllerProvider(searchProductKey)],
+        ),
+      ],
     );
   }
 }
