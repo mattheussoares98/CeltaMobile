@@ -6,7 +6,7 @@ import '../../../../../../constants/constants.dart';
 import '../../../../../../core/validators/validators.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entity/entity.dart';
-import '../../controllers/controllers.dart';
+import '../../../controllers/controllers.dart';
 import 'components.dart';
 
 class ReceiptItem extends ConsumerStatefulWidget {

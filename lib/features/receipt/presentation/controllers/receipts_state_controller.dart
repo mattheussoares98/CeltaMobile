@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../domain/entity/entity.dart';
-import '../../../providers.dart';
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../domain/entity/entity.dart';
+import '../../providers.dart';
 
 part 'receipts_state_controller.g.dart';
 

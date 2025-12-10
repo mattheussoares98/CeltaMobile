@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../data/model/model.dart';
-import '../../../domain/entity/entity.dart';
-import '../../../providers.dart';
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../data/model/model.dart';
+import '../../domain/entity/entity.dart';
+import '../../providers.dart';
 
 part 'products_not_found_state_controller.g.dart';
 

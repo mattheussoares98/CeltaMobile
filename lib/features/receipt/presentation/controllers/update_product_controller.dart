@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../providers.dart';
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/products/products.dart';
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../providers.dart';
 
 part 'update_product_controller.g.dart';
 

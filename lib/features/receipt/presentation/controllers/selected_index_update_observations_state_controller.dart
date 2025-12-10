@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../providers.dart';
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../providers.dart';
 import 'controllers.dart';
 
 part 'selected_index_update_observations_state_controller.g.dart';

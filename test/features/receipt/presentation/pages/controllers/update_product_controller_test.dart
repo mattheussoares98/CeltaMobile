@@ -3,7 +3,7 @@ import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/products/products.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/receipt/domain/repository/repository.dart';
-import 'package:celta_intelligence/features/receipt/presentation/pages/controllers/controllers.dart';
+import 'package:celta_intelligence/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/receipt/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

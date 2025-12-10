@@ -4,7 +4,7 @@ import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/receipt/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/receipt/domain/entity/entity.dart';
 import 'package:celta_intelligence/features/receipt/domain/repository/repository.dart';
-import 'package:celta_intelligence/features/receipt/presentation/pages/controllers/controllers.dart';
+import 'package:celta_intelligence/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/receipt/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

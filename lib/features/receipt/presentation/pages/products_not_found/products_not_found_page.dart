@@ -7,7 +7,7 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/validators/validators.dart';
 import '../../../../../utils/utils.dart';
-import '../controllers/controllers.dart';
+import '../../controllers/controllers.dart';
 
 class ProductsNotFoundPage extends ConsumerStatefulWidget {
   final int receiptCode;

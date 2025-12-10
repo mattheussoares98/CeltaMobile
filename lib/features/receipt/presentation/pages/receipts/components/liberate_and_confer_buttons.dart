@@ -8,7 +8,7 @@ import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../routing/routing.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../domain/entity/entity.dart';
-import '../../controllers/controllers.dart';
+import '../../../controllers/controllers.dart';
 
 class LiberateAndConferButtons extends ConsumerWidget {
   final ReceiptEntity receipt;

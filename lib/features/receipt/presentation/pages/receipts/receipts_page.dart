@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../controllers/controllers.dart';
+import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class ReceiptsPage extends ConsumerStatefulWidget {

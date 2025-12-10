@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entity/entity.dart';
-import '../../controllers/controllers.dart';
+import '../../../controllers/controllers.dart';
 
 class ToggleUpdateObservationButton extends ConsumerWidget {
   final ReceiptEntity receipt;
