@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/validators/validators.dart';
 import '../../../../../utils/utils.dart';
 import '../../controllers/controllers.dart';
+import '../pages.dart';
 
 class ProductsNotFoundPage extends ConsumerStatefulWidget {
   final int receiptCode;
@@ -36,21 +36,20 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
     observationsFocusNode.dispose();
   }
 
-  void onSave() {
+  Future<void> onSave() async {
     if (formKey.currentState?.validate() != true) {
       return;
     }
 
-    // ref
-    //     .read(
-    //       productsNotFoundStateControllerProvider(widget.receiptCode).notifier,
-    //     )
-    //     .insert(
-    //       internalCode: widget.receiptCode,
-    //       quantity: quantityController.text.toDouble()!,
-    //       ean: eanController.text,
-    //       observations: observationsController.text,
-    //     );
+    await ref
+        .read(
+          insertProductNotFoundControllerProvider(widget.receiptCode).notifier,
+        )
+        .insert(
+          quantity: quantityController.text.toDouble()!,
+          ean: eanController.text,
+          observations: observationsController.text,
+        );
   }
 
   @override
@@ -58,72 +57,20 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    ref.listen(productsNotFoundStateControllerProvider(widget.receiptCode), (
-      p,
-      n,
-    ) {
-      //TODO create another provider because in the previous page is treting the same error
-      // n.doOnSuccess(p, () {
-      //   context.pop();
-      // });
-      n.showAlertDialogOnError(context);
-    });
     return Scaffold(
       appBar: AppBar(title: Text('Produtos não encontrados'.hardcoded)),
       floatingActionButton: FloatingActionButton(
         child: Icon(isIOS ? CupertinoIcons.add : Icons.add),
         onPressed: () {
           showModalPage(
-            Form(
-              key: formKey,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  child: Column(
-                    children: [
-                      DefaultTextFormField(
-                        controller: eanController,
-                        onFieldSubmitted: (_) =>
-                            quantityFocusNode.requestFocus(),
-                        validator: FormValidators.compose([
-                          NumberValidator(allowDecimal: false),
-                          MinLengthValidator(8),
-                        ]),
-                        labelText: 'EAN'.hardcoded,
-                        hintText: 'EAN'.hardcoded,
-                      ),
-                      DefaultTextFormField(
-                        controller: quantityController,
-                        focusNode: quantityFocusNode,
-                        onFieldSubmitted: (_) =>
-                            observationsFocusNode.requestFocus(),
-                        validator: FormValidators.compose([
-                          NumberValidator(allowDecimal: true),
-                        ]),
-                        labelText: 'Quantidade'.hardcoded,
-                        hintText: 'Quantidade'.hardcoded,
-                      ),
-                      DefaultTextFormField(
-                        controller: observationsController,
-                        focusNode: observationsFocusNode,
-                        onFieldSubmitted: (_) => onSave(),
-                        labelText: 'Observações'.hardcoded,
-                        hintText: 'Observações'.hardcoded,
-                      ),
-                      gapH32,
-                      PrimaryButton(
-                        text: 'Salvar',
-                        onPressed: onSave,
-                        isLoading: ref.watch(
-                          productsNotFoundStateControllerProvider(
-                            widget.receiptCode,
-                          ).select((s) => s.isLoading),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            InsertNewProductPage(
+              receiptCode: widget.receiptCode,
+              formKey: formKey,
+              quantityFocusNode: quantityFocusNode,
+              observationsFocusNode: observationsFocusNode,
+              eanController: eanController,
+              quantityController: quantityController,
+              observationsController: observationsController,
             ),
             context,
           );
