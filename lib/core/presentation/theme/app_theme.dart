@@ -19,6 +19,10 @@ class AppTheme {
       primaryColorLight: primaryColorLight,
       primaryColorDark: primaryColorDark,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+      ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: true,
