@@ -2,10 +2,12 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../utils/utils.dart';
+import '../../../domain/entity/entity.dart';
 import '../../controllers/controllers.dart';
 import '../pages.dart';
 
@@ -36,12 +38,12 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
     observationsFocusNode.dispose();
   }
 
-  Future<void> onSave() async {
+  Future<void> onSubmit(int? internalCode) async {
     if (formKey.currentState?.validate() != true) {
       return;
     }
 
-    await ref
+    final succeds = await ref
         .read(
           insertProductNotFoundControllerProvider(widget.receiptCode).notifier,
         )
@@ -49,7 +51,39 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
           quantity: quantityController.text.toDouble()!,
           ean: eanController.text,
           observations: observationsController.text,
+          internalCode: internalCode,
         );
+
+    if (succeds) {
+      context.pop();
+    }
+  }
+
+  void openInsertUpdateProductPage(ProductNotFoundEntity? product) {
+    if (product != null) {
+      eanController.text = product.ean;
+      quantityController.text = product.quantity.toString().toBrazilianNumber();
+      observationsController.text = product.observations == 'null'
+          ? ""
+          : product.observations ?? "";
+    } else {
+      eanController.clear();
+      quantityController.clear();
+      observationsController.clear();
+    }
+    showModalPage(
+      InsertUpdateProductPage(
+        receiptCode: widget.receiptCode,
+        formKey: formKey,
+        quantityFocusNode: quantityFocusNode,
+        observationsFocusNode: observationsFocusNode,
+        eanController: eanController,
+        quantityController: quantityController,
+        observationsController: observationsController,
+        onSubmit: () => onSubmit(product?.internalCode),
+      ),
+      context,
+    );
   }
 
   @override
@@ -58,23 +92,12 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Produtos não encontrados'.hardcoded)),
+      appBar: AppBar(
+        title: FittedBox(child: Text('Produtos não encontrados'.hardcoded)),
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(isIOS ? CupertinoIcons.add : Icons.add),
-        onPressed: () {
-          showModalPage(
-            InsertNewProductPage(
-              receiptCode: widget.receiptCode,
-              formKey: formKey,
-              quantityFocusNode: quantityFocusNode,
-              observationsFocusNode: observationsFocusNode,
-              eanController: eanController,
-              quantityController: quantityController,
-              observationsController: observationsController,
-            ),
-            context,
-          );
-        },
+        onPressed: () => openInsertUpdateProductPage(null),
       ),
       body: AsyncValueWidget(
         value: ref.watch(
@@ -98,7 +121,38 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
                 return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),
-                    child: Column(children: [Text(product.ean)]),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TitleAndSubTitle(
+                          title: 'EAN'.hardcoded,
+                          subTitle: product.ean,
+                        ),
+                        TitleAndSubTitle(
+                          title: 'Quantidade'.hardcoded,
+                          subTitle: product.quantity
+                              .toString()
+                              .toBrazilianNumber(),
+                        ),
+                        if (product.observations != null &&
+                            product.observations!.isNotEmpty &&
+                            product.observations.toString() != 'null')
+                          TitleAndSubTitle(
+                            title: 'Observações'.hardcoded,
+                            subTitle: product.observations,
+                          ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: IconButton(
+                            onPressed: () =>
+                                openInsertUpdateProductPage(product),
+                            icon: Icon(
+                              isIOS ? CupertinoIcons.pencil : Icons.edit,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

@@ -17,6 +17,7 @@ class InsertProductNotFoundController
     required double quantity,
     required String ean,
     required String observations,
+    required int? internalCode,
   }) async {
     bool succeeds = false;
     state = const AsyncValue.loading();
@@ -31,7 +32,7 @@ class InsertProductNotFoundController
             baseUrl: validatedUser!.enterprise!.baseUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             productNotFound: ProductNotFoundModel(
-              internalCode: null,
+              internalCode: internalCode,
               quantity: quantity,
               ean: ean,
               observations: observations,

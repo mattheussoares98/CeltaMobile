@@ -52,6 +52,7 @@ void main() {
   late double fakeQuantity;
   late String fakeEan;
   late String fakeObservations;
+  late int? fakeInternalCode;
 
   setUpAll(() {
     registerFallbackValue(1);
@@ -75,6 +76,9 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    fakeInternalCode = faker.randomGenerator.boolean()
+        ? faker.randomGenerator.integer(100)
+        : null;
   });
 
   // Helper function to create a ProviderContainer
@@ -136,6 +140,7 @@ void main() {
               quantity: fakeQuantity,
               ean: fakeEan,
               observations: fakeObservations,
+              internalCode: fakeInternalCode,
             );
 
         expect(succeeds, isTrue);
@@ -148,7 +153,7 @@ void main() {
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             productNotFound: ProductNotFoundModel(
-              internalCode: null,
+              internalCode: fakeInternalCode,
               quantity: fakeQuantity,
               ean: fakeEan,
               observations: fakeObservations,
@@ -185,6 +190,7 @@ void main() {
               quantity: fakeQuantity,
               ean: fakeEan,
               observations: fakeObservations,
+              internalCode: fakeInternalCode,
             );
 
         expect(succeeds, isFalse);
@@ -237,6 +243,7 @@ void main() {
             quantity: fakeQuantity,
             ean: fakeEan,
             observations: fakeObservations,
+            internalCode: fakeInternalCode,
           );
       expect(succeeds, isFalse);
 
