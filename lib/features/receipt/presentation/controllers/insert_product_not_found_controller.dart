@@ -13,11 +13,12 @@ class InsertProductNotFoundController
   @override
   FutureOr<void> build(int receiptCode) async {}
 
-  Future<void> insert({
+  Future<bool> insert({
     required double quantity,
     required String ean,
     required String observations,
   }) async {
+    bool succeeds = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
@@ -38,6 +39,8 @@ class InsertProductNotFoundController
             receiptCode: receiptCode,
           );
       ref.invalidate(productsNotFoundStateControllerProvider(receiptCode));
+      succeeds = true;
     });
+    return succeeds;
   }
 }

@@ -99,7 +99,7 @@ void main() {
 
   group('InsertProductNotFoundController', () {
     test(
-      'insert should call datasource with internalCode=null and invalidate list controller on success',
+      'insert should call datasource with internalCode=null, invalidate list controller on success and return true',
       () async {
         // ARRANGE
         final container = makeProviderContainer(session: fakeSession);
@@ -128,7 +128,7 @@ void main() {
 
         // ACT
         // Reading the future forces the action to execute its async logic
-        await container
+        final succeeds = await container
             .read(
               insertProductNotFoundControllerProvider(fakeReceiptCode).notifier,
             )
@@ -137,6 +137,8 @@ void main() {
               ean: fakeEan,
               observations: fakeObservations,
             );
+
+        expect(succeeds, isTrue);
 
         // ASSERT
         // 1. Verify remote datasource call with correct data mapping
@@ -166,7 +168,7 @@ void main() {
     );
 
     test(
-      'insert should throw AppException and not call datasource when session is invalid',
+      'insert should throw AppException, not call datasource when session is invalid and return false',
       () async {
         // ARRANGE
         final container = makeProviderContainer(
@@ -175,7 +177,7 @@ void main() {
         addTearDown(container.dispose);
 
         // ACT & ASSERT
-        await container
+        final succeeds = await container
             .read(
               insertProductNotFoundControllerProvider(fakeReceiptCode).notifier,
             )
@@ -184,6 +186,8 @@ void main() {
               ean: fakeEan,
               observations: fakeObservations,
             );
+
+        expect(succeeds, isFalse);
 
         expect(
           container.read(
@@ -204,7 +208,7 @@ void main() {
       },
     );
 
-    test('insert should throw if datasource fails', () async {
+    test('insert should throw if datasource fails and return false', () async {
       // ARRANGE
       final exception = Exception('Network Error');
       when(
@@ -225,7 +229,7 @@ void main() {
       );
 
       // ACT & ASSERT
-      await container
+      final succeeds = await container
           .read(
             insertProductNotFoundControllerProvider(fakeReceiptCode).notifier,
           )
@@ -234,6 +238,7 @@ void main() {
             ean: fakeEan,
             observations: fakeObservations,
           );
+      expect(succeeds, isFalse);
 
       expect(
         container.read(
