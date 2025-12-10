@@ -5,12 +5,14 @@ import '../../core/domain/entities/entities.dart';
 import '../commom_widgets.dart';
 
 class InfoButton extends StatelessWidget {
-  const InfoButton({super.key, required this.product, required this.routine});
-  final ProductEntity product;
-  final BsRoutine routine;
+  final ProductItemWidget widget;
+  const InfoButton(this.widget, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    if (widget.routine == BsRoutine.goodsReceiving) {
+      return const SizedBox.shrink();
+    }
     final theme = Theme.of(context);
 
     return PrimaryTextButton(
@@ -18,11 +20,10 @@ class InfoButton extends StatelessWidget {
       icon: Icon(
         theme.platform == TargetPlatform.iOS ? Icons.info : Icons.info,
         color: theme.primaryColor,
-        // size: 16,
       ),
       onPressed: () {
         showModalPage(
-          ProductInfoModal(product: product, routine: routine),
+          ProductInfoModal(product: widget.product, routine: widget.routine),
           context,
         );
       },

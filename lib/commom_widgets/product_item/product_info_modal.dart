@@ -31,14 +31,16 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
 
   @override
   Widget build(BuildContext context) {
+    final showMargins = widget.routine == BsRoutine.adjustSalePrice;
+
     final pages = [
       //TODO check in all modules, if load the data from each page. Because if is necessary, needs to hide depending on the module
       Prices(widget: widget),
-      Stocks(widget: widget),
+      if (widget.routine != BsRoutine.adjustSalePrice) Stocks(widget: widget),
       Addresses(widget: widget),
       Shopping(widget: widget),
       Costs(widget: widget),
-      if (widget.routine == BsRoutine.adjustSalePrice) Margins(widget: widget),
+      if (showMargins) Margins(widget: widget),
     ];
 
     final theme = Theme.of(context);
@@ -76,12 +78,13 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
             ),
             label: 'Preços'.hardcoded,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              isIOS ? CupertinoIcons.archivebox : Icons.inventory_2_outlined,
+          if (widget.routine != BsRoutine.adjustSalePrice)
+            BottomNavigationBarItem(
+              icon: Icon(
+                isIOS ? CupertinoIcons.archivebox : Icons.inventory_2_outlined,
+              ),
+              label: 'Estoques'.hardcoded,
             ),
-            label: 'Estoques'.hardcoded,
-          ),
           BottomNavigationBarItem(
             icon: Icon(isIOS ? CupertinoIcons.location : Icons.location_pin),
             label: 'Endereços'.hardcoded,
@@ -98,7 +101,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
             icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
             label: 'Custos'.hardcoded,
           ),
-          if (widget.routine == BsRoutine.adjustSalePrice)
+          if (showMargins)
             BottomNavigationBarItem(
               icon: Icon(
                 isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart_rounded,

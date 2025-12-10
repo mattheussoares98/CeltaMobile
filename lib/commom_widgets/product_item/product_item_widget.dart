@@ -8,6 +8,7 @@ import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
 import '../../features/adjust_sale_price/presentation/controllers/controllers.dart';
 import '../commom_widgets.dart';
+import 'properties/properties.dart';
 
 class ProductItemWidget extends ConsumerWidget {
   final ProductEntity product;
@@ -34,24 +35,6 @@ class ProductItemWidget extends ConsumerWidget {
     this.cartItemSummary,
   });
 
-  double _getStockQuantityByName(List<StockEntity>? stocks, String name) {
-    if (stocks == null || stocks.isEmpty) {
-      return 0;
-    }
-
-    final currentStockIndex = stocks.indexWhere(
-      (e) =>
-          e.EnterpriseCode == product.EnterpriseCode &&
-          e.StockName.toLowerCase().contains(name.toLowerCase()),
-    );
-
-    if (currentStockIndex == -1) {
-      return 0;
-    } else {
-      return stocks[currentStockIndex].StockQuantity;
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(finishOfferControllerProvider, (p, n) {
@@ -68,11 +51,6 @@ class ProductItemWidget extends ConsumerWidget {
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-
-    final currentStockQuantity = _getStockQuantityByName(
-      product.Stocks,
-      'Estoque Atual'.hardcoded,
-    );
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -106,75 +84,17 @@ class ProductItemWidget extends ConsumerWidget {
                                 title: "PLU ",
                                 subTitle: product.PLU,
                               ),
-                              if (routine != BsRoutine.adjustStock &&
-                                  routine != BsRoutine.researchOfPrice) ...[
-                                if (routine != BsRoutine.buyRequest) ...[
-                                  TitleAndSubTitle(
-                                    title: "Preço ",
-                                    emptyMessage: 'Sem preço'.hardcoded,
-                                    subTitle:
-                                        routine == BsRoutine.transferRequest
-                                        ? product.Value
-                                        : ((product.Value ?? 0) > 0
-                                              ? product.Value
-                                              : product.RetailPracticedPrice),
-                                    subTitleIsPrice: true,
-                                  ),
-                                ],
-                                if (routine == BsRoutine.saleRequest ||
-                                    routine == BsRoutine.adjustSalePrice) ...[
-                                  if ((product.WholePracticedPrice ?? 0) >
-                                      0) ...[
-                                    TitleAndSubTitle(
-                                      title: 'Preço atacado',
-                                      subTitle: product.WholePracticedPrice,
-                                      subTitleIsPrice: true,
-                                    ),
-                                    TitleAndSubTitle(
-                                      title: 'Qtd mín p/ atacado',
-                                      subTitle: product.MinimumWholeQuantity,
-                                    ),
-                                  ],
-                                ],
-                                if (routine != BsRoutine.transferRequest) ...[
-                                  TitleAndSubTitle(
-                                    title: "Custo líquido ",
-                                    subTitle: product.LiquidCost,
-                                    emptyMessage: 'Sem custo líquido'.hardcoded,
-                                    subTitleIsPrice: true,
-                                  ),
-                                ],
-                              ],
+                              PracticedPriceProperty(this),
+                              WholePriceAndMinQuantity(this),
+                              LiquidCostProperty(this),
+                              CurrentAndSaleStocks(this),
+                              EansProperty(this),
                             ],
                           ),
                           if (routine != BsRoutine.researchOfPrice)
-                            Positioned(
-                              right: 0,
-                              child: InfoButton(
-                                product: product,
-                                routine: routine,
-                              ),
-                            ),
+                            Positioned(right: 0, child: InfoButton(this)),
                         ],
                       ),
-                      if (routine != BsRoutine.adjustSalePrice &&
-                          routine != BsRoutine.researchOfPrice) ...[
-                        TitleAndSubTitle(
-                          title: "Estoque atual ",
-                          emptyMessage: currentStockQuantity == -1
-                              ? 'Sem permissão p/ ver estoque'.hardcoded
-                              : 'Sem estoque atual'.hardcoded,
-                          subTitle: currentStockQuantity,
-                        ),
-                        TitleAndSubTitle(
-                          title: "Saldo de venda",
-                          emptyMessage: 'Sem saldo de venda'.hardcoded,
-                          subTitle: _getStockQuantityByName(
-                            product.Stocks,
-                            'saldo'.hardcoded,
-                          ),
-                        ),
-                      ],
                       ?cartItemSummary,
                       ?clickableBottom,
                     ],
