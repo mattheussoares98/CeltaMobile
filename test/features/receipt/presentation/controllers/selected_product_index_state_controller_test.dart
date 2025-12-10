@@ -16,7 +16,7 @@ void main() {
   group('SelectedIndexStateController', () {
     test('build should have an initial state of null', () {
       // ARRANGE / ACT
-      final state = container.read(selectedIndexStateControllerProvider);
+      final state = container.read(selectedProductIndeStateControllerProvider);
 
       // ASSERT
       expect(state, isNull);
@@ -28,13 +28,13 @@ void main() {
         // ARRANGE
         final newIndex = faker.randomGenerator.integer(100);
         final notifier = container.read(
-          selectedIndexStateControllerProvider.notifier,
+          selectedProductIndeStateControllerProvider.notifier,
         );
 
         final states = <int?>[];
         // Listen to capture the state change
         container.listen(
-          selectedIndexStateControllerProvider,
+          selectedProductIndeStateControllerProvider,
           (_, next) => states.add(next),
         );
 
@@ -46,7 +46,10 @@ void main() {
         expect(states, [newIndex]);
 
         // 2. Verify the final state value
-        expect(container.read(selectedIndexStateControllerProvider), newIndex);
+        expect(
+          container.read(selectedProductIndeStateControllerProvider),
+          newIndex,
+        );
       },
     );
 
@@ -56,7 +59,7 @@ void main() {
         // ARRANGE
         const indexToToggle = 10;
         final notifier = container.read(
-          selectedIndexStateControllerProvider.notifier,
+          selectedProductIndeStateControllerProvider.notifier,
         );
 
         // Set the initial selection (pre-condition)
@@ -64,7 +67,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedIndexStateControllerProvider,
+          selectedProductIndeStateControllerProvider,
           (_, next) => states.add(next),
         );
 
@@ -74,7 +77,10 @@ void main() {
         // ASSERT
         // The state transitions from 10 back to null
         expect(states, [isNull]);
-        expect(container.read(selectedIndexStateControllerProvider), isNull);
+        expect(
+          container.read(selectedProductIndeStateControllerProvider),
+          isNull,
+        );
       },
     );
 
@@ -85,7 +91,7 @@ void main() {
         const initialIndex = 1;
         const newIndex = 2;
         final notifier = container.read(
-          selectedIndexStateControllerProvider.notifier,
+          selectedProductIndeStateControllerProvider.notifier,
         );
 
         // Set initial selection
@@ -93,7 +99,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedIndexStateControllerProvider,
+          selectedProductIndeStateControllerProvider,
           (_, next) => states.add(next),
         );
 
@@ -103,7 +109,10 @@ void main() {
         // ASSERT
         // State transitions from 1 to 2
         expect(states, [newIndex]);
-        expect(container.read(selectedIndexStateControllerProvider), newIndex);
+        expect(
+          container.read(selectedProductIndeStateControllerProvider),
+          newIndex,
+        );
       },
     );
   });
