@@ -5,7 +5,7 @@ abstract class ISoapUpdateProductRepository {
     required int grDocCode,
     required int productCode,
     required int productPackingCode,
-    double? newQuantity,
-    DateTime? newValidityDate,
+    required double newQuantity,
+    required DateTime? newValidityDate,
   });
 }

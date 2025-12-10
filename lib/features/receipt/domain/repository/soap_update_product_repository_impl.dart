@@ -12,17 +12,16 @@ class SoapUpdateProductRepositoryImpl implements ISoapUpdateProductRepository {
     required int grDocCode,
     required int productCode,
     required int productPackingCode,
-    double? newQuantity,
-    DateTime? newValidityDate,
+    required double newQuantity,
+    required DateTime? newValidityDate,
   }) async {
     final parametersPayload = {
       "crossIdentity": crossIdentity,
       "grDocCode": grDocCode,
       "productgCode": productCode,
       "productPackingCode": productPackingCode,
-      if (newQuantity != null) "quantity": newQuantity,
-      if (newValidityDate != null)
-        "validityDate": newValidityDate.toIso8601String(),
+      "quantity": newQuantity,
+      "validityDate": newValidityDate?.toIso8601String(),
     };
 
     await datasource.update(

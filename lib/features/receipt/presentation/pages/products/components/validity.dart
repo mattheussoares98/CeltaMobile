@@ -68,10 +68,12 @@ class Validity extends ConsumerWidget {
                           searchProductKey,
                         ).notifier,
                       )
-                      .updateValidity(
+                      .updateValues(
                         grDocCode: receiptCode,
                         newValidityDate: newDate,
-                        productCode: product.ProductCode!,
+                        isSubtract: false,
+                        quantity: 0,
+                        //TODO fix
                         productPackingCode: product.ProductPackingCode!,
                       );
                 }

@@ -26,7 +26,7 @@ void main() {
   late int productgCode;
   late int productPackingCode;
   late double newQuantity;
-  late DateTime newValidityDate;
+  late DateTime? newValidityDate;
 
   setUp(() {
     mockDatasource = SoapUpdateProductDatasourceSpy();
@@ -38,7 +38,9 @@ void main() {
     productgCode = faker.randomGenerator.integer(100);
     productPackingCode = faker.randomGenerator.integer(100);
     newQuantity = faker.randomGenerator.decimal();
-    newValidityDate = faker.date.dateTime();
+    newValidityDate = faker.randomGenerator.boolean()
+        ? faker.date.dateTime()
+        : null;
   });
 
   test(
@@ -50,6 +52,8 @@ void main() {
         grDocCode: grDocCode,
         productCode: productgCode,
         productPackingCode: productPackingCode,
+        newQuantity: newQuantity,
+        newValidityDate: newValidityDate,
       );
 
       verify(
@@ -60,6 +64,8 @@ void main() {
             "grDocCode": grDocCode,
             "productgCode": productgCode,
             "productPackingCode": productPackingCode,
+            "quantity": newQuantity,
+            "validityDate": newValidityDate?.toIso8601String(),
           },
         ),
       ).called(1);
@@ -85,7 +91,7 @@ void main() {
           "productgCode": productgCode,
           "productPackingCode": productPackingCode,
           "quantity": newQuantity,
-          "validityDate": newValidityDate.toIso8601String(),
+          "validityDate": newValidityDate?.toIso8601String(),
         },
       ),
     ).called(1);

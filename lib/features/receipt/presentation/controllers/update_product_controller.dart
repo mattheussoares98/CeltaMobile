@@ -14,39 +14,12 @@ class UpdateProductController extends _$UpdateProductController {
   @override
   FutureOr<void> build(SearchProductKey searchProductKey) {}
 
-  Future<void> updateValidity({
-    required int grDocCode,
-    required DateTime newValidityDate,
-    required int productCode,
-    required int productPackingCode,
-  }) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.watch(
-        validatedUserSessionProvider.future,
-      );
-
-      await ref
-          .read(soapUpdateProductRepositoryProvider)
-          .update(
-            baseUrl: validatedUser!.enterprise!.baseUrl!,
-            crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
-            grDocCode: grDocCode,
-            productCode: productCode,
-            productPackingCode: productPackingCode,
-            newValidityDate: newValidityDate,
-          );
-
-      final product = await _getCorrespondentProduct(productPackingCode);
-      _updateProduct(product: product, validatyDate: newValidityDate);
-    });
-  }
-
-  Future<void> updateQuantity({
+  Future<void> updateValues({
     required int grDocCode,
     required int productPackingCode,
     required bool isSubtract,
     required double quantity,
+    required DateTime? newValidityDate,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -70,6 +43,7 @@ class UpdateProductController extends _$UpdateProductController {
             productCode: product.ProductCode!,
             productPackingCode: productPackingCode,
             newQuantity: newQuantity,
+            newValidityDate: newValidityDate,
           );
 
       _updateProduct(product: product, quantity: newQuantity);

@@ -39,6 +39,7 @@ void main() {
   late int fakeProductPackingCode;
   late ProductEntity fakeProduct;
   late SearchProductKey fakeSearchKey;
+  late DateTime? newValidityDate;
 
   setUpAll(() {
     registerFallbackValue(DateTime.now());
@@ -57,6 +58,9 @@ void main() {
     fakeGrDocCode = faker.randomGenerator.integer(100);
     fakeProductCode = 50;
     fakeProductPackingCode = 100;
+    newValidityDate = faker.randomGenerator.boolean()
+        ? faker.date.dateTime()
+        : null;
 
     // Create the product that will be in the cart
     fakeProduct = EntityFactory.makeProductEntity(
@@ -111,57 +115,6 @@ void main() {
 
   group('UpdateProductController', () {
     test(
-      'updateValidity should update remote API and perform local optimistic update',
-      () async {
-        // ARRANGE
-        final newValidityDate = DateTime.now();
-        final spySearchProducts = FakeSearchProductsStateController([
-          fakeProduct,
-        ]);
-        final container = makeProviderContainer(
-          session: fakeSession,
-          spySearchProducts: spySearchProducts,
-        );
-        addTearDown(container.dispose);
-
-        // ACT
-        await container
-            .read(updateProductControllerProvider(fakeSearchKey).notifier)
-            .updateValidity(
-              grDocCode: fakeGrDocCode,
-              newValidityDate: newValidityDate,
-              productCode: fakeProductCode,
-              productPackingCode: fakeProductPackingCode,
-            );
-
-        // ASSERT
-        // 1. Verify remote API call
-        verify(
-          () => mockRepository.update(
-            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
-            newQuantity: null,
-            productCode: fakeProductCode,
-            productPackingCode: fakeProductPackingCode,
-            newValidityDate: newValidityDate,
-            grDocCode: fakeGrDocCode,
-          ),
-        ).called(1);
-
-        // 2. Verify local optimistic update
-        expect(spySearchProducts.updatedProduct, isNotNull);
-        expect(
-          spySearchProducts.updatedProduct!.DataValidade_ProcRecebDocProEmb,
-          newValidityDate,
-        );
-        expect(
-          spySearchProducts.updatedProduct!.ProductPackingCode,
-          fakeProductPackingCode,
-        );
-      },
-    );
-
-    test(
       'updateQuantity should calculate final quantity, call remote API, and perform local update',
       () async {
         // ARRANGE
@@ -179,10 +132,11 @@ void main() {
         // ACT
         await container
             .read(updateProductControllerProvider(fakeSearchKey).notifier)
-            .updateQuantity(
+            .updateValues(
               grDocCode: fakeGrDocCode,
               productPackingCode: fakeProductPackingCode,
               isSubtract: true,
+              newValidityDate: newValidityDate,
               quantity: quantityToSubtract,
             );
 
@@ -193,7 +147,7 @@ void main() {
             productCode: fakeProductCode,
             productPackingCode: fakeProductPackingCode,
             newQuantity: expectedNewQuantity, // Critical check
-            newValidityDate: null,
+            newValidityDate: newValidityDate,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             baseUrl: fakeSession.enterprise!.baseUrl!,
             grDocCode: fakeGrDocCode,
@@ -223,10 +177,11 @@ void main() {
       // ACT & ASSERT
       await container
           .read(updateProductControllerProvider(fakeSearchKey).notifier)
-          .updateValidity(
+          .updateValues(
             grDocCode: fakeGrDocCode,
             newValidityDate: DateTime.now(),
-            productCode: fakeProductCode,
+            isSubtract: false,
+            quantity: 1,
             productPackingCode: fakeProductPackingCode,
           );
 
