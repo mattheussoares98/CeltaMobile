@@ -122,6 +122,23 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                             return ProductItemWidget(
                               product: product,
                               routine: BsRoutine.goodsReceiving,
+                              clickableBottom: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Validity(
+                                    product: product,
+                                    searchProductKey: searchProductKey,
+                                    receiptCode: widget.receiptCode,
+                                  ),
+                                  TitleAndSubTitle(
+                                    title: 'Quantidade contada'.hardcoded,
+                                    subTitle:
+                                        product.Quantidade_ProcRecebDocProEmb,
+                                    emptyMessage:
+                                        'Sem quantidade contada'.hardcoded,
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         );
