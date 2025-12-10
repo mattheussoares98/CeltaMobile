@@ -24,7 +24,9 @@ class SoapInsertProductNotFoundDatasource
         "crossIdentity": crossIdentity,
         "grDocCode": receiptCode,
         "ean": productNotFound.ean,
-        "observations": productNotFound.observations,
+        "observations": productNotFound.observations?.isEmpty == true
+            ? null
+            : productNotFound.observations,
         "quantity": productNotFound.quantity,
         if (productNotFound.internalCode != null)
           "grDocProductWithoutCadasterCode": productNotFound.internalCode,

@@ -98,4 +98,33 @@ void main() {
       ).called(1);
     },
   );
+
+  test('should observations as null value if is empty', () async {
+    await sut.insert(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      productNotFound: ProductNotFoundModel.fromEntity(
+        product.toEntity().annulValues(annulObservations: true),
+      ),
+      receiptCode: receiptCode,
+    );
+
+    verify(
+      () => soapRequest.post(
+        url: baseUrl,
+        typeOfResponse: "InsertProductWithoutCadasterResponse",
+        soapAction: "InsertProductWithoutCadaster",
+        serviceASMX: "CeltaGoodsReceivingService.asmx",
+        typeOfResult: null,
+        parameters: {
+          "crossIdentity": crossIdentity,
+          "grDocCode": receiptCode,
+          "ean": product.ean,
+          "observations": null,
+          "quantity": product.quantity,
+          "grDocProductWithoutCadasterCode": product.internalCode,
+        },
+      ),
+    ).called(1);
+  });
 }
