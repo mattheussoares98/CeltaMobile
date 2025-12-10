@@ -41,16 +41,16 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
       return;
     }
 
-    ref
-        .read(
-          productsNotFoundStateControllerProvider(widget.receiptCode).notifier,
-        )
-        .insert(
-          internalCode: widget.receiptCode,
-          quantity: quantityController.text.toDouble()!,
-          ean: eanController.text,
-          observations: observationsController.text,
-        );
+    // ref
+    //     .read(
+    //       productsNotFoundStateControllerProvider(widget.receiptCode).notifier,
+    //     )
+    //     .insert(
+    //       internalCode: widget.receiptCode,
+    //       quantity: quantityController.text.toDouble()!,
+    //       ean: eanController.text,
+    //       observations: observationsController.text,
+    //     );
   }
 
   @override
