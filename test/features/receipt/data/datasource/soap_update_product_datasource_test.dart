@@ -35,9 +35,7 @@ void main() {
     productCode = faker.randomGenerator.integer(100);
     productPackingCode = faker.randomGenerator.integer(100);
     newQuantity = faker.randomGenerator.decimal();
-    newValidityDate = faker.randomGenerator.boolean()
-        ? faker.date.dateTime()
-        : null;
+    newValidityDate = faker.date.dateTime();
   }
 
   setUp(() {
@@ -72,6 +70,36 @@ void main() {
           "productPackingCode": productPackingCode,
           "quantity": newQuantity,
           "validityDate": newValidityDate?.toIso8601String(),
+        },
+      ),
+    ).called(1);
+  });
+
+  test('should not send validityDate if receive null param', () async {
+    await sut.update(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      grDocCode: grDocCode,
+      productCode: productCode,
+      productPackingCode: productPackingCode,
+      newQuantity: newQuantity,
+      newValidityDate: null,
+    );
+
+    verify(
+      () => soapRequest.post(
+        url: baseUrl,
+        typeOfResponse: "EntryQuantityResponse",
+        soapAction: "EntryQuantity",
+        serviceASMX: "CeltaGoodsReceivingService.asmx",
+        typeOfResult: null,
+        parameters: {
+          "crossIdentity": crossIdentity,
+          "grDocCode": grDocCode,
+          "productgCode": productCode,
+          "productPackingCode": productPackingCode,
+          "quantity": newQuantity,
+          // "validityDate": newValidityDate?.toIso8601String(),
         },
       ),
     ).called(1);

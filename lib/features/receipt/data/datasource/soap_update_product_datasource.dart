@@ -27,7 +27,8 @@ class SoapUpdateProductDatasource implements ISoapUpdateProductDatasource {
         "productgCode": productCode,
         "productPackingCode": productPackingCode,
         "quantity": newQuantity,
-        "validityDate": newValidityDate?.toIso8601String(),
+        if (newValidityDate != null)
+          "validityDate": newValidityDate.toIso8601String(),
       },
     );
   }
