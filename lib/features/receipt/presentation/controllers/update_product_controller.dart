@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../../../exceptions/exceptions.dart';
 import '../../providers.dart';
 
 part 'update_product_controller.g.dart';
@@ -29,10 +31,17 @@ class UpdateProductController extends _$UpdateProductController {
 
       final product = await _getCorrespondentProduct(productPackingCode);
 
-      final oldQuantity = product.Quantidade_ProcRecebDocProEmb ?? 0;
-      final newQuantity = isSubtract == true
-          ? oldQuantity - quantity
+      final quantityToSendInRequest = isSubtract == true
+          ? 0 - quantity
           : quantity;
+      final oldQuantity = product.Quantidade_ProcRecebDocProEmb ?? 0;
+      final newQuantity = oldQuantity + quantityToSendInRequest;
+
+      if (newQuantity < 0) {
+        throw AppException(
+          'A nova quantidade não pode ser menor que zero'.hardcoded,
+        );
+      }
 
       await ref
           .read(soapUpdateProductDatasourceProvider)
@@ -42,7 +51,7 @@ class UpdateProductController extends _$UpdateProductController {
             grDocCode: grDocCode,
             productCode: product.ProductCode!,
             productPackingCode: productPackingCode,
-            newQuantity: newQuantity,
+            newQuantity: quantityToSendInRequest,
             newValidityDate: newValidityDate,
           );
 

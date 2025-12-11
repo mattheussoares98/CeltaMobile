@@ -114,54 +114,55 @@ void main() {
   }
 
   group('UpdateProductController', () {
-    test(
-      'updateQuantity should calculate final quantity, call remote API, and perform local update',
-      () async {
-        // ARRANGE
-        const quantityToSubtract = 10.0;
-        const expectedNewQuantity = 40.0; // 50.0 - 10.0
-        final spySearchProducts = FakeSearchProductsStateController([
-          fakeProduct,
-        ]);
-        final container = makeProviderContainer(
-          session: fakeSession,
-          spySearchProducts: spySearchProducts,
-        );
-        addTearDown(container.dispose);
+    test('updateQuantity should behave correctly on success', () async {
+      // ARRANGEF
+      final spySearchProducts = FakeSearchProductsStateController([
+        fakeProduct.copyWith(
+          Quantidade_ProcRecebDocProEmb: 20, //first quantity
+        ),
+      ]);
+      final isSubtract = faker.randomGenerator.boolean();
 
-        // ACT
-        await container
-            .read(updateProductControllerProvider(fakeSearchKey).notifier)
-            .updateValues(
-              grDocCode: fakeGrDocCode,
-              productPackingCode: fakeProductPackingCode,
-              isSubtract: true,
-              newValidityDate: newValidityDate,
-              quantity: quantityToSubtract,
-            );
+      final container = makeProviderContainer(
+        session: fakeSession,
+        spySearchProducts: spySearchProducts,
+      );
+      addTearDown(container.dispose);
 
-        // ASSERT
-        // 1. Verify remote API call (uses calculated new quantity)
-        verify(
-          () => mockDatasource.update(
-            productCode: fakeProductCode,
-            productPackingCode: fakeProductPackingCode,
-            newQuantity: expectedNewQuantity, // Critical check
-            newValidityDate: newValidityDate,
-            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+      // ACT
+      await container
+          .read(updateProductControllerProvider(fakeSearchKey).notifier)
+          .updateValues(
             grDocCode: fakeGrDocCode,
-          ),
-        ).called(1);
+            productPackingCode: fakeProductPackingCode,
+            isSubtract: isSubtract,
+            newValidityDate: newValidityDate,
+            quantity: 10,
+          );
 
-        // 2. Verify local optimistic update
-        expect(spySearchProducts.updatedProduct, isNotNull);
-        expect(
-          spySearchProducts.updatedProduct!.Quantidade_ProcRecebDocProEmb,
-          expectedNewQuantity,
-        );
-      },
-    );
+      // ASSERT
+      // 1. Verify remote API call (uses calculated new quantity)
+      verify(
+        () => mockDatasource.update(
+          productCode: fakeProductCode,
+          productPackingCode: fakeProductPackingCode,
+          newQuantity: isSubtract
+              ? -10
+              : 10, // Critical check. 20 - 10 = 10 || 20 + 10 = 30
+          newValidityDate: newValidityDate,
+          crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+          baseUrl: fakeSession.enterprise!.baseUrl!,
+          grDocCode: fakeGrDocCode,
+        ),
+      ).called(1);
+
+      // 2. Verify local optimistic update
+      expect(spySearchProducts.updatedProduct, isNotNull);
+      expect(
+        spySearchProducts.updatedProduct!.Quantidade_ProcRecebDocProEmb,
+        isSubtract ? 10 : 30, //20 - 10 = 10 || 20 + 10 = 30
+      );
+    });
 
     test('should not update when session is invalid', () async {
       // ARRANGE
@@ -188,5 +189,35 @@ void main() {
       // Verify no update product side effect occurred
       expect(spySearchProducts.updatedProduct, isNull);
     });
+    test(
+      'should throw error when new quantity will be less than zero',
+      () async {
+        // ARRANGE
+        final spySearchProducts = FakeSearchProductsStateController([
+          fakeProduct.copyWith(Quantidade_ProcRecebDocProEmb: 10),
+        ]);
+        final container = makeProviderContainer(
+          session: fakeSession,
+          spySearchProducts: spySearchProducts,
+        );
+        addTearDown(container.dispose);
+
+        // ACT & ASSERT
+        await container
+            .read(updateProductControllerProvider(fakeSearchKey).notifier)
+            .updateValues(
+              grDocCode: fakeGrDocCode,
+              newValidityDate: DateTime.now(),
+              isSubtract: true,
+              quantity: 11,
+              productPackingCode: fakeProductPackingCode,
+            );
+
+        expect(
+          container.read(updateProductControllerProvider(fakeSearchKey)),
+          isA<AsyncError>(),
+        );
+      },
+    );
   });
 }
