@@ -145,7 +145,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           });
         }
       });
-      next.showSnackbarOnError(context, previous);
     });
 
     ref.listen(
@@ -189,15 +188,16 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     ),
                   ),
                 ),
-                Consumer(
-                  builder: (_, ref, _) {
-                    final productsState = ref.watch(
-                      searchProductsStateControllerProvider(searchProductKey),
-                    );
+                AsyncValueSliverWidget(
+                  value: ref.watch(
+                    searchProductsStateControllerProvider(searchProductKey),
+                  ),
+                  tryAgain: null,
+                  data: (products) {
                     return SliverList.builder(
-                      itemCount: productsState.value?.length ?? 0,
+                      itemCount: products.length,
                       itemBuilder: (_, index) {
-                        final product = productsState.value![index];
+                        final product = products[index];
 
                         return Card(
                           margin: const EdgeInsets.only(top: Sizes.p8),
