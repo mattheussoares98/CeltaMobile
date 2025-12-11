@@ -10,7 +10,7 @@ class SelectedProductIndeStateController
     return null;
   }
 
-  void updateIndex(int index) {
+  void updateIndex(int? index) {
     if (index == state) {
       state = null;
     } else {

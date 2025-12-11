@@ -75,6 +75,15 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       //TODO move this listener to the defaultSearchProducts
       n.doOnSuccess(p, () {
         searchValueController.clear();
+        ref
+            .read(selectedProductIndeStateControllerProvider.notifier)
+            .updateIndex(null);
+      });
+    });
+    ref.listen(updateProductControllerProvider(searchProductKey), (p, n) {
+      n.showAlertDialogOnError(context);
+      n.doOnSuccess(p, () {
+        quantityController.clear();
       });
     });
 

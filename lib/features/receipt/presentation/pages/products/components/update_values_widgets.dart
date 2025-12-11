@@ -31,15 +31,35 @@ class UpdateValuesWidgets extends ConsumerStatefulWidget {
 
 class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
   DateTime? newValidity;
+  final formKey = GlobalKey<FormState>();
 
-  void update(bool isSubtract) {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        setState(() {
+          newValidity = widget.product.DataValidade_ProcRecebDocProEmb;
+        });
+      }
+    });
+  }
+
+  void update({bool? isSubtract, bool? isAnnul}) {
+    if (isAnnul != true && formKey.currentState?.validate() != true) {
+      return;
+    }
+
     ref
         .read(updateProductControllerProvider(widget.searchProductKey).notifier)
         .updateValues(
           grDocCode: widget.receiptCode,
           productPackingCode: widget.product.ProductPackingCode!,
-          isSubtract: isSubtract,
-          quantity: widget.quantityController.text.toDouble()!,
+          isSubtract: isSubtract == true || isAnnul == true,
+          quantity: isAnnul == true
+              ? widget.product.Quantidade_ProcRecebDocProEmb ?? 0
+              : widget.quantityController.text.toDouble()!,
           newValidityDate: newValidity,
         );
   }
@@ -81,27 +101,42 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
                 ),
               ),
             ),
-            if (newValidity != null)
-              Expanded(
-                flex: 4,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    DateFormat('dd/MM/yyyy').format(newValidity!),
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontStyle: FontStyle.italic,
-                    ),
+            Expanded(
+              flex: 4,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  newValidity != null
+                      ? DateFormat('dd/MM/yyyy').format(newValidity!)
+                      : 'Nenhuma'.hardcoded,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: newValidity == null
+                        ? Colors.red
+                        : theme.primaryColor,
                   ),
                 ),
               ),
+            ),
           ],
         ),
         gapH8,
         Row(
           children: [
-            Expanded(child: PrimaryButton(text: 'Subtrair'.hardcoded)),
+            Expanded(
+              child: PrimaryButton(
+                text: 'Subtrair'.hardcoded,
+                onPressed: () => update(isSubtract: true),
+              ),
+            ),
             gapW8,
-            Expanded(flex: 2, child: PrimaryButton(text: 'Somar'.hardcoded)),
+            Expanded(
+              flex: 2,
+              child: PrimaryButton(
+                text: 'Somar'.hardcoded,
+                onPressed: () => update(isSubtract: false),
+              ),
+            ),
           ],
         ),
         gapH8,
@@ -118,7 +153,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
                           content: 'Tem certeza que deseja anular a contagem?'
                               .hardcoded,
                           onOkPressed: () {
-                            //TODO implement
+                            update(isAnnul: true);
                           },
                           defaultActionText: 'Sim'.hardcoded,
                           cancelActionText: 'Não'.hardcoded,
@@ -133,15 +168,17 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
             gapW8,
             Expanded(
               flex: 3,
-              child: DefaultTextFormField(
-                autofocus: true,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                hintText: 'Quantidade'.hardcoded,
-                labelText: 'Quantidade'.hardcoded,
-                controller: widget.quantityController,
-                validator: FormValidators.compose([
-                  NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
-                ]),
+              child: Form(
+                key: formKey,
+                child: DefaultTextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  hintText: 'Quantidade'.hardcoded,
+                  labelText: 'Quantidade'.hardcoded,
+                  controller: widget.quantityController,
+                  validator: FormValidators.compose([
+                    NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
+                  ]),
+                ),
               ),
             ),
           ],
