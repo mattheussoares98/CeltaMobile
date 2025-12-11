@@ -55,23 +55,21 @@ class UpdateProductController extends _$UpdateProductController {
             newValidityDate: newValidityDate,
           );
 
-      _updateProduct(product: product, quantity: newQuantity);
+      ref
+          .read(
+            searchProductsStateControllerProvider(searchProductKey).notifier,
+          )
+          .updateProduct(
+            product
+                .annuValues(
+                  annulDataValidade_ProcRecebDocProEmb: newValidityDate == null,
+                )
+                .copyWith(
+                  Quantidade_ProcRecebDocProEmb: newQuantity,
+                  DataValidade_ProcRecebDocProEmb: newValidityDate,
+                ),
+          );
     });
-  }
-
-  void _updateProduct({
-    required ProductEntity product,
-    double? quantity,
-    DateTime? validatyDate,
-  }) {
-    ref
-        .read(searchProductsStateControllerProvider(searchProductKey).notifier)
-        .updateProduct(
-          product.copyWith(
-            DataValidade_ProcRecebDocProEmb: validatyDate,
-            Quantidade_ProcRecebDocProEmb: quantity,
-          ),
-        );
   }
 
   Future<ProductEntity> _getCorrespondentProduct(int productPackingCode) async {

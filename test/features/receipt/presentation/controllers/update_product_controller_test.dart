@@ -159,6 +159,10 @@ void main() {
       // 2. Verify local optimistic update
       expect(spySearchProducts.updatedProduct, isNotNull);
       expect(
+        spySearchProducts.updatedProduct?.DataValidade_ProcRecebDocProEmb,
+        newValidityDate,
+      );
+      expect(
         spySearchProducts.updatedProduct!.Quantidade_ProcRecebDocProEmb,
         isSubtract ? 10 : 30, //20 - 10 = 10 || 20 + 10 = 30
       );
@@ -219,5 +223,38 @@ void main() {
         );
       },
     );
+
+    test('Should clear date when pass null value in the request', () async {
+      // ARRANGEF
+      final spySearchProducts = FakeSearchProductsStateController([
+        fakeProduct,
+      ]);
+      final isSubtract = faker.randomGenerator.boolean();
+
+      final container = makeProviderContainer(
+        session: fakeSession,
+        spySearchProducts: spySearchProducts,
+      );
+      addTearDown(container.dispose);
+
+      // ACT
+      await container
+          .read(updateProductControllerProvider(fakeSearchKey).notifier)
+          .updateValues(
+            grDocCode: fakeGrDocCode,
+            productPackingCode: fakeProductPackingCode,
+            isSubtract: isSubtract,
+            newValidityDate: null,
+            quantity: faker.randomGenerator.decimal(),
+          );
+
+      // ASSERT
+
+      // 2. Verify local optimistic update
+      expect(
+        spySearchProducts.updatedProduct?.DataValidade_ProcRecebDocProEmb,
+        isNull,
+      );
+    });
   });
 }

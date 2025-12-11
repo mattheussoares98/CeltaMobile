@@ -371,6 +371,151 @@ class ProductEntity extends Equatable {
     ReferenciaXml_ProcRecebDocProEmb: null,
     DataValidade_ProcRecebDocProEmb: null,
   );
+
+  ProductEntity annuValues({
+    bool? annulEnterpriseCode,
+    bool? annulProductCode,
+    bool? annulProductPackingCode,
+    bool? annulPLU,
+    bool? annulName,
+    bool? annulPackingQuantity,
+    bool? annulBalanceLabelType,
+    bool? annulStorageAreaAddress,
+    bool? annulValue,
+    bool? annulBalanceLabelQuantity,
+    bool? annulRetailPracticedPrice,
+    bool? annulRetailSalePrice,
+    bool? annulRetailOfferPrice,
+    bool? annulWholePracticedPrice,
+    bool? annulWholeSalePrice,
+    bool? annulWholeOfferPrice,
+    bool? annulECommercePracticedPrice,
+    bool? annulECommerceSalePrice,
+    bool? annulECommerceOfferPrice,
+    bool? annulMinimumWholeQuantity,
+    bool? annulOperationalCost,
+    bool? annulReplacementCost,
+    bool? annulReplacementCostMidle,
+    bool? annulLiquidCost,
+    bool? annulLiquidCostMidle,
+    bool? annulRealCost,
+    bool? annulRealLiquidCost,
+    bool? annulFiscalCost,
+    bool? annulFiscalLiquidCost,
+    bool? annulPendantPrintLabel,
+    bool? annulAlterationPriceForAllPackings,
+    bool? annulIsFatherOfGrate,
+    bool? annulIsChildOfGrate,
+    bool? annulInClass,
+    bool? annulMarkUpdateClassInAdjustSalePriceIndividual,
+    bool? annulPriceCost,
+    bool? annulStockByEnterpriseAssociateds,
+    bool? annulStocks,
+    bool? annulLastBuyEntrances,
+    bool? annulEANs,
+    bool? annulResearchOfPriceCode,
+    bool? annulConcurrentCode,
+    bool? annulcodigoInternoProEmb,
+    bool? annulcodigoProEmb,
+    bool? annulquantidadeInvContProEmb,
+    bool? annulFormatedProduct,
+    bool? annulQuantidade_ProcRecebDocProEmb,
+    bool? annulReferenciaXml_ProcRecebDocProEmb,
+    bool? annulDataValidade_ProcRecebDocProEmb,
+  }) => ProductEntity(
+    EnterpriseCode: annulEnterpriseCode == true ? null : EnterpriseCode,
+    ProductCode: annulProductCode == true ? null : ProductCode,
+    ProductPackingCode: annulProductPackingCode == true
+        ? null
+        : ProductPackingCode,
+    PLU: annulPLU == true ? null : PLU,
+    Name: annulName == true ? null : Name,
+    PackingQuantity: annulPackingQuantity == true ? null : PackingQuantity,
+    BalanceLabelType: annulBalanceLabelType == true ? null : BalanceLabelType,
+    StorageAreaAddress: annulStorageAreaAddress == true
+        ? null
+        : StorageAreaAddress,
+    Value: annulValue == true ? null : Value,
+    BalanceLabelQuantity: annulBalanceLabelQuantity == true
+        ? null
+        : BalanceLabelQuantity,
+    RetailPracticedPrice: annulRetailPracticedPrice == true
+        ? null
+        : RetailPracticedPrice,
+    RetailSalePrice: annulRetailSalePrice == true ? null : RetailSalePrice,
+    RetailOfferPrice: annulRetailOfferPrice == true ? null : RetailOfferPrice,
+    WholePracticedPrice: annulWholePracticedPrice == true
+        ? null
+        : WholePracticedPrice,
+    WholeSalePrice: annulWholeSalePrice == true ? null : WholeSalePrice,
+    WholeOfferPrice: annulWholeOfferPrice == true ? null : WholeOfferPrice,
+    ECommercePracticedPrice: annulECommercePracticedPrice == true
+        ? null
+        : ECommercePracticedPrice,
+    ECommerceSalePrice: annulECommerceSalePrice == true
+        ? null
+        : ECommerceSalePrice,
+    ECommerceOfferPrice: annulECommerceOfferPrice == true
+        ? null
+        : ECommerceOfferPrice,
+    MinimumWholeQuantity: annulMinimumWholeQuantity == true
+        ? null
+        : MinimumWholeQuantity,
+    OperationalCost: annulOperationalCost == true ? null : OperationalCost,
+    ReplacementCost: annulReplacementCost == true ? null : ReplacementCost,
+    ReplacementCostMidle: annulReplacementCostMidle == true
+        ? null
+        : ReplacementCostMidle,
+    LiquidCost: annulLiquidCost == true ? null : LiquidCost,
+    LiquidCostMidle: annulLiquidCostMidle == true ? null : LiquidCostMidle,
+    RealCost: annulRealCost == true ? null : RealCost,
+    RealLiquidCost: annulRealLiquidCost == true ? null : RealLiquidCost,
+    FiscalCost: annulFiscalCost == true ? null : FiscalCost,
+    FiscalLiquidCost: annulFiscalLiquidCost == true ? null : FiscalLiquidCost,
+    PendantPrintLabel: annulPendantPrintLabel == true
+        ? null
+        : PendantPrintLabel,
+    AlterationPriceForAllPackings: annulAlterationPriceForAllPackings == true
+        ? null
+        : AlterationPriceForAllPackings,
+    IsFatherOfGrate: annulIsFatherOfGrate == true ? null : IsFatherOfGrate,
+    IsChildOfGrate: annulIsChildOfGrate == true ? null : IsChildOfGrate,
+    InClass: annulInClass == true ? null : InClass,
+    MarkUpdateClassInAdjustSalePriceIndividual:
+        annulMarkUpdateClassInAdjustSalePriceIndividual == true
+        ? null
+        : MarkUpdateClassInAdjustSalePriceIndividual,
+    PriceCost: annulPriceCost == true ? null : PriceCost,
+    StockByEnterpriseAssociateds: annulStockByEnterpriseAssociateds == true
+        ? null
+        : StockByEnterpriseAssociateds,
+    Stocks: annulStocks == true ? null : Stocks,
+    LastBuyEntrances: annulLastBuyEntrances == true ? null : LastBuyEntrances,
+    EANs: annulEANs == true ? null : EANs,
+    ResearchOfPriceCode: annulResearchOfPriceCode == true
+        ? null
+        : ResearchOfPriceCode,
+    ConcurrentCode: annulConcurrentCode == true ? null : ConcurrentCode,
+    codigoInternoProEmb: annulcodigoInternoProEmb == true
+        ? null
+        : codigoInternoProEmb,
+    codigoProEmb: annulcodigoProEmb == true ? null : codigoProEmb,
+    quantidadeInvContProEmb: annulquantidadeInvContProEmb == true
+        ? null
+        : quantidadeInvContProEmb,
+    FormatedProduct: annulFormatedProduct == true ? null : FormatedProduct,
+    Quantidade_ProcRecebDocProEmb: annulQuantidade_ProcRecebDocProEmb == true
+        ? null
+        : Quantidade_ProcRecebDocProEmb,
+    ReferenciaXml_ProcRecebDocProEmb:
+        annulReferenciaXml_ProcRecebDocProEmb == true
+        ? null
+        : ReferenciaXml_ProcRecebDocProEmb,
+    DataValidade_ProcRecebDocProEmb:
+        annulDataValidade_ProcRecebDocProEmb == true
+        ? null
+        : DataValidade_ProcRecebDocProEmb,
+  );
 }
 
 enum PracticedPriceType {
