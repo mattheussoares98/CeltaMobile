@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,11 +46,6 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       BsRoutine.priceConference,
       Modules.searchProducts,
     );
-    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
-      n.doOnSuccess(p, () {
-        searchValueController.clear();
-      });
-    });
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
@@ -64,6 +58,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
           children: [
             DefaultSearchProducts(
               searchValueController: searchValueController,
+              searchProductKey: searchProductKey,
               isLoading: ref.watch(
                 searchProductsStateControllerProvider(
                   searchProductKey,

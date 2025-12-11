@@ -122,14 +122,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       BsRoutine.adjustStock,
       Modules.adjustStock,
     );
-    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
-      previous,
-      next,
-    ) {
-      next.doOnSuccess(previous, () {
-        searchValueController.clear();
-      });
-    });
     ref.listen(confirmAdjustStockControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
       n.showSnackbarOnSuccess(
@@ -164,6 +156,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                     selectedStockType: selectedStockType,
                     onChangeJustification: onChangeJustification,
                     onChangeStockType: onChangeStock,
+                    searchProductKey: searchProductKey,
                   ),
                   Expanded(
                     child: Consumer(

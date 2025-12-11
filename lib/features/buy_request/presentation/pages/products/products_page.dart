@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -66,15 +65,6 @@ class ProductsPage extends ConsumerWidget {
           );
     }
 
-    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
-      products,
-      next,
-    ) {
-      next.doOnSuccess(products, () {
-        searchProductController.clear();
-      });
-    });
-
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
     return Scaffold(
@@ -84,6 +74,7 @@ class ProductsPage extends ConsumerWidget {
           slivers: [
             SliverToBoxAdapter(
               child: DefaultSearchProducts(
+                searchProductKey: searchProductKey,
                 isLoading: ref.watch(
                   searchProductsStateControllerProvider(
                     searchProductKey,

@@ -12,6 +12,7 @@ class SearchProducts extends ConsumerWidget {
   final int codigoInternoInventario;
   final int codigoInternoInvCont;
   final VoidCallback searchProducts;
+  final SearchProductKey searchProductKey;
   const SearchProducts({
     super.key,
     required this.searchProducts,
@@ -20,18 +21,14 @@ class SearchProducts extends ConsumerWidget {
     required this.enterpriseCode,
     required this.codigoInternoInventario,
     required this.codigoInternoInvCont,
+    required this.searchProductKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(
       searchProductsStateControllerProvider(
-        SearchProductKey(
-          enterpriseCode,
-          BsRoutine.generic,
-          Modules.inventory,
-          anotherKey: '$codigoInternoInvCont-$codigoInternoInventario',
-        ),
+        searchProductKey,
       ).select((state) => state.isLoading),
     );
     return SliverToBoxAdapter(
@@ -40,6 +37,7 @@ class SearchProducts extends ConsumerWidget {
         isLoading: isLoading,
         searchProducts: searchProducts,
         searchValueController: searchProductsController,
+        searchProductKey: searchProductKey,
       ),
     );
   }

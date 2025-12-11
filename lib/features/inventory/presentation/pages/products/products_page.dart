@@ -136,8 +136,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           setState(() {
             selectedIndex = 0;
           });
+          //TODO create a new controller to select the index, to avoid update the entire page
+          quantityController.clear();
         }
-        searchProductsController.clear();
         if (insertIndividually) {
           Future.delayed(const Duration(milliseconds: 100), () {
             searchProductsFocusNode.requestFocus();
@@ -172,6 +173,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   enterpriseCode: widget.enterpriseCode,
                   codigoInternoInventario: widget.codigoInternoInventario,
                   codigoInternoInvCont: widget.codigoInternoInvCont,
+                  searchProductKey: searchProductKey,
                 ),
                 SliverToBoxAdapter(
                   child: Padding(

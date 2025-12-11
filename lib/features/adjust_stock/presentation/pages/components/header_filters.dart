@@ -15,6 +15,7 @@ class HeaderFilters extends ConsumerWidget {
   final StockTypeEntity? selectedStockType;
   final void Function(TransferJustificationEntity?) onChangeJustification;
   final void Function(StockTypeEntity?) onChangeStockType;
+  final SearchProductKey searchProductKey;
   const HeaderFilters({
     super.key,
     required this.enterpriseCode,
@@ -24,6 +25,7 @@ class HeaderFilters extends ConsumerWidget {
     required this.selectedStockType,
     required this.onChangeJustification,
     required this.onChangeStockType,
+    required this.searchProductKey,
   });
 
   @override
@@ -32,13 +34,10 @@ class HeaderFilters extends ConsumerWidget {
       children: [
         DefaultSearchProducts(
           searchValueController: searchValueController,
+          searchProductKey: searchProductKey,
           isLoading: ref.watch(
             searchProductsStateControllerProvider(
-              SearchProductKey(
-                enterpriseCode,
-                BsRoutine.adjustStock,
-                Modules.adjustStock,
-              ),
+              searchProductKey,
             ).select((state) => state.isLoading),
           ),
           searchProducts: searchProducts,

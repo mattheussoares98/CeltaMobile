@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,11 +21,6 @@ class SearchProducts extends ConsumerWidget {
       BsRoutine.saleRequest,
       Modules.saleRequest,
     );
-    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
-      n.doOnSuccess(p, () {
-        searchProductsController.clear();
-      });
-    });
 
     return DefaultSearchProducts(
       isLoading: ref.watch(
@@ -35,6 +29,7 @@ class SearchProducts extends ConsumerWidget {
         ).select((state) => state.isLoading),
       ),
       searchValueController: searchProductsController,
+      searchProductKey: searchProductKey,
       searchProducts: () {
         ref
             .read(

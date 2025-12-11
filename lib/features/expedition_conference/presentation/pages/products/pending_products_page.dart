@@ -64,6 +64,7 @@ class PendingProductsPage extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: Sizes.p4),
               child: DefaultSearchProducts(
+                searchProductKey: searchProductKey,
                 isLoading:
                     ref.watch(
                       expeditionConferenceControllerProvider(

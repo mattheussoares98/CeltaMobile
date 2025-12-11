@@ -45,6 +45,7 @@ class SearchProductsField extends ConsumerWidget {
           searchProductKey,
         ).select((s) => s.isLoading),
       ),
+      searchProductKey: searchProductKey,
       searchProducts: () {
         ref
             .read(

@@ -106,14 +106,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       BsRoutine.adjustStock,
       Modules.transferBetweenStocks,
     );
-    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
-      previous,
-      next,
-    ) {
-      next.doOnSuccess(previous, () {
-        searchValueController.clear();
-      });
-    });
 
     final stocksAsync = ref.watch(
       stockTypeStateControllerProvider(widget.enterpriseCode),
@@ -129,6 +121,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           children: [
             DefaultSearchProducts(
               searchValueController: searchValueController,
+              searchProductKey: searchProductKey,
               isLoading: ref.watch(
                 searchProductsStateControllerProvider(
                   searchProductKey,

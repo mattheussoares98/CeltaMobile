@@ -6,9 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/constants.dart';
 import '../core/domain/entities/entities.dart';
+import '../core/presentation/controllers/products/products.dart';
 import '../core/presentation/controllers/scanner/scanner.dart';
 import '../core/validators/validators.dart';
 import '../features/settings/presentation/pages/pages.dart';
+import '../utils/utils.dart';
 import 'commom_widgets.dart';
 
 class DefaultSearchProducts extends ConsumerStatefulWidget {
@@ -17,13 +19,17 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
   final TextEditingController searchValueController;
   final FocusNode? focusNode;
   final bool? allowEmptySearchValue;
+  final SearchProductKey searchProductKey;
+  final VoidCallback? doOnSearchSucceeds;
   const DefaultSearchProducts({
     super.key,
     required this.isLoading,
     required this.searchProducts,
     required this.searchValueController,
+    required this.searchProductKey,
     this.focusNode,
     this.allowEmptySearchValue,
+    this.doOnSearchSucceeds,
   });
 
   @override
@@ -78,6 +84,16 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
 
     final settings = ref.watch(appSettingsStateControllerProvider).value;
     final hintText = getHintText(settings);
+
+    ref.listen(searchProductsStateControllerProvider(widget.searchProductKey), (
+      p,
+      n,
+    ) {
+      n.doOnSuccess(p, () {
+        widget.searchValueController.clear();
+        widget.doOnSearchSucceeds?.call();
+      });
+    });
 
     return LayoutBuilder(
       builder: (context, constraints) {

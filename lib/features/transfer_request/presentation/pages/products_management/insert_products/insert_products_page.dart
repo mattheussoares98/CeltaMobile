@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -102,11 +101,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       anotherKey:
           '${widget.draftKey.enterpriseOrigin}-${widget.draftKey.enterpriseDestinyCode}-${widget.draftKey.requestTypeCode}',
     );
-    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
-      n.doOnSuccess(p, () {
-        searchValueController.clear();
-      });
-    });
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
@@ -118,6 +112,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                 searchProductKey,
               ).select((value) => value.isLoading),
             ),
+            searchProductKey: searchProductKey,
             focusNode: searchValueFocusNode,
             searchProducts: () {
               ref
