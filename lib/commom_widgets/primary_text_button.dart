@@ -60,7 +60,7 @@ class PrimaryTextButton extends StatelessWidget {
             child: icon!,
           );
 
-    final minimumSizeToShowIcon = isSmall == true ? 50 : 150;
+    final minimumSizeToShowIcon = isSmall == true ? 60 : 150;
 
     if (isIOS) {
       return LayoutBuilder(
