@@ -23,9 +23,7 @@ class SoapLoadBuyQuotationsRepositoryImpl
       enterpriseCode: enterpriseCode,
       isCompleteSearch: codeForFullSearch != null,
       searchValue: codeForFullSearch ?? '%',
-      dataType: codeForFullSearch == null
-          ? SearchBuyQuotationDataType.byPersonalizedCode
-          : SearchBuyQuotationDataType.byCode,
+      dataType: SearchBuyQuotationDataType.byPersonalizedCode,
       inclusiveExpired: false,
     );
 

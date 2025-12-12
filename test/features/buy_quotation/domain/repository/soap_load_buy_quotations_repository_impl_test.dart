@@ -56,7 +56,9 @@ void main() {
     baseUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
-    codeForFullSearch = faker.randomGenerator.integer(100).toString();
+    codeForFullSearch = faker.randomGenerator.boolean()
+        ? faker.randomGenerator.integer(100).toString()
+        : null;
   }
 
   setUp(() {
@@ -89,9 +91,7 @@ void main() {
         enterpriseCode: enterpriseCode,
         isCompleteSearch: codeForFullSearch != null,
         searchValue: codeForFullSearch ?? '%',
-        dataType: codeForFullSearch == null
-            ? SearchBuyQuotationDataType.byPersonalizedCode
-            : SearchBuyQuotationDataType.byCode,
+        dataType: SearchBuyQuotationDataType.byPersonalizedCode,
         inclusiveExpired: false,
       ),
     ).called(1);
