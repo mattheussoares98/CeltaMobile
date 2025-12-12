@@ -167,6 +167,7 @@ void main() {
               enterpriseCodes: [enterpriseEntity.Code!],
               lastBuyEntranceQuantity: lastBuyEntranceQuantity,
               buyRequestParams: buyRequestParams,
+              competingPricesParams: competingPricesParams,
             ),
           );
 
@@ -174,6 +175,7 @@ void main() {
         isA<AsyncLoading>(),
         isA<AsyncData<List<ProductEntity>>>(),
       ]);
+
       verify(
         () => sut.load(
           baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
