@@ -17,9 +17,12 @@ class CurrentAndSaleStocks extends StatelessWidget {
     );
 
     //TODO request Jr to return Stocks in adjustSalePrice routine too
-    if (widget.routine == BsRoutine.adjustSalePrice ||
-        widget.routine == BsRoutine.goodsReceiving ||
-        widget.routine == BsRoutine.researchOfPrice) {
+    if ([
+      BsRoutine.adjustSalePrice,
+      BsRoutine.buyQuotation,
+      BsRoutine.goodsReceiving,
+      BsRoutine.researchOfPrice,
+    ].contains(widget.routine)) {
       return const SizedBox.shrink();
     }
     return Column(

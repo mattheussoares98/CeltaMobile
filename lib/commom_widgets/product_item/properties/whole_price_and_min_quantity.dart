@@ -9,9 +9,11 @@ class WholePriceAndMinQuantity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.routine != BsRoutine.adjustSalePrice &&
-        widget.routine != BsRoutine.priceConference &&
-        widget.routine != BsRoutine.saleRequest) {
+    if ([
+      BsRoutine.adjustSalePrice,
+      BsRoutine.priceConference,
+      BsRoutine.saleRequest,
+    ].contains(widget.routine)) {
       return const SizedBox.shrink();
     } else if ((widget.product.WholePracticedPrice ?? 0) == 0) {
       return const SizedBox.shrink();

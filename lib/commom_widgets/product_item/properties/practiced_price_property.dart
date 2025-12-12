@@ -13,6 +13,7 @@ class PracticedPriceProperty extends StatelessWidget {
     if ([
       BsRoutine.adjustStock,
       BsRoutine.buyRequest,
+      BsRoutine.buyQuotation,
       BsRoutine.goodsReceiving,
       BsRoutine.researchOfPrice,
     ].contains(widget.routine)) {
