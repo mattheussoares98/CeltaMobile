@@ -33,6 +33,8 @@ class TitleAndSubTitle extends StatelessWidget {
       }
     } else if (subTitle == null && emptyMessage != null) {
       showErrorMessage = true;
+    } else if (subTitle is String && subTitle.isEmpty) {
+      showErrorMessage = true;
     }
 
     String? getSubtitleText() {
