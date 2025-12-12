@@ -1,7 +1,13 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class InsertUpdatePage extends StatelessWidget {
+import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
+import '../../controllers/controller.dart';
+import 'components/components.dart';
+
+class InsertUpdatePage extends ConsumerStatefulWidget {
   final int code;
   final int enterpriseCode;
   const InsertUpdatePage({
@@ -11,12 +17,93 @@ class InsertUpdatePage extends StatelessWidget {
   });
 
   @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _InsertUpdatePageState();
+}
+
+class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
+  final observationController = TextEditingController();
+  final searchValueController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final value = await ref.read(
+          completeBuyQuotationsStateControllerProvider(
+            widget.enterpriseCode,
+            widget.code.toString(),
+          ).future,
+        );
+        if (value.Observations != null && value.Observations!.isNotEmpty) {
+          observationController.text = value.Observations!;
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    observationController.dispose();
+    searchValueController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          code == 0 ? 'Inseririndo'.hardcoded : 'Alterarando'.hardcoded,
+          widget.code == 0 ? 'Inseririndo'.hardcoded : 'Alterarando'.hardcoded,
         ),
+      ),
+      body: AsyncValueWidget(
+        value: ref.watch(
+          completeBuyQuotationsStateControllerProvider(
+            widget.enterpriseCode,
+            widget.code.toString(),
+          ),
+        ),
+        tryAgain: () => ref.invalidate(
+          completeBuyQuotationsStateControllerProvider(
+            widget.enterpriseCode,
+            widget.code.toString(),
+          ),
+        ),
+        data: (buyQuotation) {
+          return Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: CustomScrollView(
+              slivers: [
+                Code(buyQuotation: buyQuotation),
+                // DefaultDropDown<BuyerEntity?>(
+                //   onChanged: (buyer) {
+                //     //TODO call controller provider to change the buyer
+                //   },
+                //   hint: Text('Comprador'.hardcoded),
+                //   selectedItem: selectedItem,
+                //   label: label,
+                //   items: ref.watch(buyersStateControllerProvider),
+                //TODO move this controller provider to core path
+                // ),
+                CreationDate(buyQuotation: buyQuotation),
+                LimitDate(buyQuotation: buyQuotation),
+                ObservationField(observationController: observationController),
+                const SliverToBoxAdapter(child: Divider()),
+                const Enterprises(),
+                const SliverToBoxAdapter(child: Divider()),
+                SearchProductField(
+                  enterpriseCode: widget.enterpriseCode,
+                  searchValueController: searchValueController,
+                ),
+                gapSliverH8,
+                ProductsItems(buyQuotation: buyQuotation),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
