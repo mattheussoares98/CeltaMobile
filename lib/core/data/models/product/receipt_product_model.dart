@@ -61,7 +61,7 @@ class ReceiptProductModel extends Equatable implements ProductModelType {
         ?.split('\\r')
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
-        .toList(), //TODO search product with PLU 55 to test
+        .toList(),
     DataValidade_ProcRecebDocProEmb:
         json["DataValidade_ProcRecebDocProEmb"] == null
         ? null
@@ -79,7 +79,7 @@ class ReceiptProductModel extends Equatable implements ProductModelType {
     "PackingQuantity": PackingQuantity,
     "Quantidade_ProcRecebDocProEmb": Quantidade_ProcRecebDocProEmb.toString(),
     "ReferenciaXml_ProcRecebDocProEmb": ReferenciaXml_ProcRecebDocProEmb,
-    "AllEans": AllEans?.map((e) => e).join('\r'),
+    "AllEans": AllEans?.map((e) => e).join('\\r'),
     "DataValidade_ProcRecebDocProEmb":
         DataValidade_ProcRecebDocProEmb?.toIso8601String(),
   };
@@ -91,8 +91,7 @@ class ReceiptProductModel extends Equatable implements ProductModelType {
         CodigoInterno_Produto: entity.ProductCode!,
         CodigoInterno_ProEmb: entity.ProductPackingCode!,
         CodigoPlu_ProEmb: entity.PLU!,
-        Codigo_ProEmb: entity.codigoInternoProEmb
-            ?.toString(), //TODO check if is the correct entity value to model
+        Codigo_ProEmb: entity.codigoInternoProEmb?.toString(),
         PackingQuantity: entity.PackingQuantity!,
         ReferenciaXml_ProcRecebDocProEmb:
             entity.ReferenciaXml_ProcRecebDocProEmb,
