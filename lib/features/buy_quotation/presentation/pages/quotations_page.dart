@@ -24,51 +24,60 @@ class QuotationsPage extends ConsumerWidget {
           buyQuotationsStateControllerProvider(enterpriseCode),
         ),
         data: (quotations) {
-          return ListView.builder(
-            itemCount: quotations.length,
-            itemBuilder: (_, index) {
-              final quotation = quotations[index];
-              return Card(
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: () {
-                    //TODO navigate to the next page
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleAndSubTitle(
-                          title: 'Código'.hardcoded,
-                          subTitle: quotation.Code.toString(),
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Código personalizado'.hardcoded,
-                          subTitle: quotation.PersonalizedCode.toString(),
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Data de criação'.hardcoded,
-                          subTitle: formatter.format(quotation.DateOfCreation),
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Data limite'.hardcoded,
-                          emptyMessage: 'Nenhuma data de limite'.hardcoded,
-                          subTitle: quotation.DateOfLimit == null
-                              ? null
-                              : formatter.format(quotation.DateOfLimit!),
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Observações'.hardcoded,
-                          subTitle: quotation.Observations,
-                          emptyMessage: 'Sem observações'.hardcoded,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(
+                buyQuotationsStateControllerProvider(enterpriseCode),
               );
             },
+            child: ListView.builder(
+              itemCount: quotations.length,
+              itemBuilder: (_, index) {
+                final quotation = quotations[index];
+                return Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: () {
+                      //TODO navigate to the next page
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(Sizes.p8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TitleAndSubTitle(
+                            title: 'Código'.hardcoded,
+                            subTitle: quotation.Code.toString(),
+                          ),
+                          TitleAndSubTitle(
+                            title: 'Código personalizado'.hardcoded,
+                            subTitle: quotation.PersonalizedCode.toString(),
+                          ),
+                          TitleAndSubTitle(
+                            title: 'Data de criação'.hardcoded,
+                            subTitle: formatter.format(
+                              quotation.DateOfCreation,
+                            ),
+                          ),
+                          TitleAndSubTitle(
+                            title: 'Data limite'.hardcoded,
+                            emptyMessage: 'Nenhuma data de limite'.hardcoded,
+                            subTitle: quotation.DateOfLimit == null
+                                ? null
+                                : formatter.format(quotation.DateOfLimit!),
+                          ),
+                          TitleAndSubTitle(
+                            title: 'Observações'.hardcoded,
+                            subTitle: quotation.Observations,
+                            emptyMessage: 'Sem observações'.hardcoded,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           );
         },
       ),
