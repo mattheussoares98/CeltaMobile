@@ -164,5 +164,34 @@ void main() {
         );
       },
     );
+
+    test('should behave correctly when CodeForFullSearch is 0', () async {
+      // ARRANGE
+
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+
+      // ACT
+      final result = await container.read(
+        completeBuyQuotationsStateControllerProvider(
+          fakeEnterpriseCode,
+          '0',
+        ).future,
+      );
+
+      // ASSERT
+      expect(result, isA<BuyQuotationEntity>());
+      expect(result, BuyQuotationEntity.empty());
+
+      // Verify repository was called correctly
+      verifyNever(
+        () => mockRepository.load(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          codeForFullSearch: any(named: 'codeForFullSearch'),
+        ),
+      );
+    });
   });
 }

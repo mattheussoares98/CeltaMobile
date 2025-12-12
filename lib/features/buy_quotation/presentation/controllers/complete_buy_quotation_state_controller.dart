@@ -18,6 +18,10 @@ class CompleteBuyQuotationsStateController
   ) async {
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
+    if (codeForFullSearch == '0') {
+      return BuyQuotationEntity.empty();
+    }
+
     final response = await ref
         .read(soapLoadBuyQuotationsRepositoryProvider)
         .load(
