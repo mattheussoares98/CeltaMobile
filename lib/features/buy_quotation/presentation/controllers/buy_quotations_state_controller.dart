@@ -29,7 +29,7 @@ class BuyQuotationsStateController extends _$BuyQuotationsStateController {
 
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
-    return ref
+    return await ref
         .read(soapLoadBuyQuotationsRepositoryProvider)
         .load(
           baseUrl: validatedUser!.enterprise!.baseUrl!,
