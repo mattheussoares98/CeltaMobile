@@ -94,21 +94,18 @@ class PrimaryTextButton extends StatelessWidget {
       builder: (context, constraints) {
         final canShowIcon = constraints.maxWidth > minimumSizeToShowIcon;
 
-        return SizedBox(
-          height: Sizes.p48,
-          child: TextButton.icon(
-            onPressed: isLoading ? null : onPressed,
-            icon: canShowIcon ? iconWidget : null,
-            iconAlignment: iconAlignment,
-            label: Stack(
-              children: [
-                FittedBox(child: textWidget),
-                if (isLoading)
-                  const Positioned.fill(
-                    child: FittedBox(child: LoadingWidget(padding: 0)),
-                  ),
-              ],
-            ),
+        return TextButton.icon(
+          onPressed: isLoading ? null : onPressed,
+          icon: canShowIcon ? iconWidget : null,
+          iconAlignment: iconAlignment,
+          label: Stack(
+            children: [
+              FittedBox(child: textWidget),
+              if (isLoading)
+                const Positioned.fill(
+                  child: FittedBox(child: LoadingWidget(padding: 0)),
+                ),
+            ],
           ),
         );
       },
