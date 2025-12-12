@@ -9,11 +9,6 @@ import 'domain/repository/repository.dart';
 part 'providers.g.dart';
 
 @riverpod
-ISoapLoadBuyersDatasource soapLoadBuyersDatasource(Ref ref) {
-  return SoapLoadBuyersDatasource(ref.watch(soapRequestProvider));
-}
-
-@riverpod
 ISoapLoadBuyersRepository soapLoadBuyersRepository(Ref ref) {
   return SoapLoadBuyersRepositoryImpl(
     ref.watch(soapLoadBuyersDatasourceProvider),

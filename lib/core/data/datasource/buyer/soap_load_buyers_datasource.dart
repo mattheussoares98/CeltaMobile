@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/core/data/models/buyer/buyer_model.dart';
-
-import '../../../../core/domain/contracts/contracts.dart';
-import 'datasource.dart';
+import '../../../domain/contracts/contracts.dart';
+import '../../models/models.dart';
+import 'buyer.dart';
 
 class SoapLoadBuyersDatasource implements ISoapLoadBuyersDatasource {
   final SoapRequest soapRequest;
