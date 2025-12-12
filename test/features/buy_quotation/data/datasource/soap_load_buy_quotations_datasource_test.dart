@@ -20,6 +20,7 @@ void main() {
   late bool isCompleteSearch;
   late String searchValue;
   late SearchBuyQuotationDataType dataType;
+  late bool inclusiveExpired;
 
   void initSut() {
     sut = SoapLoadBuyQuotationsDatasource(soapRequest);
@@ -51,6 +52,7 @@ void main() {
         SearchBuyQuotationDataType.values[faker.randomGenerator.integer(
           SearchBuyQuotationDataType.values.length,
         )];
+    inclusiveExpired = faker.randomGenerator.boolean();
   }
 
   setUp(() {
@@ -74,6 +76,7 @@ void main() {
       isCompleteSearch: isCompleteSearch,
       searchValue: searchValue,
       dataType: dataType,
+      inclusiveExpired: inclusiveExpired,
     );
 
     expect(response, buyQuotationsModels);
@@ -92,6 +95,7 @@ void main() {
             "Data": searchValue,
             "EnterpriseCode": enterpriseCode,
             "DataType": dataType.code,
+            "InclusiveExpired": inclusiveExpired,
             "InitialDateOfCreation": null,
             "FinalDateOfCreation": null,
             "InitialDateOfLimit": null,
@@ -100,7 +104,6 @@ void main() {
             "ProductPackingCode": null,
             "SupplierCode": null,
             "BuyerCode": null,
-            "InclusiveExpired": null,
           }),
         },
       ),

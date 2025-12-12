@@ -9,5 +9,6 @@ abstract class ISoapLoadBuyQuotationsDatasource {
     required bool isCompleteSearch,
     required String searchValue,
     required SearchBuyQuotationDataType dataType,
+    required bool inclusiveExpired,
   });
 }

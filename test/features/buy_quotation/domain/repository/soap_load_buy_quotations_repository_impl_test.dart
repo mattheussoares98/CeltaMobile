@@ -19,6 +19,7 @@ class SoapLoadBuyQuotationsDatasourceSpy extends Mock
         isCompleteSearch: any(named: 'isCompleteSearch'),
         searchValue: any(named: 'searchValue'),
         dataType: any(named: 'dataType'),
+        inclusiveExpired: any(named: 'inclusiveExpired'),
       ),
     ).thenAnswer((_) async => buyQuotations);
   }
@@ -91,6 +92,7 @@ void main() {
         dataType: codeForFullSearch == null
             ? SearchBuyQuotationDataType.byPersonalizedCode
             : SearchBuyQuotationDataType.byCode,
+        inclusiveExpired: false,
       ),
     ).called(1);
 

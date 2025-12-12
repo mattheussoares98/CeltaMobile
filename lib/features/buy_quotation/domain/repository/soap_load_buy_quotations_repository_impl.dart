@@ -26,6 +26,7 @@ class SoapLoadBuyQuotationsRepositoryImpl
       dataType: codeForFullSearch == null
           ? SearchBuyQuotationDataType.byPersonalizedCode
           : SearchBuyQuotationDataType.byCode,
+      inclusiveExpired: false,
     );
 
     return response.map((e) => e.toEntity()).toList();

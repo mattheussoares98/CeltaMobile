@@ -19,6 +19,7 @@ class SoapLoadBuyQuotationsDatasource
     required bool isCompleteSearch,
     required String searchValue,
     required SearchBuyQuotationDataType dataType,
+    required bool inclusiveExpired,
   }) async {
     final response = await soapRequest.post(
       url: baseUrl,
@@ -33,6 +34,7 @@ class SoapLoadBuyQuotationsDatasource
           "Data": searchValue,
           "EnterpriseCode": enterpriseCode,
           "DataType": dataType.code,
+          "InclusiveExpired": inclusiveExpired,
           "InitialDateOfCreation": null,
           "FinalDateOfCreation": null,
           "InitialDateOfLimit": null,
@@ -42,7 +44,6 @@ class SoapLoadBuyQuotationsDatasource
           "SupplierCode": null,
           "BuyerCode":
               null, //if send 0, considere that the employee is linked to the user
-          "InclusiveExpired": null,
         }),
       },
     );
