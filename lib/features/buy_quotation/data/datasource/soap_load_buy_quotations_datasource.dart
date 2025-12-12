@@ -47,7 +47,14 @@ class SoapLoadBuyQuotationsDatasource
       },
     );
 
-    return (json.decode(response) as List)
+    return (json.decode(
+              response
+                  .toString()
+                  .replaceAll(RegExp(r'\\n'), '')
+                  .replaceAll(RegExp(r'\\r\\'), '')
+                  .replaceAll(RegExp(r'\\'), ''),
+            )
+            as List)
         .map((e) => BuyQuotationModel.fromJson(e))
         .toList();
   }
