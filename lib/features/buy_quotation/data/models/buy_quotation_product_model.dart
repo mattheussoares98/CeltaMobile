@@ -1,13 +1,15 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../../core/data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import 'models.dart';
 
-class BuyQuotationProductsModel {
+class BuyQuotationProductsModel extends Equatable {
   final int? Code;
   final ProductModel? Product;
   final List<BuyQuotationProductEnterpriseModel>? ProductEnterprises;
 
-  BuyQuotationProductsModel({
+  const BuyQuotationProductsModel({
     required this.Code,
     required this.Product,
     required this.ProductEnterprises,
@@ -49,4 +51,7 @@ class BuyQuotationProductsModel {
     Product: Product?.toEntity(),
     ProductEnterprises: ProductEnterprises?.map((e) => e.toEntity()).toList(),
   );
+
+  @override
+  List<Object?> get props => [Code, Product, ProductEnterprises];
 }

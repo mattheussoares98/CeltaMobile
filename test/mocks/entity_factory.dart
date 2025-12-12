@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
 import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/competing_prices/domain/entities/entities.dart';
@@ -828,5 +829,55 @@ class EntityFactory {
         quantity: faker.randomGenerator.decimal(),
         ean: faker.randomGenerator.integer(100).toString(),
         observations: faker.lorem.word(),
+      );
+
+  static BuyQuotationEntity makeBuyQuotationEntity() => BuyQuotationEntity(
+    Code: faker.randomGenerator.integer(100),
+    DateOfCreation: faker.date.dateTime(),
+    DateOfLimit: faker.date.dateTime(),
+    PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+    Observations: faker.lorem.sentence(),
+    Buyer: makeBuyerEntity(),
+    Enterprises: [
+      _makeBuyQuotationEnterpriseEntity(),
+      _makeBuyQuotationEnterpriseEntity(),
+      _makeBuyQuotationEnterpriseEntity(),
+    ],
+    Products: [
+      _makeBuyQuotationProductsEntity(),
+      _makeBuyQuotationProductsEntity(),
+      _makeBuyQuotationProductsEntity(),
+    ],
+  );
+
+  static BuyQuotationEnterpriseEntity _makeBuyQuotationEnterpriseEntity() =>
+      BuyQuotationEnterpriseEntity(
+        Code: faker.randomGenerator.integer(100),
+        enterprise: BuyQuotationEnterpriseInfoEntity(
+          PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+          Code: faker.randomGenerator.integer(100),
+          Name: faker.company.name(),
+          CnpjNumber: faker.randomGenerator.numberOfLength(14),
+          InscriptionNumber: faker.randomGenerator.numberOfLength(14),
+        ),
+      );
+
+  static BuyQuotationProductsEntity _makeBuyQuotationProductsEntity() =>
+      BuyQuotationProductsEntity(
+        Code: faker.randomGenerator.integer(100),
+        Product: makeProductEntity(),
+        ProductEnterprises: [
+          _makeBuyQuotationProductEnterpriseEntity(),
+          _makeBuyQuotationProductEnterpriseEntity(),
+          _makeBuyQuotationProductEnterpriseEntity(),
+        ],
+      );
+
+  static BuyQuotationProductEnterpriseEntity
+  _makeBuyQuotationProductEnterpriseEntity() =>
+      BuyQuotationProductEnterpriseEntity(
+        Code: faker.randomGenerator.integer(100),
+        EnterpriseCode: faker.randomGenerator.integer(100),
+        Quantity: faker.randomGenerator.decimal(),
       );
 }
