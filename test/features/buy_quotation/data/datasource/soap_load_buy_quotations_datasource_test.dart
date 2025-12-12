@@ -109,4 +109,28 @@ void main() {
       ),
     ).called(1);
   });
+
+  test('Should return null if dateOfLimit is 01/01/0001', () async {
+    soapRequest.mockPost(
+      json.encode([
+        BuyQuotationModel.fromEntity(
+          EntityFactory.makeBuyQuotationEntity(
+            dateOfLimit: DateTime(0001, 01, 01),
+          ),
+        ),
+      ]),
+    );
+
+    final response = await sut.load(
+      baseUrl: baseUrl,
+      crossIdentity: crossIdentity,
+      enterpriseCode: enterpriseCode,
+      isCompleteSearch: isCompleteSearch,
+      searchValue: searchValue,
+      dataType: dataType,
+      inclusiveExpired: inclusiveExpired,
+    );
+
+    expect(response.first.DateOfLimit, isNull);
+  });
 }

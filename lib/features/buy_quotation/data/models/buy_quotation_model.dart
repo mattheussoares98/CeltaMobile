@@ -37,26 +37,31 @@ class BuyQuotationModel extends Equatable {
     Products,
   ];
 
-  factory BuyQuotationModel.fromJson(Map json) => BuyQuotationModel(
-    Code: json["Code"],
-    DateOfCreation: DateTime.parse(json["DateOfCreation"]),
-    DateOfLimit: DateTime.tryParse(json["DateOfLimit"]),
-    PersonalizedCode: json["PersonalizedCode"],
-    Observations: json["Observations"],
-    Buyer: json["Buyer"] != null ? BuyerModel.fromJson(json["Buyer"]) : null,
-    Enterprises: json["Enterprises"] != null
-        ? List<BuyQuotationEnterpriseModel>.from(
-            json["Enterprises"].map(
-              (x) => BuyQuotationEnterpriseModel.fromJson(x),
-            ),
-          )
-        : null,
-    Products: json["Products"] != null
-        ? List<BuyQuotationProductsModel>.from(
-            json["Products"].map((x) => BuyQuotationProductsModel.fromJson(x)),
-          )
-        : null,
-  );
+  factory BuyQuotationModel.fromJson(Map json) {
+    final dateOfLimit = DateTime.tryParse(json["DateOfLimit"]);
+    return BuyQuotationModel(
+      Code: json["Code"],
+      DateOfCreation: DateTime.parse(json["DateOfCreation"]),
+      DateOfLimit: dateOfLimit == DateTime(1, 1, 1) ? null : dateOfLimit,
+      PersonalizedCode: json["PersonalizedCode"],
+      Observations: json["Observations"],
+      Buyer: json["Buyer"] != null ? BuyerModel.fromJson(json["Buyer"]) : null,
+      Enterprises: json["Enterprises"] != null
+          ? List<BuyQuotationEnterpriseModel>.from(
+              json["Enterprises"].map(
+                (x) => BuyQuotationEnterpriseModel.fromJson(x),
+              ),
+            )
+          : null,
+      Products: json["Products"] != null
+          ? List<BuyQuotationProductsModel>.from(
+              json["Products"].map(
+                (x) => BuyQuotationProductsModel.fromJson(x),
+              ),
+            )
+          : null,
+    );
+  }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'Code': Code,

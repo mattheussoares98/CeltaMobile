@@ -831,24 +831,25 @@ class EntityFactory {
         observations: faker.lorem.word(),
       );
 
-  static BuyQuotationEntity makeBuyQuotationEntity() => BuyQuotationEntity(
-    Code: faker.randomGenerator.integer(100),
-    DateOfCreation: faker.date.dateTime(),
-    DateOfLimit: faker.date.dateTime(),
-    PersonalizedCode: faker.randomGenerator.integer(100).toString(),
-    Observations: faker.lorem.sentence(),
-    Buyer: makeBuyerEntity(),
-    Enterprises: [
-      _makeBuyQuotationEnterpriseEntity(),
-      _makeBuyQuotationEnterpriseEntity(),
-      _makeBuyQuotationEnterpriseEntity(),
-    ],
-    Products: [
-      _makeBuyQuotationProductsEntity(),
-      _makeBuyQuotationProductsEntity(),
-      _makeBuyQuotationProductsEntity(),
-    ],
-  );
+  static BuyQuotationEntity makeBuyQuotationEntity({DateTime? dateOfLimit}) =>
+      BuyQuotationEntity(
+        Code: faker.randomGenerator.integer(100),
+        DateOfCreation: faker.date.dateTime(),
+        DateOfLimit: dateOfLimit ?? faker.date.dateTime(),
+        PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+        Observations: faker.lorem.sentence(),
+        Buyer: makeBuyerEntity(),
+        Enterprises: [
+          _makeBuyQuotationEnterpriseEntity(),
+          _makeBuyQuotationEnterpriseEntity(),
+          _makeBuyQuotationEnterpriseEntity(),
+        ],
+        Products: [
+          _makeBuyQuotationProductsEntity(),
+          _makeBuyQuotationProductsEntity(),
+          _makeBuyQuotationProductsEntity(),
+        ],
+      );
 
   static BuyQuotationEnterpriseEntity _makeBuyQuotationEnterpriseEntity() =>
       BuyQuotationEnterpriseEntity(
