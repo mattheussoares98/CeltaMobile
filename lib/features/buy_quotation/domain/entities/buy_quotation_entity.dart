@@ -5,8 +5,8 @@ import 'entities.dart';
 
 class BuyQuotationEntity extends Equatable {
   final int Code;
-  final String DateOfCreation;
-  final String DateOfLimit;
+  final DateTime DateOfCreation;
+  final DateTime DateOfLimit;
   final String PersonalizedCode;
   final String? Observations;
   final BuyerEntity? Buyer;
