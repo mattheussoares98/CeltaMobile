@@ -4,6 +4,7 @@ enum Routes {
   adjustSalePriceProducts('Alterar preços'),
   adjustStocks('Ajustar estoque'),
   buyQuotations('Cotação de compras'),
+  buyQuotationInsertUpdate('Inserir/Alterar cotação'),
   buyRequest('Pedido de compras'),
   customerRegister('Cadastro de clientes'),
   competingPricesConcurrents('Preços concorrentes (concorrents)'),

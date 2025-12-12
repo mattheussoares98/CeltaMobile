@@ -1,10 +1,12 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../routing/routing.dart';
 import '../controllers/controller.dart';
 
 class QuotationsPage extends ConsumerWidget {
@@ -38,7 +40,13 @@ class QuotationsPage extends ConsumerWidget {
                   clipBehavior: Clip.antiAlias,
                   child: InkWell(
                     onTap: () {
-                      //TODO navigate to the next page
+                      context.goNamed(
+                        Routes.buyQuotationInsertUpdate.name,
+                        pathParameters: {
+                          'code': quotation.Code.toString(),
+                          'enterpriseCode': enterpriseCode.toString(),
+                        },
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(Sizes.p8),

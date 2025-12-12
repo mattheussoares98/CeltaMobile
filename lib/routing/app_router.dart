@@ -40,7 +40,7 @@ GoRouter goRouter(Ref ref) {
       homeRoute([
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
-        buyQuotationsRoute([]),
+        buyQuotationsRoute([buyQuotationInsertUpdateRoute()]),
         buyRequestRoute(),
         competingPricesResearchsRoute([
           concurrentsRoute([competingPricesProductsRoute()]),
