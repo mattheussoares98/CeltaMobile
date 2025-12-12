@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import '../../../../core/data/models/models.dart';
 
 abstract class ISoapLoadBuyersDatasource {
   Future<List<BuyerModel>> load({

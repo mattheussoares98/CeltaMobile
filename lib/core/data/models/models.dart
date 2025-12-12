@@ -1,4 +1,5 @@
 export 'address/address.dart';
+export 'buyer/buyer.dart';
 export 'enterprise/enterprise.dart';
 export './product/product.dart';
 export 'request_type/request_type.dart';

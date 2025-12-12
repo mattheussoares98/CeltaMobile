@@ -1,5 +1,5 @@
+import '../../../../core/domain/entities/entities.dart';
 import '../../data/datasource/datasource.dart';
-import '../entities/entities.dart';
 import 'repository.dart';
 
 class SoapLoadBuyersRepositoryImpl implements ISoapLoadBuyersRepository {
