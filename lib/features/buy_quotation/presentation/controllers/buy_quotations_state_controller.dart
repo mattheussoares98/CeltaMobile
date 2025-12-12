@@ -11,7 +11,7 @@ part 'buy_quotations_state_controller.g.dart';
 @riverpod
 class BuyQuotationsStateController extends _$BuyQuotationsStateController {
   @override
-  Future<List<BuyQuotationEntity>?> build(int enterpriseCode) async {
+  Future<List<BuyQuotationEntity>> build(int enterpriseCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
