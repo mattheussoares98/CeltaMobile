@@ -8,7 +8,7 @@ RouteBase buyQuotationInsertUpdateRoute() => GoRoute(
   name: Routes.buyQuotationInsertUpdate.name,
   builder: (context, state) {
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
-    final code = int.tryParse(state.pathParameters['code'] ?? '');
+    final code = int.parse(state.pathParameters['code']!);
 
     return InsertUpdatePage(code: code, enterpriseCode: enterpriseCode);
   },

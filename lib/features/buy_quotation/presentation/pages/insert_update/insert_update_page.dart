@@ -2,7 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class InsertUpdatePage extends StatelessWidget {
-  final int? code;
+  final int code;
   final int enterpriseCode;
   const InsertUpdatePage({
     super.key,
@@ -15,7 +15,7 @@ class InsertUpdatePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          code == null ? 'Inseririndo'.hardcoded : 'Alterarando'.hardcoded,
+          code == 0 ? 'Inseririndo'.hardcoded : 'Alterarando'.hardcoded,
         ),
       ),
     );
