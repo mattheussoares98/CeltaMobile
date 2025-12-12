@@ -5,10 +5,10 @@ import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class BuyQuotationModel extends Equatable {
-  final int Code;
-  final DateTime DateOfCreation;
+  final int? Code;
+  final DateTime? DateOfCreation;
   final DateTime? DateOfLimit;
-  final String PersonalizedCode;
+  final String? PersonalizedCode;
   final String? Observations;
   final BuyerModel? Buyer;
   final List<BuyQuotationEnterpriseModel>? Enterprises;
@@ -60,7 +60,7 @@ class BuyQuotationModel extends Equatable {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'Code': Code,
-    'DateOfCreation': DateOfCreation.toIso8601String(),
+    'DateOfCreation': DateOfCreation?.toIso8601String(),
     'DateOfLimit': DateOfLimit?.toIso8601String(),
     'PersonalizedCode': PersonalizedCode,
     'Observations': Observations,

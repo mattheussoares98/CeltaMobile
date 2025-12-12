@@ -52,14 +52,18 @@ class QuotationsItems extends ConsumerWidget {
                           title: 'Código'.hardcoded,
                           subTitle: quotation.Code.toString(),
                         ),
-                        TitleAndSubTitle(
-                          title: 'Código personalizado'.hardcoded,
-                          subTitle: quotation.PersonalizedCode.toString(),
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Data de criação'.hardcoded,
-                          subTitle: formatter.format(quotation.DateOfCreation),
-                        ),
+                        if (quotation.PersonalizedCode != null)
+                          TitleAndSubTitle(
+                            title: 'Código personalizado'.hardcoded,
+                            subTitle: quotation.PersonalizedCode.toString(),
+                          ),
+                        if (quotation.DateOfCreation != null)
+                          TitleAndSubTitle(
+                            title: 'Data de criação'.hardcoded,
+                            subTitle: formatter.format(
+                              quotation.DateOfCreation!,
+                            ),
+                          ),
                         TitleAndSubTitle(
                           title: 'Data limite'.hardcoded,
                           emptyMessage: 'Nenhuma data de limite'.hardcoded,

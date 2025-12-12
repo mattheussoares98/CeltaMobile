@@ -4,10 +4,10 @@ import '../../../../core/domain/entities/entities.dart';
 import 'entities.dart';
 
 class BuyQuotationEntity extends Equatable {
-  final int Code;
-  final DateTime DateOfCreation;
+  final int? Code;
+  final DateTime? DateOfCreation;
   final DateTime? DateOfLimit;
-  final String PersonalizedCode;
+  final String? PersonalizedCode;
   final String? Observations;
   final BuyerEntity? Buyer;
   final List<BuyQuotationEnterpriseEntity>? Enterprises;
@@ -35,4 +35,15 @@ class BuyQuotationEntity extends Equatable {
     Enterprises,
     Products,
   ];
+
+  factory BuyQuotationEntity.empty() => const BuyQuotationEntity(
+    Code: null,
+    DateOfCreation: null,
+    DateOfLimit: null,
+    PersonalizedCode: null,
+    Observations: null,
+    Buyer: null,
+    Enterprises: null,
+    Products: null,
+  );
 }
