@@ -86,4 +86,15 @@ class BuyQuotationModel extends Equatable {
           (e) => BuyQuotationProductsModel.fromEntity(e),
         ).toList(),
       );
+
+  BuyQuotationEntity toEntity() => BuyQuotationEntity(
+    Code: Code,
+    DateOfCreation: DateOfCreation,
+    DateOfLimit: DateOfLimit,
+    PersonalizedCode: PersonalizedCode,
+    Observations: Observations,
+    Buyer: Buyer?.toEntity(),
+    Enterprises: Enterprises?.map((e) => e.toEntity()).toList(),
+    Products: Products?.map((e) => e.toEntity()).toList(),
+  );
 }
