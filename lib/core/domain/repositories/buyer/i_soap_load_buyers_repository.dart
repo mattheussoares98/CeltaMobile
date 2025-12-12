@@ -1,4 +1,4 @@
-import '../../../../core/domain/entities/entities.dart';
+import '../../entities/entities.dart';
 
 abstract class ISoapLoadBuyersRepository {
   Future<List<BuyerEntity>> load({

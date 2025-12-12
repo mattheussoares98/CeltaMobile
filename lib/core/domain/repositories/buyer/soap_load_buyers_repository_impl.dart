@@ -1,6 +1,6 @@
-import '../../../../core/data/datasource/buyer/buyer.dart';
-import '../../../../core/domain/entities/entities.dart';
-import 'repository.dart';
+import '../../../data/datasource/buyer/buyer.dart';
+import '../../entities/entities.dart';
+import 'buyer.dart';
 
 class SoapLoadBuyersRepositoryImpl implements ISoapLoadBuyersRepository {
   final ISoapLoadBuyersDatasource datasource;

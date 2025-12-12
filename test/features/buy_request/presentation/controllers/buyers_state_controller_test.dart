@@ -1,10 +1,10 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
+import 'package:celta_intelligence/core/domain/repositories/buyer/buyer.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/core/providers/buyer/buyer.dart';
 import 'package:celta_intelligence/exceptions/app_exception.dart';
-import 'package:celta_intelligence/features/buy_request/domain/repository/repository.dart';
 import 'package:celta_intelligence/features/buy_request/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/buy_request/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
