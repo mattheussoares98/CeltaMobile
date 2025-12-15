@@ -9,7 +9,12 @@ import '../../../../domain/entities/entities.dart';
 
 class ProductsItems extends ConsumerWidget {
   final BuyQuotationEntity buyQuotation;
-  const ProductsItems({super.key, required this.buyQuotation});
+  final Map<String, TextEditingController> quantityControllers;
+  const ProductsItems({
+    super.key,
+    required this.buyQuotation,
+    required this.quantityControllers,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

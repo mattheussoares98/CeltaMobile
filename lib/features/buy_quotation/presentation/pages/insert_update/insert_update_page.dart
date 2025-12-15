@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../controllers/controller.dart';
 import 'components/components.dart';
 
@@ -24,6 +25,7 @@ class InsertUpdatePage extends ConsumerStatefulWidget {
 class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
   final observationController = TextEditingController();
   final searchValueController = TextEditingController();
+  final Map<String, TextEditingController> quantityControllers = {};
 
   @override
   void initState() {
@@ -31,6 +33,16 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
+        //almost instantly because the data was already loaded
+        final enterprises = await ref.read(
+          enterprisesStateControllerProvider().future,
+        );
+
+        for (final enterprise in enterprises) {
+          quantityControllers[enterprise.Code.toString()] =
+              TextEditingController();
+        }
+
         final value = await ref.read(
           completeBuyQuotationsStateControllerProvider(
             widget.enterpriseCode,
@@ -49,6 +61,10 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
     super.dispose();
     observationController.dispose();
     searchValueController.dispose();
+
+    for (final controller in quantityControllers.values) {
+      controller.dispose();
+    }
   }
 
   @override
@@ -102,7 +118,10 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                   buyQuotation: buyQuotation,
                 ),
                 gapSliverH8,
-                ProductsItems(buyQuotation: buyQuotation),
+                ProductsItems(
+                  buyQuotation: buyQuotation,
+                  quantityControllers: quantityControllers,
+                ),
               ],
             ),
           );
