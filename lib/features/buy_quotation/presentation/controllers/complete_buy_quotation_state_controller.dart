@@ -37,6 +37,7 @@ class CompleteBuyQuotationsStateController
 
   void updateValues({
     DateTime? DateOfLimit,
+    bool? annulDateOfLimit,
     String? Observations,
     BuyerEntity? Buyer,
     List<BuyQuotationEnterpriseEntity>? Enterprises,
@@ -47,15 +48,17 @@ class CompleteBuyQuotationsStateController
     if (currentState == null) return;
 
     // 2. Perform the immutable update using copyWith
-    final updatedEntity = currentState.copyWith(
+    final updatedEntity = BuyQuotationEntity.empty().copyWith(
       Code: state.value!.Code,
-      DateOfCreation: state.value!.DateOfCreation,
-      DateOfLimit: DateOfLimit,
       PersonalizedCode: state.value!.PersonalizedCode,
-      Observations: Observations,
-      Buyer: Buyer,
-      Enterprises: Enterprises,
-      Products: Products,
+      DateOfCreation: state.value!.DateOfCreation,
+      DateOfLimit: annulDateOfLimit == true
+          ? null
+          : DateOfLimit ?? state.value!.DateOfLimit,
+      Observations: Observations ?? state.value!.Observations,
+      Buyer: Buyer ?? state.value!.Buyer,
+      Enterprises: Enterprises ?? state.value!.Enterprises,
+      Products: Products ?? state.value!.Products,
     );
 
     // 3. Set the new state

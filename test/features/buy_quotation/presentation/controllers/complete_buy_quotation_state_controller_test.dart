@@ -265,6 +265,64 @@ void main() {
 
       expect(updatedEntity, isNot(equals(initialEntity)));
     });
+    test('should annul date of limit correctly', () async {
+      // 1. Stub load to ensure state has initial data
+      when(
+        () => mockRepository.load(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          codeForFullSearch: any(named: 'codeForFullSearch'),
+        ),
+      ).thenAnswer((_) async => [fakeQuotation]);
+
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+
+      // 2. Wait for initial state to settle (AsyncData(fakeQuotation))
+      await container.read(
+        completeBuyQuotationsStateControllerProvider(
+          fakeEnterpriseCode,
+          fakeCodeForFullSearch,
+        ).future,
+      );
+
+      final notifier = container.read(
+        completeBuyQuotationsStateControllerProvider(
+          fakeEnterpriseCode,
+          fakeCodeForFullSearch,
+        ).notifier,
+      );
+
+      final initialEntity = container
+          .read(
+            completeBuyQuotationsStateControllerProvider(
+              fakeEnterpriseCode,
+              fakeCodeForFullSearch,
+            ),
+          )
+          .value;
+
+      // ACT
+      notifier.updateValues(annulDateOfLimit: true);
+
+      // ASSERT
+      final updatedState = container.read(
+        completeBuyQuotationsStateControllerProvider(
+          fakeEnterpriseCode,
+          fakeCodeForFullSearch,
+        ),
+      );
+
+      final updatedEntity = updatedState.value!;
+
+      // 1. Verify updated fields
+      expect(updatedEntity.DateOfLimit, null);
+      expect(updatedEntity.Observations, initialEntity?.Observations);
+      expect(updatedEntity.Enterprises, initialEntity?.Enterprises);
+      expect(updatedEntity.Observations, initialEntity?.Observations);
+      expect(updatedEntity.Products, initialEntity?.Products);
+    });
 
     test(
       'should do nothing if state.value is null (e.g., loading or error state)',
