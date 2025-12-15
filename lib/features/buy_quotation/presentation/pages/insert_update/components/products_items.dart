@@ -26,7 +26,13 @@ class ProductsItems extends ConsumerWidget {
           routine: BsRoutine.buyQuotation,
           itemBeforeProductName: Column(
             children: [
-              ...?product.ProductEnterprises?.map((e) {
+              ...?product.ProductEnterprises?.where(
+                (x) =>
+                    buyQuotation.Enterprises?.any(
+                      (y) => y.enterprise.Code == x.EnterpriseCode,
+                    ) ==
+                    true,
+              ).map((e) {
                 final correspondentEnterprise = enterprises.value!.firstWhere(
                   (x) => e.EnterpriseCode == x.Code,
                 );
