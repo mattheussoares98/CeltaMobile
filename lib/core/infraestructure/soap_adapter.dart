@@ -86,6 +86,9 @@ class SoapAdapter implements contracts.SoapRequest {
   ) {
     if (responseBody.containsKey('status') && typeOfResult == null) {
       return responseBody['status'];
+    } else if (responseBody.containsKey('status') &&
+        !responseBody.containsKey(typeOfResult)) {
+      return responseBody['status'];
     } else if (typeOfResult == null) {
       return 'Sucesso'.hardcoded;
     } else if (responseBody[typeOfResult] != null) {

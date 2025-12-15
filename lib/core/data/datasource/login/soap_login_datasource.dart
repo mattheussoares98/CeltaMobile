@@ -28,7 +28,12 @@ class SoapLoginDatasource implements ISoapLoginDatasource {
       url: baseUrl.toLowerCase().removeWhiteSpaces(),
     );
 
-    Map resultAsMap = json.decode(response);
+    Map resultAsMap;
+    try {
+      resultAsMap = json.decode(response);
+    } catch (e) {
+      throw Exception(response);
+    }
 
     final myTransformer = Xml2Json();
     myTransformer.parse(resultAsMap["Usuarios"][0]['CrossIdentity_Usuario']);

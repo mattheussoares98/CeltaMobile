@@ -61,5 +61,29 @@ void main() {
         ),
       ).called(1);
     });
+
+    test('should throw if response cant be decoded', () async {
+      final invalidResponde = faker.lorem.sentence();
+      soapAdapter.mockPost(invalidResponde);
+
+      final future = sut.login(
+        baseUrl: " $url ".toUpperCase(),
+        user: user,
+        password: password,
+      );
+
+      expect(future, throwsA(isA<Exception>()));
+
+      verify(
+        () => soapAdapter.post(
+          url: url.toLowerCase().removeWhiteSpaces(),
+          parameters: {"user": user, "password": password},
+          typeOfResponse: "UserCanLoginJsonResponse",
+          soapAction: "UserCanLoginJson",
+          serviceASMX: "CeltaSecurityService.asmx",
+          typeOfResult: "UserCanLoginJsonResult",
+        ),
+      ).called(1);
+    });
   });
 }
