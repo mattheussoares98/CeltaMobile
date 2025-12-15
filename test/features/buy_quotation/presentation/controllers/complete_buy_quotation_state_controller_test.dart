@@ -238,13 +238,14 @@ void main() {
           .value;
 
       // ACT
-      notifier.updateValues(
+      final updated = notifier.updateValues(
         Buyer: newQuotation.Buyer,
         DateOfLimit: newQuotation.DateOfLimit,
         Enterprises: newQuotation.Enterprises,
         Observations: newQuotation.Observations,
         Products: newQuotation.Products,
       );
+      expect(updated, isTrue);
 
       // ASSERT
       final updatedState = container.read(
@@ -287,24 +288,16 @@ void main() {
         ).future,
       );
 
-      final notifier = container.read(
-        completeBuyQuotationsStateControllerProvider(
-          fakeEnterpriseCode,
-          fakeCodeForFullSearch,
-        ).notifier,
-      );
-
-      final initialEntity = container
+      final updated = container
           .read(
             completeBuyQuotationsStateControllerProvider(
               fakeEnterpriseCode,
               fakeCodeForFullSearch,
-            ),
+            ).notifier,
           )
-          .value;
+          .updateValues(annulDateOfLimit: true);
 
-      // ACT
-      notifier.updateValues(annulDateOfLimit: true);
+      expect(updated, isTrue);
 
       // ASSERT
       final updatedState = container.read(
@@ -318,10 +311,10 @@ void main() {
 
       // 1. Verify updated fields
       expect(updatedEntity.DateOfLimit, null);
-      expect(updatedEntity.Observations, initialEntity?.Observations);
-      expect(updatedEntity.Enterprises, initialEntity?.Enterprises);
-      expect(updatedEntity.Observations, initialEntity?.Observations);
-      expect(updatedEntity.Products, initialEntity?.Products);
+      expect(updatedEntity.Observations, fakeQuotation.Observations);
+      expect(updatedEntity.Enterprises, fakeQuotation.Enterprises);
+      expect(updatedEntity.Observations, fakeQuotation.Observations);
+      expect(updatedEntity.Products, fakeQuotation.Products);
     });
 
     test(
@@ -358,7 +351,8 @@ void main() {
 
         // ACT
         // Call updateEntity while state.value is null (AsyncLoading)
-        notifier.updateValues(Observations: 'Test');
+        final updated = notifier.updateValues(Observations: 'Test');
+        expect(updated, isFalse);
 
         // ASSERT
         // Ensure state is still AsyncLoading (no change should occur)
@@ -377,6 +371,94 @@ void main() {
             fakeCodeForFullSearch,
           ).future,
         );
+      },
+    );
+
+    test(
+      'should emit error if put more than one enterprise with the same code',
+      () async {
+        // ARRANGE
+        final newQuotation = EntityFactory.makeBuyQuotationEntity();
+
+        // 1. Stub load to ensure state has initial data
+        when(
+          () => mockRepository.load(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            codeForFullSearch: any(named: 'codeForFullSearch'),
+          ),
+        ).thenAnswer((_) async => [fakeQuotation]);
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // 2. Wait for initial state to settle (AsyncData(fakeQuotation))
+        await container.read(
+          completeBuyQuotationsStateControllerProvider(
+            fakeEnterpriseCode,
+            fakeCodeForFullSearch,
+          ).future,
+        );
+
+        // ACT
+        final updated = container
+            .read(
+              completeBuyQuotationsStateControllerProvider(
+                fakeEnterpriseCode,
+                fakeCodeForFullSearch,
+              ).notifier,
+            )
+            .updateValues(
+              Enterprises: [
+                ...newQuotation.Enterprises!,
+                ...newQuotation.Enterprises!,
+              ],
+            );
+
+        expect(updated, isFalse);
+      },
+    );
+    test(
+      'should emit error if put more than one product with the same code',
+      () async {
+        // ARRANGE
+        final newQuotation = EntityFactory.makeBuyQuotationEntity();
+
+        // 1. Stub load to ensure state has initial data
+        when(
+          () => mockRepository.load(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            codeForFullSearch: any(named: 'codeForFullSearch'),
+          ),
+        ).thenAnswer((_) async => [fakeQuotation]);
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // 2. Wait for initial state to settle (AsyncData(fakeQuotation))
+        await container.read(
+          completeBuyQuotationsStateControllerProvider(
+            fakeEnterpriseCode,
+            fakeCodeForFullSearch,
+          ).future,
+        );
+
+        // ACT
+        bool updated = container
+            .read(
+              completeBuyQuotationsStateControllerProvider(
+                fakeEnterpriseCode,
+                fakeCodeForFullSearch,
+              ).notifier,
+            )
+            .updateValues(
+              Products: [...newQuotation.Products!, ...newQuotation.Products!],
+            );
+
+        expect(updated, isFalse);
       },
     );
   });

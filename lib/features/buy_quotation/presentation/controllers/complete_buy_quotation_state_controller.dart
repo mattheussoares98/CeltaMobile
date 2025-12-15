@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
@@ -13,7 +11,7 @@ part 'complete_buy_quotation_state_controller.g.dart';
 class CompleteBuyQuotationsStateController
     extends _$CompleteBuyQuotationsStateController {
   @override
-  Future<BuyQuotationEntity> build(
+  FutureOr<BuyQuotationEntity> build(
     int enterpriseCode,
     String codeForFullSearch,
   ) async {
@@ -35,7 +33,7 @@ class CompleteBuyQuotationsStateController
     return response.first;
   }
 
-  void updateValues({
+  bool updateValues({
     DateTime? DateOfLimit,
     bool? annulDateOfLimit,
     String? Observations,
@@ -45,7 +43,14 @@ class CompleteBuyQuotationsStateController
   }) {
     // 1. Ensure the current state is data (not loading or error)
     final currentState = state.value;
-    if (currentState == null) return;
+    if (currentState == null) return false;
+
+    if (!_enterprisesAreValid(Enterprises)) {
+      return false;
+    }
+    if (!_productsAreValid(Products)) {
+      return false;
+    }
 
     // 2. Perform the immutable update using copyWith
     final updatedEntity = BuyQuotationEntity.empty().copyWith(
@@ -60,8 +65,24 @@ class CompleteBuyQuotationsStateController
       Enterprises: Enterprises ?? state.value!.Enterprises,
       Products: Products ?? state.value!.Products,
     );
-
-    // 3. Set the new state
     state = AsyncValue.data(updatedEntity);
+    return true;
+  }
+
+  bool _enterprisesAreValid(List<BuyQuotationEnterpriseEntity>? enterprises) {
+    if (enterprises == null) return true;
+    // 1. Get all codes
+    final codes = enterprises.map((e) => e.Code).toList();
+    return codes.length == codes.toSet().length;
+  }
+
+  // Helper to check for duplicate product packing codes
+  bool _productsAreValid(List<BuyQuotationProductsEntity>? products) {
+    if (products == null) return true;
+
+    // 1. Get all product packing codes
+    final codes = products.map((e) => e.Product?.ProductPackingCode).toList();
+
+    return codes.length == codes.toSet().length;
   }
 }

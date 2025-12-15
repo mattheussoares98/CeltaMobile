@@ -840,39 +840,53 @@ class EntityFactory {
         Observations: faker.lorem.sentence(),
         Buyer: makeBuyerEntity(),
         Enterprises: [
-          _makeBuyQuotationEnterpriseEntity(),
-          _makeBuyQuotationEnterpriseEntity(),
-          _makeBuyQuotationEnterpriseEntity(),
+          _makeBuyQuotationEnterpriseEntity(
+            enterpriseCode: faker.randomGenerator.integer(100),
+          ),
+          _makeBuyQuotationEnterpriseEntity(
+            enterpriseCode: faker.randomGenerator.integer(200, min: 101),
+          ),
+          _makeBuyQuotationEnterpriseEntity(
+            enterpriseCode: faker.randomGenerator.integer(300, min: 201),
+          ),
         ],
         Products: [
-          _makeBuyQuotationProductsEntity(),
-          _makeBuyQuotationProductsEntity(),
-          _makeBuyQuotationProductsEntity(),
+          _makeBuyQuotationProductsEntity(
+            productPackingCode: faker.randomGenerator.integer(100),
+          ),
+          _makeBuyQuotationProductsEntity(
+            productPackingCode: faker.randomGenerator.integer(200, min: 101),
+          ),
+          _makeBuyQuotationProductsEntity(
+            productPackingCode: faker.randomGenerator.integer(300, min: 201),
+          ),
         ],
       );
 
-  static BuyQuotationEnterpriseEntity _makeBuyQuotationEnterpriseEntity() =>
-      BuyQuotationEnterpriseEntity(
-        Code: faker.randomGenerator.integer(100),
-        enterprise: BuyQuotationEnterpriseInfoEntity(
-          PersonalizedCode: faker.randomGenerator.integer(100).toString(),
-          Code: faker.randomGenerator.integer(100),
-          Name: faker.company.name(),
-          CnpjNumber: faker.randomGenerator.numberOfLength(14),
-          InscriptionNumber: faker.randomGenerator.numberOfLength(14),
-        ),
-      );
+  static BuyQuotationEnterpriseEntity _makeBuyQuotationEnterpriseEntity({
+    int? enterpriseCode,
+  }) => BuyQuotationEnterpriseEntity(
+    Code: faker.randomGenerator.integer(100),
+    enterprise: BuyQuotationEnterpriseInfoEntity(
+      PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+      Code: enterpriseCode ?? faker.randomGenerator.integer(100),
+      Name: faker.company.name(),
+      CnpjNumber: faker.randomGenerator.numberOfLength(14),
+      InscriptionNumber: faker.randomGenerator.numberOfLength(14),
+    ),
+  );
 
-  static BuyQuotationProductsEntity _makeBuyQuotationProductsEntity() =>
-      BuyQuotationProductsEntity(
-        Code: faker.randomGenerator.integer(100),
-        Product: makeProductEntity(),
-        ProductEnterprises: [
-          _makeBuyQuotationProductEnterpriseEntity(),
-          _makeBuyQuotationProductEnterpriseEntity(),
-          _makeBuyQuotationProductEnterpriseEntity(),
-        ],
-      );
+  static BuyQuotationProductsEntity _makeBuyQuotationProductsEntity({
+    int? productPackingCode,
+  }) => BuyQuotationProductsEntity(
+    Code: faker.randomGenerator.integer(100),
+    Product: makeProductEntity(productPackingCode: productPackingCode),
+    ProductEnterprises: [
+      _makeBuyQuotationProductEnterpriseEntity(),
+      _makeBuyQuotationProductEnterpriseEntity(),
+      _makeBuyQuotationProductEnterpriseEntity(),
+    ],
+  );
 
   static BuyQuotationProductEnterpriseEntity
   _makeBuyQuotationProductEnterpriseEntity() =>
