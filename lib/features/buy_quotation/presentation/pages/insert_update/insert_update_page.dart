@@ -78,17 +78,17 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
             child: CustomScrollView(
               slivers: [
                 Code(buyQuotation: buyQuotation),
+                CreationDate(buyQuotation: buyQuotation),
+                LimitDate(
+                  buyQuotation: buyQuotation,
+                  enterpriseCode: widget.enterpriseCode,
+                ),
                 gapSliverH8,
                 BuyersDropdown(
                   buyQuotation: buyQuotation,
                   enterpriseCode: widget.enterpriseCode,
                 ),
-                CreationDate(buyQuotation: buyQuotation),
                 gapSliverH8,
-                LimitDate(
-                  buyQuotation: buyQuotation,
-                  enterpriseCode: widget.enterpriseCode,
-                ),
                 ObservationField(observationController: observationController),
                 const SliverToBoxAdapter(child: Divider()),
                 Enterprises(

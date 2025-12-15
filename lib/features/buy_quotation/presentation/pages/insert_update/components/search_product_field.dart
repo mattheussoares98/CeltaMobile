@@ -109,29 +109,43 @@ class SearchProductField extends ConsumerWidget {
       searchProductsStateControllerProvider(searchProductKey),
     );
 
+    final theme = Theme.of(context);
+
     return SliverToBoxAdapter(
-      child: DefaultSearchProducts(
-        isLoading: asyncValue.isLoading,
-        searchProducts: () {
-          ref
-              .read(
-                searchProductsStateControllerProvider(
-                  searchProductKey,
-                ).notifier,
-              )
-              .loadProducts(
-                GetProductsJsonParams(
-                  searchValue: searchValueController.text,
-                  enterpriseCodes: [enterpriseCode],
-                ),
-              );
-        },
-        searchValueController: searchValueController,
-        searchProductKey: SearchProductKey(
-          enterpriseCode,
-          BsRoutine.buyQuotation,
-          Modules.buyQuotation,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Produtos (${buyQuotation.Products?.length ?? 0})'.hardcoded,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontStyle: FontStyle.italic,
+              color: theme.primaryColor,
+            ),
+          ),
+          DefaultSearchProducts(
+            isLoading: asyncValue.isLoading,
+            searchProducts: () {
+              ref
+                  .read(
+                    searchProductsStateControllerProvider(
+                      searchProductKey,
+                    ).notifier,
+                  )
+                  .loadProducts(
+                    GetProductsJsonParams(
+                      searchValue: searchValueController.text,
+                      enterpriseCodes: [enterpriseCode],
+                    ),
+                  );
+            },
+            searchValueController: searchValueController,
+            searchProductKey: SearchProductKey(
+              enterpriseCode,
+              BsRoutine.buyQuotation,
+              Modules.buyQuotation,
+            ),
+          ),
+        ],
       ),
     );
   }

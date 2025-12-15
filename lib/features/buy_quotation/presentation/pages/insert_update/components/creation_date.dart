@@ -11,7 +11,7 @@ class CreationDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (buyQuotation.DateOfCreation != null) {
+    if (buyQuotation.DateOfCreation == null) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
