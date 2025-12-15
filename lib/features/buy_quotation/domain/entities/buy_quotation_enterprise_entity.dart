@@ -19,7 +19,7 @@ class BuyQuotationEnterpriseEntity extends Equatable {
 extension BuyQuotationEnterpriseEntityMapper on EnterpriseEntity {
   BuyQuotationEnterpriseEntity toBuyQuotationEnterprise() {
     return BuyQuotationEnterpriseEntity(
-      Code: this.Code,
+      Code: 0, //TODO check if works when unselect and select again
       enterprise: BuyQuotationEnterpriseInfoEntity(
         PersonalizedCode: PersonalizedCode,
         Name: name,
