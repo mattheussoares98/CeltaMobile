@@ -105,6 +105,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                 SearchProductField(
                   enterpriseCode: widget.enterpriseCode,
                   searchValueController: searchValueController,
+                  buyQuotation: buyQuotation,
                 ),
                 gapSliverH8,
                 ProductsItems(buyQuotation: buyQuotation),

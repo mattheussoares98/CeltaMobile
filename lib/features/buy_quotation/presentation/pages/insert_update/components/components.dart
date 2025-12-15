@@ -5,3 +5,4 @@ export './limit_date.dart';
 export './observation_field.dart';
 export './products_items.dart';
 export './search_product_field.dart';
+export './select_products_modal.dart';
