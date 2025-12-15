@@ -6,10 +6,18 @@ import 'package:intl/intl.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controller.dart';
 
 class LimitDate extends ConsumerWidget {
   final BuyQuotationEntity buyQuotation;
-  const LimitDate({super.key, required this.buyQuotation});
+  final int enterpriseCode;
+  final int buyQuotationCode;
+  const LimitDate({
+    super.key,
+    required this.buyQuotation,
+    required this.enterpriseCode,
+    required this.buyQuotationCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,9 +32,7 @@ class LimitDate extends ConsumerWidget {
               title: 'Data limite'.hardcoded,
               subTitle: buyQuotation.DateOfLimit == null
                   ? null
-                  : DateFormat(
-                      'dd/MM/yyyy HH:mm',
-                    ).format(buyQuotation.DateOfLimit!),
+                  : DateFormat('dd/MM/yyyy').format(buyQuotation.DateOfLimit!),
               emptyMessage: 'Sem data de limite'.hardcoded,
             ),
           ),
@@ -45,7 +51,17 @@ class LimitDate extends ConsumerWidget {
                 context: context,
               );
 
-              //TODO change the date of limit in the controller. Doesnt matter if return null or another value
+              ref
+                  .read(
+                    completeBuyQuotationsStateControllerProvider(
+                      enterpriseCode,
+                      buyQuotationCode.toString(),
+                    ).notifier,
+                  )
+                  .updateValues(
+                    DateOfLimit: newDate,
+                    annulDateOfLimit: newDate == null,
+                  );
             },
           ),
         ],

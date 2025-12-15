@@ -89,7 +89,11 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                 //TODO move this controller provider to core path
                 // ),
                 CreationDate(buyQuotation: buyQuotation),
-                LimitDate(buyQuotation: buyQuotation),
+                LimitDate(
+                  buyQuotation: buyQuotation,
+                  buyQuotationCode: widget.code,
+                  enterpriseCode: widget.enterpriseCode,
+                ),
                 ObservationField(observationController: observationController),
                 const SliverToBoxAdapter(child: Divider()),
                 const Enterprises(),
