@@ -56,7 +56,7 @@ class Enterprises extends ConsumerWidget {
           updatedList = [...currentList, newEnterprise];
         }
 
-        ref
+        final updated = ref
             .read(
               completeBuyQuotationsStateControllerProvider(
                 enterpriseCode,
@@ -64,6 +64,15 @@ class Enterprises extends ConsumerWidget {
               ).notifier,
             )
             .updateValues(Enterprises: updatedList);
+        if (!updated) {
+          showAlertDialog(
+            context: context,
+            title: 'Erro'.hardcoded,
+            content:
+                'Não foi possível atualizar as empresas. Entre em contato com o suporte.'
+                    .hardcoded,
+          );
+        }
       }
     }
 

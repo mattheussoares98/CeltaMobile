@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../domain/entities/entities.dart';
@@ -31,7 +32,7 @@ class SearchProductField extends ConsumerWidget {
 
     final enterprises = ref.watch(enterprisesStateControllerProvider()).value;
 
-    void addProducts(List<ProductEntity> products) {
+    void addProducts(List<ProductEntity> products) async {
       final currentProducts = buyQuotation.Products ?? [];
       final updatedProducts = [
         ...products
@@ -59,16 +60,25 @@ class SearchProductField extends ConsumerWidget {
             ),
         ...currentProducts,
       ];
-      ref
+      final updated = ref
           .read(
             completeBuyQuotationsStateControllerProvider(
               enterpriseCode,
               buyQuotation.Code.toString(),
             ).notifier,
           )
-          .updateValues(
-            Products: updatedProducts,
-          ); //TODO cant allow repeat product
+          .updateValues(Products: updatedProducts);
+
+      if (!updated) {
+        await Future.delayed(Duration.zero);
+        showAlertDialog(
+          context: context,
+          title: 'Erro'.hardcoded,
+          content:
+              'Não foi possível adicionar os produtos. Entre em contato com o suporte'
+                  .hardcoded,
+        );
+      }
     }
 
     ref.listen(searchProductsStateControllerProvider(searchProductKey), (
