@@ -56,7 +56,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.code == 0 ? 'Inseririndo'.hardcoded : 'Alterarando'.hardcoded,
+          widget.code == 0 ? 'Inserindo'.hardcoded : 'Alterando'.hardcoded,
         ),
       ),
       body: AsyncValueWidget(
@@ -78,17 +78,13 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
             child: CustomScrollView(
               slivers: [
                 Code(buyQuotation: buyQuotation),
-                // DefaultDropDown<BuyerEntity?>(
-                //   onChanged: (buyer) {
-                //     //TODO call controller provider to change the buyer
-                //   },
-                //   hint: Text('Comprador'.hardcoded),
-                //   selectedItem: selectedItem,
-                //   label: label,
-                //   items: ref.watch(buyersStateControllerProvider),
-                //TODO move this controller provider to core path
-                // ),
+                gapSliverH8,
+                BuyersDropdown(
+                  buyQuotation: buyQuotation,
+                  enterpriseCode: widget.enterpriseCode,
+                ),
                 CreationDate(buyQuotation: buyQuotation),
+                gapSliverH8,
                 LimitDate(
                   buyQuotation: buyQuotation,
                   enterpriseCode: widget.enterpriseCode,
