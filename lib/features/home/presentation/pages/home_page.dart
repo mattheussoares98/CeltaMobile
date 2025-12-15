@@ -38,7 +38,7 @@ class HomePage extends ConsumerWidget {
         ),
       ),
 
-      body: enterprisesAsync.hasValue
+      body: enterprisesAsync.hasValue && !enterprisesAsync.isLoading
           ? AsyncValueWidget(
               value: ref.watch(
                 enabledModulesByEnterpriseNameStateControllerProvider(
