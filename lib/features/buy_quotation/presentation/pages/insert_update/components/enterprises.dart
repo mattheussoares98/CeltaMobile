@@ -76,9 +76,18 @@ class Enterprises extends ConsumerWidget {
       tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
       data: (enterprises) {
         return SliverList.builder(
-          itemCount: enterprises.length,
+          itemCount: enterprises.length + 1,
           itemBuilder: (_, index) {
-            final enterprise = enterprises[index];
+            if (index == 0) {
+              return Text(
+                'Empresas'.hardcoded,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: theme.primaryColor,
+                ),
+              );
+            }
+            final enterprise = enterprises[index - 1];
             return Card(
               clipBehavior: Clip.antiAlias,
               color:
