@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
@@ -32,5 +33,32 @@ class CompleteBuyQuotationsStateController
         );
 
     return response.first;
+  }
+
+  void updateValues({
+    DateTime? DateOfLimit,
+    String? Observations,
+    BuyerEntity? Buyer,
+    List<BuyQuotationEnterpriseEntity>? Enterprises,
+    List<BuyQuotationProductsEntity>? Products,
+  }) {
+    // 1. Ensure the current state is data (not loading or error)
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    // 2. Perform the immutable update using copyWith
+    final updatedEntity = currentState.copyWith(
+      Code: state.value!.Code,
+      DateOfCreation: state.value!.DateOfCreation,
+      DateOfLimit: DateOfLimit,
+      PersonalizedCode: state.value!.PersonalizedCode,
+      Observations: Observations,
+      Buyer: Buyer,
+      Enterprises: Enterprises,
+      Products: Products,
+    );
+
+    // 3. Set the new state
+    state = AsyncValue.data(updatedEntity);
   }
 }

@@ -194,4 +194,132 @@ void main() {
       );
     });
   });
+
+  group('updateEntity', () {
+    test('should update properties correctly', () async {
+      // ARRANGE
+      final newQuotation = EntityFactory.makeBuyQuotationEntity();
+
+      // 1. Stub load to ensure state has initial data
+      when(
+        () => mockRepository.load(
+          baseUrl: any(named: 'baseUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          codeForFullSearch: any(named: 'codeForFullSearch'),
+        ),
+      ).thenAnswer((_) async => [fakeQuotation]);
+
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+
+      // 2. Wait for initial state to settle (AsyncData(fakeQuotation))
+      await container.read(
+        completeBuyQuotationsStateControllerProvider(
+          fakeEnterpriseCode,
+          fakeCodeForFullSearch,
+        ).future,
+      );
+
+      final notifier = container.read(
+        completeBuyQuotationsStateControllerProvider(
+          fakeEnterpriseCode,
+          fakeCodeForFullSearch,
+        ).notifier,
+      );
+
+      final initialEntity = container
+          .read(
+            completeBuyQuotationsStateControllerProvider(
+              fakeEnterpriseCode,
+              fakeCodeForFullSearch,
+            ),
+          )
+          .value;
+
+      // ACT
+      notifier.updateValues(
+        Buyer: newQuotation.Buyer,
+        DateOfLimit: newQuotation.DateOfLimit,
+        Enterprises: newQuotation.Enterprises,
+        Observations: newQuotation.Observations,
+        Products: newQuotation.Products,
+      );
+
+      // ASSERT
+      final updatedState = container.read(
+        completeBuyQuotationsStateControllerProvider(
+          fakeEnterpriseCode,
+          fakeCodeForFullSearch,
+        ),
+      );
+
+      final updatedEntity = updatedState.value!;
+
+      // 1. Verify updated fields
+      expect(updatedEntity.Observations, newQuotation.Observations);
+      expect(updatedEntity.DateOfLimit, newQuotation.DateOfLimit);
+      expect(updatedEntity.Enterprises, newQuotation.Enterprises);
+      expect(updatedEntity.Observations, newQuotation.Observations);
+      expect(updatedEntity.Products, newQuotation.Products);
+
+      expect(updatedEntity, isNot(equals(initialEntity)));
+    });
+
+    test(
+      'should do nothing if state.value is null (e.g., loading or error state)',
+      () async {
+        // ARRANGE
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // State is AsyncLoading due to repository stubbing
+        when(
+          () => mockRepository.load(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            codeForFullSearch: any(named: 'codeForFullSearch'),
+          ),
+        ).thenAnswer((_) async => [fakeQuotation]);
+
+        final notifier = container.read(
+          completeBuyQuotationsStateControllerProvider(
+            fakeEnterpriseCode,
+            fakeCodeForFullSearch,
+          ).notifier,
+        );
+
+        // Read to start the load process (state = AsyncLoading) but DO NOT await
+        container.read(
+          completeBuyQuotationsStateControllerProvider(
+            fakeEnterpriseCode,
+            fakeCodeForFullSearch,
+          ),
+        );
+
+        // ACT
+        // Call updateEntity while state.value is null (AsyncLoading)
+        notifier.updateValues(Observations: 'Test');
+
+        // ASSERT
+        // Ensure state is still AsyncLoading (no change should occur)
+        final finalState = container.read(
+          completeBuyQuotationsStateControllerProvider(
+            fakeEnterpriseCode,
+            fakeCodeForFullSearch,
+          ),
+        );
+        expect(finalState, isA<AsyncLoading>());
+
+        // Await the future to clean up the test properly
+        await container.read(
+          completeBuyQuotationsStateControllerProvider(
+            fakeEnterpriseCode,
+            fakeCodeForFullSearch,
+          ).future,
+        );
+      },
+    );
+  });
 }

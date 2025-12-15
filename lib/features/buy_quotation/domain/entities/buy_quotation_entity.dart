@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/domain/entities/entities.dart';
@@ -46,4 +47,26 @@ class BuyQuotationEntity extends Equatable {
     Enterprises: null,
     Products: null,
   );
+
+  BuyQuotationEntity copyWith({
+    int? Code,
+    DateTime? DateOfCreation,
+    DateTime? DateOfLimit,
+    String? PersonalizedCode,
+    String? Observations,
+    BuyerEntity? Buyer,
+    List<BuyQuotationEnterpriseEntity>? Enterprises,
+    List<BuyQuotationProductsEntity>? Products,
+  }) {
+    return BuyQuotationEntity(
+      Code: Code ?? this.Code,
+      DateOfCreation: DateOfCreation ?? this.DateOfCreation,
+      DateOfLimit: DateOfLimit ?? this.DateOfLimit,
+      PersonalizedCode: PersonalizedCode ?? this.PersonalizedCode,
+      Observations: Observations ?? this.Observations,
+      Buyer: Buyer ?? this.Buyer,
+      Enterprises: Enterprises ?? this.Enterprises,
+      Products: Products ?? this.Products,
+    );
+  }
 }
