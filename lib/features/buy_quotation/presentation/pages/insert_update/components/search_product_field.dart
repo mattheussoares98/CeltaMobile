@@ -63,8 +63,7 @@ class SearchProductField extends ConsumerWidget {
           .read(
             completeBuyQuotationsStateControllerProvider(
               enterpriseCode,
-              buyQuotation
-                  .Code.toString(), //TODO remove buyQuotationCode param in anothers widgets that already receive the entire buy quotation
+              buyQuotation.Code.toString(),
             ).notifier,
           )
           .updateValues(

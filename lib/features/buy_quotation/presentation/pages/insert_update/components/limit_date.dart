@@ -11,12 +11,10 @@ import '../../../controllers/controller.dart';
 class LimitDate extends ConsumerWidget {
   final BuyQuotationEntity buyQuotation;
   final int enterpriseCode;
-  final int buyQuotationCode;
   const LimitDate({
     super.key,
     required this.buyQuotation,
     required this.enterpriseCode,
-    required this.buyQuotationCode,
   });
 
   @override
@@ -55,7 +53,7 @@ class LimitDate extends ConsumerWidget {
                   .read(
                     completeBuyQuotationsStateControllerProvider(
                       enterpriseCode,
-                      buyQuotationCode.toString(),
+                      buyQuotation.Code.toString(),
                     ).notifier,
                   )
                   .updateValues(

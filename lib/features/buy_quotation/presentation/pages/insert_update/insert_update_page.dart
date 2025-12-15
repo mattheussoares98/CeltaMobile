@@ -91,14 +91,12 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                 CreationDate(buyQuotation: buyQuotation),
                 LimitDate(
                   buyQuotation: buyQuotation,
-                  buyQuotationCode: widget.code,
                   enterpriseCode: widget.enterpriseCode,
                 ),
                 ObservationField(observationController: observationController),
                 const SliverToBoxAdapter(child: Divider()),
                 Enterprises(
                   enterpriseCode: widget.enterpriseCode,
-                  buyQuotationCode: widget.code,
                   buyQuotation: buyQuotation,
                 ),
                 const SliverToBoxAdapter(child: Divider()),

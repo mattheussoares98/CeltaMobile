@@ -13,12 +13,10 @@ import '../../../controllers/controller.dart';
 
 class Enterprises extends ConsumerWidget {
   final int enterpriseCode;
-  final int buyQuotationCode;
   final BuyQuotationEntity buyQuotation;
   const Enterprises({
     super.key,
     required this.enterpriseCode,
-    required this.buyQuotationCode,
     required this.buyQuotation,
   });
 
@@ -62,7 +60,7 @@ class Enterprises extends ConsumerWidget {
             .read(
               completeBuyQuotationsStateControllerProvider(
                 enterpriseCode,
-                buyQuotationCode.toString(),
+                buyQuotation.Code.toString(),
               ).notifier,
             )
             .updateValues(Enterprises: updatedList);
