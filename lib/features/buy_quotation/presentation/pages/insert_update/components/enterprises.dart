@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,9 +8,19 @@ import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../enterprises/presentation/controllers/controllers.dart';
+import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controller.dart';
 
 class Enterprises extends ConsumerWidget {
-  const Enterprises({super.key});
+  final int enterpriseCode;
+  final int buyQuotationCode;
+  final BuyQuotationEntity buyQuotation;
+  const Enterprises({
+    super.key,
+    required this.enterpriseCode,
+    required this.buyQuotationCode,
+    required this.buyQuotation,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,8 +39,37 @@ class Enterprises extends ConsumerWidget {
           content:
               'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo',
         );
+      } else {
+        final currentList = buyQuotation.Enterprises ?? [];
+        final existingEnterprise = currentList.firstWhereOrNull(
+          (e) => e.enterprise.Code == enterprise.Code,
+        );
+
+        final List<BuyQuotationEnterpriseEntity> updatedList;
+
+        if (existingEnterprise != null) {
+          // Enterprise exists, so REMOVE it
+          updatedList = currentList
+              .where((e) => e.enterprise.Code != enterprise.Code)
+              .toList();
+        } else {
+          // Enterprise does not exist, so ADD it (after mapping)
+          final newEnterprise = enterprise.toBuyQuotationEnterprise();
+          updatedList = [...currentList, newEnterprise];
+        }
+
+        ref
+            .read(
+              completeBuyQuotationsStateControllerProvider(
+                enterpriseCode,
+                buyQuotationCode.toString(),
+              ).notifier,
+            )
+            .updateValues(Enterprises: updatedList);
       }
     }
+
+    final theme = Theme.of(context);
 
     return AsyncValueSliverWidget(
       value: ref.watch(enterprisesStateControllerProvider()),
@@ -41,6 +81,13 @@ class Enterprises extends ConsumerWidget {
             final enterprise = enterprises[index];
             return Card(
               clipBehavior: Clip.antiAlias,
+              color:
+                  buyQuotation.Enterprises?.any(
+                        (e) => e.enterprise.Code == enterprise.Code,
+                      ) ==
+                      true
+                  ? theme.colorScheme.primaryContainer
+                  : null,
               child: InkWell(
                 onTap: () {
                   updateSelectedEnterprise(enterprise);

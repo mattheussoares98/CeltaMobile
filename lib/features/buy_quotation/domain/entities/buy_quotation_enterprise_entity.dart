@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/domain/entities/entities.dart';
 import 'entities.dart';
 
 class BuyQuotationEnterpriseEntity extends Equatable {
@@ -13,4 +14,19 @@ class BuyQuotationEnterpriseEntity extends Equatable {
 
   @override
   List<Object?> get props => [Code, enterprise];
+}
+
+extension BuyQuotationEnterpriseEntityMapper on EnterpriseEntity {
+  BuyQuotationEnterpriseEntity toBuyQuotationEnterprise() {
+    return BuyQuotationEnterpriseEntity(
+      Code: this.Code,
+      enterprise: BuyQuotationEnterpriseInfoEntity(
+        PersonalizedCode: PersonalizedCode,
+        Name: name,
+        CnpjNumber: CnpjNumber,
+        InscriptionNumber: InscriptionNumber,
+        Code: Code,
+      ),
+    );
+  }
 }

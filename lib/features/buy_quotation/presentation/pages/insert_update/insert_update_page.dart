@@ -96,7 +96,11 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                 ),
                 ObservationField(observationController: observationController),
                 const SliverToBoxAdapter(child: Divider()),
-                const Enterprises(),
+                Enterprises(
+                  enterpriseCode: widget.enterpriseCode,
+                  buyQuotationCode: widget.code,
+                  buyQuotation: buyQuotation,
+                ),
                 const SliverToBoxAdapter(child: Divider()),
                 SearchProductField(
                   enterpriseCode: widget.enterpriseCode,
