@@ -121,6 +121,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                 ProductsItems(
                   buyQuotation: buyQuotation,
                   quantityControllers: quantityControllers,
+                  enterpriseCode: widget.enterpriseCode,
                 ),
               ],
             ),
