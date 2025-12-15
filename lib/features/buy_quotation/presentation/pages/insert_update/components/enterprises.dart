@@ -116,7 +116,7 @@ class Enterprises extends ConsumerWidget {
                           children: [
                             TitleAndSubTitle(
                               title: 'Código'.hardcoded,
-                              subTitle: enterprise.Code.toString(),
+                              subTitle: enterprise.PersonalizedCode.toString(),
                             ),
                             TitleAndSubTitle(
                               title: 'Empresa'.hardcoded,
