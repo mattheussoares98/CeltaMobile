@@ -120,7 +120,16 @@ class Enterprises extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      //TODO create a DefaultCheckBox for the application and use here
+                      Checkbox(
+                        value:
+                            buyQuotation.Enterprises?.any(
+                              (e) => e.enterprise.Code == enterprise.Code,
+                            ) ??
+                            false,
+                        onChanged: (_) {
+                          updateSelectedEnterprise(enterprise);
+                        },
+                      ),
                     ],
                   ),
                 ),
