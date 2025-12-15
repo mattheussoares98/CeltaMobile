@@ -40,7 +40,7 @@ class BuyersDropdown extends ConsumerWidget {
                       );
                 },
                 items: buyers
-                    ?.map(
+                    .map(
                       (e) => DropdownMenuItem(
                         value: e,
                         child: Center(child: Text(e.Name)),
