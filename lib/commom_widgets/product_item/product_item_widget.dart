@@ -19,8 +19,10 @@ class ProductItemWidget extends ConsumerWidget {
   final VoidCallback? onDelete;
   final bool? showDropIcon;
   final bool? isSelected;
-  final Widget? itemBeforeProductName;
+  final bool? showInfoButton;
   final CartItemSummary? cartItemSummary;
+  final Widget? itemBeforeProductName;
+  final Widget? rightWidget;
   const ProductItemWidget({
     super.key,
     required this.product,
@@ -31,8 +33,10 @@ class ProductItemWidget extends ConsumerWidget {
     this.clickableBottom,
     this.showDropIcon,
     this.isSelected,
-    this.itemBeforeProductName,
+    this.showInfoButton = true,
     this.cartItemSummary,
+    this.itemBeforeProductName,
+    this.rightWidget,
   });
 
   @override
@@ -63,40 +67,48 @@ class ProductItemWidget extends ConsumerWidget {
                 onTap: onTap,
                 child: Padding(
                   padding: const EdgeInsets.all(Sizes.p8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: Row(
                     children: [
-                      ?itemBeforeProductName,
-                      TitleAndSubTitle(
-                        title: product.Name,
-                        subTitle: product.PackingQuantity == null
-                            ? null
-                            : " (${product.PackingQuantity.toString().formattedPacking()})",
-                        titleStyle: theme.textTheme.titleMedium,
-                        subTitleStyle: theme.textTheme.bodyMedium,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ?itemBeforeProductName,
+                            TitleAndSubTitle(
+                              title: product.Name,
+                              subTitle: product.PackingQuantity == null
+                                  ? null
+                                  : " (${product.PackingQuantity.toString().formattedPacking()})",
+                              titleStyle: theme.textTheme.titleMedium,
+                              subTitleStyle: theme.textTheme.bodyMedium,
+                            ),
+                            Stack(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TitleAndSubTitle(
+                                      title: "PLU ",
+                                      subTitle: product.PLU,
+                                    ),
+                                    PracticedPriceProperty(this),
+                                    WholePriceAndMinQuantity(this),
+                                    LiquidCostProperty(this),
+                                    CurrentAndSaleStocks(this),
+                                    EansProperty(this),
+                                  ],
+                                ),
+                                if (routine != BsRoutine.researchOfPrice &&
+                                    showInfoButton == true)
+                                  Positioned(right: 0, child: InfoButton(this)),
+                              ],
+                            ),
+                            ?cartItemSummary,
+                            ?clickableBottom,
+                          ],
+                        ),
                       ),
-                      Stack(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitleAndSubTitle(
-                                title: "PLU ",
-                                subTitle: product.PLU,
-                              ),
-                              PracticedPriceProperty(this),
-                              WholePriceAndMinQuantity(this),
-                              LiquidCostProperty(this),
-                              CurrentAndSaleStocks(this),
-                              EansProperty(this),
-                            ],
-                          ),
-                          if (routine != BsRoutine.researchOfPrice)
-                            Positioned(right: 0, child: InfoButton(this)),
-                        ],
-                      ),
-                      ?cartItemSummary,
-                      ?clickableBottom,
+                      ?rightWidget,
                     ],
                   ),
                 ),
