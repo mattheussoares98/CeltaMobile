@@ -24,7 +24,7 @@ class SoapInsertUpdateBuyQuotationRepositoryImpl
         buyQuotation.copyWith(
           Enterprises: buyQuotation.Enterprises?.map(
             (e) => e.copyWith(Code: e.Code ?? 0),
-          ).toList(),
+          ).toList().where((x) => x.isSelected == true).toList(),
           Products: buyQuotation.Products?.map(
             (e) => e.copyWith(Code: e.Code ?? 0),
           ).toList(),

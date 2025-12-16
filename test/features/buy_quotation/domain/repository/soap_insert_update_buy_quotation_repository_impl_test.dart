@@ -112,7 +112,7 @@ void main() {
             entity.copyWith(
               Enterprises: entity.Enterprises?.map(
                 (e) => e.copyWith(Code: 0),
-              ).toList(),
+              ).toList().where((x) => x.isSelected == true).toList(),
               Products: entity.Products?.map(
                 (e) => e.copyWith(Code: 0),
               ).toList(),
