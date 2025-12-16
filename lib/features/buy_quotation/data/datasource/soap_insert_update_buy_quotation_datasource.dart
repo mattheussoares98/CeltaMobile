@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import '../../../../core/data/models/models.dart';
 import '../../../../core/domain/contracts/contracts.dart';
 import '../models/models.dart';
 import 'datasource.dart';
@@ -14,14 +13,7 @@ class SoapInsertUpdateBuyQuotationDatasource
   Future<void> insertUpdate({
     required String baseUrl,
     required String crossIdentity,
-    required int? code,
-    required DateTime? dateOfCreation,
-    required DateTime? dateOfLimit,
-    required String? personalizedCode,
-    required String? observations,
-    required BuyerModel? buyer,
-    required List<BuyQuotationEnterpriseModel>? Enterprises,
-    required List<BuyQuotationProductsModel>? Products,
+    required BuyQuotationModel buyQuotation,
   }) async {
     await soapRequest.post(
       url: baseUrl,
@@ -32,14 +24,16 @@ class SoapInsertUpdateBuyQuotationDatasource
       parameters: {
         "json": json.encode({
           "CrossIdentity": crossIdentity,
-          "Code": code,
-          "DateOfCreation": dateOfCreation?.toIso8601String(),
-          "DateOfLimit": dateOfLimit?.toIso8601String(),
-          "PersonalizedCode": personalizedCode,
-          "Observations": observations,
-          "Buyer": buyer?.toJson(),
-          "Enterprises": Enterprises?.map((e) => e.toJson()).toList(),
-          "Products": Products?.map((e) => e.toJson()).toList(),
+          "Code": buyQuotation.Code,
+          "DateOfCreation": buyQuotation.DateOfCreation?.toIso8601String(),
+          "DateOfLimit": buyQuotation.DateOfLimit?.toIso8601String(),
+          "PersonalizedCode": buyQuotation.PersonalizedCode,
+          "Observations": buyQuotation.Observations,
+          "Buyer": buyQuotation.Buyer?.toJson(),
+          "Enterprises": buyQuotation.Enterprises?.map(
+            (e) => e.toJson(),
+          ).toList(),
+          "Products": buyQuotation.Products?.map((e) => e.toJson()).toList(),
         }),
       },
     );

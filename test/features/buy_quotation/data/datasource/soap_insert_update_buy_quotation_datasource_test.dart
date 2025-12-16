@@ -49,14 +49,7 @@ void main() {
     await sut.insertUpdate(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
-      code: buyQuotation.Code,
-      dateOfCreation: buyQuotation.DateOfCreation,
-      dateOfLimit: buyQuotation.DateOfLimit,
-      personalizedCode: buyQuotation.PersonalizedCode,
-      observations: buyQuotation.Observations,
-      buyer: buyQuotation.Buyer,
-      Enterprises: buyQuotation.Enterprises,
-      Products: buyQuotation.Products,
+      buyQuotation: buyQuotation,
     );
 
     verify(
