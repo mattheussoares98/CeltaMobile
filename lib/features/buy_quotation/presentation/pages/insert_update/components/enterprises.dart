@@ -44,24 +44,19 @@ class Enterprises extends ConsumerWidget {
         final currentEnterpriseIndex = currentList.indexWhere(
           (e) => e.enterprise.Code == enterprise.Code,
         );
-        if (currentEnterpriseIndex == -1) {
-          showAlertDialog(
-            context: context,
-            title: 'Erro'.hardcoded,
-            content:
-                'Esse erro jamais deveria ocorrer. Não foi possível alterar a empresa. Entre em contato com o suporte técnico'
-                    .hardcoded,
-          );
-          return;
-        }
 
-        final oldEnterprise = currentList[currentEnterpriseIndex];
-        final isSelected = oldEnterprise.isSelected == true;
-        final currentEnterprise = oldEnterprise.copyWith(
-          isSelected: !isSelected,
-        );
         final updatedList = [...currentList];
-        updatedList[currentEnterpriseIndex] = currentEnterprise;
+        if (currentEnterpriseIndex == -1) {
+          updatedList.add(enterprise.toBuyQuotationEnterprise());
+        } else {
+          final oldEnterprise = currentList[currentEnterpriseIndex];
+          final isSelected =
+              currentList[currentEnterpriseIndex].isSelected == true;
+          final currentEnterprise = oldEnterprise.copyWith(
+            isSelected: !isSelected,
+          );
+          updatedList[currentEnterpriseIndex] = currentEnterprise;
+        }
 
         final updated = ref
             .read(
