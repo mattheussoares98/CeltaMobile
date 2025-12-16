@@ -25,3 +25,12 @@ ISoapInsertUpdateBuyQuotationDatasource soapInsertUpdateBuyQuotationDatasource(
 ) {
   return SoapInsertUpdateBuyQuotationDatasource(ref.watch(soapRequestProvider));
 }
+
+@riverpod
+ISoapInsertUpdateBuyQuotationRepository soapInsertUpdateBuyQuotationRepository(
+  Ref ref,
+) {
+  return SoapInsertUpdateBuyQuotationRepositoryImpl(
+    ref.watch(soapInsertUpdateBuyQuotationDatasourceProvider),
+  );
+}
