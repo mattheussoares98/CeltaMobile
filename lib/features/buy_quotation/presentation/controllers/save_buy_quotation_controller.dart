@@ -42,6 +42,7 @@ class SaveBuyQuotationController extends _$SaveBuyQuotationController {
             baseUrl: validatedUser!.enterprise!.baseUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             buyQuotation: buyQuotation,
+            now: DateTime.now(),
           );
 
       ref.invalidateSelf();

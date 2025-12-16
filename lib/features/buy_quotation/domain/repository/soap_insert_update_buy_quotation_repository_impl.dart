@@ -14,6 +14,7 @@ class SoapInsertUpdateBuyQuotationRepositoryImpl
     required String baseUrl,
     required String crossIdentity,
     required BuyQuotationEntity buyQuotation,
+    required DateTime now,
   }) async {
     await datasource.insertUpdate(
       baseUrl: baseUrl,
@@ -26,6 +27,8 @@ class SoapInsertUpdateBuyQuotationRepositoryImpl
           Products: buyQuotation.Products?.map(
             (e) => e.copyWith(Code: e.Code ?? 0),
           ).toList(),
+          Code: buyQuotation.Code ?? 0,
+          DateOfCreation: buyQuotation.DateOfCreation ?? now,
         ),
       ),
     );

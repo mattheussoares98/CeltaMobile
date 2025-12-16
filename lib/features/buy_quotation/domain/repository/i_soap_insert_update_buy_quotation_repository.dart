@@ -5,5 +5,6 @@ abstract class ISoapInsertUpdateBuyQuotationRepository {
     required String baseUrl,
     required String crossIdentity,
     required BuyQuotationEntity buyQuotation,
+    required DateTime now,
   });
 }

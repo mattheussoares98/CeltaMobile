@@ -27,6 +27,7 @@ void main() {
   late BuyQuotationModel buyQuotationModel;
   late String baseUrl;
   late String crossIdentity;
+  late DateTime now;
 
   void initSut() {
     sut = SoapInsertUpdateBuyQuotationRepositoryImpl(datasource);
@@ -39,8 +40,9 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
+    now = DateTime.now();
     buyQuotationModel = BuyQuotationModel.fromEntity(
-      EntityFactory.makeBuyQuotationEntity(),
+      EntityFactory.makeBuyQuotationEntity(dateOfCreation: now),
     );
     baseUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
@@ -63,6 +65,7 @@ void main() {
     await sut.insertUpdate(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
+      now: now,
       buyQuotation: buyQuotationModel.toEntity(),
     );
 
@@ -75,33 +78,40 @@ void main() {
     ).called(1);
   });
   test(
-    'should send 0 code in products and enterprises when codes are null',
+    'should behave correctly when is inserting a new buy quotation',
     () async {
       await sut.insertUpdate(
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
-        buyQuotation: buyQuotationModel.toEntity().copyWith(
-          Enterprises: buyQuotationModel.Enterprises?.map(
-            (e) => e.toEntity().annulValues(annulCode: true),
-          ).toList(),
-          Products: buyQuotationModel.Products?.map(
-            (e) => e.toEntity().annulValues(annulCode: true),
-          ).toList(),
-        ),
+        now: now,
+        buyQuotation: buyQuotationModel
+            .toEntity()
+            .copyWith(
+              Enterprises: buyQuotationModel.Enterprises?.map(
+                (e) => e.toEntity().annulValues(annulCode: true),
+              ).toList(),
+              Products: buyQuotationModel.Products?.map(
+                (e) => e.toEntity().annulValues(annulCode: true),
+              ).toList(),
+            )
+            .annulValues(annulCode: true, annulDateOfCreation: true),
       );
 
+      final entity = buyQuotationModel.toEntity();
       verify(
         () => datasource.insertUpdate(
           baseUrl: baseUrl,
           crossIdentity: crossIdentity,
           buyQuotation: BuyQuotationModel.fromEntity(
-            buyQuotationModel.toEntity().copyWith(
-              Enterprises: buyQuotationModel.Enterprises?.map(
-                (e) => e.toEntity().copyWith(Code: 0),
+            entity.copyWith(
+              Enterprises: entity.Enterprises?.map(
+                (e) => e.copyWith(Code: 0),
               ).toList(),
-              Products: buyQuotationModel.Products?.map(
-                (e) => e.toEntity().copyWith(Code: 0),
+              Products: entity.Products?.map(
+                (e) => e.copyWith(Code: 0),
               ).toList(),
+              Code: 0,
+              DateOfCreation: now,
             ),
           ),
         ),

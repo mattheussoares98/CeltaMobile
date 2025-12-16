@@ -74,10 +74,12 @@ class BuyQuotationEntity extends Equatable {
     bool? annulBuyer,
     bool? annulEnterprises,
     bool? annulProducts,
+    bool? annulCode,
+    bool? annulDateOfCreation,
   }) {
     return BuyQuotationEntity(
-      Code: Code,
-      DateOfCreation: DateOfCreation,
+      Code: annulCode == true ? null : Code,
+      DateOfCreation: annulDateOfCreation == true ? null : DateOfCreation,
       DateOfLimit: DateOfLimit,
       PersonalizedCode: PersonalizedCode,
       Observations: Observations,

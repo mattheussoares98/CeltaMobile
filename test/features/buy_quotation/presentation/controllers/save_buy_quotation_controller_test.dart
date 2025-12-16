@@ -71,6 +71,7 @@ void main() {
         baseUrl: any(named: 'baseUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         buyQuotation: any(named: 'buyQuotation'),
+        now: any(named: 'now'),
       ),
     ).thenAnswer((_) async {});
   });
@@ -165,6 +166,7 @@ void main() {
             baseUrl: fakeSession.enterprise!.baseUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             buyQuotation: validQuotation,
+            now: any(named: 'now'),
           ),
         ).called(1);
 
@@ -230,6 +232,7 @@ void main() {
           baseUrl: any(named: 'baseUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           buyQuotation: any(named: 'buyQuotation'),
+          now: any(named: 'now'),
         ),
       );
     });
@@ -385,6 +388,7 @@ void main() {
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             buyQuotation: any(named: 'buyQuotation'),
+            now: any(named: 'now'),
           ),
         );
       },
@@ -398,6 +402,7 @@ void main() {
           baseUrl: any(named: 'baseUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           buyQuotation: any(named: 'buyQuotation'),
+          now: any(named: 'now'),
         ),
       ).thenThrow(exception);
 
