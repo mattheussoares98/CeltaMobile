@@ -12,7 +12,7 @@ class SaveBuyQuotationController extends _$SaveBuyQuotationController {
   @override
   Future<void> build(int enterpriseCode, String code) async {}
 
-  Future<bool> save() async {
+  Future<bool> save(String observations) async {
     bool saved = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -43,6 +43,7 @@ class SaveBuyQuotationController extends _$SaveBuyQuotationController {
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             buyQuotation: buyQuotation,
             now: DateTime.now(),
+            observations: observations,
           );
 
       ref.invalidateSelf();

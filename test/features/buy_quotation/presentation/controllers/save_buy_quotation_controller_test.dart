@@ -14,7 +14,19 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class MockSoapInsertUpdateBuyQuotationRepository extends Mock
-    implements ISoapInsertUpdateBuyQuotationRepository {}
+    implements ISoapInsertUpdateBuyQuotationRepository {
+  MockSoapInsertUpdateBuyQuotationRepository() {
+    when(
+      () => this.insertUpdate(
+        baseUrl: any(named: 'baseUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        buyQuotation: any(named: 'buyQuotation'),
+        now: any(named: 'now'),
+        observations: any(named: 'observations'),
+      ),
+    ).thenAnswer((_) async {});
+  }
+}
 
 // Spy/Fake for the CompleteBuyQuotationsStateController (to control the data input)
 class FakeCompleteBuyQuotationsStateController
@@ -47,6 +59,7 @@ void main() {
   late UserSessionModel fakeSession;
   late int fakeEnterpriseCode;
   late String fakeCode;
+  late String observations;
 
   // Test data variables
 
@@ -64,16 +77,7 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
-
-    // Stub the repository call to simulate success by default
-    when(
-      () => mockRepository.insertUpdate(
-        baseUrl: any(named: 'baseUrl'),
-        crossIdentity: any(named: 'crossIdentity'),
-        buyQuotation: any(named: 'buyQuotation'),
-        now: any(named: 'now'),
-      ),
-    ).thenAnswer((_) async {});
+    observations = faker.lorem.sentence();
   });
 
   ProviderContainer makeProviderContainer({
@@ -153,7 +157,7 @@ void main() {
                 fakeCode,
               ).notifier,
             )
-            .save();
+            .save(observations);
 
         // ASSERT
         // 1. Verify state transitions (Loading -> Data)
@@ -167,6 +171,7 @@ void main() {
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             buyQuotation: validQuotation,
             now: any(named: 'now'),
+            observations: observations,
           ),
         ).called(1);
 
@@ -202,7 +207,7 @@ void main() {
               fakeCode,
             ).notifier,
           )
-          .save();
+          .save(observations);
 
       // Expect the AppException to be thrown
       expect(saved, isFalse);
@@ -233,6 +238,7 @@ void main() {
           crossIdentity: any(named: 'crossIdentity'),
           buyQuotation: any(named: 'buyQuotation'),
           now: any(named: 'now'),
+          observations: any(named: 'observations'),
         ),
       );
     });
@@ -258,7 +264,7 @@ void main() {
                 fakeCode,
               ).notifier,
             )
-            .save();
+            .save(observations);
 
         expect(udpated, isFalse);
 
@@ -308,7 +314,7 @@ void main() {
               fakeCode,
             ).notifier,
           )
-          .save();
+          .save(observations);
 
       expectLater(updated, isFalse);
 
@@ -353,7 +359,7 @@ void main() {
                 fakeCode,
               ).notifier,
             )
-            .save();
+            .save(observations);
 
         expectLater(updated, isFalse);
 
@@ -388,6 +394,7 @@ void main() {
             baseUrl: any(named: 'baseUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             buyQuotation: any(named: 'buyQuotation'),
+            observations: any(named: 'observations'),
             now: any(named: 'now'),
           ),
         );
@@ -403,6 +410,7 @@ void main() {
           crossIdentity: any(named: 'crossIdentity'),
           buyQuotation: any(named: 'buyQuotation'),
           now: any(named: 'now'),
+          observations: any(named: 'observations'),
         ),
       ).thenThrow(exception);
 
@@ -421,7 +429,7 @@ void main() {
               fakeCode,
             ).notifier,
           )
-          .save();
+          .save(observations);
 
       expect(updated, isFalse);
 

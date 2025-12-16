@@ -28,6 +28,7 @@ void main() {
   late String baseUrl;
   late String crossIdentity;
   late DateTime now;
+  late String observations;
 
   void initSut() {
     sut = SoapInsertUpdateBuyQuotationRepositoryImpl(datasource);
@@ -46,6 +47,7 @@ void main() {
     );
     baseUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
+    observations = faker.lorem.sentence();
   }
 
   setUp(() {
@@ -67,13 +69,16 @@ void main() {
       crossIdentity: crossIdentity,
       now: now,
       buyQuotation: buyQuotationModel.toEntity(),
+      observations: observations,
     );
 
     verify(
       () => datasource.insertUpdate(
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
-        buyQuotation: buyQuotationModel,
+        buyQuotation: BuyQuotationModel.fromEntity(
+          buyQuotationModel.toEntity().copyWith(Observations: observations),
+        ),
       ),
     ).called(1);
   });
@@ -84,6 +89,7 @@ void main() {
         baseUrl: baseUrl,
         crossIdentity: crossIdentity,
         now: now,
+        observations: observations,
         buyQuotation: buyQuotationModel
             .toEntity()
             .copyWith(
@@ -112,6 +118,7 @@ void main() {
               ).toList(),
               Code: 0,
               DateOfCreation: now,
+              Observations: observations,
             ),
           ),
         ),

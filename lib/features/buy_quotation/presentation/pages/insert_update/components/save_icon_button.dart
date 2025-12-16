@@ -10,11 +10,13 @@ import '../../../controllers/controller.dart';
 class SaveIconButton extends ConsumerWidget {
   final int enterpriseCode;
   final int code;
+  final TextEditingController observationController;
 
   const SaveIconButton({
     super.key,
     required this.enterpriseCode,
     required this.code,
+    required this.observationController,
   });
 
   @override
@@ -40,7 +42,7 @@ class SaveIconButton extends ConsumerWidget {
                   code.toString(),
                 ).notifier,
               )
-              .save();
+              .save(observationController.text);
         }
 
         await Future.delayed(Duration.zero);

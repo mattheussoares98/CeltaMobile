@@ -91,6 +91,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
               SaveIconButton(
                 enterpriseCode: widget.enterpriseCode,
                 code: widget.code,
+                observationController: observationController,
               ),
             ],
           ),
