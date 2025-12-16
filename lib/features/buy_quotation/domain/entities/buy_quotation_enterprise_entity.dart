@@ -7,21 +7,26 @@ import 'entities.dart';
 class BuyQuotationEnterpriseEntity extends Equatable {
   final int? Code;
   final BuyQuotationEnterpriseInfoEntity enterprise;
+  final bool?
+  isSelected; //local property to avoid loose the Code that receive from ERP
 
   const BuyQuotationEnterpriseEntity({
     required this.Code,
     required this.enterprise,
+    required this.isSelected,
   });
 
   @override
-  List<Object?> get props => [Code, enterprise];
+  List<Object?> get props => [Code, enterprise, isSelected];
 
   BuyQuotationEnterpriseEntity copyWith({
     int? Code,
     BuyQuotationEnterpriseInfoEntity? enterprise,
+    bool? isSelected,
   }) {
     return BuyQuotationEnterpriseEntity(
       Code: Code ?? this.Code,
+      isSelected: isSelected ?? this.isSelected,
       enterprise: enterprise ?? this.enterprise,
     );
   }
@@ -30,6 +35,7 @@ class BuyQuotationEnterpriseEntity extends Equatable {
     return BuyQuotationEnterpriseEntity(
       Code: annulCode == true ? null : Code,
       enterprise: enterprise,
+      isSelected: isSelected,
     );
   }
 }
@@ -38,6 +44,7 @@ extension BuyQuotationEnterpriseEntityMapper on EnterpriseEntity {
   BuyQuotationEnterpriseEntity toBuyQuotationEnterprise() {
     return BuyQuotationEnterpriseEntity(
       Code: null,
+      isSelected: true,
       enterprise: BuyQuotationEnterpriseInfoEntity(
         PersonalizedCode: PersonalizedCode,
         Name: name,

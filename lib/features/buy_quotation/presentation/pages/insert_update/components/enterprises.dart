@@ -41,22 +41,27 @@ class Enterprises extends ConsumerWidget {
         );
       } else {
         final currentList = buyQuotation.Enterprises ?? [];
-        final existingEnterprise = currentList.firstWhereOrNull(
+        final currentEnterpriseIndex = currentList.indexWhere(
           (e) => e.enterprise.Code == enterprise.Code,
         );
-
-        final List<BuyQuotationEnterpriseEntity> updatedList;
-
-        if (existingEnterprise != null) {
-          // Enterprise exists, so REMOVE it
-          updatedList = currentList
-              .where((e) => e.enterprise.Code != enterprise.Code)
-              .toList();
-        } else {
-          // Enterprise does not exist, so ADD it (after mapping)
-          final newEnterprise = enterprise.toBuyQuotationEnterprise();
-          updatedList = [...currentList, newEnterprise];
+        if (currentEnterpriseIndex == -1) {
+          showAlertDialog(
+            context: context,
+            title: 'Erro'.hardcoded,
+            content:
+                'Esse erro jamais deveria ocorrer. Não foi possível alterar a empresa. Entre em contato com o suporte técnico'
+                    .hardcoded,
+          );
+          return;
         }
+
+        final oldEnterprise = currentList[currentEnterpriseIndex];
+        final isSelected = oldEnterprise.isSelected == true;
+        final currentEnterprise = oldEnterprise.copyWith(
+          isSelected: !isSelected,
+        );
+        final updatedList = [...currentList];
+        updatedList[currentEnterpriseIndex] = currentEnterprise;
 
         final updated = ref
             .read(
@@ -97,19 +102,17 @@ class Enterprises extends ConsumerWidget {
               );
             }
             final enterprise = enterprises[index - 1];
+
+            final isSelected =
+                buyQuotation.Enterprises?.where(
+                  (e) => e.enterprise.Code == enterprise.Code,
+                ).toList().firstOrNull?.isSelected ==
+                true;
             return Card(
               clipBehavior: Clip.antiAlias,
-              color:
-                  buyQuotation.Enterprises?.any(
-                        (e) => e.enterprise.Code == enterprise.Code,
-                      ) ==
-                      true
-                  ? theme.colorScheme.primaryContainer
-                  : null,
+              color: isSelected ? theme.colorScheme.primaryContainer : null,
               child: InkWell(
-                onTap: () {
-                  updateSelectedEnterprise(enterprise);
-                },
+                onTap: () => updateSelectedEnterprise(enterprise),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(
                     Sizes.p8,
@@ -139,11 +142,7 @@ class Enterprises extends ConsumerWidget {
                         ),
                       ),
                       Checkbox(
-                        value:
-                            buyQuotation.Enterprises?.any(
-                              (e) => e.enterprise.Code == enterprise.Code,
-                            ) ??
-                            false,
+                        value: isSelected,
                         onChanged: (_) {
                           updateSelectedEnterprise(enterprise);
                         },

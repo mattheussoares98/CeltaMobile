@@ -869,6 +869,7 @@ class EntityFactory {
     int? enterpriseCode,
   }) => BuyQuotationEnterpriseEntity(
     Code: faker.randomGenerator.integer(100),
+    isSelected: faker.randomGenerator.boolean(),
     enterprise: BuyQuotationEnterpriseInfoEntity(
       PersonalizedCode: faker.randomGenerator.integer(100).toString(),
       Code: enterpriseCode ?? faker.randomGenerator.integer(100),
