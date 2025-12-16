@@ -13,11 +13,13 @@ import 'components.dart';
 
 class SearchProductField extends ConsumerWidget {
   final int enterpriseCode;
+  final int code;
   final TextEditingController searchValueController;
   final BuyQuotationEntity buyQuotation;
   const SearchProductField({
     super.key,
     required this.enterpriseCode,
+    required this.code,
     required this.searchValueController,
     required this.buyQuotation,
   });
@@ -64,7 +66,7 @@ class SearchProductField extends ConsumerWidget {
           .read(
             completeBuyQuotationsStateControllerProvider(
               enterpriseCode,
-              buyQuotation.Code.toString(),
+              code.toString(),
             ).notifier,
           )
           .updateValues(Products: updatedProducts);

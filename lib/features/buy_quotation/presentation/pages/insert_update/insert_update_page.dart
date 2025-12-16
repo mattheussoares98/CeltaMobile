@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -69,11 +70,41 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           widget.code == 0 ? 'Inserindo'.hardcoded : 'Alterando'.hardcoded,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showAlertDialog(
+                context: context,
+                title: 'Salvar'.hardcoded,
+                content: 'Deseja salvar as alterações?'.hardcoded,
+                cancelActionText: 'Cancelar'.hardcoded,
+                defaultActionText: 'Salvar'.hardcoded,
+                onOkPressed: () {
+                  // ref
+                  //     .read(
+                  //       completeBuyQuotationsStateControllerProvider(
+                  //         widget.enterpriseCode,
+                  //         widget.code.toString(),
+                  //       ).notifier,
+                  //     )
+                  //     .insertUpdateBuyQuotation(
+                  //       context: context,
+                  //       enterpriseCode: widget.enterpriseCode,
+                  //       code: widget.code,
+                  //     );
+                },
+              );
+            },
+            icon: Icon(isIOS ? CupertinoIcons.check_mark : Icons.save),
+          ),
+        ],
       ),
       body: AsyncValueWidget(
         value: ref.watch(
@@ -97,23 +128,27 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                 CreationDate(buyQuotation: buyQuotation),
                 LimitDate(
                   buyQuotation: buyQuotation,
+                  code: widget.code,
                   enterpriseCode: widget.enterpriseCode,
                 ),
                 gapSliverH8,
                 BuyersDropdown(
                   buyQuotation: buyQuotation,
                   enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
                 ),
                 gapSliverH8,
                 ObservationField(observationController: observationController),
                 const SliverToBoxAdapter(child: Divider()),
                 Enterprises(
                   enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
                   buyQuotation: buyQuotation,
                 ),
                 const SliverToBoxAdapter(child: Divider()),
                 SearchProductField(
                   enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
                   searchValueController: searchValueController,
                   buyQuotation: buyQuotation,
                 ),

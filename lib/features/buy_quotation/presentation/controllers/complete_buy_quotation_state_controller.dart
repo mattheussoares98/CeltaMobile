@@ -72,7 +72,11 @@ class CompleteBuyQuotationsStateController
   bool _enterprisesAreValid(List<BuyQuotationEnterpriseEntity>? enterprises) {
     if (enterprises == null) return true;
     // 1. Get all codes
-    final codes = enterprises.map((e) => e.Code).toList();
+    final codes = enterprises
+        .map((e) => e.Code)
+        .toList()
+        // <-- CRITICAL: Ignore null values (uninitialized)
+        .nonNulls;
     return codes.length == codes.toSet().length;
   }
 
