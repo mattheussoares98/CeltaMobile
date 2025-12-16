@@ -15,27 +15,24 @@ class SoapInsertUpdateBuyQuotationDatasource
     required String crossIdentity,
     required BuyQuotationModel buyQuotation,
   }) async {
+    final params = {
+      "CrossIdentity": crossIdentity,
+      "Code": buyQuotation.Code,
+      "DateOfCreation": buyQuotation.DateOfCreation?.toIso8601String(),
+      "DateOfLimit": buyQuotation.DateOfLimit?.toIso8601String(),
+      "PersonalizedCode": buyQuotation.PersonalizedCode,
+      "Observations": buyQuotation.Observations,
+      "Buyer": buyQuotation.Buyer?.toJson(),
+      "Enterprises": buyQuotation.Enterprises?.map((e) => e.toJson()).toList(),
+      "Products": buyQuotation.Products?.map((e) => e.toJson()).toList(),
+    };
     await soapRequest.post(
       url: baseUrl,
       typeOfResponse: "InsertUpdateBuyQuotationResponse",
       soapAction: "InsertUpdateBuyQuotation",
       serviceASMX: "CeltaBuyRequestService.asmx",
       typeOfResult: "InsertUpdateBuyQuotationResult",
-      parameters: {
-        "json": json.encode({
-          "CrossIdentity": crossIdentity,
-          "Code": buyQuotation.Code,
-          "DateOfCreation": buyQuotation.DateOfCreation?.toIso8601String(),
-          "DateOfLimit": buyQuotation.DateOfLimit?.toIso8601String(),
-          "PersonalizedCode": buyQuotation.PersonalizedCode,
-          "Observations": buyQuotation.Observations,
-          "Buyer": buyQuotation.Buyer?.toJson(),
-          "Enterprises": buyQuotation.Enterprises?.map(
-            (e) => e.toJson(),
-          ).toList(),
-          "Products": buyQuotation.Products?.map((e) => e.toJson()).toList(),
-        }),
-      },
+      parameters: {"json": json.encode(params)},
     );
   }
 }

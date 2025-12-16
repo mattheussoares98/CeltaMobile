@@ -48,7 +48,7 @@ class SearchProductField extends ConsumerWidget {
             .map(
               (p) => BuyQuotationProductsEntity(
                 Product: p,
-                Code: p.ProductPackingCode,
+                Code: null,
                 ProductEnterprises: enterprises!
                     .map(
                       (x) => BuyQuotationProductEnterpriseEntity(
