@@ -161,8 +161,9 @@ class ProductsItems extends ConsumerWidget {
                             text: 'Confirmar'.hardcoded,
                             backgroundColor: theme.primaryColor,
                             onPressed: () {
-                              final currentProducts =
-                                  buyQuotation.Products ?? [];
+                              final currentProducts = [
+                                ...?buyQuotation.Products,
+                              ];
                               int index = currentProducts.indexWhere(
                                 (e) =>
                                     e.Product?.ProductPackingCode ==
@@ -178,41 +179,47 @@ class ProductsItems extends ConsumerWidget {
                                 );
                                 return;
                               }
+                              //TODO improve this logic below
+
+                              final selectedEnterpriseCodes =
+                                  buyQuotation.Enterprises?.where(
+                                    (e) => e.isSelected == true,
+                                  ).map((e) => e.enterprise.Code).toSet() ??
+                                  {};
 
                               final oldProduct = currentProducts[index];
                               final newProduct = oldProduct.copyWith(
                                 Code: oldProduct.Code,
-                                Product: product.Product,
-                                ProductEnterprises: buyQuotation.Enterprises!
-                                    .map((e) {
-                                      return BuyQuotationProductEnterpriseEntity(
-                                        Code: e.Code,
-                                        EnterpriseCode: e.enterprise.Code,
-                                        Quantity:
-                                            quantityControllers[e
-                                                    .enterprise
-                                                    .Code
-                                                    .toString()]!
-                                                .text
-                                                .toDouble() ??
-                                            0,
-                                      );
-                                    })
-                                    .toList(),
+                                Product: oldProduct.Product,
+                                ProductEnterprises: selectedEnterpriseCodes.map((
+                                  x,
+                                ) {
+                                  return BuyQuotationProductEnterpriseEntity(
+                                    Code:
+                                        oldProduct
+                                                .ProductEnterprises?.firstWhereOrNull(
+                                              (y) => y.EnterpriseCode == x,
+                                            )
+                                            ?.Code,
+                                    EnterpriseCode: x,
+                                    Quantity:
+                                        quantityControllers[x.toString()]!.text
+                                            .toDouble() ??
+                                        0,
+                                  );
+                                }).toList(),
                               );
 
-                              {
-                                currentProducts[index] = newProduct;
-                                ref
-                                    .read(
-                                      completeBuyQuotationsStateControllerProvider(
-                                        enterpriseCode,
-                                        code.toString(),
-                                      ).notifier,
-                                    )
-                                    .updateValues(Products: currentProducts);
-                                updateIndex(null);
-                              }
+                              currentProducts[index] = newProduct;
+                              ref
+                                  .read(
+                                    completeBuyQuotationsStateControllerProvider(
+                                      enterpriseCode,
+                                      code.toString(),
+                                    ).notifier,
+                                  )
+                                  .updateValues(Products: currentProducts);
+                              updateIndex(null);
                             },
                           ),
                         ),
