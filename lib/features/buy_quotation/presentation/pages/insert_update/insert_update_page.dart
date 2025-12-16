@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -71,9 +70,6 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     ref.listen(
       saveBuyQuotationControllerProvider(
         widget.enterpriseCode,
@@ -92,27 +88,9 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
               widget.code == 0 ? 'Inserindo'.hardcoded : 'Alterando'.hardcoded,
             ),
             actions: [
-              IconButton(
-                onPressed: () {
-                  showAlertDialog(
-                    context: context,
-                    title: 'Salvar'.hardcoded,
-                    content: 'Deseja salvar as alterações?'.hardcoded,
-                    cancelActionText: 'Cancelar'.hardcoded,
-                    defaultActionText: 'Salvar'.hardcoded,
-                    onOkPressed: () {
-                      ref
-                          .read(
-                            saveBuyQuotationControllerProvider(
-                              widget.enterpriseCode,
-                              widget.code.toString(),
-                            ).notifier,
-                          )
-                          .save();
-                    },
-                  );
-                },
-                icon: Icon(isIOS ? CupertinoIcons.check_mark : Icons.save),
+              SaveIconButton(
+                enterpriseCode: widget.enterpriseCode,
+                code: widget.code,
               ),
             ],
           ),
