@@ -8,7 +8,7 @@ abstract class ISoapInsertUpdateBuyQuotationDatasource {
     required int? code,
     required DateTime? dateOfCreation,
     required DateTime? dateOfLimit,
-    required int? personalizedCode,
+    required String? personalizedCode,
     required String? observations,
     required BuyerModel? buyer,
     required List<BuyQuotationEnterpriseModel>? Enterprises,

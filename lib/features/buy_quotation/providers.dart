@@ -18,3 +18,10 @@ ISoapLoadBuyQuotationsRepository soapLoadBuyQuotationsRepository(Ref ref) {
     ref.watch(soapLoadBuyQuotationsDatasourceProvider),
   );
 }
+
+@riverpod
+ISoapInsertUpdateBuyQuotationDatasource soapInsertUpdateBuyQuotationDatasource(
+  Ref ref,
+) {
+  return SoapInsertUpdateBuyQuotationDatasource(ref.watch(soapRequestProvider));
+}

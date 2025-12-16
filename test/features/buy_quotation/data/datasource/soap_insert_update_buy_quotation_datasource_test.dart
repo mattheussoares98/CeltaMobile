@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:celta_intelligence/features/buy_quotation/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/buy_quotation/data/models/models.dart';
-import 'package:celta_intelligence/features/buy_quotation/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -47,68 +46,42 @@ void main() {
   setUpAll(() {});
 
   test('Should behave correctly on success', () async {
-    final response = await sut.load(
+    await sut.insertUpdate(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
-      enterpriseCode: enterpriseCode,
-      isCompleteSearch: isCompleteSearch,
-      searchValue: searchValue,
-      dataType: dataType,
-      inclusiveExpired: inclusiveExpired,
+      code: buyQuotation.Code,
+      dateOfCreation: buyQuotation.DateOfCreation,
+      dateOfLimit: buyQuotation.DateOfLimit,
+      personalizedCode: buyQuotation.PersonalizedCode,
+      observations: buyQuotation.Observations,
+      buyer: buyQuotation.Buyer,
+      Enterprises: buyQuotation.Enterprises,
+      Products: buyQuotation.Products,
     );
-
-    expect(response, buyQuotationsModels);
 
     verify(
       () => soapRequest.post(
         url: baseUrl,
-        typeOfResponse: "GetBuyQuotationJsonResponse",
-        soapAction: "GetBuyQuotationJson",
+        typeOfResponse: "InsertUpdateBuyQuotationResponse",
+        soapAction: "InsertUpdateBuyQuotation",
         serviceASMX: "CeltaBuyRequestService.asmx",
-        typeOfResult: "GetBuyQuotationJsonResult",
+        typeOfResult: "InsertUpdateBuyQuotationResult",
         parameters: {
-          "filters": json.encode({
+          "json": json.encode({
             "CrossIdentity": crossIdentity,
-            "Complete": isCompleteSearch,
-            "Data": searchValue,
-            "EnterpriseCode": enterpriseCode,
-            "DataType": dataType.code,
-            "InclusiveExpired": inclusiveExpired,
-            "InitialDateOfCreation": null,
-            "FinalDateOfCreation": null,
-            "InitialDateOfLimit": null,
-            "FinalDateOfLimit": null,
-            "ProductCode": null,
-            "ProductPackingCode": null,
-            "SupplierCode": null,
-            "BuyerCode": null,
+            "Code": buyQuotation.Code,
+            "DateOfCreation": buyQuotation.DateOfCreation?.toIso8601String(),
+            "DateOfLimit": buyQuotation.DateOfLimit?.toIso8601String(),
+            "PersonalizedCode": buyQuotation.PersonalizedCode,
+            "Observations": buyQuotation.Observations,
+            "Buyer": buyQuotation.Buyer?.toJson(),
+            "Enterprises": buyQuotation.Enterprises?.map(
+              (e) => e.toJson(),
+            ).toList(),
+            "Products": buyQuotation.Products?.map((e) => e.toJson()).toList(),
           }),
         },
       ),
     ).called(1);
-  });
-
-  test('Should return null if dateOfLimit is 01/01/0001', () async {
-    soapRequest.mockPost(
-      json.encode([
-        BuyQuotationModel.fromEntity(
-          EntityFactory.makeBuyQuotationEntity(
-            dateOfLimit: DateTime(0001, 01, 01),
-          ),
-        ),
-      ]),
-    );
-
-    final response = await sut.load(
-      baseUrl: baseUrl,
-      crossIdentity: crossIdentity,
-      enterpriseCode: enterpriseCode,
-      isCompleteSearch: isCompleteSearch,
-      searchValue: searchValue,
-      dataType: dataType,
-      inclusiveExpired: inclusiveExpired,
-    );
-
-    expect(response.first.DateOfLimit, isNull);
   });
 }
