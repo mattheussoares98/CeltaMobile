@@ -15,7 +15,6 @@ class QuotationsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formatter = DateFormat('dd/MM/yyyy HH:mm');
     return AsyncValueWidget(
       value: ref.watch(buyQuotationsStateControllerProvider(enterpriseCode)),
       tryAgain: () =>
@@ -60,16 +59,18 @@ class QuotationsItems extends ConsumerWidget {
                         if (quotation.DateOfCreation != null)
                           TitleAndSubTitle(
                             title: 'Data de criação'.hardcoded,
-                            subTitle: formatter.format(
-                              quotation.DateOfCreation!,
-                            ),
+                            subTitle: DateFormat(
+                              'dd/MM/yyyy HH:mm',
+                            ).format(quotation.DateOfCreation!),
                           ),
                         TitleAndSubTitle(
                           title: 'Data limite'.hardcoded,
                           emptyMessage: 'Nenhuma data de limite'.hardcoded,
                           subTitle: quotation.DateOfLimit == null
                               ? null
-                              : formatter.format(quotation.DateOfLimit!),
+                              : DateFormat(
+                                  'dd/MM/yyyy',
+                                ).format(quotation.DateOfLimit!),
                         ),
                         TitleAndSubTitle(
                           title: 'Observações'.hardcoded,
