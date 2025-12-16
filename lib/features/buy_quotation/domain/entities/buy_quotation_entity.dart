@@ -69,4 +69,21 @@ class BuyQuotationEntity extends Equatable {
       Products: Products ?? this.Products,
     );
   }
+
+  BuyQuotationEntity annulValues({
+    bool? annulBuyer,
+    bool? annulEnterprises,
+    bool? annulProducts,
+  }) {
+    return BuyQuotationEntity(
+      Code: Code,
+      DateOfCreation: DateOfCreation,
+      DateOfLimit: DateOfLimit,
+      PersonalizedCode: PersonalizedCode,
+      Observations: Observations,
+      Buyer: annulBuyer == true ? null : Buyer,
+      Enterprises: annulEnterprises == true ? null : Enterprises,
+      Products: annulProducts == true ? null : Products,
+    );
+  }
 }
