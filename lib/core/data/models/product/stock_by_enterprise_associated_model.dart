@@ -23,7 +23,9 @@ class StockByEnterpriseAssociatedModel extends Equatable {
     return StockByEnterpriseAssociatedModel(
       Enterprise: json['Enterprise'],
       StockBalanceForSale: json['StockBalanceForSale'],
-      StorageAreaAddress: json['StorageAreaAddress'],
+      StorageAreaAddress: json['StorageAreaAddress'] == null
+          ? null
+          : (json['StorageAreaAddress'] as List).join('; '),
     );
   }
 
