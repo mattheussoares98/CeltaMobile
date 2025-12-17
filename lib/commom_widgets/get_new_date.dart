@@ -19,9 +19,15 @@ class GetNewDate {
     DateTime? selectedDate;
     final theme = Theme.of(context);
 
+    final currentSelectedIsBeforeMinimumDate =
+        currentSelectedDate?.isBefore(minimumDate) ?? true;
+    final correctMinimumDate = currentSelectedIsBeforeMinimumDate
+        ? minimumDate
+        : currentSelectedDate!;
+
     if (theme.platform == TargetPlatform.iOS) {
       selectedDate = await _showCupertinoDatePicker(
-        minimumDate: minimumDate,
+        minimumDate: correctMinimumDate,
         context: context,
         maximumDate: maximumDate,
         currentSelectedDate: currentSelectedDate,
@@ -30,8 +36,12 @@ class GetNewDate {
     } else {
       selectedDate = await showDatePicker(
         context: context,
-        firstDate: minimumDate,
-        initialDate: currentSelectedDate,
+        firstDate: currentSelectedIsBeforeMinimumDate
+            ? correctMinimumDate
+            : minimumDate,
+        initialDate: currentSelectedIsBeforeMinimumDate
+            ? correctMinimumDate
+            : currentSelectedDate,
         lastDate: maximumDate,
       );
     }
