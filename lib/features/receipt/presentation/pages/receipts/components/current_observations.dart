@@ -36,9 +36,11 @@ class CurrentObservations extends StatelessWidget {
               : 'Observações'.hardcoded,
           titleStyle: theme.textTheme.bodyMedium?.copyWith(
             fontStyle: FontStyle.italic,
+            color: observations == null || observations.isEmpty
+                ? Colors.transparent
+                : null,
           ),
           subTitle: null,
-          //TODO test in a enterprise that doesnt has default observations
         ),
         TitleAndSubTitle(
           title: null,

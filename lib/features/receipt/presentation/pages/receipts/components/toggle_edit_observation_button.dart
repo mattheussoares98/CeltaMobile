@@ -25,8 +25,13 @@ class ToggleUpdateObservationButton extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
+    final observations =
+        receipt.Observacoes_ProcRecebDoc ?? receipt.DefaultObservations;
+
     return PrimaryTextButton(
-      text: 'Alterar obs'.hardcoded,
+      text: observations == null || observations.isEmpty
+          ? 'Inserir obs'.hardcoded
+          : 'Alterar obs'.hardcoded,
       isLoading: ref.watch(
         receiptsStateControllerProvider(
           enterpriseCode,
