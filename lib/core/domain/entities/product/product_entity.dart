@@ -42,10 +42,9 @@ class ProductEntity extends Equatable {
   final int? ResearchOfPriceCode;
   final int? ConcurrentCode;
   final PriceCostEntity? PriceCost;
-  final List<StockByEnterpriseAssociatedEntity>?
-  StockByEnterpriseAssociateds; //TODO test when the user doesnt has permission
+  final List<StockByEnterpriseAssociatedEntity>? StockByEnterpriseAssociateds;
   final List<StockEntity>?
-  Stocks; //TODO test when the user doesnt has permission
+  Stocks; //even when doesnt has permission, is returning the stocks
   final List<LastBuyEntranceEntity>? LastBuyEntrances;
   final List<String>? EANs;
   final int? codigoInternoProEmb; //inventory
