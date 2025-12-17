@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import '../models.dart';
 import '../../../domain/entities/entities.dart';
 
-//TODO create different folders here and in entities to separate inventory, params and getJson
 class InventoryProductModel extends Equatable implements ProductModelType {
   final String productName;
   final String plu;
