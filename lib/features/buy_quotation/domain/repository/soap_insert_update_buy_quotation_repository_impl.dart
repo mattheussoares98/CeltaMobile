@@ -17,6 +17,30 @@ class SoapInsertUpdateBuyQuotationRepositoryImpl
     required DateTime now,
     required String? observations,
   }) async {
+    final Set<int> currentlySelectedCodes =
+        buyQuotation.Enterprises?.where(
+          (e) => e.isSelected == true,
+        ).map((e) => e.enterprise.Code!).toSet() ??
+        {};
+
+    final cleanedProducts = buyQuotation.Products?.map((product) {
+      final existingProductEnterprises = product.ProductEnterprises;
+
+      if (existingProductEnterprises == null) {
+        return product;
+      }
+
+      final filteredProductEnterprises = existingProductEnterprises
+          .where(
+            (productEnterprise) => currentlySelectedCodes.contains(
+              productEnterprise.EnterpriseCode,
+            ),
+          )
+          .toList();
+
+      return product.copyWith(ProductEnterprises: filteredProductEnterprises);
+    }).toList();
+
     await datasource.insertUpdate(
       baseUrl: baseUrl,
       crossIdentity: crossIdentity,
@@ -25,9 +49,9 @@ class SoapInsertUpdateBuyQuotationRepositoryImpl
           Enterprises: buyQuotation.Enterprises?.map(
             (e) => e.copyWith(Code: e.Code ?? 0),
           ).toList().where((x) => x.isSelected == true).toList(),
-          Products: buyQuotation.Products?.map(
-            (e) => e.copyWith(Code: e.Code ?? 0),
-          ).toList(),
+          Products: cleanedProducts
+              ?.map((e) => e.copyWith(Code: e.Code ?? 0))
+              .toList(),
           Code: buyQuotation.Code ?? 0,
           DateOfCreation: buyQuotation.DateOfCreation ?? now,
           Observations: observations,
