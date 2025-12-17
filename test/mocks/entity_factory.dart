@@ -834,42 +834,46 @@ class EntityFactory {
   static BuyQuotationEntity makeBuyQuotationEntity({
     DateTime? dateOfLimit,
     DateTime? dateOfCreation,
-  }) => BuyQuotationEntity(
-    Code: faker.randomGenerator.integer(100),
-    DateOfCreation: dateOfCreation ?? faker.date.dateTime(),
-    DateOfLimit: dateOfLimit ?? faker.date.dateTime(),
-    PersonalizedCode: faker.randomGenerator.integer(100).toString(),
-    Observations: faker.lorem.sentence(),
-    Buyer: makeBuyerEntity(),
-    Enterprises: [
-      _makeBuyQuotationEnterpriseEntity(
-        enterpriseCode: faker.randomGenerator.integer(100),
-      ),
-      _makeBuyQuotationEnterpriseEntity(
-        enterpriseCode: faker.randomGenerator.integer(200, min: 101),
-      ),
-      _makeBuyQuotationEnterpriseEntity(
-        enterpriseCode: faker.randomGenerator.integer(300, min: 201),
-      ),
-    ],
-    Products: [
-      _makeBuyQuotationProductsEntity(
-        productPackingCode: faker.randomGenerator.integer(100),
-      ),
-      _makeBuyQuotationProductsEntity(
-        productPackingCode: faker.randomGenerator.integer(200, min: 101),
-      ),
-      _makeBuyQuotationProductsEntity(
-        productPackingCode: faker.randomGenerator.integer(300, min: 201),
-      ),
-    ],
-  );
+  }) {
+    final enterpriseCodes = [
+      faker.randomGenerator.integer(100),
+      faker.randomGenerator.integer(200, min: 101),
+      faker.randomGenerator.integer(300, min: 201),
+    ];
+    return BuyQuotationEntity(
+      Code: faker.randomGenerator.integer(100),
+      DateOfCreation: dateOfCreation ?? faker.date.dateTime(),
+      DateOfLimit: dateOfLimit ?? faker.date.dateTime(),
+      PersonalizedCode: faker.randomGenerator.integer(100).toString(),
+      Observations: faker.lorem.sentence(),
+      Buyer: makeBuyerEntity(),
+      Enterprises: [
+        makeBuyQuotationEnterpriseEntity(enterpriseCode: enterpriseCodes[0]),
+        makeBuyQuotationEnterpriseEntity(enterpriseCode: enterpriseCodes[1]),
+        makeBuyQuotationEnterpriseEntity(enterpriseCode: enterpriseCodes[2]),
+      ],
+      Products: [
+        _makeBuyQuotationProductsEntity(
+          productPackingCode: faker.randomGenerator.integer(100),
+          enterpriseCodes: enterpriseCodes,
+        ),
+        _makeBuyQuotationProductsEntity(
+          productPackingCode: faker.randomGenerator.integer(200, min: 101),
+          enterpriseCodes: enterpriseCodes,
+        ),
+        _makeBuyQuotationProductsEntity(
+          productPackingCode: faker.randomGenerator.integer(300, min: 201),
+          enterpriseCodes: enterpriseCodes,
+        ),
+      ],
+    );
+  }
 
-  static BuyQuotationEnterpriseEntity _makeBuyQuotationEnterpriseEntity({
+  static BuyQuotationEnterpriseEntity makeBuyQuotationEnterpriseEntity({
     int? enterpriseCode,
   }) => BuyQuotationEnterpriseEntity(
     Code: faker.randomGenerator.integer(100),
-    isSelected: faker.randomGenerator.boolean(),
+    isSelected: true,
     enterprise: BuyQuotationEnterpriseInfoEntity(
       PersonalizedCode: faker.randomGenerator.integer(100).toString(),
       Code: enterpriseCode ?? faker.randomGenerator.integer(100),
@@ -881,21 +885,28 @@ class EntityFactory {
 
   static BuyQuotationProductsEntity _makeBuyQuotationProductsEntity({
     int? productPackingCode,
+    List<int>? enterpriseCodes,
   }) => BuyQuotationProductsEntity(
     Code: faker.randomGenerator.integer(100),
     Product: makeProductEntity(productPackingCode: productPackingCode),
     ProductEnterprises: [
-      _makeBuyQuotationProductEnterpriseEntity(),
-      _makeBuyQuotationProductEnterpriseEntity(),
-      _makeBuyQuotationProductEnterpriseEntity(),
+      _makeBuyQuotationProductEnterpriseEntity(
+        enterpriseCode: enterpriseCodes?[0],
+      ),
+      _makeBuyQuotationProductEnterpriseEntity(
+        enterpriseCode: enterpriseCodes?[1],
+      ),
+      _makeBuyQuotationProductEnterpriseEntity(
+        enterpriseCode: enterpriseCodes?[2],
+      ),
     ],
   );
 
   static BuyQuotationProductEnterpriseEntity
-  _makeBuyQuotationProductEnterpriseEntity() =>
+  _makeBuyQuotationProductEnterpriseEntity({int? enterpriseCode}) =>
       BuyQuotationProductEnterpriseEntity(
         Code: faker.randomGenerator.integer(100),
-        EnterpriseCode: faker.randomGenerator.integer(100),
+        EnterpriseCode: enterpriseCode ?? faker.randomGenerator.integer(100),
         Quantity: faker.randomGenerator.decimal(),
       );
 }
