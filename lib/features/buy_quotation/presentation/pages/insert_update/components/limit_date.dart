@@ -36,33 +36,38 @@ class LimitDate extends ConsumerWidget {
               emptyMessage: 'Sem data de limite'.hardcoded,
             ),
           ),
-          PrimaryTextButton(
-            text: buyQuotation.DateOfLimit == null
-                ? 'Inserir'.hardcoded
-                : 'Alterar'.hardcoded,
-            icon: Icon(isIOS ? CupertinoIcons.calendar : Icons.date_range),
-            onPressed: () async {
-              final now = DateTime.now();
-              final newDate = await GetNewDate.get(
-                minimumDate: now,
-                maximumDate: now.add(const Duration(days: 365)),
-                currentSelectedDate: buyQuotation.DateOfLimit,
-                insertHoursAndMinutes: false,
-                context: context,
-              );
-
-              ref
-                  .read(
-                    completeBuyQuotationsStateControllerProvider(
-                      enterpriseCode,
-                      code.toString(),
-                    ).notifier,
-                  )
-                  .updateValues(
-                    DateOfLimit: newDate,
-                    annulDateOfLimit: newDate == null,
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: PrimaryTextButton(
+                text: buyQuotation.DateOfLimit == null
+                    ? 'Inserir'.hardcoded
+                    : 'Alterar'.hardcoded,
+                icon: Icon(isIOS ? CupertinoIcons.calendar : Icons.date_range),
+                onPressed: () async {
+                  final now = DateTime.now();
+                  final newDate = await GetNewDate.get(
+                    minimumDate: now,
+                    maximumDate: now.add(const Duration(days: 365)),
+                    currentSelectedDate: buyQuotation.DateOfLimit,
+                    insertHoursAndMinutes: false,
+                    context: context,
                   );
-            },
+
+                  ref
+                      .read(
+                        completeBuyQuotationsStateControllerProvider(
+                          enterpriseCode,
+                          code.toString(),
+                        ).notifier,
+                      )
+                      .updateValues(
+                        DateOfLimit: newDate,
+                        annulDateOfLimit: newDate == null,
+                      );
+                },
+              ),
+            ),
           ),
         ],
       ),

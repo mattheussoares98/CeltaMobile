@@ -70,6 +70,10 @@ class ProductsItems extends ConsumerWidget {
       }
     }
 
+    final canUpdateProductIndex =
+        buyQuotation.Enterprises != null &&
+        buyQuotation.Enterprises!.where((e) => e.isSelected == true).isNotEmpty;
+
     return SliverList.builder(
       itemCount: buyQuotation.Products?.length ?? 0,
       itemBuilder: (_, index) {
@@ -100,9 +104,9 @@ class ProductsItems extends ConsumerWidget {
         return ProductItemWidget(
           product: product.Product!,
           routine: BsRoutine.buyQuotation,
-          showDropIcon: true,
+          showDropIcon: canUpdateProductIndex ? true : false,
           isSelected: isSelected,
-          onTap: () => updateIndex(index),
+          onTap: canUpdateProductIndex ? () => updateIndex(index) : null,
           itemBeforeProductName: QuantityByEnterprises(
             productEnterprises: productEnterprises,
             enterprises: enterprises.value,

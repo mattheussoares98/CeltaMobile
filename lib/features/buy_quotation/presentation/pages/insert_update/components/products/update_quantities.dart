@@ -98,14 +98,17 @@ class UpdateQuantities extends ConsumerWidget {
               final correspondentEnterprise = enterprises.firstWhere(
                 (x) => entry.key == x.Code.toString(),
               );
-              return DefaultTextFormField(
-                //TODO test in a real device if change the focus correctly and create different files to reduce the file size
-                controller: entry.value,
-                keyboardType: TextInputType.number,
-                labelText:
-                    '(${correspondentEnterprise.PersonalizedCode}) ${correspondentEnterprise.name}'
-                        .hardcoded,
-                hintText: 'Quantidade'.hardcoded,
+              return Padding(
+                padding: const EdgeInsets.only(bottom: Sizes.p8),
+                child: DefaultTextFormField(
+                  //TODO test in a real device if change the focus correctly and create different files to reduce the file size
+                  controller: entry.value,
+                  keyboardType: TextInputType.number,
+                  labelText:
+                      '(${correspondentEnterprise.PersonalizedCode}) ${correspondentEnterprise.name}'
+                          .hardcoded,
+                  hintText: 'Quantidade'.hardcoded,
+                ),
               );
             }),
         gapH8,
