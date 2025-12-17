@@ -97,35 +97,32 @@ class _AdjustSalePriceProductsPageState
                           return ProductItemWidget(
                             product: product,
                             routine: BsRoutine.adjustSalePrice,
-                            notClickableBottom: Padding(
-                              padding: const EdgeInsets.only(top: Sizes.p8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Flexible(
-                                    child: PrimaryButton(
-                                      text: 'Alterar preços'.hardcoded,
-                                      icon: Icon(
-                                        theme.platform == TargetPlatform.iOS
-                                            ? CupertinoIcons.pencil
-                                            : Icons.edit,
-                                      ),
-                                      iconAlignment: IconAlignment.end,
-                                      onPressed: () {
-                                        context.goNamed(
-                                          Routes.adjustSalePrice.name,
-                                          pathParameters: {
-                                            'enterpriseCode': widget
-                                                .enterpriseCode
-                                                .toString(),
-                                            'plu': product.PLU!,
-                                          },
-                                        );
-                                      },
+                            notClickableBottom: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Flexible(
+                                  child: PrimaryButton(
+                                    text: 'Alterar preços'.hardcoded,
+                                    icon: Icon(
+                                      theme.platform == TargetPlatform.iOS
+                                          ? CupertinoIcons.pencil
+                                          : Icons.edit,
                                     ),
+                                    iconAlignment: IconAlignment.end,
+                                    onPressed: () {
+                                      context.goNamed(
+                                        Routes.adjustSalePrice.name,
+                                        pathParameters: {
+                                          'enterpriseCode': widget
+                                              .enterpriseCode
+                                              .toString(),
+                                          'plu': product.PLU!,
+                                        },
+                                      );
+                                    },
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           );
                         },
