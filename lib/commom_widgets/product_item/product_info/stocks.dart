@@ -5,7 +5,6 @@ import 'package:collection/collection.dart';
 import '../../../constants/constants.dart';
 import '../../../core/domain/entities/entities.dart';
 import '../../commom_widgets.dart';
-import 'product_info.dart';
 
 class Stocks extends StatelessWidget {
   const Stocks({super.key, required this.widget});

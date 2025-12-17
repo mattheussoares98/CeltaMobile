@@ -258,9 +258,11 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                               },
                             ),
                             _DefaultDivider(),
-                            PricesCostsAndMarginsButton(
-                              product: product!,
-                              enterpriseCode: widget.enterpriseCode,
+                            InfoButton(
+                              ProductItemWidget(
+                                product: product!,
+                                routine: BsRoutine.adjustSalePrice,
+                              ),
                             ),
                             PracticedSuggestionAndMinimumPrices(
                               product: product,

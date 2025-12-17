@@ -9,10 +9,22 @@ import 'product_info.dart';
 class ProductInfoModal extends StatefulWidget {
   final ProductEntity product;
   final BsRoutine routine;
+  final bool showPrices;
+  final bool showStocks;
+  final bool showAddresses;
+  final bool showShoppings;
+  final bool showCosts;
+  final bool showMargins;
   const ProductInfoModal({
     super.key,
     required this.product,
     required this.routine,
+    required this.showPrices,
+    required this.showStocks,
+    required this.showAddresses,
+    required this.showShoppings,
+    required this.showCosts,
+    required this.showMargins,
   });
 
   @override
@@ -31,16 +43,13 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
 
   @override
   Widget build(BuildContext context) {
-    final showMargins = widget.routine == BsRoutine.adjustSalePrice;
-
     final pages = [
-      //TODO check in all modules, if load the data from each page. Because if is necessary, needs to hide depending on the module
-      Prices(widget: widget),
-      if (widget.routine != BsRoutine.adjustSalePrice) Stocks(widget: widget),
-      Addresses(widget: widget),
-      Shopping(widget: widget),
-      Costs(widget: widget),
-      if (showMargins) Margins(widget: widget),
+      if (widget.showPrices) Prices(widget: widget),
+      if (widget.showStocks) Stocks(widget: widget),
+      if (widget.showAddresses) Addresses(widget: widget),
+      if (widget.showShoppings) Shopping(widget: widget),
+      if (widget.showCosts) Costs(widget: widget),
+      if (widget.showMargins) Margins(widget: widget),
     ];
 
     final theme = Theme.of(context);
@@ -72,36 +81,40 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
           });
         },
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              isIOS ? CupertinoIcons.money_dollar : Icons.attach_money,
+          if (widget.showPrices)
+            BottomNavigationBarItem(
+              icon: Icon(
+                isIOS ? CupertinoIcons.money_dollar : Icons.attach_money,
+              ),
+              label: 'Preços'.hardcoded,
             ),
-            label: 'Preços'.hardcoded,
-          ),
-          if (widget.routine != BsRoutine.adjustSalePrice)
+          if (widget.showStocks)
             BottomNavigationBarItem(
               icon: Icon(
                 isIOS ? CupertinoIcons.archivebox : Icons.inventory_2_outlined,
               ),
               label: 'Estoques'.hardcoded,
             ),
-          BottomNavigationBarItem(
-            icon: Icon(isIOS ? CupertinoIcons.location : Icons.location_pin),
-            label: 'Endereços'.hardcoded,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              isIOS
-                  ? CupertinoIcons.shopping_cart
-                  : Icons.shopping_cart_outlined,
+          if (widget.showAddresses)
+            BottomNavigationBarItem(
+              icon: Icon(isIOS ? CupertinoIcons.location : Icons.location_pin),
+              label: 'Endereços'.hardcoded,
             ),
-            label: 'Compras'.hardcoded,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
-            label: 'Custos'.hardcoded,
-          ),
-          if (showMargins)
+          if (widget.showShoppings)
+            BottomNavigationBarItem(
+              icon: Icon(
+                isIOS
+                    ? CupertinoIcons.shopping_cart
+                    : Icons.shopping_cart_outlined,
+              ),
+              label: 'Compras'.hardcoded,
+            ),
+          if (widget.showCosts)
+            BottomNavigationBarItem(
+              icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
+              label: 'Custos'.hardcoded,
+            ),
+          if (widget.showMargins)
             BottomNavigationBarItem(
               icon: Icon(
                 isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart_rounded,

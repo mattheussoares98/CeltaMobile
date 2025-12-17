@@ -10,6 +10,60 @@ class InfoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final retailPrice = widget.product.PriceCost?.RetailPracticedPrice;
+    final showPrices = retailPrice != null && retailPrice > 0;
+
+    final stocks = widget.product.Stocks;
+    final showStocks =
+        stocks != null &&
+        stocks.isNotEmpty &&
+        stocks.any((e) => e.StockQuantity >= 0);
+
+    final showMargins = [
+      widget.product.PriceCost?.RetailMargin,
+      widget.product.PriceCost?.RetailMinimumMargin,
+      widget.product.PriceCost?.RetailOfferMargin,
+      widget.product.PriceCost?.WholeMargin,
+      widget.product.PriceCost?.WholeMinimumMargin,
+      widget.product.PriceCost?.WholeOfferMargin,
+      widget.product.PriceCost?.ECommerceMargin,
+      widget.product.PriceCost?.ECommerceMinimumMargin,
+      widget.product.PriceCost?.ECommerceOfferMargin,
+    ].any((x) => x != null && x > 0);
+
+    final showCosts = [
+      widget.product.LiquidCost,
+      widget.product.LiquidCostMidle,
+      widget.product.FiscalCost,
+      widget.product.FiscalLiquidCost,
+      widget.product.OperationalCost,
+      widget.product.RealCost,
+      widget.product.RealLiquidCost,
+      widget.product.ReplacementCost,
+      widget.product.ReplacementCostMidle,
+    ].any((x) => x != null);
+
+    final showShoppings =
+        widget.product.LastBuyEntrances != null &&
+        widget.product.LastBuyEntrances!.isNotEmpty;
+
+    final showAddresses =
+        widget.product.StorageAreaAddress != null &&
+        (widget.product.StockByEnterpriseAssociateds?.length ?? 0) > 0;
+
+    final showQuantity = [
+      showPrices,
+      showStocks,
+      showAddresses,
+      showShoppings,
+      showCosts,
+      showMargins,
+    ].where((e) => e == true).length;
+
+    if (showQuantity < 2) {
+      //should be bigger than 2 to avoid error in the bottomNavigationBar
+      return const SizedBox.shrink();
+    }
     if (widget.routine == BsRoutine.goodsReceiving) {
       return const SizedBox.shrink();
     }
@@ -23,7 +77,16 @@ class InfoButton extends StatelessWidget {
       ),
       onPressed: () {
         showModalPage(
-          ProductInfoModal(product: widget.product, routine: widget.routine),
+          ProductInfoModal(
+            product: widget.product,
+            routine: widget.routine,
+            showPrices: showPrices,
+            showStocks: showStocks,
+            showAddresses: showAddresses,
+            showShoppings: showShoppings,
+            showCosts: showCosts,
+            showMargins: showMargins,
+          ),
           context,
         );
       },
