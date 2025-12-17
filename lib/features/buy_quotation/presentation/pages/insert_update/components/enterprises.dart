@@ -84,8 +84,21 @@ class Enterprises extends ConsumerWidget {
       value: ref.watch(enterprisesStateControllerProvider()),
       tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
       data: (enterprises) {
+        final filteredEnterprises =
+            buyQuotation.Code == 0 || buyQuotation.Code == null
+            ? enterprises
+            : enterprises
+                  //cant allow the user to insert a new enterprise because causes error
+                  .where(
+                    (e) =>
+                        buyQuotation.Enterprises?.any(
+                          (x) => x.enterprise.Code == e.Code,
+                        ) ==
+                        true,
+                  )
+                  .toList();
         return SliverList.builder(
-          itemCount: enterprises.length + 1,
+          itemCount: filteredEnterprises.length + 1,
           itemBuilder: (_, index) {
             if (index == 0) {
               return Text(
@@ -96,7 +109,7 @@ class Enterprises extends ConsumerWidget {
                 ),
               );
             }
-            final enterprise = enterprises[index - 1];
+            final enterprise = filteredEnterprises[index - 1];
 
             final isSelected =
                 buyQuotation.Enterprises?.where(
