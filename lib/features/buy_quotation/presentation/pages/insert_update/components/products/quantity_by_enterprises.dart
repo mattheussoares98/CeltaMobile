@@ -30,7 +30,7 @@ class QuantityByEnterprises extends StatelessWidget {
                   style: theme.textTheme.titleSmall,
                 ),
               ),
-              Text((e.Quantity ?? 0).toString().toBrazilianNumber()),
+              Text((e.Quantity ?? 0).toString().toBrazilianNumber(3, true)),
             ],
           );
         }),
