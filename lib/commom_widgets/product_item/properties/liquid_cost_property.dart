@@ -19,10 +19,12 @@ class LiquidCostProperty extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    final bool hasPermission = widget.product.LiquidCost != -1;
+
     return TitleAndSubTitle(
-      title: "Custo líquido ",
-      subTitle: widget.product.LiquidCost,
-      emptyMessage: 'Sem custo líquido'.hardcoded,
+      title: hasPermission ? "Custo líquido " : null,
+      subTitle: hasPermission ? widget.product.LiquidCost : null,
+      emptyMessage: hasPermission ? 'Sem custo líquido'.hardcoded : null,
       subTitleIsPrice: true,
     );
   }
