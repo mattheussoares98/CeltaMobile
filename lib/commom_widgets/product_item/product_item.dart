@@ -1,14 +1,7 @@
-export './addresses.dart';
+export './product_info/product_info.dart';
 export './cart_item_summary.dart';
-export './costs.dart';
 export './default_title.dart';
 export './delete_item_button.dart';
 export 'practiced_price.dart';
-export './info_button.dart';
-export './margins.dart';
-export './prices.dart';
-export 'product_info_modal.dart';
 export './product_item_widget.dart';
 export './selected_icon_indicator.dart';
-export './shopping.dart';
-export './stocks.dart.dart';

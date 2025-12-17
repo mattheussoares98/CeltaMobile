@@ -3,8 +3,8 @@ import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../constants/constants.dart';
-import '../commom_widgets.dart';
+import '../../../constants/constants.dart';
+import '../../commom_widgets.dart';
 
 class Shopping extends StatelessWidget {
   const Shopping({super.key, required this.widget});

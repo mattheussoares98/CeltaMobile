@@ -2,9 +2,9 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/constants.dart';
-import '../../core/domain/entities/entities.dart';
-import 'product_item.dart';
+import '../../../constants/constants.dart';
+import '../../../core/domain/entities/entities.dart';
+import 'product_info.dart';
 
 class ProductInfoModal extends StatefulWidget {
   final ProductEntity product;

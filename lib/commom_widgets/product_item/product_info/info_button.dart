@@ -1,8 +1,8 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/domain/entities/entities.dart';
-import '../commom_widgets.dart';
+import '../../../core/domain/entities/entities.dart';
+import '../../commom_widgets.dart';
 
 class InfoButton extends StatelessWidget {
   final ProductItemWidget widget;
