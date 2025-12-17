@@ -95,16 +95,13 @@ void main() {
             "CustomerCode": customerCode,
             "Products": products
                 .map(
-                  (e) =>
-                      CartProductModel.fromEntity(
-                        e.toEntity().copyWith(
-                          DiscountValue: e.DiscountValue != null
-                              ? e.DiscountValue! / e.Quantity
-                              : null,
-                        ),
-                      ).toJson()..remove(
-                        "product",
-                      ), //TODO move this logic to the repository
+                  (e) => CartProductModel.fromEntity(
+                    e.toEntity().copyWith(
+                      DiscountValue: e.DiscountValue != null
+                          ? e.DiscountValue! / e.Quantity
+                          : null,
+                    ),
+                  ).toJson()..remove("product"),
                 )
                 .toList(),
           }),
