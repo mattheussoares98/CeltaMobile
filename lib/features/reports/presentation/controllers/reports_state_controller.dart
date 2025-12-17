@@ -19,4 +19,22 @@ class ReportsStateController extends _$ReportsStateController {
           crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
         );
   }
+
+  void updateExecutionDate(int reportScheduleCode) {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    final reportIndex = state.value!.indexWhere(
+      (e) => e.Code == reportScheduleCode,
+    );
+
+    final oldReport = state.value![reportIndex].copyWith(
+      LastExecutionDate: DateTime.now(),
+    );
+
+    final updatedList = [...state.value!];
+    updatedList[reportIndex] = oldReport;
+
+    state = AsyncData(updatedList);
+  }
 }

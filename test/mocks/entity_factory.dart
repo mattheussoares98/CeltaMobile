@@ -732,7 +732,7 @@ class EntityFactory {
     Address: makeAddressEntity(),
   );
 
-  static ReportScheduleEntity makeReportScheduleEntity() =>
+  static ReportScheduleEntity makeReportScheduleEntity({int? Code}) =>
       ReportScheduleEntity(
         Name: faker.lorem.word(),
         Type: faker.lorem.word(),
@@ -743,7 +743,7 @@ class EntityFactory {
         IsExecuting: faker.randomGenerator.boolean(),
         ExecutionStatus: faker.randomGenerator.boolean(),
         LastExecutionContainsData: faker.randomGenerator.boolean(),
-        Code: faker.randomGenerator.integer(100),
+        Code:Code?? faker.randomGenerator.integer(100),
         CategoryCode: faker.randomGenerator.integer(100),
         SubCategoryCode: faker.randomGenerator.integer(100),
         ReportCode: faker.randomGenerator.integer(100),

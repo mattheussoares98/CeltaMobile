@@ -56,4 +56,24 @@ class ReportScheduleEntity extends Equatable {
     LastExecutionDate,
     LastExecutionStartDateTime,
   ];
+
+  ReportScheduleEntity copyWith({DateTime? LastExecutionDate}) =>
+      ReportScheduleEntity(
+        Name: Name,
+        Type: Type,
+        CategoryName: CategoryName,
+        SubCategoryName: SubCategoryName,
+        ReportName: ReportName,
+        ReportModelName: ReportModelName,
+        IsExecuting: IsExecuting,
+        ExecutionStatus: ExecutionStatus,
+        LastExecutionContainsData: LastExecutionContainsData,
+        Code: Code,
+        CategoryCode: CategoryCode,
+        SubCategoryCode: SubCategoryCode,
+        ReportCode: ReportCode,
+        ReportModelCode: ReportModelCode,
+        LastExecutionDate: LastExecutionDate ?? LastExecutionDate,
+        LastExecutionStartDateTime: LastExecutionStartDateTime,
+      );
 }

@@ -5,6 +5,7 @@ import 'package:celta_intelligence/features/reports/domain/entities/entities.dar
 import 'package:celta_intelligence/features/reports/domain/repository/repository.dart';
 import 'package:celta_intelligence/features/reports/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/reports/providers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -26,7 +27,17 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
-    fakeReports = [EntityFactory.makeReportScheduleEntity()];
+    fakeReports = [
+      EntityFactory.makeReportScheduleEntity(
+        Code: faker.randomGenerator.integer(100, min: 1),
+      ),
+      EntityFactory.makeReportScheduleEntity(
+        Code: faker.randomGenerator.integer(200, min: 101),
+      ),
+      EntityFactory.makeReportScheduleEntity(
+        Code: faker.randomGenerator.integer(300, min: 201),
+      ),
+    ];
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -119,6 +130,76 @@ void main() {
         container.read(reportsStateControllerProvider.future),
         throwsA(isA<Exception>()),
       );
+    });
+  });
+
+  group('updateExecutionDate', () {
+    test(
+      'should update LastExecutionDate for the specific report code',
+      () async {
+        // ARRANGE
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        when(
+          () => mockRepository.load(
+            crossIdentity: any(named: 'crossIdentity'),
+            baseUrl: any(named: 'baseUrl'),
+          ),
+        ).thenAnswer((_) async => fakeReports);
+
+        // Load initial state
+        await container.read(reportsStateControllerProvider.future);
+
+        final targetReportCode = fakeReports[0].Code;
+        final timeBeforeUpdate = DateTime.now();
+
+        // ACT
+        container
+            .read(reportsStateControllerProvider.notifier)
+            .updateExecutionDate(targetReportCode);
+
+        // ASSERT
+        final state = container.read(reportsStateControllerProvider);
+        final updatedList = state.value!;
+        final updatedReport = updatedList.firstWhere(
+          (e) => e.Code == targetReportCode,
+        );
+        final untouchedReport = updatedList.firstWhere(
+          (e) => e.Code == fakeReports[1].Code,
+        );
+
+        // Check if the date was updated to "now"
+        expect(updatedReport.LastExecutionDate, isNotNull);
+        expect(
+          updatedReport.LastExecutionDate!.isAfter(timeBeforeUpdate) ||
+              updatedReport.LastExecutionDate!.isAtSameMomentAs(
+                timeBeforeUpdate,
+              ),
+          isTrue,
+        );
+
+        // Ensure other items in the list were not modified
+        expect(
+          untouchedReport.LastExecutionDate,
+          fakeReports[1].LastExecutionDate,
+        );
+      },
+    );
+
+    test('should do nothing if state is null/loading', () {
+      // ARRANGE
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+
+      // Repository load is not called yet, so state is null/loading
+      final notifier = container.read(reportsStateControllerProvider.notifier);
+
+      // ACT
+      notifier.updateExecutionDate(faker.randomGenerator.integer(100));
+
+      // ASSERT
+      expect(container.read(reportsStateControllerProvider).value, isNull);
     });
   });
 }

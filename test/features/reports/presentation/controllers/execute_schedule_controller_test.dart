@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_intelligence/features/reports/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/reports/domain/repository/repository.dart';
 import 'package:celta_intelligence/features/reports/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/reports/providers.dart';
@@ -18,8 +21,21 @@ import '../../../../mocks/mocks.dart';
 class MockSoapExecuteOrDownloadScheduleRepository extends Mock
     implements ISoapExecuteOrDownloadScheduleRepository {}
 
+class SpyReportsStateController extends ReportsStateController {
+  int? capturedUpdateCode;
+
+  @override
+  FutureOr<List<ReportScheduleEntity>> build() async => [];
+
+  @override
+  void updateExecutionDate(int reportScheduleCode) {
+    capturedUpdateCode = reportScheduleCode;
+  }
+}
+
 void main() {
   late MockSoapExecuteOrDownloadScheduleRepository mockRepository;
+  late SpyReportsStateController spyReportsController;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
 
@@ -28,6 +44,7 @@ void main() {
 
   setUp(() {
     mockRepository = MockSoapExecuteOrDownloadScheduleRepository();
+    spyReportsController = SpyReportsStateController();
     fakeReportScheduleCode = faker.randomGenerator.integer(100);
 
     fakeSession = UserSessionModel.fromEntity(
@@ -52,6 +69,7 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterprise),
         ),
+        reportsStateControllerProvider.overrideWith(() => spyReportsController),
       ],
     );
   }
@@ -113,6 +131,8 @@ void main() {
             downloadXlsx: false,
           ),
         ).called(1);
+
+        expect(spyReportsController.capturedUpdateCode, fakeReportScheduleCode);
       },
     );
 

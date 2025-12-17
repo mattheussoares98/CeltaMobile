@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'execute_schedule_controller.g.dart';
 
@@ -28,7 +29,9 @@ class ExecuteScheduleController extends _$ExecuteScheduleController {
             downloadXlsx: false,
           );
 
-      //TODO update the last execution date in reports
+      ref
+          .read(reportsStateControllerProvider.notifier)
+          .updateExecutionDate(reportScheduleCode);
     });
   }
 }
