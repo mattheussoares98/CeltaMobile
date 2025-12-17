@@ -41,8 +41,7 @@ class ProductEntity extends Equatable {
   final bool? MarkUpdateClassInAdjustSalePriceIndividual;
   final int? ResearchOfPriceCode;
   final int? ConcurrentCode;
-  final PriceCostEntity?
-  PriceCost; //TODO test when the user doesnt has permission
+  final PriceCostEntity? PriceCost;
   final List<StockByEnterpriseAssociatedEntity>?
   StockByEnterpriseAssociateds; //TODO test when the user doesnt has permission
   final List<StockEntity>?
