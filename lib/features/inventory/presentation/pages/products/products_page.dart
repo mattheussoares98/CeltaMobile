@@ -31,7 +31,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   final searchProductsFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
   final formKeyQuantity = GlobalKey<FormState>();
-  int? selectedIndex;
   bool insertIndividually = false;
 
   @override
@@ -75,44 +74,17 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     }
   }
 
-  void changeSelectedIndex(int index) {
-    if (selectedIndex == index) {
-      setState(() {
-        selectedIndex = null;
-      });
-    } else {
-      setState(() {
-        selectedIndex = index;
-      });
+  void changeSelectedIndex(int? index) {
+    ref
+        .read(selectedProductIndexStateControllerProvider.notifier)
+        .updateIndex(index);
+
+    if (ref.read(selectedProductIndexStateControllerProvider) != null) {
       quantityController.clear();
       Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });
     }
-  }
-
-  void entry(bool isSubtract, int codigoInternoProEmb) {
-    if (formKeyQuantity.currentState?.validate() != true) {
-      if (!quantityFocusNode.hasFocus) {
-        quantityFocusNode.requestFocus();
-      }
-      return;
-    }
-    ref
-        .read(
-          entryQuantityStateControllerProvider(
-            widget.codigoInternoInvCont,
-          ).notifier,
-        )
-        .entry(
-          codigoInternoInventario: widget.codigoInternoInventario,
-          enterpriseCode: widget.enterpriseCode,
-          codigoInternoProEmb: codigoInternoProEmb,
-          quantity: insertIndividually
-              ? 1
-              : quantityController.text.toDouble()!,
-          isSubtract: isSubtract,
-        );
   }
 
   @override
@@ -129,14 +101,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       next,
     ) {
       next.doOnSuccess(previous, () {
-        setState(() {
-          selectedIndex = null;
-        });
+        changeSelectedIndex(null);
         if (next.value?.length == 1) {
-          setState(() {
-            selectedIndex = 0;
-          });
-          //TODO create a new controller to select the index, to avoid update the entire page
+          changeSelectedIndex(0);
           quantityController.clear();
         }
         if (insertIndividually) {
@@ -199,40 +166,15 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       itemBuilder: (_, index) {
                         final product = products[index];
 
-                        return Card(
-                          margin: const EdgeInsets.only(top: Sizes.p8),
-                          clipBehavior: Clip.antiAlias,
-                          child: Column(
-                            children: [
-                              ProductInformations(
-                                onChangeSelectedIndex: () =>
-                                    changeSelectedIndex(index),
-                                product: product,
-                                isSelected: selectedIndex == index,
-                                codigoInternoInvCont:
-                                    widget.codigoInternoInvCont,
-                              ),
-                              if (selectedIndex == index) ...[
-                                QuantityButtonsAndField(
-                                  insertIndividually: insertIndividually,
-                                  quantityFocusNode: quantityFocusNode,
-                                  quantityController: quantityController,
-                                  codigoInternoInvCont:
-                                      widget.codigoInternoInvCont,
-                                  codigoInternoProEmb:
-                                      product.codigoInternoProEmb!,
-                                  enterpriseCode: widget.enterpriseCode,
-                                  codigoInternoInventario:
-                                      widget.codigoInternoInventario,
-                                  entryQuantity: (isSubtract) => entry(
-                                    isSubtract,
-                                    product.codigoInternoProEmb!,
-                                  ),
-                                  formKey: formKeyQuantity,
-                                ),
-                              ],
-                            ],
-                          ),
+                        return ProductItem(
+                          widget: widget,
+                          changeSelectedIndex: changeSelectedIndex,
+                          index: index,
+                          product: product,
+                          insertIndividually: insertIndividually,
+                          quantityFocusNode: quantityFocusNode,
+                          quantityController: quantityController,
+                          formKeyQuantity: formKeyQuantity,
                         );
                       },
                     );
