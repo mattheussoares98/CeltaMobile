@@ -14,7 +14,7 @@ class EnterprisesPage extends ConsumerWidget {
 
     return Scaffold(
       body: ResponsiveScrollableWidget(
-        isSliverPage: true, //TODO change this param name
+        isSliverPage: true,
         child: AsyncValueWidget(
           value: enterprisesAsync,
           tryAgain: () {

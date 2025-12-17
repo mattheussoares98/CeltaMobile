@@ -23,7 +23,6 @@ class DocumentsItems extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () async {
         onRefresh?.call();
-        //TODO test
       },
       child: ListView.builder(
         itemCount: documents.length,

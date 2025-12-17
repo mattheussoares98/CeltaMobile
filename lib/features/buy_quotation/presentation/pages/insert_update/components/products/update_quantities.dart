@@ -117,7 +117,6 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: Sizes.p8),
                   child: DefaultTextFormField(
-                    //TODO test in a real device if change the focus correctly and create different files to reduce the file size
                     controller: controller.value,
                     keyboardType: TextInputType.number,
                     autovalidateMode: AutovalidateMode.onUserInteraction,

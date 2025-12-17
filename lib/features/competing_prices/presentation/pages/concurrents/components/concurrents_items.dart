@@ -77,7 +77,7 @@ class ConcurrentsItems extends ConsumerWidget {
         );
         return RefreshIndicator(
           onRefresh: () async =>
-              ref.invalidate(concurrentsStateControllerProvider), //TODO test
+              ref.invalidate(concurrentsStateControllerProvider),
           child: ListView.builder(
             itemCount: concurrents.length,
             itemBuilder: (context, index) {

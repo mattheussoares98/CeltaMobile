@@ -24,7 +24,6 @@ class EnterprisesPage extends ConsumerWidget {
         data: (enterprises) {
           return RefreshIndicator(
             onRefresh: () async =>
-                //TODO test
                 ref.invalidate(enterprisesStateControllerProvider),
             child: ListView.builder(
               itemCount: enterprises.length,

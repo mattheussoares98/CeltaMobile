@@ -9,9 +9,9 @@ class SupplierEntity extends Equatable {
   final String SupplierType;
   final String SupplierRegimeType;
   final String Date;
-  final List? Emails; //TODO check if needs to create a entity
-  final List? Telephones; //TODO check if needs to create a entity
-  final List? Addresses; //TODO check if needs to create a entity
+  final List? Emails; //always return a null value
+  final List? Telephones; //always return a null value
+  final List? Addresses; //always return a null value
 
   const SupplierEntity({
     required this.Code,
