@@ -90,7 +90,9 @@ class UpdateQuantities extends ConsumerWidget {
             .where(
               (e) =>
                   buyQuotation.Enterprises?.any(
-                    (y) => y.enterprise.Code.toString() == e.key,
+                    (y) =>
+                        y.enterprise.Code.toString() == e.key &&
+                        y.isSelected == true,
                   ) ==
                   true,
             )
