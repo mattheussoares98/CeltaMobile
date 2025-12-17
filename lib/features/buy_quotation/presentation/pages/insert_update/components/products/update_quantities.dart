@@ -51,23 +51,21 @@ class UpdateQuantities extends ConsumerWidget {
         return;
       }
 
-      final selectedEnterpriseCodes =
-          buyQuotation.Enterprises?.where(
-            (e) => e.isSelected == true,
-          ).map((e) => e.enterprise.Code).toSet() ??
-          {};
-
       final oldProduct = currentProducts[index];
+
       final newProduct = oldProduct.copyWith(
         Code: oldProduct.Code,
         Product: oldProduct.Product,
-        ProductEnterprises: selectedEnterpriseCodes.map((x) {
+        ProductEnterprises: oldProduct.ProductEnterprises?.map((e) {
           return BuyQuotationProductEnterpriseEntity(
             Code: oldProduct.ProductEnterprises?.firstWhereOrNull(
-              (y) => y.EnterpriseCode == x,
-            )!.Code,
-            EnterpriseCode: x,
-            Quantity: quantityControllers[x.toString()]!.text.toDouble() ?? 0,
+              (y) => y.EnterpriseCode == e.EnterpriseCode,
+            )?.Code,
+            EnterpriseCode: e.EnterpriseCode,
+            Quantity:
+                quantityControllers[e.EnterpriseCode.toString()]!.text
+                    .toDouble() ??
+                0,
           );
         }).toList(),
       );
