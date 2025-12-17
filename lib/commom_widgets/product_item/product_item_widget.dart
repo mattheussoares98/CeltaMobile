@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -54,7 +53,6 @@ class ProductItemWidget extends ConsumerWidget {
     });
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -96,6 +94,8 @@ class ProductItemWidget extends ConsumerWidget {
                                     LiquidCostProperty(this),
                                     CurrentAndSaleStocks(this),
                                     EansProperty(this),
+                                    ?cartItemSummary,
+                                    ?clickableBottom,
                                   ],
                                 ),
                                 if (routine != BsRoutine.researchOfPrice &&
@@ -103,8 +103,6 @@ class ProductItemWidget extends ConsumerWidget {
                                   Positioned(right: 0, child: InfoButton(this)),
                               ],
                             ),
-                            ?cartItemSummary,
-                            ?clickableBottom,
                           ],
                         ),
                       ),
@@ -114,28 +112,11 @@ class ProductItemWidget extends ConsumerWidget {
                 ),
               ),
               Positioned(
-                right: Sizes.p8,
-                bottom: Sizes.p8,
+                right: 0,
+                bottom: 0,
                 child: Row(
                   children: [
-                    if (onDelete != null)
-                      IconButton(
-                        onPressed: onDelete == null
-                            ? null
-                            : () {
-                                showAlertDialog(
-                                  context: context,
-                                  title: 'Remover item?'.hardcoded,
-                                  onOkPressed: onDelete,
-                                  cancelActionText: 'Cancelar'.hardcoded,
-                                  defaultActionText: 'Remover'.hardcoded,
-                                );
-                              },
-                        icon: Icon(
-                          isIOS ? CupertinoIcons.delete : Icons.delete,
-                          color: Colors.red,
-                        ),
-                      ),
+                    if (onDelete != null) DeleteItemButton(onDelete: onDelete),
                     if (showDropIcon == true)
                       SelectedIconIndicator(selected: isSelected ?? false),
                   ],

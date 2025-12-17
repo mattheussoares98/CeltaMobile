@@ -2,6 +2,7 @@ export './addresses.dart';
 export './cart_item_summary.dart';
 export './costs.dart';
 export './default_title.dart';
+export './delete_item_button.dart';
 export 'practiced_price.dart';
 export './info_button.dart';
 export './margins.dart';
