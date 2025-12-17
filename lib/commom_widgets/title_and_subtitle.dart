@@ -33,7 +33,10 @@ class TitleAndSubTitle extends StatelessWidget {
       }
     } else if (subTitle == null && emptyMessage != null) {
       showErrorMessage = true;
-    } else if (subTitle is String && subTitle.isEmpty) {
+    } else if (subTitle is String &&
+        subTitle.isEmpty &&
+        emptyMessage != null &&
+        emptyMessage!.isNotEmpty) {
       showErrorMessage = true;
     }
 
