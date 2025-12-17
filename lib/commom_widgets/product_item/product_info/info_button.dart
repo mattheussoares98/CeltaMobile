@@ -41,7 +41,7 @@ class InfoButton extends StatelessWidget {
       widget.product.RealLiquidCost,
       widget.product.ReplacementCost,
       widget.product.ReplacementCostMidle,
-    ].any((x) => x != null);
+    ].where((e) => e != null && e != -1).isNotEmpty;
 
     final showShoppings =
         widget.product.LastBuyEntrances != null &&
