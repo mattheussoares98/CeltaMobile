@@ -53,7 +53,7 @@ void main() {
         selectedUIStateControllerProvider(fakeEnterpriseCode),
       );
 
-      expect(state, SelectedUIStateEntity.empty());
+      expect(state, SelectedProductUIStateEntity.empty());
     });
 
     test(

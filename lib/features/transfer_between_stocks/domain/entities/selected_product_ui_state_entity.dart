@@ -2,14 +2,14 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/domain/entities/entities.dart';
 
-class SelectedUIStateEntity extends Equatable {
+class SelectedProductUIStateEntity extends Equatable {
   final TransferJustificationEntity? selectedJustification;
   final StockTypeEntity? selectedOriginStock;
   final StockTypeEntity? selectedDestinyStock;
   final int? productIndex;
   final int pageIndex;
 
-  const SelectedUIStateEntity({
+  const SelectedProductUIStateEntity({
     required this.selectedJustification,
     required this.selectedOriginStock,
     required this.selectedDestinyStock,
@@ -26,14 +26,14 @@ class SelectedUIStateEntity extends Equatable {
     pageIndex,
   ];
 
-  SelectedUIStateEntity copyWith({
+  SelectedProductUIStateEntity copyWith({
     TransferJustificationEntity? selectedJustification,
     StockTypeEntity? selectedOriginStock,
     StockTypeEntity? selectedDestinyStock,
     int? productIndex,
     int? pageIndex,
   }) {
-    return SelectedUIStateEntity(
+    return SelectedProductUIStateEntity(
       selectedJustification:
           selectedJustification ?? this.selectedJustification,
       selectedOriginStock: selectedOriginStock ?? this.selectedOriginStock,
@@ -43,16 +43,17 @@ class SelectedUIStateEntity extends Equatable {
     );
   }
 
-  factory SelectedUIStateEntity.empty() => const SelectedUIStateEntity(
-    selectedJustification: null,
-    selectedOriginStock: null,
-    selectedDestinyStock: null,
-    productIndex: null,
-    pageIndex: 0,
-  );
+  factory SelectedProductUIStateEntity.empty() =>
+      const SelectedProductUIStateEntity(
+        selectedJustification: null,
+        selectedOriginStock: null,
+        selectedDestinyStock: null,
+        productIndex: null,
+        pageIndex: 0,
+      );
 
-  SelectedUIStateEntity annulValues({bool? annulProductIndex}) {
-    return SelectedUIStateEntity(
+  SelectedProductUIStateEntity annulValues({bool? annulProductIndex}) {
+    return SelectedProductUIStateEntity(
       selectedJustification: selectedJustification,
       selectedOriginStock: selectedOriginStock,
       selectedDestinyStock: selectedDestinyStock,

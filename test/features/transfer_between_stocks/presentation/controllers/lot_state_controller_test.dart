@@ -15,11 +15,11 @@ class MockLocalItemsLotRepository extends Mock
     implements ILocalItemsLotRepository {}
 
 class FakeSelectedUIStateController extends SelectedUIStateController {
-  final SelectedUIStateEntity initialState;
+  final SelectedProductUIStateEntity initialState;
   FakeSelectedUIStateController(this.initialState);
 
   @override
-  SelectedUIStateEntity build(int enterpriseCode) => initialState;
+  SelectedProductUIStateEntity build(int enterpriseCode) => initialState;
 }
 
 void main() {
@@ -27,7 +27,7 @@ void main() {
   late List<ProductLotInfoEntity> fakeLot;
   late ProductEntity fakeProduct;
   late int enterpriseCode;
-  late SelectedUIStateEntity fakeUIState;
+  late SelectedProductUIStateEntity fakeUIState;
   late double fakeQuantity;
 
   setUp(() {
@@ -38,7 +38,7 @@ void main() {
     ];
     fakeQuantity = faker.randomGenerator.decimal();
     enterpriseCode = faker.randomGenerator.integer(100);
-    fakeUIState = SelectedUIStateEntity(
+    fakeUIState = SelectedProductUIStateEntity(
       selectedJustification: EntityFactory.makeTransferJustificationEntity(),
       selectedOriginStock: EntityFactory.makeStockTypeEntity(),
       selectedDestinyStock: EntityFactory.makeStockTypeEntity(),
@@ -51,13 +51,15 @@ void main() {
     registerFallbackValue(EntityFactory.makeProductLotInfoEntity());
   });
 
-  ProviderContainer makeProviderContainer({SelectedUIStateEntity? uiState}) {
+  ProviderContainer makeProviderContainer({
+    SelectedProductUIStateEntity? uiState,
+  }) {
     return ProviderContainer(
       overrides: [
         localItemsLotRepositoryProvider.overrideWithValue(mockRepository),
         selectedUIStateControllerProvider(enterpriseCode).overrideWith(
           () => FakeSelectedUIStateController(
-            uiState ?? SelectedUIStateEntity.empty(),
+            uiState ?? SelectedProductUIStateEntity.empty(),
           ),
         ),
       ],

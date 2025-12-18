@@ -8,8 +8,8 @@ part 'selected_ui_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class SelectedUIStateController extends _$SelectedUIStateController {
   @override
-  SelectedUIStateEntity build(int enterpriseCode) {
-    return SelectedUIStateEntity.empty();
+  SelectedProductUIStateEntity build(int enterpriseCode) {
+    return SelectedProductUIStateEntity.empty();
   }
 
   Future<void> updateValues({
