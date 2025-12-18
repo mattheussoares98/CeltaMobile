@@ -49,6 +49,8 @@ class LotItems extends ConsumerWidget {
       changeSelectedIndex(index, 0);
     }
 
+    final defaultTextStyle = theme.textTheme.titleMedium;
+
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (_, index) {
@@ -59,114 +61,169 @@ class LotItems extends ConsumerWidget {
           ),
           child: Card(
             clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () => changeSelectedIndex(index, item.quantity),
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleAndSubTitle(
-                      title: null,
-                      subTitle: "${item.product.Name} (${item.product.PLU})",
-                    ),
-                    TitleAndSubTitle(
-                      title: 'Just '.hardcoded,
-                      subTitle: item.selectedJustification.Descricao_JustMov,
-                    ),
-                    TitleAndSubTitle(
-                      title: 'De '.hardcoded,
-                      subTitle: item.selectedOriginStock.Nome_TipoEstoque,
-                    ),
-                    TitleAndSubTitle(
-                      title: 'Para '.hardcoded,
-                      subTitle: item.selectedDestinyStock.Nome_TipoEstoque,
-                    ),
-                    if (selectedIndex == index) gapH8,
-                    Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                InkWell(
+                  onTap: () => changeSelectedIndex(index, item.quantity),
+                  child: Padding(
+                    padding: const EdgeInsets.all(Sizes.p8),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: selectedIndex == index
-                              ? Form(
-                                  key: _formKey,
-                                  child: DefaultTextFormField(
-                                    controller: quantityController,
-                                    focusNode: quantityFocusNode,
-                                    maxLength: 10,
-                                    hintText: 'Nova qtd'.hardcoded,
-                                    labelText: 'Nova qtd'.hardcoded,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(
-                                          decimal: true,
-                                        ),
-                                    onFieldSubmitted: (_) {
-                                      onSubmit(index, item);
-                                    },
-                                    suffixIcon: mediaQuery.size.width > 300
-                                        ? IconButton(
-                                            icon: Icon(
-                                              isIos
-                                                  ? CupertinoIcons.checkmark
-                                                  : Icons.check,
-                                            ),
-                                            onPressed: () =>
-                                                onSubmit(index, item),
-                                          )
-                                        : null,
-                                    validator: FormValidators.compose([
-                                      NonEmptyValidator(),
-                                      NumberValidator(
-                                        allowDecimal: true,
-                                        maxDecimalHouses: 3,
-                                      ),
-                                    ]),
+                        TitleAndSubTitle(
+                          title: null,
+                          subTitle:
+                              "${item.product.Name} (${item.product.PLU})",
+                        ),
+                        TitleAndSubTitle(
+                          title: 'Just '.hardcoded,
+                          subTitle:
+                              item.selectedJustification.Descricao_JustMov,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TitleAndSubTitle(
+                                    title: item
+                                        .selectedOriginStock
+                                        .Nome_TipoEstoque,
+                                    titleStyle: defaultTextStyle?.copyWith(
+                                      color: Colors.red,
+                                    ),
+                                    subTitle:
+                                        ' (-${item.quantity.toString().toBrazilianNumber(3, true)})',
+                                    subTitleStyle: defaultTextStyle?.copyWith(
+                                      color: Colors.red,
+                                    ),
                                   ),
-                                )
-                              : TitleAndSubTitle(
-                                  title: 'Qtd '.hardcoded,
-                                  subTitle: item.quantity
-                                      .toString()
-                                      .toBrazilianNumber(3),
-                                ),
-                        ),
-                        IconButton(
-                          onPressed: () =>
-                              changeSelectedIndex(index, item.quantity),
-                          icon: Icon(
-                            isIos ? CupertinoIcons.pencil : Icons.edit_outlined,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            showAlertDialog(
-                              context: context,
-                              title: 'Remover item?'.hardcoded,
-                              cancelActionText: 'Cancelar'.hardcoded,
-                              defaultActionText: 'Remover'.hardcoded,
-                              onOkPressed: () {
-                                ref
-                                    .read(
-                                      lotStateControllerProvider(
-                                        enterpriseCode,
-                                      ).notifier,
-                                    )
-                                    .removeItem(item);
+                                  TitleAndSubTitle(
+                                    title: item
+                                        .selectedDestinyStock
+                                        .Nome_TipoEstoque,
+                                    titleStyle: defaultTextStyle?.copyWith(
+                                      color: Colors.green,
+                                    ),
+                                    subTitle:
+                                        ' (+${item.quantity.toString().toBrazilianNumber(3, true)})',
+                                    subTitleStyle: defaultTextStyle?.copyWith(
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () =>
+                                  changeSelectedIndex(index, item.quantity),
+                              icon: Icon(
+                                isIos
+                                    ? CupertinoIcons.pencil
+                                    : Icons.edit_outlined,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                showAlertDialog(
+                                  context: context,
+                                  title: 'Remover item?'.hardcoded,
+                                  cancelActionText: 'Cancelar'.hardcoded,
+                                  defaultActionText: 'Remover'.hardcoded,
+                                  onOkPressed: () {
+                                    ref
+                                        .read(
+                                          lotStateControllerProvider(
+                                            enterpriseCode,
+                                          ).notifier,
+                                        )
+                                        .removeItem(item);
+                                  },
+                                );
                               },
-                            );
-                          },
-                          icon: Icon(
-                            isIos ? CupertinoIcons.delete : Icons.delete,
-                            color: Colors.red,
-                          ),
+                              icon: Icon(
+                                isIos ? CupertinoIcons.delete : Icons.delete,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
+                  ),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: selectedIndex != index
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                Sizes.p8,
+                                0,
+                                Sizes.p8,
+                                Sizes.p8,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Form(
+                                      key: _formKey,
+                                      child: DefaultTextFormField(
+                                        controller: quantityController,
+                                        focusNode: quantityFocusNode,
+                                        maxLength: 10,
+                                        hintText: 'Nova qtd'.hardcoded,
+                                        labelText: 'Nova qtd'.hardcoded,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(
+                                              decimal: true,
+                                            ),
+                                        onFieldSubmitted: (_) {
+                                          onSubmit(index, item);
+                                        },
+                                        suffixIcon: mediaQuery.size.width > 300
+                                            ? IconButton(
+                                                icon: Icon(
+                                                  isIos
+                                                      ? CupertinoIcons.checkmark
+                                                      : Icons.check,
+                                                ),
+                                                onPressed: () =>
+                                                    onSubmit(index, item),
+                                              )
+                                            : null,
+                                        validator: FormValidators.compose([
+                                          NonEmptyValidator(),
+                                          NumberValidator(
+                                            allowDecimal: true,
+                                            maxDecimalHouses: 3,
+                                          ),
+                                        ]),
+                                      ),
+                                    ),
+                                  ),
+                                  gapW8,
+                                  Expanded(
+                                    child: PrimaryButton(
+                                      text: 'Alterar'.hardcoded,
+                                      onPressed: () => onSubmit(index, item),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ),
                   ],
                 ),
-              ),
+              ],
             ),
           ),
         );
