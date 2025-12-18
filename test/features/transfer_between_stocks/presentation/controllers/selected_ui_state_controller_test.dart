@@ -35,6 +35,7 @@ void main() {
         final originStock = EntityFactory.makeStockTypeEntity();
         final destinyStock = EntityFactory.makeStockTypeEntity();
         final productIndex = faker.randomGenerator.integer(100);
+        final pageIndex = faker.randomGenerator.integer(100);
 
         final notifier = container.read(
           selectedUIStateControllerProvider(fakeEnterpriseCode).notifier,
@@ -46,6 +47,7 @@ void main() {
           originStock: originStock,
           destinyStock: destinyStock,
           productIndex: productIndex,
+          pageIndex: pageIndex,
         );
 
         // Assert
@@ -57,6 +59,7 @@ void main() {
         expect(state.selectedOriginStock, originStock);
         expect(state.selectedDestinyStock, destinyStock);
         expect(state.productIndex, productIndex);
+        expect(state.pageIndex, pageIndex);
       },
     );
 

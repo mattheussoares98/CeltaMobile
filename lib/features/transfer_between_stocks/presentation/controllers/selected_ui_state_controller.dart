@@ -16,6 +16,7 @@ class SelectedUIStateController extends _$SelectedUIStateController {
     StockTypeEntity? originStock,
     StockTypeEntity? destinyStock,
     int? productIndex,
+    int? pageIndex,
   }) {
     final annulProductIndex =
         productIndex == state.productIndex || productIndex == null;
@@ -25,6 +26,7 @@ class SelectedUIStateController extends _$SelectedUIStateController {
           selectedJustification: justification,
           selectedOriginStock: originStock,
           selectedDestinyStock: destinyStock,
+          pageIndex: pageIndex,
           productIndex: annulProductIndex ? null : productIndex,
         );
   }

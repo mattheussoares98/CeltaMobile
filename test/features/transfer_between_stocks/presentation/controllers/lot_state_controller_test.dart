@@ -43,6 +43,7 @@ void main() {
       selectedOriginStock: EntityFactory.makeStockTypeEntity(),
       selectedDestinyStock: EntityFactory.makeStockTypeEntity(),
       productIndex: null,
+      pageIndex: 0,
     );
     fakeProduct = EntityFactory.makeProductEntity();
 
