@@ -1,3 +1,3 @@
-export './lot_page.dart';
-export './products_page.dart';
+export 'lot/lot.dart';
+export 'products/products.dart';
 export 'transfer_between_stocks_page.dart';

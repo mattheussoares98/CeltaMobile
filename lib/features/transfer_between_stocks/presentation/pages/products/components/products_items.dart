@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../utils/utils.dart';
-import '../../../domain/entities/entities.dart';
-import '../../controllers/controllers.dart';
-import 'components.dart.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../../utils/utils.dart';
+import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
+import '../components/components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final SearchProductKey searchProductKey;
