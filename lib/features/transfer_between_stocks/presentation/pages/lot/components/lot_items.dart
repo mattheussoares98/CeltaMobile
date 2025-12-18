@@ -1,14 +1,11 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/validators/validators.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import 'components.dart';
 
 class LotItems extends ConsumerWidget {
   final List<ProductLotInfoEntity> items;
@@ -29,13 +26,10 @@ class LotItems extends ConsumerWidget {
   });
 
   static final _formKey = GlobalKey<FormState>();
+  //TODO change to statefull
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final bool isIos = theme.platform == TargetPlatform.iOS;
-    final mediaQuery = MediaQuery.of(context);
-
     void onSubmit(int index, ProductLotInfoEntity item) {
       if (_formKey.currentState?.validate() != true) {
         return;
@@ -48,8 +42,6 @@ class LotItems extends ConsumerWidget {
           );
       changeSelectedIndex(index, 0);
     }
-
-    final defaultTextStyle = theme.textTheme.titleMedium;
 
     return ListView.builder(
       itemCount: items.length,
@@ -71,83 +63,18 @@ class LotItems extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TitleAndSubTitle(
-                          title: null,
-                          subTitle:
-                              "${item.product.Name} (${item.product.PLU})",
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Just '.hardcoded,
-                          subTitle:
-                              item.selectedJustification.Descricao_JustMov,
-                        ),
+                        NameAndJustification(item: item),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TitleAndSubTitle(
-                                    title: item
-                                        .selectedOriginStock
-                                        .Nome_TipoEstoque,
-                                    titleStyle: defaultTextStyle?.copyWith(
-                                      color: Colors.red,
-                                    ),
-                                    subTitle:
-                                        ' (-${item.quantity.toString().toBrazilianNumber(3, true)})',
-                                    subTitleStyle: defaultTextStyle?.copyWith(
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  TitleAndSubTitle(
-                                    title: item
-                                        .selectedDestinyStock
-                                        .Nome_TipoEstoque,
-                                    titleStyle: defaultTextStyle?.copyWith(
-                                      color: Colors.green,
-                                    ),
-                                    subTitle:
-                                        ' (+${item.quantity.toString().toBrazilianNumber(3, true)})',
-                                    subTitleStyle: defaultTextStyle?.copyWith(
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              child: OriginAndDestinyWithQuantities(item: item),
                             ),
-                            IconButton(
-                              onPressed: () =>
-                                  changeSelectedIndex(index, item.quantity),
-                              icon: Icon(
-                                isIos
-                                    ? CupertinoIcons.pencil
-                                    : Icons.edit_outlined,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                showAlertDialog(
-                                  context: context,
-                                  title: 'Remover item?'.hardcoded,
-                                  cancelActionText: 'Cancelar'.hardcoded,
-                                  defaultActionText: 'Remover'.hardcoded,
-                                  onOkPressed: () {
-                                    ref
-                                        .read(
-                                          lotStateControllerProvider(
-                                            enterpriseCode,
-                                          ).notifier,
-                                        )
-                                        .removeItem(item);
-                                  },
-                                );
-                              },
-                              icon: Icon(
-                                isIos ? CupertinoIcons.delete : Icons.delete,
-                                color: Colors.red,
-                              ),
+                            EditAndRemoveIconButtons(
+                              item: item,
+                              changeSelectedIndex: changeSelectedIndex,
+                              index: index,
+                              enterpriseCode: enterpriseCode,
                             ),
                           ],
                         ),
@@ -155,73 +82,14 @@ class LotItems extends ConsumerWidget {
                     ),
                   ),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: selectedIndex != index
-                          ? const SizedBox()
-                          : Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                Sizes.p8,
-                                0,
-                                Sizes.p8,
-                                Sizes.p8,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: Form(
-                                      key: _formKey,
-                                      child: DefaultTextFormField(
-                                        controller: quantityController,
-                                        focusNode: quantityFocusNode,
-                                        maxLength: 10,
-                                        hintText: 'Nova qtd'.hardcoded,
-                                        labelText: 'Nova qtd'.hardcoded,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        keyboardType:
-                                            const TextInputType.numberWithOptions(
-                                              decimal: true,
-                                            ),
-                                        onFieldSubmitted: (_) {
-                                          onSubmit(index, item);
-                                        },
-                                        suffixIcon: mediaQuery.size.width > 300
-                                            ? IconButton(
-                                                icon: Icon(
-                                                  isIos
-                                                      ? CupertinoIcons.checkmark
-                                                      : Icons.check,
-                                                ),
-                                                onPressed: () =>
-                                                    onSubmit(index, item),
-                                              )
-                                            : null,
-                                        validator: FormValidators.compose([
-                                          NonEmptyValidator(),
-                                          NumberValidator(
-                                            allowDecimal: true,
-                                            maxDecimalHouses: 3,
-                                          ),
-                                        ]),
-                                      ),
-                                    ),
-                                  ),
-                                  gapW8,
-                                  Expanded(
-                                    child: PrimaryButton(
-                                      text: 'Alterar'.hardcoded,
-                                      onPressed: () => onSubmit(index, item),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                    ),
-                  ],
+                UpdateQuantityField(
+                  selectedIndex: selectedIndex,
+                  index: index,
+                  formKey: _formKey,
+                  quantityController: quantityController,
+                  quantityFocusNode: quantityFocusNode,
+                  item: item,
+                  onSubmit: onSubmit,
                 ),
               ],
             ),
