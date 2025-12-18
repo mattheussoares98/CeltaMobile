@@ -21,6 +21,7 @@ class ValidatedUserSession extends _$ValidatedUserSession {
         userSession.enterprise?.baseUrl == null) {
       throw AppException('Sessão inválida. Efetue o login novamente'.hardcoded);
     }
+    //TODO should always reload the enterprise from supabase instead of have a static supabase enterprise. The user can be static
 
     return userSession;
   }
