@@ -55,9 +55,7 @@ class ZipField extends ConsumerWidget {
           seekAddress();
         }
       },
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: false,
-      ), //TODO test in iOS
+      keyboardType: const TextInputType.numberWithOptions(decimal: false),
       onFieldSubmitted: (_) {
         seekAddress();
       },

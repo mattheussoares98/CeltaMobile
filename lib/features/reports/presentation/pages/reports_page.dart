@@ -20,7 +20,7 @@ class ReportsPage extends ConsumerWidget {
         data: (reports) {
           return RefreshIndicator(
             onRefresh: () async =>
-                ref.invalidate(reportsStateControllerProvider), //TODO test
+                ref.invalidate(reportsStateControllerProvider),
             child: ResponsiveListFlow(
               itemCount: reports.length,
               itemBuilder: (_, index) {
