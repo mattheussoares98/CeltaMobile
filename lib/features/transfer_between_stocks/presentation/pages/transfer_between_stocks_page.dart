@@ -54,10 +54,13 @@ class TransferBetweenStocksPage extends ConsumerWidget {
               child: Text("Transferência entre estoques".hardcoded),
             ),
           ),
-          body: [
-            ProductsPage(enterpriseCode: enterpriseCode),
-            LotPage(enterpriseCode: enterpriseCode),
-          ][selectedPageIndex],
+          body: IndexedStack(
+            index: selectedPageIndex,
+            children: [
+              ProductsPage(enterpriseCode: enterpriseCode),
+              LotPage(enterpriseCode: enterpriseCode),
+            ],
+          ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: ref.watch(
               selectedUIStateControllerProvider(
