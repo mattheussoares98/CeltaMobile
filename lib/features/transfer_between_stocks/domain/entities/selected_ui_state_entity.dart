@@ -38,10 +38,19 @@ class SelectedUIStateEntity extends Equatable {
     );
   }
 
-  SelectedUIStateEntity empty() => const SelectedUIStateEntity(
+  factory SelectedUIStateEntity.empty() => const SelectedUIStateEntity(
     selectedJustification: null,
     selectedOriginStock: null,
     selectedDestinyStock: null,
     productIndex: null,
   );
+
+  SelectedUIStateEntity annulValues({bool? annulProductIndex}) {
+    return SelectedUIStateEntity(
+      selectedJustification: selectedJustification,
+      selectedOriginStock: selectedOriginStock,
+      selectedDestinyStock: selectedDestinyStock,
+      productIndex: annulProductIndex == true ? null : productIndex,
+    );
+  }
 }
