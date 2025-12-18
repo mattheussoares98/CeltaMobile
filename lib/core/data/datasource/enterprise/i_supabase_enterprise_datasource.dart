@@ -6,4 +6,8 @@ abstract class ISupabaseEnterpriseDatasource {
   Future<List<EnabledModulesByCnpjModel>> getEnabledModulesByEnterpriseName(
     String enterpriseName,
   );
+
+  Future<void> createSubEnterprises(
+    List<SupabaseSubEnterpriseModel> subEnterprises,
+  );
 }

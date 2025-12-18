@@ -39,4 +39,16 @@ class SupabaseEnterpriseDatasource implements ISupabaseEnterpriseDatasource {
     }
     return [];
   }
+
+  @override
+  Future<void> createSubEnterprises(
+    List<SupabaseSubEnterpriseModel> subEnterprises,
+  ) async {
+    await _supabase.rpc(
+      'insert_sub_enterprises',
+      params: {
+        'p_sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
+      },
+    );
+  }
 }

@@ -102,4 +102,23 @@ void main() {
       });
     });
   });
+  group("create sub enterprises", () {
+    test("Should behave correctly on success", () async {
+      final subEnterprisesModels = [
+        EntityFactory.makeSubEnterpriseEntity(),
+        EntityFactory.makeSubEnterpriseEntity(),
+        EntityFactory.makeSubEnterpriseEntity(),
+      ].map((e) => SupabaseSubEnterpriseModel.fromEntity(e)).toList();
+
+      await sut.createSubEnterprises(subEnterprisesModels);
+
+      expect(supabaseClient.lastRpcFunction, 'insert_sub_enterprises');
+
+      expect(supabaseClient.lastRpcParams, {
+        'p_sub_enterprises': subEnterprisesModels
+            .map((e) => e.toJson())
+            .toList(),
+      });
+    });
+  });
 }
