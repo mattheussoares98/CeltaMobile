@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
-import 'controllers.dart';
 
 part 'lot_state_controller.g.dart';
 
@@ -17,17 +16,17 @@ class LotStateController extends _$LotStateController {
   Future<void> addItem({
     required ProductEntity product,
     required double quantity,
+    required TransferJustificationEntity selectedJustification,
+    required StockTypeEntity selectedOriginStock,
+    required StockTypeEntity selectedDestinyStock,
   }) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final selectedUI = ref.read(
-        selectedProductUIStateControllerProvider(enterpriseCode),
-      );
       final item = ProductLotInfoEntity(
         product: product,
-        selectedJustification: selectedUI.selectedJustification!,
-        selectedOriginStock: selectedUI.selectedOriginStock!,
-        selectedDestinyStock: selectedUI.selectedDestinyStock!,
+        selectedJustification: selectedJustification,
+        selectedOriginStock: selectedOriginStock,
+        selectedDestinyStock: selectedDestinyStock,
         quantity: quantity,
       );
 

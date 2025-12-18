@@ -6,16 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/validators/validators.dart';
+import '../products.dart';
 
 class AddInLot extends ConsumerWidget {
-  final TextEditingController quantityController;
-  final FocusNode quantityFocusNode;
   final VoidCallback addInLot;
   final bool productIsAlreadyInLot;
+  final ProductsPage widget;
   const AddInLot({
     super.key,
-    required this.quantityController,
-    required this.quantityFocusNode,
+    required this.widget,
     required this.addInLot,
     required this.productIsAlreadyInLot,
   });
@@ -28,12 +27,11 @@ class AddInLot extends ConsumerWidget {
     return Row(
       children: [
         Expanded(
-          flex: 2,
           child: DefaultTextFormField(
-            controller: quantityController,
+            controller: widget.quantityController,
             maxLength: 14,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            focusNode: quantityFocusNode,
+            focusNode: widget.quantityFocusNode,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             onFieldSubmitted: (_) {
               addInLot();
@@ -59,6 +57,7 @@ class AddInLot extends ConsumerWidget {
                         ? CupertinoIcons.add
                         : Icons.add,
                   ),
+            iconAlignment: IconAlignment.end,
             onPressed: addInLot,
           ),
         ),

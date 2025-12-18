@@ -7,10 +7,8 @@ import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
 
-class LotItems extends ConsumerWidget {
+class LotItems extends ConsumerStatefulWidget {
   final List<ProductLotInfoEntity> items;
-  final int? selectedIndex;
-  final void Function(int index, double quantity) changeSelectedIndex;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final int enterpriseCode;
@@ -18,38 +16,62 @@ class LotItems extends ConsumerWidget {
   const LotItems({
     super.key,
     required this.items,
-    required this.selectedIndex,
-    required this.changeSelectedIndex,
     required this.quantityController,
     required this.quantityFocusNode,
     required this.enterpriseCode,
   });
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _LotItemsState();
+}
 
-  static final _formKey = GlobalKey<FormState>();
-  //TODO change to statefull
+class _LotItemsState extends ConsumerState<LotItems> {
+  final formKey = GlobalKey<FormState>();
+
+  void changeSelectedIndex(int? index, ProductLotInfoEntity item) {
+    ref
+        .read(selectedLotIndexStateControllerProvider.notifier)
+        .updateIndex(index);
+
+    widget.quantityController.text = item.quantity
+        .toDouble()
+        .toString()
+        .toBrazilianNumber(3, true);
+    widget.quantityController.selection = TextSelection.fromPosition(
+      TextPosition(offset: widget.quantityController.text.length),
+    );
+    Future.delayed(const Duration(milliseconds: 100), () {
+      widget.quantityFocusNode.requestFocus();
+    });
+  }
+
+  void onSubmit(int index, ProductLotInfoEntity item) {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+    ref
+        .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
+        .addItem(
+          product: item.product,
+          quantity: widget.quantityController.text.toDouble()!,
+          selectedDestinyStock: item.selectedDestinyStock,
+          selectedJustification: item.selectedJustification,
+          selectedOriginStock: item.selectedOriginStock,
+        );
+
+    ref
+        .read(selectedLotIndexStateControllerProvider.notifier)
+        .updateIndex(null);
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    void onSubmit(int index, ProductLotInfoEntity item) {
-      if (_formKey.currentState?.validate() != true) {
-        return;
-      }
-      ref
-          .read(lotStateControllerProvider(enterpriseCode).notifier)
-          .addItem(
-            product: item.product,
-            quantity: quantityController.text.toDouble()!,
-          );
-      changeSelectedIndex(index, 0);
-    }
-
+  Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: items.length,
+      itemCount: widget.items.length,
       itemBuilder: (_, index) {
-        final item = items[index];
+        final item = widget.items[index];
         return Padding(
           padding: EdgeInsets.only(
-            bottom: (index == items.length - 1) ? Sizes.p32 : 0,
+            bottom: (index == widget.items.length - 1) ? Sizes.p32 : 0,
           ),
           child: Card(
             clipBehavior: Clip.antiAlias,
@@ -57,7 +79,7 @@ class LotItems extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 InkWell(
-                  onTap: () => changeSelectedIndex(index, item.quantity),
+                  onTap: () => changeSelectedIndex(index, item),
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),
                     child: Column(
@@ -72,9 +94,8 @@ class LotItems extends ConsumerWidget {
                             ),
                             EditAndRemoveIconButtons(
                               item: item,
-                              changeSelectedIndex: changeSelectedIndex,
-                              index: index,
-                              enterpriseCode: enterpriseCode,
+                              onTapEdit: () => changeSelectedIndex(index, item),
+                              enterpriseCode: widget.enterpriseCode,
                             ),
                           ],
                         ),
@@ -83,11 +104,10 @@ class LotItems extends ConsumerWidget {
                   ),
                 ),
                 UpdateQuantityField(
-                  selectedIndex: selectedIndex,
                   index: index,
-                  formKey: _formKey,
-                  quantityController: quantityController,
-                  quantityFocusNode: quantityFocusNode,
+                  formKey: formKey,
+                  quantityController: widget.quantityController,
+                  quantityFocusNode: widget.quantityFocusNode,
                   item: item,
                   onSubmit: onSubmit,
                 ),

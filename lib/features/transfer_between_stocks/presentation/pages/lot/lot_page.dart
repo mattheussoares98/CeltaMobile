@@ -1,5 +1,4 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,51 +7,23 @@ import '../../../../../constants/constants.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class LotPage extends ConsumerStatefulWidget {
+class LotPage extends ConsumerWidget {
   final int enterpriseCode;
-  const LotPage({super.key, required this.enterpriseCode});
+  final TextEditingController lotQuantityController;
+  final FocusNode lotQuantityFocusNode;
+  const LotPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.lotQuantityController,
+    required this.lotQuantityFocusNode,
+  });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _LotPageState();
-}
-
-class _LotPageState extends ConsumerState<LotPage> {
-  int? selectedIndex;
-  final quantityController = TextEditingController();
-  final quantityFocusNode = FocusNode();
-
-  void changeSelectedIndex(int index, double? quantity) {
-    if (selectedIndex == index) {
-      setState(() {
-        selectedIndex = null;
-      });
-    } else {
-      setState(() {
-        selectedIndex = index;
-      });
-      Future.delayed(const Duration(milliseconds: 100), () {
-        quantityFocusNode.requestFocus();
-        quantityController.text = quantity.toString().toBrazilianNumber();
-        quantityController.selection = TextSelection.fromPosition(
-          TextPosition(offset: quantityController.text.length),
-        );
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    quantityController.dispose();
-    quantityFocusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-      value: ref.watch(lotStateControllerProvider(widget.enterpriseCode)),
+      value: ref.watch(lotStateControllerProvider(enterpriseCode)),
       tryAgain: () {
-        ref.invalidate(lotStateControllerProvider(widget.enterpriseCode));
+        ref.invalidate(lotStateControllerProvider(enterpriseCode));
       },
       data: (items) {
         if (items.isEmpty) {
@@ -63,11 +34,9 @@ class _LotPageState extends ConsumerState<LotPage> {
             Expanded(
               child: LotItems(
                 items: items,
-                selectedIndex: selectedIndex,
-                changeSelectedIndex: changeSelectedIndex,
-                quantityController: quantityController,
-                enterpriseCode: widget.enterpriseCode,
-                quantityFocusNode: quantityFocusNode,
+                quantityController: lotQuantityController,
+                enterpriseCode: enterpriseCode,
+                quantityFocusNode: lotQuantityFocusNode,
               ),
             ),
             Padding(
@@ -82,14 +51,14 @@ class _LotPageState extends ConsumerState<LotPage> {
                   Expanded(
                     child: ConfirmOrRequestButton(
                       isRequest: true,
-                      enterpriseCode: widget.enterpriseCode,
+                      enterpriseCode: enterpriseCode,
                     ),
                   ),
                   gapW8,
                   Expanded(
                     child: ConfirmOrRequestButton(
                       isRequest: false,
-                      enterpriseCode: widget.enterpriseCode,
+                      enterpriseCode: enterpriseCode,
                     ),
                   ),
                 ],

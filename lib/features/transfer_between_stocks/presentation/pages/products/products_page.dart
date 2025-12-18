@@ -9,33 +9,30 @@ import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  const ProductsPage({super.key, required this.enterpriseCode});
+  final TextEditingController searchValueController;
+  final TextEditingController quantityController;
+  final FocusNode quantityFocusNode;
+  const ProductsPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.searchValueController,
+    required this.quantityController,
+    required this.quantityFocusNode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
 }
 
 class _ProductsPageState extends ConsumerState<ProductsPage> {
-  final searchValueController = TextEditingController();
-  final quantityController = TextEditingController();
-  final quantityFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    searchValueController.dispose();
-    quantityController.dispose();
-    quantityFocusNode.dispose();
-  }
 
   Future<void> _searchProducts(SearchProductKey searchProductKey) async {
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
           GetProductsJsonParams(
-            searchValue: searchValueController.text,
+            searchValue: widget.searchValueController.text,
             enterpriseCodes: [widget.enterpriseCode],
           ),
         );
@@ -56,7 +53,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         child: Column(
           children: [
             DefaultSearchProducts(
-              searchValueController: searchValueController,
+              searchValueController: widget.searchValueController,
               searchProductKey: searchProductKey,
               isLoading: ref.watch(
                 searchProductsStateControllerProvider(
@@ -74,11 +71,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             gapH8,
             Flexible(
               child: ProductsItems(
-                searchProductKey: searchProductKey,
-                enterpriseCode: widget.enterpriseCode,
-                quantityController: quantityController,
                 formKey: formKey,
-                quantityFocusNode: quantityFocusNode,
+                searchProductKey: searchProductKey,
+                widget: widget,
               ),
             ),
           ],

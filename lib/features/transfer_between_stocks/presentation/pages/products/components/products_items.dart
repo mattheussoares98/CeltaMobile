@@ -8,30 +8,31 @@ import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import '../../pages.dart';
 import '../components/components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final SearchProductKey searchProductKey;
-  final int enterpriseCode;
-  final TextEditingController quantityController;
   final GlobalKey<FormState> formKey;
-  final FocusNode quantityFocusNode;
+  final ProductsPage widget;
   const ProductsItems({
     super.key,
     required this.searchProductKey,
-    required this.enterpriseCode,
-    required this.quantityController,
     required this.formKey,
-    required this.quantityFocusNode,
+    required this.widget,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(
       selectedProductUIStateControllerProvider(
-        enterpriseCode,
+        widget.enterpriseCode,
       ).select((s) => s.productIndex),
     );
+    final uiState = ref.watch(
+      selectedProductUIStateControllerProvider(widget.enterpriseCode),
+    );
+
     final theme = Theme.of(context);
 
     Future<void> addInLot(ProductEntity product) async {
@@ -40,16 +41,21 @@ class ProductsItems extends ConsumerWidget {
       }
 
       ref
-          .read(lotStateControllerProvider(enterpriseCode).notifier)
+          .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
           .addItem(
             product: product,
-            quantity: quantityController.text.toDouble() ?? 0,
+            quantity: widget.quantityController.text.toDouble() ?? 0,
+            selectedDestinyStock: uiState.selectedDestinyStock!,
+            selectedJustification: uiState.selectedJustification!,
+            selectedOriginStock: uiState.selectedOriginStock!,
           );
 
-      quantityController.clear();
+      widget.quantityController.clear();
       ref
           .read(
-            selectedProductUIStateControllerProvider(enterpriseCode).notifier,
+            selectedProductUIStateControllerProvider(
+              widget.enterpriseCode,
+            ).notifier,
           )
           .updateValues(productIndex: null);
     }
@@ -61,7 +67,7 @@ class ProductsItems extends ConsumerWidget {
         return Consumer(
           builder: (_, ref, _) {
             final lotAsync = ref.watch(
-              lotStateControllerProvider(enterpriseCode),
+              lotStateControllerProvider(widget.enterpriseCode),
             );
             return ResponsiveListFlow(
               maxItemWidth: 380,
@@ -86,14 +92,15 @@ class ProductsItems extends ConsumerWidget {
                     ref
                         .read(
                           selectedProductUIStateControllerProvider(
-                            enterpriseCode,
+                            widget.enterpriseCode,
                           ).notifier,
                         )
                         .updateValues(productIndex: index);
                     Future.delayed(
                       Duration.zero,
-                      () => quantityFocusNode.requestFocus(),
+                      () => widget.quantityFocusNode.requestFocus(),
                     );
+                    widget.quantityController.clear();
                   },
                   showDropIcon: true,
                   isSelected: selectedIndex == index,
@@ -112,8 +119,7 @@ class ProductsItems extends ConsumerWidget {
                           child: AddInLot(
                             productIsAlreadyInLot: lotItem != null,
                             addInLot: () => addInLot(product),
-                            quantityController: quantityController,
-                            quantityFocusNode: quantityFocusNode,
+                            widget: widget,
                           ),
                         )
                       : null,

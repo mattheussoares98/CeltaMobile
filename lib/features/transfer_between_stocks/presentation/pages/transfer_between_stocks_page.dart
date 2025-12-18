@@ -9,21 +9,45 @@ import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../controllers/controllers.dart';
 import 'pages.dart';
 
-class TransferBetweenStocksPage extends ConsumerWidget {
+class TransferBetweenStocksPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-
   const TransferBetweenStocksPage({super.key, required this.enterpriseCode});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    void updatePageIndex(int index) {
-      ref
-          .read(
-            selectedProductUIStateControllerProvider(enterpriseCode).notifier,
-          )
-          .updateValues(pageIndex: index);
-    }
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _TransferBetweenStocksPageState();
+}
 
+class _TransferBetweenStocksPageState
+    extends ConsumerState<TransferBetweenStocksPage> {
+  final lotQuantityController = TextEditingController();
+  final lotQuantityFocusNode = FocusNode();
+  final productSearchValueController = TextEditingController();
+  final productQuantityController = TextEditingController();
+  final productQuantityFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    lotQuantityController.dispose();
+    lotQuantityFocusNode.dispose();
+    productSearchValueController.dispose();
+    productQuantityController.dispose();
+    productQuantityFocusNode.dispose();
+    super.dispose();
+  }
+
+  void updatePageIndex(int index) {
+    ref
+        .read(
+          selectedProductUIStateControllerProvider(
+            widget.enterpriseCode,
+          ).notifier,
+        )
+        .updateValues(pageIndex: index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIos = theme.platform == TargetPlatform.iOS;
 
@@ -36,15 +60,15 @@ class TransferBetweenStocksPage extends ConsumerWidget {
       );
       n.doOnSuccess(p, () {
         ref
-            .read(lotStateControllerProvider(enterpriseCode).notifier)
-            .clearLot(enterpriseCode);
+            .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
+            .clearLot(widget.enterpriseCode);
         updatePageIndex(0);
       });
     });
 
     final selectedPageIndex = ref.watch(
       selectedProductUIStateControllerProvider(
-        enterpriseCode,
+        widget.enterpriseCode,
       ).select((s) => s.pageIndex),
     );
 
@@ -59,14 +83,23 @@ class TransferBetweenStocksPage extends ConsumerWidget {
           body: IndexedStack(
             index: selectedPageIndex,
             children: [
-              ProductsPage(enterpriseCode: enterpriseCode),
-              LotPage(enterpriseCode: enterpriseCode),
+              ProductsPage(
+                enterpriseCode: widget.enterpriseCode,
+                searchValueController: productSearchValueController,
+                quantityController: productQuantityController,
+                quantityFocusNode: productQuantityFocusNode,
+              ),
+              LotPage(
+                enterpriseCode: widget.enterpriseCode,
+                lotQuantityController: lotQuantityController,
+                lotQuantityFocusNode: lotQuantityFocusNode,
+              ),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: ref.watch(
               selectedProductUIStateControllerProvider(
-                enterpriseCode,
+                widget.enterpriseCode,
               ).select((s) => s.pageIndex),
             ),
             onTap: updatePageIndex,
@@ -79,13 +112,15 @@ class TransferBetweenStocksPage extends ConsumerWidget {
                 icon: Consumer(
                   builder: (_, ref, _) {
                     final lotAsync = ref.watch(
-                      lotStateControllerProvider(enterpriseCode),
+                      lotStateControllerProvider(widget.enterpriseCode),
                     );
 
                     return QuantityBadge(
                       quantity: lotAsync.value
                           ?.where(
-                            (e) => e.product.EnterpriseCode == enterpriseCode,
+                            (e) =>
+                                e.product.EnterpriseCode ==
+                                widget.enterpriseCode,
                           )
                           .toList()
                           .length,

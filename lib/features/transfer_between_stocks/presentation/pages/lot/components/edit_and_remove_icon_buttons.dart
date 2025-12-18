@@ -9,15 +9,13 @@ import '../../../controllers/controllers.dart';
 
 class EditAndRemoveIconButtons extends ConsumerWidget {
   final ProductLotInfoEntity item;
-  final void Function(int, double) changeSelectedIndex;
-  final int index;
   final int enterpriseCode;
+  final VoidCallback onTapEdit;
   const EditAndRemoveIconButtons({
     super.key,
     required this.item,
-    required this.changeSelectedIndex,
-    required this.index,
     required this.enterpriseCode,
+    required this.onTapEdit,
   });
 
   @override
@@ -28,7 +26,7 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () => changeSelectedIndex(index, item.quantity),
+          onPressed: onTapEdit,
           icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit_outlined),
         ),
         IconButton(

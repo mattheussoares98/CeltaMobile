@@ -51,17 +51,10 @@ void main() {
     registerFallbackValue(EntityFactory.makeProductLotInfoEntity());
   });
 
-  ProviderContainer makeProviderContainer({
-    SelectedProductUIStateEntity? uiState,
-  }) {
+  ProviderContainer makeProviderContainer() {
     return ProviderContainer(
       overrides: [
         localItemsLotRepositoryProvider.overrideWithValue(mockRepository),
-        selectedProductUIStateControllerProvider(enterpriseCode).overrideWith(
-          () => FakeSelectedUIStateController(
-            uiState ?? SelectedProductUIStateEntity.empty(),
-          ),
-        ),
       ],
     );
   }
@@ -101,7 +94,7 @@ void main() {
           ).thenAnswer((_) async => fakeLot);
           when(() => mockRepository.addItem(any())).thenAnswer((_) async {});
 
-          final container = makeProviderContainer(uiState: fakeUIState);
+          final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
             lotStateControllerProvider(enterpriseCode).future,
@@ -116,7 +109,13 @@ void main() {
           // ACT
           await container
               .read(lotStateControllerProvider(enterpriseCode).notifier)
-              .addItem(product: fakeProduct, quantity: fakeQuantity);
+              .addItem(
+                product: fakeProduct,
+                quantity: fakeQuantity,
+                selectedJustification: fakeUIState.selectedJustification!,
+                selectedOriginStock: fakeUIState.selectedOriginStock!,
+                selectedDestinyStock: fakeUIState.selectedDestinyStock!,
+              );
 
           // ASSERT
           expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
