@@ -49,7 +49,6 @@ class _LotPageState extends ConsumerState<LotPage> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO show the number of the last transfer request saved
     return AsyncValueWidget(
       value: ref.watch(lotStateControllerProvider(widget.enterpriseCode)),
       tryAgain: () {
