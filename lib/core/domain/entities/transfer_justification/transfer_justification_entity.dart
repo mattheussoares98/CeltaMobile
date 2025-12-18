@@ -26,4 +26,19 @@ class TransferJustificationEntity extends Equatable {
     Nome_TipoEstoque,
     CodigoInterno_TipoEstoque,
   ];
+
+  TransferJustificationEntity annulValues({
+    bool? annulCodigoInterno_TipoEstoque,
+  }) {
+    return TransferJustificationEntity(
+      CodigoInterno_JustMov: CodigoInterno_JustMov,
+      Descricao_JustMov: Descricao_JustMov,
+      FlagTipo_JustMov: FlagTipo_JustMov,
+      FlagInterno_TipoEstoque: FlagInterno_TipoEstoque,
+      Nome_TipoEstoque: Nome_TipoEstoque,
+      CodigoInterno_TipoEstoque: annulCodigoInterno_TipoEstoque == true
+          ? null
+          : CodigoInterno_TipoEstoque,
+    );
+  }
 }

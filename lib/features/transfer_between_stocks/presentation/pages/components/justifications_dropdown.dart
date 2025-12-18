@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import '../../controllers/controllers.dart';
 
@@ -19,9 +18,6 @@ class JustificationsDropdown extends ConsumerWidget {
         enterpriseCode,
         TransferJustificationType.transferBetweenStocks,
       ),
-    );
-    final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(enterpriseCode),
     );
     final selectedJustification = ref.watch(
       selectedUIStateControllerProvider(
@@ -43,25 +39,12 @@ class JustificationsDropdown extends ConsumerWidget {
         return DefaultSimpleDropDown<TransferJustificationEntity?>(
           isLoading: asyncValue.isLoading,
           onChanged: (value) {
-            StockTypeEntity? originStockToChange;
-            //TODO move this logic to the controller
-            if (value?.CodigoInterno_TipoEstoque != null &&
-                stocksAsync.value != null) {
-              originStockToChange = stocksAsync.value!.firstWhere(
-                (e) =>
-                    e.CodigoInterno_TipoEstoque ==
-                    value?.CodigoInterno_TipoEstoque,
-              );
-            }
-
             ref
                 .read(
                   selectedUIStateControllerProvider(enterpriseCode).notifier,
                 )
-                .updateValues(
-                  justification: value,
-                  originStock: originStockToChange,
-                );
+                .updateValues(justification: value);
+            //! change the origin stock automatically in the controller when need
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {

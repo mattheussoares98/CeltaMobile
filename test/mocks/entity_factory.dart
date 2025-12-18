@@ -283,18 +283,23 @@ class EntityFactory {
     isContinuousScanEnabledInInventory: faker.randomGenerator.boolean(),
   );
 
-  static TransferJustificationEntity makeTransferJustificationEntity() =>
-      TransferJustificationEntity(
-        CodigoInterno_JustMov: faker.randomGenerator.integer(100),
-        Descricao_JustMov: faker.lorem.word(),
-        FlagTipo_JustMov: faker.randomGenerator.integer(10),
-        FlagInterno_TipoEstoque: faker.randomGenerator.boolean(),
-        Nome_TipoEstoque: faker.lorem.word(),
-        CodigoInterno_TipoEstoque: faker.randomGenerator.integer(100),
-      );
+  static TransferJustificationEntity makeTransferJustificationEntity({
+    int? CodigoInterno_TipoEstoque,
+  }) => TransferJustificationEntity(
+    CodigoInterno_JustMov: faker.randomGenerator.integer(100),
+    Descricao_JustMov: faker.lorem.word(),
+    FlagTipo_JustMov: faker.randomGenerator.integer(10),
+    FlagInterno_TipoEstoque: faker.randomGenerator.boolean(),
+    Nome_TipoEstoque: faker.lorem.word(),
+    CodigoInterno_TipoEstoque:
+        CodigoInterno_TipoEstoque ?? faker.randomGenerator.integer(100),
+  );
 
-  static StockTypeEntity makeStockTypeEntity() => StockTypeEntity(
-    CodigoInterno_TipoEstoque: faker.randomGenerator.integer(100),
+  static StockTypeEntity makeStockTypeEntity({
+    int? CodigoInterno_TipoEstoque,
+  }) => StockTypeEntity(
+    CodigoInterno_TipoEstoque:
+        CodigoInterno_TipoEstoque ?? faker.randomGenerator.integer(100),
     Nome_TipoEstoque: faker.lorem.word(),
     FlagInterno_TipoEstoque: faker.randomGenerator.boolean(),
   );
@@ -743,7 +748,7 @@ class EntityFactory {
         IsExecuting: faker.randomGenerator.boolean(),
         ExecutionStatus: faker.randomGenerator.boolean(),
         LastExecutionContainsData: faker.randomGenerator.boolean(),
-        Code:Code?? faker.randomGenerator.integer(100),
+        Code: Code ?? faker.randomGenerator.integer(100),
         CategoryCode: faker.randomGenerator.integer(100),
         SubCategoryCode: faker.randomGenerator.integer(100),
         ReportCode: faker.randomGenerator.integer(100),
