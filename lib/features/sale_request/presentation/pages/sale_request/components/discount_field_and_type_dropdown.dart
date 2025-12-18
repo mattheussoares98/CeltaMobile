@@ -55,7 +55,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                         insertProduct();
                       },
                       keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true, //TODO test in IOS
+                        decimal: true,
                       ),
                       validator: FormValidators.compose([
                         NumberValidator(

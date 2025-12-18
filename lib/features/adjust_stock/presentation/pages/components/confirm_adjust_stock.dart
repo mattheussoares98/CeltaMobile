@@ -33,9 +33,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
             maxLength: 14,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             focusNode: quantityFocusNode,
-            keyboardType: const TextInputType.numberWithOptions(
-              decimal: true,
-            ), //TODO test in iOS
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             onFieldSubmitted: (_) {
               onConfirm();
             },

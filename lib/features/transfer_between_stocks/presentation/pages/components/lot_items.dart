@@ -98,7 +98,6 @@ class LotItems extends ConsumerWidget {
                                     keyboardType:
                                         const TextInputType.numberWithOptions(
                                           decimal: true,
-                                          //TODO test in iOS
                                         ),
                                     onFieldSubmitted: (_) {
                                       onSubmit(index, item);

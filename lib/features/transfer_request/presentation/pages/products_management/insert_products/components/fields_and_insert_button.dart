@@ -113,7 +113,7 @@ class FieldsAndInsertButton extends ConsumerWidget {
                       ]),
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
-                      ), //TODO test in iOS
+                      ), //TODO test ALL FIELDS in iOS
                     ),
                   ),
                   if (requestTypeAllowChangePrice)
@@ -145,7 +145,7 @@ class FieldsAndInsertButton extends ConsumerWidget {
                         ]),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
-                        ), //TODO test in iOS
+                        ),
                       ),
                     ),
                 ],

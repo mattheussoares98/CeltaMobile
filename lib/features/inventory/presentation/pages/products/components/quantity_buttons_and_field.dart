@@ -113,7 +113,6 @@ class QuantityButtonsAndField extends ConsumerWidget {
                       ]),
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
-                        //TODO test in iOS
                       ),
                       maxLength: 10,
                       onFieldSubmitted: (_) {

@@ -29,10 +29,7 @@ class QuantityFormField extends StatelessWidget {
         labelText: 'Quantidade'.hardcoded,
         hintText: 'Quantidade'.hardcoded,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        keyboardType: const TextInputType.numberWithOptions(
-          decimal: true,
-          //TODO test in iOS
-        ),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         validator: FormValidators.compose([
           NonEmptyValidator(),
           NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
