@@ -10,8 +10,16 @@ class InfoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final retailPrice = widget.product.PriceCost?.RetailPracticedPrice;
-    final showPrices = retailPrice != null && retailPrice > 0;
+    final showPrices = [
+      BsRoutine.generic,
+      BsRoutine.saleRequest,
+      BsRoutine.buyRequest,
+      BsRoutine.transferRequest,
+      BsRoutine.priceConference,
+      BsRoutine.adjustStock,
+      BsRoutine.adjustSalePrice,
+      BsRoutine.buyQuotation,
+    ].any((x) => x == widget.routine);
 
     final stocks = widget.product.Stocks;
     final showStocks =
@@ -63,8 +71,7 @@ class InfoButton extends StatelessWidget {
     if (showQuantity < 2) {
       //should be bigger than 2 to avoid error in the bottomNavigationBar
       return const SizedBox.shrink();
-    }
-    if (widget.routine == BsRoutine.goodsReceiving) {
+    } else if (widget.routine == BsRoutine.goodsReceiving) {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
