@@ -7,12 +7,14 @@ class SelectedUIStateEntity extends Equatable {
   final StockTypeEntity? selectedOriginStock;
   final StockTypeEntity? selectedDestinyStock;
   final int? productIndex;
+  final int pageIndex;
 
   const SelectedUIStateEntity({
     required this.selectedJustification,
     required this.selectedOriginStock,
     required this.selectedDestinyStock,
     required this.productIndex,
+    required this.pageIndex,
   });
 
   @override
@@ -21,6 +23,7 @@ class SelectedUIStateEntity extends Equatable {
     selectedOriginStock,
     selectedDestinyStock,
     productIndex,
+    pageIndex,
   ];
 
   SelectedUIStateEntity copyWith({
@@ -28,6 +31,7 @@ class SelectedUIStateEntity extends Equatable {
     StockTypeEntity? selectedOriginStock,
     StockTypeEntity? selectedDestinyStock,
     int? productIndex,
+    int? pageIndex,
   }) {
     return SelectedUIStateEntity(
       selectedJustification:
@@ -35,6 +39,7 @@ class SelectedUIStateEntity extends Equatable {
       selectedOriginStock: selectedOriginStock ?? this.selectedOriginStock,
       selectedDestinyStock: selectedDestinyStock ?? this.selectedDestinyStock,
       productIndex: productIndex ?? this.productIndex,
+      pageIndex: pageIndex ?? this.pageIndex,
     );
   }
 
@@ -43,6 +48,7 @@ class SelectedUIStateEntity extends Equatable {
     selectedOriginStock: null,
     selectedDestinyStock: null,
     productIndex: null,
+    pageIndex: 0,
   );
 
   SelectedUIStateEntity annulValues({bool? annulProductIndex}) {
@@ -50,6 +56,7 @@ class SelectedUIStateEntity extends Equatable {
       selectedJustification: selectedJustification,
       selectedOriginStock: selectedOriginStock,
       selectedDestinyStock: selectedDestinyStock,
+      pageIndex: pageIndex,
       productIndex: annulProductIndex == true ? null : productIndex,
     );
   }
