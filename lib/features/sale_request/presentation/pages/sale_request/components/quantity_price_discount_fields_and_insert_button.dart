@@ -120,7 +120,6 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
                         FocusTraversalOrder(
                           order: const NumericFocusOrder(2),
                           child: PriceField(
-                            //TODO cant insert the price if the discount is settled
                             insertProduct: insertUpdateProduct,
                             widget: widget,
                           ),
@@ -147,7 +146,6 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
               FocusTraversalOrder(
                 order: const NumericFocusOrder(3),
                 child: DiscountFieldAndTypeDropdown(
-                  //TODO cant insert the discount if the price is settled
                   insertProduct: insertUpdateProduct,
                   widget: widget,
                 ),
