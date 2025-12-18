@@ -18,12 +18,12 @@ class DestinyStocksDropdown extends ConsumerWidget {
     );
 
     final selectedOriginStock = ref.watch(
-      selectedUIStateControllerProvider(
+      selectedProductUIStateControllerProvider(
         enterpriseCode,
       ).select((s) => s.selectedOriginStock),
     );
     final selectedDestinyStock = ref.watch(
-      selectedUIStateControllerProvider(
+      selectedProductUIStateControllerProvider(
         enterpriseCode,
       ).select((s) => s.selectedDestinyStock),
     );
@@ -40,7 +40,9 @@ class DestinyStocksDropdown extends ConsumerWidget {
           onChanged: (value) {
             ref
                 .read(
-                  selectedUIStateControllerProvider(enterpriseCode).notifier,
+                  selectedProductUIStateControllerProvider(
+                    enterpriseCode,
+                  ).notifier,
                 )
                 .updateValues(destinyStock: value);
           },

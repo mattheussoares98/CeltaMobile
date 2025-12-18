@@ -3,10 +3,11 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../../domain/entities/entities.dart';
 
-part 'selected_ui_state_controller.g.dart';
+part 'selected_product_ui_state_controller.g.dart';
 
 @Riverpod(keepAlive: true)
-class SelectedUIStateController extends _$SelectedUIStateController {
+class SelectedProductUIStateController
+    extends _$SelectedProductUIStateController {
   @override
   SelectedProductUIStateEntity build(int enterpriseCode) {
     return SelectedProductUIStateEntity.empty();

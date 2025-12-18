@@ -20,7 +20,7 @@ class JustificationsDropdown extends ConsumerWidget {
       ),
     );
     final selectedJustification = ref.watch(
-      selectedUIStateControllerProvider(
+      selectedProductUIStateControllerProvider(
         enterpriseCode,
       ).select((s) => s.selectedJustification),
     );
@@ -41,7 +41,9 @@ class JustificationsDropdown extends ConsumerWidget {
           onChanged: (value) {
             ref
                 .read(
-                  selectedUIStateControllerProvider(enterpriseCode).notifier,
+                  selectedProductUIStateControllerProvider(
+                    enterpriseCode,
+                  ).notifier,
                 )
                 .updateValues(justification: value);
             //! change the origin stock automatically in the controller when need

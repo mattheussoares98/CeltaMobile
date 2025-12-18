@@ -17,12 +17,12 @@ class OriginStocksDropdown extends ConsumerWidget {
       stockTypeStateControllerProvider(enterpriseCode),
     );
     final selectedJustification = ref.watch(
-      selectedUIStateControllerProvider(
+      selectedProductUIStateControllerProvider(
         enterpriseCode,
       ).select((x) => x.selectedJustification),
     );
     final selectedOritinStock = ref.watch(
-      selectedUIStateControllerProvider(
+      selectedProductUIStateControllerProvider(
         enterpriseCode,
       ).select((x) => x.selectedOriginStock),
     );
@@ -41,7 +41,7 @@ class OriginStocksDropdown extends ConsumerWidget {
               : (value) {
                   ref
                       .read(
-                        selectedUIStateControllerProvider(
+                        selectedProductUIStateControllerProvider(
                           enterpriseCode,
                         ).notifier,
                       )

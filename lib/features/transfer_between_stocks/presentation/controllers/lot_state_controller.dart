@@ -21,7 +21,7 @@ class LotStateController extends _$LotStateController {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final selectedUI = ref.read(
-        selectedUIStateControllerProvider(enterpriseCode),
+        selectedProductUIStateControllerProvider(enterpriseCode),
       );
       final item = ProductLotInfoEntity(
         product: product,

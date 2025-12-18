@@ -14,7 +14,7 @@ import '../../../../mocks/mocks.dart';
 class MockLocalItemsLotRepository extends Mock
     implements ILocalItemsLotRepository {}
 
-class FakeSelectedUIStateController extends SelectedUIStateController {
+class FakeSelectedUIStateController extends SelectedProductUIStateController {
   final SelectedProductUIStateEntity initialState;
   FakeSelectedUIStateController(this.initialState);
 
@@ -57,7 +57,7 @@ void main() {
     return ProviderContainer(
       overrides: [
         localItemsLotRepositoryProvider.overrideWithValue(mockRepository),
-        selectedUIStateControllerProvider(enterpriseCode).overrideWith(
+        selectedProductUIStateControllerProvider(enterpriseCode).overrideWith(
           () => FakeSelectedUIStateController(
             uiState ?? SelectedProductUIStateEntity.empty(),
           ),

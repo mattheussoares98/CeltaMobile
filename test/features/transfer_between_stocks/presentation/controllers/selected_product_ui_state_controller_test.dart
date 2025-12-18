@@ -50,7 +50,7 @@ void main() {
       addTearDown(container.dispose);
 
       final state = container.read(
-        selectedUIStateControllerProvider(fakeEnterpriseCode),
+        selectedProductUIStateControllerProvider(fakeEnterpriseCode),
       );
 
       expect(state, SelectedProductUIStateEntity.empty());
@@ -71,7 +71,7 @@ void main() {
         addTearDown(container.dispose);
 
         final notifier = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode).notifier,
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode).notifier,
         );
 
         // Act
@@ -85,7 +85,7 @@ void main() {
 
         // Assert
         final state = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode),
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode),
         );
 
         expect(state.selectedJustification, justification);
@@ -113,7 +113,7 @@ void main() {
         addTearDown(container.dispose);
 
         final notifier = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode).notifier,
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode).notifier,
         );
 
         // Act
@@ -125,7 +125,7 @@ void main() {
 
         // Assert
         final state = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode),
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode),
         );
 
         // Verification: originStock must be the one from the fakeStocks list with code 10
@@ -143,14 +143,16 @@ void main() {
         addTearDown(container.dispose);
 
         final notifier = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode).notifier,
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode).notifier,
         );
 
         // Set initial index
         notifier.updateValues(productIndex: productIndex);
         expect(
           container
-              .read(selectedUIStateControllerProvider(fakeEnterpriseCode))
+              .read(
+                selectedProductUIStateControllerProvider(fakeEnterpriseCode),
+              )
               .productIndex,
           productIndex,
         );
@@ -160,7 +162,7 @@ void main() {
 
         // Assert
         final state = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode),
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode),
         );
         expect(state.productIndex, isNull);
       },
@@ -176,7 +178,7 @@ void main() {
         addTearDown(container.dispose);
 
         final notifier = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode).notifier,
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode).notifier,
         );
 
         // Set first index
@@ -187,7 +189,7 @@ void main() {
 
         // Assert
         final state = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode),
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode),
         );
         expect(state.productIndex, secondIndex);
       },
@@ -202,7 +204,7 @@ void main() {
         addTearDown(container.dispose);
 
         final notifier = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode).notifier,
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode).notifier,
         );
 
         notifier.updateValues(productIndex: initialIndex);
@@ -212,7 +214,7 @@ void main() {
 
         // Assert
         final state = container.read(
-          selectedUIStateControllerProvider(fakeEnterpriseCode),
+          selectedProductUIStateControllerProvider(fakeEnterpriseCode),
         );
         expect(state.productIndex, isNull);
       },

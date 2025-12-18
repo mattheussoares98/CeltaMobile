@@ -18,7 +18,9 @@ class TransferBetweenStocksPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void updatePageIndex(int index) {
       ref
-          .read(selectedUIStateControllerProvider(enterpriseCode).notifier)
+          .read(
+            selectedProductUIStateControllerProvider(enterpriseCode).notifier,
+          )
           .updateValues(pageIndex: index);
     }
 
@@ -41,7 +43,7 @@ class TransferBetweenStocksPage extends ConsumerWidget {
     });
 
     final selectedPageIndex = ref.watch(
-      selectedUIStateControllerProvider(
+      selectedProductUIStateControllerProvider(
         enterpriseCode,
       ).select((s) => s.pageIndex),
     );
@@ -63,7 +65,7 @@ class TransferBetweenStocksPage extends ConsumerWidget {
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: ref.watch(
-              selectedUIStateControllerProvider(
+              selectedProductUIStateControllerProvider(
                 enterpriseCode,
               ).select((s) => s.pageIndex),
             ),

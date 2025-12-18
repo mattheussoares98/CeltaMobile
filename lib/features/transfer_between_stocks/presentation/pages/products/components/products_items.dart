@@ -28,7 +28,7 @@ class ProductsItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(
-      selectedUIStateControllerProvider(
+      selectedProductUIStateControllerProvider(
         enterpriseCode,
       ).select((s) => s.productIndex),
     );
@@ -48,7 +48,9 @@ class ProductsItems extends ConsumerWidget {
 
       quantityController.clear();
       ref
-          .read(selectedUIStateControllerProvider(enterpriseCode).notifier)
+          .read(
+            selectedProductUIStateControllerProvider(enterpriseCode).notifier,
+          )
           .updateValues(productIndex: null);
     }
 
@@ -83,7 +85,7 @@ class ProductsItems extends ConsumerWidget {
                   onTap: () {
                     ref
                         .read(
-                          selectedUIStateControllerProvider(
+                          selectedProductUIStateControllerProvider(
                             enterpriseCode,
                           ).notifier,
                         )
