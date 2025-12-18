@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../../core/domain/entities/entities.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'lot_state_controller.g.dart';
 
@@ -12,9 +14,23 @@ class LotStateController extends _$LotStateController {
     return ref.watch(localItemsLotRepositoryProvider).load(enterpriseCode);
   }
 
-  Future<void> addItem(ProductLotInfoEntity item) async {
+  Future<void> addItem({
+    required ProductEntity product,
+    required double quantity,
+  }) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
+      final selectedUI = ref.read(
+        selectedUIStateControllerProvider(enterpriseCode),
+      );
+      final item = ProductLotInfoEntity(
+        product: product,
+        selectedJustification: selectedUI.selectedJustification!,
+        selectedOriginStock: selectedUI.selectedOriginStock!,
+        selectedDestinyStock: selectedUI.selectedDestinyStock!,
+        quantity: quantity,
+      );
+
       final repository = ref.read(localItemsLotRepositoryProvider);
       await repository.addItem(item);
 

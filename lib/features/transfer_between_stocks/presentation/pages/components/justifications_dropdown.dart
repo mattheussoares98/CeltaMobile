@@ -4,23 +4,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
+import '../../controllers/controllers.dart';
 
 class JustificationsDropdown extends ConsumerWidget {
-  final TransferJustificationEntity? selectedJustification;
-  final AsyncValue<List<TransferJustificationEntity>> asyncValue;
   final int enterpriseCode;
-  final void Function(TransferJustificationEntity? value) onChanged;
-  const JustificationsDropdown({
-    super.key,
-    required this.selectedJustification,
-    required this.asyncValue,
-    required this.enterpriseCode,
-    required this.onChanged,
-  });
+  const JustificationsDropdown({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final asyncValue = ref.watch(
+      transferJustificationStateControllerProvider(
+        enterpriseCode,
+        TransferJustificationType.transferBetweenStocks,
+      ),
+    );
+    final stocksAsync = ref.watch(
+      stockTypeStateControllerProvider(enterpriseCode),
+    );
+    final selectedJustification = ref.watch(
+      selectedUIStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.selectedJustification),
+    );
+
     return AsyncValueWidget(
       value: asyncValue,
       tryAgain: () {
@@ -34,7 +42,27 @@ class JustificationsDropdown extends ConsumerWidget {
       data: (justifications) {
         return DefaultSimpleDropDown<TransferJustificationEntity?>(
           isLoading: asyncValue.isLoading,
-          onChanged: onChanged,
+          onChanged: (value) {
+            StockTypeEntity? originStockToChange;
+            //TODO move this logic to the controller
+            if (value?.CodigoInterno_TipoEstoque != null &&
+                stocksAsync.value != null) {
+              originStockToChange = stocksAsync.value!.firstWhere(
+                (e) =>
+                    e.CodigoInterno_TipoEstoque ==
+                    value?.CodigoInterno_TipoEstoque,
+              );
+            }
+
+            ref
+                .read(
+                  selectedUIStateControllerProvider(enterpriseCode).notifier,
+                )
+                .updateValues(
+                  justification: value,
+                  originStock: originStockToChange,
+                );
+          },
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {
             if (value == null) {

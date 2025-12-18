@@ -1,6 +1,7 @@
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/domain/repositories/repositories.dart';
-import 'package:celta_intelligence/features/transfer_between_stocks/presentation/controllers/lot_state_controller.dart';
+import 'package:celta_intelligence/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/features/transfer_between_stocks/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,11 +14,21 @@ import '../../../../mocks/mocks.dart';
 class MockLocalItemsLotRepository extends Mock
     implements ILocalItemsLotRepository {}
 
+class FakeSelectedUIStateController extends SelectedUIStateController {
+  final SelectedUIStateEntity initialState;
+  FakeSelectedUIStateController(this.initialState);
+
+  @override
+  SelectedUIStateEntity build(int enterpriseCode) => initialState;
+}
+
 void main() {
   late MockLocalItemsLotRepository mockRepository;
   late List<ProductLotInfoEntity> fakeLot;
-  late ProductLotInfoEntity newItem;
+  late ProductEntity fakeProduct;
   late int enterpriseCode;
+  late SelectedUIStateEntity fakeUIState;
+  late double fakeQuantity;
 
   setUp(() {
     mockRepository = MockLocalItemsLotRepository();
@@ -25,17 +36,29 @@ void main() {
       EntityFactory.makeProductLotInfoEntity(),
       EntityFactory.makeProductLotInfoEntity(),
     ];
-    newItem = EntityFactory.makeProductLotInfoEntity();
+    fakeQuantity = faker.randomGenerator.decimal();
     enterpriseCode = faker.randomGenerator.integer(100);
+    fakeUIState = SelectedUIStateEntity(
+      selectedJustification: EntityFactory.makeTransferJustificationEntity(),
+      selectedOriginStock: EntityFactory.makeStockTypeEntity(),
+      selectedDestinyStock: EntityFactory.makeStockTypeEntity(),
+      productIndex: null,
+    );
+    fakeProduct = EntityFactory.makeProductEntity();
 
     // Register fallback value for mocktail's `any()` matcher
     registerFallbackValue(EntityFactory.makeProductLotInfoEntity());
   });
 
-  ProviderContainer makeProviderContainer() {
+  ProviderContainer makeProviderContainer({SelectedUIStateEntity? uiState}) {
     return ProviderContainer(
       overrides: [
         localItemsLotRepositoryProvider.overrideWithValue(mockRepository),
+        selectedUIStateControllerProvider(enterpriseCode).overrideWith(
+          () => FakeSelectedUIStateController(
+            uiState ?? SelectedUIStateEntity.empty(),
+          ),
+        ),
       ],
     );
   }
@@ -75,7 +98,7 @@ void main() {
           ).thenAnswer((_) async => fakeLot);
           when(() => mockRepository.addItem(any())).thenAnswer((_) async {});
 
-          final container = makeProviderContainer();
+          final container = makeProviderContainer(uiState: fakeUIState);
           addTearDown(container.dispose);
           await container.read(
             lotStateControllerProvider(enterpriseCode).future,
@@ -90,21 +113,24 @@ void main() {
           // ACT
           await container
               .read(lotStateControllerProvider(enterpriseCode).notifier)
-              .addItem(newItem);
+              .addItem(product: fakeProduct, quantity: fakeQuantity);
 
           // ASSERT
           expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-          // Check that the final state contains the new item
+
+          // 3. Verify final list length (2 initial + 1 added)
           expect(states.last.value, hasLength(3));
-          expect(
-            states.last.value!.any(
-              (item) =>
-                  item.product.ProductPackingCode ==
-                  newItem.product.ProductPackingCode,
+          verify(
+            () => mockRepository.addItem(
+              ProductLotInfoEntity(
+                product: fakeProduct,
+                selectedJustification: fakeUIState.selectedJustification!,
+                selectedOriginStock: fakeUIState.selectedOriginStock!,
+                selectedDestinyStock: fakeUIState.selectedDestinyStock!,
+                quantity: fakeQuantity,
+              ),
             ),
-            isTrue,
-          );
-          verify(() => mockRepository.addItem(newItem)).called(1);
+          ).called(1);
         },
       );
     });

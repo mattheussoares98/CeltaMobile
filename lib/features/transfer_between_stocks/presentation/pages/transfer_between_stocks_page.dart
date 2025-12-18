@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
-import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../controllers/controllers.dart';
 import 'pages.dart';
@@ -24,10 +23,6 @@ class _TransferBetweenStocksPageState
     extends ConsumerState<TransferBetweenStocksPage> {
   int currentIndex = 0;
   final pageController = PageController();
-
-  TransferJustificationEntity? selectedJustification;
-  StockTypeEntity? selectedOriginStock;
-  StockTypeEntity? selectedDestinyStock;
 
   @override
   void dispose() {
@@ -71,27 +66,7 @@ class _TransferBetweenStocksPageState
           body: PageView(
             controller: pageController,
             children: [
-              ProductsPage(
-                enterpriseCode: widget.enterpriseCode,
-                selectedJustification: selectedJustification,
-                selectedOriginStock: selectedOriginStock,
-                selectedDestinyStock: selectedDestinyStock,
-                changeJustification: (value) {
-                  setState(() {
-                    selectedJustification = value;
-                  });
-                },
-                changeOriginStock: (value) {
-                  setState(() {
-                    selectedOriginStock = value;
-                  });
-                },
-                changeDestinyStock: (value) {
-                  setState(() {
-                    selectedDestinyStock = value;
-                  });
-                },
-              ),
+              ProductsPage(enterpriseCode: widget.enterpriseCode),
               LotPage(enterpriseCode: widget.enterpriseCode),
             ],
             onPageChanged: (value) {

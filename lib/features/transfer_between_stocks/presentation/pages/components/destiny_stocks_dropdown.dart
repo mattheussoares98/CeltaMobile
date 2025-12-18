@@ -5,34 +5,45 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/stock/stock.dart';
+import '../../controllers/controllers.dart';
 
 class DestinyStocksDropdown extends ConsumerWidget {
-  final AsyncValue<List<StockTypeEntity>> asyncValue;
   final int enterpriseCode;
-  final StockTypeEntity? selectedOriginStock;
-  final StockTypeEntity? selectedDestinyStock;
-  final void Function(StockTypeEntity? value) onChanged;
-  const DestinyStocksDropdown({
-    super.key,
-    required this.asyncValue,
-    required this.enterpriseCode,
-    required this.selectedOriginStock,
-    required this.selectedDestinyStock,
-    required this.onChanged,
-  });
+  const DestinyStocksDropdown({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final stocksAsync = ref.watch(
+      stockTypeStateControllerProvider(enterpriseCode),
+    );
+
+    final selectedOriginStock = ref.watch(
+      selectedUIStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.selectedOriginStock),
+    );
+    final selectedDestinyStock = ref.watch(
+      selectedUIStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.selectedDestinyStock),
+    );
+
     return AsyncValueWidget(
-      value: asyncValue,
+      value: stocksAsync,
       tryAgain: () {
         ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
       },
       data: (stocks) {
         return DefaultSimpleDropDown<StockTypeEntity?>(
-          isLoading: asyncValue.isLoading,
+          isLoading: stocksAsync.isLoading,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          onChanged: onChanged,
+          onChanged: (value) {
+            ref
+                .read(
+                  selectedUIStateControllerProvider(enterpriseCode).notifier,
+                )
+                .updateValues(destinyStock: value);
+          },
           validator: (value) {
             if (value == null) {
               return 'Estoque obrigatório'.hardcoded;

@@ -42,7 +42,10 @@ class LotItems extends ConsumerWidget {
       }
       ref
           .read(lotStateControllerProvider(enterpriseCode).notifier)
-          .addItem(item.copyWith(quantity: quantityController.text.toDouble()));
+          .addItem(
+            product: item.product,
+            quantity: quantityController.text.toDouble()!,
+          );
       changeSelectedIndex(index, 0);
     }
 

@@ -5,36 +5,48 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/stock/stock.dart';
+import '../../controllers/controllers.dart';
 
 class OriginStocksDropdown extends ConsumerWidget {
-  final AsyncValue<List<StockTypeEntity>> asyncValue;
   final int enterpriseCode;
-  final TransferJustificationEntity? selectedJustification;
-  final StockTypeEntity? selectedOriginStock;
-  final void Function(StockTypeEntity? value) onChanged;
-  const OriginStocksDropdown({
-    super.key,
-    required this.asyncValue,
-    required this.enterpriseCode,
-    required this.selectedJustification,
-    required this.selectedOriginStock,
-    required this.onChanged,
-  });
+  const OriginStocksDropdown({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final stocksAsync = ref.watch(
+      stockTypeStateControllerProvider(enterpriseCode),
+    );
+    final selectedJustification = ref.watch(
+      selectedUIStateControllerProvider(
+        enterpriseCode,
+      ).select((x) => x.selectedJustification),
+    );
+    final selectedOritinStock = ref.watch(
+      selectedUIStateControllerProvider(
+        enterpriseCode,
+      ).select((x) => x.selectedOriginStock),
+    );
+
     return AsyncValueWidget(
-      value: asyncValue,
+      value: stocksAsync,
       tryAgain: () {
         ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
       },
       data: (stocks) {
         return DefaultSimpleDropDown<StockTypeEntity?>(
-          isLoading: asyncValue.isLoading,
+          isLoading: stocksAsync.isLoading,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: selectedJustification?.CodigoInterno_TipoEstoque != null
               ? null
-              : onChanged,
+              : (value) {
+                  ref
+                      .read(
+                        selectedUIStateControllerProvider(
+                          enterpriseCode,
+                        ).notifier,
+                      )
+                      .updateValues(originStock: value);
+                },
           validator: (value) {
             if (value == null) {
               return 'Estoque obrigatório'.hardcoded;
@@ -47,7 +59,7 @@ class OriginStocksDropdown extends ConsumerWidget {
               child: Center(child: Text(e.Nome_TipoEstoque)),
             );
           }).toList(),
-          value: selectedOriginStock,
+          value: selectedOritinStock,
           hint: 'Estoque de origem'.hardcoded,
         );
       },
