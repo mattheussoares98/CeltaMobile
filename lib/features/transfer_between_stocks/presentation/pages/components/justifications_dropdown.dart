@@ -27,7 +27,7 @@ class JustificationsDropdown extends ConsumerWidget {
         ref.invalidate(
           transferJustificationStateControllerProvider(
             enterpriseCode,
-            TransferJustificationType.adjustStock,
+            TransferJustificationType.transferBetweenStocks,
           ),
         );
       },
