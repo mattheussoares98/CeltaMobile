@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
@@ -19,49 +17,29 @@ class ResponsiveListFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     if (isSliver) {
-      return SliverLayoutBuilder(
-        builder: (context, constraints) {
-          final itemsPerRow = max(
-            (constraints.crossAxisExtent / maxItemWidth!).floor(),
-            1,
-          );
-          final rowCount = (itemCount / itemsPerRow).ceil();
-
-          return SliverList.builder(
-            itemCount: rowCount,
-            itemBuilder: (context, rowIndex) {
-              return _RowsItems(
-                itemCount: itemCount,
-                itemBuilder: itemBuilder,
-                itemsPerRow: itemsPerRow,
-                rowIndex: rowIndex,
-              );
-            },
+      return SliverList.builder(
+        itemCount: itemCount,
+        itemBuilder: (context, rowIndex) {
+          return _RowsItems(
+            itemCount: itemCount,
+            itemBuilder: itemBuilder,
+            itemsPerRow: (width / maxItemWidth!).floor(),
+            rowIndex: rowIndex,
           );
         },
       );
     }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final itemsPerRow = max(
-          (constraints.maxWidth / maxItemWidth!).floor(),
-          1,
-        );
-
-        final rowCount = (itemCount / itemsPerRow).ceil();
-
-        return ListView.builder(
-          itemCount: rowCount,
-          itemBuilder: (context, rowIndex) {
-            return _RowsItems(
-              itemCount: itemCount,
-              itemBuilder: itemBuilder,
-              itemsPerRow: itemsPerRow,
-              rowIndex: rowIndex,
-            );
-          },
+    return ListView.builder(
+      itemCount: itemCount,
+      itemBuilder: (context, rowIndex) {
+        return _RowsItems(
+          itemCount: itemCount,
+          itemBuilder: itemBuilder,
+          itemsPerRow: (width / maxItemWidth!).floor(),
+          rowIndex: rowIndex,
         );
       },
     );
