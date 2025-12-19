@@ -11,25 +11,18 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncValue = ref.watch(appSettingsStateControllerProvider);
-
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Configurações'.hardcoded)),
         leadingWidth: 0,
         leading: const SizedBox.shrink(),
       ),
-      body: ResponsiveScrollableWidget(
-        child: Column(
-          children: [
-            if (asyncValue.hasError)
-              const ReloadSettings()
-            else ...[
-              ProductSearchTypeWidget(asyncValue: asyncValue),
-              //TODO add autoScan in according to add the modules, like inventory
-            ],
-          ],
-        ),
+      body: AsyncValueWidget(
+        value: ref.watch(appSettingsStateControllerProvider),
+        tryAgain: () => ref.invalidate(appSettingsStateControllerProvider),
+        data: (appSettings) {
+          return ProductSearchTypeWidget(settings: appSettings!);
+        },
       ),
     );
   }
