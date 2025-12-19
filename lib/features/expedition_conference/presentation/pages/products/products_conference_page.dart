@@ -65,47 +65,74 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
 
     return Stack(
       children: [
-        Scaffold(
-          appBar: AppBar(
-            title: FittedBox(
-              child: Text(
-                '${currentIndex == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
-                    .hardcoded,
+        PopScope(
+          onPopInvokedWithResult: (_, _) async {
+            final state = await ref.read(
+              expeditionConferenceControllerProvider(
+                widget.expeditionControlCode,
+              ).future,
+            );
+
+            if (state.scannedQuantities.values.any((x) => x > 0)) {
+              //TODO check if is working
+              bool? pressed = await showAlertDialog(
+                context: context,
+                title: 'Atenção!'.hardcoded,
+                content:
+                    'Ao sair, as quantidades contadas serão perdidas. Deseja sair mesmo assim?'
+                        .hardcoded,
+                cancelActionText: 'Cancelar'.hardcoded,
+                defaultActionText: 'Sim'.hardcoded,
+              );
+
+              if (pressed == true) {
+                context.pop();
+              }
+            }
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: FittedBox(
+                child: Text(
+                  '${currentIndex == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
+                      .hardcoded,
+                ),
               ),
             ),
-          ),
-          body:
-              ref.watch(
-                confirmConferenceControllerProvider.select(
-                  (state) => state.hasError,
-                ),
-              )
-              ? TryConfirmAgain(
-                  expeditionControlCode: widget.expeditionControlCode,
-                  stepCode: widget.stepCode,
+            body:
+                ref.watch(
+                  confirmConferenceControllerProvider.select(
+                    (state) => state.hasError,
+                  ),
                 )
-              : IndexedStack(
-                  index: currentIndex,
-                  children: [
-                    PendingProductsPage(
-                      focusNode: focusNode,
-                      searchValueController: searchValueController,
-                      enterpriseCode: widget.enterpriseCode,
-                      expeditionControlCode: widget.expeditionControlCode,
-                    ),
-                    ConferedProductsPage(
-                      expeditionControlCode: widget.expeditionControlCode,
-                    ),
-                  ],
-                ),
-          bottomNavigationBar: BottomNavBar(
-            expeditionControlCode: widget.expeditionControlCode,
-            onTap: (index) {
-              setState(() {
-                currentIndex = index;
-              });
-            },
-            currentIndex: currentIndex,
+                ? TryConfirmAgain(
+                    //TODO remove this widget and use AsyncValueWidget
+                    expeditionControlCode: widget.expeditionControlCode,
+                    stepCode: widget.stepCode,
+                  )
+                : IndexedStack(
+                    index: currentIndex,
+                    children: [
+                      PendingProductsPage(
+                        focusNode: focusNode,
+                        searchValueController: searchValueController,
+                        enterpriseCode: widget.enterpriseCode,
+                        expeditionControlCode: widget.expeditionControlCode,
+                      ),
+                      ConferedProductsPage(
+                        expeditionControlCode: widget.expeditionControlCode,
+                      ),
+                    ],
+                  ),
+            bottomNavigationBar: BottomNavBar(
+              expeditionControlCode: widget.expeditionControlCode,
+              onTap: (index) {
+                setState(() {
+                  currentIndex = index;
+                });
+              },
+              currentIndex: currentIndex,
+            ),
           ),
         ),
         LoadingPage(providers: [confirmConferenceControllerProvider]),
