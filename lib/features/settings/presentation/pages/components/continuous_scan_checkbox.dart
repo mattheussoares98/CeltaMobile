@@ -52,9 +52,17 @@ class ContinuousScanCheckbox extends ConsumerWidget {
                   ),
                   Checkbox(
                     value: ref.watch(
-                      appSettingsStateControllerProvider.select(
-                        (s) => s.value?.inventoryUseContinuousScan,
-                      ),
+                      appSettingsStateControllerProvider.select((s) {
+                        if (module == Modules.inventory) {
+                          return s.value?.inventoryUseContinuousScan == true;
+                        } else if (module == Modules.expeditionConference) {
+                          return s.value?.expeditionUseContinuousScan == true;
+                        }
+                        throw Exception(
+                          'You should add the module here to update correctly the value'
+                              .hardcoded,
+                        );
+                      }),
                     ),
                     onChanged: (value) => updateValue(),
                   ),

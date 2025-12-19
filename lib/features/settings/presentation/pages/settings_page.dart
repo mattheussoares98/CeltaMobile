@@ -30,7 +30,10 @@ class SettingsPage extends ConsumerWidget {
           return Column(
             children: [
               ProductSearchTypeWidget(settings: appSettings!),
-              if (Modules.values.any((x) => x == module) &&
+              if ([
+                    Modules.inventory,
+                    Modules.expeditionConference,
+                  ].any((x) => x == module) &&
                   (isIOS || isAndroid)) ...[
                 ContinuousScanCheckbox(
                   appSettings: appSettings,

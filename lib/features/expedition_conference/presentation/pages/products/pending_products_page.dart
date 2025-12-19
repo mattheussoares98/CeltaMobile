@@ -63,9 +63,7 @@ class PendingProductsPage extends ConsumerWidget {
 
     final isContinuousScan = ref.watch(
       appSettingsStateControllerProvider.select(
-        (s) =>
-            s.value?.inventoryUseContinuousScan ==
-            true, //TODO change to another
+        (s) => s.value?.expeditionUseContinuousScan == true,
       ),
     );
 
@@ -118,6 +116,7 @@ class PendingProductsPage extends ConsumerWidget {
               padding: const EdgeInsets.only(top: Sizes.p4),
               child: DefaultSearchProducts(
                 searchProductKey: searchProductKey,
+                module: Modules.expeditionConference,
                 isLoading:
                     ref.watch(
                       expeditionConferenceControllerProvider(
