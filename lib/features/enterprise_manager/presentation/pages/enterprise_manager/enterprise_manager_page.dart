@@ -59,7 +59,6 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Gerenciar módulos'.hardcoded),
-        //TODO in these pages, need check the navigation and pass the objects as extra param
         actions: const [LogoutButton()],
       ),
       floatingActionButton: FloatingActionButton(
