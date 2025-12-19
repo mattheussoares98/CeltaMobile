@@ -24,11 +24,6 @@ class ProductsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = ref.watch(
-      selectedProductUIStateControllerProvider(
-        widget.enterpriseCode,
-      ).select((s) => s.productIndex),
-    );
     final uiState = ref.watch(
       selectedProductUIStateControllerProvider(widget.enterpriseCode),
     );
@@ -85,44 +80,53 @@ class ProductsItems extends ConsumerWidget {
                   lotItem = lotAsync.value?[productInLotIndex];
                 }
 
-                return ProductItemWidget(
-                  product: product,
-                  routine: BsRoutine.adjustStock,
-                  onTap: () {
-                    ref
-                        .read(
-                          selectedProductUIStateControllerProvider(
-                            widget.enterpriseCode,
-                          ).notifier,
-                        )
-                        .updateValues(productIndex: index);
-                    Future.delayed(
-                      Duration.zero,
-                      () => widget.quantityFocusNode.requestFocus(),
+                return Consumer(
+                  builder: (_, ref, _) {
+                    final selectedIndex = ref.watch(
+                      selectedProductUIStateControllerProvider(
+                        widget.enterpriseCode,
+                      ).select((s) => s.productIndex),
                     );
-                    widget.quantityController.clear();
+                    return ProductItemWidget(
+                      product: product,
+                      routine: BsRoutine.adjustStock,
+                      onTap: () {
+                        ref
+                            .read(
+                              selectedProductUIStateControllerProvider(
+                                widget.enterpriseCode,
+                              ).notifier,
+                            )
+                            .updateValues(productIndex: index);
+                        Future.delayed(
+                          Duration.zero,
+                          () => widget.quantityFocusNode.requestFocus(),
+                        );
+                        widget.quantityController.clear();
+                      },
+                      showDropIcon: true,
+                      isSelected: selectedIndex == index,
+                      clickableBottom: lotItem == null
+                          ? null
+                          : Text(
+                              '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
+                              textAlign: TextAlign.start,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                color: Colors.blue,
+                              ),
+                            ),
+                      notClickableBottom: selectedIndex == index
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: Sizes.p8),
+                              child: AddInLot(
+                                productIsAlreadyInLot: lotItem != null,
+                                addInLot: () => addInLot(product),
+                                widget: widget,
+                              ),
+                            )
+                          : null,
+                    );
                   },
-                  showDropIcon: true,
-                  isSelected: selectedIndex == index,
-                  clickableBottom: lotItem == null
-                      ? null
-                      : Text(
-                          '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
-                          textAlign: TextAlign.start,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            color: Colors.blue,
-                          ),
-                        ),
-                  notClickableBottom: selectedIndex == index
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: Sizes.p8),
-                          child: AddInLot(
-                            productIsAlreadyInLot: lotItem != null,
-                            addInLot: () => addInLot(product),
-                            widget: widget,
-                          ),
-                        )
-                      : null,
                 );
               },
             );
