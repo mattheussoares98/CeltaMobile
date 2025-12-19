@@ -119,12 +119,17 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
               prefixIcon: width < 220
                   ? null
                   : _DefaultIcon(
-                      onPress: () {
-                        widget.searchValueController.clear();
-                        Future.delayed(const Duration(milliseconds: 100), () {
-                          widget.focusNode?.requestFocus();
-                        });
-                      },
+                      onPress: widget.isLoading
+                          ? null
+                          : () {
+                              widget.searchValueController.clear();
+                              Future.delayed(
+                                const Duration(milliseconds: 100),
+                                () {
+                                  widget.focusNode?.requestFocus();
+                                },
+                              );
+                            },
                       materialIcon: Icons.delete,
                       cupertinoIcon: CupertinoIcons.delete,
                       iconColor: widget.isLoading
@@ -139,7 +144,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                   children: [
                     if (width >= 220 && !widget.isLoading)
                       _DefaultIcon(
-                        onPress: searchProducts,
+                        onPress: widget.isLoading ? null : searchProducts,
                         materialIcon: Icons.search,
                         cupertinoIcon: CupertinoIcons.search,
                         iconColor: widget.isLoading
@@ -153,7 +158,9 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                     if (theme.platform == TargetPlatform.iOS ||
                         theme.platform == TargetPlatform.android)
                       _DefaultIcon(
-                        onPress: () => searchProducts(searchByCamera: true),
+                        onPress: widget.isLoading
+                            ? null
+                            : () => searchProducts(searchByCamera: true),
                         materialIcon: Icons.camera_alt,
                         cupertinoIcon: CupertinoIcons.camera_fill,
                         iconColor: widget.isLoading
@@ -161,12 +168,14 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                             : null,
                       ),
                     _DefaultIcon(
-                      onPress: () {
-                        showModalPage(
-                          SettingsPage(module: widget.module),
-                          context,
-                        );
-                      },
+                      onPress: widget.isLoading
+                          ? null
+                          : () {
+                              showModalPage(
+                                SettingsPage(module: widget.module),
+                                context,
+                              );
+                            },
                       materialIcon: Icons.settings,
                       cupertinoIcon: CupertinoIcons.settings,
                       iconColor: widget.isLoading ? theme.disabledColor : null,
@@ -185,7 +194,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
 }
 
 class _DefaultIcon extends StatelessWidget {
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
   final IconData materialIcon;
   final IconData cupertinoIcon;
   final Color? iconColor;
