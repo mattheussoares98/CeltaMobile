@@ -153,9 +153,7 @@ class _ChangeModulesPermissionPageState
                       maxLength: 100,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.url,
-                      validator: FormValidators.compose([
-                        // UrlValidator(),//TODO create url validator and validate if the url is working before change
-                      ]),
+                      validator: FormValidators.compose([UrlValidator()]),
                     ),
                   ),
                 ),
