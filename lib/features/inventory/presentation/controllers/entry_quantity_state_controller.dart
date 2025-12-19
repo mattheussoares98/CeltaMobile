@@ -39,9 +39,14 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
         anotherKey: '$codigoInternoInvCont-$codigoInternoInventario',
       );
 
-      final products = await ref.read(
-        searchProductsStateControllerProvider(searchProductKey).future,
-      );
+      List<ProductEntity> products = [];
+      try {
+        products = await ref.read(
+          searchProductsStateControllerProvider(searchProductKey).future,
+        );
+      } catch (e) {
+        return state.value;
+      }
 
       final product = products.firstWhere(
         (e) => e.codigoInternoProEmb == codigoInternoProEmb,
