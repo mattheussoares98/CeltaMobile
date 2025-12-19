@@ -29,9 +29,7 @@ class ValidatedUserSession extends _$ValidatedUserSession {
 
     return UserSessionModel(
       user: userSession.user,
-      enterprise: SupabaseEnterpriseModel.fromEntity(
-        supabaseEnterprise!,
-      ), //TODO use entity instead of model and fix tests
+      enterprise: SupabaseEnterpriseModel.fromEntity(supabaseEnterprise!),
     );
   }
 }
