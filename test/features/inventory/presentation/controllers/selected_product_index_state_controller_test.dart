@@ -6,17 +6,21 @@ import 'package:faker/faker.dart';
 void main() {
   late ProviderContainer container;
   late Faker faker;
+  late int codigoInternoInvCont;
 
   setUp(() {
     container = ProviderContainer();
     faker = Faker();
+    codigoInternoInvCont = faker.randomGenerator.integer(100);
     addTearDown(container.dispose);
   });
 
   group('SelectedProductIndexStateController', () {
     test('build should have an initial state of null', () {
       // ARRANGE / ACT
-      final state = container.read(selectedProductIndexStateControllerProvider);
+      final state = container.read(
+        selectedProductIndexStateControllerProvider(codigoInternoInvCont),
+      );
 
       // ASSERT
       expect(state, isNull);
@@ -28,13 +32,15 @@ void main() {
         // ARRANGE
         final newIndex = faker.randomGenerator.integer(100, min: 1);
         final notifier = container.read(
-          selectedProductIndexStateControllerProvider.notifier,
+          selectedProductIndexStateControllerProvider(
+            codigoInternoInvCont,
+          ).notifier,
         );
 
         final states = <int?>[];
         // Listen to capture the state change
         container.listen(
-          selectedProductIndexStateControllerProvider,
+          selectedProductIndexStateControllerProvider(codigoInternoInvCont),
           (_, next) => states.add(next),
         );
 
@@ -47,7 +53,9 @@ void main() {
 
         // 2. Verify the final state value
         expect(
-          container.read(selectedProductIndexStateControllerProvider),
+          container.read(
+            selectedProductIndexStateControllerProvider(codigoInternoInvCont),
+          ),
           newIndex,
         );
       },
@@ -59,7 +67,9 @@ void main() {
         // ARRANGE
         const newIndex = 0;
         final notifier = container.read(
-          selectedProductIndexStateControllerProvider.notifier,
+          selectedProductIndexStateControllerProvider(
+            codigoInternoInvCont,
+          ).notifier,
         );
 
         // ACT
@@ -67,7 +77,9 @@ void main() {
 
         // ASSERT
         expect(
-          container.read(selectedProductIndexStateControllerProvider),
+          container.read(
+            selectedProductIndexStateControllerProvider(codigoInternoInvCont),
+          ),
           newIndex,
         );
       },
@@ -79,7 +91,9 @@ void main() {
         // ARRANGE
         const indexToToggle = 10;
         final notifier = container.read(
-          selectedProductIndexStateControllerProvider.notifier,
+          selectedProductIndexStateControllerProvider(
+            codigoInternoInvCont,
+          ).notifier,
         );
 
         // Set the initial selection (pre-condition)
@@ -87,7 +101,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedProductIndexStateControllerProvider,
+          selectedProductIndexStateControllerProvider(codigoInternoInvCont),
           (_, next) => states.add(next),
         );
 
@@ -98,7 +112,9 @@ void main() {
         // The state transitions from 10 back to null
         expect(states, [isNull]);
         expect(
-          container.read(selectedProductIndexStateControllerProvider),
+          container.read(
+            selectedProductIndexStateControllerProvider(codigoInternoInvCont),
+          ),
           isNull,
         );
       },
@@ -111,7 +127,9 @@ void main() {
         const initialIndex = 1;
         const newIndex = 2;
         final notifier = container.read(
-          selectedProductIndexStateControllerProvider.notifier,
+          selectedProductIndexStateControllerProvider(
+            codigoInternoInvCont,
+          ).notifier,
         );
 
         // Set initial selection
@@ -119,7 +137,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedProductIndexStateControllerProvider,
+          selectedProductIndexStateControllerProvider(codigoInternoInvCont),
           (_, next) => states.add(next),
         );
 
@@ -130,7 +148,9 @@ void main() {
         // State transitions from 1 to 2
         expect(states, [newIndex]);
         expect(
-          container.read(selectedProductIndexStateControllerProvider),
+          container.read(
+            selectedProductIndexStateControllerProvider(codigoInternoInvCont),
+          ),
           newIndex,
         );
       },
@@ -142,7 +162,9 @@ void main() {
         // ARRANGE
         const initialIndex = 5;
         final notifier = container.read(
-          selectedProductIndexStateControllerProvider.notifier,
+          selectedProductIndexStateControllerProvider(
+            codigoInternoInvCont,
+          ).notifier,
         );
 
         // Set initial selection
@@ -150,7 +172,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedProductIndexStateControllerProvider,
+          selectedProductIndexStateControllerProvider(codigoInternoInvCont),
           (_, next) => states.add(next),
         );
 
@@ -160,7 +182,9 @@ void main() {
         // ASSERT
         expect(states, [isNull]);
         expect(
-          container.read(selectedProductIndexStateControllerProvider),
+          container.read(
+            selectedProductIndexStateControllerProvider(codigoInternoInvCont),
+          ),
           isNull,
         );
       },
@@ -171,12 +195,14 @@ void main() {
       () {
         // ARRANGE
         final notifier = container.read(
-          selectedProductIndexStateControllerProvider.notifier,
+          selectedProductIndexStateControllerProvider(
+            codigoInternoInvCont,
+          ).notifier,
         );
 
         final states = <int?>[];
         container.listen(
-          selectedProductIndexStateControllerProvider,
+          selectedProductIndexStateControllerProvider(codigoInternoInvCont),
           (_, next) => states.add(next),
         );
 
@@ -187,7 +213,9 @@ void main() {
         // No state change should be emitted
         expect(states, isEmpty);
         expect(
-          container.read(selectedProductIndexStateControllerProvider),
+          container.read(
+            selectedProductIndexStateControllerProvider(codigoInternoInvCont),
+          ),
           isNull,
         );
       },
