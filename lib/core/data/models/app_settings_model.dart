@@ -5,8 +5,8 @@ import '../../domain/entities/entities.dart';
 
 class AppSettingsModel extends Equatable {
   final SearchProductTypePreference searchPreference;
-  final bool inventoryUseContinuousScan;
-  final bool expeditionUseContinuousScan;
+  final bool? inventoryUseContinuousScan;
+  final bool? expeditionUseContinuousScan;
 
   const AppSettingsModel({
     required this.searchPreference,

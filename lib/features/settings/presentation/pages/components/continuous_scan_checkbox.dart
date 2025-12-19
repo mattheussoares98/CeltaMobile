@@ -23,7 +23,11 @@ class ContinuousScanCheckbox extends ConsumerWidget {
           .changeSettings(
             appSettings.copyWith(
               inventoryUseContinuousScan: module == Modules.inventory
-                  ? !appSettings.inventoryUseContinuousScan
+                  ? !(appSettings.inventoryUseContinuousScan ?? false)
+                  : null,
+              expeditionUseContinuousScan:
+                  module == Modules.expeditionConference
+                  ? !(appSettings.expeditionUseContinuousScan ?? false)
                   : null,
             ),
           );
