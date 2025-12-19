@@ -52,18 +52,20 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
     int stepCode,
   ) async {
     if (state.value == null) return;
-    final currentState = state.value!;
-    final pendingQty = currentState.pendingQuantities[productPackingCode];
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final currentState = state.value!;
+      final pendingQty = currentState.pendingQuantities[productPackingCode];
 
-    if (pendingQty == null || pendingQty <= 0) {
-      state = AsyncError(
-        Exception('Esse produto não está pendente para conferência'.hardcoded),
-        StackTrace.current,
-      );
-      return;
-    }
+      if (pendingQty == null || pendingQty <= 0) {
+        throw AsyncError(
+          Exception(
+            'Esse produto não está pendente para conferência'.hardcoded,
+          ),
+          StackTrace.current,
+        );
+      }
 
-    if (pendingQty > 0) {
       final newPending = Map.of(currentState.pendingQuantities);
       final newScanned = Map.of(currentState.scannedQuantities);
 
@@ -76,8 +78,6 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
         scannedQuantities: newScanned,
       );
 
-      state = AsyncData(newState);
-
       if (newState.isComplete) {
         await ref
             .read(confirmConferenceControllerProvider.notifier)
@@ -86,6 +86,8 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
               stepCode: stepCode,
             );
       }
-    }
+
+      return newState;
+    });
   }
 }

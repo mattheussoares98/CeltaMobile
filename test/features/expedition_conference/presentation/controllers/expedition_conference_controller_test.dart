@@ -178,7 +178,7 @@ void main() {
 
         // ACT: Scan the product once
         const stepCodeForConfirmation = 4;
-        controller.scanProduct(
+        await controller.scanProduct(
           productToScan.ProductPackingCode,
           stepCodeForConfirmation,
         );
@@ -234,7 +234,7 @@ void main() {
 
         // ACT: Scan the product once
         const stepCodeForConfirmation = 4;
-        controller.scanProduct(
+        await controller.scanProduct(
           productToScan.ProductPackingCode,
           stepCodeForConfirmation,
         );
@@ -289,7 +289,7 @@ void main() {
 
         // ACT: Scan the product once
         const stepCodeForConfirmation = 4;
-        controller.scanProduct(456, stepCodeForConfirmation);
+        await controller.scanProduct(456, stepCodeForConfirmation);
 
         // ASSERT
 
