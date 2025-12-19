@@ -98,7 +98,7 @@ void main() {
         );
 
         // ACT
-        await container
+        final updated = await container
             .read(
               entryQuantityStateControllerProvider(
                 codigoInternoInvCont,
@@ -111,6 +111,7 @@ void main() {
               codigoInternoInventario: codigoInternoInventario,
               enterpriseCode: enterpriseCode,
             );
+        expect(updated, isTrue);
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -150,7 +151,7 @@ void main() {
       );
 
       // ACT
-      await container
+      final updated = await container
           .read(
             entryQuantityStateControllerProvider(codigoInternoInvCont).notifier,
           )
@@ -161,6 +162,8 @@ void main() {
             quantity: fakeProduct.quantidadeInvContProEmb!,
             isSubtract: isSubtract,
           );
+
+      expect(updated, isFalse);
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -200,7 +203,7 @@ void main() {
                 //this split or multiplication avoid problem to turn the new quantity less than zero
                 .toStringAsFixed(2)
                 .toDouble()!;
-        await container
+        final updated = await container
             .read(
               entryQuantityStateControllerProvider(
                 codigoInternoInvCont,
@@ -216,6 +219,7 @@ void main() {
             );
 
         // ASSERT
+        expect(updated, isTrue);
         // 1. Verify the repository was called.
 
         verify(
@@ -271,7 +275,7 @@ void main() {
 
         // ACT
         final quantityToAdd = fakeProduct.quantidadeInvContProEmb! * 2;
-        await container
+        final updated = await container
             .read(
               entryQuantityStateControllerProvider(
                 codigoInternoInvCont,
@@ -285,6 +289,8 @@ void main() {
                   enterpriseCode, // Pass dummy values for the family params
               codigoInternoInventario: codigoInternoInventario,
             );
+
+        expect(updated, isFalse);
 
         expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
 

@@ -18,13 +18,14 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
     return null;
   }
 
-  Future<void> entry({
+  Future<bool> entry({
     required int codigoInternoProEmb,
     required double quantity,
     required bool isSubtract,
     required int enterpriseCode,
     required int codigoInternoInventario,
   }) async {
+    bool updated = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
@@ -73,12 +74,14 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
             product.copyWith(quantidadeInvContProEmb: newQuantity),
           );
 
+      updated = true;
       return LastChangedProductEntity(
         codigoInternoProEmb: codigoInternoProEmb,
         quantity: quantity,
         isSubtract: isSubtract,
       );
     });
+    return updated;
   }
 
   Future<void> annul(
