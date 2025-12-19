@@ -7,6 +7,8 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../core/presentation/controllers/scanner/scanner.dart';
+import '../../../../settings/presentation/controllers/controllers.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -42,12 +44,24 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     super.dispose();
   }
 
-  Future<void> _searchProducts(SearchProductKey searchProductKey) async {
+  Future<void> _searchProducts(
+    SearchProductKey searchProductKey,
+    bool searchByCamera,
+  ) async {
+    String? barcode;
+    if (searchByCamera) {
+      barcode = await ref.read(barcodeScannerStateControllerProvider.future);
+      if (barcode == null) {
+        return;
+      } else {
+        searchProductsController.text = barcode;
+      }
+    }
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
           GetProductsInventoryParams(
-            searchValue: searchProductsController.text,
+            searchValue: barcode ?? searchProductsController.text,
             inventoryProcessCode: widget.codigoInternoInventario,
             inventoryCountingCode: widget.codigoInternoInvCont,
           ),
@@ -76,12 +90,21 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
   void changeSelectedIndex(int? index) {
     ref
-        .read(selectedProductIndexStateControllerProvider.notifier)
+        .read(
+          selectedProductIndexStateControllerProvider(
+            widget.codigoInternoInventario,
+          ).notifier,
+        )
         .updateIndex(index);
 
-    if (ref.read(selectedProductIndexStateControllerProvider) != null) {
+    if (ref.read(
+          selectedProductIndexStateControllerProvider(
+            widget.codigoInternoInventario,
+          ),
+        ) !=
+        null) {
       quantityController.clear();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         quantityFocusNode.requestFocus();
       });
     }
@@ -114,12 +137,38 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       });
     });
 
+    final isContinuousScan = ref.watch(
+      appSettingsStateControllerProvider.select(
+        (s) => s.value?.isContinuousScanEnabledInInventory == true,
+      ),
+    );
+
     ref.listen(
       entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
-      (p, n) {
+      (p, n) async {
+        final products = await ref.watch(
+          searchProductsStateControllerProvider(searchProductKey).future,
+        );
+
         n.showAlertDialogOnError(context);
-        n.doOnSuccess(p, () {
+        if (n.value != null) {
+          n.showSnackbarOnSuccess(
+            context,
+            previous: p,
+            message: 'Quantidade alterada com sucesso'.hardcoded,
+          );
+        }
+        n.doOnSuccess(p, () async {
+          if (products.isEmpty) {
+            return;
+          }
           quantityController.clear();
+
+          if (isContinuousScan && n.value != null) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              _searchProducts(searchProductKey, true);
+            });
+          }
         });
       },
     );
@@ -133,7 +182,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             child: CustomScrollView(
               slivers: [
                 SearchProducts(
-                  searchProducts: () => _searchProducts(searchProductKey),
+                  searchProducts: () =>
+                      _searchProducts(searchProductKey, false),
                   searchProductsController: searchProductsController,
                   searchProductsFocusNode: searchProductsFocusNode,
                   enterpriseCode: widget.enterpriseCode,

@@ -32,7 +32,9 @@ class ProductItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(
-      selectedProductIndexStateControllerProvider,
+      selectedProductIndexStateControllerProvider(
+        widget.codigoInternoInventario,
+      ),
     );
 
     void entry(bool isSubtract, int codigoInternoProEmb) {
