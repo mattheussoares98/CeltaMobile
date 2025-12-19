@@ -70,6 +70,7 @@ void main() {
         const AppSettingsModel(
           searchPreference: SearchProductTypePreference.dynamic,
           isContinuousScanEnabledInInventory: false,
+          isContinuousScanEnabledInExpedition: false,
         ),
       );
     });

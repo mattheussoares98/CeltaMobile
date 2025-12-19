@@ -291,6 +291,7 @@ class EntityFactory {
           SearchProductTypePreference.values.length,
         )],
     isContinuousScanEnabledInInventory: faker.randomGenerator.boolean(),
+    isContinuousScanEnabledInExpedition: faker.randomGenerator.boolean(),
   );
 
   static TransferJustificationEntity makeTransferJustificationEntity({
