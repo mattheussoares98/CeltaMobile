@@ -25,12 +25,9 @@ class SupabaseEnterpriseModel extends Equatable {
       name: map['name'] as String,
       baseUrl: map['base_url'] as String,
       subEnterprises: map['sub_enterprises'] != null
-          ? List<SupabaseSubEnterpriseModel>.from(
-              (map['sub_enterprises'] as List<Map<String, dynamic>>)
-                  .map<SupabaseSubEnterpriseModel?>(
-                    (x) => SupabaseSubEnterpriseModel.fromJson(x),
-                  ),
-            )
+          ? (map['sub_enterprises'] as List)
+                .map((e) => SupabaseSubEnterpriseModel.fromJson(e))
+                .toList()
           : null,
     );
   }
