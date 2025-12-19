@@ -13,7 +13,6 @@ mixin SearchProductsListenerMixin {
     required WidgetRef ref,
     required BuildContext context,
     required TextEditingController searchValueController,
-    required FocusNode focusNode,
     required int stepCode,
     required int expeditionControlCode,
     required int enterpriseCode,
@@ -29,19 +28,15 @@ mixin SearchProductsListenerMixin {
       (p, n) {
         n.showSnackbarOnError(context, p);
 
-        n.doOnSuccess(p, () {
+        n.doOnSuccess(p, () async {
           if (n.value != null && n.value!.length == 1) {
-            ref
+            await ref
                 .read(
                   expeditionConferenceControllerProvider(
                     expeditionControlCode,
                   ).notifier,
                 )
                 .scanProduct(n.value!.first.ProductPackingCode!, stepCode);
-
-            Future.delayed(const Duration(milliseconds: 100), () {
-              focusNode.requestFocus();
-            });
           } else if (n.value != null && n.value!.length > 1) {
             showModalPage(
               SelectProductModalPage(

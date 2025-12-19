@@ -48,17 +48,9 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       ref: ref,
       context: context,
       searchValueController: searchValueController,
-      focusNode: focusNode,
       stepCode: widget.stepCode,
       expeditionControlCode: widget.expeditionControlCode,
       enterpriseCode: widget.enterpriseCode,
-    );
-
-    ref.listen(
-      expeditionConferenceControllerProvider(widget.expeditionControlCode),
-      (p, n) {
-        n.showAlertDialogOnError(context);
-      },
     );
 
     ref.listen(confirmConferenceControllerProvider, (p, n) {
@@ -116,7 +108,14 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
             currentIndex: currentIndex,
           ),
         ),
-        LoadingPage(providers: [confirmConferenceControllerProvider]),
+        LoadingPage(
+          providers: [
+            confirmConferenceControllerProvider,
+            expeditionConferenceControllerProvider(
+              widget.expeditionControlCode,
+            ),
+          ],
+        ),
       ],
     );
   }

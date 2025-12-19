@@ -5,6 +5,10 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../core/presentation/controllers/scanner/scanner.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../settings/presentation/controllers/controllers.dart';
+import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -32,18 +36,67 @@ class PendingProductsPage extends ConsumerWidget {
       Modules.expeditionConference,
     );
 
-    void searchProducts() {
+    void searchProducts(bool searchByCamera) async {
+      focusNode.unfocus();
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      String? barcode;
+      if (searchByCamera) {
+        barcode = await ref.read(barcodeScannerStateControllerProvider.future);
+        if (barcode == null) {
+          return;
+        } else {
+          searchValueController.text = barcode;
+        }
+      }
       ref
           .read(
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
             GetProductsJsonParams(
-              searchValue: searchValueController.text,
+              searchValue: barcode ?? searchValueController.text,
               enterpriseCodes: [enterpriseCode],
             ),
           );
     }
+
+    final isContinuousScan = ref.watch(
+      appSettingsStateControllerProvider.select(
+        (s) =>
+            s.value?.isContinuousScanEnabledInInventory ==
+            true, //TODO change to another
+      ),
+    );
+
+    ref.listen(expeditionConferenceControllerProvider(expeditionControlCode), (
+      p,
+      n,
+    ) {
+      n.showAlertDialogOnError(context);
+      n.doOnSuccess(p, () async {
+        double sumTotal(List<ExpeditionProductEntity> list) {
+          return list.fold<double>(0.0, (p, e) => p + e.Quantity);
+        }
+
+        bool initialStateIsEqualPending =
+            sumTotal(n.value!.initialProducts) ==
+            sumTotal(n.value!.pendingProducts);
+
+        if (n.value?.pendingProducts == null ||
+            n.value!.pendingProducts.isEmpty ||
+            initialStateIsEqualPending) {
+          //avoid search products even didnt search anything
+          return;
+        }
+
+        if (isContinuousScan && n.value != null) {
+          await Future.delayed(const Duration(milliseconds: 500), () {
+            searchProducts(true);
+          });
+        }
+      });
+    });
 
     if (pendingProductsAsync.value?.pendingProducts == null ||
         pendingProductsAsync.value!.pendingProducts.isEmpty) {
@@ -75,9 +128,14 @@ class PendingProductsPage extends ConsumerWidget {
                       searchProductsStateControllerProvider(
                         searchProductKey,
                       ).select((state) => state.isLoading),
+                    ) ||
+                    ref.watch(
+                      confirmConferenceControllerProvider.select(
+                        (state) => state.isLoading,
+                      ),
                     ),
                 focusNode: focusNode,
-                searchProducts: searchProducts,
+                searchProducts: () => searchProducts(false),
                 searchValueController: searchValueController,
               ),
             ),
