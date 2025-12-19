@@ -2,6 +2,7 @@ import 'package:celta_intelligence/core/data/datasource/enterprise/enterprise.da
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/utils/utils.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../mocks/mocks.dart';
@@ -109,12 +110,17 @@ void main() {
         EntityFactory.makeSubEnterpriseEntity(),
         EntityFactory.makeSubEnterpriseEntity(),
       ].map((e) => SupabaseSubEnterpriseModel.fromEntity(e)).toList();
+      final enterpriseIdInSupabase = faker.randomGenerator.integer(100);
 
-      await sut.createSubEnterprises(subEnterprisesModels);
+      await sut.createSubEnterprises(
+        subEnterprisesModels,
+        enterpriseIdInSupabase,
+      );
 
       expect(supabaseClient.lastRpcFunction, 'insert_sub_enterprises');
 
       expect(supabaseClient.lastRpcParams, {
+        'p_enterprise_id': enterpriseIdInSupabase,
         'p_sub_enterprises': subEnterprisesModels
             .map((e) => e.toJson())
             .toList(),

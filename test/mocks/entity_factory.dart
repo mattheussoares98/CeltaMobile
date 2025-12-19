@@ -46,12 +46,14 @@ class EntityFactory {
     UseWholeSale: faker.randomGenerator.boolean(),
   );
 
-  static SubEnterpriseEntity makeSubEnterpriseEntity() => SubEnterpriseEntity(
-    id: faker.randomGenerator.integer(100),
-    personalizedCode: faker.randomGenerator.integer(100).toString(),
-    name: faker.company.name(),
-    cnpjNumber: faker.randomGenerator.integer(14, min: 14).toString(),
-  );
+  static SubEnterpriseEntity makeSubEnterpriseEntity({String? cnpjNumber}) =>
+      SubEnterpriseEntity(
+        id: faker.randomGenerator.integer(100),
+        idFromErp: faker.randomGenerator.integer(100),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        name: faker.company.name(),
+        cnpjNumber: cnpjNumber ?? faker.randomGenerator.numberOfLength(14),
+      );
 
   static UserEntity makeUserEntity() => UserEntity(
     name: faker.person.name(),

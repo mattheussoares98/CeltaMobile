@@ -13,7 +13,7 @@ class SupabaseEnterpriseDatasource implements ISupabaseEnterpriseDatasource {
   Future<SupabaseEnterpriseModel?> getEnterpriseByName(String name) async {
     final response = await _supabase.rpc(
       'get_enterprise_by_name',
-      params: {'p_name': name.toLowerCase().removeWhiteSpaces()},
+      params: {'p_enterprise_name': name.toLowerCase().removeWhiteSpaces()},
     );
 
     if (response == null) {
@@ -43,10 +43,12 @@ class SupabaseEnterpriseDatasource implements ISupabaseEnterpriseDatasource {
   @override
   Future<void> createSubEnterprises(
     List<SupabaseSubEnterpriseModel> subEnterprises,
+    int enterpriseId,
   ) async {
     await _supabase.rpc(
       'insert_sub_enterprises',
       params: {
+        'p_enterprise_id': enterpriseId,
         'p_sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
       },
     );

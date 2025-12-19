@@ -9,5 +9,6 @@ abstract class ISupabaseEnterpriseDatasource {
 
   Future<void> createSubEnterprises(
     List<SupabaseSubEnterpriseModel> subEnterprises,
+    int enterpriseId,
   );
 }
