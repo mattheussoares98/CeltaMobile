@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
@@ -18,14 +20,19 @@ class ResponsiveListFlow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    // Calculate how many items fit in one row
+    final itemsPerRow = max((width / maxItemWidth!).floor(), 1);
+    // Calculate the total number of rows needed
+    final rowCount = (itemCount / itemsPerRow).ceil();
+
     if (isSliver) {
       return SliverList.builder(
-        itemCount: itemCount,
+        itemCount: rowCount,
         itemBuilder: (context, rowIndex) {
           return _RowsItems(
             itemCount: itemCount,
             itemBuilder: itemBuilder,
-            itemsPerRow: (width / maxItemWidth!).floor(),
+            itemsPerRow: itemsPerRow,
             rowIndex: rowIndex,
           );
         },
@@ -38,7 +45,7 @@ class ResponsiveListFlow extends StatelessWidget {
         return _RowsItems(
           itemCount: itemCount,
           itemBuilder: itemBuilder,
-          itemsPerRow: (width / maxItemWidth!).floor(),
+          itemsPerRow: itemsPerRow,
           rowIndex: rowIndex,
         );
       },
