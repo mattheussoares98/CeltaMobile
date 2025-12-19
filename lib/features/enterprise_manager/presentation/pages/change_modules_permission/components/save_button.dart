@@ -8,11 +8,15 @@ class SaveButton extends ConsumerWidget {
   final int enterpriseId;
   final int? subEnterpriseId;
   final Map<int, bool?> permissionChanges;
+  final TextEditingController baseUrlController;
+  final GlobalKey<FormState> formKey;
   const SaveButton({
     super.key,
     required this.enterpriseId,
     required this.subEnterpriseId,
     required this.permissionChanges,
+    required this.baseUrlController,
+    required this.formKey,
   });
 
   @override
@@ -27,12 +31,14 @@ class SaveButton extends ConsumerWidget {
       onPressed: isLoading
           ? null
           : () {
+              if (formKey.currentState?.validate() != true) return;
               ref
                   .read(updatePermissionsControllerProvider.notifier)
                   .saveChanges(
                     enterpriseId: enterpriseId,
                     subEnterpriseId: subEnterpriseId,
                     changes: permissionChanges,
+                    baseUrl: baseUrlController.text,
                   );
             },
       icon: Icon(

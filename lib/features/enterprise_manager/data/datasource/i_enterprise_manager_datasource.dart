@@ -8,8 +8,9 @@ abstract class IEnterpriseManagerDatasource {
     required String baseUrl,
     required List<SubEnterpriseModel> subEnterprises,
   });
-  Future<void> updateModulePermissions({
+  Future<void> updateUrlAndPermissions({
     required int enterpriseId,
+    required String baseUrl,
     required List<UpdateModulePermissionModel> permissions,
   });
 }

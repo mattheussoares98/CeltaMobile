@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/validators/validators.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../providers.dart';
 import '../../controllers/controllers.dart';
@@ -28,6 +29,28 @@ class ChangeModulesPermissionPage extends ConsumerStatefulWidget {
 class _ChangeModulesPermissionPageState
     extends ConsumerState<ChangeModulesPermissionPage> {
   Map<int, bool?> _permissionChanges = {};
+  final baseUrlController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    baseUrlController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final enterprise = await ref.read(
+          enterprisePermissionsProvider(widget.enterpriseId).future,
+        );
+
+        baseUrlController.text = enterprise?.baseUrl ?? '';
+      }
+    });
+  }
 
   String getScopeName(
     bool isGlobalChange,
@@ -95,6 +118,8 @@ class _ChangeModulesPermissionPageState
               enterpriseId: widget.enterpriseId,
               subEnterpriseId: widget.subEnterpriseId,
               permissionChanges: _permissionChanges,
+              baseUrlController: baseUrlController,
+              formKey: formKey,
             ),
         ],
       ),
@@ -116,7 +141,24 @@ class _ChangeModulesPermissionPageState
             children: [
               Text(scopeName, style: theme.textTheme.titleMedium),
               gapH16,
-              if (isGlobalChange)
+              if (isGlobalChange) ...[
+                Form(
+                  key: formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(Sizes.p8),
+                    child: DefaultTextFormField(
+                      labelText: 'Url'.hardcoded,
+                      hintText: 'Url'.hardcoded,
+                      controller: baseUrlController,
+                      maxLength: 100,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.url,
+                      validator: FormValidators.compose([
+                        // UrlValidator(),//TODO create url validator and validate if the url is working before change
+                      ]),
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: EditEnterpriseSwitch(
                     onChange: (moduleId, newValue) {
@@ -125,8 +167,8 @@ class _ChangeModulesPermissionPageState
                     modulesToDisplay: modulesToDisplay,
                     permissionChanges: _permissionChanges,
                   ),
-                )
-              else
+                ),
+              ] else
                 Expanded(
                   child: EditSubEnterprisesSegmentedButttons(
                     onChange: (moduleId, newValue) {

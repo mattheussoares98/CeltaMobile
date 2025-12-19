@@ -311,9 +311,10 @@ class EnterpriseManagerDatasourceSpy extends Mock
     ).thenAnswer((_) async => {});
 
     when(
-      () => this.updateModulePermissions(
+      () => this.updateUrlAndPermissions(
         enterpriseId: any(named: 'enterpriseId'),
         permissions: any(named: 'permissions'),
+        baseUrl: any(named: 'baseUrl'),
       ),
     ).thenAnswer((_) async => {});
   }

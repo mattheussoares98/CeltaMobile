@@ -122,15 +122,17 @@ void main() {
   });
   group("Update module permissions", () {
     test("Should behave correctly on success", () async {
-      await sut.updateModulePermissions(
+      await sut.updateUrlAndPermissions(
         enterpriseId: enterpriseId,
         permissions: permissions,
+        baseUrl: baseUrl,
       );
 
       expect(supabaseClient.lastRpcFunction, 'update_module_permission');
 
       expect(supabaseClient.lastRpcParams, {
         'p_enterprise_id': enterpriseId,
+        'p_base_url': baseUrl,
         'p_permissions_payload': permissions.map((e) => e.toJson()).toList(),
       });
     });

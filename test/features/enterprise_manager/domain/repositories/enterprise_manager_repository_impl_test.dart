@@ -172,12 +172,14 @@ void main() {
       await sut.updateModulePermissions(
         enterpriseId: enterpriseId,
         permissions: permissions,
+        baseUrl: baseUrl,
       );
 
       verify(
-        () => enterpriseManagerDatasource.updateModulePermissions(
+        () => enterpriseManagerDatasource.updateUrlAndPermissions(
           enterpriseId: enterpriseId,
           permissions: permissions,
+          baseUrl: baseUrl,
         ),
       );
       verifyNoMoreInteractions(enterpriseManagerDatasource);

@@ -12,6 +12,7 @@ class UpdatePermissionsController extends _$UpdatePermissionsController {
 
   Future<void> saveChanges({
     required int enterpriseId,
+    required String baseUrl,
     int? subEnterpriseId, // Null if it's a global change
     required Map<int, bool?> changes,
   }) async {
@@ -34,6 +35,7 @@ class UpdatePermissionsController extends _$UpdatePermissionsController {
             .updateModulePermissions(
               enterpriseId: enterpriseId,
               permissions: permissions,
+              baseUrl: baseUrl,
             );
       }
       // After saving, invalidate the main list to show the new data

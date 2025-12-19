@@ -52,14 +52,16 @@ class EnterpriseManagerDatasource implements IEnterpriseManagerDatasource {
   }
 
   @override
-  Future<void> updateModulePermissions({
+  Future<void> updateUrlAndPermissions({
     required int enterpriseId,
+    required String baseUrl,
     required List<UpdateModulePermissionModel> permissions,
   }) async {
     await supabase.rpc(
       'update_module_permission',
       params: {
         'p_enterprise_id': enterpriseId,
+        'p_base_url': baseUrl,
         'p_permissions_payload': permissions.map((e) => e.toJson()).toList(),
       },
     );

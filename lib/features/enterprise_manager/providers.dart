@@ -46,8 +46,8 @@ IAuthManagerRepository authManagerRepository(Ref ref) {
 Future<EnterprisePermissionEntity?> enterprisePermissions(
   Ref ref,
   int enterpriseId,
-) {
+) async {
   final repository = ref.watch(enterpriseManagerRepositoryProvider);
 
-  return repository.getEnterprisePermissionsById(enterpriseId);
+  return await repository.getEnterprisePermissionsById(enterpriseId);
 }

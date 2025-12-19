@@ -12,6 +12,7 @@ abstract class IEnterpriseManagerRepository {
   });
   Future<void> updateModulePermissions({
     required int enterpriseId,
+    required String baseUrl,
     required List<UpdateModulePermissionModel> permissions,
   });
 }
