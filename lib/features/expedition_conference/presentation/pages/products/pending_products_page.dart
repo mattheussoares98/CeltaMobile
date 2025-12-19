@@ -27,9 +27,6 @@ class PendingProductsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pendingProductsAsync = ref.watch(
-      expeditionConferenceControllerProvider(expeditionControlCode),
-    );
     final searchProductKey = SearchProductKey(
       enterpriseCode,
       BsRoutine.generic,
@@ -95,17 +92,6 @@ class PendingProductsPage extends ConsumerWidget {
         }
       });
     });
-
-    if (pendingProductsAsync.value?.pendingProducts == null ||
-        pendingProductsAsync.value!.pendingProducts.isEmpty) {
-      return EmptyProductsMessage(
-        onRefreshEmptyProducts: () {
-          ref.invalidate(
-            expeditionConferenceControllerProvider(expeditionControlCode),
-          );
-        },
-      );
-    }
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),

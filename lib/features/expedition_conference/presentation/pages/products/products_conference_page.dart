@@ -108,14 +108,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
             currentIndex: currentIndex,
           ),
         ),
-        LoadingPage(
-          providers: [
-            confirmConferenceControllerProvider,
-            expeditionConferenceControllerProvider(
-              widget.expeditionControlCode,
-            ),
-          ],
-        ),
+        LoadingPage(providers: [confirmConferenceControllerProvider]),
       ],
     );
   }
