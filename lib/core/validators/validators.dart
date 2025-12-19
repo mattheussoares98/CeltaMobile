@@ -8,3 +8,4 @@ export './min_length_validator.dart';
 export './non_empty_validator.dart';
 export './number_validator.dart';
 export './string_validator.dart';
+export './url_validator.dart';

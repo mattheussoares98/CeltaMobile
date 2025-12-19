@@ -1,0 +1,35 @@
+import '../../localization/string_hardcoded.dart';
+import 'validators.dart';
+
+class UrlValidator implements StringValidator {
+  @override
+  String get errorMessage => _errorMessage;
+  String _errorMessage = '';
+
+  @override
+  bool isValid(String? value) {
+    // 1. Basic check for null or empty string
+    if (value == null || value.isEmpty) {
+      _errorMessage = 'Campo obrigatório'.hardcoded;
+      return false;
+    }
+
+    // 2. Try to parse the string into a Uri object
+    final uri = Uri.tryParse(value);
+
+    // 3. Validate that the URI has a valid scheme and a host
+    // We check for http or https to ensure it is a web URL
+    final bool hasValidScheme = uri?.hasScheme ?? false;
+    final bool isHttp = uri?.scheme == 'http' || uri?.scheme == 'https';
+    final bool hasHost = uri?.host.isNotEmpty ?? false;
+
+    if (uri == null || !hasValidScheme || !isHttp || !hasHost) {
+      _errorMessage = 'URL inválida'.hardcoded;
+      return false;
+    }
+
+    // 4. Clear error message and return true if all checks pass
+    _errorMessage = '';
+    return true;
+  }
+}
