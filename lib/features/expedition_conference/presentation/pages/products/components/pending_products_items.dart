@@ -15,7 +15,7 @@ class PendingProductsItems extends ConsumerWidget {
         .value
         ?.pendingProducts;
 
-    return SliverList.builder(
+    return ListView.builder(
       itemCount: products?.length ?? 0,
       itemBuilder: (_, index) {
         final product = products![index];

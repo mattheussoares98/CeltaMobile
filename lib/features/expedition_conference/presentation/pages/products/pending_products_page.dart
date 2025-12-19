@@ -109,37 +109,36 @@ class PendingProductsPage extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(top: Sizes.p4),
-              child: DefaultSearchProducts(
-                searchProductKey: searchProductKey,
-                module: Modules.expeditionConference,
-                isLoading:
-                    ref.watch(
-                      expeditionConferenceControllerProvider(
-                        expeditionControlCode,
-                      ).select((state) => state.isLoading),
-                    ) ||
-                    ref.watch(
-                      searchProductsStateControllerProvider(
-                        searchProductKey,
-                      ).select((state) => state.isLoading),
-                    ) ||
-                    ref.watch(
-                      confirmConferenceControllerProvider.select(
-                        (state) => state.isLoading,
-                      ),
-                    ),
-                focusNode: focusNode,
-                searchProducts: () => searchProducts(false),
-                searchValueController: searchValueController,
-              ),
+      child: Column(
+        children: [
+          DefaultSearchProducts(
+            searchProductKey: searchProductKey,
+            module: Modules.expeditionConference,
+            isLoading:
+                ref.watch(
+                  expeditionConferenceControllerProvider(
+                    expeditionControlCode,
+                  ).select((state) => state.isLoading),
+                ) ||
+                ref.watch(
+                  searchProductsStateControllerProvider(
+                    searchProductKey,
+                  ).select((state) => state.isLoading),
+                ) ||
+                ref.watch(
+                  confirmConferenceControllerProvider.select(
+                    (state) => state.isLoading,
+                  ),
+                ),
+            focusNode: focusNode,
+            searchProducts: () => searchProducts(false),
+            searchValueController: searchValueController,
+          ),
+          Expanded(
+            child: PendingProductsItems(
+              expeditionControlCode: expeditionControlCode,
             ),
           ),
-          PendingProductsItems(expeditionControlCode: expeditionControlCode),
         ],
       ),
     );
