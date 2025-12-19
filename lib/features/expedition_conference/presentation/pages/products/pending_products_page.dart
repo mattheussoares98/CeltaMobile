@@ -64,7 +64,7 @@ class PendingProductsPage extends ConsumerWidget {
     final isContinuousScan = ref.watch(
       appSettingsStateControllerProvider.select(
         (s) =>
-            s.value?.isContinuousScanEnabledInInventory ==
+            s.value?.inventoryUseContinuousScan ==
             true, //TODO change to another
       ),
     );

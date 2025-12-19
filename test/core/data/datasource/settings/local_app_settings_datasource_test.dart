@@ -69,8 +69,8 @@ void main() {
         await sut.loadSettings(),
         const AppSettingsModel(
           searchPreference: SearchProductTypePreference.dynamic,
-          isContinuousScanEnabledInInventory: false,
-          isContinuousScanEnabledInExpedition: false,
+          inventoryUseContinuousScan: false,
+          expeditionUseContinuousScan: false,
         ),
       );
     });

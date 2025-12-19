@@ -5,20 +5,20 @@ import '../../domain/entities/entities.dart';
 
 class AppSettingsModel extends Equatable {
   final SearchProductTypePreference searchPreference;
-  final bool isContinuousScanEnabledInInventory;
-  final bool isContinuousScanEnabledInExpedition;
+  final bool inventoryUseContinuousScan;
+  final bool expeditionUseContinuousScan;
 
   const AppSettingsModel({
     required this.searchPreference,
-    required this.isContinuousScanEnabledInInventory,
-    required this.isContinuousScanEnabledInExpedition,
+    required this.inventoryUseContinuousScan,
+    required this.expeditionUseContinuousScan,
   });
 
   @override
   List<Object?> get props => [
     searchPreference,
-    isContinuousScanEnabledInInventory,
-    isContinuousScanEnabledInExpedition,
+    inventoryUseContinuousScan,
+    expeditionUseContinuousScan,
   ];
 
   factory AppSettingsModel.fromJson(Map json) {
@@ -26,48 +26,42 @@ class AppSettingsModel extends Equatable {
       searchPreference: SearchProductTypePreference.values.firstWhere(
         (element) => element.name == json['searchPreference'],
       ),
-      isContinuousScanEnabledInInventory:
-          json['isContinuousScanEnabledInInventory'],
-      isContinuousScanEnabledInExpedition:
-          json['isContinuousScanEnabledInExpedition'],
+      inventoryUseContinuousScan: json['inventoryUseContinuousScan'],
+      expeditionUseContinuousScan: json['expeditionUseContinuousScan'],
     );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'searchPreference': searchPreference.name,
-    'isContinuousScanEnabledInInventory': isContinuousScanEnabledInInventory,
-    'isContinuousScanEnabledInExpedition': isContinuousScanEnabledInExpedition,
+    'inventoryUseContinuousScan': inventoryUseContinuousScan,
+    'expeditionUseContinuousScan': expeditionUseContinuousScan,
   };
 
   AppSettingsEntity toEntity() => AppSettingsEntity(
     searchPreference: searchPreference,
-    isContinuousScanEnabledInInventory: isContinuousScanEnabledInInventory,
-    isContinuousScanEnabledInExpedition: isContinuousScanEnabledInExpedition,
+    inventoryUseContinuousScan: inventoryUseContinuousScan,
+    expeditionUseContinuousScan: expeditionUseContinuousScan,
   );
 
   factory AppSettingsModel.fromEntity(AppSettingsEntity entity) {
     return AppSettingsModel(
       searchPreference: entity.searchPreference,
-      isContinuousScanEnabledInInventory:
-          entity.isContinuousScanEnabledInInventory,
-      isContinuousScanEnabledInExpedition:
-          entity.isContinuousScanEnabledInExpedition,
+      inventoryUseContinuousScan: entity.inventoryUseContinuousScan,
+      expeditionUseContinuousScan: entity.expeditionUseContinuousScan,
     );
   }
 
   AppSettingsModel copyWith({
     SearchProductTypePreference? searchPreference,
-    bool? isContinuousScanEnabledInInventory,
-    bool? isContinuousScanEnabledInExpedition,
+    bool? inventoryUseContinuousScan,
+    bool? expeditionUseContinuousScan,
   }) {
     return AppSettingsModel(
       searchPreference: searchPreference ?? this.searchPreference,
-      isContinuousScanEnabledInInventory:
-          isContinuousScanEnabledInInventory ??
-          this.isContinuousScanEnabledInInventory,
-      isContinuousScanEnabledInExpedition:
-          isContinuousScanEnabledInExpedition ??
-          this.isContinuousScanEnabledInExpedition,
+      inventoryUseContinuousScan:
+          inventoryUseContinuousScan ?? this.inventoryUseContinuousScan,
+      expeditionUseContinuousScan:
+          expeditionUseContinuousScan ?? this.expeditionUseContinuousScan,
     );
   }
 }

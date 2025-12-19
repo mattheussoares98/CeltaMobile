@@ -20,8 +20,8 @@ class LocalAppSettingsDatasource implements IAppSettingsDatasource {
     if (value == null) {
       return const AppSettingsModel(
         searchPreference: SearchProductTypePreference.dynamic,
-        isContinuousScanEnabledInInventory: false,
-        isContinuousScanEnabledInExpedition: false,
+        inventoryUseContinuousScan: false,
+        expeditionUseContinuousScan: false,
       );
     }
 

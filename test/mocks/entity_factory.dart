@@ -290,8 +290,8 @@ class EntityFactory {
         SearchProductTypePreference.values[faker.randomGenerator.integer(
           SearchProductTypePreference.values.length,
         )],
-    isContinuousScanEnabledInInventory: faker.randomGenerator.boolean(),
-    isContinuousScanEnabledInExpedition: faker.randomGenerator.boolean(),
+    inventoryUseContinuousScan: faker.randomGenerator.boolean(),
+    expeditionUseContinuousScan: faker.randomGenerator.boolean(),
   );
 
   static TransferJustificationEntity makeTransferJustificationEntity({

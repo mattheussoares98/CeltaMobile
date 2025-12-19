@@ -139,7 +139,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     final isContinuousScan = ref.watch(
       appSettingsStateControllerProvider.select(
-        (s) => s.value?.isContinuousScanEnabledInInventory == true,
+        (s) => s.value?.inventoryUseContinuousScan == true,
       ),
     );
 

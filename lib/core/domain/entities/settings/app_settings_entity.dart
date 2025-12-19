@@ -5,35 +5,33 @@ import 'settings.dart';
 
 class AppSettingsEntity extends Equatable {
   final SearchProductTypePreference searchPreference;
-  final bool isContinuousScanEnabledInInventory;
-  final bool isContinuousScanEnabledInExpedition;
+  final bool inventoryUseContinuousScan;
+  final bool expeditionUseContinuousScan;
 
   const AppSettingsEntity({
     required this.searchPreference,
-    required this.isContinuousScanEnabledInInventory,
-    required this.isContinuousScanEnabledInExpedition,
+    required this.inventoryUseContinuousScan,
+    required this.expeditionUseContinuousScan,
   });
 
   @override
   List<Object?> get props => [
     searchPreference,
-    isContinuousScanEnabledInInventory,
-    isContinuousScanEnabledInExpedition,
+    inventoryUseContinuousScan,
+    expeditionUseContinuousScan,
   ];
 
   AppSettingsEntity copyWith({
     SearchProductTypePreference? searchPreference,
-    bool? isContinuousScanEnabledInInventory,
-    bool? isContinuousScanEnabledInExpedition,
+    bool? inventoryUseContinuousScan,
+    bool? expeditionUseContinuousScan,
   }) {
     return AppSettingsEntity(
       searchPreference: searchPreference ?? this.searchPreference,
-      isContinuousScanEnabledInInventory:
-          isContinuousScanEnabledInInventory ??
-          this.isContinuousScanEnabledInInventory,
-      isContinuousScanEnabledInExpedition:
-          isContinuousScanEnabledInExpedition ??
-          this.isContinuousScanEnabledInExpedition,
+      inventoryUseContinuousScan:
+          inventoryUseContinuousScan ?? this.inventoryUseContinuousScan,
+      expeditionUseContinuousScan:
+          expeditionUseContinuousScan ?? this.expeditionUseContinuousScan,
     );
   }
 }

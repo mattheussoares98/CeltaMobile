@@ -22,8 +22,8 @@ class ContinuousScanCheckbox extends ConsumerWidget {
           .read(appSettingsStateControllerProvider.notifier)
           .changeSettings(
             appSettings.copyWith(
-              isContinuousScanEnabledInInventory: module == Modules.inventory
-                  ? !appSettings.isContinuousScanEnabledInInventory
+              inventoryUseContinuousScan: module == Modules.inventory
+                  ? !appSettings.inventoryUseContinuousScan
                   : null,
             ),
           );
@@ -49,7 +49,7 @@ class ContinuousScanCheckbox extends ConsumerWidget {
                   Checkbox(
                     value: ref.watch(
                       appSettingsStateControllerProvider.select(
-                        (s) => s.value?.isContinuousScanEnabledInInventory,
+                        (s) => s.value?.inventoryUseContinuousScan,
                       ),
                     ),
                     onChanged: (value) => updateValue(),
