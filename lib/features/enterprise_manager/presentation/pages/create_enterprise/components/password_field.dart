@@ -2,6 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../core/validators/validators.dart';
 import 'components.dart';
 
 class PasswordField extends StatelessWidget {
@@ -28,10 +29,12 @@ class PasswordField extends StatelessWidget {
       },
       labelText: "Senha".hardcoded,
       hintText: "Senha".hardcoded,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       suffixIcon: DeleteIcon(
         onPress: isLoading ? null : passwordController.clear,
       ),
       obscureText: true,
+      validator: FormValidators.compose([NonEmptyValidator()]),
     );
   }
 }

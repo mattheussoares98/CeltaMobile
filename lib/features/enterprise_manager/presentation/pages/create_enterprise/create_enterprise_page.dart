@@ -26,6 +26,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
   final urlFocusNode = FocusNode();
   final userNameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -40,6 +41,10 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
   }
 
   Future<void> onSubmit() async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
     await ref
         .read(createEnterpriseControllerProvider.notifier)
         .createEnterprise(
@@ -69,42 +74,45 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
     return Scaffold(
       appBar: AppBar(title: Text('Criar empresa'.hardcoded)),
       body: ResponsiveScrollableWidget(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            EnterpriseNameField(
-              isLoading: isLoading,
-              enterpriseNameController: enterpriseNameController,
-              urlFocusNode: urlFocusNode,
-            ),
-            gapH8,
-            UrlField(
-              urlController: urlController,
-              urlFocusNode: urlFocusNode,
-              isLoading: isLoading,
-              userNameFocusNode: userNameFocusNode,
-            ),
-            gapH8,
-            UserNameField(
-              userNameController: userNameController,
-              userNameFocusNode: userNameFocusNode,
-              isLoading: isLoading,
-              passwordFocusNode: passwordFocusNode,
-            ),
-            gapH8,
-            PasswordField(
-              isLoading: isLoading,
-              passwordController: passwordController,
-              passwordFocusNode: passwordFocusNode,
-              onSubmit: onSubmit,
-            ),
-            gapH32,
-            PrimaryButton(
-              text: "Adicionar".hardcoded,
-              onPressed: onSubmit,
-              isLoading: isLoading,
-            ),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              EnterpriseNameField(
+                isLoading: isLoading,
+                enterpriseNameController: enterpriseNameController,
+                urlFocusNode: urlFocusNode,
+              ),
+              gapH8,
+              UrlField(
+                urlController: urlController,
+                urlFocusNode: urlFocusNode,
+                isLoading: isLoading,
+                userNameFocusNode: userNameFocusNode,
+              ),
+              gapH8,
+              UserNameField(
+                userNameController: userNameController,
+                userNameFocusNode: userNameFocusNode,
+                isLoading: isLoading,
+                passwordFocusNode: passwordFocusNode,
+              ),
+              gapH8,
+              PasswordField(
+                isLoading: isLoading,
+                passwordController: passwordController,
+                passwordFocusNode: passwordFocusNode,
+                onSubmit: onSubmit,
+              ),
+              gapH32,
+              PrimaryButton(
+                text: "Adicionar".hardcoded,
+                onPressed: onSubmit,
+                isLoading: isLoading,
+              ),
+            ],
+          ),
         ),
       ),
     );

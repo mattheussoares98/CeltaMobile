@@ -2,6 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../core/validators/validators.dart';
 import 'components.dart';
 
 class EnterpriseNameField extends StatelessWidget {
@@ -28,6 +29,11 @@ class EnterpriseNameField extends StatelessWidget {
       ),
       hintText: "Nome da empresa".hardcoded,
       labelText: "Nome da empresa".hardcoded,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: FormValidators.compose([
+        NonEmptyValidator(),
+        MinLengthValidator(3),
+      ]),
     );
   }
 }

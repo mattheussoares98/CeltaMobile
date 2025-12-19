@@ -2,6 +2,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../core/validators/validators.dart';
 import 'components.dart';
 
 class UserNameField extends StatelessWidget {
@@ -28,9 +29,11 @@ class UserNameField extends StatelessWidget {
       },
       labelText: "Nome do usuário no BS".hardcoded,
       hintText: "Nome do usuário no BS".hardcoded,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       suffixIcon: DeleteIcon(
         onPress: isLoading ? null : userNameController.clear,
       ),
+      validator: FormValidators.compose([NonEmptyValidator()]),
     );
   }
 }
