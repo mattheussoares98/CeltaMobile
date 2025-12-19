@@ -21,6 +21,7 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
   final bool? allowEmptySearchValue;
   final SearchProductKey searchProductKey;
   final VoidCallback? doOnSearchSucceeds;
+  final Modules? module;
   const DefaultSearchProducts({
     super.key,
     required this.isLoading,
@@ -30,6 +31,7 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
     this.focusNode,
     this.allowEmptySearchValue,
     this.doOnSearchSucceeds,
+    this.module,
   });
 
   @override
@@ -160,7 +162,10 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                       ),
                     _DefaultIcon(
                       onPress: () {
-                        showModalPage(const SettingsPage(), context);
+                        showModalPage(
+                          SettingsPage(module: widget.module),
+                          context,
+                        );
                       },
                       materialIcon: Icons.settings,
                       cupertinoIcon: CupertinoIcons.settings,

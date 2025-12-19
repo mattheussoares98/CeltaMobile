@@ -38,6 +38,7 @@ class SearchProducts extends ConsumerWidget {
         searchProducts: searchProducts,
         searchValueController: searchProductsController,
         searchProductKey: searchProductKey,
+        module: Modules.inventory,
       ),
     );
   }

@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../core/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
 class SettingsPage extends ConsumerWidget {
-  const SettingsPage({super.key});
+  final Modules? module;
+  const SettingsPage({super.key, required this.module});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isAndroid = theme.platform == TargetPlatform.android;
+
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Configurações'.hardcoded)),
@@ -21,7 +27,18 @@ class SettingsPage extends ConsumerWidget {
         value: ref.watch(appSettingsStateControllerProvider),
         tryAgain: () => ref.invalidate(appSettingsStateControllerProvider),
         data: (appSettings) {
-          return ProductSearchTypeWidget(settings: appSettings!);
+          return Column(
+            children: [
+              ProductSearchTypeWidget(settings: appSettings!),
+              if (Modules.values.any((x) => x == module) &&
+                  (isIOS || isAndroid)) ...[
+                ContinuousScanCheckbox(
+                  appSettings: appSettings,
+                  module: module!,
+                ),
+              ],
+            ],
+          );
         },
       ),
     );
