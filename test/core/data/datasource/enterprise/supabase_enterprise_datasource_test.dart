@@ -48,7 +48,9 @@ void main() {
       expect(result, SupabaseEnterpriseModel.fromEntity(enterpriseEntity));
       expect(supabaseClient.lastRpcFunction, 'get_enterprise_by_name');
       expect(supabaseClient.lastRpcParams, {
-        'p_name': enterpriseEntity.name.toLowerCase().removeWhiteSpaces(),
+        'p_enterprise_name': enterpriseEntity.name
+            .toLowerCase()
+            .removeWhiteSpaces(),
       });
     });
     test('should return null when return null from database', () async {

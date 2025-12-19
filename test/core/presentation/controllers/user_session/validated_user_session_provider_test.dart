@@ -1,5 +1,7 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/enterprise/enterprise.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_intelligence/core/providers/enterprise/enterprise.dart';
 import 'package:celta_intelligence/core/providers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/exceptions.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
@@ -13,16 +15,22 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late LocalUserSessionDatasourceSpy localUserSessionDatasource;
   late UserSessionModel userSession;
+  late EnterpriseRepositorySpy enterpriseRepository;
+  late EnterpriseEntity enterprise;
 
   setUp(() {
     localUserSessionDatasource = LocalUserSessionDatasourceSpy();
     userSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    enterpriseRepository = EnterpriseRepositorySpy();
+
+    enterprise = EntityFactory.makeEnterpriseEntity();
 
     registerFallbackValue(userSession);
 
     localUserSessionDatasource.mockGetSession(userSession);
+    enterpriseRepository.mockGetSupabaseEnterpriseByName(enterprise);
   });
 
   ProviderContainer makeProviderContainer() {
@@ -31,6 +39,7 @@ void main() {
         localUserSessionDatasourceProvider.overrideWithValue(
           localUserSessionDatasource,
         ),
+        enterpriseRepositoryProvider.overrideWithValue(enterpriseRepository),
       ],
     );
   }
@@ -55,7 +64,13 @@ void main() {
           );
 
           // ASSERT
-          expect(result, userSession);
+          expect(
+            result,
+            UserSessionModel(
+              user: userSession.user,
+              enterprise: SupabaseEnterpriseModel.fromEntity(enterprise),
+            ),
+          );
           verify(() => localUserSessionDatasource.get()).called(1);
         },
       );

@@ -5,7 +5,7 @@ import '../../../domain/entities/entities.dart';
 class StockByEnterpriseAssociatedModel extends Equatable {
   final String Enterprise;
   final double StockBalanceForSale;
-  final String? StorageAreaAddress;
+  final List<String>? StorageAreaAddress;
   const StockByEnterpriseAssociatedModel({
     required this.Enterprise,
     required this.StockBalanceForSale,
@@ -23,9 +23,7 @@ class StockByEnterpriseAssociatedModel extends Equatable {
     return StockByEnterpriseAssociatedModel(
       Enterprise: json['Enterprise'],
       StockBalanceForSale: json['StockBalanceForSale'],
-      StorageAreaAddress: json['StorageAreaAddress'] == null
-          ? null
-          : (json['StorageAreaAddress'] as List).join('; '),
+      StorageAreaAddress: json['StorageAreaAddress']?.cast<String>(),
     );
   }
 

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class StockByEnterpriseAssociatedEntity extends Equatable {
   final String Enterprise;
   final double StockBalanceForSale;
-  final String? StorageAreaAddress;
+  final List<String>? StorageAreaAddress;
   const StockByEnterpriseAssociatedEntity({
     required this.Enterprise,
     required this.StockBalanceForSale,
