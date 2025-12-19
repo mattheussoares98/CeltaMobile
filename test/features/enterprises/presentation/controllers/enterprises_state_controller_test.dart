@@ -70,6 +70,13 @@ void main() {
         () => enterpriseRepositorySpy.getSoapEnterprises(
           url: userSessionEntity.supabaseEnterprise!.baseUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
+          enterpriseIdInSupabase: userSessionEntity.supabaseEnterprise!.id!,
+          existingCnpjsInSupabase: userSessionEntity
+              .supabaseEnterprise!
+              .subEnterprises!
+              .map((e) => e.cnpjNumber)
+              .toSet()
+              .toList(),
         ),
       ).called(1);
     });

@@ -24,6 +24,13 @@ class EnterprisesStateController extends _$EnterprisesStateController {
           url: baseUrl,
           crossIdentity: crossIdentity,
           enterpriseOriginCode: enterpriseCode,
+          enterpriseIdInSupabase: validatedUser.enterprise!.id!,
+          existingCnpjsInSupabase:
+              validatedUser.enterprise!.subEnterprises
+                  ?.map((e) => e.cnpjNumber)
+                  .toSet()
+                  .toList() ??
+              [],
         );
 
     if (enterprises.isNotEmpty) {

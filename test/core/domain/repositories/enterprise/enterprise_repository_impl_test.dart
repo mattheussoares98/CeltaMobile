@@ -20,6 +20,7 @@ void main() {
   late int? requestTypeCode;
   late int? enterpriseOriginCode;
   late List<EnabledModulesByCnpjEntity> enabledModulesByCnpjEntities;
+  late int enterpriseIdInSupabase;
 
   void initSut() {
     sut = EnterpriseRepositoryImpl(
@@ -67,6 +68,7 @@ void main() {
       EntityFactory.makeEnabledModulesByCnpjEntity(),
       EntityFactory.makeEnabledModulesByCnpjEntity(),
     ];
+    enterpriseIdInSupabase = faker.randomGenerator.integer(100);
   }
 
   setUp(() {
@@ -87,31 +89,90 @@ void main() {
       () => supabaseEnterpriseDatasource.getEnterpriseByName(enterpriseName),
     ).called(1);
   });
-  test("Behave correctly on get soap enterprises", () async {
-    final response = await sut.getSoapEnterprises(
-      url: url,
-      crossIdentity: crossIdentity,
-      requestTypeCode: requestTypeCode,
-      enterpriseOriginCode: enterpriseOriginCode,
+  group('Get soap enterprises', () {
+    test(
+      "Behave correctly on get soap enterprises and dont call datasource when is not missing cnpj",
+      () async {
+        final response = await sut.getSoapEnterprises(
+          url: url,
+          crossIdentity: crossIdentity,
+          requestTypeCode: requestTypeCode,
+          enterpriseIdInSupabase: enterpriseIdInSupabase,
+          enterpriseOriginCode: enterpriseOriginCode,
+          existingCnpjsInSupabase: enterpriseEntities
+              .map((e) => e.CnpjNumber!)
+              .toList(),
+        );
+
+        expect(
+          response,
+          enterpriseEntities
+              .map((e) => SoapEnterpriseModel.fromEntity(e).toEntity())
+              .toList(),
+        );
+
+        verify(
+          () => soapEnterpriseDatasource.getEnterprises(
+            crossIdentity: any(named: "crossIdentity"),
+            baseUrl: any(named: "baseUrl"),
+            requestTypeCode: any(named: "requestTypeCode"),
+            enterpriseOriginCode: any(named: "enterpriseOriginCode"),
+          ),
+        ).called(1);
+
+        verifyNever(
+          () => supabaseEnterpriseDatasource.createSubEnterprises(any(), any()),
+        );
+      },
     );
 
-    expect(
-      response,
-      enterpriseEntities
-          .map((e) => SoapEnterpriseModel.fromEntity(e).toEntity())
-          .toList(),
-    );
+    test(
+      "Behave correctly on get soap enterprises and call datasource when is missing cnpjs",
+      () async {
+        final response = await sut.getSoapEnterprises(
+          url: url,
+          crossIdentity: crossIdentity,
+          requestTypeCode: requestTypeCode,
+          enterpriseOriginCode: enterpriseOriginCode,
+          enterpriseIdInSupabase: enterpriseIdInSupabase,
+          existingCnpjsInSupabase: [],
+        );
 
-    verify(
-      () => soapEnterpriseDatasource.getEnterprises(
-        crossIdentity: any(named: "crossIdentity"),
-        baseUrl: any(named: "baseUrl"),
-        requestTypeCode: any(named: "requestTypeCode"),
-        enterpriseOriginCode: any(named: "enterpriseOriginCode"),
-      ),
-    ).called(1);
+        expect(
+          response,
+          enterpriseEntities
+              .map((e) => SoapEnterpriseModel.fromEntity(e).toEntity())
+              .toList(),
+        );
+
+        verify(
+          () => soapEnterpriseDatasource.getEnterprises(
+            crossIdentity: any(named: "crossIdentity"),
+            baseUrl: any(named: "baseUrl"),
+            requestTypeCode: any(named: "requestTypeCode"),
+            enterpriseOriginCode: any(named: "enterpriseOriginCode"),
+          ),
+        ).called(1);
+
+        verify(
+          () => supabaseEnterpriseDatasource.createSubEnterprises(
+            enterpriseEntities
+                .map(
+                  (e) => SupabaseSubEnterpriseModel(
+                    id: null,
+                    idFromErp: e.Code!,
+                    name: e.name,
+                    cnpjNumber: e.CnpjNumber!,
+                    personalizedCode: e.PersonalizedCode!,
+                  ),
+                )
+                .toList(),
+            enterpriseIdInSupabase,
+          ),
+        ).called(1);
+      },
+    );
   });
-
   group('Get enabled modules by enterprise name', () {
     test('should behave correctly on success', () async {
       final response = await sut.getEnabledModulesByEnterpriseName(

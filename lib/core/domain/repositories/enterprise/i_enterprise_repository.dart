@@ -6,6 +6,8 @@ abstract class IEnterpriseRepository {
   Future<List<EnterpriseEntity>> getSoapEnterprises({
     required String url,
     required String crossIdentity,
+    required List<String> existingCnpjsInSupabase,
+    required int enterpriseIdInSupabase,
     int? enterpriseOriginCode,
     int? requestTypeCode,
   });

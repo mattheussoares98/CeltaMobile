@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../core/providers/enterprise/enterprise.dart';
 import '../../../../utils/utils.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../routing/routing.dart';
@@ -31,7 +30,7 @@ class HomePage extends ConsumerWidget {
         leadingWidth: 40,
         title: AsyncValueWidget(
           value: enterprisesAsync,
-          tryAgain: () => ref.invalidate(enterpriseRepositoryProvider),
+          tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
           data: (enterprises) {
             return SelectEnterpriseDropDown(enterprises: enterprises);
           },

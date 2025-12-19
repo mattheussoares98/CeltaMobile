@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../exceptions/exceptions.dart';
 import '../../../data/models/models.dart';
+import '../../../providers/enterprise/enterprise.dart';
 import '../../../providers/user_session/user_session.dart';
 
 part 'validated_user_session_provider.g.dart';
@@ -21,8 +22,16 @@ class ValidatedUserSession extends _$ValidatedUserSession {
         userSession.enterprise?.baseUrl == null) {
       throw AppException('Sessão inválida. Efetue o login novamente'.hardcoded);
     }
-    //TODO should always reload the enterprise from supabase instead of have a static supabase enterprise. The user can be static
 
-    return userSession;
+    final supabaseEnterprise = await ref
+        .read(enterpriseRepositoryProvider)
+        .getSupabaseEnterpriseByName(userSession.user.enterpriseName!);
+
+    return UserSessionModel(
+      user: userSession.user,
+      enterprise: SupabaseEnterpriseModel.fromEntity(
+        supabaseEnterprise!,
+      ), //TODO use entity instead of model and fix tests
+    );
   }
 }
