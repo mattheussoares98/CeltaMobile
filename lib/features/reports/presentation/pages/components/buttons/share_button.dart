@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../constants/constants.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/data/datasource/share_download/share_download.dart';
 import '../../../../../../core/presentation/controllers/share_download/share_download.dart';
 import '../../../../../../localization/string_hardcoded.dart';
@@ -19,9 +19,10 @@ class ShareButton extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return InkWell(
-      //TODO change to primaryTextButton
-      onTap: () {
+    return PrimaryTextButton(
+      text: 'Compartilhar'.hardcoded,
+      isSmall: true,
+      onPressed: () {
         ref
             .read(shareDownloadControllerProvider.notifier)
             .share(
@@ -32,27 +33,7 @@ class ShareButton extends ConsumerWidget {
               ),
             );
       },
-      child: Padding(
-        padding: const EdgeInsets.all(Sizes.p4),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            gapW4,
-            Text(
-              'Compartilhar'.hardcoded,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.primaryColor,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-            gapW8,
-            Icon(
-              isIOS ? CupertinoIcons.share : Icons.share,
-              color: theme.primaryColor,
-            ),
-          ],
-        ),
-      ),
+      icon: Icon(isIOS ? CupertinoIcons.share : Icons.share),
     );
   }
 }
