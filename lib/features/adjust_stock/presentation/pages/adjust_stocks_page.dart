@@ -79,7 +79,12 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       );
       n.doOnSuccess(p, () {
         quantityController.clear();
-        changeSelectedIndex(null);
+        final currentIndex = ref.read(
+          selectedUIStateControllerProvider(
+            widget.enterpriseCode,
+          ).select((s) => s.selectedIndex),
+        );
+        changeSelectedIndex(currentIndex);
       });
     });
     return Stack(
