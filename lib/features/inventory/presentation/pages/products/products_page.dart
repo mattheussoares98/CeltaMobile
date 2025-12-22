@@ -211,7 +211,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   ),
                   tryAgain: null,
                   data: (products) {
-                    return SliverList.builder(
+                    return ResponsiveListFlow(
+                      isSliver: true,
                       itemCount: products.length,
                       itemBuilder: (_, index) {
                         final product = products[index];
