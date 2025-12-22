@@ -4,18 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../../core/presentation/controllers/transfer_justification/transfer_justification.dart';
+import '../../controllers/controllers.dart';
 
 class JustificationsDropdown extends ConsumerWidget {
-  final TransferJustificationEntity? selectedJustification;
   final int enterpriseCode;
-  final void Function(TransferJustificationEntity? value) onChanged;
-  const JustificationsDropdown({
-    super.key,
-    required this.selectedJustification,
-    required this.enterpriseCode,
-    required this.onChanged,
-  });
+  const JustificationsDropdown({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,6 +20,10 @@ class JustificationsDropdown extends ConsumerWidget {
         TransferJustificationType.adjustStock,
       ),
     );
+    final selectedJustification = ref.watch(
+      selectedUIStateControllerProvider.select((s) => s.selectedJustification),
+    );
+
     return AsyncValueWidget(
       value: justificationsAsync,
       tryAgain: () {
@@ -38,7 +37,32 @@ class JustificationsDropdown extends ConsumerWidget {
       data: (justifications) {
         return DefaultSimpleDropDown<TransferJustificationEntity?>(
           isLoading: justificationsAsync.isLoading,
-          onChanged: onChanged,
+          onChanged: (value) async {
+            ref
+                .read(selectedUIStateControllerProvider.notifier)
+                .udpateValues(selectedJustification: value);
+
+            final stocks = await ref.read(
+              stockTypeStateControllerProvider(enterpriseCode).future,
+            );
+
+            if (value?.CodigoInterno_TipoEstoque != null) {
+              //TODO move to controller this logic
+              ref
+                  .read(selectedUIStateControllerProvider.notifier)
+                  .udpateValues(
+                    selectedStockType: stocks.firstWhere(
+                      (e) =>
+                          e.CodigoInterno_TipoEstoque ==
+                          value?.CodigoInterno_TipoEstoque,
+                    ),
+                  );
+            }
+
+            ref
+                .read(selectedUIStateControllerProvider.notifier)
+                .udpateValues(selectedJustification: value);
+          },
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {
             if (value == null) {

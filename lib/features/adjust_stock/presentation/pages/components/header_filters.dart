@@ -11,20 +11,12 @@ class HeaderFilters extends ConsumerWidget {
   final int enterpriseCode;
   final VoidCallback searchProducts;
   final TextEditingController searchValueController;
-  final TransferJustificationEntity? selectedJustification;
-  final StockTypeEntity? selectedStockType;
-  final void Function(TransferJustificationEntity?) onChangeJustification;
-  final void Function(StockTypeEntity?) onChangeStockType;
   final SearchProductKey searchProductKey;
   const HeaderFilters({
     super.key,
     required this.enterpriseCode,
     required this.searchProducts,
     required this.searchValueController,
-    required this.selectedJustification,
-    required this.selectedStockType,
-    required this.onChangeJustification,
-    required this.onChangeStockType,
     required this.searchProductKey,
   });
 
@@ -43,18 +35,9 @@ class HeaderFilters extends ConsumerWidget {
           searchProducts: searchProducts,
         ),
         gapH8,
-        JustificationsDropdown(
-          selectedJustification: selectedJustification,
-          enterpriseCode: enterpriseCode,
-          onChanged: onChangeJustification,
-        ),
+        JustificationsDropdown(enterpriseCode: enterpriseCode),
         gapH8,
-        StocksDropdown(
-          enterpriseCode: enterpriseCode,
-          selectedJustification: selectedJustification,
-          selectedStockType: selectedStockType,
-          onChanged: onChangeStockType,
-        ),
+        StocksDropdown(enterpriseCode: enterpriseCode),
         gapH8,
       ],
     );

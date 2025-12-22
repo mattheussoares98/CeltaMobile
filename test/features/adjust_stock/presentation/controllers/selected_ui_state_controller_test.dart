@@ -55,7 +55,11 @@ void main() {
         );
 
         // Act
-        notifier.udpateValues(newState);
+        notifier.udpateValues(
+          selectedIndex: newState.selectedIndex,
+          selectedJustification: newState.selectedJustification,
+          selectedStockType: newState.selectedStockType,
+        );
 
         // Assert
         // 1. Verify the state was updated in the container
@@ -87,8 +91,16 @@ void main() {
         );
 
         // Act
-        notifier.udpateValues(firstState);
-        notifier.udpateValues(secondState);
+        notifier.udpateValues(
+          selectedIndex: firstState.selectedIndex,
+          selectedJustification: firstState.selectedJustification,
+          selectedStockType: firstState.selectedStockType,
+        );
+        notifier.udpateValues(
+          selectedIndex: secondState.selectedIndex,
+          selectedJustification: secondState.selectedJustification,
+          selectedStockType: secondState.selectedStockType,
+        );
 
         // Assert
         final finalState = container.read(selectedUIStateControllerProvider);
@@ -108,11 +120,19 @@ void main() {
       );
 
       // Act
-      notifier.udpateValues(state);
+      notifier.udpateValues(
+        selectedIndex: state.selectedIndex,
+        selectedJustification: state.selectedJustification,
+        selectedStockType: state.selectedStockType,
+      );
       final firstState = container.read(selectedUIStateControllerProvider);
       expect(firstState.selectedIndex, isNotNull);
 
-      notifier.udpateValues(state);
+      notifier.udpateValues(
+        selectedIndex: state.selectedIndex,
+        selectedJustification: state.selectedJustification,
+        selectedStockType: state.selectedStockType,
+      );
       final secondState = container.read(selectedUIStateControllerProvider);
       expect(secondState.selectedIndex, isNull);
     });

@@ -5,25 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/stock/stock.dart';
+import '../../controllers/controllers.dart';
 
 class StocksDropdown extends ConsumerWidget {
   final int enterpriseCode;
-  final TransferJustificationEntity? selectedJustification;
-  final StockTypeEntity? selectedStockType;
-  final void Function(StockTypeEntity? value) onChanged;
-  const StocksDropdown({
-    super.key,
-    required this.enterpriseCode,
-    required this.selectedJustification,
-    required this.selectedStockType,
-    required this.onChanged,
-  });
+  const StocksDropdown({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final stocksAsync = ref.watch(
       stockTypeStateControllerProvider(enterpriseCode),
     );
+    final selectedUIState = ref.watch(selectedUIStateControllerProvider);
 
     return AsyncValueWidget(
       value: stocksAsync,
@@ -34,9 +27,17 @@ class StocksDropdown extends ConsumerWidget {
         return DefaultSimpleDropDown<StockTypeEntity?>(
           isLoading: stocksAsync.isLoading,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          onChanged: selectedJustification?.CodigoInterno_TipoEstoque != null
+          onChanged:
+              selectedUIState
+                      .selectedJustification
+                      ?.CodigoInterno_TipoEstoque !=
+                  null
               ? null
-              : onChanged,
+              : (value) {
+                  ref
+                      .read(selectedUIStateControllerProvider.notifier)
+                      .udpateValues(selectedStockType: value);
+                },
           validator: (value) {
             if (value == null) {
               return 'Estoque obrigatório'.hardcoded;
@@ -49,7 +50,7 @@ class StocksDropdown extends ConsumerWidget {
               child: Center(child: Text(e.Nome_TipoEstoque)),
             );
           }).toList(),
-          value: selectedStockType,
+          value: selectedUIState.selectedStockType,
           hint: 'Estoque de destino'.hardcoded,
         );
       },

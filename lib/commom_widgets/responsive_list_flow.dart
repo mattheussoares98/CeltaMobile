@@ -19,6 +19,16 @@ class ResponsiveListFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isAndroid = theme.platform == TargetPlatform.android;
+
+    if (isIOS || isAndroid) {
+      return isSliver
+          ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
+          : ListView.builder(itemBuilder: itemBuilder, itemCount: itemCount);
+    }
+
     final width = MediaQuery.of(context).size.width;
     // Calculate how many items fit in one row
     final itemsPerRow = max((width / maxItemWidth!).floor(), 1);
