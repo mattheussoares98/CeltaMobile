@@ -15,6 +15,7 @@ class PracticedPriceProperty extends StatelessWidget {
       BsRoutine.buyRequest,
       BsRoutine.buyQuotation,
       BsRoutine.goodsReceiving,
+      BsRoutine.adjustStock,
       BsRoutine.researchOfPrice,
     ].contains(widget.routine)) {
       return const SizedBox.shrink();
