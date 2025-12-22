@@ -36,6 +36,8 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
 
   @override
   Future<void> share(FileProperties file) async {
+    final String fullName = '${file.name}${file.extension ?? ''}';
+
     final result = await SharePlus.instance.share(
       ShareParams(
         files: file.filePath != null
@@ -43,12 +45,12 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
             : [
                 XFile.fromData(
                   file.bytes,
-                  name: file.name,
+                  name: fullName,
                   mimeType: file.mimeType,
                 ),
               ],
         text: "Aqui estão os dados gerados pelo CeltaMobile...".hardcoded,
-        fileNameOverrides: [file.name],
+        fileNameOverrides: [fullName],
       ),
     );
     debugPrint(result.toString());
