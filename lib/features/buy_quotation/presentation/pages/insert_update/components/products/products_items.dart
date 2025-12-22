@@ -75,7 +75,8 @@ class ProductsItems extends ConsumerWidget {
         buyQuotation.Enterprises != null &&
         buyQuotation.Enterprises!.where((e) => e.isSelected == true).isNotEmpty;
 
-    return SliverList.builder(
+    return ResponsiveListFlow(
+      isSliver: true,
       itemCount: buyQuotation.Products?.length ?? 0,
       itemBuilder: (_, index) {
         final product = buyQuotation.Products![index];

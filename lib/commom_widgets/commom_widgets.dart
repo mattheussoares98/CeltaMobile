@@ -1,3 +1,4 @@
+export 'badges/badges.dart';
 export 'cupertino/cupertino.dart';
 export 'form_field/form_field.dart';
 export 'product_item/product_item.dart';
@@ -21,4 +22,3 @@ export 'responsive_scrollable_widget.dart';
 export './show_modal_page.dart';
 export 'show_snack_bar_message.dart';
 export './title_and_subtitle.dart';
-export 'badges/badges.dart';

@@ -13,7 +13,7 @@ class ResponsiveListFlow extends StatelessWidget {
     super.key,
     required this.itemCount,
     required this.itemBuilder,
-    this.maxItemWidth = Breakpoint.tablet,
+    this.maxItemWidth = 380,
     this.isSliver = false,
   });
 
