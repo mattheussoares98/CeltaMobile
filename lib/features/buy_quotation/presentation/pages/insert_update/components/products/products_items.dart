@@ -64,7 +64,7 @@ class ProductsItems extends ConsumerWidget {
           if (quantity != null) {
             controller.text = quantity
                 .toString()
-                .toBrazilianNumber()
+                .toBrazilianNumber(3)
                 .replaceAll(RegExp(r'\.'), '');
           }
         }
