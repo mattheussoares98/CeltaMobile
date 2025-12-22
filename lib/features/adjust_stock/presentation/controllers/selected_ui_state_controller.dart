@@ -18,12 +18,11 @@ class SelectedUIStateController extends _$SelectedUIStateController {
     StockTypeEntity? selectedStockType,
     int? selectedIndex,
   }) async {
-    final stocks = await ref.watch(
-      stockTypeStateControllerProvider(enterpriseCode).future,
-    );
-
     StockTypeEntity? newStock;
     if (selectedJustification?.CodigoInterno_TipoEstoque != null) {
+      final stocks = await ref.watch(
+        stockTypeStateControllerProvider(enterpriseCode).future,
+      );
       newStock = stocks.firstWhere(
         (e) =>
             e.CodigoInterno_TipoEstoque ==
@@ -32,11 +31,13 @@ class SelectedUIStateController extends _$SelectedUIStateController {
     }
 
     state = SelectedItemUIState(
-      selectedJustification: selectedJustification,
-      selectedStockType: newStock ?? selectedStockType,
+      selectedJustification:
+          selectedJustification ?? state.selectedJustification,
+      selectedStockType:
+          newStock ?? selectedStockType ?? state.selectedStockType,
       selectedIndex: selectedIndex == state.selectedIndex
           ? null
-          : selectedIndex,
+          : selectedIndex ?? state.selectedIndex,
     );
   }
 }

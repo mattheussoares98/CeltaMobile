@@ -208,5 +208,31 @@ void main() {
         expect(firstState.selectedStockType, fakeStocks.first);
       },
     );
+    test('should not update properties that wasnt passed', () async {
+      // Arrange
+      container = makeProviderContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(
+        selectedUIStateControllerProvider(enterpriseCode).notifier,
+      );
+
+      final state = SelectedItemUIState(
+        selectedIndex: faker.randomGenerator.integer(100),
+        selectedJustification: selectedJustification,
+        selectedStockType: selectedStockType,
+      );
+      await notifier.updateValues(
+        selectedIndex: state.selectedIndex,
+        selectedJustification: state.selectedJustification,
+        selectedStockType: state.selectedStockType,
+      );
+      await notifier.updateValues();
+      final currentState = container.read(
+        selectedUIStateControllerProvider(enterpriseCode),
+      );
+      expect(currentState.selectedIndex, state.selectedIndex);
+      expect(currentState.selectedJustification, state.selectedJustification);
+      expect(currentState.selectedStockType, state.selectedStockType);
+    });
   });
 }
