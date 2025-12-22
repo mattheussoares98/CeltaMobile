@@ -42,7 +42,14 @@ class ProductsItems extends ConsumerWidget {
           .updatePending(pendingAsync.value!.copyWith(products: products));
     }
 
-    return SliverList.builder(
+    products.sort(
+      (a, b) => '${a.Name}${a.PLU}${a.EnterpriseCode}'.compareTo(
+        '${b.Name}${b.PLU}${b.EnterpriseCode}',
+      ),
+    );
+
+    return ResponsiveListFlow(
+      isSliver: true,
       itemCount: products.length,
       itemBuilder: (_, index) {
         final product = products[index];
