@@ -84,7 +84,10 @@ class ModulesWidget extends ConsumerWidget {
         itemCount: buttons.length,
         itemBuilder: (_, index) {
           final button = buttons[index];
-          return button;
+          return Padding(
+            padding: const EdgeInsets.only(bottom: Sizes.p8),
+            child: button,
+          );
         },
       ),
     );
