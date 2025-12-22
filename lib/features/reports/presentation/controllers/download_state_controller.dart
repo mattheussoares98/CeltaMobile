@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -43,25 +41,21 @@ class DownloadStateController extends _$DownloadStateController {
       if (platform != TargetPlatform.android &&
           platform != TargetPlatform.iOS &&
           downloadType == DownloadType.xlsx) {
+        final file = FileProperties(
+          name: modelName,
+          bytes: response.first.Executions.first.Attachments
+              .firstWhere((e) => e.FileExtension == DownloadType.xlsx.name)
+              .AttachmentBase64,
+          extension: '.xlsx',
+          mimeType:
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        );
         final filePath = await ref
             .read(shareDownloadControllerProvider.notifier)
-            .download(
-              FileProperties(
-                name: modelName,
-                bytes: response.first.Executions.first.Attachments
-                    .firstWhere(
-                      (e) => e.FileExtension == DownloadType.xlsx.name,
-                    )
-                    .AttachmentBase64,
-                extension: '.xlsx',
-                mimeType:
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-              ),
-              platform,
-            );
+            .download(file, platform);
         return DownloadExecutionEntity(
           executionResult: response.first,
-          xlsxFilePath: '$filePath${Platform.pathSeparator}$modelName.xlsx',
+          xlsxFilePath: filePath,
         );
       }
 

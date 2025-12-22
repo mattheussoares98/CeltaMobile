@@ -20,7 +20,10 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
       );
     }
 
-    final response = await FilePicker.platform.getDirectoryPath();
+    final response = await FilePicker.platform.saveFile(
+      bytes: file.bytes,
+      fileName: '${file.name}${file.extension}',
+    );
 
     if (response == null) {
       throw AppException(
@@ -33,14 +36,21 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
 
   @override
   Future<void> share(FileProperties file) async {
-    await SharePlus.instance.share(
+    final result = await SharePlus.instance.share(
       ShareParams(
         files: file.filePath != null
             ? [XFile(file.filePath!)]
-            : [XFile.fromData(file.bytes, name: file.name)],
+            : [
+                XFile.fromData(
+                  file.bytes,
+                  name: file.name,
+                  mimeType: file.mimeType,
+                ),
+              ],
         text: "Aqui estão os dados gerados pelo CeltaMobile...".hardcoded,
         fileNameOverrides: [file.name],
       ),
     );
+    debugPrint(result.toString());
   }
 }
