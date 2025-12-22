@@ -34,11 +34,11 @@ class ConfirmationPage extends ConsumerWidget {
     });
 
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: ResponsiveScrollableWidget(
-              isSliverPage: true,
+      body: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          children: [
+            Expanded(
               child: CustomScrollView(
                 slivers: [
                   CleanAllDataButton(
@@ -129,9 +129,9 @@ class ConfirmationPage extends ConsumerWidget {
                 ],
               ),
             ),
-          ),
-          Footer(observationsController: observationsController),
-        ],
+            Footer(observationsController: observationsController),
+          ],
+        ),
       ),
     );
   }
