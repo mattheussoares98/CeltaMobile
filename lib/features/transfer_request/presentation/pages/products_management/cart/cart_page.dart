@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,53 +69,66 @@ class _CartPageState extends ConsumerState<CartPage> {
     final pendingAsync = ref.watch(
       cartProductsStateControllerProvider(widget.draftKey),
     );
+    final theme = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       child: Column(
         children: [
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                if (lastSavedAsync.value != null)
-                  LastSavedNumber(number: lastSavedAsync.value!),
-                AsyncValueSliverWidget(
-                  value: pendingAsync,
-                  tryAgain: () => ref.invalidate(
-                    cartProductsStateControllerProvider(widget.draftKey),
+          if (pendingAsync.value == null || pendingAsync.value!.isEmpty) ...[
+            Expanded(
+              child: Center(
+                child: Text(
+                  'Nenhum produto adicionado ao carrinho'.hardcoded,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: Colors.red,
                   ),
-                  data: (items) {
-                    return ResponsiveListFlow(
-                      isSliver: true,
-                      itemCount: items.length,
-                      itemBuilder: (_, index) {
-                        final item = items[index];
-
-                        return ProductItem(
-                          item: item,
-                          index: index,
-                          changeSelectedIndex: (index) =>
-                              changeSelectedIndex(index, item),
-                          draftKey: widget.draftKey,
-                          selectedIndex: selectedIndex,
-                          requestTypeAllowChangePrice:
-                              widget.requestTypeAllowChangePrice,
-                          priceController: priceController,
-                          priceFocusNode: priceFocusNode,
-                          quantityController: quantityController,
-                          quantityFocusNode: quantityFocusNode,
-                        );
-                      },
-                    );
-                  },
                 ),
-                if ((pendingAsync.value?.length ?? 0) > 2) ...[
-                  ClearCartButton(draftKey: widget.draftKey),
-                  gapSliverH16,
-                ],
-              ],
+              ),
             ),
-          ),
+          ] else
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  if (lastSavedAsync.value != null)
+                    LastSavedNumber(number: lastSavedAsync.value!),
+                  AsyncValueSliverWidget(
+                    value: pendingAsync,
+                    tryAgain: () => ref.invalidate(
+                      cartProductsStateControllerProvider(widget.draftKey),
+                    ),
+                    data: (items) {
+                      return ResponsiveListFlow(
+                        isSliver: true,
+                        itemCount: items.length,
+                        itemBuilder: (_, index) {
+                          final item = items[index];
+
+                          return ProductItem(
+                            item: item,
+                            index: index,
+                            changeSelectedIndex: (index) =>
+                                changeSelectedIndex(index, item),
+                            draftKey: widget.draftKey,
+                            selectedIndex: selectedIndex,
+                            requestTypeAllowChangePrice:
+                                widget.requestTypeAllowChangePrice,
+                            priceController: priceController,
+                            priceFocusNode: priceFocusNode,
+                            quantityController: quantityController,
+                            quantityFocusNode: quantityFocusNode,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  if ((pendingAsync.value?.length ?? 0) > 2) ...[
+                    ClearCartButton(draftKey: widget.draftKey),
+                    gapSliverH16,
+                  ],
+                ],
+              ),
+            ),
           Footer(draftKey: widget.draftKey),
         ],
       ),
