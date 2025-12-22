@@ -83,7 +83,8 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (_, _) async {
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
         bool? confirmed = await showAlertDialog(
           context: context,
           title: 'Atenção'.hardcoded,
