@@ -84,7 +84,7 @@ class PrimaryButton extends StatelessWidget {
         final canShowIcon = constraints.maxWidth > minimumIconSize;
 
         return SizedBox(
-          height: Sizes.p32,
+          height: Sizes.p40,
           child: ElevatedButton.icon(
             onPressed: isLoading ? null : onPressed,
             icon: canShowIcon ? icon : null,
