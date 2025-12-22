@@ -151,7 +151,9 @@ class ProductModel extends Equatable implements ProductModelType {
       Name: json['Name'],
       PackingQuantity: json['PackingQuantity'],
       BalanceLabelType: json['BalanceLabelType'],
-      StorageAreaAddress: json['StorageAreaAddress']?.cast<String>(),
+      StorageAreaAddress: json['StorageAreaAddress'] == ""
+          ? null
+          : json['StorageAreaAddress']?.cast<String>(),
       Value: json['Value'],
       BalanceLabelQuantity: json['BalanceLabelQuantity'],
       RetailPracticedPrice: json['RetailPracticedPrice'],
