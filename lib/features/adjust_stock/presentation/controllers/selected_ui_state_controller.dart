@@ -12,6 +12,8 @@ class SelectedUIStateController extends _$SelectedUIStateController {
   }
 
   void udpateValues(SelectedItemUIState value) {
-    state = value;
+    state = value.annulValues(
+      annulSelectedIndex: value.selectedIndex == state.selectedIndex,
+    );
   }
 }

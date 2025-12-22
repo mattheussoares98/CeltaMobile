@@ -96,5 +96,25 @@ void main() {
         expect(finalState.selectedIndex, isNot(firstState.selectedIndex));
       },
     );
+    test('should annul the selectedIndex if pass the same value as param', () {
+      // Arrange
+      final notifier = container.read(
+        selectedUIStateControllerProvider.notifier,
+      );
+      final state = SelectedItemUIState(
+        selectedIndex: fakerInstance.randomGenerator.integer(10),
+        selectedJustification: EntityFactory.makeTransferJustificationEntity(),
+        selectedStockType: EntityFactory.makeStockTypeEntity(),
+      );
+
+      // Act
+      notifier.udpateValues(state);
+      final firstState = container.read(selectedUIStateControllerProvider);
+      expect(firstState.selectedIndex, isNotNull);
+
+      notifier.udpateValues(state);
+      final secondState = container.read(selectedUIStateControllerProvider);
+      expect(secondState.selectedIndex, isNull);
+    });
   });
 }

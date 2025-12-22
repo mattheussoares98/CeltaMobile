@@ -39,4 +39,12 @@ class SelectedItemUIState extends Equatable {
     selectedStockType: null,
     selectedIndex: null,
   );
+
+  SelectedItemUIState annulValues({bool? annulSelectedIndex}) {
+    return SelectedItemUIState(
+      selectedJustification: selectedJustification,
+      selectedStockType: selectedStockType,
+      selectedIndex: annulSelectedIndex == true ? null : this.selectedIndex,
+    );
+  }
 }
