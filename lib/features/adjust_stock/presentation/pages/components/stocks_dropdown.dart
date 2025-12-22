@@ -16,7 +16,9 @@ class StocksDropdown extends ConsumerWidget {
     final stocksAsync = ref.watch(
       stockTypeStateControllerProvider(enterpriseCode),
     );
-    final selectedUIState = ref.watch(selectedUIStateControllerProvider);
+    final selectedUIState = ref.watch(
+      selectedUIStateControllerProvider(enterpriseCode),
+    );
 
     return AsyncValueWidget(
       value: stocksAsync,
@@ -35,8 +37,12 @@ class StocksDropdown extends ConsumerWidget {
               ? null
               : (value) {
                   ref
-                      .read(selectedUIStateControllerProvider.notifier)
-                      .udpateValues(selectedStockType: value);
+                      .read(
+                        selectedUIStateControllerProvider(
+                          enterpriseCode,
+                        ).notifier,
+                      )
+                      .updateValues(selectedStockType: value);
                 },
           validator: (value) {
             if (value == null) {

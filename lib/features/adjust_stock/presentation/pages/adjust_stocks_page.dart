@@ -57,8 +57,8 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
 
   void changeSelectedIndex(int? index) async {
     ref
-        .read(selectedUIStateControllerProvider.notifier)
-        .udpateValues(selectedIndex: index);
+        .read(selectedUIStateControllerProvider(widget.enterpriseCode).notifier)
+        .updateValues(selectedIndex: index);
     await Future.delayed(const Duration(milliseconds: 100));
     quantityFocusNode.requestFocus();
   }

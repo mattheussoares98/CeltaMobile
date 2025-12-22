@@ -26,14 +26,18 @@ class ProductsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedUIState = ref.watch(selectedUIStateControllerProvider);
+    final selectedUIState = ref.watch(
+      selectedUIStateControllerProvider(enterpriseCode),
+    );
 
     Future<void> confirmAdjust(ProductEntity product) async {
       if (formKey.currentState?.validate() != true) {
         return;
       }
 
-      final selectedUIState = ref.read(selectedUIStateControllerProvider);
+      final selectedUIState = ref.read(
+        selectedUIStateControllerProvider(enterpriseCode),
+      );
       await ref.read(confirmAdjustStockControllerProvider.notifier).confirm([
         AdjustStockItemEntity(
           EnterpriseCode: enterpriseCode,
@@ -63,8 +67,12 @@ class ProductsItems extends ConsumerWidget {
               routine: BsRoutine.adjustStock,
               onTap: () async {
                 ref
-                    .read(selectedUIStateControllerProvider.notifier)
-                    .udpateValues(selectedIndex: index);
+                    .read(
+                      selectedUIStateControllerProvider(
+                        enterpriseCode,
+                      ).notifier,
+                    )
+                    .updateValues(selectedIndex: index);
                 await Future.delayed(const Duration(milliseconds: 100));
                 quantityFocusNode.requestFocus();
               },
