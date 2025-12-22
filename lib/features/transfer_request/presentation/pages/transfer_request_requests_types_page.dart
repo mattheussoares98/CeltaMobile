@@ -28,8 +28,8 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
           );
         },
         data: (requests) {
-          return ListView.builder(
-            itemCount: requests?.length,
+          return ResponsiveListFlow(
+            itemCount: requests?.length ?? 0,
             itemBuilder: (_, index) {
               final request = requests![index];
               return Card(

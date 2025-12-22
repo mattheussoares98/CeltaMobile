@@ -43,8 +43,8 @@ class RequestsTypePage extends ConsumerWidget {
                 requestTypeStateControllerProvider(Modules.saleRequest),
               );
             },
-            child: ListView.builder(
-              itemCount: requests?.length,
+            child: ResponsiveListFlow(
+              itemCount: requests?.length ?? 0,
               itemBuilder: (_, index) {
                 final request = requests![index];
 
