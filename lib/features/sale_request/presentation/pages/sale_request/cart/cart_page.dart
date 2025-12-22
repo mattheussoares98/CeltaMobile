@@ -1,4 +1,3 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -156,17 +155,12 @@ class _CartPageState extends ConsumerState<CartPage>
                       instructionsController: instructionsController,
                     ),
                     gapSliverH8,
+
                     ResponsiveListFlow(
                       isSliver: true,
                       itemCount: cartProducts.length,
                       itemBuilder: (_, index) {
                         final cartProduct = cartProducts[index];
-
-                        if (cartProducts.isEmpty) {
-                          return Center(
-                            child: Text('Nenhum item no carrinho'.hardcoded),
-                          );
-                        }
 
                         return ProductItem(
                           cartProduct: cartProduct,
