@@ -12,6 +12,7 @@ class WholePriceAndMinQuantity extends StatelessWidget {
     if ([
       BsRoutine.adjustSalePrice,
       BsRoutine.buyQuotation,
+      BsRoutine.researchOfPrice,
       BsRoutine.priceConference,
       BsRoutine.saleRequest,
     ].contains(widget.routine)) {

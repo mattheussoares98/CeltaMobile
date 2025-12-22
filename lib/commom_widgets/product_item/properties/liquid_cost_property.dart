@@ -14,6 +14,7 @@ class LiquidCostProperty extends StatelessWidget {
       BsRoutine.adjustStock,
       BsRoutine.buyQuotation,
       BsRoutine.goodsReceiving,
+      BsRoutine.researchOfPrice,
       BsRoutine.transferRequest,
     ].contains(widget.routine)) {
       return const SizedBox.shrink();
