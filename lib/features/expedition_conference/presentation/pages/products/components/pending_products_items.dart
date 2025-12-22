@@ -19,7 +19,7 @@ class PendingProductsItems extends ConsumerWidget {
         expeditionConferenceControllerProvider(expeditionControlCode),
       ),
       data: (expedition) {
-        return ListView.builder(
+        return ResponsiveListFlow(
           itemCount: expedition.pendingProducts.length,
           itemBuilder: (_, index) {
             final product = expedition.pendingProducts[index];

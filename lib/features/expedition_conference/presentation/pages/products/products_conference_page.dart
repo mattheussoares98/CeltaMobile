@@ -63,34 +63,36 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       n.showAlertDialogOnError(context);
     });
 
-    return Stack(
-      children: [
-        PopScope(
-          onPopInvokedWithResult: (_, _) async {
-            final state = await ref.read(
-              expeditionConferenceControllerProvider(
-                widget.expeditionControlCode,
-              ).future,
-            );
+    final scannedProducts = ref.watch(
+      expeditionConferenceControllerProvider(
+        widget.expeditionControlCode,
+      ).select((s) => s.value?.scannedProducts ?? []),
+    );
 
-            if (state.scannedQuantities.values.any((x) => x > 0)) {
-              //TODO check if is working
-              bool? pressed = await showAlertDialog(
-                context: context,
-                title: 'Atenção!'.hardcoded,
-                content:
-                    'Ao sair, as quantidades contadas serão perdidas. Deseja sair mesmo assim?'
-                        .hardcoded,
-                cancelActionText: 'Cancelar'.hardcoded,
-                defaultActionText: 'Sim'.hardcoded,
-              );
+    return PopScope(
+      canPop: scannedProducts.isEmpty,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
 
-              if (pressed == true) {
-                context.pop();
-              }
-            }
-          },
-          child: Scaffold(
+        if (scannedProducts.any((x) => x.Quantity > 0)) {
+          bool? pressed = await showAlertDialog(
+            context: context,
+            title: 'Atenção!'.hardcoded,
+            content:
+                'Ao sair, as quantidades contadas serão perdidas. Deseja sair mesmo assim?'
+                    .hardcoded,
+            cancelActionText: 'Cancelar'.hardcoded,
+            defaultActionText: 'Sim'.hardcoded,
+          );
+
+          if (pressed == true) {
+            context.pop();
+          }
+        }
+      },
+      child: Stack(
+        children: [
+          Scaffold(
             appBar: AppBar(
               title: FittedBox(
                 child: Text(
@@ -134,9 +136,9 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
               currentIndex: currentIndex,
             ),
           ),
-        ),
-        LoadingPage(providers: [confirmConferenceControllerProvider]),
-      ],
+          LoadingPage(providers: [confirmConferenceControllerProvider]),
+        ],
+      ),
     );
   }
 }
