@@ -14,20 +14,6 @@ part 'expedition_conference_controller.g.dart';
 class ExpeditionConferenceController extends _$ExpeditionConferenceController {
   @override
   FutureOr<ExpeditionConferenceState> build(int expeditionControlCode) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
-
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
     final initialProducts = await ref
