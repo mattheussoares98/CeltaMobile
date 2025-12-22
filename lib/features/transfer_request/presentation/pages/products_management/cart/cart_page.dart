@@ -84,7 +84,8 @@ class _CartPageState extends ConsumerState<CartPage> {
                     cartProductsStateControllerProvider(widget.draftKey),
                   ),
                   data: (items) {
-                    return SliverList.builder(
+                    return ResponsiveListFlow(
+                      isSliver: true,
                       itemCount: items.length,
                       itemBuilder: (_, index) {
                         final item = items[index];
