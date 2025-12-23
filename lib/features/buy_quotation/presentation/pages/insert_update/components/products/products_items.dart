@@ -9,19 +9,19 @@ import '../../../../../../../utils/utils.dart';
 import '../../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controller.dart';
+import '../../../../models/models.dart';
+import '../../../pages.dart';
 import '../components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final BuyQuotationEntity buyQuotation;
-  final Map<String, TextEditingController> quantityControllers;
-  final int enterpriseCode;
-  final int code;
+  final List<EnterpriseUIController> uiControllers;
+  final InsertUpdatePage widget;
   const ProductsItems({
     super.key,
     required this.buyQuotation,
-    required this.quantityControllers,
-    required this.enterpriseCode,
-    required this.code,
+    required this.uiControllers,
+    required this.widget,
   });
 
   @override
@@ -43,13 +43,11 @@ class ProductsItems extends ConsumerWidget {
         final product = buyQuotation.Products?[newIndex];
         if (product == null) return;
 
-        for (final entry in quantityControllers.entries) {
-          final enterpriseCodeKey =
-              entry.key; // String Code of the enterprise (e.g., '123')
-          final controller = entry.value;
+        for (final uiController in uiControllers) {
+          final controller = uiController.controller;
 
           if (buyQuotation.Enterprises?.any(
-                (e) => e.enterprise.Code.toString() == enterpriseCodeKey,
+                (e) => e.enterprise.Code == uiController.enterpriseCode,
               ) ==
               false) {
             controller.text = '0';
@@ -57,7 +55,7 @@ class ProductsItems extends ConsumerWidget {
           }
 
           final quantityEntity = product.ProductEnterprises?.firstWhereOrNull(
-            (e) => e.EnterpriseCode.toString() == enterpriseCodeKey,
+            (e) => e.EnterpriseCode == uiController.enterpriseCode,
           );
 
           final quantity = quantityEntity?.Quantity;
@@ -124,13 +122,13 @@ class ProductsItems extends ConsumerWidget {
           ),
           notClickableBottom: isSelected
               ? UpdateQuantities(
-                  quantityControllers: quantityControllers,
+                  uiControllers: uiControllers,
                   buyQuotation: buyQuotation,
                   enterprises: enterprises.value!,
                   updateIndex: updateIndex,
                   product: product,
-                  enterpriseCode: enterpriseCode,
-                  code: code,
+                  enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
                 )
               : null,
         );

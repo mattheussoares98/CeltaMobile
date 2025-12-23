@@ -10,18 +10,19 @@ import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controller.dart';
+import '../../../../models/models.dart';
 
 class UpdateQuantities extends ConsumerStatefulWidget {
-  final Map<String, TextEditingController> quantityControllers;
-  final BuyQuotationEntity buyQuotation;
+  final List<EnterpriseUIController> uiControllers;
   final List<EnterpriseEntity> enterprises;
+  final BuyQuotationEntity buyQuotation;
   final void Function(int? index) updateIndex;
   final BuyQuotationProductsEntity product;
   final int enterpriseCode;
   final int code;
   const UpdateQuantities({
     super.key,
-    required this.quantityControllers,
+    required this.uiControllers,
     required this.buyQuotation,
     required this.enterprises,
     required this.updateIndex,
@@ -71,7 +72,10 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
           )?.Code,
           EnterpriseCode: e.EnterpriseCode,
           Quantity:
-              widget.quantityControllers[e.EnterpriseCode.toString()]!.text
+              widget.uiControllers
+                  .firstWhere((x) => x.enterpriseCode == e.EnterpriseCode)
+                  .controller
+                  .text
                   .toDouble() ??
               0,
         );
@@ -94,39 +98,65 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final controllers = widget.quantityControllers.entries.where(
-      (e) =>
-          widget.buyQuotation.Enterprises?.any(
-            (y) =>
-                y.enterprise.Code.toString() == e.key && y.isSelected == true,
-          ) ==
-          true,
+    final selectedEnterpriseCodes =
+        widget.buyQuotation.Enterprises
+            ?.where((e) => e.isSelected == true)
+            .toSet()
+            .toList() ??
+        [];
+
+    final selectedUIControllers = [...widget.uiControllers];
+    selectedUIControllers.removeWhere(
+      (e) => !selectedEnterpriseCodes.any(
+        (x) => x.enterprise.Code == e.enterpriseCode,
+      ),
     );
 
     return Form(
       key: formKey,
       child: Column(
         children: [
-          for (var x = 0; x < controllers.length; x++)
+          for (var x = 0; x < selectedUIControllers.length; x++)
             Builder(
               builder: (context) {
-                final controller = controllers.elementAt(x);
+                final controller = selectedUIControllers[x];
                 final correspondentEnterprise = widget.enterprises.firstWhere(
-                  (x) => controller.key == x.Code.toString(),
+                  (x) => controller.enterpriseCode == x.Code,
                 );
                 return Padding(
                   padding: const EdgeInsets.only(bottom: Sizes.p8),
                   child: DefaultTextFormField(
-                    controller: controller.value,
+                    controller: controller.controller,
+                    focusNode: controller.focusNode,
                     keyboardType: TextInputType.number,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onTap: () {
+                      if (!controller.focusNode.hasFocus) {
+                        controller.controller.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: controller.controller.text.length,
+                        );
+                      }
+                    },
                     labelText:
                         '(${correspondentEnterprise.PersonalizedCode}) ${correspondentEnterprise.name}'
                             .hardcoded,
                     hintText: 'Quantidade'.hardcoded,
                     onFieldSubmitted: (_) {
-                      if (x == controllers.length - 1) {
+                      if (x == selectedUIControllers.length - 1) {
                         confirmQuantities();
+                      } else {
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          selectedUIControllers[x + 1].focusNode.requestFocus();
+                          selectedUIControllers[x + 1].controller.selection =
+                              TextSelection(
+                                baseOffset: 0,
+                                extentOffset: selectedUIControllers[x + 1]
+                                    .controller
+                                    .text
+                                    .length,
+                              );
+                        });
                       }
                     },
                     validator: FormValidators.compose([

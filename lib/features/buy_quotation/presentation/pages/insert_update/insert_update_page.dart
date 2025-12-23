@@ -8,6 +8,7 @@ import '../../../../../constants/constants.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../controllers/controller.dart';
+import '../../models/models.dart';
 import 'components/components.dart';
 
 class InsertUpdatePage extends ConsumerStatefulWidget {
@@ -27,7 +28,7 @@ class InsertUpdatePage extends ConsumerStatefulWidget {
 class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
   final observationController = TextEditingController();
   final searchValueController = TextEditingController();
-  final Map<String, TextEditingController> quantityControllers = {};
+  final List<EnterpriseUIController> uiControllers = [];
 
   @override
   void initState() {
@@ -41,8 +42,13 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
         );
 
         for (final enterprise in enterprises) {
-          quantityControllers[enterprise.Code.toString()] =
-              TextEditingController();
+          uiControllers.add(
+            EnterpriseUIController(
+              TextEditingController(),
+              FocusNode(),
+              enterprise.Code!,
+            ),
+          );
         }
 
         final value = await ref.read(
@@ -64,8 +70,9 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
     observationController.dispose();
     searchValueController.dispose();
 
-    for (final controller in quantityControllers.values) {
-      controller.dispose();
+    for (final uiController in uiControllers) {
+      uiController.controller.dispose();
+      uiController.focusNode.dispose();
     }
   }
 
@@ -167,9 +174,8 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                       gapSliverH8,
                       ProductsItems(
                         buyQuotation: buyQuotation,
-                        quantityControllers: quantityControllers,
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
+                        uiControllers: uiControllers,
+                        widget: widget,
                       ),
                     ],
                   ),
