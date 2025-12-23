@@ -118,7 +118,6 @@ class Enterprises extends ConsumerWidget {
                 true;
             return Card(
               clipBehavior: Clip.antiAlias,
-              color: isSelected ? theme.colorScheme.primaryContainer : null,
               child: InkWell(
                 onTap: () => updateSelectedEnterprise(enterprise),
                 child: Padding(
