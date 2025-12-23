@@ -22,15 +22,13 @@ class SupplierItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onTap() {
-      if (enabled == false) {
+      if (enabled == false || pending?.selectedSupplier == supplier) {
         return;
       }
       final newValue = pending?.selectedSupplier == supplier ? null : supplier;
-      final entity = newValue == null && pending != null
-          ? pending!.annulValue(annulSelectedSupplier: true)
-          : (pending ?? PendingBuyRequestEntity.empty()).copyWith(
-              selectedSupplier: newValue,
-            );
+      final entity = (pending ?? PendingBuyRequestEntity.empty()).copyWith(
+        selectedSupplier: newValue,
+      );
 
       if (pending?.selectedEnterprises?.isNotEmpty == true) {
         showAlertDialog(
