@@ -1,10 +1,10 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components/components.dart';
@@ -47,18 +47,22 @@ class _CartPageState extends ConsumerState<CartPage> {
       setState(() {
         selectedIndex = index;
       });
-      quantityController.text = item.quantity.toString().replaceAll(
-        RegExp(r'\.'),
-        ',',
-      );
+      quantityController.text = item.quantity
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
       if (widget.requestTypeAllowChangePrice) {
-        priceController.text = item.value.toString().replaceAll(
-          RegExp(r'\.'),
-          ',',
-        );
+        priceController.text = item.value
+            .toString()
+            .toBrazilianNumber()
+            .replaceAll(RegExp(r'\.'), '');
       }
       Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
+        quantityController.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: quantityController.text.length,
+        );
       });
     }
   }

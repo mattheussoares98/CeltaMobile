@@ -91,6 +91,7 @@ class ProductItem extends ConsumerWidget {
                         children: [
                           QuantityField(
                             quantityController: quantityController,
+                            priceController: priceController,
                             quantityFocusNode: quantityFocusNode,
                             priceFocusNode: priceFocusNode,
                             requestTypeAllowChangePrice:

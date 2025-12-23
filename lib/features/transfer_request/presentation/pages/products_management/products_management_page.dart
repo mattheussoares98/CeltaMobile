@@ -95,6 +95,7 @@ class _ProductsManagementPageState
     return Stack(
       children: [
         Scaffold(
+          resizeToAvoidBottomInset: currentIndex == 0,
           appBar: AppBar(
             title: Text(appBarTitles[currentIndex]),
             actionsPadding: const EdgeInsets.fromLTRB(

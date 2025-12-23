@@ -90,6 +90,10 @@ class FieldsAndInsertButton extends ConsumerWidget {
                       onFieldSubmitted: (_) {
                         if (requestTypeAllowChangePrice) {
                           priceFocusNode.requestFocus();
+                          priceController.selection = TextSelection(
+                            baseOffset: 0,
+                            extentOffset: priceController.text.length,
+                          );
                         } else {
                           insertProduct();
                         }
