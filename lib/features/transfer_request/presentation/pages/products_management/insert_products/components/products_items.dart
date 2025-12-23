@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 import 'components.dart';
@@ -14,7 +13,6 @@ class ProductsItems extends ConsumerWidget {
   final void Function({
     required int index,
     required ProductEntity product,
-    required List<RequestTypeEntity>? requests,
     required TransferRequestProductItemEntity? transferRequestProductItem,
   })
   onTap;
@@ -47,10 +45,6 @@ class ProductsItems extends ConsumerWidget {
       cartProductsStateControllerProvider(draftKey),
     );
 
-    final requests = ref.watch(
-      requestTypeStateControllerProvider(Modules.transferRequest),
-    );
-
     return ResponsiveListFlow(
       isSliver: true,
       itemCount: products.length,
@@ -73,7 +67,6 @@ class ProductsItems extends ConsumerWidget {
           onTap: () => onTap(
             index: index,
             product: product,
-            requests: requests.value,
             transferRequestProductItem:
                 transferProductItemIndex == null || !hasInCart
                 ? null

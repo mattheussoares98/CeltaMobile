@@ -47,7 +47,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
   void onTapProductItem({
     required int index,
     required ProductEntity product,
-    required List<RequestTypeEntity>? requests,
     required TransferRequestProductItemEntity? transferRequestProductItem,
   }) {
     priceController.clear();
