@@ -26,10 +26,6 @@ class ConfirmationPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
     ref.listen(insertBuyRequestControllerProvider, (p, n) {
-      n.doOnSuccess(p, () {
-        showSnackBarMessage(context, 'Pedido salvo com sucesso'.hardcoded);
-        observationsController.clear();
-      });
       n.showAlertDialogOnError(context);
     });
 

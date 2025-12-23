@@ -116,9 +116,10 @@ void main() {
         );
 
         // ACT: Call the 'insert' method, not read the provider's future
-        await container
+        bool succeeds = await container
             .read(insertBuyRequestControllerProvider.notifier)
             .insert(fakeObservations);
+        expect(succeeds, isTrue);
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -155,9 +156,10 @@ void main() {
       );
 
       // ACT
-      await container
+      final succeeds = await container
           .read(insertBuyRequestControllerProvider.notifier)
           .insert(fakeObservations);
+      expect(succeeds, isFalse);
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -181,9 +183,10 @@ void main() {
         );
 
         // ACT
-        await container
+        final succeeds = await container
             .read(insertBuyRequestControllerProvider.notifier)
             .insert(fakeObservations);
+        expect(succeeds, isFalse);
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -215,9 +218,10 @@ void main() {
         addTearDown(container.dispose);
 
         // ACT
-        await container
+        final succeeds = await container
             .read(insertBuyRequestControllerProvider.notifier)
             .insert(fakeObservations);
+        expect(succeeds, isTrue);
 
         // ASSERT
         // Check the 'updatedEntity' property on our spy

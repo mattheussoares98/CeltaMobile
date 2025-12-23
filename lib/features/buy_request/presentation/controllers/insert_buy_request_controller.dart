@@ -12,7 +12,8 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
   @override
   FutureOr<void> build() async {}
 
-  Future<void> insert(String observations) async {
+  Future<bool> insert(String observations) async {
+    bool succeeds = false;
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(validatedUserSessionProvider.future);
@@ -42,6 +43,9 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
               lastSavedRequestNumber: response,
             ),
           );
+      succeeds = true;
     });
+
+    return succeeds;
   }
 }

@@ -52,10 +52,18 @@ class Footer extends ConsumerWidget {
                         title: 'Salvar pedido?'.hardcoded,
                         cancelActionText: 'Cancelar'.hardcoded,
                         defaultActionText: 'Sim'.hardcoded,
-                        onOkPressed: () {
-                          ref
+                        onOkPressed: () async {
+                          final succeeds = await ref
                               .read(insertBuyRequestControllerProvider.notifier)
                               .insert(observationsController.text);
+
+                          if (succeeds) {
+                            showSnackBarMessage(
+                              context,
+                              'Pedido salvo com sucesso'.hardcoded,
+                            );
+                            observationsController.clear();
+                          }
                         },
                       );
                     },
