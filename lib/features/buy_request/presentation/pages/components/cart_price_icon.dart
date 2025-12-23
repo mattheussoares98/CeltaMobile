@@ -25,15 +25,18 @@ class CartPriceIcon extends StatelessWidget {
         ) ??
         0.0;
 
-    return QuantityBadge(
-      quantity: pendingAsync.value?.products?.values.length,
-      materialIcon: Icons.shopping_cart,
-      cupertinoIcon: CupertinoIcons.shopping_cart,
-      isSelected: false,
-      offset: const Offset(3, -3),
-      subtitle: Text(
-        'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
-        style: const TextStyle(fontSize: 9),
+    return GestureDetector(
+      onTap: onTap,
+      child: QuantityBadge(
+        quantity: pendingAsync.value?.products?.values.length,
+        materialIcon: Icons.shopping_cart,
+        cupertinoIcon: CupertinoIcons.shopping_cart,
+        isSelected: false,
+        offset: const Offset(3, -3),
+        subtitle: Text(
+          'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
+          style: const TextStyle(fontSize: 9),
+        ),
       ),
     );
   }
