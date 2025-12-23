@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../routing/routing.dart';
@@ -79,15 +78,17 @@ class ModulesWidget extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p4),
-      child: ResponsiveListFlow(
-        maxItemWidth: 175,
+      child: GridView.builder(
         itemCount: buttons.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: Sizes.p4,
+          mainAxisSpacing: Sizes.p4,
+          mainAxisExtent: 120,
+        ),
         itemBuilder: (_, index) {
           final button = buttons[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: button,
-          );
+          return button;
         },
       ),
     );
