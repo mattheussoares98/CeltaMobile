@@ -7,29 +7,35 @@ import '../../../../../localization/string_hardcoded.dart';
 import '../../controllers/controllers.dart';
 
 class ContinuousScanCheckbox extends ConsumerWidget {
-  final AppSettingsEntity appSettings;
   final Modules module;
-  const ContinuousScanCheckbox({
-    super.key,
-    required this.appSettings,
-    required this.module,
-  });
+  const ContinuousScanCheckbox({super.key, required this.module});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final enabled = ref.watch(
+      appSettingsStateControllerProvider.select((s) {
+        if (module == Modules.inventory) {
+          return s.value?.inventoryUseContinuousScan;
+        } else if (module == Modules.expeditionConference) {
+          return s.value?.expeditionUseContinuousScan;
+        }
+        throw Exception(
+          'You should add the module here to update correctly the value'
+              .hardcoded,
+        );
+      }),
+    );
+
     void updateValue() {
       ref
           .read(appSettingsStateControllerProvider.notifier)
           .changeSettings(
-            appSettings.copyWith(
-              inventoryUseContinuousScan: module == Modules.inventory
-                  ? !(appSettings.inventoryUseContinuousScan ?? false)
-                  : null,
-              expeditionUseContinuousScan:
-                  module == Modules.expeditionConference
-                  ? !(appSettings.expeditionUseContinuousScan ?? false)
-                  : null,
-            ),
+            inventoryUseContinuousScan: module == Modules.inventory
+                ? !(enabled ?? false)
+                : null,
+            expeditionUseContinuousScan: module == Modules.expeditionConference
+                ? !(enabled ?? false)
+                : null,
           );
     }
 

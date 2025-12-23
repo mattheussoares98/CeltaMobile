@@ -77,7 +77,13 @@ void main() {
         // ACT
         await container
             .read(appSettingsStateControllerProvider.notifier)
-            .changeSettings(appSettingsEntity);
+            .changeSettings(
+              expeditionUseContinuousScan:
+                  appSettingsEntity.expeditionUseContinuousScan,
+              inventoryUseContinuousScan:
+                  appSettingsEntity.inventoryUseContinuousScan,
+              searchPreference: appSettingsEntity.searchPreference,
+            );
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -104,7 +110,13 @@ void main() {
       // ACT
       await container
           .read(appSettingsStateControllerProvider.notifier)
-          .changeSettings(appSettingsEntity);
+          .changeSettings(
+            expeditionUseContinuousScan:
+                appSettingsEntity.expeditionUseContinuousScan,
+            inventoryUseContinuousScan:
+                appSettingsEntity.inventoryUseContinuousScan,
+            searchPreference: appSettingsEntity.searchPreference,
+          );
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

@@ -8,11 +8,15 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
 class ProductSearchTypeWidget extends ConsumerWidget {
-  final AppSettingsEntity settings;
-  const ProductSearchTypeWidget({super.key, required this.settings});
+  const ProductSearchTypeWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searchPreference = ref.watch(
+      appSettingsStateControllerProvider.select(
+        (s) => s.value?.searchPreference,
+      ),
+    );
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(Sizes.p4),
@@ -27,13 +31,11 @@ class ProductSearchTypeWidget extends ConsumerWidget {
           gapH8,
           DefaultSegmentedButtons(
             items: SearchProductTypePreference.values,
-            selectedValue: settings.searchPreference,
+            selectedValue: searchPreference,
             onChanged: (searchPreference) async {
               await ref
                   .read(appSettingsStateControllerProvider.notifier)
-                  .changeSettings(
-                    settings.copyWith(searchPreference: searchPreference),
-                  );
+                  .changeSettings(searchPreference: searchPreference);
             },
           ),
         ],

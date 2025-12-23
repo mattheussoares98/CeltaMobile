@@ -12,14 +12,22 @@ class AppSettingsStateController extends _$AppSettingsStateController {
     return await ref.watch(appSettingsRepositoryProvider).loadSettings();
   }
 
-  Future<void> changeSettings(AppSettingsEntity userPreferredSearchType) async {
+  Future<void> changeSettings({
+    SearchProductTypePreference? searchPreference,
+    bool? inventoryUseContinuousScan,
+    bool? expeditionUseContinuousScan,
+  }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await ref
-          .read(appSettingsRepositoryProvider)
-          .changeSettings(userPreferredSearchType);
+      final newValue = state.value!.copyWith(
+        searchPreference: searchPreference,
+        inventoryUseContinuousScan: inventoryUseContinuousScan,
+        expeditionUseContinuousScan: expeditionUseContinuousScan,
+      );
 
-      return userPreferredSearchType;
+      await ref.read(appSettingsRepositoryProvider).changeSettings(newValue);
+
+      return newValue;
     });
   }
 }

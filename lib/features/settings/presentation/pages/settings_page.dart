@@ -19,31 +19,34 @@ class SettingsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Center(child: Text('Configurações'.hardcoded)),
         leadingWidth: 0,
         leading: const SizedBox.shrink(),
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(appSettingsStateControllerProvider),
-        tryAgain: () => ref.invalidate(appSettingsStateControllerProvider),
-        data: (appSettings) {
-          return Column(
-            children: [
-              ProductSearchTypeWidget(settings: appSettings!),
-              if ([
-                    Modules.inventory,
-                    Modules.expeditionConference,
-                  ].any((x) => x == module) &&
-                  (isIOS || isAndroid)) ...[
-                ContinuousScanCheckbox(
-                  appSettings: appSettings,
-                  module: module!,
-                ),
+      body:
+          ref.watch(
+            appSettingsStateControllerProvider.select((s) => s.hasError),
+          )
+          ? Center(
+              child: PrimaryTextButton(
+                text: 'Recarregar configurações'.hardcoded,
+                onPressed: () =>
+                    ref.invalidate(appSettingsStateControllerProvider),
+              ),
+            )
+          : Column(
+              children: [
+                const ProductSearchTypeWidget(),
+                if ([
+                      Modules.inventory,
+                      Modules.expeditionConference,
+                    ].any((x) => x == module) &&
+                    (isIOS || isAndroid)) ...[
+                  ContinuousScanCheckbox(module: module!),
+                ],
               ],
-            ],
-          );
-        },
-      ),
+            ),
     );
   }
 }
