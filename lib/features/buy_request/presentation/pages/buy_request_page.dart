@@ -205,7 +205,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
               ),
             ],
           ),
-          body: pages[currentIndex],
+          body: IndexedStack(index: currentIndex, children: pages),
           bottomNavigationBar: BottomNavBar(
             currentIndex: currentIndex,
             onTap: (index) {
