@@ -63,6 +63,15 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
           expeditionDocumentsStateControllerProvider(widget.enterpriseCode),
         );
         context.pop();
+        Future.delayed(const Duration(milliseconds: 100), () {
+          showAlertDialog(
+            context: context,
+            title: 'Conferência concluída!'.hardcoded,
+            content:
+                'A conferência do documento ${widget.documentNumber} foi concluída com sucesso'
+                    .hardcoded,
+          );
+        });
       });
       n.showAlertDialogOnError(context);
     });
