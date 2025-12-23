@@ -48,6 +48,7 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
                         body: body,
                       ),
                     ),
+                    const SizedBox(height: Sizes.p12),
                   ],
                 ),
               );
