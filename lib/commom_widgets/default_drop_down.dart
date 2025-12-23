@@ -122,7 +122,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.disabledColor.withAlpha(50),
+        color: theme.disabledColor.withAlpha(20),
         borderRadius: BorderRadius.circular(Sizes.p8),
       ),
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
