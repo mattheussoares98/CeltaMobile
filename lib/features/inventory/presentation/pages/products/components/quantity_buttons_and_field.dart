@@ -68,7 +68,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
               children: [
                 Expanded(
                   child: PrimaryButton(
-                    text: 'Anular',
+                    text: 'Anular'.toUpperCase().hardcoded,
                     backgroundColor: Colors.red,
                     onPressed: () async {
                       final pressed = await showAlertDialog(
