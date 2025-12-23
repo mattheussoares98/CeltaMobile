@@ -41,7 +41,9 @@ class Footer extends ConsumerWidget {
           ),
           Expanded(
             child: PrimaryButton(
-              text: 'Salvar',
+              text: pendingAsync.value?.products?.values.isEmpty ?? true
+                  ? 'Adicione produtos'.hardcoded
+                  : 'Salvar'.hardcoded,
               onPressed: pendingAsync.value?.products?.values.isEmpty ?? true
                   ? null
                   : () {
