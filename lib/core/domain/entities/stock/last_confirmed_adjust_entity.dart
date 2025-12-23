@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class LastConfirmedAdjustEntity extends Equatable {
-  final String productPackingCode;
+  final int productPackingCode;
   final double quantity;
 
   const LastConfirmedAdjustEntity({

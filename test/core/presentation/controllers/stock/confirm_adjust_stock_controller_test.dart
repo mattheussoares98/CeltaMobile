@@ -106,5 +106,90 @@ void main() {
         ),
       );
     });
+    test(
+      'should return correct LastConfirmedAdjustEntity on confirm and has only one item in the list',
+      () async {
+        // ARRANGE: Pass null for the session to simulate a failure condition.
+        when(
+          () => mockRepository.confirm(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            items: any(named: 'items'),
+          ),
+        ).thenAnswer((_) async {});
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          confirmAdjustStockControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT & ASSERT: Expect the future to complete with an AppException
+        await container.read(confirmAdjustStockControllerProvider.notifier).confirm(
+          [items[0]],
+        ); //return only when has one item in the list because is adjustStock feature. If has more than one, is transfer between stocks feature and this feature creates a lot
+
+        expect(
+          container.read(confirmAdjustStockControllerProvider).value,
+          LastConfirmedAdjustEntity(
+            productPackingCode: items[0].ProductPackingCode,
+            quantity: items[0].Quantity,
+          ),
+        );
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        // Verify the repository was never called because the session was invalid
+        verify(
+          () => mockRepository.confirm(
+            baseUrl: fakeSession.enterprise!.baseUrl!,
+            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+            items: [items[0]],
+          ),
+        ).called(1);
+      },
+    );
+    test(
+      'should NOT return LastConfirmedAdjustEntity on confirm and has more than one item in the list',
+      () async {
+        // ARRANGE: Pass null for the session to simulate a failure condition.
+        when(
+          () => mockRepository.confirm(
+            baseUrl: any(named: 'baseUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            items: any(named: 'items'),
+          ),
+        ).thenAnswer((_) async {});
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          confirmAdjustStockControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT & ASSERT: Expect the future to complete with an AppException
+        await container
+            .read(confirmAdjustStockControllerProvider.notifier)
+            .confirm(
+              items,
+            ); //return only when has one item in the list because is adjustStock feature. If has more than one, is transfer between stocks feature and this feature creates a lot
+
+        expect(
+          container.read(confirmAdjustStockControllerProvider).value,
+          null,
+        );
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        // Verify the repository was never called because the session was invalid
+        verify(
+          () => mockRepository.confirm(
+            baseUrl: fakeSession.enterprise!.baseUrl!,
+            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+            items: items,
+          ),
+        ).called(1);
+      },
+    );
   });
 }

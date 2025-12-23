@@ -11,7 +11,9 @@ part 'confirm_adjust_stock_controller.g.dart';
 @riverpod
 class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
   @override
-  FutureOr<void> build() {}
+  FutureOr<LastConfirmedAdjustEntity?> build() {
+    return null;
+  }
 
   Future<void> confirm(List<AdjustStockItemEntity> items) async {
     state = const AsyncValue.loading();
@@ -27,6 +29,15 @@ class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
         crossIdentity: crossIdentity,
         items: items,
       );
+
+      if (items.length == 1) {
+        //!return only when has one item in the list because is adjustStock feature. If has more than one, is transfer between stocks feature and this feature creates a lot
+        return LastConfirmedAdjustEntity(
+          productPackingCode: items[0].ProductPackingCode,
+          quantity: items[0].Quantity,
+        );
+      }
+      return null;
     });
   }
 }
