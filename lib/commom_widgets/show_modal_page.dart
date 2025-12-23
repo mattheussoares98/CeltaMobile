@@ -23,7 +23,7 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
             builder: (_, controller) {
               return Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(20),
                   ),
