@@ -39,7 +39,11 @@ class ContinuousScanCheckbox extends ConsumerWidget {
       child: InkWell(
         onTap: updateValue,
         child: Padding(
-          padding: const EdgeInsets.only(left: Sizes.p8, bottom: Sizes.p8),
+          padding: const EdgeInsets.only(
+            left: Sizes.p8,
+            right: Sizes.p8,
+            bottom: Sizes.p8,
+          ),
           child: Column(
             children: [
               Row(
