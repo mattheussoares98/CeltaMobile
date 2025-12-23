@@ -42,15 +42,17 @@ class SelectProductModalPage extends ConsumerWidget {
                 clipBehavior: Clip.antiAlias,
                 child: InkWell(
                   onTap: () async {
-                    context.pop();
+                    final succeeds = await ref
+                        .read(scanProductControllerProvider.notifier)
+                        .scan(
+                          expeditionControlCode: expeditionControlCode,
+                          productPackingCode: product.ProductPackingCode!,
+                          stepCode: stepCode,
+                        );
 
-                    await ref
-                        .read(
-                          expeditionConferenceControllerProvider(
-                            expeditionControlCode,
-                          ).notifier,
-                        )
-                        .scanProduct(product.ProductPackingCode!, stepCode);
+                    if (succeeds) {
+                      context.pop();
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),

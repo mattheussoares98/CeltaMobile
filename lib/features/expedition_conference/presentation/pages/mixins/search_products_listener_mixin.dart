@@ -30,13 +30,13 @@ mixin SearchProductsListenerMixin {
 
         n.doOnSuccess(p, () async {
           if (n.value != null && n.value!.length == 1) {
-            await ref
-                .read(
-                  expeditionConferenceControllerProvider(
-                    expeditionControlCode,
-                  ).notifier,
-                )
-                .scanProduct(n.value!.first.ProductPackingCode!, stepCode);
+            ref
+                .read(scanProductControllerProvider.notifier)
+                .scan(
+                  expeditionControlCode: expeditionControlCode,
+                  productPackingCode: n.value!.first.ProductPackingCode!,
+                  stepCode: stepCode,
+                );
           } else if (n.value != null && n.value!.length > 1) {
             showModalPage(
               SelectProductModalPage(

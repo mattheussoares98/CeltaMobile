@@ -53,6 +53,10 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       enterpriseCode: widget.enterpriseCode,
     );
 
+    ref.listen(scanProductControllerProvider, (p, n) {
+      n.showSnackbarOnError(context, p);
+    });
+
     ref.listen(confirmConferenceControllerProvider, (p, n) {
       n.doOnSuccess(p, () {
         ref.invalidate(
