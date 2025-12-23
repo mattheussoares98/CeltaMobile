@@ -95,6 +95,9 @@ class NotBindedCovenants extends StatelessWidget {
                             maxLength: 12,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
                             validator: FormValidators.compose([
                               NonEmptyValidator(),
                               NumberValidator(

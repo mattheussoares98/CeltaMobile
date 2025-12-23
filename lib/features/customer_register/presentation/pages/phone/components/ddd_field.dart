@@ -22,6 +22,7 @@ class DddField extends StatelessWidget {
       labelText: 'DDD',
       hintText: 'DDD',
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: const TextInputType.numberWithOptions(decimal: false),
       validator: FormValidators.compose([NonEmptyValidator(), DddValidator()]),
       onChanged: (value) {
         if (dddFormKey.currentState?.validate() == true) {

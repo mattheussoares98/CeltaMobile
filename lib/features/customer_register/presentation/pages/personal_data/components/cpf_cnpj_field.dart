@@ -24,6 +24,7 @@ class CpfCnpjField extends StatelessWidget {
       hintText: 'CPF/CNPJ'.hardcoded,
       labelText: 'CPF/CNPJ'.hardcoded,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: const TextInputType.numberWithOptions(decimal: false),
       onFieldSubmitted: (_) {
         nameFocusNode.requestFocus();
       },

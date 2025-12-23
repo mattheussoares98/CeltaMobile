@@ -30,6 +30,7 @@ class PhoneField extends ConsumerWidget {
       focusNode: phoneFocusNode,
       inputFormatters: [PhoneInputFormatter()],
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: const TextInputType.numberWithOptions(decimal: false),
       labelText: 'Telefone'.hardcoded,
       hintText: 'Telefone'.hardcoded,
       onFieldSubmitted: (_) {
