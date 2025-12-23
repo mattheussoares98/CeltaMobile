@@ -61,11 +61,13 @@ class ProductsItems extends ConsumerWidget {
           );
 
           final quantity = quantityEntity?.Quantity;
-          if (quantity != null) {
+          if (quantity != null && quantity > 0) {
             controller.text = quantity
                 .toString()
                 .toBrazilianNumber(3)
                 .replaceAll(RegExp(r'\.'), '');
+          } else {
+            controller.clear();
           }
         }
       }
