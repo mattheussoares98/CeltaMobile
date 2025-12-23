@@ -120,6 +120,7 @@ class _ChangeModulesPermissionPageState
               permissionChanges: _permissionChanges,
               baseUrlController: baseUrlController,
               formKey: formKey,
+              isGlobalChange: isGlobalChange,
             ),
         ],
       ),

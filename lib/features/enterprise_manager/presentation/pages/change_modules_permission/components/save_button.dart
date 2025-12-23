@@ -10,6 +10,7 @@ class SaveButton extends ConsumerWidget {
   final Map<int, bool?> permissionChanges;
   final TextEditingController baseUrlController;
   final GlobalKey<FormState> formKey;
+  final bool isGlobalChange;
   const SaveButton({
     super.key,
     required this.enterpriseId,
@@ -17,6 +18,7 @@ class SaveButton extends ConsumerWidget {
     required this.permissionChanges,
     required this.baseUrlController,
     required this.formKey,
+    required this.isGlobalChange,
   });
 
   @override
@@ -31,7 +33,9 @@ class SaveButton extends ConsumerWidget {
       onPressed: isLoading
           ? null
           : () {
-              if (formKey.currentState?.validate() != true) return;
+              if (isGlobalChange && formKey.currentState?.validate() != true) {
+                return;
+              }
               ref
                   .read(updatePermissionsControllerProvider.notifier)
                   .saveChanges(
