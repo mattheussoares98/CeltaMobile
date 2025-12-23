@@ -4,6 +4,7 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../../../exceptions/exceptions.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 import 'controllers.dart';
@@ -44,11 +45,8 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
       final pendingQty = currentState.pendingQuantities[productPackingCode];
 
       if (pendingQty == null || pendingQty <= 0) {
-        throw AsyncError(
-          Exception(
-            'Esse produto não está pendente para conferência'.hardcoded,
-          ),
-          StackTrace.current,
+        throw AppException(
+          'Esse produto não está pendente para conferência'.hardcoded,
         );
       }
 
