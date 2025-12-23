@@ -74,66 +74,71 @@ class _GetDateItem extends StatelessWidget {
     final now = DateTime.now();
     final theme = Theme.of(context);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              child: TitleWidget(title: title.hardcoded, enabled: enabled),
-            ),
-            IconButton(
-              onPressed: !enabled
-                  ? null
-                  : () async {
-                      final selectedDate = await GetNewDate.get(
-                        context: context,
-                        currentSelectedDate: currentSelectedDate,
-                        insertHoursAndMinutes: true,
-                        minimumDate: now,
-                        maximumDate: now.add(const Duration(days: 365)),
-                      );
-                      onDateChanged(selectedDate);
-                    },
-              icon: Icon(
-                theme.platform == TargetPlatform.iOS
-                    ? CupertinoIcons.calendar_badge_plus
-                    : Icons.calendar_month,
-                color: enabled ? null : theme.disabledColor,
+    void updateDate() async {
+      final selectedDate = await GetNewDate.get(
+        context: context,
+        currentSelectedDate: currentSelectedDate,
+        insertHoursAndMinutes: true,
+        minimumDate: now,
+        maximumDate: now.add(const Duration(days: 365)),
+      );
+      if (selectedDate != null) {
+        onDateChanged(selectedDate);
+      }
+    }
+
+    return InkWell(
+      onTap: enabled ? updateDate : null,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: TitleWidget(title: title.hardcoded, enabled: enabled),
               ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Text(
-                currentSelectedDate == null && isEndDate
-                    ? "Não definido".hardcoded
-                    : DateFormat(
-                        'dd/MM/yyyy HH:mm',
-                      ).format(currentSelectedDate ?? now),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: enabled ? null : theme.disabledColor,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            if (isEndDate && currentSelectedDate != null)
               IconButton(
-                onPressed: () => onDateChanged(null),
+                onPressed: !enabled ? null : updateDate,
                 icon: Icon(
                   theme.platform == TargetPlatform.iOS
-                      ? CupertinoIcons.clear
-                      : Icons.clear,
-                  color: Colors.red,
+                      ? CupertinoIcons.calendar_badge_plus
+                      : Icons.calendar_month,
+                  color: enabled ? null : theme.disabledColor,
                 ),
               ),
-          ],
-        ),
-      ],
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Text(
+                  currentSelectedDate == null && isEndDate
+                      ? "Não definido".hardcoded
+                      : DateFormat(
+                          'dd/MM/yyyy HH:mm',
+                        ).format(currentSelectedDate ?? now),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: enabled ? null : theme.disabledColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              if (isEndDate && currentSelectedDate != null)
+                IconButton(
+                  onPressed: () => onDateChanged(null),
+                  icon: Icon(
+                    theme.platform == TargetPlatform.iOS
+                        ? CupertinoIcons.clear
+                        : Icons.clear,
+                    color: Colors.red,
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
