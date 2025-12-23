@@ -28,6 +28,7 @@ class InsertUpdatePage extends ConsumerStatefulWidget {
 class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
   final observationController = TextEditingController();
   final searchValueController = TextEditingController();
+  final observationsFocusNode = FocusNode();
   final List<EnterpriseUIController> uiControllers = [];
 
   @override
@@ -69,6 +70,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
     super.dispose();
     observationController.dispose();
     searchValueController.dispose();
+    observationsFocusNode.dispose();
 
     for (final uiController in uiControllers) {
       uiController.controller.dispose();
@@ -120,6 +122,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                   enterpriseCode: widget.enterpriseCode,
                   code: widget.code,
                   observationController: observationController,
+                  observationsFocusNode: observationsFocusNode,
                 ),
               ],
             ),
@@ -157,6 +160,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                       gapSliverH8,
                       ObservationField(
                         observationController: observationController,
+                        observationsFocusNode: observationsFocusNode,
                       ),
                       const SliverToBoxAdapter(child: Divider()),
                       Enterprises(

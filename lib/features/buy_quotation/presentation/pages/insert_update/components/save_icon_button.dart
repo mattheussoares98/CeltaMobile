@@ -11,12 +11,14 @@ class SaveIconButton extends ConsumerWidget {
   final int enterpriseCode;
   final int code;
   final TextEditingController observationController;
+  final FocusNode observationsFocusNode;
 
   const SaveIconButton({
     super.key,
     required this.enterpriseCode,
     required this.code,
     required this.observationController,
+    required this.observationsFocusNode,
   });
 
   @override
@@ -25,6 +27,9 @@ class SaveIconButton extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
     return IconButton(
       onPressed: () async {
+        if (observationsFocusNode.hasFocus) {
+          observationsFocusNode.unfocus();
+        }
         bool updated = false;
         bool? pressedOk = await showAlertDialog(
           context: context,

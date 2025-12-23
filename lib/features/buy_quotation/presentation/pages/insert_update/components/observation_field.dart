@@ -5,13 +5,19 @@ import '../../../../../../localization/string_hardcoded.dart';
 
 class ObservationField extends StatelessWidget {
   final TextEditingController observationController;
-  const ObservationField({super.key, required this.observationController});
+  final FocusNode observationsFocusNode;
+  const ObservationField({
+    super.key,
+    required this.observationController,
+    required this.observationsFocusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: DefaultTextFormField(
         controller: observationController,
+        focusNode: observationsFocusNode,
         labelText: 'Observações'.hardcoded,
         hintText: 'Observações'.hardcoded,
         maxLines: 3,
