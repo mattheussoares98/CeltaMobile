@@ -27,6 +27,7 @@ class BindedCovenants extends ConsumerWidget {
         DefaultDivider('Convênios vinculados'.hardcoded),
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: customer.CustomerCovenants!.length,
           itemBuilder: (_, index) {
             final covenant = customer.CustomerCovenants![index];

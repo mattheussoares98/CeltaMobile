@@ -27,6 +27,7 @@ class InformedAddressess extends ConsumerWidget {
         const DefaultDivider('Endereços informados'),
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: customer?.Addresses?.length,
           itemBuilder: (_, index) {
             final address = customer!.Addresses![index];

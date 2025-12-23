@@ -34,6 +34,7 @@ class InformedEmails extends ConsumerWidget {
         DefaultDivider('E-mails informados'.hardcoded),
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: customer.Emails!.length,
           itemBuilder: (_, index) {
             final email = customer.Emails![index];

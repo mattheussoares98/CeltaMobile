@@ -36,6 +36,7 @@ class InformedPhones extends ConsumerWidget {
         DefaultDivider('Telefones informados'.hardcoded),
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: customer.Telephones?.length,
           itemBuilder: (_, index) {
             final phone = customer.Telephones![index];
