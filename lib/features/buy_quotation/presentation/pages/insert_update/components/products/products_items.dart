@@ -117,7 +117,7 @@ class ProductsItems extends ConsumerWidget {
             height:
                 product.Product?.EANs != null &&
                     product.Product!.EANs!.length <= 1
-                ? Sizes.p12
+                ? Sizes.p20
                 : 0,
           ),
           notClickableBottom: isSelected
