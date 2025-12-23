@@ -46,12 +46,12 @@ class _AddressPageState extends ConsumerState<AddressPage> {
     return Scaffold(
       appBar: AppBar(title: Text('Endereços'.hardcoded)),
       body: ResponsiveScrollableWidget(
-        child: Column(
-          children: [
+        isSliverPage: true,
+        child: CustomScrollView(
+          slivers: [
             AddressForm(
               module: Modules.customerRegister,
               addAddress: addAddress,
-              cleanStateOnDispose: false,
             ),
             const InformedAddressess(),
           ],

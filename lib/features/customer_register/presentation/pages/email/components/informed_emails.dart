@@ -16,7 +16,7 @@ class InformedEmails extends ConsumerWidget {
     final customer = ref.watch(customerStateControllerProvider).value;
 
     if (customer?.Emails == null || customer!.Emails!.isEmpty) {
-      return const SizedBox.shrink();
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
     void removeEmail(int index) {
@@ -29,44 +29,40 @@ class InformedEmails extends ConsumerWidget {
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-    return Column(
-      children: [
-        DefaultDivider('E-mails informados'.hardcoded),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: customer.Emails!.length,
-          itemBuilder: (_, index) {
-            final email = customer.Emails![index];
+    return SliverList.builder(
+      itemCount: customer.Emails!.length + 1,
+      itemBuilder: (_, index) {
+        if (index == 0) {
+          return DefaultDivider('E-mails informados'.hardcoded);
+        }
+        final email = customer.Emails![index - 1];
 
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.only(left: Sizes.p8),
-                child: Row(
-                  children: [
-                    Expanded(child: Text(email)),
-                    IconButton(
-                      onPressed: () {
-                        showAlertDialog(
-                          context: context,
-                          title: 'Remover e-mail?'.hardcoded,
-                          onOkPressed: () => removeEmail(index),
-                          defaultActionText: 'Sim'.hardcoded,
-                          cancelActionText: 'Não'.hardcoded,
-                        );
-                      },
-                      icon: Icon(
-                        isIOS ? CupertinoIcons.delete : Icons.delete,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.only(left: Sizes.p8),
+            child: Row(
+              children: [
+                Expanded(child: Text(email)),
+                IconButton(
+                  onPressed: () {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Remover e-mail?'.hardcoded,
+                      onOkPressed: () => removeEmail(index),
+                      defaultActionText: 'Sim'.hardcoded,
+                      cancelActionText: 'Não'.hardcoded,
+                    );
+                  },
+                  icon: Icon(
+                    isIOS ? CupertinoIcons.delete : Icons.delete,
+                    color: Colors.red,
+                  ),
                 ),
-              ),
-            );
-          },
-        ),
-      ],
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

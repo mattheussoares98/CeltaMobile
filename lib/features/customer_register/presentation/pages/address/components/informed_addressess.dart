@@ -19,82 +19,76 @@ class InformedAddressess extends ConsumerWidget {
     final customer = ref.watch(customerStateControllerProvider).value;
 
     if (customer?.Addresses == null || customer?.Addresses?.isEmpty == true) {
-      return const SizedBox.shrink();
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
-    return Column(
-      children: [
-        const DefaultDivider('Endereços informados'),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: customer?.Addresses?.length,
-          itemBuilder: (_, index) {
-            final address = customer!.Addresses![index];
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return SliverList.builder(
+      itemCount: customer!.Addresses!.length + 1,
+      itemBuilder: (_, index) {
+        if (index == 0) {
+          return const DefaultDivider('Endereços informados');
+        }
+
+        final address = customer.Addresses![index - 1];
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TitleAndSubTitle(
-                            title: 'CEP '.hardcoded,
-                            subTitle: address.Zip,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            showAlertDialog(
-                              context: context,
-                              title: 'Excluir endereço?'.hardcoded,
-                              onOkPressed: () {
-                                ref
-                                    .read(
-                                      customerStateControllerProvider.notifier,
-                                    )
-                                    .updateCustomer(
-                                      customer.copyWith(
-                                        Addresses: [...?customer.Addresses]
-                                          ..remove(address),
-                                      ),
-                                    );
-                              },
-                              cancelActionText: 'Não'.hardcoded,
-                              defaultActionText: 'Sim'.hardcoded,
-                            );
+                    Expanded(
+                      child: TitleAndSubTitle(
+                        title: 'CEP '.hardcoded,
+                        subTitle: address.Zip,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showAlertDialog(
+                          context: context,
+                          title: 'Excluir endereço?'.hardcoded,
+                          onOkPressed: () {
+                            ref
+                                .read(customerStateControllerProvider.notifier)
+                                .updateCustomer(
+                                  customer.copyWith(
+                                    Addresses: [...?customer.Addresses]
+                                      ..remove(address),
+                                  ),
+                                );
                           },
-                          icon: Icon(
-                            isIOS ? CupertinoIcons.delete : Icons.delete,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      '${address.Address}, número ${address.Number}. ${address.District}, ${address.City}, ${address.State?.name}',
-                    ),
-                    if (address.Complement != null &&
-                        address.Complement!.isNotEmpty)
-                      TitleAndSubTitle(
-                        title: 'Complemento '.hardcoded,
-                        subTitle: address.Complement,
+                          cancelActionText: 'Não'.hardcoded,
+                          defaultActionText: 'Sim'.hardcoded,
+                        );
+                      },
+                      icon: Icon(
+                        isIOS ? CupertinoIcons.delete : Icons.delete,
+                        color: Colors.red,
                       ),
-                    if (address.Reference != null &&
-                        address.Reference!.isNotEmpty)
-                      TitleAndSubTitle(
-                        title: 'Referência '.hardcoded,
-                        subTitle: address.Reference,
-                      ),
+                    ),
                   ],
                 ),
-              ),
-            );
-          },
-        ),
-      ],
+                Text(
+                  '${address.Address}, número ${address.Number}. ${address.District}, ${address.City}, ${address.State?.name}',
+                ),
+                if (address.Complement != null &&
+                    address.Complement!.isNotEmpty)
+                  TitleAndSubTitle(
+                    title: 'Complemento '.hardcoded,
+                    subTitle: address.Complement,
+                  ),
+                if (address.Reference != null && address.Reference!.isNotEmpty)
+                  TitleAndSubTitle(
+                    title: 'Referência '.hardcoded,
+                    subTitle: address.Reference,
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

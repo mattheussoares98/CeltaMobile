@@ -121,7 +121,6 @@ class _UpdateConcurrentPageState
                       gapH8,
                       AddressForm(
                         module: Modules.competingPrices,
-                        cleanStateOnDispose: false,
                         addAddress: (value) async {
                           setState(() {
                             newAddress = value;

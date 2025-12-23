@@ -17,83 +17,78 @@ class BindedCovenants extends ConsumerWidget {
     final customer = ref.watch(customerStateControllerProvider).value;
     if (customer?.CustomerCovenants == null ||
         customer!.CustomerCovenants!.isEmpty) {
-      return const SizedBox.shrink();
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return Column(
-      children: [
-        DefaultDivider('Convênios vinculados'.hardcoded),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: customer.CustomerCovenants!.length,
-          itemBuilder: (_, index) {
-            final covenant = customer.CustomerCovenants![index];
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+    return SliverList.builder(
+      itemCount: customer.CustomerCovenants!.length + 1,
+      itemBuilder: (_, index) {
+        if (index == 0) {
+          return DefaultDivider('Convênios vinculados'.hardcoded);
+        }
+
+        final covenant = customer.CustomerCovenants![index - 1];
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  covenant.covenant?.Name ?? '',
+                  style: theme.textTheme.titleMedium,
+                ),
+                TitleAndSubTitle(
+                  title: 'Código '.hardcoded,
+                  subTitle: covenant.covenant?.Code.toString(),
+                ),
+                Row(
                   children: [
-                    Text(
-                      covenant.covenant?.Name ?? '',
-                      style: theme.textTheme.titleMedium,
+                    Expanded(
+                      child: TitleAndSubTitle(
+                        title: 'Limite '.hardcoded,
+                        subTitle:
+                            'R\$ ${covenant.LimitOfPurchase.toString().toBrazilianNumber(2, false)}',
+                      ),
                     ),
-                    TitleAndSubTitle(
-                      title: 'Código '.hardcoded,
-                      subTitle: covenant.covenant?.Code.toString(),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TitleAndSubTitle(
-                            title: 'Limite '.hardcoded,
-                            subTitle:
-                                'R\$ ${covenant.LimitOfPurchase.toString().toBrazilianNumber(2, false)}',
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            showAlertDialog(
-                              context: context,
-                              title: 'Remover convênio'.hardcoded,
-                              content:
-                                  'Tem certeza que deseja remover esse convênio?'
-                                      .hardcoded,
-                              onOkPressed: () {
-                                ref
-                                    .read(
-                                      customerStateControllerProvider.notifier,
-                                    )
-                                    .updateCustomer(
-                                      customer.copyWith(
-                                        CustomerCovenants: [
-                                          ...customer.CustomerCovenants!
-                                            ..removeAt(index),
-                                        ],
-                                      ),
-                                    );
-                              },
-                              cancelActionText: 'Não'.hardcoded,
-                              defaultActionText: 'Sim'.hardcoded,
-                            );
+                    IconButton(
+                      onPressed: () {
+                        showAlertDialog(
+                          context: context,
+                          title: 'Remover convênio'.hardcoded,
+                          content:
+                              'Tem certeza que deseja remover esse convênio?'
+                                  .hardcoded,
+                          onOkPressed: () {
+                            ref
+                                .read(customerStateControllerProvider.notifier)
+                                .updateCustomer(
+                                  customer.copyWith(
+                                    CustomerCovenants: [
+                                      ...customer.CustomerCovenants!
+                                        ..removeAt(index),
+                                    ],
+                                  ),
+                                );
                           },
-                          icon: Icon(
-                            isIOS ? CupertinoIcons.delete : Icons.delete,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
+                          cancelActionText: 'Não'.hardcoded,
+                          defaultActionText: 'Sim'.hardcoded,
+                        );
+                      },
+                      icon: Icon(
+                        isIOS ? CupertinoIcons.delete : Icons.delete,
+                        color: Colors.red,
+                      ),
                     ),
                   ],
                 ),
-              ),
-            );
-          },
-        ),
-      ],
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

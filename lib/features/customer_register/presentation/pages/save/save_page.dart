@@ -39,11 +39,13 @@ class SavePage extends ConsumerWidget {
         ],
       ),
       body: ResponsiveScrollableWidget(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DefaultTitle(title: 'Dados pessoais'.hardcoded),
-            const PersonalDataInformations(),
+        isSliverPage: true,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: DefaultTitle(title: 'Dados pessoais'.hardcoded),
+            ),
+            const SliverToBoxAdapter(child: PersonalDataInformations()),
             const InformedAddressess(),
             const InformedEmails(),
             const InformedPhones(),

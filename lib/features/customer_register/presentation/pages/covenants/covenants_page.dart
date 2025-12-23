@@ -103,23 +103,27 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
               )
               .toList();
 
-          return ResponsiveScrollableWidget(
-            child: Column(
-              children: [
-                if (notBindedCovenants.isNotEmpty)
-                  NotBindedCovenants(
-                    formKey: formKey,
-                    notBindedCovenants: notBindedCovenants,
-                    changeSelectedIndex: changeSelectedIndex,
-                    selectedIndex: selectedIndex,
-                    bindCovenant: bindCovenant,
-                    limitController: limitController,
-                    limitFocusNode: limitFocusNode,
-                  ),
-                if (customer?.CustomerCovenants != null &&
-                    customer!.CustomerCovenants!.isNotEmpty)
-                  const BindedCovenants(),
-              ],
+          return Form(
+            key: formKey,
+            child: ResponsiveScrollableWidget(
+              isSliverPage: true,
+              child: CustomScrollView(
+                slivers: [
+                  if (notBindedCovenants.isNotEmpty)
+                    NotBindedCovenants(
+                      notBindedCovenants: notBindedCovenants,
+                      changeSelectedIndex: changeSelectedIndex,
+                      selectedIndex: selectedIndex,
+                      bindCovenant: bindCovenant,
+                      limitController: limitController,
+                      limitFocusNode: limitFocusNode,
+                    ),
+                  if (customer?.CustomerCovenants != null &&
+                      customer!.CustomerCovenants!.isNotEmpty) ...[
+                    const BindedCovenants(),
+                  ],
+                ],
+              ),
             ),
           );
         },

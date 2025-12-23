@@ -12,12 +12,10 @@ import 'address.dart';
 class AddressForm extends ConsumerStatefulWidget {
   final Modules module;
   final Future<bool> Function(AddressEntity newAddress) addAddress;
-  final bool cleanStateOnDispose;
   const AddressForm({
     super.key,
     required this.module,
     required this.addAddress,
-    required this.cleanStateOnDispose,
   });
 
   @override
@@ -183,110 +181,96 @@ class _AddressFormState extends ConsumerState<AddressForm> {
       });
     });
 
-    return PopScope(
-      onPopInvokedWithResult: (_, _) {
-        if (widget.cleanStateOnDispose) {
-          ref.invalidate(addressByCepStateControllerProvider(widget.module));
-        } else {
-          ref
-              .read(addressByCepStateControllerProvider(widget.module).notifier)
-              .updateAddress(
-                AddressEntity(
-                  Zip: zipController.text,
-                  Address: addressController.text,
-                  Number: numberController.text,
-                  District: districtController.text,
-                  City: cityController.text,
-                  State: state,
-                  Complement: complementController.text,
-                  Reference: referenceController.text,
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Form(
+                  key: zipFormKey,
+                  child: ZipField(
+                    isLoading: isLoading,
+                    zipController: zipController,
+                    zipFocusNode: zipFocusNode,
+                    seekAddress: seekAddress,
+                    changeShowAllFields: (value) =>
+                        setState(() => showAllFields = value),
+                  ),
                 ),
-              );
-        }
-      },
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            Form(
-              key: zipFormKey,
-              child: ZipField(
-                isLoading: isLoading,
-                zipController: zipController,
-                zipFocusNode: zipFocusNode,
-                seekAddress: seekAddress,
-                changeShowAllFields: (value) =>
-                    setState(() => showAllFields = value),
-              ),
+                if (showAllFields) ...[
+                  gapH8,
+                  AddressField(addressController: addressController),
+                  gapH8,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DistrictField(
+                          districtController: districtController,
+                        ),
+                      ),
+                      gapW8,
+                      Expanded(
+                        child: CityField(cityController: cityController),
+                      ),
+                    ],
+                  ),
+                  gapH8,
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 60,
+                        child: StatesDropDown(
+                          isLoading: isLoading,
+                          onChangeState: (state) =>
+                              setState(() => this.state = state),
+                          state: state,
+                        ),
+                      ),
+                      gapW8,
+                      Expanded(
+                        flex: 40,
+                        child: NumberField(
+                          isLoading: isLoading,
+                          numberController: numberController,
+                          numberFocusNode: numberFocusNode,
+                          complementFocusNode: complementFocusNode,
+                        ),
+                      ),
+                    ],
+                  ),
+                  gapH8,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ComplementField(
+                          isLoading: isLoading,
+                          complementController: complementController,
+                          complementFocusNode: complementFocusNode,
+                          referenceFocusNode: referenceFocusNode,
+                        ),
+                      ),
+                      gapW8,
+                      Expanded(
+                        child: ReferenceField(
+                          isLoading: isLoading,
+                          referenceFocusNode: referenceFocusNode,
+                          referenceController: referenceController,
+                        ),
+                      ),
+                    ],
+                  ),
+                  gapH32,
+                  PrimaryButton(
+                    text: 'Adicionar endereço'.hardcoded,
+                    onPressed: addAddress,
+                  ),
+                ],
+              ],
             ),
-            if (showAllFields) ...[
-              gapH8,
-              AddressField(addressController: addressController),
-              gapH8,
-              Row(
-                children: [
-                  Expanded(
-                    child: DistrictField(
-                      districtController: districtController,
-                    ),
-                  ),
-                  gapW8,
-                  Expanded(child: CityField(cityController: cityController)),
-                ],
-              ),
-              gapH8,
-              Row(
-                children: [
-                  Expanded(
-                    flex: 60,
-                    child: StatesDropDown(
-                      isLoading: isLoading,
-                      onChangeState: (state) =>
-                          setState(() => this.state = state),
-                      state: state,
-                    ),
-                  ),
-                  gapW8,
-                  Expanded(
-                    flex: 40,
-                    child: NumberField(
-                      isLoading: isLoading,
-                      numberController: numberController,
-                      numberFocusNode: numberFocusNode,
-                      complementFocusNode: complementFocusNode,
-                    ),
-                  ),
-                ],
-              ),
-              gapH8,
-              Row(
-                children: [
-                  Expanded(
-                    child: ComplementField(
-                      isLoading: isLoading,
-                      complementController: complementController,
-                      complementFocusNode: complementFocusNode,
-                      referenceFocusNode: referenceFocusNode,
-                    ),
-                  ),
-                  gapW8,
-                  Expanded(
-                    child: ReferenceField(
-                      isLoading: isLoading,
-                      referenceFocusNode: referenceFocusNode,
-                      referenceController: referenceController,
-                    ),
-                  ),
-                ],
-              ),
-              gapH32,
-              PrimaryButton(
-                text: 'Adicionar endereço'.hardcoded,
-                onPressed: addAddress,
-              ),
-            ],
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

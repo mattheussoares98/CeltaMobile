@@ -16,7 +16,7 @@ class InformedPhones extends ConsumerWidget {
     final customer = ref.watch(customerStateControllerProvider).value;
 
     if (customer?.Telephones == null || customer!.Telephones!.isEmpty) {
-      return const SizedBox.shrink();
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
     void removeTelephone(int index) {
       ref
@@ -31,48 +31,44 @@ class InformedPhones extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return Column(
-      children: [
-        DefaultDivider('Telefones informados'.hardcoded),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: customer.Telephones?.length,
-          itemBuilder: (_, index) {
-            final phone = customer.Telephones![index];
+    return SliverList.builder(
+      itemCount: customer.Telephones!.length + 1,
+      itemBuilder: (_, index) {
+        if (index == 0) {
+          return DefaultDivider('Telefones informados'.hardcoded);
+        }
+        final phone = customer.Telephones![index - 1];
 
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.only(left: Sizes.p8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text('(${phone.AreaCode}) ${phone.PhoneNumber}'),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        showAlertDialog(
-                          context: context,
-                          title: 'Remover telefone?'.hardcoded,
-                          defaultActionText: 'Sim'.hardcoded,
-                          cancelActionText: 'Cancelar'.hardcoded,
-                          onOkPressed: () {
-                            removeTelephone(index);
-                          },
-                        );
-                      },
-                      icon: Icon(
-                        isIOS ? CupertinoIcons.delete : Icons.delete,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.only(left: Sizes.p8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text('(${phone.AreaCode}) ${phone.PhoneNumber}'),
                 ),
-              ),
-            );
-          },
-        ),
-      ],
+                IconButton(
+                  onPressed: () {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Remover telefone?'.hardcoded,
+                      defaultActionText: 'Sim'.hardcoded,
+                      cancelActionText: 'Cancelar'.hardcoded,
+                      onOkPressed: () {
+                        removeTelephone(index);
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    isIOS ? CupertinoIcons.delete : Icons.delete,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
