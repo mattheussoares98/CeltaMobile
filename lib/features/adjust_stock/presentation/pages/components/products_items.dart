@@ -54,6 +54,9 @@ class ProductsItems extends ConsumerWidget {
       ]);
     }
 
+    final lastConfirmedAdjust = ref.watch(confirmAdjustStockControllerProvider);
+    final theme = Theme.of(context);
+
     return AsyncValueWidget(
       value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
       tryAgain: null,
@@ -78,6 +81,24 @@ class ProductsItems extends ConsumerWidget {
               },
               showDropIcon: true,
               isSelected: selectedUIState.selectedIndex == index,
+              clickableBottom:
+                  lastConfirmedAdjust.value?.productPackingCode ==
+                      product.ProductPackingCode
+                  ? TitleAndSubTitle(
+                      title: 'Última qtd alterada',
+                      subTitle: lastConfirmedAdjust.value!.quantity
+                          .toString()
+                          .toBrazilianNumber(3, true),
+                      titleStyle: theme.textTheme.titleMedium?.copyWith(
+                        color: theme.colorScheme.secondary,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                        color: theme.colorScheme.secondary,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    )
+                  : null,
               notClickableBottom: selectedUIState.selectedIndex == index
                   ? ConfirmAdjustStock(
                       onConfirm: () => confirmAdjust(product),
