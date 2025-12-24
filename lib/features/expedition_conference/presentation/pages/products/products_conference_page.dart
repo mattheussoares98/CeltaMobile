@@ -30,16 +30,16 @@ class ProductsConferencePage extends ConsumerStatefulWidget {
 
 class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
     with SearchProductsListenerMixin {
-  final searchValueController = TextEditingController();
-  final focusNode = FocusNode();
+  final searchProductController = TextEditingController();
+  final searchProductFocusNode = FocusNode();
   int currentIndex = 0;
 
   @override
   void dispose() {
     super.dispose();
 
-    searchValueController.dispose();
-    focusNode.dispose();
+    searchProductController.dispose();
+    searchProductFocusNode.dispose();
   }
 
   @override
@@ -47,10 +47,11 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
     listenSearchProducts(
       ref: ref,
       context: context,
-      searchValueController: searchValueController,
+      searchProductController: searchProductController,
       stepCode: widget.stepCode,
       expeditionControlCode: widget.expeditionControlCode,
       enterpriseCode: widget.enterpriseCode,
+      searchProductFocusNode: searchProductFocusNode,
     );
 
     ref.listen(scanProductControllerProvider, (p, n) {
@@ -129,8 +130,8 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
                     index: currentIndex,
                     children: [
                       PendingProductsPage(
-                        focusNode: focusNode,
-                        searchValueController: searchValueController,
+                        focusNode: searchProductFocusNode,
+                        searchProductController: searchProductController,
                         enterpriseCode: widget.enterpriseCode,
                         expeditionControlCode: widget.expeditionControlCode,
                       ),

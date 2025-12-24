@@ -15,13 +15,13 @@ import 'components/components.dart';
 class PendingProductsPage extends ConsumerWidget {
   final int enterpriseCode;
   final FocusNode focusNode;
-  final TextEditingController searchValueController;
+  final TextEditingController searchProductController;
   final int expeditionControlCode;
   const PendingProductsPage({
     super.key,
     required this.enterpriseCode,
     required this.focusNode,
-    required this.searchValueController,
+    required this.searchProductController,
     required this.expeditionControlCode,
   });
 
@@ -43,7 +43,7 @@ class PendingProductsPage extends ConsumerWidget {
         if (barcode == null) {
           return;
         } else {
-          searchValueController.text = barcode;
+          searchProductController.text = barcode;
         }
       }
       ref
@@ -52,7 +52,7 @@ class PendingProductsPage extends ConsumerWidget {
           )
           .loadProducts(
             GetProductsJsonParams(
-              searchValue: barcode ?? searchValueController.text,
+              searchValue: barcode ?? searchProductController.text,
               enterpriseCodes: [enterpriseCode],
             ),
           );
@@ -118,7 +118,7 @@ class PendingProductsPage extends ConsumerWidget {
                 ),
             focusNode: focusNode,
             searchProducts: () => searchProducts(false),
-            searchValueController: searchValueController,
+            searchValueController: searchProductController,
           ),
           Expanded(
             child: PendingProductsItems(

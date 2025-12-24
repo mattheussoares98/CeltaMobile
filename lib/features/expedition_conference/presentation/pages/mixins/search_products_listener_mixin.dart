@@ -12,10 +12,11 @@ mixin SearchProductsListenerMixin {
   void listenSearchProducts({
     required WidgetRef ref,
     required BuildContext context,
-    required TextEditingController searchValueController,
+    required TextEditingController searchProductController,
     required int stepCode,
     required int expeditionControlCode,
     required int enterpriseCode,
+    required FocusNode searchProductFocusNode,
   }) {
     ref.listen(
       searchProductsStateControllerProvider(
@@ -30,13 +31,19 @@ mixin SearchProductsListenerMixin {
 
         n.doOnSuccess(p, () async {
           if (n.value != null && n.value!.length == 1) {
-            ref
+            bool succeeds = await ref
                 .read(scanProductControllerProvider.notifier)
                 .scan(
                   expeditionControlCode: expeditionControlCode,
                   productPackingCode: n.value!.first.ProductPackingCode!,
                   stepCode: stepCode,
                 );
+
+            if (succeeds) {
+              Future.delayed(const Duration(milliseconds: 100), () {
+                searchProductFocusNode.requestFocus();
+              });
+            }
           } else if (n.value != null && n.value!.length > 1) {
             showModalPage(
               SelectProductModalPage(
@@ -47,7 +54,7 @@ mixin SearchProductsListenerMixin {
               context,
             );
           }
-          searchValueController.clear();
+          searchProductController.clear();
         });
       },
     );
