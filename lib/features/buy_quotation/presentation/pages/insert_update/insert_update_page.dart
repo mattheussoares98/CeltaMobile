@@ -180,6 +180,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                         buyQuotation: buyQuotation,
                         uiControllers: uiControllers,
                         widget: widget,
+                        observationsFocusNode: observationsFocusNode,
                       ),
                     ],
                   ),

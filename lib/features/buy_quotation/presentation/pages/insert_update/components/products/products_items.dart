@@ -17,11 +17,13 @@ class ProductsItems extends ConsumerWidget {
   final BuyQuotationEntity buyQuotation;
   final List<EnterpriseUIController> uiControllers;
   final InsertUpdatePage widget;
+  final FocusNode observationsFocusNode;
   const ProductsItems({
     super.key,
     required this.buyQuotation,
     required this.uiControllers,
     required this.widget,
+    required this.observationsFocusNode,
   });
 
   @override
@@ -33,6 +35,7 @@ class ProductsItems extends ConsumerWidget {
     );
 
     void updateIndex(int? index) {
+      observationsFocusNode.unfocus();
       final newIndex = (index == selectedIndex) ? null : index;
 
       ref
