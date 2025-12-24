@@ -46,7 +46,7 @@ class SaveButton extends ConsumerWidget {
                   );
             },
       icon: Icon(
-        theme.platform != TargetPlatform.iOS
+        theme.platform == TargetPlatform.iOS
             ? CupertinoIcons.checkmark_alt
             : Icons.save,
       ),

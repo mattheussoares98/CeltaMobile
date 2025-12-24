@@ -97,7 +97,7 @@ class PracticedPrice extends ConsumerWidget {
                   icon: mediaQuery.size.width < 300
                       ? null
                       : Icon(
-                          theme.platform != TargetPlatform.iOS
+                          theme.platform == TargetPlatform.iOS
                               ? CupertinoIcons.clear
                               : Icons.close,
                           color: Colors.red,
