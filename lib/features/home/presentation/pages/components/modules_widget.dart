@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../routing/routing.dart';
+import '../../controllers/controllers.dart';
 import 'components.dart';
 
 class ModulesWidget extends ConsumerWidget {
@@ -117,22 +119,38 @@ class ModulesWidget extends ConsumerWidget {
       }
     }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Padding(
-          padding: const EdgeInsets.all(Sizes.p4),
-          child: GridView.builder(
-            itemCount: buttons.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: getCrossAxisCount(constraints),
-              mainAxisExtent: 120,
-              childAspectRatio: 1.7,
-            ),
-            itemBuilder: (_, index) {
-              final button = buttons[index];
-              return button;
-            },
-          ),
+    return AsyncValueWidget(
+      value: ref.watch(favoriteModulesStateControllerProvider),
+      tryAgain: () => ref.invalidate(favoriteModulesStateControllerProvider),
+      data: (favorites) {
+        buttons.sort((a, b) {
+          if (favorites.contains(a.module)) {
+            return -1;
+          } else if (favorites.contains(b.module)) {
+            return 1;
+          } else {
+            return a.route.module.compareTo(b.route.module);
+          }
+        });
+
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return Padding(
+              padding: const EdgeInsets.all(Sizes.p4),
+              child: GridView.builder(
+                itemCount: buttons.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: getCrossAxisCount(constraints),
+                  mainAxisExtent: 120,
+                  childAspectRatio: 1.7,
+                ),
+                itemBuilder: (_, index) {
+                  final button = buttons[index];
+                  return button;
+                },
+              ),
+            );
+          },
         );
       },
     );

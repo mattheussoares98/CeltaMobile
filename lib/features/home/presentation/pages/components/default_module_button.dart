@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +11,7 @@ import '../../../../../core/presentation/controllers/enterprises/enterprises.dar
 import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../../routing/routing.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
+import '../../controllers/controllers.dart';
 
 class DefaultModuleButton extends ConsumerWidget {
   final Routes route;
@@ -53,6 +55,11 @@ class DefaultModuleButton extends ConsumerWidget {
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final isFavorite = ref.watch(
+      favoriteModulesStateControllerProvider.select(
+        (s) => s.value?.contains(module) == true,
+      ),
+    );
 
     return InkWell(
       onTap: selectedEnterprise == null
@@ -85,29 +92,54 @@ class DefaultModuleButton extends ConsumerWidget {
                     : {},
               );
             },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: [
-          // Using a circular container with a subtle background instead of a full image card
-          Container(
-            padding: const EdgeInsets.all(Sizes.p8),
-            decoration: BoxDecoration(
-              color: theme.primaryColor.withAlpha(50),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              isIOS ? cupertinoIcon : materialIcon,
-              color: theme.primaryColor,
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Using a circular container with a subtle background instead of a full image card
+                Container(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  decoration: BoxDecoration(
+                    color: theme.primaryColor.withAlpha(50),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    isIOS ? cupertinoIcon : materialIcon,
+                    color: theme.primaryColor,
+                  ),
+                ),
+                const SizedBox(height: Sizes.p12),
+                Text(
+                  route.module,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: Sizes.p12),
-          Text(
-            route.module,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w600,
+          Positioned(
+            top: 0,
+            right: 0,
+            child: IconButton(
+              onPressed: () => ref
+                  .read(favoriteModulesStateControllerProvider.notifier)
+                  .toggle(module),
+              icon: isFavorite
+                  ? Icon(
+                      isIOS ? CupertinoIcons.heart_solid : Icons.favorite,
+                      color: Colors.red,
+                    )
+                  : Icon(
+                      isIOS ? CupertinoIcons.heart : Icons.favorite_border,
+                      color: theme.disabledColor,
+                    ),
             ),
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
