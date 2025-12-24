@@ -76,21 +76,35 @@ class ModulesWidget extends ConsumerWidget {
 
     buttons.sort((a, b) => a.route.module.compareTo(b.route.module));
 
-    return Padding(
-      padding: const EdgeInsets.all(Sizes.p4),
-      child: GridView.builder(
-        itemCount: buttons.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: Sizes.p4,
-          mainAxisSpacing: Sizes.p4,
-          mainAxisExtent: 120,
-        ),
-        itemBuilder: (_, index) {
-          final button = buttons[index];
-          return button;
-        },
-      ),
+    int calculateCrossAxisCount(double screenWidth) {
+      if (screenWidth < 600) {
+        return 2;
+      } else if (screenWidth < 900) {
+        return 3;
+      } else {
+        return 4;
+      }
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Padding(
+          padding: const EdgeInsets.all(Sizes.p4),
+          child: GridView.builder(
+            itemCount: buttons.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: calculateCrossAxisCount(constraints.maxWidth),
+              childAspectRatio: 1.7,
+              crossAxisSpacing: Sizes.p4,
+              mainAxisSpacing: Sizes.p4,
+            ),
+            itemBuilder: (_, index) {
+              final button = buttons[index];
+              return button;
+            },
+          ),
+        );
+      },
     );
   }
 }
