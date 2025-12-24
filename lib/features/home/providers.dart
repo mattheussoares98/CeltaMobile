@@ -8,14 +8,14 @@ import 'domain/repository/repository.dart';
 part 'providers.g.dart';
 
 @riverpod
-ILocalFavoriteModulesDatasource localFavoriteModulesDatasource(Ref ref) {
+IFavoriteModulesDatasource localFavoriteModulesDatasource(Ref ref) {
   return LocalFavoriteModulesDatasource(
     ref.watch(hiveBoxFavoriteModulesProvider),
   );
 }
 
 @riverpod
-ILocalFavoriteModulesRepository localFavoriteModulesRepository(Ref ref) {
+IFavoriteModulesRepository localFavoriteModulesRepository(Ref ref) {
   return LocalFavoriteModulesRepositoryImpl(
     ref.watch(localFavoriteModulesDatasourceProvider),
   );

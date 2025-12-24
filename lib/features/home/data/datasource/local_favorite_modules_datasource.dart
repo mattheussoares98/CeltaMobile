@@ -4,8 +4,7 @@ import 'package:hive/hive.dart';
 import '../../../../core/infraestructure/infrastructure.dart';
 import 'datasource.dart';
 
-class LocalFavoriteModulesDatasource
-    implements ILocalFavoriteModulesDatasource {
+class LocalFavoriteModulesDatasource implements IFavoriteModulesDatasource {
   final Box box;
   LocalFavoriteModulesDatasource(this.box);
 

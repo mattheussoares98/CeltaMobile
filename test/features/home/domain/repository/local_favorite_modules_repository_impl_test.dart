@@ -7,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class LocalFavoriteModulesDatasourceSpy extends Mock
-    implements ILocalFavoriteModulesDatasource {
+    implements IFavoriteModulesDatasource {
   void mockToggle(List<Modules> modules) {
     when(() => this.toggle(any())).thenAnswer((_) async => modules);
   }
@@ -18,7 +18,7 @@ class LocalFavoriteModulesDatasourceSpy extends Mock
 }
 
 void main() {
-  late ILocalFavoriteModulesRepository sut;
+  late IFavoriteModulesRepository sut;
 
   late LocalFavoriteModulesDatasourceSpy datasource;
 

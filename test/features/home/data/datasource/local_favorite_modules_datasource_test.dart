@@ -7,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late ILocalFavoriteModulesDatasource sut;
+  late IFavoriteModulesDatasource sut;
   late MockBox mockBox;
   late List<Modules> localModules;
 

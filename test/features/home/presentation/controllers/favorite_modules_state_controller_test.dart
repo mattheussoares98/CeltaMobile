@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLocalFavoriteModulesRepository extends Mock
-    implements ILocalFavoriteModulesRepository {}
+    implements IFavoriteModulesRepository {}
 
 void main() {
   late MockLocalFavoriteModulesRepository mockRepository;

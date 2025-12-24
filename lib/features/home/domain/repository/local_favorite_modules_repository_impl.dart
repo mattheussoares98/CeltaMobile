@@ -2,9 +2,8 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../data/datasource/datasource.dart';
 import 'repository.dart';
 
-class LocalFavoriteModulesRepositoryImpl
-    implements ILocalFavoriteModulesRepository {
-  final ILocalFavoriteModulesDatasource datasource;
+class LocalFavoriteModulesRepositoryImpl implements IFavoriteModulesRepository {
+  final IFavoriteModulesDatasource datasource;
   LocalFavoriteModulesRepositoryImpl(this.datasource);
 
   @override
