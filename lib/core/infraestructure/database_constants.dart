@@ -6,6 +6,7 @@ class DatabaseConstants {
   static List<_HiveBoxConfig> get values => <_HiveBoxConfig>[
     appSettings,
     buyRequest,
+    favoriteModules,
     saleRequest,
     transferBetweenStocks,
     transferRequest,
