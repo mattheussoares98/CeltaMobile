@@ -134,10 +134,12 @@ class DefaultModuleButton extends ConsumerWidget {
                   ? Icon(
                       isIOS ? CupertinoIcons.heart_solid : Icons.favorite,
                       color: Colors.red,
+                      size: 14,
                     )
                   : Icon(
                       isIOS ? CupertinoIcons.heart : Icons.favorite_border,
                       color: theme.disabledColor,
+                      size: 14,
                     ),
             ),
           ),
