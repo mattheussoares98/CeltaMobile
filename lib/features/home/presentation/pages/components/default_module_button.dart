@@ -132,12 +132,12 @@ class DefaultModuleButton extends ConsumerWidget {
                   .toggle(module),
               icon: isFavorite
                   ? Icon(
-                      isIOS ? CupertinoIcons.heart_solid : Icons.favorite,
-                      color: Colors.red,
+                      isIOS ? CupertinoIcons.star_fill : Icons.star,
+                      color: theme.primaryColorDark,
                       size: 14,
                     )
                   : Icon(
-                      isIOS ? CupertinoIcons.heart : Icons.favorite_border,
+                      isIOS ? CupertinoIcons.star : Icons.star_border,
                       color: theme.disabledColor,
                       size: 14,
                     ),
