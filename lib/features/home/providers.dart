@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'data/datasource/datasource.dart';
+import 'domain/repository/repository.dart';
 
 part 'providers.g.dart';
 
@@ -10,5 +11,12 @@ part 'providers.g.dart';
 ILocalFavoriteModulesDatasource localFavoriteModulesDatasource(Ref ref) {
   return LocalFavoriteModulesDatasource(
     ref.watch(hiveBoxFavoriteModulesProvider),
+  );
+}
+
+@riverpod
+ILocalFavoriteModulesRepository localFavoriteModulesRepository(Ref ref) {
+  return LocalFavoriteModulesRepositoryImpl(
+    ref.watch(localFavoriteModulesDatasourceProvider),
   );
 }
