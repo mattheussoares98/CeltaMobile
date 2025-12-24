@@ -38,6 +38,29 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
   final Set<ReplicationTypes> _selectedReplications = {};
   final priceController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  List<ReplicationTypes> _availableReplications = [];
+
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final product = await ref.read(
+          selectedProductStateControllerProvider(
+            widget.enterpriseCode,
+            widget.plu,
+          ).future,
+        );
+        final selectedEnterprise = ref.read(
+          selectedEnterpriseStateControllerProvider,
+        );
+
+        setState(() {
+          updateReplicationsSelectesByDefault(product, selectedEnterprise);
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -101,15 +124,20 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
 
   void updateReplicationsSelectesByDefault(
     ProductEntity? product,
-    List<ReplicationTypes> availableReplications,
+    EnterpriseEntity? selectedEnterprise,
   ) {
+    _availableReplications = getAvailableReplications(
+      product,
+      selectedEnterprise,
+    );
+
     if (product?.AlterationPriceForAllPackings == true) {
       _selectedReplications.add(ReplicationTypes.packings);
     }
     if (product?.MarkUpdateClassInAdjustSalePriceIndividual == true) {
       _selectedReplications.add(ReplicationTypes.classess);
     }
-    if (availableReplications.contains(ReplicationTypes.operationalGrouping)) {
+    if (_availableReplications.contains(ReplicationTypes.operationalGrouping)) {
       _selectedReplications.add(ReplicationTypes.operationalGrouping);
     }
   }
@@ -163,16 +191,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                   );
                 },
                 data: (product) {
-                  final availableReplications = getAvailableReplications(
-                    product,
-                    selectedEnterprise,
-                  );
-
-                  updateReplicationsSelectesByDefault(
-                    product,
-                    availableReplications,
-                  );
-
                   return SliverToBoxAdapter(
                     child: ResponsiveScrollableWidget(
                       padding: Sizes.p4,
@@ -201,7 +219,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                             ),
                             _DefaultDivider(),
                             ReplicationTypesWidget(
-                              availableReplications: availableReplications,
+                              availableReplications: _availableReplications,
                               selectedReplications: _selectedReplications,
                               onChanged: (replicationType) {
                                 setState(() {
