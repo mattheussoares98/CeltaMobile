@@ -62,65 +62,80 @@ class DefaultModuleButton extends ConsumerWidget {
     );
 
     return InkWell(
-      onTap: selectedEnterprise == null
-          ? null
-          : () {
-              final enterpriseIndex = enabledModulesByEnterpriseAsync.value
-                  ?.indexWhere(
-                    (e) => e.cnpjNumber == selectedEnterprise.CnpjNumber,
-                  );
-              if (enterpriseIndex == null || enterpriseIndex == -1) {
-                showDisabledModuleMessage();
-                return;
-              }
-
-              final enabledModules = enabledModulesByEnterpriseAsync
-                  .value?[enterpriseIndex]
-                  .enabledModules;
-
-              bool moduleIsEnabled = enabledModules?.contains(module) ?? false;
-
-              if (!moduleIsEnabled) {
-                showDisabledModuleMessage();
-                return;
-              }
-
-              context.goNamed(
-                route.name,
-                pathParameters: passEnterpriseToNextRoute
-                    ? {'enterpriseCode': selectedEnterprise.Code.toString()}
-                    : {},
-              );
-            },
       child: Stack(
         children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Using a circular container with a subtle background instead of a full image card
-                Container(
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  decoration: BoxDecoration(
-                    color: theme.primaryColor.withAlpha(50),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    isIOS ? cupertinoIcon : materialIcon,
-                    color: theme.primaryColor,
-                  ),
+          Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              border: Border.all(color: theme.primaryColor, width: 0.4),
+              borderRadius: BorderRadius.circular(Sizes.p12),
+            ),
+            child: InkWell(
+              onTap: selectedEnterprise == null
+                  ? null
+                  : () {
+                      final enterpriseIndex = enabledModulesByEnterpriseAsync
+                          .value
+                          ?.indexWhere(
+                            (e) =>
+                                e.cnpjNumber == selectedEnterprise.CnpjNumber,
+                          );
+                      if (enterpriseIndex == null || enterpriseIndex == -1) {
+                        showDisabledModuleMessage();
+                        return;
+                      }
+
+                      final enabledModules = enabledModulesByEnterpriseAsync
+                          .value?[enterpriseIndex]
+                          .enabledModules;
+
+                      bool moduleIsEnabled =
+                          enabledModules?.contains(module) ?? false;
+
+                      if (!moduleIsEnabled) {
+                        showDisabledModuleMessage();
+                        return;
+                      }
+
+                      context.goNamed(
+                        route.name,
+                        pathParameters: passEnterpriseToNextRoute
+                            ? {
+                                'enterpriseCode':
+                                    selectedEnterprise.Code.toString(),
+                              }
+                            : {},
+                      );
+                    },
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Using a circular container with a subtle background instead of a full image card
+                    Container(
+                      padding: const EdgeInsets.all(Sizes.p8),
+                      decoration: BoxDecoration(
+                        color: theme.primaryColor.withAlpha(50),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isIOS ? cupertinoIcon : materialIcon,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: Sizes.p12),
+                    Text(
+                      route.module,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: Sizes.p12),
-                Text(
-                  route.module,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+              ),
             ),
           ),
           Positioned(

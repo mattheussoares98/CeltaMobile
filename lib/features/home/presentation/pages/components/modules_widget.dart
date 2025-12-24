@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
@@ -135,11 +136,14 @@ class ModulesWidget extends ConsumerWidget {
         return LayoutBuilder(
           builder: (context, constraints) {
             return GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
               itemCount: buttons.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: getCrossAxisCount(constraints),
-                mainAxisExtent: 120,
+                mainAxisExtent: 90,
                 childAspectRatio: 1.7,
+                crossAxisSpacing: Sizes.p4,
+                mainAxisSpacing: Sizes.p4,
               ),
               itemBuilder: (_, index) {
                 final button = buttons[index];
