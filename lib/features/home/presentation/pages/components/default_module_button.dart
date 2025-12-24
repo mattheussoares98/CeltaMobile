@@ -14,23 +14,18 @@ import '../../../../enterprises/presentation/controllers/controllers.dart';
 class DefaultModuleButton extends ConsumerWidget {
   final Routes route;
   final Modules module;
+  final IconData cupertinoIcon;
+  final IconData materialIcon;
   final bool passEnterpriseToNextRoute;
 
   const DefaultModuleButton({
     super.key,
     required this.route,
     required this.module,
+    required this.cupertinoIcon,
+    required this.materialIcon,
     this.passEnterpriseToNextRoute = true,
   });
-
-  String get imagePath {
-    switch (module) {
-      case Modules.adjustStock:
-        return 'lib/core/assets/images/adjust_stock.png';
-      default:
-        return 'lib/core/assets/images/adjust_stock.png';
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,88 +51,66 @@ class DefaultModuleButton extends ConsumerWidget {
       );
     }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Stack(
-          children: [
-            InkWell(
-              onTap: selectedEnterprise == null
-                  ? null
-                  : () {
-                      final enterpriseIndex = enabledModulesByEnterpriseAsync
-                          .value
-                          ?.indexWhere(
-                            (e) =>
-                                e.cnpjNumber == selectedEnterprise.CnpjNumber,
-                          );
-                      if (enterpriseIndex == null || enterpriseIndex == -1) {
-                        showDisabledModuleMessage();
-                        return;
-                      }
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
-                      final enabledModules = enabledModulesByEnterpriseAsync
-                          .value?[enterpriseIndex]
-                          .enabledModules;
+    return InkWell(
+      onTap: selectedEnterprise == null
+          ? null
+          : () {
+              final enterpriseIndex = enabledModulesByEnterpriseAsync.value
+                  ?.indexWhere(
+                    (e) => e.cnpjNumber == selectedEnterprise.CnpjNumber,
+                  );
+              if (enterpriseIndex == null || enterpriseIndex == -1) {
+                showDisabledModuleMessage();
+                return;
+              }
 
-                      bool moduleIsEnabled =
-                          enabledModules?.contains(module) ?? false;
+              final enabledModules = enabledModulesByEnterpriseAsync
+                  .value?[enterpriseIndex]
+                  .enabledModules;
 
-                      if (!moduleIsEnabled) {
-                        showDisabledModuleMessage();
-                        return;
-                      }
+              bool moduleIsEnabled = enabledModules?.contains(module) ?? false;
 
-                      context.goNamed(
-                        route.name,
-                        pathParameters: passEnterpriseToNextRoute
-                            ? {
-                                'enterpriseCode':
-                                    selectedEnterprise.Code.toString(),
-                              }
-                            : {},
-                      );
-                    },
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
-                height: constraints.maxHeight,
-              ),
+              if (!moduleIsEnabled) {
+                showDisabledModuleMessage();
+                return;
+              }
+
+              context.goNamed(
+                route.name,
+                pathParameters: passEnterpriseToNextRoute
+                    ? {'enterpriseCode': selectedEnterprise.Code.toString()}
+                    : {},
+              );
+            },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Using a circular container with a subtle background instead of a full image card
+          Container(
+            padding: const EdgeInsets.all(Sizes.p8),
+            decoration: BoxDecoration(
+              color: theme.primaryColor.withAlpha(50),
+              shape: BoxShape.circle,
             ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                height: constraints.maxHeight / 4,
-                width: constraints.maxWidth,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Colors.black.withAlpha(160),
-                      Colors.black.withAlpha(120),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: Sizes.p4),
-                    child: Text(
-                      route.module,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+            child: Icon(
+              isIOS ? cupertinoIcon : materialIcon,
+              color: theme.primaryColor,
             ),
-          ],
-        );
-      },
+          ),
+          const SizedBox(height: Sizes.p12),
+          Text(
+            route.module,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
 }

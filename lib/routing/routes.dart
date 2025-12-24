@@ -35,7 +35,7 @@ enum Routes {
   transferRequestOriginEnterprises('Empresas de origem'),
   transferRequestProductsManagement('Manuseio de produtos'),
   transferRequestRequestsTypes('Pedido de transferência'),
-  transferBetweenStocks('Transferência entre estoques');
+  transferBetweenStocks('Transferência (estoques)');
 
   final String module;
   const Routes(this.module);
