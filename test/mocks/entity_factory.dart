@@ -24,6 +24,7 @@ class EntityFactory {
     int? id,
     String? name,
     int? code,
+    bool? enterpriseParticipateEnterpriseGroup,
   }) => EnterpriseEntity(
     id: id ?? faker.randomGenerator.integer(100),
     name: name ?? faker.company.name(),
@@ -39,7 +40,8 @@ class EntityFactory {
     ProductCodeSizeOfBalanceLabel: faker.randomGenerator.integer(6),
     PersonalizedCode: faker.randomGenerator.integer(100).toString(),
     InscriptionNumber: faker.randomGenerator.integer(100).toString(),
-    EnterpriseParticipateEnterpriseGroup: faker.randomGenerator.boolean(),
+    EnterpriseParticipateEnterpriseGroup:
+        enterpriseParticipateEnterpriseGroup ?? faker.randomGenerator.boolean(),
     ProductCodeWithCheckerDigit: faker.randomGenerator.boolean(),
     UseEcommerceSale: faker.randomGenerator.boolean(),
     UseRetailSale: faker.randomGenerator.boolean(),
@@ -110,6 +112,11 @@ class EntityFactory {
     String? plu,
     double? Quantidade_ProcRecebDocProEmb,
     DateTime? DataValidade_ProcRecebDocProEmb,
+    bool? isFatherOfGrate,
+    bool? isChildOfGrate,
+    bool? inClass,
+    bool? alterationPriceForAllPackings,
+    bool? markUpdateClassInAdjustSalePriceIndividual,
   }) => ProductEntity(
     ConcurrentCode: faker.randomGenerator.integer(100),
     ResearchOfPriceCode: faker.randomGenerator.integer(100),
@@ -155,11 +162,14 @@ class EntityFactory {
     FiscalCost: faker.randomGenerator.decimal(),
     FiscalLiquidCost: faker.randomGenerator.decimal(),
     PendantPrintLabel: faker.randomGenerator.boolean(),
-    AlterationPriceForAllPackings: faker.randomGenerator.boolean(),
-    IsFatherOfGrate: faker.randomGenerator.boolean(),
-    IsChildOfGrate: faker.randomGenerator.boolean(),
-    InClass: faker.randomGenerator.boolean(),
-    MarkUpdateClassInAdjustSalePriceIndividual: faker.randomGenerator.boolean(),
+    AlterationPriceForAllPackings:
+        alterationPriceForAllPackings ?? faker.randomGenerator.boolean(),
+    IsFatherOfGrate: isFatherOfGrate ?? faker.randomGenerator.boolean(),
+    IsChildOfGrate: isChildOfGrate ?? faker.randomGenerator.boolean(),
+    InClass: inClass ?? faker.randomGenerator.boolean(),
+    MarkUpdateClassInAdjustSalePriceIndividual:
+        markUpdateClassInAdjustSalePriceIndividual ??
+        faker.randomGenerator.boolean(),
     PriceCost: makePriceCost(),
     StockByEnterpriseAssociateds: [
       makeStockByEnterpriseAssociatedEntity(),
