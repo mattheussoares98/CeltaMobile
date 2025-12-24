@@ -10,7 +10,7 @@ class LocalFavoriteModulesDatasource
   LocalFavoriteModulesDatasource(this.box);
 
   @override
-  Future<void> toggle(Modules module) async {
+  Future<List<Modules>> toggle(Modules module) async {
     final localModules = await load();
 
     if (localModules.contains(module)) {
@@ -19,6 +19,7 @@ class LocalFavoriteModulesDatasource
       localModules.add(module);
     }
     await _saveModules(localModules);
+    return localModules;
   }
 
   @override

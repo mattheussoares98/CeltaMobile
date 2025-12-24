@@ -8,8 +8,8 @@ class LocalFavoriteModulesRepositoryImpl
   LocalFavoriteModulesRepositoryImpl(this.datasource);
 
   @override
-  Future<void> toggle(Modules module) async {
-    await datasource.toggle(module);
+  Future<List<Modules>> toggle(Modules module) async {
+    return await datasource.toggle(module);
   }
 
   @override

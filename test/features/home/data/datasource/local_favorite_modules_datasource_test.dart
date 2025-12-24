@@ -67,13 +67,14 @@ void main() {
 
         // ACT
         final newModule = Modules.values[3];
-        await sut.toggle(newModule);
+        final updatedModules = [...localModules, newModule];
+        expect(await sut.toggle(newModule), updatedModules);
 
         // ASSERT
         verify(
           () => mockBox.put(
             DatabaseConstants.favoriteModules.name,
-            [...localModules, newModule].map((e) => e.name).toList(),
+            updatedModules.map((e) => e.name).toList(),
           ),
         );
       },

@@ -1,7 +1,6 @@
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/home/data/datasource/datasource.dart';
 import 'package:celta_intelligence/features/home/domain/repository/repository.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -9,9 +8,10 @@ import '../../../../mocks/mocks.dart';
 
 class LocalFavoriteModulesDatasourceSpy extends Mock
     implements ILocalFavoriteModulesDatasource {
-  LocalFavoriteModulesDatasourceSpy() {
-    when(() => this.toggle(any())).thenAnswer((_) async {});
+  void mockToggle(List<Modules> modules) {
+    when(() => this.toggle(any())).thenAnswer((_) async => modules);
   }
+
   void mockLoad(List<Modules> modules) {
     when(() => this.load()).thenAnswer((_) async => modules);
   }
@@ -35,11 +35,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    modules = [
-      Modules.values[faker.randomGenerator.integer(Modules.values.length)],
-      Modules.values[faker.randomGenerator.integer(Modules.values.length)],
-      Modules.values[faker.randomGenerator.integer(Modules.values.length)],
-    ];
+    modules = [Modules.values[0], Modules.values[1], Modules.values[2]];
   }
 
   setUp(() {
@@ -58,9 +54,13 @@ void main() {
 
   group('toggle', () {
     test('should behave correctly on success', () async {
-      await sut.toggle(Modules.adjustPrice);
+      final newModule = Modules.values.last;
+      datasource.mockToggle([...modules, newModule]);
 
-      verify(() => datasource.toggle(Modules.adjustPrice));
+      final response = await sut.toggle(newModule);
+      expect(response, [...modules, newModule]);
+
+      verify(() => datasource.toggle(newModule));
       verifyNoMoreInteractions(datasource);
     });
   });
