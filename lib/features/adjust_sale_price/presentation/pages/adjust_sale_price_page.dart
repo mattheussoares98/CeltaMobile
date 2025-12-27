@@ -29,42 +29,8 @@ class AdjustSalePricePage extends ConsumerStatefulWidget {
 }
 
 class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
-  SaleType? selectedSaleType = SaleType.retail;
-  PriceType? selectedPriceType = PriceType.sale;
-  bool? isSelectedClass = false;
-  bool? isSelectedGrid = false;
-  bool? isSelectedOperationalGrouping = false;
-  bool? isSelectedPackings = false;
-  DateTime? selectedStartDate;
-  DateTime? selectedEndDate;
-  final Set<ReplicationTypes> _selectedReplications = {};
   final priceController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  List<ReplicationTypes> _availableReplications = [];
-
-  @override
-  initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        final product =
-            widget.product ??
-            await ref.read(
-              selectedProductStateControllerProvider(
-                widget.enterpriseCode,
-                widget.plu,
-              ).future,
-            );
-        final selectedEnterprise = ref.read(
-          selectedEnterpriseStateControllerProvider,
-        );
-
-        setState(() {
-          updateReplicationsSelectesByDefault(product, selectedEnterprise);
-        });
-      }
-    });
-  }
 
   @override
   void dispose() {
@@ -97,40 +63,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
           plu: widget.plu,
           price: priceController.text.toDouble() ?? 0,
         );
-  }
-
-  List<ReplicationTypes> getAvailableReplications(
-    ProductEntity? product,
-    EnterpriseEntity? selectedEnterprise,
-  ) {
-    return <ReplicationTypes>{
-      ReplicationTypes.packings,
-      if (product?.IsFatherOfGrate == true || product?.IsChildOfGrate == true)
-        ReplicationTypes.grid,
-      if (product?.InClass == true) ReplicationTypes.classess,
-      if (selectedEnterprise?.EnterpriseParticipateEnterpriseGroup == true)
-        ReplicationTypes.operationalGrouping,
-    }.toList();
-  }
-
-  void updateReplicationsSelectesByDefault(
-    ProductEntity? product,
-    EnterpriseEntity? selectedEnterprise,
-  ) {
-    _availableReplications = getAvailableReplications(
-      product,
-      selectedEnterprise,
-    );
-
-    if (product?.AlterationPriceForAllPackings == true) {
-      _selectedReplications.add(ReplicationTypes.packings);
-    }
-    if (product?.MarkUpdateClassInAdjustSalePriceIndividual == true) {
-      _selectedReplications.add(ReplicationTypes.classess);
-    }
-    if (_availableReplications.contains(ReplicationTypes.operationalGrouping)) {
-      _selectedReplications.add(ReplicationTypes.operationalGrouping);
-    }
   }
 
   @override
