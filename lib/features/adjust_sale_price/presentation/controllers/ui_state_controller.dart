@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../models/models.dart';
+import 'controllers.dart';
 
 part 'ui_state_controller.g.dart';
 
@@ -11,16 +11,23 @@ part 'ui_state_controller.g.dart';
 class UIStateController extends _$UIStateController {
   //TODO test this controller and finish the tests
   @override
-  FutureOr<AdjustPriceUIModel> build(ProductEntity? product) {
+  FutureOr<AdjustPriceUIModel> build(String plu) async {
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
     );
+    final product = await ref.read(
+      selectedProductStateControllerProvider(
+        selectedEnterprise!.Code!,
+        plu,
+      ).future,
+    );
+
     final availableReplications = <ReplicationTypes>{
       ReplicationTypes.packings,
       if (product?.IsFatherOfGrate == true || product?.IsChildOfGrate == true)
         ReplicationTypes.grid,
       if (product?.InClass == true) ReplicationTypes.classess,
-      if (selectedEnterprise?.EnterpriseParticipateEnterpriseGroup == true)
+      if (selectedEnterprise.EnterpriseParticipateEnterpriseGroup == true)
         ReplicationTypes.operationalGrouping,
     }.toList();
 

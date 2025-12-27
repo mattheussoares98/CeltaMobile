@@ -32,12 +32,19 @@ void main() {
     );
   });
 
-  ProviderContainer makeProviderContainer({EnterpriseEntity? enterprise}) {
+  ProviderContainer makeProviderContainer({
+    EnterpriseEntity? enterprise,
+    ProductEntity? product,
+  }) {
     return ProviderContainer(
       overrides: [
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterprise),
         ),
+        selectedProductStateControllerProvider(
+          enterprise!.Code!,
+          fakeProduct.PLU!,
+        ).overrideWith(() => FakeSelectedProductStateController(product)),
       ],
     );
   }
@@ -49,12 +56,15 @@ void main() {
         () async {
           // Arrange
           final product = fakeProduct.copyWith(IsFatherOfGrate: true);
-          final container = makeProviderContainer(enterprise: fakeEnterprise);
+          final container = makeProviderContainer(
+            enterprise: fakeEnterprise,
+            product: product,
+          );
           addTearDown(container.dispose);
 
           // Act
           final state = await container.read(
-            UIStateControllerProvider(product).future,
+            UIStateControllerProvider(product.PLU!).future,
           );
 
           // Assert
@@ -74,7 +84,7 @@ void main() {
 
           // Act
           final state = await container.read(
-            UIStateControllerProvider(fakeProduct).future,
+            UIStateControllerProvider(fakeProduct.PLU!).future,
           );
 
           // Assert
@@ -97,12 +107,15 @@ void main() {
           final product = fakeProduct.copyWith(
             AlterationPriceForAllPackings: true,
           );
-          final container = makeProviderContainer(enterprise: fakeEnterprise);
+          final container = makeProviderContainer(
+            enterprise: fakeEnterprise,
+            product: product,
+          );
           addTearDown(container.dispose);
 
           // Act
           final state = await container.read(
-            UIStateControllerProvider(product).future,
+            UIStateControllerProvider(product.PLU!).future,
           );
 
           // Assert
@@ -121,9 +134,11 @@ void main() {
         addTearDown(container.dispose);
 
         // Wait for build
-        await container.read(UIStateControllerProvider(fakeProduct).future);
+        await container.read(
+          UIStateControllerProvider(fakeProduct.PLU!).future,
+        );
         final notifier = container.read(
-          UIStateControllerProvider(fakeProduct).notifier,
+          UIStateControllerProvider(fakeProduct.PLU!).notifier,
         );
 
         // Act
@@ -131,7 +146,7 @@ void main() {
 
         // Assert
         final finalState = container
-            .read(UIStateControllerProvider(fakeProduct))
+            .read(UIStateControllerProvider(fakeProduct.PLU!))
             .value;
         expect(
           finalState!.selectedReplications,
@@ -144,12 +159,15 @@ void main() {
         final product = fakeProduct.copyWith(
           AlterationPriceForAllPackings: true,
         );
-        final container = makeProviderContainer(enterprise: fakeEnterprise);
+        final container = makeProviderContainer(
+          enterprise: fakeEnterprise,
+          product: product,
+        );
         addTearDown(container.dispose);
 
-        await container.read(UIStateControllerProvider(product).future);
+        await container.read(UIStateControllerProvider(product.PLU!).future);
         final notifier = container.read(
-          UIStateControllerProvider(product).notifier,
+          UIStateControllerProvider(product.PLU!).notifier,
         );
 
         // Act
@@ -159,7 +177,7 @@ void main() {
 
         // Assert
         final finalState = container
-            .read(UIStateControllerProvider(product))
+            .read(UIStateControllerProvider(product.PLU!))
             .value;
         expect(
           finalState!.selectedReplications,
@@ -172,9 +190,11 @@ void main() {
         final container = makeProviderContainer(enterprise: fakeEnterprise);
         addTearDown(container.dispose);
 
-        await container.read(UIStateControllerProvider(fakeProduct).future);
+        await container.read(
+          UIStateControllerProvider(fakeProduct.PLU!).future,
+        );
         final notifier = container.read(
-          UIStateControllerProvider(fakeProduct).notifier,
+          UIStateControllerProvider(fakeProduct.PLU!).notifier,
         );
 
         final startDate = DateTime.now();
@@ -192,7 +212,7 @@ void main() {
 
         // Assert
         final finalState = container
-            .read(UIStateControllerProvider(fakeProduct))
+            .read(UIStateControllerProvider(fakeProduct.PLU!))
             .value!;
         expect(finalState.selectedStartDate, startDate);
         expect(finalState.selectedEndDate, endDate);
@@ -205,17 +225,19 @@ void main() {
         // Arrange
         final container = makeProviderContainer(enterprise: fakeEnterprise);
         addTearDown(container.dispose);
-        await container.read(UIStateControllerProvider(fakeProduct).future);
+        await container.read(
+          UIStateControllerProvider(fakeProduct.PLU!).future,
+        );
 
         final states = <AsyncValue<AdjustPriceUIModel>>[];
         container.listen(
-          UIStateControllerProvider(fakeProduct),
+          UIStateControllerProvider(fakeProduct.PLU!),
           (p, n) => states.add(n),
         );
 
         // Act
         await container
-            .read(UIStateControllerProvider(fakeProduct).notifier)
+            .read(UIStateControllerProvider(fakeProduct.PLU!).notifier)
             .updateValues(isSelectedClass: true);
 
         // Assert
