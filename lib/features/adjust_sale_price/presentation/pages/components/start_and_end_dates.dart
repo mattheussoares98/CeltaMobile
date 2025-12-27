@@ -27,15 +27,35 @@ class StartAndEndDates extends ConsumerWidget {
     );
 
     void changeStartDate(DateTime? date) {
-      ref
-          .read(uIStateControllerProvider(plu).notifier)
-          .updateValues(selectedStartDate: date);
+      if (selectedEndDate != null &&
+          date != null &&
+          selectedEndDate.isBefore(date)) {
+        showSnackBarMessage(
+          context,
+          'A data de início precisa ser anterior a data de término'.hardcoded,
+          backgroundColor: Colors.red,
+        );
+      } else {
+        ref
+            .read(uIStateControllerProvider(plu).notifier)
+            .updateValues(selectedStartDate: date);
+      }
     }
 
     void changeEndDate(DateTime? date) {
-      ref
-          .read(uIStateControllerProvider(plu).notifier)
-          .updateValues(selectedEndDate: date);
+      if (selectedStartDate != null &&
+          date != null &&
+          selectedStartDate.isAfter(date)) {
+        showSnackBarMessage(
+          context,
+          'A data de término precisa ser após a data de início'.hardcoded,
+          backgroundColor: Colors.red,
+        );
+      } else {
+        ref
+            .read(uIStateControllerProvider(plu).notifier)
+            .updateValues(selectedEndDate: date, isChangingEndDate: true);
+      }
     }
 
     return IntrinsicHeight(
@@ -57,8 +77,7 @@ class StartAndEndDates extends ConsumerWidget {
               title: 'Término ',
               isEndDate: true,
               currentSelectedDate: selectedEndDate,
-              onDateChanged:
-                  changeEndDate, //TODO throw when insert end date before start date
+              onDateChanged: changeEndDate,
             ),
           ),
         ],
