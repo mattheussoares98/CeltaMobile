@@ -56,6 +56,7 @@ class UIStateController extends _$UIStateController {
     DateTime? selectedStartDate,
     DateTime? selectedEndDate,
     ReplicationTypes? selectedReplication,
+    bool? isChangingEndDate,
   }) async {
     Set<ReplicationTypes> newSelectedReplications =
         state.value!.selectedReplications;
@@ -65,22 +66,22 @@ class UIStateController extends _$UIStateController {
           : newSelectedReplications.add(selectedReplication);
     }
 
-    //TODO throw error if the start date is after the end date
-    //TODO allow change the end date to null
-
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      return state.value!.copyWith(
-        selectedSaleType: selectedSaleType,
-        selectedPriceType: selectedPriceType,
-        isSelectedClass: isSelectedClass,
-        isSelectedGrid: isSelectedGrid,
-        isSelectedOperationalGrouping: isSelectedOperationalGrouping,
-        isSelectedPackings: isSelectedPackings,
-        selectedStartDate: selectedStartDate,
-        selectedEndDate: selectedEndDate,
-        selectedReplications: newSelectedReplications,
-      );
+      return state.value!
+          .annulValues(annulEndDate: isChangingEndDate)
+          .copyWith(
+            selectedSaleType: selectedSaleType,
+            selectedPriceType: selectedPriceType,
+            isSelectedClass: isSelectedClass,
+            isSelectedGrid: isSelectedGrid,
+            isSelectedOperationalGrouping: isSelectedOperationalGrouping,
+            isSelectedPackings: isSelectedPackings,
+            selectedStartDate: selectedStartDate,
+            selectedEndDate:
+                selectedEndDate, // in the UI is treating when try to insert the end date before the start date
+            selectedReplications: newSelectedReplications,
+          );
     });
   }
 }

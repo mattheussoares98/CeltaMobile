@@ -69,4 +69,19 @@ class AdjustPriceUIModel extends Equatable {
           availableReplications ?? this.availableReplications,
     );
   }
+
+  AdjustPriceUIModel annulValues({bool? annulEndDate}) {
+    return AdjustPriceUIModel(
+      selectedSaleType: this.selectedSaleType,
+      selectedPriceType: this.selectedPriceType,
+      isSelectedClass: this.isSelectedClass,
+      isSelectedGrid: this.isSelectedGrid,
+      isSelectedOperationalGrouping: this.isSelectedOperationalGrouping,
+      isSelectedPackings: this.isSelectedPackings,
+      selectedStartDate: this.selectedStartDate,
+      selectedEndDate: annulEndDate == true ? null : this.selectedEndDate,
+      selectedReplications: this.selectedReplications,
+      availableReplications: this.availableReplications,
+    );
+  }
 }

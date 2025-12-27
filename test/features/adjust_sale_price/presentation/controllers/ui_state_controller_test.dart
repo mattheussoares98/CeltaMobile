@@ -219,6 +219,51 @@ void main() {
         expect(finalState.selectedSaleType, saleType);
         expect(finalState.selectedPriceType, priceType);
       });
+
+      test('should change end date correctly', () async {
+        // Arrange
+        final container = makeProviderContainer(enterprise: fakeEnterprise);
+        addTearDown(container.dispose);
+
+        await container.read(
+          UIStateControllerProvider(fakeProduct.PLU!).future,
+        );
+        final state1 = container
+            .read(UIStateControllerProvider(fakeProduct.PLU!))
+            .value!;
+        expect(state1.selectedStartDate, isNull);
+
+        final notifier = container.read(
+          UIStateControllerProvider(fakeProduct.PLU!).notifier,
+        );
+
+        final startDate = DateTime.now();
+        final endDate = DateTime.now().add(const Duration(days: 7));
+
+        // Act
+        await notifier.updateValues(
+          selectedStartDate: startDate,
+          selectedEndDate: endDate,
+        );
+        // Assert
+        final state2 = container
+            .read(UIStateControllerProvider(fakeProduct.PLU!))
+            .value!;
+        expect(state2.selectedStartDate, isNotNull);
+        expect(state2.selectedEndDate, isNotNull);
+
+        // Act
+        await notifier.updateValues(
+          selectedStartDate: startDate,
+          selectedEndDate: null,
+          isChangingEndDate: true,
+        );
+        // Assert
+        final state3 = container
+            .read(UIStateControllerProvider(fakeProduct.PLU!))
+            .value!;
+        expect(state3.selectedEndDate, isNull);
+      });
     });
     group('updateValues loading state', () {
       test('should emit loading then data', () async {
