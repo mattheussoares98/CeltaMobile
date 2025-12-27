@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_intelligence/features/adjust_sale_price/presentation/models/models.dart';
 import 'package:celta_intelligence/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
 import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
@@ -935,4 +936,35 @@ class EntityFactory {
         EnterpriseCode: enterpriseCode ?? faker.randomGenerator.integer(100),
         Quantity: faker.randomGenerator.decimal(),
       );
+
+  static AdjustPriceUIModel makeAdjustPriceUIModel({
+    SaleType? selectedSaleType,
+    PriceType? selectedPriceType,
+    bool? isSelectedClass,
+    bool? isSelectedGrid,
+    bool? isSelectedOperationalGrouping,
+    bool? isSelectedPackings,
+    DateTime? selectedStartDate,
+    DateTime? selectedEndDate,
+    Set<ReplicationTypes>? selectedReplications,
+    List<ReplicationTypes>? availableReplications,
+  }) => AdjustPriceUIModel(
+    selectedSaleType:
+        selectedSaleType ??
+        SaleType.values[faker.randomGenerator.integer(SaleType.values.length)],
+    selectedPriceType:
+        selectedPriceType ??
+        PriceType.values[faker.randomGenerator.integer(
+          PriceType.values.length,
+        )],
+    isSelectedClass: isSelectedClass ?? faker.randomGenerator.boolean(),
+    isSelectedGrid: isSelectedGrid ?? faker.randomGenerator.boolean(),
+    isSelectedOperationalGrouping:
+        isSelectedOperationalGrouping ?? faker.randomGenerator.boolean(),
+    isSelectedPackings: isSelectedClass ?? faker.randomGenerator.boolean(),
+    selectedStartDate: selectedStartDate ?? faker.date.dateTime(),
+    selectedEndDate: selectedEndDate,
+    selectedReplications: selectedReplications ?? {},
+    availableReplications: availableReplications ?? [],
+  );
 }
