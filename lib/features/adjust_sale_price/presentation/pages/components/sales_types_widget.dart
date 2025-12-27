@@ -1,25 +1,23 @@
+import 'package:celta_intelligence/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 import 'components.dart';
 
-class SalesTypeWidget extends StatelessWidget {
-  final SaleType? selectedSaleType;
-  final void Function(SaleType saleType) onTap;
-  final EnterpriseEntity? selectedEnterprise;
-  const SalesTypeWidget({
-    super.key,
-    required this.selectedSaleType,
-    required this.selectedEnterprise,
-    required this.onTap,
-  });
+class SalesTypeWidget extends ConsumerWidget {
+  final String plu;
+  const SalesTypeWidget({super.key, required this.plu});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedEnterprise = ref.watch(
+      selectedEnterpriseStateControllerProvider,
+    );
     final items = [
       if (selectedEnterprise?.UseRetailSale == true) SaleType.retail,
       if (selectedEnterprise?.UseWholeSale == true) SaleType.whole,
@@ -30,6 +28,16 @@ class SalesTypeWidget extends StatelessWidget {
     bool showInVertical = mediaQuery.size.width < 300;
     final theme = Theme.of(context);
 
+    final selectedSaleType = ref.watch(
+      uIStateControllerProvider(plu).select((s) => s.value?.selectedSaleType),
+    );
+
+    void updateValue(SaleType? saleType) {
+      ref
+          .read(uIStateControllerProvider(plu).notifier)
+          .updateValues(selectedSaleType: saleType);
+    }
+
     return Column(
       children: [
         TitleWidget(title: "Tipo de venda".hardcoded),
@@ -38,20 +46,18 @@ class SalesTypeWidget extends StatelessWidget {
           DefaultSegmentedButtons<SaleType>(
             items: items,
             selectedValue: selectedSaleType?.value,
-            onChanged: onTap,
+            onChanged: updateValue,
           )
         else
           RadioGroup<SaleType>(
             key: ValueKey(showInVertical ? "vertical" : "horizontal"),
             groupValue: selectedSaleType,
-            onChanged: (value) {
-              onTap(value!);
-            },
+            onChanged: updateValue,
             child: showInVertical
                 ? Column(
                     children: [
                       ...items.map(
-                        (e) => _SaleTypeItem(saleType: e, onTap: onTap),
+                        (e) => _SaleTypeItem(saleType: e, onTap: updateValue),
                       ),
                     ],
                   )
@@ -60,7 +66,10 @@ class SalesTypeWidget extends StatelessWidget {
                         .map(
                           (e) => Flexible(
                             flex: e.name.length,
-                            child: _SaleTypeItem(saleType: e, onTap: onTap),
+                            child: _SaleTypeItem(
+                              saleType: e,
+                              onTap: updateValue,
+                            ),
                           ),
                         )
                         .toList(),

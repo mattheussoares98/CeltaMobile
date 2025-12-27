@@ -7,8 +7,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
-import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -70,9 +68,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
     final selectedProductAsync = ref.watch(
       selectedProductStateControllerProvider(widget.enterpriseCode, widget.plu),
     );
-    final selectedEnterprise = ref.watch(
-      selectedEnterpriseStateControllerProvider,
-    );
     final confirmAdjustAsync = ref.watch(confirmAdjustControllerProvider);
 
     ref.listen(confirmAdjustControllerProvider, (previous, next) {
@@ -122,82 +117,13 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                         child: Column(
                           children: [
                             _DefaultDivider(),
-                            SalesTypeWidget(
-                              selectedSaleType: selectedSaleType,
-                              selectedEnterprise: selectedEnterprise,
-                              onTap: (value) {
-                                setState(() {
-                                  selectedSaleType = value;
-                                });
-                              },
-                            ),
+                            SalesTypeWidget(plu: widget.plu),
                             _DefaultDivider(),
-                            PricesTypesWidget(
-                              selectedPriceType: selectedPriceType,
-                              onTap: (value) {
-                                setState(() {
-                                  selectedPriceType = value;
-                                });
-                              },
-                            ),
+                            PricesTypesWidget(plu: widget.plu),
                             _DefaultDivider(),
-                            ReplicationTypesWidget(
-                              availableReplications: _availableReplications,
-                              selectedReplications: _selectedReplications,
-                              onChanged: (replicationType) {
-                                setState(() {
-                                  if (_selectedReplications.contains(
-                                    replicationType,
-                                  )) {
-                                    _selectedReplications.remove(
-                                      replicationType,
-                                    );
-                                  } else {
-                                    _selectedReplications.add(replicationType);
-                                  }
-                                });
-                              },
-                            ),
+                            ReplicationTypesWidget(plu: widget.plu),
                             _DefaultDivider(),
-                            StartAndEndDates(
-                              selectedStartDate: selectedStartDate,
-                              selectedEndDate: selectedEndDate,
-                              enableEndDate:
-                                  selectedPriceType == PriceType.offer,
-                              onChangeStartDate: (newDate) {
-                                if (selectedEndDate != null &&
-                                    newDate.isAfter(selectedEndDate!)) {
-                                  showSnackBarMessage(
-                                    context,
-                                    'A data de início deve ser antes da data de término',
-                                    backgroundColor: Colors.red,
-                                  );
-                                } else {
-                                  setState(() {
-                                    selectedStartDate = newDate;
-                                  });
-                                }
-                              },
-                              onChangeEndDate: (newDate) {
-                                if (newDate == null) {
-                                  setState(() {
-                                    selectedEndDate = null;
-                                  });
-                                } else if (selectedStartDate != null &&
-                                    newDate.isBefore(selectedStartDate!) ==
-                                        true) {
-                                  showSnackBarMessage(
-                                    context,
-                                    'A data de término deve ser depois da data de início',
-                                    backgroundColor: Colors.red,
-                                  );
-                                } else {
-                                  setState(() {
-                                    selectedEndDate = newDate;
-                                  });
-                                }
-                              },
-                            ),
+                            StartAndEndDates(plu: widget.plu),
                             _DefaultDivider(),
                             InfoButton(
                               ProductItemWidget(
@@ -207,8 +133,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                             ),
                             PracticedSuggestionAndMinimumPrices(
                               product: product,
-                              selectedSaleType: selectedSaleType,
-                              selectedPriceType: selectedPriceType!,
                             ),
                             _DefaultDivider(),
                             PriceFieldAndConfirmButton(

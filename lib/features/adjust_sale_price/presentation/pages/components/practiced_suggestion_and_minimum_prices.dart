@@ -1,84 +1,93 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 
-class PracticedSuggestionAndMinimumPrices extends StatelessWidget {
+class PracticedSuggestionAndMinimumPrices extends ConsumerWidget {
   final ProductEntity product;
-  final SaleType? selectedSaleType;
-  final PriceType selectedPriceType;
-  const PracticedSuggestionAndMinimumPrices({
-    super.key,
-    required this.product,
-    required this.selectedSaleType,
-    required this.selectedPriceType,
-  });
-
-  double? get suggestion {
-    switch (selectedSaleType) {
-      case SaleType.retail:
-        return product.PriceCost!.RetailSuggestionPrice;
-      case SaleType.whole:
-        return product.PriceCost!.WholeSuggestionPrice;
-      case SaleType.ecommerce:
-        return product.PriceCost!.ECommerceSuggestionPrice;
-      default:
-        return null;
-    }
-  }
-
-  double? get minimumPrice {
-    switch (selectedSaleType) {
-      case SaleType.retail:
-        return product.PriceCost!.RetailMinimumPrice;
-      case SaleType.whole:
-        return product.PriceCost!.WholeMinimumPrice;
-      case SaleType.ecommerce:
-        return product.PriceCost!.ECommerceMinimumPrice;
-      default:
-        return null;
-    }
-  }
-
-  double? get practiced {
-    switch (selectedSaleType) {
-      case SaleType.retail:
-        return selectedPriceType == PriceType.offer
-            ? product.RetailOfferPrice
-            : product.RetailSalePrice;
-      case SaleType.whole:
-        return selectedPriceType == PriceType.offer
-            ? product.WholeOfferPrice
-            : product.WholeSalePrice;
-      case SaleType.ecommerce:
-        return selectedPriceType == PriceType.offer
-            ? product.ECommerceOfferPrice
-            : product.ECommerceSalePrice;
-      default:
-        return null;
-    }
-  }
+  const PracticedSuggestionAndMinimumPrices({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final selectedSaleType = ref.watch(
+      uIStateControllerProvider(
+        product.PLU!,
+      ).select((s) => s.value?.selectedSaleType),
+    );
+    final selectedPriceType = ref.watch(
+      uIStateControllerProvider(
+        product.PLU!,
+      ).select((s) => s.value?.selectedPriceType),
+    );
+
+    double? getSuggestion() {
+      switch (selectedSaleType) {
+        case SaleType.retail:
+          return product.PriceCost!.RetailSuggestionPrice;
+        case SaleType.whole:
+          return product.PriceCost!.WholeSuggestionPrice;
+        case SaleType.ecommerce:
+          return product.PriceCost!.ECommerceSuggestionPrice;
+        default:
+          return null;
+      }
+    }
+
+    double? getMinimumPrice() {
+      switch (selectedSaleType) {
+        case SaleType.retail:
+          return product.PriceCost!.RetailMinimumPrice;
+        case SaleType.whole:
+          return product.PriceCost!.WholeMinimumPrice;
+        case SaleType.ecommerce:
+          return product.PriceCost!.ECommerceMinimumPrice;
+        default:
+          return null;
+      }
+    }
+
+    double? getPracticedPrice() {
+      switch (selectedSaleType) {
+        case SaleType.retail:
+          return selectedPriceType == PriceType.offer
+              ? product.RetailOfferPrice
+              : product.RetailSalePrice;
+        case SaleType.whole:
+          return selectedPriceType == PriceType.offer
+              ? product.WholeOfferPrice
+              : product.WholeSalePrice;
+        case SaleType.ecommerce:
+          return selectedPriceType == PriceType.offer
+              ? product.ECommerceOfferPrice
+              : product.ECommerceSalePrice;
+        default:
+          return null;
+      }
+    }
+
+    double? practicedPrice = getPracticedPrice();
+    double? suggestionPrice = getSuggestion();
+    double? minimumPrice = getMinimumPrice();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _SuggestionItem(
           title: 'Praticado '.hardcoded,
-          value: practiced,
+          value: practicedPrice,
           emptyMessage:
-              "Sem preço ${selectedPriceType.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} praticado"
+              "Sem preço ${selectedPriceType?.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} praticado"
                   .hardcoded,
           anotherMessage:
               minimumPrice != null &&
-                  minimumPrice! > 0 &&
-                  practiced != null &&
-                  practiced! < minimumPrice!
+                  minimumPrice > 0 &&
+                  practicedPrice != null &&
+                  practicedPrice < minimumPrice
               ? TextSpan(
                   text: " MENOR QUE O MÍNIMO".hardcoded,
                   style: theme.textTheme.titleSmall!.copyWith(
@@ -89,12 +98,12 @@ class PracticedSuggestionAndMinimumPrices extends StatelessWidget {
         ),
         _SuggestionItem(
           title: 'Sugerido '.hardcoded,
-          value: suggestion,
+          value: suggestionPrice,
           emptyMessage:
-              "Sem preço ${selectedPriceType.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} sugerido"
+              "Sem preço ${selectedPriceType?.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} sugerido"
                   .hardcoded,
         ),
-        if (minimumPrice != null && minimumPrice! > 0)
+        if (minimumPrice != null && minimumPrice > 0)
           _SuggestionItem(
             title: 'Mínimo '.hardcoded,
             value: minimumPrice,

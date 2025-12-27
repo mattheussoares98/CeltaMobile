@@ -1,28 +1,43 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 import 'components.dart';
 
-class StartAndEndDates extends StatelessWidget {
-  final DateTime? selectedStartDate;
-  final DateTime? selectedEndDate;
-  final void Function(DateTime newDate) onChangeStartDate;
-  final void Function(DateTime? newDate) onChangeEndDate;
-  final bool enableEndDate;
-  const StartAndEndDates({
-    super.key,
-    required this.selectedStartDate,
-    required this.selectedEndDate,
-    required this.onChangeStartDate,
-    required this.onChangeEndDate,
-    required this.enableEndDate,
-  });
+class StartAndEndDates extends ConsumerWidget {
+  final String plu;
+  const StartAndEndDates({super.key, required this.plu});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedStartDate = ref.watch(
+      uIStateControllerProvider(plu).select((s) => s.value?.selectedStartDate),
+    );
+    final selectedEndDate = ref.watch(
+      uIStateControllerProvider(plu).select((s) => s.value?.selectedEndDate),
+    );
+
+    final selectedPriceType = ref.watch(
+      uIStateControllerProvider(plu).select((s) => s.value?.selectedPriceType),
+    );
+
+    void changeStartDate(DateTime? date) {
+      ref
+          .read(uIStateControllerProvider(plu).notifier)
+          .updateValues(selectedStartDate: date);
+    }
+
+    void changeEndDate(DateTime? date) {
+      ref
+          .read(uIStateControllerProvider(plu).notifier)
+          .updateValues(selectedEndDate: date);
+    }
+
     return IntrinsicHeight(
       child: Row(
         children: [
@@ -32,21 +47,18 @@ class StartAndEndDates extends StatelessWidget {
               enabled: true,
               isEndDate: false,
               currentSelectedDate: selectedStartDate,
-              onDateChanged: (newDate) {
-                if (newDate != null) {
-                  onChangeStartDate(newDate);
-                }
-              },
+              onDateChanged: changeStartDate,
             ),
           ),
           const VerticalDivider(),
           Expanded(
             child: _GetDateItem(
-              enabled: enableEndDate,
+              enabled: selectedPriceType == PriceType.offer,
               title: 'Término ',
               isEndDate: true,
               currentSelectedDate: selectedEndDate,
-              onDateChanged: onChangeEndDate,
+              onDateChanged:
+                  changeEndDate, //TODO throw when insert end date before start date
             ),
           ),
         ],

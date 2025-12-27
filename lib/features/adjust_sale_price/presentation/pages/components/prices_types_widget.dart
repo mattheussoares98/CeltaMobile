@@ -1,31 +1,33 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 import 'components.dart';
 
-class PricesTypesWidget extends StatefulWidget {
-  final PriceType? selectedPriceType;
-  final void Function(PriceType priceType) onTap;
-  const PricesTypesWidget({
-    super.key,
-    required this.selectedPriceType,
-    required this.onTap,
-  });
+class PricesTypesWidget extends ConsumerWidget {
+  final String plu;
+  const PricesTypesWidget({super.key, required this.plu});
 
   @override
-  State<PricesTypesWidget> createState() => _PricesTypesWidgetState();
-}
-
-class _PricesTypesWidgetState extends State<PricesTypesWidget> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final items = [PriceType.sale, PriceType.offer];
     final mediaQuery = MediaQuery.of(context);
     bool showVertical = mediaQuery.size.width < 200;
     final theme = Theme.of(context);
+
+    final selectedPriceType = ref.watch(
+      uIStateControllerProvider(plu).select((s) => s.value?.selectedPriceType),
+    );
+
+    void unTap(PriceType? priceType) {
+      ref
+          .read(uIStateControllerProvider(plu).notifier)
+          .updateValues(selectedPriceType: priceType);
+    }
 
     return Column(
       children: [
@@ -34,23 +36,18 @@ class _PricesTypesWidgetState extends State<PricesTypesWidget> {
         if (theme.platform == TargetPlatform.iOS)
           DefaultSegmentedButtons<PriceType>(
             items: items,
-            selectedValue: widget.selectedPriceType?.value,
-            onChanged: widget.onTap,
+            selectedValue: selectedPriceType?.value,
+            onChanged: unTap,
           )
         else
           RadioGroup<PriceType>(
             key: Key(showVertical ? "vertical" : "horizontal"),
-            groupValue: widget.selectedPriceType?.value,
-            onChanged: (value) {
-              widget.onTap(value!);
-            },
+            groupValue: selectedPriceType?.value,
+            onChanged: unTap,
             child: showVertical
                 ? Column(
                     children: items
-                        .map(
-                          (e) =>
-                              _PriceTypeItem(priceType: e, onTap: widget.onTap),
-                        )
+                        .map((e) => _PriceTypeItem(priceType: e, onTap: unTap))
                         .toList(),
                   )
                 : Row(
@@ -58,10 +55,7 @@ class _PricesTypesWidgetState extends State<PricesTypesWidget> {
                         .map(
                           (e) => Flexible(
                             flex: e.name.length,
-                            child: _PriceTypeItem(
-                              priceType: e,
-                              onTap: widget.onTap,
-                            ),
+                            child: _PriceTypeItem(priceType: e, onTap: unTap),
                           ),
                         )
                         .toList(),
