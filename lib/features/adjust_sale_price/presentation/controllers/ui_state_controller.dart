@@ -65,6 +65,9 @@ class UIStateController extends _$UIStateController {
           : newSelectedReplications.add(selectedReplication);
     }
 
+    //TODO throw error if the start date is after the end date
+    //TODO allow change the end date to null
+
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       return state.value!.copyWith(
