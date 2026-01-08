@@ -40,7 +40,6 @@ class SupabaseEnterpriseModel extends Equatable {
     return SupabaseEnterpriseModel(
       id: map['id'] as int,
       name: map['name'] as String,
-      urlInUse: map['urlInUse'] as String?,
       remoteHttpUrl: map['remote_http_url'] as String,
       remoteHttpsUrl: map['remote_https_url'] as String?,
       localHttpUrl: map['local_http_url'] as String?,
@@ -56,7 +55,6 @@ class SupabaseEnterpriseModel extends Equatable {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id': id,
     'name': name,
-    'urlInUse': urlInUse,
     'remote_http_url': remoteHttpUrl,
     'remote_https_url': remoteHttpsUrl,
     'local_http_url': localHttpUrl,
