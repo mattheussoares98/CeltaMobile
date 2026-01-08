@@ -2,14 +2,21 @@ import '../../localization/string_hardcoded.dart';
 import 'validators.dart';
 
 class UrlValidator implements StringValidator {
+  final bool? shouldBeHttps;
+  final bool? allowEmptyValue;
+
+  UrlValidator({this.shouldBeHttps, this.allowEmptyValue});
+
   @override
   String get errorMessage => _errorMessage;
   String _errorMessage = '';
 
   @override
-  bool isValid(String? value, {bool? shouldBeHttps}) {
+  bool isValid(String? value) {
     // 1. Basic check for null or empty string
-    if (value == null || value.isEmpty) {
+    if (allowEmptyValue == true && (value == null || value.isEmpty)) {
+      return true;
+    } else if (value == null || value.isEmpty) {
       _errorMessage = 'Campo obrigatório'.hardcoded;
       return false;
     }
