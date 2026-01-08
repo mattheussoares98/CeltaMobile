@@ -32,7 +32,8 @@ class AuthRepositoryImpl implements IAuthRepository {
     }
 
     final remoteUser = await soapLoginDatasource.login(
-      urlInUse: enterprise.urlInUse!,
+      urlInUse: enterprise
+          .remoteHttpUrl!, //TODO create new datasource to check valid url and use urlInUse property instead
       user: userName,
       password: password,
     );

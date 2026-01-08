@@ -5,17 +5,17 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/validators/validators.dart';
 import 'components.dart';
 
-class UrlField extends StatelessWidget {
+class RemoteHttpUrl extends StatelessWidget {
   final TextEditingController urlController;
   final FocusNode urlFocusNode;
   final bool isLoading;
-  final FocusNode userNameFocusNode;
-  const UrlField({
+  final FocusNode remoteHttpsFocusNode;
+  const RemoteHttpUrl({
     super.key,
     required this.urlController,
     required this.urlFocusNode,
     required this.isLoading,
-    required this.userNameFocusNode,
+    required this.remoteHttpsFocusNode,
   });
 
   @override
@@ -26,10 +26,10 @@ class UrlField extends StatelessWidget {
       focusNode: urlFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
-        userNameFocusNode.requestFocus();
+        remoteHttpsFocusNode.requestFocus();
       },
-      labelText: "Url".hardcoded,
-      hintText: "Url".hardcoded,
+      labelText: "HTTP remota".hardcoded,
+      hintText: "HTTP remota".hardcoded,
       suffixIcon: DeleteIcon(onPress: isLoading ? null : urlController.clear),
       validator: FormValidators.compose([UrlValidator()]),
     );

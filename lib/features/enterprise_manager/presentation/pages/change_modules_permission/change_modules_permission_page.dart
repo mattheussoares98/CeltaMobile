@@ -143,6 +143,7 @@ class _ChangeModulesPermissionPageState
           if (enterprise == null) {
             return Center(child: Text('Empresa não encontrada.'.hardcoded));
           }
+          //TODO change to sliver page
           final modulesToDisplay = _getModulesForScope(enterprise);
           final scopeName = getEnterpriseName(
             isGlobalChange,

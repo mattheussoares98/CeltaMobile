@@ -26,7 +26,10 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
   final localHttpsUrlController = TextEditingController();
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
-  final urlFocusNode = FocusNode();
+  final remoteHttpFocusNode = FocusNode();
+  final remoteHttpsFocusNode = FocusNode();
+  final localHttpFocusNode = FocusNode();
+  final localHttpsFocusNode = FocusNode();
   final userNameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
@@ -41,7 +44,10 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
     localHttpsUrlController.dispose();
     userNameController.dispose();
     passwordController.dispose();
-    urlFocusNode.dispose();
+    remoteHttpFocusNode.dispose();
+    remoteHttpsFocusNode.dispose();
+    localHttpFocusNode.dispose();
+    localHttpsFocusNode.dispose();
     userNameFocusNode.dispose();
     passwordFocusNode.dispose();
   }
@@ -91,12 +97,33 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
               EnterpriseNameField(
                 isLoading: isLoading,
                 enterpriseNameController: enterpriseNameController,
-                urlFocusNode: urlFocusNode,
+                urlFocusNode: remoteHttpFocusNode,
               ),
               gapH8,
-              UrlField(
+              RemoteHttpUrl(
                 urlController: remoteHttpUrlController,
-                urlFocusNode: urlFocusNode,
+                urlFocusNode: remoteHttpFocusNode,
+                isLoading: isLoading,
+                remoteHttpsFocusNode: remoteHttpsFocusNode,
+              ),
+              gapH8,
+              RemoteHttpsUrl(
+                urlController: remoteHttpsUrlController,
+                urlFocusNode: remoteHttpsFocusNode,
+                isLoading: isLoading,
+                localHttpUrlFocusNode: localHttpFocusNode,
+              ),
+              gapH8,
+              LocalHttpUrl(
+                urlController: localHttpUrlController,
+                urlFocusNode: localHttpFocusNode,
+                isLoading: isLoading,
+                localHttpsUrlFocusNode: localHttpsFocusNode,
+              ),
+              gapH8,
+              LocalHttpsUrl(
+                urlController: localHttpsUrlController,
+                urlFocusNode: localHttpsFocusNode,
                 isLoading: isLoading,
                 userNameFocusNode: userNameFocusNode,
               ),
