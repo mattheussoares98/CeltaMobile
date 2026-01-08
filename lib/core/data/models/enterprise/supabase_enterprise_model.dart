@@ -73,17 +73,19 @@ class SupabaseEnterpriseModel extends Equatable {
     subEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
   );
 
-  factory SupabaseEnterpriseModel.fromEntity(EnterpriseEntity entity) =>
-      SupabaseEnterpriseModel(
-        id: entity.id,
-        name: entity.name,
-        urlInUse: entity.urlInUse,
-        remoteHttpUrl: entity.remoteHttpUrl,
-        remoteHttpsUrl: entity.remoteHttpsUrl,
-        localHttpUrl: entity.localHttpUrl,
-        localHttpsUrl: entity.localHttpsUrl,
-        subEnterprises: entity.subEnterprises
-            ?.map((e) => SupabaseSubEnterpriseModel.fromEntity(e))
-            .toList(),
-      );
+  factory SupabaseEnterpriseModel.fromEntity(
+    EnterpriseEntity entity, {
+    String? workingUrl,
+  }) => SupabaseEnterpriseModel(
+    id: entity.id,
+    name: entity.name,
+    urlInUse: workingUrl,
+    remoteHttpUrl: entity.remoteHttpUrl,
+    remoteHttpsUrl: entity.remoteHttpsUrl,
+    localHttpUrl: entity.localHttpUrl,
+    localHttpsUrl: entity.localHttpsUrl,
+    subEnterprises: entity.subEnterprises
+        ?.map((e) => SupabaseSubEnterpriseModel.fromEntity(e))
+        .toList(),
+  );
 }

@@ -18,9 +18,7 @@ class ValidatedUserSession extends _$ValidatedUserSession {
 
     if (userSession == null ||
         userSession.user.CrossIdentity_Usuario == null ||
-        userSession.user.AccessKey == null ||
-        userSession.enterprise?.remoteHttpUrl == null) {
-      // TODO change to urlInUse
+        userSession.user.AccessKey == null) {
       throw AppException('Sessão inválida. Efetue o login novamente'.hardcoded);
     }
 
@@ -28,9 +26,21 @@ class ValidatedUserSession extends _$ValidatedUserSession {
         .read(enterpriseRepositoryProvider)
         .getSupabaseEnterpriseByName(userSession.user.enterpriseName!);
 
+    final workingUrl = await ref
+        .read(soapUrlValidationRepositoryProvider)
+        .findWorkingUrl([
+          supabaseEnterprise!.remoteHttpUrl!,
+          ?supabaseEnterprise.remoteHttpsUrl,
+          ?supabaseEnterprise.localHttpUrl,
+          ?supabaseEnterprise.localHttpsUrl,
+        ]);
+
     return UserSessionModel(
       user: userSession.user,
-      enterprise: SupabaseEnterpriseModel.fromEntity(supabaseEnterprise!),
+      enterprise: SupabaseEnterpriseModel.fromEntity(
+        supabaseEnterprise,
+        workingUrl: workingUrl,
+      ),
     );
   }
 }
