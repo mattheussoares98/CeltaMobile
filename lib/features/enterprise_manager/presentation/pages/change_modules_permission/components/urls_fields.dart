@@ -58,7 +58,7 @@ class UrlsFields extends StatelessWidget {
           DefaultTextFormField(
             labelText: 'HTTPS local'.hardcoded,
             hintText: 'HTTPS local'.hardcoded,
-            controller: localHttpUrlController,
+            controller: localHttpsUrlController,
             maxLength: 100,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             keyboardType: TextInputType.url,
