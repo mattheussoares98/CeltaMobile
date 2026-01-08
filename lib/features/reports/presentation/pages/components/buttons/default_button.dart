@@ -21,10 +21,10 @@ class DefaultButton extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     final isXlsx = downloadType == DownloadType.xlsx;
-    final isMobilePlatform =
-        theme.platform != TargetPlatform.macOS &&
-        theme.platform != TargetPlatform.windows &&
-        !kIsWeb;
+    final requestFolderToDownload =
+        (theme.platform == TargetPlatform.windows ||
+            theme.platform == TargetPlatform.macOS) &&
+        (!kIsWeb);
 
     final asyncValue = ref.watch(
       downloadStateControllerProvider(report.Code, downloadType),
@@ -45,12 +45,10 @@ class DefaultButton extends ConsumerWidget {
     }
 
     void onTap() async {
-      //TODO test this feature in all platforms
-
       final bytes = extractBytes(asyncValue);
 
       if (bytes == null) {
-        if (!isMobilePlatform && isXlsx) {
+        if (requestFolderToDownload && isXlsx) {
           await showAlertDialog(
             context: context,
             title: 'Atenção'.hardcoded,
@@ -132,16 +130,16 @@ class DefaultButton extends ConsumerWidget {
         const Spacer(),
         Consumer(
           builder: (_, ref, _) {
-            if (!hasAttachment || fileBytes == null) {
+            if (!hasAttachment || fileBytes == null || kIsWeb) {
               return const SizedBox.shrink();
             }
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (isXlsx && isMobilePlatform)
+                if (isXlsx && requestFolderToDownload)
                   ShareButton(fileBytes: fileBytes, report: report)
-                else if (isXlsx && !isMobilePlatform)
+                else if (isXlsx && !requestFolderToDownload)
                   VisualizeFilePathButton(this)
                 else
                   VisualizePdfButton(

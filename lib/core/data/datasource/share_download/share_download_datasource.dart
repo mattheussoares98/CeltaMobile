@@ -9,8 +9,6 @@ import 'share_download.dart';
 class ShareDownloadDatasource implements IShareDownloadDatasource {
   @override
   Future<String?> download(FileProperties file, TargetPlatform platform) async {
-    //TODO test if works in web platform
-
     if (platform != TargetPlatform.windows &&
         platform != TargetPlatform.macOS &&
         kIsWeb) {
@@ -25,7 +23,7 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
       fileName: '${file.name}${file.extension}',
     );
 
-    if (response == null) {
+    if (response == null && !kIsWeb) {
       throw AppException(
         'Você precisa selecionar uma pasta para salvar o arquivo'.hardcoded,
       );
