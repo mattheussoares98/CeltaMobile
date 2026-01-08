@@ -223,8 +223,8 @@ class SoapRequestSpy extends Mock implements SoapRequest {
     _mockPostCall().thenAnswer((_) async => response);
   }
 
-  void mockPostError() {
-    _mockPostCall().thenThrow(BsError(faker.lorem.sentence()));
+  void mockPostError({dynamic error}) {
+    _mockPostCall().thenThrow(error ?? BsError(faker.lorem.sentence()));
   }
 
   When _mockPostCall() => when(

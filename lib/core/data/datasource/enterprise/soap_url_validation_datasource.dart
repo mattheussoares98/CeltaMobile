@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../../../../utils/utils.dart';
 import '../../../domain/contracts/contracts.dart';
 import '../../../domain/errors/errors.dart';
 import 'enterprise.dart';
@@ -11,8 +12,9 @@ class SoapUrlValidationDatasource implements ISoapUrlValidationDatasource {
 
   @override
   Future<String?> findWorkingUrl(List<String> urls) async {
-    //TODO create tests
-    final cleanUrls = urls.where((u) => u.isNotEmpty).toList();
+    final cleanUrls = urls
+        .where((u) => u.removeWhiteSpaces().isNotEmpty)
+        .toList();
     if (cleanUrls.isEmpty) return null;
 
     final results = await Future.wait(
