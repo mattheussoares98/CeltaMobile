@@ -20,7 +20,10 @@ class CreateEnterprisePage extends ConsumerStatefulWidget {
 
 class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
   final enterpriseNameController = TextEditingController();
-  final urlController = TextEditingController();
+  final remoteHttpUrlController = TextEditingController();
+  final remoteHttpsUrlController = TextEditingController();
+  final localHttpUrlController = TextEditingController();
+  final localHttpsUrlController = TextEditingController();
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
   final urlFocusNode = FocusNode();
@@ -32,7 +35,10 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
   void dispose() {
     super.dispose();
     enterpriseNameController.dispose();
-    urlController.dispose();
+    remoteHttpUrlController.dispose();
+    remoteHttpsUrlController.dispose();
+    localHttpUrlController.dispose();
+    localHttpsUrlController.dispose();
     userNameController.dispose();
     passwordController.dispose();
     urlFocusNode.dispose();
@@ -48,7 +54,10 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
     await ref
         .read(createEnterpriseControllerProvider.notifier)
         .createEnterprise(
-          urlInUse: urlController.text,
+          remoteHttpUrl: remoteHttpUrlController.text,
+          remoteHttpsUrl: remoteHttpsUrlController.text,
+          localHttpUrl: localHttpUrlController.text,
+          localHttpsUrl: localHttpsUrlController.text,
           enterpriseName: enterpriseNameController.text,
           password: passwordController.text,
           userName: userNameController.text,
@@ -86,7 +95,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
               ),
               gapH8,
               UrlField(
-                urlController: urlController,
+                urlController: remoteHttpUrlController,
                 urlFocusNode: urlFocusNode,
                 isLoading: isLoading,
                 userNameFocusNode: userNameFocusNode,

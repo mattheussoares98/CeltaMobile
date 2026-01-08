@@ -37,25 +37,32 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   @override
   Future<void> createEnterprise({
     required String enterpriseName,
-    required String urlInUse,
+    required String remoteHttpUrl,
+    required String? remoteHttpsUrl,
+    required String? localHttpUrl,
+    required String? localHttpsUrl,
     required String userName,
     required String password,
   }) async {
     // 1- try make login in bs
+    //TODO should treat the urlInUse here correctly before call login
     final user = await soapLoginDatasource.login(
-      urlInUse: urlInUse,
+      urlInUse: remoteHttpUrl,
       user: userName,
       password: password,
     );
     // 2- load enterprises from bs
     final enterprises = await soapEnterpriseDatasource.getEnterprises(
-      urlInUse: urlInUse,
+      urlInUse: remoteHttpUrl,
       crossIdentity: user.CrossIdentity_Usuario ?? "",
     );
     // 3- try create enterprise in supabase
     await enterpriseManagerDatasource.createEnterpriseWithSubEnterprises(
       enterpriseName: enterpriseName,
-      urlInUse: urlInUse,
+      localHttpUrl: localHttpUrl,
+      localHttpsUrl: localHttpsUrl,
+      remoteHttpUrl: remoteHttpUrl,
+      remoteHttpsUrl: remoteHttpsUrl,
       subEnterprises: enterprises
           .map(
             (e) => SubEnterpriseModel(
@@ -72,12 +79,18 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   @override
   Future<void> updateModulePermissions({
     required int enterpriseId,
-    required String urlInUse,
+    required String remoteHttpUrl,
+    required String? remoteHttpsUrl,
+    required String? localHttpUrl,
+    required String? localHttpsUrl,
     required List<UpdateModulePermissionModel> permissions,
   }) async {
     await enterpriseManagerDatasource.updateUrlAndPermissions(
       enterpriseId: enterpriseId,
-      urlInUse: urlInUse,
+      remoteHttpUrl: remoteHttpUrl,
+      remoteHttpsUrl: remoteHttpsUrl,
+      localHttpUrl: localHttpUrl,
+      localHttpsUrl: localHttpsUrl,
       permissions: permissions,
     );
   }

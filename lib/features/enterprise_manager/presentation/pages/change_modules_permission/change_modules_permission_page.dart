@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/validators/validators.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../providers.dart';
 import '../../controllers/controllers.dart';
@@ -29,12 +28,18 @@ class ChangeModulesPermissionPage extends ConsumerStatefulWidget {
 class _ChangeModulesPermissionPageState
     extends ConsumerState<ChangeModulesPermissionPage> {
   Map<int, bool?> _permissionChanges = {};
-  final urlInUseController = TextEditingController();
+  final remoteHttpUrlController = TextEditingController();
+  final localHttpUrlController = TextEditingController();
+  final localHttpsUrlController = TextEditingController();
+  final remoteHttpsUrlController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    urlInUseController.dispose();
+    remoteHttpUrlController.dispose();
+    localHttpUrlController.dispose();
+    localHttpsUrlController.dispose();
+    remoteHttpsUrlController.dispose();
     super.dispose();
   }
 
@@ -47,12 +52,15 @@ class _ChangeModulesPermissionPageState
           enterprisePermissionsProvider(widget.enterpriseId).future,
         );
 
-        urlInUseController.text = enterprise?.urlInUse ?? '';
+        remoteHttpUrlController.text = enterprise?.remoteHttpUrl ?? '';
+        remoteHttpsUrlController.text = enterprise?.remoteHttpsUrl ?? '';
+        localHttpUrlController.text = enterprise?.localHttpUrl ?? '';
+        localHttpsUrlController.text = enterprise?.localHttpsUrl ?? '';
       }
     });
   }
 
-  String getScopeName(
+  String getEnterpriseName(
     bool isGlobalChange,
     EnterprisePermissionEntity enterprise,
   ) {
@@ -118,7 +126,11 @@ class _ChangeModulesPermissionPageState
               enterpriseId: widget.enterpriseId,
               subEnterpriseId: widget.subEnterpriseId,
               permissionChanges: _permissionChanges,
-              urlInUseController: urlInUseController,
+              remoteHttpUrlController: remoteHttpUrlController,
+              localHttpUrlController: localHttpUrlController,
+              localHttpsUrlController: localHttpsUrlController,
+              remoteHttpsUrlController: remoteHttpsUrlController,
+
               formKey: formKey,
               isGlobalChange: isGlobalChange,
             ),
@@ -132,7 +144,7 @@ class _ChangeModulesPermissionPageState
             return Center(child: Text('Empresa não encontrada.'.hardcoded));
           }
           final modulesToDisplay = _getModulesForScope(enterprise);
-          final scopeName = getScopeName(
+          final scopeName = getEnterpriseName(
             isGlobalChange,
             enterprise,
           ).toUpperCase();
@@ -145,17 +157,11 @@ class _ChangeModulesPermissionPageState
               if (isGlobalChange) ...[
                 Form(
                   key: formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: DefaultTextFormField(
-                      labelText: 'Url'.hardcoded,
-                      hintText: 'Url'.hardcoded,
-                      controller: urlInUseController,
-                      maxLength: 100,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.url,
-                      validator: FormValidators.compose([UrlValidator()]),
-                    ),
+                  child: UrlsFields(
+                    remoteHttpUrlController: remoteHttpUrlController,
+                    remoteHttpsUrlController: remoteHttpsUrlController,
+                    localHttpUrlController: localHttpUrlController,
+                    localHttpsUrlController: localHttpsUrlController,
                   ),
                 ),
                 Expanded(

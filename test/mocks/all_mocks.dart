@@ -305,7 +305,10 @@ class EnterpriseManagerDatasourceSpy extends Mock
     when(
       () => this.createEnterpriseWithSubEnterprises(
         enterpriseName: any(named: "enterpriseName"),
-        urlInUse: any(named: "urlInUse"),
+        remoteHttpUrl: any(named: "remoteHttpUrl"),
+        remoteHttpsUrl: any(named: "remoteHttpsUrl"),
+        localHttpUrl: any(named: "localHttpUrl"),
+        localHttpsUrl: any(named: "localHttpsUrl"),
         subEnterprises: any(named: "subEnterprises"),
       ),
     ).thenAnswer((_) async => {});
@@ -314,7 +317,10 @@ class EnterpriseManagerDatasourceSpy extends Mock
       () => this.updateUrlAndPermissions(
         enterpriseId: any(named: 'enterpriseId'),
         permissions: any(named: 'permissions'),
-        urlInUse: any(named: 'urlInUse'),
+        remoteHttpUrl: any(named: 'remoteHttpUrl'),
+        remoteHttpsUrl: any(named: 'remoteHttpsUrl'),
+        localHttpUrl: any(named: 'localHttpUrl'),
+        localHttpsUrl: any(named: 'localHttpsUrl'),
       ),
     ).thenAnswer((_) async => {});
   }
@@ -355,7 +361,10 @@ class EnterpriseManagerRepositorySpy extends Mock
   When _mockCreateEnterpriseCall() => when(
     () => this.createEnterprise(
       enterpriseName: any(named: "enterpriseName"),
-      urlInUse: any(named: "urlInUse"),
+      remoteHttpUrl: any(named: "remoteHttpUrl"),
+      remoteHttpsUrl: any(named: "remoteHttpsUrl"),
+      localHttpUrl: any(named: "localHttpUrl"),
+      localHttpsUrl: any(named: "localHttpsUrl"),
       userName: any(named: "userName"),
       password: any(named: "password"),
     ),

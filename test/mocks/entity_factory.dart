@@ -75,7 +75,10 @@ class EntityFactory {
       EnterprisePermissionEntity(
         id: faker.randomGenerator.integer(100),
         name: faker.company.name(),
-        urlInUse: faker.internet.httpsUrl(),
+        remoteHttpUrl: faker.internet.httpUrl(),
+        remoteHttpsUrl: faker.internet.httpsUrl(),
+        localHttpUrl: faker.internet.httpUrl(),
+        localHttpsUrl: faker.internet.httpsUrl(),
         globalModules: [
           makeModulePermissionEntity(),
           makeModulePermissionEntity(),

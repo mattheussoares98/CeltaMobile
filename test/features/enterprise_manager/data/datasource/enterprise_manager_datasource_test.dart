@@ -14,7 +14,10 @@ void main() {
 
   late EnterprisePermissionEntity enterprisePermissionEntity;
   late String enterpriseName;
-  late String urlInUse;
+  late String remoteHttpUrl;
+  late String remoteHttpsUrl;
+  late String localHttpUrl;
+  late String localHttpsUrl;
   late List<SubEnterpriseModel> subEnterprises;
   late int enterpriseId;
   late List<UpdateModulePermissionModel> permissions;
@@ -37,7 +40,10 @@ void main() {
     enterprisePermissionEntity = EntityFactory.makeEnterprisePermissionEntity();
 
     enterpriseName = faker.company.name();
-    urlInUse = faker.internet.httpsUrl();
+    remoteHttpUrl = faker.internet.httpUrl();
+    remoteHttpsUrl = faker.internet.httpsUrl();
+    localHttpUrl = faker.internet.httpUrl();
+    localHttpsUrl = faker.internet.httpsUrl();
     subEnterprises = [
       SubEnterpriseModel(
         cnpj: faker.randomGenerator.integer(14).toString(),
@@ -104,7 +110,10 @@ void main() {
     test("Should behave correctly on success", () async {
       await sut.createEnterpriseWithSubEnterprises(
         enterpriseName: "${enterpriseName.toUpperCase()} ",
-        urlInUse: "${urlInUse.toUpperCase()} ",
+        remoteHttpUrl: "${remoteHttpUrl.toUpperCase()} ",
+        localHttpUrl: "${localHttpUrl.toUpperCase()} ",
+        localHttpsUrl: "${localHttpsUrl.toUpperCase()} ",
+        remoteHttpsUrl: "${remoteHttpsUrl.toUpperCase()} ",
         subEnterprises: subEnterprises,
       );
 
@@ -115,7 +124,10 @@ void main() {
 
       expect(supabaseClient.lastRpcParams, {
         'p_enterprise_name': enterpriseName.toLowerCase().removeWhiteSpaces(),
-        'p_base_url': urlInUse.toLowerCase().removeWhiteSpaces(),
+        'p_remote_http_url': remoteHttpUrl.toLowerCase().removeWhiteSpaces(),
+        'p_remote_https_url': remoteHttpsUrl.toLowerCase().removeWhiteSpaces(),
+        'p_local_http_url': localHttpUrl.toLowerCase().removeWhiteSpaces(),
+        'p_local_https_url': localHttpsUrl.toLowerCase().removeWhiteSpaces(),
         'p_sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
       });
     });
@@ -125,14 +137,17 @@ void main() {
       await sut.updateUrlAndPermissions(
         enterpriseId: enterpriseId,
         permissions: permissions,
-        urlInUse: urlInUse,
+        remoteHttpUrl: remoteHttpUrl,
+        remoteHttpsUrl: remoteHttpsUrl,
+        localHttpUrl: localHttpUrl,
+        localHttpsUrl: localHttpsUrl,
       );
 
       expect(supabaseClient.lastRpcFunction, 'update_module_permission');
 
       expect(supabaseClient.lastRpcParams, {
         'p_enterprise_id': enterpriseId,
-        'p_base_url': urlInUse,
+        'p_base_url': remoteHttpUrl,
         'p_permissions_payload': permissions.map((e) => e.toJson()).toList(),
       });
     });

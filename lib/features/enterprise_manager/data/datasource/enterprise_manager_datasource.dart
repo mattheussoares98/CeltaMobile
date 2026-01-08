@@ -23,14 +23,20 @@ class EnterpriseManagerDatasource implements IEnterpriseManagerDatasource {
   @override
   Future<void> createEnterpriseWithSubEnterprises({
     required String enterpriseName,
-    required String urlInUse,
+    required String remoteHttpUrl,
+    required String? remoteHttpsUrl,
+    required String? localHttpUrl,
+    required String? localHttpsUrl,
     required List<SubEnterpriseModel> subEnterprises,
   }) async {
     await supabase.rpc(
       'create_enterprise_with_sub_enterprises',
       params: {
         'p_enterprise_name': enterpriseName.toLowerCase().removeWhiteSpaces(),
-        'p_base_url': urlInUse.toLowerCase().removeWhiteSpaces(),
+        'p_remote_http_url': remoteHttpUrl.toLowerCase().removeWhiteSpaces(),
+        'p_remote_https_url': remoteHttpsUrl?.toLowerCase().removeWhiteSpaces(),
+        'p_local_http_url': localHttpUrl?.toLowerCase().removeWhiteSpaces(),
+        'p_local_https_url': localHttpsUrl?.toLowerCase().removeWhiteSpaces(),
         'p_sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
       },
     );
@@ -54,14 +60,20 @@ class EnterpriseManagerDatasource implements IEnterpriseManagerDatasource {
   @override
   Future<void> updateUrlAndPermissions({
     required int enterpriseId,
-    required String urlInUse,
+    required String remoteHttpUrl,
+    required String? remoteHttpsUrl,
+    required String? localHttpUrl,
+    required String? localHttpsUrl,
     required List<UpdateModulePermissionModel> permissions,
   }) async {
     await supabase.rpc(
       'update_module_permission',
       params: {
         'p_enterprise_id': enterpriseId,
-        'p_base_url': urlInUse,
+        'p_remote_http_url': remoteHttpUrl.toLowerCase().removeWhiteSpaces(),
+        'p_remote_https_url': remoteHttpsUrl?.toLowerCase().removeWhiteSpaces(),
+        'p_local_http_url': localHttpUrl?.toLowerCase().removeWhiteSpaces(),
+        'p_local_https_url': localHttpsUrl?.toLowerCase().removeWhiteSpaces(),
         'p_permissions_payload': permissions.map((e) => e.toJson()).toList(),
       },
     );

@@ -19,7 +19,10 @@ class EnterpriseManagerPage extends ConsumerStatefulWidget {
 
 class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
   final enterpriseNameController = TextEditingController();
-  final urlController = TextEditingController();
+  final remoteHttpUrlController = TextEditingController();
+  final remoteHttpsUrlController = TextEditingController();
+  final localHttpUrlController = TextEditingController();
+  final localHttpsUrlController = TextEditingController();
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
   final filterEnterpriseNameController = TextEditingController();
@@ -32,7 +35,10 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
     super.dispose();
 
     enterpriseNameController.dispose();
-    urlController.dispose();
+    remoteHttpUrlController.dispose();
+    remoteHttpsUrlController.dispose();
+    localHttpUrlController.dispose();
+    localHttpsUrlController.dispose();
     userNameController.dispose();
     passwordController.dispose();
     filterEnterpriseNameController.dispose();
@@ -45,7 +51,10 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
     await ref
         .read(createEnterpriseControllerProvider.notifier)
         .createEnterprise(
-          urlInUse: urlController.text,
+          remoteHttpUrl: remoteHttpUrlController.text,
+          remoteHttpsUrl: remoteHttpsUrlController.text,
+          localHttpUrl: localHttpUrlController.text,
+          localHttpsUrl: localHttpsUrlController.text,
           enterpriseName: enterpriseNameController.text,
           password: passwordController.text,
           userName: userNameController.text,

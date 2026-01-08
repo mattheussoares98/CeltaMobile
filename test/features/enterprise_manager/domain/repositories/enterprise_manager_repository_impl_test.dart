@@ -18,7 +18,10 @@ void main() {
 
   late List<EnterprisePermissionEntity> enterprisePermissionEntities;
   late String enterpriseName;
-  late String urlInUse;
+  late String remoteHttpUrl;
+  late String remoteHttpsUrl;
+  late String localHttpUrl;
+  late String localHttpsUrl;
   late String userName;
   late String password;
   late int enterpriseId;
@@ -54,7 +57,10 @@ void main() {
     ];
 
     enterpriseName = faker.company.name();
-    urlInUse = faker.internet.httpsUrl();
+    remoteHttpUrl = faker.internet.httpUrl();
+    remoteHttpsUrl = faker.internet.httpsUrl();
+    localHttpUrl = faker.internet.httpUrl();
+    localHttpsUrl = faker.internet.httpsUrl();
     userName = faker.internet.userName();
     password = faker.internet.password();
     enterpriseId = faker.randomGenerator.integer(100);
@@ -128,14 +134,17 @@ void main() {
 
       await sut.createEnterprise(
         enterpriseName: enterpriseName,
-        urlInUse: urlInUse,
+        remoteHttpUrl: remoteHttpUrl,
+        remoteHttpsUrl: remoteHttpsUrl,
+        localHttpUrl: localHttpUrl,
+        localHttpsUrl: localHttpsUrl,
         userName: userName,
         password: password,
       );
 
       verify(
         () => soapLoginDatasource.login(
-          urlInUse: urlInUse,
+          urlInUse: remoteHttpUrl,
           user: userName,
           password: password,
         ),
@@ -143,7 +152,7 @@ void main() {
 
       verify(
         () => soapEnterpriseDatasource.getEnterprises(
-          urlInUse: urlInUse,
+          urlInUse: remoteHttpUrl,
           crossIdentity: user.CrossIdentity_Usuario ?? "",
         ),
       ).called(1);
@@ -151,7 +160,10 @@ void main() {
       verify(
         () => enterpriseManagerDatasource.createEnterpriseWithSubEnterprises(
           enterpriseName: enterpriseName,
-          urlInUse: urlInUse,
+          remoteHttpUrl: remoteHttpUrl,
+          remoteHttpsUrl: remoteHttpsUrl,
+          localHttpUrl: localHttpUrl,
+          localHttpsUrl: localHttpsUrl,
           subEnterprises: enterprises
               .map(
                 (e) => SubEnterpriseModel(
@@ -172,14 +184,20 @@ void main() {
       await sut.updateModulePermissions(
         enterpriseId: enterpriseId,
         permissions: permissions,
-        urlInUse: urlInUse,
+        remoteHttpUrl: remoteHttpUrl,
+        remoteHttpsUrl: remoteHttpsUrl,
+        localHttpUrl: localHttpUrl,
+        localHttpsUrl: localHttpsUrl,
       );
 
       verify(
         () => enterpriseManagerDatasource.updateUrlAndPermissions(
           enterpriseId: enterpriseId,
           permissions: permissions,
-          urlInUse: urlInUse,
+          remoteHttpUrl: remoteHttpUrl,
+          remoteHttpsUrl: remoteHttpsUrl,
+          localHttpUrl: localHttpUrl,
+          localHttpsUrl: localHttpsUrl,
         ),
       );
       verifyNoMoreInteractions(enterpriseManagerDatasource);

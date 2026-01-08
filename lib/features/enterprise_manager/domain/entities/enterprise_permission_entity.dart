@@ -5,14 +5,20 @@ import 'entities.dart';
 class EnterprisePermissionEntity extends Equatable {
   final int id;
   final String name;
-  final String urlInUse;
+  final String? remoteHttpUrl;
+  final String? remoteHttpsUrl;
+  final String? localHttpUrl;
+  final String? localHttpsUrl;
   final List<ModulePermissionEntity> globalModules;
   final List<SubEnterprisePermissionEntity> subEnterprises;
 
   const EnterprisePermissionEntity({
     required this.id,
     required this.name,
-    required this.urlInUse,
+    required this.remoteHttpUrl,
+    required this.remoteHttpsUrl,
+    required this.localHttpUrl,
+    required this.localHttpsUrl,
     required this.globalModules,
     required this.subEnterprises,
   });
@@ -21,7 +27,10 @@ class EnterprisePermissionEntity extends Equatable {
   List<Object?> get props => [
     id,
     name,
-    urlInUse,
+    remoteHttpUrl,
+    remoteHttpsUrl,
+    localHttpUrl,
+    localHttpsUrl,
     subEnterprises,
     globalModules,
   ];

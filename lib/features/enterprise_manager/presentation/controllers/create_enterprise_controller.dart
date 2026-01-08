@@ -11,7 +11,10 @@ class CreateEnterpriseController extends _$CreateEnterpriseController {
 
   Future<void> createEnterprise({
     required String enterpriseName,
-    required String urlInUse,
+    required String remoteHttpUrl,
+    required String? remoteHttpsUrl,
+    required String? localHttpUrl,
+    required String? localHttpsUrl,
     required String userName,
     required String password,
   }) async {
@@ -21,7 +24,10 @@ class CreateEnterpriseController extends _$CreateEnterpriseController {
           .read(enterpriseManagerRepositoryProvider)
           .createEnterprise(
             enterpriseName: enterpriseName,
-            urlInUse: urlInUse,
+            remoteHttpUrl: remoteHttpUrl,
+            remoteHttpsUrl: remoteHttpsUrl,
+            localHttpUrl: localHttpUrl,
+            localHttpsUrl: localHttpsUrl,
             userName: userName,
             password: password,
           );

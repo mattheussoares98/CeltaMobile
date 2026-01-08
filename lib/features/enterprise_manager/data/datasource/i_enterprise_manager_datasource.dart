@@ -5,12 +5,18 @@ abstract class IEnterpriseManagerDatasource {
   Future<EnterprisePermissionModel?> getEnterprisePermissionsById(int id);
   Future<void> createEnterpriseWithSubEnterprises({
     required String enterpriseName,
-    required String urlInUse,
+    required String remoteHttpUrl,
+    required String? remoteHttpsUrl,
+    required String? localHttpUrl,
+    required String? localHttpsUrl,
     required List<SubEnterpriseModel> subEnterprises,
   });
   Future<void> updateUrlAndPermissions({
     required int enterpriseId,
-    required String urlInUse,
+    required String remoteHttpUrl,
+    required String? remoteHttpsUrl,
+    required String? localHttpUrl,
+    required String? localHttpsUrl,
     required List<UpdateModulePermissionModel> permissions,
   });
 }

@@ -6,14 +6,20 @@ import 'models.dart';
 class EnterprisePermissionModel extends Equatable {
   final int id;
   final String name;
-  final String urlInUse;
+  final String? remoteHttpUrl;
+  final String? remoteHttpsUrl;
+  final String? localHttpUrl;
+  final String? localHttpsUrl;
   final List<ModulePermissionModel> globalModules;
   final List<SubEnterprisePermissionModel> subEnterprises;
 
   const EnterprisePermissionModel({
     required this.id,
     required this.name,
-    required this.urlInUse,
+    required this.remoteHttpUrl,
+    required this.remoteHttpsUrl,
+    required this.localHttpUrl,
+    required this.localHttpsUrl,
     required this.globalModules,
     required this.subEnterprises,
   });
@@ -22,7 +28,10 @@ class EnterprisePermissionModel extends Equatable {
   List<Object?> get props => [
     id,
     name,
-    urlInUse,
+    remoteHttpUrl,
+    remoteHttpsUrl,
+    localHttpUrl,
+    localHttpsUrl,
     subEnterprises,
     globalModules,
   ];
@@ -31,7 +40,10 @@ class EnterprisePermissionModel extends Equatable {
     return EnterprisePermissionModel(
       id: json['id'],
       name: json['name'],
-      urlInUse: json['base_url'],
+      remoteHttpUrl: json['remote_http_url'],
+      remoteHttpsUrl: json['remote_https_url'],
+      localHttpUrl: json['local_http_url'],
+      localHttpsUrl: json['local_https_url'],
       globalModules: (json['global_enabled_modules'] as List)
           .map((item) => ModulePermissionModel.fromJson(item))
           .toList(),
@@ -47,7 +59,10 @@ class EnterprisePermissionModel extends Equatable {
     return EnterprisePermissionModel(
       id: entity.id,
       name: entity.name,
-      urlInUse: entity.urlInUse,
+      remoteHttpUrl: entity.remoteHttpUrl,
+      remoteHttpsUrl: entity.remoteHttpsUrl,
+      localHttpUrl: entity.localHttpUrl,
+      localHttpsUrl: entity.localHttpsUrl,
       globalModules: entity.globalModules
           .map((e) => ModulePermissionModel.fromEntity(e))
           .toList(),
@@ -61,7 +76,10 @@ class EnterprisePermissionModel extends Equatable {
     return EnterprisePermissionEntity(
       id: id,
       name: name,
-      urlInUse: urlInUse,
+      remoteHttpUrl: remoteHttpUrl,
+      remoteHttpsUrl: remoteHttpsUrl,
+      localHttpUrl: localHttpUrl,
+      localHttpsUrl: localHttpsUrl,
       globalModules: globalModules.map((e) => e.toEntity()).toList(),
       subEnterprises: subEnterprises.map((e) => e.toEntity()).toList(),
     );
@@ -70,7 +88,10 @@ class EnterprisePermissionModel extends Equatable {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id': id,
     'name': name,
-    'base_url': urlInUse,
+    'remote_http_url': remoteHttpUrl,
+    'remote_https_url': remoteHttpsUrl,
+    'local_http_url': localHttpUrl,
+    'local_https_url': localHttpsUrl,
     'global_enabled_modules': globalModules.map((e) => e.toJson()).toList(),
     'sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
   };
