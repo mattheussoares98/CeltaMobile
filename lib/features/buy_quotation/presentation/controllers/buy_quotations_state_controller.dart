@@ -16,7 +16,6 @@ class BuyQuotationsStateController extends _$BuyQuotationsStateController {
     final link = ref.keepAlive();
     ref.onCancel(() {
       timer = Timer(const Duration(seconds: 20), () {
-        //TODO check anothers controller that probably needs to use this logic of timer too
         link.close();
       });
     });
