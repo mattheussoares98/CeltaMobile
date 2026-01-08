@@ -73,4 +73,21 @@ void main() {
       expect(sut.errorMessage, isEmpty);
     });
   });
+
+  group('Obligatory https', () {
+    test('should return true when is https', () {
+      // Use faker to generate dynamic valid URLs
+      final httpsUrl = faker.internet.httpsUrl();
+
+      expect(sut.isValid(httpsUrl, shouldBeHttps: true), isTrue);
+      expect(sut.errorMessage, isEmpty);
+    });
+    test('should return false when is https and pass http url', () {
+      // Use faker to generate dynamic valid URLs
+      final httpUrl = faker.internet.httpUrl();
+
+      expect(sut.isValid(httpUrl, shouldBeHttps: true), isFalse);
+      expect(sut.errorMessage, isNotEmpty);
+    });
+  });
 }

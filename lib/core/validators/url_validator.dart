@@ -7,7 +7,7 @@ class UrlValidator implements StringValidator {
   String _errorMessage = '';
 
   @override
-  bool isValid(String? value) {
+  bool isValid(String? value, {bool? shouldBeHttps}) {
     // 1. Basic check for null or empty string
     if (value == null || value.isEmpty) {
       _errorMessage = 'Campo obrigatório'.hardcoded;
@@ -25,6 +25,11 @@ class UrlValidator implements StringValidator {
 
     if (uri == null || !hasValidScheme || !isHttp || !hasHost) {
       _errorMessage = 'URL inválida'.hardcoded;
+      return false;
+    }
+
+    if (shouldBeHttps == true && uri.scheme != 'https') {
+      _errorMessage = 'A URL precisa ser HTTPS'.hardcoded;
       return false;
     }
 
