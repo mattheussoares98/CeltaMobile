@@ -14,7 +14,7 @@ class SoapLoadConcurrentsDatasourceSpy extends Mock
     when(
       () => this.load(
         crossIdentity: any(named: 'crossIdentity'),
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         searchType: any(named: 'searchType'),
         searchValue: any(named: 'searchValue'),
       ),
@@ -27,7 +27,7 @@ void main() {
 
   late SoapLoadConcurrentsDatasourceSpy datasource;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late List<ConcurrentEntity> concurrentsEntities;
 
@@ -47,7 +47,7 @@ void main() {
 
   void initEntities() {
     crossIdentity = faker.guid.guid();
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     concurrentsEntities = [
       EntityFactory.makeConcurrentEntity(),
       EntityFactory.makeConcurrentEntity(),
@@ -75,7 +75,7 @@ void main() {
 
       final response = await sut.load(
         crossIdentity: crossIdentity,
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         searchValue: searchValue,
       );
 
@@ -84,7 +84,7 @@ void main() {
       verify(
         () => datasource.load(
           crossIdentity: crossIdentity,
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           searchType: SearchConcurrentType.approximateName,
           searchValue: searchValue,
         ),
@@ -100,7 +100,7 @@ void main() {
 
       final response = await sut.load(
         crossIdentity: crossIdentity,
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         searchValue: searchValue,
       );
 
@@ -109,7 +109,7 @@ void main() {
       verify(
         () => datasource.load(
           crossIdentity: crossIdentity,
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           searchType: SearchConcurrentType.exactCode,
           searchValue: searchValue,
         ),

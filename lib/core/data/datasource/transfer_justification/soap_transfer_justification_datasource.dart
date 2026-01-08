@@ -12,12 +12,12 @@ class SoapTransferJustificationDatasource
   SoapTransferJustificationDatasource(this.soapRequest);
   @override
   Future<List<TransferJustificationModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required TransferJustificationType type,
   }) async {
     final result = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetJustificationsResponse",
       typeOfResult: "GetJustificationsResult",
       soapAction: "GetJustifications",

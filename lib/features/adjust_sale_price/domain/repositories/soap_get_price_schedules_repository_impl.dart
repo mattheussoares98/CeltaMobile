@@ -13,14 +13,14 @@ class SoapGetPriceSchedulesRepositoryImpl
 
   @override
   Future<List<PriceScheduleEntity>> getPriceSchedules({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
     required int productCode,
     required int productPackingCode,
   }) async {
     final response = await soapGetPriceSchedulesDatasource.getPriceSchedules(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       productCode: productCode,

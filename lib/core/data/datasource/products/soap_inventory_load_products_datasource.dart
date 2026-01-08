@@ -9,11 +9,11 @@ class SoapInventoryLoadProductsDatasource
 
   @override
   Future<List<ProductModelType>> get({
-    required String urlInUse,
+    required String workingUrl,
     required Map<String, dynamic> parametersPayload,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetProductResponse",
       soapAction: "GetProduct",
       serviceASMX: "CeltaInventoryService.asmx",

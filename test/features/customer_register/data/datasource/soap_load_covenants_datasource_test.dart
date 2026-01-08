@@ -14,7 +14,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late List<CovenantModel> covenantModels;
   late SearchCovenantType searchCovenantType;
@@ -35,7 +35,7 @@ void main() {
   }
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     covenantModels = [
       EntityFactory.makeCovenantEntity(),
@@ -64,7 +64,7 @@ void main() {
 
   test('should call with correct params', () async {
     final value = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       searchCovenantType: searchCovenantType,
       searchValue: searchValue,
@@ -74,7 +74,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "GetCovenantJsonResponse",
         soapAction: "GetCovenantJson",
         serviceASMX: "CeltaCustomerService.asmx",

@@ -9,12 +9,12 @@ class SoapLoadExpeditionDocumentsRepositoryImpl
 
   @override
   Future<List<ExpeditionDocumentEntity>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
   }) async {
     final response = await datasource.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
     );

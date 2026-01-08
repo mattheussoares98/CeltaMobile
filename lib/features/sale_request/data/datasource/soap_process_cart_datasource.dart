@@ -11,7 +11,7 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
   @override
   Future<ProcessedCartModel> process({
     required String crossId,
-    required String urlInUse,
+    required String workingUrl,
     required int enterpriseCode,
     required int requestTypeCode,
     required int customerCode,
@@ -40,7 +40,7 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
     };
 
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "ProcessCartResponse",
       soapAction: "ProcessCart",
       serviceASMX: "CeltaSaleRequestService.asmx",

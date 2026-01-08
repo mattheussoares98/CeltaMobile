@@ -101,7 +101,7 @@ void main() {
         // ARRANGE
         when(
           () => mockDatasource.insert(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             researchCode: any(named: 'researchCode'),
             concurrentCode: any(named: 'concurrentCode'),
@@ -151,7 +151,7 @@ void main() {
         // Verify datasource call
         verify(
           () => mockDatasource.insert(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             researchCode: any(named: 'researchCode'),
             concurrentCode: any(named: 'concurrentCode'),
@@ -220,7 +220,7 @@ void main() {
       // Verify datasource was never called
       verifyNever(
         () => mockDatasource.insert(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           researchCode: any(named: 'researchCode'),
           concurrentCode: any(named: 'concurrentCode'),

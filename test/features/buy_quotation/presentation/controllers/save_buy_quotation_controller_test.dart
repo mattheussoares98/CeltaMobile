@@ -18,7 +18,7 @@ class MockSoapInsertUpdateBuyQuotationRepository extends Mock
   MockSoapInsertUpdateBuyQuotationRepository() {
     when(
       () => this.insertUpdate(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         buyQuotation: any(named: 'buyQuotation'),
         now: any(named: 'now'),
@@ -167,7 +167,7 @@ void main() {
         // 2. Verify repository call with the correct entity
         verify(
           () => mockRepository.insertUpdate(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             buyQuotation: validQuotation,
             now: any(named: 'now'),
@@ -234,7 +234,7 @@ void main() {
       // Verify repository was NOT called
       verifyNever(
         () => mockRepository.insertUpdate(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           buyQuotation: any(named: 'buyQuotation'),
           now: any(named: 'now'),
@@ -391,7 +391,7 @@ void main() {
         // Verify repository was NOT called
         verifyNever(
           () => mockRepository.insertUpdate(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             buyQuotation: any(named: 'buyQuotation'),
             observations: any(named: 'observations'),
@@ -406,7 +406,7 @@ void main() {
       final exception = Exception('Repository write failed');
       when(
         () => mockRepository.insertUpdate(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           buyQuotation: any(named: 'buyQuotation'),
           now: any(named: 'now'),

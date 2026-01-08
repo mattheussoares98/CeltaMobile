@@ -66,7 +66,7 @@ void main() {
   group('Get enterprise', () {
     test('should behave correctly on success', () async {
       final result = await sut.getEnterprises(
-        urlInUse: url,
+        workingUrl: url,
         crossIdentity: crossIdentity,
         enterpriseOriginCode: enterpriseOriginCode,
         requestTypeCode: requestTypeCode,
@@ -100,7 +100,7 @@ void main() {
       soapRequest.mockPostError();
 
       expect(
-        sut.getEnterprises(urlInUse: url, crossIdentity: crossIdentity),
+        sut.getEnterprises(workingUrl: url, crossIdentity: crossIdentity),
         throwsA(isA<BsError>()),
       );
     });

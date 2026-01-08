@@ -10,7 +10,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int codigoInternoInvCont;
   late int productPackingCode;
@@ -28,7 +28,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     codigoInternoInvCont = faker.randomGenerator.integer(100);
     productPackingCode = faker.randomGenerator.integer(100);
@@ -47,7 +47,7 @@ void main() {
 
   test('should call soap adapter with correct values', () async {
     await sut.entry(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       codigoInternoInvCont: codigoInternoInvCont,
       productPackingCode: productPackingCode,
@@ -57,7 +57,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResult: null,
         typeOfResponse: "EntryQuantityResponse",
         soapAction: "EntryQuantity",

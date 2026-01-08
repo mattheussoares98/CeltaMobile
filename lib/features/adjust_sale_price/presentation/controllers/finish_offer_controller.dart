@@ -28,7 +28,7 @@ class FinishOfferController extends _$FinishOfferController {
       await ref
           .read(soapAdjustSalePriceRepositoryProvider)
           .confirm(
-            urlInUse: userSession!.enterprise!.urlInUse!,
+            workingUrl: userSession!.enterprise!.workingUrl!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             enterpriseCode: selectedEnterprise!.Code!,
             productCode: product.ProductCode!,

@@ -10,7 +10,7 @@ class EnterpriseEntity extends Equatable {
   final String? remoteHttpsUrl;
   final String? localHttpUrl;
   final String? localHttpsUrl;
-  final String? urlInUse; //url that is working after check the urls provided
+  final String? workingUrl; //url that is working after check the urls provided
   final int? Code; //from soap
   final String? PersonalizedCode; //from soap
   final String? CnpjNumber; //from soap
@@ -29,7 +29,7 @@ class EnterpriseEntity extends Equatable {
     required this.name,
     this.id,
     this.subEnterprises,
-    this.urlInUse,
+    this.workingUrl,
     this.Code,
     this.PersonalizedCode,
     this.CnpjNumber,
@@ -54,7 +54,7 @@ class EnterpriseEntity extends Equatable {
     name,
     id,
     subEnterprises,
-    urlInUse,
+    workingUrl,
     Code,
     PersonalizedCode,
     CnpjNumber,
@@ -78,7 +78,7 @@ class EnterpriseEntity extends Equatable {
     String? name,
     int? id,
     List<SubEnterpriseEntity>? subEnterprises,
-    String? urlInUse,
+    String? workingUrl,
     int? Code,
     String? PersonalizedCode,
     String? CnpjNumber,
@@ -101,7 +101,7 @@ class EnterpriseEntity extends Equatable {
       name: name ?? this.name,
       id: id ?? this.id,
       subEnterprises: subEnterprises ?? this.subEnterprises,
-      urlInUse: urlInUse ?? this.urlInUse,
+      workingUrl: workingUrl ?? this.workingUrl,
       Code: Code ?? this.Code,
       PersonalizedCode: PersonalizedCode ?? this.PersonalizedCode,
       CnpjNumber: CnpjNumber ?? this.CnpjNumber,

@@ -15,7 +15,7 @@ class BuyersStateController extends _$BuyersStateController {
     return await ref
         .read(soapLoadBuyersRepositoryProvider)
         .load(
-          urlInUse: userSession!.enterprise!.urlInUse!,
+          workingUrl: userSession!.enterprise!.workingUrl!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
         );
   }

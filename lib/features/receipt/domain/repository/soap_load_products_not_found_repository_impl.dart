@@ -10,12 +10,12 @@ class SoapLoadProductsNotFoundRepositoryImpl
 
   @override
   Future<List<ProductNotFoundEntity>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int receiptCode,
   }) async {
     final response = await datasource.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       receiptCode: receiptCode,
     );

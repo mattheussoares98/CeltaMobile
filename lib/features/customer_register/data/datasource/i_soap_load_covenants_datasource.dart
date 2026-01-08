@@ -3,7 +3,7 @@ import '../models/models.dart';
 
 abstract class ISoapLoadCovenantsDatasource {
   Future<List<CovenantModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required SearchCovenantType searchCovenantType,
     required String searchValue, //% to find everything

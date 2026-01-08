@@ -6,6 +6,6 @@ abstract class ISoapCustomerRepository {
     required String searchValue,
     required String crossIdentity,
     required int enterpriseCode,
-    required String urlInUse,
+    required String workingUrl,
   });
 }

@@ -29,7 +29,7 @@ class DownloadStateController extends _$DownloadStateController {
       final response = await ref
           .read(soapExecuteOrDownloadScheduleRepositoryProvider)
           .executeOrDownloadSchedule(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             reportScheduleCode: reportScheduleCode,
             execute: false,

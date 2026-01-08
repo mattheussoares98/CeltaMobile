@@ -46,7 +46,7 @@ class UpdateProductController extends _$UpdateProductController {
       await ref
           .read(soapUpdateProductDatasourceProvider)
           .update(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             grDocCode: grDocCode,
             productCode: product.ProductCode!,

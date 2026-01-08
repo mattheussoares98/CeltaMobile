@@ -3,7 +3,7 @@ import '../entities/entities.dart';
 abstract class ISoapProcessCartRepository {
   Future<ProcessedCartEntity> process({
     required String crossId,
-    required String urlInUse,
+    required String workingUrl,
     required int enterpriseCode,
     required int requestTypeCode,
     required int customerCode,

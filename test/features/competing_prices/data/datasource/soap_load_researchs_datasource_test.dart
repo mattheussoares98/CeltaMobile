@@ -13,7 +13,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int enterpriseCode;
   late List<ResearchModel> researchsModels;
@@ -34,7 +34,7 @@ void main() {
   }
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(1000);
     researchsModels = [
@@ -57,7 +57,7 @@ void main() {
   test('Should behave correctly on success', () async {
     final response = await sut.load(
       crossIdentity: crossIdentity,
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       enterpriseCode: enterpriseCode,
       searchValue: searchValue,
     );
@@ -66,7 +66,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "GetResearchOfPriceJsonResponse",
         soapAction: "GetResearchOfPriceJson",
         serviceASMX: "CeltaResearchOfPriceService.asmx",
@@ -87,7 +87,7 @@ void main() {
   test('Should call with empty value if pass a null value to search', () async {
     final response = await sut.load(
       crossIdentity: crossIdentity,
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       enterpriseCode: enterpriseCode,
     );
 
@@ -95,7 +95,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "GetResearchOfPriceJsonResponse",
         soapAction: "GetResearchOfPriceJson",
         serviceASMX: "CeltaResearchOfPriceService.asmx",

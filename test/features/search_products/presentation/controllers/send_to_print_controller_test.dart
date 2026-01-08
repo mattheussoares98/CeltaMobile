@@ -79,7 +79,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.send(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             productPackingCode: any(named: 'productPackingCode'),
@@ -114,7 +114,7 @@ void main() {
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
         verify(
           () => mockRepository.send(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterprise.Code!,
             productPackingCode: fakeProductPackingCode,
@@ -154,7 +154,7 @@ void main() {
       // Verify the repository was never called
       verifyNever(
         () => mockRepository.send(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
           productPackingCode: any(named: 'productPackingCode'),
@@ -167,7 +167,7 @@ void main() {
       // ARRANGE
       when(
         () => mockRepository.send(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
           productPackingCode: any(named: 'productPackingCode'),
@@ -195,7 +195,7 @@ void main() {
       // 1. Verify the repository call
       verify(
         () => mockRepository.send(
-          urlInUse: fakeSession.enterprise!.urlInUse!,
+          workingUrl: fakeSession.enterprise!.workingUrl!,
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           enterpriseCode: fakeEnterprise.Code!,
           productPackingCode: fakeProductPackingCode,

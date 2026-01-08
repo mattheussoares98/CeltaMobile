@@ -13,7 +13,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late List<BuyerModel> buyersModels;
 
@@ -32,7 +32,7 @@ void main() {
   }
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     buyersModels = [
       EntityFactory.makeBuyerEntity(),
@@ -50,7 +50,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final value = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
     );
 
@@ -58,7 +58,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "GetEmployeeJsonResponse",
         soapAction: "GetEmployeeJson",
         serviceASMX: "CeltaEmployeeService.asmx",
@@ -76,7 +76,10 @@ void main() {
   test("Should behave correctly on error", () async {
     soapAdapter.mockPostError();
 
-    final result = sut.load(urlInUse: urlInUse, crossIdentity: crossIdentity);
+    final result = sut.load(
+      workingUrl: workingUrl,
+      crossIdentity: crossIdentity,
+    );
 
     expect(result, throwsA(isA<Exception>()));
   });

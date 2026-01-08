@@ -20,7 +20,7 @@ class ExecuteScheduleController extends _$ExecuteScheduleController {
       await ref
           .read(soapExecuteOrDownloadScheduleRepositoryProvider)
           .executeOrDownloadSchedule(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             reportScheduleCode: reportScheduleCode,
             execute: true,

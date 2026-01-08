@@ -14,7 +14,7 @@ void main() {
   late SoapRequestSpy soapRequest;
 
   late List<SoapEnterpriseModel> enterprisesModels;
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int requestTypeCode;
   late int enterpriseOriginCode;
@@ -34,7 +34,7 @@ void main() {
       EntityFactory.makeEnterpriseEntity(),
     ].map((e) => SoapEnterpriseModel.fromEntity(e)).toList();
 
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     requestTypeCode = faker.randomGenerator.integer(100);
     enterpriseOriginCode = faker.randomGenerator.integer(100);
@@ -56,7 +56,7 @@ void main() {
   group('load', () {
     test('should works correctly on success', () async {
       final result = await sut.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         requestTypeCode: requestTypeCode,
         enterpriseOriginCode: enterpriseOriginCode,
@@ -67,7 +67,7 @@ void main() {
 
       verify(
         () => soapRequest.post(
-          url: urlInUse,
+          url: workingUrl,
           typeOfResponse: "GetEnterprisesDestinyJsonResponse",
           soapAction: "GetEnterprisesDestinyJson",
           serviceASMX: "CeltaEnterpriseService.asmx",

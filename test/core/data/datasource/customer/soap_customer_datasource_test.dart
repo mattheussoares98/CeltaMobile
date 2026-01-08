@@ -18,7 +18,7 @@ void main() {
   late SearchCustomerType searchType;
   late String searchValue;
   late int enterpriseCode;
-  late String urlInUse;
+  late String workingUrl;
   late List<CustomerModel> customersModels;
 
   void initEntities() {
@@ -28,7 +28,7 @@ void main() {
         )];
     searchValue = faker.lorem.word();
     enterpriseCode = faker.randomGenerator.integer(100);
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     customersModels = [
       EntityFactory.makeCustomerEntity(),
@@ -63,14 +63,14 @@ void main() {
         searchValue: searchValue,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
       );
 
       expect(result, customersModels);
 
       verify(
         () => soapRequest.post(
-          url: urlInUse,
+          url: workingUrl,
           parameters: {
             "filters": json.encode({
               "crossIdentity": crossIdentity,

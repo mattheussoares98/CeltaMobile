@@ -4,13 +4,13 @@ import '../../domain/entities/entities.dart';
 abstract class ISoapConcurrentsRepository {
   Future<List<ConcurrentEntity>> load({
     required String crossIdentity,
-    required String urlInUse,
+    required String workingUrl,
     String? searchValue,
   });
 
   Future<void> insertUpdate({
     required String crossIdentity,
-    required String urlInUse,
+    required String workingUrl,
     required int? concurrentCode,
     required String concurrentName,
     required String observation,

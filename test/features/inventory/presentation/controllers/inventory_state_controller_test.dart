@@ -20,7 +20,7 @@ class MockSoapLoadInventoryRepository extends Mock
 
   When _mockLoadCall() => when(
     () => load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
     ),
@@ -60,7 +60,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),
@@ -78,7 +78,7 @@ void main() {
         expect(result, fakeInventory);
         verify(
           () => mockRepository.load(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterpriseCode,
           ),
@@ -102,7 +102,7 @@ void main() {
       // Verify the repository was never called.
       verifyNever(
         () => mockRepository.load(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
         ),

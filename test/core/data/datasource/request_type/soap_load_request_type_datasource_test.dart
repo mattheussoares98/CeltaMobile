@@ -13,7 +13,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late List<RequestTypeModel> requestTypeModels;
   late bool inclusiveBuy;
@@ -40,7 +40,7 @@ void main() {
       EntityFactory.makeRequestTypeEntity(),
       EntityFactory.makeRequestTypeEntity(),
     ].map((e) => RequestTypeModel.fromEntity(e)).toList();
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     inclusiveBuy = faker.randomGenerator.boolean();
     inclusiveTransfer = faker.randomGenerator.boolean();
@@ -56,7 +56,7 @@ void main() {
 
   test('should call soap adapter with correct values', () async {
     final requests = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       inclusiveBuy: inclusiveBuy,
       inclusiveTransfer: inclusiveTransfer,
@@ -67,7 +67,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: urlInUse,
+        url: workingUrl,
         serviceASMX: "CeltaRequestTypeService.asmx",
         typeOfResponse: "GetRequestTypesJsonResponse",
         soapAction: "GetRequestTypesJson",

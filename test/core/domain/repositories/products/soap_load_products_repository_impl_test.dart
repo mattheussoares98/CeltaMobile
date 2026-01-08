@@ -16,7 +16,7 @@ class SoapGetProductsJsonDatasourceSpy extends Mock
 
   When _mockCall() => when(
     () => this.get(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       parametersPayload: any(named: 'parametersPayload'),
       isCompetingPrices: any(named: 'isCompetingPrices'),
     ),
@@ -35,7 +35,7 @@ class SoapInventoryLoadProductsDatasourceSpy extends Mock
 
   When _mockCall() => when(
     () => this.get(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       parametersPayload: any(named: 'parametersPayload'),
     ),
   );
@@ -53,7 +53,7 @@ class SoapLoadProductByRequestTypeDatasourceSpy extends Mock
 
   When _mockCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       parametersPayload: any(named: 'parametersPayload'),
     ),
   );
@@ -71,7 +71,7 @@ class SoapReceiptLoadProductsDatasourceSpy extends Mock
 
   When _mockCall() => when(
     () => this.get(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       parametersPayload: any(named: 'parametersPayload'),
     ),
   );
@@ -92,7 +92,7 @@ void main() {
 
   late List<ProductEntity> productsEntities;
   late List<ProductEntity> inventoryProductsEntities;
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late EnterpriseEntity enterpriseEntity;
   late GetProductsJsonParams getProductsJsonParams;
@@ -141,7 +141,7 @@ void main() {
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
     ];
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     getProductsJsonParams = GetProductsJsonParams(
       searchValue: faker.randomGenerator.string(13),
       enterpriseCodes: [
@@ -213,7 +213,7 @@ void main() {
   group("Products json datasource", () {
     test("Should behave correctly when pass all params", () async {
       final response = await sut.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
         searchType: searchType,
@@ -229,7 +229,7 @@ void main() {
 
       verify(
         () => soapProductsDatasource.get(
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           isCompetingPrices: true,
           parametersPayload: {
             "CrossIdentity": crossIdentity,
@@ -261,7 +261,7 @@ void main() {
     });
     test("Should behave correctly when doesnt pass buyRequestParams", () async {
       final response = await sut.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
         searchType: searchType,
@@ -279,7 +279,7 @@ void main() {
 
       verify(
         () => soapProductsDatasource.get(
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           isCompetingPrices: true,
           parametersPayload: {
             "CrossIdentity": crossIdentity,
@@ -310,7 +310,7 @@ void main() {
       "Should behave correctly when doesnt pass competingPricesParams",
       () async {
         final response = await sut.load(
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           crossIdentity: crossIdentity,
           enterpriseEntity: enterpriseEntity,
           searchType: searchType,
@@ -328,7 +328,7 @@ void main() {
 
         verify(
           () => soapProductsDatasource.get(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             isCompetingPrices: false,
             parametersPayload: {
               "CrossIdentity": crossIdentity,
@@ -357,7 +357,7 @@ void main() {
 
         try {
           final response = await sut.load(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: enterpriseEntity,
             searchType: searchType,
@@ -373,7 +373,7 @@ void main() {
 
         verify(
           () => soapProductsDatasource.get(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             isCompetingPrices: true,
             parametersPayload: {
               "CrossIdentity": crossIdentity,
@@ -406,7 +406,7 @@ void main() {
         ).called(1);
         verify(
           () => soapProductsDatasource.get(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             isCompetingPrices: true,
             parametersPayload: {
               "CrossIdentity": crossIdentity,
@@ -451,7 +451,7 @@ void main() {
   group("Products inventory datasource", () {
     test("Should behave correctly when pass all params", () async {
       final response = await sut.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
         searchType: searchType,
@@ -467,7 +467,7 @@ void main() {
 
       verify(
         () => soapInventoryDatasource.get(
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           parametersPayload: {
             "crossIdentity": crossIdentity,
             "enterpriseCode": enterpriseEntity.Code,
@@ -491,7 +491,7 @@ void main() {
 
         try {
           final response = await sut.load(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: enterpriseEntity,
             searchType: searchType,
@@ -507,7 +507,7 @@ void main() {
 
         verify(
           () => soapInventoryDatasource.get(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             parametersPayload: {
               "crossIdentity": crossIdentity,
               "enterpriseCode": enterpriseEntity.Code,
@@ -522,7 +522,7 @@ void main() {
         ).called(1);
         verify(
           () => soapInventoryDatasource.get(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             parametersPayload: {
               "crossIdentity": crossIdentity,
               "enterpriseCode": enterpriseEntity.Code,
@@ -550,7 +550,7 @@ void main() {
   group("Products by request type", () {
     test("Should behave correctly when pass all params", () async {
       final response = await sut.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
         searchType: searchType,
@@ -566,7 +566,7 @@ void main() {
 
       verify(
         () => soapProductByRequestTypeDatasource.load(
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           parametersPayload: {
             "crossIdentity": crossIdentity,
             "enterpriseCode":
@@ -591,7 +591,7 @@ void main() {
 
         try {
           final response = await sut.load(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: enterpriseEntity,
             searchType: searchType,
@@ -607,7 +607,7 @@ void main() {
 
         verify(
           () => soapProductByRequestTypeDatasource.load(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             parametersPayload: {
               "crossIdentity": crossIdentity,
               "enterpriseCode":
@@ -623,7 +623,7 @@ void main() {
         ).called(1);
         verify(
           () => soapProductByRequestTypeDatasource.load(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             parametersPayload: {
               "crossIdentity": crossIdentity,
               "enterpriseCode":
@@ -651,7 +651,7 @@ void main() {
   group("Receipt products", () {
     test("Should behave correctly when pass all params", () async {
       final response = await sut.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
         searchType: searchType,
@@ -667,7 +667,7 @@ void main() {
 
       verify(
         () => soapReceiptLoadProductsDatasource.get(
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           parametersPayload: {
             "crossIdentity": crossIdentity,
             "grDocCode": getProductsReceiptParams.grDocCode,
@@ -687,7 +687,7 @@ void main() {
 
         try {
           final response = await sut.load(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: enterpriseEntity,
             searchType: searchType,
@@ -703,7 +703,7 @@ void main() {
 
         verify(
           () => soapReceiptLoadProductsDatasource.get(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             parametersPayload: {
               "crossIdentity": crossIdentity,
               "grDocCode": getProductsReceiptParams.grDocCode,
@@ -714,7 +714,7 @@ void main() {
         ).called(1);
         verify(
           () => soapReceiptLoadProductsDatasource.get(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             parametersPayload: {
               "crossIdentity": crossIdentity,
               "grDocCode": getProductsReceiptParams.grDocCode,

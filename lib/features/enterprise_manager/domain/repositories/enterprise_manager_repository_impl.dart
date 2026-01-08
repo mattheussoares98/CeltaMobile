@@ -56,13 +56,13 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
 
     // 2- try make login in bs
     final user = await soapLoginDatasource.login(
-      urlInUse: workingUrl,
+      workingUrl: workingUrl,
       user: userName,
       password: password,
     );
     // 3- load enterprises from bs
     final enterprises = await soapEnterpriseDatasource.getEnterprises(
-      urlInUse: workingUrl,
+      workingUrl: workingUrl,
       crossIdentity: user.CrossIdentity_Usuario ?? "",
     );
     // 4- try create enterprise in supabase

@@ -24,7 +24,7 @@ class ConsumerCustomerStasteController
           searchType: SearchCustomerType.exactCode,
           searchValue: '-1',
           crossIdentity: validatedUserSession!.user.CrossIdentity_Usuario!,
-          urlInUse: validatedUserSession.enterprise!.urlInUse!,
+          workingUrl: validatedUserSession.enterprise!.workingUrl!,
           enterpriseCode: selectedEnterprise!.Code!,
         );
 

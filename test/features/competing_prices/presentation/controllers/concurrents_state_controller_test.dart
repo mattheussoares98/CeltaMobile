@@ -43,7 +43,7 @@ void main() {
     when(
       () => mockRepository.insertUpdate(
         crossIdentity: any(named: 'crossIdentity'),
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         concurrentCode: any(named: 'concurrentCode'),
         concurrentName: any(named: 'concurrentName'),
         observation: any(named: 'observation'),
@@ -71,7 +71,7 @@ void main() {
     when(
       () => mockRepository.load(
         crossIdentity: any(named: 'crossIdentity'),
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         searchValue: any(named: 'searchValue'),
       ),
     ).thenAnswer((_) async => data);
@@ -86,7 +86,7 @@ void main() {
         when(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             searchValue: any(named: 'searchValue'),
           ),
         ).thenAnswer((_) async {
@@ -107,7 +107,7 @@ void main() {
         verify(
           () => mockRepository.load(
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             searchValue: null, // Verify the default is passed
           ),
         ).called(1);
@@ -131,7 +131,7 @@ void main() {
         verifyNever(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             searchValue: any(named: 'searchValue'),
           ),
         );
@@ -144,7 +144,7 @@ void main() {
       when(
         () => mockRepository.load(
           crossIdentity: any(named: 'crossIdentity'),
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           searchValue: any(named: 'searchValue'),
         ),
       ).thenThrow(exception);
@@ -186,7 +186,7 @@ void main() {
         verify(
           () => mockRepository.insertUpdate(
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             concurrentCode: fakeConcurrents.first.ConcurrentCode,
             concurrentName: fakeName,
             observation: fakeObservation,
@@ -215,7 +215,7 @@ void main() {
             concurrentName: any(named: 'concurrentName'),
             observation: any(named: 'observation'),
             address: any(named: 'address'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
           ),
         ).thenAnswer((_) async {});
@@ -223,7 +223,7 @@ void main() {
         when(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             searchValue: any(named: 'searchValue'),
           ),
         ).thenAnswer((_) async => fakeConcurrents);
@@ -257,7 +257,7 @@ void main() {
             concurrentName: fakeName,
             observation: fakeObservation,
             address: fakeAddress,
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
           ),
         ).called(1);

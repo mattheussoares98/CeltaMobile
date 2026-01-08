@@ -1,6 +1,6 @@
 abstract class ISoapUpdateProductDatasource {
   Future<void> update({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int grDocCode,
     required int productCode,

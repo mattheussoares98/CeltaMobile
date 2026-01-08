@@ -11,7 +11,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int enterpriseCode;
   late List<ReceiptModel> receiptModels;
@@ -31,7 +31,7 @@ void main() {
   }
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
     receiptModels = [
@@ -50,7 +50,7 @@ void main() {
 
   test('should call soap adapter with correct values', () async {
     final response = await sut.loadReceipts(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
     );
@@ -59,7 +59,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "GetActiveGRDocsStatusResponse",
         soapAction: "GetActiveGRDocsStatus",
         serviceASMX: "CeltaGoodsReceivingService.asmx",

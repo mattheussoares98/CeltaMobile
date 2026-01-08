@@ -72,7 +72,7 @@ void main() {
         () => resourceRepositorySpy.canAccessResource(
           resource: resource,
           routine: routine,
-          urlInUse: userSessionEntity.supabaseEnterprise!.urlInUse!,
+          workingUrl: userSessionEntity.supabaseEnterprise!.workingUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
         ),
       ).called(1);

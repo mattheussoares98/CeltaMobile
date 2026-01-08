@@ -3,7 +3,7 @@ import '../../models/models.dart';
 
 abstract class ISoapTransferJustificationDatasource {
   Future<List<TransferJustificationModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required TransferJustificationType type,
   });

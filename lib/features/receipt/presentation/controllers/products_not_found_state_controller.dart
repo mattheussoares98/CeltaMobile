@@ -15,7 +15,7 @@ class ProductsNotFoundStateController
     return await ref
         .read(soapLoadProductsNotFoundRepositoryProvider)
         .load(
-          urlInUse: validatedUser!.enterprise!.urlInUse!,
+          workingUrl: validatedUser!.enterprise!.workingUrl!,
           crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
           receiptCode: receiptCode,
         );

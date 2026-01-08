@@ -10,11 +10,11 @@ class SoapLoadBuyersDatasource implements ISoapLoadBuyersDatasource {
 
   @override
   Future<List<BuyerModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetEmployeeJsonResponse",
       soapAction: "GetEmployeeJson",
       serviceASMX: "CeltaEmployeeService.asmx",

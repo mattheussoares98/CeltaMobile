@@ -3,7 +3,7 @@ import '../models/models.dart';
 
 abstract class ISoapLoadBuyQuotationsDatasource {
   Future<List<BuyQuotationModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
     required bool isCompleteSearch,

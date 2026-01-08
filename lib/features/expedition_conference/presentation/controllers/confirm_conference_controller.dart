@@ -21,7 +21,7 @@ class ConfirmConferenceController extends _$ConfirmConferenceController {
       final repository = ref.read(soapConfirmConferenceRepositoryProvider);
 
       await repository.confirm(
-        urlInUse: userSession!.enterprise!.urlInUse!,
+        workingUrl: userSession!.enterprise!.workingUrl!,
         crossIdentity: userSession.user.CrossIdentity_Usuario!,
         expeditionControlCode: expeditionControlCode,
         stepCode: stepCode,

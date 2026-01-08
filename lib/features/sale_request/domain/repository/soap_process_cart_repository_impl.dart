@@ -13,7 +13,7 @@ class SoapProcessCartRepositoryImpl implements ISoapProcessCartRepository {
   @override
   Future<ProcessedCartEntity> process({
     required String crossId,
-    required String urlInUse,
+    required String workingUrl,
     required int enterpriseCode,
     required int requestTypeCode,
     required int customerCode,
@@ -22,7 +22,7 @@ class SoapProcessCartRepositoryImpl implements ISoapProcessCartRepository {
   }) async {
     final response = await datasource.process(
       crossId: crossId,
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,
       customerCode: customerCode,

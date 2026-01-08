@@ -8,12 +8,12 @@ class SoapLiberateDocumentDatasource
 
   @override
   Future<void> liberate({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int CodigoInterno_ProcRecebDoc,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "LiberateGRDocResponse",
       soapAction: "LiberateGRDoc",
       serviceASMX: "CeltaGoodsReceivingService.asmx",

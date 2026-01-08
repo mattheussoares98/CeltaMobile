@@ -13,7 +13,7 @@ void main() {
   late SoapLoadCovenantsDatasourceSpy datasource;
 
   late List<CovenantEntity> covenantEntities;
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late SearchCovenantType searchCovenantType;
   late String searchValue;
@@ -38,7 +38,7 @@ void main() {
       EntityFactory.makeCovenantEntity(),
       EntityFactory.makeCovenantEntity(),
     ];
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     searchCovenantType =
         SearchCovenantType.values[faker.randomGenerator.integer(
@@ -64,7 +64,7 @@ void main() {
   group('Load Covenants', () {
     test('should behave correctly on success', () async {
       final covenants = await sut.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         searchCovenantType: searchCovenantType,
         searchValue: searchValue,
@@ -73,7 +73,7 @@ void main() {
       expect(covenants, covenantEntities);
       verify(
         () => datasource.load(
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           crossIdentity: crossIdentity,
           searchCovenantType: searchCovenantType,
           searchValue: searchValue,

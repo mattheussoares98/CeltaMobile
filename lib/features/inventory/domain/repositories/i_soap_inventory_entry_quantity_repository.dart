@@ -1,6 +1,6 @@
 abstract class ISoapInventoryEntryQuantityRepository {
   Future<void> entry({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int codigoInternoInvCont,
     required int productPackingCode,

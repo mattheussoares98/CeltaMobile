@@ -8,7 +8,7 @@ class SoapInventoryEntryQuantityDatasource
 
   @override
   Future<void> entry({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int codigoInternoInvCont,
     required int productPackingCode,
@@ -16,7 +16,7 @@ class SoapInventoryEntryQuantityDatasource
     required bool isSubtract,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResult: null,
       typeOfResponse: "EntryQuantityResponse",
       soapAction: "EntryQuantity",

@@ -14,7 +14,7 @@ void main() {
   late SoapRequestSpy soapRequest;
 
   late String crossId;
-  late String urlInUse;
+  late String workingUrl;
   late int enterpriseCode;
   late int requestTypeCode;
   late int customerCode;
@@ -35,7 +35,7 @@ void main() {
   }
 
   void initEntities() {
-    urlInUse = faker.internet.httpsUrl();
+    workingUrl = faker.internet.httpsUrl();
     enterpriseCode = faker.randomGenerator.integer(1000);
     requestTypeCode = faker.randomGenerator.integer(1000);
     customerCode = faker.randomGenerator.integer(1000);
@@ -69,7 +69,7 @@ void main() {
   test('should call with correct params', () async {
     final result = await sut.process(
       crossId: crossId,
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,
       customerCode: customerCode,
@@ -81,7 +81,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "ProcessCartResponse",
         soapAction: "ProcessCart",
         serviceASMX: "CeltaSaleRequestService.asmx",
@@ -114,7 +114,7 @@ void main() {
     () async {
       final result = await sut.process(
         crossId: crossId,
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,
         customerCode: customerCode,
@@ -126,7 +126,7 @@ void main() {
 
       verify(
         () => soapRequest.post(
-          url: urlInUse,
+          url: workingUrl,
           typeOfResponse: "ProcessCartResponse",
           soapAction: "ProcessCart",
           serviceASMX: "CeltaSaleRequestService.asmx",

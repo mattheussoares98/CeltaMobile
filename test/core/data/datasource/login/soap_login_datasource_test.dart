@@ -45,7 +45,7 @@ void main() {
       );
 
       await sut.login(
-        urlInUse: " $url ".toUpperCase(),
+        workingUrl: " $url ".toUpperCase(),
         user: user,
         password: password,
       );
@@ -67,7 +67,7 @@ void main() {
       soapAdapter.mockPost(invalidResponde);
 
       final future = sut.login(
-        urlInUse: " $url ".toUpperCase(),
+        workingUrl: " $url ".toUpperCase(),
         user: user,
         password: password,
       );

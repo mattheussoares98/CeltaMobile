@@ -14,7 +14,7 @@ void main() {
   late SoapInsertBuyRequestDatasourceSpy datasource;
 
   late String savedRequestNumber;
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int buyerCode;
   late int requestTypeCode;
@@ -37,7 +37,7 @@ void main() {
 
   void initEntities() {
     savedRequestNumber = faker.lorem.word();
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     buyerCode = faker.randomGenerator.integer(100);
     requestTypeCode = faker.randomGenerator.integer(100);
@@ -72,7 +72,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.insertBuyRequest(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       buyerCode: buyerCode,
       requestTypeCode: requestTypeCode,
@@ -85,7 +85,7 @@ void main() {
     expect(response, savedRequestNumber);
     verify(
       () => datasource.insertBuyRequest(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         buyerCode: buyerCode,
         requestTypeCode: requestTypeCode,

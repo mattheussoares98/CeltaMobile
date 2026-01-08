@@ -12,12 +12,12 @@ class SoapConcurrentsDatasource implements ISoapConcurrentsDatasource {
   @override
   Future<List<ConcurrentModel>> load({
     required String crossIdentity,
-    required String urlInUse,
+    required String workingUrl,
     required SearchConcurrentType searchType,
     required String searchValue,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       soapAction: "GetConcurrentJson",
       typeOfResponse: "GetConcurrentJsonResponse",
       serviceASMX: "CeltaResearchOfPriceService.asmx",
@@ -39,11 +39,11 @@ class SoapConcurrentsDatasource implements ISoapConcurrentsDatasource {
   @override
   Future<void> insertUpdate({
     required String crossIdentity,
-    required String urlInUse,
+    required String workingUrl,
     required ConcurrentModel concurrent,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "InsertUpdateConcurrentJsonResponse",
       soapAction: "InsertUpdateConcurrentJson",
       serviceASMX: "CeltaResearchOfPriceService.asmx",

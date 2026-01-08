@@ -46,7 +46,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
           ),
         ).thenAnswer((_) async => fakeStockTypes);
@@ -73,7 +73,7 @@ void main() {
         ]);
         verify(
           () => mockRepository.load(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           ),
         ).called(1);

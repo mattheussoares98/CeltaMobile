@@ -9,14 +9,14 @@ class SoapLoadRequestTypeRepositoryImpl
 
   @override
   Future<List<RequestTypeEntity>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required bool inclusiveBuy,
     required bool inclusiveTransfer,
     required bool inclusiveSale,
   }) async {
     final result = await datasource.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       inclusiveBuy: inclusiveBuy,
       inclusiveTransfer: inclusiveTransfer,

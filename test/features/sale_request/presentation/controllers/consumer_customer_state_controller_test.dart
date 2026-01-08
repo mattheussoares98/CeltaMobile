@@ -69,7 +69,7 @@ void main() {
             searchType: any(named: 'searchType'),
             searchValue: any(named: 'searchValue'),
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),
         ).thenAnswer(
@@ -93,7 +93,7 @@ void main() {
           () => mockRepository.loadCustomer(
             searchType: SearchCustomerType.exactCode,
             searchValue: '-1',
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterprise.Code!,
           ),
@@ -109,7 +109,7 @@ void main() {
           searchValue: '-1',
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           enterpriseCode: fakeEnterprise.Code!,
-          urlInUse: fakeSession.enterprise!.urlInUse!,
+          workingUrl: fakeSession.enterprise!.workingUrl!,
         ),
       ).thenAnswer((_) async => []); // Return an empty list
 

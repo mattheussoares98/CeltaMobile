@@ -8,12 +8,12 @@ class SoapLoadReceiptsDatasource implements ISoapLoadReceiptsDatasource {
 
   @override
   Future<List<ReceiptModel>> loadReceipts({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetActiveGRDocsStatusResponse",
       soapAction: "GetActiveGRDocsStatus",
       serviceASMX: "CeltaGoodsReceivingService.asmx",

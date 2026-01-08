@@ -21,7 +21,7 @@ class MockSoapInsertProductNotFoundDatasource extends Mock
   MockSoapInsertProductNotFoundDatasource() {
     when(
       () => insert(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         productNotFound: any(named: 'productNotFound'),
         receiptCode: any(named: 'receiptCode'),
@@ -112,7 +112,7 @@ void main() {
         // Mock successful insertion
         when(
           () => mockDatasource.insert(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             productNotFound: any(named: 'productNotFound'),
             receiptCode: fakeReceiptCode,
@@ -150,7 +150,7 @@ void main() {
 
         verify(
           () => mockDatasource.insert(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             productNotFound: ProductNotFoundModel(
               internalCode: fakeInternalCode,
@@ -205,7 +205,7 @@ void main() {
         // Verify datasource was never called
         verifyNever(
           () => mockDatasource.insert(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             productNotFound: any(named: 'productNotFound'),
             receiptCode: any(named: 'receiptCode'),
@@ -219,7 +219,7 @@ void main() {
       final exception = Exception('Network Error');
       when(
         () => mockDatasource.insert(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           productNotFound: any(named: 'productNotFound'),
           receiptCode: any(named: 'receiptCode'),

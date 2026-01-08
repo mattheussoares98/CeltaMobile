@@ -10,13 +10,13 @@ class SoapConfirmConferenceDatasource
 
   @override
   Future<void> confirm({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int expeditionControlCode,
     required int stepCode,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "ConfirmConferenceResponse",
       soapAction: "ConfirmConference",
       serviceASMX: "CeltaProductService.asmx",

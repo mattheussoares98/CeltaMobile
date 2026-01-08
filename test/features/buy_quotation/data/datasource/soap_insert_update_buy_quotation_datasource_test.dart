@@ -13,7 +13,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
   late BuyQuotationModel buyQuotation;
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
 
   void initSut() {
@@ -32,7 +32,7 @@ void main() {
     buyQuotation = BuyQuotationModel.fromEntity(
       EntityFactory.makeBuyQuotationEntity(),
     );
-    urlInUse = faker.internet.httpsUrl();
+    workingUrl = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
   }
 
@@ -47,14 +47,14 @@ void main() {
 
   test('Should behave correctly on success', () async {
     await sut.insertUpdate(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       buyQuotation: buyQuotation,
     );
 
     verify(
       () => soapRequest.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "InsertUpdateBuyQuotationResponse",
         soapAction: "InsertUpdateBuyQuotation",
         serviceASMX: "CeltaBuyRequestService.asmx",

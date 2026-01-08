@@ -19,7 +19,7 @@ class ConcurrentsStateController extends _$ConcurrentsStateController {
         .read(soapConcurrentsRepositoryProvider)
         .load(
           crossIdentity: validatedUser!.user.CrossIdentity_Usuario!,
-          urlInUse: validatedUser.enterprise!.urlInUse!,
+          workingUrl: validatedUser.enterprise!.workingUrl!,
           searchValue: null,
         );
   }
@@ -39,7 +39,7 @@ class ConcurrentsStateController extends _$ConcurrentsStateController {
 
       await repository.insertUpdate(
         crossIdentity: validatedUser!.user.CrossIdentity_Usuario!,
-        urlInUse: validatedUser.enterprise!.urlInUse!,
+        workingUrl: validatedUser.enterprise!.workingUrl!,
         concurrentCode: concurrentCode,
         concurrentName: name,
         observation: observation,

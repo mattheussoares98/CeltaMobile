@@ -36,7 +36,7 @@ class SelectedIndexUpdateObservationsStateController
       await ref
           .read(soapUpdateObservationsDatasourceProvider)
           .update(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             CodigoInterno_ProcRecebDoc: CodigoInterno_ProcRecebDoc,
             observations: observations,

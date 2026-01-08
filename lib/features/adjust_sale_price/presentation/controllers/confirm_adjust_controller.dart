@@ -31,7 +31,7 @@ class ConfirmAdjustController extends _$ConfirmAdjustController {
       await ref
           .read(soapAdjustSalePriceRepositoryProvider)
           .confirm(
-            urlInUse: userSession!.enterprise!.urlInUse!,
+            workingUrl: userSession!.enterprise!.workingUrl!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             enterpriseCode: enterpriseCode,
             productCode: selectedProduct!.ProductCode!,

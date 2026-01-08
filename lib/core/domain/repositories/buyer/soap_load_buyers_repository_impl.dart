@@ -8,11 +8,11 @@ class SoapLoadBuyersRepositoryImpl implements ISoapLoadBuyersRepository {
 
   @override
   Future<List<BuyerEntity>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
   }) async {
     final response = await datasource.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
     );
 

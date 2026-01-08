@@ -21,7 +21,7 @@ class DestinyEnterprisesStateController
     final enterprises = await ref
         .watch(soapLoadDestinyEnterprisesRepositoryProvider)
         .load(
-          urlInUse: validatedUser!.enterprise!.urlInUse!,
+          workingUrl: validatedUser!.enterprise!.workingUrl!,
           crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
           requestTypeCode: requestTypeCode,
           enterpriseOriginCode: enterpriseOriginCode,

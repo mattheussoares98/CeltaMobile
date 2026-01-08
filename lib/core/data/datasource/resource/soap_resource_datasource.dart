@@ -12,12 +12,12 @@ class SoapResourceDatasource implements ISoapResourceDatasource {
   @override
   Future<bool> canAccessResource({
     required BsResource resource,
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required BsRoutine routine,
   }) async {
     final response = await soapAdapter.post(
-      url: urlInUse,
+      url: workingUrl,
       parameters: {
         "jsonParameters": json.encode({
           "CrossIdentity": crossIdentity,

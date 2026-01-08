@@ -4,7 +4,7 @@ import '../models/models.dart';
 
 abstract class ISoapExecuteOrDownloadScheduleDatasource {
   Future<List<ScheduleExecutionsModel>> executeOrDownloadSchedule({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int reportScheduleCode,
     required bool execute,

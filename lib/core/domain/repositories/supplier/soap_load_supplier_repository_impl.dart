@@ -11,13 +11,13 @@ class SoapLoadSupplierRepositoryImpl implements ISoapLoadSupplierRepository {
 
   @override
   Future<List<SupplierEntity>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required SearchSupplierType searchType,
     required String searchValue,
   }) async {
     final result = await datasource.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       searchType: searchType,
       searchValue: searchValue,

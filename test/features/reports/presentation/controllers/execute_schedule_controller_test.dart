@@ -81,7 +81,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.executeOrDownloadSchedule(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             reportScheduleCode: any(named: 'reportScheduleCode'),
             execute: any(named: 'execute'),
@@ -122,7 +122,7 @@ void main() {
         // 2. Verify repository was called with execute=true
         verify(
           () => mockRepository.executeOrDownloadSchedule(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             reportScheduleCode: fakeReportScheduleCode,
             execute: true, // Critical check
@@ -169,7 +169,7 @@ void main() {
         // 2. Verify repository was never called
         verifyNever(
           () => mockRepository.executeOrDownloadSchedule(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             reportScheduleCode: any(named: 'reportScheduleCode'),
             execute: any(named: 'execute'),
@@ -186,7 +186,7 @@ void main() {
       final exception = Exception('SOAP API Failed');
       when(
         () => mockRepository.executeOrDownloadSchedule(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           reportScheduleCode: any(named: 'reportScheduleCode'),
           execute: any(named: 'execute'),

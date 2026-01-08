@@ -69,7 +69,7 @@ void main() {
       when(
         () => mockRepository.load(
           crossIdentity: any(named: 'crossIdentity'),
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
           searchValue: any(named: 'searchValue'),
         ),
@@ -97,7 +97,7 @@ void main() {
       verify(
         () => mockRepository.load(
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-          urlInUse: fakeSession.enterprise!.urlInUse!,
+          workingUrl: fakeSession.enterprise!.workingUrl!,
           enterpriseCode: fakeEnterprise.Code!,
           searchValue: null,
         ),
@@ -112,7 +112,7 @@ void main() {
           when(
             () => mockRepository.load(
               crossIdentity: any(named: 'crossIdentity'),
-              urlInUse: any(named: 'urlInUse'),
+              workingUrl: any(named: 'workingUrl'),
               enterpriseCode: any(named: 'enterpriseCode'),
               searchValue: any(named: 'searchValue'),
             ),
@@ -147,7 +147,7 @@ void main() {
           verify(
             () => mockRepository.load(
               crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-              urlInUse: fakeSession.enterprise!.urlInUse!,
+              workingUrl: fakeSession.enterprise!.workingUrl!,
               enterpriseCode: fakeEnterprise.Code!,
               searchValue: fakeSearchValue,
             ),
@@ -170,7 +170,7 @@ void main() {
         verifyNever(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
             searchValue: any(named: 'searchValue'),
           ),
@@ -193,7 +193,7 @@ void main() {
           verifyNever(
             () => mockRepository.load(
               crossIdentity: any(named: 'crossIdentity'),
-              urlInUse: any(named: 'urlInUse'),
+              workingUrl: any(named: 'workingUrl'),
               enterpriseCode: any(named: 'enterpriseCode'),
               searchValue: any(named: 'searchValue'),
             ),
@@ -214,7 +214,7 @@ void main() {
         when(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
             searchValue: any(named: 'searchValue'),
           ),
@@ -267,7 +267,7 @@ void main() {
         when(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
             searchValue: any(named: 'searchValue'),
           ),

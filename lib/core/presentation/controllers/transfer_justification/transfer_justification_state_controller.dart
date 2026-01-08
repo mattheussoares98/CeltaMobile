@@ -33,11 +33,11 @@ class TransferJustificationStateController
     final repository = ref.watch(soapTransferJustificationRepositoryProvider);
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
-    final urlInUse = userSession!.enterprise!.urlInUse!;
+    final workingUrl = userSession!.enterprise!.workingUrl!;
     final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
     return await repository.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       type: type,
     );

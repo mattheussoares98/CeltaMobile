@@ -15,7 +15,7 @@ class RequestTypeStateController extends _$RequestTypeStateController {
     return await ref
         .read(soapLoadRequestTypeRepositoryProvider)
         .load(
-          urlInUse: userSession!.enterprise!.urlInUse!,
+          workingUrl: userSession!.enterprise!.workingUrl!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
           inclusiveBuy: module == Modules.buyRequest,
           inclusiveTransfer: module == Modules.transferRequest,

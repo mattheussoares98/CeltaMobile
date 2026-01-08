@@ -11,14 +11,14 @@ class SoapLoadRequestTypeDatasource implements ISoapLoadRequestTypeDatasource {
 
   @override
   Future<List<RequestTypeModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required bool inclusiveBuy,
     required bool inclusiveTransfer,
     required bool inclusiveSale,
   }) async {
     final result = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       serviceASMX: "CeltaRequestTypeService.asmx",
       typeOfResponse: "GetRequestTypesJsonResponse",
       soapAction: "GetRequestTypesJson",

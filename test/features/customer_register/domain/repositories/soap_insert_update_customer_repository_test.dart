@@ -13,7 +13,7 @@ void main() {
   late SoapInsertUpdateCustomerDatasourceSpy datasource;
 
   late String crossIdentity;
-  late String urlInUse;
+  late String workingUrl;
   late CustomerEntity customer;
 
   void initSut() {
@@ -31,7 +31,7 @@ void main() {
   void initEntities() {
     customer = EntityFactory.makeCustomerEntity();
     crossIdentity = faker.guid.guid();
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
   }
 
   setUp(() {
@@ -49,14 +49,14 @@ void main() {
   test('should behave correctly on success', () async {
     await sut.insertOrUpdateCustomer(
       customer: customer,
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
     );
 
     verify(
       () => datasource.insertOrUpdateCustomer(
         customer: CustomerModel.fromEntity(customer),
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
       ),
     ).called(1);

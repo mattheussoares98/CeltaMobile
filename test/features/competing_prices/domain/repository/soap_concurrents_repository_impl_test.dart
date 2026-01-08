@@ -14,7 +14,7 @@ class SoapLoadConcurrentsDatasourceSpy extends Mock
     when(
       () => this.insertUpdate(
         crossIdentity: any(named: 'crossIdentity'),
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         concurrent: any(named: 'concurrent'),
       ),
     ).thenAnswer((_) async {});
@@ -23,7 +23,7 @@ class SoapLoadConcurrentsDatasourceSpy extends Mock
     when(
       () => this.load(
         crossIdentity: any(named: 'crossIdentity'),
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         searchType: any(named: 'searchType'),
         searchValue: any(named: 'searchValue'),
       ),
@@ -36,7 +36,7 @@ void main() {
 
   late SoapLoadConcurrentsDatasourceSpy datasource;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late List<ConcurrentEntity> concurrentsEntities;
 
@@ -56,7 +56,7 @@ void main() {
 
   void initEntities() {
     crossIdentity = faker.guid.guid();
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     concurrentsEntities = [
       EntityFactory.makeConcurrentEntity(),
       EntityFactory.makeConcurrentEntity(),
@@ -88,7 +88,7 @@ void main() {
 
         final response = await sut.load(
           crossIdentity: crossIdentity,
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           searchValue: searchValue,
         );
 
@@ -97,7 +97,7 @@ void main() {
         verify(
           () => datasource.load(
             crossIdentity: crossIdentity,
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             searchType: SearchConcurrentType.approximateName,
             searchValue: searchValue,
           ),
@@ -113,7 +113,7 @@ void main() {
 
         final response = await sut.load(
           crossIdentity: crossIdentity,
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           searchValue: searchValue,
         );
 
@@ -122,7 +122,7 @@ void main() {
         verify(
           () => datasource.load(
             crossIdentity: crossIdentity,
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             searchType: SearchConcurrentType.exactCode,
             searchValue: searchValue,
           ),
@@ -137,7 +137,7 @@ void main() {
     test('Should call datasource with correct values', () async {
       await sut.insertUpdate(
         crossIdentity: crossIdentity,
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         concurrentCode: concurrentsEntities.first.ConcurrentCode,
         concurrentName: concurrentsEntities.first.Name!,
         observation: concurrentsEntities.first.Observation!,
@@ -147,7 +147,7 @@ void main() {
       verify(
         () => datasource.insertUpdate(
           crossIdentity: crossIdentity,
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           concurrent: ConcurrentModel.fromEntity(concurrentsEntities.first),
         ),
       );
@@ -157,7 +157,7 @@ void main() {
       () async {
         await sut.insertUpdate(
           crossIdentity: crossIdentity,
-          urlInUse: urlInUse,
+          workingUrl: workingUrl,
           concurrentCode: null,
           concurrentName: concurrentsEntities.first.Name!,
           observation: concurrentsEntities.first.Observation!,
@@ -167,7 +167,7 @@ void main() {
         verify(
           () => datasource.insertUpdate(
             crossIdentity: crossIdentity,
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             concurrent: ConcurrentModel.fromEntity(
               concurrentsEntities.first.copyWith(ConcurrentCode: 0),
             ),

@@ -25,7 +25,7 @@ class InsertUpdateCustomerController extends _$InsertUpdateCustomerController {
           .read(soapInsertUpdateCustomerRepositoryProvider)
           .insertOrUpdateCustomer(
             customer: customer!,
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
           );
     });

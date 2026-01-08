@@ -29,7 +29,7 @@ class EntityFactory {
   }) => EnterpriseEntity(
     id: id ?? faker.randomGenerator.integer(100),
     name: name ?? faker.company.name(),
-    urlInUse: faker.internet.httpsUrl(),
+    workingUrl: faker.internet.httpsUrl(),
     localHttpUrl: faker.internet.httpUrl(),
     localHttpsUrl: faker.internet.httpsUrl(),
     remoteHttpUrl: faker.internet.httpUrl(),

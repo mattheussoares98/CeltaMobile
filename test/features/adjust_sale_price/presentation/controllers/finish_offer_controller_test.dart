@@ -78,7 +78,7 @@ void main() async {
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
       verify(
         () => mockRepository.confirm(
-          urlInUse: userSessionEntity.supabaseEnterprise!.urlInUse!,
+          workingUrl: userSessionEntity.supabaseEnterprise!.workingUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseEntity.Code!,
           productCode: productEntity.ProductCode!,

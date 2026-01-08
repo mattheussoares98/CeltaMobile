@@ -12,7 +12,7 @@ void main() {
 
   late SoapLoadDestinyEnterprisesDatasourceSpy datasource;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int enterpriseOriginCode;
   late int requestTypeCode;
@@ -36,7 +36,7 @@ void main() {
   }
 
   void initEntities() {
-    urlInUse = faker.internet.httpsUrl();
+    workingUrl = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     enterpriseOriginCode = faker.randomGenerator.integer(1000);
     requestTypeCode = faker.randomGenerator.integer(1000);
@@ -57,7 +57,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       requestTypeCode: requestTypeCode,
       enterpriseOriginCode: enterpriseOriginCode,
@@ -67,7 +67,7 @@ void main() {
 
     verify(
       () => datasource.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         requestTypeCode: requestTypeCode,
         enterpriseOriginCode: enterpriseOriginCode,

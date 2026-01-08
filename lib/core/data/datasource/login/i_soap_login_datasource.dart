@@ -3,7 +3,7 @@ import '../../../../features/auth/data/models/models.dart'; // Make sure to crea
 abstract class ISoapLoginDatasource {
   /// Calls the ERP login endpoint and returns the raw user data as a UserModel.
   Future<UserModel> login({
-    required String urlInUse,
+    required String workingUrl,
     required String user,
     required String password,
   });

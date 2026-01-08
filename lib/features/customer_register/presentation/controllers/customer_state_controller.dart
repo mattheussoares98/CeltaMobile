@@ -33,7 +33,7 @@ class CustomerStateController extends _$CustomerStateController {
             searchType: SearchCustomerType.exactCnpjCpfNumber,
             searchValue: cpfCnpj,
             crossIdentity: validatedUserSession!.user.CrossIdentity_Usuario!,
-            urlInUse: validatedUserSession.enterprise!.urlInUse!,
+            workingUrl: validatedUserSession.enterprise!.workingUrl!,
             enterpriseCode: selectedEnterprise!.Code!,
           );
 

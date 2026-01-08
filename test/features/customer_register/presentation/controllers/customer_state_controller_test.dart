@@ -79,7 +79,7 @@ void main() {
             searchType: SearchCustomerType.exactCnpjCpfNumber,
             searchValue: fakeCpfCnpj,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             enterpriseCode: fakeEnterprise.Code!,
           ),
         ).called(1);

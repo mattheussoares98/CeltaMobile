@@ -137,7 +137,7 @@ void main() {
 
           when(
             () => mockRepository.executeOrDownloadSchedule(
-              urlInUse: any(named: 'urlInUse'),
+              workingUrl: any(named: 'workingUrl'),
               crossIdentity: any(named: 'crossIdentity'),
               reportScheduleCode: any(named: 'reportScheduleCode'),
               execute: any(named: 'execute'),
@@ -185,7 +185,7 @@ void main() {
           // 3. Verify the main repository was called
           verify(
             () => mockRepository.executeOrDownloadSchedule(
-              urlInUse: fakeSession.enterprise!.urlInUse!,
+              workingUrl: fakeSession.enterprise!.workingUrl!,
               crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
               reportScheduleCode: fakeReportScheduleCode,
               execute: false,
@@ -209,7 +209,7 @@ void main() {
           );
           when(
             () => mockRepository.executeOrDownloadSchedule(
-              urlInUse: any(named: 'urlInUse'),
+              workingUrl: any(named: 'workingUrl'),
               crossIdentity: any(named: 'crossIdentity'),
               reportScheduleCode: any(named: 'reportScheduleCode'),
               execute: any(named: 'execute'),

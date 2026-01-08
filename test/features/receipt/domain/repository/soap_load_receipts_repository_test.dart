@@ -12,7 +12,7 @@ class SoapLoadReceiptsDatasourceSpy extends Mock
     implements ISoapLoadReceiptsDatasource {
   void mockLoad(List<ReceiptModel> response) => when(
     () => this.loadReceipts(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
     ),
@@ -25,7 +25,7 @@ void main() {
 
   late List<ReceiptEntity> receiptsEntities;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int enterpriseCode;
 
@@ -39,7 +39,7 @@ void main() {
       EntityFactory.makeReceiptEntity(),
     ];
 
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
 
@@ -50,7 +50,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.loadReceipts(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
     );
@@ -59,7 +59,7 @@ void main() {
 
     verify(
       () => mockDatasource.loadReceipts(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
       ),

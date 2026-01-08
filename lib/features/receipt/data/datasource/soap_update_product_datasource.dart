@@ -7,7 +7,7 @@ class SoapUpdateProductDatasource implements ISoapUpdateProductDatasource {
 
   @override
   Future<void> update({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int grDocCode,
     required int productCode,
@@ -16,7 +16,7 @@ class SoapUpdateProductDatasource implements ISoapUpdateProductDatasource {
     required DateTime? newValidityDate,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "EntryQuantityResponse",
       soapAction: "EntryQuantity",
       serviceASMX: "CeltaGoodsReceivingService.asmx",

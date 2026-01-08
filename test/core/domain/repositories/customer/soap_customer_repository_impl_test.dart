@@ -17,7 +17,7 @@ void main() {
   late String searchValue;
   late String crossIdentity;
   late int enterpriseCode;
-  late String urlInUse;
+  late String workingUrl;
 
   void initSut() {
     sut = SoapCustomerRepositoryImpl(soapCustomerDatasource);
@@ -46,7 +46,7 @@ void main() {
     searchValue = faker.guid.guid();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
   }
 
   setUp(() {
@@ -68,7 +68,7 @@ void main() {
       searchValue: searchValue,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
     );
 
     expect(response, customersEntities);
@@ -78,7 +78,7 @@ void main() {
         searchValue: searchValue,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
       ),
     );
     verifyNoMoreInteractions(soapCustomerDatasource);

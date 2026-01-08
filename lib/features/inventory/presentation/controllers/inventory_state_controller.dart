@@ -31,7 +31,7 @@ class InventoryStateController extends _$InventoryStateController {
     return await ref
         .read(soapLoadInventoryRepositoryProvider)
         .load(
-          urlInUse: validatedUser!.enterprise!.urlInUse!,
+          workingUrl: validatedUser!.enterprise!.workingUrl!,
           crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseCode,
         );

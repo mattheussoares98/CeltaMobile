@@ -12,13 +12,13 @@ class SoapLoadBuyQuotationsRepositoryImpl
 
   @override
   Future<List<BuyQuotationEntity>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
     required String? codeForFullSearch,
   }) async {
     final response = await datasource.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       isCompleteSearch: codeForFullSearch != null,

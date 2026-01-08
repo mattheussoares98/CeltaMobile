@@ -10,7 +10,7 @@ class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
 
   @override
   Future<void> confirm({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
     required int productCode,
@@ -54,7 +54,7 @@ class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
 
     //TODO create a ticket because even I am sending 5,99 is applying 6
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       parameters: {"parameters": json.encode(params)},
       typeOfResponse: 'AdjustSalePriceResponse',
       typeOfResult: 'AdjustSalePriceResult',

@@ -41,7 +41,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       final saleRequestNumber = await ref
           .read(soapSaveSaleRequestRepositoryProvider)
           .save(
-            urlInUse: validateduser!.enterprise!.urlInUse!,
+            workingUrl: validateduser!.enterprise!.workingUrl!,
             crossIdentity: validateduser.user.CrossIdentity_Usuario!,
             enterpriseCode: selectedEnterprise!.Code!,
             requestTypeCode: requestTypeCode,

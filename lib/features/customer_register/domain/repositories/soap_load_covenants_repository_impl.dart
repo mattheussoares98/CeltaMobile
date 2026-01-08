@@ -8,13 +8,13 @@ class SoapLoadCovenantsRepositoryImpl implements ISoapLoadCovenantsRepository {
 
   @override
   Future<List<CovenantEntity>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required SearchCovenantType searchCovenantType,
     required String searchValue,
   }) async {
     final response = await datasource.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       searchCovenantType: searchCovenantType,
       searchValue: searchValue,

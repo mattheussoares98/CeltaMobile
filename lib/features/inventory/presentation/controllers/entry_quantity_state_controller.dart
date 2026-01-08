@@ -63,7 +63,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
       await ref
           .read(soapInventoryEntryQuantityRepositoryProvider)
           .entry(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
             productPackingCode: codigoInternoProEmb,
@@ -110,7 +110,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
       await ref
           .read(soapInventoryAnnulRepositoryProvider)
           .annul(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
             codigoInternoProEmb: codigoInternoProEmb,

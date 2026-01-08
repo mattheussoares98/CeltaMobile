@@ -8,13 +8,13 @@ class SoapConfirmConferenceRepositoryImpl
 
   @override
   Future<void> confirm({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int expeditionControlCode,
     required int stepCode,
   }) async {
     await datasource.confirm(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       expeditionControlCode: expeditionControlCode,
       stepCode: stepCode,

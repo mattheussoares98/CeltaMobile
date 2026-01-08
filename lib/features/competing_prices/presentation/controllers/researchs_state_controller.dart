@@ -34,7 +34,7 @@ class ResearchsStateController extends _$ResearchsStateController {
 
     final researchs = await repository.load(
       crossIdentity: validatedUserSession!.user.CrossIdentity_Usuario!,
-      urlInUse: validatedUserSession.enterprise!.urlInUse!,
+      workingUrl: validatedUserSession.enterprise!.workingUrl!,
       enterpriseCode: selectedEnterprise!.Code!,
       searchValue: searchValue,
     );

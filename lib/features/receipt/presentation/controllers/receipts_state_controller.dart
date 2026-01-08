@@ -31,7 +31,7 @@ class ReceiptsStateController extends _$ReceiptsStateController {
     return await ref
         .read(soapLoadReceiptsRepositoryProvider)
         .loadReceipts(
-          urlInUse: validatedUser!.enterprise!.urlInUse!,
+          workingUrl: validatedUser!.enterprise!.workingUrl!,
           crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseCode,
         );

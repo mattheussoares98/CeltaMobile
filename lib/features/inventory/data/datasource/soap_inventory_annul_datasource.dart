@@ -7,13 +7,13 @@ class SoapInventoryAnnulDatasource implements ISoapInventoryAnnulDatasource {
 
   @override
   Future<void> annul({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int codigoInternoInvCont,
     required int codigoInternoProEmb,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResult: null,
       typeOfResponse: "AnnulQuantityResponse",
       soapAction: "AnnulQuantity",

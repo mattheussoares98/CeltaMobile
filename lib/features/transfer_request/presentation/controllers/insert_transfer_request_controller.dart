@@ -28,7 +28,7 @@ class InsertTransferRequestController
       final response = await ref
           .read(soapInsertTransferRequestRepositoryProvider)
           .save(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             enterpriseOriginCode: draftKey.enterpriseOrigin,
             enterpriseDestinyCode: draftKey.enterpriseDestinyCode,

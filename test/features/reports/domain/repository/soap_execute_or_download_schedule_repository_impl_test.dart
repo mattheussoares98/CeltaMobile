@@ -11,7 +11,7 @@ class SoapExecuteOrDownloadScheduleDatasourceSpy extends Mock
     implements ISoapExecuteOrDownloadScheduleDatasource {
   void mockLoad(List<ScheduleExecutionsModel> response) => when(
     () => this.executeOrDownloadSchedule(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       reportScheduleCode: any(named: 'reportScheduleCode'),
       execute: any(named: 'execute'),
@@ -25,7 +25,7 @@ void main() {
   late ISoapExecuteOrDownloadScheduleRepository sut;
   late SoapExecuteOrDownloadScheduleDatasourceSpy mockDatasource;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late List<ScheduleExecutionsModel> reportScheduleExecutionsModels;
   late int reportScheduleCode;
@@ -42,7 +42,7 @@ void main() {
       EntityFactory.makeScheduleExecutionsEntity(),
     ].map((e) => ScheduleExecutionsModel.fromEntity(e)).toList();
 
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     reportScheduleCode = faker.randomGenerator.integer(100);
     downloadPdf = faker.randomGenerator.boolean();
@@ -63,7 +63,7 @@ void main() {
 
   test('should behave correctly on success when is not executing', () async {
     final response = await sut.executeOrDownloadSchedule(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       reportScheduleCode: reportScheduleCode,
       execute: false,
@@ -79,7 +79,7 @@ void main() {
 
     verify(
       () => mockDatasource.executeOrDownloadSchedule(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         reportScheduleCode: reportScheduleCode,
         execute: false,
@@ -96,7 +96,7 @@ void main() {
     final sendEmailOnExecution = faker.randomGenerator.boolean();
 
     final response = await sut.executeOrDownloadSchedule(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       reportScheduleCode: reportScheduleCode,
       execute: true,
@@ -109,7 +109,7 @@ void main() {
 
     verify(
       () => mockDatasource.executeOrDownloadSchedule(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         reportScheduleCode: reportScheduleCode,
         execute: true,

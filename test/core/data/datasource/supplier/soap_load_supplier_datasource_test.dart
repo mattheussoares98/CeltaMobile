@@ -14,7 +14,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late String searchValue;
   late SearchSupplierType searchType;
@@ -31,7 +31,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     searchValue = faker.lorem.word();
     supplierModels = [
@@ -64,7 +64,7 @@ void main() {
     );
 
     final result = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       searchType: searchType,
       searchValue: searchValue,
@@ -74,7 +74,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: urlInUse,
+        url: workingUrl,
         serviceASMX: "CeltaSupplierService.asmx",
         typeOfResponse: "GetSupplierJsonResponse",
         soapAction: "GetSupplierJson",

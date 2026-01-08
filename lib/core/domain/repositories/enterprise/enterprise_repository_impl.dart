@@ -27,7 +27,7 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
     int? requestTypeCode,
   }) async {
     final erpEnterprises = await soapEnterpriseDatasource.getEnterprises(
-      urlInUse: url,
+      workingUrl: url,
       crossIdentity: crossIdentity,
       enterpriseOriginCode: enterpriseOriginCode,
       requestTypeCode: requestTypeCode,

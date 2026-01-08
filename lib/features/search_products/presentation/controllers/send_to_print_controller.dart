@@ -33,7 +33,7 @@ class SendToPrintController extends _$SendToPrintController {
       await ref
           .read(soapSendToPrintRepositoryProvider)
           .send(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             enterpriseCode: selectedEnterprise!.Code!,
             productPackingCode: productPackingCode,

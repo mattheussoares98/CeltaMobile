@@ -111,7 +111,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.save(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseOriginCode: any(named: 'enterpriseOriginCode'),
             enterpriseDestinyCode: any(named: 'enterpriseDestinyCode'),
@@ -135,7 +135,7 @@ void main() {
         // 1. Verify the repository was called
         verify(
           () => mockRepository.save(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseOriginCode: fakeDraftKey.enterpriseOrigin,
             enterpriseDestinyCode: fakeDraftKey.enterpriseDestinyCode,
@@ -180,7 +180,7 @@ void main() {
         // Verify no methods were called
         verifyNever(
           () => mockRepository.save(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseOriginCode: any(named: 'enterpriseOriginCode'),
             enterpriseDestinyCode: any(named: 'enterpriseDestinyCode'),

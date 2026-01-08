@@ -13,7 +13,7 @@ void main() {
   late SoapLoadSupplierDatasourceSpy soapStockTypeDatasource;
 
   late List<SupplierEntity> supplierEntities;
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late String searchValue;
   late SearchSupplierType searchType;
@@ -38,7 +38,7 @@ void main() {
       EntityFactory.makeSupplierEntity(),
       EntityFactory.makeSupplierEntity(),
     ];
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     searchType =
         SearchSupplierType.values[faker.randomGenerator.integer(
@@ -61,7 +61,7 @@ void main() {
 
   test("Should behave correctly on get", () async {
     final response = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       searchType: searchType,
       searchValue: searchValue,
@@ -71,7 +71,7 @@ void main() {
 
     verify(
       () => soapStockTypeDatasource.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         searchType: searchType,
         searchValue: searchValue,

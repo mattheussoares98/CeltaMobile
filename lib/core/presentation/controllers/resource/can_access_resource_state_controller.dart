@@ -13,7 +13,7 @@ class CanAccessResourceStateController
   Future<bool> build(BsRoutine routine, BsResource resource) async {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
-    final urlInUse = userSession!.enterprise!.urlInUse!;
+    final workingUrl = userSession!.enterprise!.workingUrl!;
     final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
     final resourceRepository = ref.watch(soapResourceRepositoryProvider);
@@ -21,7 +21,7 @@ class CanAccessResourceStateController
     return await resourceRepository.canAccessResource(
       resource: resource,
       routine: routine,
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
     );
   }

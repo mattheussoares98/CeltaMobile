@@ -13,13 +13,13 @@ class SoapLoadCovenantsDatasource implements ISoapLoadCovenantsDatasource {
 
   @override
   Future<List<CovenantModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required SearchCovenantType searchCovenantType,
     required String searchValue,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetCovenantJsonResponse",
       soapAction: "GetCovenantJson",
       serviceASMX: "CeltaCustomerService.asmx",

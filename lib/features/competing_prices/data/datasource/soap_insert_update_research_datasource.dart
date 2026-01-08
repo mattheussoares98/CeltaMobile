@@ -10,7 +10,7 @@ class SoapInsertUpdateResearchDatasource
 
   @override
   Future<void> insertUpdate({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
     required String name,
@@ -19,7 +19,7 @@ class SoapInsertUpdateResearchDatasource
     String? observations,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "InsertUpdateResearchOfPriceResponse",
       soapAction: "InsertUpdateResearchOfPrice",
       serviceASMX: "CeltaResearchOfPriceService.asmx",

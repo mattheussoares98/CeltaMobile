@@ -14,7 +14,7 @@ void main() {
 
   late List<SoapEnterpriseByFiltersModel> enterprisesModels;
   late String crossIdentity;
-  late String urlInUse;
+  late String workingUrl;
   late int supplierCode;
   late int requestTypeCode;
 
@@ -38,7 +38,7 @@ void main() {
     ].map((e) => SoapEnterpriseByFiltersModel.fromEntity(e)).toList();
 
     crossIdentity = faker.guid.guid();
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     supplierCode = faker.randomGenerator.integer(100);
     requestTypeCode = faker.randomGenerator.integer(100);
   }
@@ -59,7 +59,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final buyers = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       supplierCode: supplierCode,
       requestTypeCode: requestTypeCode,
@@ -68,7 +68,7 @@ void main() {
     expect(buyers, enterprisesModels.map((e) => e.toEntity()).toList());
     verify(
       () => datasource.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         supplierCode: supplierCode,
         requestTypeCode: requestTypeCode,

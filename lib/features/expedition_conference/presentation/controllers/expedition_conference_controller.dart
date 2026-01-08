@@ -15,7 +15,7 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
     final initialProducts = await ref
         .read(soapLoadPendingProductsRepositoryProvider)
         .load(
-          urlInUse: userSession!.enterprise!.urlInUse!,
+          workingUrl: userSession!.enterprise!.workingUrl!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
           expeditionControlCode: expeditionControlCode,
         );

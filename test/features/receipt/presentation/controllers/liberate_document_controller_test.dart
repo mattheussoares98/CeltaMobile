@@ -58,7 +58,7 @@ void main() {
         // ARRANGE
         when(
           () => mockDatasource.liberate(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             CodigoInterno_ProcRecebDoc: fakeDocCode,
           ),
@@ -87,7 +87,7 @@ void main() {
         // 2. Verify datasource call
         verify(
           () => mockDatasource.liberate(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             CodigoInterno_ProcRecebDoc: fakeDocCode,
           ),
@@ -122,7 +122,7 @@ void main() {
         // Verify datasource was never called
         verifyNever(
           () => mockDatasource.liberate(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             CodigoInterno_ProcRecebDoc: any(
               named: 'CodigoInterno_ProcRecebDoc',
@@ -137,7 +137,7 @@ void main() {
       final exception = Exception('API access failed');
       when(
         () => mockDatasource.liberate(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           CodigoInterno_ProcRecebDoc: any(named: 'CodigoInterno_ProcRecebDoc'),
         ),

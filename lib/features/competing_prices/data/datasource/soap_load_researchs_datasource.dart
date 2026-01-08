@@ -12,12 +12,12 @@ class SoapLoadResearchsDatasource implements ISoapLoadResearchsDatasource {
   @override
   Future<List<ResearchModel>> load({
     required String crossIdentity,
-    required String urlInUse,
+    required String workingUrl,
     required int enterpriseCode,
     String? searchValue,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetResearchOfPriceJsonResponse",
       soapAction: "GetResearchOfPriceJson",
       serviceASMX: "CeltaResearchOfPriceService.asmx",

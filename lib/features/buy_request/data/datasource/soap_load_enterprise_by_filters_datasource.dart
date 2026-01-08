@@ -12,13 +12,13 @@ class SoapLoadEnterpriseByFiltersDatasource
 
   @override
   Future<List<SoapEnterpriseByFiltersModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int supplierCode,
     required int requestTypeCode,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       serviceASMX: "CeltaEnterpriseService.asmx",
       typeOfResponse: "GetEnterprisesJsonByFiltersResponse",
       soapAction: "GetEnterprisesJsonByFilters",

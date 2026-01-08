@@ -10,12 +10,12 @@ class SoapGetProductsJsonDatasource implements ISoapGetProductsJsonDatasource {
 
   @override
   Future<List<ProductModelType>> get({
-    required String urlInUse,
+    required String workingUrl,
     required Map<String, dynamic> parametersPayload,
     required bool isCompetingPrices,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetProductsJsonResponse",
       typeOfResult: "GetProductsJsonResult",
       soapAction: "GetProductsJson",

@@ -151,7 +151,7 @@ void main() {
       // Stub all async calls
       when(
         () => mockSoapSaveSaleRequestRepository.save(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
           requestTypeCode: any(named: 'requestTypeCode'),
@@ -185,7 +185,7 @@ void main() {
       // 2. Verify SOAP repository was called
       verify(
         () => mockSoapSaveSaleRequestRepository.save(
-          urlInUse: fakeSession.enterprise!.urlInUse!,
+          workingUrl: fakeSession.enterprise!.workingUrl!,
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           enterpriseCode: fakeEnterprise.Code!,
           requestTypeCode: fakeRequestTypeCode,
@@ -267,7 +267,7 @@ void main() {
       // Verify no side-effects happened
       verifyNever(
         () => mockSoapSaveSaleRequestRepository.save(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
           requestTypeCode: any(named: 'requestTypeCode'),

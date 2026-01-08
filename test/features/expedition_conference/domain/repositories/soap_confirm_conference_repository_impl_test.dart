@@ -10,7 +10,7 @@ void main() {
 
   late SoapConfirmConferenceDatasourceSpy datasource;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int expeditionControlCode;
   late int stepCode;
@@ -26,7 +26,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    urlInUse = faker.internet.httpsUrl();
+    workingUrl = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     expeditionControlCode = faker.randomGenerator.integer(1000);
     stepCode = faker.randomGenerator.integer(1000);
@@ -41,7 +41,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     await sut.confirm(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       expeditionControlCode: expeditionControlCode,
       stepCode: stepCode,
@@ -49,7 +49,7 @@ void main() {
 
     verify(
       () => datasource.confirm(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         expeditionControlCode: expeditionControlCode,
         stepCode: stepCode,

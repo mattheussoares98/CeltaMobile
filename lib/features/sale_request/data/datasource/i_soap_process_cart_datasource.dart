@@ -3,7 +3,7 @@ import '../models/models.dart';
 abstract class ISoapProcessCartDatasource {
   Future<ProcessedCartModel> process({
     required String crossId,
-    required String urlInUse,
+    required String workingUrl,
     required int enterpriseCode,
     required int requestTypeCode,
     required int customerCode,

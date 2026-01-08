@@ -15,13 +15,13 @@ class EnterprisesStateController extends _$EnterprisesStateController {
   Future<List<EnterpriseEntity>> build({int? enterpriseCode}) async {
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
-    final urlInUse = validatedUser!.enterprise!.remoteHttpUrl!; //TODO fix
+    final workingUrl = validatedUser!.enterprise!.remoteHttpUrl!; //TODO fix
     final crossIdentity = validatedUser.user.CrossIdentity_Usuario!;
 
     final enterprises = await ref
         .watch(enterpriseRepositoryProvider)
         .getSoapEnterprises(
-          url: urlInUse,
+          url: workingUrl,
           crossIdentity: crossIdentity,
           enterpriseOriginCode: enterpriseCode,
           enterpriseIdInSupabase: validatedUser.enterprise!.id!,

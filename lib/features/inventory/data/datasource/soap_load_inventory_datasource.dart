@@ -9,12 +9,12 @@ class SoapLoadInventoryDatasource implements ISoapLoadInventoryDatasource {
 
   @override
   Future<InventoryModel> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
   }) async {
     final response = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetFrozenProcessesResponse",
       soapAction: "GetFrozenProcesses",
       serviceASMX: "CeltaInventoryService.asmx",

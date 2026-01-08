@@ -13,7 +13,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int supplierCode;
   late int requestTypeCode;
@@ -34,7 +34,7 @@ void main() {
   }
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseModels = [
       EntityFactory.makeEnterpriseEntity(),
@@ -54,7 +54,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final value = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       supplierCode: supplierCode,
       requestTypeCode: requestTypeCode,
@@ -64,7 +64,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: urlInUse,
+        url: workingUrl,
         serviceASMX: "CeltaEnterpriseService.asmx",
         typeOfResponse: "GetEnterprisesJsonByFiltersResponse",
         soapAction: "GetEnterprisesJsonByFilters",
@@ -85,7 +85,7 @@ void main() {
     soapAdapter.mockPostError();
 
     final result = sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       supplierCode: supplierCode,
       requestTypeCode: requestTypeCode,

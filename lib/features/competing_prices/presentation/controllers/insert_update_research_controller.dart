@@ -33,7 +33,7 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
       );
       await repository.insertUpdate(
         crossIdentity: validatedUser!.user.CrossIdentity_Usuario!,
-        urlInUse: validatedUser.enterprise!.urlInUse!,
+        workingUrl: validatedUser.enterprise!.workingUrl!,
         enterpriseCode: selectedEnterprise!.Code!,
         name: name,
         observations: observations,

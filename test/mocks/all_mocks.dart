@@ -151,7 +151,7 @@ class SoapLoginDatasourceSpy extends Mock implements ISoapLoginDatasource {
   void mockLogin(UserModel user) {
     when(
       () => this.login(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         user: any(named: 'user'),
         password: any(named: 'password'),
       ),
@@ -244,7 +244,7 @@ class SoapEnterpriseDatasourceSpy extends Mock
   void mockGetEnterprises(List<SoapEnterpriseModel> response) {
     when(
       () => this.getEnterprises(
-        urlInUse: any(named: "urlInUse"),
+        workingUrl: any(named: "workingUrl"),
         crossIdentity: any(named: "crossIdentity"),
         enterpriseOriginCode: any(named: "enterpriseOriginCode"),
         requestTypeCode: any(named: "requestTypeCode"),
@@ -399,7 +399,7 @@ class SoapProductsDatasourceSpy extends Mock
   void mockGetProductsJson(List<ProductModel> response) {
     when(
       () => this.get(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         parametersPayload: any(named: 'parametersPayload'),
         isCompetingPrices: any(named: 'isCompetingPrices'),
       ),
@@ -411,7 +411,7 @@ class SoapProductsRepositorySpy extends Mock
     implements ISoapLoadProductsRepository {
   When _mockCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       searchType: any(named: 'searchType'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseEntity: any(named: 'enterpriseEntity'),
@@ -507,7 +507,7 @@ class SoapAdjustSalePriceDatasourceSpy extends Mock
   SoapAdjustSalePriceDatasourceSpy() {
     when(
       () => this.confirm(
-        urlInUse: any(named: "urlInUse"),
+        workingUrl: any(named: "workingUrl"),
         crossIdentity: any(named: "crossIdentity"),
         enterpriseCode: any(named: "enterpriseCode"),
         productCode: any(named: "productCode"),
@@ -532,7 +532,7 @@ class SoapAdjustSalePriceRepositorySpy extends Mock
 
   When _confirmCall() => when(
     () => this.confirm(
-      urlInUse: any(named: "urlInUse"),
+      workingUrl: any(named: "workingUrl"),
       crossIdentity: any(named: "crossIdentity"),
       enterpriseCode: any(named: "enterpriseCode"),
       productCode: any(named: "productCode"),
@@ -550,7 +550,7 @@ class SoapGetPriceSchedulesDatasourceSpy extends Mock
     implements ISoapGetPriceSchedulesDatasource {
   When _mockGetPriceSchedulesCall() => when(
     () => this.getPriceSchedules(
-      urlInUse: any(named: "urlInUse"),
+      workingUrl: any(named: "workingUrl"),
       crossIdentity: any(named: "crossIdentity"),
       enterpriseCode: any(named: "enterpriseCode"),
       productCode: any(named: "productCode"),
@@ -570,7 +570,7 @@ class SoapGetPriceSchedulesRepositorySpy extends Mock
     implements ISoapGetPriceSchedulesRepository {
   When _mockGetPriceSchedulesCall() => when(
     () => this.getPriceSchedules(
-      urlInUse: any(named: "urlInUse"),
+      workingUrl: any(named: "workingUrl"),
       crossIdentity: any(named: "crossIdentity"),
       enterpriseCode: any(named: "enterpriseCode"),
       productCode: any(named: "productCode"),
@@ -630,7 +630,7 @@ class SoapResourceDatasourceSpy extends Mock
   When _mockCanAccessResourceCall() => when(
     () => this.canAccessResource(
       resource: any(named: "resource"),
-      urlInUse: any(named: "urlInUse"),
+      workingUrl: any(named: "workingUrl"),
       crossIdentity: any(named: "crossIdentity"),
       routine: any(named: "routine"),
     ),
@@ -652,7 +652,7 @@ class SoapResourceRepositorySpy extends Mock
   When _mockCanAccessResourceCall() => when(
     () => this.canAccessResource(
       resource: any(named: "resource"),
-      urlInUse: any(named: "urlInUse"),
+      workingUrl: any(named: "workingUrl"),
       crossIdentity: any(named: "crossIdentity"),
       routine: any(named: "routine"),
     ),
@@ -703,7 +703,7 @@ class SoapTransferJustificationDatasourceSpy extends Mock
     implements ISoapTransferJustificationDatasource {
   When _mockLoadCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       type: any(named: 'type'),
     ),
@@ -718,7 +718,7 @@ class SoapStockTypeDatasourceSpy extends Mock
   void mockLoad(List<StockTypeModel> response) {
     when(
       () => this.load(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
       ),
     ).thenAnswer((_) async => response);
@@ -730,7 +730,7 @@ class SoapAdjustStockDatasourceSpy extends Mock
   SoapAdjustStockDatasourceSpy() {
     when(
       () => this.confirm(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         items: any(named: 'items'),
       ),
@@ -746,7 +746,7 @@ class SoapCustomerDatasourceSpy extends Mock
       searchValue: any(named: 'searchValue'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
     ),
   );
 
@@ -764,7 +764,7 @@ class SoapCustomerRepositorySpy extends Mock
       searchValue: any(named: 'searchValue'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
     ),
   );
 
@@ -789,7 +789,7 @@ class SoapLoadCovenantsDatasourceSpy extends Mock
     implements ISoapLoadCovenantsDatasource {
   When _mockLoadCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       searchCovenantType: any(named: 'searchCovenantType'),
       searchValue: any(named: 'searchValue'),
@@ -806,7 +806,7 @@ class SoapInsertUpdateCustomerDatasourceSpy extends Mock
   When _mockInsertUpdateCall() => when(
     () => this.insertOrUpdateCustomer(
       customer: any(named: 'customer'),
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
     ),
   );
@@ -820,7 +820,7 @@ class SoapInsertUpdateCustomerRepositorySpy extends Mock
     when(
       () => this.insertOrUpdateCustomer(
         customer: any(named: 'customer'),
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
       ),
     ).thenAnswer((_) async {});
@@ -849,7 +849,7 @@ class SoapSendToPrintDatasourceSpy extends Mock
   SoapSendToPrintDatasourceSpy() {
     when(
       () => this.send(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         enterpriseCode: any(named: 'enterpriseCode'),
         productPackingCode: any(named: 'productPackingCode'),
@@ -867,7 +867,7 @@ class SoapLoadExpeditionDocumentsDatasourceSpy extends Mock
 
   When _mockLoadCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
     ),
@@ -882,7 +882,7 @@ class SoapLoadPendingProductsDatasourceSpy extends Mock
 
   When _mockLoadCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       expeditionControlCode: any(named: 'expeditionControlCode'),
     ),
@@ -894,7 +894,7 @@ class SoapConfirmConferenceDatasourceSpy extends Mock
   SoapConfirmConferenceDatasourceSpy() {
     when(
       () => this.confirm(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         expeditionControlCode: any(named: 'expeditionControlCode'),
         stepCode: any(named: 'stepCode'),
@@ -911,7 +911,7 @@ class SoapLoadInventoryDatasourceSpy extends Mock
 
   When _mockLoadCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
     ),
@@ -923,7 +923,7 @@ class SoapInventoryEntryQuantityDatasourceSpy extends Mock
   SoapInventoryEntryQuantityDatasourceSpy() {
     when(
       () => this.entry(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
         productPackingCode: any(named: 'productPackingCode'),
@@ -939,7 +939,7 @@ class SoapInventoryAnnulDatasourceSpy extends Mock
   SoapInventoryAnnulDatasourceSpy() {
     when(
       () => this.annul(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
         codigoInternoProEmb: any(named: 'codigoInternoProEmb'),
@@ -956,7 +956,7 @@ class SoapLoadBuyersDatasourceSpy extends Mock
 
   When _mockLoadCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
     ),
   );
@@ -967,7 +967,7 @@ class SoapLoadRequestTypeDatasourceSpy extends Mock
   void mockLoad(List<RequestTypeModel> response) {
     when(
       () => this.load(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         inclusiveBuy: any(named: 'inclusiveBuy'),
         inclusiveTransfer: any(named: 'inclusiveTransfer'),
@@ -985,7 +985,7 @@ class SoapLoadSupplierDatasourceSpy extends Mock
 
   When _mockLoadCall() => when(
     () => this.load(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       searchType: any(named: 'searchType'),
       searchValue: any(named: 'searchValue'),
@@ -998,7 +998,7 @@ class SoapLoadEnterpriseByFiltersDatasourceSpy extends Mock
   void mockLoad(List<SoapEnterpriseByFiltersModel> response) {
     when(
       () => this.load(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         supplierCode: any(named: 'supplierCode'),
         requestTypeCode: any(named: 'requestTypeCode'),
@@ -1025,7 +1025,7 @@ class SoapInsertBuyRequestDatasourceSpy extends Mock
 
   When _mockInsertCall() => when(
     () => this.insertBuyRequest(
-      urlInUse: any(named: 'urlInUse'),
+      workingUrl: any(named: 'workingUrl'),
       crossIdentity: any(named: 'crossIdentity'),
       buyerCode: any(named: 'buyerCode'),
       requestTypeCode: any(named: 'requestTypeCode'),
@@ -1042,7 +1042,7 @@ class SoapLoadDestinyEnterprisesDatasourceSpy extends Mock
   void mockLoad(List<SoapEnterpriseModel> response) {
     when(
       () => this.load(
-        urlInUse: any(named: 'urlInUse'),
+        workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         requestTypeCode: any(named: 'requestTypeCode'),
         enterpriseOriginCode: any(named: 'enterpriseOriginCode'),

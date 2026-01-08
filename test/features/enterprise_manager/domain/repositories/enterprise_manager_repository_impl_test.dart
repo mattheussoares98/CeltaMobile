@@ -164,7 +164,7 @@ void main() {
 
       verify(
         () => soapLoginDatasource.login(
-          urlInUse: workingUrl,
+          workingUrl: workingUrl,
           user: userName,
           password: password,
         ),
@@ -172,7 +172,7 @@ void main() {
 
       verify(
         () => soapEnterpriseDatasource.getEnterprises(
-          urlInUse: workingUrl,
+          workingUrl: workingUrl,
           crossIdentity: user.CrossIdentity_Usuario ?? "",
         ),
       ).called(1);

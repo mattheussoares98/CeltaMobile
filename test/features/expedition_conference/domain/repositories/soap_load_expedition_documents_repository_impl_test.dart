@@ -12,7 +12,7 @@ void main() {
   late SoapLoadExpeditionDocumentsDatasourceSpy datasource;
 
   late List<ExpeditionDocumentModel> expeditionDocumentModels;
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int enterpriseCode;
 
@@ -34,7 +34,7 @@ void main() {
       EntityFactory.makeExpeditionDocumentEntity(),
       EntityFactory.makeExpeditionDocumentEntity(),
     ].map((e) => ExpeditionDocumentModel.fromEntity(e)).toList();
-    urlInUse = faker.internet.httpsUrl();
+    workingUrl = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(1000);
   }
@@ -48,7 +48,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
     );
@@ -59,7 +59,7 @@ void main() {
     );
     verify(
       () => datasource.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
       ),

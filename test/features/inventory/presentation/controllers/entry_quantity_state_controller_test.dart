@@ -76,7 +76,7 @@ void main() {
         // ARRANGE
         when(
           () => mockEntryQuantityRepository.entry(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
             productPackingCode: any(named: 'productPackingCode'),
@@ -125,7 +125,7 @@ void main() {
         );
         verify(
           () => mockEntryQuantityRepository.entry(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
             quantity: fakeProduct.quantidadeInvContProEmb!,
@@ -169,7 +169,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => mockEntryQuantityRepository.entry(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
           productPackingCode: any(named: 'productPackingCode'),
@@ -185,7 +185,7 @@ void main() {
         // ARRANGE
         when(
           () => mockEntryQuantityRepository.entry(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
             productPackingCode: any(named: 'productPackingCode'),
@@ -224,7 +224,7 @@ void main() {
 
         verify(
           () => mockEntryQuantityRepository.entry(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
             productPackingCode: fakeProduct.codigoInternoProEmb!,
@@ -250,7 +250,7 @@ void main() {
         // ARRANGE
         when(
           () => mockEntryQuantityRepository.entry(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
             productPackingCode: any(named: 'productPackingCode'),
@@ -298,7 +298,7 @@ void main() {
         // 1. Verify the repository was called.
         verifyNever(
           () => mockEntryQuantityRepository.entry(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
             productPackingCode: any(named: 'productPackingCode'),
@@ -317,7 +317,7 @@ void main() {
         // Stub its 'annul' method to succeed
         when(
           () => mockAnnulRepository.annul(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
             codigoInternoProEmb: any(named: 'codigoInternoProEmb'),
@@ -361,7 +361,7 @@ void main() {
         // Verify the repository was called correctly
         verify(
           () => mockAnnulRepository.annul(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
             codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,
@@ -404,7 +404,7 @@ void main() {
       () async {
         when(
           () => mockAnnulRepository.annul(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             codigoInternoInvCont: any(named: 'codigoInternoInvCont'),
             codigoInternoProEmb: any(named: 'codigoInternoProEmb'),
@@ -446,7 +446,7 @@ void main() {
         // 1. Verify the repository was called.
         verify(
           () => mockAnnulRepository.annul(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             codigoInternoInvCont: codigoInternoInvCont,
             codigoInternoProEmb: fakeProduct.codigoInternoProEmb!,

@@ -12,7 +12,7 @@ void main() {
   late SoapLoadInventoryDatasourceSpy datasource;
 
   late InventoryModel inventoryModel;
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late int enterpriseCode;
 
@@ -32,7 +32,7 @@ void main() {
     inventoryModel = InventoryModel.fromEntity(
       EntityFactory.makeInventoryEntity(),
     );
-    urlInUse = faker.internet.httpsUrl();
+    workingUrl = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(1000);
   }
@@ -46,7 +46,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
     );
@@ -55,7 +55,7 @@ void main() {
 
     verify(
       () => datasource.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
       ),

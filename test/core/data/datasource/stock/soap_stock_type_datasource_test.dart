@@ -14,7 +14,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late List<StockTypeEntity> stockTypeEntities;
 
@@ -29,7 +29,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     stockTypeEntities = [
       EntityFactory.makeStockTypeEntity(),
@@ -66,7 +66,7 @@ void main() {
       );
 
       final result = await sut.load(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
       );
 
@@ -77,7 +77,7 @@ void main() {
 
       verify(
         () => soapAdapter.post(
-          url: urlInUse,
+          url: workingUrl,
           typeOfResponse: "GetStockTypesResponse",
           soapAction: "GetStockTypes",
           serviceASMX: "CeltaProductService.asmx",

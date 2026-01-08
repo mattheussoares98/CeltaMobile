@@ -8,12 +8,12 @@ class SoapAdjustStockDatasource implements ISoapAdjustStockDatasource {
 
   @override
   Future<void> confirm({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required List<AdjustStockItemModel> items,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "ConfirmAdjustStockResponse",
       soapAction: "ConfirmAdjustStock",
       serviceASMX: "CeltaProductService.asmx",

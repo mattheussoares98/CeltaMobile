@@ -22,7 +22,7 @@ class LiberateDocumentController extends _$LiberateDocumentController {
       await ref
           .read(soapLiberateDocumentDatasourceProvider)
           .liberate(
-            urlInUse: validatedUser!.enterprise!.urlInUse!,
+            workingUrl: validatedUser!.enterprise!.workingUrl!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             CodigoInterno_ProcRecebDoc: CodigoInterno_ProcRecebDoc,
           );

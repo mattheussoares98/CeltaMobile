@@ -12,11 +12,11 @@ class SoapStockTypeDatasource implements ISoapStockTypeDatasource {
 
   @override
   Future<List<StockTypeModel>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
   }) async {
     final value = await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "GetStockTypesResponse",
       soapAction: "GetStockTypes",
       serviceASMX: "CeltaProductService.asmx",

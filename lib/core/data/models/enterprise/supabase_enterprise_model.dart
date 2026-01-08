@@ -6,7 +6,7 @@ import '../models.dart';
 class SupabaseEnterpriseModel extends Equatable {
   final int? id;
   final String name;
-  final String? urlInUse;
+  final String? workingUrl;
   final List<SupabaseSubEnterpriseModel>? subEnterprises; //from supabase
   final String? remoteHttpUrl; //from supabase
   final String? remoteHttpsUrl; //from supabase
@@ -21,14 +21,14 @@ class SupabaseEnterpriseModel extends Equatable {
     required this.remoteHttpsUrl,
     required this.localHttpsUrl,
     required this.localHttpUrl,
-    this.urlInUse,
+    this.workingUrl,
   });
 
   @override
   List<Object?> get props => [
     id,
     name,
-    urlInUse,
+    workingUrl,
     subEnterprises,
     remoteHttpUrl,
     remoteHttpsUrl,
@@ -65,7 +65,7 @@ class SupabaseEnterpriseModel extends Equatable {
   EnterpriseEntity toEntity() => EnterpriseEntity(
     id: id,
     name: name,
-    urlInUse: urlInUse,
+    workingUrl: workingUrl,
     remoteHttpUrl: remoteHttpUrl,
     remoteHttpsUrl: remoteHttpsUrl,
     localHttpUrl: localHttpUrl,
@@ -79,7 +79,7 @@ class SupabaseEnterpriseModel extends Equatable {
   }) => SupabaseEnterpriseModel(
     id: entity.id,
     name: entity.name,
-    urlInUse: workingUrl,
+    workingUrl: workingUrl,
     remoteHttpUrl: entity.remoteHttpUrl,
     remoteHttpsUrl: entity.remoteHttpsUrl,
     localHttpUrl: entity.localHttpUrl,

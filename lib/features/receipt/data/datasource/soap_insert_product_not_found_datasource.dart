@@ -9,13 +9,13 @@ class SoapInsertProductNotFoundDatasource
 
   @override
   Future<void> insert({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required ProductNotFoundModel productNotFound,
     required int receiptCode,
   }) async {
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "InsertProductWithoutCadasterResponse",
       soapAction: "InsertProductWithoutCadaster",
       serviceASMX: "CeltaGoodsReceivingService.asmx",

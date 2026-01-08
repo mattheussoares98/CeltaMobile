@@ -43,7 +43,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
         selectedEnterpriseStateControllerProvider,
       );
 
-      final urlInUse = userSession!.enterprise!.urlInUse!;
+      final workingUrl = userSession!.enterprise!.workingUrl!;
       final crossIdentity = userSession.user.CrossIdentity_Usuario!;
 
       final settings = await ref.read(
@@ -55,7 +55,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
       final products = await ref
           .read(soapLoadProductsRepositoryProvider)
           .load(
-            urlInUse: urlInUse,
+            workingUrl: workingUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: selectedEnterprise!,
             searchType: specifiedSearchType ?? searchType,

@@ -89,7 +89,7 @@ void main() {
           () => mockRepository.insertUpdate(
             concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
             name: any(named: 'name'),
             observations: any(named: 'observations'),
@@ -128,7 +128,7 @@ void main() {
           () => mockRepository.insertUpdate(
             concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             enterpriseCode: fakeEnterprise.Code!,
             name: fakeName,
             observations: fakeObservations,
@@ -174,7 +174,7 @@ void main() {
           () => mockRepository.insertUpdate(
             concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
             name: any(named: 'name'),
             observations: any(named: 'observations'),
@@ -220,7 +220,7 @@ void main() {
           () => mockRepository.insertUpdate(
             concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
             name: any(named: 'name'),
             observations: any(named: 'observations'),
@@ -236,7 +236,7 @@ void main() {
         () => mockRepository.insertUpdate(
           concurrentToAssociate: any(named: 'concurrentToAssociate'),
           crossIdentity: any(named: 'crossIdentity'),
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
           name: any(named: 'name'),
           observations: any(named: 'observations'),
@@ -266,7 +266,7 @@ void main() {
         () => mockRepository.insertUpdate(
           concurrentToAssociate: any(named: 'concurrentToAssociate'),
           crossIdentity: any(named: 'crossIdentity'),
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
           name: fakeName,
           observations: null, // Verify null was passed
@@ -281,7 +281,7 @@ void main() {
         () => mockRepository.insertUpdate(
           concurrentToAssociate: any(named: 'concurrentToAssociate'),
           crossIdentity: any(named: 'crossIdentity'),
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
           name: any(named: 'name'),
           observations: any(named: 'observations'),
@@ -317,7 +317,7 @@ void main() {
           () => mockRepository.insertUpdate(
             concurrentToAssociate: any(named: 'concurrentToAssociate'),
             crossIdentity: any(named: 'crossIdentity'),
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             enterpriseCode: any(named: 'enterpriseCode'),
             name: any(named: 'name'),
             observations: any(named: 'observations'),

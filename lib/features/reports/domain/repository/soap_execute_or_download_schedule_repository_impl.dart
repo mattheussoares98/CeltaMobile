@@ -9,7 +9,7 @@ class SoapExecuteOrDownloadScheduleRepositoryImpl
 
   @override
   Future<List<ScheduleExecutionsEntity>> executeOrDownloadSchedule({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int reportScheduleCode,
     required bool execute,
@@ -18,7 +18,7 @@ class SoapExecuteOrDownloadScheduleRepositoryImpl
     required bool downloadXlsx,
   }) async {
     final response = await datasource.executeOrDownloadSchedule(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       reportScheduleCode: reportScheduleCode,
       execute: execute,

@@ -9,11 +9,11 @@ class SoapStockTypeRepositoryImpl implements ISoapStockTypeRepository {
   SoapStockTypeRepositoryImpl(this.datasource);
   @override
   Future<List<StockTypeEntity>> load({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
   }) async {
     final value = await datasource.load(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
     );
 

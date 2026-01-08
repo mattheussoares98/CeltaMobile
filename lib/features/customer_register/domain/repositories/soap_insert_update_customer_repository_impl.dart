@@ -12,12 +12,12 @@ class SoapInsertUpdateCustomerRepositoryImpl
   @override
   Future<void> insertOrUpdateCustomer({
     required CustomerEntity customer,
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
   }) async {
     await datasource.insertOrUpdateCustomer(
       customer: CustomerModel.fromEntity(customer),
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
     );
   }

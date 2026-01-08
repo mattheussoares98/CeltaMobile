@@ -2,7 +2,7 @@ import '../../domain/entities/entities.dart';
 
 abstract class ISoapAdjustSalePriceDatasource {
   Future<void> confirm({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required int enterpriseCode,
     required int productCode,

@@ -24,7 +24,7 @@ class CompleteBuyQuotationsStateController
     final response = await ref
         .read(soapLoadBuyQuotationsRepositoryProvider)
         .load(
-          urlInUse: validatedUser!.enterprise!.urlInUse!,
+          workingUrl: validatedUser!.enterprise!.workingUrl!,
           crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseCode,
           codeForFullSearch: codeForFullSearch,

@@ -62,7 +62,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             inclusiveBuy: any(named: 'inclusiveBuy'),
             inclusiveTransfer: any(named: 'inclusiveTransfer'),
@@ -82,7 +82,7 @@ void main() {
         expect(result, requestTypeEntities);
         verify(
           () => mockRepository.load(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             inclusiveBuy: module == Modules.buyRequest,
             inclusiveTransfer: module == Modules.transferRequest,
@@ -106,7 +106,7 @@ void main() {
       // Verify the repository was never called.
       verifyNever(
         () => mockRepository.load(
-          urlInUse: any(named: 'urlInUse'),
+          workingUrl: any(named: 'workingUrl'),
           crossIdentity: any(named: 'crossIdentity'),
           inclusiveBuy: any(named: 'inclusiveBuy'),
           inclusiveTransfer: any(named: 'inclusiveTransfer'),

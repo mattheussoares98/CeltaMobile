@@ -11,7 +11,7 @@ class SoapInsertUpdateBuyQuotationDatasource
 
   @override
   Future<void> insertUpdate({
-    required String urlInUse,
+    required String workingUrl,
     required String crossIdentity,
     required BuyQuotationModel buyQuotation,
   }) async {
@@ -27,7 +27,7 @@ class SoapInsertUpdateBuyQuotationDatasource
       "Products": buyQuotation.Products?.map((e) => e.toJson()).toList(),
     };
     await soapRequest.post(
-      url: urlInUse,
+      url: workingUrl,
       typeOfResponse: "InsertUpdateBuyQuotationResponse",
       soapAction: "InsertUpdateBuyQuotation",
       serviceASMX: "CeltaBuyRequestService.asmx",

@@ -11,7 +11,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String urlInUse;
+  late String workingUrl;
   late String crossIdentity;
   late ProductNotFoundModel product;
   late int receiptCode;
@@ -27,7 +27,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    urlInUse = faker.internet.httpUrl();
+    workingUrl = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     product = ProductNotFoundModel.fromEntity(
       EntityFactory.makeProductNotFoundEntity(),
@@ -44,7 +44,7 @@ void main() {
 
   test('should call soap adapter with correct values', () async {
     await sut.insert(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       productNotFound: product,
       receiptCode: receiptCode,
@@ -52,7 +52,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "InsertProductWithoutCadasterResponse",
         soapAction: "InsertProductWithoutCadaster",
         serviceASMX: "CeltaGoodsReceivingService.asmx",
@@ -72,7 +72,7 @@ void main() {
     'should call soap adapter with correct values when product internal code is null',
     () async {
       await sut.insert(
-        urlInUse: urlInUse,
+        workingUrl: workingUrl,
         crossIdentity: crossIdentity,
         productNotFound: ProductNotFoundModel.fromEntity(
           product.toEntity().annulValues(annulInternalCode: true),
@@ -82,7 +82,7 @@ void main() {
 
       verify(
         () => soapRequest.post(
-          url: urlInUse,
+          url: workingUrl,
           typeOfResponse: "InsertProductWithoutCadasterResponse",
           soapAction: "InsertProductWithoutCadaster",
           serviceASMX: "CeltaGoodsReceivingService.asmx",
@@ -101,7 +101,7 @@ void main() {
 
   test('should observations as null value if is empty', () async {
     await sut.insert(
-      urlInUse: urlInUse,
+      workingUrl: workingUrl,
       crossIdentity: crossIdentity,
       productNotFound: ProductNotFoundModel.fromEntity(
         product.toEntity().annulValues(annulObservations: true),
@@ -111,7 +111,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: urlInUse,
+        url: workingUrl,
         typeOfResponse: "InsertProductWithoutCadasterResponse",
         soapAction: "InsertProductWithoutCadaster",
         serviceASMX: "CeltaGoodsReceivingService.asmx",

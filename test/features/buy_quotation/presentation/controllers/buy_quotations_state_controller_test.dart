@@ -63,7 +63,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: null, // CRITICAL: Must be null for initial load
@@ -87,7 +87,7 @@ void main() {
         // Verify repository was called correctly
         verify(
           () => mockRepository.load(
-            urlInUse: fakeSession.enterprise!.urlInUse!,
+            workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterpriseCode,
             codeForFullSearch: null,
@@ -116,7 +116,7 @@ void main() {
         // Verify the repository was never called
         verifyNever(
           () => mockRepository.load(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: any(named: 'codeForFullSearch'),
@@ -132,7 +132,7 @@ void main() {
         final exception = Exception('Repository load failed');
         when(
           () => mockRepository.load(
-            urlInUse: any(named: 'urlInUse'),
+            workingUrl: any(named: 'workingUrl'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: any(named: 'codeForFullSearch'),
