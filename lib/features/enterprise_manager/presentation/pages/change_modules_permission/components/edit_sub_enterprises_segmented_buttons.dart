@@ -45,6 +45,7 @@ class EditSubEnterprisesSegmentedButttons extends StatelessWidget {
     }
 
     return ResponsiveListFlow(
+      isSliver: true,
       itemCount: modulesToDisplay.length,
       itemBuilder: (_, index) {
         final module = modulesToDisplay[index];

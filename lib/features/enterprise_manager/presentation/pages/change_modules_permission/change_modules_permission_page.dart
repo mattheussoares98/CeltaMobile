@@ -143,46 +143,48 @@ class _ChangeModulesPermissionPageState
           if (enterprise == null) {
             return Center(child: Text('Empresa não encontrada.'.hardcoded));
           }
-          //TODO change to sliver page
           final modulesToDisplay = _getModulesForScope(enterprise);
           final scopeName = getEnterpriseName(
             isGlobalChange,
             enterprise,
           ).toUpperCase();
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(scopeName, style: theme.textTheme.titleMedium),
-              gapH16,
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Text(
+                  scopeName,
+                  style: theme.textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              gapSliverH16,
               if (isGlobalChange) ...[
-                Form(
-                  key: formKey,
-                  child: UrlsFields(
-                    remoteHttpUrlController: remoteHttpUrlController,
-                    remoteHttpsUrlController: remoteHttpsUrlController,
-                    localHttpUrlController: localHttpUrlController,
-                    localHttpsUrlController: localHttpsUrlController,
+                SliverToBoxAdapter(
+                  child: Form(
+                    key: formKey,
+                    child: UrlsFields(
+                      remoteHttpUrlController: remoteHttpUrlController,
+                      remoteHttpsUrlController: remoteHttpsUrlController,
+                      localHttpUrlController: localHttpUrlController,
+                      localHttpsUrlController: localHttpsUrlController,
+                    ),
                   ),
                 ),
-                Expanded(
-                  child: EditEnterpriseSwitch(
-                    onChange: (moduleId, newValue) {
-                      setState(() => _permissionChanges[moduleId] = newValue);
-                    },
-                    modulesToDisplay: modulesToDisplay,
-                    permissionChanges: _permissionChanges,
-                  ),
+                EditEnterpriseSwitch(
+                  onChange: (moduleId, newValue) {
+                    setState(() => _permissionChanges[moduleId] = newValue);
+                  },
+                  modulesToDisplay: modulesToDisplay,
+                  permissionChanges: _permissionChanges,
                 ),
               ] else
-                Expanded(
-                  child: EditSubEnterprisesSegmentedButttons(
-                    onChange: (moduleId, newValue) {
-                      setState(() => _permissionChanges[moduleId] = newValue);
-                    },
-                    modulesToDisplay: modulesToDisplay,
-                    permissionChanges: _permissionChanges,
-                  ),
+                EditSubEnterprisesSegmentedButttons(
+                  onChange: (moduleId, newValue) {
+                    setState(() => _permissionChanges[moduleId] = newValue);
+                  },
+                  modulesToDisplay: modulesToDisplay,
+                  permissionChanges: _permissionChanges,
                 ),
             ],
           );

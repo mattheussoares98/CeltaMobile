@@ -17,6 +17,7 @@ class EditEnterpriseSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveListFlow(
+      isSliver: true,
       itemCount: modulesToDisplay.length,
       itemBuilder: (_, index) {
         final module = modulesToDisplay[index];
