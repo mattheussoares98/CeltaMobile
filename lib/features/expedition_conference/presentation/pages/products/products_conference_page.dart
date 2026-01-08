@@ -122,7 +122,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
                   ),
                 )
                 ? TryConfirmAgain(
-                    //TODO remove this widget and use AsyncValueWidget
                     expeditionControlCode: widget.expeditionControlCode,
                     stepCode: widget.stepCode,
                   )

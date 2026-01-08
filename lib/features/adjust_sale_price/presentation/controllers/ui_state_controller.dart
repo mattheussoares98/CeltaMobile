@@ -9,7 +9,6 @@ part 'ui_state_controller.g.dart';
 
 @riverpod
 class UIStateController extends _$UIStateController {
-  //TODO test this controller and finish the tests
   @override
   FutureOr<AdjustPriceUIModel> build(String plu) async {
     final selectedEnterprise = ref.watch(
