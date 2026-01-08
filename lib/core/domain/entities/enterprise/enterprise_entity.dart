@@ -6,6 +6,10 @@ class EnterpriseEntity extends Equatable {
   final String name;
   final int? id; //from supabase
   final List<SubEnterpriseEntity>? subEnterprises; //from supabase
+  final String? remoteHttpUrl;
+  final String? remoteHttpsUrl;
+  final String? localHttpUrl;
+  final String? localHttpsUrl;
   final String? urlInUse; //url that is working after check the urls provided
   final int? Code; //from soap
   final String? PersonalizedCode; //from soap
@@ -39,6 +43,10 @@ class EnterpriseEntity extends Equatable {
     this.InscriptionNumber,
     this.SaleRequestTypeCode,
     this.FantasizesName,
+    this.remoteHttpUrl,
+    this.remoteHttpsUrl,
+    this.localHttpUrl,
+    this.localHttpsUrl,
   });
 
   @override
@@ -60,6 +68,10 @@ class EnterpriseEntity extends Equatable {
     InscriptionNumber,
     SaleRequestTypeCode,
     FantasizesName,
+    remoteHttpUrl,
+    remoteHttpsUrl,
+    localHttpUrl,
+    localHttpsUrl,
   ];
 
   EnterpriseEntity copyWith({
@@ -80,6 +92,10 @@ class EnterpriseEntity extends Equatable {
     String? InscriptionNumber,
     int? SaleRequestTypeCode,
     String? FantasizesName,
+    String? remoteHttpUrl,
+    String? remoteHttpsUrl,
+    String? localHttpUrl,
+    String? localHttpsUrl,
   }) {
     return EnterpriseEntity(
       name: name ?? this.name,
@@ -105,6 +121,10 @@ class EnterpriseEntity extends Equatable {
       InscriptionNumber: InscriptionNumber ?? this.InscriptionNumber,
       SaleRequestTypeCode: SaleRequestTypeCode ?? this.SaleRequestTypeCode,
       FantasizesName: FantasizesName ?? this.FantasizesName,
+      remoteHttpUrl: remoteHttpUrl ?? this.remoteHttpUrl,
+      remoteHttpsUrl: remoteHttpsUrl ?? this.remoteHttpsUrl,
+      localHttpUrl: localHttpUrl ?? this.localHttpUrl,
+      localHttpsUrl: localHttpsUrl ?? this.localHttpsUrl,
     );
   }
 }

@@ -30,6 +30,12 @@ class EntityFactory {
     id: id ?? faker.randomGenerator.integer(100),
     name: name ?? faker.company.name(),
     urlInUse: faker.internet.httpsUrl(),
+    localHttpUrl: faker.internet.httpUrl(),
+    localHttpsUrl: faker.internet.httpsUrl(),
+    remoteHttpUrl: faker.internet.httpUrl(),
+    remoteHttpsUrl: faker.internet.httpsUrl(),
+    FantasizesName: faker.company.name(),
+    SaleRequestTypeCode: faker.randomGenerator.integer(100),
     subEnterprises: [
       makeSubEnterpriseEntity(),
       makeSubEnterpriseEntity(),

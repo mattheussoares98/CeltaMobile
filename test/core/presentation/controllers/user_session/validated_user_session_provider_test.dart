@@ -102,7 +102,10 @@ void main() {
                 id: faker.randomGenerator.integer(100),
                 name: faker.company.name(),
                 subEnterprises: const [],
-                urlInUse: null,
+                remoteHttpUrl: null,
+                remoteHttpsUrl: null,
+                localHttpUrl: null,
+                localHttpsUrl: null,
               ),
             ),
           );
@@ -131,6 +134,10 @@ void main() {
               name: faker.company.name(),
               subEnterprises: const [],
               urlInUse: faker.internet.httpUrl(),
+              remoteHttpUrl: faker.internet.httpUrl(),
+              remoteHttpsUrl: faker.internet.httpsUrl(),
+              localHttpUrl: faker.internet.httpUrl(),
+              localHttpsUrl: faker.internet.httpsUrl(),
             ),
           ),
         );
@@ -160,6 +167,10 @@ void main() {
                 name: faker.company.name(),
                 subEnterprises: const [],
                 urlInUse: faker.internet.httpUrl(),
+                remoteHttpUrl: faker.internet.httpUrl(),
+                remoteHttpsUrl: faker.internet.httpsUrl(),
+                localHttpUrl: faker.internet.httpUrl(),
+                localHttpsUrl: faker.internet.httpsUrl(),
               ),
             ),
           );

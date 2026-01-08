@@ -6,24 +6,45 @@ import '../models.dart';
 class SupabaseEnterpriseModel extends Equatable {
   final int? id;
   final String name;
+  final String? urlInUse;
   final List<SupabaseSubEnterpriseModel>? subEnterprises; //from supabase
-  final String? urlInUse; //from supabase
+  final String? remoteHttpUrl; //from supabase
+  final String? remoteHttpsUrl; //from supabase
+  final String? localHttpsUrl; //from supabase
+  final String? localHttpUrl; //from supabase
 
   const SupabaseEnterpriseModel({
     required this.id,
     required this.name,
     required this.subEnterprises,
-    required this.urlInUse,
+    required this.remoteHttpUrl,
+    required this.remoteHttpsUrl,
+    required this.localHttpsUrl,
+    required this.localHttpUrl,
+    this.urlInUse,
   });
 
   @override
-  List<Object?> get props => [id, name, subEnterprises, urlInUse];
+  List<Object?> get props => [
+    id,
+    name,
+    urlInUse,
+    subEnterprises,
+    remoteHttpUrl,
+    remoteHttpsUrl,
+    localHttpUrl,
+    localHttpsUrl,
+  ];
 
   factory SupabaseEnterpriseModel.fromJson(Map map) {
     return SupabaseEnterpriseModel(
       id: map['id'] as int,
       name: map['name'] as String,
-      urlInUse: map['base_url'] as String,
+      urlInUse: map['urlInUse'] as String?,
+      remoteHttpUrl: map['remote_http_url'] as String,
+      remoteHttpsUrl: map['remote_https_url'] as String?,
+      localHttpUrl: map['local_http_url'] as String?,
+      localHttpsUrl: map['local_https_url'] as String?,
       subEnterprises: map['sub_enterprises'] != null
           ? (map['sub_enterprises'] as List)
                 .map((e) => SupabaseSubEnterpriseModel.fromJson(e))
@@ -35,7 +56,11 @@ class SupabaseEnterpriseModel extends Equatable {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id': id,
     'name': name,
-    'base_url': urlInUse,
+    'urlInUse': urlInUse,
+    'remote_http_url': remoteHttpUrl,
+    'remote_https_url': remoteHttpsUrl,
+    'local_http_url': localHttpUrl,
+    'local_https_url': localHttpsUrl,
     'sub_enterprises': subEnterprises?.map((e) => e.toJson()).toList(),
   };
 
@@ -43,6 +68,10 @@ class SupabaseEnterpriseModel extends Equatable {
     id: id,
     name: name,
     urlInUse: urlInUse,
+    remoteHttpUrl: remoteHttpUrl,
+    remoteHttpsUrl: remoteHttpsUrl,
+    localHttpUrl: localHttpUrl,
+    localHttpsUrl: localHttpsUrl,
     subEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
   );
 
@@ -51,6 +80,10 @@ class SupabaseEnterpriseModel extends Equatable {
         id: entity.id,
         name: entity.name,
         urlInUse: entity.urlInUse,
+        remoteHttpUrl: entity.remoteHttpUrl,
+        remoteHttpsUrl: entity.remoteHttpsUrl,
+        localHttpUrl: entity.localHttpUrl,
+        localHttpsUrl: entity.localHttpsUrl,
         subEnterprises: entity.subEnterprises
             ?.map((e) => SupabaseSubEnterpriseModel.fromEntity(e))
             .toList(),
