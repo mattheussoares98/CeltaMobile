@@ -15,6 +15,12 @@ ISoapEnterpriseDatasource soapEnterpriseDatasource(Ref ref) {
 }
 
 @riverpod
+ISoapUrlValidationDatasource soapUrlValidationDatasource(Ref ref) {
+  final soapAdapter = ref.watch(soapRequestProvider);
+  return SoapUrlValidationDatasource(soapAdapter);
+}
+
+@riverpod
 ISupabaseEnterpriseDatasource supabaseEnterpriseDatasource(Ref ref) {
   final supabase = ref.watch(supabaseClientProvider);
   return SupabaseEnterpriseDatasource(supabase);

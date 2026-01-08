@@ -22,10 +22,14 @@ IAuthRepository authRepository(Ref ref) {
   final localUserSessionDatasource = ref.watch(
     localUserSessionDatasourceProvider,
   );
+  final soapUrlValidationDatasource = ref.read(
+    soapUrlValidationDatasourceProvider,
+  );
 
   return AuthRepositoryImpl(
     soapLoginDatasource: soapLoginDatasource,
     enterpriseRepository: enterpriseRepository,
     localUserSessionDatasource: localUserSessionDatasource,
+    soapUrlValidationDatasource: soapUrlValidationDatasource,
   );
 }

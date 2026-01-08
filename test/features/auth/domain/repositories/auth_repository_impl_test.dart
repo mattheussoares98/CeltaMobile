@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/core/data/datasource/enterprise/enterprise.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/exceptions/exceptions.dart';
@@ -9,21 +10,32 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
+class SoapUrlValidationDatasourceSpy extends Mock
+    implements ISoapUrlValidationDatasource {
+  void mockWorkingUrl(String? response) {
+    when(() => this.findWorkingUrl(any())).thenAnswer((_) async => response);
+  }
+}
+
 void main() {
   late IAuthRepository sut;
 
   late SoapLoginDatasourceSpy soapLoginDatasource;
   late EnterpriseRepositorySpy enterpriseRepository;
   late LocalUserSessionDatasourceSpy localSessionDatasource;
+  late SoapUrlValidationDatasourceSpy soapUrlValidationDatasource;
 
   late String password;
   late UserSessionEntity userSessionEntity;
+
+  late String workingUrl;
 
   void initSut() {
     sut = AuthRepositoryImpl(
       soapLoginDatasource: soapLoginDatasource,
       enterpriseRepository: enterpriseRepository,
       localUserSessionDatasource: localSessionDatasource,
+      soapUrlValidationDatasource: soapUrlValidationDatasource,
     );
   }
 
@@ -31,6 +43,7 @@ void main() {
     soapLoginDatasource = SoapLoginDatasourceSpy();
     enterpriseRepository = EnterpriseRepositorySpy();
     localSessionDatasource = LocalUserSessionDatasourceSpy();
+    soapUrlValidationDatasource = SoapUrlValidationDatasourceSpy();
   }
 
   void mockSuccess() {
@@ -38,6 +51,7 @@ void main() {
       userSessionEntity.supabaseEnterprise,
     );
     soapLoginDatasource.mockLogin(UserModel.fromEntity(userSessionEntity.user));
+    soapUrlValidationDatasource.mockWorkingUrl(workingUrl);
   }
 
   void initEntities() {
@@ -53,6 +67,7 @@ void main() {
         EntityFactory.makeEnterpriseEntity(),
       ).toEntity(),
     );
+    workingUrl = faker.internet.httpUrl();
   }
 
   setUp(() {
@@ -84,7 +99,7 @@ void main() {
       ).called(1);
       verify(
         () => soapLoginDatasource.login(
-          urlInUse: userSessionEntity.supabaseEnterprise!.urlInUse!,
+          urlInUse: workingUrl,
           user: userSessionEntity.user.name!,
           password: password,
         ),
@@ -105,9 +120,18 @@ void main() {
           ),
         ),
       ).called(1);
+      verify(
+        () => soapUrlValidationDatasource.findWorkingUrl([
+          userSessionEntity.supabaseEnterprise!.remoteHttpUrl!,
+          userSessionEntity.supabaseEnterprise!.remoteHttpsUrl!,
+          userSessionEntity.supabaseEnterprise!.localHttpUrl!,
+          userSessionEntity.supabaseEnterprise!.localHttpsUrl!,
+        ]),
+      ).called(1);
 
       verifyNoMoreInteractions(enterpriseRepository);
       verifyNoMoreInteractions(soapLoginDatasource);
+      verifyNoMoreInteractions(soapUrlValidationDatasource);
     });
 
     test("Should throw an AppException on enterprise not found", () async {
@@ -120,6 +144,18 @@ void main() {
       );
 
       expect(result, throwsA(isA<AppException>()));
+    });
+
+    test('should throw when doesnt has working url', () async {
+      soapUrlValidationDatasource.mockWorkingUrl(null);
+
+      final response = sut.login(
+        enterpriseName: userSessionEntity.supabaseEnterprise!.name,
+        userName: userSessionEntity.user.name!,
+        password: password,
+      );
+
+      expectLater(response, throwsA(isA<AppException>()));
     });
   });
 }

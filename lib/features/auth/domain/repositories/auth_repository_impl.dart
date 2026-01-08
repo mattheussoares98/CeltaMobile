@@ -1,3 +1,4 @@
+import '../../../../core/data/datasource/enterprise/enterprise.dart';
 import '../../../../core/data/datasource/login/login.dart';
 import '../../../../core/data/datasource/user_session/user_session.dart';
 import '../../../../core/data/models/models.dart';
@@ -11,11 +12,13 @@ class AuthRepositoryImpl implements IAuthRepository {
   final ISoapLoginDatasource soapLoginDatasource;
   final IEnterpriseRepository enterpriseRepository;
   final ILocalUserSessionDatasource localUserSessionDatasource;
+  final ISoapUrlValidationDatasource soapUrlValidationDatasource;
 
   AuthRepositoryImpl({
     required this.soapLoginDatasource,
     required this.enterpriseRepository,
     required this.localUserSessionDatasource,
+    required this.soapUrlValidationDatasource,
   });
 
   @override
@@ -31,9 +34,22 @@ class AuthRepositoryImpl implements IAuthRepository {
       throw AppException('Empresa não encontrada'.hardcoded);
     }
 
+    final urlWorking = await soapUrlValidationDatasource.findWorkingUrl([
+      enterprise.remoteHttpUrl!,
+      ?enterprise.remoteHttpsUrl,
+      ?enterprise.localHttpUrl,
+      ?enterprise.localHttpsUrl,
+    ]);
+
+    if (urlWorking == null) {
+      throw AppException(
+        'Nenhuma URL está funcionando. Verifique sua conexão com a internet e caso esteja funcionando, entre em contato com o suporte técnico'
+            .hardcoded,
+      );
+    }
+
     final remoteUser = await soapLoginDatasource.login(
-      urlInUse: enterprise
-          .remoteHttpUrl!, //TODO create new datasource to check valid url and use urlInUse property instead
+      urlInUse: urlWorking,
       user: userName,
       password: password,
     );

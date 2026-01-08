@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../../../domain/contracts/contracts.dart';
+import '../../../domain/errors/errors.dart';
 import 'enterprise.dart';
 
 class SoapUrlValidationDatasource implements ISoapUrlValidationDatasource {
@@ -27,7 +28,7 @@ class SoapUrlValidationDatasource implements ISoapUrlValidationDatasource {
 
   Future<String?> _testUrlConnectivity(String url) async {
     try {
-      final response = await soapRequest
+      await soapRequest
           .post(
             url: url,
             parameters: {
@@ -43,12 +44,10 @@ class SoapUrlValidationDatasource implements ISoapUrlValidationDatasource {
             typeOfResult: "UserCanAccessCrossResourceResult",
           )
           .timeout(const Duration(seconds: 10));
-
-      if (response.isNotEmpty) {
+    } catch (e) {
+      if (e is HttpError) {
         return url;
       }
-    } catch (e) {
-      return null;
     }
     return null;
   }
