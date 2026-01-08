@@ -16,9 +16,9 @@ class CurrentAndSaleStocks extends StatelessWidget {
       widget.product.EnterpriseCode,
     );
 
-    //TODO request Jr to return Stocks in adjustSalePrice routine too
     if ([
-      BsRoutine.adjustSalePrice,
+      BsRoutine
+          .adjustSalePrice, //! is not returning this property in this routine
       BsRoutine.buyQuotation,
       BsRoutine.goodsReceiving,
       BsRoutine.researchOfPrice,
