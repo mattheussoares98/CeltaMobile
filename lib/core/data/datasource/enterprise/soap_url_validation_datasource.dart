@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
+
+import '../../../../exceptions/exceptions.dart';
 import '../../../../utils/utils.dart';
 import '../../../domain/contracts/contracts.dart';
 import '../../../domain/errors/errors.dart';
@@ -11,20 +14,30 @@ class SoapUrlValidationDatasource implements ISoapUrlValidationDatasource {
   SoapUrlValidationDatasource(this.soapRequest);
 
   @override
-  Future<String?> findWorkingUrl(List<String> urls) async {
+  Future<String> findWorkingUrl(List<String> urls) async {
     final cleanUrls = urls
         .where((u) => u.removeWhiteSpaces().isNotEmpty)
         .toList();
-    if (cleanUrls.isEmpty) return null;
+
+    final exception = AppException(
+      'Nenhuma URL está funcionando. Verifique sua conexão com a internet e caso esteja funcionando, entre em contato com o suporte técnico'
+          .hardcoded,
+    );
+    if (cleanUrls.isEmpty) {
+      throw exception;
+    }
 
     final results = await Future.wait(
       cleanUrls.map((url) => _testUrlConnectivity(url)),
     );
 
     try {
-      return results.firstWhere((url) => url != null);
+      if (results.isEmpty) {
+        throw exception;
+      }
+      return results.firstWhere((url) => url != null)!;
     } catch (_) {
-      return null;
+      throw exception;
     }
   }
 

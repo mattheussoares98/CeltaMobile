@@ -1,3 +1,3 @@
 abstract class ISoapUrlValidationDatasource {
-  Future<String?> findWorkingUrl(List<String> urls);
+  Future<String> findWorkingUrl(List<String> urls);
 }

@@ -41,13 +41,6 @@ class AuthRepositoryImpl implements IAuthRepository {
       ?enterprise.localHttpsUrl,
     ]);
 
-    if (urlWorking == null) {
-      throw AppException(
-        'Nenhuma URL está funcionando. Verifique sua conexão com a internet e caso esteja funcionando, entre em contato com o suporte técnico'
-            .hardcoded,
-      );
-    }
-
     final remoteUser = await soapLoginDatasource.login(
       urlInUse: urlWorking,
       user: userName,

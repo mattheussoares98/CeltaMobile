@@ -1,6 +1,7 @@
 import 'package:celta_intelligence/core/data/datasource/enterprise/enterprise.dart';
 import 'package:celta_intelligence/core/domain/contracts/contracts.dart';
 import 'package:celta_intelligence/core/domain/errors/errors.dart';
+import 'package:celta_intelligence/exceptions/exceptions.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -90,33 +91,30 @@ void main() {
       },
     );
 
-    test(
-      'should return null if all URLs throw non-HttpError exceptions',
-      () async {
-        final urls = [faker.internet.httpsUrl(), faker.internet.httpsUrl()];
+    test('should throw if all URLs throw non-HttpError exceptions', () async {
+      final urls = [faker.internet.httpsUrl(), faker.internet.httpsUrl()];
 
-        // Simulating socket exceptions or timeouts for all candidates
-        when(
-          () => mockSoapRequest.post(
-            url: any(named: 'url'),
-            parameters: any(named: 'parameters'),
-            typeOfResponse: any(named: 'typeOfResponse'),
-            soapAction: any(named: 'soapAction'),
-            serviceASMX: any(named: 'serviceASMX'),
-            typeOfResult: any(named: 'typeOfResult'),
-          ),
-        ).thenThrow(Exception('Timeout'));
+      // Simulating socket exceptions or timeouts for all candidates
+      when(
+        () => mockSoapRequest.post(
+          url: any(named: 'url'),
+          parameters: any(named: 'parameters'),
+          typeOfResponse: any(named: 'typeOfResponse'),
+          soapAction: any(named: 'soapAction'),
+          serviceASMX: any(named: 'serviceASMX'),
+          typeOfResult: any(named: 'typeOfResult'),
+        ),
+      ).thenThrow(Exception('Timeout'));
 
-        final result = await sut.findWorkingUrl(urls);
+      final result = sut.findWorkingUrl(urls);
 
-        expect(result, isNull);
-      },
-    );
+      expect(result, throwsA(isA<AppException>()));
+    });
 
-    test('should return null if the input list is empty', () async {
-      final result = await sut.findWorkingUrl([]);
+    test('should throw if the input list is empty', () async {
+      final result = sut.findWorkingUrl([]);
 
-      expect(result, isNull);
+      expect(result, throwsA(isA<AppException>()));
       verifyNever(
         () => mockSoapRequest.post(
           url: any(named: 'url'),

@@ -12,9 +12,15 @@ import '../../../../mocks/mocks.dart';
 
 class SoapUrlValidationDatasourceSpy extends Mock
     implements ISoapUrlValidationDatasource {
-  void mockWorkingUrl(String? response) {
-    when(() => this.findWorkingUrl(any())).thenAnswer((_) async => response);
+  void mockWorkingUrl(String response) {
+    _findWorkingUrlCall().thenAnswer((_) async => response);
   }
+
+  void mockWorkingUrlError() {
+    _findWorkingUrlCall().thenThrow(Exception());
+  }
+
+  When _findWorkingUrlCall() => when(() => this.findWorkingUrl(any()));
 }
 
 void main() {
@@ -147,7 +153,7 @@ void main() {
     });
 
     test('should throw when doesnt has working url', () async {
-      soapUrlValidationDatasource.mockWorkingUrl(null);
+      soapUrlValidationDatasource.mockWorkingUrlError();
 
       final response = sut.login(
         enterpriseName: userSessionEntity.supabaseEnterprise!.name,
