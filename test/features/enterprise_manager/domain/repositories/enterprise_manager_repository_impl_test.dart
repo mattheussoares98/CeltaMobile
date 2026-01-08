@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/core/data/datasource/enterprise/enterprise.dart';
 import 'package:celta_intelligence/core/data/models/models.dart';
 import 'package:celta_intelligence/features/auth/data/models/models.dart';
 import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
@@ -9,12 +10,26 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
+class SoapUrlValidationDatasourceSpy extends Mock
+    implements ISoapUrlValidationDatasource {
+  void mockWorkingUrl(String response) {
+    _findWorkingUrlCall().thenAnswer((_) async => response);
+  }
+
+  void mockWorkingUrlError() {
+    _findWorkingUrlCall().thenThrow(Exception());
+  }
+
+  When _findWorkingUrlCall() => when(() => this.findWorkingUrl(any()));
+}
+
 void main() {
   late EnterpriseManagerRepositoryImpl sut;
 
   late EnterpriseManagerDatasourceSpy enterpriseManagerDatasource;
   late SoapLoginDatasourceSpy soapLoginDatasource;
   late SoapEnterpriseDatasourceSpy soapEnterpriseDatasource;
+  late SoapUrlValidationDatasourceSpy soapUrlValidationDatasource;
 
   late List<EnterprisePermissionEntity> enterprisePermissionEntities;
   late String enterpriseName;
@@ -22,6 +37,7 @@ void main() {
   late String remoteHttpsUrl;
   late String localHttpUrl;
   late String localHttpsUrl;
+  late String workingUrl;
   late String userName;
   late String password;
   late int enterpriseId;
@@ -32,6 +48,7 @@ void main() {
       enterpriseManagerDatasource: enterpriseManagerDatasource,
       soapLoginDatasource: soapLoginDatasource,
       soapEnterpriseDatasource: soapEnterpriseDatasource,
+      soapUrlValidationDatasource: soapUrlValidationDatasource,
     );
   }
 
@@ -39,6 +56,7 @@ void main() {
     enterpriseManagerDatasource = EnterpriseManagerDatasourceSpy();
     soapLoginDatasource = SoapLoginDatasourceSpy();
     soapEnterpriseDatasource = SoapEnterpriseDatasourceSpy();
+    soapUrlValidationDatasource = SoapUrlValidationDatasourceSpy();
   }
 
   void mockSuccess() {
@@ -47,6 +65,7 @@ void main() {
           .map((e) => EnterprisePermissionModel.fromEntity(e))
           .toList(),
     );
+    soapUrlValidationDatasource.mockWorkingUrl(workingUrl);
   }
 
   void initEntities() {
@@ -63,6 +82,7 @@ void main() {
     localHttpsUrl = faker.internet.httpsUrl();
     userName = faker.internet.userName();
     password = faker.internet.password();
+    workingUrl = faker.internet.httpUrl();
     enterpriseId = faker.randomGenerator.integer(100);
     permissions = [
       UpdateModulePermissionModel(
@@ -144,7 +164,7 @@ void main() {
 
       verify(
         () => soapLoginDatasource.login(
-          urlInUse: remoteHttpUrl,
+          urlInUse: workingUrl,
           user: userName,
           password: password,
         ),
@@ -152,7 +172,7 @@ void main() {
 
       verify(
         () => soapEnterpriseDatasource.getEnterprises(
-          urlInUse: remoteHttpUrl,
+          urlInUse: workingUrl,
           crossIdentity: user.CrossIdentity_Usuario ?? "",
         ),
       ).called(1);
@@ -175,6 +195,14 @@ void main() {
               )
               .toList(),
         ),
+      ).called(1);
+      verify(
+        () => soapUrlValidationDatasource.findWorkingUrl([
+          remoteHttpUrl,
+          remoteHttpsUrl,
+          localHttpUrl,
+          localHttpsUrl,
+        ]),
       ).called(1);
     });
   });

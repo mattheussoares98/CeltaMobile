@@ -22,11 +22,15 @@ IEnterpriseManagerRepository enterpriseManagerRepository(Ref ref) {
   );
   final soapLoginDatasource = ref.watch(soapLoginDatasourceProvider);
   final soapEnterpriseDatasource = ref.watch(soapEnterpriseDatasourceProvider);
+  final soapUrlValidationDatasource = ref.read(
+    soapUrlValidationDatasourceProvider,
+  );
 
   return EnterpriseManagerRepositoryImpl(
     enterpriseManagerDatasource: enterpriseManagerDatasource,
     soapLoginDatasource: soapLoginDatasource,
     soapEnterpriseDatasource: soapEnterpriseDatasource,
+    soapUrlValidationDatasource: soapUrlValidationDatasource,
   );
 }
 

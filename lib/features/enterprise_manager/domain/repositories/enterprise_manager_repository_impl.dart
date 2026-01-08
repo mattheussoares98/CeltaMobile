@@ -9,11 +9,13 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   final IEnterpriseManagerDatasource enterpriseManagerDatasource;
   final ISoapLoginDatasource soapLoginDatasource;
   final ISoapEnterpriseDatasource soapEnterpriseDatasource;
+  final ISoapUrlValidationDatasource soapUrlValidationDatasource;
 
   EnterpriseManagerRepositoryImpl({
     required this.enterpriseManagerDatasource,
     required this.soapLoginDatasource,
     required this.soapEnterpriseDatasource,
+    required this.soapUrlValidationDatasource,
   });
 
   @override
@@ -44,19 +46,26 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
     required String userName,
     required String password,
   }) async {
-    // 1- try make login in bs
-    //TODO should treat the urlInUse here correctly before call login
+    //1- check which url is working
+    final workingUrl = await soapUrlValidationDatasource.findWorkingUrl([
+      remoteHttpUrl,
+      ?remoteHttpsUrl,
+      ?localHttpUrl,
+      ?localHttpsUrl,
+    ]);
+
+    // 2- try make login in bs
     final user = await soapLoginDatasource.login(
-      urlInUse: remoteHttpUrl,
+      urlInUse: workingUrl,
       user: userName,
       password: password,
     );
-    // 2- load enterprises from bs
+    // 3- load enterprises from bs
     final enterprises = await soapEnterpriseDatasource.getEnterprises(
-      urlInUse: remoteHttpUrl,
+      urlInUse: workingUrl,
       crossIdentity: user.CrossIdentity_Usuario ?? "",
     );
-    // 3- try create enterprise in supabase
+    // 4- try create enterprise in supabase
     await enterpriseManagerDatasource.createEnterpriseWithSubEnterprises(
       enterpriseName: enterpriseName,
       localHttpUrl: localHttpUrl,
