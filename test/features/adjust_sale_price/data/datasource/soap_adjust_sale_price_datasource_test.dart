@@ -13,7 +13,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late int productCode;
@@ -32,7 +32,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
     productCode = faker.randomGenerator.integer(100);
@@ -61,7 +61,7 @@ void main() {
         final price = faker.randomGenerator.decimal();
 
         await sut.confirm(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           crossIdentity: crossIdentity,
           enterpriseCode: enterpriseCode,
           productCode: productCode,
@@ -82,7 +82,7 @@ void main() {
 
         verify(
           () => soapAdapter.post(
-            url: baseUrl,
+            url: urlInUse,
             parameters: {
               "parameters": json.encode({
                 "CrossIdentity": crossIdentity,
@@ -121,7 +121,7 @@ void main() {
         final endDateOffer = faker.date.dateTime();
 
         await sut.confirm(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           crossIdentity: crossIdentity,
           enterpriseCode: enterpriseCode,
           productCode: productCode,
@@ -142,7 +142,7 @@ void main() {
 
         verify(
           () => soapAdapter.post(
-            url: baseUrl,
+            url: urlInUse,
             parameters: {
               "parameters": json.encode({
                 "CrossIdentity": crossIdentity,
@@ -183,7 +183,7 @@ void main() {
         final price = faker.randomGenerator.decimal();
 
         await sut.confirm(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           crossIdentity: crossIdentity,
           enterpriseCode: enterpriseCode,
           productCode: productCode,
@@ -197,7 +197,7 @@ void main() {
 
         verify(
           () => soapAdapter.post(
-            url: baseUrl,
+            url: urlInUse,
             parameters: {
               "parameters": json.encode({
                 "CrossIdentity": crossIdentity,
@@ -235,7 +235,7 @@ void main() {
         final effectuationDatePrice = faker.date.dateTime();
 
         await sut.confirm(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           crossIdentity: crossIdentity,
           enterpriseCode: enterpriseCode,
           productCode: productCode,
@@ -252,7 +252,7 @@ void main() {
 
         verify(
           () => soapAdapter.post(
-            url: baseUrl,
+            url: urlInUse,
             parameters: {
               "parameters": json.encode({
                 "CrossIdentity": crossIdentity,

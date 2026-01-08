@@ -10,13 +10,13 @@ class SoapLoadEnterpriseByFiltersRepositoryImpl
 
   @override
   Future<List<EnterpriseEntity>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int supplierCode,
     required int requestTypeCode,
   }) async {
     final response = await datasource.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       supplierCode: supplierCode,
       requestTypeCode: requestTypeCode,

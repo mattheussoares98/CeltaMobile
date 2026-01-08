@@ -9,11 +9,11 @@ class SoapLoadReportsRepositoryImpl implements ISoapLoadReportsRepository {
 
   @override
   Future<List<ReportScheduleEntity>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
   }) async {
     final response = await datasource.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
     );
 

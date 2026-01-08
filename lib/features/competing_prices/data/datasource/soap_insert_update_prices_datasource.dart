@@ -10,7 +10,7 @@ class SoapInsertUpdatePricesDatasource
 
   @override
   Future<void> insert({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int researchCode,
     required int concurrentCode,
@@ -24,7 +24,7 @@ class SoapInsertUpdatePricesDatasource
     required double offerECommerce,
   }) async {
     await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "InsertConcurrentProductResponse",
       soapAction: "InsertConcurrentProduct",
       serviceASMX: "CeltaResearchOfPriceService.asmx",

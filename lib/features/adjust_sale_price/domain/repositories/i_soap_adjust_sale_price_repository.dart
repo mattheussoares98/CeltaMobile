@@ -2,7 +2,7 @@ import '../entities/entities.dart';
 
 abstract class ISoapAdjustSalePriceRepository {
   Future<void> confirm({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required int productCode,

@@ -10,13 +10,13 @@ class SoapLoadResearchsRepositoryImpl implements ISoapLoadResearchsRepository {
   @override
   Future<List<ResearchEntity>> load({
     required String crossIdentity,
-    required String baseUrl,
+    required String urlInUse,
     required int enterpriseCode,
     String? searchValue,
   }) async {
     final response = await datasource.load(
       crossIdentity: crossIdentity,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       enterpriseCode: enterpriseCode,
       searchValue: searchValue,
     );

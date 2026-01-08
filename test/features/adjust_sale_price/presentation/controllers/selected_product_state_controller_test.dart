@@ -90,7 +90,7 @@ void main() {
 
         verify(
           () => mockSoapProductsRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             searchType: any(named: 'searchType'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
@@ -125,7 +125,7 @@ void main() {
 
         verify(
           () => mockSoapProductsRepository.load(
-            baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
+            urlInUse: userSessionEntity.supabaseEnterprise!.urlInUse!,
             crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
             enterpriseEntity: userSessionEntity.supabaseEnterprise!,
             searchType: SearchType.dynamic,

@@ -29,7 +29,7 @@ class EntityFactory {
   }) => EnterpriseEntity(
     id: id ?? faker.randomGenerator.integer(100),
     name: name ?? faker.company.name(),
-    baseUrl: faker.internet.httpsUrl(),
+    urlInUse: faker.internet.httpsUrl(),
     subEnterprises: [
       makeSubEnterpriseEntity(),
       makeSubEnterpriseEntity(),
@@ -69,7 +69,7 @@ class EntityFactory {
       EnterprisePermissionEntity(
         id: faker.randomGenerator.integer(100),
         name: faker.company.name(),
-        baseUrl: faker.internet.httpsUrl(),
+        urlInUse: faker.internet.httpsUrl(),
         globalModules: [
           makeModulePermissionEntity(),
           makeModulePermissionEntity(),

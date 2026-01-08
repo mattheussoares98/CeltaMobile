@@ -114,7 +114,7 @@ void main() {
         verify(
           () => soapEnterpriseDatasource.getEnterprises(
             crossIdentity: any(named: "crossIdentity"),
-            baseUrl: any(named: "baseUrl"),
+            urlInUse: any(named: "urlInUse"),
             requestTypeCode: any(named: "requestTypeCode"),
             enterpriseOriginCode: any(named: "enterpriseOriginCode"),
           ),
@@ -148,7 +148,7 @@ void main() {
         verify(
           () => soapEnterpriseDatasource.getEnterprises(
             crossIdentity: any(named: "crossIdentity"),
-            baseUrl: any(named: "baseUrl"),
+            urlInUse: any(named: "urlInUse"),
             requestTypeCode: any(named: "requestTypeCode"),
             enterpriseOriginCode: any(named: "enterpriseOriginCode"),
           ),

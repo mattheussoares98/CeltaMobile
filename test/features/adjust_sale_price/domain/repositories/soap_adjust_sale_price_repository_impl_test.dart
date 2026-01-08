@@ -11,7 +11,7 @@ void main() {
 
   late SoapAdjustSalePriceDatasourceSpy soapAdjustSalePriceDatasource;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late int productCode;
@@ -35,7 +35,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
     productCode = faker.randomGenerator.integer(100);
@@ -75,7 +75,7 @@ void main() {
   group('logIn', () {
     test('should behave correctly on success', () async {
       await sut.confirm(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         productCode: productCode,
@@ -89,7 +89,7 @@ void main() {
 
       verify(
         () => soapAdjustSalePriceDatasource.confirm(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           crossIdentity: crossIdentity,
           enterpriseCode: enterpriseCode,
           productCode: productCode,

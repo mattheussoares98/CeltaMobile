@@ -53,7 +53,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             searchType: any(named: 'searchType'),
             searchValue: any(named: 'searchValue'),
@@ -87,7 +87,7 @@ void main() {
         expect(states.last.value, fakeSuppliers);
         verify(
           () => mockRepository.load(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             searchType: searchType,
             searchValue: fakeSearchValue,
@@ -119,7 +119,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           searchType: any(named: 'searchType'),
           searchValue: any(named: 'searchValue'),

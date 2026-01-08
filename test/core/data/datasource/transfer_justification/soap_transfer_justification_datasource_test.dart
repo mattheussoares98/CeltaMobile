@@ -14,7 +14,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late List<TransferJustificationEntity> transferJustificationEntties;
   late TransferJustificationType transferJustificationType;
@@ -30,7 +30,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     transferJustificationEntties = [
       EntityFactory.makeTransferJustificationEntity(),
@@ -71,7 +71,7 @@ void main() {
       );
 
       final result = await sut.load(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         type: transferJustificationType,
       );
@@ -85,7 +85,7 @@ void main() {
 
       verify(
         () => soapAdapter.post(
-          url: baseUrl,
+          url: urlInUse,
           typeOfResponse: "GetJustificationsResponse",
           typeOfResult: "GetJustificationsResult",
           soapAction: "GetJustifications",

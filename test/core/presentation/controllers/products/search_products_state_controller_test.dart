@@ -178,7 +178,7 @@ void main() {
 
       verify(
         () => sut.load(
-          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
+          urlInUse: userSessionEntity.supabaseEnterprise!.urlInUse!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseEntity: enterpriseEntity,
           searchType: appSettingsEntity.searchPreference.searchType,
@@ -223,7 +223,7 @@ void main() {
       verifyNever(
         () => sut.load(
           searchType: any(named: 'searchType'),
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseEntity: any(named: 'enterpriseEntity'),
           getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
@@ -260,7 +260,7 @@ void main() {
       verifyNever(
         () => sut.load(
           searchType: any(named: 'searchType'),
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseEntity: any(named: 'enterpriseEntity'),
           getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
@@ -303,7 +303,7 @@ void main() {
         ]);
         verify(
           () => sut.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseEntity: any(named: 'enterpriseEntity'),
             searchType: SearchType.approximateLegacyCode,

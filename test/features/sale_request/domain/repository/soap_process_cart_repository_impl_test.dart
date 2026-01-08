@@ -13,7 +13,7 @@ class SoapProcessCartDatasourceSpy extends Mock
   void mockProcess(ProcessedCartModel response) => when(
     () => this.process(
       crossId: any(named: 'crossId'),
-      baseUrl: any(named: 'baseUrl'),
+      urlInUse: any(named: 'urlInUse'),
       enterpriseCode: any(named: 'enterpriseCode'),
       requestTypeCode: any(named: 'requestTypeCode'),
       customerCode: any(named: 'customerCode'),
@@ -28,7 +28,7 @@ void main() {
   late SoapProcessCartDatasourceSpy mockDatasource;
 
   late String crossId;
-  late String baseUrl;
+  late String urlInUse;
   late int enterpriseCode;
   late int requestTypeCode;
   late int customerCode;
@@ -41,7 +41,7 @@ void main() {
     sut = SoapProcessCartRepositoryImpl(mockDatasource);
 
     crossId = faker.guid.guid();
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     enterpriseCode = faker.randomGenerator.integer(100);
     requestTypeCode = faker.randomGenerator.integer(100);
     customerCode = faker.randomGenerator.integer(100);
@@ -70,7 +70,7 @@ void main() {
   test('should behave correctly on save', () async {
     final response = await sut.process(
       crossId: crossId,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,
       customerCode: customerCode,
@@ -83,7 +83,7 @@ void main() {
     verify(
       () => mockDatasource.process(
         crossId: crossId,
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,
         customerCode: customerCode,

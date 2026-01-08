@@ -73,7 +73,7 @@ void main() {
         when(
           () => mockRepository.loadReceipts(
             crossIdentity: any(named: 'crossIdentity'),
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),
         ).thenAnswer((_) async {
@@ -94,7 +94,7 @@ void main() {
         verify(
           () => mockRepository.loadReceipts(
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             enterpriseCode: enterpriseCode,
           ),
         ).called(1);
@@ -120,7 +120,7 @@ void main() {
         verifyNever(
           () => mockRepository.loadReceipts(
             crossIdentity: any(named: 'crossIdentity'),
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),
         );
@@ -136,7 +136,7 @@ void main() {
       // 1. Stub the LOAD method to return the initial list
       when(
         () => mockRepository.loadReceipts(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
         ),
@@ -145,7 +145,7 @@ void main() {
       // 2. Stub the UPDATE method to simulate success
       when(
         () => mockUpdateDatasource.update(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           CodigoInterno_ProcRecebDoc: any(named: 'CodigoInterno_ProcRecebDoc'),
           observations: any(named: 'observations'),
@@ -178,7 +178,7 @@ void main() {
       // 2. Verify remote datasource was called
       verifyNever(
         () => mockUpdateDatasource.update(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           CodigoInterno_ProcRecebDoc: any(named: 'CodigoInterno_ProcRecebDoc'),
           observations: any(named: 'observations'),
@@ -206,7 +206,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.loadReceipts(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),
@@ -229,7 +229,7 @@ void main() {
         // 1. Verify remote datasource was never called
         verifyNever(
           () => mockUpdateDatasource.update(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             CodigoInterno_ProcRecebDoc: any(
               named: 'CodigoInterno_ProcRecebDoc',

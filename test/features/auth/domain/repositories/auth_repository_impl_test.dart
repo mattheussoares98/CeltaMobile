@@ -84,7 +84,7 @@ void main() {
       ).called(1);
       verify(
         () => soapLoginDatasource.login(
-          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
+          urlInUse: userSessionEntity.supabaseEnterprise!.urlInUse!,
           user: userSessionEntity.user.name!,
           password: password,
         ),

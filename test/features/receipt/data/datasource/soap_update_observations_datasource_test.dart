@@ -10,7 +10,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int CodigoInterno_ProcRecebDoc;
   late String observations;
@@ -26,7 +26,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     CodigoInterno_ProcRecebDoc = faker.randomGenerator.integer(100);
     observations = faker.lorem.sentence();
@@ -41,7 +41,7 @@ void main() {
 
   test('should call soap adapter with correct values', () async {
     await sut.update(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       CodigoInterno_ProcRecebDoc: CodigoInterno_ProcRecebDoc,
       observations: observations,
@@ -49,7 +49,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "UpdateObservationsResponse",
         soapAction: "UpdateObservations",
         serviceASMX: "CeltaGoodsReceivingService.asmx",

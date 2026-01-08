@@ -9,14 +9,14 @@ class SoapSaveSaleRequestDatasource implements ISoapSaveSaleRequestDatasource {
   SoapSaveSaleRequestDatasource(this.soapRequest);
   @override
   Future<String?> save({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required int requestTypeCode,
     required PendingSaleRequestModel saleRequest,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResult: null,
       typeOfResponse: "InsertResponse",
       soapAction: "Insert",

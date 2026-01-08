@@ -45,7 +45,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
     await ref
         .read(createEnterpriseControllerProvider.notifier)
         .createEnterprise(
-          baseUrl: urlController.text,
+          urlInUse: urlController.text,
           enterpriseName: enterpriseNameController.text,
           password: passwordController.text,
           userName: userNameController.text,

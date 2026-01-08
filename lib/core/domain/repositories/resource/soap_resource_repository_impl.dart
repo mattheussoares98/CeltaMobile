@@ -11,13 +11,13 @@ class SoapResourceRepositoryImpl implements ISoapResourceRepository {
   Future<bool> canAccessResource({
     required BsResource resource,
     required BsRoutine routine,
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
   }) async {
     return await soapResourceDatasource.canAccessResource(
       resource: resource,
       routine: routine,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
     );
   }

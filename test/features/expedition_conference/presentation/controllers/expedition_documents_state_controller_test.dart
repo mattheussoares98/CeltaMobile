@@ -49,7 +49,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
           ),
@@ -72,7 +72,7 @@ void main() {
 
         verify(
           () => mockRepository.load(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterpriseCode,
           ),
@@ -107,7 +107,7 @@ void main() {
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       verifyNever(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
         ),

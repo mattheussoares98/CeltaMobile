@@ -8,13 +8,13 @@ class SoapInventoryAnnulRepositoryImpl
 
   @override
   Future<void> annul({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int codigoInternoInvCont,
     required int codigoInternoProEmb,
   }) async {
     await datasource.annul(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       codigoInternoInvCont: codigoInternoInvCont,
       codigoInternoProEmb: codigoInternoProEmb,

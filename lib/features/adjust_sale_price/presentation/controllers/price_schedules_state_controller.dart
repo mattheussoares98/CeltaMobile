@@ -48,7 +48,7 @@ class PriceSchedulesStateController extends _$PriceSchedulesStateController {
       return await ref
           .read(soapGetPriceSchedulesRepositoryProvider)
           .getPriceSchedules(
-            baseUrl: userSession!.enterprise!.baseUrl!,
+            urlInUse: userSession!.enterprise!.urlInUse!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             enterpriseCode: selectedEnterprise!.Code!,
             productCode: productCode,

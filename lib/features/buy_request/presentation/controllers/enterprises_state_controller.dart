@@ -18,7 +18,7 @@ class EnterprisesStateController extends _$EnterprisesStateController {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
     final enterprises = await repository.load(
-      baseUrl: userSession!.enterprise!.baseUrl!,
+      urlInUse: userSession!.enterprise!.urlInUse!,
       crossIdentity: userSession.user.CrossIdentity_Usuario!,
       supplierCode: pending.selectedSupplier!.Code,
       requestTypeCode: pending.selectedRequestType!.Code,

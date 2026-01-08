@@ -12,7 +12,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int expeditionControlCode;
   late int stepCode;
@@ -28,7 +28,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     expeditionControlCode = faker.randomGenerator.integer(1000);
     stepCode = faker.randomGenerator.integer(1000);
@@ -43,7 +43,7 @@ void main() {
 
   test('should call with correct params', () async {
     await sut.confirm(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       expeditionControlCode: expeditionControlCode,
       stepCode: stepCode,
@@ -51,7 +51,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "ConfirmConferenceResponse",
         soapAction: "ConfirmConference",
         serviceASMX: "CeltaProductService.asmx",

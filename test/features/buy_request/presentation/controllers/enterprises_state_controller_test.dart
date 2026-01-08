@@ -67,7 +67,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             supplierCode: any(named: 'supplierCode'),
             requestTypeCode: any(named: 'requestTypeCode'),
@@ -89,7 +89,7 @@ void main() {
         expect(result, fakeEnterprises);
         verify(
           () => mockRepository.load(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             supplierCode: fakePendingRequest.selectedSupplier!.Code,
             requestTypeCode: fakePendingRequest.selectedRequestType!.Code,
@@ -115,7 +115,7 @@ void main() {
       // Verify the repository was never called
       verifyNever(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           supplierCode: any(named: 'supplierCode'),
           requestTypeCode: any(named: 'requestTypeCode'),
@@ -140,7 +140,7 @@ void main() {
       // Verify the repository was never called
       verifyNever(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           supplierCode: any(named: 'supplierCode'),
           requestTypeCode: any(named: 'requestTypeCode'),

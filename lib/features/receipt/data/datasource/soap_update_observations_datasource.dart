@@ -8,13 +8,13 @@ class SoapUpdateObservationsDatasource
 
   @override
   Future<void> update({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int CodigoInterno_ProcRecebDoc,
     required String observations,
   }) async {
     await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "UpdateObservationsResponse",
       soapAction: "UpdateObservations",
       serviceASMX: "CeltaGoodsReceivingService.asmx",

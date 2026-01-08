@@ -80,7 +80,7 @@ void main() {
         verify(
           () => mockRepository.insertOrUpdateCustomer(
             customer: fakeCustomer,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           ),
         ).called(1);
@@ -112,7 +112,7 @@ void main() {
       verifyNever(
         () => mockRepository.insertOrUpdateCustomer(
           customer: any(named: 'customer'),
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
         ),
       );

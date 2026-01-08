@@ -13,7 +13,7 @@ void main() {
   late SoapAdjustStockDatasourceSpy soapAdjustStockDatasource;
 
   late List<AdjustStockItemModel> items;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
 
   void initSut() {
@@ -32,7 +32,7 @@ void main() {
       EntityFactory.makeAdjustStockItemEntity(),
       EntityFactory.makeAdjustStockItemEntity(),
     ].map((e) => AdjustStockItemModel.fromEntity(e)).toList();
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
   }
 
@@ -54,14 +54,14 @@ void main() {
 
   test("Should call datasource with correct params", () async {
     await sut.confirm(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       items: items.map((e) => e.toEntity()).toList(),
     );
 
     verify(
       () => soapAdjustStockDatasource.confirm(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         items: items,
       ),

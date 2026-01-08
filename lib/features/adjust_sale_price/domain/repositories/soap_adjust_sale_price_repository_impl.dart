@@ -17,7 +17,7 @@ class SoapAdjustSalePriceRepositoryImpl
 
   @override
   Future<void> confirm({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required int productCode,
@@ -29,7 +29,7 @@ class SoapAdjustSalePriceRepositoryImpl
     required DateTime now,
   }) async {
     return await soapAdjustSalePriceDatasource.confirm(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       productCode: productCode,

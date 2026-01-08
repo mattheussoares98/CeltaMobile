@@ -37,25 +37,25 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   @override
   Future<void> createEnterprise({
     required String enterpriseName,
-    required String baseUrl,
+    required String urlInUse,
     required String userName,
     required String password,
   }) async {
     // 1- try make login in bs
     final user = await soapLoginDatasource.login(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       user: userName,
       password: password,
     );
     // 2- load enterprises from bs
     final enterprises = await soapEnterpriseDatasource.getEnterprises(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: user.CrossIdentity_Usuario ?? "",
     );
     // 3- try create enterprise in supabase
     await enterpriseManagerDatasource.createEnterpriseWithSubEnterprises(
       enterpriseName: enterpriseName,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       subEnterprises: enterprises
           .map(
             (e) => SubEnterpriseModel(
@@ -72,12 +72,12 @@ class EnterpriseManagerRepositoryImpl implements IEnterpriseManagerRepository {
   @override
   Future<void> updateModulePermissions({
     required int enterpriseId,
-    required String baseUrl,
+    required String urlInUse,
     required List<UpdateModulePermissionModel> permissions,
   }) async {
     await enterpriseManagerDatasource.updateUrlAndPermissions(
       enterpriseId: enterpriseId,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       permissions: permissions,
     );
   }

@@ -29,7 +29,7 @@ class InsertProductNotFoundController
       await ref
           .read(soapInsertProductNotFoundDatasourceProvider)
           .insert(
-            baseUrl: validatedUser!.enterprise!.baseUrl!,
+            urlInUse: validatedUser!.enterprise!.urlInUse!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             productNotFound: ProductNotFoundModel(
               internalCode: internalCode,

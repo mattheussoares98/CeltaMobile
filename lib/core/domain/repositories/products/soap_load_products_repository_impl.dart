@@ -20,7 +20,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
 
   @override
   Future<List<ProductEntity>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required EnterpriseEntity enterpriseEntity,
     required GetProductsDefaultParams getProductsDefaultParams,
@@ -28,7 +28,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
   }) async {
     try {
       return await _makeCall(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseEntity: enterpriseEntity,
         getProductsDefaultParams: getProductsDefaultParams,
@@ -42,7 +42,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     }
 
     return await _makeCall(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseEntity: enterpriseEntity,
       getProductsDefaultParams: getProductsDefaultParams,
@@ -52,7 +52,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
   }
 
   Future<List<ProductEntity>> _makeCall({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required EnterpriseEntity enterpriseEntity,
     required GetProductsDefaultParams getProductsDefaultParams,
@@ -71,24 +71,24 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
 
     if (getProductsDefaultParams is GetProductsJsonParams) {
       response = await soapGetProductsJsonDatasource.get(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         parametersPayload: params,
         isCompetingPrices:
             getProductsDefaultParams.competingPricesParams != null,
       );
     } else if (getProductsDefaultParams is GetProductsByRequestTypeParams) {
       response = await soapLoadProductByRequestTypeDatasource.load(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         parametersPayload: params,
       );
     } else if (getProductsDefaultParams is GetProductsReceiptParams) {
       response = await soapReceiptLoadProductsDatasource.get(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         parametersPayload: params,
       );
     } else {
       response = await soapInventoryLoadProductsDatasource.get(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         parametersPayload: params,
       );
     }

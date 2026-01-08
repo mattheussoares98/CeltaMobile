@@ -20,7 +20,7 @@ class SupplierStateController extends _$SupplierStateController {
       return await ref
           .read(soapLoadSupplierRepositoryProvider)
           .load(
-            baseUrl: userSession!.enterprise!.baseUrl!,
+            urlInUse: userSession!.enterprise!.urlInUse!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             searchType: searchType,
             searchValue: searchValue,

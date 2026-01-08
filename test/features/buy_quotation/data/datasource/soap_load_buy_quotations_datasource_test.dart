@@ -14,7 +14,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
   late List<BuyQuotationModel> buyQuotationsModels;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late bool isCompleteSearch;
@@ -43,7 +43,7 @@ void main() {
       EntityFactory.makeBuyQuotationEntity(),
     ].map((e) => BuyQuotationModel.fromEntity(e)).toList();
 
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
     isCompleteSearch = faker.randomGenerator.boolean();
@@ -70,7 +70,7 @@ void main() {
 
   test('Should behave correctly on success', () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       isCompleteSearch: isCompleteSearch,
@@ -83,7 +83,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "GetBuyQuotationJsonResponse",
         soapAction: "GetBuyQuotationJson",
         serviceASMX: "CeltaBuyRequestService.asmx",
@@ -122,7 +122,7 @@ void main() {
     );
 
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       isCompleteSearch: isCompleteSearch,

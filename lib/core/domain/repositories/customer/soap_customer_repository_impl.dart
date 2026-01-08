@@ -15,14 +15,14 @@ class SoapCustomerRepositoryImpl implements ISoapCustomerRepository {
     required String searchValue,
     required String crossIdentity,
     required int enterpriseCode,
-    required String baseUrl,
+    required String urlInUse,
   }) async {
     final result = await datasource.loadCustomer(
       searchType: searchType,
       searchValue: searchValue,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
     );
 
     return result.map((e) => e.toEntity()).toList();

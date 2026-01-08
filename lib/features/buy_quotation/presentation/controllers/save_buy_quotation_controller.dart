@@ -39,7 +39,7 @@ class SaveBuyQuotationController extends _$SaveBuyQuotationController {
       await ref
           .read(soapInsertUpdateBuyQuotationRepositoryProvider)
           .insertUpdate(
-            baseUrl: validatedUser!.enterprise!.baseUrl!,
+            urlInUse: validatedUser!.enterprise!.urlInUse!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             buyQuotation: buyQuotation,
             now: DateTime.now(),

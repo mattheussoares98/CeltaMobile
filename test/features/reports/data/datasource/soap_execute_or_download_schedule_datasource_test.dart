@@ -13,7 +13,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int reportScheduleCode;
   late DownloadParams downloadParams;
@@ -37,7 +37,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     reportScheduleCode = faker.randomGenerator.integer(100);
     downloadParams = DownloadParams(
@@ -61,7 +61,7 @@ void main() {
 
   test('should behave correctly in success and is not executing', () async {
     final response = await sut.executeOrDownloadSchedule(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       reportScheduleCode: reportScheduleCode,
       execute: false,
@@ -73,7 +73,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "GetReportScheduleExecutionsResponse",
         soapAction: "GetReportScheduleExecutions",
         serviceASMX: "CeltaReportService.asmx",
@@ -97,7 +97,7 @@ void main() {
   test('should behave correctly in success and is executing', () async {
     final sendEmailOnExecution = faker.randomGenerator.boolean();
     final response = await sut.executeOrDownloadSchedule(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       reportScheduleCode: reportScheduleCode,
       execute: true,
@@ -109,7 +109,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "GetReportScheduleExecutionsResponse",
         soapAction: "GetReportScheduleExecutions",
         serviceASMX: "CeltaReportService.asmx",

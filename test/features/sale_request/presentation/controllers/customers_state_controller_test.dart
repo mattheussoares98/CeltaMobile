@@ -66,7 +66,7 @@ void main() {
         searchType: any(named: 'searchType'),
         searchValue: any(named: 'searchValue'),
         crossIdentity: any(named: 'crossIdentity'),
-        baseUrl: any(named: 'baseUrl'),
+        urlInUse: any(named: 'urlInUse'),
         enterpriseCode: any(named: 'enterpriseCode'),
       ),
     ).thenAnswer((_) async {
@@ -100,7 +100,7 @@ void main() {
             searchValue: searchValue,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterprise.Code!,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
           ),
         ).called(1);
       },
@@ -130,7 +130,7 @@ void main() {
             searchValue: searchValue,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterprise.Code!,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
           ),
         ).called(1);
       },
@@ -160,7 +160,7 @@ void main() {
             searchValue: searchValue,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterprise.Code!,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
           ),
         ).called(1);
       },
@@ -190,7 +190,7 @@ void main() {
             searchValue: searchValue,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterprise.Code!,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
           ),
         ).called(1);
       },

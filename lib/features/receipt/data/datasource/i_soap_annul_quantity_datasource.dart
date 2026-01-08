@@ -1,6 +1,6 @@
 abstract class ISoapAnnulQuantityDatasource {
   Future<void> annul({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int grDocCode,
     required int productgCode,

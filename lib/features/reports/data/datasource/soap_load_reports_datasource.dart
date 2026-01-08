@@ -11,11 +11,11 @@ class SoapLoadReportsDatasource implements ISoapLoadReportsDatasource {
 
   @override
   Future<List<ReportScheduleModel>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "GetReportSchedulesJsonResponse",
       soapAction: "GetReportSchedulesJson",
       serviceASMX: "CeltaReportService.asmx",

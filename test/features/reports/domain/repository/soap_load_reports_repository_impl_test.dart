@@ -12,7 +12,7 @@ class SoapLoadReportsDatasourceSpy extends Mock
     implements ISoapLoadReportsDatasource {
   void mockLoad(List<ReportScheduleModel> response) => when(
     () => this.load(
-      baseUrl: any(named: 'baseUrl'),
+      urlInUse: any(named: 'urlInUse'),
       crossIdentity: any(named: 'crossIdentity'),
     ),
   ).thenAnswer((_) async => response);
@@ -24,7 +24,7 @@ void main() {
 
   late List<ReportScheduleEntity> reportsEntities;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
 
   setUp(() {
@@ -37,7 +37,7 @@ void main() {
       EntityFactory.makeReportScheduleEntity(),
     ];
 
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
 
     mockDatasource.mockLoad(
@@ -47,14 +47,15 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
     );
 
     expect(response, reportsEntities);
 
     verify(
-      () => mockDatasource.load(baseUrl: baseUrl, crossIdentity: crossIdentity),
+      () =>
+          mockDatasource.load(urlInUse: urlInUse, crossIdentity: crossIdentity),
     ).called(1);
   });
 }

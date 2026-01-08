@@ -11,7 +11,7 @@ class SoapInsertUpdateBuyQuotationRepositoryImpl
 
   @override
   Future<void> insertUpdate({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required BuyQuotationEntity buyQuotation,
     required DateTime now,
@@ -42,7 +42,7 @@ class SoapInsertUpdateBuyQuotationRepositoryImpl
     }).toList();
 
     await datasource.insertUpdate(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       buyQuotation: BuyQuotationModel.fromEntity(
         buyQuotation.copyWith(

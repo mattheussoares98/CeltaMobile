@@ -8,7 +8,7 @@ class SoapInventoryEntryQuantityRepositoryImpl
 
   @override
   Future<void> entry({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int codigoInternoInvCont,
     required int productPackingCode,
@@ -16,7 +16,7 @@ class SoapInventoryEntryQuantityRepositoryImpl
     required bool isSubtract,
   }) async {
     await datasource.entry(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       codigoInternoInvCont: codigoInternoInvCont,
       productPackingCode: productPackingCode,

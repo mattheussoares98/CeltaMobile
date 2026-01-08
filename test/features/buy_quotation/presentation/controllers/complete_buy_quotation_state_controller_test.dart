@@ -63,7 +63,7 @@ void main() {
         // The repository must return a List, and the controller returns the first element
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: fakeCodeForFullSearch,
@@ -91,7 +91,7 @@ void main() {
         // Verify repository was called correctly
         verify(
           () => mockRepository.load(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             enterpriseCode: fakeEnterpriseCode,
             codeForFullSearch: fakeCodeForFullSearch,
@@ -106,7 +106,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: any(named: 'codeForFullSearch'),
@@ -156,7 +156,7 @@ void main() {
         // Verify the repository was never called
         verifyNever(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: any(named: 'codeForFullSearch'),
@@ -186,7 +186,7 @@ void main() {
       // Verify repository was called correctly
       verifyNever(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
           codeForFullSearch: any(named: 'codeForFullSearch'),
@@ -203,7 +203,7 @@ void main() {
       // 1. Stub load to ensure state has initial data
       when(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
           codeForFullSearch: any(named: 'codeForFullSearch'),
@@ -270,7 +270,7 @@ void main() {
       // 1. Stub load to ensure state has initial data
       when(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           enterpriseCode: any(named: 'enterpriseCode'),
           codeForFullSearch: any(named: 'codeForFullSearch'),
@@ -327,7 +327,7 @@ void main() {
         // State is AsyncLoading due to repository stubbing
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: any(named: 'codeForFullSearch'),
@@ -383,7 +383,7 @@ void main() {
         // 1. Stub load to ensure state has initial data
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: any(named: 'codeForFullSearch'),
@@ -428,7 +428,7 @@ void main() {
         // 1. Stub load to ensure state has initial data
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             enterpriseCode: any(named: 'enterpriseCode'),
             codeForFullSearch: any(named: 'codeForFullSearch'),

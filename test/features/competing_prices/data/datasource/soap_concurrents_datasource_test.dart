@@ -14,7 +14,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late List<ConcurrentModel> concurrentModels;
   late String searchValue;
@@ -35,7 +35,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     concurrentModels = [
       EntityFactory.makeConcurrentEntity(),
@@ -66,7 +66,7 @@ void main() {
     test('Should behave correctly on success', () async {
       final response = await sut.load(
         crossIdentity: crossIdentity,
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         searchValue: searchValue,
         searchType: searchConcurrentType,
       );
@@ -75,7 +75,7 @@ void main() {
 
       verify(
         () => soapRequest.post(
-          url: baseUrl,
+          url: urlInUse,
           soapAction: "GetConcurrentJson",
           typeOfResponse: "GetConcurrentJsonResponse",
           serviceASMX: "CeltaResearchOfPriceService.asmx",
@@ -96,13 +96,13 @@ void main() {
     test('Should call soap with correct params', () async {
       await sut.insertUpdate(
         crossIdentity: crossIdentity,
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         concurrent: concurrentModels.first,
       );
 
       verify(
         () => soapRequest.post(
-          url: baseUrl,
+          url: urlInUse,
           typeOfResponse: "InsertUpdateConcurrentJsonResponse",
           soapAction: "InsertUpdateConcurrentJson",
           serviceASMX: "CeltaResearchOfPriceService.asmx",

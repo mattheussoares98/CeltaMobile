@@ -61,7 +61,7 @@ void main() {
         when(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
           ),
         ).thenAnswer((_) async {
           await Future.delayed(Duration.zero);
@@ -81,7 +81,7 @@ void main() {
         verify(
           () => mockRepository.load(
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
           ),
         ).called(1);
       },
@@ -106,7 +106,7 @@ void main() {
         verifyNever(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
           ),
         );
       },
@@ -118,7 +118,7 @@ void main() {
       when(
         () => mockRepository.load(
           crossIdentity: any(named: 'crossIdentity'),
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
         ),
       ).thenThrow(exception);
 
@@ -144,7 +144,7 @@ void main() {
         when(
           () => mockRepository.load(
             crossIdentity: any(named: 'crossIdentity'),
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
           ),
         ).thenAnswer((_) async => fakeReports);
 

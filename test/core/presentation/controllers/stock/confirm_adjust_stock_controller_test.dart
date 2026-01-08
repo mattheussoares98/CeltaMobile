@@ -48,7 +48,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.confirm(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             items: any(named: 'items'),
           ),
@@ -72,7 +72,7 @@ void main() {
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
         verify(
           () => mockRepository.confirm(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             items: items,
           ),
@@ -100,7 +100,7 @@ void main() {
       // Verify the repository was never called because the session was invalid
       verifyNever(
         () => mockRepository.confirm(
-          baseUrl: fakeSession.enterprise!.baseUrl!,
+          urlInUse: fakeSession.enterprise!.urlInUse!,
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           items: items,
         ),
@@ -112,7 +112,7 @@ void main() {
         // ARRANGE: Pass null for the session to simulate a failure condition.
         when(
           () => mockRepository.confirm(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             items: any(named: 'items'),
           ),
@@ -142,7 +142,7 @@ void main() {
         // Verify the repository was never called because the session was invalid
         verify(
           () => mockRepository.confirm(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             items: [items[0]],
           ),
@@ -155,7 +155,7 @@ void main() {
         // ARRANGE: Pass null for the session to simulate a failure condition.
         when(
           () => mockRepository.confirm(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             items: any(named: 'items'),
           ),
@@ -184,7 +184,7 @@ void main() {
         // Verify the repository was never called because the session was invalid
         verify(
           () => mockRepository.confirm(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             items: items,
           ),

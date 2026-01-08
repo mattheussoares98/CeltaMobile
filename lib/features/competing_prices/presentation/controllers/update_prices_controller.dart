@@ -35,7 +35,7 @@ class UpdatePricesController extends _$UpdatePricesController {
       await ref
           .read(soapInsertUpdatePricesDatasourceProvider)
           .insert(
-            baseUrl: validatedUser!.enterprise!.baseUrl!,
+            urlInUse: validatedUser!.enterprise!.urlInUse!,
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             researchCode: researchCode,
             concurrentCode: concurrentCode,

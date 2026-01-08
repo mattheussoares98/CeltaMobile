@@ -10,13 +10,13 @@ class SoapLoadDestinyEnterprisesRepositoryImpl
 
   @override
   Future<List<EnterpriseEntity>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int requestTypeCode,
     required int enterpriseOriginCode,
   }) async {
     final response = await datasource.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       requestTypeCode: requestTypeCode,
       enterpriseOriginCode: enterpriseOriginCode,

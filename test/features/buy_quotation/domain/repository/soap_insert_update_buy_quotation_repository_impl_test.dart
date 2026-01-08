@@ -12,7 +12,7 @@ class SoapInsertUpdateBuyQuotationDatasourceSpy extends Mock
   SoapInsertUpdateBuyQuotationDatasourceSpy() {
     when(
       () => this.insertUpdate(
-        baseUrl: any(named: 'baseUrl'),
+        urlInUse: any(named: 'urlInUse'),
         crossIdentity: any(named: 'crossIdentity'),
         buyQuotation: any(named: 'buyQuotation'),
       ),
@@ -25,7 +25,7 @@ void main() {
 
   late SoapInsertUpdateBuyQuotationDatasourceSpy datasource;
   late BuyQuotationModel buyQuotationModel;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late DateTime now;
   late String observations;
@@ -45,7 +45,7 @@ void main() {
     buyQuotationModel = BuyQuotationModel.fromEntity(
       EntityFactory.makeBuyQuotationEntity(dateOfCreation: now),
     );
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     observations = faker.lorem.sentence();
   }
@@ -65,7 +65,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     await sut.insertUpdate(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       now: now,
       buyQuotation: buyQuotationModel.toEntity(),
@@ -74,7 +74,7 @@ void main() {
 
     verify(
       () => datasource.insertUpdate(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         buyQuotation: BuyQuotationModel.fromEntity(
           buyQuotationModel.toEntity().copyWith(Observations: observations),
@@ -86,7 +86,7 @@ void main() {
     'should behave correctly when is inserting a new buy quotation',
     () async {
       await sut.insertUpdate(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         now: now,
         observations: observations,
@@ -106,7 +106,7 @@ void main() {
       final entity = buyQuotationModel.toEntity();
       verify(
         () => datasource.insertUpdate(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           crossIdentity: crossIdentity,
           buyQuotation: BuyQuotationModel.fromEntity(
             entity.copyWith(

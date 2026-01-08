@@ -11,7 +11,7 @@ void main() {
 
   late SoapInventoryEntryQuantityDatasourceSpy datasource;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int codigoInternoInvCont;
   late int productPackingCode;
@@ -29,7 +29,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     codigoInternoInvCont = faker.randomGenerator.integer(100);
     productPackingCode = faker.randomGenerator.integer(100);
@@ -55,7 +55,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     await sut.entry(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       codigoInternoInvCont: codigoInternoInvCont,
       productPackingCode: productPackingCode,
@@ -64,7 +64,7 @@ void main() {
     );
     verify(
       () => datasource.entry(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         codigoInternoInvCont: codigoInternoInvCont,
         productPackingCode: productPackingCode,

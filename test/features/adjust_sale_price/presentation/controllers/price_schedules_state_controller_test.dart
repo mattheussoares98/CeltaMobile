@@ -103,7 +103,7 @@ void main() {
       expect(states.last.value, priceSchedulesEntities);
       verify(
         () => mockRepository.getPriceSchedules(
-          baseUrl: userSessionEntity.supabaseEnterprise!.baseUrl!,
+          urlInUse: userSessionEntity.supabaseEnterprise!.urlInUse!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseEntity.Code!,
           productCode: productEntity.ProductCode!,

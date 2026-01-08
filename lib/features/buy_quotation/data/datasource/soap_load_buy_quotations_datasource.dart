@@ -13,7 +13,7 @@ class SoapLoadBuyQuotationsDatasource
 
   @override
   Future<List<BuyQuotationModel>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required bool isCompleteSearch,
@@ -22,7 +22,7 @@ class SoapLoadBuyQuotationsDatasource
     required bool inclusiveExpired,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "GetBuyQuotationJsonResponse",
       soapAction: "GetBuyQuotationJson",
       serviceASMX: "CeltaBuyRequestService.asmx",

@@ -12,13 +12,13 @@ class SoapLoadDestinyEnterprisesDatasource
 
   @override
   Future<List<SoapEnterpriseModel>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int requestTypeCode,
     required int enterpriseOriginCode,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "GetEnterprisesDestinyJsonResponse",
       soapAction: "GetEnterprisesDestinyJson",
       serviceASMX: "CeltaEnterpriseService.asmx",

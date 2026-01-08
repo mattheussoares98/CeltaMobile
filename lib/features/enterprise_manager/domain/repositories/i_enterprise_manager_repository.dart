@@ -6,13 +6,13 @@ abstract class IEnterpriseManagerRepository {
   Future<EnterprisePermissionEntity?> getEnterprisePermissionsById(int id);
   Future<void> createEnterprise({
     required String enterpriseName,
-    required String baseUrl,
+    required String urlInUse,
     required String userName,
     required String password,
   });
   Future<void> updateModulePermissions({
     required int enterpriseId,
-    required String baseUrl,
+    required String urlInUse,
     required List<UpdateModulePermissionModel> permissions,
   });
 }

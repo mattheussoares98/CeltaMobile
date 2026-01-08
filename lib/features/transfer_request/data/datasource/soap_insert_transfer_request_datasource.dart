@@ -12,7 +12,7 @@ class SoapInsertTransferRequestDatasource
 
   @override
   Future<String> save({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseOriginCode,
     required int enterpriseDestinyCode,
@@ -28,7 +28,7 @@ class SoapInsertTransferRequestDatasource
     }).toList();
 
     return await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResult: null,
       typeOfResponse: "InsertResponse",
       soapAction: "Insert",

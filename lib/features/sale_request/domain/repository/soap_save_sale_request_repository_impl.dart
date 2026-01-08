@@ -10,14 +10,14 @@ class SoapSaveSaleRequestRepositoryImpl
 
   @override
   Future<String?> save({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required int requestTypeCode,
     required PendingSaleRequestEntity saleRequest,
   }) async {
     return await datasource.save(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,

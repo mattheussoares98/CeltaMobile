@@ -10,7 +10,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late int productPackingCode;
@@ -27,7 +27,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
     productPackingCode = faker.randomGenerator.integer(100);
@@ -43,7 +43,7 @@ void main() {
 
   test('should call with correct params', () async {
     await sut.send(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       productPackingCode: productPackingCode,
@@ -52,7 +52,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResult: null,
         typeOfResponse: "SendToPrintResponse",
         soapAction: "SendToPrint",

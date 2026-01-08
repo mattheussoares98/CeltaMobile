@@ -12,14 +12,14 @@ Future<void> initApp() async {
 }
 
 Future<void> _initSupabase() async {
-  const String supabaseUrl = AppSecrets.supabaseUrl;
+  const String supaurlInUse = AppSecrets.supaurlInUse;
   const String supabaseAnonKey = AppSecrets.supabaseAnonKey;
 
-  if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
+  if (supaurlInUse.isEmpty || supabaseAnonKey.isEmpty) {
     throw Exception('Secrets not found. Check your secrets.dart file.');
   }
 
-  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+  await Supabase.initialize(url: supaurlInUse, anonKey: supabaseAnonKey);
 }
 
 Future<void> _initHive() async {

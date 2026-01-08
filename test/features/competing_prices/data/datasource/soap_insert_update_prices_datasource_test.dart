@@ -12,7 +12,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int researchCode;
   late int concurrentCode;
@@ -36,7 +36,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     researchCode = faker.randomGenerator.integer(100);
     researchCode = faker.randomGenerator.integer(100);
@@ -60,7 +60,7 @@ void main() {
 
   test('Should behave correctly on success', () async {
     await sut.insert(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       researchCode: researchCode,
       concurrentCode: concurrentCode,
@@ -76,7 +76,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "InsertConcurrentProductResponse",
         soapAction: "InsertConcurrentProduct",
         serviceASMX: "CeltaResearchOfPriceService.asmx",

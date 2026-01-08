@@ -2,7 +2,7 @@ import '../../domain/entities/entities.dart';
 
 abstract class ISoapInsertBuyRequestRepository {
   Future<String?> insertBuyRequest({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int buyerCode,
     required int requestTypeCode,

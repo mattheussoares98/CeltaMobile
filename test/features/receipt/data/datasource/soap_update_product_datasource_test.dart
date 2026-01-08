@@ -10,7 +10,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int grDocCode;
   late int productCode;
@@ -29,7 +29,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     grDocCode = faker.randomGenerator.integer(100);
     productCode = faker.randomGenerator.integer(100);
@@ -47,7 +47,7 @@ void main() {
 
   test('should call soap adapter with correct values', () async {
     await sut.update(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       grDocCode: grDocCode,
       productCode: productCode,
@@ -58,7 +58,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "EntryQuantityResponse",
         soapAction: "EntryQuantity",
         serviceASMX: "CeltaGoodsReceivingService.asmx",
@@ -77,7 +77,7 @@ void main() {
 
   test('should not send validityDate if receive null param', () async {
     await sut.update(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       grDocCode: grDocCode,
       productCode: productCode,
@@ -88,7 +88,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "EntryQuantityResponse",
         soapAction: "EntryQuantity",
         serviceASMX: "CeltaGoodsReceivingService.asmx",

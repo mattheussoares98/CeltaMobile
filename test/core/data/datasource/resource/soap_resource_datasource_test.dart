@@ -16,7 +16,7 @@ void main() {
 
   late BsResource resource;
   late BsRoutine routine;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late bool canAccess;
 
@@ -35,7 +35,7 @@ void main() {
         .values[faker.randomGenerator.integer(BsResource.values.length)];
     routine = BsRoutine
         .values[faker.randomGenerator.integer(BsRoutine.values.length)];
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     canAccess = faker.randomGenerator.boolean();
   }
@@ -63,7 +63,7 @@ void main() {
 
       final result = await sut.canAccessResource(
         resource: resource,
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         routine: routine,
       );
@@ -72,7 +72,7 @@ void main() {
 
       verify(
         () => soapAdapter.post(
-          url: baseUrl.toLowerCase().removeWhiteSpaces(),
+          url: urlInUse.toLowerCase().removeWhiteSpaces(),
           parameters: {
             "jsonParameters": json.encode({
               "CrossIdentity": crossIdentity,

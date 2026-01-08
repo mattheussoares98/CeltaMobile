@@ -48,7 +48,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.confirm(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             expeditionControlCode: any(named: 'expeditionControlCode'),
             stepCode: any(named: 'stepCode'),
@@ -77,7 +77,7 @@ void main() {
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
         verify(
           () => mockRepository.confirm(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             expeditionControlCode: fakeExpeditionCode,
             stepCode: fakeStepCode,
@@ -112,7 +112,7 @@ void main() {
         expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
         verifyNever(
           () => mockRepository.confirm(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             expeditionControlCode: any(named: 'expeditionControlCode'),
             stepCode: any(named: 'stepCode'),

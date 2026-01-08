@@ -9,12 +9,12 @@ class SoapLoadProductsNotFoundDatasource
 
   @override
   Future<List<ProductNotFoundModel>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int receiptCode,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "GetProductProductWithoutCadasterResponse",
       soapAction: "GetProductProductWithoutCadaster",
       serviceASMX: "CeltaGoodsReceivingService.asmx",

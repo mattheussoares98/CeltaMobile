@@ -88,7 +88,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.insertBuyRequest(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             buyerCode: any(named: 'buyerCode'),
             requestTypeCode: any(named: 'requestTypeCode'),
@@ -125,7 +125,7 @@ void main() {
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
         verify(
           () => mockRepository.insertBuyRequest(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             buyerCode: fakePendingRequest.selectedBuyer!.Code,
             requestTypeCode: fakePendingRequest.selectedRequestType!.Code,
@@ -200,7 +200,7 @@ void main() {
         final spyPendingController = FakePendingBuyRequest(fakePendingRequest);
         when(
           () => mockRepository.insertBuyRequest(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             buyerCode: any(named: 'buyerCode'),
             requestTypeCode: any(named: 'requestTypeCode'),

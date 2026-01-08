@@ -7,6 +7,6 @@ abstract class ISoapCustomerDatasource {
     required String searchValue,
     required String crossIdentity,
     required int enterpriseCode,
-    required String baseUrl,
+    required String urlInUse,
   });
 }

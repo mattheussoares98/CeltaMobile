@@ -11,7 +11,7 @@ class SoapInsertBuyRequestRepositoryImpl
 
   @override
   Future<String?> insertBuyRequest({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int buyerCode,
     required int requestTypeCode,
@@ -21,7 +21,7 @@ class SoapInsertBuyRequestRepositoryImpl
     required List<BuyRequestProductItemEntity> products,
   }) async {
     return await datasource.insertBuyRequest(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       buyerCode: buyerCode,
       requestTypeCode: requestTypeCode,

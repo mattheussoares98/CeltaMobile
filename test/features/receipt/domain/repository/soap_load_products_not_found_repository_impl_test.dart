@@ -12,7 +12,7 @@ class SoapLoadProductsNotFoundDatasourceSpy extends Mock
     implements ISoapLoadProductsNotFoundDatasource {
   void mockLoad(List<ProductNotFoundModel> response) => when(
     () => this.load(
-      baseUrl: any(named: 'baseUrl'),
+      urlInUse: any(named: 'urlInUse'),
       crossIdentity: any(named: 'crossIdentity'),
       receiptCode: any(named: 'receiptCode'),
     ),
@@ -25,7 +25,7 @@ void main() {
 
   late List<ProductNotFoundEntity> productsEntities;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int receiptCode;
 
@@ -39,7 +39,7 @@ void main() {
       EntityFactory.makeProductNotFoundEntity(),
     ];
 
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     receiptCode = faker.randomGenerator.integer(100);
 
@@ -50,7 +50,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       receiptCode: receiptCode,
     );
@@ -59,7 +59,7 @@ void main() {
 
     verify(
       () => mockDatasource.load(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         receiptCode: receiptCode,
       ),

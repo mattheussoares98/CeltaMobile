@@ -57,7 +57,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             searchCovenantType: any(named: 'searchCovenantType'),
             searchValue: any(named: 'searchValue'),
@@ -76,7 +76,7 @@ void main() {
 
         verify(
           () => mockRepository.load(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             searchCovenantType: SearchCovenantType.approximateName,
             searchValue: "%",
@@ -102,7 +102,7 @@ void main() {
       // Verify the repository was NEVER called because the session was invalid.
       verifyNever(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           searchCovenantType: any(named: 'searchCovenantType'),
           searchValue: any(named: 'searchValue'),

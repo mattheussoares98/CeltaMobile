@@ -10,12 +10,12 @@ class SoapAdjustStockRepositoryImpl implements ISoapAdjustStockRepository {
 
   @override
   Future<void> confirm({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required List<AdjustStockItemEntity> items,
   }) async {
     await datasource.confirm(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       items: items.map((e) => AdjustStockItemModel.fromEntity(e)).toList(),
     );

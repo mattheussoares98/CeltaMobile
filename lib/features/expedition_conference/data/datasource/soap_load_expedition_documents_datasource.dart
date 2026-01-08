@@ -12,12 +12,12 @@ class SoapLoadExpeditionDocumentsDatasource
 
   @override
   Future<List<ExpeditionDocumentModel>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "GetExpeditionControlsToConferenceResponse",
       soapAction: "GetExpeditionControlsToConference",
       serviceASMX: "celtaproductservice.asmx",

@@ -11,7 +11,7 @@ class SoapConcurrentsRepositoryImpl implements ISoapConcurrentsRepository {
   @override
   Future<List<ConcurrentEntity>> load({
     required String crossIdentity,
-    required String baseUrl,
+    required String urlInUse,
     String? searchValue,
   }) async {
     final searchType = int.tryParse(searchValue ?? '') != null
@@ -20,7 +20,7 @@ class SoapConcurrentsRepositoryImpl implements ISoapConcurrentsRepository {
 
     final response = await datasource.load(
       crossIdentity: crossIdentity,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       searchType: searchType,
       searchValue: searchValue ?? '%',
     );
@@ -31,7 +31,7 @@ class SoapConcurrentsRepositoryImpl implements ISoapConcurrentsRepository {
   @override
   Future<void> insertUpdate({
     required String crossIdentity,
-    required String baseUrl,
+    required String urlInUse,
     required int? concurrentCode,
     required String concurrentName,
     required String observation,
@@ -39,7 +39,7 @@ class SoapConcurrentsRepositoryImpl implements ISoapConcurrentsRepository {
   }) async {
     await datasource.insertUpdate(
       crossIdentity: crossIdentity,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       concurrent: ConcurrentModel.fromEntity(
         ConcurrentEntity(
           ConcurrentCode: concurrentCode ?? 0,

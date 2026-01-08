@@ -13,7 +13,7 @@ void main() {
   late SoapStockTypeDatasourceSpy soapStockTypeDatasource;
 
   late List<StockTypeEntity> stockTypeEntities;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
 
   void initSut() {
@@ -36,7 +36,7 @@ void main() {
       EntityFactory.makeStockTypeEntity(),
       EntityFactory.makeStockTypeEntity(),
     ];
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
   }
 
@@ -58,7 +58,7 @@ void main() {
 
   test("Should behave correctly on get", () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
     );
 
@@ -66,7 +66,7 @@ void main() {
 
     verify(
       () => soapStockTypeDatasource.load(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
       ),
     ).called(1);

@@ -13,7 +13,7 @@ void main() {
 
   late List<BuyerModel> buyersModels;
   late String crossIdentity;
-  late String baseUrl;
+  late String urlInUse;
 
   void initSut() {
     sut = SoapLoadBuyersRepositoryImpl(datasource);
@@ -35,7 +35,7 @@ void main() {
     ].map((e) => BuyerModel.fromEntity(e)).toList();
 
     crossIdentity = faker.guid.guid();
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
   }
 
   setUp(() {
@@ -54,13 +54,13 @@ void main() {
 
   test('should behave correctly on success', () async {
     final buyers = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
     );
 
     expect(buyers, buyersModels.map((e) => e.toEntity()).toList());
     verify(
-      () => datasource.load(baseUrl: baseUrl, crossIdentity: crossIdentity),
+      () => datasource.load(urlInUse: urlInUse, crossIdentity: crossIdentity),
     ).called(1);
 
     verifyNoMoreInteractions(datasource);

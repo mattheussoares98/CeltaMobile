@@ -14,7 +14,7 @@ void main() {
   late SoapRequestSpy soapRequest;
 
   late List<ExpeditionProductModel> expeditionsModels;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int expeditionControlCode;
 
@@ -38,7 +38,7 @@ void main() {
       EntityFactory.makeExpeditionProductEntity(),
       EntityFactory.makeExpeditionProductEntity(),
     ].map((e) => ExpeditionProductModel.fromEntity(e)).toList();
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     expeditionControlCode = faker.randomGenerator.integer(1000);
   }
@@ -52,7 +52,7 @@ void main() {
 
   test('should behave correctly in success', () async {
     final result = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       expeditionControlCode: expeditionControlCode,
     );
@@ -61,7 +61,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "GetExpeditionControlProductsResponse",
         soapAction: "GetExpeditionControlProducts",
         serviceASMX: "CeltaProductService.asmx",

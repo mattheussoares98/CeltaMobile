@@ -14,7 +14,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late CustomerEntity customer;
 
@@ -29,7 +29,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     customer = EntityFactory.makeCustomerEntity();
   }
@@ -44,13 +44,13 @@ void main() {
   test('should call with correct params', () async {
     await sut.insertOrUpdateCustomer(
       customer: CustomerModel.fromEntity(customer),
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
     );
 
     verify(
       () => soapAdapter.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "InsertUpdateCustomerResponse",
         soapAction: "InsertUpdateCustomer",
         serviceASMX: "CeltaCustomerService.asmx",

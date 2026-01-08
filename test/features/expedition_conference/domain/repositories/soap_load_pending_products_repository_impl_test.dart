@@ -12,7 +12,7 @@ void main() {
   late SoapLoadPendingProductsDatasourceSpy datasource;
 
   late List<ExpeditionProductModel> expeditionProductsModels;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int expeditionControlCode;
 
@@ -34,7 +34,7 @@ void main() {
       EntityFactory.makeExpeditionProductEntity(),
       EntityFactory.makeExpeditionProductEntity(),
     ].map((e) => ExpeditionProductModel.fromEntity(e)).toList();
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     expeditionControlCode = faker.randomGenerator.integer(1000);
   }
@@ -48,7 +48,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       expeditionControlCode: expeditionControlCode,
     );
@@ -59,7 +59,7 @@ void main() {
     );
     verify(
       () => datasource.load(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         expeditionControlCode: expeditionControlCode,
       ),

@@ -7,14 +7,14 @@ class SoapAnnulQuantityDatasource implements ISoapAnnulQuantityDatasource {
 
   @override
   Future<void> annul({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int grDocCode,
     required int productgCode,
     required int productPackingCode,
   }) async {
     await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "AnnulQuantityResponse",
       soapAction: "AnnulQuantity",
       serviceASMX: "CeltaGoodsReceivingService.asmx",

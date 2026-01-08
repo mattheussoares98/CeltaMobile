@@ -15,7 +15,7 @@ void main() {
   late SoapRequestSpy soapRequest;
 
   late String savedRequestNumber;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int buyerCode;
   late int requestTypeCode;
@@ -38,7 +38,7 @@ void main() {
 
   void initEntities() {
     savedRequestNumber = faker.lorem.word();
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     buyerCode = faker.randomGenerator.integer(100);
     requestTypeCode = faker.randomGenerator.integer(100);
@@ -66,7 +66,7 @@ void main() {
 
   test('Should behave correctly on success', () async {
     final response = await sut.insertBuyRequest(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       buyerCode: buyerCode,
       requestTypeCode: requestTypeCode,
@@ -82,7 +82,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         serviceASMX: "CeltaBuyRequestService.asmx",
         typeOfResponse: "InsertResponse",
         soapAction: "Insert",

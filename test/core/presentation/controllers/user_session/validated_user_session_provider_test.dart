@@ -87,33 +87,36 @@ void main() {
         // ASSERT
         expect(result, throwsA(isA<AppException>()));
       });
-      test('should throw if datasource returns user without baseUrl', () async {
-        localUserSessionDatasource.mockGetSession(
-          UserSessionModel(
-            user: UserModel(
-              name: faker.person.name(),
-              enterpriseName: faker.company.name(),
-              AccessKey: faker.guid.guid(),
-              CrossIdentity_Usuario: faker.guid.guid(),
+      test(
+        'should throw if datasource returns user without urlInUse',
+        () async {
+          localUserSessionDatasource.mockGetSession(
+            UserSessionModel(
+              user: UserModel(
+                name: faker.person.name(),
+                enterpriseName: faker.company.name(),
+                AccessKey: faker.guid.guid(),
+                CrossIdentity_Usuario: faker.guid.guid(),
+              ),
+              enterprise: SupabaseEnterpriseModel(
+                id: faker.randomGenerator.integer(100),
+                name: faker.company.name(),
+                subEnterprises: const [],
+                urlInUse: null,
+              ),
             ),
-            enterprise: SupabaseEnterpriseModel(
-              id: faker.randomGenerator.integer(100),
-              name: faker.company.name(),
-              subEnterprises: const [],
-              baseUrl: null,
-            ),
-          ),
-        );
+          );
 
-        final container = makeProviderContainer();
-        addTearDown(container.dispose);
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
 
-        // ACT
-        final result = container.read(validatedUserSessionProvider.future);
+          // ACT
+          final result = container.read(validatedUserSessionProvider.future);
 
-        // ASSERT
-        expect(result, throwsA(isA<AppException>()));
-      });
+          // ASSERT
+          expect(result, throwsA(isA<AppException>()));
+        },
+      );
       test('should throw if datasource returns user without crossId', () async {
         localUserSessionDatasource.mockGetSession(
           UserSessionModel(
@@ -127,7 +130,7 @@ void main() {
               id: faker.randomGenerator.integer(100),
               name: faker.company.name(),
               subEnterprises: const [],
-              baseUrl: faker.internet.httpUrl(),
+              urlInUse: faker.internet.httpUrl(),
             ),
           ),
         );
@@ -156,7 +159,7 @@ void main() {
                 id: faker.randomGenerator.integer(100),
                 name: faker.company.name(),
                 subEnterprises: const [],
-                baseUrl: faker.internet.httpUrl(),
+                urlInUse: faker.internet.httpUrl(),
               ),
             ),
           );

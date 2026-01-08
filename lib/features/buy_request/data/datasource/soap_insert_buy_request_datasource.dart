@@ -11,7 +11,7 @@ class SoapInsertBuyRequestDatasource
 
   @override
   Future<String?> insertBuyRequest({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int buyerCode,
     required int requestTypeCode,
@@ -21,7 +21,7 @@ class SoapInsertBuyRequestDatasource
     required List<BuyRequestProductItemModel> products,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       serviceASMX: "CeltaBuyRequestService.asmx",
       typeOfResponse: "InsertResponse",
       soapAction: "Insert",

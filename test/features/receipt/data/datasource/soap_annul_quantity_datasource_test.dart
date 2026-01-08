@@ -10,7 +10,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int grDocCode;
   late int productgCode;
@@ -27,7 +27,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     grDocCode = faker.randomGenerator.integer(100);
     productgCode = faker.randomGenerator.integer(100);
@@ -43,7 +43,7 @@ void main() {
 
   test('should call soap adapter with correct values', () async {
     await sut.annul(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       grDocCode: grDocCode,
       productgCode: productgCode,
@@ -52,7 +52,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "AnnulQuantityResponse",
         soapAction: "AnnulQuantity",
         serviceASMX: "CeltaGoodsReceivingService.asmx",

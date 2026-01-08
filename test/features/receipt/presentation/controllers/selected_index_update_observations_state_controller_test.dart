@@ -200,7 +200,7 @@ void main() {
           // ARRANGE
           when(
             () => mockUpdateDatasource.update(
-              baseUrl: any(named: 'baseUrl'),
+              urlInUse: any(named: 'urlInUse'),
               crossIdentity: any(named: 'crossIdentity'),
               CodigoInterno_ProcRecebDoc: any(
                 named: 'CodigoInterno_ProcRecebDoc',
@@ -242,7 +242,7 @@ void main() {
           // 2. Verify remote datasource was called
           verify(
             () => mockUpdateDatasource.update(
-              baseUrl: fakeSession.enterprise!.baseUrl!,
+              urlInUse: fakeSession.enterprise!.urlInUse!,
               crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
               CodigoInterno_ProcRecebDoc: fakeDocCode,
               observations: fakeObservations,
@@ -287,7 +287,7 @@ void main() {
         // Verify remote datasource was never called
         verifyNever(
           () => mockUpdateDatasource.update(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             CodigoInterno_ProcRecebDoc: any(
               named: 'CodigoInterno_ProcRecebDoc',

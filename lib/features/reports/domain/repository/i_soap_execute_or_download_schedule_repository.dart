@@ -2,7 +2,7 @@ import '../entities/entities.dart';
 
 abstract class ISoapExecuteOrDownloadScheduleRepository {
   Future<List<ScheduleExecutionsEntity>> executeOrDownloadSchedule({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int reportScheduleCode,
     required bool execute,

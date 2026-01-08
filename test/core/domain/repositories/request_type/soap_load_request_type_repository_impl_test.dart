@@ -12,7 +12,7 @@ void main() {
   late SoapLoadRequestTypeDatasourceSpy soapLoadRequestTypeDatasource;
 
   late List<RequestTypeModel> requestTypeModels;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late bool inclusiveBuy;
   late bool inclusiveTransfer;
@@ -36,7 +36,7 @@ void main() {
       EntityFactory.makeRequestTypeEntity(),
       EntityFactory.makeRequestTypeEntity(),
     ].map((e) => RequestTypeModel.fromEntity(e)).toList();
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     inclusiveBuy = faker.randomGenerator.boolean();
     inclusiveTransfer = faker.randomGenerator.boolean();
@@ -53,7 +53,7 @@ void main() {
 
   test("Should behave correctly on load", () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       inclusiveBuy: inclusiveBuy,
       inclusiveTransfer: inclusiveTransfer,
@@ -64,7 +64,7 @@ void main() {
 
     verify(
       () => soapLoadRequestTypeDatasource.load(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         inclusiveBuy: inclusiveBuy,
         inclusiveTransfer: inclusiveTransfer,

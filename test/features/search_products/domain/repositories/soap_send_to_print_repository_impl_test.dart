@@ -9,7 +9,7 @@ void main() {
   late ISoapSendToPrintRepository sut;
   late SoapSendToPrintDatasourceSpy mockDatasource;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late int productPackingCode;
@@ -19,7 +19,7 @@ void main() {
     mockDatasource = SoapSendToPrintDatasourceSpy();
     sut = SoapSendToPrintRepositoryImpl(mockDatasource);
 
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     productPackingCode = faker.randomGenerator.integer(100);
     newValue = faker.randomGenerator.boolean();
@@ -30,7 +30,7 @@ void main() {
 
   test('should call datasource with correct values', () async {
     await sut.send(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       productPackingCode: productPackingCode,
@@ -39,7 +39,7 @@ void main() {
 
     verify(
       () => mockDatasource.send(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         productPackingCode: productPackingCode,

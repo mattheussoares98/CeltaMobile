@@ -12,7 +12,7 @@ class SoapSaveSaleRequestDatasourceSpy extends Mock
     implements ISoapSaveSaleRequestDatasource {
   void mockSave(String? response) => when(
     () => this.save(
-      baseUrl: any(named: 'baseUrl'),
+      urlInUse: any(named: 'urlInUse'),
       crossIdentity: any(named: 'crossIdentity'),
       enterpriseCode: any(named: 'enterpriseCode'),
       requestTypeCode: any(named: 'requestTypeCode'),
@@ -26,7 +26,7 @@ void main() {
   late SoapSaveSaleRequestDatasourceSpy mockDatasource;
 
   late String crossId;
-  late String baseUrl;
+  late String urlInUse;
   late int enterpriseCode;
   late int requestTypeCode;
   late String saleRequestNumber;
@@ -37,7 +37,7 @@ void main() {
     sut = SoapSaveSaleRequestRepositoryImpl(mockDatasource);
 
     crossId = faker.guid.guid();
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     enterpriseCode = faker.randomGenerator.integer(100);
     requestTypeCode = faker.randomGenerator.integer(100);
     saleRequestNumber = faker.randomGenerator.integer(100).toString();
@@ -56,7 +56,7 @@ void main() {
 
   test('should behave correctly on save', () async {
     final response = await sut.save(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossId,
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,
@@ -67,7 +67,7 @@ void main() {
 
     verify(
       () => mockDatasource.save(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossId,
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,

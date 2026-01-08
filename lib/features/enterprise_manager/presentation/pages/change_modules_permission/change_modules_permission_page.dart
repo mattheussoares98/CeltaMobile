@@ -29,12 +29,12 @@ class ChangeModulesPermissionPage extends ConsumerStatefulWidget {
 class _ChangeModulesPermissionPageState
     extends ConsumerState<ChangeModulesPermissionPage> {
   Map<int, bool?> _permissionChanges = {};
-  final baseUrlController = TextEditingController();
+  final urlInUseController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    baseUrlController.dispose();
+    urlInUseController.dispose();
     super.dispose();
   }
 
@@ -47,7 +47,7 @@ class _ChangeModulesPermissionPageState
           enterprisePermissionsProvider(widget.enterpriseId).future,
         );
 
-        baseUrlController.text = enterprise?.baseUrl ?? '';
+        urlInUseController.text = enterprise?.urlInUse ?? '';
       }
     });
   }
@@ -118,7 +118,7 @@ class _ChangeModulesPermissionPageState
               enterpriseId: widget.enterpriseId,
               subEnterpriseId: widget.subEnterpriseId,
               permissionChanges: _permissionChanges,
-              baseUrlController: baseUrlController,
+              urlInUseController: urlInUseController,
               formKey: formKey,
               isGlobalChange: isGlobalChange,
             ),
@@ -150,7 +150,7 @@ class _ChangeModulesPermissionPageState
                     child: DefaultTextFormField(
                       labelText: 'Url'.hardcoded,
                       hintText: 'Url'.hardcoded,
-                      controller: baseUrlController,
+                      controller: urlInUseController,
                       maxLength: 100,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.url,

@@ -32,7 +32,7 @@ class ExpeditionDocumentsStateController
     return await ref
         .read(soapLoadExpeditionDocumentsRepositoryProvider)
         .load(
-          baseUrl: userSession!.enterprise!.baseUrl!,
+          urlInUse: userSession!.enterprise!.urlInUse!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
           enterpriseCode: enterpriseCode,
         );

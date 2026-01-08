@@ -15,7 +15,7 @@ class ReportsStateController extends _$ReportsStateController {
     return ref
         .read(soapLoadReportsRepositoryProvider)
         .load(
-          baseUrl: validatedUser!.enterprise!.baseUrl!,
+          urlInUse: validatedUser!.enterprise!.urlInUse!,
           crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
         );
   }

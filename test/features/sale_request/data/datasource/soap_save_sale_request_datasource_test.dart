@@ -14,7 +14,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late int requestTypeCode;
@@ -34,7 +34,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     enterpriseCode = faker.randomGenerator.integer(1000);
     requestTypeCode = faker.randomGenerator.integer(1000);
     crossIdentity = faker.guid.guid();
@@ -53,7 +53,7 @@ void main() {
 
   test('should call with correct params', () async {
     final result = await sut.save(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,
@@ -64,7 +64,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResult: null,
         typeOfResponse: "InsertResponse",
         soapAction: "Insert",
@@ -94,7 +94,7 @@ void main() {
     'should call covenant and customer with zero number when pass null value',
     () async {
       final result = await sut.save(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,
@@ -110,7 +110,7 @@ void main() {
 
       verify(
         () => soapRequest.post(
-          url: baseUrl,
+          url: urlInUse,
           typeOfResult: null,
           typeOfResponse: "InsertResponse",
           soapAction: "Insert",

@@ -12,7 +12,7 @@ void main() {
   late SoapRequestSpy soapAdapter;
 
   late List<AdjustStockItemModel> items;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
 
   void initSut() {
@@ -26,7 +26,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     items = [
       EntityFactory.makeAdjustStockItemEntity(),
@@ -46,14 +46,14 @@ void main() {
 
   test('should call with correct params', () async {
     await sut.confirm(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       items: items,
     );
 
     verify(
       () => soapAdapter.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "ConfirmAdjustStockResponse",
         soapAction: "ConfirmAdjustStock",
         serviceASMX: "CeltaProductService.asmx",

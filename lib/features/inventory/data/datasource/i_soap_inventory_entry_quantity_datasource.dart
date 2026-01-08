@@ -1,6 +1,6 @@
 abstract class ISoapInventoryEntryQuantityDatasource {
   Future<void> entry({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int codigoInternoInvCont,
     required int productPackingCode,

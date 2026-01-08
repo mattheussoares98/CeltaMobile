@@ -13,7 +13,7 @@ class SoapInsertTransferRequestDatasourceSpy extends Mock
   void mockSave(String response) {
     when(
       () => this.save(
-        baseUrl: any(named: 'baseUrl'),
+        urlInUse: any(named: 'urlInUse'),
         crossIdentity: any(named: 'crossIdentity'),
         enterpriseOriginCode: any(named: 'enterpriseOriginCode'),
         enterpriseDestinyCode: any(named: 'enterpriseDestinyCode'),
@@ -29,7 +29,7 @@ void main() {
 
   late SoapInsertTransferRequestDatasourceSpy datasource;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseOriginCode;
   late int requestTypeCode;
@@ -50,7 +50,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     enterpriseOriginCode = faker.randomGenerator.integer(1000);
     requestTypeCode = faker.randomGenerator.integer(1000);
@@ -85,7 +85,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.save(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseOriginCode: enterpriseOriginCode,
       enterpriseDestinyCode: enterpriseDestinyCode,
@@ -97,7 +97,7 @@ void main() {
 
     verify(
       () => datasource.save(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseOriginCode: enterpriseOriginCode,
         enterpriseDestinyCode: enterpriseDestinyCode,

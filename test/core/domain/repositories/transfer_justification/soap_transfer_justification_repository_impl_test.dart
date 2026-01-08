@@ -14,7 +14,7 @@ void main() {
   soapTransferJustificationDatasource;
 
   late List<TransferJustificationEntity> transferJustificationEntities;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late TransferJustificationType type;
 
@@ -43,7 +43,7 @@ void main() {
       EntityFactory.makeTransferJustificationEntity(),
       EntityFactory.makeTransferJustificationEntity(),
     ];
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     type =
         TransferJustificationType.values[faker.randomGenerator.integer(
@@ -66,7 +66,7 @@ void main() {
 
   test("Should behave correctly on load", () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       type: type,
     );
@@ -75,7 +75,7 @@ void main() {
 
     verify(
       () => soapTransferJustificationDatasource.load(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         type: type,
       ),

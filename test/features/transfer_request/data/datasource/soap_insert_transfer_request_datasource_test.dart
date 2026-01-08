@@ -15,7 +15,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int requestTypeCode;
   late int enterpriseOriginCode;
@@ -32,7 +32,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     requestTypeCode = faker.randomGenerator.integer(100);
     enterpriseOriginCode = faker.randomGenerator.integer(100);
@@ -70,7 +70,7 @@ void main() {
 
   test('should works correctly on success', () async {
     final result = await sut.save(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseOriginCode: enterpriseOriginCode,
       enterpriseDestinyCode: enterpriseDestinyCode,
@@ -82,7 +82,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResult: null,
         typeOfResponse: "InsertResponse",
         soapAction: "Insert",

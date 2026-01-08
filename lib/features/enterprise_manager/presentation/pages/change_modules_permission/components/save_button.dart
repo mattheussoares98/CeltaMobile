@@ -8,7 +8,7 @@ class SaveButton extends ConsumerWidget {
   final int enterpriseId;
   final int? subEnterpriseId;
   final Map<int, bool?> permissionChanges;
-  final TextEditingController baseUrlController;
+  final TextEditingController urlInUseController;
   final GlobalKey<FormState> formKey;
   final bool isGlobalChange;
   const SaveButton({
@@ -16,7 +16,7 @@ class SaveButton extends ConsumerWidget {
     required this.enterpriseId,
     required this.subEnterpriseId,
     required this.permissionChanges,
-    required this.baseUrlController,
+    required this.urlInUseController,
     required this.formKey,
     required this.isGlobalChange,
   });
@@ -42,7 +42,7 @@ class SaveButton extends ConsumerWidget {
                     enterpriseId: enterpriseId,
                     subEnterpriseId: subEnterpriseId,
                     changes: permissionChanges,
-                    baseUrl: baseUrlController.text,
+                    urlInUse: urlInUseController.text,
                   );
             },
       icon: Icon(

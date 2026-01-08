@@ -1,6 +1,6 @@
 abstract class ISoapInsertUpdatePricesDatasource {
   Future<void> insert({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int researchCode,
     required int concurrentCode,

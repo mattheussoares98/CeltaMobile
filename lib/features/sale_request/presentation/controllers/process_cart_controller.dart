@@ -37,7 +37,7 @@ class ProcessCartController extends _$ProcessCartController {
           .read(soapProcessCartRepositoryProvider)
           .process(
             crossId: validateduser!.user.CrossIdentity_Usuario!,
-            baseUrl: validateduser.enterprise!.baseUrl!,
+            urlInUse: validateduser.enterprise!.urlInUse!,
             enterpriseCode: selectedEnterprise!.Code!,
             requestTypeCode: requestTypeCode,
             customerCode: pending.customer!.Code!,

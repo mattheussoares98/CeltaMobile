@@ -13,13 +13,13 @@ class SoapLoadSupplierDatasource implements ISoapLoadSupplierDatasource {
 
   @override
   Future<List<SupplierModel>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required SearchSupplierType searchType,
     required String searchValue,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       serviceASMX: "CeltaSupplierService.asmx",
       typeOfResponse: "GetSupplierJsonResponse",
       soapAction: "GetSupplierJson",

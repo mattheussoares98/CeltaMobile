@@ -13,7 +13,7 @@ class SoapLoadBuyQuotationsDatasourceSpy extends Mock
   void mockLoad(List<BuyQuotationModel> buyQuotations) {
     when(
       () => this.load(
-        baseUrl: any(named: 'baseUrl'),
+        urlInUse: any(named: 'urlInUse'),
         crossIdentity: any(named: 'crossIdentity'),
         enterpriseCode: any(named: 'enterpriseCode'),
         isCompleteSearch: any(named: 'isCompleteSearch'),
@@ -30,7 +30,7 @@ void main() {
 
   late SoapLoadBuyQuotationsDatasourceSpy datasource;
   late List<BuyQuotationModel> buyQuotationsModels;
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late String? codeForFullSearch;
@@ -53,7 +53,7 @@ void main() {
       EntityFactory.makeBuyQuotationEntity(),
       EntityFactory.makeBuyQuotationEntity(),
     ].map((e) => BuyQuotationModel.fromEntity(e)).toList();
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
     codeForFullSearch = faker.randomGenerator.boolean()
@@ -76,7 +76,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final result = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       codeForFullSearch: codeForFullSearch,
@@ -86,7 +86,7 @@ void main() {
 
     verify(
       () => datasource.load(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         isCompleteSearch: codeForFullSearch != null,

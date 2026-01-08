@@ -13,7 +13,7 @@ class SoapInsertUpdateResearchDatasourceSpy extends Mock
   SoapInsertUpdateResearchDatasourceSpy() {
     when(
       () => this.insertUpdate(
-        baseUrl: any(named: 'baseUrl'),
+        urlInUse: any(named: 'urlInUse'),
         crossIdentity: any(named: 'crossIdentity'),
         enterpriseCode: any(named: 'enterpriseCode'),
         name: any(named: 'name'),
@@ -30,7 +30,7 @@ void main() {
 
   late SoapInsertUpdateResearchDatasourceSpy datasource;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late String name;
@@ -53,7 +53,7 @@ void main() {
     researchCode = faker.randomGenerator.integer(100);
     observations = faker.lorem.word();
     crossIdentity = faker.guid.guid();
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     enterpriseCode = faker.randomGenerator.integer(1000);
     concurrentToAssociate = EntityFactory.makeConcurrentEntity();
   }
@@ -75,7 +75,7 @@ void main() {
 
   test('should call with correct values when pass all params', () async {
     await sut.insertUpdate(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       name: name,
@@ -86,7 +86,7 @@ void main() {
 
     verify(
       () => datasource.insertUpdate(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         name: name,
@@ -111,7 +111,7 @@ void main() {
     'should call with correct values when DOESNT pass researchCode params',
     () async {
       await sut.insertUpdate(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         name: name,
@@ -119,7 +119,7 @@ void main() {
 
       verify(
         () => datasource.insertUpdate(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           crossIdentity: crossIdentity,
           enterpriseCode: enterpriseCode,
           name: name,

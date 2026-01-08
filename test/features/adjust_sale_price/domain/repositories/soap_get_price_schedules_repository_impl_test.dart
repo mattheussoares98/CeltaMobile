@@ -12,7 +12,7 @@ void main() {
 
   late SoapGetPriceSchedulesDatasourceSpy soapGetPriceSchedulesDatasource;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late int productCode;
@@ -38,7 +38,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(100);
     productCode = faker.randomGenerator.integer(100);
@@ -64,7 +64,7 @@ void main() {
   });
   test('should behave correctly on success', () async {
     final result = await sut.getPriceSchedules(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       productCode: productCode,
@@ -75,7 +75,7 @@ void main() {
 
     verify(
       () => soapGetPriceSchedulesDatasource.getPriceSchedules(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         productCode: productCode,
@@ -89,7 +89,7 @@ void main() {
     soapGetPriceSchedulesDatasource.mockGetPriceSchedulesError();
 
     final result = sut.getPriceSchedules(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       productCode: productCode,

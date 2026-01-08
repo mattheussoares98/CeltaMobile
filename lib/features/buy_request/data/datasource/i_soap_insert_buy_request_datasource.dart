@@ -2,7 +2,7 @@ import '../../data/models/models.dart';
 
 abstract class ISoapInsertBuyRequestDatasource {
   Future<String?> insertBuyRequest({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int buyerCode,
     required int requestTypeCode,

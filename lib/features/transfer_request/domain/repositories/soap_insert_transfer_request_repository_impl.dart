@@ -10,7 +10,7 @@ class SoapInsertTransferRequestRepositoryImpl
 
   @override
   Future<String> save({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseOriginCode,
     required int enterpriseDestinyCode,
@@ -18,7 +18,7 @@ class SoapInsertTransferRequestRepositoryImpl
     required List<TransferRequestProductItemEntity> products,
   }) async {
     return await datasource.save(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseOriginCode: enterpriseOriginCode,
       enterpriseDestinyCode: enterpriseDestinyCode,

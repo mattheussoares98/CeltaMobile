@@ -11,7 +11,7 @@ void main() {
 
   late SoapInventoryAnnulDatasourceSpy datasource;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int codigoInternoInvCont;
   late int productPackingCode;
@@ -27,7 +27,7 @@ void main() {
   void mockSuccess() {}
 
   void initEntities() {
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     codigoInternoInvCont = faker.randomGenerator.integer(100);
     productPackingCode = faker.randomGenerator.integer(100);
@@ -49,14 +49,14 @@ void main() {
 
   test('should behave correctly on success', () async {
     await sut.annul(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       codigoInternoInvCont: codigoInternoInvCont,
       codigoInternoProEmb: productPackingCode,
     );
     verify(
       () => datasource.annul(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         crossIdentity: crossIdentity,
         codigoInternoInvCont: codigoInternoInvCont,
         codigoInternoProEmb: productPackingCode,

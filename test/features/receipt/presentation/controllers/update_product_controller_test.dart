@@ -17,7 +17,7 @@ class MockSoapUpdateProductDatasource extends Mock
   MockSoapUpdateProductDatasource() {
     when(
       () => this.update(
-        baseUrl: any(named: 'baseUrl'),
+        urlInUse: any(named: 'urlInUse'),
         crossIdentity: any(named: 'crossIdentity'),
         grDocCode: any(named: 'grDocCode'),
         productCode: any(named: 'productCode'),
@@ -84,7 +84,7 @@ void main() {
     // Stub the repository update method to succeed for all tests
     when(
       () => mockDatasource.update(
-        baseUrl: any(named: 'baseUrl'),
+        urlInUse: any(named: 'urlInUse'),
         crossIdentity: any(named: 'crossIdentity'),
         grDocCode: any(named: 'grDocCode'),
         productCode: any(named: 'productCode'),
@@ -151,7 +151,7 @@ void main() {
               : 10, // Critical check. 20 - 10 = 10 || 20 + 10 = 30
           newValidityDate: newValidityDate,
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-          baseUrl: fakeSession.enterprise!.baseUrl!,
+          urlInUse: fakeSession.enterprise!.urlInUse!,
           grDocCode: fakeGrDocCode,
         ),
       ).called(1);

@@ -2,7 +2,7 @@ import '../entities/entities.dart';
 
 abstract class ISoapInsertTransferRequestRepository {
   Future<String> save({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseOriginCode,
     required int enterpriseDestinyCode,

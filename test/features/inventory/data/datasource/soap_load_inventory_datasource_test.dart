@@ -11,7 +11,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int enterpriseCode;
   late InventoryModel inventoryModel;
@@ -29,7 +29,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     crossIdentity = faker.guid.guid();
     enterpriseCode = faker.randomGenerator.integer(1000);
     inventoryModel = InventoryModel.fromEntity(
@@ -46,7 +46,7 @@ void main() {
 
   test('should call with correct params', () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
     );
@@ -55,7 +55,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "GetFrozenProcessesResponse",
         soapAction: "GetFrozenProcesses",
         serviceASMX: "CeltaInventoryService.asmx",

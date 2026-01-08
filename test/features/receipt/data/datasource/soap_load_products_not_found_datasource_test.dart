@@ -11,7 +11,7 @@ void main() {
 
   late SoapRequestSpy soapRequest;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late int receiptCode;
   late List<ProductNotFoundModel> productsNotFoundModels;
@@ -34,7 +34,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     receiptCode = faker.randomGenerator.integer(100);
 
@@ -55,7 +55,7 @@ void main() {
 
   test('should behave correctly on success', () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       receiptCode: receiptCode,
     );
@@ -69,7 +69,7 @@ void main() {
 
     verify(
       () => soapRequest.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "GetProductProductWithoutCadasterResponse",
         soapAction: "GetProductProductWithoutCadaster",
         serviceASMX: "CeltaGoodsReceivingService.asmx",

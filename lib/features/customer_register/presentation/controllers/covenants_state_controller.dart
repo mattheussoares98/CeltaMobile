@@ -32,7 +32,7 @@ class CovenantsStateController extends _$CovenantsStateController {
     );
 
     return await repository.load(
-      baseUrl: validatedUserSession!.enterprise!.baseUrl!,
+      urlInUse: validatedUserSession!.enterprise!.urlInUse!,
       crossIdentity: validatedUserSession.user.CrossIdentity_Usuario!,
       searchCovenantType: SearchCovenantType.approximateName,
       searchValue: "%",

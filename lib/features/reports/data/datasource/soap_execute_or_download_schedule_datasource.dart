@@ -12,7 +12,7 @@ class SoapExecuteOrDownloadScheduleDatasource
 
   @override
   Future<List<ScheduleExecutionsModel>> executeOrDownloadSchedule({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int reportScheduleCode,
     required bool execute,
@@ -20,7 +20,7 @@ class SoapExecuteOrDownloadScheduleDatasource
     required DownloadParams downloadParams,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "GetReportScheduleExecutionsResponse",
       soapAction: "GetReportScheduleExecutions",
       serviceASMX: "CeltaReportService.asmx",

@@ -7,14 +7,14 @@ class SoapSendToPrintDatasource implements ISoapSendToPrintDatasource {
 
   @override
   Future<void> send({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required int productPackingCode,
     required bool newValue,
   }) async {
     await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResult: null,
       typeOfResponse: "SendToPrintResponse",
       soapAction: "SendToPrint",

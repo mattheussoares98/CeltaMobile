@@ -24,7 +24,7 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
       final response = await ref
           .read(soapInsertBuyRequestRepositoryProvider)
           .insertBuyRequest(
-            baseUrl: userSession!.enterprise!.baseUrl!,
+            urlInUse: userSession!.enterprise!.urlInUse!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             buyerCode: pending.selectedBuyer!.Code,
             requestTypeCode: pending.selectedRequestType!.Code,

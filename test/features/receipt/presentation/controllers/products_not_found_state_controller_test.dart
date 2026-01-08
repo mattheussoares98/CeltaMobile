@@ -71,7 +71,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             receiptCode: any(named: 'receiptCode'),
           ),
@@ -92,7 +92,7 @@ void main() {
         expect(result, fakeProductsNotFound);
         verify(
           () => mockRepository.load(
-            baseUrl: fakeSession.enterprise!.baseUrl!,
+            urlInUse: fakeSession.enterprise!.urlInUse!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             receiptCode: fakeReceiptCode,
           ),
@@ -120,7 +120,7 @@ void main() {
         // Verify the repository was never called
         verifyNever(
           () => mockRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             receiptCode: any(named: 'receiptCode'),
           ),
@@ -133,7 +133,7 @@ void main() {
       final exception = Exception('Network Error');
       when(
         () => mockRepository.load(
-          baseUrl: any(named: 'baseUrl'),
+          urlInUse: any(named: 'urlInUse'),
           crossIdentity: any(named: 'crossIdentity'),
           receiptCode: any(named: 'receiptCode'),
         ),

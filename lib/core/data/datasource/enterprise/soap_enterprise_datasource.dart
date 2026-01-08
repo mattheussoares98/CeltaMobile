@@ -13,7 +13,7 @@ class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
 
   @override
   Future<List<SoapEnterpriseModel>> getEnterprises({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     int? enterpriseOriginCode,
     int? requestTypeCode,
@@ -29,7 +29,7 @@ class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
     });
 
     final response = await soapAdapter.post(
-      url: baseUrl.toLowerCase().removeWhiteSpaces(),
+      url: urlInUse.toLowerCase().removeWhiteSpaces(),
       parameters: parameters,
       soapAction: "GetEnterprisesJson",
       typeOfResponse: "GetEnterprisesJsonResponse",

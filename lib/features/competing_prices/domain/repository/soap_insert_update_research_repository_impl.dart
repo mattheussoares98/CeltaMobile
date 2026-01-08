@@ -12,7 +12,7 @@ class SoapInsertUpdateResearchRepositoryImpl
 
   @override
   Future<void> insertUpdate({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required String name,
@@ -40,7 +40,7 @@ class SoapInsertUpdateResearchRepositoryImpl
     }
 
     await datasource.insertUpdate(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       name: name,

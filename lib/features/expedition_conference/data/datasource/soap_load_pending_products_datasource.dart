@@ -12,12 +12,12 @@ class SoapLoadPendingProductsDatasource
 
   @override
   Future<List<ExpeditionProductModel>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int expeditionControlCode,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "GetExpeditionControlProductsResponse",
       soapAction: "GetExpeditionControlProducts",
       serviceASMX: "CeltaProductService.asmx",

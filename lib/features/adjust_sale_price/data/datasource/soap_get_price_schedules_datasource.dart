@@ -12,14 +12,14 @@ class SoapGetPriceSchedulesDatasource
 
   @override
   Future<List<PriceScheduleModel>> getPriceSchedules({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required int productCode,
     required int productPackingCode,
   }) async {
     final response = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       typeOfResponse: "GetPriceSchedulesResponse",
       soapAction: "GetPriceSchedules",
       serviceASMX: "CeltaProductService.asmx",

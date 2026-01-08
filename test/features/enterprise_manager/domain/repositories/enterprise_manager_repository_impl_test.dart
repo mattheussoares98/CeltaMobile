@@ -18,7 +18,7 @@ void main() {
 
   late List<EnterprisePermissionEntity> enterprisePermissionEntities;
   late String enterpriseName;
-  late String baseUrl;
+  late String urlInUse;
   late String userName;
   late String password;
   late int enterpriseId;
@@ -54,7 +54,7 @@ void main() {
     ];
 
     enterpriseName = faker.company.name();
-    baseUrl = faker.internet.httpsUrl();
+    urlInUse = faker.internet.httpsUrl();
     userName = faker.internet.userName();
     password = faker.internet.password();
     enterpriseId = faker.randomGenerator.integer(100);
@@ -128,14 +128,14 @@ void main() {
 
       await sut.createEnterprise(
         enterpriseName: enterpriseName,
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         userName: userName,
         password: password,
       );
 
       verify(
         () => soapLoginDatasource.login(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           user: userName,
           password: password,
         ),
@@ -143,7 +143,7 @@ void main() {
 
       verify(
         () => soapEnterpriseDatasource.getEnterprises(
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           crossIdentity: user.CrossIdentity_Usuario ?? "",
         ),
       ).called(1);
@@ -151,7 +151,7 @@ void main() {
       verify(
         () => enterpriseManagerDatasource.createEnterpriseWithSubEnterprises(
           enterpriseName: enterpriseName,
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
           subEnterprises: enterprises
               .map(
                 (e) => SubEnterpriseModel(
@@ -172,14 +172,14 @@ void main() {
       await sut.updateModulePermissions(
         enterpriseId: enterpriseId,
         permissions: permissions,
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
       );
 
       verify(
         () => enterpriseManagerDatasource.updateUrlAndPermissions(
           enterpriseId: enterpriseId,
           permissions: permissions,
-          baseUrl: baseUrl,
+          urlInUse: urlInUse,
         ),
       );
       verifyNoMoreInteractions(enterpriseManagerDatasource);

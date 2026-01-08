@@ -9,12 +9,12 @@ class SoapLoadPendingProductsRepositoryImpl
 
   @override
   Future<List<ExpeditionProductEntity>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int expeditionControlCode,
   }) async {
     final result = await datasource.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       expeditionControlCode: expeditionControlCode,
     );

@@ -2,7 +2,7 @@ import '../../models/models.dart';
 
 abstract class ISoapInventoryLoadProductsDatasource {
   Future<List<ProductModelType>> get({
-    required String baseUrl,
+    required String urlInUse,
     required Map<String, dynamic> parametersPayload,
   });
 }

@@ -3,7 +3,7 @@ import '../../models/models.dart';
 
 abstract class ISoapLoadSupplierDatasource {
   Future<List<SupplierModel>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required SearchSupplierType searchType,
     required String searchValue,

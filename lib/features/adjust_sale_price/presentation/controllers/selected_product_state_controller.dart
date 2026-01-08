@@ -39,7 +39,7 @@ class SelectedProductStateController extends _$SelectedProductStateController {
     final products = await ref
         .read(soapLoadProductsRepositoryProvider)
         .load(
-          baseUrl: userSession!.enterprise!.baseUrl!,
+          urlInUse: userSession!.enterprise!.urlInUse!,
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
           enterpriseEntity: enterpriseEntity,
           searchType: SearchType.dynamic,

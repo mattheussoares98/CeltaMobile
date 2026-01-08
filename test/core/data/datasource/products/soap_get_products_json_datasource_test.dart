@@ -15,7 +15,7 @@ void main() {
   late SoapRequestSpy soapAdapter;
 
   late List<ProductEntity> productsEntities;
-  late String baseUrl;
+  late String urlInUse;
   late Map<String, dynamic> parametersPayload;
 
   void initSut() {
@@ -43,7 +43,7 @@ void main() {
       EntityFactory.makeProductEntity(),
     ];
 
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     parametersPayload = {
       faker.lorem.word(): faker.lorem.word(),
       faker.lorem.word(): faker.randomGenerator.integer(100),
@@ -68,7 +68,7 @@ void main() {
     'should call adapter with correct params and return correct value when is not competing prices',
     () async {
       final products = await sut.get(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         parametersPayload: parametersPayload,
         isCompetingPrices: false,
       );
@@ -80,7 +80,7 @@ void main() {
 
       verify(
         () => soapAdapter.post(
-          url: baseUrl,
+          url: urlInUse,
           typeOfResponse: "GetProductsJsonResponse",
           typeOfResult: "GetProductsJsonResult",
           soapAction: "GetProductsJson",
@@ -102,7 +102,7 @@ void main() {
       );
 
       final products = await sut.get(
-        baseUrl: baseUrl,
+        urlInUse: urlInUse,
         parametersPayload: parametersPayload,
         isCompetingPrices: true,
       );
@@ -118,7 +118,7 @@ void main() {
 
       verify(
         () => soapAdapter.post(
-          url: baseUrl,
+          url: urlInUse,
           typeOfResponse: "GetProductsJsonResponse",
           typeOfResult: "GetProductsJsonResult",
           soapAction: "GetProductsJson",

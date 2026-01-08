@@ -7,14 +7,14 @@ class SoapSendToPrintRepositoryImpl implements ISoapSendToPrintRepository {
 
   @override
   Future<void> send({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
     required int productPackingCode,
     required bool newValue,
   }) async {
     await datasource.send(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       productPackingCode: productPackingCode,

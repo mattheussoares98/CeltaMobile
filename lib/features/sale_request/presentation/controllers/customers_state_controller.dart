@@ -61,7 +61,7 @@ class CustomersStateController extends _$CustomersStateController {
             searchType: searchType,
             searchValue: value,
             crossIdentity: validatedUserSession!.user.CrossIdentity_Usuario!,
-            baseUrl: validatedUserSession.enterprise!.baseUrl!,
+            urlInUse: validatedUserSession.enterprise!.urlInUse!,
             enterpriseCode: selectedEnterprise!.Code!,
           );
     });

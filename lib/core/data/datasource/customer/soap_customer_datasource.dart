@@ -16,10 +16,10 @@ class SoapCustomerDatasource implements ISoapCustomerDatasource {
     required String searchValue,
     required String crossIdentity,
     required int enterpriseCode,
-    required String baseUrl,
+    required String urlInUse,
   }) async {
     final value = await soapRequest.post(
-      url: baseUrl,
+      url: urlInUse,
       parameters: {
         "filters": json.encode({
           "crossIdentity": crossIdentity,

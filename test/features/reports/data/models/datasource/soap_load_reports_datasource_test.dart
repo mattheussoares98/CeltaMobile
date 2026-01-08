@@ -13,7 +13,7 @@ void main() {
 
   late SoapRequestSpy soapAdapter;
 
-  late String baseUrl;
+  late String urlInUse;
   late String crossIdentity;
   late List<ReportScheduleModel> reportsModels;
 
@@ -32,7 +32,7 @@ void main() {
   }
 
   void initEntities() {
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     crossIdentity = faker.guid.guid();
     reportsModels = [
       EntityFactory.makeReportScheduleEntity(),
@@ -50,7 +50,7 @@ void main() {
 
   test('should behave correctly in success', () async {
     final response = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
     );
 
@@ -58,7 +58,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "GetReportSchedulesJsonResponse",
         soapAction: "GetReportSchedulesJson",
         serviceASMX: "CeltaReportService.asmx",

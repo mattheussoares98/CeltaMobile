@@ -15,7 +15,7 @@ void main() {
   late SoapRequestSpy soapAdapter;
 
   late List<ProductEntity> productsEntities;
-  late String baseUrl;
+  late String urlInUse;
   late Map<String, dynamic> parametersPayload;
 
   void initSut() {
@@ -43,7 +43,7 @@ void main() {
       EntityFactory.makeProductEntity(),
     ];
 
-    baseUrl = faker.internet.httpUrl();
+    urlInUse = faker.internet.httpUrl();
     parametersPayload = {
       faker.lorem.word(): faker.lorem.word(),
       faker.lorem.word(): faker.randomGenerator.integer(100),
@@ -66,7 +66,7 @@ void main() {
 
   test('should call adapter with correct params', () async {
     final products = await sut.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       parametersPayload: parametersPayload,
     );
 
@@ -77,7 +77,7 @@ void main() {
 
     verify(
       () => soapAdapter.post(
-        url: baseUrl,
+        url: urlInUse,
         typeOfResponse: "GetProductJsonByRequestTypeResponse",
         soapAction: "GetProductJsonByRequestType",
         serviceASMX: "CeltaProductService.asmx",

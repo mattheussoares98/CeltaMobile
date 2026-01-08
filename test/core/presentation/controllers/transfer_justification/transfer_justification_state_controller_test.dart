@@ -65,7 +65,7 @@ void main() {
         // ARRANGE
         when(
           () => soapTransferJustificationRepository.load(
-            baseUrl: any(named: 'baseUrl'),
+            urlInUse: any(named: 'urlInUse'),
             crossIdentity: any(named: 'crossIdentity'),
             type: any(named: 'type'),
           ),
@@ -99,7 +99,7 @@ void main() {
         ]);
         verify(
           () => soapTransferJustificationRepository.load(
-            baseUrl: userSession.enterprise!.baseUrl!,
+            urlInUse: userSession.enterprise!.urlInUse!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             type: justificationType,
           ),

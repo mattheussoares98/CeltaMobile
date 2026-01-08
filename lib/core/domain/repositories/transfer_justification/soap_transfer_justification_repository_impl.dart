@@ -13,12 +13,12 @@ class SoapTransferJustificationRepositoryImpl
 
   @override
   Future<List<TransferJustificationEntity>> load({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required TransferJustificationType type,
   }) async {
     final justifications = await datasource.load(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       type: type,
     );

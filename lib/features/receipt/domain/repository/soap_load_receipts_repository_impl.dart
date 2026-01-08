@@ -10,12 +10,12 @@ class SoapLoadReceiptsRepositoryImpl implements ISoapLoadReceiptsRepository {
 
   @override
   Future<List<ReceiptEntity>> loadReceipts({
-    required String baseUrl,
+    required String urlInUse,
     required String crossIdentity,
     required int enterpriseCode,
   }) async {
     final response = await datasource.loadReceipts(
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
     );

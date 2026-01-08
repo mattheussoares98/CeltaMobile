@@ -6,26 +6,32 @@ import 'models.dart';
 class EnterprisePermissionModel extends Equatable {
   final int id;
   final String name;
-  final String baseUrl;
+  final String urlInUse;
   final List<ModulePermissionModel> globalModules;
   final List<SubEnterprisePermissionModel> subEnterprises;
 
   const EnterprisePermissionModel({
     required this.id,
     required this.name,
-    required this.baseUrl,
+    required this.urlInUse,
     required this.globalModules,
     required this.subEnterprises,
   });
 
   @override
-  List<Object?> get props => [id, name, baseUrl, subEnterprises, globalModules];
+  List<Object?> get props => [
+    id,
+    name,
+    urlInUse,
+    subEnterprises,
+    globalModules,
+  ];
 
   factory EnterprisePermissionModel.fromJson(Map json) {
     return EnterprisePermissionModel(
       id: json['id'],
       name: json['name'],
-      baseUrl: json['base_url'],
+      urlInUse: json['base_url'],
       globalModules: (json['global_enabled_modules'] as List)
           .map((item) => ModulePermissionModel.fromJson(item))
           .toList(),
@@ -41,7 +47,7 @@ class EnterprisePermissionModel extends Equatable {
     return EnterprisePermissionModel(
       id: entity.id,
       name: entity.name,
-      baseUrl: entity.baseUrl,
+      urlInUse: entity.urlInUse,
       globalModules: entity.globalModules
           .map((e) => ModulePermissionModel.fromEntity(e))
           .toList(),
@@ -55,7 +61,7 @@ class EnterprisePermissionModel extends Equatable {
     return EnterprisePermissionEntity(
       id: id,
       name: name,
-      baseUrl: baseUrl,
+      urlInUse: urlInUse,
       globalModules: globalModules.map((e) => e.toEntity()).toList(),
       subEnterprises: subEnterprises.map((e) => e.toEntity()).toList(),
     );
@@ -64,7 +70,7 @@ class EnterprisePermissionModel extends Equatable {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id': id,
     'name': name,
-    'base_url': baseUrl,
+    'base_url': urlInUse,
     'global_enabled_modules': globalModules.map((e) => e.toJson()).toList(),
     'sub_enterprises': subEnterprises.map((e) => e.toJson()).toList(),
   };
