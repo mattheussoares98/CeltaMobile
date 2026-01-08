@@ -27,6 +27,12 @@ ISupabaseEnterpriseDatasource supabaseEnterpriseDatasource(Ref ref) {
 }
 
 @riverpod
+ISoapUrlValidationRepository soapUrlValidationRepository(Ref ref) {
+  final datasource = ref.watch(soapUrlValidationDatasourceProvider);
+  return SoapUrlValidationRepositoryImpl(datasource);
+}
+
+@riverpod
 IEnterpriseRepository enterpriseRepository(Ref ref) {
   final supabaseEnterpriseDatasource = ref.watch(
     supabaseEnterpriseDatasourceProvider,
