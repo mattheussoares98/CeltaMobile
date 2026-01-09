@@ -9,32 +9,23 @@ import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class ProductsPage extends ConsumerWidget {
-  final TextEditingController searchProductController;
-  final TextEditingController quantityController;
-  final TextEditingController costController;
-  final FocusNode quantityFocusNode;
-  final FocusNode costFocusNode;
-  final void Function(AsyncValue<PendingBuyRequestEntity>, ProductEntity)
-  insertProduct;
-  final GlobalKey<FormState> fieldsFormKey;
-  final GlobalKey<FormState> quantityFormKey;
-  final void Function(int, ProductEntity) onTapProduct;
-  const ProductsPage({
-    super.key,
-    required this.searchProductController,
-    required this.quantityController,
-    required this.costController,
-    required this.quantityFocusNode,
-    required this.costFocusNode,
-    required this.insertProduct,
-    required this.fieldsFormKey,
-    required this.quantityFormKey,
-    required this.onTapProduct,
-  });
+class ProductsPage extends ConsumerStatefulWidget {
+  const ProductsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
+}
+
+class _ProductsPageState extends ConsumerState<ProductsPage> {
+  final searchProductController = TextEditingController();
+  @override
+  dispose() {
+    super.dispose();
+    searchProductController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     const searchProductKey = SearchProductKey(
       0,
       BsRoutine.buyRequest,
@@ -83,36 +74,7 @@ class ProductsPage extends ConsumerWidget {
               ),
             ),
             gapSliverH8,
-            Consumer(
-              builder: (_, ref, _) {
-                final productsState = ref.watch(
-                  searchProductsStateControllerProvider(searchProductKey),
-                );
-
-                return AsyncValueSliverWidget(
-                  value: productsState,
-                  tryAgain: null,
-                  data: (products) {
-                    final filteredProducts =
-                        products
-                            .where(
-                              (e) =>
-                                  pendingAsync.value?.selectedEnterprises
-                                      ?.map((e) => e.Code)
-                                      .contains(e.EnterpriseCode) ==
-                                  true,
-                            )
-                            .toList()
-                          ..sort((a, b) => a.Name!.compareTo(b.Name!));
-
-                    return ProductsItems(
-                      productsPage: this,
-                      products: filteredProducts,
-                    );
-                  },
-                );
-              },
-            ),
+            const ProductsItems(),
           ],
         ),
       ),

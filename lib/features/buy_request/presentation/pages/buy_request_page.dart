@@ -1,13 +1,11 @@
 import 'package:celta_intelligence/commom_widgets/commom_widgets.dart';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/supplier/supplier.dart';
-import '../../domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 import 'pages.dart';
@@ -22,14 +20,7 @@ class BuyRequestPage extends ConsumerStatefulWidget {
 class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   final supplierController = TextEditingController();
   final identificationFormKey = GlobalKey<FormState>();
-  final productsFieldsFormKey = GlobalKey<FormState>();
-  final productsQuantityFormKey = GlobalKey<FormState>();
-  final searchProductController = TextEditingController();
-  final quantityController = TextEditingController();
   final observationsController = TextEditingController();
-  final costController = TextEditingController();
-  final quantityFocusNode = FocusNode();
-  final costFocusNode = FocusNode();
 
   List<SupplierEntity> suppliers = [];
   @override
@@ -69,65 +60,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   void dispose() {
     super.dispose();
     supplierController.dispose();
-    searchProductController.dispose();
-    quantityController.dispose();
     observationsController.dispose();
-    costController.dispose();
-    quantityFocusNode.dispose();
-    costFocusNode.dispose();
-  }
-
-  void insertProduct(
-    AsyncValue<PendingBuyRequestEntity> pendingAsync,
-    ProductEntity product,
-  ) {
-    if (productsQuantityFormKey.currentState?.validate() != true) {
-      quantityFocusNode.requestFocus();
-      return;
-    }
-
-    if (productsFieldsFormKey.currentState?.validate() != true) {
-      costFocusNode.requestFocus();
-      return;
-    }
-    final products = pendingAsync.value?.products ?? {};
-    products.addAll({
-      ProductKey(
-        enterpriseCode: product.EnterpriseCode!,
-        productPackingCode: product.ProductPackingCode!,
-      ): BuyRequestProductItemEntity(
-        product: product,
-        quantity: quantityController.text.toDouble()!,
-        cost: costController.text.toDouble()!,
-      ),
-    });
-    ref
-        .read(pendingBuyRequestStateControllerProvider.notifier)
-        .updatePending(pendingAsync.value!.copyWith(products: products));
-    quantityController.clear();
-    costController.clear();
-    ref
-        .read(uiStateControllerProvider.notifier)
-        .updateSelectedProductIndex(null);
-  }
-
-  void onTapProduct(int index, ProductEntity product) async {
-    quantityController.clear();
-    costController.clear();
-
-    ref
-        .read(uiStateControllerProvider.notifier)
-        .updateSelectedProductIndex(index);
-
-    if ((product.PriceCost!.LiquidCost ?? 0) > 0) {
-      costController.text = product.PriceCost!.LiquidCost
-          .toString()
-          .toBrazilianNumber(4);
-    }
-
-    Future.delayed(const Duration(milliseconds: 100), () {
-      quantityFocusNode.requestFocus();
-    });
   }
 
   final appBarTitles = [
@@ -141,18 +74,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   Widget build(BuildContext context) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
 
-    final productsPage = ProductsPage(
-      searchProductController: searchProductController,
-      quantityController: quantityController,
-      costController: costController,
-      quantityFocusNode: quantityFocusNode,
-      costFocusNode: costFocusNode,
-      insertProduct: insertProduct,
-      fieldsFormKey: productsFieldsFormKey,
-      quantityFormKey: productsQuantityFormKey,
-      onTapProduct: onTapProduct,
-    );
-
     final pages = [
       IdentificationPage(
         supplierController: supplierController,
@@ -160,11 +81,8 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         suppliers: suppliers,
       ),
       const EnterprisesPage(),
-      productsPage,
-      ConfirmationPage(
-        productsPage: productsPage,
-        observationsController: observationsController,
-      ),
+      const ProductsPage(),
+      ConfirmationPage(observationsController: observationsController),
     ];
 
     return Stack(

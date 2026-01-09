@@ -9,18 +9,12 @@ import '../../controllers/controllers.dart';
 import '../components/components.dart';
 import '../enterprises/components/components.dart';
 import '../identification/components/components.dart';
-import '../pages.dart';
 import '../products/components/components.dart';
 import 'components/components.dart';
 
 class ConfirmationPage extends ConsumerWidget {
-  final ProductsPage productsPage;
   final TextEditingController observationsController;
-  const ConfirmationPage({
-    super.key,
-    required this.productsPage,
-    required this.observationsController,
-  });
+  const ConfirmationPage({super.key, required this.observationsController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -110,14 +104,8 @@ class ConfirmationPage extends ConsumerWidget {
                       ),
                     ),
                     gapSliverH8,
-                    ProductsItems(
-                      products:
-                          pendingAsync.value?.products?.values
-                              .map((e) => e.product)
-                              .toList() ??
-                          [],
-                      productsPage: productsPage,
-                    ),
+
+                    const ProductsItems(),
                   ] else
                     UnselectedMessage(
                       title: 'Nenhum produto informado'.hardcoded,
