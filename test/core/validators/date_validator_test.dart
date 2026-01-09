@@ -26,6 +26,16 @@ void main() {
       test('should return true for a date exactly on the end date', () {
         expect(sut.isValid('31/01/2025'), true);
       });
+
+      test('should return true when allow empty date', () {
+        final allowEmptyDate = DateValidator(
+          minimumDate: startDate,
+          maximumDate: endDate,
+          allowEmptyDate: true,
+        );
+
+        expect(allowEmptyDate.isValid(''), true);
+      });
     });
 
     group('Invalid Dates', () {

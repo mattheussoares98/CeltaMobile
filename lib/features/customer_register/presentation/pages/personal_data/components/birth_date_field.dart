@@ -63,7 +63,11 @@ class BirthDateField extends ConsumerWidget {
         ],
       ),
       validator: FormValidators.compose([
-        DateValidator(minimumDate: minimumDate, maximumDate: maximumDate),
+        DateValidator(
+          minimumDate: minimumDate,
+          maximumDate: maximumDate,
+          allowEmptyDate: true,
+        ),
       ]),
     );
   }

@@ -6,8 +6,13 @@ import 'validators.dart';
 class DateValidator implements StringValidator {
   final DateTime minimumDate;
   final DateTime maximumDate;
+  final bool? allowEmptyDate;
 
-  DateValidator({required this.minimumDate, required this.maximumDate});
+  DateValidator({
+    required this.minimumDate,
+    required this.maximumDate,
+    this.allowEmptyDate,
+  });
   @override
   String get errorMessage => _errorMessage.hardcoded;
   String _errorMessage = '';
@@ -21,7 +26,9 @@ class DateValidator implements StringValidator {
 
   @override
   bool isValid(String? value) {
-    if (value == null || value.isEmpty) {
+    if (allowEmptyDate == true && (value == null || value.isEmpty)) {
+      return true;
+    } else if (value == null || value.isEmpty) {
       return false;
     }
 
