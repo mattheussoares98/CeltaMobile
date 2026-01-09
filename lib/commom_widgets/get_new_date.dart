@@ -55,10 +55,10 @@ class GetNewDate {
 
     if (theme.platform == TargetPlatform.iOS) {
       final time = await _showCupertinoDatePicker(
-        firstDate: minimumDate,
+        firstDate: firstDate,
         context: context,
         maximumDate: maximumDate,
-        initialDate: currentSelectedDate,
+        initialDate: initialDate,
         mode: CupertinoDatePickerMode.time,
       );
       selectedTime = time == null
@@ -91,7 +91,7 @@ class GetNewDate {
       selectedTime.minute,
     );
 
-    if (finalDateTime.isBefore(minimumDate)) {
+    if (finalDateTime.isBefore(firstDate)) {
       showSnackBarMessage(
         context,
         'O horário não pode ser menor que a data mínima'.hardcoded,
@@ -110,7 +110,7 @@ class GetNewDate {
     required BuildContext context,
     required CupertinoDatePickerMode mode,
   }) async {
-    DateTime? tempPickedDate = initialDate;
+    DateTime? tempPickedDate = firstDate;
     final theme = Theme.of(context);
 
     return await showCupertinoModalPopup<DateTime>(

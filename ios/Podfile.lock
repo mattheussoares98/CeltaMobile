@@ -40,8 +40,6 @@ PODS:
   - Flutter (1.0.0)
   - flutter_barcode_scanner_plus (3.0.7):
     - Flutter
-  - open_file_plus (1.0.0):
-    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -65,7 +63,6 @@ DEPENDENCIES:
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_barcode_scanner_plus (from `.symlinks/plugins/flutter_barcode_scanner_plus/ios`)
-  - open_file_plus (from `.symlinks/plugins/open_file_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -90,8 +87,6 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_barcode_scanner_plus:
     :path: ".symlinks/plugins/flutter_barcode_scanner_plus/ios"
-  open_file_plus:
-    :path: ".symlinks/plugins/open_file_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   share_plus:
@@ -111,7 +106,6 @@ SPEC CHECKSUMS:
   file_picker: b159e0c068aef54932bb15dc9fd1571818edaf49
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_barcode_scanner_plus: 5777819a85622aed4284fb14d1fa33b72a64003d
-  open_file_plus: 05737718530c14cf02868e3b7754d7fe4df76d8b
   path_provider_foundation: 0b743cbb62d8e47eab856f09262bb8c1ddcfe6ba
   SDWebImage: d0184764be51240d49c761c37f53dd017e1ccaaf
   share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
