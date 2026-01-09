@@ -68,7 +68,7 @@ class BindedCovenants extends ConsumerWidget {
                                   customer.copyWith(
                                     CustomerCovenants: [
                                       ...customer.CustomerCovenants!
-                                        ..removeAt(index),
+                                        ..removeAt(index - 1),
                                     ],
                                   ),
                                 );
