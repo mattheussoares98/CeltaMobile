@@ -53,6 +53,7 @@ class ProductItemWidget extends ConsumerWidget {
     });
 
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -112,8 +113,8 @@ class ProductItemWidget extends ConsumerWidget {
                 ),
               ),
               Positioned(
-                right: 0,
-                bottom: 0,
+                right: isIOS ? Sizes.p4 : 0,
+                bottom: isIOS ? Sizes.p4 : 0,
                 child: Row(
                   children: [
                     if (onDelete != null) DeleteItemButton(onDelete: onDelete),
