@@ -99,6 +99,13 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
                     : colorScheme.onSurface.withAlpha(100),
                 fontSize: 12,
               ),
+              padding: EdgeInsets.only(
+                bottom: dtf.hintText == null
+                    ? 0
+                    : dtf.controller?.text.isEmpty ?? true
+                    ? Sizes.p8
+                    : Sizes.p4,
+              ),
               textAlignVertical: TextAlignVertical.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               obscureText: dtf.obscureText,
