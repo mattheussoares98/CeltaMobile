@@ -46,33 +46,38 @@ class PrimaryButton extends StatelessWidget {
 
     const loadingWidget = Positioned.fill(child: LoadingWidget(padding: 0));
 
+    const buttonHeight = Sizes.p40;
+
     if (isIOS) {
       return LayoutBuilder(
         builder: (context, constraints) {
           final canShowIcon = constraints.maxWidth > minimumIconSize;
 
-          return CupertinoButton.filled(
-            onPressed: isLoading ? null : onPressed,
-            sizeStyle: CupertinoButtonSize.small,
-            padding: const EdgeInsets.all(0),
-            color: buttonColor,
-            child: Stack(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(child: textWidget),
-                    if (icon != null && canShowIcon)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Sizes.p8,
+          return SizedBox(
+            height: buttonHeight,
+            child: CupertinoButton.filled(
+              onPressed: isLoading ? null : onPressed,
+              sizeStyle: CupertinoButtonSize.small,
+              padding: const EdgeInsets.all(0),
+              color: buttonColor,
+              child: Stack(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(child: textWidget),
+                      if (icon != null && canShowIcon)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Sizes.p8,
+                          ),
+                          child: icon!,
                         ),
-                        child: icon!,
-                      ),
-                  ],
-                ),
-                if (isLoading) loadingWidget,
-              ],
+                    ],
+                  ),
+                  if (isLoading) loadingWidget,
+                ],
+              ),
             ),
           );
         },
@@ -84,7 +89,7 @@ class PrimaryButton extends StatelessWidget {
         final canShowIcon = constraints.maxWidth > minimumIconSize;
 
         return SizedBox(
-          height: Sizes.p40,
+          height: buttonHeight,
           child: ElevatedButton.icon(
             onPressed: isLoading ? null : onPressed,
             icon: canShowIcon ? icon : null,
