@@ -59,6 +59,7 @@ class _AdjustSalePriceProductsPageState
     );
 
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Scaffold(
       appBar: AppBar(
@@ -100,7 +101,10 @@ class _AdjustSalePriceProductsPageState
                             notClickableBottom: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                if (isIOS)
+                                  const Expanded(flex: 55, child: Text('')),
                                 Flexible(
+                                  flex: 45,
                                   child: PrimaryButton(
                                     text: 'Alterar preços'.hardcoded,
                                     icon: Icon(
