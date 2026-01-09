@@ -111,7 +111,7 @@ class _GetDateItem extends StatelessWidget {
         currentSelectedDate: currentSelectedDate,
         insertHoursAndMinutes: true,
         minimumDate: now,
-        maximumDate: now.add(const Duration(days: 365)),
+        maximumDate: now.add(Duration(days: isEndDate ? (365 * 5) : 365)),
       );
       if (selectedDate != null) {
         onDateChanged(selectedDate);
