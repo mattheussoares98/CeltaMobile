@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
@@ -27,18 +28,36 @@ class SoapUrlValidationDatasource implements ISoapUrlValidationDatasource {
       throw exception;
     }
 
-    final results = await Future.wait(
-      cleanUrls.map((url) => _testUrlConnectivity(url)),
-    );
+    final completer = Completer<String>();
+    int failedAttempts = 0;
 
-    try {
-      if (results.isEmpty) {
-        throw exception;
-      }
-      return results.firstWhere((url) => url != null)!;
-    } catch (_) {
-      throw exception;
+    for (final url in cleanUrls) {
+      _testUrlConnectivity(url)
+          .then((result) {
+            if (completer.isCompleted) return;
+
+            if (result != null) {
+              // Success: complete with the working URL
+              completer.complete(result);
+            } else {
+              // Failure: increment counter and check if all have failed
+              failedAttempts++;
+              if (failedAttempts == cleanUrls.length) {
+                completer.completeError(exception);
+              }
+            }
+          })
+          .catchError((_) {
+            if (completer.isCompleted) return;
+
+            failedAttempts++;
+            if (failedAttempts == cleanUrls.length) {
+              completer.completeError(exception);
+            }
+          });
     }
+
+    return completer.future;
   }
 
   Future<String?> _testUrlConnectivity(String url) async {
