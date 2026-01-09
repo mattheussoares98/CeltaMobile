@@ -47,8 +47,7 @@ class BottomNavigationWidget extends ConsumerWidget {
         BottomNavigationBarItem(
           label: 'E-mail'.hardcoded,
           icon: ValidatedBadge(
-            isValid:
-                customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
+            isValid: customer?.Emails != null && customer!.Emails!.isNotEmpty,
             materialIcon: Icons.email,
             cupertinoIcon: CupertinoIcons.mail,
             isSelected: selectedIndex == 2,
@@ -58,7 +57,8 @@ class BottomNavigationWidget extends ConsumerWidget {
           label: 'Telefone'.hardcoded,
           icon: ValidatedBadge(
             isValid:
-                customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
+                customer?.Telephones != null &&
+                customer!.Telephones!.isNotEmpty,
             materialIcon: Icons.phone,
             cupertinoIcon: CupertinoIcons.phone,
             isSelected: selectedIndex == 3,
@@ -68,7 +68,8 @@ class BottomNavigationWidget extends ConsumerWidget {
           label: 'Convênios'.hardcoded,
           icon: ValidatedBadge(
             isValid:
-                customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
+                customer?.CustomerCovenants != null &&
+                customer!.CustomerCovenants!.isNotEmpty,
             materialIcon: Icons.wallet,
             cupertinoIcon: CupertinoIcons.creditcard,
             isSelected: selectedIndex == 4,
