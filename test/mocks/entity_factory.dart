@@ -597,8 +597,8 @@ class EntityFactory {
     AllowDiscount: faker.randomGenerator.boolean(),
   );
 
-  static SupplierEntity makeSupplierEntity() => SupplierEntity(
-    Code: faker.randomGenerator.integer(100),
+  static SupplierEntity makeSupplierEntity({int? Code}) => SupplierEntity(
+    Code: Code ?? faker.randomGenerator.integer(100),
     Name: faker.person.name(),
     FantasizesName: faker.company.name(),
     CnpjCpfNumber: faker.randomGenerator.integer(100).toString(),
@@ -623,14 +623,16 @@ class EntityFactory {
     ],
   );
 
-  static PendingBuyRequestEntity makePendingBuyRequestEntity() {
+  static PendingBuyRequestEntity makePendingBuyRequestEntity({
+    SupplierEntity? selectedSupplier,
+  }) {
     final enterpriseCode = faker.randomGenerator.integer(100);
     final productPackingCode = faker.randomGenerator.integer(100);
 
     return PendingBuyRequestEntity(
       selectedRequestType: makeRequestTypeEntity(),
       selectedBuyer: makeBuyerEntity(),
-      selectedSupplier: makeSupplierEntity(),
+      selectedSupplier: selectedSupplier ?? makeSupplierEntity(),
       lastSavedRequestNumber: faker.lorem.word(),
       products: {
         ProductKey(
