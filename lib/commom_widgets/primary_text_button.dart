@@ -76,7 +76,7 @@ class PrimaryTextButton extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(child: textWidget),
+                    textWidget,
                     if (icon != null && canShowIcon) ...[gapW8, iconWidget!],
                   ],
                 ),
