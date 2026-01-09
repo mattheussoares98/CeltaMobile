@@ -178,7 +178,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         Scaffold(
           appBar: AppBar(title: Text('Produtos'.hardcoded)),
           body: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
+            padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
             child: CustomScrollView(
               slivers: [
                 SearchProducts(
