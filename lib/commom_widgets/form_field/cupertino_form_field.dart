@@ -45,12 +45,12 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final dtf = widget.defaultTextFormField;
-    final bool isEnabled = dtf.enabled ?? true;
+    final isEnabled = dtf.enabled ?? true;
 
     return FormField<String>(
       key: ValueKey(Random().nextDouble()),
       validator: dtf.validator,
-      enabled: dtf.enabled ?? true,
+      enabled: isEnabled,
       initialValue: dtf.controller?.text,
       autovalidateMode: dtf.autovalidateMode,
       builder: (state) {
@@ -63,7 +63,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
         final Border? border = state.hasError
             ? Border.all(color: CupertinoColors.destructiveRed)
             : !isEnabled
-            ? Border.all(color: colorScheme.onSurface.withAlpha(50))
+            ? Border.all(color: colorScheme.onSurface.withAlpha(20))
             : null;
 
         return Column(
@@ -71,10 +71,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
           children: [
             if (dtf.labelText != null)
               Padding(
-                padding: const EdgeInsets.only(
-                  left: Sizes.p8,
-                  bottom: Sizes.p4,
-                ),
+                padding: const EdgeInsets.only(left: Sizes.p8, bottom: 2),
                 child: Text(
                   dtf.labelText!,
                   style: TextStyle(
@@ -106,7 +103,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
               crossAxisAlignment: CrossAxisAlignment.center,
               obscureText: dtf.obscureText,
               onSubmitted: dtf.onFieldSubmitted,
-              enabled: dtf.enabled == true,
+              enabled: isEnabled,
               focusNode: dtf.focusNode,
               enableSuggestions: true,
               maxLength: dtf.maxLength,
@@ -121,21 +118,17 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
               ),
               keyboardType: dtf.keyboardType,
               prefix: dtf.prefixIcon != null
-                  ? Padding(
-                      padding: EdgeInsets.only(
-                        left: dtf.prefixIcon is IconButton ? 0 : Sizes.p8,
-                      ),
-                      child: dtf.prefixIcon,
-                    )
+                  ? dtf.prefixIcon is Icon
+                        ? IgnorePointer(
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: dtf.prefixIcon!,
+                            ),
+                          )
+                        : dtf.prefixIcon
                   : null,
               suffix: dtf.suffixIcon,
-              padding: EdgeInsets.only(
-                left: Sizes.p8,
-                bottom: dtf.prefixIcon != null ? Sizes.p12 : Sizes.p16,
-                top: dtf.prefixIcon != null ? 0 : Sizes.p8,
-              ),
             ),
-
             if (state.hasError)
               Padding(
                 padding: const EdgeInsets.only(left: Sizes.p8, top: Sizes.p4),
