@@ -113,7 +113,11 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
       final day = customer?.DateOfBirth!.day.toString().padLeft(2, '0');
       final month = customer?.DateOfBirth!.month.toString().padLeft(2, '0');
       final year = customer?.DateOfBirth!.year.toString().padLeft(4, '0');
-      birthDateController.text = '$day/$month/$year';
+      if (day == '01' && month == '01' && year == '0001') {
+        birthDateController.text = '';
+      } else {
+        birthDateController.text = '$day/$month/$year';
+      }
     } else {
       birthDateController.text = '';
     }
