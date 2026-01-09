@@ -39,12 +39,13 @@ class PersonalDataInformations extends ConsumerWidget {
                 subTitle: customer?.ReducedName,
               ),
 
-            if (customer?.DateOfBirth != null)
+            if (customer?.DateOfBirth != null &&
+                customer!.DateOfBirth != DateTime(0001, 01, 01))
               TitleAndSubTitle(
                 title: 'Nascimento '.hardcoded,
                 subTitle: DateFormat(
                   'dd/MM/yyyy',
-                ).format(customer!.DateOfBirth!),
+                ).format(customer.DateOfBirth!),
               ),
             if (customer?.Password != null && customer!.Password!.isNotEmpty)
               TitleAndSubTitle(
