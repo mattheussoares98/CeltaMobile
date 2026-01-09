@@ -84,9 +84,9 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
             Name: nameController.text,
             ReducedName: reducedNameController.text,
             Password: passwordController.text,
-            DateOfBirth: DateFormat(
-              'dd/MM/yyyy',
-            ).tryParse(birthDateController.text),
+            DateOfBirth: birthDateController.text.isEmpty
+                ? null
+                : DateFormat('dd/MM/yyyy').tryParse(birthDateController.text),
           ),
         );
   }
