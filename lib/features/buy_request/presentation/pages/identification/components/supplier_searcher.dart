@@ -14,12 +14,7 @@ import '../../components/components.dart';
 
 class SupplierSearcher extends ConsumerStatefulWidget {
   final TextEditingController supplierController;
-  final AsyncValue<List<SupplierEntity>?> suppliersState;
-  const SupplierSearcher({
-    super.key,
-    required this.supplierController,
-    required this.suppliersState,
-  });
+  const SupplierSearcher({super.key, required this.supplierController});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SupplierItemsState();
@@ -130,7 +125,11 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
             ),
           ),
           gapH8,
-          if (widget.suppliersState.isLoading)
+          if (ref.watch(
+            supplierStateControllerProvider(
+              SearchSupplierType.buyRequest,
+            ).select((s) => s.isLoading),
+          ))
             const Center(child: LoadingWidget()),
         ],
       ),

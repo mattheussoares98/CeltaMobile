@@ -3,17 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../core/presentation/controllers/supplier/supplier.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
 
 class SupplierItems extends ConsumerWidget {
-  final AsyncValue<List<SupplierEntity>?> suppliersState;
-  final List<SupplierEntity> suppliers;
-  const SupplierItems({
-    super.key,
-    required this.suppliersState,
-    required this.suppliers,
-  });
+  const SupplierItems({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,6 +17,14 @@ class SupplierItems extends ConsumerWidget {
     if (pendingAsync.isLoading) {
       return const SliverToBoxAdapter(child: LoadingWidget());
     }
+
+    final suppliers = ref.watch(
+      uiStateControllerProvider.select((s) => s.value?.suppliers ?? []),
+    );
+
+    final suppliersState = ref.watch(
+      supplierStateControllerProvider(SearchSupplierType.buyRequest),
+    );
 
     return SliverList.builder(
       itemCount: suppliersState.value?.length ?? suppliers.length,

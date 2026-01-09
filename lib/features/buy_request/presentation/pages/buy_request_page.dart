@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/constants.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/supplier/supplier.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 import 'pages.dart';
@@ -21,40 +19,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   final supplierController = TextEditingController();
   final identificationFormKey = GlobalKey<FormState>();
   final observationsController = TextEditingController();
-
-  List<SupplierEntity> suppliers = [];
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        suppliers = await ref
-            .read(
-              supplierStateControllerProvider(
-                SearchSupplierType.buyRequest,
-              ).future,
-            )
-            .then((value) {
-              return [...?value];
-            });
-
-        final pendingAsync = await ref.read(
-          pendingBuyRequestStateControllerProvider.future,
-        );
-
-        if (pendingAsync.selectedSupplier != null &&
-            suppliers.any(
-                  (e) => e.Code == pendingAsync.selectedSupplier?.Code,
-                ) !=
-                true) {
-          setState(() {
-            suppliers.add(pendingAsync.selectedSupplier!);
-          });
-        }
-      }
-    });
-  }
 
   @override
   void dispose() {
@@ -78,7 +42,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       IdentificationPage(
         supplierController: supplierController,
         identificationFormKey: identificationFormKey,
-        suppliers: suppliers,
       ),
       const EnterprisesPage(),
       const ProductsPage(),
@@ -148,6 +111,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
               if (currentIndex == 0 && (index == 1 || index == 2)) {
                 bool isValid =
                     identificationFormKey.currentState?.validate() == true;
+                //TODO check to remove this formKey
                 if (!isValid) {
                   return;
                 } else if (pendingAsync.value?.selectedSupplier == null) {
