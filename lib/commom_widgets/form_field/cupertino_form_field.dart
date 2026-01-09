@@ -100,7 +100,11 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
                 fontSize: 12,
               ),
               padding: EdgeInsets.only(
-                bottom: dtf.hintText == null
+                top: dtf.prefixIcon != null ? 0 : Sizes.p8,
+                left: dtf.prefixIcon != null ? 0 : Sizes.p8,
+                bottom: dtf.prefixIcon == null
+                    ? Sizes.p12
+                    : dtf.hintText == null
                     ? 0
                     : dtf.controller?.text.isEmpty ?? true
                     ? Sizes.p8
