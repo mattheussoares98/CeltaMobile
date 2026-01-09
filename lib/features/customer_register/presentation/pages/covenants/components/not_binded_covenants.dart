@@ -82,6 +82,7 @@ class NotBindedCovenants extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
+                        flex: 3,
                         child: DefaultTextFormField(
                           controller: limitController,
                           focusNode: limitFocusNode,
@@ -104,12 +105,12 @@ class NotBindedCovenants extends StatelessWidget {
                           },
                         ),
                       ),
-                      gapW8,
-                      PrimaryButton(
-                        text: 'Vincular'.hardcoded,
-                        onPressed: () {
-                          bindCovenant(covenant);
-                        },
+                      gapW16,
+                      Flexible(
+                        child: PrimaryButton(
+                          text: 'Vincular'.hardcoded,
+                          onPressed: () => bindCovenant(covenant),
+                        ),
                       ),
                     ],
                   ),
