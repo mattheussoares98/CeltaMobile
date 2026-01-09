@@ -68,38 +68,43 @@ class SupplierItem extends ConsumerWidget {
           onChanged: (_) {
             onTap();
           },
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: TitleAndSubTitle(
-                        title: 'Código',
-                        subTitle: supplier.Code.toString(),
-                      ),
+                    TitleAndSubTitle(
+                      title: 'Código',
+                      subTitle: supplier.Code.toString(),
                     ),
-                    if (enabled == true)
-                      Radio(value: supplier, enabled: enabled),
+                    TitleAndSubTitle(
+                      title: 'CPF/CNPJ',
+                      subTitle: supplier.CnpjCpfNumber,
+                    ),
+                    TitleAndSubTitle(title: 'Nome', subTitle: supplier.Name),
+                    TitleAndSubTitle(
+                      title: 'Nome fantasia',
+                      subTitle: supplier.FantasizesName,
+                    ),
+                    TitleAndSubTitle(
+                      title: 'Tipo comércio',
+                      subTitle: supplier.SupplierRegimeType,
+                    ),
                   ],
                 ),
-                TitleAndSubTitle(title: 'Nome', subTitle: supplier.Name),
-                TitleAndSubTitle(
-                  title: 'Nome fantasia',
-                  subTitle: supplier.FantasizesName,
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Radio(
+                  value: supplier,
+                  enabled: enabled,
+                  visualDensity: VisualDensity.compact,
                 ),
-                TitleAndSubTitle(
-                  title: 'CPF/CNPJ',
-                  subTitle: supplier.CnpjCpfNumber,
-                ),
-                TitleAndSubTitle(
-                  title: 'Tipo comércio',
-                  subTitle: supplier.SupplierRegimeType,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
