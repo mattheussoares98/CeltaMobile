@@ -55,7 +55,7 @@ class InformedPhones extends ConsumerWidget {
                       defaultActionText: 'Sim'.hardcoded,
                       cancelActionText: 'Cancelar'.hardcoded,
                       onOkPressed: () {
-                        removeTelephone(index);
+                        removeTelephone(index - 1);
                       },
                     );
                   },

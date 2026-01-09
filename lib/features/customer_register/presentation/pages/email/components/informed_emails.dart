@@ -48,7 +48,7 @@ class InformedEmails extends ConsumerWidget {
                     showAlertDialog(
                       context: context,
                       title: 'Remover e-mail?'.hardcoded,
-                      onOkPressed: () => removeEmail(index),
+                      onOkPressed: () => removeEmail(index - 1),
                       defaultActionText: 'Sim'.hardcoded,
                       cancelActionText: 'Não'.hardcoded,
                     );
