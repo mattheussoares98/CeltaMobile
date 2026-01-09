@@ -119,40 +119,43 @@ class ModulesWidget extends ConsumerWidget {
       }
     }
 
-    return AsyncValueWidget(
-      value: ref.watch(favoriteModulesStateControllerProvider),
-      tryAgain: () => ref.invalidate(favoriteModulesStateControllerProvider),
-      data: (favorites) {
-        buttons.sort((a, b) {
-          if (favorites.contains(a.module)) {
-            return -1;
-          } else if (favorites.contains(b.module)) {
-            return 1;
-          } else {
-            return a.route.module.compareTo(b.route.module);
-          }
-        });
+    return SafeArea(
+      child: AsyncValueWidget(
+        value: ref.watch(favoriteModulesStateControllerProvider),
+        tryAgain: () => ref.invalidate(favoriteModulesStateControllerProvider),
+        data: (favorites) {
+          buttons.sort((a, b) {
+            if (favorites.contains(a.module)) {
+              return -1;
+            } else if (favorites.contains(b.module)) {
+              return 1;
+            } else {
+              return a.route.module.compareTo(b.route.module);
+            }
+          });
 
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            return GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-              itemCount: buttons.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: getCrossAxisCount(constraints),
-                mainAxisExtent: 90,
-                childAspectRatio: 1.7,
-                crossAxisSpacing: Sizes.p4,
-                mainAxisSpacing: Sizes.p4,
-              ),
-              itemBuilder: (_, index) {
-                final button = buttons[index];
-                return button;
-              },
-            );
-          },
-        );
-      },
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return GridView.builder(
+                physics: const ClampingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+                itemCount: buttons.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: getCrossAxisCount(constraints),
+                  mainAxisExtent: 90,
+                  childAspectRatio: 1.7,
+                  crossAxisSpacing: Sizes.p4,
+                  mainAxisSpacing: Sizes.p4,
+                ),
+                itemBuilder: (_, index) {
+                  final button = buttons[index];
+                  return button;
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
