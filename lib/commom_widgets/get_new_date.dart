@@ -25,23 +25,26 @@ class GetNewDate {
         ? minimumDate
         : currentSelectedDate!;
 
+    final firstDate = currentSelectedIsBeforeMinimumDate
+        ? correctMinimumDate
+        : minimumDate;
+    final initialDate = currentSelectedIsBeforeMinimumDate
+        ? correctMinimumDate
+        : currentSelectedDate;
+
     if (theme.platform == TargetPlatform.iOS) {
       selectedDate = await _showCupertinoDatePicker(
-        minimumDate: correctMinimumDate,
+        firstDate: firstDate,
         context: context,
         maximumDate: maximumDate,
-        currentSelectedDate: currentSelectedDate,
+        initialDate: initialDate,
         mode: CupertinoDatePickerMode.date,
       );
     } else {
       selectedDate = await showDatePicker(
         context: context,
-        firstDate: currentSelectedIsBeforeMinimumDate
-            ? correctMinimumDate
-            : minimumDate,
-        initialDate: currentSelectedIsBeforeMinimumDate
-            ? correctMinimumDate
-            : currentSelectedDate,
+        firstDate: firstDate,
+        initialDate: initialDate,
         lastDate: maximumDate,
       );
     }
@@ -52,10 +55,10 @@ class GetNewDate {
 
     if (theme.platform == TargetPlatform.iOS) {
       final time = await _showCupertinoDatePicker(
-        minimumDate: minimumDate,
+        firstDate: minimumDate,
         context: context,
         maximumDate: maximumDate,
-        currentSelectedDate: currentSelectedDate,
+        initialDate: currentSelectedDate,
         mode: CupertinoDatePickerMode.time,
       );
       selectedTime = time == null
@@ -102,12 +105,12 @@ class GetNewDate {
 
   static Future<DateTime?> _showCupertinoDatePicker({
     required DateTime? maximumDate,
-    required DateTime? minimumDate,
-    required DateTime? currentSelectedDate,
+    required DateTime? firstDate,
+    required DateTime? initialDate,
     required BuildContext context,
     required CupertinoDatePickerMode mode,
   }) async {
-    DateTime? tempPickedDate = currentSelectedDate;
+    DateTime? tempPickedDate = initialDate;
     final theme = Theme.of(context);
 
     return await showCupertinoModalPopup<DateTime>(
@@ -147,8 +150,8 @@ class GetNewDate {
                       height: 180,
                       child: CupertinoDatePicker(
                         mode: mode,
-                        initialDateTime: currentSelectedDate,
-                        minimumDate: minimumDate,
+                        initialDateTime: initialDate,
+                        minimumDate: firstDate,
                         maximumDate: maximumDate,
                         use24hFormat: true,
                         onDateTimeChanged: (DateTime newDate) {
