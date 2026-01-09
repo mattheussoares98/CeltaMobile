@@ -26,7 +26,11 @@ class ResponsiveListFlow extends StatelessWidget {
     if (isIOS || isAndroid) {
       return isSliver
           ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
-          : ListView.builder(itemBuilder: itemBuilder, itemCount: itemCount);
+          : ListView.builder(
+              physics: const ClampingScrollPhysics(),
+              itemBuilder: itemBuilder,
+              itemCount: itemCount,
+            );
     }
 
     final width = MediaQuery.of(context).size.width;
@@ -50,6 +54,7 @@ class ResponsiveListFlow extends StatelessWidget {
     }
 
     return ListView.builder(
+      physics: const ClampingScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, rowIndex) {
         return _RowsItems(
