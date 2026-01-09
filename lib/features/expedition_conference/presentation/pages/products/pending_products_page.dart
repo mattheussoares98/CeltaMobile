@@ -94,7 +94,7 @@ class PendingProductsPage extends ConsumerWidget {
     });
 
     return Padding(
-      padding: const EdgeInsets.all(Sizes.p8),
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       child: Column(
         children: [
           DefaultSearchProducts(
