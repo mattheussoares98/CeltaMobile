@@ -12,7 +12,7 @@ Future<void> initApp() async {
 }
 
 Future<void> _initSupabase() async {
-  const String supaworkingUrl = AppSecrets.supaworkingUrl;
+  const String supaworkingUrl = AppSecrets.supaUrl;
   const String supabaseAnonKey = AppSecrets.supabaseAnonKey;
 
   if (supaworkingUrl.isEmpty || supabaseAnonKey.isEmpty) {
