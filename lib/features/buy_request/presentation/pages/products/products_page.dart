@@ -17,8 +17,6 @@ class ProductsPage extends ConsumerWidget {
   final FocusNode costFocusNode;
   final void Function(AsyncValue<PendingBuyRequestEntity>, ProductEntity)
   insertProduct;
-  final int? selectedIndex;
-  final void Function(int? index) changeSelectedIndex;
   final GlobalKey<FormState> fieldsFormKey;
   final GlobalKey<FormState> quantityFormKey;
   final void Function(int, ProductEntity) onTapProduct;
@@ -30,8 +28,6 @@ class ProductsPage extends ConsumerWidget {
     required this.quantityFocusNode,
     required this.costFocusNode,
     required this.insertProduct,
-    required this.selectedIndex,
-    required this.changeSelectedIndex,
     required this.fieldsFormKey,
     required this.quantityFormKey,
     required this.onTapProduct,
@@ -48,7 +44,9 @@ class ProductsPage extends ConsumerWidget {
     Future<void> searchProducts(
       AsyncValue<PendingBuyRequestEntity> pendingAsync,
     ) async {
-      changeSelectedIndex(null);
+      ref
+          .read(uiStateControllerProvider.notifier)
+          .updateSelectedProductIndex(null);
       await ref
           .read(
             searchProductsStateControllerProvider(searchProductKey).notifier,

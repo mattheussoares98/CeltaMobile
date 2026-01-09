@@ -48,6 +48,10 @@ class ProductsItems extends ConsumerWidget {
       ),
     );
 
+    final selectedProductIndex = ref.watch(
+      uiStateControllerProvider.select((s) => s.value?.selectedProductIndex),
+    );
+
     return ResponsiveListFlow(
       isSliver: true,
       itemCount: products.length,
@@ -67,7 +71,7 @@ class ProductsItems extends ConsumerWidget {
           product: product,
           routine: BsRoutine.buyRequest,
           showDropIcon: true,
-          isSelected: productsPage.selectedIndex == index,
+          isSelected: selectedProductIndex == index,
           onDelete: insertedItem == null
               ? null
               : () => onDelete(product, pendingAsync),
@@ -75,7 +79,7 @@ class ProductsItems extends ConsumerWidget {
           clickableBottom: insertedItem == null
               ? null
               : CostQuantityAndTotalWritten(insertedItem: insertedItem),
-          notClickableBottom: productsPage.selectedIndex == index
+          notClickableBottom: selectedProductIndex == index
               ? Form(
                   key: productsPage.fieldsFormKey,
                   child: Padding(

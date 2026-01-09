@@ -50,7 +50,11 @@ class UiStateController extends _$UiStateController {
         state.value!.annulValues(annulSelectedProductIndex: true),
       );
     } else {
-      state = AsyncData(state.value!.copyWith(selectedProductIndex: index));
+      state = AsyncData(
+        state.value!
+            .annulValues(annulSelectedProductIndex: index == null)
+            .copyWith(selectedProductIndex: index),
+      );
     }
   }
 }

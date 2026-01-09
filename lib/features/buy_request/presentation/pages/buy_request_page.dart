@@ -21,8 +21,6 @@ class BuyRequestPage extends ConsumerStatefulWidget {
 
 class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   final supplierController = TextEditingController();
-  int currentIndex = 0;
-  int? selectedProductIndex;
   final identificationFormKey = GlobalKey<FormState>();
   final productsFieldsFormKey = GlobalKey<FormState>();
   final productsQuantityFormKey = GlobalKey<FormState>();
@@ -77,10 +75,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     costController.dispose();
     quantityFocusNode.dispose();
     costFocusNode.dispose();
-
-    identificationFormKey.currentState?.dispose();
-    productsFieldsFormKey.currentState?.dispose();
-    productsQuantityFormKey.currentState?.dispose();
   }
 
   void insertProduct(
@@ -112,32 +106,28 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         .updatePending(pendingAsync.value!.copyWith(products: products));
     quantityController.clear();
     costController.clear();
-    setState(() {
-      selectedProductIndex = null;
-    });
+    ref
+        .read(uiStateControllerProvider.notifier)
+        .updateSelectedProductIndex(null);
   }
 
-  void onTapProduct(int index, ProductEntity product) {
+  void onTapProduct(int index, ProductEntity product) async {
     quantityController.clear();
     costController.clear();
 
-    if (selectedProductIndex != index) {
-      if ((product.PriceCost!.LiquidCost ?? 0) > 0) {
-        costController.text = product.PriceCost!.LiquidCost
-            .toString()
-            .toBrazilianNumber(4);
-      }
-      setState(() {
-        selectedProductIndex = index;
-      });
-      Future.delayed(const Duration(milliseconds: 100), () {
-        quantityFocusNode.requestFocus();
-      });
-    } else {
-      setState(() {
-        selectedProductIndex = null;
-      });
+    ref
+        .read(uiStateControllerProvider.notifier)
+        .updateSelectedProductIndex(index);
+
+    if ((product.PriceCost!.LiquidCost ?? 0) > 0) {
+      costController.text = product.PriceCost!.LiquidCost
+          .toString()
+          .toBrazilianNumber(4);
     }
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      quantityFocusNode.requestFocus();
+    });
   }
 
   final appBarTitles = [
@@ -160,13 +150,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       insertProduct: insertProduct,
       fieldsFormKey: productsFieldsFormKey,
       quantityFormKey: productsQuantityFormKey,
-      selectedIndex: selectedProductIndex,
       onTapProduct: onTapProduct,
-      changeSelectedIndex: (index) {
-        setState(() {
-          selectedProductIndex = index;
-        });
-      },
     );
 
     final pages = [
@@ -187,7 +171,15 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       children: [
         Scaffold(
           appBar: AppBar(
-            title: FittedBox(child: Text(appBarTitles[currentIndex])),
+            title: FittedBox(
+              child: Text(
+                appBarTitles[ref.watch(
+                  uiStateControllerProvider.select(
+                    (s) => s.value?.currentPageIndex ?? 0,
+                  ),
+                )],
+              ),
+            ),
             actionsPadding: const EdgeInsets.fromLTRB(
               0,
               Sizes.p8,
@@ -197,17 +189,28 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             actions: [
               CartPriceIcon(
                 onTap: () {
-                  setState(() {
-                    currentIndex = 3;
-                  });
+                  ref
+                      .read(uiStateControllerProvider.notifier)
+                      .updatePageIndex(3);
                 },
                 pendingAsync: pendingAsync,
               ),
             ],
           ),
-          body: IndexedStack(index: currentIndex, children: pages),
+          body: IndexedStack(
+            index: ref.watch(
+              uiStateControllerProvider.select(
+                (s) => s.value?.currentPageIndex ?? 0,
+              ),
+            ),
+            children: pages,
+          ),
           bottomNavigationBar: BottomNavBar(
-            currentIndex: currentIndex,
+            currentIndex: ref.watch(
+              uiStateControllerProvider.select(
+                (s) => s.value?.currentPageIndex ?? 0,
+              ),
+            ),
             onTap: (index) {
               bool enterprisesAreValid =
                   pendingAsync.value?.selectedEnterprises != null &&
@@ -217,6 +220,12 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
                   pendingAsync.value?.selectedRequestType != null;
               bool supplierIsSelected =
                   pendingAsync.value?.selectedSupplier != null;
+
+              final currentIndex = ref.watch(
+                uiStateControllerProvider.select(
+                  (s) => s.value?.currentPageIndex ?? 0,
+                ),
+              );
 
               if (currentIndex == 0 && (index == 1 || index == 2)) {
                 bool isValid =
@@ -255,7 +264,9 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
                 return;
               }
 
-              setState(() => currentIndex = index);
+              ref
+                  .read(uiStateControllerProvider.notifier)
+                  .updatePageIndex(index);
             },
           ),
         ),
