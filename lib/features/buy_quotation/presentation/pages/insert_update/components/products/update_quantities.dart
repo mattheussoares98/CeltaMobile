@@ -173,8 +173,9 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
             ),
           gapH8,
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Expanded(
+              Flexible(
                 flex: 4,
                 child: PrimaryButton(
                   text: 'Cancelar'.hardcoded,
@@ -183,7 +184,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                 ),
               ),
               gapW8,
-              Expanded(
+              Flexible(
                 flex: 6,
                 child: PrimaryButton(
                   text: 'Confirmar'.hardcoded,
