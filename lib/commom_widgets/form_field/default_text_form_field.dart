@@ -54,47 +54,41 @@ class DefaultTextFormField extends StatelessWidget {
     final theme = Theme.of(context);
 
     if (theme.platform == TargetPlatform.iOS) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: CupertinoFormField(defaultTextFormField: this),
-      );
+      return CupertinoFormField(defaultTextFormField: this);
     }
-    return Padding(
-      padding: const EdgeInsets.only(top: 4),
-      child: TextFormField(
-        key: ValueKey(Random().nextDouble()),
-        minLines: 1,
-        maxLines: maxLines ?? 1,
-        enabled: enabled,
-        controller: controller,
-        autovalidateMode: autovalidateMode,
-        onFieldSubmitted: onFieldSubmitted,
-        inputFormatters: inputFormatters,
-        validator: validator,
-        obscureText: obscureText,
-        focusNode: focusNode,
-        keyboardType: keyboardType,
-        maxLength: maxLength,
-        onChanged: onChanged,
-        onTap: onTap,
-        autofocus: autofocus == true,
-        buildCounter:
-            (
-              context, {
-              required currentLength,
-              required isFocused,
-              required maxLength,
-            }) => null,
-        decoration: AppDecorations.input(
-          enabled: enabled ?? true,
-          context: context,
-          labelText: labelText,
-          hintText: hintText,
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          errorText: errorText,
-          isMultiLine: (maxLines ?? 1) > 1,
-        ),
+    return TextFormField(
+      key: ValueKey(Random().nextDouble()),
+      minLines: 1,
+      maxLines: maxLines ?? 1,
+      enabled: enabled,
+      controller: controller,
+      autovalidateMode: autovalidateMode,
+      onFieldSubmitted: onFieldSubmitted,
+      inputFormatters: inputFormatters,
+      validator: validator,
+      obscureText: obscureText,
+      focusNode: focusNode,
+      keyboardType: keyboardType,
+      maxLength: maxLength,
+      onChanged: onChanged,
+      onTap: onTap,
+      autofocus: autofocus == true,
+      buildCounter:
+          (
+            context, {
+            required currentLength,
+            required isFocused,
+            required maxLength,
+          }) => null,
+      decoration: AppDecorations.input(
+        enabled: enabled ?? true,
+        context: context,
+        labelText: labelText,
+        hintText: hintText,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        errorText: errorText,
+        isMultiLine: (maxLines ?? 1) > 1,
       ),
     );
   }
