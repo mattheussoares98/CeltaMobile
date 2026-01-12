@@ -26,82 +26,75 @@ class ResearchItem extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          context.goNamed(
-            Routes.competingPricesConcurrents.name,
-            pathParameters: {
-              'researchCode': research.Code.toString(),
-              'enterpriseCode': enterpriseCode.toString(),
+    return Stack(
+      children: [
+        Card(
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: () {
+              context.goNamed(
+                Routes.competingPricesConcurrents.name,
+                pathParameters: {
+                  'researchCode': research.Code.toString(),
+                  'enterpriseCode': enterpriseCode.toString(),
+                },
+              );
             },
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: TitleAndSubTitle(
-                      title: 'Código',
-                      subTitle: research.Code.toString(),
+                  TitleAndSubTitle(
+                    title: 'Código',
+                    subTitle: research.Code.toString(),
+                  ),
+                  TitleAndSubTitle(title: 'Nome', subTitle: research.Name),
+                  TitleAndSubTitle(
+                    title: null,
+                    subTitle: research.RestrictProducts
+                        ? 'Produtos restringidos'.hardcoded
+                        : 'Produtos NÃO restringidos'.hardcoded,
+                    subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                      color: research.RestrictProducts
+                          ? theme.primaryColor
+                          : Colors.red,
                     ),
                   ),
-                  Flexible(
-                    flex: 7,
-                    child: PrimaryTextButton(
-                      text: 'Alterar pesquisa'.hardcoded,
-                      onPressed: () {
-                        showModalPage(
-                          InsertUpdateResearchPage(research: research),
-                          context,
-                        );
-                      },
-                      icon: mediaQuery.size.width > 300
-                          ? Icon(
-                              isIOS
-                                  ? CupertinoIcons.pencil
-                                  : Icons.edit_outlined,
-                            )
-                          : null,
-                    ),
+                  TitleAndSubTitle(
+                    title: 'Data de criação',
+                    subTitle: DateFormat(
+                      'dd/MM/yyyy HH:mm',
+                    ).format(research.CreationDate),
                   ),
+                  if (research.Observation != null &&
+                      research.Observation!.isNotEmpty)
+                    TitleAndSubTitle(
+                      title: 'Observação',
+                      subTitle: research.Observation,
+                    ),
                 ],
               ),
-              TitleAndSubTitle(title: 'Nome', subTitle: research.Name),
-              TitleAndSubTitle(
-                title: null,
-                subTitle: research.RestrictProducts
-                    ? 'Produtos restringidos'.hardcoded
-                    : 'Produtos NÃO restringidos'.hardcoded,
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                  color: research.RestrictProducts
-                      ? theme.primaryColor
-                      : Colors.red,
-                ),
-              ),
-              TitleAndSubTitle(
-                title: 'Data de criação',
-                subTitle: DateFormat(
-                  'dd/MM/yyyy HH:mm',
-                ).format(research.CreationDate),
-              ),
-              if (research.Observation != null &&
-                  research.Observation!.isNotEmpty)
-                TitleAndSubTitle(
-                  title: 'Observação',
-                  subTitle: research.Observation,
-                ),
-            ],
+            ),
           ),
         ),
-      ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: PrimaryTextButton(
+            text: 'Alterar pesquisa'.hardcoded,
+            onPressed: () {
+              showModalPage(
+                InsertUpdateResearchPage(research: research),
+                context,
+              );
+            },
+            icon: mediaQuery.size.width > 300
+                ? Icon(isIOS ? CupertinoIcons.pencil : Icons.edit_outlined)
+                : null,
+          ),
+        ),
+      ],
     );
   }
 }

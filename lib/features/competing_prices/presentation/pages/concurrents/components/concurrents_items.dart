@@ -88,77 +88,71 @@ class ConcurrentsItems extends ConsumerWidget {
                     (e) => e.ConcurrentCode == concurrent.ConcurrentCode,
                   );
 
-              return Card(
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: () => onTap(
-                    concurrent: concurrent,
-                    concurrentBindedInResearch: concurrentBindedInResearch,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              return Stack(
+                children: [
+                  Card(
+                    clipBehavior: Clip.antiAlias,
+                    child: InkWell(
+                      onTap: () => onTap(
+                        concurrent: concurrent,
+                        concurrentBindedInResearch: concurrentBindedInResearch,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(Sizes.p8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Expanded(
-                              flex: 3,
-                              child: TitleAndSubTitle(
-                                title: 'Código'.hardcoded,
-                                subTitle: concurrent.ConcurrentCode.toString(),
-                              ),
+                            TitleAndSubTitle(
+                              title: 'Código'.hardcoded,
+                              subTitle: concurrent.ConcurrentCode.toString(),
                             ),
-                            Flexible(
-                              flex: 7,
-                              child: PrimaryTextButton(
-                                text: 'Alterar concorrente'.hardcoded,
-                                onPressed: () {
-                                  showModalPage(
-                                    InsertUpdateConcurrentPage(
-                                      concurrentUpdating: concurrent,
-                                    ),
-                                    context,
-                                  );
-                                },
-                                icon: mediaQuery.size.width < 300
-                                    ? null
-                                    : Icon(
-                                        isIOS
-                                            ? CupertinoIcons.pencil
-                                            : Icons.edit,
-                                      ),
-                              ),
+                            TitleAndSubTitle(
+                              title: 'Nome'.hardcoded,
+                              subTitle: concurrent.Name.toString(),
                             ),
+                            TitleAndSubTitle(
+                              title: null,
+                              subTitle: concurrentBindedInResearch == true
+                                  ? 'Associado à pesquisa'.hardcoded
+                                  : 'Não associado à pesquisa'.hardcoded,
+                              subTitleStyle: theme.textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: concurrentBindedInResearch == true
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                            ),
+                            if (concurrent.Observation != null &&
+                                concurrent.Observation!.isNotEmpty)
+                              TitleAndSubTitle(
+                                title: 'Observação'.hardcoded,
+                                subTitle: concurrent.Observation.toString(),
+                              ),
+                            AddressDetails(address: concurrent.Address),
                           ],
                         ),
-                        TitleAndSubTitle(
-                          title: 'Nome'.hardcoded,
-                          subTitle: concurrent.Name.toString(),
-                        ),
-                        TitleAndSubTitle(
-                          title: null,
-                          subTitle: concurrentBindedInResearch == true
-                              ? 'Associado à pesquisa'.hardcoded
-                              : 'Não associado à pesquisa'.hardcoded,
-                          subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                            color: concurrentBindedInResearch == true
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
-                        if (concurrent.Observation != null &&
-                            concurrent.Observation!.isNotEmpty)
-                          TitleAndSubTitle(
-                            title: 'Observação'.hardcoded,
-                            subTitle: concurrent.Observation.toString(),
-                          ),
-                        AddressDetails(address: concurrent.Address),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: PrimaryTextButton(
+                      text: 'Alterar concorrente'.hardcoded,
+                      onPressed: () {
+                        showModalPage(
+                          InsertUpdateConcurrentPage(
+                            concurrentUpdating: concurrent,
+                          ),
+                          context,
+                        );
+                      },
+                      icon: mediaQuery.size.width < 300
+                          ? null
+                          : Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                    ),
+                  ),
+                ],
               );
             },
           ),
