@@ -15,10 +15,10 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
     final pdf = pw.Document();
 
     final fontData = await rootBundle.load(
-      "lib/core/assets/images/fonts/Roboto-Regular.ttf",
+      "lib/core/assets/fonts/Roboto-Regular.ttf",
     );
     final boldFontData = await rootBundle.load(
-      "lib/core/assets/images/fonts/Roboto-Bold.ttf",
+      "lib/core/assets/fonts/Roboto-Bold.ttf",
     );
 
     final ttfFont = pw.Font.ttf(fontData);
