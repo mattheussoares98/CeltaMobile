@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'pending_buy_request_state_controller.g.dart';
 
@@ -24,7 +25,13 @@ class PendingBuyRequestStateController
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localPendingBuyRequestRepositoryProvider);
-      repository.update(entity);
+      final currentState = state.value!;
+      if (currentState.selectedRequestType != entity.selectedRequestType ||
+          currentState.selectedSupplier != entity.selectedSupplier) {
+        ref.invalidate(enterprisesStateControllerProvider);
+      }
+
+      await repository.update(entity);
 
       return entity;
     });

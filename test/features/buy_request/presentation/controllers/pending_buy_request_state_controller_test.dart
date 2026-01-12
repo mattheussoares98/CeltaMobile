@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_intelligence/features/buy_request/domain/repository/repository.dart';
@@ -14,17 +17,31 @@ import '../../../../mocks/mocks.dart';
 class MockLocalPendingBuyRequestRepository extends Mock
     implements ILocalPendingBuyRequestRepository {}
 
+class SpyEnterprisesStateController extends EnterprisesStateController {
+  int buildCount = 0;
+
+  @override
+  FutureOr<List<EnterpriseEntity>> build() async {
+    buildCount++;
+    return [];
+  }
+}
+
 void main() {
   late MockLocalPendingBuyRequestRepository mockRepository;
+  late SpyEnterprisesStateController spyEnterprisesController;
   late PendingBuyRequestEntity entity;
   late PendingBuyRequestEntity emptyEntity;
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makePendingBuyRequestEntity());
+    registerFallbackValue(
+      AsyncValue.data([EntityFactory.makeEnterpriseEntity()]),
+    );
   });
-
   setUp(() {
     mockRepository = MockLocalPendingBuyRequestRepository();
+    spyEnterprisesController = SpyEnterprisesStateController();
     entity = EntityFactory.makePendingBuyRequestEntity();
     emptyEntity = PendingBuyRequestEntity.empty();
   });
@@ -34,6 +51,9 @@ void main() {
       overrides: [
         localPendingBuyRequestRepositoryProvider.overrideWithValue(
           mockRepository,
+        ),
+        enterprisesStateControllerProvider.overrideWith(
+          () => spyEnterprisesController,
         ),
         userSessionProvider.overrideWith(
           () => FakeUserSession(
@@ -137,5 +157,58 @@ void main() {
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
+  });
+
+  group('PendingBuyRequestStateController Invalidation Logic', () {
+    test(
+      'should re-build enterprisesStateControllerProvider when supplier changes',
+      () async {
+        // ARRANGE
+        final newSupplier = EntityFactory.makeSupplierEntity();
+        final updatedEntity = entity.copyWith(selectedSupplier: newSupplier);
+
+        when(() => mockRepository.load()).thenAnswer((_) async => entity);
+        when(() => mockRepository.update(any())).thenAnswer((_) async {});
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+
+        // 1. Initial read to trigger the first build
+        await container.read(pendingBuyRequestStateControllerProvider.future);
+        expect(spyEnterprisesController.buildCount, 0);
+
+        // ACT
+        await container
+            .read(pendingBuyRequestStateControllerProvider.notifier)
+            .updatePending(updatedEntity);
+
+        // ASSERT
+        // If ref.invalidate was called, the buildCount must be 2
+        expect(spyEnterprisesController.buildCount, 1);
+      },
+    );
+
+    test(
+      'should NOT re-build enterprisesStateControllerProvider when data remains the same',
+      () async {
+        // ARRANGE
+        when(() => mockRepository.load()).thenAnswer((_) async => entity);
+        when(() => mockRepository.update(any())).thenAnswer((_) async {});
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+
+        await container.read(pendingBuyRequestStateControllerProvider.future);
+        expect(spyEnterprisesController.buildCount, 0);
+
+        // ACT
+        await container
+            .read(pendingBuyRequestStateControllerProvider.notifier)
+            .updatePending(entity); // Same entity
+
+        // ASSERT
+        expect(spyEnterprisesController.buildCount, 0);
+      },
+    );
   });
 }
