@@ -38,8 +38,8 @@ class Filters extends ConsumerWidget {
       collapsedShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Sizes.p12),
       ),
-      backgroundColor: theme.primaryColorLight.withAlpha(20),
-      collapsedBackgroundColor: theme.primaryColorLight.withAlpha(60),
+      backgroundColor: theme.primaryColorLight.withAlpha(30),
+      collapsedBackgroundColor: theme.primaryColorDark.withAlpha(30),
       childrenPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       tilePadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       iconColor: theme.primaryColorDark,

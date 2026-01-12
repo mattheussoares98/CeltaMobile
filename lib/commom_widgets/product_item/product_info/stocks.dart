@@ -46,8 +46,8 @@ class Stocks extends StatelessWidget {
                 collapsedShape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(Sizes.p12),
                 ),
-                backgroundColor: theme.primaryColorLight.withAlpha(120),
-                collapsedBackgroundColor: theme.primaryColorLight.withAlpha(60),
+                backgroundColor: theme.primaryColorLight.withAlpha(30),
+                collapsedBackgroundColor: theme.primaryColorDark.withAlpha(30),
                 childrenPadding: const EdgeInsets.all(Sizes.p8),
                 iconColor: theme.primaryColorDark,
                 collapsedIconColor: theme.primaryColor,

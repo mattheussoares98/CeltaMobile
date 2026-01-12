@@ -59,8 +59,8 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
               collapsedShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Sizes.p12),
               ),
-              backgroundColor: theme.primaryColorLight.withAlpha(120),
-              collapsedBackgroundColor: theme.primaryColorLight.withAlpha(60),
+              backgroundColor: theme.primaryColorLight.withAlpha(30),
+              collapsedBackgroundColor: theme.primaryColorDark.withAlpha(30),
               // tilePadding: const EdgeInsets.all(Sizes.p4),
               childrenPadding: EdgeInsets.only(
                 bottom: index + 1 == filteredEnterprises.length ? Sizes.p8 : 0,
