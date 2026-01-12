@@ -27,8 +27,6 @@ class SaleRequestPage extends ConsumerStatefulWidget {
 }
 
 class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
-  int currentIndex = 0;
-
   final appBarTitles = [
     'Inserir produtos'.hardcoded,
     'Cliente'.hardcoded,
@@ -65,7 +63,15 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
       children: [
         Scaffold(
           appBar: AppBar(
-            title: FittedBox(child: Text(appBarTitles[currentIndex])),
+            title: Consumer(
+              builder: (_, ref, _) {
+                return FittedBox(
+                  child: Text(
+                    appBarTitles[ref.watch(pageIndexStateControllerProvider)],
+                  ),
+                );
+              },
+            ),
             actionsPadding: const EdgeInsets.fromLTRB(
               0,
               Sizes.p8,
@@ -75,21 +81,36 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
             actions: [
               ShowPdfButton(enterpriseCode: widget.enterpriseCode),
               PrintButton(enterpriseCode: widget.enterpriseCode),
-              QuantityBadge(
-                quantity: products?.length ?? 0,
-                materialIcon: Icons.shopping_cart,
-                cupertinoIcon: CupertinoIcons.shopping_cart,
-                isSelected: false,
-                offset: const Offset(3, -3),
-                subtitle: Text(
-                  (products?.fold<double>(0.0, (p, e) {
-                            return p + e.TotalLiquid;
-                          }).toString() ??
-                          '0')
-                      .toBrazilianNumber()
-                      .addBrazilianCoin(),
-                  style: const TextStyle(fontSize: 9),
-                ),
+              Consumer(
+                builder: (_, ref, _) {
+                  final products = ref.watch(
+                    pendingSaleRequestStateControllerProvider.select(
+                      (s) => s.value?.cart.values,
+                    ),
+                  );
+
+                  final totalPrice =
+                      products?.fold<double>(
+                        0.0,
+                        (p, e) => p + e.TotalLiquid,
+                      ) ??
+                      0.0;
+
+                  return QuantityBadge(
+                    quantity: products?.length ?? 0,
+                    materialIcon: Icons.shopping_cart,
+                    cupertinoIcon: CupertinoIcons.shopping_cart,
+                    isSelected: false,
+                    offset: const Offset(3, -3),
+                    subtitle: Text(
+                      totalPrice
+                          .toString()
+                          .toBrazilianNumber()
+                          .addBrazilianCoin(),
+                      style: const TextStyle(fontSize: 9),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -107,54 +128,68 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
                 (e) => e.Code == widget.requestCode,
               );
 
-              return IndexedStack(
-                index: currentIndex,
-                children: [
-                  InsertProductsPage(
-                    enterpriseCode: widget.enterpriseCode,
-                    selectedRequest: selectedRequest,
-                  ),
-                  const CustomerPage(),
-                  CartPage(selectedRequest: selectedRequest),
-                ],
+              return Consumer(
+                builder: (_, ref, _) {
+                  return IndexedStack(
+                    index: ref.watch(pageIndexStateControllerProvider),
+                    children: [
+                      InsertProductsPage(
+                        enterpriseCode: widget.enterpriseCode,
+                        selectedRequest: selectedRequest,
+                      ),
+                      const CustomerPage(),
+                      CartPage(selectedRequest: selectedRequest),
+                    ],
+                  );
+                },
               );
             },
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: (index) => setState(() => currentIndex = index),
-            currentIndex: currentIndex,
-            items: [
-              BottomNavigationBarItem(
-                label: 'Inserir produtos'.hardcoded,
-                icon: Icon(
-                  isIOS ? CupertinoIcons.cart_fill : Icons.add_shopping_cart,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: 'Cliente'.hardcoded,
-                icon: ValidatedBadge(
-                  isSelected: currentIndex == 1,
-                  isValid:
-                      ref.watch(
-                        pendingSaleRequestStateControllerProvider.select(
-                          (state) => state.value?.customer,
-                        ),
-                      ) !=
-                      null,
-                  materialIcon: Icons.person,
-                  cupertinoIcon: CupertinoIcons.person,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: 'Carrinho'.hardcoded,
-                icon: QuantityBadge(
-                  quantity: products?.length ?? 0,
-                  materialIcon: Icons.shopping_cart,
-                  cupertinoIcon: CupertinoIcons.shopping_cart,
-                  isSelected: currentIndex == 2,
-                ),
-              ),
-            ],
+          bottomNavigationBar: Consumer(
+            builder: (_, ref, _) {
+              final index = ref.watch(pageIndexStateControllerProvider);
+
+              return BottomNavigationBar(
+                onTap: ref
+                    .read(pageIndexStateControllerProvider.notifier)
+                    .updateIndex,
+                currentIndex: index,
+                items: [
+                  BottomNavigationBarItem(
+                    label: 'Inserir produtos'.hardcoded,
+                    icon: Icon(
+                      isIOS
+                          ? CupertinoIcons.cart_fill
+                          : Icons.add_shopping_cart,
+                    ),
+                  ),
+                  BottomNavigationBarItem(
+                    label: 'Cliente'.hardcoded,
+                    icon: ValidatedBadge(
+                      isSelected: index == 1,
+                      isValid:
+                          ref.watch(
+                            pendingSaleRequestStateControllerProvider.select(
+                              (state) => state.value?.customer,
+                            ),
+                          ) !=
+                          null,
+                      materialIcon: Icons.person,
+                      cupertinoIcon: CupertinoIcons.person,
+                    ),
+                  ),
+                  BottomNavigationBarItem(
+                    label: 'Carrinho'.hardcoded,
+                    icon: QuantityBadge(
+                      quantity: products?.length ?? 0,
+                      materialIcon: Icons.shopping_cart,
+                      cupertinoIcon: CupertinoIcons.shopping_cart,
+                      isSelected: index == 2,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
         LoadingPage(
