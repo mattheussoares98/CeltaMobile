@@ -25,17 +25,20 @@ class _IdentificationPageState extends ConsumerState<IdentificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: CustomScrollView(
-          slivers: [
-            const BuyersDropdown(),
-            gapSliverH8,
-            const RequestTypeDropdown(),
-            gapSliverH8,
-            SupplierSearcher(supplierController: supplierController),
-            const SupplierItems(),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+        child: ResponsiveScrollableWidget(
+          isSliverPage: true,
+          child: CustomScrollView(
+            slivers: [
+              const BuyersDropdown(),
+              gapSliverH8,
+              const RequestTypeDropdown(),
+              gapSliverH8,
+              SupplierSearcher(supplierController: supplierController),
+              const SupplierItems(),
+            ],
+          ),
         ),
       ),
     );

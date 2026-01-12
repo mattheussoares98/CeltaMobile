@@ -58,7 +58,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
