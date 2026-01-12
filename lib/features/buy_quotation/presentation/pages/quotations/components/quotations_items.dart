@@ -27,6 +27,7 @@ class QuotationsItems extends ConsumerWidget {
             );
           },
           child: ListView.builder(
+            padding: const EdgeInsets.only(bottom: Sizes.p64),
             itemCount: quotations.length,
             itemBuilder: (_, index) {
               final quotation = quotations[index];

@@ -182,6 +182,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                         widget: widget,
                         observationsFocusNode: observationsFocusNode,
                       ),
+                      gapSliverH32,
                     ],
                   ),
                 );
