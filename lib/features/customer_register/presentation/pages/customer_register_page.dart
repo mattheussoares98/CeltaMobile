@@ -17,10 +17,10 @@ class CustomerRegisterPage extends ConsumerStatefulWidget {
 }
 
 class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
-  int selectedIndex = 0;
   final personalDataPageKey = GlobalKey<PersonalDataPageState>();
 
   Future<bool> updateCustomerInProvider({required bool validateField}) async {
+    final selectedIndex = ref.read(pageIndexStateControllerProvider);
     if (selectedIndex == 0) {
       final personalDataState = personalDataPageKey.currentState;
       if (validateField && personalDataState?.validate() != true) {
@@ -43,9 +43,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         );
         ref.read(customerStateControllerProvider.notifier).updateCustomer(null);
         personalDataPageKey.currentState?.updateFields();
-        setState(() {
-          selectedIndex = 0;
-        });
+        ref.read(pageIndexStateControllerProvider.notifier).updateIndex(0);
       });
       n.showAlertDialogOnError(context);
     });
@@ -67,9 +65,11 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
             await updateCustomerInProvider(validateField: false);
           },
           child: Scaffold(
-            body: IndexedStack(index: selectedIndex, children: pages),
+            body: IndexedStack(
+              index: ref.watch(pageIndexStateControllerProvider),
+              children: pages,
+            ),
             bottomNavigationBar: BottomNavigationWidget(
-              selectedIndex: selectedIndex,
               onTapItem: (index) async {
                 final updated = await updateCustomerInProvider(
                   validateField: true,
@@ -78,9 +78,9 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
                   return;
                 }
 
-                setState(() {
-                  selectedIndex = index;
-                });
+                ref
+                    .read(pageIndexStateControllerProvider.notifier)
+                    .updateIndex(index);
               },
             ),
           ),

@@ -7,17 +7,13 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../controllers/controllers.dart';
 
 class BottomNavigationWidget extends ConsumerWidget {
-  final int selectedIndex;
   final void Function(int index) onTapItem;
-  const BottomNavigationWidget({
-    super.key,
-    required this.selectedIndex,
-    required this.onTapItem,
-  });
+  const BottomNavigationWidget({super.key, required this.onTapItem});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final customer = ref.watch(customerStateControllerProvider).value;
+    final selectedIndex = ref.watch(pageIndexStateControllerProvider);
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
