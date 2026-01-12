@@ -141,6 +141,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                                 isLoading: confirmAdjustAsync.isLoading,
                                 onPressed: () => onPressed(product),
                               ),
+                              gapH32,
                             ],
                           ),
                         ),
