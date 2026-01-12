@@ -32,7 +32,7 @@ class LoadingPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: theme.disabledColor.withAlpha(50),
+      backgroundColor: theme.disabledColor.withAlpha(80),
       body: Center(
         child: LoadingWidget(size: size, title: title),
       ),
