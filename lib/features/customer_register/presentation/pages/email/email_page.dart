@@ -59,50 +59,53 @@ class _EmailPageState extends ConsumerState<EmailPage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('E-mails'.hardcoded)),
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  Form(
-                    key: formKey,
-                    child: DefaultTextFormField(
-                      controller: emailController,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      hintText: 'E-mail'.hardcoded,
-                      labelText: 'E-mail'.hardcoded,
-                      keyboardType: TextInputType.emailAddress,
-                      maxLength: 50,
-                      onFieldSubmitted: (_) {
-                        insertEmail();
-                      },
-                      suffixIcon: IconButton(
-                        onPressed: emailController.clear,
-                        icon: Icon(
-                          isIOS ? CupertinoIcons.delete : Icons.delete,
-                          color: Colors.red,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+        child: ResponsiveScrollableWidget(
+          isSliverPage: true,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Form(
+                      key: formKey,
+                      child: DefaultTextFormField(
+                        controller: emailController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        hintText: 'E-mail'.hardcoded,
+                        labelText: 'E-mail'.hardcoded,
+                        keyboardType: TextInputType.emailAddress,
+                        maxLength: 50,
+                        onFieldSubmitted: (_) {
+                          insertEmail();
+                        },
+                        suffixIcon: IconButton(
+                          onPressed: emailController.clear,
+                          icon: Icon(
+                            isIOS ? CupertinoIcons.delete : Icons.delete,
+                            color: Colors.red,
+                          ),
                         ),
+                        validator: FormValidators.compose([
+                          NonEmptyValidator(),
+                          EmailValidator(),
+                        ]),
                       ),
-                      validator: FormValidators.compose([
-                        NonEmptyValidator(),
-                        EmailValidator(),
-                      ]),
                     ),
-                  ),
-                  gapH32,
-                  PrimaryButton(
-                    text: 'Inserir e-mail'.hardcoded,
-                    onPressed: insertEmail,
-                  ),
-                ],
+                    gapH32,
+                    PrimaryButton(
+                      text: 'Inserir e-mail'.hardcoded,
+                      onPressed: insertEmail,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            if (customer?.Emails != null && customer!.Emails!.isNotEmpty) ...[
-              const InformedEmails(),
+              if (customer?.Emails != null && customer!.Emails!.isNotEmpty) ...[
+                const InformedEmails(),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
@@ -105,24 +106,27 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
 
           return Form(
             key: formKey,
-            child: ResponsiveScrollableWidget(
-              isSliverPage: true,
-              child: CustomScrollView(
-                slivers: [
-                  if (notBindedCovenants.isNotEmpty)
-                    NotBindedCovenants(
-                      notBindedCovenants: notBindedCovenants,
-                      changeSelectedIndex: changeSelectedIndex,
-                      selectedIndex: selectedIndex,
-                      bindCovenant: bindCovenant,
-                      limitController: limitController,
-                      limitFocusNode: limitFocusNode,
-                    ),
-                  if (customer?.CustomerCovenants != null &&
-                      customer!.CustomerCovenants!.isNotEmpty) ...[
-                    const BindedCovenants(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+              child: ResponsiveScrollableWidget(
+                isSliverPage: true,
+                child: CustomScrollView(
+                  slivers: [
+                    if (notBindedCovenants.isNotEmpty)
+                      NotBindedCovenants(
+                        notBindedCovenants: notBindedCovenants,
+                        changeSelectedIndex: changeSelectedIndex,
+                        selectedIndex: selectedIndex,
+                        bindCovenant: bindCovenant,
+                        limitController: limitController,
+                        limitFocusNode: limitFocusNode,
+                      ),
+                    if (customer?.CustomerCovenants != null &&
+                        customer!.CustomerCovenants!.isNotEmpty) ...[
+                      const BindedCovenants(),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           );

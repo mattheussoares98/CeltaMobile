@@ -74,55 +74,58 @@ class _PhonePageState extends ConsumerState<PhonePage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Telefones'.hardcoded)),
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: Form(
-          key: phoneFormKey,
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Form(
-                            key: dddFormKey,
-                            child: DddField(
-                              dddController: dddController,
-                              dddFormKey: dddFormKey,
-                              phoneFocusNode: phoneFocusNode,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+        child: ResponsiveScrollableWidget(
+          isSliverPage: true,
+          child: Form(
+            key: phoneFormKey,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Form(
+                              key: dddFormKey,
+                              child: DddField(
+                                dddController: dddController,
+                                dddFormKey: dddFormKey,
+                                phoneFocusNode: phoneFocusNode,
+                              ),
                             ),
                           ),
-                        ),
-                        gapW8,
-                        Expanded(
-                          flex: 3,
-                          child: PhoneField(
-                            customer: customer,
-                            formKey: phoneFormKey,
-                            dddController: dddController,
-                            phoneController: phoneController,
-                            phoneFocusNode: phoneFocusNode,
-                            addPhone: addPhone,
+                          gapW8,
+                          Expanded(
+                            flex: 3,
+                            child: PhoneField(
+                              customer: customer,
+                              formKey: phoneFormKey,
+                              dddController: dddController,
+                              phoneController: phoneController,
+                              phoneFocusNode: phoneFocusNode,
+                              addPhone: addPhone,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    gapH32,
-                    PrimaryButton(
-                      text: 'Adicionar telefone'.hardcoded,
-                      onPressed: addPhone,
-                    ),
-                  ],
+                        ],
+                      ),
+                      gapH32,
+                      PrimaryButton(
+                        text: 'Adicionar telefone'.hardcoded,
+                        onPressed: addPhone,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              if (customer?.Telephones != null &&
-                  customer!.Telephones!.isNotEmpty) ...[
-                const InformedPhones(),
+                if (customer?.Telephones != null &&
+                    customer!.Telephones!.isNotEmpty) ...[
+                  const InformedPhones(),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),

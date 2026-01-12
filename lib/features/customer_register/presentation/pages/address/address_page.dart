@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/widgets/address/address.dart';
 import '../../controllers/controllers.dart';
@@ -45,16 +46,19 @@ class _AddressPageState extends ConsumerState<AddressPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Endereços'.hardcoded)),
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: CustomScrollView(
-          slivers: [
-            AddressForm(
-              module: Modules.customerRegister,
-              addAddress: addAddress,
-            ),
-            const InformedAddressess(),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+        child: ResponsiveScrollableWidget(
+          isSliverPage: true,
+          child: CustomScrollView(
+            slivers: [
+              AddressForm(
+                module: Modules.customerRegister,
+                addAddress: addAddress,
+              ),
+              const InformedAddressess(),
+            ],
+          ),
         ),
       ),
     );
