@@ -31,61 +31,62 @@ class BindedCovenants extends ConsumerWidget {
 
         final covenant = customer.CustomerCovenants![index - 1];
         return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  covenant.covenant?.Name ?? '',
-                  style: theme.textTheme.titleMedium,
-                ),
-                TitleAndSubTitle(
-                  title: 'Código '.hardcoded,
-                  subTitle: covenant.covenant?.Code.toString(),
-                ),
-                Row(
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      child: TitleAndSubTitle(
-                        title: 'Limite '.hardcoded,
-                        subTitle:
-                            'R\$ ${covenant.LimitOfPurchase.toString().toBrazilianNumber(2, false)}',
-                      ),
+                    Text(
+                      covenant.covenant?.Name ?? '',
+                      style: theme.textTheme.titleMedium,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        showAlertDialog(
-                          context: context,
-                          title: 'Remover convênio'.hardcoded,
-                          content:
-                              'Tem certeza que deseja remover esse convênio?'
-                                  .hardcoded,
-                          onOkPressed: () {
-                            ref
-                                .read(customerStateControllerProvider.notifier)
-                                .updateCustomer(
-                                  customer.copyWith(
-                                    CustomerCovenants: [
-                                      ...customer.CustomerCovenants!
-                                        ..removeAt(index - 1),
-                                    ],
-                                  ),
-                                );
-                          },
-                          cancelActionText: 'Não'.hardcoded,
-                          defaultActionText: 'Sim'.hardcoded,
-                        );
-                      },
-                      icon: Icon(
-                        isIOS ? CupertinoIcons.delete : Icons.delete,
-                        color: Colors.red,
-                      ),
+                    TitleAndSubTitle(
+                      title: 'Código '.hardcoded,
+                      subTitle: covenant.covenant?.Code.toString(),
+                    ),
+                    TitleAndSubTitle(
+                      title: 'Limite '.hardcoded,
+                      subTitle:
+                          'R\$ ${covenant.LimitOfPurchase.toString().toBrazilianNumber(2, false)}',
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: IconButton(
+                  onPressed: () {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Remover convênio'.hardcoded,
+                      content: 'Tem certeza que deseja remover esse convênio?'
+                          .hardcoded,
+                      onOkPressed: () {
+                        ref
+                            .read(customerStateControllerProvider.notifier)
+                            .updateCustomer(
+                              customer.copyWith(
+                                CustomerCovenants: [
+                                  ...customer.CustomerCovenants!
+                                    ..removeAt(index - 1),
+                                ],
+                              ),
+                            );
+                      },
+                      cancelActionText: 'Não'.hardcoded,
+                      defaultActionText: 'Sim'.hardcoded,
+                    );
+                  },
+                  icon: Icon(
+                    isIOS ? CupertinoIcons.delete : Icons.delete,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
