@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+import '../../../../localization/string_hardcoded.dart';
 
 class SearchTextAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -24,45 +27,47 @@ class SearchTextAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _SearchTextAppBarState extends State<SearchTextAppBar> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
     return AppBar(
       leading: IconButton(
-        icon: const Icon(Icons.close),
+        icon: Icon(isIOS ? CupertinoIcons.xmark : Icons.close),
         onPressed: widget.toggleSearchUI,
       ),
       title: TextField(
         controller: widget.searchTextController,
         autofocus: true,
-        style: const TextStyle(color: Colors.white),
-        decoration: const InputDecoration(
-          hintText: 'Pesquisar...',
-          hintStyle: TextStyle(color: Colors.white60),
+        decoration: InputDecoration(
+          hintText: 'Pesquisar...'.hardcoded,
           border: InputBorder.none,
         ),
         onSubmitted: (_) => widget.performSearch(),
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.search),
+          icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
           onPressed: widget.performSearch,
-          tooltip: 'Pesquisar',
+          tooltip: 'Pesquisar'.hardcoded,
         ),
         IconButton(
-          icon: const Icon(Icons.keyboard_arrow_up),
+          icon: Icon(isIOS ? CupertinoIcons.arrow_up : Icons.keyboard_arrow_up),
           onPressed: () {
             if (widget.searchResult.totalInstanceCount > 0) {
               widget.searchResult.previousInstance();
             }
           },
-          tooltip: 'Anterior',
+          tooltip: 'Anterior'.hardcoded,
         ),
         IconButton(
-          icon: const Icon(Icons.keyboard_arrow_down),
+          icon: Icon(
+            isIOS ? CupertinoIcons.arrow_down : Icons.keyboard_arrow_down,
+          ),
           onPressed: () {
             if (widget.searchResult.totalInstanceCount > 0) {
               widget.searchResult.nextInstance();
             }
           },
-          tooltip: 'Próximo',
+          tooltip: 'Próximo'.hardcoded,
         ),
       ],
     );
