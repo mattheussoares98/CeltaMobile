@@ -47,7 +47,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     );
 
     return Padding(
-      padding: const EdgeInsets.all(Sizes.p8),
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Form(
         key: formKey,
         child: Column(

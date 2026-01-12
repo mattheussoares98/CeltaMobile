@@ -69,7 +69,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
           body: Form(
             key: formKey,
             child: Padding(
-              padding: const EdgeInsets.all(Sizes.p4),
+              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
               child: Column(
                 children: [
                   HeaderFilters(

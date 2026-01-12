@@ -33,7 +33,7 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

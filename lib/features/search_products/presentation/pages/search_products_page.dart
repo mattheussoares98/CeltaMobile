@@ -53,7 +53,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
     return Scaffold(
       appBar: AppBar(title: Text('Pesquisar produtos'.hardcoded)),
       body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: Column(
           children: [
             DefaultSearchProducts(

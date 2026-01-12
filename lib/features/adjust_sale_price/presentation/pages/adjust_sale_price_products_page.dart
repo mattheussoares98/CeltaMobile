@@ -66,7 +66,7 @@ class _AdjustSalePriceProductsPageState
         title: FittedBox(child: Text("Produtos (ajuste de preço)".hardcoded)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(Sizes.p4),
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: Column(
           children: [
             DefaultSearchProducts(
