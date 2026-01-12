@@ -1,6 +1,8 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/domain/entities/entities.dart';
+import '../../../utils/utils.dart';
 import '../../commom_widgets.dart';
 
 class WholePriceAndMinQuantity extends StatelessWidget {
@@ -15,23 +17,44 @@ class WholePriceAndMinQuantity extends StatelessWidget {
       BsRoutine.buyQuotation,
       BsRoutine.researchOfPrice,
       BsRoutine.priceConference,
-      BsRoutine.saleRequest,
     ].contains(widget.routine)) {
       return const SizedBox.shrink();
     } else if ((widget.product.WholePracticedPrice ?? 0) == 0) {
       return const SizedBox.shrink();
     }
+
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleAndSubTitle(
-          title: 'Preço atacado',
-          subTitle: widget.product.WholePracticedPrice,
-          subTitleIsPrice: true,
-        ),
-        TitleAndSubTitle(
-          title: 'Qtd mín p/ atacado',
-          subTitle: widget.product.MinimumWholeQuantity,
+        Row(
+          children: [
+            Flexible(
+              child: TitleAndSubTitle(
+                title: 'Preço atacado',
+                subTitle: widget.product.WholePracticedPrice,
+                subTitleIsPrice: true,
+              ),
+            ),
+            TitleAndSubTitle(
+              title: ' (mín'.hardcoded,
+              subTitle:
+                  '${(widget.product.MinimumWholeQuantity ?? 0).toString().toBrazilianNumber(2, true)})',
+              subTitleStyle: theme.textTheme.titleSmall?.copyWith(
+                color: (widget.product.MinimumWholeQuantity ?? 0) == 0
+                    ? Colors.red
+                    : theme.colorScheme.secondary,
+                fontStyle: FontStyle.italic,
+              ),
+              titleStyle: theme.textTheme.titleSmall?.copyWith(
+                color: (widget.product.MinimumWholeQuantity ?? 0) == 0
+                    ? Colors.red
+                    : theme.colorScheme.secondary,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
         ),
       ],
     );
