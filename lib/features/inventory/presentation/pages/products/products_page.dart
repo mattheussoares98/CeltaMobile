@@ -48,6 +48,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     SearchProductKey searchProductKey,
     bool searchByCamera,
   ) async {
+    changeSelectedIndex(null);
     String? barcode;
     if (searchByCamera) {
       barcode = await ref.read(barcodeScannerStateControllerProvider.future);
@@ -104,7 +105,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         ) !=
         null) {
       quantityController.clear();
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
       });
     }
@@ -119,29 +120,28 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       anotherKey:
           '${widget.codigoInternoInvCont}-${widget.codigoInternoInventario}',
     );
-    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
-      previous,
-      next,
-    ) {
-      next.doOnSuccess(previous, () {
-        changeSelectedIndex(null);
-        if (next.value?.length == 1) {
-          changeSelectedIndex(0);
-          quantityController.clear();
-        }
-        if (insertIndividually) {
-          Future.delayed(const Duration(milliseconds: 100), () {
-            searchProductsFocusNode.requestFocus();
-          });
-        }
-      });
-    });
-
     final isContinuousScan = ref.watch(
       appSettingsStateControllerProvider.select(
         (s) => s.value?.inventoryUseContinuousScan == true,
       ),
     );
+
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (
+      previous,
+      next,
+    ) {
+      next.doOnSuccess(previous, () {
+        if (next.value?.length == 1 && !isContinuousScan) {
+          changeSelectedIndex(0);
+          quantityController.clear();
+        }
+        if (insertIndividually) {
+          Future.delayed(const Duration(milliseconds: 200), () {
+            searchProductsFocusNode.requestFocus();
+          });
+        }
+      });
+    });
 
     ref.listen(
       entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
