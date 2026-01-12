@@ -11,12 +11,8 @@ class CartPriceIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final products = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.products ?? {},
-      ),
-    );
-    final totalPrice = products.values.fold(
+    final asyncValue = ref.watch(pendingBuyRequestStateControllerProvider);
+    final totalPrice = asyncValue.value?.products?.values.fold(
       0.0,
       (previousValue, element) =>
           previousValue + (element.cost * element.quantity),
@@ -26,13 +22,13 @@ class CartPriceIcon extends ConsumerWidget {
       onTap: () =>
           ref.read(uiStateControllerProvider.notifier).updatePageIndex(3),
       child: QuantityBadge(
-        quantity: products.values.length,
+        quantity: asyncValue.value?.products?.values.length,
         materialIcon: Icons.shopping_cart,
         cupertinoIcon: CupertinoIcons.shopping_cart,
         isSelected: false,
         offset: const Offset(3, -3),
         subtitle: Text(
-          'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
+          'R\$ ${totalPrice?.toStringAsFixed(2).toBrazilianNumber(2, true)}',
           style: const TextStyle(fontSize: 9),
         ),
       ),
