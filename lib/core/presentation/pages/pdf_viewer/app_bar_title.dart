@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,6 +25,8 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isWindows = theme.platform == TargetPlatform.windows;
 
     ref.listen(shareDownloadControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
@@ -40,23 +43,40 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
       ),
       title: FittedBox(child: Text(fileName)),
       actions: [
+        if (isWindows || kIsWeb)
+          IconButton(
+            onPressed: () async {
+              await ref
+                  .read(shareDownloadControllerProvider.notifier)
+                  .download(
+                    FileProperties(
+                      name: fileName,
+                      bytes: bytes,
+                      extension: '.pdf',
+                    ),
+                    theme.platform,
+                  );
+            },
+            icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
+          )
+        else
+          IconButton(
+            icon: Icon(isIOS ? CupertinoIcons.share : Icons.share),
+            onPressed: () async {
+              await ref
+                  .read(shareDownloadControllerProvider.notifier)
+                  .share(
+                    FileProperties(
+                      name: fileName,
+                      bytes: bytes,
+                      extension: '.pdf',
+                    ),
+                  );
+            },
+            tooltip: 'Compartilhar',
+          ),
         IconButton(
-          icon: const Icon(Icons.share),
-          onPressed: () async {
-            await ref
-                .read(shareDownloadControllerProvider.notifier)
-                .share(
-                  FileProperties(
-                    name: fileName,
-                    bytes: bytes,
-                    extension: '.pdf',
-                  ),
-                );
-          },
-          tooltip: 'Compartilhar',
-        ),
-        IconButton(
-          icon: const Icon(Icons.search),
+          icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
           onPressed: toggleSearchUI,
           tooltip: 'Pesquisar',
         ),
