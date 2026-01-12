@@ -33,6 +33,7 @@ class UrlsFields extends StatelessWidget {
             keyboardType: TextInputType.url,
             validator: FormValidators.compose([UrlValidator()]),
           ),
+          gapH8,
           DefaultTextFormField(
             labelText: 'HTTPS remoto'.hardcoded,
             hintText: 'HTTPS remoto'.hardcoded,
@@ -44,6 +45,7 @@ class UrlsFields extends StatelessWidget {
               UrlValidator(shouldBeHttps: true, allowEmptyValue: true),
             ]),
           ),
+          gapH8,
           DefaultTextFormField(
             labelText: 'HTTP local'.hardcoded,
             hintText: 'HTTP local'.hardcoded,
@@ -55,6 +57,7 @@ class UrlsFields extends StatelessWidget {
               UrlValidator(allowEmptyValue: true),
             ]),
           ),
+          gapH8,
           DefaultTextFormField(
             labelText: 'HTTPS local'.hardcoded,
             hintText: 'HTTPS local'.hardcoded,
