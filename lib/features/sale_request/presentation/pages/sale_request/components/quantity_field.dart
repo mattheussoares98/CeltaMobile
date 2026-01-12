@@ -23,6 +23,7 @@ class QuantityField extends StatelessWidget {
       controller: widget.quantityController,
       focusNode: widget.quantityFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
       onFieldSubmitted: (_) {
         if (widget.selectedRequest.AllowAlterCostOrSalePrice == true &&
             widget.discountController.text.isEmpty) {

@@ -34,6 +34,9 @@ class PriceField extends StatelessWidget {
                 controller: widget.priceController,
                 focusNode: widget.priceFocusNode,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 enabled: enabled,
                 onFieldSubmitted: (_) {
                   if (widget.selectedRequest.AllowDiscount == true &&
