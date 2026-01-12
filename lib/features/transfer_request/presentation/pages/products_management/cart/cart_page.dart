@@ -76,7 +76,7 @@ class _CartPageState extends ConsumerState<CartPage> {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Column(
         children: [
           if (pendingAsync.value == null || pendingAsync.value!.isEmpty) ...[

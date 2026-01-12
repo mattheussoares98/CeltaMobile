@@ -80,7 +80,12 @@ class ProductItem extends ConsumerWidget {
           ),
           if (selectedIndex == index) ...[
             Padding(
-              padding: const EdgeInsets.all(Sizes.p8),
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                0,
+                Sizes.p8,
+                Sizes.p8,
+              ),
               child: Row(
                 children: [
                   Expanded(
