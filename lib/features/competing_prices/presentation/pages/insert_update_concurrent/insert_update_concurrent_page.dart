@@ -120,6 +120,7 @@ class _UpdateConcurrentPageState
                       DefaultTitle(title: 'Inserir/alterar endereço'.hardcoded),
                       gapH8,
                       AddressForm(
+                        //TODO this widget is sliver, should change all the page to sliver to test
                         module: Modules.competingPrices,
                         addAddress: (value) async {
                           setState(() {
