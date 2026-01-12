@@ -38,7 +38,6 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ResponsiveScrollableWidget(
-            padding: 0,
             child: SearchFieldAndSwitch(
               formKey: formKey,
               searchController: searchCustomerController,

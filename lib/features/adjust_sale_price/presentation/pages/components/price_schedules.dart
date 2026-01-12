@@ -86,7 +86,6 @@ class PriceSchedules extends ConsumerWidget {
             final schedule = schedules![index - 1];
 
             return ResponsiveScrollableWidget(
-              padding: Sizes.p4,
               child: Card(
                 margin: EdgeInsets.zero,
                 child: Padding(

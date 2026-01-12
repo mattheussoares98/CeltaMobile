@@ -113,7 +113,6 @@ class _AssociatedsPageState extends ConsumerState<ProductsPage> {
             child: Column(
               children: [
                 ResponsiveScrollableWidget(
-                  padding: 0,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [

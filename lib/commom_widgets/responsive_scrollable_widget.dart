@@ -1,6 +1,5 @@
 import '/constants/breakpoints.dart';
 import 'package:flutter/material.dart';
-import '/constants/app_sizes.dart';
 import 'commom_widgets.dart';
 
 /// Scrollable widget that shows a responsive card with a given child widget.
@@ -8,7 +7,6 @@ import 'commom_widgets.dart';
 class ResponsiveScrollableWidget extends StatelessWidget {
   final bool? centralize;
   final double? maxContentWidth;
-  final double? padding;
   final bool? isSliverPage;
   const ResponsiveScrollableWidget({
     super.key,
@@ -16,7 +14,6 @@ class ResponsiveScrollableWidget extends StatelessWidget {
     this.centralize,
     this.maxContentWidth,
     this.isSliverPage = false,
-    this.padding = Sizes.p8,
   });
   final Widget child;
   @override
@@ -28,7 +25,7 @@ class ResponsiveScrollableWidget extends StatelessWidget {
             width: centralize == true ? mediaQuery.size.width : null,
             child: ResponsiveCenter(
               maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
-              child: Padding(padding: EdgeInsets.all(padding!), child: child),
+              child: child,
             ),
           )
         : SingleChildScrollView(
@@ -37,7 +34,7 @@ class ResponsiveScrollableWidget extends StatelessWidget {
               width: centralize == true ? mediaQuery.size.width : null,
               child: ResponsiveCenter(
                 maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
-                child: Padding(padding: EdgeInsets.all(padding!), child: child),
+                child: child,
               ),
             ),
           );

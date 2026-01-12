@@ -112,7 +112,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                   data: (product) {
                     return SliverToBoxAdapter(
                       child: ResponsiveScrollableWidget(
-                        padding: Sizes.p4,
                         child: Form(
                           key: formKey,
                           child: Column(
