@@ -6,13 +6,7 @@ import '../../../../../constants/constants.dart';
 import 'components/components.dart';
 
 class IdentificationPage extends ConsumerStatefulWidget {
-  final TextEditingController supplierController;
-  final GlobalKey<FormState> identificationFormKey;
-  const IdentificationPage({
-    super.key,
-    required this.supplierController,
-    required this.identificationFormKey,
-  });
+  const IdentificationPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -20,31 +14,28 @@ class IdentificationPage extends ConsumerStatefulWidget {
 }
 
 class _IdentificationPageState extends ConsumerState<IdentificationPage> {
-  final formKey = GlobalKey<FormState>();
+  final supplierController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
-    formKey.currentState?.dispose();
+    supplierController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: widget.identificationFormKey,
-        child: ResponsiveScrollableWidget(
-          isSliverPage: true,
-          child: CustomScrollView(
-            slivers: [
-              const BuyersDropdown(),
-              gapSliverH8,
-              const RequestTypeDropdown(),
-              gapSliverH8,
-              SupplierSearcher(supplierController: widget.supplierController),
-              const SupplierItems(),
-            ],
-          ),
+      body: ResponsiveScrollableWidget(
+        isSliverPage: true,
+        child: CustomScrollView(
+          slivers: [
+            const BuyersDropdown(),
+            gapSliverH8,
+            const RequestTypeDropdown(),
+            gapSliverH8,
+            SupplierSearcher(supplierController: supplierController),
+            const SupplierItems(),
+          ],
         ),
       ),
     );

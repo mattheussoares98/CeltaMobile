@@ -12,12 +12,25 @@ import '../identification/components/components.dart';
 import '../products/components/components.dart';
 import 'components/components.dart';
 
-class ConfirmationPage extends ConsumerWidget {
-  final TextEditingController observationsController;
-  const ConfirmationPage({super.key, required this.observationsController});
+class ConfirmationPage extends ConsumerStatefulWidget {
+  const ConfirmationPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ConfirmationPageState();
+}
+
+class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
+  final observationsController = TextEditingController();
+
+  @override
+  void dispose() {
+    observationsController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
     ref.listen(insertBuyRequestControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);

@@ -1,34 +1,32 @@
 import 'package:celta_intelligence/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 
-class CartPriceIcon extends StatelessWidget {
-  final VoidCallback onTap;
-  final AsyncValue<PendingBuyRequestEntity> pendingAsync;
-  const CartPriceIcon({
-    super.key,
-    required this.onTap,
-    required this.pendingAsync,
-  });
+class CartPriceIcon extends ConsumerWidget {
+  const CartPriceIcon({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final totalPrice =
-        pendingAsync.value?.products?.values.fold(
-          0.0,
-          (previousValue, element) =>
-              previousValue + (element.cost * element.quantity),
-        ) ??
-        0.0;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final products = ref.watch(
+      pendingBuyRequestStateControllerProvider.select(
+        (s) => s.value?.products ?? {},
+      ),
+    );
+    final totalPrice = products.values.fold(
+      0.0,
+      (previousValue, element) =>
+          previousValue + (element.cost * element.quantity),
+    );
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: () =>
+          ref.read(uiStateControllerProvider.notifier).updatePageIndex(3),
       child: QuantityBadge(
-        quantity: pendingAsync.value?.products?.values.length,
+        quantity: products.values.length,
         materialIcon: Icons.shopping_cart,
         cupertinoIcon: CupertinoIcons.shopping_cart,
         isSelected: false,

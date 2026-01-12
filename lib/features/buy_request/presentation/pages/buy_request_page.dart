@@ -17,7 +17,6 @@ class BuyRequestPage extends ConsumerStatefulWidget {
 
 class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   final supplierController = TextEditingController();
-  final identificationFormKey = GlobalKey<FormState>();
   final observationsController = TextEditingController();
 
   @override
@@ -36,16 +35,11 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
 
   @override
   Widget build(BuildContext context) {
-    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
-
     final pages = [
-      IdentificationPage(
-        supplierController: supplierController,
-        identificationFormKey: identificationFormKey,
-      ),
+      const IdentificationPage(),
       const EnterprisesPage(),
       const ProductsPage(),
-      ConfirmationPage(observationsController: observationsController),
+      const ConfirmationPage(),
     ];
 
     return Stack(
@@ -67,16 +61,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
               Sizes.p12,
               Sizes.p8,
             ),
-            actions: [
-              CartPriceIcon(
-                onTap: () {
-                  ref
-                      .read(uiStateControllerProvider.notifier)
-                      .updatePageIndex(3);
-                },
-                pendingAsync: pendingAsync,
-              ),
-            ],
+            actions: const [CartPriceIcon()],
           ),
           body: IndexedStack(
             index: ref.watch(
@@ -86,71 +71,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             ),
             children: pages,
           ),
-          bottomNavigationBar: BottomNavBar(
-            currentIndex: ref.watch(
-              uiStateControllerProvider.select(
-                (s) => s.value?.currentPageIndex ?? 0,
-              ),
-            ),
-            onTap: (index) {
-              bool enterprisesAreValid =
-                  pendingAsync.value?.selectedEnterprises != null &&
-                  pendingAsync.value!.selectedEnterprises!.isNotEmpty;
-              bool buyerIsSelected = pendingAsync.value?.selectedBuyer != null;
-              bool requestTypeIsSelected =
-                  pendingAsync.value?.selectedRequestType != null;
-              bool supplierIsSelected =
-                  pendingAsync.value?.selectedSupplier != null;
-
-              final currentIndex = ref.watch(
-                uiStateControllerProvider.select(
-                  (s) => s.value?.currentPageIndex ?? 0,
-                ),
-              );
-
-              if (currentIndex == 0 && (index == 1 || index == 2)) {
-                bool isValid =
-                    identificationFormKey.currentState?.validate() == true;
-                //TODO check to remove this formKey
-                if (!isValid) {
-                  return;
-                } else if (pendingAsync.value?.selectedSupplier == null) {
-                  showSnackBarMessage(
-                    context,
-                    'Selecione um fornecedor'.hardcoded,
-                    backgroundColor: Colors.red,
-                  );
-                  return;
-                }
-              }
-
-              if ((index == 1 || index == 2)) {
-                if (!buyerIsSelected ||
-                    !requestTypeIsSelected ||
-                    !supplierIsSelected) {
-                  showSnackBarMessage(
-                    context,
-                    'Preencha os campos de identificação'.hardcoded,
-                    backgroundColor: Colors.red,
-                  );
-                  return;
-                }
-              }
-
-              if (index == 2 && !enterprisesAreValid) {
-                showSnackBarMessage(
-                  context,
-                  'Selecione pelo menos uma empresa'.hardcoded,
-                  backgroundColor: Colors.red,
-                );
-                return;
-              }
-
-              ref
-                  .read(uiStateControllerProvider.notifier)
-                  .updatePageIndex(index);
-            },
-          ),
+          bottomNavigationBar: const BottomNavBar(),
         ),
         LoadingPage(providers: [insertBuyRequestControllerProvider]),
       ],

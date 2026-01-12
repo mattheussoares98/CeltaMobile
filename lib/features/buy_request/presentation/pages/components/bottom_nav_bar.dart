@@ -7,29 +7,85 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
-  final void Function(int)? onTap;
-  final int currentIndex;
-  const BottomNavBar({
-    super.key,
-    required this.onTap,
-    required this.currentIndex,
-  });
+  const BottomNavBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+    final pendingValue = ref
+        .watch(pendingBuyRequestStateControllerProvider)
+        .value;
+
+    final currentIndex = ref.watch(
+      uiStateControllerProvider.select((s) => s.value?.currentPageIndex ?? 0),
+    );
 
     return BottomNavigationBar(
       currentIndex: currentIndex,
-      onTap: onTap,
+      onTap: (index) {
+        bool buyerIsSelected = pendingValue?.selectedBuyer != null;
+        bool requestTypeIsSelected = pendingValue?.selectedRequestType != null;
+        bool supplierIsSelected = pendingValue?.selectedSupplier != null;
+
+        if (currentIndex == 0 && (index == 1 || index == 2)) {
+          if (!buyerIsSelected) {
+            showSnackBarMessage(
+              context,
+              'Selecione um comprador'.hardcoded,
+              backgroundColor: Colors.red,
+            );
+            return;
+          } else if (!requestTypeIsSelected) {
+            showSnackBarMessage(
+              context,
+              'Selecione um modelo de pedido'.hardcoded,
+              backgroundColor: Colors.red,
+            );
+            return;
+          } else if (!supplierIsSelected) {
+            showSnackBarMessage(
+              context,
+              'Selecione um fornecedor'.hardcoded,
+              backgroundColor: Colors.red,
+            );
+            return;
+          }
+        }
+
+        if ((index == 1 || index == 2)) {
+          if (!buyerIsSelected ||
+              !requestTypeIsSelected ||
+              !supplierIsSelected) {
+            showSnackBarMessage(
+              context,
+              'Preencha os campos de identificação'.hardcoded,
+              backgroundColor: Colors.red,
+            );
+            return;
+          }
+        }
+
+        bool enterprisesAreValid =
+            pendingValue?.selectedEnterprises != null &&
+            pendingValue!.selectedEnterprises!.isNotEmpty;
+        if (index == 2 && !enterprisesAreValid) {
+          showSnackBarMessage(
+            context,
+            'Selecione pelo menos uma empresa'.hardcoded,
+            backgroundColor: Colors.red,
+          );
+          return;
+        }
+
+        ref.read(uiStateControllerProvider.notifier).updatePageIndex(index);
+      },
       items: [
         BottomNavigationBarItem(
           label: 'Identificação'.hardcoded,
           icon: ValidatedBadge(
             isValid:
-                pendingAsync.value?.selectedBuyer != null &&
-                pendingAsync.value?.selectedRequestType != null &&
-                pendingAsync.value?.selectedSupplier != null,
+                pendingValue?.selectedBuyer != null &&
+                pendingValue?.selectedRequestType != null &&
+                pendingValue?.selectedSupplier != null,
             materialIcon: Icons.info,
             cupertinoIcon: CupertinoIcons.info,
             isSelected: currentIndex == 0,
@@ -38,7 +94,7 @@ class BottomNavBar extends ConsumerWidget {
         BottomNavigationBarItem(
           label: 'Empresas'.hardcoded,
           icon: QuantityBadge(
-            quantity: pendingAsync.value?.selectedEnterprises?.length,
+            quantity: pendingValue?.selectedEnterprises?.length,
             materialIcon: Icons.business,
             cupertinoIcon: CupertinoIcons.building_2_fill,
             isSelected: currentIndex == 1,
@@ -47,7 +103,7 @@ class BottomNavBar extends ConsumerWidget {
         BottomNavigationBarItem(
           label: 'Produtos'.hardcoded,
           icon: QuantityBadge(
-            quantity: pendingAsync.value?.products?.length,
+            quantity: pendingValue?.products?.length,
             materialIcon: Icons.shopping_cart,
             cupertinoIcon: CupertinoIcons.shopping_cart,
             isSelected: currentIndex == 2,
@@ -57,10 +113,10 @@ class BottomNavBar extends ConsumerWidget {
           label: 'Confirmação'.hardcoded,
           icon: ValidatedBadge(
             isValid:
-                pendingAsync.value?.selectedBuyer != null &&
-                pendingAsync.value?.selectedRequestType != null &&
-                pendingAsync.value?.selectedSupplier != null &&
-                pendingAsync.value?.products?.isNotEmpty == true,
+                pendingValue?.selectedBuyer != null &&
+                pendingValue?.selectedRequestType != null &&
+                pendingValue?.selectedSupplier != null &&
+                pendingValue?.products?.isNotEmpty == true,
             materialIcon: Icons.check_box_outlined,
             cupertinoIcon: CupertinoIcons.checkmark_square,
             isSelected: currentIndex == 3,
