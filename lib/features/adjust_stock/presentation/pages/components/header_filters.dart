@@ -9,19 +9,21 @@ import '../../../../../core/presentation/controllers/products/products.dart';
 
 class HeaderFilters extends ConsumerWidget {
   final int enterpriseCode;
-  final VoidCallback searchProducts;
   final TextEditingController searchValueController;
-  final SearchProductKey searchProductKey;
   const HeaderFilters({
     super.key,
     required this.enterpriseCode,
-    required this.searchProducts,
     required this.searchValueController,
-    required this.searchProductKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searchProductKey = SearchProductKey(
+      enterpriseCode,
+      BsRoutine.adjustStock,
+      Modules.adjustStock,
+    );
+
     return Column(
       children: [
         DefaultSearchProducts(
@@ -32,7 +34,21 @@ class HeaderFilters extends ConsumerWidget {
               searchProductKey,
             ).select((state) => state.isLoading),
           ),
-          searchProducts: searchProducts,
+          searchProducts: () {
+            ref
+                .read(
+                  searchProductsStateControllerProvider(
+                    searchProductKey,
+                  ).notifier,
+                )
+                .loadProducts(
+                  GetProductsJsonParams(
+                    searchValue: searchValueController.text,
+                    enterpriseCodes: [enterpriseCode],
+                    routine: BsRoutine.adjustStock,
+                  ),
+                );
+          },
         ),
         gapH8,
         JustificationsDropdown(enterpriseCode: enterpriseCode),

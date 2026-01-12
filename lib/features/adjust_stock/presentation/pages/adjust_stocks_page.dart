@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
@@ -35,26 +33,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     quantityFocusNode.dispose();
   }
 
-  Future<void> _searchProducts() async {
-    await ref
-        .read(
-          searchProductsStateControllerProvider(
-            SearchProductKey(
-              widget.enterpriseCode,
-              BsRoutine.adjustStock,
-              Modules.adjustStock,
-            ),
-          ).notifier,
-        )
-        .loadProducts(
-          GetProductsJsonParams(
-            searchValue: searchValueController.text,
-            enterpriseCodes: [widget.enterpriseCode],
-            routine: BsRoutine.adjustStock,
-          ),
-        );
-  }
-
   void changeSelectedIndex(int? index) async {
     ref
         .read(selectedUIStateControllerProvider(widget.enterpriseCode).notifier)
@@ -65,11 +43,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
 
   @override
   Widget build(BuildContext context) {
-    final searchProductKey = SearchProductKey(
-      widget.enterpriseCode,
-      BsRoutine.adjustStock,
-      Modules.adjustStock,
-    );
     ref.listen(confirmAdjustStockControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
       n.showSnackbarOnSuccess(
@@ -101,13 +74,10 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                 children: [
                   HeaderFilters(
                     enterpriseCode: widget.enterpriseCode,
-                    searchProducts: _searchProducts,
                     searchValueController: searchValueController,
-                    searchProductKey: searchProductKey,
                   ),
                   Expanded(
                     child: ProductsItems(
-                      searchProductKey: searchProductKey,
                       quantityFocusNode: quantityFocusNode,
                       formKey: formKey,
                       enterpriseCode: widget.enterpriseCode,

@@ -10,14 +10,12 @@ import '../../controllers/controllers.dart';
 import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
-  final SearchProductKey searchProductKey;
   final FocusNode quantityFocusNode;
   final GlobalKey<FormState> formKey;
   final int enterpriseCode;
   final TextEditingController quantityController;
   const ProductsItems({
     super.key,
-    required this.searchProductKey,
     required this.quantityFocusNode,
     required this.formKey,
     required this.enterpriseCode,
@@ -58,7 +56,15 @@ class ProductsItems extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return AsyncValueWidget(
-      value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
+      value: ref.watch(
+        searchProductsStateControllerProvider(
+          SearchProductKey(
+            enterpriseCode,
+            BsRoutine.adjustStock,
+            Modules.adjustStock,
+          ),
+        ),
+      ),
       tryAgain: null,
       data: (products) {
         return ResponsiveListFlow(
