@@ -51,7 +51,7 @@ class RequestsTypePage extends ConsumerWidget {
                 return Card(
                   clipBehavior: Clip.antiAlias,
                   color: selectedEnterprise?.SaleRequestTypeCode == request.Code
-                      ? theme.primaryColorLight
+                      ? theme.primaryColorLight.withAlpha(200)
                       : null,
                   child: InkWell(
                     onTap: () {
