@@ -28,7 +28,6 @@ class SaleRequestPage extends ConsumerStatefulWidget {
 
 class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
   int currentIndex = 0;
-  int? selectedProductIndex;
 
   final appBarTitles = [
     'Inserir produtos'.hardcoded,
