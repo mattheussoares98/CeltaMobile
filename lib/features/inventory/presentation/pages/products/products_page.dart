@@ -1,5 +1,6 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -34,6 +35,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   final quantityFocusNode = FocusNode();
   final formKeyQuantity = GlobalKey<FormState>();
   bool insertIndividually = false;
+  final tooltipKey = GlobalKey<TooltipState>();
 
   @override
   void dispose() {
@@ -173,6 +175,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       },
     );
 
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     return Stack(
       children: [
         Scaffold(
@@ -195,14 +200,34 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(top: Sizes.p8),
-                    child: DefaultSwitch(
-                      title: 'Inserir individualmente'.hardcoded,
-                      value: insertIndividually,
-                      onChanged: (value) {
-                        setState(() {
-                          insertIndividually = value;
-                        });
-                      },
+                    child: Row(
+                      children: [
+                        Tooltip(
+                          triggerMode: TooltipTriggerMode.tap,
+                          showDuration: const Duration(seconds: 5),
+                          key: tooltipKey,
+                          message:
+                              'Quando essa opção está ativa, ao encontrar um único produto na busca, será somado automaticamente 1 quantidade'
+                                  .hardcoded,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: Sizes.p4),
+                            child: Icon(
+                              isIOS ? CupertinoIcons.info : Icons.info_outline,
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: DefaultSwitch(
+                            title: 'Inserir individualmente'.hardcoded,
+                            value: insertIndividually,
+                            onChanged: (value) {
+                              setState(() {
+                                insertIndividually = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
