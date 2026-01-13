@@ -138,7 +138,17 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
                           )
                         : dtf.prefixIcon
                   : null,
-              suffix: dtf.suffixIcon,
+              suffix: Padding(
+                padding: EdgeInsets.only(
+                  right:
+                      dtf.suffixIcon != null &&
+                          dtf.suffixIcon is! Icon &&
+                          dtf.suffixIcon is! IconButton
+                      ? Sizes.p8
+                      : 0,
+                ),
+                child: dtf.suffixIcon,
+              ),
             ),
             if (state.hasError)
               Padding(
