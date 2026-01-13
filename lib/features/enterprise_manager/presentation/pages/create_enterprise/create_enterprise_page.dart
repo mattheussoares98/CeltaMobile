@@ -88,66 +88,69 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Criar empresa'.hardcoded)),
-      body: ResponsiveScrollableWidget(
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              EnterpriseNameField(
-                isLoading: isLoading,
-                enterpriseNameController: enterpriseNameController,
-                urlFocusNode: remoteHttpFocusNode,
-              ),
-              gapH8,
-              RemoteHttpUrl(
-                urlController: remoteHttpUrlController,
-                urlFocusNode: remoteHttpFocusNode,
-                isLoading: isLoading,
-                remoteHttpsFocusNode: remoteHttpsFocusNode,
-              ),
-              gapH8,
-              RemoteHttpsUrl(
-                urlController: remoteHttpsUrlController,
-                urlFocusNode: remoteHttpsFocusNode,
-                isLoading: isLoading,
-                localHttpUrlFocusNode: localHttpFocusNode,
-              ),
-              gapH8,
-              LocalHttpUrl(
-                urlController: localHttpUrlController,
-                urlFocusNode: localHttpFocusNode,
-                isLoading: isLoading,
-                localHttpsUrlFocusNode: localHttpsFocusNode,
-              ),
-              gapH8,
-              LocalHttpsUrl(
-                urlController: localHttpsUrlController,
-                urlFocusNode: localHttpsFocusNode,
-                isLoading: isLoading,
-                userNameFocusNode: userNameFocusNode,
-              ),
-              gapH8,
-              UserNameField(
-                userNameController: userNameController,
-                userNameFocusNode: userNameFocusNode,
-                isLoading: isLoading,
-                passwordFocusNode: passwordFocusNode,
-              ),
-              gapH8,
-              PasswordField(
-                isLoading: isLoading,
-                passwordController: passwordController,
-                passwordFocusNode: passwordFocusNode,
-                onSubmit: onSubmit,
-              ),
-              gapH32,
-              PrimaryButton(
-                text: "Adicionar".hardcoded,
-                onPressed: onSubmit,
-                isLoading: isLoading,
-              ),
-            ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+        child: ResponsiveScrollableWidget(
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                EnterpriseNameField(
+                  isLoading: isLoading,
+                  enterpriseNameController: enterpriseNameController,
+                  urlFocusNode: remoteHttpFocusNode,
+                ),
+                gapH8,
+                RemoteHttpUrl(
+                  urlController: remoteHttpUrlController,
+                  urlFocusNode: remoteHttpFocusNode,
+                  isLoading: isLoading,
+                  remoteHttpsFocusNode: remoteHttpsFocusNode,
+                ),
+                gapH8,
+                RemoteHttpsUrl(
+                  urlController: remoteHttpsUrlController,
+                  urlFocusNode: remoteHttpsFocusNode,
+                  isLoading: isLoading,
+                  localHttpUrlFocusNode: localHttpFocusNode,
+                ),
+                gapH8,
+                LocalHttpUrl(
+                  urlController: localHttpUrlController,
+                  urlFocusNode: localHttpFocusNode,
+                  isLoading: isLoading,
+                  localHttpsUrlFocusNode: localHttpsFocusNode,
+                ),
+                gapH8,
+                LocalHttpsUrl(
+                  urlController: localHttpsUrlController,
+                  urlFocusNode: localHttpsFocusNode,
+                  isLoading: isLoading,
+                  userNameFocusNode: userNameFocusNode,
+                ),
+                gapH8,
+                UserNameField(
+                  userNameController: userNameController,
+                  userNameFocusNode: userNameFocusNode,
+                  isLoading: isLoading,
+                  passwordFocusNode: passwordFocusNode,
+                ),
+                gapH8,
+                PasswordField(
+                  isLoading: isLoading,
+                  passwordController: passwordController,
+                  passwordFocusNode: passwordFocusNode,
+                  onSubmit: onSubmit,
+                ),
+                gapH32,
+                PrimaryButton(
+                  text: "Adicionar".hardcoded,
+                  onPressed: onSubmit,
+                  isLoading: isLoading,
+                ),
+              ],
+            ),
           ),
         ),
       ),
