@@ -78,9 +78,8 @@ class AsyncValueSliverWidget<T> extends StatelessWidget {
     final theme = Theme.of(context);
     return value.when(
       data: data,
-      loading: () => const SliverToBoxAdapter(
-        child: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const SliverToBoxAdapter(child: Center(child: LoadingWidget())),
       error: (e, st) => SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
