@@ -1,16 +1,13 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
-import 'components.dart';
 
 class ProductsItems extends ConsumerStatefulWidget {
   const ProductsItems({super.key});
@@ -36,39 +33,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     costController.dispose();
     quantityFocusNode.dispose();
     costFocusNode.dispose();
-  }
-
-  void insertProduct(ProductEntity product) async {
-    if (quantityFormKey.currentState?.validate() != true) {
-      quantityFocusNode.requestFocus();
-      return;
-    } else if (fieldsFormKey.currentState?.validate() != true) {
-      costFocusNode.requestFocus();
-      return;
-    }
-
-    final pending = await ref.read(
-      pendingBuyRequestStateControllerProvider.future,
-    );
-    final products = pending.products ?? {};
-    products.addAll({
-      ProductKey(
-        enterpriseCode: product.EnterpriseCode!,
-        productPackingCode: product.ProductPackingCode!,
-      ): BuyRequestProductItemEntity(
-        product: product,
-        quantity: quantityController.text.toDouble()!,
-        cost: costController.text.toDouble()!,
-      ),
-    });
-    ref
-        .read(pendingBuyRequestStateControllerProvider.notifier)
-        .updatePending(pending.copyWith(products: products));
-    quantityController.clear();
-    costController.clear();
-    ref
-        .read(uiStateControllerProvider.notifier)
-        .updateSelectedProductIndex(null);
   }
 
   void onTapProduct(int index, ProductEntity product) async {
@@ -183,39 +147,15 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                       product: insertedItem.product,
                     ),
               notClickableBottom: selectedProductIndex == index
-                  ? Form(
-                      key: fieldsFormKey,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: Sizes.p8),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: QuantityFormField(
-                                quantityFormKey: quantityFormKey,
-                                quantityFocusNode: quantityFocusNode,
-                                quantityController: quantityController,
-                                costController: costController,
-                                costFocusNode: costFocusNode,
-                              ),
-                            ),
-                            gapW8,
-                            Expanded(
-                              child: CostFormField(
-                                costFocusNode: costFocusNode,
-                                costController: costController,
-                                insertProduct: () => insertProduct(product),
-                              ),
-                            ),
-                            gapW8,
-                            Expanded(
-                              child: PrimaryButton(
-                                text: 'Confirmar'.hardcoded,
-                                onPressed: () => insertProduct(product),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                  ? FieldsAndConfirm(
+                      isConfirmationPage: false,
+                      fieldsFormKey: fieldsFormKey,
+                      quantityFormKey: quantityFormKey,
+                      quantityController: quantityController,
+                      costController: costController,
+                      quantityFocusNode: quantityFocusNode,
+                      costFocusNode: costFocusNode,
+                      product: product,
                     )
                   : null,
             );

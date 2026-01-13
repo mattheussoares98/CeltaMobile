@@ -23,10 +23,20 @@ class ConfirmationPage extends ConsumerStatefulWidget {
 
 class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
   final observationsController = TextEditingController();
+  final fieldsFormKey = GlobalKey<FormState>();
+  final quantityFormKey = GlobalKey<FormState>();
+  final quantityController = TextEditingController();
+  final costController = TextEditingController();
+  final quantityFocusNode = FocusNode();
+  final costFocusNode = FocusNode();
 
   @override
   void dispose() {
     observationsController.dispose();
+    quantityController.dispose();
+    costController.dispose();
+    quantityFocusNode.dispose();
+    costFocusNode.dispose();
     super.dispose();
   }
 
@@ -154,6 +164,19 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                             ),
                           ),
                           onTap: () {
+                            quantityFocusNode.requestFocus();
+                            costController.text = product.cost
+                                .toString()
+                                .toBrazilianNumber(4)
+                                .replaceAll(RegExp(r'\.'), '');
+                            quantityController.text = product.quantity
+                                .toString()
+                                .toBrazilianNumber(3, true)
+                                .replaceAll(RegExp(r'\.'), '');
+                            quantityController.selection = TextSelection(
+                              baseOffset: 0,
+                              extentOffset: quantityController.text.length,
+                            );
                             ref
                                 .read(uiStateControllerProvider.notifier)
                                 .updateSelectedCartProductIndex(index);
@@ -168,6 +191,25 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                           itemBeforeProductName: EnterpriseCodeAndProductName(
                             product: product.product,
                           ),
+                          notClickableBottom:
+                              ref.watch(
+                                uiStateControllerProvider.select(
+                                  (s) =>
+                                      s.value?.selectedCartProductIndex ==
+                                      index,
+                                ),
+                              )
+                              ? FieldsAndConfirm(
+                                  isConfirmationPage: true,
+                                  fieldsFormKey: fieldsFormKey,
+                                  quantityFormKey: quantityFormKey,
+                                  quantityController: quantityController,
+                                  costController: costController,
+                                  quantityFocusNode: quantityFocusNode,
+                                  costFocusNode: costFocusNode,
+                                  product: product.product,
+                                )
+                              : null,
                         );
                       },
                     ),
