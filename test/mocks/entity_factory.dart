@@ -581,8 +581,11 @@ class EntityFactory {
     Buyer: faker.randomGenerator.boolean(),
   );
 
-  static RequestTypeEntity makeRequestTypeEntity() => RequestTypeEntity(
-    Code: faker.randomGenerator.integer(100),
+  static RequestTypeEntity makeRequestTypeEntity({
+    int? Code,
+    bool? AllowAlterCostOrSalePrice,
+  }) => RequestTypeEntity(
+    Code: Code ?? faker.randomGenerator.integer(100),
     OperationType: faker.randomGenerator.integer(100),
     UseWholePrice: faker.randomGenerator.integer(1, min: 0),
     UnitValueType: faker.randomGenerator.integer(100),
@@ -593,7 +596,8 @@ class EntityFactory {
     UseWholePriceString: faker.randomGenerator.integer(1, min: 0).toString(),
     UnitValueTypeString: faker.randomGenerator.integer(100).toString(),
     TransferUnitValueTypeString: faker.randomGenerator.integer(100).toString(),
-    AllowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
+    AllowAlterCostOrSalePrice:
+        AllowAlterCostOrSalePrice ?? faker.randomGenerator.boolean(),
     AllowDiscount: faker.randomGenerator.boolean(),
   );
 
