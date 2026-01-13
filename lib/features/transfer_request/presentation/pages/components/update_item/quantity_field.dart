@@ -1,8 +1,8 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../core/validators/validators.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../core/validators/validators.dart';
 
 class QuantityField extends StatelessWidget {
   final TextEditingController quantityController;

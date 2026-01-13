@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
-import '../../../../../../../core/validators/validators.dart';
-import '../../../../controllers/controllers.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
+import '../../../../../../core/validators/validators.dart';
+import '../../../controllers/controllers.dart';
 
 class PriceField extends ConsumerWidget {
   final TextEditingController priceController;
@@ -55,6 +55,7 @@ class PriceField extends ConsumerWidget {
             right: Sizes.p8,
             bottom: Sizes.p8,
             child: Tooltip(
+              showDuration: const Duration(seconds: 5),
               triggerMode: TooltipTriggerMode.tap,
               message:
                   'O modelo de pedido selecionado não permite alterar o preço'

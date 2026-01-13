@@ -8,7 +8,7 @@ import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
-import 'components.dart';
+import '../../../components/components.dart';
 
 class ProductsItems extends ConsumerStatefulWidget {
   final DraftKey draftKey;
@@ -28,6 +28,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
   final priceController = TextEditingController();
   final quantityFocusNode = FocusNode();
   final priceFocusNode = FocusNode();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -90,6 +91,34 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
         .removeItem(productItem);
   }
 
+  void update({
+    required ProductEntity product,
+    required double? quantityInCart,
+  }) {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final newQuantity = quantityController.text.toDouble() ?? 0;
+    final value = priceController.text.toDouble() ?? product.Value;
+
+    ref
+        .read(cartProductsStateControllerProvider(widget.draftKey).notifier)
+        .addItem(
+          TransferRequestProductItemEntity(
+            product: product,
+            quantity: newQuantity,
+            value: value!,
+          ),
+        );
+
+    ref
+        .read(
+          uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+        )
+        .updateSelectedInsertProductIndex(null);
+  }
+
   @override
   Widget build(BuildContext context) {
     final pendingAsync = ref.watch(
@@ -136,6 +165,10 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                         transferProductItemIndex != null &&
                         transferProductItemIndex != -1;
 
+                    final transferRequestProductItem = hasInCart
+                        ? pendingAsync.value![transferProductItemIndex]
+                        : null;
+
                     return ProductItemWidget(
                       product: product,
                       routine: BsRoutine.transferRequest,
@@ -145,9 +178,8 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                         onTapProductItem(
                           index: index,
                           product: product,
-                          transferRequestProductItem: hasInCart == true
-                              ? pendingAsync.value![transferProductItemIndex!]
-                              : null,
+                          transferRequestProductItem:
+                              transferRequestProductItem,
                           requestTypeAllowChangePrice:
                               requestTypeAllowChangePrice,
                         );
@@ -171,26 +203,24 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                             )
                           : null,
                       notClickableBottom: selectedIndex == index
-                          ? FieldsAndInsertButton(
-                              product: product,
-                              cartItem: hasInCart
-                                  ? pendingAsync
-                                        .value![transferProductItemIndex]
-                                  : null,
-                              quantityController: quantityController,
-                              priceController: priceController,
-                              draftKey: widget.draftKey,
-                              changeSelectedIndex: ref
-                                  .read(
-                                    uiStateControllerProvider(
-                                      widget.draftKey.requestTypeCode,
-                                    ).notifier,
-                                  )
-                                  .updateSelectedInsertProductIndex,
-                              quantityFocusNode: quantityFocusNode,
-                              priceFocusNode: priceFocusNode,
-                              requestTypeAllowChangePrice:
-                                  requestTypeAllowChangePrice,
+                          ? Form(
+                              key: formKey,
+                              child: UpdateItemWidget(
+                                isAlreadyInCart: hasInCart,
+                                update: () {
+                                  update(
+                                    product: product,
+                                    quantityInCart:
+                                        transferRequestProductItem?.quantity,
+                                  );
+                                },
+                                draftKey: widget.draftKey,
+                                price: product.Value ?? 0,
+                                quantityController: quantityController,
+                                priceController: priceController,
+                                quantityFocusNode: quantityFocusNode,
+                                priceFocusNode: priceFocusNode,
+                              ),
                             )
                           : null,
                     );

@@ -8,34 +8,15 @@ import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class CartPage extends ConsumerStatefulWidget {
+class CartPage extends ConsumerWidget {
   final DraftKey draftKey;
   const CartPage({super.key, required this.draftKey});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CartPageState();
-}
-
-class _CartPageState extends ConsumerState<CartPage> {
-  final quantityController = TextEditingController();
-  final quantityFocusNode = FocusNode();
-  final priceController = TextEditingController();
-  final priceFocusNode = FocusNode();
-
-  @override
-  void dispose() {
-    super.dispose();
-    quantityController.dispose();
-    quantityFocusNode.dispose();
-    priceController.dispose();
-    priceFocusNode.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final lastSavedAsync = ref.watch(lastSavedNumberStateControllerProvider);
     final pendingAsync = ref.watch(
-      cartProductsStateControllerProvider(widget.draftKey),
+      cartProductsStateControllerProvider(draftKey),
     );
 
     final theme = Theme.of(context);
@@ -65,7 +46,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                   AsyncValueSliverWidget(
                     value: pendingAsync,
                     tryAgain: () => ref.invalidate(
-                      cartProductsStateControllerProvider(widget.draftKey),
+                      cartProductsStateControllerProvider(draftKey),
                     ),
                     data: (items) {
                       return ResponsiveListFlow(
@@ -79,11 +60,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                               return ProductItem(
                                 item: item,
                                 index: index,
-                                draftKey: widget.draftKey,
-                                priceController: priceController,
-                                priceFocusNode: priceFocusNode,
-                                quantityController: quantityController,
-                                quantityFocusNode: quantityFocusNode,
+                                draftKey: draftKey,
                               );
                             },
                           );
@@ -92,13 +69,13 @@ class _CartPageState extends ConsumerState<CartPage> {
                     },
                   ),
                   if ((pendingAsync.value?.length ?? 0) > 2) ...[
-                    ClearCartButton(draftKey: widget.draftKey),
+                    ClearCartButton(draftKey: draftKey),
                     gapSliverH16,
                   ],
                 ],
               ),
             ),
-          Footer(draftKey: widget.draftKey),
+          Footer(draftKey: draftKey),
         ],
       ),
     );
