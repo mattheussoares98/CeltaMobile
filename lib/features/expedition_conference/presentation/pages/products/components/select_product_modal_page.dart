@@ -26,6 +26,7 @@ class SelectProductModalPage extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
             child: Text(

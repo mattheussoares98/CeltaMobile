@@ -111,6 +111,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
               child: ResponsiveScrollableWidget(
                 isSliverPage: true,
                 child: CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     if (notBindedCovenants.isNotEmpty)
                       NotBindedCovenants(

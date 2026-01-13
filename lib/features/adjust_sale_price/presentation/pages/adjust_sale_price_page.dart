@@ -93,6 +93,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
           ),
           body: SafeArea(
             child: CustomScrollView(
+              physics: const ClampingScrollPhysics(),
               slivers: [
                 if (product != null)
                   PriceSchedules(

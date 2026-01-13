@@ -43,6 +43,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
           children: [
             Expanded(
               child: CustomScrollView(
+                physics: const ClampingScrollPhysics(),
                 slivers: [
                   CleanAllDataButton(
                     observationsController: observationsController,

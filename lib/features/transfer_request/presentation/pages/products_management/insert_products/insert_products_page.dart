@@ -139,6 +139,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
           gapH8,
           Expanded(
             child: CustomScrollView(
+              physics: const ClampingScrollPhysics(),
               slivers: [
                 Consumer(
                   builder: (_, ref, _) {

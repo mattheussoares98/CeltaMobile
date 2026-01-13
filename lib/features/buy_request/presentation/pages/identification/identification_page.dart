@@ -30,6 +30,7 @@ class _IdentificationPageState extends ConsumerState<IdentificationPage> {
         child: ResponsiveScrollableWidget(
           isSliverPage: true,
           child: CustomScrollView(
+            physics: const ClampingScrollPhysics(),
             slivers: [
               const BuyersDropdown(),
               gapSliverH8,

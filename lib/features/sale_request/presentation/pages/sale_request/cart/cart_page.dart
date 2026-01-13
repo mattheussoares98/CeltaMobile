@@ -143,6 +143,7 @@ class _CartPageState extends ConsumerState<CartPage>
             if (cartProducts.isNotEmpty) ...[
               Expanded(
                 child: CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     ObservationsField(
                       observationsFocusNode: observationsFocusNode,

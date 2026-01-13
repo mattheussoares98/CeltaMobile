@@ -81,6 +81,7 @@ class _PhonePageState extends ConsumerState<PhonePage> {
           child: Form(
             key: phoneFormKey,
             child: CustomScrollView(
+              physics: const ClampingScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(
                   child: Column(

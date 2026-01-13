@@ -51,6 +51,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
         child: ResponsiveScrollableWidget(
           isSliverPage: true,
           child: CustomScrollView(
+            physics: const ClampingScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
                 child: AddressForm(

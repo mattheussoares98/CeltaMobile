@@ -22,6 +22,7 @@ class Stocks extends StatelessWidget {
     final enterpriseNames = groupedStocks.keys.toList();
 
     return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(
           child: Padding(

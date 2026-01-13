@@ -41,6 +41,7 @@ class SavePage extends ConsumerWidget {
       body: ResponsiveScrollableWidget(
         isSliverPage: true,
         child: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
               child: DefaultTitle(title: 'Dados pessoais'.hardcoded),

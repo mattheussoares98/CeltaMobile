@@ -150,6 +150,7 @@ class _ChangeModulesPermissionPageState
           ).toUpperCase();
 
           return CustomScrollView(
+            physics: const ClampingScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
                 child: Text(

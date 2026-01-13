@@ -64,6 +64,7 @@ class _EmailPageState extends ConsumerState<EmailPage> {
         child: ResponsiveScrollableWidget(
           isSliverPage: true,
           child: CustomScrollView(
+            physics: const ClampingScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
                 child: Column(

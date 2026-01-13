@@ -24,6 +24,7 @@ class _EnterpriseItemsState extends ConsumerState<EnterpriseItems> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(
           child: Padding(

@@ -24,6 +24,7 @@ class Addresses extends StatelessWidget {
     }
 
     return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(
           child: Padding(

@@ -45,6 +45,7 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
           ),
           Expanded(
             child: CustomScrollView(
+              physics: const ClampingScrollPhysics(),
               slivers: [
                 AsyncValueSliverWidget(
                   value: ref.watch(consumerCustomerStasteControllerProvider),

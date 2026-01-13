@@ -60,6 +60,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
               child: DefaultSearchProducts(

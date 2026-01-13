@@ -93,6 +93,7 @@ class _CartPageState extends ConsumerState<CartPage> {
           ] else
             Expanded(
               child: CustomScrollView(
+                physics: const ClampingScrollPhysics(),
                 slivers: [
                   if (lastSavedAsync.value != null)
                     LastSavedNumber(number: lastSavedAsync.value!),
