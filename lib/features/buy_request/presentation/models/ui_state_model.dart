@@ -5,11 +5,13 @@ import '../../../../core/domain/entities/entities.dart';
 class UiStateModel extends Equatable {
   final int currentPageIndex;
   final int? selectedProductIndex;
+  final int? selectedCartProductIndex;
   final List<SupplierEntity> suppliers;
 
   const UiStateModel({
     required this.currentPageIndex,
     required this.selectedProductIndex,
+    required this.selectedCartProductIndex,
     required this.suppliers,
   });
 
@@ -17,17 +19,21 @@ class UiStateModel extends Equatable {
   List<Object?> get props => [
     currentPageIndex,
     selectedProductIndex,
+    selectedCartProductIndex,
     suppliers,
   ];
 
   UiStateModel copyWith({
     int? currentPageIndex,
     int? selectedProductIndex,
+    int? selectedCartProductIndex,
     List<SupplierEntity>? suppliers,
   }) {
     return UiStateModel(
       currentPageIndex: currentPageIndex ?? this.currentPageIndex,
       selectedProductIndex: selectedProductIndex ?? this.selectedProductIndex,
+      selectedCartProductIndex:
+          selectedCartProductIndex ?? this.selectedCartProductIndex,
       suppliers: suppliers ?? this.suppliers,
     );
   }
@@ -35,12 +41,16 @@ class UiStateModel extends Equatable {
   UiStateModel annulValues({
     bool? annulCurrentPage,
     bool? annulSelectedProductIndex,
+    bool? annulselectedCartProductIndex,
     bool? annulSuppliers,
   }) => UiStateModel(
     currentPageIndex: annulCurrentPage == true ? 0 : currentPageIndex,
     selectedProductIndex: annulSelectedProductIndex == true
         ? null
         : selectedProductIndex,
+    selectedCartProductIndex: annulselectedCartProductIndex == true
+        ? null
+        : selectedCartProductIndex,
     suppliers: annulSuppliers == true ? [] : suppliers,
   );
 }

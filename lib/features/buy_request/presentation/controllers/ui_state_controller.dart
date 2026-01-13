@@ -36,6 +36,7 @@ class UiStateController extends _$UiStateController {
     return UiStateModel(
       currentPageIndex: 0,
       selectedProductIndex: null,
+      selectedCartProductIndex: null,
       suppliers: suppliers,
     );
   }
