@@ -16,9 +16,11 @@ class CurrentAndSaleStocks extends StatelessWidget {
       widget.product.EnterpriseCode,
     );
 
-    if ([
+    if (widget.hideCurrentAndSaleStocks == true) {
+      return const SizedBox.shrink();
+    } else if ([
       BsRoutine
-          .adjustSalePrice, //! is not returning this property in this routine
+          .adjustSalePrice, //! is not returning this property on this routine
       BsRoutine.buyQuotation,
       BsRoutine.goodsReceiving,
       BsRoutine.researchOfPrice,

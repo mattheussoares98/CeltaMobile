@@ -11,7 +11,9 @@ class WholePriceAndMinQuantity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if ([
+    if (widget.hideWholeInformations == true) {
+      return const SizedBox.shrink();
+    } else if ([
       BsRoutine.adjustSalePrice,
       BsRoutine.adjustStock,
       BsRoutine.buyQuotation,

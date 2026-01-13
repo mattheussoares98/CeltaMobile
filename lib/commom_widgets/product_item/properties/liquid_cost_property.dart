@@ -10,7 +10,9 @@ class LiquidCostProperty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if ([
+    if (widget.hideCost == true) {
+      return const SizedBox.shrink();
+    } else if ([
       BsRoutine.adjustStock,
       BsRoutine.buyQuotation,
       BsRoutine.goodsReceiving,
