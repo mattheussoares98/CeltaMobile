@@ -10,12 +10,14 @@ class CartItemSummary extends StatelessWidget {
   final double? cartValue;
   final ProductEntity product;
   final double? totalDiscount;
+  final int priceDecimalHouses;
   const CartItemSummary({
     super.key,
     required this.cartQuantity,
     required this.cartValue,
     required this.product,
     this.totalDiscount,
+    this.priceDecimalHouses = 2,
   });
 
   bool get changedPrice {
@@ -64,7 +66,9 @@ class CartItemSummary extends StatelessWidget {
         if (changedPrice)
           TitleAndSubTitle(
             title: 'Preço digitado'.hardcoded,
-            subTitle: itemPrice.toString().toBrazilianNumber(),
+            subTitle: itemPrice.toString().toBrazilianNumber(
+              priceDecimalHouses,
+            ),
             subTitleIsPrice: true,
             titleStyle: titleStyle,
             subTitleStyle: subtitleStyle,

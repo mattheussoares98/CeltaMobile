@@ -8,29 +8,32 @@ import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
-class ProductsItems extends ConsumerWidget {
-  final GlobalKey<FormState> fieldsFormKey;
-  final GlobalKey<FormState> quantityFormKey;
-  final TextEditingController quantityController;
-  final TextEditingController costController;
-  final FocusNode quantityFocusNode;
-  final FocusNode costFocusNode;
-  final ProductEntity product;
-  final bool isConfirmationPage;
-  const ProductsItems({
-    super.key,
-    required this.fieldsFormKey,
-    required this.quantityFormKey,
-    required this.quantityController,
-    required this.costController,
-    required this.quantityFocusNode,
-    required this.costFocusNode,
-    required this.product,
-    required this.isConfirmationPage,
-  });
+class ProductsItems extends ConsumerStatefulWidget {
+  const ProductsItems({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
+}
+
+class _ProductsItemsState extends ConsumerState<ProductsItems> {
+  final fieldsFormKey = GlobalKey<FormState>();
+  final quantityFormKey = GlobalKey<FormState>();
+  final quantityController = TextEditingController();
+  final costController = TextEditingController();
+  final quantityFocusNode = FocusNode();
+  final costFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    quantityController.dispose();
+    costController.dispose();
+    quantityFocusNode.dispose();
+    costFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     void onDelete(ProductEntity product, PendingBuyRequestEntity? pending) {
       final products = pending?.products;
       products?.removeWhere((key, value) {
@@ -88,6 +91,7 @@ class ProductsItems extends ConsumerWidget {
             cartQuantity: product.quantity,
             cartValue: product.cost,
             product: product.product,
+            priceDecimalHouses: 4,
           ),
           onDelete: () => onDelete(product.product, pendingAsync.value),
           itemBeforeProductName: EnterpriseCodeAndProductName(

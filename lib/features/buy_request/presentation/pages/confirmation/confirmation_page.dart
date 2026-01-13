@@ -23,20 +23,10 @@ class ConfirmationPage extends ConsumerStatefulWidget {
 
 class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
   final observationsController = TextEditingController();
-  final fieldsFormKey = GlobalKey<FormState>();
-  final quantityFormKey = GlobalKey<FormState>();
-  final quantityController = TextEditingController();
-  final costController = TextEditingController();
-  final quantityFocusNode = FocusNode();
-  final costFocusNode = FocusNode();
 
   @override
   void dispose() {
     observationsController.dispose();
-    quantityController.dispose();
-    costController.dispose();
-    quantityFocusNode.dispose();
-    costFocusNode.dispose();
     super.dispose();
   }
 
@@ -144,75 +134,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                       ),
                     ),
                     gapSliverH8,
-
-                    SliverList.builder(
-                      itemCount: pendingAsync.value?.products?.length ?? 0,
-                      itemBuilder: (_, index) {
-                        final product = pendingAsync.value?.products?.values
-                            .toList()[index];
-                        return ProductItemWidget(
-                          product: product!.product,
-                          routine: BsRoutine.buyRequest,
-                          hideCost: true,
-                          hideCurrentAndSaleStocks: true,
-                          hideWholeInformations: true,
-                          showDropIcon: true,
-                          showInfoButton: false,
-                          isSelected: ref.watch(
-                            uiStateControllerProvider.select(
-                              (s) => s.value?.selectedCartProductIndex == index,
-                            ),
-                          ),
-                          onTap: () {
-                            quantityFocusNode.requestFocus();
-                            costController.text = product.cost
-                                .toString()
-                                .toBrazilianNumber(4)
-                                .replaceAll(RegExp(r'\.'), '');
-                            quantityController.text = product.quantity
-                                .toString()
-                                .toBrazilianNumber(3, true)
-                                .replaceAll(RegExp(r'\.'), '');
-                            quantityController.selection = TextSelection(
-                              baseOffset: 0,
-                              extentOffset: quantityController.text.length,
-                            );
-                            ref
-                                .read(uiStateControllerProvider.notifier)
-                                .updateSelectedCartProductIndex(index);
-                          },
-                          cartItemSummary: CartItemSummary(
-                            cartQuantity: product.quantity,
-                            cartValue: product.cost,
-                            product: product.product,
-                          ),
-                          onDelete: () =>
-                              onDelete(product.product, pendingAsync.value),
-                          itemBeforeProductName: EnterpriseCodeAndProductName(
-                            product: product.product,
-                          ),
-                          notClickableBottom:
-                              ref.watch(
-                                uiStateControllerProvider.select(
-                                  (s) =>
-                                      s.value?.selectedCartProductIndex ==
-                                      index,
-                                ),
-                              )
-                              ? FieldsAndConfirm(
-                                  isConfirmationPage: true,
-                                  fieldsFormKey: fieldsFormKey,
-                                  quantityFormKey: quantityFormKey,
-                                  quantityController: quantityController,
-                                  costController: costController,
-                                  quantityFocusNode: quantityFocusNode,
-                                  costFocusNode: costFocusNode,
-                                  product: product.product,
-                                )
-                              : null,
-                        );
-                      },
-                    ),
+                    const ProductsItems(),
                   ] else
                     UnselectedMessage(
                       title: 'Nenhum produto informado'.hardcoded,
