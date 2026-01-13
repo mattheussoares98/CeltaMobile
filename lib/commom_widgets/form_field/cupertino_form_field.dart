@@ -71,7 +71,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
           children: [
             if (dtf.labelText != null)
               Padding(
-                padding: const EdgeInsets.only(left: Sizes.p8, bottom: 2),
+                padding: const EdgeInsets.only(left: Sizes.p8),
                 child: Text(
                   dtf.labelText!,
                   style: TextStyle(
