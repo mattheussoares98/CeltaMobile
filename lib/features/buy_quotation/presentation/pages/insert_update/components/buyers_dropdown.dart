@@ -52,9 +52,9 @@ class BuyersDropdown extends ConsumerWidget {
                       )
                       .updateValues(Buyer: buyer);
                 },
-                hint: Text('Comprador'.hardcoded),
+                hint: Text(buyQuotation.Buyer?.Name ?? 'Comprador'.hardcoded),
                 selectedItem: buyQuotation.Buyer,
-                label: 'Comprador'.hardcoded,
+                label: buyQuotation.Buyer?.Name ?? 'Comprador'.hardcoded,
                 items: buyers
                     .map(
                       (e) => DropdownMenuItem(
