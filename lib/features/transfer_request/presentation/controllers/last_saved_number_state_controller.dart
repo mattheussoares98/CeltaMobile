@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../providers.dart';
 
 part 'last_saved_number_state_controller.g.dart';
@@ -10,6 +11,7 @@ part 'last_saved_number_state_controller.g.dart';
 class LastSavedNumberStateController extends _$LastSavedNumberStateController {
   @override
   Future<String?> build() async {
+    ref.watch(userSessionProvider);
     return await ref.read(localLastSavedNumberRepositoryProvider).load();
   }
 
