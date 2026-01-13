@@ -14,7 +14,6 @@ class CartPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lastSavedAsync = ref.watch(lastSavedNumberStateControllerProvider);
     final pendingAsync = ref.watch(
       cartProductsStateControllerProvider(draftKey),
     );
@@ -26,6 +25,7 @@ class CartPage extends ConsumerWidget {
       child: Column(
         children: [
           if (pendingAsync.value == null || pendingAsync.value!.isEmpty) ...[
+            const LastSavedNumber(),
             Expanded(
               child: Center(
                 child: Text(
@@ -41,8 +41,7 @@ class CartPage extends ConsumerWidget {
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
                 slivers: [
-                  if (lastSavedAsync.value != null)
-                    LastSavedNumber(number: lastSavedAsync.value!),
+                  const SliverToBoxAdapter(child: LastSavedNumber()),
                   AsyncValueSliverWidget(
                     value: pendingAsync,
                     tryAgain: () => ref.invalidate(
