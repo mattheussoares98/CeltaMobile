@@ -75,78 +75,75 @@ class FieldsAndConfirm extends ConsumerWidget {
 
     return Form(
       key: fieldsFormKey,
-      child: Padding(
-        padding: const EdgeInsets.only(top: Sizes.p8),
-        child: Row(
-          children: [
-            Expanded(
-              child: Form(
-                key: quantityFormKey,
-                child: DefaultTextFormField(
-                  focusNode: quantityFocusNode,
-                  controller: quantityController,
-                  labelText: 'Quantidade'.hardcoded,
-                  hintText: 'Quantidade'.hardcoded,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  validator: FormValidators.compose([
-                    NonEmptyValidator(),
-                    NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
-                  ]),
-                  maxLength: 13,
-                  onFieldSubmitted: (_) {
-                    if (quantityFormKey.currentState?.validate() != true) {
-                      quantityFocusNode.requestFocus();
-                    } else {
-                      costController.selection = TextSelection(
-                        baseOffset: 0,
-                        extentOffset: costController.text.length,
-                      );
-                      costFocusNode.requestFocus();
-                    }
-                  },
-                ),
-              ),
-            ),
-            gapW8,
-            Expanded(
+      child: Row(
+        children: [
+          Expanded(
+            child: Form(
+              key: quantityFormKey,
               child: DefaultTextFormField(
-                onTap: () {
-                  if (costFocusNode.hasFocus) {
-                    return;
-                  }
-                  costController.selection = TextSelection(
-                    baseOffset: 0,
-                    extentOffset: costController.text.length,
-                  );
-                },
-                focusNode: costFocusNode,
-                controller: costController,
-                labelText: 'Custo'.hardcoded,
-                hintText: 'Custo'.hardcoded,
+                focusNode: quantityFocusNode,
+                controller: quantityController,
+                labelText: 'Quantidade'.hardcoded,
+                hintText: 'Quantidade'.hardcoded,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
                 validator: FormValidators.compose([
                   NonEmptyValidator(),
-                  NumberValidator(allowDecimal: true, maxDecimalHouses: 4),
+                  NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
                 ]),
                 maxLength: 13,
-                onFieldSubmitted: (_) => insertProduct(product),
+                onFieldSubmitted: (_) {
+                  if (quantityFormKey.currentState?.validate() != true) {
+                    quantityFocusNode.requestFocus();
+                  } else {
+                    costController.selection = TextSelection(
+                      baseOffset: 0,
+                      extentOffset: costController.text.length,
+                    );
+                    costFocusNode.requestFocus();
+                  }
+                },
               ),
             ),
-            gapW8,
-            Expanded(
-              child: PrimaryButton(
-                text: 'Confirmar'.hardcoded,
-                onPressed: () => insertProduct(product),
+          ),
+          gapW8,
+          Expanded(
+            child: DefaultTextFormField(
+              onTap: () {
+                if (costFocusNode.hasFocus) {
+                  return;
+                }
+                costController.selection = TextSelection(
+                  baseOffset: 0,
+                  extentOffset: costController.text.length,
+                );
+              },
+              focusNode: costFocusNode,
+              controller: costController,
+              labelText: 'Custo'.hardcoded,
+              hintText: 'Custo'.hardcoded,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
               ),
+              validator: FormValidators.compose([
+                NonEmptyValidator(),
+                NumberValidator(allowDecimal: true, maxDecimalHouses: 4),
+              ]),
+              maxLength: 13,
+              onFieldSubmitted: (_) => insertProduct(product),
             ),
-          ],
-        ),
+          ),
+          gapW8,
+          Expanded(
+            child: PrimaryButton(
+              text: 'Confirmar'.hardcoded,
+              onPressed: () => insertProduct(product),
+            ),
+          ),
+        ],
       ),
     );
   }
