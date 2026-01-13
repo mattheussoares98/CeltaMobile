@@ -49,6 +49,5 @@ List<Box> boxesToClearOnLogout(Ref ref) {
     ref.watch(hiveBoxSaleRequestProvider),
     ref.watch(hiveBoxTransferBetweenStocksProvider),
     ref.watch(hiveBoxTransferRequestProvider),
-    ref.watch(hiveBoxFavoriteModulesProvider),
   ];
 }
