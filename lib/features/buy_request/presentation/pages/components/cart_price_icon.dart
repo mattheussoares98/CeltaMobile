@@ -28,7 +28,7 @@ class CartPriceIcon extends ConsumerWidget {
         isSelected: false,
         offset: const Offset(3, -3),
         subtitle: Text(
-          'R\$ ${totalPrice?.toStringAsFixed(2).toBrazilianNumber(2, true)}',
+          'R\$ ${(totalPrice ?? 0).toStringAsFixed(2).toBrazilianNumber(2, true)}',
           style: const TextStyle(fontSize: 9),
         ),
       ),
