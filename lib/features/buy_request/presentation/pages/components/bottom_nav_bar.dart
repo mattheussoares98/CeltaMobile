@@ -26,7 +26,7 @@ class BottomNavBar extends ConsumerWidget {
         bool requestTypeIsSelected = pendingValue?.selectedRequestType != null;
         bool supplierIsSelected = pendingValue?.selectedSupplier != null;
 
-        if (currentIndex == 0 && (index == 1 || index == 2)) {
+        if (index == 1 || index == 2) {
           if (!buyerIsSelected) {
             showSnackBarMessage(
               context,
@@ -45,19 +45,6 @@ class BottomNavBar extends ConsumerWidget {
             showSnackBarMessage(
               context,
               'Selecione um fornecedor'.hardcoded,
-              backgroundColor: Colors.red,
-            );
-            return;
-          }
-        }
-
-        if ((index == 1 || index == 2)) {
-          if (!buyerIsSelected ||
-              !requestTypeIsSelected ||
-              !supplierIsSelected) {
-            showSnackBarMessage(
-              context,
-              'Preencha os campos de identificação'.hardcoded,
               backgroundColor: Colors.red,
             );
             return;
