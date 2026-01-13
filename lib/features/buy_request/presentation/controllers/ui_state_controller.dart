@@ -58,4 +58,18 @@ class UiStateController extends _$UiStateController {
       );
     }
   }
+
+  void updateSelectedCartProductIndex(int? index) {
+    if (state.value != null && state.value!.selectedCartProductIndex == index) {
+      state = AsyncData(
+        state.value!.annulValues(annulSelectedCartProductIndex: true),
+      );
+    } else {
+      state = AsyncData(
+        state.value!
+            .annulValues(annulSelectedCartProductIndex: index == null)
+            .copyWith(selectedCartProductIndex: index),
+      );
+    }
+  }
 }

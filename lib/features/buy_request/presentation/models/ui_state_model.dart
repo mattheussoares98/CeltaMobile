@@ -41,14 +41,14 @@ class UiStateModel extends Equatable {
   UiStateModel annulValues({
     bool? annulCurrentPage,
     bool? annulSelectedProductIndex,
-    bool? annulselectedCartProductIndex,
+    bool? annulSelectedCartProductIndex,
     bool? annulSuppliers,
   }) => UiStateModel(
     currentPageIndex: annulCurrentPage == true ? 0 : currentPageIndex,
     selectedProductIndex: annulSelectedProductIndex == true
         ? null
         : selectedProductIndex,
-    selectedCartProductIndex: annulselectedCartProductIndex == true
+    selectedCartProductIndex: annulSelectedCartProductIndex == true
         ? null
         : selectedCartProductIndex,
     suppliers: annulSuppliers == true ? [] : suppliers,

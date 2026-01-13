@@ -130,7 +130,7 @@ void main() {
     );
   });
 
-  group('UiStateController Actions', () {
+  group('update page index', () {
     test('updatePageIndex should update the state correctly', () async {
       // ARRANGE
       final container = makeProviderContainer();
@@ -151,7 +151,9 @@ void main() {
       // ASSERT
       expect(states.last.value?.currentPageIndex, 2);
     });
+  });
 
+  group('Update selected product index', () {
     test(
       'updateSelectedProductIndex should set index and toggle it off',
       () async {
@@ -197,6 +199,66 @@ void main() {
         // ASSERT
         expect(
           container.read(uiStateControllerProvider).value?.selectedProductIndex,
+          2,
+        );
+      },
+    );
+  });
+  group('Update selected CART product index', () {
+    test(
+      'updateSelectedCartProductIndex should set index and toggle it off',
+      () async {
+        // ARRANGE
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+
+        await container.read(uiStateControllerProvider.future);
+
+        final notifier = container.read(uiStateControllerProvider.notifier);
+
+        // ACT 1: Select an index
+        notifier.updateSelectedCartProductIndex(5);
+        expect(
+          container
+              .read(uiStateControllerProvider)
+              .value
+              ?.selectedCartProductIndex,
+          5,
+        );
+
+        // ACT 2: Select the same index again (Toggle/Annul logic)
+        notifier.updateSelectedCartProductIndex(5);
+
+        // ASSERT
+        expect(
+          container
+              .read(uiStateControllerProvider)
+              .value
+              ?.selectedCartProductIndex,
+          isNull,
+        );
+      },
+    );
+
+    test(
+      'updateSelectedProductIndex should update to a new index if different',
+      () async {
+        // ARRANGE
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        await container.read(uiStateControllerProvider.future);
+        final notifier = container.read(uiStateControllerProvider.notifier);
+
+        // ACT
+        notifier.updateSelectedCartProductIndex(1);
+        notifier.updateSelectedCartProductIndex(2);
+
+        // ASSERT
+        expect(
+          container
+              .read(uiStateControllerProvider)
+              .value
+              ?.selectedCartProductIndex,
           2,
         );
       },
