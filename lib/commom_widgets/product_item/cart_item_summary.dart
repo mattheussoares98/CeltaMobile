@@ -57,7 +57,7 @@ class CartItemSummary extends StatelessWidget {
       children: [
         TitleAndSubTitle(
           title: 'Qtd no carrinho'.hardcoded,
-          subTitle: cartQuantity.toString().toBrazilianNumber(),
+          subTitle: cartQuantity.toString().toBrazilianNumber(3, true),
           titleStyle: titleStyle,
           subTitleStyle: subtitleStyle,
         ),
