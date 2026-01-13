@@ -52,9 +52,11 @@ class _AddressPageState extends ConsumerState<AddressPage> {
           isSliverPage: true,
           child: CustomScrollView(
             slivers: [
-              AddressForm(
-                module: Modules.customerRegister,
-                addAddress: addAddress,
+              SliverToBoxAdapter(
+                child: AddressForm(
+                  module: Modules.customerRegister,
+                  addAddress: addAddress,
+                ),
               ),
               const InformedAddressess(),
             ],
