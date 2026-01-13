@@ -77,9 +77,9 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                     ),
                   ),
                   gapSliverH8,
-                  const BuyersDropdown(),
+                  const BuyersDropdown(enabled: false),
                   gapSliverH8,
-                  const RequestTypeDropdown(),
+                  const RequestTypeDropdown(enabled: false),
                   gapSliverH8,
                   if (pendingAsync.value?.selectedSupplier != null) ...[
                     SliverToBoxAdapter(
