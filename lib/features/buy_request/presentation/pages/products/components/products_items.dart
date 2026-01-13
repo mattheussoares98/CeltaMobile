@@ -9,6 +9,7 @@ import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import '../../components/components.dart';
 import 'components.dart';
 
 class ProductsItems extends ConsumerStatefulWidget {
@@ -174,9 +175,13 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
               itemBeforeProductName: EnterpriseCodeAndProductName(
                 product: product,
               ),
-              clickableBottom: insertedItem == null
+              cartItemSummary: insertedItem == null
                   ? null
-                  : CostQuantityAndTotalWritten(insertedItem: insertedItem),
+                  : CartItemSummary(
+                      cartQuantity: insertedItem.quantity,
+                      cartValue: insertedItem.cost,
+                      product: insertedItem.product,
+                    ),
               notClickableBottom: selectedProductIndex == index
                   ? Form(
                       key: fieldsFormKey,

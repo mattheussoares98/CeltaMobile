@@ -5,11 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/domain/entities/entities.dart';
+import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import '../components/components.dart';
 import '../enterprises/components/components.dart';
 import '../identification/components/components.dart';
-import '../products/components/components.dart';
 import 'components/components.dart';
 
 class ConfirmationPage extends ConsumerStatefulWidget {
@@ -27,6 +28,21 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
   void dispose() {
     observationsController.dispose();
     super.dispose();
+  }
+
+  void onDelete(ProductEntity product, PendingBuyRequestEntity? pending) {
+    final products = pending?.products;
+    products?.removeWhere((key, value) {
+      return key ==
+          ProductKey(
+            enterpriseCode: product.EnterpriseCode!,
+            productPackingCode: product.ProductPackingCode!,
+          );
+    });
+
+    ref
+        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .updatePending(pending!.copyWith(products: products));
   }
 
   @override
@@ -119,7 +135,32 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                     ),
                     gapSliverH8,
 
-                    const ProductsItems(),
+                    SliverList.builder(
+                      itemCount: pendingAsync.value?.products?.length ?? 0,
+                      itemBuilder: (_, index) {
+                        final product = pendingAsync.value?.products?.values
+                            .toList()[index];
+                        return ProductItemWidget(
+                          product: product!.product,
+                          routine: BsRoutine.buyRequest,
+                          hideCost: true,
+                          hideCurrentAndSaleStocks: true,
+                          hideWholeInformations: true,
+                          showDropIcon: true,
+                          showInfoButton: false,
+                          cartItemSummary: CartItemSummary(
+                            cartQuantity: product.quantity,
+                            cartValue: product.cost,
+                            product: product.product,
+                          ),
+                          onDelete: () =>
+                              onDelete(product.product, pendingAsync.value),
+                          itemBeforeProductName: EnterpriseCodeAndProductName(
+                            product: product.product,
+                          ),
+                        );
+                      },
+                    ),
                   ] else
                     UnselectedMessage(
                       title: 'Nenhum produto informado'.hardcoded,
