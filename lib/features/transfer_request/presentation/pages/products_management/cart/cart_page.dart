@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components/components.dart';
@@ -38,40 +37,6 @@ class _CartPageState extends ConsumerState<CartPage> {
     final pendingAsync = ref.watch(
       cartProductsStateControllerProvider(widget.draftKey),
     );
-    final requestTypeAllowChangePrice = ref.watch(
-      uiStateControllerProvider(
-        widget.draftKey.requestTypeCode,
-      ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
-    );
-
-    void changeSelectedIndex(
-      int? index,
-      TransferRequestProductItemEntity item,
-    ) {
-      ref
-          .read(
-            uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
-          )
-          .updateSelectedCartProductIndex(index);
-
-      quantityController.text = item.quantity
-          .toString()
-          .toBrazilianNumber()
-          .replaceAll(RegExp(r'\.'), '');
-      if (requestTypeAllowChangePrice) {
-        priceController.text = item.value
-            .toString()
-            .toBrazilianNumber()
-            .replaceAll(RegExp(r'\.'), '');
-      }
-      Future.delayed(const Duration(milliseconds: 100), () {
-        quantityFocusNode.requestFocus();
-        quantityController.selection = TextSelection(
-          baseOffset: 0,
-          extentOffset: quantityController.text.length,
-        );
-      });
-    }
 
     final theme = Theme.of(context);
 
@@ -114,18 +79,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                               return ProductItem(
                                 item: item,
                                 index: index,
-                                changeSelectedIndex: (index) =>
-                                    changeSelectedIndex(index, item),
                                 draftKey: widget.draftKey,
-                                selectedIndex: ref.watch(
-                                  uiStateControllerProvider(
-                                    widget.draftKey.requestTypeCode,
-                                  ).select(
-                                    (s) => s.value?.selectedCartProductIndex,
-                                  ),
-                                ),
-                                requestTypeAllowChangePrice:
-                                    requestTypeAllowChangePrice,
                                 priceController: priceController,
                                 priceFocusNode: priceFocusNode,
                                 quantityController: quantityController,

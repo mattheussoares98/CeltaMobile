@@ -1,19 +1,19 @@
 import 'package:celta_intelligence/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_intelligence/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../domain/entities/entities.dart';
 import 'components.dart';
 
 class ProductItem extends ConsumerWidget {
-  final void Function(int? index) changeSelectedIndex;
   final TransferRequestProductItemEntity item;
   final int index;
   final DraftKey draftKey;
-  final int? selectedIndex;
-  final bool requestTypeAllowChangePrice;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final TextEditingController priceController;
@@ -22,10 +22,7 @@ class ProductItem extends ConsumerWidget {
     super.key,
     required this.item,
     required this.index,
-    required this.changeSelectedIndex,
     required this.draftKey,
-    required this.selectedIndex,
-    required this.requestTypeAllowChangePrice,
     required this.quantityController,
     required this.quantityFocusNode,
     required this.priceController,
@@ -36,6 +33,35 @@ class ProductItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final requestTypeAllowChangePrice = ref.watch(
+      uiStateControllerProvider(
+        draftKey.requestTypeCode,
+      ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
+    );
+
+    void changeSelectedIndex(int? index) {
+      ref
+          .read(uiStateControllerProvider(draftKey.requestTypeCode).notifier)
+          .updateSelectedCartProductIndex(index);
+
+      quantityController.text = item.quantity
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
+
+      priceController.text = item.value
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
+      Future.delayed(const Duration(milliseconds: 100), () {
+        quantityFocusNode.requestFocus();
+        quantityController.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: quantityController.text.length,
+        );
+      });
+    }
+
     void update() {
       if (_formKey.currentState?.validate() != true) {
         return;
@@ -52,8 +78,13 @@ class ProductItem extends ConsumerWidget {
             ),
           );
 
-      changeSelectedIndex(null);
+      ref
+          .read(uiStateControllerProvider(draftKey.requestTypeCode).notifier)
+          .updateSelectedCartProductIndex(null);
     }
+
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -78,7 +109,12 @@ class ProductItem extends ConsumerWidget {
               ),
             ),
           ),
-          if (selectedIndex == index) ...[
+          if (ref.watch(
+                uiStateControllerProvider(
+                  draftKey.requestTypeCode,
+                ).select((s) => s.value?.selectedCartProductIndex),
+              ) ==
+              index) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 Sizes.p8,
@@ -86,15 +122,15 @@ class ProductItem extends ConsumerWidget {
                 Sizes.p8,
                 Sizes.p8,
               ),
-              child: Row(
+              child: Column(
                 children: [
-                  Expanded(
-                    flex: 6,
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          QuantityField(
+                  Form(
+                    key: _formKey,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 35,
+                          child: QuantityField(
                             quantityController: quantityController,
                             priceController: priceController,
                             quantityFocusNode: quantityFocusNode,
@@ -103,27 +139,30 @@ class ProductItem extends ConsumerWidget {
                                 requestTypeAllowChangePrice,
                             update: update,
                           ),
-                          if (requestTypeAllowChangePrice) ...[
-                            gapH4,
-                            PriceField(
-                              priceController: priceController,
-                              priceFocusNode: priceFocusNode,
-                              update: update,
-                            ),
-                          ],
-                        ],
-                      ),
+                        ),
+                        gapW12,
+                        Expanded(
+                          flex: 30,
+                          child: PriceField(
+                            priceController: priceController,
+                            priceFocusNode: priceFocusNode,
+                            update: update,
+                            requestTypeCode: draftKey.requestTypeCode,
+                          ),
+                        ),
+                        gapW12,
+                        Expanded(flex: 35, child: TotalPrice(widget: this)),
+                      ],
                     ),
                   ),
-                  gapW4,
-                  Expanded(
-                    flex: 4,
-                    child: NewTotalAndUpdateButton(
-                      quantityController: quantityController,
-                      priceController: priceController,
-                      update: update,
-                      item: item,
-                      requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+                  gapH8,
+                  PrimaryButton(
+                    text: 'Alterar'.hardcoded,
+                    onPressed: update,
+                    icon: Icon(
+                      isIOS
+                          ? CupertinoIcons.shopping_cart
+                          : Icons.shopping_cart,
                     ),
                   ),
                 ],
