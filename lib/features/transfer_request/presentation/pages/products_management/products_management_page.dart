@@ -35,9 +35,6 @@ class _ProductsManagementPageState
       enterpriseOrigin: widget.enterpriseOriginCode,
       enterpriseDestinyCode: widget.enterpriseDestinyCode,
     );
-    final pendingAsync = ref.watch(
-      cartProductsStateControllerProvider(draftKey),
-    );
 
     ref.listen(insertTransferRequestControllerProvider(draftKey), (p, n) {
       n.doOnSuccess(p, () {
@@ -53,10 +50,6 @@ class _ProductsManagementPageState
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-
-    final totalPrice =
-        pendingAsync.value?.fold(0.0, (p, e) => p + (e.value * e.quantity)) ??
-        0.0;
 
     final pageIndex = ref.watch(
       uiStateControllerProvider(
@@ -77,16 +70,31 @@ class _ProductsManagementPageState
               Sizes.p8,
             ),
             actions: [
-              QuantityBadge(
-                quantity: pendingAsync.value?.length,
-                materialIcon: Icons.shopping_cart,
-                cupertinoIcon: CupertinoIcons.shopping_cart,
-                isSelected: false,
-                offset: const Offset(3, -3),
-                subtitle: Text(
-                  'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
-                  style: const TextStyle(fontSize: 9),
-                ),
+              Consumer(
+                builder: (_, ref, _) {
+                  final pendingAsync = ref.watch(
+                    cartProductsStateControllerProvider(draftKey),
+                  );
+
+                  final totalPrice =
+                      pendingAsync.value?.fold(
+                        0.0,
+                        (p, e) => p + (e.value * e.quantity),
+                      ) ??
+                      0.0;
+
+                  return QuantityBadge(
+                    quantity: pendingAsync.value?.length,
+                    materialIcon: Icons.shopping_cart,
+                    cupertinoIcon: CupertinoIcons.shopping_cart,
+                    isSelected: false,
+                    offset: const Offset(3, -3),
+                    subtitle: Text(
+                      'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
+                      style: const TextStyle(fontSize: 9),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -109,11 +117,18 @@ class _ProductsManagementPageState
               ),
               BottomNavigationBarItem(
                 label: 'Carrinho'.hardcoded,
-                icon: QuantityBadge(
-                  quantity: pendingAsync.value?.length,
-                  materialIcon: Icons.shopping_cart,
-                  cupertinoIcon: CupertinoIcons.shopping_cart,
-                  isSelected: pageIndex == 1,
+                icon: Consumer(
+                  builder: (_, ref, _) {
+                    final pendingAsync = ref.watch(
+                      cartProductsStateControllerProvider(draftKey),
+                    );
+                    return QuantityBadge(
+                      quantity: pendingAsync.value?.length,
+                      materialIcon: Icons.shopping_cart,
+                      cupertinoIcon: CupertinoIcons.shopping_cart,
+                      isSelected: pageIndex == 1,
+                    );
+                  },
                 ),
               ),
             ],
