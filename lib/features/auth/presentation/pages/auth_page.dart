@@ -79,46 +79,51 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     final loginAsync = ref.watch(loginControllerProvider);
 
     return Scaffold(
-      body: ResponsiveScrollableWidget(
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const CeltaImage(),
-              EnterpriseField(
-                isLoading: loginAsync.isLoading,
-                enterpriseController: enterpriseController,
-                userFocusNode: userFocusNode,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+          child: ResponsiveScrollableWidget(
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const CeltaImage(),
+                  EnterpriseField(
+                    isLoading: loginAsync.isLoading,
+                    enterpriseController: enterpriseController,
+                    userFocusNode: userFocusNode,
+                  ),
+                  gapH8,
+                  UserField(
+                    isLoading: loginAsync.isLoading,
+                    userController: userController,
+                    userFocusNode: userFocusNode,
+                    passwordFocusNode: passwordFocusNode,
+                  ),
+                  gapH8,
+                  PasswordField(
+                    isLoading: loginAsync.isLoading,
+                    passwordController: passwordController,
+                    passwordFocusNode: passwordFocusNode,
+                    onSubmit: loginAsync.isLoading ? null : onSubmit,
+                    showPassword: showPassword,
+                    changeShowPassword: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                  ),
+                  gapH32,
+                  PrimaryButton(
+                    text: 'Entrar'.hardcoded,
+                    isLoading: loginAsync.isLoading,
+                    onPressed: loginAsync.isLoading ? null : onSubmit,
+                  ),
+                ],
               ),
-              gapH8,
-              UserField(
-                isLoading: loginAsync.isLoading,
-                userController: userController,
-                userFocusNode: userFocusNode,
-                passwordFocusNode: passwordFocusNode,
-              ),
-              gapH8,
-              PasswordField(
-                isLoading: loginAsync.isLoading,
-                passwordController: passwordController,
-                passwordFocusNode: passwordFocusNode,
-                onSubmit: loginAsync.isLoading ? null : onSubmit,
-                showPassword: showPassword,
-                changeShowPassword: () {
-                  setState(() {
-                    showPassword = !showPassword;
-                  });
-                },
-              ),
-              gapH32,
-              PrimaryButton(
-                text: 'Entrar'.hardcoded,
-                isLoading: loginAsync.isLoading,
-                onPressed: loginAsync.isLoading ? null : onSubmit,
-              ),
-            ],
+            ),
           ),
         ),
       ),
