@@ -6,8 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 import 'products_management.dart';
@@ -30,32 +28,6 @@ class ProductsManagementPage extends ConsumerStatefulWidget {
 
 class _ProductsManagementPageState
     extends ConsumerState<ProductsManagementPage> {
-  int currentIndex = 0;
-  bool requestTypeAllowChangePrice = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    ref
-        .read(
-          requestTypeStateControllerProvider(Modules.transferRequest).future,
-        )
-        .then((value) {
-          setState(() {
-            final requestIndex = value?.indexWhere(
-              (e) => e.Code == widget.requestTypeCode,
-            );
-            if (requestIndex == null || requestIndex == -1) {
-              return;
-            }
-
-            requestTypeAllowChangePrice =
-                value![requestIndex].AllowAlterCostOrSalePrice == true;
-          });
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     final draftKey = DraftKey(
@@ -74,14 +46,8 @@ class _ProductsManagementPageState
     });
 
     final pages = [
-      InsertProductsPage(
-        draftKey: draftKey,
-        requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-      ),
-      CartPage(
-        draftKey: draftKey,
-        requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-      ),
+      InsertProductsPage(draftKey: draftKey),
+      CartPage(draftKey: draftKey),
     ];
     final appBarTitles = ['Inserir produtos'.hardcoded, 'Carrinho'.hardcoded];
 
@@ -92,12 +58,18 @@ class _ProductsManagementPageState
         pendingAsync.value?.fold(0.0, (p, e) => p + (e.value * e.quantity)) ??
         0.0;
 
+    final pageIndex = ref.watch(
+      uiStateControllerProvider(
+        widget.requestTypeCode,
+      ).select((s) => s.value?.pageIndex ?? 0),
+    );
+
     return Stack(
       children: [
         Scaffold(
-          resizeToAvoidBottomInset: currentIndex == 0,
+          resizeToAvoidBottomInset: pageIndex == 0,
           appBar: AppBar(
-            title: Text(appBarTitles[currentIndex]),
+            title: Text(appBarTitles[pageIndex]),
             actionsPadding: const EdgeInsets.fromLTRB(
               0,
               Sizes.p8,
@@ -118,14 +90,14 @@ class _ProductsManagementPageState
               ),
             ],
           ),
-          body: IndexedStack(index: currentIndex, children: pages),
+          body: IndexedStack(index: pageIndex, children: pages),
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: currentIndex,
-            onTap: (index) {
-              setState(() {
-                currentIndex = index;
-              });
-            },
+            currentIndex: pageIndex,
+            onTap: ref
+                .read(
+                  uiStateControllerProvider(widget.requestTypeCode).notifier,
+                )
+                .updatePageIndex,
             items: [
               BottomNavigationBarItem(
                 label: 'Inserir'.hardcoded,
@@ -141,7 +113,7 @@ class _ProductsManagementPageState
                   quantity: pendingAsync.value?.length,
                   materialIcon: Icons.shopping_cart,
                   cupertinoIcon: CupertinoIcons.shopping_cart,
-                  isSelected: currentIndex == 1,
+                  isSelected: pageIndex == 1,
                 ),
               ),
             ],

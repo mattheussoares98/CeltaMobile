@@ -3,106 +3,204 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 import 'components.dart';
 
-class ProductsItems extends ConsumerWidget {
-  final List<ProductEntity> products;
-  final int? selectedIndex;
-  final void Function({
-    required int index,
-    required ProductEntity product,
-    required TransferRequestProductItemEntity? transferRequestProductItem,
-  })
-  onTap;
-  final void Function(TransferRequestProductItemEntity productItem) removeItem;
-  final bool requestTypeAllowChangePrice;
+class ProductsItems extends ConsumerStatefulWidget {
   final DraftKey draftKey;
-  final TextEditingController quantityController;
-  final TextEditingController priceController;
-  final FocusNode quantityFocusNode;
-  final FocusNode priceFocusNode;
-  final void Function(int? index) changeSelectedIndex;
+  final SearchProductKey searchProductKey;
   const ProductsItems({
     super.key,
-    required this.products,
-    required this.selectedIndex,
-    required this.onTap,
-    required this.removeItem,
-    required this.requestTypeAllowChangePrice,
     required this.draftKey,
-    required this.quantityController,
-    required this.priceController,
-    required this.quantityFocusNode,
-    required this.priceFocusNode,
-    required this.changeSelectedIndex,
+    required this.searchProductKey,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
+}
+
+class _ProductsItemsState extends ConsumerState<ProductsItems> {
+  final quantityController = TextEditingController();
+  final priceController = TextEditingController();
+  final quantityFocusNode = FocusNode();
+  final priceFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+    quantityController.dispose();
+    priceController.dispose();
+    quantityFocusNode.dispose();
+    priceFocusNode.dispose();
+  }
+
+  void onTapProductItem({
+    required int index,
+    required ProductEntity product,
+    required TransferRequestProductItemEntity? transferRequestProductItem,
+    required bool requestTypeAllowChangePrice,
+  }) {
+    priceController.clear();
+
+    if (product.Value == 0 && !requestTypeAllowChangePrice) {
+      showSnackBarMessage(
+        context,
+        'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
+            .hardcoded,
+        backgroundColor: Colors.red,
+      );
+      ref
+          .read(
+            uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+          )
+          .updateSelectedInsertProductIndex(null);
+      return;
+    }
+
+    ref
+        .read(
+          uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+        )
+        .updateSelectedInsertProductIndex(index);
+
+    quantityController.text = '1';
+    if (product.Value! > 0 || transferRequestProductItem?.value != null) {
+      final price = transferRequestProductItem?.value ?? product.Value;
+      priceController.text = price.toString().toBrazilianNumber().replaceAll(
+        RegExp(r'\.'),
+        ',',
+      );
+    }
+    Future.delayed(const Duration(milliseconds: 100), () {
+      quantityFocusNode.requestFocus();
+      quantityController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: quantityController.text.length,
+      );
+    });
+  }
+
+  void removeProductItem(TransferRequestProductItemEntity productItem) {
+    ref
+        .read(cartProductsStateControllerProvider(widget.draftKey).notifier)
+        .removeItem(productItem);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final pendingAsync = ref.watch(
-      cartProductsStateControllerProvider(draftKey),
+      cartProductsStateControllerProvider(widget.draftKey),
     );
 
-    return ResponsiveListFlow(
-      isSliver: true,
-      itemCount: products.length,
-      itemBuilder: (_, index) {
-        final product = products[index];
+    final requestTypeAllowChangePrice = ref.watch(
+      uiStateControllerProvider(
+        widget.draftKey.requestTypeCode,
+      ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
+    );
 
-        int? transferProductItemIndex = pendingAsync.value?.indexWhere(
-          (element) =>
-              element.product.ProductPackingCode == product.ProductPackingCode,
-        );
+    final selectedIndex = ref.watch(
+      uiStateControllerProvider(
+        widget.draftKey.requestTypeCode,
+      ).select((s) => s.value?.selectedInsertProductIndex),
+    );
 
-        bool hasInCart =
-            transferProductItemIndex != null && transferProductItemIndex != -1;
+    return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
+      slivers: [
+        Consumer(
+          builder: (_, ref, _) {
+            return AsyncValueSliverWidget(
+              value: ref.watch(
+                searchProductsStateControllerProvider(widget.searchProductKey),
+              ),
+              tryAgain: null,
+              data: (products) {
+                return ResponsiveListFlow(
+                  isSliver: true,
+                  itemCount: products.length,
+                  itemBuilder: (_, index) {
+                    final product = products[index];
 
-        return ProductItemWidget(
-          product: product,
-          routine: BsRoutine.transferRequest,
-          isSelected: selectedIndex == index,
-          showDropIcon: true,
-          onTap: () => onTap(
-            index: index,
-            product: product,
-            transferRequestProductItem:
-                transferProductItemIndex == null || !hasInCart
-                ? null
-                : pendingAsync.value?[transferProductItemIndex],
-          ),
-          onDelete: hasInCart == true
-              ? () {
-                  removeItem(pendingAsync.value![transferProductItemIndex!]);
-                }
-              : null,
-          cartItemSummary: hasInCart
-              ? CartItemSummary(
-                  cartQuantity:
-                      pendingAsync.value![transferProductItemIndex].quantity,
-                  cartValue:
-                      pendingAsync.value![transferProductItemIndex].value,
-                  product: product,
-                )
-              : null,
-          notClickableBottom: selectedIndex == index
-              ? FieldsAndInsertButton(
-                  product: product,
-                  cartItem: hasInCart
-                      ? pendingAsync.value![transferProductItemIndex]
-                      : null,
-                  quantityController: quantityController,
-                  priceController: priceController,
-                  draftKey: draftKey,
-                  changeSelectedIndex: changeSelectedIndex,
-                  quantityFocusNode: quantityFocusNode,
-                  priceFocusNode: priceFocusNode,
-                  requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-                )
-              : null,
-        );
-      },
+                    int? transferProductItemIndex = pendingAsync.value
+                        ?.indexWhere(
+                          (element) =>
+                              element.product.ProductPackingCode ==
+                              product.ProductPackingCode,
+                        );
+
+                    bool hasInCart =
+                        transferProductItemIndex != null &&
+                        transferProductItemIndex != -1;
+
+                    return ProductItemWidget(
+                      product: product,
+                      routine: BsRoutine.transferRequest,
+                      isSelected: selectedIndex == index,
+                      showDropIcon: true,
+                      onTap: () {
+                        onTapProductItem(
+                          index: index,
+                          product: product,
+                          transferRequestProductItem: hasInCart == true
+                              ? pendingAsync.value![transferProductItemIndex!]
+                              : null,
+                          requestTypeAllowChangePrice:
+                              requestTypeAllowChangePrice,
+                        );
+                      },
+                      onDelete: hasInCart == true
+                          ? () {
+                              removeProductItem(
+                                pendingAsync.value![transferProductItemIndex!],
+                              );
+                            }
+                          : null,
+                      cartItemSummary: hasInCart
+                          ? CartItemSummary(
+                              cartQuantity: pendingAsync
+                                  .value![transferProductItemIndex]
+                                  .quantity,
+                              cartValue: pendingAsync
+                                  .value![transferProductItemIndex]
+                                  .value,
+                              product: product,
+                            )
+                          : null,
+                      notClickableBottom: selectedIndex == index
+                          ? FieldsAndInsertButton(
+                              product: product,
+                              cartItem: hasInCart
+                                  ? pendingAsync
+                                        .value![transferProductItemIndex]
+                                  : null,
+                              quantityController: quantityController,
+                              priceController: priceController,
+                              draftKey: widget.draftKey,
+                              changeSelectedIndex: ref
+                                  .read(
+                                    uiStateControllerProvider(
+                                      widget.draftKey.requestTypeCode,
+                                    ).notifier,
+                                  )
+                                  .updateSelectedInsertProductIndex,
+                              quantityFocusNode: quantityFocusNode,
+                              priceFocusNode: priceFocusNode,
+                              requestTypeAllowChangePrice:
+                                  requestTypeAllowChangePrice,
+                            )
+                          : null,
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }

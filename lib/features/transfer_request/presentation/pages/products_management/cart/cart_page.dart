@@ -11,12 +11,7 @@ import 'components/components.dart';
 
 class CartPage extends ConsumerStatefulWidget {
   final DraftKey draftKey;
-  final bool requestTypeAllowChangePrice;
-  const CartPage({
-    super.key,
-    required this.draftKey,
-    required this.requestTypeAllowChangePrice,
-  });
+  const CartPage({super.key, required this.draftKey});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CartPageState();
@@ -27,7 +22,6 @@ class _CartPageState extends ConsumerState<CartPage> {
   final quantityFocusNode = FocusNode();
   final priceController = TextEditingController();
   final priceFocusNode = FocusNode();
-  int? selectedIndex;
 
   @override
   void dispose() {
@@ -38,20 +32,33 @@ class _CartPageState extends ConsumerState<CartPage> {
     priceFocusNode.dispose();
   }
 
-  void changeSelectedIndex(int? index, TransferRequestProductItemEntity item) {
-    if (selectedIndex == index || index == null) {
-      setState(() {
-        selectedIndex = null;
-      });
-    } else {
-      setState(() {
-        selectedIndex = index;
-      });
+  @override
+  Widget build(BuildContext context) {
+    final lastSavedAsync = ref.watch(lastSavedNumberStateControllerProvider);
+    final pendingAsync = ref.watch(
+      cartProductsStateControllerProvider(widget.draftKey),
+    );
+    final requestTypeAllowChangePrice = ref.watch(
+      uiStateControllerProvider(
+        widget.draftKey.requestTypeCode,
+      ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
+    );
+
+    void changeSelectedIndex(
+      int? index,
+      TransferRequestProductItemEntity item,
+    ) {
+      ref
+          .read(
+            uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+          )
+          .updateSelectedCartProductIndex(index);
+
       quantityController.text = item.quantity
           .toString()
           .toBrazilianNumber()
           .replaceAll(RegExp(r'\.'), '');
-      if (widget.requestTypeAllowChangePrice) {
+      if (requestTypeAllowChangePrice) {
         priceController.text = item.value
             .toString()
             .toBrazilianNumber()
@@ -65,14 +72,7 @@ class _CartPageState extends ConsumerState<CartPage> {
         );
       });
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    final lastSavedAsync = ref.watch(lastSavedNumberStateControllerProvider);
-    final pendingAsync = ref.watch(
-      cartProductsStateControllerProvider(widget.draftKey),
-    );
     final theme = Theme.of(context);
 
     return Padding(
@@ -109,19 +109,29 @@ class _CartPageState extends ConsumerState<CartPage> {
                         itemBuilder: (_, index) {
                           final item = items[index];
 
-                          return ProductItem(
-                            item: item,
-                            index: index,
-                            changeSelectedIndex: (index) =>
-                                changeSelectedIndex(index, item),
-                            draftKey: widget.draftKey,
-                            selectedIndex: selectedIndex,
-                            requestTypeAllowChangePrice:
-                                widget.requestTypeAllowChangePrice,
-                            priceController: priceController,
-                            priceFocusNode: priceFocusNode,
-                            quantityController: quantityController,
-                            quantityFocusNode: quantityFocusNode,
+                          return Consumer(
+                            builder: (_, ref, _) {
+                              return ProductItem(
+                                item: item,
+                                index: index,
+                                changeSelectedIndex: (index) =>
+                                    changeSelectedIndex(index, item),
+                                draftKey: widget.draftKey,
+                                selectedIndex: ref.watch(
+                                  uiStateControllerProvider(
+                                    widget.draftKey.requestTypeCode,
+                                  ).select(
+                                    (s) => s.value?.selectedCartProductIndex,
+                                  ),
+                                ),
+                                requestTypeAllowChangePrice:
+                                    requestTypeAllowChangePrice,
+                                priceController: priceController,
+                                priceFocusNode: priceFocusNode,
+                                quantityController: quantityController,
+                                quantityFocusNode: quantityFocusNode,
+                              );
+                            },
                           );
                         },
                       );
