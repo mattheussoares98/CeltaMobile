@@ -55,10 +55,7 @@ class DefaultTextFormField extends StatelessWidget {
     final theme = Theme.of(context);
 
     if (theme.platform == TargetPlatform.iOS) {
-      return Padding(
-        padding: const EdgeInsets.only(top: Sizes.p4),
-        child: CupertinoFormField(defaultTextFormField: this),
-      );
+      return CupertinoFormField(defaultTextFormField: this);
     }
     return Padding(
       padding: const EdgeInsets.only(top: Sizes.p4),
