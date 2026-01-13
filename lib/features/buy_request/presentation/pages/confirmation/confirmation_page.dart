@@ -148,6 +148,16 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                           hideWholeInformations: true,
                           showDropIcon: true,
                           showInfoButton: false,
+                          isSelected: ref.watch(
+                            uiStateControllerProvider.select(
+                              (s) => s.value?.selectedCartProductIndex == index,
+                            ),
+                          ),
+                          onTap: () {
+                            ref
+                                .read(uiStateControllerProvider.notifier)
+                                .updateSelectedCartProductIndex(index);
+                          },
                           cartItemSummary: CartItemSummary(
                             cartQuantity: product.quantity,
                             cartValue: product.cost,
