@@ -25,6 +25,7 @@ class ProductItemWidget extends ConsumerWidget {
   final bool? hideWholeInformations;
   final bool? hideCost;
   final bool? hideCurrentAndSaleStocks;
+  final bool? hidePrice;
   const ProductItemWidget({
     super.key,
     required this.product,
@@ -42,6 +43,7 @@ class ProductItemWidget extends ConsumerWidget {
     this.hideWholeInformations,
     this.hideCost,
     this.hideCurrentAndSaleStocks,
+    this.hidePrice,
   });
 
   @override

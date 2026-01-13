@@ -10,7 +10,9 @@ class PracticedPriceProperty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if ([
+    if (widget.hidePrice == true) {
+      return const SizedBox.shrink();
+    } else if ([
       BsRoutine.adjustStock,
       BsRoutine.buyRequest,
       BsRoutine.buyQuotation,
