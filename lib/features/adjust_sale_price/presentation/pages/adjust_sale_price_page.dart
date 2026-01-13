@@ -92,64 +92,67 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
             ),
           ),
           body: SafeArea(
-            child: CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                if (product != null)
-                  PriceSchedules(
-                    enterpriseCode: widget.enterpriseCode,
-                    product: product,
-                  ),
-                AsyncValueSliverWidget(
-                  value: selectedProductAsync,
-                  tryAgain: () {
-                    ref.invalidate(
-                      selectedProductStateControllerProvider(
-                        widget.enterpriseCode,
-                        widget.plu,
-                      ),
-                    );
-                  },
-                  data: (product) {
-                    return SliverToBoxAdapter(
-                      child: ResponsiveScrollableWidget(
-                        child: Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
-                              _DefaultDivider(),
-                              SalesTypeWidget(plu: widget.plu),
-                              _DefaultDivider(),
-                              PricesTypesWidget(plu: widget.plu),
-                              _DefaultDivider(),
-                              ReplicationTypesWidget(plu: widget.plu),
-                              _DefaultDivider(),
-                              StartAndEndDates(plu: widget.plu),
-                              _DefaultDivider(),
-                              InfoButton(
-                                ProductItemWidget(
-                                  product: product!,
-                                  routine: BsRoutine.adjustSalePrice,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+              child: CustomScrollView(
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  if (product != null)
+                    PriceSchedules(
+                      enterpriseCode: widget.enterpriseCode,
+                      product: product,
+                    ),
+                  AsyncValueSliverWidget(
+                    value: selectedProductAsync,
+                    tryAgain: () {
+                      ref.invalidate(
+                        selectedProductStateControllerProvider(
+                          widget.enterpriseCode,
+                          widget.plu,
+                        ),
+                      );
+                    },
+                    data: (product) {
+                      return SliverToBoxAdapter(
+                        child: ResponsiveScrollableWidget(
+                          child: Form(
+                            key: formKey,
+                            child: Column(
+                              children: [
+                                _DefaultDivider(),
+                                SalesTypeWidget(plu: widget.plu),
+                                _DefaultDivider(),
+                                PricesTypesWidget(plu: widget.plu),
+                                _DefaultDivider(),
+                                ReplicationTypesWidget(plu: widget.plu),
+                                _DefaultDivider(),
+                                StartAndEndDates(plu: widget.plu),
+                                _DefaultDivider(),
+                                InfoButton(
+                                  ProductItemWidget(
+                                    product: product!,
+                                    routine: BsRoutine.adjustSalePrice,
+                                  ),
                                 ),
-                              ),
-                              PracticedSuggestionAndMinimumPrices(
-                                product: product,
-                              ),
-                              _DefaultDivider(),
-                              PriceFieldAndConfirmButton(
-                                priceController: priceController,
-                                isLoading: confirmAdjustAsync.isLoading,
-                                onPressed: () => onPressed(product),
-                              ),
-                              gapH32,
-                            ],
+                                PracticedSuggestionAndMinimumPrices(
+                                  product: product,
+                                ),
+                                _DefaultDivider(),
+                                PriceFieldAndConfirmButton(
+                                  priceController: priceController,
+                                  isLoading: confirmAdjustAsync.isLoading,
+                                  onPressed: () => onPressed(product),
+                                ),
+                                gapH32,
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
