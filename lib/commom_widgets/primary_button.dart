@@ -65,7 +65,7 @@ class PrimaryButton extends StatelessWidget {
                     if (icon != null && canShowIcon)
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: Sizes.p8,
+                          horizontal: Sizes.p16,
                         ),
                         child: icon!,
                       ),
