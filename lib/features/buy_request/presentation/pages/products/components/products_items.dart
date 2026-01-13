@@ -46,7 +46,8 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     if ((product.PriceCost!.LiquidCost ?? 0) > 0) {
       costController.text = product.PriceCost!.LiquidCost
           .toString()
-          .toBrazilianNumber(4);
+          .toBrazilianNumber(4)
+          .replaceAll(RegExp(r'\.'), '');
     }
 
     Future.delayed(const Duration(milliseconds: 100), () {
