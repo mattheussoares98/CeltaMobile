@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
@@ -8,7 +7,7 @@ import '../../../domain/entity/entity.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class ProductsPage extends ConsumerWidget {
+class ProductsPage extends StatelessWidget {
   final int receiptCode;
   final ReceiptEntity? receipt;
   final int enterpriseCode;
@@ -20,7 +19,7 @@ class ProductsPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final searchProductKey = SearchProductKey(
       enterpriseCode,
       BsRoutine.goodsReceiving,
