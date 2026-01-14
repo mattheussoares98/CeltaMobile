@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,35 +36,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     super.dispose();
   }
 
-  Future<void> addInLot(ProductEntity product) async {
-    if (widget.formKey.currentState?.validate() != true) {
-      return;
-    }
-
-    final uiState = ref.read(
-      selectedProductUIStateControllerProvider(widget.enterpriseCode),
-    );
-
-    ref
-        .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
-        .addItem(
-          product: product,
-          quantity: quantityController.text.toDouble() ?? 0,
-          selectedDestinyStock: uiState.selectedDestinyStock!,
-          selectedJustification: uiState.selectedJustification!,
-          selectedOriginStock: uiState.selectedOriginStock!,
-        );
-
-    quantityController.clear();
-    ref
-        .read(
-          selectedProductUIStateControllerProvider(
-            widget.enterpriseCode,
-          ).notifier,
-        )
-        .updateValues(productIndex: null);
-  }
-
   @override
   Widget build(BuildContext context) {
     return AsyncValueWidget(
@@ -86,7 +56,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
               index: index,
               quantityController: quantityController,
               quantityFocusNode: quantityFocusNode,
-              addInLot: addInLot,
+              formKey: widget.formKey,
             );
           },
         );
@@ -101,7 +71,7 @@ class _ProductItem extends ConsumerWidget {
   final int index;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
-  final Future<void> Function(ProductEntity product) addInLot;
+  final GlobalKey<FormState> formKey;
   const _ProductItem({
     super.key,
     required this.enterpriseCode,
@@ -109,21 +79,39 @@ class _ProductItem extends ConsumerWidget {
     required this.index,
     required this.quantityController,
     required this.quantityFocusNode,
-    required this.addInLot,
+    required this.formKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    final lotItem = ref.watch(
-      //TODO every item is rebuilding when lot changes. Need create another controller to receive the quantity in lot
-      lotStateControllerProvider(enterpriseCode).select(
-        (asyncLot) => asyncLot.value?.firstWhereOrNull(
-          (e) => e.product.ProductPackingCode == product.ProductPackingCode,
-        ),
-      ),
-    );
+    Future<void> addInLot(ProductEntity product) async {
+      if (formKey.currentState?.validate() != true) {
+        return;
+      }
+
+      final uiState = ref.read(
+        selectedProductUIStateControllerProvider(enterpriseCode),
+      );
+
+      ref
+          .read(lotStateControllerProvider(enterpriseCode).notifier)
+          .addItem(
+            product: product,
+            quantity: quantityController.text.toDouble() ?? 0,
+            selectedDestinyStock: uiState.selectedDestinyStock!,
+            selectedJustification: uiState.selectedJustification!,
+            selectedOriginStock: uiState.selectedOriginStock!,
+          );
+
+      quantityController.clear();
+      ref
+          .read(
+            selectedProductUIStateControllerProvider(enterpriseCode).notifier,
+          )
+          .updateValues(productIndex: null);
+    }
 
     final isSelected = ref.watch(
       selectedProductUIStateControllerProvider(
@@ -131,38 +119,53 @@ class _ProductItem extends ConsumerWidget {
       ).select((s) => s.productIndex == index),
     );
 
-    return ProductItemWidget(
-      product: product,
-      routine: BsRoutine.adjustStock,
-      onTap: () {
-        ref
-            .read(
-              selectedProductUIStateControllerProvider(enterpriseCode).notifier,
-            )
-            .updateValues(productIndex: index);
-        Future.delayed(Duration.zero, () => quantityFocusNode.requestFocus());
-        quantityController.clear();
-      },
-      showDropIcon: true,
-      isSelected: isSelected,
-      clickableBottom: lotItem == null
-          ? null
-          : Text(
-              '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
-              textAlign: TextAlign.start,
-              style: theme.textTheme.titleSmall?.copyWith(color: Colors.blue),
-            ),
-      notClickableBottom: isSelected
-          ? Padding(
-              padding: const EdgeInsets.only(top: Sizes.p8),
-              child: AddInLot(
-                productIsAlreadyInLot: lotItem != null,
-                addInLot: () => addInLot(product),
-                quantityController: quantityController,
-                quantityFocusNode: quantityFocusNode,
+    final quantityInLot = ref.watch(
+      quantityInLotStateControllerProvider(
+        enterpriseCode,
+        product.ProductPackingCode!,
+      ),
+    );
+
+    return RepaintBoundary(
+      child: ProductItemWidget(
+        product: product,
+        routine: BsRoutine.adjustStock,
+        onTap: () {
+          ref
+              .read(
+                selectedProductUIStateControllerProvider(
+                  enterpriseCode,
+                ).notifier,
+              )
+              .updateValues(productIndex: index);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (quantityFocusNode.canRequestFocus) {
+              quantityFocusNode.requestFocus();
+            }
+          });
+          quantityController.clear();
+        },
+        showDropIcon: true,
+        isSelected: isSelected,
+        clickableBottom: quantityInLot == null
+            ? null
+            : Text(
+                '${quantityInLot.toString().toBrazilianNumber()} qtds no lote',
+                textAlign: TextAlign.start,
+                style: theme.textTheme.titleSmall?.copyWith(color: Colors.blue),
               ),
-            )
-          : null,
+        notClickableBottom: isSelected
+            ? Padding(
+                padding: const EdgeInsets.only(top: Sizes.p8),
+                child: AddInLot(
+                  productIsAlreadyInLot: quantityInLot != null,
+                  addInLot: () => addInLot(product),
+                  quantityController: quantityController,
+                  quantityFocusNode: quantityFocusNode,
+                ),
+              )
+            : null,
+      ),
     );
   }
 }
