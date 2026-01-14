@@ -110,7 +110,7 @@ class _ProductItem extends ConsumerWidget {
           .read(
             selectedProductUIStateControllerProvider(enterpriseCode).notifier,
           )
-          .updateValues(productIndex: null);
+          .updateProductIndex(null);
     }
 
     final isSelected = ref.watch(
@@ -137,7 +137,7 @@ class _ProductItem extends ConsumerWidget {
                   enterpriseCode,
                 ).notifier,
               )
-              .updateValues(productIndex: index);
+              .updateProductIndex(index);
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (quantityFocusNode.canRequestFocus) {
               quantityFocusNode.requestFocus();

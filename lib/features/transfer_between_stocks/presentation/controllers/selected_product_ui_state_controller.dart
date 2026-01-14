@@ -13,16 +13,20 @@ class SelectedProductUIStateController
     return SelectedProductUIStateEntity.empty();
   }
 
+  void updateProductIndex(int? index) {
+    if (state.productIndex == index || index == null) {
+      state = state.annulValues(annulProductIndex: true);
+    } else {
+      state = state.copyWith(productIndex: index);
+    }
+  }
+
   Future<void> updateValues({
     TransferJustificationEntity? justification,
     StockTypeEntity? originStock,
     StockTypeEntity? destinyStock,
-    int? productIndex,
     int? pageIndex,
   }) async {
-    final annulProductIndex =
-        productIndex == state.productIndex || productIndex == null;
-
     StockTypeEntity? originStockToChange;
     if (justification != null) {
       //*check if the justification has a fixed stock
@@ -39,14 +43,11 @@ class SelectedProductUIStateController
       }
     }
 
-    state = state
-        .annulValues(annulProductIndex: annulProductIndex)
-        .copyWith(
-          selectedJustification: justification,
-          selectedOriginStock: originStockToChange ?? originStock,
-          selectedDestinyStock: destinyStock,
-          pageIndex: pageIndex,
-          productIndex: annulProductIndex ? null : productIndex,
-        );
+    state = state.copyWith(
+      selectedJustification: justification,
+      selectedOriginStock: originStockToChange ?? originStock,
+      selectedDestinyStock: destinyStock,
+      pageIndex: pageIndex,
+    );
   }
 }

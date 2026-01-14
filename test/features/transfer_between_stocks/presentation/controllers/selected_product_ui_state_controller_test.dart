@@ -64,7 +64,6 @@ void main() {
             .annulValues(annulCodigoInterno_TipoEstoque: true);
         final originStock = EntityFactory.makeStockTypeEntity();
         final destinyStock = EntityFactory.makeStockTypeEntity();
-        final productIndex = faker.randomGenerator.integer(100);
         final pageIndex = faker.randomGenerator.integer(100);
 
         container = makeProviderContainer();
@@ -79,7 +78,6 @@ void main() {
           justification: justification,
           originStock: originStock,
           destinyStock: destinyStock,
-          productIndex: productIndex,
           pageIndex: pageIndex,
         );
 
@@ -91,7 +89,6 @@ void main() {
         expect(state.selectedJustification, justification);
         expect(state.selectedOriginStock, originStock);
         expect(state.selectedDestinyStock, destinyStock);
-        expect(state.productIndex, productIndex);
         expect(state.pageIndex, pageIndex);
       },
     );
@@ -147,7 +144,7 @@ void main() {
         );
 
         // Set initial index
-        notifier.updateValues(productIndex: productIndex);
+        notifier.updateProductIndex(productIndex);
         expect(
           container
               .read(
@@ -158,7 +155,7 @@ void main() {
         );
 
         // Act: Passing the same index should trigger the toggle to null
-        notifier.updateValues(productIndex: productIndex);
+        notifier.updateProductIndex(productIndex);
 
         // Assert
         final state = container.read(
@@ -182,10 +179,10 @@ void main() {
         );
 
         // Set first index
-        notifier.updateValues(productIndex: firstIndex);
+        notifier.updateProductIndex(firstIndex);
 
         // Act: Passing a different index should update the value
-        notifier.updateValues(productIndex: secondIndex);
+        notifier.updateProductIndex(secondIndex);
 
         // Assert
         final state = container.read(
@@ -207,10 +204,10 @@ void main() {
           selectedProductUIStateControllerProvider(fakeEnterpriseCode).notifier,
         );
 
-        notifier.updateValues(productIndex: initialIndex);
+        notifier.updateProductIndex(initialIndex);
 
         // Act: Passing null explicitly
-        notifier.updateValues(productIndex: null);
+        notifier.updateProductIndex(null);
 
         // Assert
         final state = container.read(
