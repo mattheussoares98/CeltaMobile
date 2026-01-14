@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
@@ -10,6 +8,7 @@ import '../../../../../../core/validators/validators.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
+import 'components.dart';
 
 class UpdateValuesWidgets extends ConsumerStatefulWidget {
   final ProductEntity product;
@@ -35,20 +34,6 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
   DateTime? newValidity;
   final formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        setState(() {
-          //TODO move this to a controller
-          newValidity = widget.product.DataValidade_ProcRecebDocProEmb;
-        });
-      }
-    });
-  }
-
   void update({bool? isSubtract, bool? isAnnul}) {
     if (isAnnul != true && formKey.currentState?.validate() != true) {
       return;
@@ -70,59 +55,14 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final bool hasInsertedQuantity =
         widget.product.Quantidade_ProcRecebDocProEmb != null &&
         widget.product.Quantidade_ProcRecebDocProEmb! > 0;
 
-    final now = DateTime.now();
-
     return Column(
       children: [
         const Divider(),
-        Row(
-          children: [
-            Expanded(
-              flex: 6,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: PrimaryTextButton(
-                  text: 'Nova validade'.hardcoded,
-                  icon: Icon(
-                    isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
-                  ),
-                  onPressed: () async {
-                    newValidity = await GetNewDate.get(
-                      minimumDate: now,
-                      maximumDate: now.add(const Duration(days: 365 * 10)),
-                      context: context,
-                      currentSelectedDate: newValidity,
-                      insertHoursAndMinutes: false,
-                    );
-                    setState(() {});
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  newValidity != null
-                      ? DateFormat('dd/MM/yyyy').format(newValidity!)
-                      : 'Nenhuma'.hardcoded,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontStyle: FontStyle.italic,
-                    color: newValidity == null
-                        ? Colors.red
-                        : theme.primaryColor,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        Validity(product: widget.product),
         gapH8,
         Row(
           children: [
