@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../routing/routing.dart';
@@ -106,8 +105,6 @@ class ModulesWidget extends ConsumerWidget {
       ),
     ];
 
-    buttons.sort((a, b) => a.route.module.compareTo(b.route.module));
-
     int getCrossAxisCount(BoxConstraints constraints) {
       final floor = (constraints.maxWidth / 160).floor();
       if (floor < 2) {
@@ -119,40 +116,87 @@ class ModulesWidget extends ConsumerWidget {
       }
     }
 
-    return SafeArea(
-      child: AsyncValueWidget(
-        value: ref.watch(favoriteModulesStateControllerProvider),
-        tryAgain: () => ref.invalidate(favoriteModulesStateControllerProvider),
-        data: (favorites) {
-          buttons.sort((a, b) {
-            if (favorites.contains(a.module)) {
-              return -1;
-            } else if (favorites.contains(b.module)) {
-              return 1;
-            } else {
-              return a.route.module.compareTo(b.route.module);
-            }
-          });
+    final favoriteModules =
+        ref.watch(favoriteModulesStateControllerProvider).value ?? [];
 
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              return GridView.builder(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-                itemCount: buttons.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: getCrossAxisCount(constraints),
-                  mainAxisExtent: 90,
-                  childAspectRatio: 1.7,
-                  crossAxisSpacing: Sizes.p4,
-                  mainAxisSpacing: Sizes.p4,
+    final sortedButtons = [...buttons]
+      ..sort((a, b) {
+        // We find the position of the modules in the favorites list
+        final int indexA = favoriteModules.indexOf(a.module);
+        final int indexB = favoriteModules.indexOf(b.module);
+
+        final bool aIsFav = indexA != -1;
+        final bool bIsFav = indexB != -1;
+
+        // If both are favorites, we sort them by their appearance in the
+        // favoriteModules list in reverse order (newest first).
+        if (aIsFav && bIsFav) {
+          return indexB.compareTo(indexA);
+        }
+
+        // Favorited items always come before non-favorited items
+        if (aIsFav && !bIsFav) return -1;
+        if (!aIsFav && bIsFav) return 1;
+
+        // Default alphabetical sorting for non-favorited modules
+        return a.route.module.compareTo(b.route.module);
+      });
+
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          final crossAxisCount = getCrossAxisCount(constraints);
+
+          // Grid configuration variables
+          const double itemHeight = 90;
+          const double spacing = Sizes.p4;
+          final double itemWidth =
+              (width - (spacing * (crossAxisCount + 1))) / crossAxisCount;
+
+          // Calculate total rows to determine the scrollable area height
+          final int rowCount = (sortedButtons.length / crossAxisCount).ceil();
+          final double totalHeight =
+              rowCount * (itemHeight + spacing) + spacing;
+
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: SizedBox(
+              height: totalHeight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: spacing),
+                child: Stack(
+                  children: List.generate(sortedButtons.length, (index) {
+                    final button = sortedButtons[index];
+
+                    // Coordinate math for the grid position
+                    final int row = index ~/ crossAxisCount;
+                    final int col = index % crossAxisCount;
+
+                    final double left = col * (itemWidth + spacing);
+                    final double top = row * (itemHeight + spacing);
+
+                    // AnimatedPositioned makes the item slide to its new
+                    // coordinates instead of jumping instantly.
+                    return AnimatedPositioned(
+                      // Using the unique route name as a key is critical so
+                      // Flutter knows it's the same widget moving.
+                      key: ValueKey('anim_module_${button.route.name}'),
+                      duration: const Duration(milliseconds: 600),
+                      curve: Curves.easeInOutCubic,
+                      left: left,
+                      top: top,
+                      width: itemWidth,
+                      height: itemHeight,
+                      child: RepaintBoundary(
+                        // RepaintBoundary keeps the paint logic efficient during movement
+                        child: button,
+                      ),
+                    );
+                  }),
                 ),
-                itemBuilder: (_, index) {
-                  final button = buttons[index];
-                  return button;
-                },
-              );
-            },
+              ),
+            ),
           );
         },
       ),
