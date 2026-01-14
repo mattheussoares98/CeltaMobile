@@ -1,4 +1,5 @@
 export './app_bar_title.dart';
+export './bottom_nav_bar.dart';
 export './bs_prices_and_minimum_whole_quantity.dart';
 export './cart_badge.dart';
 export './discount_field_and_type_dropdown.dart';
