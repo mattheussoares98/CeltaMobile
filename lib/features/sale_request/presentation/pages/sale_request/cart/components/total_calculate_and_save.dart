@@ -66,6 +66,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 );
               },
               data: (canChangePrice) {
+                //TODO test with a user that cant change price
                 final needProcessCart = ref.watch(
                   pendingSaleRequestStateControllerProvider.select(
                     (s) => s.value?.needProcessCart == true,

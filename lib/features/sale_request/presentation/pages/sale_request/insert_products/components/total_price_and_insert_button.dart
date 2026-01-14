@@ -6,19 +6,22 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../domain/entities/entities.dart';
-import 'components.dart';
 
 class TotalPriceAndInsertButton extends StatelessWidget {
   final VoidCallback insertProduct;
   final ProductEntity product;
-  final ProductsItems productsItems;
   final PercentageOrValue? discountType;
+  final TextEditingController priceController;
+  final TextEditingController quantityController;
+  final TextEditingController discountController;
   const TotalPriceAndInsertButton({
     super.key,
     required this.insertProduct,
     required this.product,
-    required this.productsItems,
     required this.discountType,
+    required this.priceController,
+    required this.quantityController,
+    required this.discountController,
   });
 
   @override
@@ -27,16 +30,16 @@ class TotalPriceAndInsertButton extends StatelessWidget {
 
     return AnimatedBuilder(
       animation: Listenable.merge([
-        productsItems.priceController,
-        productsItems.quantityController,
-        productsItems.discountController,
+        priceController,
+        quantityController,
+        discountController,
       ]),
       builder: (_, _) {
         final newItem = CartProductEntity.create(
           product: product,
-          quantity: productsItems.quantityController.text.toDouble() ?? 0,
-          price: productsItems.priceController.text.toDouble() ?? 0,
-          discountByItem: productsItems.discountController.text.toDouble(),
+          quantity: quantityController.text.toDouble() ?? 0,
+          price: priceController.text.toDouble() ?? 0,
+          discountByItem: discountController.text.toDouble(),
           discountType: discountType,
         );
         return Column(
