@@ -9,30 +9,28 @@ import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final TextEditingController searchValueController;
-  final TextEditingController quantityController;
-  final FocusNode quantityFocusNode;
-  const ProductsPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.searchValueController,
-    required this.quantityController,
-    required this.quantityFocusNode,
-  });
+  const ProductsPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
 }
 
 class _ProductsPageState extends ConsumerState<ProductsPage> {
+  final searchValueController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    searchValueController.dispose();
+    super.dispose();
+  }
 
   Future<void> _searchProducts(SearchProductKey searchProductKey) async {
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
           GetProductsJsonParams(
-            searchValue: widget.searchValueController.text,
+            searchValue: searchValueController.text,
             enterpriseCodes: [widget.enterpriseCode],
           ),
         );
@@ -53,7 +51,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         child: Column(
           children: [
             DefaultSearchProducts(
-              searchValueController: widget.searchValueController,
+              searchValueController: searchValueController,
               searchProductKey: searchProductKey,
               isLoading: ref.watch(
                 searchProductsStateControllerProvider(
@@ -71,9 +69,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             gapH8,
             Flexible(
               child: ProductsItems(
-                formKey: formKey,
                 searchProductKey: searchProductKey,
-                widget: widget,
+                enterpriseCode: widget.enterpriseCode,
+                formKey: formKey,
               ),
             ),
           ],

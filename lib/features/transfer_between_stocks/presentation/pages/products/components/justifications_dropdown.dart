@@ -13,20 +13,13 @@ class JustificationsDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncValue = ref.watch(
-      transferJustificationStateControllerProvider(
-        enterpriseCode,
-        TransferJustificationType.transferBetweenStocks,
-      ),
-    );
-    final selectedJustification = ref.watch(
-      selectedProductUIStateControllerProvider(
-        enterpriseCode,
-      ).select((s) => s.selectedJustification),
-    );
-
     return AsyncValueWidget(
-      value: asyncValue,
+      value: ref.watch(
+        transferJustificationStateControllerProvider(
+          enterpriseCode,
+          TransferJustificationType.transferBetweenStocks,
+        ),
+      ),
       tryAgain: () {
         ref.invalidate(
           transferJustificationStateControllerProvider(
@@ -37,7 +30,6 @@ class JustificationsDropdown extends ConsumerWidget {
       },
       data: (justifications) {
         return DefaultSimpleDropDown<TransferJustificationEntity?>(
-          isLoading: asyncValue.isLoading,
           onChanged: (value) {
             ref
                 .read(
@@ -46,7 +38,6 @@ class JustificationsDropdown extends ConsumerWidget {
                   ).notifier,
                 )
                 .updateValues(justification: value);
-            //! change the origin stock automatically in the controller when need
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {
@@ -61,7 +52,11 @@ class JustificationsDropdown extends ConsumerWidget {
               child: Center(child: Text(e.Descricao_JustMov)),
             );
           }).toList(),
-          value: selectedJustification,
+          value: ref.watch(
+            selectedProductUIStateControllerProvider(
+              enterpriseCode,
+            ).select((s) => s.selectedJustification),
+          ),
           hint: 'Justificativas'.hardcoded,
         );
       },

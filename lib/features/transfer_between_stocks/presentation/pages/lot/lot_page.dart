@@ -7,23 +7,31 @@ import '../../../../../constants/constants.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class LotPage extends ConsumerWidget {
+class LotPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final TextEditingController lotQuantityController;
-  final FocusNode lotQuantityFocusNode;
-  const LotPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.lotQuantityController,
-    required this.lotQuantityFocusNode,
-  });
+  const LotPage({super.key, required this.enterpriseCode});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _LotPageState();
+}
+
+class _LotPageState extends ConsumerState<LotPage> {
+  final lotQuantityController = TextEditingController();
+  final lotQuantityFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    lotQuantityController.dispose();
+    lotQuantityFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return AsyncValueWidget(
-      value: ref.watch(lotStateControllerProvider(enterpriseCode)),
+      value: ref.watch(lotStateControllerProvider(widget.enterpriseCode)),
       tryAgain: () {
-        ref.invalidate(lotStateControllerProvider(enterpriseCode));
+        ref.invalidate(lotStateControllerProvider(widget.enterpriseCode));
       },
       data: (items) {
         if (items.isEmpty) {
@@ -35,7 +43,7 @@ class LotPage extends ConsumerWidget {
               child: LotItems(
                 items: items,
                 quantityController: lotQuantityController,
-                enterpriseCode: enterpriseCode,
+                enterpriseCode: widget.enterpriseCode,
                 quantityFocusNode: lotQuantityFocusNode,
               ),
             ),
@@ -51,14 +59,14 @@ class LotPage extends ConsumerWidget {
                   Expanded(
                     child: ConfirmOrRequestButton(
                       isRequest: true,
-                      enterpriseCode: enterpriseCode,
+                      enterpriseCode: widget.enterpriseCode,
                     ),
                   ),
                   gapW8,
                   Expanded(
                     child: ConfirmOrRequestButton(
                       isRequest: false,
-                      enterpriseCode: enterpriseCode,
+                      enterpriseCode: widget.enterpriseCode,
                     ),
                   ),
                 ],

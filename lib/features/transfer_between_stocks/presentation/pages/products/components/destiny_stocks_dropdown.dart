@@ -13,10 +13,6 @@ class DestinyStocksDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stocksAsync = ref.watch(
-      stockTypeStateControllerProvider(enterpriseCode),
-    );
-
     final selectedOriginStock = ref.watch(
       selectedProductUIStateControllerProvider(
         enterpriseCode,
@@ -29,13 +25,12 @@ class DestinyStocksDropdown extends ConsumerWidget {
     );
 
     return AsyncValueWidget(
-      value: stocksAsync,
+      value: ref.watch(stockTypeStateControllerProvider(enterpriseCode)),
       tryAgain: () {
         ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
       },
       data: (stocks) {
         return DefaultSimpleDropDown<StockTypeEntity?>(
-          isLoading: stocksAsync.isLoading,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (value) {
             ref

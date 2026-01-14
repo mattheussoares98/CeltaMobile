@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,133 +7,162 @@ import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../utils/utils.dart';
-import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
-import '../../pages.dart';
 import '../components/components.dart';
 
-class ProductsItems extends ConsumerWidget {
+class ProductsItems extends ConsumerStatefulWidget {
   final SearchProductKey searchProductKey;
-  final GlobalKey<FormState> formKey;
-  final ProductsPage widget;
+  final int enterpriseCode;
+  final GlobalKey<FormState>
+  formKey; //receive as param because validate the dropdowns too
   const ProductsItems({
     super.key,
     required this.searchProductKey,
+    required this.enterpriseCode,
     required this.formKey,
-    required this.widget,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final uiState = ref.watch(
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
+}
+
+class _ProductsItemsState extends ConsumerState<ProductsItems> {
+  final quantityController = TextEditingController();
+  final quantityFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    quantityController.dispose();
+    quantityFocusNode.dispose();
+    super.dispose();
+  }
+
+  Future<void> addInLot(ProductEntity product) async {
+    if (widget.formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final uiState = ref.read(
       selectedProductUIStateControllerProvider(widget.enterpriseCode),
     );
 
-    final theme = Theme.of(context);
+    ref
+        .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
+        .addItem(
+          product: product,
+          quantity: quantityController.text.toDouble() ?? 0,
+          selectedDestinyStock: uiState.selectedDestinyStock!,
+          selectedJustification: uiState.selectedJustification!,
+          selectedOriginStock: uiState.selectedOriginStock!,
+        );
 
-    Future<void> addInLot(ProductEntity product) async {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      }
+    quantityController.clear();
+    ref
+        .read(
+          selectedProductUIStateControllerProvider(
+            widget.enterpriseCode,
+          ).notifier,
+        )
+        .updateValues(productIndex: null);
+  }
 
-      ref
-          .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
-          .addItem(
-            product: product,
-            quantity: widget.quantityController.text.toDouble() ?? 0,
-            selectedDestinyStock: uiState.selectedDestinyStock!,
-            selectedJustification: uiState.selectedJustification!,
-            selectedOriginStock: uiState.selectedOriginStock!,
-          );
-
-      widget.quantityController.clear();
-      ref
-          .read(
-            selectedProductUIStateControllerProvider(
-              widget.enterpriseCode,
-            ).notifier,
-          )
-          .updateValues(productIndex: null);
-    }
-
+  @override
+  Widget build(BuildContext context) {
     return AsyncValueWidget(
-      value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
+      value: ref.watch(
+        searchProductsStateControllerProvider(widget.searchProductKey),
+      ),
       tryAgain: null,
       data: (products) {
-        return Consumer(
-          builder: (_, ref, _) {
-            final lotAsync = ref.watch(
-              lotStateControllerProvider(widget.enterpriseCode),
-            );
-            return ResponsiveListFlow(
-              maxItemWidth: 380,
-              itemCount: products.length,
-              itemBuilder: (_, index) {
-                final product = products[index];
+        return ResponsiveListFlow(
+          itemCount: products.length,
+          itemBuilder: (_, index) {
+            final product = products[index];
 
-                final productInLotIndex = lotAsync.value?.indexWhere(
-                  (e) =>
-                      e.product.ProductPackingCode ==
-                      product.ProductPackingCode,
-                );
-                ProductLotInfoEntity? lotItem;
-                if (productInLotIndex != -1 && productInLotIndex != null) {
-                  lotItem = lotAsync.value?[productInLotIndex];
-                }
-
-                return Consumer(
-                  builder: (_, ref, _) {
-                    final selectedIndex = ref.watch(
-                      selectedProductUIStateControllerProvider(
-                        widget.enterpriseCode,
-                      ).select((s) => s.productIndex),
-                    );
-                    return ProductItemWidget(
-                      product: product,
-                      routine: BsRoutine.adjustStock,
-                      onTap: () {
-                        ref
-                            .read(
-                              selectedProductUIStateControllerProvider(
-                                widget.enterpriseCode,
-                              ).notifier,
-                            )
-                            .updateValues(productIndex: index);
-                        Future.delayed(
-                          Duration.zero,
-                          () => widget.quantityFocusNode.requestFocus(),
-                        );
-                        widget.quantityController.clear();
-                      },
-                      showDropIcon: true,
-                      isSelected: selectedIndex == index,
-                      clickableBottom: lotItem == null
-                          ? null
-                          : Text(
-                              '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
-                              textAlign: TextAlign.start,
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                color: Colors.blue,
-                              ),
-                            ),
-                      notClickableBottom: selectedIndex == index
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: Sizes.p8),
-                              child: AddInLot(
-                                productIsAlreadyInLot: lotItem != null,
-                                addInLot: () => addInLot(product),
-                                widget: widget,
-                              ),
-                            )
-                          : null,
-                    );
-                  },
-                );
-              },
+            return _ProductItem(
+              key: ValueKey('product_${product.ProductPackingCode}'),
+              enterpriseCode: widget.enterpriseCode,
+              product: product,
+              index: index,
+              quantityController: quantityController,
+              quantityFocusNode: quantityFocusNode,
+              addInLot: addInLot,
             );
           },
         );
       },
+    );
+  }
+}
+
+class _ProductItem extends ConsumerWidget {
+  final int enterpriseCode;
+  final ProductEntity product;
+  final int index;
+  final TextEditingController quantityController;
+  final FocusNode quantityFocusNode;
+  final Future<void> Function(ProductEntity product) addInLot;
+  const _ProductItem({
+    super.key,
+    required this.enterpriseCode,
+    required this.product,
+    required this.index,
+    required this.quantityController,
+    required this.quantityFocusNode,
+    required this.addInLot,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
+    final lotItem = ref.watch(
+      //TODO every item is rebuilding when lot changes. Need create another controller to receive the quantity in lot
+      lotStateControllerProvider(enterpriseCode).select(
+        (asyncLot) => asyncLot.value?.firstWhereOrNull(
+          (e) => e.product.ProductPackingCode == product.ProductPackingCode,
+        ),
+      ),
+    );
+
+    final isSelected = ref.watch(
+      selectedProductUIStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.productIndex == index),
+    );
+
+    return ProductItemWidget(
+      product: product,
+      routine: BsRoutine.adjustStock,
+      onTap: () {
+        ref
+            .read(
+              selectedProductUIStateControllerProvider(enterpriseCode).notifier,
+            )
+            .updateValues(productIndex: index);
+        Future.delayed(Duration.zero, () => quantityFocusNode.requestFocus());
+        quantityController.clear();
+      },
+      showDropIcon: true,
+      isSelected: isSelected,
+      clickableBottom: lotItem == null
+          ? null
+          : Text(
+              '${lotItem.quantity.toString().toBrazilianNumber()} qtds no lote',
+              textAlign: TextAlign.start,
+              style: theme.textTheme.titleSmall?.copyWith(color: Colors.blue),
+            ),
+      notClickableBottom: isSelected
+          ? Padding(
+              padding: const EdgeInsets.only(top: Sizes.p8),
+              child: AddInLot(
+                productIsAlreadyInLot: lotItem != null,
+                addInLot: () => addInLot(product),
+                quantityController: quantityController,
+                quantityFocusNode: quantityFocusNode,
+              ),
+            )
+          : null,
     );
   }
 }
