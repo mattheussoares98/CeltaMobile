@@ -34,7 +34,7 @@ class QuantityField extends StatelessWidget {
       },
       validator: FormValidators.compose([
         NonEmptyValidator(),
-        NumberValidator(allowDecimal: true),
+        NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
       ]),
     );
   }
