@@ -38,6 +38,7 @@ class DefaultRowFields extends StatelessWidget {
             suffixIcon: DefaultDeleteIcon(controller, focusNode),
             onFieldSubmitted: (_) => offerFocusNode.requestFocus(),
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: FormValidators.compose([
               NumberValidator(
                 allowDecimal: true,
@@ -58,6 +59,7 @@ class DefaultRowFields extends StatelessWidget {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLength: 13,
             suffixIcon: DefaultDeleteIcon(offerController, offerFocusNode),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: FormValidators.compose([
               NumberValidator(
                 allowDecimal: true,
