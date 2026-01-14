@@ -50,9 +50,6 @@ class RequestsTypePage extends ConsumerWidget {
 
                 return Card(
                   clipBehavior: Clip.antiAlias,
-                  color: selectedEnterprise?.SaleRequestTypeCode == request.Code
-                      ? theme.primaryColorLight.withAlpha(200)
-                      : null,
                   child: InkWell(
                     onTap: () {
                       context.goNamed(
@@ -73,7 +70,7 @@ class RequestsTypePage extends ConsumerWidget {
                             Text(
                               'Modelo padrão'.hardcoded,
                               style: theme.textTheme.titleMedium?.copyWith(
-                                color: theme.primaryColorDark,
+                                color: theme.colorScheme.secondary,
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
