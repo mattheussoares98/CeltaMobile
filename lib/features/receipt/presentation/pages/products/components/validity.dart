@@ -8,7 +8,14 @@ import '../../../../../../localization/string_hardcoded.dart';
 
 class Validity extends StatefulWidget {
   final ProductEntity product;
-  const Validity({super.key, required this.product});
+  final DateTime? newValidityDate;
+  final void Function(DateTime? newValidityDate) onValidityDateChanged;
+  const Validity({
+    super.key,
+    required this.product,
+    required this.newValidityDate,
+    required this.onValidityDateChanged,
+  });
 
   @override
   State<Validity> createState() => _ValidityState();
@@ -25,7 +32,9 @@ class _ValidityState extends State<Validity> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         setState(() {
-          newValidity = widget.product.DataValidade_ProcRecebDocProEmb;
+          newValidity =
+              widget.newValidityDate ??
+              widget.product.DataValidade_ProcRecebDocProEmb;
         });
       }
     });
@@ -55,6 +64,7 @@ class _ValidityState extends State<Validity> {
                   currentSelectedDate: newValidity,
                   insertHoursAndMinutes: false,
                 );
+                widget.onValidityDateChanged(newValidity);
                 setState(() {});
               },
             ),
@@ -65,21 +75,12 @@ class _ValidityState extends State<Validity> {
           child: Align(
             alignment: Alignment.centerRight,
             child: Text(
-              newValidity == null &&
-                      widget.product.DataValidade_ProcRecebDocProEmb != null
-                  ? DateFormat(
-                      'dd/MM/yyyy',
-                    ).format(widget.product.DataValidade_ProcRecebDocProEmb!)
-                  : newValidity != null
+              newValidity != null
                   ? DateFormat('dd/MM/yyyy').format(newValidity!)
                   : 'Nenhuma'.hardcoded,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontStyle: FontStyle.italic,
-                color:
-                    newValidity == null &&
-                        widget.product.DataValidade_ProcRecebDocProEmb == null
-                    ? Colors.red
-                    : theme.primaryColor,
+                color: newValidity == null ? Colors.red : theme.primaryColor,
               ),
             ),
           ),

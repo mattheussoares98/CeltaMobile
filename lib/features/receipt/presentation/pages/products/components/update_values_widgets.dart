@@ -62,7 +62,11 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
     return Column(
       children: [
         const Divider(),
-        Validity(product: widget.product),
+        Validity(
+          product: widget.product,
+          newValidityDate: newValidity,
+          onValidityDateChanged: (value) => newValidity = value,
+        ),
         gapH8,
         Row(
           children: [
