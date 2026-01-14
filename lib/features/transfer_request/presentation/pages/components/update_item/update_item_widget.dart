@@ -42,6 +42,7 @@ class UpdateItemWidget extends ConsumerWidget {
     );
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           children: [
