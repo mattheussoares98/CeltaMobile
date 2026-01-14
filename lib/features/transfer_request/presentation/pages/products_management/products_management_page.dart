@@ -77,7 +77,7 @@ class _ProductsManagementPageState
               Sizes.p12,
               Sizes.p8,
             ),
-            leadingWidth: Sizes.p32,
+            // leadingWidth: Sizes.p32,
             actions: [
               Consumer(
                 builder: (_, ref, _) {

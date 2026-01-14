@@ -73,7 +73,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       final price = transferRequestProductItem?.value ?? product.Value;
       priceController.text = price.toString().toBrazilianNumber().replaceAll(
         RegExp(r'\.'),
-        ',',
+        '',
       );
     }
     Future.delayed(const Duration(milliseconds: 100), () {
