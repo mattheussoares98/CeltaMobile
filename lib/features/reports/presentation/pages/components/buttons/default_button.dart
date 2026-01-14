@@ -48,13 +48,6 @@ class DefaultButton extends ConsumerWidget {
       final bytes = extractBytes(asyncValue);
 
       if (bytes == null) {
-        if (requestFolderToDownload && isXlsx) {
-          await showAlertDialog(
-            context: context,
-            title: 'Atenção'.hardcoded,
-            content: 'Selecione a pasta que deseja salvar o arquivo'.hardcoded,
-          );
-        }
         await ref
             .read(
               downloadStateControllerProvider(
@@ -137,9 +130,9 @@ class DefaultButton extends ConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (isXlsx && requestFolderToDownload)
+                if (isXlsx && !requestFolderToDownload)
                   ShareButton(fileBytes: fileBytes, report: report)
-                else if (isXlsx && !requestFolderToDownload)
+                else if (isXlsx && requestFolderToDownload)
                   VisualizeFilePathButton(this)
                 else
                   VisualizePdfButton(
