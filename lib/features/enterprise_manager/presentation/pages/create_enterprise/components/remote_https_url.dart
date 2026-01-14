@@ -30,6 +30,7 @@ class RemoteHttpsUrl extends StatelessWidget {
       },
       labelText: "HTTPS remota".hardcoded,
       hintText: "HTTPS remota".hardcoded,
+      keyboardType: TextInputType.url,
       suffixIcon: DeleteIcon(onPress: isLoading ? null : urlController.clear),
       validator: FormValidators.compose([
         UrlValidator(allowEmptyValue: true, shouldBeHttps: true),

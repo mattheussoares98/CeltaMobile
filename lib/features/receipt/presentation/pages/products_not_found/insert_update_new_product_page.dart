@@ -54,6 +54,9 @@ class InsertUpdateProductPage extends ConsumerWidget {
                 controller: eanController,
                 enabled: !isLoading && !isEditing,
                 onFieldSubmitted: (_) => quantityFocusNode.requestFocus(),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: false,
+                ),
                 validator: FormValidators.compose([
                   NumberValidator(allowDecimal: false),
                   MinLengthValidator(8),
@@ -67,6 +70,9 @@ class InsertUpdateProductPage extends ConsumerWidget {
                 enabled: !isLoading,
                 focusNode: quantityFocusNode,
                 onFieldSubmitted: (_) => observationsFocusNode.requestFocus(),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: false,
+                ),
                 validator: FormValidators.compose([
                   NumberValidator(allowDecimal: true),
                 ]),

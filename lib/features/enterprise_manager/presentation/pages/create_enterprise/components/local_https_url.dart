@@ -30,6 +30,7 @@ class LocalHttpsUrl extends StatelessWidget {
       },
       labelText: "HTTPS local".hardcoded,
       hintText: "HTTPS local".hardcoded,
+      keyboardType: TextInputType.url,
       suffixIcon: DeleteIcon(onPress: isLoading ? null : urlController.clear),
       validator: FormValidators.compose([
         UrlValidator(allowEmptyValue: true, shouldBeHttps: true),

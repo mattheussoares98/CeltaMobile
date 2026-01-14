@@ -129,7 +129,9 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                     maxLength: 5,
                     controller: controller.controller,
                     focusNode: controller.focusNode,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     onTap: () {
                       if (!controller.focusNode.hasFocus) {

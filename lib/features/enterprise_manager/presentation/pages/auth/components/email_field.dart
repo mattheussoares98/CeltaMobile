@@ -24,8 +24,8 @@ class EmailField extends StatelessWidget {
       enabled: !isLoading,
       controller: emailController,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      labelText: 'Email'.hardcoded,
-      hintText: 'Email'.hardcoded,
+      labelText: 'E-mail'.hardcoded,
+      hintText: 'E-mail'.hardcoded,
       onFieldSubmitted: (_) {
         passwordFocusNode.requestFocus();
       },
