@@ -17,6 +17,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
   final TextEditingController quantityController;
   final TextEditingController observationsController;
   final VoidCallback onSubmit;
+  final bool isEditing;
   const InsertUpdateProductPage({
     super.key,
     required this.receiptCode,
@@ -27,6 +28,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
     required this.quantityController,
     required this.observationsController,
     required this.onSubmit,
+    required this.isEditing,
   });
 
   @override
@@ -50,7 +52,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
             children: [
               DefaultTextFormField(
                 controller: eanController,
-                enabled: !isLoading,
+                enabled: !isLoading && !isEditing,
                 onFieldSubmitted: (_) => quantityFocusNode.requestFocus(),
                 validator: FormValidators.compose([
                   NumberValidator(allowDecimal: false),

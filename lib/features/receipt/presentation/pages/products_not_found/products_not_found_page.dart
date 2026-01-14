@@ -73,6 +73,7 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
     }
     showModalPage(
       InsertUpdateProductPage(
+        isEditing: product != null,
         receiptCode: widget.receiptCode,
         formKey: formKey,
         quantityFocusNode: quantityFocusNode,
@@ -118,40 +119,45 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
               itemBuilder: (_, index) {
                 final product = products[index];
 
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleAndSubTitle(
-                          title: 'EAN'.hardcoded,
-                          subTitle: product.ean,
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Quantidade'.hardcoded,
-                          subTitle: product.quantity
-                              .toString()
-                              .toBrazilianNumber(),
-                        ),
-                        if (product.observations != null &&
-                            product.observations!.isNotEmpty &&
-                            product.observations.toString() != 'null')
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: (products.length == index + 1) ? Sizes.p64 : 0,
+                  ),
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(Sizes.p8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           TitleAndSubTitle(
-                            title: 'Observações'.hardcoded,
-                            subTitle: product.observations,
+                            title: 'EAN'.hardcoded,
+                            subTitle: product.ean,
                           ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: IconButton(
-                            onPressed: () =>
-                                openInsertUpdateProductPage(product),
-                            icon: Icon(
-                              isIOS ? CupertinoIcons.pencil : Icons.edit,
+                          TitleAndSubTitle(
+                            title: 'Quantidade'.hardcoded,
+                            subTitle: product.quantity
+                                .toString()
+                                .toBrazilianNumber(),
+                          ),
+                          if (product.observations != null &&
+                              product.observations!.isNotEmpty &&
+                              product.observations.toString() != 'null')
+                            TitleAndSubTitle(
+                              title: 'Observações'.hardcoded,
+                              subTitle: product.observations,
+                            ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: IconButton(
+                              onPressed: () =>
+                                  openInsertUpdateProductPage(product),
+                              icon: Icon(
+                                isIOS ? CupertinoIcons.pencil : Icons.edit,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
