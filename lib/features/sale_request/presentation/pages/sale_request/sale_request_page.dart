@@ -27,12 +27,6 @@ class SaleRequestPage extends ConsumerStatefulWidget {
 }
 
 class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
-  final appBarTitles = [
-    'Inserir produtos'.hardcoded,
-    'Cliente'.hardcoded,
-    'Carrinho'.hardcoded,
-  ];
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -63,15 +57,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
       children: [
         Scaffold(
           appBar: AppBar(
-            title: Consumer(
-              builder: (_, ref, _) {
-                return FittedBox(
-                  child: Text(
-                    appBarTitles[ref.watch(pageIndexStateControllerProvider)],
-                  ),
-                );
-              },
-            ),
+            title: AppBarTitle(enterpriseCode: widget.enterpriseCode),
             actionsPadding: const EdgeInsets.fromLTRB(
               0,
               Sizes.p8,
