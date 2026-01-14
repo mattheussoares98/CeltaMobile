@@ -8,6 +8,7 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
+import '../components/components.dart';
 import 'products_management.dart';
 
 class ProductsManagementPage extends ConsumerStatefulWidget {
@@ -62,13 +63,21 @@ class _ProductsManagementPageState
         Scaffold(
           resizeToAvoidBottomInset: pageIndex == 0,
           appBar: AppBar(
-            title: Text(appBarTitles[pageIndex]),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(appBarTitles[pageIndex]),
+                const LastSavedNumber(),
+              ],
+            ),
             actionsPadding: const EdgeInsets.fromLTRB(
               0,
               Sizes.p8,
               Sizes.p12,
               Sizes.p8,
             ),
+            leadingWidth: Sizes.p32,
             actions: [
               Consumer(
                 builder: (_, ref, _) {

@@ -24,8 +24,7 @@ class CartPage extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Column(
         children: [
-          if (pendingAsync.value == null || pendingAsync.value!.isEmpty) ...[
-            const LastSavedNumber(),
+          if (pendingAsync.value == null || pendingAsync.value!.isEmpty)
             Expanded(
               child: Center(
                 child: Text(
@@ -35,13 +34,12 @@ class CartPage extends ConsumerWidget {
                   ),
                 ),
               ),
-            ),
-          ] else
+            )
+          else
             Expanded(
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
                 slivers: [
-                  const SliverToBoxAdapter(child: LastSavedNumber()),
                   AsyncValueSliverWidget(
                     value: pendingAsync,
                     tryAgain: () => ref.invalidate(
