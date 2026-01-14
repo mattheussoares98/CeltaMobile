@@ -126,6 +126,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: Sizes.p8),
                   child: DefaultTextFormField(
+                    maxLength: 5,
                     controller: controller.controller,
                     focusNode: controller.focusNode,
                     keyboardType: TextInputType.number,

@@ -28,6 +28,7 @@ class PhoneField extends ConsumerWidget {
     return DefaultTextFormField(
       controller: phoneController,
       focusNode: phoneFocusNode,
+      maxLength: 9,
       inputFormatters: [PhoneInputFormatter()],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: const TextInputType.numberWithOptions(decimal: false),

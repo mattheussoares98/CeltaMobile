@@ -25,6 +25,7 @@ class NumberField extends StatelessWidget {
       focusNode: numberFocusNode,
       labelText: 'Número'.hardcoded,
       hintText: 'Número'.hardcoded,
+      maxLength: 5,
       validator: FormValidators.compose([
         NonEmptyValidator(),
         MinLengthValidator(1),

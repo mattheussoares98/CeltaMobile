@@ -21,6 +21,7 @@ class DddField extends StatelessWidget {
       controller: dddController,
       labelText: 'DDD',
       hintText: 'DDD',
+      maxLength: 2,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: const TextInputType.numberWithOptions(decimal: false),
       validator: FormValidators.compose([NonEmptyValidator(), DddValidator()]),

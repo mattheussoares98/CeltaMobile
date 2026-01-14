@@ -60,6 +60,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
                 ]),
                 labelText: 'EAN'.hardcoded,
                 hintText: 'EAN'.hardcoded,
+                maxLength: 22,
               ),
               DefaultTextFormField(
                 controller: quantityController,
@@ -71,6 +72,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
                 ]),
                 labelText: 'Quantidade'.hardcoded,
                 hintText: 'Quantidade'.hardcoded,
+                maxLength: 10,
               ),
               DefaultTextFormField(
                 controller: observationsController,

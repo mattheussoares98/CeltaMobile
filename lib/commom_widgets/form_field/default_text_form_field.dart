@@ -29,7 +29,7 @@ class DefaultTextFormField extends StatelessWidget {
   final bool? autofocus;
   const DefaultTextFormField({
     super.key,
-    this.maxLength,
+    this.maxLength = 50,
     this.controller,
     this.enabled = true,
     this.onFieldSubmitted,

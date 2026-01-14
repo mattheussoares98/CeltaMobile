@@ -123,6 +123,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
                   labelText: 'Quantidade'.hardcoded,
                   controller: widget.quantityController,
                   focusNode: widget.quantityFocusNode,
+                  maxLength: 10,
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
