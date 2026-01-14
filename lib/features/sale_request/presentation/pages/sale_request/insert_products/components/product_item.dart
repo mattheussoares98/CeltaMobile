@@ -87,6 +87,10 @@ class _ProductItemState extends ConsumerState<ProductItem> {
 
       Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
+        quantityController.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: quantityController.text.length,
+        );
       });
     }
 
