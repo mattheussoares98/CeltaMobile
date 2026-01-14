@@ -47,7 +47,10 @@ class TitleAndSubTitle extends StatelessWidget {
         return emptyMessage!;
       } else if (subTitle == null || (subTitle is List && subTitle!.isEmpty)) {
         return null;
-      } else if (subTitleIsNumber is double) {
+      } else if (subTitleIsNumber) {
+        if (subTitle.toString().toInt() != null) {
+          return subTitle.toString().toInt().toString();
+        }
         return subTitle.toString().toBrazilianNumber();
       } else {
         return subTitle.toString();
