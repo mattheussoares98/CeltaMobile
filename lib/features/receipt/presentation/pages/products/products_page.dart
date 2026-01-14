@@ -1,18 +1,14 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../utils/utils.dart';
 import '../../../domain/entity/entity.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class ProductsPage extends ConsumerStatefulWidget {
+class ProductsPage extends ConsumerWidget {
   final int receiptCode;
   final ReceiptEntity? receipt;
   final int enterpriseCode;
@@ -24,80 +20,23 @@ class ProductsPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
-}
-
-class _ProductsPageState extends ConsumerState<ProductsPage> {
-  final searchValueController = TextEditingController();
-  final quantityController = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    searchValueController.dispose();
-    quantityController.dispose();
-  }
-
-  void searchProduct(
-    SearchProductKey searchProductKey, {
-    SearchType? searchType,
-  }) async {
-    ref
-        .read(searchProductsStateControllerProvider(searchProductKey).notifier)
-        .loadProducts(
-          GetProductsReceiptParams(
-            searchValue: searchValueController.text,
-            grDocCode: widget.receiptCode,
-          ),
-          specifiedSearchType: searchType,
-        );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    StringBuffer? buffer;
-    if (widget.receipt != null) {
-      buffer = StringBuffer(
-        '[${widget.receipt!.Numero_ProcRecebDoc.toString()}]',
-      );
-      if (widget.receipt!.EmitterName != null) {
-        buffer.write(' ${widget.receipt!.EmitterName}');
-      }
-    }
-
+  Widget build(BuildContext context, WidgetRef ref) {
     final searchProductKey = SearchProductKey(
-      widget.enterpriseCode,
+      enterpriseCode,
       BsRoutine.goodsReceiving,
       Modules.receipt,
     );
 
-    ref.listen(updateProductControllerProvider(searchProductKey), (p, n) {
-      n.showAlertDialogOnError(context);
-      n.doOnSuccess(p, () {
-        quantityController.clear();
-      });
-    });
-
-    final asyncValue = ref.watch(
-      searchProductsStateControllerProvider(searchProductKey),
-    );
-    final selectedIndex = ref.watch(selectedProductIndeStateControllerProvider);
-
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(
-            title: FittedBox(
-              child: Text(buffer?.toString() ?? 'Produtos'.hardcoded),
-            ),
-          ),
+          appBar: AppBar(title: AppBarTitle(receipt: receipt)),
           body: Column(
             children: [
               TopButtons(
-                searchProduct: (searchType) =>
-                    searchProduct(searchProductKey, searchType: searchType),
-                enterpriseCode: widget.enterpriseCode,
-                receiptCode: widget.receiptCode,
+                searchProductKey: searchProductKey,
+                enterpriseCode: enterpriseCode,
+                receiptCode: receiptCode,
               ),
               Expanded(
                 child: Padding(
@@ -109,86 +48,15 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   ),
                   child: Column(
                     children: [
-                      DefaultSearchProducts(
-                        isLoading: asyncValue.isLoading,
-                        searchProducts: () {
-                          searchProduct(searchProductKey);
-                        },
-                        searchValueController: searchValueController,
+                      SearchProducts(
                         searchProductKey: searchProductKey,
-                        doOnSearchSucceeds: () {
-                          ref
-                              .read(
-                                selectedProductIndeStateControllerProvider
-                                    .notifier,
-                              )
-                              .updateIndex(null);
-                        },
+                        receiptCode: receiptCode,
                       ),
                       gapH8,
                       Expanded(
-                        child: AsyncValueWidget(
-                          value: asyncValue,
-                          tryAgain: null,
-                          data: (products) {
-                            return ResponsiveListFlow(
-                              itemCount: products.length,
-                              itemBuilder: (_, index) {
-                                final product = products[index];
-
-                                return ProductItemWidget(
-                                  product: product,
-                                  routine: BsRoutine.goodsReceiving,
-                                  showDropIcon: true,
-                                  isSelected: selectedIndex == index,
-                                  onTap: () {
-                                    quantityController.clear();
-
-                                    ref
-                                        .read(
-                                          selectedProductIndeStateControllerProvider
-                                              .notifier,
-                                        )
-                                        .updateIndex(index);
-                                  },
-                                  notClickableBottom: selectedIndex == index
-                                      ? UpdateValuesWidgets(
-                                          product: product,
-                                          quantityController:
-                                              quantityController,
-                                          receiptCode: widget.receiptCode,
-                                          searchProductKey: searchProductKey,
-                                        )
-                                      : null,
-                                  clickableBottom: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      TitleAndSubTitle(
-                                        title: 'Validade'.hardcoded,
-                                        subTitle:
-                                            product.DataValidade_ProcRecebDocProEmb ==
-                                                null
-                                            ? null
-                                            : DateFormat('dd/MM/yyyy').format(
-                                                product
-                                                    .DataValidade_ProcRecebDocProEmb!,
-                                              ),
-                                        emptyMessage: 'Sem validade'.hardcoded,
-                                      ),
-                                      TitleAndSubTitle(
-                                        title: 'Quantidade contada'.hardcoded,
-                                        subTitle: product
-                                            .Quantidade_ProcRecebDocProEmb,
-                                        emptyMessage:
-                                            'Sem quantidade contada'.hardcoded,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          },
+                        child: ProductsItems(
+                          searchProductKey: searchProductKey,
+                          receiptCode: receiptCode,
                         ),
                       ),
                     ],

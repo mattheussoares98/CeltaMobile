@@ -16,12 +16,14 @@ class UpdateValuesWidgets extends ConsumerStatefulWidget {
   final TextEditingController quantityController;
   final SearchProductKey searchProductKey;
   final int receiptCode;
+  final FocusNode quantityFocusNode;
   const UpdateValuesWidgets({
     super.key,
     required this.product,
     required this.quantityController,
     required this.searchProductKey,
     required this.receiptCode,
+    required this.quantityFocusNode,
   });
 
   @override
@@ -40,6 +42,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         setState(() {
+          //TODO move this to a controller
           newValidity = widget.product.DataValidade_ProcRecebDocProEmb;
         });
       }
@@ -175,6 +178,10 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
                   hintText: 'Quantidade'.hardcoded,
                   labelText: 'Quantidade'.hardcoded,
                   controller: widget.quantityController,
+                  focusNode: widget.quantityFocusNode,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   validator: FormValidators.compose([
                     NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
                   ]),
