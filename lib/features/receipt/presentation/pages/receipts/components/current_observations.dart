@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entity/entity.dart';
 
@@ -29,7 +28,6 @@ class CurrentObservations extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        gapH12,
         TitleAndSubTitle(
           title: shouldInsertObservations
               ? 'Observação padrão'.hardcoded

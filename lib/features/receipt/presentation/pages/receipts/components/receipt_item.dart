@@ -60,11 +60,11 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TitleAndSubTitle(
@@ -84,14 +84,12 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                     subTitle: widget.receipt.EmitterName,
                   ),
                 if (selectedIndex != widget.index) ...[
-                  gapH4,
-                  Stack(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      gapH8,
                       CurrentObservations(receipt: widget.receipt),
-                      Positioned(
-                        top: 0,
-                        right: 0,
+                      Align(
+                        alignment: Alignment.centerRight,
                         child: ToggleUpdateObservationButton(
                           receipt: widget.receipt,
                           enterpriseCode: widget.enterpriseCode,
@@ -104,11 +102,8 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                 ],
               ],
             ),
-          ),
-          if (selectedIndex == widget.index) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-              child: Column(
+            if (selectedIndex == widget.index) ...[
+              Column(
                 children: [
                   Form(
                     key: formKey,
@@ -131,13 +126,10 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                   ),
                 ],
               ),
-            ),
-          ],
-          Padding(
-            padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
-            child: Column(
+            ],
+            Column(
               children: [
-                const Divider(height: Sizes.p24, thickness: 2),
+                const Divider(height: Sizes.p12, thickness: 2),
                 if (shouldInsertObservations)
                   Text(
                     'Observação pendente'.hardcoded,
@@ -153,8 +145,8 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                   ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
