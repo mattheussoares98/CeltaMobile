@@ -121,43 +121,50 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
 
                 return Padding(
                   padding: EdgeInsets.only(
-                    bottom: (products.length == index + 1) ? Sizes.p64 : 0,
+                    bottom: (products.length == index + 1)
+                        ? Sizes.p64
+                        : 0, //avoid overlay the floating button
                   ),
                   child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(Sizes.p8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TitleAndSubTitle(
-                            title: 'EAN'.hardcoded,
-                            subTitle: product.ean,
-                          ),
-                          TitleAndSubTitle(
-                            title: 'Quantidade'.hardcoded,
-                            subTitle: product.quantity
-                                .toString()
-                                .toBrazilianNumber(),
-                          ),
-                          if (product.observations != null &&
-                              product.observations!.isNotEmpty &&
-                              product.observations.toString() != 'null')
-                            TitleAndSubTitle(
-                              title: 'Observações'.hardcoded,
-                              subTitle: product.observations,
-                            ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: IconButton(
-                              onPressed: () =>
-                                  openInsertUpdateProductPage(product),
-                              icon: Icon(
-                                isIOS ? CupertinoIcons.pencil : Icons.edit,
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(Sizes.p8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleAndSubTitle(
+                                title: 'EAN'.hardcoded,
+                                subTitle: product.ean,
                               ),
+                              TitleAndSubTitle(
+                                title: 'Quantidade'.hardcoded,
+                                subTitle: product.quantity
+                                    .toString()
+                                    .toBrazilianNumber(),
+                              ),
+                              if (product.observations != null &&
+                                  product.observations!.isNotEmpty &&
+                                  product.observations.toString() != 'null')
+                                TitleAndSubTitle(
+                                  title: 'Observações'.hardcoded,
+                                  subTitle: product.observations,
+                                ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: IconButton(
+                            onPressed: () =>
+                                openInsertUpdateProductPage(product),
+                            icon: Icon(
+                              isIOS ? CupertinoIcons.pencil : Icons.edit,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 );
