@@ -11,12 +11,36 @@ import '../../../controllers/controllers.dart';
 import 'components.dart';
 
 class PricesFieldsAndSubmit extends ConsumerStatefulWidget {
-  final ProductsItems widget;
   final ProductEntity product;
+  final TextEditingController retailController;
+  final TextEditingController retailOfferController;
+  final TextEditingController wholeController;
+  final TextEditingController wholeOfferController;
+  final TextEditingController ecommerceController;
+  final TextEditingController ecommerceOfferController;
+  final FocusNode retailFocusNode;
+  final FocusNode retailOfferFocusNode;
+  final FocusNode wholeFocusNode;
+  final FocusNode wholeOfferFocusNode;
+  final FocusNode ecommerceFocusNode;
+  final FocusNode ecommerceOfferFocusNode;
+  final ProductsItems widget;
   const PricesFieldsAndSubmit({
     super.key,
-    required this.widget,
     required this.product,
+    required this.retailController,
+    required this.retailOfferController,
+    required this.wholeController,
+    required this.wholeOfferController,
+    required this.ecommerceController,
+    required this.ecommerceOfferController,
+    required this.retailFocusNode,
+    required this.retailOfferFocusNode,
+    required this.wholeFocusNode,
+    required this.wholeOfferFocusNode,
+    required this.ecommerceFocusNode,
+    required this.ecommerceOfferFocusNode,
+    required this.widget,
   });
 
   @override
@@ -44,16 +68,13 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
               enterpriseCode: widget.widget.widget.enterpriseCode,
               researchCode: widget.widget.widget.researchCode,
               concurrentCode: widget.widget.widget.concurrentCode,
-              priceRetail: widget.widget.retailController.text.toDouble() ?? 0,
-              offerRetail:
-                  widget.widget.retailOfferController.text.toDouble() ?? 0,
-              priceWhole: widget.widget.wholeController.text.toDouble() ?? 0,
-              offerWhole:
-                  widget.widget.wholeOfferController.text.toDouble() ?? 0,
-              priceECommerce:
-                  widget.widget.ecommerceController.text.toDouble() ?? 0,
+              priceRetail: widget.retailController.text.toDouble() ?? 0,
+              offerRetail: widget.retailOfferController.text.toDouble() ?? 0,
+              priceWhole: widget.wholeController.text.toDouble() ?? 0,
+              offerWhole: widget.wholeOfferController.text.toDouble() ?? 0,
+              priceECommerce: widget.ecommerceController.text.toDouble() ?? 0,
               offerECommerce:
-                  widget.widget.ecommerceOfferController.text.toDouble() ?? 0,
+                  widget.ecommerceOfferController.text.toDouble() ?? 0,
               product: widget.product,
             );
       },
@@ -68,62 +89,58 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           DefaultRowFields(
-            controller: widget.widget.retailController,
-            offerController: widget.widget.retailOfferController,
-            focusNode: widget.widget.retailFocusNode,
-            offerFocusNode: widget.widget.retailOfferFocusNode,
+            controller: widget.retailController,
+            offerController: widget.retailOfferController,
+            focusNode: widget.retailFocusNode,
+            offerFocusNode: widget.retailOfferFocusNode,
             priceType: 'Venda',
-            onSubmit: widget.widget.wholeFocusNode.requestFocus,
+            onSubmit: widget.wholeFocusNode.requestFocus,
           ),
           DefaultRowFields(
-            controller: widget.widget.wholeController,
-            offerController: widget.widget.wholeOfferController,
-            focusNode: widget.widget.wholeFocusNode,
-            offerFocusNode: widget.widget.wholeOfferFocusNode,
+            controller: widget.wholeController,
+            offerController: widget.wholeOfferController,
+            focusNode: widget.wholeFocusNode,
+            offerFocusNode: widget.wholeOfferFocusNode,
             priceType: 'Atacado',
-            onSubmit: widget.widget.ecommerceFocusNode.requestFocus,
+            onSubmit: widget.ecommerceFocusNode.requestFocus,
           ),
           DefaultRowFields(
-            controller: widget.widget.ecommerceController,
-            offerController: widget.widget.ecommerceOfferController,
-            focusNode: widget.widget.ecommerceFocusNode,
-            offerFocusNode: widget.widget.ecommerceOfferFocusNode,
+            controller: widget.ecommerceController,
+            offerController: widget.ecommerceOfferController,
+            focusNode: widget.ecommerceFocusNode,
+            offerFocusNode: widget.ecommerceOfferFocusNode,
             priceType: 'Ecommerce',
             onSubmit: insertUpdate,
           ),
           gapH8,
           AnimatedBuilder(
             animation: Listenable.merge([
-              widget.widget.retailController,
-              widget.widget.retailOfferController,
-              widget.widget.wholeController,
-              widget.widget.wholeOfferController,
-              widget.widget.ecommerceController,
-              widget.widget.ecommerceOfferController,
+              widget.retailController,
+              widget.retailOfferController,
+              widget.wholeController,
+              widget.wholeOfferController,
+              widget.ecommerceController,
+              widget.ecommerceOfferController,
             ]),
             builder: (_, _) {
               bool isValid = false;
 
-              if ((widget.widget.retailController.text.toDouble() ?? 0) !=
+              if ((widget.retailController.text.toDouble() ?? 0) !=
                   widget.product.RetailPracticedPrice) {
                 isValid = true;
-              } else if ((widget.widget.retailOfferController.text.toDouble() ??
-                      0) !=
+              } else if ((widget.retailOfferController.text.toDouble() ?? 0) !=
                   widget.product.RetailOfferPrice) {
                 isValid = true;
-              } else if ((widget.widget.wholeController.text.toDouble() ?? 0) !=
+              } else if ((widget.wholeController.text.toDouble() ?? 0) !=
                   widget.product.WholePracticedPrice) {
                 isValid = true;
-              } else if ((widget.widget.wholeOfferController.text.toDouble() ??
-                      0) !=
+              } else if ((widget.wholeOfferController.text.toDouble() ?? 0) !=
                   widget.product.WholeOfferPrice) {
                 isValid = true;
-              } else if ((widget.widget.ecommerceController.text.toDouble() ??
-                      0) !=
+              } else if ((widget.ecommerceController.text.toDouble() ?? 0) !=
                   widget.product.ECommercePracticedPrice) {
                 isValid = true;
-              } else if ((widget.widget.ecommerceOfferController.text
-                          .toDouble() ??
+              } else if ((widget.ecommerceOfferController.text.toDouble() ??
                       0) !=
                   widget.product.ECommerceOfferPrice) {
                 isValid = true;

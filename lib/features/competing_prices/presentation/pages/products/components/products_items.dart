@@ -9,41 +9,50 @@ import '../../../controllers/controllers.dart';
 import '../products.dart';
 import 'components.dart';
 
-class ProductsItems extends ConsumerWidget {
+class ProductsItems extends ConsumerStatefulWidget {
   final ProductsPage widget;
-  final TextEditingController retailController;
-  final TextEditingController retailOfferController;
-  final TextEditingController wholeController;
-  final TextEditingController wholeOfferController;
-  final TextEditingController ecommerceController;
-  final TextEditingController ecommerceOfferController;
-  final FocusNode retailFocusNode;
-  final FocusNode retailOfferFocusNode;
-  final FocusNode wholeFocusNode;
-  final FocusNode wholeOfferFocusNode;
-  final FocusNode ecommerceFocusNode;
-  final FocusNode ecommerceOfferFocusNode;
-  const ProductsItems({
-    super.key,
-    required this.widget,
-    required this.retailController,
-    required this.retailOfferController,
-    required this.wholeController,
-    required this.wholeOfferController,
-    required this.ecommerceController,
-    required this.ecommerceOfferController,
-    required this.retailFocusNode,
-    required this.retailOfferFocusNode,
-    required this.wholeFocusNode,
-    required this.wholeOfferFocusNode,
-    required this.ecommerceFocusNode,
-    required this.ecommerceOfferFocusNode,
-  });
+  const ProductsItems({super.key, required this.widget});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
+}
+
+class _ProductsItemsState extends ConsumerState<ProductsItems> {
+  final retailController = TextEditingController();
+  final retailOfferController = TextEditingController();
+  final wholeController = TextEditingController();
+  final wholeOfferController = TextEditingController();
+  final ecommerceController = TextEditingController();
+  final ecommerceOfferController = TextEditingController();
+  final retailFocusNode = FocusNode();
+  final retailOfferFocusNode = FocusNode();
+  final wholeFocusNode = FocusNode();
+  final wholeOfferFocusNode = FocusNode();
+  final ecommerceFocusNode = FocusNode();
+  final ecommerceOfferFocusNode = FocusNode();
+
+  @override
+  dispose() {
+    super.dispose();
+    retailController.dispose();
+    retailOfferController.dispose();
+    wholeController.dispose();
+    wholeOfferController.dispose();
+    ecommerceController.dispose();
+    ecommerceOfferController.dispose();
+    retailFocusNode.dispose();
+    retailOfferFocusNode.dispose();
+    wholeFocusNode.dispose();
+    wholeOfferFocusNode.dispose();
+    ecommerceFocusNode.dispose();
+    ecommerceOfferFocusNode.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final selectedItemAsync = ref.watch(selectedItemUIControllerProvider);
     final searchProductKey = SearchProductKey(
-      widget.enterpriseCode,
+      widget.widget.enterpriseCode,
       BsRoutine.researchOfPrice,
       Modules.competingPrices,
     );
@@ -69,7 +78,22 @@ class ProductsItems extends ConsumerWidget {
                   routine: BsRoutine.researchOfPrice,
                   showDropIcon: true,
                   notClickableBottom: selectedItemAsync.selectedIndex == index
-                      ? PricesFieldsAndSubmit(widget: this, product: product)
+                      ? PricesFieldsAndSubmit(
+                          product: product,
+                          retailController: retailController,
+                          retailOfferController: retailOfferController,
+                          wholeController: wholeController,
+                          wholeOfferController: wholeOfferController,
+                          ecommerceController: ecommerceController,
+                          ecommerceOfferController: ecommerceOfferController,
+                          retailFocusNode: retailFocusNode,
+                          retailOfferFocusNode: retailOfferFocusNode,
+                          wholeFocusNode: wholeFocusNode,
+                          wholeOfferFocusNode: wholeOfferFocusNode,
+                          ecommerceFocusNode: ecommerceFocusNode,
+                          ecommerceOfferFocusNode: ecommerceOfferFocusNode,
+                          widget: widget,
+                        )
                       : null,
                   onTap: () {
                     ref
