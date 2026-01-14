@@ -67,37 +67,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
             actions: [
               ShowPdfButton(enterpriseCode: widget.enterpriseCode),
               PrintButton(enterpriseCode: widget.enterpriseCode),
-              Consumer(
-                builder: (_, ref, _) {
-                  final products = ref.watch(
-                    pendingSaleRequestStateControllerProvider.select(
-                      (s) => s.value?.cart.values,
-                    ),
-                  );
-
-                  final totalPrice =
-                      products?.fold<double>(
-                        0.0,
-                        (p, e) => p + e.TotalLiquid,
-                      ) ??
-                      0.0;
-
-                  return QuantityBadge(
-                    quantity: products?.length ?? 0,
-                    materialIcon: Icons.shopping_cart,
-                    cupertinoIcon: CupertinoIcons.shopping_cart,
-                    isSelected: false,
-                    offset: const Offset(3, -3),
-                    subtitle: Text(
-                      totalPrice
-                          .toString()
-                          .toBrazilianNumber()
-                          .addBrazilianCoin(),
-                      style: const TextStyle(fontSize: 9),
-                    ),
-                  );
-                },
-              ),
+              const CartBadge(),
             ],
           ),
           body: AsyncValueWidget(

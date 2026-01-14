@@ -1,5 +1,6 @@
 export './app_bar_title.dart';
 export './bs_prices_and_minimum_whole_quantity.dart';
+export './cart_badge.dart';
 export './discount_field_and_type_dropdown.dart';
 export './price_field.dart';
 export 'print_button.dart';
