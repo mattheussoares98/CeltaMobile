@@ -9,6 +9,5 @@ part 'soap.g.dart';
 
 @Riverpod(keepAlive: true)
 SoapRequest soapRequest(Ref ref) {
-  final client = ref.watch(soapClientHttpProvider);
-  return SoapAdapter(client);
+  return SoapAdapter(ref.watch(clientProvider));
 }

@@ -8,11 +8,11 @@ import '../../infraestructure/infrastructure.dart';
 part 'http.g.dart';
 
 @Riverpod(keepAlive: true)
-HttpClient httpClient(Ref ref) {
-  return HttpAdapter(http.Client());
+http.Client client(Ref ref) {
+  return http.Client();
 }
 
 @Riverpod(keepAlive: true)
-http.Client soapClientHttp(Ref ref) {
-  return http.Client();
+HttpClient httpClient(Ref ref) {
+  return HttpAdapter(ref.watch(clientProvider));
 }
