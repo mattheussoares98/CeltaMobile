@@ -10,7 +10,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
-class AdjustSalePricePage extends ConsumerStatefulWidget {
+class AdjustSalePricePage extends ConsumerWidget {
   final String plu;
   final int enterpriseCode;
   final ProductEntity? product;
@@ -22,53 +22,10 @@ class AdjustSalePricePage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AdjustSalePricePageState();
-}
-
-class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
-  final priceController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    priceController.dispose();
-  }
-
-  Future<void> onPressed(ProductEntity product) async {
-    if (formKey.currentState?.validate() != true) {
-      return;
-    }
-
-    bool? confirmed = await showAlertDialog(
-      context: context,
-      title: 'Confirmar?'.hardcoded,
-      cancelActionText: 'Cencelar'.hardcoded,
-      defaultActionText: 'Sim'.hardcoded,
-    );
-
-    if (confirmed != true) {
-      return;
-    }
-
-    await ref
-        .read(confirmAdjustControllerProvider.notifier)
-        .confirm(
-          enterpriseCode: widget.enterpriseCode,
-          now: DateTime.now(),
-          plu: widget.plu,
-          price: priceController.text.toDouble() ?? 0,
-        );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final selectedProductAsync = ref.watch(
-      selectedProductStateControllerProvider(widget.enterpriseCode, widget.plu),
+      selectedProductStateControllerProvider(enterpriseCode, plu),
     );
-    final confirmAdjustAsync = ref.watch(confirmAdjustControllerProvider);
 
     ref.listen(confirmAdjustControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
@@ -78,7 +35,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
       });
     });
 
-    final product = widget.product ?? selectedProductAsync.value;
+    final selectedProduct = product ?? selectedProductAsync.value;
 
     return Stack(
       children: [
@@ -87,7 +44,9 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
             leadingWidth: 40,
             title: FittedBox(
               child: Text(
-                product == null ? "" : "(${product.PLU}) ${product.Name}",
+                selectedProduct == null
+                    ? ""
+                    : "(${selectedProduct.PLU}) ${selectedProduct.Name}",
               ),
             ),
           ),
@@ -97,55 +56,51 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
                 slivers: [
-                  if (product != null)
+                  if (selectedProduct != null)
                     PriceSchedules(
-                      enterpriseCode: widget.enterpriseCode,
-                      product: product,
+                      enterpriseCode: enterpriseCode,
+                      product: selectedProduct,
                     ),
                   AsyncValueSliverWidget(
                     value: selectedProductAsync,
                     tryAgain: () {
                       ref.invalidate(
                         selectedProductStateControllerProvider(
-                          widget.enterpriseCode,
-                          widget.plu,
+                          enterpriseCode,
+                          plu,
                         ),
                       );
                     },
                     data: (product) {
                       return SliverToBoxAdapter(
                         child: ResponsiveScrollableWidget(
-                          child: Form(
-                            key: formKey,
-                            child: Column(
-                              children: [
-                                _DefaultDivider(),
-                                SalesTypeWidget(plu: widget.plu),
-                                _DefaultDivider(),
-                                PricesTypesWidget(plu: widget.plu),
-                                _DefaultDivider(),
-                                ReplicationTypesWidget(plu: widget.plu),
-                                _DefaultDivider(),
-                                StartAndEndDates(plu: widget.plu),
-                                _DefaultDivider(),
-                                InfoButton(
-                                  ProductItemWidget(
-                                    product: product!,
-                                    routine: BsRoutine.adjustSalePrice,
-                                  ),
+                          child: Column(
+                            children: [
+                              _DefaultDivider(),
+                              SalesTypeWidget(plu: plu),
+                              _DefaultDivider(),
+                              PricesTypesWidget(plu: plu),
+                              _DefaultDivider(),
+                              ReplicationTypesWidget(plu: plu),
+                              _DefaultDivider(),
+                              StartAndEndDates(plu: plu),
+                              _DefaultDivider(),
+                              InfoButton(
+                                ProductItemWidget(
+                                  product: product!,
+                                  routine: BsRoutine.adjustSalePrice,
                                 ),
-                                PracticedSuggestionAndMinimumPrices(
-                                  product: product,
-                                ),
-                                _DefaultDivider(),
-                                PriceFieldAndConfirmButton(
-                                  priceController: priceController,
-                                  isLoading: confirmAdjustAsync.isLoading,
-                                  onPressed: () => onPressed(product),
-                                ),
-                                gapH32,
-                              ],
-                            ),
+                              ),
+                              PracticedSuggestionAndMinimumPrices(
+                                product: product,
+                              ),
+                              _DefaultDivider(),
+                              PriceFieldAndConfirmButton(
+                                enterpriseCode: enterpriseCode,
+                                plu: plu,
+                              ),
+                              gapH32,
+                            ],
                           ),
                         ),
                       );

@@ -7,6 +7,38 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
+extension _ProductPriceExt on ProductEntity {
+  double? getSuggestion(SaleType? saleType) {
+    if (PriceCost == null) return null;
+    return switch (saleType) {
+      SaleType.retail => PriceCost!.RetailSuggestionPrice,
+      SaleType.whole => PriceCost!.WholeSuggestionPrice,
+      SaleType.ecommerce => PriceCost!.ECommerceSuggestionPrice,
+      _ => null,
+    };
+  }
+
+  double? getMinimumPrice(SaleType? saleType) {
+    if (PriceCost == null) return null;
+    return switch (saleType) {
+      SaleType.retail => PriceCost!.RetailMinimumPrice,
+      SaleType.whole => PriceCost!.WholeMinimumPrice,
+      SaleType.ecommerce => PriceCost!.ECommerceMinimumPrice,
+      _ => null,
+    };
+  }
+
+  double? getPracticed(SaleType? saleType, PriceType? priceType) {
+    final isOffer = priceType == PriceType.offer;
+    return switch (saleType) {
+      SaleType.retail => isOffer ? RetailOfferPrice : RetailSalePrice,
+      SaleType.whole => isOffer ? WholeOfferPrice : WholeSalePrice,
+      SaleType.ecommerce => isOffer ? ECommerceOfferPrice : ECommerceSalePrice,
+      _ => null,
+    };
+  }
+}
+
 class PracticedSuggestionAndMinimumPrices extends ConsumerWidget {
   final ProductEntity product;
   const PracticedSuggestionAndMinimumPrices({super.key, required this.product});
@@ -25,54 +57,12 @@ class PracticedSuggestionAndMinimumPrices extends ConsumerWidget {
       ).select((s) => s.value?.selectedPriceType),
     );
 
-    double? getSuggestion() {
-      switch (selectedSaleType) {
-        case SaleType.retail:
-          return product.PriceCost!.RetailSuggestionPrice;
-        case SaleType.whole:
-          return product.PriceCost!.WholeSuggestionPrice;
-        case SaleType.ecommerce:
-          return product.PriceCost!.ECommerceSuggestionPrice;
-        default:
-          return null;
-      }
-    }
-
-    double? getMinimumPrice() {
-      switch (selectedSaleType) {
-        case SaleType.retail:
-          return product.PriceCost!.RetailMinimumPrice;
-        case SaleType.whole:
-          return product.PriceCost!.WholeMinimumPrice;
-        case SaleType.ecommerce:
-          return product.PriceCost!.ECommerceMinimumPrice;
-        default:
-          return null;
-      }
-    }
-
-    double? getPracticedPrice() {
-      switch (selectedSaleType) {
-        case SaleType.retail:
-          return selectedPriceType == PriceType.offer
-              ? product.RetailOfferPrice
-              : product.RetailSalePrice;
-        case SaleType.whole:
-          return selectedPriceType == PriceType.offer
-              ? product.WholeOfferPrice
-              : product.WholeSalePrice;
-        case SaleType.ecommerce:
-          return selectedPriceType == PriceType.offer
-              ? product.ECommerceOfferPrice
-              : product.ECommerceSalePrice;
-        default:
-          return null;
-      }
-    }
-
-    double? practicedPrice = getPracticedPrice();
-    double? suggestionPrice = getSuggestion();
-    double? minimumPrice = getMinimumPrice();
+    final practicedPrice = product.getPracticed(
+      selectedSaleType,
+      selectedPriceType,
+    );
+    final suggestionPrice = product.getSuggestion(selectedSaleType);
+    final minimumPrice = product.getMinimumPrice(selectedSaleType);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

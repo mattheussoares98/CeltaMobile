@@ -15,17 +15,24 @@ class SalesTypeWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedEnterprise = ref.watch(
-      selectedEnterpriseStateControllerProvider,
+    final (useRetail, useWhole, useEcommerce) = ref.watch(
+      selectedEnterpriseStateControllerProvider.select(
+        (e) => (
+          e?.UseRetailSale == true,
+          e?.UseWholeSale == true,
+          e?.UseEcommerceSale == true,
+        ),
+      ),
     );
+
     final items = [
-      if (selectedEnterprise?.UseRetailSale == true) SaleType.retail,
-      if (selectedEnterprise?.UseWholeSale == true) SaleType.whole,
-      if (selectedEnterprise?.UseEcommerceSale == true) SaleType.ecommerce,
+      if (useRetail) SaleType.retail,
+      if (useWhole) SaleType.whole,
+      if (useEcommerce) SaleType.ecommerce,
     ];
 
-    final mediaQuery = MediaQuery.of(context);
-    bool showInVertical = mediaQuery.size.width < 300;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final bool showInVertical = screenWidth < 300;
     final theme = Theme.of(context);
 
     final selectedSaleType = ref.watch(
@@ -50,14 +57,18 @@ class SalesTypeWidget extends ConsumerWidget {
           )
         else
           RadioGroup<SaleType>(
-            key: ValueKey(showInVertical ? "vertical" : "horizontal"),
+            key: ValueKey('sales_type_layout_${showInVertical ? "v" : "h"}'),
             groupValue: selectedSaleType,
             onChanged: updateValue,
             child: showInVertical
                 ? Column(
                     children: [
                       ...items.map(
-                        (e) => _SaleTypeItem(saleType: e, onTap: updateValue),
+                        (e) => _SaleTypeItem(
+                          key: ValueKey('sale_item_${e.name}'),
+                          saleType: e,
+                          onTap: updateValue,
+                        ),
                       ),
                     ],
                   )
@@ -67,6 +78,7 @@ class SalesTypeWidget extends ConsumerWidget {
                           (e) => Flexible(
                             flex: e.name.length,
                             child: _SaleTypeItem(
+                              key: ValueKey('sale_item_${e.name}'),
                               saleType: e,
                               onTap: updateValue,
                             ),
@@ -83,18 +95,20 @@ class SalesTypeWidget extends ConsumerWidget {
 class _SaleTypeItem extends StatelessWidget {
   final void Function(SaleType newType) onTap;
   final SaleType saleType;
-  const _SaleTypeItem({required this.saleType, required this.onTap});
+  const _SaleTypeItem({super.key, required this.saleType, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onTap(saleType),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(child: Text(saleType.name)),
-          Radio(value: saleType),
-        ],
+    return RepaintBoundary(
+      child: InkWell(
+        onTap: () => onTap(saleType),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(child: Text(saleType.name)),
+            Radio(value: saleType),
+          ],
+        ),
       ),
     );
   }

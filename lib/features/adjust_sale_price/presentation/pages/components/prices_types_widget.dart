@@ -14,9 +14,9 @@ class PricesTypesWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final items = [PriceType.sale, PriceType.offer];
-    final mediaQuery = MediaQuery.of(context);
-    bool showVertical = mediaQuery.size.width < 200;
+    const items = [PriceType.sale, PriceType.offer];
+    final width = MediaQuery.sizeOf(context).width;
+    bool showVertical = width < 200;
     final theme = Theme.of(context);
 
     final selectedPriceType = ref.watch(
@@ -47,7 +47,13 @@ class PricesTypesWidget extends ConsumerWidget {
             child: showVertical
                 ? Column(
                     children: items
-                        .map((e) => _PriceTypeItem(priceType: e, onTap: unTap))
+                        .map(
+                          (e) => _PriceTypeItem(
+                            key: ValueKey('price_type_${e.name}'),
+                            priceType: e,
+                            onTap: unTap,
+                          ),
+                        )
                         .toList(),
                   )
                 : Row(
@@ -55,7 +61,11 @@ class PricesTypesWidget extends ConsumerWidget {
                         .map(
                           (e) => Flexible(
                             flex: e.name.length,
-                            child: _PriceTypeItem(priceType: e, onTap: unTap),
+                            child: _PriceTypeItem(
+                              key: ValueKey('price_type_${e.name}'),
+                              priceType: e,
+                              onTap: unTap,
+                            ),
                           ),
                         )
                         .toList(),
@@ -69,20 +79,26 @@ class PricesTypesWidget extends ConsumerWidget {
 class _PriceTypeItem extends StatelessWidget {
   final void Function(PriceType newType) onTap;
   final PriceType priceType;
-  const _PriceTypeItem({required this.priceType, required this.onTap});
+  const _PriceTypeItem({
+    super.key,
+    required this.priceType,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        onTap(priceType);
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(child: Text(priceType.name)),
-          Radio(value: priceType),
-        ],
+    return RepaintBoundary(
+      child: InkWell(
+        onTap: () {
+          onTap(priceType);
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(child: Text(priceType.name)),
+            Radio(value: priceType),
+          ],
+        ),
       ),
     );
   }
