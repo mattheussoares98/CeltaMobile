@@ -1,26 +1,37 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../localization/string_hardcoded.dart';
-import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controller.dart';
 
-class CreationDate extends StatelessWidget {
-  final BuyQuotationEntity buyQuotation;
-  const CreationDate({super.key, required this.buyQuotation});
+class CreationDate extends ConsumerWidget {
+  final int enterpriseCode;
+  final int code;
+  const CreationDate({
+    super.key,
+    required this.enterpriseCode,
+    required this.code,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    if (buyQuotation.DateOfCreation == null) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dateOfCreation = ref.watch(
+      completeBuyQuotationsStateControllerProvider(
+        enterpriseCode,
+        code.toString(),
+      ).select((s) => s.value?.DateOfCreation),
+    );
+
+    if (dateOfCreation == null) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
     return SliverToBoxAdapter(
       child: TitleAndSubTitle(
         title: 'Data de criação'.hardcoded,
-        subTitle: DateFormat(
-          'dd/MM/yyyy HH:mm',
-        ).format(buyQuotation.DateOfCreation!),
+        subTitle: DateFormat('dd/MM/yyyy HH:mm').format(dateOfCreation),
       ),
     );
   }

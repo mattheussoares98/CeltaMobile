@@ -126,66 +126,69 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                 ),
               ],
             ),
-            body: AsyncValueWidget(
-              value: ref.watch(
-                completeBuyQuotationsStateControllerProvider(
-                  widget.enterpriseCode,
-                  widget.code.toString(),
-                ),
-              ),
-              tryAgain: () => ref.invalidate(
-                completeBuyQuotationsStateControllerProvider(
-                  widget.enterpriseCode,
-                  widget.code.toString(),
-                ),
-              ),
-              data: (buyQuotation) {
-                return Padding(
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  child: CustomScrollView(
-                    physics: const ClampingScrollPhysics(),
-                    slivers: [
-                      Code(buyQuotation: buyQuotation),
-                      CreationDate(buyQuotation: buyQuotation),
-                      LimitDate(
-                        buyQuotation: buyQuotation,
-                        code: widget.code,
-                        enterpriseCode: widget.enterpriseCode,
-                      ),
-                      gapSliverH8,
-                      BuyersDropdown(
-                        buyQuotation: buyQuotation,
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
-                      ),
-                      gapSliverH8,
-                      ObservationField(
-                        observationController: observationController,
-                        observationsFocusNode: observationsFocusNode,
-                      ),
-                      const SliverToBoxAdapter(child: Divider()),
-                      Enterprises(
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
-                        buyQuotation: buyQuotation,
-                      ),
-                      const SliverToBoxAdapter(child: Divider()),
-                      SearchProductField(
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
-                        searchValueController: searchValueController,
-                        buyQuotation: buyQuotation,
-                      ),
-                      gapSliverH8,
-                      ProductsItems(
-                        buyQuotation: buyQuotation,
-                        uiControllers: uiControllers,
-                        widget: widget,
-                        observationsFocusNode: observationsFocusNode,
-                      ),
-                      gapSliverH32,
-                    ],
+            body: Consumer(
+              builder: (_, ref, _) {
+                return AsyncValueWidget(
+                  value: ref.watch(
+                    completeBuyQuotationsStateControllerProvider(
+                      widget.enterpriseCode,
+                      widget.code.toString(),
+                    ),
                   ),
+                  tryAgain: () => ref.invalidate(
+                    completeBuyQuotationsStateControllerProvider(
+                      widget.enterpriseCode,
+                      widget.code.toString(),
+                    ),
+                  ),
+                  data: (_) {
+                    return Padding(
+                      padding: const EdgeInsets.all(Sizes.p8),
+                      child: CustomScrollView(
+                        physics: const ClampingScrollPhysics(),
+                        slivers: [
+                          Code(code: widget.code),
+                          CreationDate(
+                            enterpriseCode: widget.enterpriseCode,
+                            code: widget.code,
+                          ),
+                          LimitDate(
+                            code: widget.code,
+                            enterpriseCode: widget.enterpriseCode,
+                          ),
+                          gapSliverH8,
+                          BuyersDropdown(
+                            enterpriseCode: widget.enterpriseCode,
+                            code: widget.code,
+                          ),
+                          gapSliverH8,
+                          ObservationField(
+                            observationController: observationController,
+                            observationsFocusNode: observationsFocusNode,
+                          ),
+                          const SliverToBoxAdapter(child: Divider()),
+                          Enterprises(
+                            enterpriseCode: widget.enterpriseCode,
+                            code: widget.code,
+                          ),
+                          const SliverToBoxAdapter(child: Divider()),
+                          SearchProductField(
+                            enterpriseCode: widget.enterpriseCode,
+                            code: widget.code,
+                            searchValueController: searchValueController,
+                          ),
+                          gapSliverH8,
+                          //TODO add option to filter already searched products
+                          ProductsItems(
+                            uiControllers: uiControllers,
+                            widget: widget,
+                            observationsFocusNode: observationsFocusNode,
+                          ),
+                          gapSliverH32,
+                        ],
+                      ),
+                    );
+                  },
                 );
               },
             ),

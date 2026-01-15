@@ -192,5 +192,27 @@ void main() {
         );
       },
     );
+    test('change index to null when pass the same previous value', () {
+      // ARRANGE
+      final newIndex = faker.randomGenerator.integer(100);
+      final notifier = container.read(
+        selectedProductIndexStateControllerProvider.notifier,
+      );
+
+      // ACT
+      notifier.updateIndex(newIndex);
+
+      // ASSERT
+      expect(
+        container.read(selectedProductIndexStateControllerProvider),
+        newIndex,
+      );
+
+      // ACT
+      notifier.updateIndex(newIndex);
+
+      // ASSERT
+      expect(container.read(selectedProductIndexStateControllerProvider), null);
+    });
   });
 }

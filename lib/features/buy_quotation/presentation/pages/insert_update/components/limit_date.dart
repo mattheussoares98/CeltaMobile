@@ -5,16 +5,13 @@ import 'package:intl/intl.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../localization/string_hardcoded.dart';
-import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controller.dart';
 
 class LimitDate extends ConsumerWidget {
-  final BuyQuotationEntity buyQuotation;
   final int enterpriseCode;
   final int code;
   const LimitDate({
     super.key,
-    required this.buyQuotation,
     required this.enterpriseCode,
     required this.code,
   });
@@ -24,15 +21,22 @@ class LimitDate extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
+    final dateOfLimit = ref.watch(
+      completeBuyQuotationsStateControllerProvider(
+        enterpriseCode,
+        code.toString(),
+      ).select((s) => s.value?.DateOfLimit),
+    );
+
     return SliverToBoxAdapter(
       child: Row(
         children: [
           Expanded(
             child: TitleAndSubTitle(
               title: 'Data limite'.hardcoded,
-              subTitle: buyQuotation.DateOfLimit == null
+              subTitle: dateOfLimit == null
                   ? null
-                  : DateFormat('dd/MM/yyyy').format(buyQuotation.DateOfLimit!),
+                  : DateFormat('dd/MM/yyyy').format(dateOfLimit),
               emptyMessage: 'Sem data de limite'.hardcoded,
             ),
           ),
@@ -40,7 +44,7 @@ class LimitDate extends ConsumerWidget {
             child: Align(
               alignment: Alignment.centerRight,
               child: PrimaryTextButton(
-                text: buyQuotation.DateOfLimit == null
+                text: dateOfLimit == null
                     ? 'Inserir'.hardcoded
                     : 'Alterar'.hardcoded,
                 icon: Icon(isIOS ? CupertinoIcons.calendar : Icons.date_range),
@@ -49,7 +53,7 @@ class LimitDate extends ConsumerWidget {
                   final newDate = await GetNewDate.get(
                     minimumDate: now,
                     maximumDate: now.add(const Duration(days: 365)),
-                    currentSelectedDate: buyQuotation.DateOfLimit,
+                    currentSelectedDate: dateOfLimit,
                     insertHoursAndMinutes: false,
                     context: context,
                   );

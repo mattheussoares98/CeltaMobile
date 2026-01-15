@@ -15,13 +15,11 @@ class SearchProductField extends ConsumerWidget {
   final int enterpriseCode;
   final int code;
   final TextEditingController searchValueController;
-  final BuyQuotationEntity buyQuotation;
   const SearchProductField({
     super.key,
     required this.enterpriseCode,
     required this.code,
     required this.searchValueController,
-    required this.buyQuotation,
   });
 
   @override
@@ -33,42 +31,69 @@ class SearchProductField extends ConsumerWidget {
     );
 
     final enterprises = ref.watch(enterprisesStateControllerProvider()).value;
+    final completeBuyQuotationProvider =
+        completeBuyQuotationsStateControllerProvider(
+          enterpriseCode,
+          code.toString(),
+        );
+    final searchProductProvider = searchProductsStateControllerProvider(
+      searchProductKey,
+    );
 
-    void addProducts(List<ProductEntity> products) async {
-      final currentProducts = buyQuotation.Products ?? [];
-      final updatedProducts = [
-        ...products
-            .where(
-              (e) =>
-                  currentProducts
-                      .map((p) => p.Product?.ProductPackingCode)
-                      .contains(e.ProductPackingCode) !=
-                  true,
-            )
-            .map(
-              (p) => BuyQuotationProductsEntity(
-                Product: p,
-                Code: null,
-                ProductEnterprises: enterprises!
-                    .map(
-                      (x) => BuyQuotationProductEnterpriseEntity(
-                        Code: null,
-                        EnterpriseCode: x.Code,
-                        Quantity: 0,
-                      ),
-                    )
-                    .toList(),
-              ),
+    final currentProducts =
+        ref.watch(
+          completeBuyQuotationProvider.select((s) => s.value?.Products),
+        ) ??
+        [];
+
+    void addProducts(List<ProductEntity> newProducts) async {
+      // 1. Create a Set of incoming IDs for O(1) lookup.
+      final incomingIds = newProducts.map((p) => p.ProductPackingCode).toSet();
+
+      // 2. Separate current products into those that will be "moved" and those that stay.
+      final existentToMove = <BuyQuotationProductsEntity>[];
+      final remainingProducts = <BuyQuotationProductsEntity>[];
+
+      for (final item in currentProducts) {
+        if (incomingIds.contains(item.Product?.ProductPackingCode)) {
+          existentToMove.add(item);
+        } else {
+          remainingProducts.add(item);
+        }
+      }
+
+      // 3. Identify truly new products (those not already in the current list).
+      final existingInCurrentIds = currentProducts
+          .map((e) => e.Product?.ProductPackingCode)
+          .toSet();
+
+      final trulyNewItems = newProducts
+          .where((p) => !existingInCurrentIds.contains(p.ProductPackingCode))
+          .map(
+            (p) => BuyQuotationProductsEntity(
+              Product: p,
+              Code: null,
+              // Pre-mapping enterprises once instead of inside a nested where.
+              ProductEnterprises: enterprises!.map((x) {
+                return BuyQuotationProductEnterpriseEntity(
+                  Code: null,
+                  EnterpriseCode: x.Code,
+                  Quantity: 0,
+                );
+              }).toList(),
             ),
-        ...currentProducts,
-      ];
-      final updated = ref
-          .read(
-            completeBuyQuotationsStateControllerProvider(
-              enterpriseCode,
-              code.toString(),
-            ).notifier,
           )
+          .toList();
+
+      // 4. Combine: New items first, then moved existing items, then the rest.
+      final updatedProducts = [
+        ...trulyNewItems,
+        ...existentToMove,
+        ...remainingProducts,
+      ];
+
+      final updated = ref
+          .read(completeBuyQuotationProvider.notifier)
           .updateValues(Products: updatedProducts);
 
       if (!updated) {
@@ -87,13 +112,10 @@ class SearchProductField extends ConsumerWidget {
       p,
       n,
     ) async {
-      final value = await ref.watch(
-        searchProductsStateControllerProvider(searchProductKey).future,
-      );
       n.doOnSuccess(p, () async {
-        if (value.length == 1) {
-          addProducts([value.first]);
-        } else if (value.length > 1) {
+        if (n.value?.length == 1) {
+          addProducts([n.value!.first]);
+        } else if (n.value!.length > 1) {
           await showModalPage(
             SelectProductsModal(
               enterpriseCode: enterpriseCode,
@@ -107,10 +129,6 @@ class SearchProductField extends ConsumerWidget {
       n.showSnackbarOnError(context, p);
     });
 
-    final asyncValue = ref.watch(
-      searchProductsStateControllerProvider(searchProductKey),
-    );
-
     final theme = Theme.of(context);
 
     return SliverToBoxAdapter(
@@ -118,34 +136,36 @@ class SearchProductField extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Produtos (${buyQuotation.Products?.length ?? 0})'.hardcoded,
+            'Produtos (${currentProducts.length})'.hardcoded,
             style: theme.textTheme.titleSmall?.copyWith(
               fontStyle: FontStyle.italic,
               color: theme.primaryColor,
             ),
           ),
-          DefaultSearchProducts(
-            isLoading: asyncValue.isLoading,
-            searchProducts: () {
-              ref
-                  .read(
-                    searchProductsStateControllerProvider(
-                      searchProductKey,
-                    ).notifier,
-                  )
-                  .loadProducts(
-                    GetProductsJsonParams(
-                      searchValue: searchValueController.text,
-                      enterpriseCodes: [enterpriseCode],
-                    ),
-                  );
+          Consumer(
+            builder: (_, ref, _) {
+              return DefaultSearchProducts(
+                isLoading: ref.watch(
+                  searchProductProvider.select(((s) => s.isLoading)),
+                ),
+                searchProducts: () {
+                  ref
+                      .read(searchProductProvider.notifier)
+                      .loadProducts(
+                        GetProductsJsonParams(
+                          searchValue: searchValueController.text,
+                          enterpriseCodes: [enterpriseCode],
+                        ),
+                      );
+                },
+                searchValueController: searchValueController,
+                searchProductKey: SearchProductKey(
+                  enterpriseCode,
+                  BsRoutine.buyQuotation,
+                  Modules.buyQuotation,
+                ),
+              );
             },
-            searchValueController: searchValueController,
-            searchProductKey: SearchProductKey(
-              enterpriseCode,
-              BsRoutine.buyQuotation,
-              Modules.buyQuotation,
-            ),
           ),
         ],
       ),

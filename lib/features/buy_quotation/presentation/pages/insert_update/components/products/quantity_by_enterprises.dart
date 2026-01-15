@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../../domain/entities/entities.dart';
 
-class QuantityByEnterprises extends StatelessWidget {
+class QuantityByEnterprises extends ConsumerWidget {
   final List<BuyQuotationProductEnterpriseEntity>? productEnterprises;
-  final List<EnterpriseEntity>? enterprises;
-  const QuantityByEnterprises({
-    super.key,
-    required this.productEnterprises,
-    required this.enterprises,
-  });
+
+  const QuantityByEnterprises({super.key, required this.productEnterprises});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enterprises = ref.watch(enterprisesStateControllerProvider()).value;
+
     final theme = Theme.of(context);
     return Column(
       children: [

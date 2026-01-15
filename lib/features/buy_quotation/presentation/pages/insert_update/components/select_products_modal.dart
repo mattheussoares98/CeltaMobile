@@ -25,7 +25,7 @@ class SelectProductsModal extends ConsumerStatefulWidget {
 
 class _SelectProductsModalState extends ConsumerState<SelectProductsModal> {
   Map<String, dynamic> selectedProducts = {};
-
+  //TODO test in the phone if is slow to improve it
   @override
   Widget build(BuildContext context) {
     final asyncValue = ref.watch(
@@ -54,6 +54,7 @@ class _SelectProductsModalState extends ConsumerState<SelectProductsModal> {
                   }
 
                   return ProductItemWidget(
+                    //TODO indicate when already is inserted
                     product: product,
                     routine: BsRoutine.buyQuotation,
                     showInfoButton: false,

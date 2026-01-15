@@ -13,17 +13,22 @@ import '../../../controllers/controller.dart';
 
 class Enterprises extends ConsumerWidget {
   final int enterpriseCode;
-  final BuyQuotationEntity buyQuotation;
   final int code;
   const Enterprises({
     super.key,
     required this.enterpriseCode,
-    required this.buyQuotation,
     required this.code,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final provider = completeBuyQuotationsStateControllerProvider(
+      enterpriseCode,
+      code.toString(),
+    );
+    final buyQuotationEnterprises =
+        ref.watch(provider.select((s) => s.value?.Enterprises)) ?? [];
+
     void updateSelectedEnterprise(EnterpriseEntity enterprise) async {
       bool moduleIsEnabled = await ref.read(
         moduleIsEnabledControllerProvider(
@@ -40,31 +45,25 @@ class Enterprises extends ConsumerWidget {
               'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo',
         );
       } else {
-        final currentList = buyQuotation.Enterprises ?? [];
-        final currentEnterpriseIndex = currentList.indexWhere(
+        final enterpriseToUpdate = buyQuotationEnterprises.firstWhereOrNull(
           (e) => e.enterprise.Code == enterprise.Code,
         );
 
-        final updatedList = [...currentList];
-        if (currentEnterpriseIndex == -1) {
+        final updatedList = [...buyQuotationEnterprises];
+        if (enterpriseToUpdate == null) {
           updatedList.add(enterprise.toBuyQuotationEnterprise());
         } else {
-          final oldEnterprise = currentList[currentEnterpriseIndex];
-          final isSelected =
-              currentList[currentEnterpriseIndex].isSelected == true;
-          final currentEnterprise = oldEnterprise.copyWith(
+          final isSelected = enterpriseToUpdate.isSelected == true;
+          final currentEnterprise = enterpriseToUpdate.copyWith(
             isSelected: !isSelected,
           );
-          updatedList[currentEnterpriseIndex] = currentEnterprise;
+          updatedList
+            ..remove(enterpriseToUpdate)
+            ..add(currentEnterprise);
         }
 
         final updated = ref
-            .read(
-              completeBuyQuotationsStateControllerProvider(
-                enterpriseCode,
-                code.toString(),
-              ).notifier,
-            )
+            .read(provider.notifier)
             .updateValues(Enterprises: updatedList);
         if (!updated) {
           showAlertDialog(
@@ -84,17 +83,14 @@ class Enterprises extends ConsumerWidget {
       value: ref.watch(enterprisesStateControllerProvider()),
       tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
       data: (enterprises) {
-        final filteredEnterprises =
-            buyQuotation.Code == 0 || buyQuotation.Code == null
+        final filteredEnterprises = code == 0
             ? enterprises
             : enterprises
                   //cant allow the user to insert a new enterprise because causes error
                   .where(
-                    (e) =>
-                        buyQuotation.Enterprises?.any(
-                          (x) => x.enterprise.Code == e.Code,
-                        ) ==
-                        true,
+                    (e) => buyQuotationEnterprises.any(
+                      (x) => x.enterprise.Code == e.Code,
+                    ),
                   )
                   .toList();
         return SliverList.builder(
@@ -112,56 +108,83 @@ class Enterprises extends ConsumerWidget {
             final enterprise = filteredEnterprises[index - 1];
 
             final isSelected =
-                buyQuotation.Enterprises?.where(
-                  (e) => e.enterprise.Code == enterprise.Code,
-                ).toList().firstOrNull?.isSelected ==
+                buyQuotationEnterprises
+                    .firstWhereOrNull(
+                      (e) => e.enterprise.Code == enterprise.Code,
+                    )
+                    ?.isSelected ==
                 true;
-            return Card(
-              clipBehavior: Clip.antiAlias,
-              child: InkWell(
-                onTap: () => updateSelectedEnterprise(enterprise),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Sizes.p8,
-                    Sizes.p8,
-                    0, //because of the CheckBox
-                    Sizes.p8,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TitleAndSubTitle(
-                              title: 'Código'.hardcoded,
-                              subTitle: enterprise.PersonalizedCode.toString(),
-                            ),
-                            TitleAndSubTitle(
-                              title: 'Empresa'.hardcoded,
-                              subTitle: enterprise.name,
-                            ),
-                            TitleAndSubTitle(
-                              title: 'CNPJ'.hardcoded,
-                              subTitle: enterprise.CnpjNumber,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Checkbox(
-                        value: isSelected,
-                        onChanged: (_) {
-                          updateSelectedEnterprise(enterprise);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+
+            return _EnterpriseItem(
+              key: ValueKey(enterprise.Code),
+              updateSelectedEnterprise: () =>
+                  updateSelectedEnterprise(enterprise),
+              enterprise: enterprise,
+              isSelected: isSelected,
             );
           },
         );
       },
+    );
+  }
+}
+
+class _EnterpriseItem extends StatelessWidget {
+  final VoidCallback updateSelectedEnterprise;
+  final EnterpriseEntity enterprise;
+  final bool isSelected;
+
+  const _EnterpriseItem({
+    super.key,
+    required this.updateSelectedEnterprise,
+    required this.enterprise,
+    required this.isSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: updateSelectedEnterprise,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              Sizes.p8,
+              Sizes.p8,
+              0, //because of the CheckBox
+              Sizes.p8,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleAndSubTitle(
+                        title: 'Código'.hardcoded,
+                        subTitle: enterprise.PersonalizedCode.toString(),
+                      ),
+                      TitleAndSubTitle(
+                        title: 'Empresa'.hardcoded,
+                        subTitle: enterprise.name,
+                      ),
+                      TitleAndSubTitle(
+                        title: 'CNPJ'.hardcoded,
+                        subTitle: enterprise.CnpjNumber,
+                      ),
+                    ],
+                  ),
+                ),
+                Checkbox(
+                  value: isSelected,
+                  onChanged: (_) => updateSelectedEnterprise(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

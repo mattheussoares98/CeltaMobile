@@ -4,31 +4,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
-import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controller.dart';
 import '../../../../models/models.dart';
 
 class UpdateQuantities extends ConsumerStatefulWidget {
   final List<EnterpriseUIController> uiControllers;
-  final List<EnterpriseEntity> enterprises;
-  final BuyQuotationEntity buyQuotation;
-  final void Function(int? index) updateIndex;
   final BuyQuotationProductsEntity product;
   final int enterpriseCode;
-  final int code;
+  final int buyQuotationCode;
   const UpdateQuantities({
     super.key,
     required this.uiControllers,
-    required this.buyQuotation,
-    required this.enterprises,
-    required this.updateIndex,
     required this.product,
     required this.enterpriseCode,
-    required this.code,
+    required this.buyQuotationCode,
   });
 
   @override
@@ -38,12 +32,19 @@ class UpdateQuantities extends ConsumerStatefulWidget {
 
 class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
   final formKey = GlobalKey<FormState>();
-  void confirmQuantities() {
+  void confirmQuantities() async {
     if (formKey.currentState?.validate() != true) {
       return;
     }
+    //TODO the performance will be better if add this logic in the controller
+    final buyQuotationProducts = await ref.read(
+      completeBuyQuotationsStateControllerProvider(
+        widget.enterpriseCode,
+        widget.buyQuotationCode.toString(),
+      ).selectAsync((s) => s.Products),
+    );
 
-    final currentProducts = [...?widget.buyQuotation.Products];
+    final currentProducts = [...?buyQuotationProducts];
     int index = currentProducts.indexWhere(
       (e) =>
           e.Product?.ProductPackingCode ==
@@ -87,19 +88,29 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
         .read(
           completeBuyQuotationsStateControllerProvider(
             widget.enterpriseCode,
-            widget.code.toString(),
+            widget.buyQuotationCode.toString(),
           ).notifier,
         )
         .updateValues(Products: currentProducts);
-    widget.updateIndex(null);
+    ref
+        .read(selectedProductIndexStateControllerProvider.notifier)
+        .updateIndex(null);
   }
 
   @override
   Widget build(BuildContext context) {
+    final enterprises = ref.watch(enterprisesStateControllerProvider()).value;
+    final buyQuotationEnterprises = ref.watch(
+      completeBuyQuotationsStateControllerProvider(
+        widget.enterpriseCode,
+        widget.buyQuotationCode.toString(),
+      ).select((s) => s.value?.Enterprises),
+    );
+
     final theme = Theme.of(context);
 
     final selectedEnterpriseCodes =
-        widget.buyQuotation.Enterprises
+        buyQuotationEnterprises
             ?.where((e) => e.isSelected == true)
             .toSet()
             .toList() ??
@@ -120,7 +131,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
             Builder(
               builder: (context) {
                 final controller = selectedUIControllers[x];
-                final correspondentEnterprise = widget.enterprises.firstWhere(
+                final correspondentEnterprise = enterprises?.firstWhere(
                   (x) => controller.enterpriseCode == x.Code,
                 );
                 return Padding(
@@ -142,7 +153,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                       }
                     },
                     labelText:
-                        '(${correspondentEnterprise.PersonalizedCode}) ${correspondentEnterprise.name}'
+                        '(${correspondentEnterprise?.PersonalizedCode}) ${correspondentEnterprise?.name}'
                             .hardcoded,
                     hintText: 'Quantidade'.hardcoded,
                     onFieldSubmitted: (_) {
@@ -183,7 +194,11 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                 child: PrimaryButton(
                   text: 'Cancelar'.hardcoded,
                   backgroundColor: Colors.red,
-                  onPressed: () => widget.updateIndex(null),
+                  onPressed: () => ref
+                      .read(
+                        selectedProductIndexStateControllerProvider.notifier,
+                      )
+                      .updateIndex(null),
                 ),
               ),
               gapW8,

@@ -11,7 +11,7 @@ class SelectedProductIndexStateController
   }
 
   void updateIndex(int? index) {
-    if (state == index) {
+    if (state == index || index == null) {
       state = null;
     } else {
       state = index;
