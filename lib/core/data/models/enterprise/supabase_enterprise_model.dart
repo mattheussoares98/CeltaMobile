@@ -79,7 +79,7 @@ class SupabaseEnterpriseModel extends Equatable {
   }) => SupabaseEnterpriseModel(
     id: entity.id,
     name: entity.name,
-    workingUrl: workingUrl,
+    workingUrl: workingUrl ?? entity.workingUrl,
     remoteHttpUrl: entity.remoteHttpUrl,
     remoteHttpsUrl: entity.remoteHttpsUrl,
     localHttpUrl: entity.localHttpUrl,
