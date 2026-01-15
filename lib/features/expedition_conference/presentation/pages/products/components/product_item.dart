@@ -23,7 +23,9 @@ class ProductItem extends ConsumerWidget {
     final product = ref.watch(
       expeditionConferenceControllerProvider(expeditionControlCode).select(
         (s) => isPending
-            ? s.value!.pendingProducts[index]
+            ? s
+                  .value!
+                  .pendingProducts[index] //TODO fix error that happend when tried to insert the product using the modal page
             : s.value!.scannedProducts[index],
       ),
     );
