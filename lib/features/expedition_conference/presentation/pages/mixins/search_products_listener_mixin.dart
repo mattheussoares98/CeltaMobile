@@ -47,7 +47,7 @@ mixin SearchProductsListenerMixin {
           } else if (n.value != null && n.value!.length > 1) {
             showModalPage(
               SelectProductModalPage(
-                n: n,
+                products: n.value!,
                 expeditionControlCode: expeditionControlCode,
                 stepCode: stepCode,
               ),

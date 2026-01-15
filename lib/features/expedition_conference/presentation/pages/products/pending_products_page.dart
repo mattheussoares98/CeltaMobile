@@ -97,28 +97,32 @@ class PendingProductsPage extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       child: Column(
         children: [
-          DefaultSearchProducts(
-            searchProductKey: searchProductKey,
-            module: Modules.expeditionConference,
-            isLoading:
-                ref.watch(
-                  expeditionConferenceControllerProvider(
-                    expeditionControlCode,
-                  ).select((state) => state.isLoading),
-                ) ||
-                ref.watch(
-                  searchProductsStateControllerProvider(
-                    searchProductKey,
-                  ).select((state) => state.isLoading),
-                ) ||
-                ref.watch(
-                  confirmConferenceControllerProvider.select(
-                    (state) => state.isLoading,
-                  ),
-                ),
-            focusNode: focusNode,
-            searchProducts: () => searchProducts(false),
-            searchValueController: searchProductController,
+          Consumer(
+            builder: (_, ref, _) {
+              return DefaultSearchProducts(
+                searchProductKey: searchProductKey,
+                module: Modules.expeditionConference,
+                isLoading:
+                    ref.watch(
+                      expeditionConferenceControllerProvider(
+                        expeditionControlCode,
+                      ).select((state) => state.isLoading),
+                    ) ||
+                    ref.watch(
+                      searchProductsStateControllerProvider(
+                        searchProductKey,
+                      ).select((state) => state.isLoading),
+                    ) ||
+                    ref.watch(
+                      confirmConferenceControllerProvider.select(
+                        (state) => state.isLoading,
+                      ),
+                    ),
+                focusNode: focusNode,
+                searchProducts: () => searchProducts(false),
+                searchValueController: searchProductController,
+              );
+            },
           ),
           Expanded(
             child: PendingProductsItems(

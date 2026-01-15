@@ -22,8 +22,14 @@ class PendingProductsItems extends ConsumerWidget {
         return ResponsiveListFlow(
           itemCount: expedition.pendingProducts.length,
           itemBuilder: (_, index) {
-            final product = expedition.pendingProducts[index];
-            return ProductItem(product: product);
+            return ProductItem(
+              key: ValueKey(
+                expedition.pendingProducts[index].ProductPackingCode,
+              ),
+              index: index,
+              expeditionControlCode: expeditionControlCode,
+              isPending: true,
+            );
           },
         );
       },

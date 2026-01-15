@@ -13,10 +13,11 @@ class ConferedProductsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scannedProducts = ref
-        .watch(expeditionConferenceControllerProvider(expeditionControlCode))
-        .value
-        ?.scannedProducts;
+    final scannedProducts = ref.watch(
+      expeditionConferenceControllerProvider(
+        expeditionControlCode,
+      ).select((s) => s.value?.scannedProducts),
+    );
 
     if (scannedProducts == null || scannedProducts.isEmpty) {
       return Center(
@@ -29,8 +30,12 @@ class ConferedProductsPage extends ConsumerWidget {
       child: ResponsiveListFlow(
         itemCount: scannedProducts.length,
         itemBuilder: (_, index) {
-          final product = scannedProducts[index];
-          return ProductItem(product: product);
+          return ProductItem(
+            key: ValueKey(scannedProducts[index].ProductPackingCode),
+            index: index,
+            expeditionControlCode: expeditionControlCode,
+            isPending: false,
+          );
         },
       ),
     );
