@@ -12,9 +12,7 @@ part 'customer_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class CustomerStateController extends _$CustomerStateController {
   @override
-  FutureOr<CustomerEntity?> build() async {
-    return null;
-  }
+  FutureOr<CustomerEntity?> build() => null;
 
   Future<void> loadCustomer(String cpfCnpj) async {
     final emptyCustomer = CustomerEntity.empty();
@@ -48,7 +46,53 @@ class CustomerStateController extends _$CustomerStateController {
     }
   }
 
-  void updateCustomer(CustomerEntity? entity) {
-    state = AsyncValue.data(entity);
+  void updatePersonalData({
+    String? Name,
+    String? ReducedName,
+    String? CpfCnpjNumber,
+    String? Password,
+    DateTime? DateOfBirth,
+    CustomerSexType? SexType,
+    CustomerPersonType? PersonType,
+    String? RegistrationNumber,
+  }) {
+    state = AsyncValue.data(
+      (state.value ?? CustomerEntity.empty()).copyWith(
+        Name: Name,
+        ReducedName: ReducedName,
+        CpfCnpjNumber: CpfCnpjNumber,
+        Password: Password,
+        DateOfBirth: DateOfBirth,
+        SexType: SexType,
+        PersonType: PersonType,
+        RegistrationNumber: RegistrationNumber,
+      ),
+    );
+  }
+
+  void updateEmails(List<String> value) {
+    state = AsyncData(
+      (state.value ?? CustomerEntity.empty()).copyWith(Emails: value),
+    );
+  }
+
+  void updateTelephones(List<CustomerTelephoneEntity> value) {
+    state = AsyncData(
+      (state.value ?? CustomerEntity.empty()).copyWith(Telephones: value),
+    );
+  }
+
+  void updateCustomerCovenants(List<CustomerCovenantEntity> value) {
+    state = AsyncData(
+      (state.value ?? CustomerEntity.empty()).copyWith(
+        CustomerCovenants: value,
+      ),
+    );
+  }
+
+  void updateAddresses(List<AddressEntity> value) {
+    state = AsyncData(
+      (state.value ?? CustomerEntity.empty()).copyWith(Addresses: value),
+    );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
@@ -13,62 +14,80 @@ class InformedPhones extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final customer = ref.watch(customerStateControllerProvider).value;
+    final telephones = ref.watch(
+      customerStateControllerProvider.select((s) => s.value?.Telephones),
+    );
 
-    if (customer?.Telephones == null || customer!.Telephones!.isEmpty) {
+    if (telephones == null || telephones.isEmpty) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
+
     void removeTelephone(int index) {
       ref
           .read(customerStateControllerProvider.notifier)
-          .updateCustomer(
-            customer.copyWith(
-              Telephones: [...customer.Telephones!..removeAt(index)],
-            ),
-          );
+          .updateTelephones([...telephones]..removeAt(index));
     }
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return SliverList.builder(
-      itemCount: customer.Telephones!.length + 1,
+      itemCount: telephones.length + 1,
       itemBuilder: (_, index) {
         if (index == 0) {
           return DefaultDivider('Telefones informados'.hardcoded);
         }
-        final phone = customer.Telephones![index - 1];
+        final telephone = telephones[index - 1];
 
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.only(left: Sizes.p8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text('(${phone.AreaCode}) ${phone.PhoneNumber}'),
-                ),
-                IconButton(
-                  onPressed: () {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Remover telefone?'.hardcoded,
-                      defaultActionText: 'Sim'.hardcoded,
-                      cancelActionText: 'Cancelar'.hardcoded,
-                      onOkPressed: () {
-                        removeTelephone(index - 1);
-                      },
-                    );
-                  },
-                  icon: Icon(
-                    isIOS ? CupertinoIcons.delete : Icons.delete,
-                    color: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        return _TelephoneItem(
+          key: ValueKey('${telephone.AreaCode}${telephone.PhoneNumber}'),
+          removeTelephone: () => removeTelephone(index - 1),
+          telephone: telephone,
         );
       },
+    );
+  }
+}
+
+class _TelephoneItem extends StatelessWidget {
+  final VoidCallback removeTelephone;
+  final CustomerTelephoneEntity telephone;
+  const _TelephoneItem({
+    super.key,
+    required this.removeTelephone,
+    required this.telephone,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    return RepaintBoundary(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.only(left: Sizes.p8),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text('(${telephone.AreaCode}) ${telephone.PhoneNumber}'),
+              ),
+              IconButton(
+                onPressed: () {
+                  showAlertDialog(
+                    context: context,
+                    title: 'Remover telefone?'.hardcoded,
+                    defaultActionText: 'Sim'.hardcoded,
+                    cancelActionText: 'Cancelar'.hardcoded,
+                    onOkPressed: removeTelephone,
+                  );
+                },
+                icon: Icon(
+                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

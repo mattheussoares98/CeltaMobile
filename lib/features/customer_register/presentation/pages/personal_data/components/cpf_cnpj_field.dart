@@ -1,23 +1,23 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/validators/validators.dart';
+import '../../../controllers/controllers.dart';
 import 'components.dart';
 
-class CpfCnpjField extends StatelessWidget {
+class CpfCnpjField extends ConsumerWidget {
   final TextEditingController cpfCnpjController;
   final FocusNode nameFocusNode;
-  final VoidCallback onChangeCpfCnpj;
   const CpfCnpjField({
     super.key,
     required this.cpfCnpjController,
     required this.nameFocusNode,
-    required this.onChangeCpfCnpj,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTextFormField(
       controller: cpfCnpjController,
       maxLength: 14,
@@ -32,8 +32,12 @@ class CpfCnpjField extends StatelessWidget {
         NonEmptyValidator(),
         CpfCnpjValidator(),
       ]),
-      onChanged: (_) {
-        onChangeCpfCnpj();
+      onChanged: (value) {
+        if (CpfCnpjValidator().isValid(value)) {
+          ref
+              .read(customerStateControllerProvider.notifier)
+              .loadCustomer(value);
+        }
       },
       suffixIcon: DefaultDeleteIcon(controller: cpfCnpjController),
     );

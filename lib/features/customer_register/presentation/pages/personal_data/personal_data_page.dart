@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/validators/validators.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -33,7 +32,6 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
   final passwordConfirmationFocusNode = FocusNode();
   final birthDateFocusNode = FocusNode();
   final inscriptionFocusNode = FocusNode();
-  CustomerSexType? selectedSex;
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -68,37 +66,27 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
   }
 
   Future<void> updateCustomerInProvider() async {
+    //! use in the CustomerRegisterPage
     final customer = await ref.read(customerStateControllerProvider.future);
     if (customer == null) return;
 
     ref
         .read(customerStateControllerProvider.notifier)
-        .updateCustomer(
-          customer.copyWith(
-            CpfCnpjNumber: cpfCnpjController.text,
-            PersonType: cpfCnpjController.text.length == 11
-                ? CustomerPersonType.fisica
-                : CustomerPersonType.juridica,
-            SexType: selectedSex,
-            RegistrationNumber: inscriptionController.text,
-            Name: nameController.text,
-            ReducedName: reducedNameController.text,
-            Password: passwordController.text,
-            DateOfBirth: DateFormat('dd/MM/yyyy').tryParse(
-              birthDateController.text.isEmpty
-                  ? '01/01/0001'
-                  : birthDateController.text,
-            ),
+        .updatePersonalData(
+          CpfCnpjNumber: cpfCnpjController.text,
+          PersonType: cpfCnpjController.text.length == 11
+              ? CustomerPersonType.fisica
+              : CustomerPersonType.juridica,
+          RegistrationNumber: inscriptionController.text,
+          Name: nameController.text,
+          ReducedName: reducedNameController.text,
+          Password: passwordController.text,
+          DateOfBirth: DateFormat('dd/MM/yyyy').tryParse(
+            birthDateController.text.isEmpty
+                ? '01/01/0001'
+                : birthDateController.text,
           ),
         );
-  }
-
-  Future<void> onChangeCpfCnpj() async {
-    if (CpfCnpjValidator().isValid(cpfCnpjController.text)) {
-      await ref
-          .read(customerStateControllerProvider.notifier)
-          .loadCustomer(cpfCnpjController.text);
-    }
   }
 
   Future<void> updateFields() async {
@@ -123,7 +111,6 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
     } else {
       birthDateController.text = '';
     }
-    selectedSex = customer?.SexType;
   }
 
   @override
@@ -148,7 +135,6 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                 CpfCnpjField(
                   cpfCnpjController: cpfCnpjController,
                   nameFocusNode: nameFocusNode,
-                  onChangeCpfCnpj: onChangeCpfCnpj,
                 ),
                 if (customer != null) ...[
                   if (cpfCnpjController.text.length == 14) ...[
@@ -193,14 +179,7 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                   ),
                   if (cpfCnpjController.text.length == 11) ...[
                     gapH8,
-                    SexDropDown(
-                      onChangeSex: (sex) {
-                        setState(() {
-                          selectedSex = sex;
-                        });
-                      },
-                      selectedSex: selectedSex,
-                    ),
+                    const SexDropDown(),
                   ],
                 ],
               ],

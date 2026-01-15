@@ -1,20 +1,24 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
-class SexDropDown extends StatelessWidget {
-  final Function(CustomerSexType? value) onChangeSex;
-  final CustomerSexType? selectedSex;
-  const SexDropDown({
-    super.key,
-    required this.onChangeSex,
-    required this.selectedSex,
-  });
+class SexDropDown extends ConsumerWidget {
+  const SexDropDown({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedSex = ref.watch(
+      customerStateControllerProvider.select((s) => s.value?.SexType),
+    );
+
+    void onChangeSex(CustomerSexType? value) => ref
+        .read(customerStateControllerProvider.notifier)
+        .updatePersonalData(SexType: value);
+
     return DefaultSimpleDropDown<CustomerSexType?>(
       value: selectedSex,
       hint: 'Sexo'.hardcoded,

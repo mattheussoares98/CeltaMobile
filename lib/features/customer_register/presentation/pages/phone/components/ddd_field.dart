@@ -7,12 +7,10 @@ class DddField extends StatelessWidget {
   const DddField({
     super.key,
     required this.dddController,
-    required this.dddFormKey,
     required this.phoneFocusNode,
   });
 
   final TextEditingController dddController;
-  final GlobalKey<FormState> dddFormKey;
   final FocusNode phoneFocusNode;
 
   @override
@@ -26,7 +24,10 @@ class DddField extends StatelessWidget {
       keyboardType: const TextInputType.numberWithOptions(decimal: false),
       validator: FormValidators.compose([NonEmptyValidator(), DddValidator()]),
       onChanged: (value) {
-        if (dddFormKey.currentState?.validate() == true) {
+        if ([
+          NonEmptyValidator(),
+          DddValidator(),
+        ].every((validator) => validator.isValid(value))) {
           phoneFocusNode.requestFocus();
         }
       },

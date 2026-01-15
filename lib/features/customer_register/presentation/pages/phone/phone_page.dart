@@ -16,7 +16,6 @@ class PhonePage extends ConsumerStatefulWidget {
 }
 
 class _PhonePageState extends ConsumerState<PhonePage> {
-  final dddFormKey = GlobalKey<FormState>();
   final phoneFormKey = GlobalKey<FormState>();
   final dddController = TextEditingController();
   final phoneController = TextEditingController();
@@ -34,10 +33,14 @@ class _PhonePageState extends ConsumerState<PhonePage> {
   }
 
   void addPhone() async {
-    final customer = await ref.read(customerStateControllerProvider.future);
+    final telephones = await ref.read(
+      customerStateControllerProvider.selectAsync((s) => s?.Telephones),
+    );
     if (phoneFormKey.currentState?.validate() != true) {
       return;
-    } else if (customer?.Telephones?.any(
+    }
+
+    if (telephones?.any(
           (e) =>
               e.PhoneNumber == phoneController.text &&
               e.AreaCode == dddController.text,
@@ -51,27 +54,21 @@ class _PhonePageState extends ConsumerState<PhonePage> {
       return;
     }
 
-    ref
-        .read(customerStateControllerProvider.notifier)
-        .updateCustomer(
-          customer!.copyWith(
-            Telephones: (customer.Telephones ?? [])
-              ..add(
-                CustomerTelephoneEntity(
-                  AreaCode: dddController.text,
-                  PhoneNumber: phoneController.text,
-                ),
-              ),
-          ),
-        );
+    ref.read(customerStateControllerProvider.notifier).updateTelephones([
+      ...?telephones,
+      CustomerTelephoneEntity(
+        AreaCode: dddController.text,
+        PhoneNumber: phoneController.text,
+      ),
+    ]);
     phoneController.clear();
     dddController.clear();
+
+    phoneFormKey.currentState?.reset();
   }
 
   @override
   Widget build(BuildContext context) {
-    final customer = ref.watch(customerStateControllerProvider).value;
-
     return Scaffold(
       appBar: AppBar(title: Text('Telefones'.hardcoded)),
       body: Padding(
@@ -90,22 +87,15 @@ class _PhonePageState extends ConsumerState<PhonePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: Form(
-                              key: dddFormKey,
-                              child: DddField(
-                                dddController: dddController,
-                                dddFormKey: dddFormKey,
-                                phoneFocusNode: phoneFocusNode,
-                              ),
+                            child: DddField(
+                              dddController: dddController,
+                              phoneFocusNode: phoneFocusNode,
                             ),
                           ),
                           gapW8,
                           Expanded(
                             flex: 3,
                             child: PhoneField(
-                              customer: customer,
-                              formKey: phoneFormKey,
-                              dddController: dddController,
                               phoneController: phoneController,
                               phoneFocusNode: phoneFocusNode,
                               addPhone: addPhone,
@@ -121,10 +111,7 @@ class _PhonePageState extends ConsumerState<PhonePage> {
                     ],
                   ),
                 ),
-                if (customer?.Telephones != null &&
-                    customer!.Telephones!.isNotEmpty) ...[
-                  const InformedPhones(),
-                ],
+                const InformedPhones(),
               ],
             ),
           ),

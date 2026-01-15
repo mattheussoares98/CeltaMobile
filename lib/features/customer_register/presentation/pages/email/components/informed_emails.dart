@@ -13,56 +13,74 @@ class InformedEmails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final customer = ref.watch(customerStateControllerProvider).value;
+    final emails = ref.watch(
+      customerStateControllerProvider.select((s) => s.value?.Emails),
+    );
 
-    if (customer?.Emails == null || customer!.Emails!.isEmpty) {
+    if (emails == null || emails.isEmpty) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
     void removeEmail(int index) {
-      ref
-          .read(customerStateControllerProvider.notifier)
-          .updateCustomer(
-            customer.copyWith(Emails: [...customer.Emails!..removeAt(index)]),
-          );
+      ref.read(customerStateControllerProvider.notifier).updateEmails([
+        ...emails..removeAt(index),
+      ]);
     }
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return SliverList.builder(
-      itemCount: customer.Emails!.length + 1,
+      itemCount: emails.length + 1,
       itemBuilder: (_, index) {
         if (index == 0) {
           return DefaultDivider('E-mails informados'.hardcoded);
         }
-        final email = customer.Emails![index - 1];
+        final email = emails[index - 1];
 
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.only(left: Sizes.p8),
-            child: Row(
-              children: [
-                Expanded(child: Text(email)),
-                IconButton(
-                  onPressed: () {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Remover e-mail?'.hardcoded,
-                      onOkPressed: () => removeEmail(index - 1),
-                      defaultActionText: 'Sim'.hardcoded,
-                      cancelActionText: 'Não'.hardcoded,
-                    );
-                  },
-                  icon: Icon(
-                    isIOS ? CupertinoIcons.delete : Icons.delete,
-                    color: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        return _EmailItem(
+          key: ValueKey(email),
+          email: email,
+          removeEmail: () => removeEmail(index - 1),
         );
       },
+    );
+  }
+}
+
+class _EmailItem extends StatelessWidget {
+  final String email;
+  final VoidCallback removeEmail;
+  const _EmailItem({super.key, required this.email, required this.removeEmail});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    return RepaintBoundary(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.only(left: Sizes.p8),
+          child: Row(
+            children: [
+              Expanded(child: Text(email)),
+              IconButton(
+                onPressed: () {
+                  showAlertDialog(
+                    context: context,
+                    title: 'Remover e-mail?'.hardcoded,
+                    onOkPressed: removeEmail,
+                    defaultActionText: 'Sim'.hardcoded,
+                    cancelActionText: 'Não'.hardcoded,
+                  );
+                },
+                icon: Icon(
+                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

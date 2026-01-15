@@ -1,13 +1,16 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/validators/validators.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
+import '../../../controllers/controllers.dart';
 
-class NotBindedCovenants extends StatelessWidget {
-  final List<CovenantEntity> notBindedCovenants;
+class NotBindedCovenants extends ConsumerWidget {
+  final List<CovenantEntity>? covenants;
   final void Function(int index) changeSelectedIndex;
   final int? selectedIndex;
   final void Function(CovenantEntity covenant) bindCovenant;
@@ -15,7 +18,7 @@ class NotBindedCovenants extends StatelessWidget {
   final FocusNode limitFocusNode;
   const NotBindedCovenants({
     super.key,
-    required this.notBindedCovenants,
+    required this.covenants,
     required this.changeSelectedIndex,
     required this.selectedIndex,
     required this.bindCovenant,
@@ -24,8 +27,25 @@ class NotBindedCovenants extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final customerCovenants = ref.watch(
+      customerStateControllerProvider.select((s) => s.value?.CustomerCovenants),
+    );
+
+    final notBindedCovenants = covenants
+        ?.where(
+          (e) =>
+              customerCovenants
+                  ?.where((x) => e.Codigo_Convenio?.toInt() == x.covenant?.Code)
+                  .toList()
+                  .isEmpty !=
+              false,
+        )
+        .toList();
+
+    if (notBindedCovenants == null || notBindedCovenants.isEmpty) {
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
+    }
 
     return SliverList.builder(
       itemCount: notBindedCovenants.length + 1,
@@ -36,89 +56,125 @@ class NotBindedCovenants extends StatelessWidget {
 
         final covenant = notBindedCovenants[index - 1];
 
-        return Card(
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  changeSelectedIndex(index);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        covenant.Nome_Convenio ?? '',
-                        style: theme.textTheme.titleMedium,
-                      ),
-                      TitleAndSubTitle(
-                        title: 'CNPJ '.hardcoded,
-                        subTitle: covenant.Cnpj_Convenio,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TitleAndSubTitle(
-                              title: 'Endereço '.hardcoded,
-                              subTitle:
-                                  "${covenant.Logradouro_Convenio}, ${covenant.NumEndereco_Convenio}",
-                            ),
-                          ),
-                          SelectedIconIndicator(
-                            selected: selectedIndex == index,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              if (selectedIndex == index)
-                Padding(
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: DefaultTextFormField(
-                          controller: limitController,
-                          focusNode: limitFocusNode,
-                          labelText: 'Limite R\$'.hardcoded,
-                          hintText: 'Limite R\$'.hardcoded,
-                          maxLength: 12,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          validator: FormValidators.compose([
-                            NonEmptyValidator(),
-                            NumberValidator(
-                              allowDecimal: true,
-                              maxDecimalHouses: 2,
-                            ),
-                          ]),
-                          onFieldSubmitted: (_) {
-                            bindCovenant(covenant);
-                          },
-                        ),
-                      ),
-                      gapW16,
-                      Flexible(
-                        child: PrimaryButton(
-                          text: 'Vincular'.hardcoded,
-                          onPressed: () => bindCovenant(covenant),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
+        return _CovenantItem(
+          key: ValueKey('${covenant.Codigo_Convenio}'),
+          changeSelectedIndex: changeSelectedIndex,
+          covenant: covenant,
+          selectedIndex: selectedIndex,
+          limitController: limitController,
+          limitFocusNode: limitFocusNode,
+          bindCovenant: bindCovenant,
+          index: index,
         );
       },
+    );
+  }
+}
+
+class _CovenantItem extends StatelessWidget {
+  final void Function(int index) changeSelectedIndex;
+  final CovenantEntity covenant;
+  final int? selectedIndex;
+  final TextEditingController limitController;
+  final FocusNode limitFocusNode;
+  final void Function(CovenantEntity covenant) bindCovenant;
+  final int index;
+  const _CovenantItem({
+    super.key,
+    required this.changeSelectedIndex,
+    required this.covenant,
+    required this.selectedIndex,
+    required this.limitController,
+    required this.limitFocusNode,
+    required this.bindCovenant,
+    required this.index,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return RepaintBoundary(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () {
+                changeSelectedIndex(index);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      covenant.Nome_Convenio ?? '',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    TitleAndSubTitle(
+                      title: 'CNPJ '.hardcoded,
+                      subTitle: covenant.Cnpj_Convenio,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TitleAndSubTitle(
+                            title: 'Endereço '.hardcoded,
+                            subTitle:
+                                "${covenant.Logradouro_Convenio}, ${covenant.NumEndereco_Convenio}",
+                          ),
+                        ),
+                        SelectedIconIndicator(selected: selectedIndex == index),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if (selectedIndex == index)
+              Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: DefaultTextFormField(
+                        controller: limitController,
+                        focusNode: limitFocusNode,
+                        labelText: 'Limite R\$'.hardcoded,
+                        hintText: 'Limite R\$'.hardcoded,
+                        maxLength: 12,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        validator: FormValidators.compose([
+                          NonEmptyValidator(),
+                          NumberValidator(
+                            allowDecimal: true,
+                            maxDecimalHouses: 2,
+                          ),
+                        ]),
+                        onFieldSubmitted: (_) {
+                          bindCovenant(covenant);
+                        },
+                      ),
+                    ),
+                    gapW16,
+                    Flexible(
+                      child: PrimaryButton(
+                        text: 'Vincular'.hardcoded,
+                        onPressed: () => bindCovenant(covenant),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

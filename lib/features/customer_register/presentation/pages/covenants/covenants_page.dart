@@ -18,7 +18,8 @@ class CovenantsPage extends ConsumerStatefulWidget {
 }
 
 class _CovenantsPageState extends ConsumerState<CovenantsPage> {
-  int? selectedIndex;
+  int?
+  selectedIndex; //I didnt create another controller because normally the list will be small
   final formKey = GlobalKey<FormState>();
   final limitController = TextEditingController();
   final limitFocusNode = FocusNode();
@@ -57,24 +58,18 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
       return;
     }
 
-    ref
-        .read(customerStateControllerProvider.notifier)
-        .updateCustomer(
-          customer.copyWith(
-            CustomerCovenants: [
-              ...?customer.CustomerCovenants,
-              CustomerCovenantEntity(
-                covenant: CovenantInfoEntity(
-                  Code: covenant.Codigo_Convenio?.toInt() ?? 0,
-                  PersonalizedCode: covenant.CodigoLegado_Convenio.toString(),
-                  Name: covenant.Nome_Convenio ?? '',
-                ),
-                LimitOfPurchase: double.tryParse(limitController.text),
-                Matriculate: '',
-              ),
-            ],
-          ),
-        );
+    ref.read(customerStateControllerProvider.notifier).updateCustomerCovenants([
+      ...?customer.CustomerCovenants,
+      CustomerCovenantEntity(
+        covenant: CovenantInfoEntity(
+          Code: covenant.Codigo_Convenio?.toInt() ?? 0,
+          PersonalizedCode: covenant.CodigoLegado_Convenio.toString(),
+          Name: covenant.Nome_Convenio ?? '',
+        ),
+        LimitOfPurchase: limitController.text.toDouble(),
+        Matriculate: '',
+      ),
+    ]);
 
     limitController.clear();
     changeSelectedIndex(null);
@@ -82,7 +77,9 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final customer = ref.watch(customerStateControllerProvider).value;
+    final customerCovenants = ref.watch(
+      customerStateControllerProvider.select((s) => s.value?.CustomerCovenants),
+    );
     final covenantsAsync = ref.watch(covenantsStateControllerProvider);
 
     return Scaffold(
@@ -91,19 +88,6 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
         value: covenantsAsync,
         tryAgain: () => ref.invalidate(covenantsStateControllerProvider),
         data: (covenants) {
-          final notBindedCovenants = covenants!
-              .where(
-                (e) =>
-                    customer?.CustomerCovenants
-                        ?.where(
-                          (x) => e.Codigo_Convenio?.toInt() == x.covenant?.Code,
-                        )
-                        .toList()
-                        .isEmpty !=
-                    false,
-              )
-              .toList();
-
           return Form(
             key: formKey,
             child: Padding(
@@ -113,17 +97,16 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
                 child: CustomScrollView(
                   physics: const ClampingScrollPhysics(),
                   slivers: [
-                    if (notBindedCovenants.isNotEmpty)
-                      NotBindedCovenants(
-                        notBindedCovenants: notBindedCovenants,
-                        changeSelectedIndex: changeSelectedIndex,
-                        selectedIndex: selectedIndex,
-                        bindCovenant: bindCovenant,
-                        limitController: limitController,
-                        limitFocusNode: limitFocusNode,
-                      ),
-                    if (customer?.CustomerCovenants != null &&
-                        customer!.CustomerCovenants!.isNotEmpty) ...[
+                    NotBindedCovenants(
+                      covenants: covenants,
+                      changeSelectedIndex: changeSelectedIndex,
+                      selectedIndex: selectedIndex,
+                      bindCovenant: bindCovenant,
+                      limitController: limitController,
+                      limitFocusNode: limitFocusNode,
+                    ),
+                    if (customerCovenants != null &&
+                        customerCovenants.isNotEmpty) ...[
                       const BindedCovenants(),
                     ],
                   ],

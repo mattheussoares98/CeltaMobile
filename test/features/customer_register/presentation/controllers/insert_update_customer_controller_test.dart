@@ -13,7 +13,8 @@ class FakeCustomerStateController extends CustomerStateController {
   final CustomerEntity? customerToReturn;
   FakeCustomerStateController(this.customerToReturn);
   @override
-  Future<CustomerEntity?> build() async => customerToReturn;
+  Future<CustomerEntity> build() async =>
+      customerToReturn ?? CustomerEntity.empty();
 }
 
 void main() {
