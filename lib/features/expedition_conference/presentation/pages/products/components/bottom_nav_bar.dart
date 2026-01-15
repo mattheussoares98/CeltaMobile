@@ -6,35 +6,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
-  final void Function(int) onTap;
-  final int currentIndex;
   final int expeditionControlCode;
-  const BottomNavBar({
-    super.key,
-    required this.onTap,
-    required this.currentIndex,
-    required this.expeditionControlCode,
-  });
+  const BottomNavBar({super.key, required this.expeditionControlCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final pendingProductsAsync = ref.watch(
-      expeditionConferenceControllerProvider(expeditionControlCode),
-    );
-
     return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
+      currentIndex: ref.watch(pageIndexStateControllerProvider),
+      onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
       items: [
         BottomNavigationBarItem(
           label: 'Pendentes'.hardcoded,
           icon: Badge(
             label: Text(
-              pendingProductsAsync.value?.pendingProducts.length.toString() ??
-                  '0',
+              ref
+                  .watch(
+                    expeditionConferenceControllerProvider(
+                      expeditionControlCode,
+                    ).select((s) => s.value?.pendingProducts.length ?? 0),
+                  )
+                  .toString(),
             ),
             offset: const Offset(8, -6),
             child: Icon(
@@ -46,8 +40,13 @@ class BottomNavBar extends ConsumerWidget {
           label: 'Conferidos'.hardcoded,
           icon: Badge(
             label: Text(
-              pendingProductsAsync.value?.scannedProducts.length.toString() ??
-                  '0',
+              ref
+                  .watch(
+                    expeditionConferenceControllerProvider(
+                      expeditionControlCode,
+                    ).select((s) => s.value?.scannedProducts.length ?? 0),
+                  )
+                  .toString(),
             ),
             offset: const Offset(8, -6),
             child: Icon(

@@ -32,7 +32,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
     with SearchProductsListenerMixin {
   final searchProductController = TextEditingController();
   final searchProductFocusNode = FocusNode();
-  int currentIndex = 0;
 
   @override
   void dispose() {
@@ -108,11 +107,15 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
         children: [
           Scaffold(
             appBar: AppBar(
-              title: FittedBox(
-                child: Text(
-                  '${currentIndex == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
-                      .hardcoded,
-                ),
+              title: Consumer(
+                builder: (_, ref, _) {
+                  return FittedBox(
+                    child: Text(
+                      '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
+                          .hardcoded,
+                    ),
+                  );
+                },
               ),
             ),
             body:
@@ -125,28 +128,26 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
                     expeditionControlCode: widget.expeditionControlCode,
                     stepCode: widget.stepCode,
                   )
-                : IndexedStack(
-                    index: currentIndex,
-                    children: [
-                      PendingProductsPage(
-                        focusNode: searchProductFocusNode,
-                        searchProductController: searchProductController,
-                        enterpriseCode: widget.enterpriseCode,
-                        expeditionControlCode: widget.expeditionControlCode,
-                      ),
-                      ConferedProductsPage(
-                        expeditionControlCode: widget.expeditionControlCode,
-                      ),
-                    ],
+                : Consumer(
+                    builder: (_, ref, _) {
+                      return IndexedStack(
+                        index: ref.watch(pageIndexStateControllerProvider),
+                        children: [
+                          PendingProductsPage(
+                            focusNode: searchProductFocusNode,
+                            searchProductController: searchProductController,
+                            enterpriseCode: widget.enterpriseCode,
+                            expeditionControlCode: widget.expeditionControlCode,
+                          ),
+                          ConferedProductsPage(
+                            expeditionControlCode: widget.expeditionControlCode,
+                          ),
+                        ],
+                      );
+                    },
                   ),
             bottomNavigationBar: BottomNavBar(
               expeditionControlCode: widget.expeditionControlCode,
-              onTap: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-              currentIndex: currentIndex,
             ),
           ),
           LoadingPage(providers: [confirmConferenceControllerProvider]),
