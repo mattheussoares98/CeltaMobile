@@ -89,7 +89,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                         child: Text(
                           widget.label ?? 'Selecionar'.hardcoded,
                           maxLines: 1,
-                          style: theme.textTheme.titleMedium,
+                          style: theme.textTheme.bodyLarge,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -122,7 +122,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.disabledColor.withAlpha(20),
+        color: theme.disabledColor.withAlpha(50),
         borderRadius: BorderRadius.circular(Sizes.p8),
       ),
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
