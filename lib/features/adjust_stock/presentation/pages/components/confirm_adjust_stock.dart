@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../../core/validators/validators.dart';
 
 class ConfirmAdjustStock extends ConsumerWidget {
@@ -20,10 +19,6 @@ class ConfirmAdjustStock extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final confirmAdjustStockAsync = ref.watch(
-      confirmAdjustStockControllerProvider,
-    );
-
     return Row(
       children: [
         Expanded(
@@ -50,7 +45,6 @@ class ConfirmAdjustStock extends ConsumerWidget {
           child: PrimaryButton(
             text: 'Confirmar'.hardcoded,
             onPressed: onConfirm,
-            isLoading: confirmAdjustStockAsync.isLoading,
           ),
         ),
       ],

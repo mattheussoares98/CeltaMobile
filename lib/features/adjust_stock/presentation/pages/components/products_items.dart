@@ -24,10 +24,6 @@ class ProductsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedUIState = ref.watch(
-      selectedUIStateControllerProvider(enterpriseCode),
-    );
-
     Future<void> confirmAdjust(ProductEntity product) async {
       if (formKey.currentState?.validate() != true) {
         return;
@@ -52,9 +48,6 @@ class ProductsItems extends ConsumerWidget {
       ]);
     }
 
-    final lastConfirmedAdjust = ref.watch(confirmAdjustStockControllerProvider);
-    final theme = Theme.of(context);
-
     return AsyncValueWidget(
       value: ref.watch(
         searchProductsStateControllerProvider(
@@ -71,51 +64,102 @@ class ProductsItems extends ConsumerWidget {
           itemCount: products.length,
           itemBuilder: (_, index) {
             final product = products[index];
-            return ProductItemWidget(
+
+            return _ProductItem(
+              key: ValueKey('product_item_${product.ProductPackingCode}'),
               product: product,
-              routine: BsRoutine.adjustStock,
-              onTap: () async {
-                ref
-                    .read(
-                      selectedUIStateControllerProvider(
-                        enterpriseCode,
-                      ).notifier,
-                    )
-                    .updateValues(selectedIndex: index);
-                await Future.delayed(const Duration(milliseconds: 100));
-                quantityFocusNode.requestFocus();
-              },
-              showDropIcon: true,
-              isSelected: selectedUIState.selectedIndex == index,
-              clickableBottom:
-                  lastConfirmedAdjust.value?.productPackingCode ==
-                      product.ProductPackingCode
-                  ? TitleAndSubTitle(
-                      title: 'Última qtd alterada',
-                      subTitle: lastConfirmedAdjust.value!.quantity
-                          .toString()
-                          .toBrazilianNumber(3, true),
-                      titleStyle: theme.textTheme.titleMedium?.copyWith(
-                        color: theme.colorScheme.secondary,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                        color: theme.colorScheme.secondary,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    )
-                  : null,
-              notClickableBottom: selectedUIState.selectedIndex == index
-                  ? ConfirmAdjustStock(
-                      onConfirm: () => confirmAdjust(product),
-                      quantityController: quantityController,
-                      quantityFocusNode: quantityFocusNode,
-                    )
-                  : null,
+              enterpriseCode: enterpriseCode,
+              quantityFocusNode: quantityFocusNode,
+              quantityController: quantityController,
+              index: index,
+              formKey: formKey,
+              confirmAdjust: () => confirmAdjust(product),
             );
           },
         );
       },
+    );
+  }
+}
+
+class _ProductItem extends ConsumerWidget {
+  final ProductEntity product;
+  final int enterpriseCode;
+  final FocusNode quantityFocusNode;
+  final TextEditingController quantityController;
+  final int index;
+  final GlobalKey<FormState> formKey;
+  final VoidCallback confirmAdjust;
+
+  const _ProductItem({
+    super.key,
+    required this.product,
+    required this.enterpriseCode,
+    required this.quantityFocusNode,
+    required this.quantityController,
+    required this.index,
+    required this.formKey,
+    required this.confirmAdjust,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
+    final isSelected = ref.watch(
+      selectedUIStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.selectedIndex == index),
+    );
+
+    final lastAdjustedQty = ref.watch(
+      confirmAdjustStockControllerProvider.select((asyncValue) {
+        final data = asyncValue.value;
+        if (data?.productPackingCode == product.ProductPackingCode) {
+          return data?.quantity;
+        }
+        return null;
+      }),
+    );
+
+    return RepaintBoundary(
+      child: ProductItemWidget(
+        product: product,
+        routine: BsRoutine.adjustStock,
+        onTap: () async {
+          ref
+              .read(selectedUIStateControllerProvider(enterpriseCode).notifier)
+              .updateValues(selectedIndex: index);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (quantityFocusNode.canRequestFocus) {
+              quantityFocusNode.requestFocus();
+            }
+          });
+        },
+        showDropIcon: true,
+        isSelected: isSelected,
+        clickableBottom: lastAdjustedQty != null
+            ? TitleAndSubTitle(
+                title: 'Última qtd alterada',
+                subTitle: lastAdjustedQty.toString().toBrazilianNumber(3, true),
+                titleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.secondary,
+                  fontStyle: FontStyle.italic,
+                ),
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.secondary,
+                  fontStyle: FontStyle.italic,
+                ),
+              )
+            : null,
+        notClickableBottom: isSelected
+            ? ConfirmAdjustStock(
+                onConfirm: confirmAdjust,
+                quantityController: quantityController,
+                quantityFocusNode: quantityFocusNode,
+              )
+            : null,
+      ),
     );
   }
 }
