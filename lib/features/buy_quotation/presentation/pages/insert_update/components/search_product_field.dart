@@ -121,6 +121,7 @@ class SearchProductField extends ConsumerWidget {
               enterpriseCode: enterpriseCode,
               searchProductKey: searchProductKey,
               addProducts: addProducts,
+              buyQuotationCode: code,
             ),
             context,
           );
