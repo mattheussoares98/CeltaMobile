@@ -9,57 +9,19 @@ import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../routing/routing.dart';
+import 'components/components.dart';
 
-class AdjustSalePriceProductsPage extends ConsumerStatefulWidget {
+class AdjustSalePriceProductsPage extends ConsumerWidget {
   final int enterpriseCode;
   const AdjustSalePriceProductsPage({super.key, required this.enterpriseCode});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AdjustSalePriceProductsPageState();
-}
-
-class _AdjustSalePriceProductsPageState
-    extends ConsumerState<AdjustSalePriceProductsPage> {
-  final searchValueController = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    searchValueController.dispose();
-  }
-
-  Future<void> _searchProducts() async {
-    await ref
-        .read(
-          searchProductsStateControllerProvider(
-            SearchProductKey(
-              widget.enterpriseCode,
-              BsRoutine.adjustSalePrice,
-              Modules.adjustPrice,
-            ),
-          ).notifier,
-        )
-        .loadProducts(
-          GetProductsJsonParams(
-            searchValue: searchValueController.text,
-            enterpriseCodes: [widget.enterpriseCode],
-            routine: BsRoutine.adjustSalePrice,
-          ),
-        );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final searchProductKey = SearchProductKey(
-      widget.enterpriseCode,
+      enterpriseCode,
       BsRoutine.adjustSalePrice,
       Modules.adjustPrice,
     );
-
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Scaffold(
       appBar: AppBar(
@@ -69,70 +31,84 @@ class _AdjustSalePriceProductsPageState
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: Column(
           children: [
-            DefaultSearchProducts(
-              searchValueController: searchValueController,
+            SearchProduct(
               searchProductKey: searchProductKey,
-              isLoading: ref.watch(
-                searchProductsStateControllerProvider(
-                  searchProductKey,
-                ).select((state) => state.isLoading),
-              ),
-              searchProducts: _searchProducts,
+              enterpriseCode: enterpriseCode,
             ),
             gapH8,
             Expanded(
               child: Consumer(
                 builder: (_, ref, _) {
-                  final productsState = ref.watch(
-                    searchProductsStateControllerProvider(searchProductKey),
-                  );
-
                   return AsyncValueWidget(
-                    value: productsState,
+                    value: ref.watch(
+                      searchProductsStateControllerProvider(searchProductKey),
+                    ),
                     tryAgain: null,
                     data: (products) {
                       return ResponsiveListFlow(
                         itemCount: products.length,
                         itemBuilder: (_, index) {
                           final product = products[index];
-                          return ProductItemWidget(
-                            product: product,
-                            routine: BsRoutine.adjustSalePrice,
-                            notClickableBottom: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                if (isIOS)
-                                  const Expanded(flex: 55, child: Text('')),
-                                Flexible(
-                                  flex: 45,
-                                  child: PrimaryButton(
-                                    text: 'Alterar preços'.hardcoded,
-                                    icon: Icon(
-                                      theme.platform == TargetPlatform.iOS
-                                          ? CupertinoIcons.pencil
-                                          : Icons.edit,
-                                    ),
-                                    iconAlignment: IconAlignment.end,
-                                    onPressed: () {
-                                      context.goNamed(
-                                        Routes.adjustSalePrice.name,
-                                        pathParameters: {
-                                          'enterpriseCode': widget
-                                              .enterpriseCode
-                                              .toString(),
-                                          'plu': product.PLU!,
-                                        },
-                                        extra: product,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
+                          return _ProductItem(
+                            key: ValueKey(
+                              'product_${product.ProductPackingCode}',
                             ),
+                            product: product,
+                            enterpriseCode: enterpriseCode,
                           );
                         },
                       );
                     },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProductItem extends StatelessWidget {
+  final ProductEntity product;
+  final int enterpriseCode;
+  const _ProductItem({
+    super.key,
+    required this.product,
+    required this.enterpriseCode,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    return RepaintBoundary(
+      child: ProductItemWidget(
+        product: product,
+        routine: BsRoutine.adjustSalePrice,
+        notClickableBottom: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (isIOS) const Expanded(flex: 55, child: Text('')),
+            Flexible(
+              flex: 45,
+              child: PrimaryButton(
+                text: 'Alterar preços'.hardcoded,
+                icon: Icon(
+                  theme.platform == TargetPlatform.iOS
+                      ? CupertinoIcons.pencil
+                      : Icons.edit,
+                ),
+                iconAlignment: IconAlignment.end,
+                onPressed: () {
+                  context.goNamed(
+                    Routes.adjustSalePrice.name,
+                    pathParameters: {
+                      'enterpriseCode': enterpriseCode.toString(),
+                      'plu': product.PLU!,
+                    },
+                    extra: product,
                   );
                 },
               ),
