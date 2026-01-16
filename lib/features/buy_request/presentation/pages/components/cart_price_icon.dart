@@ -11,25 +11,36 @@ class CartPriceIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncValue = ref.watch(pendingBuyRequestStateControllerProvider);
-    final totalPrice = asyncValue.value?.products?.values.fold(
-      0.0,
-      (previousValue, element) =>
-          previousValue + (element.cost * element.quantity),
-    );
-
     return GestureDetector(
       onTap: () =>
           ref.read(uiStateControllerProvider.notifier).updatePageIndex(3),
       child: QuantityBadge(
-        quantity: asyncValue.value?.products?.values.length,
+        quantity: ref.watch(
+          pendingBuyRequestStateControllerProvider.select(
+            (s) => s.value?.products?.length ?? 0,
+          ),
+        ),
         materialIcon: Icons.shopping_cart,
         cupertinoIcon: CupertinoIcons.shopping_cart,
         isSelected: false,
         offset: const Offset(3, -3),
-        subtitle: Text(
-          'R\$ ${(totalPrice ?? 0).toStringAsFixed(2).toBrazilianNumber(2, true)}',
-          style: const TextStyle(fontSize: 9),
+        subtitle: Consumer(
+          builder: (_, ref, _) {
+            final totalPrice = ref.watch(
+              pendingBuyRequestStateControllerProvider.select(
+                (s) => s.value?.products?.values.fold(
+                  0.0,
+                  (previousValue, element) =>
+                      previousValue + (element.cost * element.quantity),
+                ),
+              ),
+            );
+
+            return Text(
+              'R\$ ${(totalPrice ?? 0).toStringAsFixed(2).toBrazilianNumber(2, true)}',
+              style: const TextStyle(fontSize: 9),
+            );
+          },
         ),
       ),
     );

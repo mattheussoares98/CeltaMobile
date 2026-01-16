@@ -16,11 +16,8 @@ class BuyersDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final buyersState = ref.watch(buyersStateControllerProvider);
-    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
-
     return AsyncValueSliverWidget(
-      value: buyersState,
+      value: ref.watch(buyersStateControllerProvider),
       tryAgain: () {
         ref.invalidate(buyersStateControllerProvider);
       },
@@ -31,37 +28,46 @@ class BuyersDropdown extends ConsumerWidget {
             children: [
               DefaultSmallTitle(title: 'Comprador'.hardcoded),
               gapH4,
-              DefaultSimpleDropDown<BuyerEntity?>(
-                onChanged: enabled
-                    ? (buyer) {
-                        ref
-                            .read(
-                              pendingBuyRequestStateControllerProvider.notifier,
-                            )
-                            .updatePending(
-                              (pendingAsync.value ??
-                                      PendingBuyRequestEntity.empty())
-                                  .copyWith(selectedBuyer: buyer),
-                            );
+              Consumer(
+                builder: (_, ref, _) {
+                  final pendingAsync = ref.watch(
+                    pendingBuyRequestStateControllerProvider,
+                  );
+
+                  return DefaultSimpleDropDown<BuyerEntity?>(
+                    onChanged: enabled
+                        ? (buyer) {
+                            ref
+                                .read(
+                                  pendingBuyRequestStateControllerProvider
+                                      .notifier,
+                                )
+                                .updatePending(
+                                  (pendingAsync.value ??
+                                          PendingBuyRequestEntity.empty())
+                                      .copyWith(selectedBuyer: buyer),
+                                );
+                          }
+                        : null,
+                    items: buyers
+                        .map(
+                          (e) => DropdownMenuItem(
+                            key: ValueKey(e.Code),
+                            value: e,
+                            child: Center(child: Text(e.Name)),
+                          ),
+                        )
+                        .toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Selecione um comprador'.hardcoded;
                       }
-                    : null,
-                items: buyers
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Center(child: Text(e.Name)),
-                      ),
-                    )
-                    .toList(),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Selecione um comprador'.hardcoded;
-                  }
-                  return null;
+                      return null;
+                    },
+                    value: pendingAsync.value?.selectedBuyer,
+                    hint: 'Selecione'.hardcoded,
+                  );
                 },
-                value: pendingAsync.value?.selectedBuyer,
-                hint: 'Selecione'.hardcoded,
-                isLoading: buyersState.isLoading,
               ),
             ],
           ),

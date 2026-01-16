@@ -5,39 +5,25 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import 'components/components.dart';
 
-class IdentificationPage extends ConsumerStatefulWidget {
+class IdentificationPage extends ConsumerWidget {
   const IdentificationPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _IdentificationPageState();
-}
-
-class _IdentificationPageState extends ConsumerState<IdentificationPage> {
-  final supplierController = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    supplierController.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+        padding: EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: ResponsiveScrollableWidget(
           isSliverPage: true,
           child: CustomScrollView(
-            physics: const ClampingScrollPhysics(),
+            physics: ClampingScrollPhysics(),
             slivers: [
-              const BuyersDropdown(),
+              BuyersDropdown(),
               gapSliverH8,
-              const RequestTypeDropdown(),
+              RequestTypeDropdown(),
               gapSliverH8,
-              SupplierSearcher(supplierController: supplierController),
-              const SupplierItems(),
+              SupplierSearcher(),
+              SupplierItems(),
             ],
           ),
         ),

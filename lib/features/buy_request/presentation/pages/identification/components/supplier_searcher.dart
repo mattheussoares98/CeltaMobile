@@ -13,8 +13,7 @@ import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class SupplierSearcher extends ConsumerStatefulWidget {
-  final TextEditingController supplierController;
-  const SupplierSearcher({super.key, required this.supplierController});
+  const SupplierSearcher({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SupplierItemsState();
@@ -22,11 +21,12 @@ class SupplierSearcher extends ConsumerStatefulWidget {
 
 class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
   final formKey = GlobalKey<FormState>();
+  final supplierController = TextEditingController();
 
   @override
   void dispose() {
-    formKey.currentState?.dispose();
     super.dispose();
+    supplierController.dispose();
   }
 
   @override
@@ -56,7 +56,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
               SearchSupplierType.buyRequest,
             ).notifier,
           )
-          .load(widget.supplierController.text);
+          .load(supplierController.text);
     }
 
     ref.listen(supplierStateControllerProvider(SearchSupplierType.buyRequest), (
@@ -65,7 +65,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
     ) {
       n.showSnackbarOnError(context, p);
       n.doOnSuccess(p, () {
-        widget.supplierController.clear();
+        supplierController.clear();
       });
     });
 
@@ -83,7 +83,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
             child: DefaultTextFormField(
               labelText: 'Fornecedor'.hardcoded,
               hintText: 'Fornecedor'.hardcoded,
-              controller: widget.supplierController,
+              controller: supplierController,
               maxLength: 50,
               validator: FormValidators.compose([NonEmptyValidator()]),
               onFieldSubmitted: (value) {
@@ -111,7 +111,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
               },
               prefixIcon: IconButton(
                 onPressed: () {
-                  widget.supplierController.clear();
+                  supplierController.clear();
                 },
                 icon: Icon(
                   isIOS ? CupertinoIcons.delete : Icons.delete,

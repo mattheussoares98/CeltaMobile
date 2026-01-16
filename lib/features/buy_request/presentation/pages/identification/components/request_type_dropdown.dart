@@ -16,28 +16,8 @@ class RequestTypeDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final requestsState = ref.watch(
-      requestTypeStateControllerProvider(Modules.buyRequest),
-    );
-    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
-    final pendingValue = pendingAsync.value;
-
-    void update(RequestTypeEntity? request) {
-      if (request == pendingValue?.selectedRequestType) {
-        return;
-      }
-      final entity = (pendingValue ?? PendingBuyRequestEntity.empty())
-          .copyWith(selectedRequestType: request)
-          .annulValue(annulSelectedEnterprises: true, annulProducts: true);
-      ref
-          .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(entity);
-
-      ref.invalidate(enterprisesStateControllerProvider);
-    }
-
     return AsyncValueSliverWidget(
-      value: requestsState,
+      value: ref.watch(requestTypeStateControllerProvider(Modules.buyRequest)),
       tryAgain: () {
         ref.invalidate(requestTypeStateControllerProvider(Modules.buyRequest));
       },
@@ -48,36 +28,64 @@ class RequestTypeDropdown extends ConsumerWidget {
             children: [
               DefaultSmallTitle(title: 'Modelo de pedido'.hardcoded),
               gapH4,
-              DefaultSimpleDropDown<RequestTypeEntity?>(
-                onTap: (request) {
-                  if (pendingValue?.selectedEnterprises?.isNotEmpty == true) {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Atenção!'.hardcoded,
-                      content:
-                          'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'
-                              .hardcoded,
-                    );
+              Consumer(
+                builder: (_, ref, _) {
+                  final pendingAsync = ref.watch(
+                    pendingBuyRequestStateControllerProvider,
+                  );
+                  final pendingValue = pendingAsync.value;
+
+                  void update(RequestTypeEntity? request) {
+                    if (request == pendingValue?.selectedRequestType) {
+                      return;
+                    }
+                    final entity =
+                        (pendingValue ?? PendingBuyRequestEntity.empty())
+                            .copyWith(selectedRequestType: request)
+                            .annulValue(
+                              annulSelectedEnterprises: true,
+                              annulProducts: true,
+                            );
+                    ref
+                        .read(pendingBuyRequestStateControllerProvider.notifier)
+                        .updatePending(entity);
+
+                    ref.invalidate(enterprisesStateControllerProvider);
                   }
+
+                  return DefaultSimpleDropDown<RequestTypeEntity?>(
+                    onTap: (request) {
+                      if (pendingValue?.selectedEnterprises?.isNotEmpty ==
+                          true) {
+                        showAlertDialog(
+                          context: context,
+                          title: 'Atenção!'.hardcoded,
+                          content:
+                              'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'
+                                  .hardcoded,
+                        );
+                      }
+                    },
+                    onChanged: enabled ? update : null,
+                    items: requests
+                        ?.map(
+                          (e) => DropdownMenuItem(
+                            key: ValueKey(e.Code),
+                            value: e,
+                            child: Center(child: Text(e.Name)),
+                          ),
+                        )
+                        .toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Selecione um modelo'.hardcoded;
+                      }
+                      return null;
+                    },
+                    value: pendingValue?.selectedRequestType,
+                    hint: 'Selecione'.hardcoded,
+                  );
                 },
-                onChanged: enabled ? update : null,
-                items: requests
-                    ?.map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Center(child: Text(e.Name)),
-                      ),
-                    )
-                    .toList(),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Selecione um modelo'.hardcoded;
-                  }
-                  return null;
-                },
-                value: pendingValue?.selectedRequestType,
-                hint: 'Selecione'.hardcoded,
-                isLoading: requestsState.isLoading,
               ),
             ],
           ),

@@ -47,12 +47,16 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         Scaffold(
           appBar: AppBar(
             title: FittedBox(
-              child: Text(
-                appBarTitles[ref.watch(
-                  uiStateControllerProvider.select(
-                    (s) => s.value?.currentPageIndex ?? 0,
-                  ),
-                )],
+              child: Consumer(
+                builder: (_, ref, _) {
+                  return Text(
+                    appBarTitles[ref.watch(
+                      uiStateControllerProvider.select(
+                        (s) => s.value?.currentPageIndex ?? 0,
+                      ),
+                    )],
+                  );
+                },
               ),
             ),
             actionsPadding: const EdgeInsets.fromLTRB(
@@ -63,13 +67,17 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             ),
             actions: const [CartPriceIcon()],
           ),
-          body: IndexedStack(
-            index: ref.watch(
-              uiStateControllerProvider.select(
-                (s) => s.value?.currentPageIndex ?? 0,
-              ),
-            ),
-            children: pages,
+          body: Consumer(
+            builder: (_, ref, _) {
+              return IndexedStack(
+                index: ref.watch(
+                  uiStateControllerProvider.select(
+                    (s) => s.value?.currentPageIndex ?? 0,
+                  ),
+                ),
+                children: pages,
+              );
+            },
           ),
           bottomNavigationBar: const BottomNavBar(),
         ),
