@@ -11,26 +11,20 @@ class PendingProductsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AsyncValueWidget(
-      value: ref.watch(
-        expeditionConferenceControllerProvider(expeditionControlCode),
-      ),
-      tryAgain: () => ref.invalidate(
-        expeditionConferenceControllerProvider(expeditionControlCode),
-      ),
-      data: (expedition) {
-        return ResponsiveListFlow(
-          itemCount: expedition.pendingProducts.length,
-          itemBuilder: (_, index) {
-            return ProductItem(
-              key: ValueKey(
-                expedition.pendingProducts[index].ProductPackingCode,
-              ),
-              index: index,
-              expeditionControlCode: expeditionControlCode,
-              isPending: true,
-            );
-          },
+    final pendingProducts = ref.watch(
+      expeditionConferenceControllerProvider(
+        expeditionControlCode,
+      ).select((s) => s.value?.pendingProducts),
+    );
+    return ResponsiveListFlow(
+      itemCount: pendingProducts?.length ?? 0,
+      itemBuilder: (_, index) {
+        final product = pendingProducts![index];
+        return ProductItem(
+          key: ValueKey(product.ProductPackingCode),
+          product: product,
+          expeditionControlCode: expeditionControlCode,
+          isPending: true,
         );
       },
     );

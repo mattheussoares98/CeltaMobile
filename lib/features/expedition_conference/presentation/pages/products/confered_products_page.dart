@@ -30,9 +30,10 @@ class ConferedProductsPage extends ConsumerWidget {
       child: ResponsiveListFlow(
         itemCount: scannedProducts.length,
         itemBuilder: (_, index) {
+          final product = scannedProducts[index];
           return ProductItem(
-            key: ValueKey(scannedProducts[index].ProductPackingCode),
-            index: index,
+            key: ValueKey(product.ProductPackingCode),
+            product: product,
             expeditionControlCode: expeditionControlCode,
             isPending: false,
           );

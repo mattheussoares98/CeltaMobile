@@ -5,31 +5,21 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../utils/utils.dart';
-import '../../../controllers/controllers.dart';
+import '../../../../domain/entities/entities.dart';
 
 class ProductItem extends ConsumerWidget {
-  final int index;
   final int expeditionControlCode;
   final bool isPending;
+  final ExpeditionProductEntity product;
   const ProductItem({
     super.key,
-    required this.index,
     required this.expeditionControlCode,
     required this.isPending,
+    required this.product,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final product = ref.watch(
-      expeditionConferenceControllerProvider(expeditionControlCode).select(
-        (s) => isPending
-            ? s
-                  .value!
-                  .pendingProducts[index] //TODO fix error that happend when tried to insert the product using the modal page
-            : s.value!.scannedProducts[index],
-      ),
-    );
-
     return RepaintBoundary(
       child: Card(
         margin: const EdgeInsets.only(top: Sizes.p8),
