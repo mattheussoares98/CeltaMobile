@@ -60,10 +60,36 @@ class SupplierItems extends ConsumerWidget {
       }
     }
 
-    return AsyncValueSliverWidget(
-      value: ref.watch(
-        supplierStateControllerProvider(SearchSupplierType.buyRequest),
+    final suppliersAsync = ref.watch(
+      supplierStateControllerProvider(SearchSupplierType.buyRequest),
+    );
+    final hasSelectedSupplier = ref.read(
+      pendingBuyRequestStateControllerProvider.select(
+        (s) => s.value?.selectedSupplier != null,
       ),
+    );
+
+    if (hasSelectedSupplier && (suppliersAsync.value?.isEmpty ?? true)) {
+      return SliverList.builder(
+        itemCount: 1,
+        itemBuilder: (_, index) {
+          final supplier = ref.read(
+            pendingBuyRequestStateControllerProvider.select(
+              (s) => s.value?.selectedSupplier,
+            ),
+          );
+          return SupplierItem(
+            key: ValueKey(supplier?.Code),
+            supplier: supplier!,
+            onTap: () => onTap(supplier),
+            enabled: true,
+          );
+        },
+      );
+    }
+
+    return AsyncValueSliverWidget(
+      value: suppliersAsync,
       data: (suppliers) {
         return SliverList.builder(
           itemCount: suppliers?.length ?? 0,
