@@ -12,12 +12,10 @@ class FrozenProcessesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final value = ref.watch(inventoryStateControllerProvider(enterpriseCode));
-
     return Scaffold(
       appBar: AppBar(title: Text('Processos congelados'.hardcoded)),
       body: AsyncValueWidget(
-        value: value,
+        value: ref.watch(inventoryStateControllerProvider(enterpriseCode)),
         tryAgain: () {
           ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
         },
@@ -28,6 +26,7 @@ class FrozenProcessesPage extends ConsumerWidget {
               final frozenProcess = inventories!.frozenProcesses[index];
 
               return FrozenItem(
+                key: ValueKey(frozenProcess.CodigoInternoInventario),
                 frozenProcess: frozenProcess,
                 inventories: inventories,
                 enterpriseCode: enterpriseCode,

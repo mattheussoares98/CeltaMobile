@@ -23,57 +23,59 @@ class FrozenItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final dateFormatter = DateFormat('dd/MM/yyyy HH:mm');
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          context.goNamed(
-            Routes.inventoryCountings.name,
-            pathParameters: {
-              'enterpriseCode': enterpriseCode.toString(),
-              'codigoInternoInventario':
-                  frozenProcess.CodigoInternoInventario.toString(),
-            },
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TitleAndSubTitle(
-                title: 'Empresa'.hardcoded,
-                subTitle:
-                    '${frozenProcess.CodigoEmpresa} - ${frozenProcess.NomeEmpresa}',
-              ),
-              TitleAndSubTitle(
-                title: 'Tipo de estoque'.hardcoded,
-                subTitle: frozenProcess.NomeTipoEstoque,
-              ),
-              TitleAndSubTitle(
-                title: 'Responsável'.hardcoded,
-                subTitle: frozenProcess.NomeFuncionario,
-              ),
-              TitleAndSubTitle(
-                title: 'Criado em'.hardcoded,
-                subTitle: dateFormatter.format(
-                  frozenProcess.CataCriacaoInventario,
+    return RepaintBoundary(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () {
+            context.goNamed(
+              Routes.inventoryCountings.name,
+              pathParameters: {
+                'enterpriseCode': enterpriseCode.toString(),
+                'codigoInternoInventario':
+                    frozenProcess.CodigoInternoInventario.toString(),
+              },
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TitleAndSubTitle(
+                  title: 'Empresa'.hardcoded,
+                  subTitle:
+                      '${frozenProcess.CodigoEmpresa} - ${frozenProcess.NomeEmpresa}',
                 ),
-              ),
-              TitleAndSubTitle(
-                title: 'Congelado em'.hardcoded,
-                subTitle: dateFormatter.format(
-                  frozenProcess.DataCongelamentoInventario,
+                TitleAndSubTitle(
+                  title: 'Tipo de estoque'.hardcoded,
+                  subTitle: frozenProcess.NomeTipoEstoque,
                 ),
-              ),
+                TitleAndSubTitle(
+                  title: 'Responsável'.hardcoded,
+                  subTitle: frozenProcess.NomeFuncionario,
+                ),
+                TitleAndSubTitle(
+                  title: 'Criado em'.hardcoded,
+                  subTitle: dateFormatter.format(
+                    frozenProcess.CataCriacaoInventario,
+                  ),
+                ),
+                TitleAndSubTitle(
+                  title: 'Congelado em'.hardcoded,
+                  subTitle: dateFormatter.format(
+                    frozenProcess.DataCongelamentoInventario,
+                  ),
+                ),
 
-              TitleAndSubTitle(
-                title: frozenProcess.ObsInventario == null
-                    ? 'Sem observações'.hardcoded
-                    : 'Observações'.hardcoded,
-                subTitle: frozenProcess.ObsInventario,
-              ),
-            ],
+                TitleAndSubTitle(
+                  title: frozenProcess.ObsInventario == null
+                      ? 'Sem observações'.hardcoded
+                      : 'Observações'.hardcoded,
+                  subTitle: frozenProcess.ObsInventario,
+                ),
+              ],
+            ),
           ),
         ),
       ),
