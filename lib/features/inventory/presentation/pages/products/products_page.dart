@@ -34,6 +34,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   final quantityFocusNode = FocusNode();
   final formKeyQuantity = GlobalKey<FormState>();
   ValueNotifier<bool> insertIndividually = ValueNotifier(false);
+  bool get _isContinuousScan =>
+      ref
+          .read(appSettingsStateControllerProvider)
+          .value
+          ?.inventoryUseContinuousScan ??
+      false;
 
   @override
   void dispose() {
@@ -91,20 +97,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   }
 
   void changeSelectedIndex(int? index) {
-    ref
-        .read(
-          selectedProductIndexStateControllerProvider(
-            widget.codigoInternoInventario,
-          ).notifier,
-        )
-        .updateIndex(index);
+    final provider = selectedProductIndexStateControllerProvider(
+      widget.codigoInternoInventario,
+    );
+    ref.read(provider.notifier).updateIndex(index);
 
-    if (ref.read(
-          selectedProductIndexStateControllerProvider(
-            widget.codigoInternoInventario,
-          ),
-        ) !=
-        null) {
+    if (ref.read(provider) != null) {
       quantityController.clear();
       Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
@@ -121,18 +119,13 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       anotherKey:
           '${widget.codigoInternoInvCont}-${widget.codigoInternoInventario}',
     );
-    final isContinuousScan = ref.watch(
-      appSettingsStateControllerProvider.select(
-        (s) => s.value?.inventoryUseContinuousScan == true,
-      ),
-    );
 
     ref.listen(searchProductsStateControllerProvider(searchProductKey), (
       previous,
       next,
     ) {
       next.doOnSuccess(previous, () {
-        if (next.value?.length == 1 && !isContinuousScan) {
+        if (next.value?.length == 1 && !_isContinuousScan) {
           changeSelectedIndex(0);
           quantityController.clear();
         }
@@ -160,7 +153,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           }
           quantityController.clear();
 
-          if (isContinuousScan && n.value != null) {
+          if (_isContinuousScan && n.value != null) {
             await Future.delayed(const Duration(seconds: 1), () {
               _searchProducts(searchProductKey, true);
             });
