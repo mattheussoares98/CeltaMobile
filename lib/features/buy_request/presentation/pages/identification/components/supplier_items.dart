@@ -66,7 +66,7 @@ class SupplierItems extends ConsumerWidget {
       ),
       data: (suppliers) {
         return SliverList.builder(
-          itemCount: suppliers?.length,
+          itemCount: suppliers?.length ?? 0,
           itemBuilder: (_, index) {
             final supplier = suppliers![index];
             return SupplierItem(
