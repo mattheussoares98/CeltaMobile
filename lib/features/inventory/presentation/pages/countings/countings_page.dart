@@ -2,7 +2,6 @@ import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -17,34 +16,28 @@ class CountingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final value = ref.watch(inventoryStateControllerProvider(enterpriseCode));
+    final countings = ref
+        .watch(
+          inventoryStateControllerProvider(enterpriseCode).select(
+            (s) => s.value?.countings.where(
+              (e) => e.CodigoInternoInventario == codigoInternoInventario,
+            ),
+          ),
+        )
+        ?.toList();
+
     return Scaffold(
       appBar: AppBar(title: Text('Contagens'.hardcoded)),
-      body: AsyncValueWidget(
-        value: value,
-        tryAgain: () {
-          ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
-        },
-        data: (inventory) {
-          final countings = inventory?.countings
-              .where(
-                (e) => codigoInternoInventario == e.CodigoInternoInventario,
-              )
-              .toList();
-          if (countings == null || countings.isEmpty) {
-            return Text(
+      body: (countings == null || countings.isEmpty)
+          ? Text(
               'Não foram encontradas contagens para esse processe de inventário. Crie pelo menos uma contagem'
                   .hardcoded,
-            );
-          }
-
-          return CountingsItems(
-            countings: countings,
-            enterpriseCode: enterpriseCode,
-            codigoInternoInventario: codigoInternoInventario,
-          );
-        },
-      ),
+            )
+          : CountingsItems(
+              countings: countings,
+              enterpriseCode: enterpriseCode,
+              codigoInternoInventario: codigoInternoInventario,
+            ),
     );
   }
 }
