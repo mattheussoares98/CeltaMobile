@@ -29,33 +29,37 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
     supplierController.dispose();
   }
 
+  Future<void> loadSuppliers() async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    await ref
+        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .updatePending(
+          annulSelectedSupplier: true,
+          annulSelectedEnterprises: true,
+          annulProducts: true,
+        );
+
+    await ref
+        .read(
+          supplierStateControllerProvider(
+            SearchSupplierType.buyRequest,
+          ).notifier,
+        )
+        .load(supplierController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
-
-    Future<void> loadSuppliers() async {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      }
-
-      if (pendingAsync.value?.selectedSupplier != null) {
-        ref
-            .read(pendingBuyRequestStateControllerProvider.notifier)
-            .updatePending(
-              annulSelectedSupplier: true,
-              annulSelectedEnterprises: true,
-              annulProducts: true,
-            );
-      }
-
-      await ref
-          .read(
-            supplierStateControllerProvider(
-              SearchSupplierType.buyRequest,
-            ).notifier,
-          )
-          .load(supplierController.text);
-    }
+    final hasSelectedEnterprisesOrProducts = ref.watch(
+      pendingBuyRequestStateControllerProvider.select(
+        (s) =>
+            (s.value?.selectedEnterprises?.isNotEmpty ?? false) ||
+            (s.value?.products?.isNotEmpty ?? false),
+      ),
+    );
 
     ref.listen(supplierStateControllerProvider(SearchSupplierType.buyRequest), (
       p,
@@ -76,59 +80,56 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
         children: [
           DefaultSmallTitle(title: 'Fornecedores'.hardcoded),
           gapH8,
-          Form(
-            key: formKey,
-            child: DefaultTextFormField(
-              labelText: 'Fornecedor'.hardcoded,
-              hintText: 'Fornecedor'.hardcoded,
-              controller: supplierController,
-              maxLength: 50,
-              validator: FormValidators.compose([NonEmptyValidator()]),
-              onFieldSubmitted: (value) {
-                bool hasSelectedEnterprises =
-                    pendingAsync.value?.selectedEnterprises?.isNotEmpty ??
-                    false;
-                bool hasSelectedProducts =
-                    pendingAsync.value?.products?.isNotEmpty ?? false;
-
-                if (pendingAsync.value?.selectedSupplier != null &&
-                    (hasSelectedEnterprises || hasSelectedProducts)) {
-                  showAlertDialog(
-                    context: context,
-                    title: 'Consultar fornecedores?'.hardcoded,
-                    content:
-                        'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'
-                            .hardcoded,
-                    cancelActionText: 'Cancelar'.hardcoded,
-                    defaultActionText: 'Consultar'.hardcoded,
-                    onOkPressed: loadSuppliers,
-                  );
-                } else {
-                  loadSuppliers();
-                }
-              },
-              prefixIcon: IconButton(
-                onPressed: () {
-                  supplierController.clear();
-                },
-                icon: Icon(
-                  isIOS ? CupertinoIcons.delete : Icons.delete,
-                  color: Colors.red,
+          Consumer(
+            builder: (_, ref, _) {
+              final selectedSupplier = ref.watch(
+                pendingBuyRequestStateControllerProvider.select(
+                  (s) => s.value?.selectedSupplier,
                 ),
-              ),
-              suffixIcon: IconButton(
-                onPressed: loadSuppliers,
-                icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
-              ),
-            ),
+              );
+
+              return Form(
+                key: formKey,
+                child: DefaultTextFormField(
+                  labelText: 'Fornecedor'.hardcoded,
+                  hintText: 'Fornecedor'.hardcoded,
+                  controller: supplierController,
+                  maxLength: 50,
+                  validator: FormValidators.compose([NonEmptyValidator()]),
+                  onFieldSubmitted: (value) {
+                    if (selectedSupplier != null &&
+                        hasSelectedEnterprisesOrProducts) {
+                      showAlertDialog(
+                        context: context,
+                        title: 'Consultar fornecedores?'.hardcoded,
+                        content:
+                            'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'
+                                .hardcoded,
+                        cancelActionText: 'Cancelar'.hardcoded,
+                        defaultActionText: 'Consultar'.hardcoded,
+                        onOkPressed: loadSuppliers,
+                      );
+                    } else {
+                      loadSuppliers();
+                    }
+                  },
+                  prefixIcon: IconButton(
+                    onPressed: () {
+                      supplierController.clear();
+                    },
+                    icon: Icon(
+                      isIOS ? CupertinoIcons.delete : Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: loadSuppliers,
+                    icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+                  ),
+                ),
+              );
+            },
           ),
-          gapH8,
-          if (ref.watch(
-            supplierStateControllerProvider(
-              SearchSupplierType.buyRequest,
-            ).select((s) => s.isLoading),
-          ))
-            const Center(child: LoadingWidget()),
         ],
       ),
     );

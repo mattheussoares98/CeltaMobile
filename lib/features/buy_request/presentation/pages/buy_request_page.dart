@@ -35,11 +35,11 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      const IdentificationPage(),
-      const EnterprisesPage(),
-      const ProductsPage(),
-      const ConfirmationPage(),
+    const pages = [
+      IdentificationPage(),
+      EnterprisesPage(),
+      ProductsPage(),
+      ConfirmationPage(),
     ];
 
     return Stack(

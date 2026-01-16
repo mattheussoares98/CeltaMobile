@@ -88,8 +88,8 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                     SliverToBoxAdapter(
                       child: SupplierItem(
                         supplier: pendingAsync.value!.selectedSupplier!,
-                        pending: pendingAsync.value,
                         enabled: false,
+                        onTap: () {},
                       ),
                     ),
                     gapSliverH8,

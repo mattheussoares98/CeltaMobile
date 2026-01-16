@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/supplier/supplier.dart';
+import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
 
@@ -12,26 +13,72 @@ class SupplierItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+    final hasSelectedEnterprisesOrProducts = ref.watch(
+      pendingBuyRequestStateControllerProvider.select(
+        (s) =>
+            (s.value?.selectedEnterprises?.isNotEmpty ?? false) ||
+            (s.value?.products?.isNotEmpty ?? false),
+      ),
+    );
 
-    if (pendingAsync.isLoading) {
-      return const SliverToBoxAdapter(child: LoadingWidget());
+    void onTap(SupplierEntity? supplier) {
+      final selectedSupplier = ref.read(
+        pendingBuyRequestStateControllerProvider.select(
+          (s) => s.value?.selectedSupplier,
+        ),
+      );
+
+      if (hasSelectedEnterprisesOrProducts) {
+        showAlertDialog(
+          context: context,
+          title: 'Alterar fornecedor?'.hardcoded,
+          defaultActionText: 'Sim'.hardcoded,
+          cancelActionText: 'Cancelar'.hardcoded,
+          content:
+              'Ao alterar o fornecedor, todas empresas e produtos selecionados serão removidos'
+                  .hardcoded,
+          onOkPressed: () {
+            ref
+                .read(pendingBuyRequestStateControllerProvider.notifier)
+                .updatePending(
+                  selectedSupplier: supplier,
+                  annulSelectedEnterprises: true,
+                  annulProducts: true,
+                  annulSelectedSupplier: selectedSupplier == supplier,
+                );
+          },
+        );
+      } else {
+        ref
+            .read(pendingBuyRequestStateControllerProvider.notifier)
+            .updatePending(
+              selectedSupplier: supplier,
+              annulSelectedEnterprises: true,
+              annulProducts: true,
+              annulSelectedSupplier: selectedSupplier == supplier,
+            );
+      }
     }
 
-    final suppliers = ref.watch(
-      uiStateControllerProvider.select((s) => s.value?.suppliers ?? []),
-    );
-
-    final suppliersState = ref.watch(
-      supplierStateControllerProvider(SearchSupplierType.buyRequest),
-    );
-
-    return SliverList.builder(
-      itemCount: suppliersState.value?.length ?? suppliers.length,
-      itemBuilder: (_, index) {
-        final supplier = suppliersState.value?[index] ?? suppliers[index];
-        return SupplierItem(supplier: supplier, pending: pendingAsync.value);
+    return AsyncValueSliverWidget(
+      value: ref.watch(
+        supplierStateControllerProvider(SearchSupplierType.buyRequest),
+      ),
+      data: (suppliers) {
+        return SliverList.builder(
+          itemCount: suppliers?.length,
+          itemBuilder: (_, index) {
+            final supplier = suppliers![index];
+            return SupplierItem(
+              key: ValueKey(supplier.Code),
+              supplier: supplier,
+              onTap: () => onTap(supplier),
+              enabled: true,
+            );
+          },
+        );
       },
+      tryAgain: null,
     );
   }
 }

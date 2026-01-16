@@ -29,31 +29,31 @@ class RequestTypeDropdown extends ConsumerWidget {
               gapH4,
               Consumer(
                 builder: (_, ref, _) {
-                  final pendingAsync = ref.watch(
-                    pendingBuyRequestStateControllerProvider,
+                  final selectedSaleRequest = ref.watch(
+                    pendingBuyRequestStateControllerProvider.select(
+                      (s) => s.value?.selectedRequestType,
+                    ),
                   );
-                  final pendingValue = pendingAsync.value;
+                  final hasSelectedEnterprises = ref.watch(
+                    pendingBuyRequestStateControllerProvider.select(
+                      (s) => s.value?.selectedEnterprises?.isNotEmpty ?? false,
+                    ),
+                  );
 
                   void update(RequestTypeEntity? request) {
-                    if (request == pendingValue?.selectedRequestType) {
-                      return;
-                    }
-
                     ref
                         .read(pendingBuyRequestStateControllerProvider.notifier)
                         .updatePending(
                           selectedRequestType: request,
-                          annulSelectedEnterprises: true,
-                          annulProducts: true,
+                          annulSelectedEnterprises:
+                              selectedSaleRequest != request,
+                          annulProducts: selectedSaleRequest != request,
                         );
-
-                    ref.invalidate(enterprisesStateControllerProvider);
                   }
 
                   return DefaultSimpleDropDown<RequestTypeEntity?>(
                     onTap: (request) {
-                      if (pendingValue?.selectedEnterprises?.isNotEmpty ==
-                          true) {
+                      if (hasSelectedEnterprises) {
                         showAlertDialog(
                           context: context,
                           title: 'Atenção!'.hardcoded,
@@ -79,7 +79,7 @@ class RequestTypeDropdown extends ConsumerWidget {
                       }
                       return null;
                     },
-                    value: pendingValue?.selectedRequestType,
+                    value: selectedSaleRequest,
                     hint: 'Selecione'.hardcoded,
                   );
                 },

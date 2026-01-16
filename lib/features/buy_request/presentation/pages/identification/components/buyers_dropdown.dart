@@ -29,8 +29,10 @@ class BuyersDropdown extends ConsumerWidget {
               gapH4,
               Consumer(
                 builder: (_, ref, _) {
-                  final pendingAsync = ref.watch(
-                    pendingBuyRequestStateControllerProvider,
+                  final selectedBuyer = ref.watch(
+                    pendingBuyRequestStateControllerProvider.select(
+                      (s) => s.value?.selectedBuyer,
+                    ),
                   );
 
                   return DefaultSimpleDropDown<BuyerEntity?>(
@@ -59,7 +61,7 @@ class BuyersDropdown extends ConsumerWidget {
                       }
                       return null;
                     },
-                    value: pendingAsync.value?.selectedBuyer,
+                    value: selectedBuyer,
                     hint: 'Selecione'.hardcoded,
                   );
                 },
