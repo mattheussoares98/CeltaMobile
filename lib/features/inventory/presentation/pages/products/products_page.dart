@@ -1,6 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:celta_intelligence/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -34,8 +33,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   final searchProductsFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
   final formKeyQuantity = GlobalKey<FormState>();
-  bool insertIndividually = false;
-  final tooltipKey = GlobalKey<TooltipState>();
+  ValueNotifier<bool> insertIndividually = ValueNotifier(false);
 
   @override
   void dispose() {
@@ -43,6 +41,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     quantityController.dispose();
     searchProductsFocusNode.dispose();
     quantityFocusNode.dispose();
+    insertIndividually.dispose();
     super.dispose();
   }
 
@@ -74,7 +73,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       searchProductsStateControllerProvider(searchProductKey),
     );
 
-    if (insertIndividually && products.value?.length == 1) {
+    if (insertIndividually.value && products.value?.length == 1) {
       ref
           .read(
             entryQuantityStateControllerProvider(
@@ -137,11 +136,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           changeSelectedIndex(0);
           quantityController.clear();
         }
-        if (insertIndividually) {
-          Future.delayed(const Duration(milliseconds: 200), () {
-            searchProductsFocusNode.requestFocus();
-          });
-        }
       });
     });
 
@@ -175,9 +169,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       },
     );
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return Stack(
       children: [
         Scaffold(
@@ -197,39 +188,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   codigoInternoInvCont: widget.codigoInternoInvCont,
                   searchProductKey: searchProductKey,
                 ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: Sizes.p8),
-                    child: Row(
-                      children: [
-                        Tooltip(
-                          triggerMode: TooltipTriggerMode.tap,
-                          showDuration: const Duration(seconds: 5),
-                          key: tooltipKey,
-                          message:
-                              'Quando essa opção está ativa, ao encontrar um único produto na busca, será somado automaticamente 1 quantidade'
-                                  .hardcoded,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: Sizes.p4),
-                            child: Icon(
-                              isIOS ? CupertinoIcons.info : Icons.info_outline,
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: DefaultSwitch(
-                            title: 'Inserir individualmente'.hardcoded,
-                            value: insertIndividually,
-                            onChanged: (value) {
-                              setState(() {
-                                insertIndividually = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                InsertIndividuallySwitch(
+                  insertIndividually: insertIndividually,
                 ),
                 AsyncValueSliverWidget(
                   value: ref.watch(

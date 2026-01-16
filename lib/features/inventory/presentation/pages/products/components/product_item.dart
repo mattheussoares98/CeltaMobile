@@ -13,7 +13,7 @@ class ProductItem extends ConsumerWidget {
   final void Function(int? index) changeSelectedIndex;
   final int index;
   final ProductEntity product;
-  final bool insertIndividually;
+  final ValueNotifier<bool> insertIndividually;
   final FocusNode quantityFocusNode;
   final TextEditingController quantityController;
   final GlobalKey<FormState> formKeyQuantity;
@@ -54,7 +54,7 @@ class ProductItem extends ConsumerWidget {
             codigoInternoInventario: widget.codigoInternoInventario,
             enterpriseCode: widget.enterpriseCode,
             codigoInternoProEmb: codigoInternoProEmb,
-            quantity: insertIndividually
+            quantity: insertIndividually.value
                 ? 1
                 : quantityController.text.toDouble()!,
             isSubtract: isSubtract,
