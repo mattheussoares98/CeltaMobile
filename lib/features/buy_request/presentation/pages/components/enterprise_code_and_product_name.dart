@@ -9,6 +9,22 @@ class EnterpriseCodeAndProductName extends ConsumerWidget {
   final ProductEntity product;
   const EnterpriseCodeAndProductName({super.key, required this.product});
 
+  static const List<Color> _enterpriseColors = [
+    Colors.blue,
+    Colors.teal,
+    Colors.orange,
+    Colors.purple,
+    Colors.indigo,
+    Colors.brown,
+    Colors.pink,
+    Colors.cyan,
+  ];
+  Color _getEnterpriseColor(int? code) {
+    if (code == null) return Colors.grey;
+    // Modulo operator ensures we stay within the list bounds
+    return _enterpriseColors[code % _enterpriseColors.length];
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
@@ -22,7 +38,7 @@ class EnterpriseCodeAndProductName extends ConsumerWidget {
       subTitle:
           '(${correspondentEnterprise?.PersonalizedCode}) - ${correspondentEnterprise?.name}',
       subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-        color: theme.colorScheme.secondary,
+        color: _getEnterpriseColor(product.EnterpriseCode),
       ),
     );
   }

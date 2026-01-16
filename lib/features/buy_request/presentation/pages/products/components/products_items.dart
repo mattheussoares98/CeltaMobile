@@ -24,6 +24,11 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
   final costController = TextEditingController();
   final quantityFocusNode = FocusNode();
   final costFocusNode = FocusNode();
+  static const searchProductKey = SearchProductKey(
+    0,
+    BsRoutine.buyRequest,
+    Modules.buyRequest,
+  );
 
   @override
   void dispose() {
@@ -55,64 +60,47 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     });
   }
 
+  void onDelete(ProductEntity product) {
+    final products = ref.read(
+      pendingBuyRequestStateControllerProvider.select((s) => s.value?.products),
+    );
+    final updatedProducts = {...?products};
+    updatedProducts.removeWhere((key, value) {
+      return key ==
+          ProductKey(
+            enterpriseCode: product.EnterpriseCode!,
+            productPackingCode: product.ProductPackingCode!,
+          );
+    });
+
+    ref
+        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .updatePending(products: products);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final pending = ref.watch(pendingBuyRequestStateControllerProvider);
-    const searchProductKey = SearchProductKey(
-      0,
-      BsRoutine.buyRequest,
-      Modules.buyRequest,
+    final selectedEnterprisesCodes = ref.watch(
+      pendingBuyRequestStateControllerProvider.select(
+        (s) => s.value?.selectedEnterprises?.map((e) => e.Code).toSet() ?? {},
+      ),
     );
 
-    void onDelete(
-      ProductEntity product,
-      AsyncValue<PendingBuyRequestEntity> pending,
-    ) {
-      final products = pending.value?.products;
-      products?.removeWhere((key, value) {
-        return key ==
-            ProductKey(
-              enterpriseCode: product.EnterpriseCode!,
-              productPackingCode: product.ProductPackingCode!,
-            );
-      });
-
-      ref
-          .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(products: products);
-    }
-
-    final selectedProductIndex = ref.watch(
-      uiStateControllerProvider.select((s) => s.value?.selectedProductIndex),
-    );
-
-    final productsState = ref.watch(
-      searchProductsStateControllerProvider(searchProductKey),
-    );
     return AsyncValueSliverWidget(
-      value: productsState,
+      value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
       tryAgain: null,
       data: (products) {
-        products.sort(
-          (a, b) => '${a.Name}${a.PLU}${a.EnterpriseCode}'.compareTo(
-            '${b.Name}${b.PLU}${b.EnterpriseCode}',
-          ),
-        );
-
         final filteredProducts =
             products
                 .where(
-                  (e) =>
-                      ref
-                          .watch(pendingBuyRequestStateControllerProvider)
-                          .value
-                          ?.selectedEnterprises
-                          ?.map((e) => e.Code)
-                          .contains(e.EnterpriseCode) ==
-                      true,
+                  (e) => selectedEnterprisesCodes.contains(e.EnterpriseCode),
                 )
                 .toList()
-              ..sort((a, b) => a.Name!.compareTo(b.Name!));
+              ..sort(
+                (a, b) => '${a.Name}${a.PLU}${a.EnterpriseCode}'.compareTo(
+                  '${b.Name}${b.PLU}${b.EnterpriseCode}',
+                ),
+              );
 
         return ResponsiveListFlow(
           isSliver: true,
@@ -120,49 +108,101 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
           itemBuilder: (_, index) {
             final product = filteredProducts[index];
 
-            final productKey = ProductKey(
-              enterpriseCode: product.EnterpriseCode!,
-              productPackingCode: product.ProductPackingCode!,
-            );
-
-            BuyRequestProductItemEntity? insertedItem =
-                pending.value?.products?[productKey];
-
-            return ProductItemWidget(
-              onTap: () => onTapProduct(index, product),
-              product: product,
-              routine: BsRoutine.buyRequest,
-              showDropIcon: true,
-              isSelected: selectedProductIndex == index,
-              onDelete: insertedItem == null
-                  ? null
-                  : () => onDelete(product, pending),
-              itemBeforeProductName: EnterpriseCodeAndProductName(
-                product: product,
+            return _ProductItem(
+              key: ValueKey(
+                '${product.ProductPackingCode}-${product.EnterpriseCode}',
               ),
-              cartItemSummary: insertedItem == null
-                  ? null
-                  : CartItemSummary(
-                      cartQuantity: insertedItem.quantity,
-                      cartValue: insertedItem.cost,
-                      product: insertedItem.product,
-                    ),
-              notClickableBottom: selectedProductIndex == index
-                  ? FieldsAndConfirm(
-                      isConfirmationPage: false,
-                      fieldsFormKey: fieldsFormKey,
-                      quantityFormKey: quantityFormKey,
-                      quantityController: quantityController,
-                      costController: costController,
-                      quantityFocusNode: quantityFocusNode,
-                      costFocusNode: costFocusNode,
-                      product: product,
-                    )
-                  : null,
+              product: product,
+              index: index,
+              onTap: () => onTapProduct(index, product),
+              onDelete: () => onDelete(product),
+              fieldsFormKey: fieldsFormKey,
+              quantityFormKey: quantityFormKey,
+              quantityController: quantityController,
+              costController: costController,
+              quantityFocusNode: quantityFocusNode,
+              costFocusNode: costFocusNode,
             );
           },
         );
       },
+    );
+  }
+}
+
+class _ProductItem extends ConsumerWidget {
+  final ProductEntity product;
+  final int index;
+  final VoidCallback onTap;
+  final VoidCallback onDelete;
+  final GlobalKey<FormState> fieldsFormKey;
+  final GlobalKey<FormState> quantityFormKey;
+  final TextEditingController quantityController;
+  final TextEditingController costController;
+  final FocusNode quantityFocusNode;
+  final FocusNode costFocusNode;
+
+  const _ProductItem({
+    super.key,
+    required this.product,
+    required this.index,
+    required this.onTap,
+    required this.onDelete,
+    required this.fieldsFormKey,
+    required this.quantityFormKey,
+    required this.quantityController,
+    required this.costController,
+    required this.quantityFocusNode,
+    required this.costFocusNode,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSelected = ref.watch(
+      uiStateControllerProvider.select(
+        (s) => s.value?.selectedProductIndex == index,
+      ),
+    );
+
+    final insertedItem = ref.watch(
+      pendingBuyRequestStateControllerProvider.select((s) {
+        final key = ProductKey(
+          enterpriseCode: product.EnterpriseCode!,
+          productPackingCode: product.ProductPackingCode!,
+        );
+        return s.value?.products?[key];
+      }),
+    );
+
+    return RepaintBoundary(
+      child: ProductItemWidget(
+        onTap: onTap,
+        product: product,
+        routine: BsRoutine.buyRequest,
+        showDropIcon: true,
+        isSelected: isSelected,
+        onDelete: insertedItem == null ? null : onDelete,
+        itemBeforeProductName: EnterpriseCodeAndProductName(product: product),
+        cartItemSummary: insertedItem == null
+            ? null
+            : CartItemSummary(
+                cartQuantity: insertedItem.quantity,
+                cartValue: insertedItem.cost,
+                product: insertedItem.product,
+              ),
+        notClickableBottom: isSelected
+            ? FieldsAndConfirm(
+                isConfirmationPage: false,
+                fieldsFormKey: fieldsFormKey,
+                quantityFormKey: quantityFormKey,
+                quantityController: quantityController,
+                costController: costController,
+                quantityFocusNode: quantityFocusNode,
+                costFocusNode: costFocusNode,
+                product: product,
+              )
+            : null,
+      ),
     );
   }
 }

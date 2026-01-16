@@ -116,6 +116,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                         return EnterpriseItem(
                           enterprise: enterprise!,
                           enabled: false,
+                          onTap: () {},
                         );
                       },
                     ),
