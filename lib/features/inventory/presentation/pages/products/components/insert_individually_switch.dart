@@ -1,16 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
+import '../../../controllers/controllers.dart';
 
-class InsertIndividuallySwitch extends StatelessWidget {
-  final ValueNotifier<bool> insertIndividually;
-  const InsertIndividuallySwitch({super.key, required this.insertIndividually});
+class InsertIndividuallySwitch extends ConsumerWidget {
+  final int codigoInternoInventario;
+  const InsertIndividuallySwitch({
+    super.key,
+    required this.codigoInternoInventario,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     return SliverToBoxAdapter(
@@ -30,15 +35,20 @@ class InsertIndividuallySwitch extends StatelessWidget {
               ),
             ),
             Flexible(
-              child: ValueListenableBuilder<bool>(
-                valueListenable: insertIndividually,
-                builder: (_, isIndividually, _) {
-                  return DefaultSwitch(
-                    title: 'Inserir individualmente'.hardcoded,
-                    value: isIndividually,
-                    onChanged: (value) => insertIndividually.value = value,
-                  );
-                },
+              child: DefaultSwitch(
+                title: 'Inserir individualmente'.hardcoded,
+                value: ref.watch(
+                  uiStateControllerProvider(
+                    codigoInternoInventario,
+                  ).select((s) => s.insertIndividually),
+                ),
+                onChanged: (_) => ref
+                    .read(
+                      uiStateControllerProvider(
+                        codigoInternoInventario,
+                      ).notifier,
+                    )
+                    .updateInsertIndividually(),
               ),
             ),
           ],

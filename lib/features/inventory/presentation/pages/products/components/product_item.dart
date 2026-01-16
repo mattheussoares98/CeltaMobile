@@ -10,20 +10,16 @@ import 'components.dart';
 
 class ProductItem extends ConsumerWidget {
   final ProductsPage widget;
-  final void Function(int? index) changeSelectedIndex;
   final int index;
   final ProductEntity product;
-  final ValueNotifier<bool> insertIndividually;
   final FocusNode quantityFocusNode;
   final TextEditingController quantityController;
   final GlobalKey<FormState> formKeyQuantity;
   const ProductItem({
     super.key,
     required this.widget,
-    required this.changeSelectedIndex,
     required this.index,
     required this.product,
-    required this.insertIndividually,
     required this.quantityFocusNode,
     required this.quantityController,
     required this.formKeyQuantity,
@@ -32,10 +28,11 @@ class ProductItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(
-      selectedProductIndexStateControllerProvider(
+      uiStateControllerProvider(
         widget.codigoInternoInventario,
-      ),
+      ).select((s) => s.selectedProductIndex),
     );
+    final isSelected = selectedIndex == index;
 
     void entry(bool isSubtract, int codigoInternoProEmb) {
       if (formKeyQuantity.currentState?.validate() != true) {
@@ -44,6 +41,12 @@ class ProductItem extends ConsumerWidget {
         }
         return;
       }
+      final insertIndividually = ref.read(
+        uiStateControllerProvider(
+          widget.codigoInternoInventario,
+        ).select((s) => s.insertIndividually),
+      );
+
       ref
           .read(
             entryQuantityStateControllerProvider(
@@ -54,7 +57,7 @@ class ProductItem extends ConsumerWidget {
             codigoInternoInventario: widget.codigoInternoInventario,
             enterpriseCode: widget.enterpriseCode,
             codigoInternoProEmb: codigoInternoProEmb,
-            quantity: insertIndividually.value
+            quantity: insertIndividually
                 ? 1
                 : quantityController.text.toDouble()!,
             isSubtract: isSubtract,
@@ -66,15 +69,26 @@ class ProductItem extends ConsumerWidget {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          ProductInformations(
-            onChangeSelectedIndex: () => changeSelectedIndex(index),
-            product: product,
-            isSelected: selectedIndex == index,
-            codigoInternoInvCont: widget.codigoInternoInvCont,
+          Consumer(
+            builder: (_, ref, _) {
+              return ProductInformations(
+                onChangeSelectedIndex: () {
+                  ref
+                      .read(
+                        uiStateControllerProvider(
+                          widget.codigoInternoInventario,
+                        ).notifier,
+                      )
+                      .updateProductIndex(index);
+                },
+                product: product,
+                isSelected: isSelected,
+                codigoInternoInvCont: widget.codigoInternoInvCont,
+              );
+            },
           ),
-          if (selectedIndex == index) ...[
+          if (isSelected) ...[
             QuantityButtonsAndField(
-              insertIndividually: insertIndividually,
               quantityFocusNode: quantityFocusNode,
               quantityController: quantityController,
               codigoInternoInvCont: widget.codigoInternoInvCont,

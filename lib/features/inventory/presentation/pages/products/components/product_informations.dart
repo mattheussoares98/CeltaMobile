@@ -24,9 +24,8 @@ class ProductInformations extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final lastChangedProduct = ref
-        .watch(entryQuantityStateControllerProvider(codigoInternoInvCont))
-        .value;
+
+    // return ProductItemWidget(product: product, routine: BsRoutine.generic);
 
     return InkWell(
       onTap: onChangeSelectedIndex,
@@ -36,25 +35,40 @@ class ProductInformations extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TitleAndSubTitle(title: null, subTitle: product.Name),
-            if (lastChangedProduct?.codigoInternoProEmb ==
-                product.codigoInternoProEmb)
-              TitleAndSubTitle(
-                title:
-                    'Última quantidade alterada ${lastChangedProduct?.isSubtract == true ? " -" : ""}'
-                        .hardcoded,
-                subTitle: lastChangedProduct?.quantity
-                    .toString()
-                    .toBrazilianNumber(3),
-                titleStyle: theme.textTheme.bodyMedium?.copyWith(
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w300,
-                  color: theme.primaryColor,
-                ),
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                  fontStyle: FontStyle.italic,
-                  color: theme.primaryColor,
-                ),
-              ),
+
+            Consumer(
+              builder: (_, ref, _) {
+                final lastChangedProduct = ref
+                    .watch(
+                      entryQuantityStateControllerProvider(
+                        codigoInternoInvCont,
+                      ),
+                    )
+                    .value;
+
+                if (lastChangedProduct?.codigoInternoProEmb !=
+                    product.codigoInternoProEmb) {
+                  return const SizedBox.shrink();
+                }
+                return TitleAndSubTitle(
+                  title:
+                      'Última quantidade alterada ${lastChangedProduct?.isSubtract == true ? " -" : ""}'
+                          .hardcoded,
+                  subTitle: lastChangedProduct?.quantity
+                      .toString()
+                      .toBrazilianNumber(3),
+                  titleStyle: theme.textTheme.bodyMedium?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w300,
+                    color: theme.primaryColor,
+                  ),
+                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: theme.primaryColor,
+                  ),
+                );
+              },
+            ),
             Row(
               children: [
                 Expanded(

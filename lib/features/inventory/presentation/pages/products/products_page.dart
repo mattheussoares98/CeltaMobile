@@ -33,13 +33,17 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   final searchProductsFocusNode = FocusNode();
   final quantityFocusNode = FocusNode();
   final formKeyQuantity = GlobalKey<FormState>();
-  ValueNotifier<bool> insertIndividually = ValueNotifier(false);
   bool get _isContinuousScan =>
       ref
           .read(appSettingsStateControllerProvider)
           .value
           ?.inventoryUseContinuousScan ??
       false;
+  bool get _insertIndividually => ref.read(
+    uiStateControllerProvider(
+      widget.codigoInternoInventario,
+    ).select((s) => s.insertIndividually),
+  );
 
   @override
   void dispose() {
@@ -47,7 +51,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     quantityController.dispose();
     searchProductsFocusNode.dispose();
     quantityFocusNode.dispose();
-    insertIndividually.dispose();
     super.dispose();
   }
 
@@ -79,7 +82,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       searchProductsStateControllerProvider(searchProductKey),
     );
 
-    if (insertIndividually.value && products.value?.length == 1) {
+    if (_insertIndividually && products.value?.length == 1) {
       ref
           .read(
             entryQuantityStateControllerProvider(
@@ -97,12 +100,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   }
 
   void changeSelectedIndex(int? index) {
-    final provider = selectedProductIndexStateControllerProvider(
-      widget.codigoInternoInventario,
-    );
-    ref.read(provider.notifier).updateIndex(index);
+    final provider = uiStateControllerProvider(widget.codigoInternoInventario);
+    ref.read(provider.notifier).updateProductIndex(index);
 
-    if (ref.read(provider) != null) {
+    if (ref.read(provider.select((s) => s.selectedProductIndex)) != null) {
       quantityController.clear();
       Future.delayed(const Duration(milliseconds: 100), () {
         quantityFocusNode.requestFocus();
@@ -182,7 +183,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   searchProductKey: searchProductKey,
                 ),
                 InsertIndividuallySwitch(
-                  insertIndividually: insertIndividually,
+                  codigoInternoInventario: widget.codigoInternoInventario,
                 ),
                 AsyncValueSliverWidget(
                   value: ref.watch(
@@ -198,10 +199,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
                         return ProductItem(
                           widget: widget,
-                          changeSelectedIndex: changeSelectedIndex,
                           index: index,
                           product: product,
-                          insertIndividually: insertIndividually,
                           quantityFocusNode: quantityFocusNode,
                           quantityController: quantityController,
                           formKeyQuantity: formKeyQuantity,
