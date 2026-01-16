@@ -79,7 +79,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
       ref
           .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(pending.value!.copyWith(products: products));
+          .updatePending(products: products);
     }
 
     final selectedProductIndex = ref.watch(

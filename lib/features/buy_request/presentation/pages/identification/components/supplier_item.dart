@@ -25,10 +25,6 @@ class SupplierItem extends ConsumerWidget {
       if (enabled == false || pending?.selectedSupplier == supplier) {
         return;
       }
-      final newValue = pending?.selectedSupplier == supplier ? null : supplier;
-      final entity = (pending ?? PendingBuyRequestEntity.empty()).copyWith(
-        selectedSupplier: newValue,
-      );
 
       if (pending?.selectedEnterprises?.isNotEmpty == true) {
         showAlertDialog(
@@ -43,18 +39,19 @@ class SupplierItem extends ConsumerWidget {
             ref
                 .read(pendingBuyRequestStateControllerProvider.notifier)
                 .updatePending(
-                  entity.annulValue(
-                    annulSelectedEnterprises: true,
-                    annulProducts: true,
-                  ),
+                  annulSelectedEnterprises: true,
+                  annulProducts: true,
                 );
             ref.invalidate(enterprisesStateControllerProvider);
           },
         );
       } else {
+        final newValue = pending?.selectedSupplier == supplier
+            ? null
+            : supplier;
         ref
             .read(pendingBuyRequestStateControllerProvider.notifier)
-            .updatePending(entity);
+            .updatePending(selectedSupplier: newValue);
       }
     }
 

@@ -42,11 +42,9 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
         ref
             .read(pendingBuyRequestStateControllerProvider.notifier)
             .updatePending(
-              pendingAsync.value!.annulValue(
-                annulSelectedSupplier: true,
-                annulSelectedEnterprises: true,
-                annulProducts: true,
-              ),
+              annulSelectedSupplier: true,
+              annulSelectedEnterprises: true,
+              annulProducts: true,
             );
       }
 

@@ -58,7 +58,7 @@ class FieldsAndConfirm extends ConsumerWidget {
       });
       ref
           .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(pending.copyWith(products: products));
+          .updatePending(products: products);
       quantityController.clear();
       costController.clear();
 

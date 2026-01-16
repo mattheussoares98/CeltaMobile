@@ -6,7 +6,6 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/request_type/request_type.dart';
-import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
@@ -39,16 +38,14 @@ class RequestTypeDropdown extends ConsumerWidget {
                     if (request == pendingValue?.selectedRequestType) {
                       return;
                     }
-                    final entity =
-                        (pendingValue ?? PendingBuyRequestEntity.empty())
-                            .copyWith(selectedRequestType: request)
-                            .annulValue(
-                              annulSelectedEnterprises: true,
-                              annulProducts: true,
-                            );
+
                     ref
                         .read(pendingBuyRequestStateControllerProvider.notifier)
-                        .updatePending(entity);
+                        .updatePending(
+                          selectedRequestType: request,
+                          annulSelectedEnterprises: true,
+                          annulProducts: true,
+                        );
 
                     ref.invalidate(enterprisesStateControllerProvider);
                   }

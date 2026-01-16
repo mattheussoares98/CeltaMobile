@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_intelligence/core/domain/entities/entities.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/exceptions/app_exception.dart';
 import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
@@ -28,8 +29,31 @@ class FakePendingBuyRequest extends PendingBuyRequestStateController {
 
   // We override updatePending to "spy" on the value passed to it.
   @override
-  Future<void> updatePending(PendingBuyRequestEntity entity) async {
-    updatedEntity = entity;
+  Future<void> updatePending({
+    BuyerEntity? selectedBuyer,
+    RequestTypeEntity? selectedRequestType,
+    SupplierEntity? selectedSupplier,
+    List<EnterpriseEntity>? selectedEnterprises,
+    Map<ProductKey, BuyRequestProductItemEntity>? products,
+    String? lastSavedRequestNumber,
+    bool? annulSelectedEnterprises,
+    bool? annulProducts,
+    bool? annulSelectedSupplier,
+  }) async {
+    updatedEntity = updatedEntity
+        ?.annulValue(
+          annulSelectedEnterprises: annulSelectedEnterprises,
+          annulProducts: annulProducts,
+          annulSelectedSupplier: annulSelectedSupplier,
+        )
+        .copyWith(
+          selectedBuyer: selectedBuyer,
+          selectedSupplier: selectedSupplier,
+          selectedEnterprises: selectedEnterprises,
+          selectedRequestType: selectedRequestType,
+          products: products,
+          lastSavedRequestNumber: lastSavedRequestNumber,
+        );
     // We don't need to call super() or update the state,
     // just record the value.
   }

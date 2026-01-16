@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 import 'controllers.dart';
 
@@ -38,11 +37,7 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
 
       ref
           .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(
-            PendingBuyRequestEntity.empty().copyWith(
-              lastSavedRequestNumber: response,
-            ),
-          );
+          .updatePending(lastSavedRequestNumber: response);
       succeeds = true;
     });
 

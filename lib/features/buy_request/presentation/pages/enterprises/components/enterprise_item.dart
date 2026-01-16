@@ -6,7 +6,6 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/enterprises/enterprises.dart';
-import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 
 class EnterpriseItem extends ConsumerWidget {
@@ -79,10 +78,8 @@ class EnterpriseItem extends ConsumerWidget {
       ref
           .read(pendingBuyRequestStateControllerProvider.notifier)
           .updatePending(
-            (pendingAsync.value ?? PendingBuyRequestEntity.empty()).copyWith(
-              selectedEnterprises: selectedEnterprises,
-              products: products,
-            ),
+            selectedEnterprises: selectedEnterprises,
+            products: products,
           );
     }
 

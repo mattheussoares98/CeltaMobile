@@ -31,7 +31,6 @@ void main() {
   late MockLocalPendingBuyRequestRepository mockRepository;
   late SpyEnterprisesStateController spyEnterprisesController;
   late PendingBuyRequestEntity entity;
-  late PendingBuyRequestEntity emptyEntity;
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makePendingBuyRequestEntity());
@@ -42,8 +41,8 @@ void main() {
   setUp(() {
     mockRepository = MockLocalPendingBuyRequestRepository();
     spyEnterprisesController = SpyEnterprisesStateController();
+
     entity = EntityFactory.makePendingBuyRequestEntity();
-    emptyEntity = PendingBuyRequestEntity.empty();
   });
 
   ProviderContainer makeProviderContainer() {
@@ -94,7 +93,7 @@ void main() {
       );
 
       // ASSERT
-      expect(result, emptyEntity);
+      expect(result, PendingBuyRequestEntity.empty());
     });
   });
 
@@ -103,9 +102,9 @@ void main() {
       'should emit [loading, data] and call repository.update on success',
       () async {
         // ARRANGE
-        when(
-          () => mockRepository.load(),
-        ).thenAnswer((_) async => emptyEntity); // Initial state
+        when(() => mockRepository.load()).thenAnswer(
+          (_) async => PendingBuyRequestEntity.empty(),
+        ); // Initial state
         when(() => mockRepository.update(any())).thenAnswer((_) async {
           await Future.delayed(Duration.zero); // Simulate async delay
         });
@@ -125,7 +124,14 @@ void main() {
         // ACT
         await container
             .read(pendingBuyRequestStateControllerProvider.notifier)
-            .updatePending(entity);
+            .updatePending(
+              selectedBuyer: entity.selectedBuyer,
+              selectedRequestType: entity.selectedRequestType,
+              selectedSupplier: entity.selectedSupplier,
+              selectedEnterprises: entity.selectedEnterprises,
+              products: entity.products,
+              lastSavedRequestNumber: entity.lastSavedRequestNumber,
+            );
 
         // ASSERT
         expect(states, [isA<AsyncLoading>(), AsyncData(entity)]);
@@ -136,7 +142,9 @@ void main() {
     test('should emit [loading, error] if repository.update fails', () async {
       // ARRANGE
       final exception = Exception('Failed to save');
-      when(() => mockRepository.load()).thenAnswer((_) async => emptyEntity);
+      when(
+        () => mockRepository.load(),
+      ).thenAnswer((_) async => PendingBuyRequestEntity.empty());
       when(() => mockRepository.update(any())).thenThrow(exception);
 
       final container = makeProviderContainer();
@@ -152,7 +160,7 @@ void main() {
       // ACT
       await container
           .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(entity);
+          .updatePending();
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
@@ -165,7 +173,6 @@ void main() {
       () async {
         // ARRANGE
         final newSupplier = EntityFactory.makeSupplierEntity();
-        final updatedEntity = entity.copyWith(selectedSupplier: newSupplier);
 
         when(() => mockRepository.load()).thenAnswer((_) async => entity);
         when(() => mockRepository.update(any())).thenAnswer((_) async {});
@@ -180,7 +187,7 @@ void main() {
         // ACT
         await container
             .read(pendingBuyRequestStateControllerProvider.notifier)
-            .updatePending(updatedEntity);
+            .updatePending(selectedSupplier: newSupplier);
 
         // ASSERT
         // If ref.invalidate was called, the buildCount must be 2
@@ -204,11 +211,71 @@ void main() {
         // ACT
         await container
             .read(pendingBuyRequestStateControllerProvider.notifier)
-            .updatePending(entity); // Same entity
+            .updatePending(); // Same entity
 
         // ASSERT
         expect(spyEnterprisesController.buildCount, 0);
       },
     );
+
+    test('should annull data when pass null params', () async {
+      // ARRANGE
+      when(() => mockRepository.load()).thenAnswer((_) async => entity);
+      when(() => mockRepository.update(any())).thenAnswer((_) async {});
+
+      final container = makeProviderContainer();
+      addTearDown(container.dispose);
+
+      await container.read(pendingBuyRequestStateControllerProvider.future);
+      expect(spyEnterprisesController.buildCount, 0);
+
+      // ACT
+      await container
+          .read(pendingBuyRequestStateControllerProvider.notifier)
+          .updatePending(
+            selectedBuyer: entity.selectedBuyer,
+            selectedRequestType: entity.selectedRequestType,
+            selectedSupplier: entity.selectedSupplier,
+            selectedEnterprises: entity.selectedEnterprises,
+            products: entity.products,
+            lastSavedRequestNumber: entity.lastSavedRequestNumber,
+            annulProducts: true,
+            annulSelectedEnterprises: true,
+            annulSelectedSupplier: true,
+          );
+
+      final result = await container.read(
+        pendingBuyRequestStateControllerProvider.future,
+      );
+      expect(result.products, null);
+      expect(result.selectedEnterprises, null);
+      expect(result.selectedSupplier, null);
+    });
+
+    test('should clean all data correctly', () async {
+      // ARRANGE
+      when(() => mockRepository.load()).thenAnswer((_) async => entity);
+      when(() => mockRepository.update(any())).thenAnswer((_) async {});
+
+      final container = makeProviderContainer();
+      addTearDown(container.dispose);
+
+      await container.read(pendingBuyRequestStateControllerProvider.future);
+      expect(spyEnterprisesController.buildCount, 0);
+
+      // ACT
+      await container
+          .read(pendingBuyRequestStateControllerProvider.notifier)
+          .clearState();
+
+      final result = await container.read(
+        pendingBuyRequestStateControllerProvider.future,
+      );
+      expect(result, PendingBuyRequestEntity.empty());
+
+      verify(
+        () => mockRepository.update(PendingBuyRequestEntity.empty()),
+      ).called(1);
+    });
   });
 }

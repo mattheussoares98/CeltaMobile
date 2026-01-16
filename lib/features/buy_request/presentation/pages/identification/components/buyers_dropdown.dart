@@ -6,7 +6,6 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/buyer/buyer.dart';
-import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
@@ -42,11 +41,7 @@ class BuyersDropdown extends ConsumerWidget {
                                   pendingBuyRequestStateControllerProvider
                                       .notifier,
                                 )
-                                .updatePending(
-                                  (pendingAsync.value ??
-                                          PendingBuyRequestEntity.empty())
-                                      .copyWith(selectedBuyer: buyer),
-                                );
+                                .updatePending(selectedBuyer: buyer);
                           }
                         : null,
                     items: buyers

@@ -42,7 +42,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
 
     ref
         .read(pendingBuyRequestStateControllerProvider.notifier)
-        .updatePending(pending!.copyWith(products: products));
+        .updatePending(products: products);
   }
 
   @override
