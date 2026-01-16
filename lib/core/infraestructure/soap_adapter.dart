@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:xml2json/xml2json.dart';
 
@@ -24,32 +25,14 @@ class SoapAdapter implements contracts.SoapRequest {
       final soapHeaders = {
         'Content-Type': 'text/xml; charset=utf-8',
         'SOAPAction': 'http://celtaware.com.br/$soapAction',
-        'Accept-Language': 'en-US',
-        'Access-Control-Allow-Methods': '*',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
       };
 
-      String parameterTags = '';
-
-      parameters.forEach((tag, value) {
-        parameterTags += '<$tag>$value</$tag>\n';
-      });
-
-      final envelope =
-          '''<?xml version="1.0" encoding="utf-8"?>
-      <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
-        <soap12:Body>
-          <$soapAction xmlns="http://celtaware.com.br/">
-          $parameterTags
-          </$soapAction>
-        </soap12:Body>
-      </soap12:Envelope>''';
+      final soapEnvelope = _buildEnvelope(parameters, soapAction);
 
       final response = await client
           .post(
             Uri.parse('$url/ccs/$serviceASMX'),
-            body: envelope,
+            body: soapEnvelope,
             headers: soapHeaders,
           )
           .timeout(const Duration(seconds: 30));
@@ -58,26 +41,47 @@ class SoapAdapter implements contracts.SoapRequest {
         throw HttpError.serverError(response.body);
       }
 
-      final Xml2Json xml2json = Xml2Json();
-      xml2json.parse(response.body);
-      final parsedJson = json.decode(xml2json.toParker());
+      final parsedJson = await compute(_parseXmlCompute, response.body);
 
       final responseBody =
           parsedJson["soap:Envelope"]["soap:Body"][typeOfResponse];
 
-      if (responseBody["status"] == "OK") {
+      final status = responseBody["status"];
+      if (status == "OK") {
         return _handleSuccessResponse(responseBody, typeOfResult);
-      } else if (responseBody["status"].contains("sucesso")) {
+      } else if (status.contains("sucesso")) {
         return _handleSuccessResponse(responseBody, typeOfResult);
       } else if (serviceASMX.toLowerCase() ==
           'CeltaSecurityService.asmx'.toLowerCase()) {
         return _handleSuccessResponse(responseBody, typeOfResult);
       } else {
-        throw BsError(responseBody["status"]);
+        throw BsError(status);
       }
     } catch (e) {
       rethrow;
     }
+  }
+
+  static Map<String, dynamic> _parseXmlCompute(String xmlBody) {
+    final transformer = Xml2Json();
+    transformer.parse(xmlBody);
+    return json.decode(transformer.toParker());
+  }
+
+  String _buildEnvelope(Map<String, dynamic> params, String soapAction) {
+    // Optimization: Use StringBuffer for complex SOAP bodies
+    final buffer = StringBuffer();
+    buffer.write('<?xml version="1.0" encoding="utf-8"?>');
+    buffer.write(
+      '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">',
+    );
+    buffer.write('<soap12:Body>');
+    buffer.write('<$soapAction xmlns="http://celtaware.com.br/">');
+    params.forEach((key, value) => buffer.write('<$key>$value</$key>'));
+    buffer.write('</$soapAction>');
+    buffer.write('</soap12:Body>');
+    buffer.write('</soap12:Envelope>');
+    return buffer.toString();
   }
 
   dynamic _handleSuccessResponse(
@@ -109,16 +113,13 @@ class SoapAdapter implements contracts.SoapRequest {
     String typeOfResult,
   ) {
     try {
-      if (responseBody[typeOfResult] == null) {
-        return false;
-      } else if (responseBody[typeOfResult]?["diffgr:diffgram"] == null) {
-        return false;
-      } else if (responseBody[typeOfResult]?["diffgr:diffgram"]?["NewDataSet"] ==
-          null) {
-        return false;
-      }
-      return responseBody[typeOfResult]?["diffgr:diffgram"]?["NewDataSet"] !=
-          null;
+      final result = responseBody[typeOfResult];
+      if (result == null) return false;
+
+      final diffgram = result["diffgr:diffgram"];
+      if (diffgram == null) return false;
+
+      return diffgram["NewDataSet"] != null;
     } catch (e) {
       return false;
     }
