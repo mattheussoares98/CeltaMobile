@@ -21,14 +21,18 @@ class BottomNavBar extends ConsumerWidget {
         BottomNavigationBarItem(
           label: 'Pendentes'.hardcoded,
           icon: Badge(
-            label: Text(
-              ref
-                  .watch(
-                    expeditionConferenceControllerProvider(
-                      expeditionControlCode,
-                    ).select((s) => s.value?.pendingProducts.length ?? 0),
-                  )
-                  .toString(),
+            label: Consumer(
+              builder: (_, ref, _) {
+                return Text(
+                  ref
+                      .watch(
+                        expeditionConferenceControllerProvider(
+                          expeditionControlCode,
+                        ).select((s) => s.value?.pendingProducts.length ?? 0),
+                      )
+                      .toString(),
+                );
+              },
             ),
             offset: const Offset(8, -6),
             child: Icon(
@@ -39,14 +43,18 @@ class BottomNavBar extends ConsumerWidget {
         BottomNavigationBarItem(
           label: 'Conferidos'.hardcoded,
           icon: Badge(
-            label: Text(
-              ref
-                  .watch(
-                    expeditionConferenceControllerProvider(
-                      expeditionControlCode,
-                    ).select((s) => s.value?.scannedProducts.length ?? 0),
-                  )
-                  .toString(),
+            label: Consumer(
+              builder: (_, ref, _) {
+                return Text(
+                  ref
+                      .watch(
+                        expeditionConferenceControllerProvider(
+                          expeditionControlCode,
+                        ).select((s) => s.value?.scannedProducts.length ?? 0),
+                      )
+                      .toString(),
+                );
+              },
             ),
             offset: const Offset(8, -6),
             child: Icon(
