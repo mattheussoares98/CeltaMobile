@@ -39,7 +39,8 @@ class PendingBuyRequestStateController
     List<EnterpriseEntity>? selectedEnterprises,
     Map<ProductKey, BuyRequestProductItemEntity>? products,
     String? lastSavedRequestNumber,
-    bool? annulSelectedEnterprises,
+    bool?
+    annulSelectedEnterprises, //TODO remove these annul params and use a logic inside
     bool? annulProducts,
     bool? annulSelectedSupplier,
   }) async {
