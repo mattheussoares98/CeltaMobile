@@ -8,9 +8,6 @@ import '../../../../../../core/presentation/controllers/products/products.dart';
 class SearchProducts extends ConsumerWidget {
   final FocusNode searchProductsFocusNode;
   final TextEditingController searchProductsController;
-  final int enterpriseCode;
-  final int codigoInternoInventario;
-  final int codigoInternoInvCont;
   final VoidCallback searchProducts;
   final SearchProductKey searchProductKey;
   const SearchProducts({
@@ -18,9 +15,6 @@ class SearchProducts extends ConsumerWidget {
     required this.searchProducts,
     required this.searchProductsController,
     required this.searchProductsFocusNode,
-    required this.enterpriseCode,
-    required this.codigoInternoInventario,
-    required this.codigoInternoInvCont,
     required this.searchProductKey,
   });
 

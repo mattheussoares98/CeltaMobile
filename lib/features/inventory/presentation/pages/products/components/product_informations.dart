@@ -25,8 +25,6 @@ class ProductInformations extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    // return ProductItemWidget(product: product, routine: BsRoutine.generic);
-
     return InkWell(
       onTap: onChangeSelectedIndex,
       child: Padding(
@@ -34,7 +32,10 @@ class ProductInformations extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TitleAndSubTitle(title: null, subTitle: product.Name),
+            TitleAndSubTitle(
+              title: null,
+              subTitle: product.Name?.formattedPacking(),
+            ),
 
             Consumer(
               builder: (_, ref, _) {

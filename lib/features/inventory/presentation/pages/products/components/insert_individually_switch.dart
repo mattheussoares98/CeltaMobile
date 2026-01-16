@@ -35,20 +35,24 @@ class InsertIndividuallySwitch extends ConsumerWidget {
               ),
             ),
             Flexible(
-              child: DefaultSwitch(
-                title: 'Inserir individualmente'.hardcoded,
-                value: ref.watch(
-                  uiStateControllerProvider(
-                    codigoInternoInventario,
-                  ).select((s) => s.insertIndividually),
-                ),
-                onChanged: (_) => ref
-                    .read(
+              child: Consumer(
+                builder: (_, ref, _) {
+                  return DefaultSwitch(
+                    title: 'Inserir individualmente'.hardcoded,
+                    value: ref.watch(
                       uiStateControllerProvider(
                         codigoInternoInventario,
-                      ).notifier,
-                    )
-                    .updateInsertIndividually(),
+                      ).select((s) => s.insertIndividually),
+                    ),
+                    onChanged: (_) => ref
+                        .read(
+                          uiStateControllerProvider(
+                            codigoInternoInventario,
+                          ).notifier,
+                        )
+                        .updateInsertIndividually(),
+                  );
+                },
               ),
             ),
           ],

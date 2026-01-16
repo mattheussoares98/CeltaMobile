@@ -15,7 +15,6 @@ class QuantityButtonsAndField extends ConsumerWidget {
   final int enterpriseCode;
   final int codigoInternoInventario;
   final void Function(bool isSubtract) entryQuantity;
-  final GlobalKey<FormState> formKey;
   const QuantityButtonsAndField({
     super.key,
     required this.quantityFocusNode,
@@ -25,126 +24,119 @@ class QuantityButtonsAndField extends ConsumerWidget {
     required this.enterpriseCode,
     required this.codigoInternoInventario,
     required this.entryQuantity,
-    required this.formKey,
   });
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Form(
-      key: formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: Column(
-          children: [
-            Consumer(
-              builder: (_, ref, _) {
-                final insertIndividually = ref.watch(
-                  uiStateControllerProvider(
-                    codigoInternoInventario,
-                  ).select((s) => s.insertIndividually),
-                );
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p8),
+      child: Column(
+        children: [
+          Consumer(
+            builder: (_, ref, _) {
+              final insertIndividually = ref.watch(
+                uiStateControllerProvider(
+                  codigoInternoInventario,
+                ).select((s) => s.insertIndividually),
+              );
 
-                return Row(
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: PrimaryButton(
-                        text:
-                            '${'Subtrair'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
-                        onPressed: () {
-                          entryQuantity(true);
-                        },
-                      ),
+              return Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: PrimaryButton(
+                      text:
+                          '${'Subtrair'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
+                      onPressed: () {
+                        entryQuantity(true);
+                      },
                     ),
-                    gapW8,
-                    Expanded(
-                      flex: 6,
-                      child: PrimaryButton(
-                        text:
-                            '${'Somar'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
-                        onPressed: () {
-                          entryQuantity(false);
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            gapH8,
-            Row(
-              children: [
-                Expanded(
-                  child: PrimaryButton(
-                    text: 'Anular'.toUpperCase().hardcoded,
-                    backgroundColor: Colors.red,
-                    onPressed: () async {
-                      final pressed = await showAlertDialog(
-                        context: context,
-                        title: 'Anular'.hardcoded,
-                        content:
-                            'Tem certeza que deseja anular a contagem desse produto?'
-                                .hardcoded,
-                        defaultActionText: 'Sim'.hardcoded,
-                        cancelActionText: 'Não'.hardcoded,
-                      );
-
-                      if (pressed == true) {
-                        ref
-                            .read(
-                              entryQuantityStateControllerProvider(
-                                codigoInternoInvCont,
-                              ).notifier,
-                            )
-                            .annul(
-                              codigoInternoProEmb,
-                              enterpriseCode,
-                              codigoInternoInventario,
-                            );
-                      }
-                    },
                   ),
-                ),
-                gapW8,
-                Consumer(
-                  builder: (_, ref, _) {
-                    final insertIndividually = ref.watch(
-                      uiStateControllerProvider(
-                        codigoInternoInventario,
-                      ).select((s) => s.insertIndividually),
+                  gapW8,
+                  Expanded(
+                    flex: 6,
+                    child: PrimaryButton(
+                      text:
+                          '${'Somar'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
+                      onPressed: () {
+                        entryQuantity(false);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          gapH8,
+          Row(
+            children: [
+              Expanded(
+                child: PrimaryButton(
+                  text: 'Anular'.toUpperCase().hardcoded,
+                  backgroundColor: Colors.red,
+                  onPressed: () async {
+                    final pressed = await showAlertDialog(
+                      context: context,
+                      title: 'Anular'.hardcoded,
+                      content:
+                          'Tem certeza que deseja anular a contagem desse produto?'
+                              .hardcoded,
+                      defaultActionText: 'Sim'.hardcoded,
+                      cancelActionText: 'Não'.hardcoded,
                     );
 
-                    if (insertIndividually) {
-                      return const Expanded(flex: 2, child: SizedBox.shrink());
+                    if (pressed == true) {
+                      ref
+                          .read(
+                            entryQuantityStateControllerProvider(
+                              codigoInternoInvCont,
+                            ).notifier,
+                          )
+                          .annul(
+                            codigoInternoProEmb,
+                            enterpriseCode,
+                            codigoInternoInventario,
+                          );
                     }
-
-                    return Expanded(
-                      flex: 2,
-                      child: DefaultTextFormField(
-                        focusNode: quantityFocusNode,
-                        controller: quantityController,
-                        labelText: 'Quantidade'.hardcoded,
-                        hintText: 'Quantidade'.hardcoded,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: FormValidators.compose([
-                          NonEmptyValidator(),
-                          NumberValidator(allowDecimal: true),
-                        ]),
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                        maxLength: 10,
-                        onFieldSubmitted: (_) {
-                          entryQuantity(false);
-                        },
-                      ),
-                    );
                   },
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              gapW8,
+              Consumer(
+                builder: (_, ref, _) {
+                  final insertIndividually = ref.watch(
+                    uiStateControllerProvider(
+                      codigoInternoInventario,
+                    ).select((s) => s.insertIndividually),
+                  );
+
+                  if (insertIndividually) {
+                    return const Expanded(flex: 2, child: SizedBox.shrink());
+                  }
+
+                  return Expanded(
+                    flex: 2,
+                    child: DefaultTextFormField(
+                      focusNode: quantityFocusNode,
+                      controller: quantityController,
+                      labelText: 'Quantidade'.hardcoded,
+                      hintText: 'Quantidade'.hardcoded,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: FormValidators.compose([
+                        NonEmptyValidator(),
+                        NumberValidator(allowDecimal: true),
+                      ]),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      maxLength: 10,
+                      onFieldSubmitted: (_) => entryQuantity(false),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

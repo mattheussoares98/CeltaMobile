@@ -103,12 +103,11 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     final provider = uiStateControllerProvider(widget.codigoInternoInventario);
     ref.read(provider.notifier).updateProductIndex(index);
 
-    if (ref.read(provider.select((s) => s.selectedProductIndex)) != null) {
-      quantityController.clear();
-      Future.delayed(const Duration(milliseconds: 100), () {
-        quantityFocusNode.requestFocus();
-      });
-    }
+    if (ref.read(provider.select((s) => s.selectedProductIndex)) != null) {}
+    quantityController.clear();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      quantityFocusNode.requestFocus();
+    });
   }
 
   @override
@@ -177,37 +176,18 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       _searchProducts(searchProductKey, false),
                   searchProductsController: searchProductsController,
                   searchProductsFocusNode: searchProductsFocusNode,
-                  enterpriseCode: widget.enterpriseCode,
-                  codigoInternoInventario: widget.codigoInternoInventario,
-                  codigoInternoInvCont: widget.codigoInternoInvCont,
                   searchProductKey: searchProductKey,
                 ),
                 InsertIndividuallySwitch(
                   codigoInternoInventario: widget.codigoInternoInventario,
                 ),
-                AsyncValueSliverWidget(
-                  value: ref.watch(
-                    searchProductsStateControllerProvider(searchProductKey),
-                  ),
-                  tryAgain: null,
-                  data: (products) {
-                    return ResponsiveListFlow(
-                      isSliver: true,
-                      itemCount: products.length,
-                      itemBuilder: (_, index) {
-                        final product = products[index];
-
-                        return ProductItem(
-                          widget: widget,
-                          index: index,
-                          product: product,
-                          quantityFocusNode: quantityFocusNode,
-                          quantityController: quantityController,
-                          formKeyQuantity: formKeyQuantity,
-                        );
-                      },
-                    );
-                  },
+                ProductsItems(
+                  codigoInternoInventario: widget.codigoInternoInventario,
+                  codigoInternoInvCont: widget.codigoInternoInvCont,
+                  enterpriseCode: widget.enterpriseCode,
+                  searchProductKey: searchProductKey,
+                  quantityFocusNode: quantityFocusNode,
+                  quantityController: quantityController,
                 ),
               ],
             ),
