@@ -30,41 +30,64 @@ class CountingsItems extends ConsumerWidget {
         itemCount: countings?.length ?? 0,
         itemBuilder: (_, index) {
           final counting = countings![index];
-          return Card(
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () {
-                context.pushNamed(
-                  Routes.inventoryProducts.name,
-                  pathParameters: {
-                    'codigoInternoInvCont':
-                        counting.CodigoInternoInvCont.toString(),
-                    'enterpriseCode': enterpriseCode.toString(),
-                    'codigoInternoInventario': codigoInternoInventario
-                        .toString(),
-                  },
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TitleAndSubTitle(
-                      title: 'Número'.hardcoded,
-                      subTitle: counting.NumeroContagemInvCont.toString(),
-                    ),
-                    if (counting.ObsInvCont != null)
-                      TitleAndSubTitle(
-                        title: 'Obs'.hardcoded,
-                        subTitle: counting.ObsInvCont,
-                      ),
-                  ],
-                ),
-              ),
-            ),
+          return _CountingItem(
+            key: ValueKey(counting.CodigoInternoInvCont),
+            counting: counting,
+            enterpriseCode: enterpriseCode,
+            codigoInternoInventario: codigoInternoInventario,
           );
         },
+      ),
+    );
+  }
+}
+
+class _CountingItem extends StatelessWidget {
+  final CountingEntity counting;
+  final int enterpriseCode;
+  final int codigoInternoInventario;
+  const _CountingItem({
+    super.key,
+    required this.counting,
+    required this.enterpriseCode,
+    required this.codigoInternoInventario,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () {
+            context.pushNamed(
+              Routes.inventoryProducts.name,
+              pathParameters: {
+                'codigoInternoInvCont':
+                    counting.CodigoInternoInvCont.toString(),
+                'enterpriseCode': enterpriseCode.toString(),
+                'codigoInternoInventario': codigoInternoInventario.toString(),
+              },
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TitleAndSubTitle(
+                  title: 'Número'.hardcoded,
+                  subTitle: counting.NumeroContagemInvCont.toString(),
+                ),
+                if (counting.ObsInvCont != null)
+                  TitleAndSubTitle(
+                    title: 'Obs'.hardcoded,
+                    subTitle: counting.ObsInvCont,
+                  ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
