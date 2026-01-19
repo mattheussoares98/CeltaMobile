@@ -34,7 +34,13 @@ class ProductsItems extends ConsumerWidget {
           itemBuilder: (_, index) {
             final product = products[index];
 
-            return ProductItem(product: product, requestCode: requestCode);
+            return ProductItem(
+              key: ValueKey(
+                '${product.ProductPackingCode}${product.EnterpriseCode}',
+              ),
+              product: product,
+              requestCode: requestCode,
+            );
           },
         );
       },

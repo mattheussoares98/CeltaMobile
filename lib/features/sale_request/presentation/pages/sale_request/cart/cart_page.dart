@@ -86,9 +86,11 @@ class _CartPageState extends ConsumerState<CartPage>
         .read(selectedItemUIControllerProvider(isCartPage: true).notifier)
         .selectProduct(product.ProductPackingCode, product);
 
-    final selectedPackingCode = ref
-        .read(selectedItemUIControllerProvider(isCartPage: true))
-        .productPackingCode;
+    final selectedPackingCode = ref.read(
+      selectedItemUIControllerProvider(
+        isCartPage: true,
+      ).select((s) => s.productPackingCode),
+    );
 
     if (selectedPackingCode == null) {
       return;
@@ -112,13 +114,6 @@ class _CartPageState extends ConsumerState<CartPage>
 
   @override
   Widget build(BuildContext context) {
-    final cart = ref.watch(
-      pendingSaleRequestStateControllerProvider.select(
-        (state) => state.value?.cart ?? const {},
-      ),
-    );
-    final cartProducts = cart.values.toList();
-
     ref.listen(processCartControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
@@ -140,47 +135,61 @@ class _CartPageState extends ConsumerState<CartPage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (cartProducts.isNotEmpty) ...[
-              Expanded(
-                child: CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  slivers: [
-                    ObservationsField(
-                      observationsFocusNode: observationsFocusNode,
-                      observationsController: observationsController,
-                      instructionsFocusNode: instructionsFocusNode,
-                    ),
-                    gapSliverH4,
-                    InstructionsField(
-                      instructionsFocusNode: instructionsFocusNode,
-                      instructionsController: instructionsController,
-                    ),
-                    gapSliverH8,
+            Consumer(
+              builder: (_, ref, _) {
+                final cartProducts = ref.watch(
+                  pendingSaleRequestStateControllerProvider.select(
+                    (state) => (state.value?.cart ?? const {}).values.toList(),
+                  ),
+                );
 
-                    ResponsiveListFlow(
-                      isSliver: true,
-                      itemCount: cartProducts.length,
-                      itemBuilder: (_, index) {
-                        final cartProduct = cartProducts[index];
+                if (cartProducts.isEmpty) {
+                  return const Expanded(child: InsertProductsInCart());
+                }
 
-                        return ProductItem(
-                          cartProduct: cartProduct,
-                          onTap: () => changeSelectedIndex(cartProduct),
-                          quantityController: quantityController,
-                          priceController: priceController,
-                          discountController: discountController,
-                          quantityFocusNode: quantityFocusNode,
-                          discountFocusNode: discountFocusNode,
-                          priceFocusNode: priceFocusNode,
-                          selectedRequest: widget.selectedRequest,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ] else
-              const Expanded(child: InsertProductsInCart()),
+                return Expanded(
+                  child: CustomScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    slivers: [
+                      ObservationsField(
+                        observationsFocusNode: observationsFocusNode,
+                        observationsController: observationsController,
+                        instructionsFocusNode: instructionsFocusNode,
+                      ),
+                      gapSliverH4,
+                      InstructionsField(
+                        instructionsFocusNode: instructionsFocusNode,
+                        instructionsController: instructionsController,
+                      ),
+                      gapSliverH8,
+
+                      ResponsiveListFlow(
+                        isSliver: true,
+                        itemCount: cartProducts.length,
+                        itemBuilder: (_, index) {
+                          final cartProduct = cartProducts[index];
+
+                          return ProductItem(
+                            key: ValueKey(
+                              '${cartProduct.ProductPackingCode}${cartProduct.product?.EnterpriseCode}',
+                            ),
+                            cartProduct: cartProduct,
+                            onTap: () => changeSelectedIndex(cartProduct),
+                            quantityController: quantityController,
+                            priceController: priceController,
+                            discountController: discountController,
+                            quantityFocusNode: quantityFocusNode,
+                            discountFocusNode: discountFocusNode,
+                            priceFocusNode: priceFocusNode,
+                            selectedRequest: widget.selectedRequest,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
             TotalCalculateAndSave(
               selectedRequest: widget.selectedRequest,
               instructionsController: instructionsController,

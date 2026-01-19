@@ -48,42 +48,66 @@ class Covenants extends ConsumerWidget {
             );
           }
           final covenant = customerItem.customer.CustomerCovenants![index - 1];
-          return Card(
-            clipBehavior: Clip.antiAlias,
-            margin: const EdgeInsets.only(top: Sizes.p8),
-            child: InkWell(
-              onTap: () => onTapCovenant(covenant),
-              child: RadioGroup<CustomerCovenantEntity>(
-                groupValue: selectedCovenant,
-                onChanged: (_) => onTapCovenant(covenant),
-                child: Padding(
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            TitleAndSubTitle(
-                              title: null,
-                              subTitle: covenant.covenant?.Name,
-                            ),
-                            if (covenant.LimitOfPurchase != null)
-                              TitleAndSubTitle(
-                                title: 'Limite'.hardcoded,
-                                subTitle: covenant.LimitOfPurchase,
-                                subTitleIsPrice: true,
-                              ),
-                          ],
-                        ),
-                      ),
-                      Radio(value: covenant, toggleable: true),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+          return _CovenantItem(
+            key: ValueKey(covenant.covenant?.Code),
+            covenant: covenant,
+            selectedCovenant: selectedCovenant,
+            onTapCovenant: () => onTapCovenant(covenant),
           );
         },
+      ),
+    );
+  }
+}
+
+class _CovenantItem extends StatelessWidget {
+  final CustomerCovenantEntity covenant;
+  final CustomerCovenantEntity? selectedCovenant;
+  final VoidCallback onTapCovenant;
+  const _CovenantItem({
+    super.key,
+    required this.covenant,
+    required this.selectedCovenant,
+    required this.onTapCovenant,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        margin: const EdgeInsets.only(top: Sizes.p8),
+        child: InkWell(
+          onTap: onTapCovenant,
+          child: RadioGroup<CustomerCovenantEntity>(
+            groupValue: selectedCovenant,
+            onChanged: (_) => onTapCovenant(),
+            child: Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        TitleAndSubTitle(
+                          title: null,
+                          subTitle: covenant.covenant?.Name,
+                        ),
+                        if (covenant.LimitOfPurchase != null)
+                          TitleAndSubTitle(
+                            title: 'Limite'.hardcoded,
+                            subTitle: covenant.LimitOfPurchase,
+                            subTitleIsPrice: true,
+                          ),
+                      ],
+                    ),
+                  ),
+                  Radio(value: covenant, toggleable: true),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

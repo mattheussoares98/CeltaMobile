@@ -67,20 +67,16 @@ class SaleRequestPage extends ConsumerWidget {
                 (e) => e.Code == requestCode,
               );
 
-              return Consumer(
-                builder: (_, ref, _) {
-                  return IndexedStack(
-                    index: ref.watch(pageIndexStateControllerProvider),
-                    children: [
-                      InsertProductsPage(
-                        enterpriseCode: enterpriseCode,
-                        selectedRequest: selectedRequest,
-                      ),
-                      const CustomerPage(),
-                      CartPage(selectedRequest: selectedRequest),
-                    ],
-                  );
-                },
+              return IndexedStack(
+                index: ref.watch(pageIndexStateControllerProvider),
+                children: [
+                  InsertProductsPage(
+                    enterpriseCode: enterpriseCode,
+                    selectedRequest: selectedRequest,
+                  ),
+                  const CustomerPage(),
+                  CartPage(selectedRequest: selectedRequest),
+                ],
               );
             },
           ),

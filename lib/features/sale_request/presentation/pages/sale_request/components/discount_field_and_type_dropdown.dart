@@ -23,12 +23,6 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final discountType = ref.watch(
-      selectedItemUIControllerProvider(
-        isCartPage: widget.isCartPage,
-      ).select((state) => state.discountType),
-    );
-
     return Row(
       children: [
         Expanded(
@@ -94,39 +88,49 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
             child: AnimatedBuilder(
               animation: widget.priceController,
               builder: (_, _) {
-                return DefaultSimpleDropDown<PercentageOrValue?>(
-                  onChanged: widget.priceController.text.isNotEmpty
-                      ? null
-                      : (value) {
-                          ref
-                              .read(
-                                selectedItemUIControllerProvider(
-                                  isCartPage: widget.isCartPage,
-                                ).notifier,
-                              )
-                              .updateDiscountType(value);
-                        },
-                  value: discountType,
-                  hint: 'Tipo',
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (discountType == null &&
-                        widget.discountController.text.isNotEmpty) {
-                      return 'Campo obrigatório'.hardcoded;
-                    }
+                return Consumer(
+                  builder: (_, ref, _) {
+                    final discountType = ref.watch(
+                      selectedItemUIControllerProvider(
+                        isCartPage: widget.isCartPage,
+                      ).select((state) => state.discountType),
+                    );
 
-                    return null;
+                    return DefaultSimpleDropDown<PercentageOrValue?>(
+                      onChanged: widget.priceController.text.isNotEmpty
+                          ? null
+                          : (value) {
+                              ref
+                                  .read(
+                                    selectedItemUIControllerProvider(
+                                      isCartPage: widget.isCartPage,
+                                    ).notifier,
+                                  )
+                                  .updateDiscountType(value);
+                            },
+                      value: discountType,
+                      hint: 'Tipo',
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (discountType == null &&
+                            widget.discountController.text.isNotEmpty) {
+                          return 'Campo obrigatório'.hardcoded;
+                        }
+
+                        return null;
+                      },
+                      items: [
+                        DropdownMenuItem(
+                          value: PercentageOrValue.percentage,
+                          child: Text(PercentageOrValue.percentage.symbol),
+                        ),
+                        DropdownMenuItem(
+                          value: PercentageOrValue.value,
+                          child: Text(PercentageOrValue.value.symbol),
+                        ),
+                      ],
+                    );
                   },
-                  items: [
-                    DropdownMenuItem(
-                      value: PercentageOrValue.percentage,
-                      child: Text(PercentageOrValue.percentage.symbol),
-                    ),
-                    DropdownMenuItem(
-                      value: PercentageOrValue.value,
-                      child: Text(PercentageOrValue.value.symbol),
-                    ),
-                  ],
                 );
               },
             ),

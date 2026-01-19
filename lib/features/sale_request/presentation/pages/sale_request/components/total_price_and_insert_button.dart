@@ -28,12 +28,6 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
       ).select((state) => state.discountType),
     );
 
-    final correspondentProduct = ref.watch(
-      pendingSaleRequestStateControllerProvider.select(
-        (state) => state.value?.cart[widget.product.ProductPackingCode],
-      ),
-    );
-
     return AnimatedBuilder(
       animation: Listenable.merge([
         widget.priceController,
@@ -74,11 +68,21 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
               ),
             ),
             gapH4,
-            PrimaryButton(
-              text: widget.isCartPage || correspondentProduct != null
-                  ? 'Atualizar'.hardcoded
-                  : 'Adicionar'.hardcoded,
-              onPressed: insertProduct,
+            Consumer(
+              builder: (_, ref, _) {
+                final correspondentProduct = ref.watch(
+                  pendingSaleRequestStateControllerProvider.select(
+                    (state) =>
+                        state.value?.cart[widget.product.ProductPackingCode],
+                  ),
+                );
+                return PrimaryButton(
+                  text: widget.isCartPage || correspondentProduct != null
+                      ? 'Atualizar'.hardcoded
+                      : 'Adicionar'.hardcoded,
+                  onPressed: insertProduct,
+                );
+              },
             ),
           ],
         );

@@ -22,8 +22,12 @@ class AppBarTitle extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FittedBox(
-          child: Text(
-            appBarTitles[ref.watch(pageIndexStateControllerProvider)],
+          child: Consumer(
+            builder: (_, ref, _) {
+              return Text(
+                appBarTitles[ref.watch(pageIndexStateControllerProvider)],
+              );
+            },
           ),
         ),
         Consumer(

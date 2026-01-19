@@ -19,12 +19,6 @@ class CustomerInfoAndRadio extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedCustomer = ref.watch(
-      pendingSaleRequestStateControllerProvider.select(
-        (s) => s.value?.customer,
-      ),
-    );
-
     return InkWell(
       onTap: changeSelectedCustomer,
       child: Padding(
@@ -58,10 +52,20 @@ class CustomerInfoAndRadio extends ConsumerWidget {
                 ],
               ),
             ),
-            RadioGroup<CustomerEntity>(
-              groupValue: selectedCustomer,
-              onChanged: (_) => changeSelectedCustomer(),
-              child: Radio(value: customerItem.customer, toggleable: true),
+            Consumer(
+              builder: (_, ref, _) {
+                final selectedCustomer = ref.watch(
+                  pendingSaleRequestStateControllerProvider.select(
+                    (s) => s.value?.customer,
+                  ),
+                );
+
+                return RadioGroup<CustomerEntity>(
+                  groupValue: selectedCustomer,
+                  onChanged: (_) => changeSelectedCustomer(),
+                  child: Radio(value: customerItem.customer, toggleable: true),
+                );
+              },
             ),
           ],
         ),

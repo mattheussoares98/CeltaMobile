@@ -8,11 +8,9 @@ import 'components.dart';
 class CustomerItem extends ConsumerWidget {
   final CustomerEntity customer;
   final bool isConsumerCustomer;
-  final VoidCallback changeSelectedCustomer;
   const CustomerItem({
     super.key,
     required this.customer,
-    required this.changeSelectedCustomer,
     this.isConsumerCustomer = false,
   });
 
@@ -24,21 +22,25 @@ class CustomerItem extends ConsumerWidget {
       ),
     );
 
-    return Card(
-      margin: const EdgeInsets.all(0),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          CustomerInfoAndRadio(
-            customerItem: this,
-            changeSelectedCustomer: changeSelectedCustomer,
-          ),
-          if (customer == selectedCustomer &&
-              customer.CustomerCovenants != null &&
-              customer.CustomerCovenants!.isNotEmpty) ...[
-            Covenants(customerItem: this),
+    return RepaintBoundary(
+      child: Card(
+        margin: const EdgeInsets.all(0),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            CustomerInfoAndRadio(
+              customerItem: this,
+              changeSelectedCustomer: () => ref
+                  .read(pendingSaleRequestStateControllerProvider.notifier)
+                  .changeCustomer(customer),
+            ),
+            if (customer == selectedCustomer &&
+                customer.CustomerCovenants != null &&
+                customer.CustomerCovenants!.isNotEmpty) ...[
+              Covenants(customerItem: this),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

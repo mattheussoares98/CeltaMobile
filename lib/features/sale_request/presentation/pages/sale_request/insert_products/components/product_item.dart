@@ -40,107 +40,123 @@ class _ProductItemState extends ConsumerState<ProductItem> {
     priceFocusNode.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final requests = ref
-        .watch(requestTypeStateControllerProvider(Modules.saleRequest))
-        .value;
-
-    final selectedRequest = requests!.firstWhere(
-      (e) => e.Code == widget.requestCode,
+  void onTapProduct(
+    ProductEntity product,
+    CartProductEntity? cartProduct,
+  ) async {
+    final selectedRequest = await ref.read(
+      requestTypeStateControllerProvider(
+        Modules.saleRequest,
+      ).selectAsync((s) => s!.firstWhere((x) => x.Code == widget.requestCode)),
     );
 
-    void onTapProduct(ProductEntity product, CartProductEntity? cartProduct) {
-      if (product.getPrice == 0 &&
-          selectedRequest.AllowAlterCostOrSalePrice != true) {
-        showSnackBarMessage(
-          context,
-          'Esse produto está com o preço zerado e o modelo não permite alterar o preço'
-              .hardcoded,
-          backgroundColor: Colors.red,
-        );
-        return;
-      }
-      ref
-          .read(selectedItemUIControllerProvider(isCartPage: false).notifier)
-          .selectProduct(product.ProductPackingCode, cartProduct);
+    if (product.getPrice == 0 &&
+        selectedRequest.AllowAlterCostOrSalePrice != true) {
+      showSnackBarMessage(
+        context,
+        'Esse produto está com o preço zerado e o modelo não permite alterar o preço'
+            .hardcoded,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    ref
+        .read(selectedItemUIControllerProvider(isCartPage: false).notifier)
+        .selectProduct(product.ProductPackingCode, cartProduct);
 
-      if (ref
-              .read(selectedItemUIControllerProvider(isCartPage: false))
-              .productPackingCode ==
-          null) {
-        //selected item is null
-        return;
-      }
-
-      priceController.clear();
-      discountController.clear();
-
-      if ((cartProduct?.Quantity ?? 0) > 0) {
-        quantityController.text = cartProduct!.Quantity.toString().replaceAll(
-          RegExp(r'\.'),
-          ',',
-        );
-      } else {
-        quantityController.text = '1';
-      }
-
-      Future.delayed(const Duration(milliseconds: 100), () {
-        quantityFocusNode.requestFocus();
-        quantityController.selection = TextSelection(
-          baseOffset: 0,
-          extentOffset: quantityController.text.length,
-        );
-      });
+    if (ref
+            .read(selectedItemUIControllerProvider(isCartPage: false))
+            .productPackingCode ==
+        null) {
+      //selected item is null
+      return;
     }
 
+    priceController.clear();
+    discountController.clear();
+
+    if ((cartProduct?.Quantity ?? 0) > 0) {
+      quantityController.text = cartProduct!.Quantity.toString().replaceAll(
+        RegExp(r'\.'),
+        ',',
+      );
+    } else {
+      quantityController.text = '1';
+    }
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      quantityFocusNode.requestFocus();
+      quantityController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: quantityController.text.length,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final cartProduct = ref.watch(
       pendingSaleRequestStateControllerProvider.select(
         (state) => state.value?.cart[widget.product.ProductPackingCode],
       ),
     );
-    final selectedPackingCode = ref.watch(
-      selectedItemUIControllerProvider(
-        isCartPage: false,
-      ).select((s) => s.productPackingCode),
+    final isSelected = ref.watch(
+      selectedItemUIControllerProvider(isCartPage: false).select(
+        (s) => s.productPackingCode == widget.product.ProductPackingCode,
+      ),
     );
 
-    return ProductItemWidget(
-      product: widget.product,
-      routine: BsRoutine.saleRequest,
-      showDropIcon: true,
-      isSelected: selectedPackingCode == widget.product.ProductPackingCode,
-      onTap: () => onTapProduct(widget.product, cartProduct),
-      cartItemSummary: cartProduct == null
-          ? null
-          : CartItemSummary(
-              cartQuantity: cartProduct.Quantity,
-              cartValue: cartProduct.Value,
-              product: widget.product,
-              totalDiscount: cartProduct.DiscountValue,
-            ),
-      onDelete: cartProduct == null
-          ? null
-          : () {
-              ref
-                  .read(pendingSaleRequestStateControllerProvider.notifier)
-                  .removeProduct(cartProduct);
-            },
-      notClickableBottom:
-          selectedPackingCode == widget.product.ProductPackingCode
-          ? QuantityPriceDiscountFieldsAndInsertButton(
-              isCartPage: false,
-              product: widget.product,
-              cartProduct: cartProduct,
-              quantityController: quantityController,
-              priceController: priceController,
-              discountController: discountController,
-              quantityFocusNode: quantityFocusNode,
-              discountFocusNode: discountFocusNode,
-              priceFocusNode: priceFocusNode,
-              selectedRequest: selectedRequest,
-            )
-          : null,
+    return RepaintBoundary(
+      child: ProductItemWidget(
+        product: widget.product,
+        routine: BsRoutine.saleRequest,
+        showDropIcon: true,
+        isSelected: isSelected,
+        onTap: () => onTapProduct(widget.product, cartProduct),
+        cartItemSummary: cartProduct == null
+            ? null
+            : CartItemSummary(
+                cartQuantity: cartProduct.Quantity,
+                cartValue: cartProduct.Value,
+                product: widget.product,
+                totalDiscount: cartProduct.DiscountValue,
+              ),
+        onDelete: cartProduct == null
+            ? null
+            : () {
+                ref
+                    .read(pendingSaleRequestStateControllerProvider.notifier)
+                    .removeProduct(cartProduct);
+              },
+        notClickableBottom: isSelected
+            ? Consumer(
+                builder: (_, ref, _) {
+                  final selectedRequest = ref.watch(
+                    requestTypeStateControllerProvider(
+                      Modules.saleRequest,
+                    ).select(
+                      (s) => s.value!.firstWhere(
+                        (x) => x.Code == widget.requestCode,
+                      ),
+                    ),
+                  );
+
+                  return QuantityPriceDiscountFieldsAndInsertButton(
+                    isCartPage: false,
+                    product: widget.product,
+                    cartProduct: cartProduct,
+                    quantityController: quantityController,
+                    priceController: priceController,
+                    discountController: discountController,
+                    quantityFocusNode: quantityFocusNode,
+                    discountFocusNode: discountFocusNode,
+                    priceFocusNode: priceFocusNode,
+                    selectedRequest: selectedRequest,
+                  );
+                },
+              )
+            : null,
+      ),
     );
   }
 }
