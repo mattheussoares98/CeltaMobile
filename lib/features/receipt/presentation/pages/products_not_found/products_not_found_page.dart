@@ -119,59 +119,82 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
               itemBuilder: (_, index) {
                 final product = products[index];
 
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom: (products.length == index + 1)
-                        ? Sizes.p64
-                        : 0, //avoid overlay the floating button
-                  ),
-                  child: Card(
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(Sizes.p8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitleAndSubTitle(
-                                title: 'EAN'.hardcoded,
-                                subTitle: product.ean,
-                              ),
-                              TitleAndSubTitle(
-                                title: 'Quantidade'.hardcoded,
-                                subTitle: product.quantity
-                                    .toString()
-                                    .toBrazilianNumber(),
-                              ),
-                              if (product.observations != null &&
-                                  product.observations!.isNotEmpty &&
-                                  product.observations.toString() != 'null')
-                                TitleAndSubTitle(
-                                  title: 'Observações'.hardcoded,
-                                  subTitle: product.observations,
-                                ),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: IconButton(
-                            onPressed: () =>
-                                openInsertUpdateProductPage(product),
-                            icon: Icon(
-                              isIOS ? CupertinoIcons.pencil : Icons.edit,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                return _ProductItem(
+                  key: ValueKey(product.ean),
+                  product: product,
+                  openInsertUpdateProductPage: () =>
+                      openInsertUpdateProductPage(product),
+                  bottomPadding: (products.length == index + 1)
+                      ? Sizes.p64
+                      : 0, //avoid overlay the floating button,
                 );
               },
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _ProductItem extends StatelessWidget {
+  final ProductNotFoundEntity product;
+  final VoidCallback openInsertUpdateProductPage;
+  final double bottomPadding;
+  const _ProductItem({
+    super.key,
+    required this.product,
+    required this.openInsertUpdateProductPage,
+    required this.bottomPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    return RepaintBoundary(
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: bottomPadding, //avoid overlay the floating button
+        ),
+        child: Card(
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleAndSubTitle(
+                      title: 'EAN'.hardcoded,
+                      subTitle: product.ean,
+                    ),
+                    TitleAndSubTitle(
+                      title: 'Quantidade'.hardcoded,
+                      subTitle: product.quantity.toString().toBrazilianNumber(),
+                    ),
+                    if (product.observations != null &&
+                        product.observations!.isNotEmpty &&
+                        product.observations.toString() != 'null')
+                      TitleAndSubTitle(
+                        title: 'Observações'.hardcoded,
+                        subTitle: product.observations,
+                      ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  onPressed: openInsertUpdateProductPage,
+                  icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
