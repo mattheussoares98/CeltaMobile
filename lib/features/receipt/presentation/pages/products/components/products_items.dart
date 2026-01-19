@@ -36,8 +36,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = ref.watch(selectedProductIndeStateControllerProvider);
-
     ref.listen(updateProductControllerProvider(widget.searchProductKey), (
       p,
       n,
@@ -59,54 +57,93 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
           itemBuilder: (_, index) {
             final product = products[index];
 
-            return ProductItemWidget(
-              product: product,
-              routine: BsRoutine.goodsReceiving,
-              showDropIcon: true,
-              isSelected: selectedIndex == index,
-              onTap: () {
-                quantityController.clear();
-
-                ref
-                    .read(selectedProductIndeStateControllerProvider.notifier)
-                    .updateIndex(index);
-
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  quantityFocusNode.requestFocus();
-                });
-              },
-              notClickableBottom: selectedIndex == index
-                  ? UpdateValuesWidgets(
-                      product: product,
-                      quantityFocusNode: quantityFocusNode,
-                      quantityController: quantityController,
-                      receiptCode: widget.receiptCode,
-                      searchProductKey: widget.searchProductKey,
-                    )
-                  : null,
-              clickableBottom: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TitleAndSubTitle(
-                    title: 'Validade'.hardcoded,
-                    subTitle: product.DataValidade_ProcRecebDocProEmb == null
-                        ? null
-                        : DateFormat(
-                            'dd/MM/yyyy',
-                          ).format(product.DataValidade_ProcRecebDocProEmb!),
-                    emptyMessage: 'Sem validade'.hardcoded,
-                  ),
-                  TitleAndSubTitle(
-                    title: 'Quantidade contada'.hardcoded,
-                    subTitle: product.Quantidade_ProcRecebDocProEmb,
-                    emptyMessage: 'Sem quantidade contada'.hardcoded,
-                  ),
-                ],
+            return _ProductItem(
+              key: ValueKey(
+                '${product.ProductPackingCode}${product.EnterpriseCode}',
               ),
+              product: product,
+              index: index,
+              receiptCode: widget.receiptCode,
+              quantityFocusNode: quantityFocusNode,
+              quantityController: quantityController,
+              searchProductKey: widget.searchProductKey,
             );
           },
         );
       },
+    );
+  }
+}
+
+class _ProductItem extends ConsumerWidget {
+  final ProductEntity product;
+  final int index;
+  final int receiptCode;
+  final FocusNode quantityFocusNode;
+  final TextEditingController quantityController;
+  final SearchProductKey searchProductKey;
+  const _ProductItem({
+    super.key,
+    required this.product,
+    required this.index,
+    required this.receiptCode,
+    required this.quantityFocusNode,
+    required this.quantityController,
+    required this.searchProductKey,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSelected = ref.watch(
+      selectedProductIndeStateControllerProvider.select((s) => s == index),
+    );
+
+    return RepaintBoundary(
+      child: ProductItemWidget(
+        product: product,
+        routine: BsRoutine.goodsReceiving,
+        showDropIcon: true,
+        isSelected: isSelected,
+        onTap: () {
+          quantityController.clear();
+
+          ref
+              .read(selectedProductIndeStateControllerProvider.notifier)
+              .updateIndex(index);
+
+          Future.delayed(const Duration(milliseconds: 300), () {
+            quantityFocusNode.requestFocus();
+          });
+        },
+        notClickableBottom: isSelected
+            ? UpdateValuesWidgets(
+                product: product,
+                quantityFocusNode: quantityFocusNode,
+                quantityController: quantityController,
+                receiptCode: receiptCode,
+                searchProductKey: searchProductKey,
+              )
+            : null,
+        clickableBottom: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TitleAndSubTitle(
+              title: 'Validade'.hardcoded,
+              subTitle: product.DataValidade_ProcRecebDocProEmb == null
+                  ? null
+                  : DateFormat(
+                      'dd/MM/yyyy',
+                    ).format(product.DataValidade_ProcRecebDocProEmb!),
+              emptyMessage: 'Sem validade'.hardcoded,
+            ),
+            TitleAndSubTitle(
+              title: 'Quantidade contada'.hardcoded,
+              subTitle: product.Quantidade_ProcRecebDocProEmb,
+              emptyMessage: 'Sem quantidade contada'.hardcoded,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
