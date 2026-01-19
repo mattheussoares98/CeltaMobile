@@ -91,20 +91,25 @@ void main() {
           session: fakeSession,
           enterprise: fakeEnterprise,
         );
-        await container.read(sendToPrintControllerProvider.future);
+        await container.read(
+          sendToPrintControllerProvider(fakeProduct.ProductPackingCode!).future,
+        );
         addTearDown(container.dispose);
 
         final states = <AsyncValue<void>>[];
         container.listen(
-          sendToPrintControllerProvider,
+          sendToPrintControllerProvider(fakeProduct.ProductPackingCode!),
           (_, next) => states.add(next),
         );
 
         // ACT: Call the action method on the notifier
         await container
-            .read(sendToPrintControllerProvider.notifier)
+            .read(
+              sendToPrintControllerProvider(
+                fakeProduct.ProductPackingCode!,
+              ).notifier,
+            )
             .send(
-              productPackingCode: fakeProductPackingCode,
               newValue: fakeNewValue,
               enterpriseCode: fakeEnterprise.Code!,
               routine: BsRoutine.priceConference,
@@ -130,20 +135,25 @@ void main() {
         session: null,
         enterprise: fakeEnterprise,
       );
-      await container.read(sendToPrintControllerProvider.future);
+      await container.read(
+        sendToPrintControllerProvider(fakeProduct.ProductPackingCode!).future,
+      );
       addTearDown(container.dispose);
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        sendToPrintControllerProvider,
+        sendToPrintControllerProvider(fakeProduct.ProductPackingCode!),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(sendToPrintControllerProvider.notifier)
+          .read(
+            sendToPrintControllerProvider(
+              fakeProduct.ProductPackingCode!,
+            ).notifier,
+          )
           .send(
-            productPackingCode: fakeProductPackingCode,
             newValue: fakeNewValue,
             enterpriseCode: fakeEnterprise.Code!,
             routine: BsRoutine.priceConference,
@@ -183,9 +193,12 @@ void main() {
 
       // ACT
       await container
-          .read(sendToPrintControllerProvider.notifier)
+          .read(
+            sendToPrintControllerProvider(
+              fakeProduct.ProductPackingCode!,
+            ).notifier,
+          )
           .send(
-            productPackingCode: fakeProductPackingCode,
             newValue: fakeNewValue,
             enterpriseCode: fakeEnterprise.Code!,
             routine: BsRoutine.priceConference,

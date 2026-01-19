@@ -13,10 +13,9 @@ part 'send_to_print_controller.g.dart';
 @riverpod
 class SendToPrintController extends _$SendToPrintController {
   @override
-  Future<void> build() async {}
+  Future<void> build(int productPackingCode) async {}
 
   Future<void> send({
-    required int productPackingCode,
     required bool newValue,
     required int enterpriseCode,
     required BsRoutine routine,

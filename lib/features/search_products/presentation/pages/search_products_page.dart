@@ -20,7 +20,6 @@ class SearchProductsPage extends ConsumerStatefulWidget {
 
 class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
   final searchValueController = TextEditingController();
-  int? lastChangedIndex;
 
   @override
   void dispose() {
@@ -103,24 +102,19 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
                               color: product.PendantPrintLabel!
                                   ? Colors.red
                                   : null,
-                              isLoading:
-                                  ref.watch(
-                                    sendToPrintControllerProvider.select(
-                                      (state) => state.isLoading,
-                                    ),
-                                  ) &&
-                                  index == lastChangedIndex,
+                              isLoading: ref.watch(
+                                sendToPrintControllerProvider(
+                                  product.ProductPackingCode!,
+                                ).select((state) => state.isLoading),
+                              ),
                               onPressed: () async {
-                                setState(() {
-                                  lastChangedIndex = index;
-                                });
                                 await ref
                                     .read(
-                                      sendToPrintControllerProvider.notifier,
+                                      sendToPrintControllerProvider(
+                                        product.ProductPackingCode!,
+                                      ).notifier,
                                     )
                                     .send(
-                                      productPackingCode:
-                                          product.ProductPackingCode!,
                                       newValue: !product.PendantPrintLabel!,
                                       enterpriseCode: widget.enterpriseCode,
                                       routine: BsRoutine.priceConference,
