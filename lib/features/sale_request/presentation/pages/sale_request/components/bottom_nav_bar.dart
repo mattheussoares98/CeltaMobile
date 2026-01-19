@@ -14,12 +14,6 @@ class BottomNavBar extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final products = ref.watch(
-      pendingSaleRequestStateControllerProvider.select(
-        (s) => s.value?.cart.values,
-      ),
-    );
-
     final index = ref.watch(pageIndexStateControllerProvider);
     return BottomNavigationBar(
       onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
@@ -33,26 +27,39 @@ class BottomNavBar extends ConsumerWidget {
         ),
         BottomNavigationBarItem(
           label: 'Cliente'.hardcoded,
-          icon: ValidatedBadge(
-            isSelected: index == 1,
-            isValid:
-                ref.watch(
-                  pendingSaleRequestStateControllerProvider.select(
-                    (state) => state.value?.customer,
-                  ),
-                ) !=
-                null,
-            materialIcon: Icons.person,
-            cupertinoIcon: CupertinoIcons.person,
+          icon: Consumer(
+            builder: (_, ref, _) {
+              return ValidatedBadge(
+                isSelected: index == 1,
+                isValid:
+                    ref.watch(
+                      pendingSaleRequestStateControllerProvider.select(
+                        (state) => state.value?.customer,
+                      ),
+                    ) !=
+                    null,
+                materialIcon: Icons.person,
+                cupertinoIcon: CupertinoIcons.person,
+              );
+            },
           ),
         ),
         BottomNavigationBarItem(
           label: 'Carrinho'.hardcoded,
-          icon: QuantityBadge(
-            quantity: products?.length ?? 0,
-            materialIcon: Icons.shopping_cart,
-            cupertinoIcon: CupertinoIcons.shopping_cart,
-            isSelected: index == 2,
+          icon: Consumer(
+            builder: (_, ref, _) {
+              final productsLength = ref.watch(
+                pendingSaleRequestStateControllerProvider.select(
+                  (s) => s.value?.cart.values.length ?? 0,
+                ),
+              );
+              return QuantityBadge(
+                quantity: productsLength,
+                materialIcon: Icons.shopping_cart,
+                cupertinoIcon: CupertinoIcons.shopping_cart,
+                isSelected: index == 2,
+              );
+            },
           ),
         ),
       ],
