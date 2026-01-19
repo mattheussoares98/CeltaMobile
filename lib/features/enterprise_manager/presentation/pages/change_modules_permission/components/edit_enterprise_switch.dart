@@ -23,20 +23,44 @@ class EditEnterpriseSwitch extends StatelessWidget {
         final module = modulesToDisplay[index];
         final value = permissionChanges[module.id];
 
-        return Card(
-          child: SwitchListTile(
-            activeThumbColor: Colors.green,
-            inactiveThumbColor: Colors.redAccent,
-            inactiveTrackColor: Colors.red.shade100,
-            dense: true,
-            title: Text(module.name),
-            value: value ?? false, // Default global to false
-            onChanged: (newValue) {
-              onChange(module.id, newValue);
-            },
-          ),
+        return _ModuleItem(
+          key: ValueKey(module.id),
+          value: value,
+          onChanged: (newValue) {
+            onChange(module.id, newValue);
+          },
+          module: module,
         );
       },
+    );
+  }
+}
+
+class _ModuleItem extends StatelessWidget {
+  final bool? value;
+  final void Function(bool)? onChanged;
+  final ModulePermissionEntity module;
+  const _ModuleItem({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    required this.module,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: Card(
+        child: SwitchListTile(
+          activeThumbColor: Colors.green,
+          inactiveThumbColor: Colors.redAccent,
+          inactiveTrackColor: Colors.red.shade100,
+          dense: true,
+          title: Text(module.name),
+          value: value ?? false, // Default global to false
+          onChanged: onChanged,
+        ),
+      ),
     );
   }
 }

@@ -69,53 +69,104 @@ class _LotItemsState extends ConsumerState<LotItems> {
       itemCount: widget.items.length,
       itemBuilder: (_, index) {
         final item = widget.items[index];
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: (index == widget.items.length - 1) ? Sizes.p32 : 0,
+
+        final packingCode = item.product.ProductPackingCode;
+        final destinyCode = item.selectedDestinyStock.CodigoInterno_TipoEstoque;
+        final originCode = item.selectedOriginStock.CodigoInterno_TipoEstoque;
+        final justificationCode =
+            item.selectedJustification.CodigoInterno_JustMov;
+
+        return _LotItem(
+          key: ValueKey(
+            '$packingCode-$destinyCode-$originCode-$justificationCode',
           ),
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                InkWell(
-                  onTap: () => changeSelectedIndex(index, item),
-                  child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        NameAndJustification(item: item),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: OriginAndDestinyWithQuantities(item: item),
-                            ),
-                            EditAndRemoveIconButtons(
-                              item: item,
-                              onTapEdit: () => changeSelectedIndex(index, item),
-                              enterpriseCode: widget.enterpriseCode,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                UpdateQuantityField(
-                  index: index,
-                  formKey: formKey,
-                  quantityController: widget.quantityController,
-                  quantityFocusNode: widget.quantityFocusNode,
-                  item: item,
-                  onSubmit: onSubmit,
-                ),
-              ],
-            ),
-          ),
+          index: index,
+          item: item,
+          items: widget.items,
+          quantityController: widget.quantityController,
+          quantityFocusNode: widget.quantityFocusNode,
+          enterpriseCode: widget.enterpriseCode,
+          onSubmit: () => onSubmit(index, item),
+          changeSelectedIndex: () => changeSelectedIndex(index, item),
+          formKey: formKey,
         );
       },
+    );
+  }
+}
+
+class _LotItem extends StatelessWidget {
+  final int index;
+  final ProductLotInfoEntity item;
+  final List<ProductLotInfoEntity> items;
+  final TextEditingController quantityController;
+  final FocusNode quantityFocusNode;
+  final int enterpriseCode;
+  final VoidCallback onSubmit;
+  final VoidCallback changeSelectedIndex;
+  final GlobalKey<FormState> formKey;
+  const _LotItem({
+    super.key,
+    required this.index,
+    required this.item,
+    required this.items,
+    required this.quantityController,
+    required this.quantityFocusNode,
+    required this.enterpriseCode,
+    required this.onSubmit,
+    required this.changeSelectedIndex,
+    required this.formKey,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: (index == items.length - 1) ? Sizes.p32 : 0,
+        ),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InkWell(
+                onTap: changeSelectedIndex,
+                child: Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      NameAndJustification(item: item),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: OriginAndDestinyWithQuantities(item: item),
+                          ),
+                          EditAndRemoveIconButtons(
+                            item: item,
+                            onTapEdit: changeSelectedIndex,
+                            enterpriseCode: enterpriseCode,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              UpdateQuantityField(
+                index: index,
+                formKey: formKey,
+                quantityController: quantityController,
+                quantityFocusNode: quantityFocusNode,
+                item: item,
+                onSubmit: onSubmit,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -64,15 +64,9 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                       itemCount: customers.length,
                       itemBuilder: (_, index) {
                         final customer = customers[index];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            CustomerItem(
-                              key: ValueKey(customer.Code),
-                              customer: customer,
-                            ),
-                            gapH8,
-                          ],
+                        return CustomerItem(
+                          key: ValueKey(customer.Code),
+                          customer: customer,
                         );
                       },
                     );

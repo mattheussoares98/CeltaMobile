@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 import 'components.dart';
@@ -24,7 +25,7 @@ class CustomerItem extends ConsumerWidget {
 
     return RepaintBoundary(
       child: Card(
-        margin: const EdgeInsets.all(0),
+        margin: const EdgeInsets.only(bottom: Sizes.p8),
         clipBehavior: Clip.antiAlias,
         child: Column(
           children: [

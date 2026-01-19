@@ -166,61 +166,64 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                     ? pendingAsync.value![transferProductItemIndex]
                     : null;
 
-                return ProductItemWidget(
+                return RepaintBoundary(
                   key: ValueKey(
                     '${product.ProductPackingCode}${product.EnterpriseCode}',
                   ),
-                  product: product,
-                  routine: BsRoutine.transferRequest,
-                  isSelected: selectedIndex == index,
-                  showDropIcon: true,
-                  onTap: () {
-                    onTapProductItem(
-                      index: index,
-                      product: product,
-                      transferRequestProductItem: transferRequestProductItem,
-                      requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-                    );
-                  },
-                  onDelete: hasInCart == true
-                      ? () {
-                          removeProductItem(
-                            pendingAsync.value![transferProductItemIndex!],
-                          );
-                        }
-                      : null,
-                  cartItemSummary: hasInCart
-                      ? CartItemSummary(
-                          cartQuantity: pendingAsync
-                              .value![transferProductItemIndex]
-                              .quantity,
-                          cartValue: pendingAsync
-                              .value![transferProductItemIndex]
-                              .value,
-                          product: product,
-                        )
-                      : null,
-                  notClickableBottom: selectedIndex == index
-                      ? Form(
-                          key: formKey,
-                          child: UpdateItemWidget(
-                            isAlreadyInCart: hasInCart,
-                            update: () {
-                              update(
-                                product: product,
-                                quantityInCart:
-                                    transferRequestProductItem?.quantity,
-                              );
-                            },
-                            draftKey: widget.draftKey,
-                            price: product.Value ?? 0,
-                            quantityController: quantityController,
-                            priceController: priceController,
-                            quantityFocusNode: quantityFocusNode,
-                            priceFocusNode: priceFocusNode,
-                          ),
-                        )
-                      : null,
+                  child: ProductItemWidget(
+                    product: product,
+                    routine: BsRoutine.transferRequest,
+                    isSelected: selectedIndex == index,
+                    showDropIcon: true,
+                    onTap: () {
+                      onTapProductItem(
+                        index: index,
+                        product: product,
+                        transferRequestProductItem: transferRequestProductItem,
+                        requestTypeAllowChangePrice:
+                            requestTypeAllowChangePrice,
+                      );
+                    },
+                    onDelete: hasInCart == true
+                        ? () {
+                            removeProductItem(
+                              pendingAsync.value![transferProductItemIndex!],
+                            );
+                          }
+                        : null,
+                    cartItemSummary: hasInCart
+                        ? CartItemSummary(
+                            cartQuantity: pendingAsync
+                                .value![transferProductItemIndex]
+                                .quantity,
+                            cartValue: pendingAsync
+                                .value![transferProductItemIndex]
+                                .value,
+                            product: product,
+                          )
+                        : null,
+                    notClickableBottom: selectedIndex == index
+                        ? Form(
+                            key: formKey,
+                            child: UpdateItemWidget(
+                              isAlreadyInCart: hasInCart,
+                              update: () {
+                                update(
+                                  product: product,
+                                  quantityInCart:
+                                      transferRequestProductItem?.quantity,
+                                );
+                              },
+                              draftKey: widget.draftKey,
+                              price: product.Value ?? 0,
+                              quantityController: quantityController,
+                              priceController: priceController,
+                              quantityFocusNode: quantityFocusNode,
+                              priceFocusNode: priceFocusNode,
+                            ),
+                          )
+                        : null,
+                  ),
                 );
               },
             );

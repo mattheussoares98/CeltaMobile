@@ -42,57 +42,59 @@ class ProductItem extends ConsumerWidget {
         cartProduct.ProductPackingCode;
     final theme = Theme.of(context);
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: Sizes.p4),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sizes.p8,
-                Sizes.p8,
-                0,
-                Sizes.p8,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  NamePluAndDeleteButton(cartProduct: cartProduct),
-                  gapH4,
-                  if (cartProduct.DiscountDescription != null)
-                    TitleAndSubTitle(
-                      title: null,
-                      subTitle: cartProduct.DiscountDescription,
-                      subTitleStyle: theme.textTheme.titleSmall?.copyWith(
-                        color: theme.colorScheme.secondary,
+    return RepaintBoundary(
+      child: Card(
+        margin: const EdgeInsets.only(bottom: Sizes.p4),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  Sizes.p8,
+                  Sizes.p8,
+                  0,
+                  Sizes.p8,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    NamePluAndDeleteButton(cartProduct: cartProduct),
+                    gapH4,
+                    if (cartProduct.DiscountDescription != null)
+                      TitleAndSubTitle(
+                        title: null,
+                        subTitle: cartProduct.DiscountDescription,
+                        subTitleStyle: theme.textTheme.titleSmall?.copyWith(
+                          color: theme.colorScheme.secondary,
+                        ),
                       ),
-                    ),
-                  Values(product: cartProduct, isSelected: isSelected),
-                ],
+                    Values(product: cartProduct, isSelected: isSelected),
+                  ],
+                ),
               ),
             ),
-          ),
-          if (isSelected) ...[
-            Padding(
-              padding: const EdgeInsets.all(Sizes.p8),
-              child: QuantityPriceDiscountFieldsAndInsertButton(
-                cartProduct: cartProduct,
-                isCartPage: true,
-                quantityController: quantityController,
-                priceController: priceController,
-                discountController: discountController,
-                quantityFocusNode: quantityFocusNode,
-                discountFocusNode: discountFocusNode,
-                priceFocusNode: priceFocusNode,
-                selectedRequest: selectedRequest,
-                product: cartProduct.product!,
+            if (isSelected) ...[
+              Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: QuantityPriceDiscountFieldsAndInsertButton(
+                  cartProduct: cartProduct,
+                  isCartPage: true,
+                  quantityController: quantityController,
+                  priceController: priceController,
+                  discountController: discountController,
+                  quantityFocusNode: quantityFocusNode,
+                  discountFocusNode: discountFocusNode,
+                  priceFocusNode: priceFocusNode,
+                  selectedRequest: selectedRequest,
+                  product: cartProduct.product!,
+                ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

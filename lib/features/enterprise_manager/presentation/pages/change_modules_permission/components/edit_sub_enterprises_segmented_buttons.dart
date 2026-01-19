@@ -19,7 +19,7 @@ class EditSubEnterprisesSegmentedButttons extends StatelessWidget {
     required this.permissionChanges,
   });
 
-  ModulePermissionValue getModulePermissionModule(bool? value) {
+  ModulePermissionValue getModulePermissionValue(bool? value) {
     if (value == true) {
       return ModulePermissionValue.trueValue;
     } else if (value == false) {
@@ -29,7 +29,7 @@ class EditSubEnterprisesSegmentedButttons extends StatelessWidget {
     }
   }
 
-  bool? getModulePermissionValue(ModulePermissionValue value) {
+  bool? getValue(ModulePermissionValue value) {
     if (value == ModulePermissionValue.trueValue) return true;
     if (value == ModulePermissionValue.falseValue) return false;
     return null;
@@ -51,44 +51,77 @@ class EditSubEnterprisesSegmentedButttons extends StatelessWidget {
         final module = modulesToDisplay[index];
         final value = permissionChanges[module.id];
 
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  module.name,
-                  style: theme.textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-                gapH8,
-                CupertinoSlidingSegmentedControl<ModulePermissionValue>(
-                  groupValue: getModulePermissionModule(value),
-                  onValueChanged: (newValue) {
-                    onChange(module.id, getModulePermissionValue(newValue!));
-                  },
-                  thumbColor: getThumbColor(getModulePermissionModule(value)),
-                  children: <ModulePermissionValue, Widget>{
-                    ModulePermissionValue.trueValue: _Item(
-                      selected: value == true,
-                      message: 'Habilitado'.hardcoded,
-                    ),
-                    ModulePermissionValue.inherit: _Item(
-                      selected: value == null,
-                      message: 'Herdar'.hardcoded,
-                    ),
-                    ModulePermissionValue.falseValue: _Item(
-                      selected: value == false,
-                      message: 'Desabilitado'.hardcoded,
-                    ),
-                  },
-                ),
-              ],
-            ),
-          ),
+        final groupValue = getModulePermissionValue(value);
+
+        return _Module(
+          key: ValueKey(module.id),
+          value: value,
+          module: module,
+          groupValue: groupValue,
+          onValueChanged: (newValue) {
+            onChange(module.id, getValue(newValue!));
+          },
+          thumbColor: getThumbColor(groupValue),
         );
       },
+    );
+  }
+}
+
+class _Module extends StatelessWidget {
+  final bool? value;
+  final ModulePermissionEntity module;
+  final ModulePermissionValue groupValue;
+  final void Function(ModulePermissionValue? newValue) onValueChanged;
+  final Color thumbColor;
+  const _Module({
+    super.key,
+    required this.value,
+    required this.module,
+    required this.groupValue,
+    required this.onValueChanged,
+    required this.thumbColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return RepaintBoundary(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                module.name,
+                style: theme.textTheme.titleMedium,
+                textAlign: TextAlign.center,
+              ),
+              gapH8,
+              CupertinoSlidingSegmentedControl<ModulePermissionValue>(
+                groupValue: groupValue,
+                onValueChanged: onValueChanged,
+                thumbColor: thumbColor,
+                children: <ModulePermissionValue, Widget>{
+                  ModulePermissionValue.trueValue: _Item(
+                    selected: value == true,
+                    message: 'Habilitado'.hardcoded,
+                  ),
+                  ModulePermissionValue.inherit: _Item(
+                    selected: value == null,
+                    message: 'Herdar'.hardcoded,
+                  ),
+                  ModulePermissionValue.falseValue: _Item(
+                    selected: value == false,
+                    message: 'Desabilitado'.hardcoded,
+                  ),
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

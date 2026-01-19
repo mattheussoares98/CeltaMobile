@@ -15,7 +15,7 @@ class UpdateQuantityField extends ConsumerWidget {
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final ProductLotInfoEntity item;
-  final void Function(int index, ProductLotInfoEntity item) onSubmit;
+  final VoidCallback onSubmit;
   const UpdateQuantityField({
     super.key,
     required this.index,
@@ -64,7 +64,7 @@ class UpdateQuantityField extends ConsumerWidget {
                               decimal: true,
                             ),
                             onFieldSubmitted: (_) {
-                              onSubmit(index, item);
+                              onSubmit();
                             },
                             suffixIcon: mediaSize.width > 300
                                 ? IconButton(
@@ -73,7 +73,7 @@ class UpdateQuantityField extends ConsumerWidget {
                                           ? CupertinoIcons.checkmark
                                           : Icons.check,
                                     ),
-                                    onPressed: () => onSubmit(index, item),
+                                    onPressed: onSubmit,
                                   )
                                 : null,
                             validator: FormValidators.compose([
@@ -90,7 +90,7 @@ class UpdateQuantityField extends ConsumerWidget {
                       Expanded(
                         child: PrimaryButton(
                           text: 'Alterar'.hardcoded,
-                          onPressed: () => onSubmit(index, item),
+                          onPressed: onSubmit,
                           icon: Icon(
                             isIOS ? CupertinoIcons.check_mark : Icons.save,
                           ),

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../core/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 
 class EnterprisesPage extends ConsumerWidget {
@@ -13,13 +14,10 @@ class EnterprisesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enterprisesAsync = ref.watch((enterprisesStateControllerProvider()));
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(title: Text('Empresas'.hardcoded)),
       body: AsyncValueWidget(
-        value: enterprisesAsync,
+        value: ref.watch((enterprisesStateControllerProvider())),
         tryAgain: () => ref.invalidate(enterprisesStateControllerProvider),
         data: (enterprises) {
           return RefreshIndicator(
@@ -29,60 +27,79 @@ class EnterprisesPage extends ConsumerWidget {
               itemCount: enterprises.length,
               itemBuilder: (_, index) {
                 final enterprise = enterprises[index];
-                return Card(
-                  child: InkWell(
-                    onTap: () {
-                      context.goNamed(
-                        nextRoute,
-                        pathParameters: {
-                          'enterpriseCode': enterprise.Code.toString(),
-                          'nextRoute': nextRoute,
-                        },
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(Sizes.p8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              text: enterprise.PersonalizedCode,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                fontSize: 10,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: ' ${enterprise.name}',
-                                  style: theme.textTheme.titleMedium,
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (enterprise.CnpjNumber != null)
-                            RichText(
-                              text: TextSpan(
-                                text: 'CNPJ'.hardcoded,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  fontSize: 10,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: ' ${enterprise.CnpjNumber}',
-                                    style: theme.textTheme.titleSmall,
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
+                return _EnterpriseItem(
+                  key: ValueKey(enterprise.Code),
+                  nextRoute: nextRoute,
+                  enterprise: enterprise,
                 );
               },
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _EnterpriseItem extends StatelessWidget {
+  final String nextRoute;
+  final EnterpriseEntity enterprise;
+  const _EnterpriseItem({
+    super.key,
+    required this.nextRoute,
+    required this.enterprise,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return RepaintBoundary(
+      child: Card(
+        child: InkWell(
+          onTap: () {
+            context.goNamed(
+              nextRoute,
+              pathParameters: {
+                'enterpriseCode': enterprise.Code.toString(),
+                'nextRoute': nextRoute,
+              },
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: enterprise.PersonalizedCode,
+                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
+                    children: [
+                      TextSpan(
+                        text: ' ${enterprise.name}',
+                        style: theme.textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                ),
+                if (enterprise.CnpjNumber != null)
+                  RichText(
+                    text: TextSpan(
+                      text: 'CNPJ'.hardcoded,
+                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
+                      children: [
+                        TextSpan(
+                          text: ' ${enterprise.CnpjNumber}',
+                          style: theme.textTheme.titleSmall,
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
