@@ -31,47 +31,51 @@ class LiberateAndConferButtons extends ConsumerWidget {
     return Row(
       children: [
         Expanded(
-          child: PrimaryButton(
-            text: receipt.status == Status.liberatedForEntry
-                ? 'Já liberado'.hardcoded
-                : 'Liberar'.hardcoded,
-            isLoading: ref.watch(
-              liberateDocumentControllerProvider(
-                receipt.CodigoInterno_ProcRecebDoc,
-              ).select((s) => s.isLoading),
-            ),
-            onPressed: receipt.status == Status.liberatedForEntry
-                ? null
-                : () async {
-                    if (receipt.status == Status.inProcessOfAuthorization) {
-                      showAlertDialog(
-                        context: context,
-                        title: 'Atenção'.hardcoded,
-                        content:
-                            'Esse documento está em processo de autorização e por isso não pode ser liberado'
-                                .hardcoded,
-                      );
-                    } else {
-                      showAlertDialog(
-                        context: context,
-                        title: 'Liberar?'.hardcoded,
-                        defaultActionText: 'Liberar'.hardcoded,
-                        cancelActionText: 'Cancelar'.hardcoded,
-                        content:
-                            'Tem certeza que deseja liberar esse documento?'
-                                .hardcoded,
-                        onOkPressed: () {
-                          ref
-                              .read(
-                                liberateDocumentControllerProvider(
-                                  receipt.CodigoInterno_ProcRecebDoc,
-                                ).notifier,
-                              )
-                              .liberate();
-                        },
-                      );
-                    }
-                  },
+          child: Consumer(
+            builder: (_, ref, _) {
+              return PrimaryButton(
+                text: receipt.status == Status.liberatedForEntry
+                    ? 'Já liberado'.hardcoded
+                    : 'Liberar'.hardcoded,
+                isLoading: ref.watch(
+                  liberateDocumentControllerProvider(
+                    receipt.CodigoInterno_ProcRecebDoc,
+                  ).select((s) => s.isLoading),
+                ),
+                onPressed: receipt.status == Status.liberatedForEntry
+                    ? null
+                    : () async {
+                        if (receipt.status == Status.inProcessOfAuthorization) {
+                          showAlertDialog(
+                            context: context,
+                            title: 'Atenção'.hardcoded,
+                            content:
+                                'Esse documento está em processo de autorização e por isso não pode ser liberado'
+                                    .hardcoded,
+                          );
+                        } else {
+                          showAlertDialog(
+                            context: context,
+                            title: 'Liberar?'.hardcoded,
+                            defaultActionText: 'Liberar'.hardcoded,
+                            cancelActionText: 'Cancelar'.hardcoded,
+                            content:
+                                'Tem certeza que deseja liberar esse documento?'
+                                    .hardcoded,
+                            onOkPressed: () {
+                              ref
+                                  .read(
+                                    liberateDocumentControllerProvider(
+                                      receipt.CodigoInterno_ProcRecebDoc,
+                                    ).notifier,
+                                  )
+                                  .liberate();
+                            },
+                          );
+                        }
+                      },
+              );
+            },
           ),
         ),
         gapW8,

@@ -28,16 +28,14 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final asyncValue = ref.watch(
-      receiptsStateControllerProvider(widget.enterpriseCode),
-    );
-
     return Stack(
       children: [
         Scaffold(
           appBar: AppBar(title: Text('Recebimentos'.hardcoded)),
           body: AsyncValueWidget(
-            value: asyncValue,
+            value: ref.watch(
+              receiptsStateControllerProvider(widget.enterpriseCode),
+            ),
             tryAgain: () => ref.invalidate(
               receiptsStateControllerProvider(widget.enterpriseCode),
             ),
@@ -88,6 +86,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
                               final receipt = filteredReceipts[index];
 
                               return ReceiptItem(
+                                key: ValueKey(receipt.Numero_ProcRecebDoc),
                                 receipt: receipt,
                                 index: index,
                                 enterpriseCode: widget.enterpriseCode,
