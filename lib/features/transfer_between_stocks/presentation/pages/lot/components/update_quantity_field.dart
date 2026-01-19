@@ -28,7 +28,7 @@ class UpdateQuantityField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mediaQuery = MediaQuery.of(context);
+    final mediaSize = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
@@ -66,7 +66,7 @@ class UpdateQuantityField extends ConsumerWidget {
                             onFieldSubmitted: (_) {
                               onSubmit(index, item);
                             },
-                            suffixIcon: mediaQuery.size.width > 300
+                            suffixIcon: mediaSize.width > 300
                                 ? IconButton(
                                     icon: Icon(
                                       isIOS

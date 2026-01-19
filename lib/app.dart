@@ -11,7 +11,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     debugPrint('${size.height.toInt()} x ${size.width.toInt()}');
     final theme = Theme.of(context);
 

@@ -12,13 +12,14 @@ class CompleteDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mediaQuery = MediaQuery.of(context);
+    final mediaSize = MediaQuery.sizeOf(context);
+    final mediaPedding = MediaQuery.paddingOf(context);
     const exitHeight = 40.0;
 
     final userSession = ref.watch(userSessionProvider);
 
     return Drawer(
-      width: min(mediaQuery.size.width * 0.85, 400),
+      width: min(mediaSize.width * 0.85, 400),
       child: Column(
         children: [
           const CeltaImage(),
@@ -38,8 +39,8 @@ class CompleteDrawer extends ConsumerWidget {
             ),
           ),
           Container(
-            height: exitHeight + mediaQuery.padding.bottom,
-            padding: EdgeInsets.only(bottom: mediaQuery.padding.bottom),
+            height: exitHeight + mediaPedding.bottom,
+            padding: EdgeInsets.only(bottom: mediaPedding.bottom),
             child: ExitDrawerItem(
               logout: ref.read(userSessionProvider.notifier).logout,
             ),

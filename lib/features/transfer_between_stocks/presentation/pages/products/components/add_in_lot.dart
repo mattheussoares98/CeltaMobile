@@ -23,7 +23,7 @@ class AddInLot extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
+    final mediaSize = MediaQuery.sizeOf(context);
 
     return Row(
       children: [
@@ -51,7 +51,7 @@ class AddInLot extends ConsumerWidget {
             text: productIsAlreadyInLot
                 ? 'Alterar'.hardcoded
                 : 'Lote'.hardcoded,
-            icon: mediaQuery.size.width < 300
+            icon: mediaSize.width < 300
                 ? null
                 : Icon(
                     theme.platform == TargetPlatform.iOS

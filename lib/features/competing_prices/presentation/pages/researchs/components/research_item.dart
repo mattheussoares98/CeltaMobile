@@ -22,7 +22,7 @@ class ResearchItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mediaQuery = MediaQuery.sizeOf(context);
+    final mediaSize = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
@@ -90,7 +90,7 @@ class ResearchItem extends ConsumerWidget {
                   context,
                 );
               },
-              icon: mediaQuery.width > 300
+              icon: mediaSize.width > 300
                   ? Icon(isIOS ? CupertinoIcons.pencil : Icons.edit_outlined)
                   : null,
             ),

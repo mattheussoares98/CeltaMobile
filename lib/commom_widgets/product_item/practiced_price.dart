@@ -44,7 +44,7 @@ class PracticedPrice extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
+    final mediaSize = MediaQuery.sizeOf(context);
 
     final finishOfferAsync = ref.watch(finishOfferControllerProvider);
 
@@ -94,7 +94,7 @@ class PracticedPrice extends ConsumerWidget {
                   text: 'Encerrar'.hardcoded,
                   color: Colors.red,
                   isLoading: finishOfferAsync.isLoading,
-                  icon: mediaQuery.size.width < 300
+                  icon: mediaSize.width < 300
                       ? null
                       : Icon(
                           theme.platform == TargetPlatform.iOS
