@@ -46,81 +46,44 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       Modules.searchProducts,
     );
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return Scaffold(
       appBar: AppBar(title: Text('Pesquisar produtos'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: Column(
           children: [
-            DefaultSearchProducts(
-              searchValueController: searchValueController,
-              searchProductKey: searchProductKey,
-              isLoading: ref.watch(
-                searchProductsStateControllerProvider(
-                  searchProductKey,
-                ).select((state) => state.isLoading),
-              ),
-              searchProducts: () => searchProducts(searchProductKey),
+            Consumer(
+              builder: (_, ref, _) {
+                return DefaultSearchProducts(
+                  searchValueController: searchValueController,
+                  searchProductKey: searchProductKey,
+                  isLoading: ref.watch(
+                    searchProductsStateControllerProvider(
+                      searchProductKey,
+                    ).select((state) => state.isLoading),
+                  ),
+                  searchProducts: () => searchProducts(searchProductKey),
+                );
+              },
             ),
             gapH8,
             Expanded(
               child: Consumer(
                 builder: (_, ref, _) {
-                  final productsState = ref.watch(
-                    searchProductsStateControllerProvider(searchProductKey),
-                  );
                   return AsyncValueWidget(
-                    value: productsState,
+                    value: ref.watch(
+                      searchProductsStateControllerProvider(searchProductKey),
+                    ),
                     tryAgain: null,
                     data: (products) {
                       return ResponsiveListFlow(
                         itemCount: products.length,
                         itemBuilder: (_, index) {
                           final product = products[index];
-                          return ProductItemWidget(
+                          return ProductItem(
+                            key: ValueKey(product.ProductPackingCode),
                             product: product,
-                            routine: BsRoutine.priceConference,
-                            notClickableBottom: PrimaryTextButton(
-                              text: product.PendantPrintLabel!
-                                  ? 'Desmarcar para impressão'.hardcoded
-                                  : 'Marcar para impressão'.hardcoded,
-                              icon: Icon(
-                                product.PendantPrintLabel!
-                                    ? (isIOS
-                                          ? CupertinoIcons.printer_fill
-                                          : Icons.print_disabled)
-                                    : isIOS
-                                    ? CupertinoIcons.printer
-                                    : Icons.print,
-                                color: product.PendantPrintLabel!
-                                    ? Colors.red
-                                    : null,
-                              ),
-                              color: product.PendantPrintLabel!
-                                  ? Colors.red
-                                  : null,
-                              isLoading: ref.watch(
-                                sendToPrintControllerProvider(
-                                  product.ProductPackingCode!,
-                                ).select((state) => state.isLoading),
-                              ),
-                              onPressed: () async {
-                                await ref
-                                    .read(
-                                      sendToPrintControllerProvider(
-                                        product.ProductPackingCode!,
-                                      ).notifier,
-                                    )
-                                    .send(
-                                      newValue: !product.PendantPrintLabel!,
-                                      enterpriseCode: widget.enterpriseCode,
-                                      routine: BsRoutine.priceConference,
-                                    );
-                              },
-                            ),
+                            enterpriseCode: widget.enterpriseCode,
                           );
                         },
                       );
@@ -130,6 +93,69 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProductItem extends ConsumerWidget {
+  final ProductEntity product;
+  final int enterpriseCode;
+  const ProductItem({
+    super.key,
+    required this.product,
+    required this.enterpriseCode,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    return RepaintBoundary(
+      child: ProductItemWidget(
+        product: product,
+        routine: BsRoutine.priceConference,
+        notClickableBottom: Consumer(
+          builder: (_, ref, _) {
+            final isLoading = ref.watch(
+              sendToPrintControllerProvider(
+                product.ProductPackingCode!,
+              ).select((state) => state.isLoading),
+            );
+
+            return PrimaryTextButton(
+              text: product.PendantPrintLabel!
+                  ? 'Desmarcar para impressão'.hardcoded
+                  : 'Marcar para impressão'.hardcoded,
+              icon: Icon(
+                product.PendantPrintLabel!
+                    ? (isIOS
+                          ? CupertinoIcons.printer_fill
+                          : Icons.print_disabled)
+                    : isIOS
+                    ? CupertinoIcons.printer
+                    : Icons.print,
+                color: product.PendantPrintLabel! ? Colors.red : null,
+              ),
+              color: product.PendantPrintLabel! ? Colors.red : null,
+              isLoading: isLoading,
+              onPressed: () async {
+                await ref
+                    .read(
+                      sendToPrintControllerProvider(
+                        product.ProductPackingCode!,
+                      ).notifier,
+                    )
+                    .send(
+                      newValue: !product.PendantPrintLabel!,
+                      enterpriseCode: enterpriseCode,
+                      routine: BsRoutine.priceConference,
+                    );
+              },
+            );
+          },
         ),
       ),
     );
