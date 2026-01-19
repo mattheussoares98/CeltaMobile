@@ -93,59 +93,70 @@ class _ProductItemState extends ConsumerState<ProductItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          InkWell(
-            onTap: changeSelectedIndex,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sizes.p8,
-                Sizes.p8,
-                0,
-                Sizes.p8,
-              ),
-              child: Row(
-                children: [
-                  Expanded(child: ProductInformations(item: widget.item)),
-                  RemoveAndEditIcons(
-                    draftKey: widget.draftKey,
-                    item: widget.item,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (ref.watch(
-                uiStateControllerProvider(
-                  widget.draftKey.requestTypeCode,
-                ).select((s) => s.value?.selectedCartProductIndex),
-              ) ==
-              widget.index) ...[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sizes.p8,
-                0,
-                Sizes.p8,
-                Sizes.p8,
-              ),
-              child: Form(
-                key: formKey,
-                child: UpdateItemWidget(
-                  isAlreadyInCart: true,
-                  update: update,
-                  draftKey: widget.draftKey,
-                  price: widget.item.value,
-                  quantityController: quantityController,
-                  priceController: priceController,
-                  quantityFocusNode: quantityFocusNode,
-                  priceFocusNode: priceFocusNode,
+    return RepaintBoundary(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            InkWell(
+              onTap: changeSelectedIndex,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  Sizes.p8,
+                  Sizes.p8,
+                  0,
+                  Sizes.p8,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(child: ProductInformations(item: widget.item)),
+                    RemoveAndEditIcons(
+                      draftKey: widget.draftKey,
+                      item: widget.item,
+                    ),
+                  ],
                 ),
               ),
             ),
+            Consumer(
+              builder: (_, ref, _) {
+                final bool isSelected =
+                    ref.watch(
+                      uiStateControllerProvider(
+                        widget.draftKey.requestTypeCode,
+                      ).select((s) => s.value?.selectedCartProductIndex),
+                    ) ==
+                    widget.index;
+
+                if (!isSelected) {
+                  return const SizedBox.shrink();
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    Sizes.p8,
+                    0,
+                    Sizes.p8,
+                    Sizes.p8,
+                  ),
+                  child: Form(
+                    key: formKey,
+                    child: UpdateItemWidget(
+                      isAlreadyInCart: true,
+                      update: update,
+                      draftKey: widget.draftKey,
+                      price: widget.item.value,
+                      quantityController: quantityController,
+                      priceController: priceController,
+                      quantityFocusNode: quantityFocusNode,
+                      priceFocusNode: priceFocusNode,
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
-        ],
+        ),
       ),
     );
   }

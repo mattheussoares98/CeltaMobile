@@ -14,17 +14,19 @@ class CartPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pendingAsync = ref.watch(
-      cartProductsStateControllerProvider(draftKey),
-    );
-
     final theme = Theme.of(context);
+
+    final productsInCartLength = ref.watch(
+      cartProductsStateControllerProvider(
+        draftKey,
+      ).select((s) => s.value?.length ?? 0),
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Column(
         children: [
-          if (pendingAsync.value == null || pendingAsync.value!.isEmpty)
+          if (productsInCartLength == 0)
             Expanded(
               child: Center(
                 child: Text(
@@ -40,21 +42,26 @@ class CartPage extends ConsumerWidget {
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
                 slivers: [
-                  AsyncValueSliverWidget(
-                    value: pendingAsync,
-                    tryAgain: () => ref.invalidate(
-                      cartProductsStateControllerProvider(draftKey),
-                    ),
-                    data: (items) {
-                      return ResponsiveListFlow(
-                        isSliver: true,
-                        itemCount: items.length,
-                        itemBuilder: (_, index) {
-                          final item = items[index];
+                  Consumer(
+                    builder: (_, ref, _) {
+                      return AsyncValueSliverWidget(
+                        value: ref.watch(
+                          cartProductsStateControllerProvider(draftKey),
+                        ),
+                        tryAgain: () => ref.invalidate(
+                          cartProductsStateControllerProvider(draftKey),
+                        ),
+                        data: (items) {
+                          return ResponsiveListFlow(
+                            isSliver: true,
+                            itemCount: items.length,
+                            itemBuilder: (_, index) {
+                              final item = items[index];
 
-                          return Consumer(
-                            builder: (_, ref, _) {
                               return ProductItem(
+                                key: ValueKey(
+                                  '${item.product.ProductPackingCode}${item.product.EnterpriseCode}',
+                                ),
                                 item: item,
                                 index: index,
                                 draftKey: draftKey,
@@ -65,7 +72,7 @@ class CartPage extends ConsumerWidget {
                       );
                     },
                   ),
-                  if ((pendingAsync.value?.length ?? 0) > 2) ...[
+                  if (productsInCartLength > 2) ...[
                     ClearCartButton(draftKey: draftKey),
                     gapSliverH16,
                   ],

@@ -167,6 +167,9 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                     : null;
 
                 return ProductItemWidget(
+                  key: ValueKey(
+                    '${product.ProductPackingCode}${product.EnterpriseCode}',
+                  ),
                   product: product,
                   routine: BsRoutine.transferRequest,
                   isSelected: selectedIndex == index,
