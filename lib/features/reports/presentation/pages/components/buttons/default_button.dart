@@ -26,26 +26,32 @@ class DefaultButton extends ConsumerWidget {
             theme.platform == TargetPlatform.macOS) &&
         (!kIsWeb);
 
-    final asyncValue = ref.watch(
-      downloadStateControllerProvider(report.Code, downloadType),
+    final hasAttachment = ref.watch(
+      downloadStateControllerProvider(report.Code, downloadType).select(
+        (s) =>
+            s.value?.executionResult.Executions.any(
+              (e) => e.Attachments.any(
+                (x) => x.FileExtension == downloadType.name,
+              ),
+            ) ==
+            true,
+      ),
     );
 
-    final hasAttachment =
-        asyncValue.value?.executionResult.Executions.any(
-          (e) => e.Attachments.any((x) => x.FileExtension == downloadType.name),
-        ) ==
-        true;
-
-    Uint8List? extractBytes(AsyncValue<DownloadExecutionEntity?> asyncValue) {
-      return asyncValue.value?.executionResult.Executions
-          .firstWhereOrNull((e) => e.Attachments.isNotEmpty)
-          ?.Attachments
-          .firstWhereOrNull((e) => e.FileExtension == downloadType.name)
-          ?.AttachmentBase64;
+    Uint8List? extractBytes() {
+      return ref.read(
+        downloadStateControllerProvider(report.Code, downloadType).select(
+          (s) => s.value?.executionResult.Executions
+              .firstWhereOrNull((e) => e.Attachments.isNotEmpty)
+              ?.Attachments
+              .firstWhereOrNull((e) => e.FileExtension == downloadType.name)
+              ?.AttachmentBase64,
+        ),
+      );
     }
 
     void onTap() async {
-      final bytes = extractBytes(asyncValue);
+      final bytes = extractBytes();
 
       if (bytes == null) {
         await ref
@@ -75,13 +81,24 @@ class DefaultButton extends ConsumerWidget {
       }
     }
 
-    final Uint8List? fileBytes = extractBytes(asyncValue);
+    final downloadedLastExecution = ref.watch(
+      downloadStateControllerProvider(report.Code, downloadType).select(
+        (s) =>
+            s.value?.executionResult.Executions.any(
+              (e) => e.Attachments.any(
+                (e) => e.FileExtension == downloadType.name,
+              ),
+            ) ??
+            false,
+      ),
+    );
 
-    bool downloadedLastExecution =
-        asyncValue.value?.executionResult.Executions.any(
-          (e) => e.Attachments.any((e) => e.FileExtension == downloadType.name),
-        ) ??
-        false;
+    final isLoading = ref.watch(
+      downloadStateControllerProvider(
+        report.Code,
+        downloadType,
+      ).select((s) => s.isLoading),
+    );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,27 +119,43 @@ class DefaultButton extends ConsumerWidget {
                 : (isXlsx
                       ? 'Baixar planilha'.hardcoded
                       : 'Baixar PDF'.hardcoded),
-            isLoading: asyncValue.isLoading,
+            isLoading: isLoading,
             icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
             onPressed: hasAttachment ? null : onTap,
           ),
         ),
-        if (asyncValue.hasError) ...[
-          gapW8,
-          Expanded(
-            flex: 6,
-            child: Text(
-              asyncValue.error.toString(),
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: Colors.red,
-                fontStyle: FontStyle.italic,
+
+        Consumer(
+          builder: (_, ref, _) {
+            final error = ref.watch(
+              downloadStateControllerProvider(
+                report.Code,
+                downloadType,
+              ).select((s) => s.error),
+            );
+
+            if (error == null) return const SizedBox.shrink();
+
+            return Expanded(
+              flex: 6,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: Sizes.p8),
+                child: Text(
+                  error.toString(),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: Colors.red,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            );
+          },
+        ),
         const Spacer(),
         Consumer(
           builder: (_, ref, _) {
+            final Uint8List? fileBytes = extractBytes();
+
             if (!hasAttachment || fileBytes == null || kIsWeb) {
               return const SizedBox.shrink();
             }

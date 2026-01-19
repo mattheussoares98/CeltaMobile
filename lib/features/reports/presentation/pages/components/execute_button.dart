@@ -49,23 +49,29 @@ class ExecuteButton extends ConsumerWidget {
           ),
 
         Flexible(
-          child: PrimaryButton(
-            text: 'Gerar'.hardcoded,
-            isLoading: ref.watch(
-              executeScheduleControllerProvider(
-                report.Code,
-              ).select((s) => s.isLoading),
-            ),
-            onPressed: () async {
-              bool? value = await showAlertDialog(
-                context: context,
-                title: 'Enviar por e-mail?'.hardcoded,
-                defaultActionText: 'Sim'.hardcoded,
-                cancelActionText: 'Não'.hardcoded,
+          child: Consumer(
+            builder: (_, ref, _) {
+              return PrimaryButton(
+                text: 'Gerar'.hardcoded,
+                isLoading: ref.watch(
+                  executeScheduleControllerProvider(
+                    report.Code,
+                  ).select((s) => s.isLoading),
+                ),
+                onPressed: () async {
+                  bool? value = await showAlertDialog(
+                    context: context,
+                    title: 'Enviar por e-mail?'.hardcoded,
+                    defaultActionText: 'Sim'.hardcoded,
+                    cancelActionText: 'Não'.hardcoded,
+                  );
+                  ref
+                      .read(
+                        executeScheduleControllerProvider(report.Code).notifier,
+                      )
+                      .execute(value == true);
+                },
               );
-              ref
-                  .read(executeScheduleControllerProvider(report.Code).notifier)
-                  .execute(value == true);
             },
           ),
         ),
