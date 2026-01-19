@@ -34,6 +34,7 @@ class ResearchsPage extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final research = researchs[index];
                 return ResearchItem(
+                  key: ValueKey(research.Code),
                   research: research,
                   enterpriseCode: enterpriseCode,
                 );
