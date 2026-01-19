@@ -21,28 +21,33 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
       );
     }
 
+    final provider = requestTypeStateControllerProvider(
+      Modules.transferRequest,
+    );
+
     return Scaffold(
       appBar: AppBar(title: Text('Modelos de pedido'.hardcoded)),
       body: AsyncValueWidget(
-        value: ref.watch(
-          requestTypeStateControllerProvider(Modules.transferRequest),
-        ),
+        value: ref.watch(provider),
         tryAgain: () {
-          ref.invalidate(
-            requestTypeStateControllerProvider(Modules.transferRequest),
-          );
+          ref.invalidate(provider);
         },
         data: (requests) {
-          return ResponsiveListFlow(
-            itemCount: requests?.length ?? 0,
-            itemBuilder: (_, index) {
-              final request = requests![index];
-              return _RequestTypeItem(
-                key: ValueKey(request.Code),
-                request: request,
-                onTap: () => onTap(request),
-              );
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(provider);
             },
+            child: ResponsiveListFlow(
+              itemCount: requests?.length ?? 0,
+              itemBuilder: (_, index) {
+                final request = requests![index];
+                return _RequestTypeItem(
+                  key: ValueKey(request.Code),
+                  request: request,
+                  onTap: () => onTap(request),
+                );
+              },
+            ),
           );
         },
       ),

@@ -20,18 +20,23 @@ class FrozenProcessesPage extends ConsumerWidget {
           ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
         },
         data: (inventories) {
-          return ResponsiveListFlow(
-            itemCount: inventories?.frozenProcesses.length ?? 0,
-            itemBuilder: (_, index) {
-              final frozenProcess = inventories!.frozenProcesses[index];
-
-              return FrozenItem(
-                key: ValueKey(frozenProcess.CodigoInternoInventario),
-                frozenProcess: frozenProcess,
-                inventories: inventories,
-                enterpriseCode: enterpriseCode,
-              );
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
             },
+            child: ResponsiveListFlow(
+              itemCount: inventories?.frozenProcesses.length ?? 0,
+              itemBuilder: (_, index) {
+                final frozenProcess = inventories!.frozenProcesses[index];
+
+                return FrozenItem(
+                  key: ValueKey(frozenProcess.CodigoInternoInventario),
+                  frozenProcess: frozenProcess,
+                  inventories: inventories,
+                  enterpriseCode: enterpriseCode,
+                );
+              },
+            ),
           );
         },
       ),

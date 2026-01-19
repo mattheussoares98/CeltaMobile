@@ -7,7 +7,6 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../routing/routing.dart';
 import '../../../../domain/entities/entities.dart';
-import '../../../controllers/controllers.dart';
 
 class CountingsItems extends ConsumerWidget {
   final List<CountingEntity>? countings;
@@ -22,22 +21,17 @@ class CountingsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
+    return ListView.builder(
+      itemCount: countings?.length ?? 0,
+      itemBuilder: (_, index) {
+        final counting = countings![index];
+        return _CountingItem(
+          key: ValueKey(counting.CodigoInternoInvCont),
+          counting: counting,
+          enterpriseCode: enterpriseCode,
+          codigoInternoInventario: codigoInternoInventario,
+        );
       },
-      child: ListView.builder(
-        itemCount: countings?.length ?? 0,
-        itemBuilder: (_, index) {
-          final counting = countings![index];
-          return _CountingItem(
-            key: ValueKey(counting.CodigoInternoInvCont),
-            counting: counting,
-            enterpriseCode: enterpriseCode,
-            codigoInternoInventario: codigoInternoInventario,
-          );
-        },
-      ),
     );
   }
 }
