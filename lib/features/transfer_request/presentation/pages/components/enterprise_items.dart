@@ -20,37 +20,56 @@ class EnterpriseItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return RefreshIndicator(
-      onRefresh: () async {
-        onRefresh();
-      },
+      onRefresh: () async => onRefresh(),
       child: ListView.builder(
         itemCount: enterprises.length,
         itemBuilder: (_, index) {
           final enterprise = enterprises[index];
-          return Card(
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () => onTap(enterprise),
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleAndSubTitle(
-                      title: null,
-                      subTitle:
-                          '${enterprise.PersonalizedCode} - ${enterprise.name}',
-                    ),
-                    TitleAndSubTitle(
-                      title: 'CNPJ'.hardcoded,
-                      subTitle: enterprise.CnpjNumber,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          return _EnterpriseItem(
+            key: ValueKey(enterprise.id),
+            enterprise: enterprise,
+            onTap: () => onTap(enterprise),
           );
         },
+      ),
+    );
+  }
+}
+
+class _EnterpriseItem extends StatelessWidget {
+  final EnterpriseEntity enterprise;
+  final VoidCallback onTap;
+  const _EnterpriseItem({
+    super.key,
+    required this.enterprise,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TitleAndSubTitle(
+                  title: null,
+                  subTitle:
+                      '${enterprise.PersonalizedCode} - ${enterprise.name}',
+                ),
+                TitleAndSubTitle(
+                  title: 'CNPJ'.hardcoded,
+                  subTitle: enterprise.CnpjNumber,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
