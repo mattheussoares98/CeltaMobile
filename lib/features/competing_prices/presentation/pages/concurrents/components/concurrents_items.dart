@@ -25,10 +25,6 @@ class ConcurrentsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    final mediaQuery = MediaQuery.of(context);
-
     void onTap({
       required ConcurrentEntity concurrent,
       required bool? concurrentBindedInResearch,
@@ -88,76 +84,101 @@ class ConcurrentsItems extends ConsumerWidget {
                     (e) => e.ConcurrentCode == concurrent.ConcurrentCode,
                   );
 
-              return Stack(
-                children: [
-                  Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: InkWell(
-                      onTap: () => onTap(
-                        concurrent: concurrent,
-                        concurrentBindedInResearch: concurrentBindedInResearch,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(Sizes.p8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            TitleAndSubTitle(
-                              title: 'Código'.hardcoded,
-                              subTitle: concurrent.ConcurrentCode.toString(),
-                            ),
-                            TitleAndSubTitle(
-                              title: 'Nome'.hardcoded,
-                              subTitle: concurrent.Name.toString(),
-                            ),
-                            TitleAndSubTitle(
-                              title: null,
-                              subTitle: concurrentBindedInResearch == true
-                                  ? 'Associado à pesquisa'.hardcoded
-                                  : 'Não associado à pesquisa'.hardcoded,
-                              subTitleStyle: theme.textTheme.titleMedium
-                                  ?.copyWith(
-                                    color: concurrentBindedInResearch == true
-                                        ? Colors.green
-                                        : Colors.red,
-                                  ),
-                            ),
-                            if (concurrent.Observation != null &&
-                                concurrent.Observation!.isNotEmpty)
-                              TitleAndSubTitle(
-                                title: 'Observação'.hardcoded,
-                                subTitle: concurrent.Observation.toString(),
-                              ),
-                            AddressDetails(address: concurrent.Address),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: PrimaryTextButton(
-                      text: 'Alterar concorrente'.hardcoded,
-                      onPressed: () {
-                        showModalPage(
-                          InsertUpdateConcurrentPage(
-                            concurrentUpdating: concurrent,
-                          ),
-                          context,
-                        );
-                      },
-                      icon: mediaQuery.size.width < 300
-                          ? null
-                          : Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
-                    ),
-                  ),
-                ],
+              return ConcurrentItem(
+                key: ValueKey(concurrent.ConcurrentCode),
+                onTap: () => onTap(
+                  concurrent: concurrent,
+                  concurrentBindedInResearch: concurrentBindedInResearch,
+                ),
+                concurrent: concurrent,
+                concurrentBindedInResearch: concurrentBindedInResearch,
               );
             },
           ),
         );
       },
+    );
+  }
+}
+
+class ConcurrentItem extends StatelessWidget {
+  final VoidCallback onTap;
+  final ConcurrentEntity concurrent;
+  final bool? concurrentBindedInResearch;
+  const ConcurrentItem({
+    super.key,
+    required this.onTap,
+    required this.concurrent,
+    required this.concurrentBindedInResearch,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    final mediaQuery = MediaQuery.sizeOf(context);
+
+    return RepaintBoundary(
+      child: Stack(
+        children: [
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TitleAndSubTitle(
+                      title: 'Código'.hardcoded,
+                      subTitle: concurrent.ConcurrentCode.toString(),
+                    ),
+                    TitleAndSubTitle(
+                      title: 'Nome'.hardcoded,
+                      subTitle: concurrent.Name.toString(),
+                    ),
+                    TitleAndSubTitle(
+                      title: null,
+                      subTitle: concurrentBindedInResearch == true
+                          ? 'Associado à pesquisa'.hardcoded
+                          : 'Não associado à pesquisa'.hardcoded,
+                      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                        color: concurrentBindedInResearch == true
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ),
+                    if (concurrent.Observation != null &&
+                        concurrent.Observation!.isNotEmpty)
+                      TitleAndSubTitle(
+                        title: 'Observação'.hardcoded,
+                        subTitle: concurrent.Observation.toString(),
+                      ),
+                    AddressDetails(address: concurrent.Address),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: PrimaryTextButton(
+              text: 'Alterar concorrente'.hardcoded,
+              onPressed: () {
+                showModalPage(
+                  InsertUpdateConcurrentPage(concurrentUpdating: concurrent),
+                  context,
+                );
+              },
+              icon: mediaQuery.width < 300
+                  ? null
+                  : Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
