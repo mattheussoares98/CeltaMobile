@@ -11,7 +11,7 @@ import '../../controllers/controllers.dart';
 import '../components/components.dart';
 import 'products_management.dart';
 
-class ProductsManagementPage extends ConsumerStatefulWidget {
+class ProductsManagementPage extends ConsumerWidget {
   final int enterpriseOriginCode;
   final int enterpriseDestinyCode;
   final int requestTypeCode;
@@ -21,20 +21,12 @@ class ProductsManagementPage extends ConsumerStatefulWidget {
     required this.enterpriseDestinyCode,
     required this.requestTypeCode,
   });
-
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ProductsManagementPageState();
-}
-
-class _ProductsManagementPageState
-    extends ConsumerState<ProductsManagementPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final draftKey = DraftKey(
-      requestTypeCode: widget.requestTypeCode,
-      enterpriseOrigin: widget.enterpriseOriginCode,
-      enterpriseDestinyCode: widget.enterpriseDestinyCode,
+      requestTypeCode: requestTypeCode,
+      enterpriseOrigin: enterpriseOriginCode,
+      enterpriseDestinyCode: enterpriseDestinyCode,
     );
 
     ref.listen(insertTransferRequestControllerProvider(draftKey), (p, n) {
@@ -54,14 +46,14 @@ class _ProductsManagementPageState
 
     final pageIndex = ref.watch(
       uiStateControllerProvider(
-        widget.requestTypeCode,
+        requestTypeCode,
       ).select((s) => s.value?.pageIndex ?? 0),
     );
 
     return Stack(
       children: [
         Scaffold(
-          resizeToAvoidBottomInset: pageIndex == 0,
+          resizeToAvoidBottomInset: pageIndex == 0, //TODO test in mobile
           appBar: AppBar(
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,9 +88,7 @@ class _ProductsManagementPageState
                     onTap: () {
                       ref
                           .read(
-                            uiStateControllerProvider(
-                              widget.requestTypeCode,
-                            ).notifier,
+                            uiStateControllerProvider(requestTypeCode).notifier,
                           )
                           .updatePageIndex(1);
                     },
@@ -122,9 +112,7 @@ class _ProductsManagementPageState
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: pageIndex,
             onTap: ref
-                .read(
-                  uiStateControllerProvider(widget.requestTypeCode).notifier,
-                )
+                .read(uiStateControllerProvider(requestTypeCode).notifier)
                 .updatePageIndex,
             items: [
               BottomNavigationBarItem(
