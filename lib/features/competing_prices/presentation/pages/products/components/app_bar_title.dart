@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,42 +12,43 @@ class AppBarTitle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    return Consumer(
-      builder: (_, ref, _) {
-        final restrictProducts = ref.watch(
-          researchsStateControllerProvider.select(
-            (s) =>
-                s.value
-                    ?.firstWhere((e) => e.Code == widget.researchCode)
-                    .RestrictProducts ??
-                false,
-          ),
-        );
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (widget.researchName == null || widget.concurrentName == null)
-              FittedBox(
-                child: Text(
-                  'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
-                ),
-              )
-            else
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${widget.researchName!} (${widget.researchCode})",
-                    style: theme.textTheme.titleSmall,
-                  ),
-                  Text(
-                    "${widget.concurrentName!} (${widget.concurrentCode})",
-                    style: theme.textTheme.titleSmall,
-                  ),
-                ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (widget.researchName == null || widget.concurrentName == null)
+          FittedBox(
+            child: Text(
+              'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
+            ),
+          )
+        else
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${widget.researchName!} (${widget.researchCode})",
+                style: theme.textTheme.titleSmall,
               ),
-            Text(
+              Text(
+                "${widget.concurrentName!} (${widget.concurrentCode})",
+                style: theme.textTheme.titleSmall,
+              ),
+            ],
+          ),
+        Consumer(
+          builder: (_, ref, _) {
+            final restrictProducts = ref.watch(
+              researchsStateControllerProvider.select(
+                (s) =>
+                    s.value
+                        ?.firstWhereOrNull((e) => e.Code == widget.researchCode)
+                        ?.RestrictProducts ??
+                    false,
+              ),
+            );
+
+            return Text(
               restrictProducts == true
                   ? 'Produtos restringidos'
                   : 'Produtos não restringidos',
@@ -55,10 +57,10 @@ class AppBarTitle extends ConsumerWidget {
                     ? theme.primaryColor
                     : Colors.red,
               ),
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+      ],
     );
   }
 }

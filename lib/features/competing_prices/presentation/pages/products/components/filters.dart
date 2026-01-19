@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,8 +26,8 @@ class Filters extends ConsumerWidget {
       researchsStateControllerProvider.select(
         (s) =>
             s.value
-                ?.firstWhere((e) => e.Code == widget.researchCode)
-                .RestrictProducts ??
+                ?.firstWhereOrNull((e) => e.Code == widget.researchCode)
+                ?.RestrictProducts ??
             false,
       ),
     );

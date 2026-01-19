@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -44,20 +45,6 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
       },
     );
 
-    final searchType = ref.watch(
-      selectedItemUIControllerProvider.select((s) => s.searchType),
-    );
-
-    final restrictProducts = ref.watch(
-      researchsStateControllerProvider.select(
-        (s) =>
-            s.value
-                ?.firstWhere((e) => e.Code == widget.widget.researchCode)
-                .RestrictProducts ??
-            false,
-      ),
-    );
-
     final searchProductKey = SearchProductKey(
       widget.widget.enterpriseCode,
       BsRoutine.researchOfPrice,
@@ -73,6 +60,20 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
       ),
       searchProductKey: searchProductKey,
       searchProducts: () {
+        final searchType = ref.read(
+          selectedItemUIControllerProvider.select((s) => s.searchType),
+        );
+        final restrictProducts = ref.read(
+          researchsStateControllerProvider.select(
+            (s) =>
+                s.value
+                    ?.firstWhereOrNull(
+                      (e) => e.Code == widget.widget.researchCode,
+                    )
+                    ?.RestrictProducts ??
+                false,
+          ),
+        );
         ref
             .read(
               searchProductsStateControllerProvider(searchProductKey).notifier,
