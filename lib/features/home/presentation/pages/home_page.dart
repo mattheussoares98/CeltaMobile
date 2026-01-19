@@ -30,7 +30,7 @@ class HomePage extends ConsumerWidget {
         leadingWidth: 40,
         title: AsyncValueWidget(
           value: enterprisesAsync,
-          tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
+          tryAgain: () => ref.invalidate(validatedUserSessionProvider),
           data: (enterprises) {
             return SelectEnterpriseDropDown(enterprises: enterprises);
           },

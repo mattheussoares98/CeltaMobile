@@ -29,6 +29,8 @@ class SoapAdapter implements contracts.SoapRequest {
 
       final soapEnvelope = _buildEnvelope(parameters, soapAction);
 
+      // throw Exception();
+
       final response = await client
           .post(
             Uri.parse('$url/ccs/$serviceASMX'),

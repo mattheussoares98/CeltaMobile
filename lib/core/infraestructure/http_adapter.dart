@@ -30,6 +30,7 @@ class HttpAdapter implements HttpClient {
     var response = Response('', 500);
     Future<Response>? futureResponse;
     try {
+      // throw Exception();
       if (method == 'post') {
         futureResponse = client.post(
           Uri.parse(url),
