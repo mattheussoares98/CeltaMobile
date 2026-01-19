@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,6 +10,14 @@ import '../core/infraestructure/infrastructure.dart' show DatabaseConstants;
 Future<void> initApp() async {
   await _initSupabase();
   await _initHive();
+  await setOnlyPortraitMode();
+}
+
+Future<void> setOnlyPortraitMode() async {
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 }
 
 Future<void> _initSupabase() async {
