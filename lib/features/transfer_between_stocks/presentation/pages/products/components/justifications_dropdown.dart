@@ -48,6 +48,7 @@ class JustificationsDropdown extends ConsumerWidget {
           },
           items: justifications.map((e) {
             return DropdownMenuItem(
+              key: ValueKey(e.CodigoInterno_JustMov),
               value: e,
               child: Center(child: Text(e.Descricao_JustMov)),
             );

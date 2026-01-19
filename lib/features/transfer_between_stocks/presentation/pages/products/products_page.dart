@@ -50,15 +50,19 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         key: formKey,
         child: Column(
           children: [
-            DefaultSearchProducts(
-              searchValueController: searchValueController,
-              searchProductKey: searchProductKey,
-              isLoading: ref.watch(
-                searchProductsStateControllerProvider(
-                  searchProductKey,
-                ).select((state) => state.isLoading),
-              ),
-              searchProducts: () => _searchProducts(searchProductKey),
+            Consumer(
+              builder: (_, ref, _) {
+                return DefaultSearchProducts(
+                  searchValueController: searchValueController,
+                  searchProductKey: searchProductKey,
+                  isLoading: ref.watch(
+                    searchProductsStateControllerProvider(
+                      searchProductKey,
+                    ).select((state) => state.isLoading),
+                  ),
+                  searchProducts: () => _searchProducts(searchProductKey),
+                );
+              },
             ),
             gapH8,
             JustificationsDropdown(enterpriseCode: widget.enterpriseCode),

@@ -13,11 +13,6 @@ class DestinyStocksDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedOriginStock = ref.watch(
-      selectedProductUIStateControllerProvider(
-        enterpriseCode,
-      ).select((s) => s.selectedOriginStock),
-    );
     final selectedDestinyStock = ref.watch(
       selectedProductUIStateControllerProvider(
         enterpriseCode,
@@ -42,6 +37,12 @@ class DestinyStocksDropdown extends ConsumerWidget {
                 .updateValues(destinyStock: value);
           },
           validator: (value) {
+            final selectedOriginStock = ref.read(
+              selectedProductUIStateControllerProvider(
+                enterpriseCode,
+              ).select((s) => s.selectedOriginStock),
+            );
+
             if (value == null) {
               return 'Estoque obrigatório'.hardcoded;
             } else if (value == selectedOriginStock) {
@@ -51,6 +52,7 @@ class DestinyStocksDropdown extends ConsumerWidget {
           },
           items: stocks.map((e) {
             return DropdownMenuItem(
+              key: ValueKey(e.CodigoInterno_TipoEstoque),
               value: e,
               child: Center(child: Text(e.Nome_TipoEstoque)),
             );

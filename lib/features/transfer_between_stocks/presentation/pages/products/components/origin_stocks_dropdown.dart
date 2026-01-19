@@ -51,6 +51,7 @@ class OriginStocksDropdown extends ConsumerWidget {
           },
           items: stocks.map((e) {
             return DropdownMenuItem(
+              key: ValueKey(e.CodigoInterno_TipoEstoque),
               value: e,
               child: Center(child: Text(e.Nome_TipoEstoque)),
             );

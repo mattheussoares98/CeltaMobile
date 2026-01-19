@@ -38,15 +38,17 @@ class BottomNavBar extends ConsumerWidget {
         BottomNavigationBarItem(
           icon: Consumer(
             builder: (_, ref, _) {
-              final lotAsync = ref.watch(
-                lotStateControllerProvider(enterpriseCode),
+              final quantityLength = ref.watch(
+                lotStateControllerProvider(enterpriseCode).select(
+                  (s) => s.value
+                      ?.where((e) => e.product.EnterpriseCode == enterpriseCode)
+                      .toList()
+                      .length,
+                ),
               );
 
               return QuantityBadge(
-                quantity: lotAsync.value
-                    ?.where((e) => e.product.EnterpriseCode == enterpriseCode)
-                    .toList()
-                    .length,
+                quantity: quantityLength,
                 materialIcon: Icons.shopping_cart,
                 cupertinoIcon: CupertinoIcons.shopping_cart,
                 isSelected: selectedPageIndex == 1,

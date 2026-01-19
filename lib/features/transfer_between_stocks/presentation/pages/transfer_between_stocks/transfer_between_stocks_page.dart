@@ -38,12 +38,6 @@ class TransferBetweenStocksPage extends ConsumerWidget {
       });
     });
 
-    final selectedPageIndex = ref.watch(
-      selectedProductUIStateControllerProvider(
-        enterpriseCode,
-      ).select((s) => s.pageIndex),
-    );
-
     return Stack(
       children: [
         Scaffold(
@@ -52,12 +46,22 @@ class TransferBetweenStocksPage extends ConsumerWidget {
               child: Text("Transferência entre estoques".hardcoded),
             ),
           ),
-          body: IndexedStack(
-            index: selectedPageIndex,
-            children: [
-              ProductsPage(enterpriseCode: enterpriseCode),
-              LotPage(enterpriseCode: enterpriseCode),
-            ],
+          body: Consumer(
+            builder: (_, ref, _) {
+              final selectedPageIndex = ref.watch(
+                selectedProductUIStateControllerProvider(
+                  enterpriseCode,
+                ).select((s) => s.pageIndex),
+              );
+
+              return IndexedStack(
+                index: selectedPageIndex,
+                children: [
+                  ProductsPage(enterpriseCode: enterpriseCode),
+                  LotPage(enterpriseCode: enterpriseCode),
+                ],
+              );
+            },
           ),
           bottomNavigationBar: BottomNavBar(enterpriseCode: enterpriseCode),
         ),
