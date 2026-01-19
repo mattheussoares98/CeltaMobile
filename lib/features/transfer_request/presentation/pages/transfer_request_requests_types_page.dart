@@ -14,7 +14,12 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    void onTap(RequestTypeEntity request) {
+      context.goNamed(
+        Routes.transferRequestOriginEnterprises.name,
+        pathParameters: {'requestTypeCode': request.Code.toString()},
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(title: Text('Modelos de pedido'.hardcoded)),
@@ -32,62 +37,77 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
             itemCount: requests?.length ?? 0,
             itemBuilder: (_, index) {
               final request = requests![index];
-              return Card(
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: () {
-                    context.goNamed(
-                      Routes.transferRequestOriginEnterprises.name,
-                      pathParameters: {
-                        'requestTypeCode': request.Code.toString(),
-                      },
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleAndSubTitle(
-                          title: 'Nome'.hardcoded,
-                          subTitle: request.Name,
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Cód personalizado'.hardcoded,
-                          subTitle: request.PersonalizedCode,
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Tipo de operação'.hardcoded,
-                          subTitle: request.OperationTypeString,
-                        ),
-                        if (request.UseWholePrice == 1)
-                          TitleAndSubTitle(
-                            title: 'Preço atacado'.hardcoded,
-                            subTitle: request.UseWholePriceString,
-                          ),
-                        TitleAndSubTitle(
-                          title: 'Preço praticado'.hardcoded,
-                          subTitle: request.UnitValueTypeString,
-                        ),
-                        TitleAndSubTitle(
-                          title: null,
-                          subTitle: request.AllowAlterCostOrSalePrice == true
-                              ? "Pode alterar preço de custo ou venda"
-                              : "Não pode alterar preço de custo ou venda",
-                          subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                            color: request.AllowAlterCostOrSalePrice == true
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              return _RequestTypeItem(
+                key: ValueKey(request.Code),
+                request: request,
+                onTap: () => onTap(request),
               );
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class _RequestTypeItem extends StatelessWidget {
+  final RequestTypeEntity request;
+  final VoidCallback onTap;
+  const _RequestTypeItem({
+    super.key,
+    required this.request,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return RepaintBoundary(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TitleAndSubTitle(
+                  title: 'Nome'.hardcoded,
+                  subTitle: request.Name,
+                ),
+                TitleAndSubTitle(
+                  title: 'Cód personalizado'.hardcoded,
+                  subTitle: request.PersonalizedCode,
+                ),
+                TitleAndSubTitle(
+                  title: 'Tipo de operação'.hardcoded,
+                  subTitle: request.OperationTypeString,
+                ),
+                if (request.UseWholePrice == 1)
+                  TitleAndSubTitle(
+                    title: 'Preço atacado'.hardcoded,
+                    subTitle: request.UseWholePriceString,
+                  ),
+                TitleAndSubTitle(
+                  title: 'Preço praticado'.hardcoded,
+                  subTitle: request.UnitValueTypeString,
+                ),
+                TitleAndSubTitle(
+                  title: null,
+                  subTitle: request.AllowAlterCostOrSalePrice == true
+                      ? "Pode alterar preço de custo ou venda"
+                      : "Não pode alterar preço de custo ou venda",
+                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                    color: request.AllowAlterCostOrSalePrice == true
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
