@@ -11,7 +11,7 @@ import '../../controllers/controllers.dart';
 import 'components/components.dart';
 import 'sale_request.dart';
 
-class SaleRequestPage extends ConsumerStatefulWidget {
+class SaleRequestPage extends ConsumerWidget {
   final int enterpriseCode;
   final int requestCode;
   const SaleRequestPage({
@@ -19,15 +19,8 @@ class SaleRequestPage extends ConsumerStatefulWidget {
     required this.enterpriseCode,
     required this.requestCode,
   });
-
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SaleRequestPageState();
-}
-
-class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(pendingSaleRequestStateControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
@@ -47,7 +40,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
       children: [
         Scaffold(
           appBar: AppBar(
-            title: AppBarTitle(enterpriseCode: widget.enterpriseCode),
+            title: AppBarTitle(enterpriseCode: enterpriseCode),
             actionsPadding: const EdgeInsets.fromLTRB(
               0,
               Sizes.p8,
@@ -55,8 +48,8 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
               Sizes.p8,
             ),
             actions: [
-              ShowPdfButton(enterpriseCode: widget.enterpriseCode),
-              PrintButton(enterpriseCode: widget.enterpriseCode),
+              ShowPdfButton(enterpriseCode: enterpriseCode),
+              PrintButton(enterpriseCode: enterpriseCode),
               const CartBadge(),
             ],
           ),
@@ -71,7 +64,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
             },
             data: (requests) {
               final selectedRequest = requests!.firstWhere(
-                (e) => e.Code == widget.requestCode,
+                (e) => e.Code == requestCode,
               );
 
               return Consumer(
@@ -80,7 +73,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage> {
                     index: ref.watch(pageIndexStateControllerProvider),
                     children: [
                       InsertProductsPage(
-                        enterpriseCode: widget.enterpriseCode,
+                        enterpriseCode: enterpriseCode,
                         selectedRequest: selectedRequest,
                       ),
                       const CustomerPage(),
