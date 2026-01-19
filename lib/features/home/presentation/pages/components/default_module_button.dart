@@ -1,4 +1,5 @@
 import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,14 +36,6 @@ class DefaultModuleButton extends ConsumerWidget {
       selectedEnterpriseStateControllerProvider,
     );
 
-    final enterpriseName = ref.watch(
-      validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
-    );
-
-    final enabledModulesByEnterpriseAsync = ref.watch(
-      enabledModulesByEnterpriseNameStateControllerProvider(enterpriseName),
-    );
-
     void showDisabledModuleMessage() {
       showAlertDialog(
         context: context,
@@ -57,7 +50,7 @@ class DefaultModuleButton extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
     final isFavorite = ref.watch(
       favoriteModulesStateControllerProvider.select(
-        (s) => s.value?.contains(module) == true,
+        (s) => s.value?.any((x) => x == module) ?? false,
       ),
     );
 
@@ -70,72 +63,88 @@ class DefaultModuleButton extends ConsumerWidget {
               border: Border.all(color: theme.primaryColor, width: 0.4),
               borderRadius: BorderRadius.circular(Sizes.p12),
             ),
-            child: InkWell(
-              onTap: selectedEnterprise == null
-                  ? null
-                  : () {
-                      final enterpriseIndex = enabledModulesByEnterpriseAsync
-                          .value
-                          ?.indexWhere(
-                            (e) =>
-                                e.cnpjNumber == selectedEnterprise.CnpjNumber,
+            child: Consumer(
+              builder: (_, ref, _) {
+                final enterpriseName = ref.watch(
+                  validatedUserSessionProvider.select(
+                    (s) => s.value!.enterprise!.name,
+                  ),
+                );
+                final enabledModulesByEnterpriseAsync = ref.watch(
+                  enabledModulesByEnterpriseNameStateControllerProvider(
+                    enterpriseName,
+                  ),
+                );
+
+                return InkWell(
+                  onTap: selectedEnterprise == null
+                      ? null
+                      : () {
+                          final correspondentEnterprise =
+                              enabledModulesByEnterpriseAsync.value
+                                  ?.firstWhereOrNull(
+                                    (e) =>
+                                        e.cnpjNumber ==
+                                        selectedEnterprise.CnpjNumber,
+                                  );
+                          if (correspondentEnterprise == null) {
+                            showDisabledModuleMessage();
+                            return;
+                          }
+
+                          final enabledModules =
+                              correspondentEnterprise.enabledModules;
+
+                          bool moduleIsEnabled = enabledModules.contains(
+                            module,
                           );
-                      if (enterpriseIndex == null || enterpriseIndex == -1) {
-                        showDisabledModuleMessage();
-                        return;
-                      }
 
-                      final enabledModules = enabledModulesByEnterpriseAsync
-                          .value?[enterpriseIndex]
-                          .enabledModules;
+                          if (!moduleIsEnabled) {
+                            showDisabledModuleMessage();
+                            return;
+                          }
 
-                      bool moduleIsEnabled =
-                          enabledModules?.contains(module) ?? false;
-
-                      if (!moduleIsEnabled) {
-                        showDisabledModuleMessage();
-                        return;
-                      }
-
-                      context.goNamed(
-                        route.name,
-                        pathParameters: passEnterpriseToNextRoute
-                            ? {
-                                'enterpriseCode':
-                                    selectedEnterprise.Code.toString(),
-                              }
-                            : {},
-                      );
-                    },
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Using a circular container with a subtle background instead of a full image card
-                    Container(
-                      padding: const EdgeInsets.all(Sizes.p8),
-                      decoration: BoxDecoration(
-                        color: theme.primaryColor.withAlpha(50),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isIOS ? cupertinoIcon : materialIcon,
-                        color: theme.primaryColor,
-                      ),
+                          context.goNamed(
+                            route.name,
+                            pathParameters: passEnterpriseToNextRoute
+                                ? {
+                                    'enterpriseCode':
+                                        selectedEnterprise.Code.toString(),
+                                  }
+                                : {},
+                          );
+                        },
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Using a circular container with a subtle background instead of a full image card
+                        Container(
+                          padding: const EdgeInsets.all(Sizes.p8),
+                          decoration: BoxDecoration(
+                            color: theme.primaryColor.withAlpha(50),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            isIOS ? cupertinoIcon : materialIcon,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                        const SizedBox(height: Sizes.p12),
+                        Text(
+                          route.module,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: Sizes.p12),
-                    Text(
-                      route.module,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           ),
           Positioned(

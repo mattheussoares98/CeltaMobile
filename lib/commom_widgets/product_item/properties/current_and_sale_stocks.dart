@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/domain/entities/entities.dart';
@@ -60,15 +61,12 @@ double _getStockQuantityByName(
     return 0;
   }
 
-  final currentStockIndex = stocks.indexWhere(
-    (e) =>
-        e.EnterpriseCode == enterpriseCode &&
-        e.StockName.toLowerCase().contains(name.toLowerCase()),
-  );
-
-  if (currentStockIndex == -1) {
-    return 0;
-  } else {
-    return stocks[currentStockIndex].StockQuantity;
-  }
+  return stocks
+          .firstWhereOrNull(
+            (e) =>
+                e.EnterpriseCode == enterpriseCode &&
+                e.StockName.toLowerCase().contains(name.toLowerCase()),
+          )
+          ?.StockQuantity ??
+      0;
 }

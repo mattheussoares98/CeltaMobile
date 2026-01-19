@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/entities/entities.dart';
@@ -20,14 +21,10 @@ class ModuleIsEnabledController extends _$ModuleIsEnabledController {
       ).future,
     );
 
-    final enterpriseIndex = enabledModules.indexWhere(
-      (e) => e.cnpjNumber == cnpjNumber,
-    );
-
-    if (enterpriseIndex == -1) {
-      return false;
-    }
-
-    return enabledModules[enterpriseIndex].enabledModules.contains(module);
+    return enabledModules
+            .firstWhereOrNull((e) => e.cnpjNumber == cnpjNumber)
+            ?.enabledModules
+            .contains(module) ??
+        false;
   }
 }

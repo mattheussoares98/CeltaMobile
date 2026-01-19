@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -152,19 +153,14 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
               itemBuilder: (_, index) {
                 final product = products[index];
 
-                int? transferProductItemIndex = pendingAsync.value?.indexWhere(
-                  (element) =>
-                      element.product.ProductPackingCode ==
-                      product.ProductPackingCode,
-                );
+                final transferRequestProductItem = pendingAsync.value
+                    ?.firstWhereOrNull(
+                      (element) =>
+                          element.product.ProductPackingCode ==
+                          product.ProductPackingCode,
+                    );
 
-                bool hasInCart =
-                    transferProductItemIndex != null &&
-                    transferProductItemIndex != -1;
-
-                final transferRequestProductItem = hasInCart
-                    ? pendingAsync.value![transferProductItemIndex]
-                    : null;
+                bool hasInCart = transferRequestProductItem != null;
 
                 return RepaintBoundary(
                   key: ValueKey(
@@ -186,19 +182,13 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                     },
                     onDelete: hasInCart == true
                         ? () {
-                            removeProductItem(
-                              pendingAsync.value![transferProductItemIndex!],
-                            );
+                            removeProductItem(transferRequestProductItem!);
                           }
                         : null,
                     cartItemSummary: hasInCart
                         ? CartItemSummary(
-                            cartQuantity: pendingAsync
-                                .value![transferProductItemIndex]
-                                .quantity,
-                            cartValue: pendingAsync
-                                .value![transferProductItemIndex]
-                                .value,
+                            cartQuantity: transferRequestProductItem.quantity,
+                            cartValue: transferRequestProductItem.value,
                             product: product,
                           )
                         : null,

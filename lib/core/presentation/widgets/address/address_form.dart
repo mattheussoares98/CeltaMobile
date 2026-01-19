@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -77,14 +78,9 @@ class _AddressFormState extends ConsumerState<AddressForm> {
           numberController.text = address.Number ?? '';
           zipController.text = address.Zip;
 
-          final stateIndex = BrazilStates.values.indexWhere(
+          state = BrazilStates.values.firstWhereOrNull(
             (e) => e.name == address.State?.name,
           );
-          if (stateIndex == -1) {
-            return;
-          } else {
-            state = BrazilStates.values[stateIndex];
-          }
         }
       }
     });
@@ -166,15 +162,10 @@ class _AddressFormState extends ConsumerState<AddressForm> {
         districtController.text = n.value?.District ?? '';
         cityController.text = n.value?.City ?? '';
 
-        final stateIndex = BrazilStates.values.indexWhere(
+        state = BrazilStates.values.firstWhereOrNull(
           (e) => e.name == n.value?.State?.name,
         );
 
-        if (stateIndex == -1) {
-          return;
-        } else {
-          state = BrazilStates.values[stateIndex];
-        }
         Future.delayed(const Duration(milliseconds: 100), () {
           numberFocusNode.requestFocus();
         });

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
@@ -10,16 +11,15 @@ part 'ui_state_controller.g.dart';
 class UiStateController extends _$UiStateController {
   @override
   FutureOr<UiModel> build(int requestTypeCode) async {
-    bool allowChangePrice = false;
     final requests = await ref.read(
       requestTypeStateControllerProvider(Modules.transferRequest).future,
     );
 
-    final requestIndex = requests?.indexWhere((e) => e.Code == requestTypeCode);
-    if (requestIndex != null && requestIndex != -1) {
-      allowChangePrice =
-          requests![requestIndex].AllowAlterCostOrSalePrice == true;
-    }
+    final allowChangePrice =
+        requests
+            ?.firstWhereOrNull((e) => e.Code == requestTypeCode)
+            ?.AllowAlterCostOrSalePrice ==
+        true;
 
     return UiModel(
       selectedInsertProductIndex: null,
