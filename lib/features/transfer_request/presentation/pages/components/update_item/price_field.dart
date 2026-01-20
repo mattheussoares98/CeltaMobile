@@ -42,6 +42,16 @@ class PriceField extends ConsumerWidget {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           maxLength: 13,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          onTap: () {
+            if (priceFocusNode.hasFocus) {
+              return;
+            }
+
+            priceController.selection = TextSelection(
+              baseOffset: 0,
+              extentOffset: priceController.text.length,
+            );
+          },
           validator: FormValidators.compose([
             NumberValidator(
               allowDecimal: true,
