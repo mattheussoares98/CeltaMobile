@@ -1,4 +1,4 @@
-package com.example.celta_intelligence
+package br.com.celtaware.inventario
 
 import io.flutter.embedding.android.FlutterActivity
 
