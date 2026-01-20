@@ -34,6 +34,16 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
   DateTime? newValidity;
   final formKey = GlobalKey<FormState>();
 
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        newValidity = widget.product.DataValidade_ProcRecebDocProEmb;
+      }
+    });
+  }
+
   void update({bool? isSubtract, bool? isAnnul}) {
     if (isAnnul != true && formKey.currentState?.validate() != true) {
       return;
