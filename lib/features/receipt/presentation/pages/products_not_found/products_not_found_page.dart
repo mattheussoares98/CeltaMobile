@@ -62,7 +62,10 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
   void openInsertUpdateProductPage(ProductNotFoundEntity? product) {
     if (product != null) {
       eanController.text = product.ean;
-      quantityController.text = product.quantity.toString().toBrazilianNumber();
+      quantityController.text = product.quantity
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
       observationsController.text = product.observations == 'null'
           ? ""
           : product.observations ?? "";
@@ -154,14 +157,14 @@ class _ProductItem extends StatelessWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: openInsertUpdateProductPage,
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: bottomPadding, //avoid overlay the floating button
-            ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: bottomPadding, //avoid overlay the floating button
+        ),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: openInsertUpdateProductPage,
             child: Stack(
               children: [
                 Padding(
