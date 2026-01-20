@@ -6,50 +6,25 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
 
-class ProductsItems extends ConsumerStatefulWidget {
+class ProductsItems extends ConsumerWidget {
   final SearchProductKey searchProductKey;
   final int receiptCode;
+  final TextEditingController quantityController;
+  final FocusNode quantityFocusNode;
   const ProductsItems({
     super.key,
     required this.searchProductKey,
     required this.receiptCode,
+    required this.quantityController,
+    required this.quantityFocusNode,
   });
-
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
-}
-
-class _ProductsItemsState extends ConsumerState<ProductsItems> {
-  final quantityController = TextEditingController();
-  final quantityFocusNode = FocusNode();
-
-  @override
-  void dispose() {
-    quantityController.dispose();
-    quantityFocusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    ref.listen(updateProductControllerProvider(widget.searchProductKey), (
-      p,
-      n,
-    ) {
-      n.showAlertDialogOnError(context);
-      n.doOnSuccess(p, () {
-        quantityController.clear();
-      });
-    });
-
+  Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-      value: ref.watch(
-        searchProductsStateControllerProvider(widget.searchProductKey),
-      ),
+      value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
       tryAgain: null,
       data: (products) {
         return ResponsiveListFlow(
@@ -63,10 +38,10 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
               ),
               product: product,
               index: index,
-              receiptCode: widget.receiptCode,
+              receiptCode: receiptCode,
               quantityFocusNode: quantityFocusNode,
               quantityController: quantityController,
-              searchProductKey: widget.searchProductKey,
+              searchProductKey: searchProductKey,
             );
           },
         );
