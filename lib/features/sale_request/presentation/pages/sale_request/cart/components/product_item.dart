@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 import '../../components/components.dart';
@@ -66,7 +67,8 @@ class ProductItem extends ConsumerWidget {
                     if (cartProduct.DiscountDescription != null)
                       TitleAndSubTitle(
                         title: null,
-                        subTitle: cartProduct.DiscountDescription,
+                        subTitle:
+                            "${cartProduct.DiscountDescription} (${((cartProduct.DiscountValue ?? 0) / cartProduct.Quantity).toString().toBrazilianNumber().addBrazilianCoin()} por UN)",
                         subTitleStyle: theme.textTheme.titleSmall?.copyWith(
                           color: theme.colorScheme.secondary,
                         ),
