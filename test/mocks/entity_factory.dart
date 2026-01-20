@@ -319,7 +319,8 @@ class EntityFactory {
   }) => TransferJustificationEntity(
     CodigoInterno_JustMov: faker.randomGenerator.integer(100),
     Descricao_JustMov: faker.lorem.word(),
-    FlagTipo_JustMov: faker.randomGenerator.integer(10),
+    operationType: OperationType
+        .values[faker.randomGenerator.integer(OperationType.values.length)],
     FlagInterno_TipoEstoque: faker.randomGenerator.boolean(),
     Nome_TipoEstoque: faker.lorem.word(),
     CodigoInterno_TipoEstoque:
