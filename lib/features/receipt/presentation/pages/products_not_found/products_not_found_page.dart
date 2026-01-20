@@ -154,45 +154,48 @@ class _ProductItem extends StatelessWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: bottomPadding, //avoid overlay the floating button
-        ),
-        child: Card(
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleAndSubTitle(
-                      title: 'EAN'.hardcoded,
-                      subTitle: product.ean,
-                    ),
-                    TitleAndSubTitle(
-                      title: 'Quantidade'.hardcoded,
-                      subTitle: product.quantity.toString().toBrazilianNumber(),
-                    ),
-                    if (product.observations != null &&
-                        product.observations!.isNotEmpty &&
-                        product.observations.toString() != 'null')
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: openInsertUpdateProductPage,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: bottomPadding, //avoid overlay the floating button
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       TitleAndSubTitle(
-                        title: 'Observações'.hardcoded,
-                        subTitle: product.observations,
+                        title: 'EAN'.hardcoded,
+                        subTitle: product.ean,
                       ),
-                  ],
+                      TitleAndSubTitle(
+                        title: 'Quantidade'.hardcoded,
+                        subTitle: product.quantity
+                            .toString()
+                            .toBrazilianNumber(),
+                      ),
+                      if (product.observations != null &&
+                          product.observations!.isNotEmpty &&
+                          product.observations.toString() != 'null')
+                        TitleAndSubTitle(
+                          title: 'Observações'.hardcoded,
+                          subTitle: product.observations,
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: IconButton(
-                  onPressed: openInsertUpdateProductPage,
-                  icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                Positioned(
+                  top: Sizes.p8,
+                  right: Sizes.p8,
+                  child: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
