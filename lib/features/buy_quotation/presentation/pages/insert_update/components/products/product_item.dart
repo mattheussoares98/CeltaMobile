@@ -67,6 +67,27 @@ class ProductItem extends ConsumerWidget {
         showDropIcon: true,
         isSelected: isSelected,
         onTap: onTap,
+        onDelete: () {
+          final completeBuyQuotationProvider =
+              completeBuyQuotationsStateControllerProvider(
+                enterpriseCode,
+                buyQuotationCode.toString(),
+              );
+
+          final currentProducts = ref.read(
+            completeBuyQuotationProvider.select((s) => s.value!.Products),
+          );
+
+          currentProducts!.removeWhere(
+            (e) =>
+                e.Product!.ProductPackingCode ==
+                product.Product!.ProductPackingCode,
+          );
+
+          ref
+              .read(completeBuyQuotationProvider.notifier)
+              .updateValues(Products: currentProducts);
+        },
         itemBeforeProductName: QuantityByEnterprises(
           productEnterprises: productEnterprises,
         ),
