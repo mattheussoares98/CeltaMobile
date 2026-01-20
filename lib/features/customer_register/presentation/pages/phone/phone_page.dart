@@ -63,6 +63,7 @@ class _PhonePageState extends ConsumerState<PhonePage> {
     ]);
     phoneController.clear();
     dddController.clear();
+    phoneFocusNode.unfocus();
 
     phoneFormKey.currentState?.reset();
   }
