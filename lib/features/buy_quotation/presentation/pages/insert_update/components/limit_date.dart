@@ -33,10 +33,10 @@ class LimitDate extends ConsumerWidget {
         children: [
           Expanded(
             child: TitleAndSubTitle(
-              title: 'Data limite'.hardcoded,
+              title: 'Limite'.hardcoded,
               subTitle: dateOfLimit == null
                   ? null
-                  : DateFormat('dd/MM/yyyy').format(dateOfLimit),
+                  : DateFormat('dd/MM/yyyy HH:mm').format(dateOfLimit),
               emptyMessage: 'Sem data de limite'.hardcoded,
             ),
           ),
@@ -54,7 +54,7 @@ class LimitDate extends ConsumerWidget {
                     minimumDate: now,
                     maximumDate: now.add(const Duration(days: 365)),
                     currentSelectedDate: dateOfLimit,
-                    insertHoursAndMinutes: false,
+                    insertHoursAndMinutes: true,
                     context: context,
                   );
 
