@@ -49,6 +49,8 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
       return;
     }
 
+    widget.quantityFocusNode.unfocus();
+
     ref
         .read(updateProductControllerProvider(widget.searchProductKey).notifier)
         .updateValues(
