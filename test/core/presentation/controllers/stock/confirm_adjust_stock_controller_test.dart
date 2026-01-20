@@ -136,6 +136,7 @@ void main() {
           LastConfirmedAdjustEntity(
             productPackingCode: items[0].ProductPackingCode,
             quantity: items[0].Quantity,
+            isSubtract: any(),
           ),
         );
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
