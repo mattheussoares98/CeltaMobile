@@ -56,7 +56,7 @@ class InfoButton extends StatelessWidget {
         widget.product.LastBuyEntrances!.isNotEmpty;
 
     final showAddresses =
-        widget.product.StorageAreaAddress != null &&
+        widget.product.StorageAreaAddress != null ||
         (widget.product.StockByEnterpriseAssociateds?.length ?? 0) > 0;
 
     final showQuantity = [
