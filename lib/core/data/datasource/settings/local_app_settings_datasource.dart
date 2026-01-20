@@ -22,6 +22,7 @@ class LocalAppSettingsDatasource implements IAppSettingsDatasource {
         searchPreference: SearchProductTypePreference.dynamic,
         inventoryUseContinuousScan: false,
         expeditionUseContinuousScan: false,
+        receiptUseContinuousScan: false,
       );
     }
 

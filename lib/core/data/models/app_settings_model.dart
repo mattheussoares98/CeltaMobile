@@ -7,11 +7,13 @@ class AppSettingsModel extends Equatable {
   final SearchProductTypePreference searchPreference;
   final bool? inventoryUseContinuousScan;
   final bool? expeditionUseContinuousScan;
+  final bool? receiptUseContinuousScan;
 
   const AppSettingsModel({
     required this.searchPreference,
     required this.inventoryUseContinuousScan,
     required this.expeditionUseContinuousScan,
+    required this.receiptUseContinuousScan,
   });
 
   @override
@@ -19,6 +21,7 @@ class AppSettingsModel extends Equatable {
     searchPreference,
     inventoryUseContinuousScan,
     expeditionUseContinuousScan,
+    receiptUseContinuousScan,
   ];
 
   factory AppSettingsModel.fromJson(Map json) {
@@ -28,6 +31,7 @@ class AppSettingsModel extends Equatable {
       ),
       inventoryUseContinuousScan: json['inventoryUseContinuousScan'],
       expeditionUseContinuousScan: json['expeditionUseContinuousScan'],
+      receiptUseContinuousScan: json['receiptUseContinuousScan'],
     );
   }
 
@@ -35,12 +39,14 @@ class AppSettingsModel extends Equatable {
     'searchPreference': searchPreference.name,
     'inventoryUseContinuousScan': inventoryUseContinuousScan,
     'expeditionUseContinuousScan': expeditionUseContinuousScan,
+    'receiptUseContinuousScan': receiptUseContinuousScan,
   };
 
   AppSettingsEntity toEntity() => AppSettingsEntity(
     searchPreference: searchPreference,
     inventoryUseContinuousScan: inventoryUseContinuousScan,
     expeditionUseContinuousScan: expeditionUseContinuousScan,
+    receiptUseContinuousScan: receiptUseContinuousScan,
   );
 
   factory AppSettingsModel.fromEntity(AppSettingsEntity entity) {
@@ -48,6 +54,7 @@ class AppSettingsModel extends Equatable {
       searchPreference: entity.searchPreference,
       inventoryUseContinuousScan: entity.inventoryUseContinuousScan,
       expeditionUseContinuousScan: entity.expeditionUseContinuousScan,
+      receiptUseContinuousScan: entity.receiptUseContinuousScan,
     );
   }
 
@@ -55,6 +62,7 @@ class AppSettingsModel extends Equatable {
     SearchProductTypePreference? searchPreference,
     bool? inventoryUseContinuousScan,
     bool? expeditionUseContinuousScan,
+    bool? receiptUseContinuousScan,
   }) {
     return AppSettingsModel(
       searchPreference: searchPreference ?? this.searchPreference,
@@ -62,6 +70,8 @@ class AppSettingsModel extends Equatable {
           inventoryUseContinuousScan ?? this.inventoryUseContinuousScan,
       expeditionUseContinuousScan:
           expeditionUseContinuousScan ?? this.expeditionUseContinuousScan,
+      receiptUseContinuousScan:
+          receiptUseContinuousScan ?? this.receiptUseContinuousScan,
     );
   }
 }

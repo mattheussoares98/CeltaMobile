@@ -7,11 +7,13 @@ class AppSettingsEntity extends Equatable {
   final SearchProductTypePreference searchPreference;
   final bool? inventoryUseContinuousScan;
   final bool? expeditionUseContinuousScan;
+  final bool? receiptUseContinuousScan;
 
   const AppSettingsEntity({
     required this.searchPreference,
     required this.inventoryUseContinuousScan,
     required this.expeditionUseContinuousScan,
+    required this.receiptUseContinuousScan,
   });
 
   @override
@@ -19,12 +21,14 @@ class AppSettingsEntity extends Equatable {
     searchPreference,
     inventoryUseContinuousScan,
     expeditionUseContinuousScan,
+    receiptUseContinuousScan,
   ];
 
   AppSettingsEntity copyWith({
     SearchProductTypePreference? searchPreference,
     bool? inventoryUseContinuousScan,
     bool? expeditionUseContinuousScan,
+    bool? receiptUseContinuousScan,
   }) {
     return AppSettingsEntity(
       searchPreference: searchPreference ?? this.searchPreference,
@@ -32,6 +36,8 @@ class AppSettingsEntity extends Equatable {
           inventoryUseContinuousScan ?? this.inventoryUseContinuousScan,
       expeditionUseContinuousScan:
           expeditionUseContinuousScan ?? this.expeditionUseContinuousScan,
+      receiptUseContinuousScan:
+          receiptUseContinuousScan ?? this.receiptUseContinuousScan,
     );
   }
 }

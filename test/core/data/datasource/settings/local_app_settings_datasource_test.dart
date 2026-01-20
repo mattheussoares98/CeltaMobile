@@ -71,6 +71,7 @@ void main() {
           searchPreference: SearchProductTypePreference.dynamic,
           inventoryUseContinuousScan: false,
           expeditionUseContinuousScan: false,
+          receiptUseContinuousScan: false,
         ),
       );
     });

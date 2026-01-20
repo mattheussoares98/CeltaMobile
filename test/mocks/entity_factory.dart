@@ -312,6 +312,7 @@ class EntityFactory {
         )],
     inventoryUseContinuousScan: faker.randomGenerator.boolean(),
     expeditionUseContinuousScan: faker.randomGenerator.boolean(),
+    receiptUseContinuousScan: faker.randomGenerator.boolean(),
   );
 
   static TransferJustificationEntity makeTransferJustificationEntity({
