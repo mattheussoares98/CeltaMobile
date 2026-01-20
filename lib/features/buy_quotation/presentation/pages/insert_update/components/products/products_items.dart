@@ -13,22 +13,17 @@ class ProductsItems extends ConsumerWidget {
   final List<EnterpriseUIController> uiControllers;
   final InsertUpdatePage widget;
   final FocusNode observationsFocusNode;
+  final TextEditingController filterProductsController;
   const ProductsItems({
     super.key,
     required this.uiControllers,
     required this.widget,
     required this.observationsFocusNode,
+    required this.filterProductsController,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsCount = ref.watch(
-      completeBuyQuotationsStateControllerProvider(
-        widget.enterpriseCode,
-        widget.code.toString(),
-      ).select((s) => s.value?.Products?.length ?? 0),
-    );
-
     final buyQuotationEnterprises = ref.watch(
       completeBuyQuotationsStateControllerProvider(
         widget.enterpriseCode,
@@ -44,8 +39,8 @@ class ProductsItems extends ConsumerWidget {
       observationsFocusNode.unfocus();
 
       ref
-          .read(selectedProductIndexStateControllerProvider.notifier)
-          .updateIndex(index);
+          .read(selectedProductPackingCodeStateControllerProvider.notifier)
+          .updateProductPackingCode(index);
 
       if (index != null) {
         final products = ref
@@ -88,18 +83,35 @@ class ProductsItems extends ConsumerWidget {
       }
     }
 
-    return ResponsiveListFlow(
-      isSliver: true,
-      itemCount: productsCount,
-      itemBuilder: (_, index) {
-        return ProductItem(
-          onTap: () => updateIndex(index),
-          index: index,
-          sortedEnterprises: buyQuotationEnterprises,
-          parentWidget: widget,
-          uiControllers: uiControllers,
-          enterpriseCode: widget.enterpriseCode,
-          buyQuotationCode: widget.code,
+    return AnimatedBuilder(
+      animation: filterProductsController,
+      builder: (_, _) {
+        final filteredProducts = ref
+            .read(
+              completeBuyQuotationsStateControllerProvider(
+                widget.enterpriseCode,
+                widget.code.toString(),
+              ).notifier,
+            )
+            .filterProducts(filterProductsController.text);
+        final productsCount = filteredProducts.length;
+
+        return ResponsiveListFlow(
+          isSliver: true,
+          itemCount: productsCount,
+          itemBuilder: (_, index) {
+            final product = filteredProducts[index];
+            return ProductItem(
+              onTap: () => updateIndex(index),
+              product: product,
+              filteredProducts: filteredProducts,
+              sortedEnterprises: buyQuotationEnterprises,
+              parentWidget: widget,
+              uiControllers: uiControllers,
+              enterpriseCode: widget.enterpriseCode,
+              buyQuotationCode: widget.code,
+            );
+          },
         );
       },
     );

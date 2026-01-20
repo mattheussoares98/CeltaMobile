@@ -12,40 +12,35 @@ import '../../../pages.dart';
 import '../components.dart';
 
 class ProductItem extends ConsumerWidget {
-  final int index;
+  final BuyQuotationProductsEntity product;
   final VoidCallback onTap;
   final List<EnterpriseUIController> uiControllers;
   final int enterpriseCode;
   final int buyQuotationCode;
   final List<BuyQuotationEnterpriseEntity>? sortedEnterprises;
   final InsertUpdatePage parentWidget;
+  final List<BuyQuotationProductsEntity> filteredProducts;
   const ProductItem({
     super.key,
-    required this.index,
+    required this.product,
     required this.onTap,
     required this.uiControllers,
     required this.enterpriseCode,
     required this.buyQuotationCode,
     required this.sortedEnterprises,
     required this.parentWidget,
+    required this.filteredProducts,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Granular selector. This specific row only rebuilds
     // if its own product data changes.
-    final product = ref.watch(
-      completeBuyQuotationsStateControllerProvider(
-        enterpriseCode,
-        buyQuotationCode.toString(),
-      ).select((s) => s.value?.Products?[index]),
-    );
 
-    if (product == null) return const SizedBox.shrink();
-
-    // Watch selection status separately.
     final isSelected = ref.watch(
-      selectedProductIndexStateControllerProvider.select((s) => s == index),
+      selectedProductPackingCodeStateControllerProvider.select(
+        (s) => s == product.Product!.ProductPackingCode,
+      ),
     );
 
     final productEnterprises = sortedEnterprises?.map((e) {

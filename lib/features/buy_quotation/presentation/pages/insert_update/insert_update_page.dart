@@ -28,6 +28,8 @@ class InsertUpdatePage extends ConsumerStatefulWidget {
 class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
   final observationController = TextEditingController();
   final searchValueController = TextEditingController();
+  final filterProductsController = TextEditingController();
+  final filterProductsFocusNode = FocusNode();
   final observationsFocusNode = FocusNode();
   final List<EnterpriseUIController> uiControllers = [];
 
@@ -70,6 +72,8 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
     super.dispose();
     observationController.dispose();
     searchValueController.dispose();
+    filterProductsController.dispose();
+    filterProductsFocusNode.dispose();
     observationsFocusNode.dispose();
 
     for (final uiController in uiControllers) {
@@ -172,17 +176,23 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                             code: widget.code,
                           ),
                           const SliverToBoxAdapter(child: Divider()),
+                          FilterProducts(
+                            enterpriseCode: widget.enterpriseCode,
+                            code: widget.code,
+                            filterProductsFocusNode: filterProductsFocusNode,
+                            filterProductsController: filterProductsController,
+                          ),
                           SearchProductField(
                             enterpriseCode: widget.enterpriseCode,
                             code: widget.code,
                             searchValueController: searchValueController,
                           ),
                           gapSliverH8,
-                          //TODO add option to filter already searched products
                           ProductsItems(
                             uiControllers: uiControllers,
                             widget: widget,
                             observationsFocusNode: observationsFocusNode,
+                            filterProductsController: filterProductsController,
                           ),
                           gapSliverH32,
                         ],

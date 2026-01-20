@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../../../utils/utils.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 
@@ -88,5 +89,24 @@ class CompleteBuyQuotationsStateController
     final codes = products.map((e) => e.Product?.ProductPackingCode).toList();
 
     return codes.length == codes.toSet().length;
+  }
+
+  List<BuyQuotationProductsEntity> filterProducts(String text) {
+    final products = state.value?.Products;
+
+    return products?.where((x) {
+          final productName = x.Product?.Name
+              ?.toLowerCase()
+              .removeWhiteSpaces();
+          final productPlu = x.Product?.PLU
+              ?.toString()
+              .replaceAll(RegExp(r'-'), '')
+              .removeWhiteSpaces();
+          final filterText = text.toLowerCase().removeWhiteSpaces();
+
+          return (productName?.contains(filterText) ?? false) ||
+              (productPlu?.contains(filterText) ?? false);
+        }).toList() ??
+        [];
   }
 }

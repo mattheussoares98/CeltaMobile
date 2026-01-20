@@ -3,6 +3,7 @@ export './buyers_dropdown.dart';
 export './code.dart';
 export './creation_date.dart';
 export './enterprises.dart';
+export './filter_products.dart';
 export './limit_date.dart';
 export './observation_field.dart';
 export './save_icon_button.dart';

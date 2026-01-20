@@ -130,45 +130,27 @@ class SearchProductField extends ConsumerWidget {
       n.showSnackbarOnError(context, p);
     });
 
-    final theme = Theme.of(context);
-
     return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Produtos (${currentProducts.length})'.hardcoded,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontStyle: FontStyle.italic,
-              color: theme.primaryColor,
-            ),
-          ),
-          Consumer(
-            builder: (_, ref, _) {
-              return DefaultSearchProducts(
-                isLoading: ref.watch(
-                  searchProductProvider.select(((s) => s.isLoading)),
-                ),
-                searchProducts: () {
-                  ref
-                      .read(searchProductProvider.notifier)
-                      .loadProducts(
-                        GetProductsJsonParams(
-                          searchValue: searchValueController.text,
-                          enterpriseCodes: [enterpriseCode],
-                        ),
-                      );
-                },
-                searchValueController: searchValueController,
-                searchProductKey: SearchProductKey(
-                  enterpriseCode,
-                  BsRoutine.buyQuotation,
-                  Modules.buyQuotation,
+      child: DefaultSearchProducts(
+        isLoading: ref.watch(
+          searchProductProvider.select(((s) => s.isLoading)),
+        ),
+        searchProducts: () {
+          ref
+              .read(searchProductProvider.notifier)
+              .loadProducts(
+                GetProductsJsonParams(
+                  searchValue: searchValueController.text,
+                  enterpriseCodes: [enterpriseCode],
                 ),
               );
-            },
-          ),
-        ],
+        },
+        searchValueController: searchValueController,
+        searchProductKey: SearchProductKey(
+          enterpriseCode,
+          BsRoutine.buyQuotation,
+          Modules.buyQuotation,
+        ),
       ),
     );
   }

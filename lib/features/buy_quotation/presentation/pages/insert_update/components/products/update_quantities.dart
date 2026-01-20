@@ -36,7 +36,6 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
     if (formKey.currentState?.validate() != true) {
       return;
     }
-    //TODO the performance will be better if add this logic in the controller
     final buyQuotationProducts = await ref.read(
       completeBuyQuotationsStateControllerProvider(
         widget.enterpriseCode,
@@ -93,8 +92,8 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
         )
         .updateValues(Products: currentProducts);
     ref
-        .read(selectedProductIndexStateControllerProvider.notifier)
-        .updateIndex(null);
+        .read(selectedProductPackingCodeStateControllerProvider.notifier)
+        .updateProductPackingCode(null);
   }
 
   @override
@@ -196,9 +195,10 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                   backgroundColor: Colors.red,
                   onPressed: () => ref
                       .read(
-                        selectedProductIndexStateControllerProvider.notifier,
+                        selectedProductPackingCodeStateControllerProvider
+                            .notifier,
                       )
-                      .updateIndex(null),
+                      .updateProductPackingCode(null),
                 ),
               ),
               gapW8,
