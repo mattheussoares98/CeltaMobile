@@ -82,6 +82,8 @@ void main() {
                   appSettingsEntity.expeditionUseContinuousScan,
               inventoryUseContinuousScan:
                   appSettingsEntity.inventoryUseContinuousScan,
+              receiptUseContinuousScan:
+                  appSettingsEntity.receiptUseContinuousScan,
               searchPreference: appSettingsEntity.searchPreference,
             );
 
@@ -115,6 +117,8 @@ void main() {
                 appSettingsEntity.expeditionUseContinuousScan,
             inventoryUseContinuousScan:
                 appSettingsEntity.inventoryUseContinuousScan,
+            receiptUseContinuousScan:
+                appSettingsEntity.receiptUseContinuousScan,
             searchPreference: appSettingsEntity.searchPreference,
           );
 

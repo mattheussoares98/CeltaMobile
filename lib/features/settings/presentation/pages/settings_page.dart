@@ -41,6 +41,7 @@ class SettingsPage extends ConsumerWidget {
                 if ([
                       Modules.inventory,
                       Modules.expeditionConference,
+                      Modules.receipt,
                     ].any((x) => x == module) &&
                     (isIOS || isAndroid)) ...[
                   ContinuousScanCheckbox(module: module!),

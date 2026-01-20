@@ -47,6 +47,7 @@ class _SearchProductsState extends ConsumerState<SearchProducts> {
   @override
   Widget build(BuildContext context) {
     return DefaultSearchProducts(
+      module: Modules.receipt,
       isLoading: ref.watch(
         searchProductsStateControllerProvider(
           widget.searchProductKey,

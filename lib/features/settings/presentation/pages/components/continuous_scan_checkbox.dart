@@ -18,6 +18,8 @@ class ContinuousScanCheckbox extends ConsumerWidget {
           return s.value?.inventoryUseContinuousScan;
         } else if (module == Modules.expeditionConference) {
           return s.value?.expeditionUseContinuousScan;
+        } else if (module == Modules.receipt) {
+          return s.value?.receiptUseContinuousScan;
         }
         throw Exception(
           'You should add the module here to update correctly the value'
@@ -34,6 +36,9 @@ class ContinuousScanCheckbox extends ConsumerWidget {
                 ? !(enabled ?? false)
                 : null,
             expeditionUseContinuousScan: module == Modules.expeditionConference
+                ? !(enabled ?? false)
+                : null,
+            receiptUseContinuousScan: module == Modules.receipt
                 ? !(enabled ?? false)
                 : null,
           );
@@ -60,21 +65,29 @@ class ContinuousScanCheckbox extends ConsumerWidget {
                       style: theme.textTheme.titleMedium,
                     ),
                   ),
-                  Checkbox(
-                    value: ref.watch(
-                      appSettingsStateControllerProvider.select((s) {
-                        if (module == Modules.inventory) {
-                          return s.value?.inventoryUseContinuousScan == true;
-                        } else if (module == Modules.expeditionConference) {
-                          return s.value?.expeditionUseContinuousScan == true;
-                        }
-                        throw Exception(
-                          'You should add the module here to update correctly the value'
-                              .hardcoded,
-                        );
-                      }),
-                    ),
-                    onChanged: (value) => updateValue(),
+                  Consumer(
+                    builder: (_, ref, _) {
+                      return Checkbox(
+                        value: ref.watch(
+                          appSettingsStateControllerProvider.select((s) {
+                            if (module == Modules.inventory) {
+                              return s.value?.inventoryUseContinuousScan ==
+                                  true;
+                            } else if (module == Modules.expeditionConference) {
+                              return s.value?.expeditionUseContinuousScan ==
+                                  true;
+                            } else if (module == Modules.receipt) {
+                              return s.value?.receiptUseContinuousScan == true;
+                            }
+                            throw Exception(
+                              'You should add the module here to update correctly the value'
+                                  .hardcoded,
+                            );
+                          }),
+                        ),
+                        onChanged: (value) => updateValue(),
+                      );
+                    },
                   ),
                 ],
               ),

@@ -16,6 +16,7 @@ class AppSettingsStateController extends _$AppSettingsStateController {
     SearchProductTypePreference? searchPreference,
     bool? inventoryUseContinuousScan,
     bool? expeditionUseContinuousScan,
+    bool? receiptUseContinuousScan,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -23,6 +24,7 @@ class AppSettingsStateController extends _$AppSettingsStateController {
         searchPreference: searchPreference,
         inventoryUseContinuousScan: inventoryUseContinuousScan,
         expeditionUseContinuousScan: expeditionUseContinuousScan,
+        receiptUseContinuousScan: receiptUseContinuousScan,
       );
 
       await ref.read(appSettingsRepositoryProvider).changeSettings(newValue);
