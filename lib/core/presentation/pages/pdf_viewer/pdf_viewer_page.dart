@@ -21,14 +21,19 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom],
-    );
-
-    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom],
+      );
+    });
 
     _pdfController = PdfViewerController();
+    super.initState();
   }
 
   @override
@@ -74,32 +79,40 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _isSearchVisible
-          ? SearchTextAppBar(
-                  toggleSearchUI: _toggleSearchUI,
-                  performSearch: _performSearch,
-                  searchTextController: _searchTextController,
-                  searchResult: _searchResult,
-                )
-                as PreferredSizeWidget
-          : AppBarWithTitle(
-              bytes: widget.bytes,
-              fileName: widget.fileName,
-              toggleSearchUI: _toggleSearchUI,
-            ),
-      body: SfPdfViewer.memory(
-        enableDoubleTapZooming: true,
-        enableTextSelection: true,
-        enableDocumentLinkAnnotation: true,
-        enableHyperlinkNavigation: true,
-        interactionMode: PdfInteractionMode.selection,
-        canShowScrollStatus: true,
-        canShowScrollHead: true,
-        widget.bytes,
-        canShowTextSelectionMenu: true,
-        controller: _pdfController,
-        currentSearchTextHighlightColor: Colors.amber[700]!.withAlpha(200),
+    return PopScope(
+      onPopInvokedWithResult: (_, _) async {
+        await SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitDown,
+          DeviceOrientation.portraitUp,
+        ]);
+      },
+      child: Scaffold(
+        appBar: _isSearchVisible
+            ? SearchTextAppBar(
+                    toggleSearchUI: _toggleSearchUI,
+                    performSearch: _performSearch,
+                    searchTextController: _searchTextController,
+                    searchResult: _searchResult,
+                  )
+                  as PreferredSizeWidget
+            : AppBarWithTitle(
+                bytes: widget.bytes,
+                fileName: widget.fileName,
+                toggleSearchUI: _toggleSearchUI,
+              ),
+        body: SfPdfViewer.memory(
+          enableDoubleTapZooming: true,
+          enableTextSelection: true,
+          enableDocumentLinkAnnotation: true,
+          enableHyperlinkNavigation: true,
+          interactionMode: PdfInteractionMode.selection,
+          canShowScrollStatus: true,
+          canShowScrollHead: true,
+          widget.bytes,
+          canShowTextSelectionMenu: true,
+          controller: _pdfController,
+          currentSearchTextHighlightColor: Colors.amber[700]!.withAlpha(200),
+        ),
       ),
     );
   }
