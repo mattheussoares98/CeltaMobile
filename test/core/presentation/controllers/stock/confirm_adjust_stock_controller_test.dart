@@ -4,6 +4,7 @@ import 'package:celta_intelligence/core/domain/repositories/stock/stock.dart';
 import 'package:celta_intelligence/core/presentation/controllers/stock/confirm_adjust_stock_controller.dart';
 import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_intelligence/core/providers/stock/stock.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -126,9 +127,13 @@ void main() {
           (_, next) => states.add(next),
         );
 
+        final operationType = OperationType
+            .values[faker.randomGenerator.integer(OperationType.values.length)];
+
         // ACT & ASSERT: Expect the future to complete with an AppException
         await container.read(confirmAdjustStockControllerProvider.notifier).confirm(
           [items[0]],
+          operationType: operationType,
         ); //return only when has one item in the list because is adjustStock feature. If has more than one, is transfer between stocks feature and this feature creates a lot
 
         expect(
@@ -136,7 +141,7 @@ void main() {
           LastConfirmedAdjustEntity(
             productPackingCode: items[0].ProductPackingCode,
             quantity: items[0].Quantity,
-            isSubtract: any(),
+            operationType: operationType,
           ),
         );
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);

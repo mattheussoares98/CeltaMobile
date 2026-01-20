@@ -34,7 +34,7 @@ class TransferJustificationModel extends Equatable {
         CodigoInterno_JustMov: json["CodigoInterno_JustMov"],
         Descricao_JustMov: json["Descricao_JustMov"],
         operationType: OperationType.values.firstWhere(
-          (element) => element.name == json["FlagTipo_JustMov"],
+          (element) => element.value == json["FlagTipo_JustMov"],
         ),
         FlagInterno_TipoEstoque: json["FlagInterno_TipoEstoque"],
         Nome_TipoEstoque: json["Nome_TipoEstoque"],

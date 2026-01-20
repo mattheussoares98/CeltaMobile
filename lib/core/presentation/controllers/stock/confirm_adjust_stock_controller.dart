@@ -15,7 +15,10 @@ class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
     return null;
   }
 
-  Future<void> confirm(List<AdjustStockItemEntity> items) async {
+  Future<void> confirm(
+    List<AdjustStockItemEntity> items, {
+    OperationType? operationType,
+  }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(soapAdjustStockRepositoryProvider);
@@ -35,6 +38,7 @@ class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
         return LastConfirmedAdjustEntity(
           productPackingCode: items[0].ProductPackingCode,
           quantity: items[0].Quantity,
+          operationType: operationType ?? OperationType.entrance,
         );
       }
       return null;

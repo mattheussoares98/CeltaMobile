@@ -1,3 +1,4 @@
+import 'package:celta_intelligence/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -45,7 +46,7 @@ class ProductsItems extends ConsumerWidget {
           IsPendingAdjust: false,
           Quantity: quantityController.text.toDouble() ?? 0,
         ),
-      ]);
+      ], operationType: selectedUIState.selectedJustification!.operationType);
     }
 
     return AsyncValueWidget(
@@ -112,15 +113,9 @@ class _ProductItem extends ConsumerWidget {
       ).select((s) => s.selectedIndex == index),
     );
 
-    final lastAdjustedQty = ref.watch(
-      confirmAdjustStockControllerProvider.select((asyncValue) {
-        final data = asyncValue.value;
-        if (data?.productPackingCode == product.ProductPackingCode) {
-          return data?.quantity;
-        }
-        return null;
-      }),
-    );
+    final lastConfirmedAdjust = ref
+        .watch(confirmAdjustStockControllerProvider)
+        .value;
 
     return RepaintBoundary(
       child: ProductItemWidget(
@@ -138,10 +133,14 @@ class _ProductItem extends ConsumerWidget {
         },
         showDropIcon: true,
         isSelected: isSelected,
-        clickableBottom: lastAdjustedQty != null
+        clickableBottom: lastConfirmedAdjust != null
             ? TitleAndSubTitle(
-                title: 'Última qtd alterada',
-                subTitle: lastAdjustedQty.toString().toBrazilianNumber(3, true),
+                title:
+                    'Última qtd alterada ${lastConfirmedAdjust.operationType == OperationType.entrance ? "+" : "-"}'
+                        .hardcoded,
+                subTitle: lastConfirmedAdjust.quantity
+                    .toString()
+                    .toBrazilianNumber(3, true),
                 titleStyle: theme.textTheme.titleMedium?.copyWith(
                   color: theme.colorScheme.secondary,
                   fontStyle: FontStyle.italic,
