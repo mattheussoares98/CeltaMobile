@@ -25,10 +25,7 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
 
     return Row(
       children: [
-        IconButton(
-          onPressed: onTapEdit,
-          icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit_outlined),
-        ),
+        Icon(isIOS ? CupertinoIcons.pencil : Icons.edit_outlined),
         IconButton(
           onPressed: () {
             showAlertDialog(

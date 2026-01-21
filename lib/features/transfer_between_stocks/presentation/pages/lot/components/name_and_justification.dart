@@ -10,6 +10,7 @@ class NameAndJustification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -18,8 +19,12 @@ class NameAndJustification extends StatelessWidget {
           subTitle: "${item.product.Name} (${item.product.PLU})",
         ),
         TitleAndSubTitle(
-          title: 'Just '.hardcoded,
-          subTitle: item.selectedJustification.Descricao_JustMov,
+          title: item.selectedJustification.Descricao_JustMov,
+          titleStyle: theme.textTheme.titleMedium?.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
+          subTitle: ' (Justificativa)'.hardcoded,
+          subTitleStyle: theme.textTheme.bodyMedium?.copyWith(),
         ),
       ],
     );

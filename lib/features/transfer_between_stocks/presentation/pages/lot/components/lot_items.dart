@@ -134,27 +134,28 @@ class _LotItem extends StatelessWidget {
             children: [
               InkWell(
                 onTap: changeSelectedIndex,
-                child: Padding(
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      NameAndJustification(item: item),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(Sizes.p8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: OriginAndDestinyWithQuantities(item: item),
-                          ),
-                          EditAndRemoveIconButtons(
-                            item: item,
-                            onTapEdit: changeSelectedIndex,
-                            enterpriseCode: enterpriseCode,
-                          ),
+                          NameAndJustification(item: item),
+                          OriginAndDestinyWithQuantities(item: item),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: EditAndRemoveIconButtons(
+                        item: item,
+                        onTapEdit: changeSelectedIndex,
+                        enterpriseCode: enterpriseCode,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               UpdateQuantityField(
