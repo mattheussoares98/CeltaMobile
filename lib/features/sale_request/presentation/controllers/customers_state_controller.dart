@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';

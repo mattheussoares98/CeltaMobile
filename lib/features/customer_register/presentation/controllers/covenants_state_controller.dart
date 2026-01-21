@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/features/customer_register/providers.dart';
+import 'package:celta_inventario/features/customer_register/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';

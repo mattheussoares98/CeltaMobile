@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/adjust_stock/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/adjust_stock/presentation/pages/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

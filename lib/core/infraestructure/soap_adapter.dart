@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:xml2json/xml2json.dart';

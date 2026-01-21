@@ -1,8 +1,8 @@
-import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/price_params.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/price_params.dart';
 
-import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/replication_types.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/replication_types.dart';
 
-import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/sale_type.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/sale_type.dart';
 
 import '../../data/datasource/datasource.dart';
 import 'repositories.dart';

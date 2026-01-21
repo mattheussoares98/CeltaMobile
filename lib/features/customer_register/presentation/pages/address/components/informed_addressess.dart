@@ -1,5 +1,5 @@
-import 'package:celta_intelligence/core/domain/entities/address/address_entity.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/domain/entities/address/address_entity.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,7 +1,7 @@
-import 'package:celta_intelligence/features/competing_prices/data/datasource/datasource.dart';
-import 'package:celta_intelligence/features/competing_prices/data/models/models.dart';
-import 'package:celta_intelligence/features/competing_prices/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/competing_prices/domain/repository/repository.dart';
+import 'package:celta_inventario/features/competing_prices/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/competing_prices/data/models/models.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/domain/repository/repository.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

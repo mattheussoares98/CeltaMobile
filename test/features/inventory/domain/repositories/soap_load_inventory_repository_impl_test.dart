@@ -1,5 +1,5 @@
-import 'package:celta_intelligence/features/inventory/data/models/models.dart';
-import 'package:celta_intelligence/features/inventory/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/inventory/data/models/models.dart';
+import 'package:celta_inventario/features/inventory/domain/repositories/repositories.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

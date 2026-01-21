@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../features/expedition_conference/presentation/pages/pages.dart';

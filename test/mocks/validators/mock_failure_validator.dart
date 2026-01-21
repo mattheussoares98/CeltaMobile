@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/validators/validators.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
 
 class MockFailureValidator implements StringValidator {
   final String message;

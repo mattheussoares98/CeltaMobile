@@ -1,4 +1,4 @@
-# celta_intelligence
+# celta_inventario
 
 A new Flutter project.
 

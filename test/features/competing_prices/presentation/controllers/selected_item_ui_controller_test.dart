@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/competing_prices/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/competing_prices/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

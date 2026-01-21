@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/core/domain/entities/supplier/search_supplier_type.dart';
+import 'package:celta_inventario/core/domain/entities/supplier/search_supplier_type.dart';
 
-import 'package:celta_intelligence/core/domain/entities/supplier/supplier_entity.dart';
+import 'package:celta_inventario/core/domain/entities/supplier/supplier_entity.dart';
 
 import '../../../data/datasource/supplier/supplier.dart';
 import 'supplier.dart';

@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/data/models/user_session_model.dart';
+import 'package:celta_inventario/core/data/models/user_session_model.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../features/auth/data/models/models.dart';

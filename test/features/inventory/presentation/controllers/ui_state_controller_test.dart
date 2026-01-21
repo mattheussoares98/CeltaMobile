@@ -1,5 +1,5 @@
-import 'package:celta_intelligence/features/inventory/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/inventory/presentation/models/models.dart';
+import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/inventory/presentation/models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:faker/faker.dart';

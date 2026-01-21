@@ -1,5 +1,5 @@
-import 'package:celta_intelligence/core/validators/validators.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 

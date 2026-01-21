@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../models/models.dart';

@@ -1,5 +1,5 @@
-import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/price_schedule_entity.dart';
-import 'package:celta_intelligence/features/adjust_sale_price/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/price_schedule_entity.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/repositories/repositories.dart';
 
 import '../../data/datasource/datasource.dart';
 

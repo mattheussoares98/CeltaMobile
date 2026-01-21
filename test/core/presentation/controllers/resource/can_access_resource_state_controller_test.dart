@@ -1,8 +1,8 @@
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:celta_intelligence/core/presentation/controllers/resource/resource.dart';
-import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_intelligence/core/providers/resource/resource.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/resource/resource.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

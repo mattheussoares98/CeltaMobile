@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/domain/entities/enterprise/enterprise_entity.dart';
+import 'package:celta_inventario/core/domain/entities/enterprise/enterprise_entity.dart';
 
 import '../../data/datasource/datasource.dart';
 import 'repositories.dart';

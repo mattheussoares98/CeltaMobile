@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/features/enterprise_manager/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';

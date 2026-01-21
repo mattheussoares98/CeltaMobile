@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:faker/faker.dart';

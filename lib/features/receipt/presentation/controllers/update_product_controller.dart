@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';

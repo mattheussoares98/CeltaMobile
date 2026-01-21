@@ -1,5 +1,5 @@
-import 'package:celta_intelligence/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

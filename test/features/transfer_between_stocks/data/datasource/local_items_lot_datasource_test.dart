@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/core/infraestructure/infrastructure.dart';
-import 'package:celta_intelligence/features/transfer_between_stocks/data/datasource/datasource.dart';
-import 'package:celta_intelligence/features/transfer_between_stocks/data/models/models.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/data/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

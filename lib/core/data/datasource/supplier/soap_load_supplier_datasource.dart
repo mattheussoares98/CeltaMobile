@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/core/data/models/supplier/supplier_model.dart';
+import 'package:celta_inventario/core/data/models/supplier/supplier_model.dart';
 
-import 'package:celta_intelligence/core/domain/entities/supplier/search_supplier_type.dart';
+import 'package:celta_inventario/core/domain/entities/supplier/search_supplier_type.dart';
 
 import '../../../domain/contracts/contracts.dart';
 import 'supplier.dart';

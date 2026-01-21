@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/core/infraestructure/infrastructure.dart';
-import 'package:celta_intelligence/features/home/data/datasource/datasource.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/features/home/data/datasource/datasource.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

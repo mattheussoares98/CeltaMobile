@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/exceptions/exceptions.dart';
-import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/expedition_conference/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
+import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

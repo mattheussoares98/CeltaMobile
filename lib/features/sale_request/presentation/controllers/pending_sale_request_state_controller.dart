@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/exceptions/app_exception.dart';
-import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/exceptions/app_exception.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';

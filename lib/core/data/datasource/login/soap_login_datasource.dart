@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:xml2json/xml2json.dart';
 
 import '../../../domain/contracts/contracts.dart';

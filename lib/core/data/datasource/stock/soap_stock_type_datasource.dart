@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/core/data/models/stock/stock_type_model.dart';
+import 'package:celta_inventario/core/data/models/stock/stock_type_model.dart';
 
 import '../../../domain/contracts/contracts.dart';
 import 'stock.dart';

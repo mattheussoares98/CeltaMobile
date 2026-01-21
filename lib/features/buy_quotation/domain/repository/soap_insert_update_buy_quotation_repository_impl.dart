@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/buy_quotation/domain/entities/buy_quotation_entity.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/buy_quotation_entity.dart';
 
 import '../../data/datasource/datasource.dart';
 import '../../data/models/models.dart';

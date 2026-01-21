@@ -1,7 +1,7 @@
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/home/domain/repository/repository.dart';
-import 'package:celta_intelligence/features/home/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/home/providers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/home/domain/repository/repository.dart';
+import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/home/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

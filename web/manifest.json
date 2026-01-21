@@ -1,6 +1,6 @@
 {
-    "name": "celta_intelligence",
-    "short_name": "celta_intelligence",
+    "name": "celta_inventario",
+    "short_name": "celta_inventario",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

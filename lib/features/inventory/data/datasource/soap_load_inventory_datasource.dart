@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/inventory/data/models/inventory_model.dart';
+import 'package:celta_inventario/features/inventory/data/models/inventory_model.dart';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';

@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/core/domain/entities/transfer_justification/transfer_justification_entity.dart';
+import 'package:celta_inventario/core/domain/entities/transfer_justification/transfer_justification_entity.dart';
 
-import 'package:celta_intelligence/core/domain/entities/transfer_justification/transfer_justification_type.dart';
+import 'package:celta_inventario/core/domain/entities/transfer_justification/transfer_justification_type.dart';
 
 import '../../../data/datasource/transfer_justification/transfer_justification.dart';
 import 'transfer_justification.dart';

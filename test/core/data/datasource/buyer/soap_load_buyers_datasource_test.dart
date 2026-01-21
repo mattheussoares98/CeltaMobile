@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/core/data/datasource/buyer/buyer.dart';
-import 'package:celta_intelligence/core/data/models/models.dart';
+import 'package:celta_inventario/core/data/datasource/buyer/buyer.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

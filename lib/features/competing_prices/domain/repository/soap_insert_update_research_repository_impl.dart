@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 import '../../../../exceptions/exceptions.dart';
 import '../../data/datasource/datasource.dart';

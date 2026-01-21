@@ -1,7 +1,7 @@
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/core/presentation/controllers/stock/stock.dart';
-import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/transfer_between_stocks/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:faker/faker.dart';

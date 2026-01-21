@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/features/reports/data/models/report_schedule_model.dart';
+import 'package:celta_inventario/features/reports/data/models/report_schedule_model.dart';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';

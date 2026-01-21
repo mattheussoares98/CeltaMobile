@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/features/buy_quotation/data/models/buy_quotation_model.dart';
+import 'package:celta_inventario/features/buy_quotation/data/models/buy_quotation_model.dart';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import '../../domain/entities/entities.dart';

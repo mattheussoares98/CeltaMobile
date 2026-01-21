@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/core/presentation/controllers/request_type/request_type.dart';
-import 'package:celta_intelligence/features/transfer_request/presentation/controllers/ui_state_controller.dart';
-import 'package:celta_intelligence/features/transfer_request/presentation/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
+import 'package:celta_inventario/features/transfer_request/presentation/controllers/ui_state_controller.dart';
+import 'package:celta_inventario/features/transfer_request/presentation/models/models.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

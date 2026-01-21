@@ -1,8 +1,8 @@
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_intelligence/features/adjust_sale_price/presentation/models/models.dart';
-import 'package:celta_intelligence/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/models/models.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

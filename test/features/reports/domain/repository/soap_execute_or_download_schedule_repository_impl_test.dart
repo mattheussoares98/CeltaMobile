@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/features/reports/data/datasource/datasource.dart';
-import 'package:celta_intelligence/features/reports/data/models/models.dart';
-import 'package:celta_intelligence/features/reports/domain/repository/repository.dart';
+import 'package:celta_inventario/features/reports/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/reports/data/models/models.dart';
+import 'package:celta_inventario/features/reports/domain/repository/repository.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

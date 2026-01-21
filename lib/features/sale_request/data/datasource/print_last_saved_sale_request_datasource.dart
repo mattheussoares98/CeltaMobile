@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter_esc_pos_network/flutter_esc_pos_network.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:intl/intl.dart';

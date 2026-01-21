@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class TitleAndSubTitle extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/features/expedition_conference/data/models/expedition_document_model.dart';
+import 'package:celta_inventario/features/expedition_conference/data/models/expedition_document_model.dart';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';

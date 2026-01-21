@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/features/adjust_sale_price/data/models/price_schedule_model.dart';
+import 'package:celta_inventario/features/adjust_sale_price/data/models/price_schedule_model.dart';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';

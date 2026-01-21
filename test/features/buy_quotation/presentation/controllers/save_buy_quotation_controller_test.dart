@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:celta_intelligence/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_intelligence/features/buy_quotation/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/buy_quotation/domain/repository/repository.dart';
-import 'package:celta_intelligence/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_intelligence/features/buy_quotation/providers.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/repository/repository.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/features/buy_quotation/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

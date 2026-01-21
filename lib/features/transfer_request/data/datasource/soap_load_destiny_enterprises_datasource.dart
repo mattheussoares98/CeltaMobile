@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/core/data/models/enterprise/soap_enterprise_model.dart';
+import 'package:celta_inventario/core/data/models/enterprise/soap_enterprise_model.dart';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';

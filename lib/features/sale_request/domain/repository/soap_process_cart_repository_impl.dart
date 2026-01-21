@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/features/sale_request/domain/entities/cart_product_entity.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/cart_product_entity.dart';
 
-import 'package:celta_intelligence/features/sale_request/domain/entities/processed_cart_entity.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/processed_cart_entity.dart';
 
 import '../../data/datasource/datasource.dart';
 import '../../data/models/models.dart';

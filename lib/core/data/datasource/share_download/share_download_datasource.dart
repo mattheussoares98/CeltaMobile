@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';

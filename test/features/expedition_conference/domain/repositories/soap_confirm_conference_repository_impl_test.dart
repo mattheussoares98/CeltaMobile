@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/expedition_conference/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/expedition_conference/domain/repositories/repositories.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

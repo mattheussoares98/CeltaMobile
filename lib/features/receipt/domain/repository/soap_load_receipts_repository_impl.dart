@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/receipt/domain/entity/receipt_entity.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/receipt_entity.dart';
 
 import '../../data/datasource/datasource.dart';
 import 'repository.dart';

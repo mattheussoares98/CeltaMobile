@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/features/customer_register/data/models/covenant_model.dart';
+import 'package:celta_inventario/features/customer_register/data/models/covenant_model.dart';
 
-import 'package:celta_intelligence/features/customer_register/domain/entities/search_covenant_type.dart';
+import 'package:celta_inventario/features/customer_register/domain/entities/search_covenant_type.dart';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';

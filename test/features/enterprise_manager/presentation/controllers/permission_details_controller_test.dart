@@ -1,6 +1,6 @@
 //TODO create this test
-// import 'package:celta_intelligence/features/enterprise_manager/presentation/controllers/controllers.dart';
-// import 'package:celta_intelligence/features/enterprise_manager/providers.dart';
+// import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+// import 'package:celta_inventario/features/enterprise_manager/providers.dart';
 // import 'package:faker/faker.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:flutter_test/flutter_test.dart';

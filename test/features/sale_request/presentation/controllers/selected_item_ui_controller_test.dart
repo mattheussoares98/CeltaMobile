@@ -1,5 +1,5 @@
-import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 

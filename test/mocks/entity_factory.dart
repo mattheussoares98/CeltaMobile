@@ -1,21 +1,21 @@
 import 'dart:typed_data';
 
-import 'package:celta_intelligence/core/data/models/models.dart';
-import 'package:celta_intelligence/core/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/adjust_sale_price/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/adjust_sale_price/presentation/models/models.dart';
-import 'package:celta_intelligence/features/buy_quotation/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/buy_request/data/models/models.dart';
-import 'package:celta_intelligence/features/buy_request/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/competing_prices/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/customer_register/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/expedition_conference/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/inventory/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/receipt/domain/entity/entity.dart';
-import 'package:celta_intelligence/features/reports/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_intelligence/features/transfer_between_stocks/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/models/models.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_request/data/models/models.dart';
+import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
+import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
+import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 
 class EntityFactory {

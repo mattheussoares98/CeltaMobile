@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_intelligence/features/competing_prices/data/models/research_model.dart';
+import 'package:celta_inventario/features/competing_prices/data/models/research_model.dart';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import 'datasource.dart';

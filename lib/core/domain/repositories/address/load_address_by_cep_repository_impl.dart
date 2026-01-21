@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/domain/entities/address/address_entity.dart';
+import 'package:celta_inventario/core/domain/entities/address/address_entity.dart';
 
 import '../../../data/datasource/address/address.dart';
 import 'address.dart';

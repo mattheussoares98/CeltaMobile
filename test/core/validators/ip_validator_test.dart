@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/validators/validators.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Mock the StringHardcoded extension to return the base string.

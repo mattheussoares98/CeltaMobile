@@ -1,7 +1,7 @@
-import 'package:celta_intelligence/features/enterprise_manager/data/datasource/datasource.dart';
-import 'package:celta_intelligence/features/enterprise_manager/data/models/models.dart';
-import 'package:celta_intelligence/features/enterprise_manager/domain/entities/entities.dart';
-import 'package:celta_intelligence/utils/utils.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/models/models.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 

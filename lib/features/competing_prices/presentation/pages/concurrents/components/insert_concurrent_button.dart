@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/competing_prices/presentation/pages/insert_update_concurrent/insert_update_concurrent_page.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/pages/insert_update_concurrent/insert_update_concurrent_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

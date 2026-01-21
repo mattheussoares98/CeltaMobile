@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 import '../../models/address/address_model.dart';
 import '../../../domain/contracts/contracts.dart';

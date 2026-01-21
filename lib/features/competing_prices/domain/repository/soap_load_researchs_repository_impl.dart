@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/features/competing_prices/domain/entities/research_entity.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/research_entity.dart';
 
 import '../../data/datasource/datasource.dart';
 import 'repository.dart';

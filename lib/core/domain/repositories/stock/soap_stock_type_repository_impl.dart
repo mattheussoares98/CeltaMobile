@@ -1,4 +1,4 @@
-import 'package:celta_intelligence/core/domain/entities/stock/stock_type_entity.dart';
+import 'package:celta_inventario/core/domain/entities/stock/stock_type_entity.dart';
 
 import '../../../data/datasource/stock/stock.dart';
 import 'stock.dart';

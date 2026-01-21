@@ -1,6 +1,6 @@
-import 'package:celta_intelligence/features/transfer_request/domain/entities/draft_key.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/draft_key.dart';
 
-import 'package:celta_intelligence/features/transfer_request/domain/entities/transfer_request_product_item_entity.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/transfer_request_product_item_entity.dart';
 
 import '../../data/datasource/datasource.dart';
 import '../../data/models/models.dart';
