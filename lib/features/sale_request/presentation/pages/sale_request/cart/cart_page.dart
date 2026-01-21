@@ -103,7 +103,8 @@ class _CartPageState extends ConsumerState<CartPage>
         .toBrazilianNumber(3, true)
         .replaceAll(RegExp(r'\.'), '');
 
-    Future.delayed(const Duration(milliseconds: 100), () {
+    quantityFocusNode.unfocus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       quantityFocusNode.requestFocus();
       quantityController.selection = TextSelection(
         baseOffset: 0,
