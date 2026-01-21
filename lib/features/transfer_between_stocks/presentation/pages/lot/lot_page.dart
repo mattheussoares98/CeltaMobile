@@ -47,30 +47,44 @@ class _LotPageState extends ConsumerState<LotPage> {
                 quantityFocusNode: lotQuantityFocusNode,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sizes.p4,
-                0,
-                Sizes.p4,
-                Sizes.p4,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ConfirmOrRequestButton(
-                      isRequest: true,
-                      enterpriseCode: widget.enterpriseCode,
-                    ),
+            Consumer(
+              builder: (_, ref, _) {
+                final hasItemSelected = ref.watch(
+                  selectedLotIndexStateControllerProvider.select(
+                    (s) => s != null,
                   ),
-                  gapW8,
-                  Expanded(
-                    child: ConfirmOrRequestButton(
-                      isRequest: false,
-                      enterpriseCode: widget.enterpriseCode,
-                    ),
+                );
+
+                if (hasItemSelected) {
+                  return const SizedBox.shrink();
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    Sizes.p4,
+                    0,
+                    Sizes.p4,
+                    Sizes.p4,
                   ),
-                ],
-              ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ConfirmOrRequestButton(
+                          isRequest: true,
+                          enterpriseCode: widget.enterpriseCode,
+                        ),
+                      ),
+                      gapW8,
+                      Expanded(
+                        child: ConfirmOrRequestButton(
+                          isRequest: false,
+                          enterpriseCode: widget.enterpriseCode,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ],
         );
