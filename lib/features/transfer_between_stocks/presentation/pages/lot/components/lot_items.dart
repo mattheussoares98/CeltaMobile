@@ -39,7 +39,9 @@ class _LotItemsState extends ConsumerState<LotItems> {
     widget.quantityController.selection = TextSelection.fromPosition(
       TextPosition(offset: widget.quantityController.text.length),
     );
-    Future.delayed(const Duration(milliseconds: 100), () {
+
+    widget.quantityFocusNode.unfocus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.quantityFocusNode.requestFocus();
     });
   }

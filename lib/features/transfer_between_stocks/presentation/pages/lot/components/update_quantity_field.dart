@@ -28,7 +28,6 @@ class UpdateQuantityField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mediaSize = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
@@ -66,16 +65,6 @@ class UpdateQuantityField extends ConsumerWidget {
                             onFieldSubmitted: (_) {
                               onSubmit();
                             },
-                            suffixIcon: mediaSize.width > 300
-                                ? IconButton(
-                                    icon: Icon(
-                                      isIOS
-                                          ? CupertinoIcons.checkmark
-                                          : Icons.check,
-                                    ),
-                                    onPressed: onSubmit,
-                                  )
-                                : null,
                             validator: FormValidators.compose([
                               NonEmptyValidator(),
                               NumberValidator(

@@ -138,12 +138,12 @@ class _ProductItem extends ConsumerWidget {
                 ).notifier,
               )
               .updateProductIndex(index);
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (quantityFocusNode.canRequestFocus) {
-              quantityFocusNode.requestFocus();
-            }
-          });
+
           quantityController.clear();
+          quantityFocusNode.unfocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            quantityFocusNode.requestFocus();
+          });
         },
         showDropIcon: true,
         isSelected: isSelected,
