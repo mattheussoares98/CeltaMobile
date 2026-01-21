@@ -55,7 +55,6 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
   }
 
   void onTap(int index, BuyRequestProductItemEntity product) {
-    quantityFocusNode.requestFocus();
     costController.text = product.cost
         .toString()
         .toBrazilianNumber(4)
@@ -71,6 +70,11 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
     ref
         .read(uiStateControllerProvider.notifier)
         .updateSelectedCartProductIndex(index);
+
+    quantityFocusNode.unfocus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      quantityFocusNode.requestFocus();
+    });
   }
 
   @override

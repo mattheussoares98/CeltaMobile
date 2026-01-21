@@ -55,7 +55,8 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
           .replaceAll(RegExp(r'\.'), '');
     }
 
-    Future.delayed(const Duration(milliseconds: 100), () {
+    quantityFocusNode.unfocus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       quantityFocusNode.requestFocus();
     });
   }

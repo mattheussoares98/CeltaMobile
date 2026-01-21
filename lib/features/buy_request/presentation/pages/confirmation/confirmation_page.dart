@@ -35,7 +35,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
         child: Column(
           children: [
             Expanded(
