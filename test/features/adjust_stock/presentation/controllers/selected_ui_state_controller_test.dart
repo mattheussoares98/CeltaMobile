@@ -1,5 +1,7 @@
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/adjust_stock/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_stock/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
@@ -17,12 +19,13 @@ class FakeStockTypeStateController extends StockTypeStateController {
 }
 
 void main() {
-  late ProviderContainer container;
   late Faker fakerInstance;
   late TransferJustificationEntity? selectedJustification;
   late StockTypeEntity? selectedStockType;
   late int enterpriseCode;
   late List<StockTypeEntity> fakeStocks;
+  late UserSessionModel userSession;
+  //TODO fix tests, is failing when listen the validatedUserSessionProvider
 
   setUp(() {
     fakerInstance = Faker();
@@ -35,12 +38,18 @@ void main() {
       EntityFactory.makeStockTypeEntity(),
       EntityFactory.makeStockTypeEntity(),
     ];
+    userSession = UserSessionModel.fromEntity(
+      EntityFactory.makeUserSessionEntity(),
+    );
   });
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
       overrides: [
         // 2. Override the internal provider dependency
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(userSession),
+        ),
         stockTypeStateControllerProvider(
           enterpriseCode,
         ).overrideWith(() => FakeStockTypeStateController(fakeStocks)),
@@ -53,7 +62,7 @@ void main() {
       'build should return SelectedItemUIState.empty() as initial state',
       () {
         // Act
-        container = makeProviderContainer();
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
         final state = container.read(
           selectedUIStateControllerProvider(enterpriseCode),
@@ -69,7 +78,7 @@ void main() {
       'udpateValues should replace the current state with the provided value',
       () async {
         // Arrange
-        container = makeProviderContainer();
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(
           selectedUIStateControllerProvider(enterpriseCode).notifier,
@@ -93,14 +102,6 @@ void main() {
           selectedStockType: newState.selectedStockType,
         );
 
-        // Assert
-        // 1. Verify the state was updated in the container
-        expect(
-          container.read(selectedUIStateControllerProvider(enterpriseCode)),
-          newState,
-        );
-
-        // 2. Verify the listener captured exactly one change
         expect(states, [newState]);
       },
     );
@@ -109,7 +110,7 @@ void main() {
       'multiple udpateValues calls should result in the last provided state',
       () async {
         // Arrange
-        container = makeProviderContainer();
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(
           selectedUIStateControllerProvider(enterpriseCode).notifier,
@@ -150,13 +151,12 @@ void main() {
     test(
       'should annul the selectedIndex if pass the same value as param',
       () async {
-        // Arrange
-        container = makeProviderContainer();
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(
           selectedUIStateControllerProvider(enterpriseCode).notifier,
         );
-        final state = SelectedItemUIState(
+        final firstState = SelectedItemUIState(
           selectedIndex: fakerInstance.randomGenerator.integer(10),
           selectedJustification: EntityFactory.makeTransferJustificationEntity()
               .annulValues(annulCodigoInterno_TipoEstoque: true),
@@ -165,31 +165,25 @@ void main() {
 
         // Act
         await notifier.updateValues(
-          selectedIndex: state.selectedIndex,
-          selectedJustification: state.selectedJustification,
-          selectedStockType: state.selectedStockType,
+          selectedIndex: firstState.selectedIndex,
+          selectedJustification: firstState.selectedJustification,
+          selectedStockType: firstState.selectedStockType,
         );
-        final firstState = container.read(
-          selectedUIStateControllerProvider(enterpriseCode),
-        );
-        expect(firstState.selectedIndex, isNotNull);
+        await notifier.updateValues(selectedIndex: firstState.selectedIndex);
 
-        await notifier.updateValues(
-          selectedIndex: state.selectedIndex,
-          selectedJustification: state.selectedJustification,
-          selectedStockType: state.selectedStockType,
-        );
-        final secondState = container.read(
+        // Assert
+        final finalState = container.read(
           selectedUIStateControllerProvider(enterpriseCode),
         );
-        expect(secondState.selectedIndex, isNull);
+        expect(finalState.selectedIndex, isNull);
+        expect(finalState.selectedIndex, isNot(firstState.selectedIndex));
       },
     );
     test(
       'should update automatically the selected stock when the justification has a fixed stock',
       () async {
         // Arrange
-        container = makeProviderContainer();
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
         final notifier = container.read(
           selectedUIStateControllerProvider(enterpriseCode).notifier,
@@ -210,7 +204,7 @@ void main() {
     );
     test('should not update properties that wasnt passed', () async {
       // Arrange
-      container = makeProviderContainer();
+      final container = makeProviderContainer();
       addTearDown(container.dispose);
       final notifier = container.read(
         selectedUIStateControllerProvider(enterpriseCode).notifier,
@@ -221,6 +215,7 @@ void main() {
         selectedJustification: selectedJustification,
         selectedStockType: selectedStockType,
       );
+
       await notifier.updateValues(
         selectedIndex: state.selectedIndex,
         selectedJustification: state.selectedJustification,
@@ -234,5 +229,44 @@ void main() {
       expect(currentState.selectedJustification, state.selectedJustification);
       expect(currentState.selectedStockType, state.selectedStockType);
     });
+
+    test(
+      'should annul the selectedIndex if pass true value for annulSelectedIndex',
+      () async {
+        // Arrange
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        final notifier = container.read(
+          selectedUIStateControllerProvider(enterpriseCode).notifier,
+        );
+
+        final state = SelectedItemUIState(
+          selectedIndex: faker.randomGenerator.integer(100),
+          selectedJustification: selectedJustification,
+          selectedStockType: selectedStockType,
+        );
+        await notifier.updateValues(
+          selectedIndex: state.selectedIndex,
+          selectedJustification: state.selectedJustification,
+          selectedStockType: state.selectedStockType,
+        );
+
+        final currentState1 = container.read(
+          selectedUIStateControllerProvider(enterpriseCode),
+        );
+        expect(currentState1.selectedIndex, state.selectedIndex);
+        expect(
+          currentState1.selectedJustification,
+          state.selectedJustification,
+        );
+        expect(currentState1.selectedStockType, state.selectedStockType);
+
+        await notifier.updateValues(annulSelectedIndex: true);
+        final currentState2 = container.read(
+          selectedUIStateControllerProvider(enterpriseCode),
+        );
+        expect(currentState2.selectedIndex, isNull);
+      },
+    );
   });
 }

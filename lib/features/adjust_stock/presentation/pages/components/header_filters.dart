@@ -6,20 +6,30 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../controllers/controllers.dart';
 
-class HeaderFilters extends ConsumerWidget {
+class HeaderFilters extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final TextEditingController searchValueController;
-  const HeaderFilters({
-    super.key,
-    required this.enterpriseCode,
-    required this.searchValueController,
-  });
+
+  const HeaderFilters({super.key, required this.enterpriseCode});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _HeaderFiltersState();
+}
+
+class _HeaderFiltersState extends ConsumerState<HeaderFilters> {
+  final searchValueController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchValueController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final searchProductKey = SearchProductKey(
-      enterpriseCode,
+      widget.enterpriseCode,
       BsRoutine.adjustStock,
       Modules.adjustStock,
     );
@@ -35,6 +45,15 @@ class HeaderFilters extends ConsumerWidget {
             ).select((state) => state.isLoading),
           ),
           searchProducts: () {
+            //remove the selected index when search the product
+            ref
+                .read(
+                  selectedUIStateControllerProvider(
+                    widget.enterpriseCode,
+                  ).notifier,
+                )
+                .updateValues(annulSelectedIndex: true);
+
             ref
                 .read(
                   searchProductsStateControllerProvider(
@@ -44,16 +63,16 @@ class HeaderFilters extends ConsumerWidget {
                 .loadProducts(
                   GetProductsJsonParams(
                     searchValue: searchValueController.text,
-                    enterpriseCodes: [enterpriseCode],
+                    enterpriseCodes: [widget.enterpriseCode],
                     routine: BsRoutine.adjustStock,
                   ),
                 );
           },
         ),
         gapH8,
-        JustificationsDropdown(enterpriseCode: enterpriseCode),
+        JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
         gapH8,
-        StocksDropdown(enterpriseCode: enterpriseCode),
+        StocksDropdown(enterpriseCode: widget.enterpriseCode),
         gapH8,
       ],
     );

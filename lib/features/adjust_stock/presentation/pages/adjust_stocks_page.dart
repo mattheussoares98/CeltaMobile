@@ -19,7 +19,6 @@ class AdjustStocksPage extends ConsumerStatefulWidget {
 }
 
 class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
-  final searchValueController = TextEditingController();
   final quantityController = TextEditingController();
   final quantityFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
@@ -28,7 +27,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
   void dispose() {
     super.dispose();
 
-    searchValueController.dispose();
     quantityController.dispose();
     quantityFocusNode.dispose();
   }
@@ -72,10 +70,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
               padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
               child: Column(
                 children: [
-                  HeaderFilters(
-                    enterpriseCode: widget.enterpriseCode,
-                    searchValueController: searchValueController,
-                  ),
+                  HeaderFilters(enterpriseCode: widget.enterpriseCode),
                   Expanded(
                     child: ProductsItems(
                       quantityFocusNode: quantityFocusNode,

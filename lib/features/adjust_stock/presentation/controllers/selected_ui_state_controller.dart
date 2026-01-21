@@ -19,6 +19,7 @@ class SelectedUIStateController extends _$SelectedUIStateController {
     TransferJustificationEntity? selectedJustification,
     StockTypeEntity? selectedStockType,
     int? selectedIndex,
+    bool? annulSelectedIndex,
   }) async {
     StockTypeEntity? newStock;
     if (selectedJustification?.CodigoInterno_TipoEstoque != null) {
@@ -37,7 +38,8 @@ class SelectedUIStateController extends _$SelectedUIStateController {
           selectedJustification ?? state.selectedJustification,
       selectedStockType:
           newStock ?? selectedStockType ?? state.selectedStockType,
-      selectedIndex: selectedIndex == state.selectedIndex
+      selectedIndex:
+          selectedIndex == state.selectedIndex || annulSelectedIndex == true
           ? null
           : selectedIndex ?? state.selectedIndex,
     );
