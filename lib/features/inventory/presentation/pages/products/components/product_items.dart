@@ -69,7 +69,10 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
           uiStateControllerProvider(widget.codigoInternoInventario).notifier,
         )
         .updateProductIndex(index);
-    Future.delayed(const Duration(milliseconds: 100), () {
+
+    widget.quantityController.clear();
+    widget.quantityFocusNode.unfocus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.quantityFocusNode.requestFocus();
     });
   }
