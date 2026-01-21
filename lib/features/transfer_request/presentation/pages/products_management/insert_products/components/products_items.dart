@@ -46,8 +46,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     required TransferRequestProductItemEntity? transferRequestProductItem,
     required bool requestTypeAllowChangePrice,
   }) {
-    priceController.clear();
-
     if (product.Value == 0 && !requestTypeAllowChangePrice) {
       showSnackBarMessage(
         context,
@@ -69,7 +67,9 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
         )
         .updateSelectedInsertProductIndex(index);
 
-    quantityController.text = '1';
+    priceController.clear();
+    quantityController.clear();
+
     if (product.Value! > 0 || transferRequestProductItem?.value != null) {
       final price = transferRequestProductItem?.value ?? product.Value;
       priceController.text = price.toString().toBrazilianNumber().replaceAll(
@@ -77,12 +77,10 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
         '',
       );
     }
-    Future.delayed(const Duration(milliseconds: 100), () {
+
+    quantityFocusNode.unfocus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       quantityFocusNode.requestFocus();
-      quantityController.selection = TextSelection(
-        baseOffset: 0,
-        extentOffset: quantityController.text.length,
-      );
     });
   }
 
