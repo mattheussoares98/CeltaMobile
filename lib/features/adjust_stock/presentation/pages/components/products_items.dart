@@ -122,6 +122,7 @@ class _ProductItem extends ConsumerWidget {
         product: product,
         routine: BsRoutine.adjustStock,
         onTap: () async {
+          quantityController.clear();
           ref
               .read(selectedUIStateControllerProvider(enterpriseCode).notifier)
               .updateValues(selectedIndex: index);
