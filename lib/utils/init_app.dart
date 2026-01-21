@@ -35,7 +35,7 @@ Future<void> _initFirebase() async {
 }
 
 Future<void> _setOnlyPortraitMode() async {
-  await SystemChrome.setPreferredOrientations([
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
