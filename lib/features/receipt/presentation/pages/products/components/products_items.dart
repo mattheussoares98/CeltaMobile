@@ -86,7 +86,8 @@ class _ProductItem extends ConsumerWidget {
               .read(selectedProductIndeStateControllerProvider.notifier)
               .updateIndex(index);
 
-          Future.delayed(const Duration(milliseconds: 300), () {
+          quantityFocusNode.unfocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             quantityFocusNode.requestFocus();
           });
         },
