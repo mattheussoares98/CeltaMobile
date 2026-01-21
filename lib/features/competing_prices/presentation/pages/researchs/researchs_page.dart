@@ -25,9 +25,7 @@ class ResearchsPage extends ConsumerWidget {
 
           return RefreshIndicator(
             onRefresh: () async {
-              ref.invalidate(
-                researchsStateControllerProvider,
-              ); //TODO test and add in all pages that is possible reload the list
+              ref.invalidate(researchsStateControllerProvider);
             },
             child: ListView.builder(
               itemCount: researchs.length,
