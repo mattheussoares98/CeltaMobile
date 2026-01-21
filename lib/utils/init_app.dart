@@ -14,10 +14,12 @@ import '../firebase_options.dart';
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await _initFirebase();
-  await _initSupabase();
-  await _initHive();
-  await _setOnlyPortraitMode();
+  await Future.wait([
+    _initFirebase(),
+    _initSupabase(),
+    _initHive(),
+    _setOnlyPortraitMode(),
+  ]);
 }
 
 Future<void> _initFirebase() async {
