@@ -133,10 +133,12 @@ class _ProductItem extends ConsumerWidget {
         },
         showDropIcon: true,
         isSelected: isSelected,
-        clickableBottom: lastConfirmedAdjust != null
+        clickableBottom:
+            lastConfirmedAdjust?.productPackingCode ==
+                product.ProductPackingCode
             ? TitleAndSubTitle(
                 title:
-                    'Última qtd alterada ${lastConfirmedAdjust.operationType == OperationType.entrance ? "+" : "-"}'
+                    'Última qtd alterada ${lastConfirmedAdjust!.operationType == OperationType.entrance ? "+" : "-"}'
                         .hardcoded,
                 subTitle: lastConfirmedAdjust.quantity
                     .toString()
