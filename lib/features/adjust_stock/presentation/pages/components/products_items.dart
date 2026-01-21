@@ -125,10 +125,11 @@ class _ProductItem extends ConsumerWidget {
           ref
               .read(selectedUIStateControllerProvider(enterpriseCode).notifier)
               .updateValues(selectedIndex: index);
+          if (quantityFocusNode.hasFocus) {
+            quantityFocusNode.unfocus();
+          }
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (quantityFocusNode.canRequestFocus) {
-              quantityFocusNode.requestFocus();
-            }
+            quantityFocusNode.requestFocus();
           });
         },
         showDropIcon: true,
