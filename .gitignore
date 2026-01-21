@@ -46,6 +46,3 @@ app.*.map.json
 
 # Generated files
 **/*.g.dart
-
-# Secrets and Credentials
-lib/core/config/secrets.dart
