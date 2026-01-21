@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import './app.dart';
 import './exceptions/error_logger.dart';
 import './localization/string_hardcoded.dart';
@@ -11,6 +13,10 @@ import 'utils/utils.dart';
 
 void main() async {
   await initApp();
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.clear();
+  //TODO after update all devices, remove this code
   // turn off the # in the URLs on the web
   usePathUrlStrategy();
   // * Register error handlers. For more info, see:
