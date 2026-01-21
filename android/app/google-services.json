@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "386752507656",
+    "firebase_url": "https://celtamobile-7d69a-default-rtdb.firebaseio.com",
+    "project_id": "celtamobile-7d69a",
+    "storage_bucket": "celtamobile-7d69a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386752507656:android:a6e4e81749987ca914c6bd",
+        "android_client_info": {
+          "package_name": "br.com.celtaware.inventario"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386752507656-juuqubsakvef29db8o31h2f6d0lmrp35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwyOVAPIabJ6k65VyyBeTv_wx4vz-pSmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386752507656-juuqubsakvef29db8o31h2f6d0lmrp35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

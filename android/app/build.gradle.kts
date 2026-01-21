@@ -6,6 +6,7 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -32,18 +33,15 @@ android {
 
     signingConfigs {
         create("release") {
-           val keystoreProperties = Properties().apply { 
-                val propertiesFile = file("../key.properties")
-                if (propertiesFile.exists()) {
-                    load(FileInputStream(propertiesFile))
-                }
-            }
-            keyAlias = keystoreProperties["keyAlias"] as String?
-            keyPassword = keystoreProperties["keyPassword"] as String?
-            storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
-            storePassword = keystoreProperties["storePassword"] as String?
+            val keystoreProperties =
+                    Properties().apply { load(FileInputStream(file("../key.properties"))) }
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
         }
     }
+    
 
     buildTypes {
         getByName("release") {
@@ -55,3 +53,9 @@ android {
 }
 
 flutter { source = "../.." }
+
+dependencies {
+  implementation(platform("com.google.firebase:firebase-bom:34.8.0"))
+  implementation("com.google.firebase:firebase-analytics")
+  implementation("com.google.firebase:firebase-crashlytics")
+}
