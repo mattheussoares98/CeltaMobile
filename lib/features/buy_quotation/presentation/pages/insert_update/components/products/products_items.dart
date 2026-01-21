@@ -35,50 +35,56 @@ class ProductsItems extends ConsumerWidget {
       ),
     );
 
-    void updateIndex(int? index) {
-      observationsFocusNode.unfocus();
+    void updateSelectedPackingCode(int? productPackingCode) {
+      if (observationsFocusNode.hasFocus) {
+        observationsFocusNode.unfocus();
+      }
 
       ref
           .read(selectedProductPackingCodeStateControllerProvider.notifier)
-          .updateProductPackingCode(index);
+          .updateProductPackingCode(productPackingCode);
 
-      if (index != null) {
-        final products = ref
-            .read(
-              completeBuyQuotationsStateControllerProvider(
-                widget.enterpriseCode,
-                widget.code.toString(),
-              ),
-            )
-            .value
-            ?.Products;
+      if (productPackingCode == null) {
+        return;
+      }
 
-        final product = products?[index];
-        if (product == null) return;
+      final products = ref
+          .read(
+            completeBuyQuotationsStateControllerProvider(
+              widget.enterpriseCode,
+              widget.code.toString(),
+            ),
+          )
+          .value
+          ?.Products;
 
-        for (final uiController in uiControllers) {
-          final controller = uiController.controller;
+      final product = products?.firstWhereOrNull(
+        (p) => p.Product?.ProductPackingCode == productPackingCode,
+      );
+      if (product == null) return;
 
-          if (buyQuotationEnterprises?.any(
-                (e) => e.enterprise.Code == uiController.enterpriseCode,
-              ) ==
-              false) {
-            controller.text = '0';
-            continue;
-          }
+      for (final uiController in uiControllers) {
+        final controller = uiController.controller;
 
-          final quantity = product.ProductEnterprises?.firstWhereOrNull(
-            (e) => e.EnterpriseCode == uiController.enterpriseCode,
-          )?.Quantity;
+        if (buyQuotationEnterprises?.any(
+              (e) => e.enterprise.Code == uiController.enterpriseCode,
+            ) ==
+            false) {
+          controller.text = '0';
+          continue;
+        }
 
-          if (quantity != null && quantity > 0) {
-            controller.text = quantity
-                .toString()
-                .toBrazilianNumber(3)
-                .replaceAll(RegExp(r'\.'), '');
-          } else {
-            controller.clear();
-          }
+        final quantity = product.ProductEnterprises?.firstWhereOrNull(
+          (e) => e.EnterpriseCode == uiController.enterpriseCode,
+        )?.Quantity;
+
+        if (quantity != null && quantity > 0) {
+          controller.text = quantity
+              .toString()
+              .toBrazilianNumber(3)
+              .replaceAll(RegExp(r'\.'), '');
+        } else {
+          controller.clear();
         }
       }
     }
@@ -102,7 +108,9 @@ class ProductsItems extends ConsumerWidget {
           itemBuilder: (_, index) {
             final product = filteredProducts[index];
             return ProductItem(
-              onTap: () => updateIndex(index),
+              onTap: () => updateSelectedPackingCode(
+                product.Product?.ProductPackingCode,
+              ),
               product: product,
               filteredProducts: filteredProducts,
               sortedEnterprises: buyQuotationEnterprises,
