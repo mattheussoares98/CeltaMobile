@@ -166,7 +166,7 @@ void main() {
               .removeItem(itemToRemove);
 
           // ASSERT
-          expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+          expect(states, [isA<AsyncData>()]);
           expect(states.last.value, hasLength(1));
           expect(
             states.last.value!.any(

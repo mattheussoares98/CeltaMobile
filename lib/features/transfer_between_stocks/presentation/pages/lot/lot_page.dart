@@ -1,8 +1,6 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
@@ -28,67 +26,63 @@ class _LotPageState extends ConsumerState<LotPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AsyncValueWidget(
-      value: ref.watch(lotStateControllerProvider(widget.enterpriseCode)),
-      tryAgain: () {
-        ref.invalidate(lotStateControllerProvider(widget.enterpriseCode));
-      },
-      data: (items) {
-        if (items.isEmpty) {
-          return Center(child: Text('Lote vazio'.hardcoded));
-        }
-        return Column(
-          children: [
-            Expanded(
-              child: LotItems(
-                items: items,
-                quantityController: lotQuantityController,
-                enterpriseCode: widget.enterpriseCode,
-                quantityFocusNode: lotQuantityFocusNode,
+    return Column(
+      children: [
+        Expanded(
+          child: LotItems(
+            quantityController: lotQuantityController,
+            enterpriseCode: widget.enterpriseCode,
+            quantityFocusNode: lotQuantityFocusNode,
+          ),
+        ),
+        Consumer(
+          builder: (_, ref, _) {
+            final hasItemSelected = ref.watch(
+              selectedLotIndexStateControllerProvider.select((s) => s != null),
+            );
+
+            if (hasItemSelected) {
+              return const SizedBox.shrink();
+            }
+
+            final hasInsertedProduct = ref.watch(
+              lotStateControllerProvider(
+                widget.enterpriseCode,
+              ).select((s) => s.value?.isNotEmpty == true),
+            );
+
+            if (!hasInsertedProduct) {
+              return const SizedBox.shrink();
+            }
+
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p4,
+                0,
+                Sizes.p4,
+                Sizes.p4,
               ),
-            ),
-            Consumer(
-              builder: (_, ref, _) {
-                final hasItemSelected = ref.watch(
-                  selectedLotIndexStateControllerProvider.select(
-                    (s) => s != null,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ConfirmOrRequestButton(
+                      isRequest: true,
+                      enterpriseCode: widget.enterpriseCode,
+                    ),
                   ),
-                );
-
-                if (hasItemSelected) {
-                  return const SizedBox.shrink();
-                }
-
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Sizes.p4,
-                    0,
-                    Sizes.p4,
-                    Sizes.p4,
+                  gapW8,
+                  Expanded(
+                    child: ConfirmOrRequestButton(
+                      isRequest: false,
+                      enterpriseCode: widget.enterpriseCode,
+                    ),
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ConfirmOrRequestButton(
-                          isRequest: true,
-                          enterpriseCode: widget.enterpriseCode,
-                        ),
-                      ),
-                      gapW8,
-                      Expanded(
-                        child: ConfirmOrRequestButton(
-                          isRequest: false,
-                          enterpriseCode: widget.enterpriseCode,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ],
-        );
-      },
+                ],
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

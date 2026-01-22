@@ -50,7 +50,6 @@ class LotStateController extends _$LotStateController {
   }
 
   Future<void> removeItem(ProductLotInfoEntity item) async {
-    state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localItemsLotRepositoryProvider);
       await repository.removeItem(item);

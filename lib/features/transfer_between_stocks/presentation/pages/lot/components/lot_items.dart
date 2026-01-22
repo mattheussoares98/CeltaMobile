@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../constants/constants.dart';
+import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
 
 class LotItems extends ConsumerStatefulWidget {
-  final List<ProductLotInfoEntity> items;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final int enterpriseCode;
 
   const LotItems({
     super.key,
-    required this.items,
     required this.quantityController,
     required this.quantityFocusNode,
     required this.enterpriseCode,
@@ -36,13 +35,14 @@ class _LotItemsState extends ConsumerState<LotItems> {
         .toDouble()
         .toString()
         .toBrazilianNumber(3, true);
-    widget.quantityController.selection = TextSelection.fromPosition(
-      TextPosition(offset: widget.quantityController.text.length),
-    );
 
     widget.quantityFocusNode.unfocus();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.quantityFocusNode.requestFocus();
+      widget.quantityController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: widget.quantityController.text.length,
+      );
     });
   }
 
@@ -67,10 +67,30 @@ class _LotItemsState extends ConsumerState<LotItems> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final productsAreEmpty = ref.watch(
+      lotStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.value?.isEmpty == true),
+    );
+
+    if (productsAreEmpty) {
+      return Center(
+        child: Text(
+          'Lote vazio'.hardcoded,
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.red),
+        ),
+      );
+    }
+
+    final products = ref.watch(
+      lotStateControllerProvider(widget.enterpriseCode).select((s) => s.value),
+    );
     return ListView.builder(
-      itemCount: widget.items.length,
+      itemCount: products!.length,
       itemBuilder: (_, index) {
-        final item = widget.items[index];
+        final item = products[index];
 
         final packingCode = item.product.ProductPackingCode;
         final destinyCode = item.selectedDestinyStock.CodigoInterno_TipoEstoque;
@@ -83,8 +103,6 @@ class _LotItemsState extends ConsumerState<LotItems> {
             '$packingCode-$destinyCode-$originCode-$justificationCode',
           ),
           index: index,
-          item: item,
-          items: widget.items,
           quantityController: widget.quantityController,
           quantityFocusNode: widget.quantityFocusNode,
           enterpriseCode: widget.enterpriseCode,
@@ -97,10 +115,8 @@ class _LotItemsState extends ConsumerState<LotItems> {
   }
 }
 
-class _LotItem extends StatelessWidget {
+class _LotItem extends ConsumerWidget {
   final int index;
-  final ProductLotInfoEntity item;
-  final List<ProductLotInfoEntity> items;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
   final int enterpriseCode;
@@ -110,8 +126,6 @@ class _LotItem extends StatelessWidget {
   const _LotItem({
     super.key,
     required this.index,
-    required this.item,
-    required this.items,
     required this.quantityController,
     required this.quantityFocusNode,
     required this.enterpriseCode,
@@ -121,53 +135,51 @@ class _LotItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final item = ref.watch(
+      lotStateControllerProvider(enterpriseCode).select((s) => s.value![index]),
+    );
     return RepaintBoundary(
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: (index == items.length - 1) ? Sizes.p32 : 0,
-        ),
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              InkWell(
-                onTap: changeSelectedIndex,
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(Sizes.p8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NameAndJustification(item: item),
-                          OriginAndDestinyWithQuantities(item: item),
-                        ],
-                      ),
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            InkWell(
+              onTap: changeSelectedIndex,
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(Sizes.p8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        NameAndJustification(item: item),
+                        OriginAndDestinyWithQuantities(item: item),
+                      ],
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: EditAndRemoveIconButtons(
-                        item: item,
-                        onTapEdit: changeSelectedIndex,
-                        enterpriseCode: enterpriseCode,
-                      ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: EditAndRemoveIconButtons(
+                      item: item,
+                      onTapEdit: changeSelectedIndex,
+                      enterpriseCode: enterpriseCode,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              UpdateQuantityField(
-                index: index,
-                formKey: formKey,
-                quantityController: quantityController,
-                quantityFocusNode: quantityFocusNode,
-                item: item,
-                onSubmit: onSubmit,
-              ),
-            ],
-          ),
+            ),
+            UpdateQuantityField(
+              index: index,
+              formKey: formKey,
+              quantityController: quantityController,
+              quantityFocusNode: quantityFocusNode,
+              item: item,
+              onSubmit: onSubmit,
+            ),
+          ],
         ),
       ),
     );
