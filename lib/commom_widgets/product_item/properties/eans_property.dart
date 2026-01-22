@@ -16,6 +16,10 @@ class EansProperty extends StatelessWidget {
         widget.product.EANs!.isNotEmpty &&
         widget.product.EANs!.any((e) => e.isNotEmpty);
 
+    if (!hasEan) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: EdgeInsets.only(
         top: widget.routine == BsRoutine.buyQuotation ? Sizes.p16 : 0,
