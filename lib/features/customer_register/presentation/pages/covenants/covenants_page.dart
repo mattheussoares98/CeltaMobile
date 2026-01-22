@@ -33,6 +33,10 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
   }
 
   void changeSelectedIndex(int? index) {
+    if (limitFocusNode.hasFocus) {
+      limitFocusNode.unfocus();
+    }
+
     if (selectedIndex == index || index == null) {
       setState(() {
         selectedIndex = null;
@@ -41,7 +45,8 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
       setState(() {
         selectedIndex = index;
       });
-      Future.delayed(const Duration(milliseconds: 100), () {
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         limitFocusNode.requestFocus();
       });
     }
