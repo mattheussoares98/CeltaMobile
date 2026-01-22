@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../utils/utils.dart';
@@ -157,14 +156,11 @@ class _ProductItem extends ConsumerWidget {
                 style: theme.textTheme.titleSmall?.copyWith(color: Colors.blue),
               ),
         notClickableBottom: isSelected
-            ? Padding(
-                padding: const EdgeInsets.only(top: Sizes.p8),
-                child: AddInLot(
-                  productIsAlreadyInLot: quantityInLot != null,
-                  addInLot: () => addInLot(product),
-                  quantityController: quantityController,
-                  quantityFocusNode: quantityFocusNode,
-                ),
+            ? AddInLot(
+                productIsAlreadyInLot: quantityInLot != null,
+                addInLot: () => addInLot(product),
+                quantityController: quantityController,
+                quantityFocusNode: quantityFocusNode,
               )
             : null,
       ),
