@@ -80,10 +80,21 @@ class _CartPageState extends ConsumerState<CartPage>
     await notifier.changeInstructions(instructionsController.text);
   }
 
-  void changeSelectedIndex(CartProductEntity product) {
+  void changeSelectedIndex(CartProductEntity product) async {
     ref
         .read(selectedItemUIControllerProvider(isCartPage: true).notifier)
         .selectProduct(product.ProductPackingCode, product);
+
+    if (quantityFocusNode.hasFocus) {
+      quantityFocusNode.unfocus();
+      await Future.delayed(const Duration(milliseconds: 100));
+    } else if (observationsFocusNode.hasFocus) {
+      observationsFocusNode.unfocus();
+      await Future.delayed(const Duration(milliseconds: 100));
+    } else if (instructionsFocusNode.hasFocus) {
+      instructionsFocusNode.unfocus();
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
 
     final selectedPackingCode = ref.read(
       selectedItemUIControllerProvider(
@@ -102,7 +113,6 @@ class _CartPageState extends ConsumerState<CartPage>
         .toBrazilianNumber(3, true)
         .replaceAll(RegExp(r'\.'), '');
 
-    quantityFocusNode.unfocus();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       quantityFocusNode.requestFocus();
       quantityController.selection = TextSelection(
@@ -190,10 +200,35 @@ class _CartPageState extends ConsumerState<CartPage>
                 );
               },
             ),
-            TotalCalculateAndSave(
-              selectedRequest: widget.selectedRequest,
-              instructionsController: instructionsController,
-              observationsController: observationsController,
+            Consumer(
+              builder: (_, ref, _) {
+                final hasSelectedCartProductIndex = ref.watch(
+                  selectedItemUIControllerProvider(
+                    isCartPage: true,
+                  ).select((s) => s.productPackingCode != null),
+                );
+                if (hasSelectedCartProductIndex) {
+                  return const SizedBox.shrink();
+                }
+
+                return AnimatedBuilder(
+                  animation: Listenable.merge([
+                    observationsFocusNode,
+                    instructionsFocusNode,
+                  ]),
+                  builder: (_, _) {
+                    if (observationsFocusNode.hasFocus ||
+                        instructionsFocusNode.hasFocus) {
+                      return const SizedBox.shrink();
+                    }
+                    return TotalCalculateAndSave(
+                      selectedRequest: widget.selectedRequest,
+                      instructionsController: instructionsController,
+                      observationsController: observationsController,
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
