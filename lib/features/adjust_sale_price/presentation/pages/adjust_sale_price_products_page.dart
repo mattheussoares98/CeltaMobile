@@ -9,6 +9,7 @@ import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../routing/routing.dart';
+import '../controllers/controllers.dart';
 import 'components/components.dart';
 
 class AdjustSalePriceProductsPage extends ConsumerWidget {
@@ -70,7 +71,7 @@ class AdjustSalePriceProductsPage extends ConsumerWidget {
   }
 }
 
-class _ProductItem extends StatelessWidget {
+class _ProductItem extends ConsumerWidget {
   final ProductEntity product;
   final int enterpriseCode;
   const _ProductItem({
@@ -80,7 +81,7 @@ class _ProductItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     return RepaintBoundary(
@@ -102,6 +103,14 @@ class _ProductItem extends StatelessWidget {
                 ),
                 iconAlignment: IconAlignment.end,
                 onPressed: () {
+                  ref
+                      .read(
+                        selectedProductStateControllerProvider(
+                          enterpriseCode,
+                          product.PLU!,
+                        ).notifier,
+                      )
+                      .updateSelectedProduct(product);
                   context.goNamed(
                     Routes.adjustSalePrice.name,
                     pathParameters: {

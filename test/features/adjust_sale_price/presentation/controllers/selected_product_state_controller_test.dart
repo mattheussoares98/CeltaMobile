@@ -58,35 +58,37 @@ void main() {
     );
   }
 
-  group('SelectedProductStateController', () {
+  group('build', () {
+    test('should return null when build', () async {
+      final container = makeProviderContainer();
+      final state = await container.read(
+        selectedProductStateControllerProvider(
+          enterpriseCode,
+          productEntity.PLU!,
+        ).future,
+      );
+
+      expect(state, isNull);
+    });
+  });
+
+  group('Update selected product', () {
     test(
-      'should return the previous product when call more than once the same provider',
+      'should load the product remotely when select product with null value',
       () async {
+        final provider = selectedProductStateControllerProvider(
+          enterpriseCode,
+          productEntity.PLU!,
+        );
         final container = makeProviderContainer();
-        final states = <AsyncValue<ProductEntity?>>[];
-        container.listen(
-          selectedProductStateControllerProvider(
-            enterpriseCode,
-            productEntity.PLU!,
-          ),
-          (_, next) => states.add(next),
-        );
 
-        final result = await container.read(
-          selectedProductStateControllerProvider(
-            enterpriseCode,
-            productEntity.PLU!,
-          ).future,
-        );
+        final result = await container.read(provider.future);
+        expect(result, isNull);
 
-        expect(result, productEntity);
+        await container.read(provider.notifier).updateSelectedProduct(null);
 
-        await container.read(
-          selectedProductStateControllerProvider(
-            enterpriseCode,
-            productEntity.PLU!,
-          ).future,
-        );
+        final state = await container.read(provider.future);
+        expect(state, productEntity);
 
         verify(
           () => mockSoapProductsRepository.load(
@@ -100,46 +102,37 @@ void main() {
       },
     );
 
-    test(
-      'should fetch product from repository if initialProduct is null',
-      () async {
-        final container = makeProviderContainer();
-        final states = <AsyncValue<ProductEntity?>>[];
-        container.listen(
-          selectedProductStateControllerProvider(
-            enterpriseCode,
-            productEntity.PLU!,
-          ),
-          (_, next) => states.add(next),
-        );
+    test('should not call repository when product is not null', () async {
+      final provider = selectedProductStateControllerProvider(
+        enterpriseCode,
+        productEntity.PLU!,
+      );
+      final container = makeProviderContainer();
+      final states = <AsyncValue<ProductEntity?>>[];
+      container.listen(provider, (_, next) => states.add(next));
 
-        await container.read(
-          selectedProductStateControllerProvider(
-            enterpriseCode,
-            productEntity.PLU!,
-          ).future,
-        );
+      final result = await container.read(provider.future);
 
-        expect(states, [isA<AsyncData<ProductEntity?>>()]);
-        expect(states.last.value, productEntity);
+      expect(result, isNull);
 
-        verify(
-          () => mockSoapProductsRepository.load(
-            workingUrl: userSessionEntity.supabaseEnterprise!.workingUrl!,
-            crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
-            enterpriseEntity: userSessionEntity.supabaseEnterprise!,
-            searchType: SearchType.dynamic,
-            getProductsDefaultParams: GetProductsJsonParams(
-              enterpriseCodes: [enterpriseCode],
-              routine: BsRoutine.adjustSalePrice,
-              searchValue: productEntity.PLU!,
-              lastBuyEntranceQuantity: null,
-              buyRequestParams: null,
-              competingPricesParams: null,
-            ),
-          ),
-        ).called(1);
-      },
-    );
+      await container
+          .read(provider.notifier)
+          .updateSelectedProduct(productEntity);
+
+      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+      final state = await container.read(provider.future);
+      expect(state, productEntity);
+
+      verifyNever(
+        () => mockSoapProductsRepository.load(
+          workingUrl: any(named: 'workingUrl'),
+          searchType: any(named: 'searchType'),
+          crossIdentity: any(named: 'crossIdentity'),
+          enterpriseEntity: any(named: 'enterpriseEntity'),
+          getProductsDefaultParams: any(named: 'getProductsDefaultParams'),
+        ),
+      );
+    });
   });
 }

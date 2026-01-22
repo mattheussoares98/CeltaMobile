@@ -14,7 +14,7 @@ class UIStateController extends _$UIStateController {
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
     );
-    final product = await ref.read(
+    final product = await ref.watch(
       selectedProductStateControllerProvider(
         selectedEnterprise!.Code!,
         plu,

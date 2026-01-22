@@ -10,21 +10,45 @@ import '../../../../core/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
-class AdjustSalePricePage extends ConsumerWidget {
-  final String plu;
-  final int enterpriseCode;
+class AdjustSalePricePage extends ConsumerStatefulWidget {
   final ProductEntity? product;
+  final int enterpriseCode;
+  final String plu;
   const AdjustSalePricePage({
     super.key,
-    required this.plu,
+    this.product,
     required this.enterpriseCode,
-    required this.product,
+    required this.plu,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AdjustSalePricePageState();
+}
+
+class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        ref
+            .read(
+              selectedProductStateControllerProvider(
+                widget.enterpriseCode,
+                widget.plu,
+              ).notifier,
+            )
+            .updateSelectedProduct(widget.product);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final selectedProductAsync = ref.watch(
-      selectedProductStateControllerProvider(enterpriseCode, plu),
+      selectedProductStateControllerProvider(widget.enterpriseCode, widget.plu),
     );
 
     ref.listen(confirmAdjustControllerProvider, (previous, next) {
@@ -35,7 +59,7 @@ class AdjustSalePricePage extends ConsumerWidget {
       });
     });
 
-    final selectedProduct = product ?? selectedProductAsync.value;
+    final selectedProduct = widget.product ?? selectedProductAsync.value;
 
     return Stack(
       children: [
@@ -58,7 +82,7 @@ class AdjustSalePricePage extends ConsumerWidget {
                 slivers: [
                   if (selectedProduct != null)
                     PriceSchedules(
-                      enterpriseCode: enterpriseCode,
+                      enterpriseCode: widget.enterpriseCode,
                       product: selectedProduct,
                     ),
                   AsyncValueSliverWidget(
@@ -66,8 +90,8 @@ class AdjustSalePricePage extends ConsumerWidget {
                     tryAgain: () {
                       ref.invalidate(
                         selectedProductStateControllerProvider(
-                          enterpriseCode,
-                          plu,
+                          widget.enterpriseCode,
+                          widget.plu,
                         ),
                       );
                     },
@@ -77,27 +101,27 @@ class AdjustSalePricePage extends ConsumerWidget {
                           child: Column(
                             children: [
                               _DefaultDivider(),
-                              SalesTypeWidget(plu: plu),
+                              SalesTypeWidget(plu: widget.plu),
                               _DefaultDivider(),
-                              PricesTypesWidget(plu: plu),
+                              PricesTypesWidget(plu: widget.plu),
                               _DefaultDivider(),
-                              ReplicationTypesWidget(plu: plu),
+                              ReplicationTypesWidget(plu: widget.plu),
                               _DefaultDivider(),
-                              StartAndEndDates(plu: plu),
+                              StartAndEndDates(plu: widget.plu),
                               _DefaultDivider(),
                               InfoButton(
                                 ProductItemWidget(
-                                  product: product!,
+                                  product: selectedProduct!,
                                   routine: BsRoutine.adjustSalePrice,
                                 ),
                               ),
                               PracticedSuggestionAndMinimumPrices(
-                                product: product,
+                                product: selectedProduct,
                               ),
                               _DefaultDivider(),
                               PriceFieldAndConfirmButton(
-                                enterpriseCode: enterpriseCode,
-                                plu: plu,
+                                enterpriseCode: widget.enterpriseCode,
+                                plu: widget.plu,
                               ),
                               gapH32,
                             ],
