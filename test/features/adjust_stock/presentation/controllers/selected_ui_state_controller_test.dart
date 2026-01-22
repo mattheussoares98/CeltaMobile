@@ -25,7 +25,6 @@ void main() {
   late int enterpriseCode;
   late List<StockTypeEntity> fakeStocks;
   late UserSessionModel userSession;
-  //TODO fix tests, is failing when listen the validatedUserSessionProvider
 
   setUp(() {
     fakerInstance = Faker();
