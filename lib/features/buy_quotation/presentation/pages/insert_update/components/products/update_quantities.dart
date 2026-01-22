@@ -139,23 +139,8 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                     maxLength: 5,
                     controller: controller.controller,
                     focusNode: controller.focusNode,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    onTap: () {
-                      if (!controller.focusNode.hasFocus) {
-                        controller.controller.selection = TextSelection(
-                          baseOffset: 0,
-                          extentOffset: controller.controller.text.length,
-                        );
-                      }
-                    },
-                    labelText:
-                        '(${correspondentEnterprise?.PersonalizedCode}) ${correspondentEnterprise?.name}'
-                            .hardcoded,
-                    hintText: 'Quantidade'.hardcoded,
-                    onFieldSubmitted: (_) {
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () {
                       if (x == selectedUIControllers.length - 1) {
                         confirmQuantities();
                       } else {
@@ -172,6 +157,22 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                         });
                       }
                     },
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onTap: () {
+                      if (!controller.focusNode.hasFocus) {
+                        controller.controller.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: controller.controller.text.length,
+                        );
+                      }
+                    },
+                    labelText:
+                        '(${correspondentEnterprise?.PersonalizedCode}) ${correspondentEnterprise?.name}'
+                            .hardcoded,
+                    hintText: 'Quantidade'.hardcoded,
                     validator: FormValidators.compose([
                       NumberValidator(
                         allowDecimal: true,
