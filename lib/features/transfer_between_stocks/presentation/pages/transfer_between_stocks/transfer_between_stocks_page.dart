@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/presentation/controllers/stock/stock.dart';
 import '../../controllers/controllers.dart';
+import '../lot/components/components.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
@@ -45,6 +46,7 @@ class TransferBetweenStocksPage extends ConsumerWidget {
             title: FittedBox(
               child: Text("Transferência entre estoques".hardcoded),
             ),
+            actions: [ClearLotButton(enterpriseCode: enterpriseCode)],
           ),
           body: Consumer(
             builder: (_, ref, _) {
