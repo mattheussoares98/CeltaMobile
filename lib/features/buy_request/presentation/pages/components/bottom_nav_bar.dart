@@ -11,20 +11,20 @@ class BottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pendingValue = ref
-        .watch(pendingBuyRequestStateControllerProvider)
-        .value;
-
     final currentIndex = ref.watch(
       uiStateControllerProvider.select((s) => s.value?.currentPageIndex ?? 0),
     );
 
     return BottomNavigationBar(
       currentIndex: currentIndex,
-      onTap: (index) {
-        bool buyerIsSelected = pendingValue?.selectedBuyer != null;
-        bool requestTypeIsSelected = pendingValue?.selectedRequestType != null;
-        bool supplierIsSelected = pendingValue?.selectedSupplier != null;
+      onTap: (index) async {
+        final pendingValue = await ref.read(
+          pendingBuyRequestStateControllerProvider.future,
+        );
+
+        bool buyerIsSelected = pendingValue.selectedBuyer != null;
+        bool requestTypeIsSelected = pendingValue.selectedRequestType != null;
+        bool supplierIsSelected = pendingValue.selectedSupplier != null;
 
         if (index == 1 || index == 2) {
           if (!buyerIsSelected) {
@@ -52,8 +52,8 @@ class BottomNavBar extends ConsumerWidget {
         }
 
         bool enterprisesAreValid =
-            pendingValue?.selectedEnterprises != null &&
-            pendingValue!.selectedEnterprises!.isNotEmpty;
+            pendingValue.selectedEnterprises != null &&
+            pendingValue.selectedEnterprises!.isNotEmpty;
         if (index == 2 && !enterprisesAreValid) {
           showSnackBarMessage(
             context,
@@ -68,45 +68,80 @@ class BottomNavBar extends ConsumerWidget {
       items: [
         BottomNavigationBarItem(
           label: 'Identificação'.hardcoded,
-          icon: ValidatedBadge(
-            isValid:
-                pendingValue?.selectedBuyer != null &&
-                pendingValue?.selectedRequestType != null &&
-                pendingValue?.selectedSupplier != null,
-            materialIcon: Icons.info,
-            cupertinoIcon: CupertinoIcons.info,
-            isSelected: currentIndex == 0,
+          icon: Consumer(
+            builder: (_, ref, _) {
+              final isValid = ref.watch(
+                pendingBuyRequestStateControllerProvider.select(
+                  (s) =>
+                      (s.value?.selectedBuyer != null) &&
+                      (s.value?.selectedRequestType != null) &&
+                      (s.value?.selectedSupplier != null),
+                ),
+              );
+              return ValidatedBadge(
+                isValid: isValid,
+                materialIcon: Icons.info,
+                cupertinoIcon: CupertinoIcons.info,
+                isSelected: currentIndex == 0,
+              );
+            },
           ),
         ),
         BottomNavigationBarItem(
           label: 'Empresas'.hardcoded,
-          icon: QuantityBadge(
-            quantity: pendingValue?.selectedEnterprises?.length,
-            materialIcon: Icons.business,
-            cupertinoIcon: CupertinoIcons.building_2_fill,
-            isSelected: currentIndex == 1,
+          icon: Consumer(
+            builder: (_, ref, _) {
+              return QuantityBadge(
+                quantity: ref.watch(
+                  pendingBuyRequestStateControllerProvider.select(
+                    (s) => s.value?.selectedEnterprises?.length,
+                  ),
+                ),
+                materialIcon: Icons.business,
+                cupertinoIcon: CupertinoIcons.building_2_fill,
+                isSelected: currentIndex == 1,
+              );
+            },
           ),
         ),
         BottomNavigationBarItem(
           label: 'Produtos'.hardcoded,
-          icon: QuantityBadge(
-            quantity: pendingValue?.products?.length,
-            materialIcon: Icons.shopping_cart,
-            cupertinoIcon: CupertinoIcons.shopping_cart,
-            isSelected: currentIndex == 2,
+          icon: Consumer(
+            builder: (_, ref, _) {
+              return QuantityBadge(
+                quantity: ref.watch(
+                  pendingBuyRequestStateControllerProvider.select(
+                    (s) => s.value?.products?.length,
+                  ),
+                ),
+                materialIcon: Icons.shopping_cart,
+                cupertinoIcon: CupertinoIcons.shopping_cart,
+                isSelected: currentIndex == 2,
+              );
+            },
           ),
         ),
         BottomNavigationBarItem(
           label: 'Confirmação'.hardcoded,
-          icon: ValidatedBadge(
-            isValid:
-                pendingValue?.selectedBuyer != null &&
-                pendingValue?.selectedRequestType != null &&
-                pendingValue?.selectedSupplier != null &&
-                pendingValue?.products?.isNotEmpty == true,
-            materialIcon: Icons.check_box_outlined,
-            cupertinoIcon: CupertinoIcons.checkmark_square,
-            isSelected: currentIndex == 3,
+          icon: Consumer(
+            builder: (_, ref, _) {
+              final isValid = ref.watch(
+                pendingBuyRequestStateControllerProvider.select(
+                  (s) =>
+                      (s.value?.selectedBuyer != null) &&
+                      (s.value?.selectedRequestType != null) &&
+                      (s.value?.selectedSupplier != null) &&
+                      (s.value?.products?.isNotEmpty == true),
+                ),
+              );
+
+              return ValidatedBadge(
+                isValid: isValid,
+                materialIcon: Icons.check_box_outlined,
+                cupertinoIcon: CupertinoIcons.checkmark_square,
+                isSelected: currentIndex == 3,
+              );
+            },
           ),
         ),
       ],
