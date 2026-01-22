@@ -53,7 +53,6 @@ class ProductsManagementPage extends ConsumerWidget {
     return Stack(
       children: [
         Scaffold(
-          resizeToAvoidBottomInset: pageIndex == 0,
           appBar: AppBar(
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

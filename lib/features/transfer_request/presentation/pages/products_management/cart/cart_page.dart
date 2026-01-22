@@ -79,7 +79,19 @@ class CartPage extends ConsumerWidget {
                 ],
               ),
             ),
-          Footer(draftKey: draftKey),
+          Consumer(
+            builder: (_, ref, _) {
+              final hasSelectedCartProductIndex = ref.watch(
+                uiStateControllerProvider(
+                  draftKey.requestTypeCode,
+                ).select((s) => s.value?.selectedCartProductIndex != null),
+              );
+              if (hasSelectedCartProductIndex) {
+                return const SizedBox.shrink();
+              }
+              return Footer(draftKey: draftKey);
+            },
+          ),
         ],
       ),
     );
