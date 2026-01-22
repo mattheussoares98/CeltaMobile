@@ -138,8 +138,15 @@ class _LotItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final item = ref.watch(
-      lotStateControllerProvider(enterpriseCode).select((s) => s.value![index]),
+      lotStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.elementAtOrNull(index)),
     );
+
+    if (item == null) {
+      return const SizedBox.shrink();
+    }
+
     final isLastItem = ref.watch(
       lotStateControllerProvider(
         enterpriseCode,

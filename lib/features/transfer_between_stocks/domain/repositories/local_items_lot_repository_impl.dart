@@ -24,7 +24,13 @@ class LocalItemsLotRepositoryImpl implements ILocalItemsLotRepository {
   }
 
   @override
-  Future<void> removeItem(ProductLotInfoEntity item) async {
-    await datasource.removeItem(ProductLotInfoModel.fromEntity(item));
+  Future<void> removeItem({
+    required int productPackingCode,
+    required int enterpriseCode,
+  }) async {
+    await datasource.removeItem(
+      productPackingCode: productPackingCode,
+      enterpriseCode: enterpriseCode,
+    );
   }
 }

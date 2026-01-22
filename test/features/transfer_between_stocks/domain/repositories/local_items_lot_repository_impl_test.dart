@@ -12,7 +12,12 @@ class LocalItemsLotDatasourceSpy extends Mock
     implements ILocalItemsLotDatasource {
   LocalItemsLotDatasourceSpy() {
     when(() => this.addItem(any())).thenAnswer((_) async => {});
-    when(() => this.removeItem(any())).thenAnswer((_) async => {});
+    when(
+      () => this.removeItem(
+        productPackingCode: any(named: 'productPackingCode'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+      ),
+    ).thenAnswer((_) async => {});
     when(() => this.clear(any())).thenAnswer((_) async {});
   }
 
@@ -69,11 +74,15 @@ void main() {
     test(
       'should call datasource.removeItem with the correctly mapped model',
       () async {
-        await sut.removeItem(itemsEntities.first);
+        await sut.removeItem(
+          productPackingCode: itemsEntities.first.product.ProductPackingCode!,
+          enterpriseCode: enterpriseCode,
+        );
 
         verify(
           () => mockDatasource.removeItem(
-            ProductLotInfoModel.fromEntity(itemsEntities.first),
+            productPackingCode: itemsEntities.first.product.ProductPackingCode!,
+            enterpriseCode: enterpriseCode,
           ),
         );
       },

@@ -49,17 +49,18 @@ class LotStateController extends _$LotStateController {
     });
   }
 
-  Future<void> removeItem(ProductLotInfoEntity item) async {
+  Future<void> removeItem(int productPackingCode) async {
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localItemsLotRepositoryProvider);
-      await repository.removeItem(item);
+
+      await repository.removeItem(
+        productPackingCode: productPackingCode,
+        enterpriseCode: enterpriseCode,
+      );
 
       final previousState = state.valueOrNull ?? [];
       final newState = previousState
-          .where(
-            (i) =>
-                i.product.ProductPackingCode != item.product.ProductPackingCode,
-          )
+          .where((i) => i.product.ProductPackingCode != productPackingCode)
           .toList();
 
       return newState;

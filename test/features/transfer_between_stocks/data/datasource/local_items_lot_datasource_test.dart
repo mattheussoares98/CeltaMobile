@@ -114,7 +114,10 @@ void main() {
       when(() => mockBox.put(any(), any())).thenAnswer((_) async {});
 
       // ACT
-      await sut.removeItem(fakeItem1);
+      await sut.removeItem(
+        productPackingCode: fakeItem1.product.ProductPackingCode!,
+        enterpriseCode: fakeItem1.product.EnterpriseCode!,
+      );
 
       // ASSERT
       final captured = verify(() => mockBox.put(lotKey, captureAny())).captured;

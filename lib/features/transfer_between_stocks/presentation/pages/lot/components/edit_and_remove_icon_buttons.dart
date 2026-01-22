@@ -36,7 +36,7 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
               onOkPressed: () {
                 ref
                     .read(lotStateControllerProvider(enterpriseCode).notifier)
-                    .removeItem(item);
+                    .removeItem(item.product.ProductPackingCode!);
               },
             );
           },

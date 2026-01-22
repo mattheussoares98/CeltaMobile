@@ -146,7 +146,12 @@ void main() {
           when(
             () => mockRepository.load(any()),
           ).thenAnswer((_) async => fakeLot);
-          when(() => mockRepository.removeItem(any())).thenAnswer((_) async {});
+          when(
+            () => mockRepository.removeItem(
+              productPackingCode: any(named: 'productPackingCode'),
+              enterpriseCode: any(named: 'enterpriseCode'),
+            ),
+          ).thenAnswer((_) async {});
 
           final container = makeProviderContainer();
           addTearDown(container.dispose);
@@ -163,7 +168,7 @@ void main() {
           // ACT
           await container
               .read(lotStateControllerProvider(enterpriseCode).notifier)
-              .removeItem(itemToRemove);
+              .removeItem(itemToRemove.product.ProductPackingCode!);
 
           // ASSERT
           expect(states, [isA<AsyncData>()]);
@@ -176,7 +181,12 @@ void main() {
             ),
             isFalse,
           );
-          verify(() => mockRepository.removeItem(itemToRemove)).called(1);
+          verify(
+            () => mockRepository.removeItem(
+              productPackingCode: itemToRemove.product.ProductPackingCode!,
+              enterpriseCode: enterpriseCode,
+            ),
+          ).called(1);
         },
       );
     });

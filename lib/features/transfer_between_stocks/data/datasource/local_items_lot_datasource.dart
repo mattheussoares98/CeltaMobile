@@ -45,10 +45,13 @@ class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
   }
 
   @override
-  Future<void> removeItem(ProductLotInfoModel item) async {
+  Future<void> removeItem({
+    required int productPackingCode,
+    required int enterpriseCode,
+  }) async {
     final allLots = await _getAllLots();
-    final enterpriseCodeStr = item.product.EnterpriseCode.toString();
-    final productCodeStr = item.product.ProductPackingCode.toString();
+    final enterpriseCodeStr = enterpriseCode.toString();
+    final productCodeStr = productPackingCode.toString();
 
     if (allLots.containsKey(enterpriseCodeStr)) {
       final enterpriseLotMap = Map<String, dynamic>.from(
