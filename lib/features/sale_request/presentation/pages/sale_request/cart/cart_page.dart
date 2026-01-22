@@ -68,7 +68,6 @@ class _CartPageState extends ConsumerState<CartPage>
 
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
-      //TODO test this in phones
       saveInstructionsAndObservations();
     }
   }
