@@ -50,6 +50,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
               TextEditingController(),
               FocusNode(),
               enterprise.Code!,
+              enterprise.PersonalizedCode!,
             ),
           );
         }

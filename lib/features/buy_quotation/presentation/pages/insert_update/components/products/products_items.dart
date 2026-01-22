@@ -35,7 +35,7 @@ class ProductsItems extends ConsumerWidget {
       ),
     );
 
-    void updateSelectedPackingCode(int? productPackingCode) {
+    void updateSelectedPackingCode(int? productPackingCode) async {
       if (observationsFocusNode.hasFocus) {
         observationsFocusNode.unfocus();
       }
@@ -63,8 +63,31 @@ class ProductsItems extends ConsumerWidget {
       );
       if (product == null) return;
 
-      for (final uiController in uiControllers) {
+      final sortedUIControllers = uiControllers.sorted(
+        (a, b) => a.enterprisePersonalizedCode.compareTo(
+          b.enterprisePersonalizedCode,
+        ),
+      );
+
+      for (var x = 0; x < sortedUIControllers.length; x++) {
+        final uiController = sortedUIControllers[x];
+        final focusNode = uiController.focusNode;
         final controller = uiController.controller;
+
+        if (x == 0) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            if (focusNode.hasFocus) {
+              focusNode.unfocus();
+            }
+            Future.delayed(const Duration(milliseconds: 300), () {
+              focusNode.requestFocus();
+              controller.selection = TextSelection(
+                baseOffset: 0,
+                extentOffset: controller.text.length,
+              );
+            });
+          });
+        }
 
         if (buyQuotationEnterprises?.any(
               (e) => e.enterprise.Code == uiController.enterpriseCode,
@@ -74,11 +97,13 @@ class ProductsItems extends ConsumerWidget {
           continue;
         }
 
-        final quantity = product.ProductEnterprises?.firstWhereOrNull(
-          (e) => e.EnterpriseCode == uiController.enterpriseCode,
-        )?.Quantity;
+        final quantity =
+            product.ProductEnterprises?.firstWhereOrNull(
+              (e) => e.EnterpriseCode == uiController.enterpriseCode,
+            )?.Quantity ??
+            0;
 
-        if (quantity != null && quantity > 0) {
+        if (quantity > 0) {
           controller.text = quantity
               .toString()
               .toBrazilianNumber(3)
