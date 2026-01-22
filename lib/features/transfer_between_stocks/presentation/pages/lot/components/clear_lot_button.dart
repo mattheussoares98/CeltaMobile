@@ -15,35 +15,34 @@ class ClearLotButton extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final canShowClearLotButton = ref.watch(
+    final hasProductsInCart = ref.watch(
       lotStateControllerProvider(
         enterpriseCode,
-      ).select((s) => (s.value?.length ?? 0) > 3),
+      ).select((s) => s.value?.isNotEmpty ?? true),
     );
-    if (canShowClearLotButton) {
-      return PrimaryTextButton(
-        text: ''.hardcoded,
-        color: Colors.red,
-        icon: Icon(
-          isIOS ? CupertinoIcons.delete : Icons.delete,
-          color: Colors.red,
-        ),
-        onPressed: () {
-          showAlertDialog(
-            context: context,
-            title: 'Limpar lote?'.hardcoded,
-            cancelActionText: 'Cancelar'.hardcoded,
-            defaultActionText: 'Limpar'.hardcoded,
-            onOkPressed: () {
-              ref
-                  .read(lotStateControllerProvider(enterpriseCode).notifier)
-                  .clearLot(enterpriseCode);
-            },
-          );
-        },
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
+
+    return PrimaryTextButton(
+      text: ''.hardcoded,
+      color: Colors.red,
+      icon: Icon(
+        isIOS ? CupertinoIcons.delete : Icons.delete,
+        color: hasProductsInCart ? Colors.red : theme.disabledColor,
+      ),
+      onPressed: hasProductsInCart
+          ? () {
+              showAlertDialog(
+                context: context,
+                title: 'Limpar lote?'.hardcoded,
+                cancelActionText: 'Cancelar'.hardcoded,
+                defaultActionText: 'Limpar'.hardcoded,
+                onOkPressed: () {
+                  ref
+                      .read(lotStateControllerProvider(enterpriseCode).notifier)
+                      .clearLot(enterpriseCode);
+                },
+              );
+            }
+          : null,
+    );
   }
 }
