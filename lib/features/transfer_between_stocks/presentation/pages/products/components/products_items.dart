@@ -131,6 +131,13 @@ class _ProductItem extends ConsumerWidget {
       child: ProductItemWidget(
         product: product,
         routine: BsRoutine.adjustStock,
+        onDelete: quantityInLot == null
+            ? null
+            : () {
+                ref
+                    .read(lotStateControllerProvider(enterpriseCode).notifier)
+                    .removeItem(product.ProductPackingCode!);
+              },
         onTap: () {
           ref
               .read(
