@@ -101,7 +101,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
             BsPricesAndMinimumWholeQuantity(widget: widget),
             gapH8,
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   flex: 65,
@@ -133,9 +133,13 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
                   flex: 35,
                   child: FocusTraversalOrder(
                     order: const NumericFocusOrder(4),
-                    child: TotalPriceAndInsertButton(
-                      insertProduct: insertUpdateProduct,
-                      widget: widget,
+                    child: Column(
+                      children: [
+                        TotalPriceAndInsertButton(
+                          insertProduct: insertUpdateProduct,
+                          widget: widget,
+                        ),
+                      ],
                     ),
                   ),
                 ),

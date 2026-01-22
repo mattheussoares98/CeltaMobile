@@ -49,23 +49,12 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
         );
         return Column(
           children: [
-            Text('Total'.hardcoded, style: theme.textTheme.titleSmall),
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'R\$ '.hardcoded,
-                    style: theme.textTheme.titleSmall?.copyWith(fontSize: 10),
-                  ),
-                  TextSpan(
-                    text: newItem.getTotalLiquid
-                        .toString()
-                        .toBrazilianNumber()
-                        .hardcoded,
-                    style: theme.textTheme.titleSmall,
-                  ),
-                ],
-              ),
+            TitleAndSubTitle(
+              title: 'Total'.hardcoded,
+              titleStyle: theme.textTheme.titleMedium,
+              subTitleStyle: theme.textTheme.titleLarge,
+              subTitle: newItem.getTotalLiquid,
+              subTitleIsPrice: true,
             ),
             gapH4,
             Consumer(
