@@ -56,6 +56,9 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
       return;
     }
 
+    FocusScope.of(context).unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
+
     showAlertDialog(
       context: context,
       title: 'Salvar alterações?'.hardcoded,
@@ -79,6 +82,30 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
             );
       },
     );
+  }
+
+  bool get hasChangedAnyValue {
+    if ((widget.retailController.text.toDouble() ?? 0) !=
+        (widget.product.RetailPracticedPrice ?? 0)) {
+      return true;
+    } else if ((widget.retailOfferController.text.toDouble() ?? 0) !=
+        (widget.product.RetailOfferPrice ?? 0)) {
+      return true;
+    } else if ((widget.wholeController.text.toDouble() ?? 0) !=
+        (widget.product.WholePracticedPrice ?? 0)) {
+      return true;
+    } else if ((widget.wholeOfferController.text.toDouble() ?? 0) !=
+        (widget.product.WholeOfferPrice ?? 0)) {
+      return true;
+    } else if ((widget.ecommerceController.text.toDouble() ?? 0) !=
+        (widget.product.ECommercePracticedPrice ?? 0)) {
+      return true;
+    } else if ((widget.ecommerceOfferController.text.toDouble() ?? 0) !=
+        (widget.product.ECommerceOfferPrice ?? 0)) {
+      return true;
+    }
+
+    return false;
   }
 
   @override
@@ -123,32 +150,9 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
               widget.ecommerceOfferController,
             ]),
             builder: (_, _) {
-              bool isValid = false;
-
-              if ((widget.retailController.text.toDouble() ?? 0) !=
-                  widget.product.RetailPracticedPrice) {
-                isValid = true;
-              } else if ((widget.retailOfferController.text.toDouble() ?? 0) !=
-                  widget.product.RetailOfferPrice) {
-                isValid = true;
-              } else if ((widget.wholeController.text.toDouble() ?? 0) !=
-                  widget.product.WholePracticedPrice) {
-                isValid = true;
-              } else if ((widget.wholeOfferController.text.toDouble() ?? 0) !=
-                  widget.product.WholeOfferPrice) {
-                isValid = true;
-              } else if ((widget.ecommerceController.text.toDouble() ?? 0) !=
-                  widget.product.ECommercePracticedPrice) {
-                isValid = true;
-              } else if ((widget.ecommerceOfferController.text.toDouble() ??
-                      0) !=
-                  widget.product.ECommerceOfferPrice) {
-                isValid = true;
-              }
-
               return PrimaryButton(
                 text: 'Confirmar alterações'.hardcoded,
-                onPressed: isValid ? insertUpdate : null,
+                onPressed: hasChangedAnyValue ? insertUpdate : null,
               );
             },
           ),
