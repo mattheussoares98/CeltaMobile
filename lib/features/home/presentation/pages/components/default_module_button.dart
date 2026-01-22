@@ -35,7 +35,7 @@ class DefaultModuleButton extends ConsumerWidget {
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
     );
-
+    //TODO show dialog if try to access adjustSalePrice and the user doesnt has permission
     void showDisabledModuleMessage() {
       showAlertDialog(
         context: context,
