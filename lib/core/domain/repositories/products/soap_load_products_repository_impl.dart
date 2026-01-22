@@ -18,6 +18,8 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     this.soapReceiptLoadProductsDatasource,
   );
 
+  static final _balanceStartPattern = RegExp(r'^2');
+
   @override
   Future<List<ProductEntity>> load({
     required String workingUrl,
@@ -104,7 +106,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
     required EnterpriseEntity enterprise,
   }) {
     return searchValue
-        .replaceFirst(RegExp(r'2'), '')
+        .replaceFirst(_balanceStartPattern, '')
         .replaceRange(
           enterprise.ProductCodeSizeOfBalanceLabel!,
           null,
