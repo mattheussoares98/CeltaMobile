@@ -84,8 +84,10 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
               ),
             CupertinoTextField(
               onTap: dtf.onTap,
+              onEditingComplete: dtf.onEditingComplete,
               inputFormatters: dtf.inputFormatters,
               controller: dtf.controller,
+              textInputAction: dtf.textInputAction,
               minLines: 1,
               maxLines: dtf.maxLines ?? 1,
               placeholder: dtf.hintText,
