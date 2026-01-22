@@ -133,6 +133,7 @@ class ProductsItems extends ConsumerWidget {
           itemBuilder: (_, index) {
             final product = filteredProducts[index];
             return ProductItem(
+              key: ValueKey(product.Product?.ProductPackingCode),
               onTap: () => updateSelectedPackingCode(
                 product.Product?.ProductPackingCode,
               ),

@@ -11,23 +11,19 @@ class EansProperty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.product.EANs != null &&
+    bool hasEan =
+        widget.product.EANs != null &&
         widget.product.EANs!.isNotEmpty &&
-        widget.product.EANs!.any((e) => e.isNotEmpty)) {
-      return Padding(
-        padding: EdgeInsets.only(
-          top:
-              widget.routine == BsRoutine.buyQuotation &&
-                  widget.product.EANs!.length > 1
-              ? Sizes.p8
-              : 0,
-        ),
-        child: TitleAndSubTitle(
-          title: 'EANs'.hardcoded,
-          subTitle: widget.product.EANs!.map((e) => e.toString()).join(', '),
-        ),
-      );
-    }
-    return const SizedBox.shrink();
+        widget.product.EANs!.any((e) => e.isNotEmpty);
+
+    return Padding(
+      padding: EdgeInsets.only(
+        top: widget.routine == BsRoutine.buyQuotation ? Sizes.p16 : 0,
+      ),
+      child: TitleAndSubTitle(
+        title: hasEan ? 'EANs'.hardcoded : null,
+        subTitle: widget.product.EANs?.map((e) => e.toString()).join(', '),
+      ),
+    );
   }
 }
