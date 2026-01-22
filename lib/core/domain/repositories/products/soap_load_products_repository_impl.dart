@@ -93,7 +93,7 @@ class SoapLoadProductsRepositoryImpl implements ISoapLoadProductsRepository {
       );
     }
 
-    return response.map((e) => e.toEntity()).toList().cast<ProductEntity>();
+    return List<ProductEntity>.from(response.map((e) => e.toEntity()).toList());
   }
 
   bool _isBalanceFormat(String searchValue) =>

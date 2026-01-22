@@ -64,7 +64,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             ),
           );
 
-      return products.cast<ProductEntity>();
+      return List<ProductEntity>.from(products);
     });
   }
 

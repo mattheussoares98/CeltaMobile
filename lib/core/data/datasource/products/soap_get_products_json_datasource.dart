@@ -30,13 +30,14 @@ class SoapGetProductsJsonDatasource implements ISoapGetProductsJsonDatasource {
     dynamic response,
     bool isCompetingPrices,
   ) {
-    return (json.decode(response) as List)
-        .map(
-          (e) => isCompetingPrices
-              ? CompetingPriceProductModel.fromJson(e)
-              : ProductModel.fromJson(e),
-        )
-        .toList()
-        .cast();
+    return List<ProductModelType>.from(
+      (json.decode(response) as List)
+          .map(
+            (e) => isCompetingPrices
+                ? CompetingPriceProductModel.fromJson(e)
+                : ProductModel.fromJson(e),
+          )
+          .toList(),
+    );
   }
 }
