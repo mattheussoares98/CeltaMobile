@@ -91,6 +91,8 @@ class _ProductItem extends ConsumerWidget {
         return;
       }
 
+      FocusManager.instance.primaryFocus?.unfocus();
+
       final uiState = ref.read(
         selectedProductUIStateControllerProvider(enterpriseCode),
       );
