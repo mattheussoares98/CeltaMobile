@@ -50,6 +50,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
     }
 
     widget.quantityFocusNode.unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
 
     ref
         .read(updateProductControllerProvider(widget.searchProductKey).notifier)
