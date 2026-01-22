@@ -65,7 +65,19 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                 ],
               ),
             ),
-            Footer(observationsController: observationsController),
+            Consumer(
+              builder: (_, ref, _) {
+                final hasProductIndexSelected = ref.watch(
+                  uiStateControllerProvider.select(
+                    (s) => s.value?.selectedCartProductIndex != null,
+                  ),
+                );
+                if (hasProductIndexSelected) {
+                  return const SizedBox.shrink();
+                }
+                return Footer(observationsController: observationsController);
+              },
+            ),
           ],
         ),
       ),
