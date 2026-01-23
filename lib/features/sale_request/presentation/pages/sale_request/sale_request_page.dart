@@ -36,6 +36,8 @@ class SaleRequestPage extends ConsumerWidget {
       n.showAlertDialogOnError(context);
     });
 
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
     return Stack(
       children: [
         Scaffold(
@@ -48,8 +50,10 @@ class SaleRequestPage extends ConsumerWidget {
               Sizes.p8,
             ),
             actions: [
-              ShowPdfButton(enterpriseCode: enterpriseCode),
-              PrintButton(enterpriseCode: enterpriseCode),
+              if (screenWidth > 200) ...[
+                ShowPdfButton(enterpriseCode: enterpriseCode),
+                PrintButton(enterpriseCode: enterpriseCode),
+              ],
               const CartBadge(),
             ],
           ),
