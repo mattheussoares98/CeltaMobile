@@ -61,6 +61,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       return;
     }
 
+    FocusManager.instance.primaryFocus?.unfocus();
     ref
         .read(
           uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
