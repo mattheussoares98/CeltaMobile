@@ -79,6 +79,17 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       );
     }
 
+    if ((transferRequestProductItem?.quantity ?? 0) > 0) {
+      quantityController.text = transferRequestProductItem!.quantity
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
+      quantityController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: quantityController.text.length,
+      );
+    }
+
     quantityFocusNode.unfocus();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       quantityFocusNode.requestFocus();
