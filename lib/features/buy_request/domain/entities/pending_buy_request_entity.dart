@@ -30,6 +30,14 @@ class PendingBuyRequestEntity extends Equatable {
     lastSavedRequestNumber,
   ];
 
+  bool get canSave {
+    return selectedBuyer != null &&
+        selectedRequestType != null &&
+        selectedSupplier != null &&
+        selectedEnterprises?.isNotEmpty == true &&
+        products?.isNotEmpty == true;
+  }
+
   PendingBuyRequestEntity copyWith({
     BuyerEntity? selectedBuyer,
     SupplierEntity? selectedSupplier,
