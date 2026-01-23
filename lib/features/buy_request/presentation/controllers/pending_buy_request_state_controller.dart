@@ -26,9 +26,13 @@ class PendingBuyRequestStateController
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localPendingBuyRequestRepositoryProvider);
-      await repository.update(PendingBuyRequestEntity.empty());
+      final oldState = state.value!;
+      final newState = PendingBuyRequestEntity.empty().copyWith(
+        lastSavedRequestNumber: oldState.lastSavedRequestNumber,
+      );
+      await repository.update(newState);
 
-      return PendingBuyRequestEntity.empty();
+      return newState;
     });
   }
 

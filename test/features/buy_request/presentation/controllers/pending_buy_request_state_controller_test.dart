@@ -252,30 +252,42 @@ void main() {
       expect(result.selectedSupplier, null);
     });
 
-    test('should clean all data correctly', () async {
-      // ARRANGE
-      when(() => mockRepository.load()).thenAnswer((_) async => entity);
-      when(() => mockRepository.update(any())).thenAnswer((_) async {});
+    test(
+      'should clean all data correctly but maintain lastSavedRequestNumber',
+      () async {
+        // ARRANGE
+        when(() => mockRepository.load()).thenAnswer((_) async => entity);
+        when(() => mockRepository.update(any())).thenAnswer((_) async {});
 
-      final container = makeProviderContainer();
-      addTearDown(container.dispose);
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
 
-      await container.read(pendingBuyRequestStateControllerProvider.future);
-      expect(spyEnterprisesController.buildCount, 0);
+        await container.read(pendingBuyRequestStateControllerProvider.future);
+        expect(spyEnterprisesController.buildCount, 0);
 
-      // ACT
-      await container
-          .read(pendingBuyRequestStateControllerProvider.notifier)
-          .clearState();
+        // ACT
+        await container
+            .read(pendingBuyRequestStateControllerProvider.notifier)
+            .clearState();
 
-      final result = await container.read(
-        pendingBuyRequestStateControllerProvider.future,
-      );
-      expect(result, PendingBuyRequestEntity.empty());
+        final result = await container.read(
+          pendingBuyRequestStateControllerProvider.future,
+        );
+        expect(
+          result,
+          PendingBuyRequestEntity.empty().copyWith(
+            lastSavedRequestNumber: entity.lastSavedRequestNumber,
+          ),
+        );
 
-      verify(
-        () => mockRepository.update(PendingBuyRequestEntity.empty()),
-      ).called(1);
-    });
+        verify(
+          () => mockRepository.update(
+            PendingBuyRequestEntity.empty().copyWith(
+              lastSavedRequestNumber: entity.lastSavedRequestNumber,
+            ),
+          ),
+        ).called(1);
+      },
+    );
   });
 }
