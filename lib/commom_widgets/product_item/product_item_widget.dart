@@ -155,7 +155,12 @@ class ProductItemWidget extends ConsumerWidget {
             Stack(
               children: [
                 InkWell(
-                  onTap: onTap,
+                  onTap: onTap == null
+                      ? null
+                      : () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          onTap!();
+                        },
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(
                       Sizes.p8,

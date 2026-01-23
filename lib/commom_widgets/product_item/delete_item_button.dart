@@ -16,6 +16,7 @@ class DeleteItemButton extends StatelessWidget {
       onPressed: onDelete == null
           ? null
           : () {
+              FocusManager.instance.primaryFocus?.unfocus();
               showAlertDialog(
                 context: context,
                 title: 'Remover item?'.hardcoded,
