@@ -66,6 +66,7 @@ class Footer extends ConsumerWidget {
                             cancelActionText: 'Cancelar'.hardcoded,
                             defaultActionText: 'Sim'.hardcoded,
                             onOkPressed: () async {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               final succeeds = await ref
                                   .read(
                                     insertBuyRequestControllerProvider.notifier,
