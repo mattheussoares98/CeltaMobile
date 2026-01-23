@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
@@ -10,6 +11,7 @@ class SelectedProductUIStateController
     extends _$SelectedProductUIStateController {
   @override
   SelectedProductUIStateEntity build(int enterpriseCode) {
+    ref.watch(validatedUserSessionProvider);
     return SelectedProductUIStateEntity.empty();
   }
 
