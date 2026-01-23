@@ -19,6 +19,7 @@ class PriceField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final widthScreen = MediaQuery.sizeOf(context).width;
 
     return AnimatedBuilder(
       animation: widget.discountController,
@@ -51,21 +52,22 @@ class PriceField extends StatelessWidget {
                 ]),
               ),
             ),
-            FocusTraversalGroup(
-              descendantsAreFocusable: false,
-              child: IconButton(
-                onPressed: () {
-                  showAlertDialog(
-                    context: context,
-                    title: 'Atenção!'.hardcoded,
-                    content:
-                        'Esse campo fica habilitado quando o modelo de pedido permite alterar o preço e não foi informado um desconto manualmente'
-                            .hardcoded,
-                  );
-                },
-                icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+            if (widthScreen > 200)
+              FocusTraversalGroup(
+                descendantsAreFocusable: false,
+                child: IconButton(
+                  onPressed: () {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Atenção!'.hardcoded,
+                      content:
+                          'Esse campo fica habilitado quando o modelo de pedido permite alterar o preço e não foi informado um desconto manualmente'
+                              .hardcoded,
+                    );
+                  },
+                  icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+                ),
               ),
-            ),
           ],
         );
       },
