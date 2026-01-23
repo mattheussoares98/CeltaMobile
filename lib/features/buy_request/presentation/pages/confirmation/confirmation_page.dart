@@ -63,6 +63,23 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   const SelectedSupplier(),
                   const SelectedEnterprise(),
                   const InformedProducts(),
+                  Consumer(
+                    builder: (_, ref, _) {
+                      final keyboardIsOpen = ref.watch(
+                        keyboardVisibilityStateControllerProvider,
+                      );
+                      if (keyboardIsOpen) {
+                        //I added this because if the keyboard is open but the user roll the screen
+                        //the footer will be hidden instead
+                        return SliverToBoxAdapter(
+                          child: Footer(
+                            observationsController: observationsController,
+                          ),
+                        );
+                      }
+                      return const SliverToBoxAdapter(child: SizedBox.shrink());
+                    },
+                  ),
                 ],
               ),
             ),
