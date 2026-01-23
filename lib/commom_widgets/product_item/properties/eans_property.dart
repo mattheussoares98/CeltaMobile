@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/constants.dart';
-import '../../../core/domain/entities/entities.dart';
 import '../../../localization/string_hardcoded.dart';
 import '../../commom_widgets.dart';
 
@@ -11,21 +9,10 @@ class EansProperty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool hasEan =
-        widget.product.EANs != null &&
-        widget.product.EANs!.isNotEmpty &&
-        widget.product.EANs!.any((e) => e.isNotEmpty);
-
-    if (!hasEan) {
-      return const SizedBox.shrink();
-    }
-
     return Padding(
-      padding: EdgeInsets.only(
-        top: widget.routine == BsRoutine.buyQuotation ? Sizes.p16 : 0,
-      ),
+      padding: const EdgeInsets.only(top: 0),
       child: TitleAndSubTitle(
-        title: hasEan ? 'EANs'.hardcoded : null,
+        title: 'EANs'.hardcoded,
         subTitle: widget.product.EANs?.map((e) => e.toString()).join(', '),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/domain/entities/entities.dart';
 import '../../../localization/string_hardcoded.dart';
 import '../../commom_widgets.dart';
 
@@ -10,18 +9,6 @@ class LiquidCostProperty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.hideCost == true) {
-      return const SizedBox.shrink();
-    } else if ([
-      BsRoutine.adjustStock,
-      BsRoutine.buyQuotation,
-      BsRoutine.goodsReceiving,
-      BsRoutine.researchOfPrice,
-      BsRoutine.transferRequest,
-    ].contains(widget.routine)) {
-      return const SizedBox.shrink();
-    }
-
     final bool hasPermission = widget.product.LiquidCost != -1;
 
     return TitleAndSubTitle(
