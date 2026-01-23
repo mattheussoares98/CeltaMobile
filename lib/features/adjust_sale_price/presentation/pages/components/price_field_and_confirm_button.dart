@@ -40,6 +40,8 @@ class _PriceFieldAndConfirmButtonState
         return;
       }
 
+      FocusManager.instance.primaryFocus?.unfocus();
+
       bool? confirmed = await showAlertDialog(
         context: context,
         title: 'Confirmar?'.hardcoded,
