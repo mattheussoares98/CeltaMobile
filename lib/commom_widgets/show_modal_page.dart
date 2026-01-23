@@ -21,35 +21,39 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
             minChildSize: 0.5,
             maxChildSize: 0.95,
             builder: (_, controller) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(20),
+              return SafeArea(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
                   ),
-                ),
-                child: Column(
-                  children: [
-                    //dragglable indicator
-                    Center(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: Sizes.p12),
-                        height: 5,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(12),
+                  child: Column(
+                    children: [
+                      //dragglable indicator
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: Sizes.p12,
+                          ),
+                          height: 5,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Scaffold(
-                        backgroundColor: Colors.transparent,
-                        body: body,
+                      Expanded(
+                        child: Scaffold(
+                          backgroundColor: Colors.transparent,
+                          body: body,
+                        ),
                       ),
-                    ),
-                    // const SizedBox(height: Sizes.p12),
-                  ],
+                      // const SizedBox(height: Sizes.p12),
+                    ],
+                  ),
                 ),
               );
             },
