@@ -19,10 +19,12 @@ class ConfirmationPage extends ConsumerStatefulWidget {
 
 class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
   final observationsController = TextEditingController();
+  final observationsFocusNode = FocusNode();
 
   @override
   void dispose() {
     observationsController.dispose();
+    observationsFocusNode.dispose();
     super.dispose();
   }
 
@@ -49,6 +51,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   SliverToBoxAdapter(
                     child: DefaultTextFormField(
                       controller: observationsController,
+                      focusNode: observationsFocusNode,
                       hintText: 'Observações'.hardcoded,
                       labelText: 'Observações'.hardcoded,
                       maxLines: 4,
@@ -75,7 +78,17 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                 if (hasProductIndexSelected) {
                   return const SizedBox.shrink();
                 }
-                return Footer(observationsController: observationsController);
+                return AnimatedBuilder(
+                  animation: observationsFocusNode,
+                  builder: (_, _) {
+                    if (observationsFocusNode.hasFocus) {
+                      return const SizedBox.shrink();
+                    }
+                    return Footer(
+                      observationsController: observationsController,
+                    );
+                  },
+                );
               },
             ),
           ],
