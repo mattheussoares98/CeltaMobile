@@ -40,6 +40,8 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       }
       return;
     }
+    FocusManager.instance.primaryFocus?.unfocus();
+
     final insertIndividually = ref.read(
       uiStateControllerProvider(
         widget.codigoInternoInventario,
