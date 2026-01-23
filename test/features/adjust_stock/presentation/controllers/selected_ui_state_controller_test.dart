@@ -18,6 +18,15 @@ class FakeStockTypeStateController extends StockTypeStateController {
   Future<List<StockTypeEntity>> build(int arg) async => stocks;
 }
 
+class FakeSelectedUIStateController extends SelectedUIStateController {
+  final SelectedItemUIState? value;
+  FakeSelectedUIStateController(this.value);
+
+  @override
+  SelectedItemUIState build(int enterpriseCode) =>
+      value ?? SelectedItemUIState.empty();
+}
+
 void main() {
   late Faker fakerInstance;
   late TransferJustificationEntity? selectedJustification;
@@ -42,7 +51,7 @@ void main() {
     );
   });
 
-  ProviderContainer makeProviderContainer() {
+  ProviderContainer makeProviderContainer({SelectedItemUIState? state}) {
     return ProviderContainer(
       overrides: [
         // 2. Override the internal provider dependency
@@ -52,6 +61,11 @@ void main() {
         stockTypeStateControllerProvider(
           enterpriseCode,
         ).overrideWith(() => FakeStockTypeStateController(fakeStocks)),
+        selectedUIStateControllerProvider(enterpriseCode).overrideWith(
+          () => FakeSelectedUIStateController(
+            state ?? SelectedItemUIState.empty(),
+          ),
+        ),
       ],
     );
   }
