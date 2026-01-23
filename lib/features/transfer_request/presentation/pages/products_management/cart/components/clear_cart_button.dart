@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../../constants/constants.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
@@ -17,26 +18,31 @@ class ClearCartButton extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return SliverToBoxAdapter(
-      child: PrimaryTextButton(
-        text: 'Limpar carrinho'.hardcoded,
-        color: Colors.red,
-        icon: Icon(
-          isIOS ? CupertinoIcons.delete : Icons.delete,
-          color: Colors.red,
+      child: Padding(
+        padding: const EdgeInsets.only(top: Sizes.p16),
+        child: PrimaryButton(
+          text: 'Limpar carrinho'.hardcoded,
+          backgroundColor: Colors.red,
+          icon: Icon(
+            isIOS ? CupertinoIcons.delete : Icons.delete,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            showAlertDialog(
+              context: context,
+              title: 'Limpar carrinho?'.hardcoded,
+              defaultActionText: 'Limpar'.hardcoded,
+              cancelActionText: 'Cancelar'.hardcoded,
+              onOkPressed: () {
+                ref
+                    .read(
+                      cartProductsStateControllerProvider(draftKey).notifier,
+                    )
+                    .clearLot();
+              },
+            );
+          },
         ),
-        onPressed: () {
-          showAlertDialog(
-            context: context,
-            title: 'Limpar carrinho?'.hardcoded,
-            defaultActionText: 'Limpar'.hardcoded,
-            cancelActionText: 'Cancelar'.hardcoded,
-            onOkPressed: () {
-              ref
-                  .read(cartProductsStateControllerProvider(draftKey).notifier)
-                  .clearLot();
-            },
-          );
-        },
       ),
     );
   }
