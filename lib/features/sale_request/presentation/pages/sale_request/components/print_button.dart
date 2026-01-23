@@ -102,42 +102,44 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
                           key: formKey,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  'Imprimir último pedido salvo na empresa'
-                                      .hardcoded,
-                                ),
-                                const SizedBox(height: Sizes.p16),
-                                DefaultTextFormField(
-                                  labelText: 'IP da impressora'.hardcoded,
-                                  hintText: '192.168.0.1',
-                                  maxLength: 15,
-                                  controller: ipController,
-                                  enabled: !isLoading,
-                                  onFieldSubmitted: (_) => print(),
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    // This allows *only* digits and dots
-                                    FilteringTextInputFormatter.allow(
-                                      RegExp(r'[\d.]'),
-                                    ),
-                                  ],
-                                  validator: FormValidators.compose([
-                                    NonEmptyValidator(),
-                                    IpValidator(),
-                                  ]),
-                                  keyboardType: TextInputType.datetime,
-                                ),
-                                const SizedBox(height: Sizes.p32),
-                                PrimaryButton(
-                                  text: 'Imprimir'.hardcoded,
-                                  isLoading: isLoading,
-                                  onPressed: print,
-                                ),
-                              ],
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    'Imprimir último pedido salvo na empresa'
+                                        .hardcoded,
+                                  ),
+                                  const SizedBox(height: Sizes.p16),
+                                  DefaultTextFormField(
+                                    labelText: 'IP da impressora'.hardcoded,
+                                    hintText: '192.168.0.1',
+                                    maxLength: 15,
+                                    controller: ipController,
+                                    enabled: !isLoading,
+                                    onFieldSubmitted: (_) => print(),
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    inputFormatters: [
+                                      // This allows *only* digits and dots
+                                      FilteringTextInputFormatter.allow(
+                                        RegExp(r'[\d.]'),
+                                      ),
+                                    ],
+                                    validator: FormValidators.compose([
+                                      NonEmptyValidator(),
+                                      IpValidator(),
+                                    ]),
+                                    keyboardType: TextInputType.datetime,
+                                  ),
+                                  const SizedBox(height: Sizes.p32),
+                                  PrimaryButton(
+                                    text: 'Imprimir'.hardcoded,
+                                    isLoading: isLoading,
+                                    onPressed: print,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );
