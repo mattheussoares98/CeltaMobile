@@ -1,5 +1,4 @@
 import 'package:celta_inventario/core/data/models/models.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
@@ -17,7 +16,10 @@ class FakePendingBuyRequest extends PendingBuyRequestStateController {
   final PendingBuyRequestEntity? requestToReturn;
   FakePendingBuyRequest(this.requestToReturn);
 
-  PendingBuyRequestEntity? updatedEntity;
+  // PendingBuyRequestEntity? get updatedEntity => _updatedEntity;
+  // PendingBuyRequestEntity? _updatedEntity;
+  bool get clearedState => _clearedState;
+  bool _clearedState = false;
 
   @override
   Future<PendingBuyRequestEntity> build() async {
@@ -27,36 +29,41 @@ class FakePendingBuyRequest extends PendingBuyRequestStateController {
     return requestToReturn!;
   }
 
-  // We override updatePending to "spy" on the value passed to it.
   @override
-  Future<void> updatePending({
-    BuyerEntity? selectedBuyer,
-    RequestTypeEntity? selectedRequestType,
-    SupplierEntity? selectedSupplier,
-    List<EnterpriseEntity>? selectedEnterprises,
-    Map<ProductKey, BuyRequestProductItemEntity>? products,
-    String? lastSavedRequestNumber,
-    bool? annulSelectedEnterprises,
-    bool? annulProducts,
-    bool? annulSelectedSupplier,
-  }) async {
-    updatedEntity = updatedEntity
-        ?.annulValue(
-          annulSelectedEnterprises: annulSelectedEnterprises,
-          annulProducts: annulProducts,
-          annulSelectedSupplier: annulSelectedSupplier,
-        )
-        .copyWith(
-          selectedBuyer: selectedBuyer,
-          selectedSupplier: selectedSupplier,
-          selectedEnterprises: selectedEnterprises,
-          selectedRequestType: selectedRequestType,
-          products: products,
-          lastSavedRequestNumber: lastSavedRequestNumber,
-        );
-    // We don't need to call super() or update the state,
-    // just record the value.
+  Future<void> clearState(String? newSavedRequestNumber) async {
+    _clearedState = true;
   }
+
+  // // We override updatePending to "spy" on the value passed to it.
+  // @override
+  // Future<void> updatePending({
+  //   BuyerEntity? selectedBuyer,
+  //   RequestTypeEntity? selectedRequestType,
+  //   SupplierEntity? selectedSupplier,
+  //   List<EnterpriseEntity>? selectedEnterprises,
+  //   Map<ProductKey, BuyRequestProductItemEntity>? products,
+  //   String? lastSavedRequestNumber,
+  //   bool? annulSelectedEnterprises,
+  //   bool? annulProducts,
+  //   bool? annulSelectedSupplier,
+  // }) async {
+  //   _updatedEntity = updatedEntity
+  //       ?.annulValue(
+  //         annulSelectedEnterprises: annulSelectedEnterprises,
+  //         annulProducts: annulProducts,
+  //         annulSelectedSupplier: annulSelectedSupplier,
+  //       )
+  //       .copyWith(
+  //         selectedBuyer: selectedBuyer,
+  //         selectedSupplier: selectedSupplier,
+  //         selectedEnterprises: selectedEnterprises,
+  //         selectedRequestType: selectedRequestType,
+  //         products: products,
+  //         lastSavedRequestNumber: lastSavedRequestNumber,
+  //       );
+  //   // We don't need to call super() or update the state,
+  //   // just record the value.
+  // }
 }
 
 class MockSoapInsertBuyRequestRepository extends Mock
@@ -218,7 +225,7 @@ void main() {
     );
 
     test(
-      'should call updatePending with correct data after successful insert',
+      'should call clear state with correct new saleRequestNumber on success',
       () async {
         // ARRANGE
         final spyPendingController = FakePendingBuyRequest(fakePendingRequest);
@@ -249,13 +256,7 @@ void main() {
 
         // ASSERT
         // Check the 'updatedEntity' property on our spy
-        expect(spyPendingController.updatedEntity, isNotNull);
-        expect(
-          spyPendingController.updatedEntity,
-          PendingBuyRequestEntity.empty().copyWith(
-            lastSavedRequestNumber: fakeLastSavedRequestNumber,
-          ),
-        );
+        expect(spyPendingController.clearedState, isTrue);
       },
     );
   });

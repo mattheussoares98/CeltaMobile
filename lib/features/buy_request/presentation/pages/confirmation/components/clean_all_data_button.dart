@@ -42,7 +42,7 @@ class CleanAllDataButton extends ConsumerWidget {
                           .read(
                             pendingBuyRequestStateControllerProvider.notifier,
                           )
-                          .clearState();
+                          .clearState(null);
                       observationsController.clear();
                     },
                   );

@@ -7,6 +7,7 @@ import 'package:celta_inventario/features/buy_request/domain/entities/entities.d
 import 'package:celta_inventario/features/buy_request/domain/repository/repository.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/providers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -251,9 +252,11 @@ void main() {
       expect(result.selectedEnterprises, null);
       expect(result.selectedSupplier, null);
     });
+  });
 
+  group("Clear state", () {
     test(
-      'should clean all data correctly but maintain lastSavedRequestNumber',
+      'should clean all data correctly but maintain lastSavedRequestNumber when pass null value',
       () async {
         // ARRANGE
         when(() => mockRepository.load()).thenAnswer((_) async => entity);
@@ -268,7 +271,7 @@ void main() {
         // ACT
         await container
             .read(pendingBuyRequestStateControllerProvider.notifier)
-            .clearState();
+            .clearState(null);
 
         final result = await container.read(
           pendingBuyRequestStateControllerProvider.future,
@@ -284,6 +287,44 @@ void main() {
           () => mockRepository.update(
             PendingBuyRequestEntity.empty().copyWith(
               lastSavedRequestNumber: entity.lastSavedRequestNumber,
+            ),
+          ),
+        ).called(1);
+      },
+    );
+    test(
+      'should clean all data correctly and update the lastSavedRequestNumber when pass a new value',
+      () async {
+        // ARRANGE
+        when(() => mockRepository.load()).thenAnswer((_) async => entity);
+        when(() => mockRepository.update(any())).thenAnswer((_) async {});
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+
+        await container.read(pendingBuyRequestStateControllerProvider.future);
+        expect(spyEnterprisesController.buildCount, 0);
+
+        final newValue = faker.guid.guid();
+        // ACT
+        await container
+            .read(pendingBuyRequestStateControllerProvider.notifier)
+            .clearState(newValue);
+
+        final result = await container.read(
+          pendingBuyRequestStateControllerProvider.future,
+        );
+        expect(
+          result,
+          PendingBuyRequestEntity.empty().copyWith(
+            lastSavedRequestNumber: newValue,
+          ),
+        );
+
+        verify(
+          () => mockRepository.update(
+            PendingBuyRequestEntity.empty().copyWith(
+              lastSavedRequestNumber: newValue,
             ),
           ),
         ).called(1);

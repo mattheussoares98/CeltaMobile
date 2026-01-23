@@ -22,13 +22,16 @@ class PendingBuyRequestStateController
     return localData ?? PendingBuyRequestEntity.empty();
   }
 
-  Future<void> clearState() async {
+  Future<void> clearState(String? newSavedRequestNumber) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(localPendingBuyRequestRepositoryProvider);
       final oldState = state.value!;
       final newState = PendingBuyRequestEntity.empty().copyWith(
-        lastSavedRequestNumber: oldState.lastSavedRequestNumber,
+        lastSavedRequestNumber:
+            newSavedRequestNumber ?? oldState.lastSavedRequestNumber,
+        //called by insertBuyRequestStateController when save the new request. This is the
+        //reason why update the number here
       );
       await repository.update(newState);
 
