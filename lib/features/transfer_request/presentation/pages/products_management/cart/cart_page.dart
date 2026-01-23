@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components/components.dart';
@@ -81,12 +82,11 @@ class CartPage extends ConsumerWidget {
             ),
           Consumer(
             builder: (_, ref, _) {
-              final hasSelectedCartProductIndex = ref.watch(
-                uiStateControllerProvider(
-                  draftKey.requestTypeCode,
-                ).select((s) => s.value?.selectedCartProductIndex != null),
+              final keyboardIsOpen = ref.watch(
+                keyboardVisibilityStateControllerProvider,
               );
-              if (hasSelectedCartProductIndex) {
+
+              if (keyboardIsOpen) {
                 return const SizedBox.shrink();
               }
               return Footer(draftKey: draftKey);

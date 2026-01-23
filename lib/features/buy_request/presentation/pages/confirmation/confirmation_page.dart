@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import '../../controllers/controllers.dart';
 import '../identification/components/components.dart';
 import 'components/components.dart';
@@ -19,12 +20,10 @@ class ConfirmationPage extends ConsumerStatefulWidget {
 
 class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
   final observationsController = TextEditingController();
-  final observationsFocusNode = FocusNode();
 
   @override
   void dispose() {
     observationsController.dispose();
-    observationsFocusNode.dispose();
     super.dispose();
   }
 
@@ -51,7 +50,6 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   SliverToBoxAdapter(
                     child: DefaultTextFormField(
                       controller: observationsController,
-                      focusNode: observationsFocusNode,
                       hintText: 'Observações'.hardcoded,
                       labelText: 'Observações'.hardcoded,
                       maxLines: 4,
@@ -70,25 +68,13 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
             ),
             Consumer(
               builder: (_, ref, _) {
-                final hasProductIndexSelected = ref.watch(
-                  uiStateControllerProvider.select(
-                    (s) => s.value?.selectedCartProductIndex != null,
-                  ),
+                final keyboardIsOpen = ref.watch(
+                  keyboardVisibilityStateControllerProvider,
                 );
-                if (hasProductIndexSelected) {
+                if (keyboardIsOpen) {
                   return const SizedBox.shrink();
                 }
-                return AnimatedBuilder(
-                  animation: observationsFocusNode,
-                  builder: (_, _) {
-                    if (observationsFocusNode.hasFocus) {
-                      return const SizedBox.shrink();
-                    }
-                    return Footer(
-                      observationsController: observationsController,
-                    );
-                  },
-                );
+                return Footer(observationsController: observationsController);
               },
             ),
           ],
