@@ -22,32 +22,29 @@ class ConcurrentsPage extends ConsumerWidget {
       n.showAlertDialogOnError(context);
     });
 
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: FittedBox(
-              child: Text('Concorrentes (pesquisa $researchCode)'.hardcoded),
-            ),
-            actions: const [InsertConcurrentButton()],
-          ),
-          body: AsyncValueWidget(
-            value: ref.watch(researchsStateControllerProvider),
-            tryAgain: () => ref.invalidate(researchsStateControllerProvider),
-            data: (researchs) {
-              final selectedResearch = researchs.firstWhere(
-                (research) => research.Code == researchCode,
-              );
+    ref.observeLoading([insertUpdateResearchControllerProvider]);
 
-              return ConcurrentsItems(
-                selectedResearch: selectedResearch,
-                enterpriseCode: enterpriseCode,
-              );
-            },
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: FittedBox(
+          child: Text('Concorrentes (pesquisa $researchCode)'.hardcoded),
         ),
-        LoadingPage(providers: [insertUpdateResearchControllerProvider]),
-      ],
+        actions: const [InsertConcurrentButton()],
+      ),
+      body: AsyncValueWidget(
+        value: ref.watch(researchsStateControllerProvider),
+        tryAgain: () => ref.invalidate(researchsStateControllerProvider),
+        data: (researchs) {
+          final selectedResearch = researchs.firstWhere(
+            (research) => research.Code == researchCode,
+          );
+
+          return ConcurrentsItems(
+            selectedResearch: selectedResearch,
+            enterpriseCode: enterpriseCode,
+          );
+        },
+      ),
     );
   }
 }

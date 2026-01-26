@@ -39,36 +39,31 @@ class TransferBetweenStocksPage extends ConsumerWidget {
       });
     });
 
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: FittedBox(
-              child: Text("Transferência entre estoques".hardcoded),
-            ),
-            actions: [ClearLotButton(enterpriseCode: enterpriseCode)],
-          ),
-          body: Consumer(
-            builder: (_, ref, _) {
-              final selectedPageIndex = ref.watch(
-                selectedProductUIStateControllerProvider(
-                  enterpriseCode,
-                ).select((s) => s.pageIndex),
-              );
+    ref.observeLoading([confirmAdjustStockControllerProvider]);
 
-              return IndexedStack(
-                index: selectedPageIndex,
-                children: [
-                  ProductsPage(enterpriseCode: enterpriseCode),
-                  LotPage(enterpriseCode: enterpriseCode),
-                ],
-              );
-            },
-          ),
-          bottomNavigationBar: BottomNavBar(enterpriseCode: enterpriseCode),
-        ),
-        LoadingPage(providers: [confirmAdjustStockControllerProvider]),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: FittedBox(child: Text("Transferência entre estoques".hardcoded)),
+        actions: [ClearLotButton(enterpriseCode: enterpriseCode)],
+      ),
+      body: Consumer(
+        builder: (_, ref, _) {
+          final selectedPageIndex = ref.watch(
+            selectedProductUIStateControllerProvider(
+              enterpriseCode,
+            ).select((s) => s.pageIndex),
+          );
+
+          return IndexedStack(
+            index: selectedPageIndex,
+            children: [
+              ProductsPage(enterpriseCode: enterpriseCode),
+              LotPage(enterpriseCode: enterpriseCode),
+            ],
+          );
+        },
+      ),
+      bottomNavigationBar: BottomNavBar(enterpriseCode: enterpriseCode),
     );
   }
 }

@@ -23,49 +23,43 @@ class HomePage extends ConsumerWidget {
         context.goNamed(Routes.auth.name);
       }
     });
+    ref.observeLoading([
+      canAccessResourceStateControllerProvider(
+        BsRoutine.adjustSalePrice,
+        BsResource.adjustSalePrice,
+      ),
+    ]);
 
     final enterprisesAsync = ref.watch(enterprisesStateControllerProvider());
 
-    return Stack(
-      children: [
-        Scaffold(
-          drawer: const CompleteDrawer(),
-          appBar: AppBar(
-            leadingWidth: 40,
-            title: AsyncValueWidget(
-              value: enterprisesAsync,
-              tryAgain: () => ref.invalidate(validatedUserSessionProvider),
-              data: (enterprises) {
-                return SelectEnterpriseDropDown(enterprises: enterprises);
-              },
-            ),
-          ),
+    return Scaffold(
+      drawer: const CompleteDrawer(),
+      appBar: AppBar(
+        leadingWidth: 40,
+        title: AsyncValueWidget(
+          value: enterprisesAsync,
+          tryAgain: () => ref.invalidate(validatedUserSessionProvider),
+          data: (enterprises) {
+            return SelectEnterpriseDropDown(enterprises: enterprises);
+          },
+        ),
+      ),
 
-          body: enterprisesAsync.hasValue && !enterprisesAsync.isLoading
-              ? AsyncValueWidget(
-                  value: ref.watch(
-                    enabledModulesByEnterpriseNameStateControllerProvider(
-                      selectedEnterpriseStateControllerProvider.name!,
-                    ),
-                  ),
-                  tryAgain: () => ref.invalidate(
-                    enabledModulesByEnterpriseNameStateControllerProvider(
-                      selectedEnterpriseStateControllerProvider.name!,
-                    ),
-                  ),
-                  data: (_) => const ModulesWidget(),
-                )
-              : null,
-        ),
-        LoadingPage(
-          providers: [
-            canAccessResourceStateControllerProvider(
-              BsRoutine.adjustSalePrice,
-              BsResource.adjustSalePrice,
-            ),
-          ],
-        ),
-      ],
+      body: enterprisesAsync.hasValue && !enterprisesAsync.isLoading
+          ? AsyncValueWidget(
+              value: ref.watch(
+                enabledModulesByEnterpriseNameStateControllerProvider(
+                  selectedEnterpriseStateControllerProvider.name!,
+                ),
+              ),
+              tryAgain: () => ref.invalidate(
+                enabledModulesByEnterpriseNameStateControllerProvider(
+                  selectedEnterpriseStateControllerProvider.name!,
+                ),
+              ),
+              data: (_) => const ModulesWidget(),
+            )
+          : null,
     );
   }
 }

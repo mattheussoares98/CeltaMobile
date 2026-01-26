@@ -36,63 +36,58 @@ class SaleRequestPage extends ConsumerWidget {
       n.showAlertDialogOnError(context);
     });
 
+    ref.observeLoading([
+      processCartControllerProvider,
+      saveSaleRequestControllerProvider,
+    ]);
+
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: AppBarTitle(enterpriseCode: enterpriseCode),
-            actionsPadding: const EdgeInsets.fromLTRB(
-              0,
-              Sizes.p8,
-              Sizes.p12,
-              Sizes.p8,
-            ),
-            actions: [
-              if (screenWidth > 200) ...[
-                ShowPdfButton(enterpriseCode: enterpriseCode),
-                PrintButton(enterpriseCode: enterpriseCode),
-              ],
-              const CartBadge(),
-            ],
-          ),
-          body: AsyncValueWidget(
-            value: ref.watch(
-              requestTypeStateControllerProvider(Modules.saleRequest),
-            ),
-            tryAgain: () {
-              ref.invalidate(
-                requestTypeStateControllerProvider(Modules.saleRequest),
-              );
-            },
-            data: (requests) {
-              final selectedRequest = requests!.firstWhere(
-                (e) => e.Code == requestCode,
-              );
-
-              return IndexedStack(
-                index: ref.watch(pageIndexStateControllerProvider),
-                children: [
-                  InsertProductsPage(
-                    enterpriseCode: enterpriseCode,
-                    selectedRequest: selectedRequest,
-                  ),
-                  const CustomerPage(),
-                  CartPage(selectedRequest: selectedRequest),
-                ],
-              );
-            },
-          ),
-          bottomNavigationBar: const BottomNavBar(),
+    return Scaffold(
+      appBar: AppBar(
+        title: AppBarTitle(enterpriseCode: enterpriseCode),
+        actionsPadding: const EdgeInsets.fromLTRB(
+          0,
+          Sizes.p8,
+          Sizes.p12,
+          Sizes.p8,
         ),
-        LoadingPage(
-          providers: [
-            processCartControllerProvider,
-            saveSaleRequestControllerProvider,
+        actions: [
+          if (screenWidth > 200) ...[
+            ShowPdfButton(enterpriseCode: enterpriseCode),
+            PrintButton(enterpriseCode: enterpriseCode),
           ],
+          const CartBadge(),
+        ],
+      ),
+      body: AsyncValueWidget(
+        value: ref.watch(
+          requestTypeStateControllerProvider(Modules.saleRequest),
         ),
-      ],
+        tryAgain: () {
+          ref.invalidate(
+            requestTypeStateControllerProvider(Modules.saleRequest),
+          );
+        },
+        data: (requests) {
+          final selectedRequest = requests!.firstWhere(
+            (e) => e.Code == requestCode,
+          );
+
+          return IndexedStack(
+            index: ref.watch(pageIndexStateControllerProvider),
+            children: [
+              InsertProductsPage(
+                enterpriseCode: enterpriseCode,
+                selectedRequest: selectedRequest,
+              ),
+              const CustomerPage(),
+              CartPage(selectedRequest: selectedRequest),
+            ],
+          );
+        },
+      ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

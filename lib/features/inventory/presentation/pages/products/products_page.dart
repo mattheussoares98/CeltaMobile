@@ -162,6 +162,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       },
     );
 
+    ref.observeLoading([
+      entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
+    ]);
+
     return Stack(
       children: [
         Scaffold(
@@ -192,11 +196,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               ],
             ),
           ),
-        ),
-        LoadingPage(
-          providers: [
-            entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
-          ],
         ),
       ],
     );

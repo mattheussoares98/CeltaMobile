@@ -42,47 +42,44 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       ConfirmationPage(),
     ];
 
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: FittedBox(
-              child: Consumer(
-                builder: (_, ref, _) {
-                  return Text(
-                    appBarTitles[ref.watch(
-                      uiStateControllerProvider.select(
-                        (s) => s.value?.currentPageIndex ?? 0,
-                      ),
-                    )],
-                  );
-                },
-              ),
-            ),
-            actionsPadding: const EdgeInsets.fromLTRB(
-              0,
-              Sizes.p8,
-              Sizes.p12,
-              Sizes.p8,
-            ),
-            actions: const [CartPriceIcon()],
-          ),
-          body: Consumer(
+    ref.observeLoading([insertBuyRequestControllerProvider]);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: FittedBox(
+          child: Consumer(
             builder: (_, ref, _) {
-              return IndexedStack(
-                index: ref.watch(
+              return Text(
+                appBarTitles[ref.watch(
                   uiStateControllerProvider.select(
                     (s) => s.value?.currentPageIndex ?? 0,
                   ),
-                ),
-                children: pages,
+                )],
               );
             },
           ),
-          bottomNavigationBar: const BottomNavBar(),
         ),
-        LoadingPage(providers: [insertBuyRequestControllerProvider]),
-      ],
+        actionsPadding: const EdgeInsets.fromLTRB(
+          0,
+          Sizes.p8,
+          Sizes.p12,
+          Sizes.p8,
+        ),
+        actions: const [CartPriceIcon()],
+      ),
+      body: Consumer(
+        builder: (_, ref, _) {
+          return IndexedStack(
+            index: ref.watch(
+              uiStateControllerProvider.select(
+                (s) => s.value?.currentPageIndex ?? 0,
+              ),
+            ),
+            children: pages,
+          );
+        },
+      ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

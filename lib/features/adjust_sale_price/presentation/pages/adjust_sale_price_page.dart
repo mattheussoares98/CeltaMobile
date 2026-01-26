@@ -61,82 +61,79 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
 
     final selectedProduct = widget.product ?? selectedProductAsync.value;
 
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            leadingWidth: 40,
-            title: FittedBox(
-              child: Text(
-                selectedProduct == null
-                    ? ""
-                    : "(${selectedProduct.PLU}) ${selectedProduct.Name}",
-              ),
-            ),
-          ),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-              child: CustomScrollView(
-                physics: const ClampingScrollPhysics(),
-                slivers: [
-                  if (selectedProduct != null)
-                    PriceSchedules(
-                      enterpriseCode: widget.enterpriseCode,
-                      product: selectedProduct,
-                    ),
-                  AsyncValueSliverWidget(
-                    value: selectedProductAsync,
-                    tryAgain: () {
-                      ref.invalidate(
-                        selectedProductStateControllerProvider(
-                          widget.enterpriseCode,
-                          widget.plu,
-                        ),
-                      );
-                    },
-                    data: (product) {
-                      return SliverToBoxAdapter(
-                        child: ResponsiveScrollableWidget(
-                          child: Column(
-                            children: [
-                              _DefaultDivider(),
-                              SalesTypeWidget(plu: widget.plu),
-                              _DefaultDivider(),
-                              PricesTypesWidget(plu: widget.plu),
-                              _DefaultDivider(),
-                              ReplicationTypesWidget(plu: widget.plu),
-                              _DefaultDivider(),
-                              StartAndEndDates(plu: widget.plu),
-                              _DefaultDivider(),
-                              InfoButton(
-                                ProductItemWidget(
-                                  product: selectedProduct!,
-                                  routine: BsRoutine.adjustSalePrice,
-                                ),
-                              ),
-                              PracticedSuggestionAndMinimumPrices(
-                                product: selectedProduct,
-                              ),
-                              _DefaultDivider(),
-                              PriceFieldAndConfirmButton(
-                                enterpriseCode: widget.enterpriseCode,
-                                plu: widget.plu,
-                              ),
-                              gapH32,
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
+    ref.observeLoading([confirmAdjustControllerProvider]);
+
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 40,
+        title: FittedBox(
+          child: Text(
+            selectedProduct == null
+                ? ""
+                : "(${selectedProduct.PLU}) ${selectedProduct.Name}",
           ),
         ),
-        LoadingPage(providers: [confirmAdjustControllerProvider]),
-      ],
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+          child: CustomScrollView(
+            physics: const ClampingScrollPhysics(),
+            slivers: [
+              if (selectedProduct != null)
+                PriceSchedules(
+                  enterpriseCode: widget.enterpriseCode,
+                  product: selectedProduct,
+                ),
+              AsyncValueSliverWidget(
+                value: selectedProductAsync,
+                tryAgain: () {
+                  ref.invalidate(
+                    selectedProductStateControllerProvider(
+                      widget.enterpriseCode,
+                      widget.plu,
+                    ),
+                  );
+                },
+                data: (product) {
+                  return SliverToBoxAdapter(
+                    child: ResponsiveScrollableWidget(
+                      child: Column(
+                        children: [
+                          _DefaultDivider(),
+                          SalesTypeWidget(plu: widget.plu),
+                          _DefaultDivider(),
+                          PricesTypesWidget(plu: widget.plu),
+                          _DefaultDivider(),
+                          ReplicationTypesWidget(plu: widget.plu),
+                          _DefaultDivider(),
+                          StartAndEndDates(plu: widget.plu),
+                          _DefaultDivider(),
+                          InfoButton(
+                            ProductItemWidget(
+                              product: selectedProduct!,
+                              routine: BsRoutine.adjustSalePrice,
+                            ),
+                          ),
+                          PracticedSuggestionAndMinimumPrices(
+                            product: selectedProduct,
+                          ),
+                          _DefaultDivider(),
+                          PriceFieldAndConfirmButton(
+                            enterpriseCode: widget.enterpriseCode,
+                            plu: widget.plu,
+                          ),
+                          gapH32,
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

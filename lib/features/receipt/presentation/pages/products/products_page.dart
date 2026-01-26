@@ -86,52 +86,47 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       });
     });
 
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(title: AppBarTitle(receipt: widget.receipt)),
-          body: Column(
-            children: [
-              TopButtons(
-                searchProductKey: searchProductKey,
-                enterpriseCode: widget.enterpriseCode,
-                receiptCode: widget.receiptCode,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Sizes.p8,
-                    0,
-                    Sizes.p8,
-                    Sizes.p8,
-                  ),
-                  child: Column(
-                    children: [
-                      SearchProducts(
-                        searchProductKey: searchProductKey,
-                        searchValueController: searchValueController,
-                        receiptCode: widget.receiptCode,
-                      ),
-                      gapH8,
-                      Expanded(
-                        child: ProductsItems(
-                          searchProductKey: searchProductKey,
-                          receiptCode: widget.receiptCode,
-                          quantityController: quantityController,
-                          quantityFocusNode: quantityFocusNode,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+    ref.observeLoading([updateProductControllerProvider(searchProductKey)]);
+
+    return Scaffold(
+      appBar: AppBar(title: AppBarTitle(receipt: widget.receipt)),
+      body: Column(
+        children: [
+          TopButtons(
+            searchProductKey: searchProductKey,
+            enterpriseCode: widget.enterpriseCode,
+            receiptCode: widget.receiptCode,
           ),
-        ),
-        LoadingPage(
-          providers: [updateProductControllerProvider(searchProductKey)],
-        ),
-      ],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                0,
+                Sizes.p8,
+                Sizes.p8,
+              ),
+              child: Column(
+                children: [
+                  SearchProducts(
+                    searchProductKey: searchProductKey,
+                    searchValueController: searchValueController,
+                    receiptCode: widget.receiptCode,
+                  ),
+                  gapH8,
+                  Expanded(
+                    child: ProductsItems(
+                      searchProductKey: searchProductKey,
+                      receiptCode: widget.receiptCode,
+                      quantityController: quantityController,
+                      quantityFocusNode: quantityFocusNode,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

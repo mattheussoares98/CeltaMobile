@@ -58,34 +58,32 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
         changeSelectedIndex(currentIndex);
       });
     });
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: FittedBox(child: Text("Ajuste de estoque".hardcoded)),
-          ),
-          body: Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-              child: Column(
-                children: [
-                  HeaderFilters(enterpriseCode: widget.enterpriseCode),
-                  Expanded(
-                    child: ProductsItems(
-                      quantityFocusNode: quantityFocusNode,
-                      formKey: formKey,
-                      enterpriseCode: widget.enterpriseCode,
-                      quantityController: quantityController,
-                    ),
-                  ),
-                ],
+
+    ref.observeLoading([confirmAdjustStockControllerProvider]);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: FittedBox(child: Text("Ajuste de estoque".hardcoded)),
+      ),
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+          child: Column(
+            children: [
+              HeaderFilters(enterpriseCode: widget.enterpriseCode),
+              Expanded(
+                child: ProductsItems(
+                  quantityFocusNode: quantityFocusNode,
+                  formKey: formKey,
+                  enterpriseCode: widget.enterpriseCode,
+                  quantityController: quantityController,
+                ),
               ),
-            ),
+            ],
           ),
         ),
-        LoadingPage(providers: [confirmAdjustStockControllerProvider]),
-      ],
+      ),
     );
   }
 }

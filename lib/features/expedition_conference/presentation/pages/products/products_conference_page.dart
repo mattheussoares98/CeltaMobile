@@ -82,6 +82,8 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       ).select((s) => s.value?.scannedProducts ?? []),
     );
 
+    ref.observeLoading([confirmConferenceControllerProvider]);
+
     return PopScope(
       canPop: scannedProducts.isEmpty,
       onPopInvokedWithResult: (didPop, _) async {
@@ -103,72 +105,64 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
           }
         }
       },
-      child: Stack(
-        children: [
-          Scaffold(
-            appBar: AppBar(
-              title: Consumer(
-                builder: (_, ref, _) {
-                  return FittedBox(
-                    child: Text(
-                      '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
-                          .hardcoded,
-                    ),
-                  );
-                },
-              ),
-            ),
-            body: AsyncValueWidget(
-              value: ref.watch(
-                expeditionConferenceControllerProvider(
-                  widget.expeditionControlCode,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Consumer(
+            builder: (_, ref, _) {
+              return FittedBox(
+                child: Text(
+                  '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
+                      .hardcoded,
                 ),
-              ),
-              tryAgain: () => ref.invalidate(
-                expeditionConferenceControllerProvider(
-                  widget.expeditionControlCode,
-                ),
-              ),
-              data: (_) {
-                return ref.watch(
-                      confirmConferenceControllerProvider.select(
-                        (state) => state.hasError,
-                      ),
-                    )
-                    ? TryConfirmAgain(
-                        expeditionControlCode: widget.expeditionControlCode,
-                        stepCode: widget.stepCode,
-                      )
-                    : Consumer(
-                        builder: (_, ref, _) {
-                          return IndexedStack(
-                            index: ref.watch(pageIndexStateControllerProvider),
-                            children: [
-                              PendingProductsPage(
-                                focusNode: searchProductFocusNode,
-                                searchProductController:
-                                    searchProductController,
-                                enterpriseCode: widget.enterpriseCode,
-                                expeditionControlCode:
-                                    widget.expeditionControlCode,
-                              ),
-                              ConferedProductsPage(
-                                expeditionControlCode:
-                                    widget.expeditionControlCode,
-                              ),
-                            ],
-                          );
-                        },
-                      );
-              },
-            ),
-
-            bottomNavigationBar: BottomNavBar(
-              expeditionControlCode: widget.expeditionControlCode,
+              );
+            },
+          ),
+        ),
+        body: AsyncValueWidget(
+          value: ref.watch(
+            expeditionConferenceControllerProvider(
+              widget.expeditionControlCode,
             ),
           ),
-          LoadingPage(providers: [confirmConferenceControllerProvider]),
-        ],
+          tryAgain: () => ref.invalidate(
+            expeditionConferenceControllerProvider(
+              widget.expeditionControlCode,
+            ),
+          ),
+          data: (_) {
+            return ref.watch(
+                  confirmConferenceControllerProvider.select(
+                    (state) => state.hasError,
+                  ),
+                )
+                ? TryConfirmAgain(
+                    expeditionControlCode: widget.expeditionControlCode,
+                    stepCode: widget.stepCode,
+                  )
+                : Consumer(
+                    builder: (_, ref, _) {
+                      return IndexedStack(
+                        index: ref.watch(pageIndexStateControllerProvider),
+                        children: [
+                          PendingProductsPage(
+                            focusNode: searchProductFocusNode,
+                            searchProductController: searchProductController,
+                            enterpriseCode: widget.enterpriseCode,
+                            expeditionControlCode: widget.expeditionControlCode,
+                          ),
+                          ConferedProductsPage(
+                            expeditionControlCode: widget.expeditionControlCode,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+          },
+        ),
+
+        bottomNavigationBar: BottomNavBar(
+          expeditionControlCode: widget.expeditionControlCode,
+        ),
       ),
     );
   }

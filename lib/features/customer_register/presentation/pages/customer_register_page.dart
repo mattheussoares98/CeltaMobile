@@ -48,6 +48,11 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       n.showAlertDialogOnError(context);
     });
 
+    ref.observeLoading([
+      customerStateControllerProvider,
+      insertUpdateCustomerControllerProvider,
+    ]);
+
     final pages = [
       PersonalDataPage(key: personalDataPageKey),
       const AddressPage(),
@@ -84,12 +89,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
               },
             ),
           ),
-        ),
-        LoadingPage(
-          providers: [
-            customerStateControllerProvider,
-            insertUpdateCustomerControllerProvider,
-          ],
         ),
       ],
     );

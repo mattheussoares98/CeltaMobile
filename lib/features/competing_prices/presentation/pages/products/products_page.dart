@@ -42,36 +42,33 @@ class ProductsPage extends ConsumerWidget {
       );
     });
 
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: AppBarTitle(widget: this),
-            toolbarHeight: researchName != null && concurrentName != null
-                ? 66
-                : null,
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              children: [
-                ResponsiveScrollableWidget(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Filters(widget: this),
-                      SearchProductsField(widget: this),
-                      gapH8,
-                    ],
-                  ),
-                ),
-                ProductsItems(widget: this),
-              ],
+    ref.observeLoading([updatePricesControllerProvider]);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: AppBarTitle(widget: this),
+        toolbarHeight: researchName != null && concurrentName != null
+            ? 66
+            : null,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          children: [
+            ResponsiveScrollableWidget(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Filters(widget: this),
+                  SearchProductsField(widget: this),
+                  gapH8,
+                ],
+              ),
             ),
-          ),
+            ProductsItems(widget: this),
+          ],
         ),
-        LoadingPage(providers: [updatePricesControllerProvider]),
-      ],
+      ),
     );
   }
 }
