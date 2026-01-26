@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +20,14 @@ Future<void> initApp() async {
     _initSupabase(),
     _initHive(),
     _setOnlyPortraitMode(),
+    _deletePrefs(),
   ]);
+}
+
+Future<void> _deletePrefs() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs
+      .clear(); //! Need to remove this in the future after all devices are updated
 }
 
 Future<void> _initFirebase() async {
