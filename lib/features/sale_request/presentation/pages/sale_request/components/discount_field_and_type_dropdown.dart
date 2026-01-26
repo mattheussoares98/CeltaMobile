@@ -22,6 +22,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final widthScreen = MediaQuery.sizeOf(context).width;
 
     return Row(
       children: [
@@ -62,21 +63,22 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                   },
                 ),
               ),
-              FocusTraversalGroup(
-                descendantsAreFocusable: false,
-                child: IconButton(
-                  onPressed: () {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Atenção!'.hardcoded,
-                      content:
-                          'Esse campo fica habilitado quando o modelo de pedido permite aplicar desconto, não foi informado um preço manualmente e o produto possui um preço de varejo definido'
-                              .hardcoded,
-                    );
-                  },
-                  icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+              if (widthScreen > 200)
+                FocusTraversalGroup(
+                  descendantsAreFocusable: false,
+                  child: IconButton(
+                    onPressed: () {
+                      showAlertDialog(
+                        context: context,
+                        title: 'Atenção!'.hardcoded,
+                        content:
+                            'Esse campo fica habilitado quando o modelo de pedido permite aplicar desconto, não foi informado um preço manualmente e o produto possui um preço de varejo definido'
+                                .hardcoded,
+                      );
+                    },
+                    icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+                  ),
                 ),
-              ),
             ],
           ),
         ),

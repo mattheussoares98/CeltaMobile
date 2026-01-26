@@ -82,12 +82,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyD_L2cZCv4JiFcMhfj-8F2O6z3Qwc7mCik',
-    appId: '1:386752507656:web:2dbe29faee4028c614c6bd',
+    appId: '1:386752507656:web:d5c46600f7b211d814c6bd',
     messagingSenderId: '386752507656',
     projectId: 'celtamobile-7d69a',
     authDomain: 'celtamobile-7d69a.firebaseapp.com',
     databaseURL: 'https://celtamobile-7d69a-default-rtdb.firebaseio.com',
     storageBucket: 'celtamobile-7d69a.appspot.com',
-    measurementId: 'G-NLZ653Z1JT',
+    measurementId: 'G-4V9LLV2FWP',
   );
+
 }

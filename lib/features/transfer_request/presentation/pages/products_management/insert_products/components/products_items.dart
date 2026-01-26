@@ -61,6 +61,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       return;
     }
 
+    FocusManager.instance.primaryFocus?.unfocus();
     ref
         .read(
           uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
@@ -75,6 +76,17 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       priceController.text = price.toString().toBrazilianNumber().replaceAll(
         RegExp(r'\.'),
         '',
+      );
+    }
+
+    if ((transferRequestProductItem?.quantity ?? 0) > 0) {
+      quantityController.text = transferRequestProductItem!.quantity
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
+      quantityController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: quantityController.text.length,
       );
     }
 

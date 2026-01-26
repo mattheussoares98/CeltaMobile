@@ -1,7 +1,6 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/domain/entities/entities.dart';
 import '../../../utils/utils.dart';
 import '../../commom_widgets.dart';
 
@@ -11,20 +10,6 @@ class WholePriceAndMinQuantity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.hideWholeInformations == true) {
-      return const SizedBox.shrink();
-    } else if ([
-      BsRoutine.adjustSalePrice,
-      BsRoutine.adjustStock,
-      BsRoutine.buyQuotation,
-      BsRoutine.researchOfPrice,
-      BsRoutine.priceConference,
-    ].contains(widget.routine)) {
-      return const SizedBox.shrink();
-    } else if ((widget.product.WholePracticedPrice ?? 0) == 0) {
-      return const SizedBox.shrink();
-    }
-
     final theme = Theme.of(context);
 
     return Column(

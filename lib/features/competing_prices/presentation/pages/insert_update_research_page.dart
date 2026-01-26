@@ -85,48 +85,50 @@ class _InsertUpdateResearchPageState
       key: formKey,
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
-        child: Column(
-          children: [
-            Text(
-              widget.research == null
-                  ? 'Inserindo pesquisa'.hardcoded
-                  : 'Editando pesquisa'.hardcoded,
-              style: theme.textTheme.titleLarge,
-            ),
-            gapH32,
-            DefaultTextFormField(
-              controller: nameController,
-              labelText: 'Nome'.hardcoded,
-              hintText: 'Nome'.hardcoded,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              maxLength: 100,
-              validator: FormValidators.compose([NonEmptyValidator()]),
-              onFieldSubmitted: (_) {
-                observationsFocusNode.requestFocus();
-              },
-            ),
-            gapH8,
-            DefaultTextFormField(
-              controller: observarionsController,
-              focusNode: observationsFocusNode,
-              labelText: 'Observações'.hardcoded,
-              hintText: 'Observações'.hardcoded,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              maxLength: 300,
-              onFieldSubmitted: (_) => submit(),
-            ),
-            gapH32,
-            SizedBox(
-              width: 200,
-              child: PrimaryButton(
-                text: widget.research == null
-                    ? 'Inserir'.hardcoded
-                    : 'Editar'.hardcoded,
-                onPressed: submit,
-                isLoading: isLoading,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                widget.research == null
+                    ? 'Inserindo pesquisa'.hardcoded
+                    : 'Editando pesquisa'.hardcoded,
+                style: theme.textTheme.titleLarge,
               ),
-            ),
-          ],
+              gapH32,
+              DefaultTextFormField(
+                controller: nameController,
+                labelText: 'Nome'.hardcoded,
+                hintText: 'Nome'.hardcoded,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                maxLength: 100,
+                validator: FormValidators.compose([NonEmptyValidator()]),
+                onFieldSubmitted: (_) {
+                  observationsFocusNode.requestFocus();
+                },
+              ),
+              gapH8,
+              DefaultTextFormField(
+                controller: observarionsController,
+                focusNode: observationsFocusNode,
+                labelText: 'Observações'.hardcoded,
+                hintText: 'Observações'.hardcoded,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                maxLength: 300,
+                onFieldSubmitted: (_) => submit(),
+              ),
+              gapH32,
+              SizedBox(
+                width: 200,
+                child: PrimaryButton(
+                  text: widget.research == null
+                      ? 'Inserir'.hardcoded
+                      : 'Editar'.hardcoded,
+                  onPressed: submit,
+                  isLoading: isLoading,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

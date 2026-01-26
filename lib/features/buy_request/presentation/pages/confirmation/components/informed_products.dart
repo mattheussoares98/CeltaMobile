@@ -71,6 +71,7 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
         .read(uiStateControllerProvider.notifier)
         .updateSelectedCartProductIndex(index);
 
+    FocusManager.instance.primaryFocus?.unfocus();
     quantityFocusNode.unfocus();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       quantityFocusNode.requestFocus();

@@ -37,28 +37,31 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
         children: [
           Row(
             children: [
-              AnimatedBuilder(
-                animation: widget.filterProductsController,
-                builder: (_, _) {
-                  final filteredProducts = ref
-                      .read(
-                        completeBuyQuotationsStateControllerProvider(
-                          widget.enterpriseCode,
-                          widget.code.toString(),
-                        ).notifier,
-                      )
-                      .filterProducts(widget.filterProductsController.text);
+              Expanded(
+                child: AnimatedBuilder(
+                  animation: widget.filterProductsController,
+                  builder: (_, _) {
+                    final filteredProducts = ref
+                        .read(
+                          completeBuyQuotationsStateControllerProvider(
+                            widget.enterpriseCode,
+                            widget.code.toString(),
+                          ).notifier,
+                        )
+                        .filterProducts(widget.filterProductsController.text);
 
-                  return Text(
-                    'Produtos (${filteredProducts.length})'.hardcoded,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontStyle: FontStyle.italic,
-                      color: theme.primaryColor,
-                    ),
-                  );
-                },
+                    return Text(
+                      'Produtos (${filteredProducts.length})'.hardcoded,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontStyle: FontStyle.italic,
+                        color: theme.primaryColor,
+                      ),
+                    );
+                  },
+                ),
               ),
               Expanded(
+                flex: 2,
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: PrimaryTextButton(

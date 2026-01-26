@@ -37,8 +37,25 @@
 <body>
   <script src="flutter_bootstrap.js" async></script>
   <script type="module" async>
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+
     import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.9.155/pdf.min.mjs';
     pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.9.155/pdf.worker.min.mjs";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_L2cZCv4JiFcMhfj-8F2O6z3Qwc7mCik",
+      authDomain: "celtamobile-7d69a.firebaseapp.com",
+      databaseURL: "https://celtamobile-7d69a-default-rtdb.firebaseio.com",
+      projectId: "celtamobile-7d69a",
+      storageBucket: "celtamobile-7d69a.appspot.com",
+      messagingSenderId: "386752507656",
+      appId: "1:386752507656:web:9d1bc23b2202053a14c6bd",
+      measurementId: "G-X4FZ8H9WJQ"
+    };
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
   </script>
 </body>
 

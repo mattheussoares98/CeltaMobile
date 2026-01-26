@@ -35,18 +35,20 @@ class SettingsPage extends ConsumerWidget {
                     ref.invalidate(appSettingsStateControllerProvider),
               ),
             )
-          : Column(
-              children: [
-                const ProductSearchTypeWidget(),
-                if ([
-                      Modules.inventory,
-                      Modules.expeditionConference,
-                      Modules.receipt,
-                    ].any((x) => x == module) &&
-                    (isIOS || isAndroid)) ...[
-                  ContinuousScanCheckbox(module: module!),
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  const ProductSearchTypeWidget(),
+                  if ([
+                        Modules.inventory,
+                        Modules.expeditionConference,
+                        Modules.receipt,
+                      ].any((x) => x == module) &&
+                      (isIOS || isAndroid)) ...[
+                    ContinuousScanCheckbox(module: module!),
+                  ],
                 ],
-              ],
+              ),
             ),
     );
   }

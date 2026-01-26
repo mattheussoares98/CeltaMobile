@@ -9,7 +9,7 @@ import '../../providers/providers.dart';
 
 part 'concurrents_state_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class ConcurrentsStateController extends _$ConcurrentsStateController {
   @override
   Future<List<ConcurrentEntity>> build() async {

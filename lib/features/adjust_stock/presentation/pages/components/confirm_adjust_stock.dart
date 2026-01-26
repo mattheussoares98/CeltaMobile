@@ -25,7 +25,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
           flex: 2,
           child: DefaultTextFormField(
             controller: quantityController,
-            maxLength: 14,
+            maxLength: 10,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             focusNode: quantityFocusNode,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),

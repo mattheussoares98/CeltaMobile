@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        onGenerateTitle: (BuildContext context) => 'My Shop'.hardcoded,
+        onGenerateTitle: (BuildContext context) => 'Celta mobile'.hardcoded,
         theme: AppTheme.themeData(theme),
       ),
     );

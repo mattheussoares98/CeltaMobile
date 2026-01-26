@@ -9,6 +9,7 @@ class TitleAndSubTitle extends StatelessWidget {
   final TextStyle? subTitleStyle;
   final bool? subTitleIsPrice;
   final bool? subTitleIsPercentage;
+  final TextAlign? textAlign;
   const TitleAndSubTitle({
     super.key,
     required this.title,
@@ -18,6 +19,7 @@ class TitleAndSubTitle extends StatelessWidget {
     this.emptyMessage,
     this.subTitleIsPrice,
     this.subTitleIsPercentage,
+    this.textAlign,
   });
 
   @override
@@ -74,6 +76,7 @@ class TitleAndSubTitle extends StatelessWidget {
     if (title == null && subtitleText == null) return const SizedBox.shrink();
 
     return RichText(
+      textAlign: textAlign ?? TextAlign.start,
       textHeightBehavior: const TextHeightBehavior(
         applyHeightToFirstAscent: false,
         applyHeightToLastDescent: false,

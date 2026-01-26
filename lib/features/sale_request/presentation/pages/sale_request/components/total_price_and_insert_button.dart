@@ -50,6 +50,7 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
         return Column(
           children: [
             TitleAndSubTitle(
+              textAlign: TextAlign.center,
               title: 'Total'.hardcoded,
               titleStyle: theme.textTheme.titleMedium,
               subTitleStyle: theme.textTheme.titleLarge,

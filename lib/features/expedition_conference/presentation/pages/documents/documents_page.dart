@@ -12,10 +12,6 @@ class DocumentsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final value = ref.watch(
-      expeditionDocumentsStateControllerProvider(enterpriseCode),
-    );
-
     void onRefresh() {
       ref.invalidate(
         expeditionDocumentsStateControllerProvider(enterpriseCode),
@@ -25,7 +21,9 @@ class DocumentsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Documentos'.hardcoded)),
       body: AsyncValueWidget(
-        value: value,
+        value: ref.watch(
+          expeditionDocumentsStateControllerProvider(enterpriseCode),
+        ),
         tryAgain: onRefresh,
         data: (documents) {
           if (documents == null || documents.isEmpty) {

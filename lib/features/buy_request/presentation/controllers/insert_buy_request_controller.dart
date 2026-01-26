@@ -37,7 +37,7 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
 
       ref
           .read(pendingBuyRequestStateControllerProvider.notifier)
-          .updatePending(lastSavedRequestNumber: response);
+          .clearState(response);
       succeeds = true;
     });
 

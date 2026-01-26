@@ -18,22 +18,24 @@ class InsertIndividuallySwitch extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final widthScreen = MediaQuery.sizeOf(context).width;
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.only(top: Sizes.p8),
         child: Row(
           children: [
-            Tooltip(
-              triggerMode: TooltipTriggerMode.tap,
-              showDuration: const Duration(seconds: 5),
-              message:
-                  'Quando essa opção está ativa, ao encontrar um único produto na busca, será somado automaticamente 1 quantidade'
-                      .hardcoded,
-              child: Padding(
-                padding: const EdgeInsets.only(right: Sizes.p4),
-                child: Icon(isIOS ? CupertinoIcons.info : Icons.info_outline),
+            if (widthScreen > 200)
+              Tooltip(
+                triggerMode: TooltipTriggerMode.tap,
+                showDuration: const Duration(seconds: 5),
+                message:
+                    'Quando essa opção está ativa, ao encontrar um único produto na busca, será somado automaticamente 1 quantidade'
+                        .hardcoded,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: Sizes.p4),
+                  child: Icon(isIOS ? CupertinoIcons.info : Icons.info_outline),
+                ),
               ),
-            ),
             Flexible(
               child: Consumer(
                 builder: (_, ref, _) {

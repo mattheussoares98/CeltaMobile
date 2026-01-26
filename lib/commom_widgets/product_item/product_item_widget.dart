@@ -46,6 +46,89 @@ class ProductItemWidget extends ConsumerWidget {
     this.hidePrice,
   });
 
+  bool get showPracticedPrices {
+    if (hidePrice == true) {
+      return false;
+    } else if ([
+      BsRoutine.adjustStock,
+      BsRoutine.buyRequest,
+      BsRoutine.buyQuotation,
+      BsRoutine.goodsReceiving,
+      BsRoutine.adjustStock,
+      BsRoutine.researchOfPrice,
+    ].contains(routine)) {
+      return false;
+    }
+    return true;
+  }
+
+  bool get showWholePrices {
+    if (hideWholeInformations == true) {
+      return false;
+    } else if ([
+      BsRoutine.adjustSalePrice,
+      BsRoutine.adjustStock,
+      BsRoutine.buyQuotation,
+      BsRoutine.researchOfPrice,
+      BsRoutine.priceConference,
+    ].contains(routine)) {
+      return false;
+    } else if ((product.WholePracticedPrice ?? 0) == 0) {
+      return false;
+    }
+    return true;
+  }
+
+  bool get showLiquidCosts {
+    if (hideCost == true) {
+      return false;
+    } else if ([
+      BsRoutine.adjustStock,
+      BsRoutine.buyQuotation,
+      BsRoutine.goodsReceiving,
+      BsRoutine.researchOfPrice,
+      BsRoutine.transferRequest,
+    ].contains(routine)) {
+      return false;
+    }
+    return true;
+  }
+
+  bool get showCurrentAndSaleStocks {
+    if (hideCurrentAndSaleStocks == true) {
+      return false;
+    } else if ([
+      BsRoutine
+          .adjustSalePrice, //! is not returning this property on this routine
+      BsRoutine.buyQuotation,
+      BsRoutine.goodsReceiving,
+      BsRoutine.researchOfPrice,
+    ].contains(routine)) {
+      return false;
+    }
+    return true;
+  }
+
+  bool get showEans {
+    return product.EANs?.any((s) => s.isNotEmpty) ?? false;
+  }
+
+  bool get showingLittleInformations {
+    int value = [
+      showPracticedPrices,
+      showWholePrices,
+      showLiquidCosts,
+      showCurrentAndSaleStocks,
+      showEans,
+    ].fold(0, (p, e) => e ? ++p : p);
+    if (showCurrentAndSaleStocks) {
+      //show 2 informations
+      value++;
+    }
+
+    return value <= 1;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(finishOfferControllerProvider, (p, n) {
@@ -72,9 +155,21 @@ class ProductItemWidget extends ConsumerWidget {
             Stack(
               children: [
                 InkWell(
-                  onTap: onTap,
+                  onTap: onTap == null
+                      ? null
+                      : () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          onTap!();
+                        },
                   child: Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
+                    padding: EdgeInsets.fromLTRB(
+                      Sizes.p8,
+                      Sizes.p8,
+                      Sizes.p8,
+                      showingLittleInformations && showEans
+                          ? Sizes.p40
+                          : Sizes.p8,
+                    ),
                     child: Row(
                       children: [
                         Expanded(
@@ -100,17 +195,20 @@ class ProductItemWidget extends ConsumerWidget {
                                         title: "PLU ",
                                         subTitle: product.PLU,
                                       ),
-                                      PracticedPriceProperty(this),
-                                      WholePriceAndMinQuantity(this),
-                                      LiquidCostProperty(this),
-                                      CurrentAndSaleStocks(this),
-                                      EansProperty(this),
+                                      if (showPracticedPrices)
+                                        PracticedPriceProperty(this),
+                                      if (showWholePrices)
+                                        WholePriceAndMinQuantity(this),
+                                      if (showLiquidCosts)
+                                        LiquidCostProperty(this),
+                                      if (showCurrentAndSaleStocks)
+                                        CurrentAndSaleStocks(this),
+                                      if (showEans) EansProperty(this),
                                       ?cartItemSummary,
                                       ?clickableBottom,
                                     ],
                                   ),
-                                  if (routine != BsRoutine.researchOfPrice &&
-                                      showInfoButton == true)
+                                  if (!showingLittleInformations)
                                     Positioned(
                                       right: 0,
                                       child: InfoButton(this),
@@ -127,9 +225,14 @@ class ProductItemWidget extends ConsumerWidget {
                 ),
                 Positioned(
                   right: isIOS ? Sizes.p4 : 0,
-                  bottom: isIOS ? Sizes.p4 : 0,
+                  bottom: isIOS
+                      ? Sizes.p4
+                      : routine == BsRoutine.buyQuotation
+                      ? -Sizes.p4
+                      : 0,
                   child: Row(
                     children: [
+                      if (showingLittleInformations) InfoButton(this),
                       if (onDelete != null)
                         DeleteItemButton(onDelete: onDelete),
                       if (showDropIcon == true)
