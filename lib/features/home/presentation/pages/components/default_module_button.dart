@@ -9,6 +9,7 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/enterprises/enterprises.dart';
+import '../../../../../core/presentation/controllers/resource/resource.dart';
 import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../../routing/routing.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
@@ -35,7 +36,6 @@ class DefaultModuleButton extends ConsumerWidget {
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
     );
-    //TODO show dialog if try to access adjustSalePrice and the user doesnt has permission
     void showDisabledModuleMessage() {
       showAlertDialog(
         context: context,
@@ -43,6 +43,62 @@ class DefaultModuleButton extends ConsumerWidget {
         content:
             'O módulo ${route.module.toUpperCase()} está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo'
                 .hardcoded,
+      );
+    }
+
+    void showUserWithoutPermissionMessage() {
+      showAlertDialog(
+        context: context,
+        title: 'Usuário sem permissão'.hardcoded,
+        content:
+            'Seu usuário não possui permissão para alterar preços'.hardcoded,
+      );
+    }
+
+    void onTap() async {
+      final enterpriseName = ref.read(
+        validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
+      );
+      final enabledModulesByEnterprise = await ref.read(
+        enabledModulesByEnterpriseNameStateControllerProvider(
+          enterpriseName,
+        ).future,
+      );
+
+      final correspondentEnterprise = enabledModulesByEnterprise
+          .firstWhereOrNull(
+            (e) => e.cnpjNumber == selectedEnterprise?.CnpjNumber,
+          );
+      if (correspondentEnterprise == null) {
+        showDisabledModuleMessage();
+        return;
+      }
+
+      final enabledModules = correspondentEnterprise.enabledModules;
+      bool moduleIsEnabled = enabledModules.contains(module);
+      if (!moduleIsEnabled) {
+        showDisabledModuleMessage();
+        return;
+      }
+
+      if (module == Modules.adjustPrice) {
+        final canAccess = await ref.read(
+          canAccessResourceStateControllerProvider(
+            BsRoutine.adjustSalePrice,
+            BsResource.adjustSalePrice,
+          ).future,
+        );
+        if (!canAccess) {
+          showUserWithoutPermissionMessage();
+          return;
+        }
+      }
+
+      context.goNamed(
+        route.name,
+        pathParameters: passEnterpriseToNextRoute
+            ? {'enterpriseCode': selectedEnterprise!.Code.toString()}
+            : {},
       );
     }
 
@@ -65,55 +121,8 @@ class DefaultModuleButton extends ConsumerWidget {
             ),
             child: Consumer(
               builder: (_, ref, _) {
-                final enterpriseName = ref.watch(
-                  validatedUserSessionProvider.select(
-                    (s) => s.value!.enterprise!.name,
-                  ),
-                );
-                final enabledModulesByEnterpriseAsync = ref.watch(
-                  enabledModulesByEnterpriseNameStateControllerProvider(
-                    enterpriseName,
-                  ),
-                );
-
                 return InkWell(
-                  onTap: selectedEnterprise == null
-                      ? null
-                      : () {
-                          final correspondentEnterprise =
-                              enabledModulesByEnterpriseAsync.value
-                                  ?.firstWhereOrNull(
-                                    (e) =>
-                                        e.cnpjNumber ==
-                                        selectedEnterprise.CnpjNumber,
-                                  );
-                          if (correspondentEnterprise == null) {
-                            showDisabledModuleMessage();
-                            return;
-                          }
-
-                          final enabledModules =
-                              correspondentEnterprise.enabledModules;
-
-                          bool moduleIsEnabled = enabledModules.contains(
-                            module,
-                          );
-
-                          if (!moduleIsEnabled) {
-                            showDisabledModuleMessage();
-                            return;
-                          }
-
-                          context.goNamed(
-                            route.name,
-                            pathParameters: passEnterpriseToNextRoute
-                                ? {
-                                    'enterpriseCode':
-                                        selectedEnterprise.Code.toString(),
-                                  }
-                                : {},
-                          );
-                        },
+                  onTap: selectedEnterprise == null ? null : onTap,
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
