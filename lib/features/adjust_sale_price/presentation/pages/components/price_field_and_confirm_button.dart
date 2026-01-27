@@ -41,7 +41,7 @@ class _PriceFieldAndConfirmButtonState
     }
 
     if (priceFocusNode.hasFocus) {
-      priceFocusNode.unfocus(); //TODO test if is working
+      priceFocusNode.unfocus();
     }
     FocusManager.instance.primaryFocus?.unfocus();
 

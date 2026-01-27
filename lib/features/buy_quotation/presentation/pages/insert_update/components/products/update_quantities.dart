@@ -36,6 +36,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
     if (formKey.currentState?.validate() != true) {
       return;
     }
+    FocusManager.instance.primaryFocus?.unfocus();
     final buyQuotationProducts = await ref.read(
       completeBuyQuotationsStateControllerProvider(
         widget.enterpriseCode,
