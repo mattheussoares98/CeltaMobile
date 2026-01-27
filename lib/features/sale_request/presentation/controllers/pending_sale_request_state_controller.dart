@@ -22,7 +22,6 @@ class PendingSaleRequestStateController
 
     if (localData?.customer != null &&
         (ref.read(customersStateControllerProvider).value?.isEmpty ?? true)) {
-      //TODO test this
       await ref
           .read(customersStateControllerProvider.notifier)
           .loadCustomer(
