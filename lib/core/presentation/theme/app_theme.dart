@@ -37,7 +37,8 @@ class AppTheme {
         error: Colors.red,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: disabledColor,
+        color: primaryColorLight,
+        refreshBackgroundColor: Colors.transparent,
         strokeWidth: 2,
       ),
       // platform: TargetPlatform.iOS,
