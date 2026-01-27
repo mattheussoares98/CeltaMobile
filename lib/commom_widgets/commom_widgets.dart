@@ -1,5 +1,6 @@
 export 'badges/badges.dart';
 export 'form_field/form_field.dart';
+export 'loading_extension/loading_extension.dart';
 export 'product_item/product_item.dart';
 export './action_text_button.dart';
 export './alert_dialogs.dart';
@@ -12,7 +13,6 @@ export './default_simple_drop_down.dart';
 export './default_switch.dart';
 export './empty_placeholder_widget.dart';
 export './get_new_date.dart';
-export './loading_page.dart';
 export './loading_widget.dart';
 export './primary_button.dart';
 export './primary_text_button.dart';

@@ -2,13 +2,13 @@ import 'package:celta_inventario/commom_widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
+import 'animated_ellipsis.dart';
 
 /// PERFORMANCE: Using an extension on WidgetRef allows for a clean,
 /// functional approach in ConsumerWidgets without adding extra
 /// boilerplate or converting to StatefulWidgets.
-extension LoadingRefExtension on WidgetRef {
-  //TODO create more than one file
+extension ObserveLoadingExtension on WidgetRef {
   /// Observes a list of [providers] and manages an Overlay loader.
   /// This is the most efficient way to handle side-effect UI in Riverpod.
   void observeLoading(List<ProviderListenable<AsyncValue<dynamic>>> providers) {
@@ -82,7 +82,7 @@ class _LoadingOverlayController extends Notifier<void> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text('Aguarde', style: theme.textTheme.titleMedium),
-                        _AnimatedEllipsis(),
+                        const AnimatedEllipsis(),
                       ],
                     ),
                     gapH8,
@@ -104,55 +104,5 @@ class _LoadingOverlayController extends Notifier<void> {
   void hide() {
     _entry?.remove();
     _entry = null;
-  }
-}
-
-class _AnimatedEllipsis extends StatefulWidget {
-  @override
-  State<_AnimatedEllipsis> createState() => _AnimatedEllipsisState();
-}
-
-class _AnimatedEllipsisState extends State<_AnimatedEllipsis>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<int> _dotCount;
-
-  @override
-  void initState() {
-    super.initState();
-    // PERFORMANCE: Animation duration is set to a reasonable human-readable
-    // speed (1.5s) to avoid excessive UI thread work.
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1500),
-    )..repeat();
-
-    // Linearly interpolates from 0 to 4 to represent ".", "..", "...", and ""
-    _dotCount = IntTween(begin: 0, end: 3).animate(_controller);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return AnimatedBuilder(
-      animation: _dotCount,
-      builder: (context, child) {
-        // Generates the string of dots based on the current animation value
-        final dots = '.' * (_dotCount.value);
-        return SizedBox(
-          // PERFORMANCE: Using a fixed width prevents the text from shifting
-          // adjacent widgets when the dot count changes (Layout Jitters).
-          width: 24,
-          child: Text(dots, style: theme.textTheme.titleMedium),
-        );
-      },
-    );
   }
 }
