@@ -36,8 +36,8 @@ class AppTheme {
         secondary: secondaryColor,
         error: Colors.red,
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: primaryColorLight,
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: primaryColorDark,
         refreshBackgroundColor: Colors.transparent,
         strokeWidth: 2,
       ),
