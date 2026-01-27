@@ -43,6 +43,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
   void onTapProduct(int index, ProductEntity product) async {
     quantityController.clear();
     costController.clear();
+    FocusManager.instance.primaryFocus?.unfocus(); //TODO test if is working
 
     ref
         .read(uiStateControllerProvider.notifier)
