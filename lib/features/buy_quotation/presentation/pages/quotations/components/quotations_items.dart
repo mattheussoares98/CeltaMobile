@@ -27,7 +27,7 @@ class QuotationsItems extends ConsumerWidget {
               buyQuotationsStateControllerProvider(enterpriseCode),
             );
           },
-          child: ListView.builder(
+          child: ResponsiveListFlow(
             padding: const EdgeInsets.only(bottom: Sizes.p64),
             itemCount: quotations.length,
             itemBuilder: (_, index) {
