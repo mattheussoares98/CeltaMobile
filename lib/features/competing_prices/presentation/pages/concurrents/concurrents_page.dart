@@ -32,7 +32,7 @@ class ConcurrentsPage extends ConsumerWidget {
         actions: const [InsertConcurrentButton()],
       ),
       body: AsyncValueWidget(
-        value: ref.watch(researchsStateControllerProvider),
+        value: ref.watch(researchsStateControllerProvider(enterpriseCode)),
         tryAgain: () => ref.invalidate(researchsStateControllerProvider),
         data: (researchs) {
           final selectedResearch = researchs.firstWhere(

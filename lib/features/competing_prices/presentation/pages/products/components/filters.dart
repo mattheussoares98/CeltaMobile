@@ -23,7 +23,7 @@ class Filters extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     final restrictProducts = ref.watch(
-      researchsStateControllerProvider.select(
+      researchsStateControllerProvider(widget.enterpriseCode).select(
         (s) =>
             s.value
                 ?.firstWhereOrNull((e) => e.Code == widget.researchCode)

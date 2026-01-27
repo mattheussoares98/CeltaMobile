@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
 
@@ -12,7 +11,7 @@ part 'researchs_state_controller.g.dart';
 @riverpod
 class ResearchsStateController extends _$ResearchsStateController {
   @override
-  Future<List<ResearchEntity>> build() async {
+  Future<List<ResearchEntity>> build(int enterpriseCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -41,14 +40,10 @@ class ResearchsStateController extends _$ResearchsStateController {
     final validatedUserSession = await ref.watch(
       validatedUserSessionProvider.future,
     );
-    final selectedEnterprise = ref.watch(
-      selectedEnterpriseStateControllerProvider,
-    );
-
     final researchs = await repository.load(
       crossIdentity: validatedUserSession!.user.CrossIdentity_Usuario!,
       workingUrl: validatedUserSession.enterprise!.workingUrl!,
-      enterpriseCode: selectedEnterprise!.Code!,
+      enterpriseCode: enterpriseCode,
       searchValue: searchValue,
     );
 

@@ -17,10 +17,10 @@ RouteBase competingPricesProductsRoute() => GoRoute(
       state.pathParameters['enterpriseCode'].toString(),
     );
 
-    final extra = state.extra as Map<String, dynamic>;
+    final extra = state.extra as Map<String, dynamic>?;
 
-    final researchName = extra['researchName'] as String?;
-    final concurrentName = extra['concurrentName'] as String?;
+    final researchName = extra?['researchName'] as String?;
+    final concurrentName = extra?['concurrentName'] as String?;
 
     return ProductsPage(
       researchCode: researchCode,

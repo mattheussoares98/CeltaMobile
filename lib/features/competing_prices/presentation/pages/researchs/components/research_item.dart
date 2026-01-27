@@ -86,7 +86,10 @@ class ResearchItem extends ConsumerWidget {
               text: 'Alterar pesquisa'.hardcoded,
               onPressed: () {
                 showModalPage(
-                  InsertUpdateResearchPage(research: research),
+                  InsertUpdateResearchPage(
+                    research: research,
+                    enterpriseCode: enterpriseCode,
+                  ),
                   context,
                 );
               },

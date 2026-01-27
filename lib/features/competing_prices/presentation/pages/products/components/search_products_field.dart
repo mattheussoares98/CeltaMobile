@@ -64,7 +64,7 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
           selectedItemUIControllerProvider.select((s) => s.searchType),
         );
         final restrictProducts = ref.read(
-          researchsStateControllerProvider.select(
+          researchsStateControllerProvider(widget.widget.enterpriseCode).select(
             (s) =>
                 s.value
                     ?.firstWhereOrNull(

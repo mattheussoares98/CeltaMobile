@@ -6,7 +6,6 @@ import 'package:celta_inventario/features/competing_prices/domain/entities/entit
 import 'package:celta_inventario/features/competing_prices/domain/repository/repository.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/providers/providers.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -55,9 +54,6 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(enterprise),
-        ),
       ],
     );
     addTearDown(container.dispose);
@@ -85,13 +81,13 @@ void main() {
       // Wait for the initial build to complete
 
       final result = await container.read(
-        researchsStateControllerProvider.future,
+        researchsStateControllerProvider(fakeEnterprise.Code!).future,
       );
 
       // ASSERT
       expect(result, fakeResearchs);
       // expectLater(
-      //   await container.read(researchsStateControllerProvider.future),
+      //   await container.read(researchsStateControllerProvider(fakeEnterprise.Code!).future),
       //   const [],
       // );
       verify(
@@ -126,17 +122,21 @@ void main() {
             enterprise: fakeEnterprise,
           );
           // Wait for the initial build to complete
-          await container.read(researchsStateControllerProvider.future);
+          await container.read(
+            researchsStateControllerProvider(fakeEnterprise.Code!).future,
+          );
 
           final states = <AsyncValue<List<ResearchEntity>>>[];
           container.listen(
-            researchsStateControllerProvider,
+            researchsStateControllerProvider(fakeEnterprise.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(researchsStateControllerProvider.notifier)
+              .read(
+                researchsStateControllerProvider(fakeEnterprise.Code!).notifier,
+              )
               .load(fakeSearchValue);
 
           // ASSERT
@@ -163,7 +163,7 @@ void main() {
         );
 
         final response = container.read(
-          researchsStateControllerProvider.future,
+          researchsStateControllerProvider(fakeEnterprise.Code!).future,
         );
 
         expect(response, throwsA(isA<AppException>()));
@@ -187,7 +187,9 @@ void main() {
           );
 
           expect(
-            container.read(researchsStateControllerProvider.future),
+            container.read(
+              researchsStateControllerProvider(fakeEnterprise.Code!).future,
+            ),
             throwsA(isA<Error>()),
           );
           verifyNever(
@@ -227,12 +229,16 @@ void main() {
         addTearDown(container.dispose);
 
         // 2. Load the initial state (build method) and wait for it to populate AsyncData
-        await container.read(researchsStateControllerProvider.future);
+        await container.read(
+          researchsStateControllerProvider(fakeEnterprise.Code!).future,
+        );
 
         // ACT
         // Since the build method finished, the state.value is guaranteed to be the list.
         container
-            .read(researchsStateControllerProvider.notifier)
+            .read(
+              researchsStateControllerProvider(fakeEnterprise.Code!).notifier,
+            )
             .updateResearchLocally(
               code: initialResearch.Code,
               name: newName,
@@ -242,7 +248,9 @@ void main() {
 
         // ASSERT
         // 3. Read the final state synchronously (no future needed for state.value)
-        final state = container.read(researchsStateControllerProvider);
+        final state = container.read(
+          researchsStateControllerProvider(fakeEnterprise.Code!),
+        );
 
         // Ensure the state is AsyncData and not null
         expect(state.value, isNotNull);
@@ -279,16 +287,20 @@ void main() {
         );
         addTearDown(container.dispose);
 
-        await container.read(researchsStateControllerProvider.future);
+        await container.read(
+          researchsStateControllerProvider(fakeEnterprise.Code!).future,
+        );
 
         final nonExistentCode = fakeResearchs.first.Code + 9999;
         final initialStateValue = container
-            .read(researchsStateControllerProvider)
+            .read(researchsStateControllerProvider(fakeEnterprise.Code!))
             .value!;
 
         // ACT
         container
-            .read(researchsStateControllerProvider.notifier)
+            .read(
+              researchsStateControllerProvider(fakeEnterprise.Code!).notifier,
+            )
             .updateResearchLocally(
               code: nonExistentCode,
               name: 'New Name',
@@ -296,7 +308,9 @@ void main() {
             );
 
         // ASSERT
-        final state = container.read(researchsStateControllerProvider);
+        final state = container.read(
+          researchsStateControllerProvider(fakeEnterprise.Code!),
+        );
         // Ensure the list content is the original list object
         expect(state.value, initialStateValue);
       });

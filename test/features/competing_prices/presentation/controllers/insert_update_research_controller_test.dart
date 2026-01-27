@@ -6,7 +6,6 @@ import 'package:celta_inventario/features/competing_prices/domain/entities/entit
 import 'package:celta_inventario/features/competing_prices/domain/repository/repository.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/providers/providers.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,7 +23,7 @@ class SpyResearchsStateController extends ResearchsStateController {
   int? updatedCode;
 
   @override
-  Future<List<ResearchEntity>> build() async => [];
+  Future<List<ResearchEntity>> build(int enterpriseCode) async => [];
 
   @override
   void updateResearchLocally({
@@ -61,7 +60,6 @@ void main() {
 
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
-    EnterpriseEntity? enterprise,
     required SpyResearchsStateController spyResearchs,
   }) {
     return ProviderContainer(
@@ -72,10 +70,9 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(enterprise),
-        ),
-        researchsStateControllerProvider.overrideWith(() => spyResearchs),
+        researchsStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spyResearchs),
       ],
     );
   }
@@ -100,7 +97,6 @@ void main() {
 
         final container = makeProviderContainer(
           session: fakeSession,
-          enterprise: fakeEnterprise,
           spyResearchs: spyResearchs,
         );
         addTearDown(container.dispose);
@@ -118,6 +114,7 @@ void main() {
               name: fakeName,
               observations: fakeObservations,
               researchCode: fakeResearchCode,
+              enterpriseCode: fakeEnterprise.Code!,
             );
 
         // ASSERT
@@ -145,7 +142,6 @@ void main() {
         final spyResearchs = SpyResearchsStateController();
         final container = makeProviderContainer(
           session: null, // Invalid session
-          enterprise: fakeEnterprise,
           spyResearchs: spyResearchs,
         );
         addTearDown(container.dispose);
@@ -163,58 +159,13 @@ void main() {
               name: fakeName,
               observations: fakeObservations,
               researchCode: fakeResearchCode,
+              enterpriseCode: fakeEnterprise.Code!,
             );
 
         // ASSERT
         expect(succeeds, isFalse);
         expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
         expect(states.last.error, isA<AppException>());
-
-        verifyNever(
-          () => mockRepository.insertUpdate(
-            concurrentToAssociate: any(named: 'concurrentToAssociate'),
-            crossIdentity: any(named: 'crossIdentity'),
-            workingUrl: any(named: 'workingUrl'),
-            enterpriseCode: any(named: 'enterpriseCode'),
-            name: any(named: 'name'),
-            observations: any(named: 'observations'),
-            researchCode: any(named: 'researchCode'),
-          ),
-        );
-      },
-    );
-
-    test(
-      'should emit [loading, error] when selected enterprise is null',
-      () async {
-        // ARRANGE
-        final spyResearchs = SpyResearchsStateController();
-        final container = makeProviderContainer(
-          session: fakeSession,
-          enterprise: null, // No enterprise selected
-          spyResearchs: spyResearchs,
-        );
-        addTearDown(container.dispose);
-
-        final states = <AsyncValue<void>>[];
-        container.listen(
-          insertUpdateResearchControllerProvider,
-          (_, next) => states.add(next),
-        );
-
-        // ACT
-        await container
-            .read(insertUpdateResearchControllerProvider.notifier)
-            .insertUpdate(
-              name: fakeName,
-              observations: fakeObservations,
-              researchCode: fakeResearchCode,
-            );
-
-        // ASSERT
-        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-        // This will likely throw a TypeError due to the ! operator on selectedEnterprise
-        expect(states.last.error, isA<Error>());
 
         verifyNever(
           () => mockRepository.insertUpdate(
@@ -247,7 +198,6 @@ void main() {
       final spyResearchs = SpyResearchsStateController();
       final container = makeProviderContainer(
         session: fakeSession,
-        enterprise: fakeEnterprise,
         spyResearchs: spyResearchs,
       );
       addTearDown(container.dispose);
@@ -259,6 +209,7 @@ void main() {
             name: fakeName,
             observations: null, // Testing nullable input
             researchCode: fakeResearchCode,
+            enterpriseCode: fakeEnterprise.Code!,
           );
 
       // ASSERT
@@ -292,7 +243,6 @@ void main() {
 
       final container = makeProviderContainer(
         session: fakeSession,
-        enterprise: fakeEnterprise,
         spyResearchs: spyResearchs,
       );
       addTearDown(container.dispose);
@@ -304,6 +254,7 @@ void main() {
             name: fakeName,
             observations: fakeObservations,
             researchCode: fakeResearchCode,
+            enterpriseCode: fakeEnterprise.Code!,
           );
 
       expect(spyResearchs.updateCalled, isTrue);
@@ -328,7 +279,6 @@ void main() {
 
         final container = makeProviderContainer(
           session: fakeSession,
-          enterprise: fakeEnterprise,
           spyResearchs: spyResearchs,
         );
         addTearDown(container.dispose);
@@ -340,6 +290,7 @@ void main() {
               name: fakeName,
               observations: fakeObservations,
               researchCode: null,
+              enterpriseCode: fakeEnterprise.Code!,
             );
 
         expect(spyResearchs.updateCalled, isFalse);

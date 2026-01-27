@@ -54,6 +54,7 @@ class ConcurrentsItems extends ConsumerWidget {
               observations: selectedResearch.Observation,
               researchCode: selectedResearch.Code,
               concurrentToAssociate: concurrent,
+              enterpriseCode: enterpriseCode,
             );
 
         if (succeeds) {

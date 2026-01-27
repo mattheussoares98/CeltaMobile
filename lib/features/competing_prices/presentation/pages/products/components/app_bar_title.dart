@@ -39,7 +39,7 @@ class AppBarTitle extends ConsumerWidget {
         Consumer(
           builder: (_, ref, _) {
             final restrictProducts = ref.watch(
-              researchsStateControllerProvider.select(
+              researchsStateControllerProvider(widget.enterpriseCode).select(
                 (s) =>
                     s.value
                         ?.firstWhereOrNull((e) => e.Code == widget.researchCode)

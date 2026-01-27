@@ -15,11 +15,11 @@ class ResearchsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text('Pesquisas cadastradas'.hardcoded)),
-        actions: const [InsertResearchButton()],
+        actions: [InsertResearchButton(enterpriseCode: enterpriseCode)],
       ),
       body: AsyncValueWidget(
         tryAgain: () => ref.invalidate(researchsStateControllerProvider),
-        value: ref.watch(researchsStateControllerProvider),
+        value: ref.watch(researchsStateControllerProvider(enterpriseCode)),
         data: (researchs) {
           researchs.sort((a, b) => a.Code.compareTo(b.Code));
 

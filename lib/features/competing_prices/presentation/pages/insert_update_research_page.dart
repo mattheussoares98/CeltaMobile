@@ -12,7 +12,12 @@ import '../controllers/controllers.dart';
 
 class InsertUpdateResearchPage extends ConsumerStatefulWidget {
   final ResearchEntity? research; //if is null, is inserting
-  const InsertUpdateResearchPage({super.key, required this.research});
+  final int enterpriseCode;
+  const InsertUpdateResearchPage({
+    super.key,
+    required this.research,
+    required this.enterpriseCode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -59,6 +64,7 @@ class _InsertUpdateResearchPageState
           name: nameController.text,
           observations: observarionsController.text,
           researchCode: widget.research?.Code,
+          enterpriseCode: widget.enterpriseCode,
         );
   }
 

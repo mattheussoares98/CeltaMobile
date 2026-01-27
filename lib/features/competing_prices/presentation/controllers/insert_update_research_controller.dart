@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
 import 'controllers.dart';
@@ -17,6 +16,7 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
 
   Future<bool> insertUpdate({
     required String name,
+    required int enterpriseCode,
     required String? observations,
     required int? researchCode,
     ConcurrentEntity? concurrentToAssociate,
@@ -28,13 +28,10 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
         validatedUserSessionProvider.future,
       );
       final repository = ref.watch(soapInsertUpdateResearchRepositoryProvider);
-      final selectedEnterprise = ref.watch(
-        selectedEnterpriseStateControllerProvider,
-      );
       await repository.insertUpdate(
         crossIdentity: validatedUser!.user.CrossIdentity_Usuario!,
         workingUrl: validatedUser.enterprise!.workingUrl!,
-        enterpriseCode: selectedEnterprise!.Code!,
+        enterpriseCode: enterpriseCode,
         name: name,
         observations: observations,
         researchCode: researchCode,
@@ -44,7 +41,7 @@ class InsertUpdateResearchController extends _$InsertUpdateResearchController {
       succeeds = true;
       if (researchCode != null) {
         ref
-            .read(researchsStateControllerProvider.notifier)
+            .read(researchsStateControllerProvider(enterpriseCode).notifier)
             .updateResearchLocally(
               code: researchCode,
               name: name,

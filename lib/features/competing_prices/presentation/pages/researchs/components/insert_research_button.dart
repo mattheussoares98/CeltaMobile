@@ -5,7 +5,8 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../pages.dart';
 
 class InsertResearchButton extends StatelessWidget {
-  const InsertResearchButton({super.key});
+  final int enterpriseCode;
+  const InsertResearchButton({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,13 @@ class InsertResearchButton extends StatelessWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
     return IconButton(
       onPressed: () {
-        showModalPage(const InsertUpdateResearchPage(research: null), context);
+        showModalPage(
+          InsertUpdateResearchPage(
+            research: null,
+            enterpriseCode: enterpriseCode,
+          ),
+          context,
+        );
       },
       icon: Icon(isIOS ? CupertinoIcons.add : Icons.add),
     );
