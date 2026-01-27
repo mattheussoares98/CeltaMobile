@@ -25,44 +25,49 @@ class PriceFieldAndConfirmButton extends ConsumerStatefulWidget {
 class _PriceFieldAndConfirmButtonState
     extends ConsumerState<PriceFieldAndConfirmButton> {
   final priceController = TextEditingController();
+  final priceFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
   @override
   dispose() {
     super.dispose();
     priceController.dispose();
+    priceFocusNode.dispose();
+  }
+
+  Future<void> onPressed() async {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    if (priceFocusNode.hasFocus) {
+      priceFocusNode.unfocus(); //TODO test if is working
+    }
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    bool? confirmed = await showAlertDialog(
+      context: context,
+      title: 'Confirmar?'.hardcoded,
+      cancelActionText: 'Cencelar'.hardcoded,
+      defaultActionText: 'Sim'.hardcoded,
+    );
+
+    if (confirmed != true) {
+      return;
+    }
+
+    await ref
+        .read(confirmAdjustControllerProvider.notifier)
+        .confirm(
+          enterpriseCode: widget.enterpriseCode,
+          now: DateTime.now(),
+          plu: widget.plu,
+          price: priceController.text.toDouble() ?? 0,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
-    Future<void> onPressed() async {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      }
-
-      FocusManager.instance.primaryFocus?.unfocus();
-
-      bool? confirmed = await showAlertDialog(
-        context: context,
-        title: 'Confirmar?'.hardcoded,
-        cancelActionText: 'Cencelar'.hardcoded,
-        defaultActionText: 'Sim'.hardcoded,
-      );
-
-      if (confirmed != true) {
-        return;
-      }
-
-      await ref
-          .read(confirmAdjustControllerProvider.notifier)
-          .confirm(
-            enterpriseCode: widget.enterpriseCode,
-            now: DateTime.now(),
-            plu: widget.plu,
-            price: priceController.text.toDouble() ?? 0,
-          );
-    }
-
     return Form(
       key: formKey,
       child: Padding(
@@ -74,6 +79,7 @@ class _PriceFieldAndConfirmButtonState
               flex: 65,
               child: DefaultTextFormField(
                 controller: priceController,
+                focusNode: priceFocusNode,
                 maxLength: 10,
                 hintText: "Novo preço".hardcoded,
                 labelText: "Novo preço".hardcoded,
