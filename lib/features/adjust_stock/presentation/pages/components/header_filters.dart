@@ -33,6 +33,7 @@ class _HeaderFiltersState extends ConsumerState<HeaderFilters> {
       BsRoutine.adjustStock,
       Modules.adjustStock,
     );
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return Column(
       children: [
@@ -70,9 +71,25 @@ class _HeaderFiltersState extends ConsumerState<HeaderFilters> {
           },
         ),
         gapH8,
-        JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
-        gapH8,
-        StocksDropdown(enterpriseCode: widget.enterpriseCode),
+        if (screenWidth < Breakpoint.desktop) ...[
+          JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
+          gapH8,
+          StocksDropdown(enterpriseCode: widget.enterpriseCode),
+        ] else ...[
+          Row(
+            children: [
+              Expanded(
+                child: JustificationsDropdown(
+                  enterpriseCode: widget.enterpriseCode,
+                ),
+              ),
+              gapW8,
+              Expanded(
+                child: StocksDropdown(enterpriseCode: widget.enterpriseCode),
+              ),
+            ],
+          ),
+        ],
         gapH8,
       ],
     );
