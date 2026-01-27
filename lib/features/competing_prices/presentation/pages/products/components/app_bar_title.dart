@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../constants/constants.dart';
 import '../../../controllers/controllers.dart';
 import '../products.dart';
 
@@ -12,17 +13,23 @@ class AppBarTitle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (widget.researchName == null || widget.concurrentName == null)
-          FittedBox(
-            child: Text(
+        if (widget.researchName == null || widget.concurrentName == null) ...[
+          if (screenWidth < Breakpoint.tablet)
+            FittedBox(
+              child: Text(
+                'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
+              ),
+            )
+          else
+            Text(
               'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
             ),
-          )
-        else
+        ] else
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
