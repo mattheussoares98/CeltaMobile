@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
@@ -18,7 +19,28 @@ import '../../../../mocks/mocks.dart';
 class MockLocalPendingSaleRequestRepository extends Mock
     implements ILocalPendingSaleRequestRepository {}
 
+class FakeCustomersStateController extends CustomersStateController {
+  final List<CustomerEntity> customersToReturn;
+  FakeCustomersStateController(this.customersToReturn);
+
+  bool _loadedCustomer = false;
+  bool get loadedCustomer => _loadedCustomer;
+
+  @override
+  FutureOr<List<CustomerEntity>> build() => customersToReturn;
+
+  @override
+  Future<void> loadCustomer(
+    String value,
+    bool searchByPersonalizedCode,
+    int enterpriseCode,
+  ) async {
+    _loadedCustomer = true;
+  }
+}
+
 void main() {
+  late FakeCustomersStateController fakeCustomersStateController;
   late MockLocalPendingSaleRequestRepository mockRepository;
   late UserSessionModel fakeSession;
   late PendingSaleRequestEntity fakeDraft;
@@ -51,9 +73,12 @@ void main() {
     fakeProcessedCart = EntityFactory.makeProcessedCartEntity(
       products: [fakeProduct],
     );
+    fakeCustomersStateController = FakeCustomersStateController([fakeCustomer]);
   });
 
-  ProviderContainer makeProviderContainer() {
+  ProviderContainer makeProviderContainer({
+    FakeCustomersStateController? customerStateController,
+  }) {
     return ProviderContainer(
       overrides: [
         localPendingSaleRequestRepositoryProvider.overrideWithValue(
@@ -61,8 +86,8 @@ void main() {
         ),
         // We must override the userSessionProvider as it's watched in the build method
         userSessionProvider.overrideWith(() => FakeUserSession(fakeSession)),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(enterpriseEntity),
+        customersStateControllerProvider.overrideWith(
+          () => customerStateController ?? fakeCustomersStateController,
         ),
       ],
     );
@@ -112,6 +137,59 @@ void main() {
             result,
             PendingSaleRequestEntity.empty().copyWith(needProcessCart: true),
           );
+        },
+      );
+      test(
+        'should load missing customer when locally is selected but doesnt exists in customers controller',
+        () async {
+          // ARRANGE
+          final draftWithCustomer = fakeDraft.copyWith(customer: fakeCustomer);
+          when(
+            () => mockRepository.load(any()),
+          ).thenAnswer((_) async => draftWithCustomer);
+
+          final emptyCustomers = FakeCustomersStateController([]);
+
+          final container = makeProviderContainer(
+            customerStateController: emptyCustomers,
+          );
+          addTearDown(container.dispose);
+
+          expect(emptyCustomers.loadedCustomer, isFalse);
+
+          // ACT
+          await container.read(
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
+          );
+
+          expect(emptyCustomers.loadedCustomer, isTrue);
+        },
+      );
+      test(
+        'should not load customers when local data return null customer',
+        () async {
+          // ARRANGE
+          when(() => mockRepository.load(any())).thenAnswer((_) async => null);
+
+          final emptyCustomers = FakeCustomersStateController([]);
+
+          final container = makeProviderContainer(
+            customerStateController: emptyCustomers,
+          );
+          addTearDown(container.dispose);
+
+          expect(emptyCustomers.loadedCustomer, isFalse);
+
+          // ACT
+          await container.read(
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
+          );
+
+          expect(emptyCustomers.loadedCustomer, isFalse);
         },
       );
     });

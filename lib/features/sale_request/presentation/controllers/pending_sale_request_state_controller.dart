@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:celta_inventario/exceptions/app_exception.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -48,10 +47,7 @@ class PendingSaleRequestStateController
     state = const AsyncValue.loading();
     newState = newState.copyWith(needProcessCart: needProcessCart);
     state = await AsyncValue.guard(() async {
-      await _repository.save(
-        newState,
-        ref.watch(selectedEnterpriseStateControllerProvider)!.Code!,
-      );
+      await _repository.save(newState, enterpriseCode);
       return newState;
     });
   }
