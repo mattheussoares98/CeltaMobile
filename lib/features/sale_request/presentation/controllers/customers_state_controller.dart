@@ -7,7 +7,6 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../core/providers/customer/customer.dart';
 import '../../../../core/validators/validators.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
 
 part 'customers_state_controller.g.dart';
 
@@ -32,15 +31,16 @@ class CustomersStateController extends _$CustomersStateController {
     return [];
   }
 
-  Future<void> loadCustomer(String value, bool searchByPersonalizedCode) async {
+  Future<void> loadCustomer(
+    String value,
+    bool searchByPersonalizedCode,
+    int enterpriseCode,
+  ) async {
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
       final validatedUserSession = await ref.watch(
         validatedUserSessionProvider.future,
-      );
-      final selectedEnterprise = ref.read(
-        selectedEnterpriseStateControllerProvider,
       );
 
       late SearchCustomerType searchType;
@@ -62,7 +62,7 @@ class CustomersStateController extends _$CustomersStateController {
             searchValue: value,
             crossIdentity: validatedUserSession!.user.CrossIdentity_Usuario!,
             workingUrl: validatedUserSession.enterprise!.workingUrl!,
-            enterpriseCode: selectedEnterprise!.Code!,
+            enterpriseCode: enterpriseCode,
           );
     });
   }

@@ -7,7 +7,8 @@ import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
-  const BottomNavBar({super.key});
+  final int enterpriseCode;
+  const BottomNavBar({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,9 +34,9 @@ class BottomNavBar extends ConsumerWidget {
                 isSelected: index == 1,
                 isValid:
                     ref.watch(
-                      pendingSaleRequestStateControllerProvider.select(
-                        (state) => state.value?.customer,
-                      ),
+                      pendingSaleRequestStateControllerProvider(
+                        enterpriseCode,
+                      ).select((state) => state.value?.customer),
                     ) !=
                     null,
                 materialIcon: Icons.person,
@@ -49,9 +50,9 @@ class BottomNavBar extends ConsumerWidget {
           icon: Consumer(
             builder: (_, ref, _) {
               final productsLength = ref.watch(
-                pendingSaleRequestStateControllerProvider.select(
-                  (s) => s.value?.cart.values.length ?? 0,
-                ),
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseCode,
+                ).select((s) => s.value?.cart.values.length ?? 0),
               );
               return QuantityBadge(
                 quantity: productsLength,

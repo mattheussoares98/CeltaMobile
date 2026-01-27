@@ -20,6 +20,7 @@ class QuantityPriceDiscountFieldsAndInsertButton
   final ProductEntity product;
   final CartProductEntity? cartProduct;
   final bool isCartPage;
+  final int enterpriseCode;
 
   const QuantityPriceDiscountFieldsAndInsertButton({
     super.key,
@@ -33,6 +34,7 @@ class QuantityPriceDiscountFieldsAndInsertButton
     required this.product,
     required this.cartProduct,
     required this.isCartPage,
+    required this.enterpriseCode,
   });
 
   @override
@@ -64,7 +66,11 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
     );
 
     final updated = await ref
-        .read(pendingSaleRequestStateControllerProvider.notifier)
+        .read(
+          pendingSaleRequestStateControllerProvider(
+            widget.enterpriseCode,
+          ).notifier,
+        )
         .addProduct(
           CartProductEntity.create(
             quantity: quantity,

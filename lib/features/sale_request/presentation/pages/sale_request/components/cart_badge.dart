@@ -7,14 +7,15 @@ import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
 
 class CartBadge extends ConsumerWidget {
-  const CartBadge({super.key});
+  final int enterpriseCode;
+  const CartBadge({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final products = ref.watch(
-      pendingSaleRequestStateControllerProvider.select(
-        (s) => s.value?.cart.values,
-      ),
+      pendingSaleRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.cart.values),
     );
     final totalPrice =
         products?.fold<double>(0.0, (p, e) => p + e.TotalLiquid) ?? 0.0;

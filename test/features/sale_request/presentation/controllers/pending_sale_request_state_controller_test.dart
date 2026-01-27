@@ -81,7 +81,9 @@ void main() {
 
         // ACT
         final result = await container.read(
-          pendingSaleRequestStateControllerProvider.future,
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
         );
 
         // ASSERT
@@ -100,7 +102,9 @@ void main() {
 
           // ACT
           final result = await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           // ASSERT
@@ -127,18 +131,24 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           final updated = await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .addProduct(fakeProduct);
 
           expect(updated, isTrue);
@@ -184,18 +194,24 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           final updated = await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .addProduct(fakeProduct.copyWith(Value: 0, Quantity: 0));
 
           expect(updated, isFalse);
@@ -225,18 +241,24 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           final updated = await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .addProduct(
                 EntityFactory.makeCartProductEntity(
                   Value: faker.randomGenerator.decimal(),
@@ -276,18 +298,24 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .removeProduct(fakeProduct);
 
           // ASSERT
@@ -317,18 +345,24 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .changeCustomer(fakeCustomer);
 
           // ASSERT
@@ -355,24 +389,38 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .changeCustomer(fakeCustomer);
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .changeCovenant(fakeCustomer.CustomerCovenants!.first);
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .changeCustomer(fakeCustomer);
 
           expect(states.last.value?.customer, null);
@@ -400,26 +448,40 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .changeCustomer(fakeCustomer);
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .changeCovenant(fakeCustomer.CustomerCovenants!.first);
 
           final newCustomer = EntityFactory.makeCustomerEntity();
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .changeCustomer(newCustomer);
 
           expect(states.last.value?.customer, newCustomer);
@@ -446,17 +508,25 @@ void main() {
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);
-        await container.read(pendingSaleRequestStateControllerProvider.future);
+        await container.read(
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
+        );
 
         final states = <AsyncValue<PendingSaleRequestEntity>>[];
         container.listen(
-          pendingSaleRequestStateControllerProvider,
+          pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .read(
+              pendingSaleRequestStateControllerProvider(
+                enterpriseEntity.Code!,
+              ).notifier,
+            )
             .changeCovenant(fakeCustomer.CustomerCovenants!.first);
 
         // ASSERT
@@ -485,18 +555,24 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .changeCovenant(
                 fakeCustomer.CustomerCovenants!.first,
               ); // Pass in the *same* covenant
@@ -530,17 +606,25 @@ void main() {
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);
-        await container.read(pendingSaleRequestStateControllerProvider.future);
+        await container.read(
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
+        );
 
         final states = <AsyncValue<PendingSaleRequestEntity>>[];
         container.listen(
-          pendingSaleRequestStateControllerProvider,
+          pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .read(
+              pendingSaleRequestStateControllerProvider(
+                enterpriseEntity.Code!,
+              ).notifier,
+            )
             .changeCovenant(
               fakeCustomer.CustomerCovenants![1],
             ); // Pass in the *new* covenant
@@ -567,17 +651,25 @@ void main() {
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);
-        await container.read(pendingSaleRequestStateControllerProvider.future);
+        await container.read(
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
+        );
 
         final states = <AsyncValue<PendingSaleRequestEntity>>[];
         container.listen(
-          pendingSaleRequestStateControllerProvider,
+          pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .read(
+              pendingSaleRequestStateControllerProvider(
+                enterpriseEntity.Code!,
+              ).notifier,
+            )
             .changeObservations(fakeObservations);
 
         // ASSERT
@@ -600,17 +692,25 @@ void main() {
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);
-        await container.read(pendingSaleRequestStateControllerProvider.future);
+        await container.read(
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
+        );
 
         final states = <AsyncValue<PendingSaleRequestEntity>>[];
         container.listen(
-          pendingSaleRequestStateControllerProvider,
+          pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(pendingSaleRequestStateControllerProvider.notifier)
+            .read(
+              pendingSaleRequestStateControllerProvider(
+                enterpriseEntity.Code!,
+              ).notifier,
+            )
             .changeInstructions(fakeInstructions);
 
         // ASSERT
@@ -639,21 +739,31 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            pendingSaleRequestStateControllerProvider.future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<PendingSaleRequestEntity>>[];
           container.listen(
-            pendingSaleRequestStateControllerProvider,
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .addProduct(fakeProduct);
           await container
-              .read(pendingSaleRequestStateControllerProvider.notifier)
+              .read(
+                pendingSaleRequestStateControllerProvider(
+                  enterpriseEntity.Code!,
+                ).notifier,
+              )
               .updateProductsFromProcessedCart(fakeProcessedCart);
 
           // ASSERT

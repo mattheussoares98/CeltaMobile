@@ -9,6 +9,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/repository/repository.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'pending_sale_request_state_controller.g.dart';
 
@@ -16,11 +17,21 @@ part 'pending_sale_request_state_controller.g.dart';
 class PendingSaleRequestStateController
     extends _$PendingSaleRequestStateController {
   @override
-  Future<PendingSaleRequestEntity> build() async {
+  Future<PendingSaleRequestEntity> build(int enterpriseCode) async {
     final repository = ref.watch(localPendingSaleRequestRepositoryProvider);
-    final localData = await repository.load(
-      ref.watch(selectedEnterpriseStateControllerProvider)!.Code!,
-    );
+    final localData = await repository.load(enterpriseCode);
+
+    if (localData?.customer != null &&
+        (ref.read(customersStateControllerProvider).value?.isEmpty ?? true)) {
+      //TODO test this
+      await ref
+          .read(customersStateControllerProvider.notifier)
+          .loadCustomer(
+            localData!.customer!.Code!.toString(),
+            false,
+            enterpriseCode,
+          );
+    }
 
     return (localData ?? PendingSaleRequestEntity.empty()).copyWith(
       needProcessCart: true,

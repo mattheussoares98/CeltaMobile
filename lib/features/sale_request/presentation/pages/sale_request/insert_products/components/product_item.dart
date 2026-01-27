@@ -12,10 +12,12 @@ import '../../components/components.dart';
 class ProductItem extends ConsumerStatefulWidget {
   final ProductEntity product;
   final int requestCode;
+  final int enterpriseCode;
   const ProductItem({
     super.key,
     required this.product,
     required this.requestCode,
+    required this.enterpriseCode,
   });
 
   @override
@@ -96,9 +98,9 @@ class _ProductItemState extends ConsumerState<ProductItem> {
   @override
   Widget build(BuildContext context) {
     final cartProduct = ref.watch(
-      pendingSaleRequestStateControllerProvider.select(
-        (state) => state.value?.cart[widget.product.ProductPackingCode],
-      ),
+      pendingSaleRequestStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((state) => state.value?.cart[widget.product.ProductPackingCode]),
     );
     final isSelected = ref.watch(
       selectedItemUIControllerProvider(isCartPage: false).select(
@@ -125,7 +127,11 @@ class _ProductItemState extends ConsumerState<ProductItem> {
             ? null
             : () {
                 ref
-                    .read(pendingSaleRequestStateControllerProvider.notifier)
+                    .read(
+                      pendingSaleRequestStateControllerProvider(
+                        widget.enterpriseCode,
+                      ).notifier,
+                    )
                     .removeProduct(cartProduct);
               },
         notClickableBottom: isSelected
@@ -152,6 +158,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                     discountFocusNode: discountFocusNode,
                     priceFocusNode: priceFocusNode,
                     selectedRequest: selectedRequest,
+                    enterpriseCode: widget.enterpriseCode,
                   );
                 },
               )

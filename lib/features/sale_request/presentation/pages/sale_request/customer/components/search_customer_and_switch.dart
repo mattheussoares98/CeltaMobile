@@ -12,10 +12,12 @@ import '../../../../controllers/controllers.dart';
 class SearchFieldAndSwitch extends ConsumerStatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController searchController;
+  final int enterpriseCode;
   const SearchFieldAndSwitch({
     super.key,
     required this.formKey,
     required this.searchController,
+    required this.enterpriseCode,
   });
 
   @override
@@ -38,7 +40,11 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
     }
     ref
         .read(customersStateControllerProvider.notifier)
-        .loadCustomer(widget.searchController.text, searchByPersonalizedCode);
+        .loadCustomer(
+          widget.searchController.text,
+          searchByPersonalizedCode,
+          widget.enterpriseCode,
+        );
   }
 
   @override

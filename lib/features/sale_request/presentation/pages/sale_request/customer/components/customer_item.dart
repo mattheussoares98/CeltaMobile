@@ -9,18 +9,20 @@ import 'components.dart';
 class CustomerItem extends ConsumerWidget {
   final CustomerEntity customer;
   final bool isConsumerCustomer;
+  final int enterpriseCode;
   const CustomerItem({
     super.key,
     required this.customer,
+    required this.enterpriseCode,
     this.isConsumerCustomer = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCustomer = ref.watch(
-      pendingSaleRequestStateControllerProvider.select(
-        (s) => s.value?.customer,
-      ),
+      pendingSaleRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.customer),
     );
 
     return RepaintBoundary(
@@ -31,14 +33,19 @@ class CustomerItem extends ConsumerWidget {
           children: [
             CustomerInfoAndRadio(
               customerItem: this,
+              enterpriseCode: enterpriseCode,
               changeSelectedCustomer: () => ref
-                  .read(pendingSaleRequestStateControllerProvider.notifier)
+                  .read(
+                    pendingSaleRequestStateControllerProvider(
+                      enterpriseCode,
+                    ).notifier,
+                  )
                   .changeCustomer(customer),
             ),
             if (customer == selectedCustomer &&
                 customer.CustomerCovenants != null &&
                 customer.CustomerCovenants!.isNotEmpty) ...[
-              Covenants(customerItem: this),
+              Covenants(customerItem: this, enterpriseCode: enterpriseCode),
             ],
           ],
         ),

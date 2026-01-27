@@ -20,6 +20,7 @@ class ProductItem extends ConsumerWidget {
   final FocusNode discountFocusNode;
   final FocusNode priceFocusNode;
   final RequestTypeEntity selectedRequest;
+  final int enterpriseCode;
   const ProductItem({
     super.key,
     required this.cartProduct,
@@ -31,6 +32,7 @@ class ProductItem extends ConsumerWidget {
     required this.discountFocusNode,
     required this.priceFocusNode,
     required this.selectedRequest,
+    required this.enterpriseCode,
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,7 +64,10 @@ class ProductItem extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    NamePluAndDeleteButton(cartProduct: cartProduct),
+                    NamePluAndDeleteButton(
+                      cartProduct: cartProduct,
+                      enterpriseCode: enterpriseCode,
+                    ),
                     gapH4,
                     if (cartProduct.DiscountDescription != null)
                       TitleAndSubTitle(
@@ -91,6 +96,7 @@ class ProductItem extends ConsumerWidget {
                   discountFocusNode: discountFocusNode,
                   priceFocusNode: priceFocusNode,
                   selectedRequest: selectedRequest,
+                  enterpriseCode: enterpriseCode,
                   product: cartProduct.product!,
                 ),
               ),

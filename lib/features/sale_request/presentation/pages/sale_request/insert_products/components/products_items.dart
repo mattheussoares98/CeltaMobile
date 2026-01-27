@@ -40,6 +40,7 @@ class ProductsItems extends ConsumerWidget {
               ),
               product: product,
               requestCode: requestCode,
+              enterpriseCode: enterpriseCode,
             );
           },
         );

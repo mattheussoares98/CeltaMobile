@@ -10,20 +10,27 @@ import 'components.dart';
 
 class Covenants extends ConsumerWidget {
   final CustomerItem customerItem;
-  const Covenants({super.key, required this.customerItem});
+  final int enterpriseCode;
+  const Covenants({
+    super.key,
+    required this.customerItem,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final selectedCovenant = ref.watch(
-      pendingSaleRequestStateControllerProvider.select(
-        (s) => s.value?.covenant,
-      ),
+      pendingSaleRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.covenant),
     );
 
     void onTapCovenant(CustomerCovenantEntity covenant) {
       ref
-          .read(pendingSaleRequestStateControllerProvider.notifier)
+          .read(
+            pendingSaleRequestStateControllerProvider(enterpriseCode).notifier,
+          )
           .changeCovenant(covenant);
     }
 

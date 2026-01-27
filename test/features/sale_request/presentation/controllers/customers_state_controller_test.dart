@@ -91,7 +91,7 @@ void main() {
         // ACT
         await container
             .read(customersStateControllerProvider.notifier)
-            .loadCustomer(searchValue, false);
+            .loadCustomer(searchValue, false, fakeEnterprise.Code!);
 
         // ASSERT
         verify(
@@ -121,7 +121,7 @@ void main() {
         // ACT: Note the `true` in the provider call
         await container
             .read(customersStateControllerProvider.notifier)
-            .loadCustomer(searchValue, true);
+            .loadCustomer(searchValue, true, fakeEnterprise.Code!);
 
         // ASSERT
         verify(
@@ -151,7 +151,7 @@ void main() {
         // ACT
         await container
             .read(customersStateControllerProvider.notifier)
-            .loadCustomer(searchValue, false);
+            .loadCustomer(searchValue, false, fakeEnterprise.Code!);
 
         // ASSERT
         verify(
@@ -181,7 +181,7 @@ void main() {
         // ACT
         await container
             .read(customersStateControllerProvider.notifier)
-            .loadCustomer(searchValue, false);
+            .loadCustomer(searchValue, false, fakeEnterprise.Code!);
 
         // ASSERT
         verify(
@@ -213,7 +213,7 @@ void main() {
       // ACT
       await container
           .read(customersStateControllerProvider.notifier)
-          .loadCustomer('Test', false);
+          .loadCustomer('Test', false, fakeEnterprise.Code!);
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

@@ -21,7 +21,10 @@ class SaleRequestPage extends ConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(pendingSaleRequestStateControllerProvider, (p, n) {
+    ref.listen(pendingSaleRequestStateControllerProvider(enterpriseCode), (
+      p,
+      n,
+    ) {
       n.showAlertDialogOnError(context);
     });
     ref.listen(saveSaleRequestControllerProvider, (p, n) {
@@ -57,7 +60,7 @@ class SaleRequestPage extends ConsumerWidget {
             ShowPdfButton(enterpriseCode: enterpriseCode),
             PrintButton(enterpriseCode: enterpriseCode),
           ],
-          const CartBadge(),
+          CartBadge(enterpriseCode: enterpriseCode),
         ],
       ),
       body: AsyncValueWidget(
@@ -81,13 +84,16 @@ class SaleRequestPage extends ConsumerWidget {
                 enterpriseCode: enterpriseCode,
                 selectedRequest: selectedRequest,
               ),
-              const CustomerPage(),
-              CartPage(selectedRequest: selectedRequest),
+              CustomerPage(enterpriseCode: enterpriseCode),
+              CartPage(
+                selectedRequest: selectedRequest,
+                enterpriseCode: enterpriseCode,
+              ),
             ],
           );
         },
       ),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(enterpriseCode: enterpriseCode),
     );
   }
 }

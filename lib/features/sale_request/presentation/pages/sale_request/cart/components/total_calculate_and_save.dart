@@ -12,11 +12,13 @@ class TotalCalculateAndSave extends ConsumerWidget {
   final RequestTypeEntity selectedRequest;
   final TextEditingController instructionsController;
   final TextEditingController observationsController;
+  final int enterpriseCode;
   const TotalCalculateAndSave({
     super.key,
     required this.selectedRequest,
     required this.instructionsController,
     required this.observationsController,
+    required this.enterpriseCode,
   });
 
   @override
@@ -34,7 +36,9 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 Consumer(
                   builder: (_, ref, _) {
                     final totalLiquid = ref.watch(
-                      pendingSaleRequestStateControllerProvider.select(
+                      pendingSaleRequestStateControllerProvider(
+                        enterpriseCode,
+                      ).select(
                         (s) => s.value?.cart.values.fold<double>(
                           0.0,
                           (p, e) => p + e.TotalLiquid,
@@ -72,23 +76,23 @@ class TotalCalculateAndSave extends ConsumerWidget {
               data: (canChangePrice) {
                 //TODO test with a user that cant change price
                 final needProcessCart = ref.watch(
-                  pendingSaleRequestStateControllerProvider.select(
-                    (s) => s.value?.needProcessCart == true,
-                  ),
+                  pendingSaleRequestStateControllerProvider(
+                    enterpriseCode,
+                  ).select((s) => s.value?.needProcessCart == true),
                 );
 
                 final selectedCustomer = ref.watch(
-                  pendingSaleRequestStateControllerProvider.select(
-                    (s) => s.value?.customer,
-                  ),
+                  pendingSaleRequestStateControllerProvider(
+                    enterpriseCode,
+                  ).select((s) => s.value?.customer),
                 );
 
                 return Consumer(
                   builder: (_, ref, _) {
                     final bool cartIsEmpty = ref.watch(
-                      pendingSaleRequestStateControllerProvider.select(
-                        (s) => s.value?.cart.values.isEmpty ?? true,
-                      ),
+                      pendingSaleRequestStateControllerProvider(
+                        enterpriseCode,
+                      ).select((s) => s.value?.cart.values.isEmpty ?? true),
                     );
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -112,6 +116,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                                         processCartControllerProvider.notifier,
                                       )
                                       .process(
+                                        enterpriseCode: enterpriseCode,
                                         requestTypeCode: selectedRequest.Code,
                                       );
                                 },
@@ -148,6 +153,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                                                 .notifier,
                                           )
                                           .save(
+                                            enterpriseCode: enterpriseCode,
                                             requestTypeCode:
                                                 selectedRequest.Code,
                                             instructions:

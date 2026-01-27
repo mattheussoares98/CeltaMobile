@@ -21,7 +21,7 @@ class SpyPendingSaleRequest extends PendingSaleRequestStateController {
   final PendingSaleRequestEntity? requestToReturn;
   SpyPendingSaleRequest(this.requestToReturn);
   @override
-  Future<PendingSaleRequestEntity> build() async =>
+  Future<PendingSaleRequestEntity> build(int enterpriseCode) async =>
       requestToReturn ?? PendingSaleRequestEntity.empty();
   // We don't need to override updateProductsFromProcessedCart for this controller
 }
@@ -94,9 +94,9 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        pendingSaleRequestStateControllerProvider.overrideWith(
-          () => SpyPendingSaleRequest(fakePendingRequest),
-        ),
+        pendingSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpyPendingSaleRequest(fakePendingRequest)),
 
         // New dependencies to override
         lastSavedSaleRequestStateControllerProvider(
@@ -137,9 +137,9 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        pendingSaleRequestStateControllerProvider.overrideWith(
-          () => spyPending,
-        ),
+        pendingSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spyPending),
         lastSavedSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyLastSaved),
@@ -176,6 +176,7 @@ void main() {
             requestTypeCode: fakeRequestTypeCode,
             observations: observations,
             instructions: instructions,
+            enterpriseCode: fakeEnterprise.Code!,
           );
 
       // ASSERT
@@ -230,9 +231,9 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        pendingSaleRequestStateControllerProvider.overrideWith(
-          () => spyNoCustomer,
-        ),
+        pendingSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spyNoCustomer),
         lastSavedSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyLastSaved),
@@ -254,6 +255,7 @@ void main() {
             requestTypeCode: fakeRequestTypeCode,
             observations: observations,
             instructions: instructions,
+            enterpriseCode: fakeEnterprise.Code!,
           );
 
       // ASSERT
@@ -294,7 +296,9 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        pendingSaleRequestStateControllerProvider.overrideWith(() => spy),
+        pendingSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spy),
         lastSavedSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyLastSaved),
@@ -316,6 +320,7 @@ void main() {
             requestTypeCode: fakeRequestTypeCode,
             observations: observations,
             instructions: instructions,
+            enterpriseCode: fakeEnterprise.Code!,
           );
 
       // ASSERT

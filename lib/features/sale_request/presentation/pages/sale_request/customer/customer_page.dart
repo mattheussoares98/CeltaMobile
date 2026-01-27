@@ -7,7 +7,8 @@ import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class CustomerPage extends ConsumerStatefulWidget {
-  const CustomerPage({super.key});
+  final int enterpriseCode;
+  const CustomerPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CustomerPageState();
@@ -34,6 +35,7 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
             child: SearchFieldAndSwitch(
               formKey: formKey,
               searchController: searchCustomerController,
+              enterpriseCode: widget.enterpriseCode,
             ),
           ),
           Expanded(
@@ -50,6 +52,7 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                         key: ValueKey(customer?.Code),
                         customer: customer!,
                         isConsumerCustomer: true,
+                        enterpriseCode: widget.enterpriseCode,
                       ),
                     );
                   },
@@ -67,6 +70,7 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                         return CustomerItem(
                           key: ValueKey(customer.Code),
                           customer: customer,
+                          enterpriseCode: widget.enterpriseCode,
                         );
                       },
                     );

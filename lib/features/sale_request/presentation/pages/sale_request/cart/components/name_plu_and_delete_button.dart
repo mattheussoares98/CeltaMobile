@@ -10,7 +10,12 @@ import '../../../../controllers/controllers.dart';
 
 class NamePluAndDeleteButton extends ConsumerWidget {
   final CartProductEntity cartProduct;
-  const NamePluAndDeleteButton({super.key, required this.cartProduct});
+  final int enterpriseCode;
+  const NamePluAndDeleteButton({
+    super.key,
+    required this.cartProduct,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -51,7 +56,9 @@ class NamePluAndDeleteButton extends ConsumerWidget {
                   onOkPressed: () {
                     ref
                         .read(
-                          pendingSaleRequestStateControllerProvider.notifier,
+                          pendingSaleRequestStateControllerProvider(
+                            enterpriseCode,
+                          ).notifier,
                         )
                         .removeProduct(cartProduct);
                   },

@@ -5,7 +5,6 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 import 'controllers.dart';
@@ -21,6 +20,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
     required int requestTypeCode,
     required String observations,
     required String instructions,
+    required int enterpriseCode,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -28,10 +28,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         validatedUserSessionProvider.future,
       );
       final pending = await ref.read(
-        pendingSaleRequestStateControllerProvider.future,
-      );
-      final selectedEnterprise = ref.read(
-        selectedEnterpriseStateControllerProvider,
+        pendingSaleRequestStateControllerProvider(enterpriseCode).future,
       );
 
       if (pending.customer == null) {
@@ -43,7 +40,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
           .save(
             workingUrl: validateduser!.enterprise!.workingUrl!,
             crossIdentity: validateduser.user.CrossIdentity_Usuario!,
-            enterpriseCode: selectedEnterprise!.Code!,
+            enterpriseCode: enterpriseCode,
             requestTypeCode: requestTypeCode,
             saleRequest: pending.copyWith(
               observations: observations,
@@ -54,7 +51,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       await ref
           .read(
             lastSavedSaleRequestStateControllerProvider(
-              selectedEnterprise.Code!,
+              enterpriseCode,
             ).notifier,
           )
           .save(
@@ -69,7 +66,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
 
       await ref
           .read(localPendingSaleRequestRepositoryProvider)
-          .clear(selectedEnterprise.Code!);
+          .clear(enterpriseCode);
       ref.invalidate(localPendingSaleRequestRepositoryProvider);
     });
   }

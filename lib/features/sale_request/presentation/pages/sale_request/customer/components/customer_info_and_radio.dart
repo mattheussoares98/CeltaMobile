@@ -11,10 +11,12 @@ import 'components.dart';
 class CustomerInfoAndRadio extends ConsumerWidget {
   final CustomerItem customerItem;
   final VoidCallback changeSelectedCustomer;
+  final int enterpriseCode;
   const CustomerInfoAndRadio({
     super.key,
     required this.customerItem,
     required this.changeSelectedCustomer,
+    required this.enterpriseCode,
   });
 
   @override
@@ -55,9 +57,9 @@ class CustomerInfoAndRadio extends ConsumerWidget {
             Consumer(
               builder: (_, ref, _) {
                 final selectedCustomer = ref.watch(
-                  pendingSaleRequestStateControllerProvider.select(
-                    (s) => s.value?.customer,
-                  ),
+                  pendingSaleRequestStateControllerProvider(
+                    enterpriseCode,
+                  ).select((s) => s.value?.customer),
                 );
 
                 return RadioGroup<CustomerEntity>(

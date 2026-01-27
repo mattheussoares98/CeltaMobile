@@ -61,7 +61,9 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
             Consumer(
               builder: (_, ref, _) {
                 final correspondentProduct = ref.watch(
-                  pendingSaleRequestStateControllerProvider.select(
+                  pendingSaleRequestStateControllerProvider(
+                    widget.enterpriseCode,
+                  ).select(
                     (state) =>
                         state.value?.cart[widget.product.ProductPackingCode],
                   ),

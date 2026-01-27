@@ -11,7 +11,12 @@ import 'components/components.dart';
 
 class CartPage extends ConsumerStatefulWidget {
   final RequestTypeEntity selectedRequest;
-  const CartPage({super.key, required this.selectedRequest});
+  final int enterpriseCode;
+  const CartPage({
+    super.key,
+    required this.selectedRequest,
+    required this.enterpriseCode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CartPageState();
@@ -54,7 +59,9 @@ class _CartPageState extends ConsumerState<CartPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final value = await ref.read(
-          pendingSaleRequestStateControllerProvider.future,
+          pendingSaleRequestStateControllerProvider(
+            widget.enterpriseCode,
+          ).future,
         );
         observationsController.text = value.observations ?? '';
         instructionsController.text = value.instructions ?? '';
@@ -74,7 +81,7 @@ class _CartPageState extends ConsumerState<CartPage>
 
   void saveInstructionsAndObservations() async {
     final notifier = ref.read(
-      pendingSaleRequestStateControllerProvider.notifier,
+      pendingSaleRequestStateControllerProvider(widget.enterpriseCode).notifier,
     );
     await notifier.changeObservations(observationsController.text);
     await notifier.changeInstructions(instructionsController.text);
@@ -148,7 +155,9 @@ class _CartPageState extends ConsumerState<CartPage>
             Consumer(
               builder: (_, ref, _) {
                 final cartProducts = ref.watch(
-                  pendingSaleRequestStateControllerProvider.select(
+                  pendingSaleRequestStateControllerProvider(
+                    widget.enterpriseCode,
+                  ).select(
                     (state) => (state.value?.cart ?? const {}).values.toList(),
                   ),
                 );
@@ -183,6 +192,7 @@ class _CartPageState extends ConsumerState<CartPage>
                             key: ValueKey(
                               '${cartProduct.ProductPackingCode}${cartProduct.product?.EnterpriseCode}',
                             ),
+                            enterpriseCode: widget.enterpriseCode,
                             cartProduct: cartProduct,
                             onTap: () => changeSelectedIndex(cartProduct),
                             quantityController: quantityController,
@@ -222,6 +232,7 @@ class _CartPageState extends ConsumerState<CartPage>
                       return const SizedBox.shrink();
                     }
                     return TotalCalculateAndSave(
+                      enterpriseCode: widget.enterpriseCode,
                       selectedRequest: widget.selectedRequest,
                       instructionsController: instructionsController,
                       observationsController: observationsController,
