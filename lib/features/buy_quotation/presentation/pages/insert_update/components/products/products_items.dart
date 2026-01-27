@@ -39,6 +39,7 @@ class ProductsItems extends ConsumerWidget {
       if (observationsFocusNode.hasFocus) {
         observationsFocusNode.unfocus();
       }
+      FocusManager.instance.primaryFocus?.unfocus(); //TODO test if is working
 
       ref
           .read(selectedProductPackingCodeStateControllerProvider.notifier)
