@@ -18,6 +18,7 @@ class EmptyDocumentsMessage extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
