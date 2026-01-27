@@ -1,5 +1,5 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -23,7 +23,8 @@ android {
     kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // TODO: Specify your own unique Application ID
+        // (https://developer.android.com/studio/build/application-id.html).
         applicationId = "br.com.celtaware.inventario"
         multiDexEnabled = true
         minSdk = flutter.minSdkVersion
@@ -36,7 +37,7 @@ android {
         create("release") {
             val keystoreProperties = Properties()
             val keystorePropertiesFile = file("../key.properties")
-            
+
             if (keystorePropertiesFile.exists()) {
                 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
             }
@@ -47,7 +48,6 @@ android {
             storePassword = keystoreProperties["storePassword"] as String?
         }
     }
-    
 
     buildTypes {
         getByName("release") {
@@ -61,7 +61,7 @@ android {
 flutter { source = "../.." }
 
 dependencies {
-  implementation(platform("com.google.firebase:firebase-bom:34.8.0"))
-  implementation("com.google.firebase:firebase-analytics")
-  implementation("com.google.firebase:firebase-crashlytics")
+    implementation(platform("com.google.firebase:firebase-bom:34.8.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-crashlytics")
 }
