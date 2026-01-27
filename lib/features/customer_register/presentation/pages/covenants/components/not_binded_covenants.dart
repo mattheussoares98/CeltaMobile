@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/validators/validators.dart';
-import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 
@@ -36,7 +35,10 @@ class NotBindedCovenants extends ConsumerWidget {
         ?.where(
           (e) =>
               customerCovenants
-                  ?.where((x) => e.Codigo_Convenio?.toInt() == x.covenant?.Code)
+                  ?.where(
+                    (x) =>
+                        e.CodigoInterno_Convenio?.toInt() == x.covenant?.Code,
+                  )
                   .toList()
                   .isEmpty !=
               false,

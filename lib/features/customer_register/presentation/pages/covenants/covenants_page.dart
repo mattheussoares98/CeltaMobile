@@ -67,7 +67,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
       ...?customer.CustomerCovenants,
       CustomerCovenantEntity(
         covenant: CovenantInfoEntity(
-          Code: covenant.Codigo_Convenio?.toInt() ?? 0,
+          Code: covenant.CodigoInterno_Convenio?.toInt() ?? 0,
           PersonalizedCode: covenant.CodigoLegado_Convenio.toString(),
           Name: covenant.Nome_Convenio ?? '',
         ),
