@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'update_item.dart';
@@ -32,9 +33,6 @@ class UpdateItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     final requestTypeAllowChangePrice = ref.watch(
       uiStateControllerProvider(
         draftKey.requestTypeCode,
@@ -57,9 +55,9 @@ class UpdateItemWidget extends ConsumerWidget {
                 update: update,
               ),
             ),
-            gapW8,
+            gapW4,
             Expanded(
-              flex: 35,
+              flex: 25,
               child: PriceField(
                 priceController: priceController,
                 priceFocusNode: priceFocusNode,
@@ -67,26 +65,36 @@ class UpdateItemWidget extends ConsumerWidget {
                 requestTypeCode: draftKey.requestTypeCode,
               ),
             ),
-            gapW12,
+            gapW4,
             Expanded(
-              flex: 35,
-              child: TotalPrice(
-                quantityController: quantityController,
-                priceController: priceController,
-                price: price,
-                draftKey: draftKey,
+              flex: 45,
+              child: AnimatedBuilder(
+                animation: Listenable.merge([
+                  quantityController,
+                  priceController,
+                ]),
+                builder: (_, _) {
+                  final quantity = quantityController.text.toDouble() ?? 0;
+                  final writtenPrice = priceController.text.toDouble() ?? 0;
+                  final itemPrice = requestTypeAllowChangePrice
+                      ? writtenPrice
+                      : price;
+                  final newValue = (itemPrice * quantity)
+                      .toString()
+                      .toBrazilianNumber()
+                      .addBrazilianCoin();
+                  return PrimaryButton(
+                    text: isAlreadyInCart
+                        ? 'Alterar $newValue'.hardcoded
+                        : 'Adicionar $newValue'.hardcoded,
+                    onPressed: update,
+                  );
+                },
               ),
             ),
           ],
         ),
         gapH8,
-        PrimaryButton(
-          text: isAlreadyInCart ? 'Alterar'.hardcoded : 'Adicionar'.hardcoded,
-          onPressed: update,
-          icon: Icon(
-            isIOS ? CupertinoIcons.shopping_cart : Icons.shopping_cart,
-          ),
-        ),
       ],
     );
   }
