@@ -33,6 +33,7 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
   }
 
   void changeSelectedIndex(int? index) {
+    limitController.clear();
     if (limitFocusNode.hasFocus) {
       limitFocusNode.unfocus();
     }
