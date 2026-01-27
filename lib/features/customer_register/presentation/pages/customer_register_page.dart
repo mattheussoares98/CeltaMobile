@@ -42,7 +42,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           'Cliente cadastrado/atualizado com sucesso'.hardcoded,
         );
         ref.invalidate(customerStateControllerProvider);
-        personalDataPageKey.currentState?.updateFields();
+        personalDataPageKey.currentState?.updateFields(clearCpf: true);
         ref.read(pageIndexStateControllerProvider.notifier).updateIndex(0);
       });
       n.showAlertDialogOnError(context);

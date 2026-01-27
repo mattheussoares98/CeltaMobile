@@ -89,10 +89,12 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
         );
   }
 
-  Future<void> updateFields() async {
+  Future<void> updateFields({bool? clearCpf}) async {
     final customer = await ref.read(customerStateControllerProvider.future);
 
-    cpfCnpjController.text = customer?.CpfCnpjNumber ?? cpfCnpjController.text;
+    cpfCnpjController.text =
+        customer?.CpfCnpjNumber ??
+        (clearCpf ?? false ? '' : cpfCnpjController.text);
     inscriptionController.text = customer?.RegistrationNumber ?? '';
     nameController.text = customer?.Name ?? '';
     reducedNameController.text = customer?.ReducedName ?? '';
