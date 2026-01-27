@@ -65,14 +65,11 @@ class CustomerModel extends Equatable {
   ];
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'Code': Code ?? 0,
-    'PersonalizedCode': PersonalizedCode,
     'Name': Name,
     'ReducedName': ReducedName,
     'CpfCnpjNumber': CpfCnpjNumber,
     'RegistrationNumber': RegistrationNumber,
     'Password': Password,
-    'HasPassword': HasPassword,
     'DateOfBirth': DateOfBirth?.toIso8601String(),
     'SexType': SexType?.shortName,
     'PersonType': PersonType?.shortName,
@@ -80,8 +77,14 @@ class CustomerModel extends Equatable {
     'Telephones': Telephones?.map((e) => e.toJson()).toList(),
     'Addresses': Addresses?.map((e) => e.toJson()).toList(),
     'CustomerCovenants': CustomerCovenants?.map((e) => e.toJson()).toList(),
-    'SaleBlockadeInstructionModel': saleBlockadeInstructionModel?.toJson(),
-    'SaleBlockadeModel': saleBlockadeModel?.toJson(),
+    //! throw error if pass the value in a new customer
+    if (Code != null) 'Code': Code,
+    if (PersonalizedCode != null) 'PersonalizedCode': PersonalizedCode,
+    if (HasPassword != null) 'HasPassword': HasPassword,
+    if (saleBlockadeInstructionModel != null)
+      'SaleBlockadeInstructionModel': saleBlockadeInstructionModel?.toJson(),
+    if (saleBlockadeModel != null)
+      'SaleBlockadeModel': saleBlockadeModel?.toJson(),
   };
 
   factory CustomerModel.fromJson(Map json) => CustomerModel(
