@@ -4,20 +4,12 @@ import 'package:celta_inventario/core/domain/repositories/customer/customer.dart
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
-
-class FakeSelectedEnterprise extends SelectedEnterpriseStateController {
-  final EnterpriseEntity? enterpriseToReturn;
-  FakeSelectedEnterprise(this.enterpriseToReturn);
-  @override
-  EnterpriseEntity? build() => enterpriseToReturn;
-}
 
 class MockSoapCustomerRepository extends Mock
     implements ISoapCustomerRepository {}
@@ -52,9 +44,6 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterprise(enterprise),
-        ),
       ],
     );
   }
@@ -84,7 +73,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          consumerCustomerStasteControllerProvider.future,
+          consumerCustomerStasteControllerProvider(fakeEnterprise.Code!).future,
         );
 
         // ASSERT
@@ -121,7 +110,9 @@ void main() {
 
       // ACT & ASSERT: Expect a StateError because .first was called on an empty list
       await expectLater(
-        container.read(consumerCustomerStasteControllerProvider.future),
+        container.read(
+          consumerCustomerStasteControllerProvider(fakeEnterprise.Code!).future,
+        ),
         throwsA(isA<StateError>()),
       );
     });
@@ -136,7 +127,9 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(consumerCustomerStasteControllerProvider.future),
+        container.read(
+          consumerCustomerStasteControllerProvider(fakeEnterprise.Code!).future,
+        ),
         throwsA(isA<AppException>()),
       );
     });
@@ -151,7 +144,9 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(consumerCustomerStasteControllerProvider.future),
+        container.read(
+          consumerCustomerStasteControllerProvider(fakeEnterprise.Code!).future,
+        ),
         // This will be a _TypeError or similar because of the `!`
         throwsA(isA<Error>()),
       );

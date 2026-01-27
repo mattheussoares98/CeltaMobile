@@ -43,7 +43,11 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
               physics: const ClampingScrollPhysics(),
               slivers: [
                 AsyncValueSliverWidget(
-                  value: ref.watch(consumerCustomerStasteControllerProvider),
+                  value: ref.watch(
+                    consumerCustomerStasteControllerProvider(
+                      widget.enterpriseCode,
+                    ),
+                  ),
                   tryAgain: () =>
                       ref.invalidate(consumerCustomerStasteControllerProvider),
                   data: (customer) {
