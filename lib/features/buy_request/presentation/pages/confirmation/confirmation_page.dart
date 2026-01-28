@@ -37,6 +37,9 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
     final isDesktop = screenWidth > Breakpoint.desktop;
 
     return Scaffold(
+      floatingActionButton: FloatingSaveButton(
+        observationsController: observationsController,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
         child: Column(
@@ -67,18 +70,8 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   const SelectedEnterprise(),
                   const InformedProductsQuantity(),
                   const InformedProducts(),
-                  SliverToBoxAdapter(
-                    child: Footer(
-                      observationsController: observationsController,
-                      treatCanSave: true,
-                    ),
-                  ),
                 ],
               ),
-            ),
-            Footer(
-              observationsController: observationsController,
-              treatCanSave: false,
             ),
           ],
         ),
