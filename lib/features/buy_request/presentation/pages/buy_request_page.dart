@@ -65,7 +65,13 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
           Sizes.p12,
           Sizes.p8,
         ),
-        actions: const [CartPriceIcon()],
+        actions: [
+          if (MediaQuery.sizeOf(context).width > Breakpoint.desktop) ...[
+            ClearRequestButton(observationsController: observationsController),
+            gapW12,
+          ],
+          const CartPriceIcon(),
+        ],
       ),
       body: Consumer(
         builder: (_, ref, _) {

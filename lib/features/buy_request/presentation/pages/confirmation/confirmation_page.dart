@@ -34,6 +34,8 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
       n.showAlertDialogOnError(context);
     });
 
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
@@ -43,9 +45,12 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
                 slivers: [
-                  CleanAllDataButton(
-                    observationsController: observationsController,
-                  ),
+                  if (screenWidth <= Breakpoint.desktop)
+                    SliverToBoxAdapter(
+                      child: ClearRequestButton(
+                        observationsController: observationsController,
+                      ),
+                    ),
                   const LastSavedRequestsNumbers(),
                   SliverToBoxAdapter(
                     child: DefaultTextFormField(
