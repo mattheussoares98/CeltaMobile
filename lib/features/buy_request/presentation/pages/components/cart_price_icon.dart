@@ -11,6 +11,8 @@ class CartPriceIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () =>
           ref.read(uiStateControllerProvider.notifier).updatePageIndex(3),
@@ -36,9 +38,21 @@ class CartPriceIcon extends ConsumerWidget {
               ),
             );
 
-            return Text(
-              'R\$ ${(totalPrice ?? 0).toStringAsFixed(2).toBrazilianNumber(2, true)}',
-              style: const TextStyle(fontSize: 9),
+            return RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'R\$ ',
+                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 9),
+                  ),
+                  TextSpan(
+                    text: (totalPrice ?? 0)
+                        .toStringAsFixed(2)
+                        .toBrazilianNumber(),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
+              ),
             );
           },
         ),
