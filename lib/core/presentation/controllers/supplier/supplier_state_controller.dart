@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../features/buy_request/presentation/controllers/controllers.dart';
 import '../../../domain/entities/entities.dart';
 import '../user_session/user_session.dart';
 import '../../../providers/supplier/supplier.dart';
@@ -10,7 +11,12 @@ part 'supplier_state_controller.g.dart';
 class SupplierStateController extends _$SupplierStateController {
   @override
   FutureOr<List<SupplierEntity>?> build(SearchSupplierType searchType) async {
-    return null;
+    final selectedSupplier = await ref.read(
+      pendingBuyRequestStateControllerProvider.selectAsync(
+        (s) => s.selectedSupplier,
+      ),
+    );
+    return [?selectedSupplier];
   }
 
   Future<void> load(String searchValue) async {

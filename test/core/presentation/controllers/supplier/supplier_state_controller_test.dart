@@ -4,21 +4,38 @@ import 'package:celta_inventario/core/domain/repositories/supplier/supplier.dart
 import 'package:celta_inventario/core/presentation/controllers/supplier/supplier.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/supplier/supplier.dart';
+import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../mocks/mocks.dart';
 
 class MockSoapLoadSupplierRepository extends Mock
     implements ISoapLoadSupplierRepository {}
 
+class FakePendingBuyRequestStateController
+    extends PendingBuyRequestStateController {
+  final PendingBuyRequestEntity dataToReturn;
+
+  FakePendingBuyRequestStateController(this.dataToReturn);
+
+  // 2. Override the build method to return your fake data instantly
+  @override
+  FutureOr<PendingBuyRequestEntity> build() async {
+    return dataToReturn;
+  }
+}
+
 void main() {
   late MockSoapLoadSupplierRepository mockRepository;
   late UserSessionModel fakeSession;
   late List<SupplierEntity> fakeSuppliers;
   late String fakeSearchValue;
+  late PendingBuyRequestEntity fakePendingBuyRequest;
 
   const searchType = SearchSupplierType.buyQuotation;
 
@@ -33,20 +50,64 @@ void main() {
     );
     fakeSuppliers = [EntityFactory.makeSupplierEntity()];
     fakeSearchValue = faker.company.name();
+    fakePendingBuyRequest = EntityFactory.makePendingBuyRequestEntity();
   });
 
-  ProviderContainer makeProviderContainer({UserSessionModel? session}) {
+  ProviderContainer makeProviderContainer({
+    UserSessionModel? session,
+    PendingBuyRequestEntity? pendingBuyRequest,
+  }) {
     return ProviderContainer(
       overrides: [
         soapLoadSupplierRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        pendingBuyRequestStateControllerProvider.overrideWith(
+          () => FakePendingBuyRequestStateController(
+            pendingBuyRequest ?? fakePendingBuyRequest,
+          ),
+        ),
       ],
     );
   }
 
   group('SupplierStateController', () {
+    test(
+      'load should return correct state on build when selected supplier is null',
+      () async {
+        // ARRANGE
+        final container = makeProviderContainer(
+          session: fakeSession,
+          pendingBuyRequest: fakePendingBuyRequest.annulValue(
+            annulSelectedSupplier: true,
+          ),
+        );
+        addTearDown(container.dispose);
+
+        // Wait for the initial build to complete (it returns null)
+        final state = await container.read(
+          supplierStateControllerProvider(searchType).future,
+        );
+
+        expect(state, []);
+      },
+    );
+    test(
+      'load should return correct state on build when selected supplier is NOT null',
+      () async {
+        // ARRANGE
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // Wait for the initial build to complete (it returns null)
+        final state = await container.read(
+          supplierStateControllerProvider(searchType).future,
+        );
+
+        expect(state, [fakePendingBuyRequest.selectedSupplier!]);
+      },
+    );
     test(
       'load should emit [loading, data] and call repository on success',
       () async {

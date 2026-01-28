@@ -13,18 +13,17 @@ class SupplierItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hasSelectedEnterprisesOrProducts = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) =>
-            (s.value?.selectedEnterprises?.isNotEmpty ?? false) ||
-            (s.value?.products?.isNotEmpty ?? false),
-      ),
-    );
-
-    void onTap(SupplierEntity? supplier) {
+    void onTap(SupplierEntity? supplier) async {
       final selectedSupplier = ref.read(
         pendingBuyRequestStateControllerProvider.select(
           (s) => s.value?.selectedSupplier,
+        ),
+      );
+      final hasSelectedEnterprisesOrProducts = await ref.read(
+        pendingBuyRequestStateControllerProvider.selectAsync(
+          (s) =>
+              (s.selectedEnterprises?.isNotEmpty ?? false) ||
+              (s.products?.isNotEmpty ?? false),
         ),
       );
 
@@ -60,36 +59,10 @@ class SupplierItems extends ConsumerWidget {
       }
     }
 
-    final suppliersAsync = ref.watch(
-      supplierStateControllerProvider(SearchSupplierType.buyRequest),
-    );
-    final hasSelectedSupplier = ref.read(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.selectedSupplier != null,
-      ),
-    );
-
-    if (hasSelectedSupplier && (suppliersAsync.value?.isEmpty ?? true)) {
-      return SliverList.builder(
-        itemCount: 1,
-        itemBuilder: (_, index) {
-          final supplier = ref.read(
-            pendingBuyRequestStateControllerProvider.select(
-              (s) => s.value?.selectedSupplier,
-            ),
-          );
-          return SupplierItem(
-            key: ValueKey(supplier?.Code),
-            supplier: supplier!,
-            onTap: () => onTap(supplier),
-            enabled: true,
-          );
-        },
-      );
-    }
-
     return AsyncValueSliverWidget(
-      value: suppliersAsync,
+      value: ref.watch(
+        supplierStateControllerProvider(SearchSupplierType.buyRequest),
+      ),
       data: (suppliers) {
         return SliverList.builder(
           itemCount: suppliers?.length ?? 0,
