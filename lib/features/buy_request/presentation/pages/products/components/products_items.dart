@@ -77,7 +77,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
     ref
         .read(pendingBuyRequestStateControllerProvider.notifier)
-        .updatePending(products: products);
+        .updatePending(products: updatedProducts);
   }
 
   @override
