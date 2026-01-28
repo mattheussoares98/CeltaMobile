@@ -65,6 +65,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   const RequestTypeDropdown(enabled: false, isSliver: true),
                   gapSliverH8,
                   const SelectedSupplier(),
+                  const SelectedEnterprisesQuantity(),
                   const SelectedEnterprise(),
                   const InformedProducts(),
                   Consumer(

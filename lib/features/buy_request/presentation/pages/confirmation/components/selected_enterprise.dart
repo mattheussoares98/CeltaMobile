@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../controllers/controllers.dart';
-import '../../components/components.dart';
 import '../../enterprises/components/components.dart';
-import 'components.dart';
 
 class SelectedEnterprise extends ConsumerWidget {
   const SelectedEnterprise({super.key});
@@ -18,19 +16,11 @@ class SelectedEnterprise extends ConsumerWidget {
       ),
     );
 
-    if (selectedEnterprises?.isEmpty ?? true) {
-      return UnselectedMessage(title: 'Nenhuma empresa selecionada'.hardcoded);
-    }
-
-    return SliverList.builder(
-      itemCount: selectedEnterprises!.length + 1,
+    return ResponsiveListFlow(
+      isSliver: true,
+      itemCount: selectedEnterprises?.length ?? 0,
       itemBuilder: (_, index) {
-        if (index == 0) {
-          return DefaultSmallTitle(
-            title: 'Empresas (${selectedEnterprises.length})'.hardcoded,
-          );
-        }
-        final enterprise = selectedEnterprises[index - 1];
+        final enterprise = selectedEnterprises![index];
 
         return EnterpriseItem(
           enterprise: enterprise,

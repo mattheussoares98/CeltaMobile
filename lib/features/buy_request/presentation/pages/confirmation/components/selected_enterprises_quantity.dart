@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../../../localization/string_hardcoded.dart';
+import '../../../controllers/controllers.dart';
+import '../../components/components.dart';
+import 'components.dart';
+
+class SelectedEnterprisesQuantity extends ConsumerWidget {
+  const SelectedEnterprisesQuantity({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enterprisesLength = ref.watch(
+      pendingBuyRequestStateControllerProvider.select(
+        (s) => s.value?.selectedEnterprises?.length ?? 0,
+      ),
+    );
+
+    if (enterprisesLength == 0) {
+      return UnselectedMessage(title: 'Nenhuma empresa selecionada'.hardcoded);
+    }
+    return SliverToBoxAdapter(
+      child: DefaultSmallTitle(
+        title: 'Empresas ($enterprisesLength)'.hardcoded,
+      ),
+    );
+  }
+}
