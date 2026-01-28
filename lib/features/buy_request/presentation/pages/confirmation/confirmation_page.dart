@@ -57,6 +57,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                       hintText: 'Observações'.hardcoded,
                       labelText: 'Observações'.hardcoded,
                       maxLines: 4,
+                      maxLength: 500,
                     ),
                   ),
                   const BuyersAndRequestsDropdown(enabled: false),
