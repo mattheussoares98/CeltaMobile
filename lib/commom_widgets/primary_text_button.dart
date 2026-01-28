@@ -29,6 +29,7 @@ class PrimaryTextButton extends StatelessWidget {
   final Color? color;
   final TextAlign? textAlign;
   final bool? isSmall;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -37,7 +38,10 @@ class PrimaryTextButton extends StatelessWidget {
     final iconColor = isLoading
         ? theme.disabledColor
         : color ?? theme.primaryColor;
-    final textColor = isLoading
+
+    final textColor = onPressed == null
+        ? theme.disabledColor
+        : isLoading
         ? Colors.transparent
         : color ?? theme.primaryColor;
 
