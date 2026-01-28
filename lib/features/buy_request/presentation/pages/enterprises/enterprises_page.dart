@@ -14,8 +14,6 @@ class EnterprisesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enterprisesAsync = ref.watch(enterprisesStateControllerProvider);
-
     void changeSelectedEnterprise(EnterpriseEntity enterprise) async {
       final moduleIsEnabled = await ref.read(
         moduleIsEnabledControllerProvider(
@@ -39,7 +37,6 @@ class EnterprisesPage extends ConsumerWidget {
           (s) => s.value?.selectedEnterprises,
         ),
       );
-      final isSelected = selectedEnterprises?.contains(enterprise) ?? false;
       final updatedEnterprises = [...?selectedEnterprises];
       final Map<ProductKey, BuyRequestProductItemEntity> updatedProducts =
           Map.from(
@@ -51,6 +48,8 @@ class EnterprisesPage extends ConsumerWidget {
                 {},
           );
 
+      final isSelected =
+          selectedEnterprises?.any((e) => e.Code == enterprise.Code) ?? false;
       if (isSelected) {
         bool hasProductFromThisEnterpriseInserted = updatedProducts.keys.any(
           (k) => k.enterpriseCode == enterprise.Code,
@@ -91,7 +90,7 @@ class EnterprisesPage extends ConsumerWidget {
       body: ResponsiveScrollableWidget(
         isSliverPage: true,
         child: AsyncValueWidget(
-          value: enterprisesAsync,
+          value: ref.watch(enterprisesStateControllerProvider),
           tryAgain: () {
             ref.invalidate(enterprisesStateControllerProvider);
           },
