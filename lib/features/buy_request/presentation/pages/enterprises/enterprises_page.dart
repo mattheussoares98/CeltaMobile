@@ -87,27 +87,24 @@ class EnterprisesPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: AsyncValueWidget(
-          value: ref.watch(enterprisesStateControllerProvider),
-          tryAgain: () {
-            ref.invalidate(enterprisesStateControllerProvider);
-          },
-          data: (enterprises) {
-            return ListView.builder(
-              itemCount: enterprises.length,
-              itemBuilder: (_, index) {
-                final enterprise = enterprises[index];
-                return EnterpriseItem(
-                  key: ValueKey(enterprise.Code),
-                  enterprise: enterprise,
-                  onTap: () => changeSelectedEnterprise(enterprise),
-                );
-              },
-            );
-          },
-        ),
+      body: AsyncValueWidget(
+        value: ref.watch(enterprisesStateControllerProvider),
+        tryAgain: () {
+          ref.invalidate(enterprisesStateControllerProvider);
+        },
+        data: (enterprises) {
+          return ResponsiveListFlow(
+            itemCount: enterprises.length,
+            itemBuilder: (_, index) {
+              final enterprise = enterprises[index];
+              return EnterpriseItem(
+                key: ValueKey(enterprise.Code),
+                enterprise: enterprise,
+                onTap: () => changeSelectedEnterprise(enterprise),
+              );
+            },
+          );
+        },
       ),
     );
   }
