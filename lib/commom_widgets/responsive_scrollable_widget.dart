@@ -12,7 +12,7 @@ class ResponsiveScrollableWidget extends StatelessWidget {
     super.key,
     required this.child,
     this.centralize,
-    this.maxContentWidth,
+    this.maxContentWidth = Breakpoint.desktop,
     this.isSliverPage = false,
   });
   final Widget child;
@@ -24,7 +24,7 @@ class ResponsiveScrollableWidget extends StatelessWidget {
             height: centralize == true ? mediaSize.height : null,
             width: centralize == true ? mediaSize.width : null,
             child: ResponsiveCenter(
-              maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
+              maxContentWidth: maxContentWidth!,
               child: child,
             ),
           )
@@ -33,7 +33,7 @@ class ResponsiveScrollableWidget extends StatelessWidget {
               height: centralize == true ? mediaSize.height : null,
               width: centralize == true ? mediaSize.width : null,
               child: ResponsiveCenter(
-                maxContentWidth: maxContentWidth ?? Breakpoint.tablet,
+                maxContentWidth: maxContentWidth!,
                 child: child,
               ),
             ),
