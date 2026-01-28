@@ -74,64 +74,62 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DefaultSmallTitle(title: 'Fornecedores'.hardcoded),
-          gapH8,
-          Consumer(
-            builder: (_, ref, _) {
-              final selectedSupplier = ref.watch(
-                pendingBuyRequestStateControllerProvider.select(
-                  (s) => s.value?.selectedSupplier,
-                ),
-              );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DefaultSmallTitle(title: 'Fornecedores'.hardcoded),
+        gapH8,
+        Consumer(
+          builder: (_, ref, _) {
+            final selectedSupplier = ref.watch(
+              pendingBuyRequestStateControllerProvider.select(
+                (s) => s.value?.selectedSupplier,
+              ),
+            );
 
-              return Form(
-                key: formKey,
-                child: DefaultTextFormField(
-                  labelText: 'Fornecedor'.hardcoded,
-                  hintText: 'Fornecedor'.hardcoded,
-                  controller: supplierController,
-                  maxLength: 50,
-                  validator: FormValidators.compose([NonEmptyValidator()]),
-                  onFieldSubmitted: (value) {
-                    if (selectedSupplier != null &&
-                        hasSelectedEnterprisesOrProducts) {
-                      showAlertDialog(
-                        context: context,
-                        title: 'Consultar fornecedores?'.hardcoded,
-                        content:
-                            'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'
-                                .hardcoded,
-                        cancelActionText: 'Cancelar'.hardcoded,
-                        defaultActionText: 'Consultar'.hardcoded,
-                        onOkPressed: loadSuppliers,
-                      );
-                    } else {
-                      loadSuppliers();
-                    }
+            return Form(
+              key: formKey,
+              child: DefaultTextFormField(
+                labelText: 'Fornecedor'.hardcoded,
+                hintText: 'Fornecedor'.hardcoded,
+                controller: supplierController,
+                maxLength: 50,
+                validator: FormValidators.compose([NonEmptyValidator()]),
+                onFieldSubmitted: (value) {
+                  if (selectedSupplier != null &&
+                      hasSelectedEnterprisesOrProducts) {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Consultar fornecedores?'.hardcoded,
+                      content:
+                          'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'
+                              .hardcoded,
+                      cancelActionText: 'Cancelar'.hardcoded,
+                      defaultActionText: 'Consultar'.hardcoded,
+                      onOkPressed: loadSuppliers,
+                    );
+                  } else {
+                    loadSuppliers();
+                  }
+                },
+                prefixIcon: IconButton(
+                  onPressed: () {
+                    supplierController.clear();
                   },
-                  prefixIcon: IconButton(
-                    onPressed: () {
-                      supplierController.clear();
-                    },
-                    icon: Icon(
-                      isIOS ? CupertinoIcons.delete : Icons.delete,
-                      color: Colors.red,
-                    ),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: loadSuppliers,
-                    icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+                  icon: Icon(
+                    isIOS ? CupertinoIcons.delete : Icons.delete,
+                    color: Colors.red,
                   ),
                 ),
-              );
-            },
-          ),
-        ],
-      ),
+                suffixIcon: IconButton(
+                  onPressed: loadSuppliers,
+                  icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

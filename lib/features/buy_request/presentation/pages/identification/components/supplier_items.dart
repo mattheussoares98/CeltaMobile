@@ -9,7 +9,8 @@ import '../../../controllers/controllers.dart';
 import 'components.dart';
 
 class SupplierItems extends ConsumerWidget {
-  const SupplierItems({super.key});
+  final bool isSliver;
+  const SupplierItems({super.key, required this.isSliver});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -59,25 +60,62 @@ class SupplierItems extends ConsumerWidget {
       }
     }
 
-    return AsyncValueSliverWidget(
+    if (isSliver) {
+      return AsyncValueSliverWidget(
+        value: ref.watch(
+          supplierStateControllerProvider(SearchSupplierType.buyRequest),
+        ),
+        data: (suppliers) => _Items(
+          key: const ValueKey('sliver'),
+          suppliers: suppliers,
+          isSliver: isSliver,
+          onTap: onTap,
+        ),
+        tryAgain: null,
+      );
+    }
+
+    return AsyncValueWidget(
       value: ref.watch(
         supplierStateControllerProvider(SearchSupplierType.buyRequest),
       ),
-      data: (suppliers) {
-        return SliverList.builder(
-          itemCount: suppliers?.length ?? 0,
-          itemBuilder: (_, index) {
-            final supplier = suppliers![index];
-            return SupplierItem(
-              key: ValueKey(supplier.Code),
-              supplier: supplier,
-              onTap: () => onTap(supplier),
-              enabled: true,
-            );
-          },
+      data: (suppliers) => _Items(
+        key: const ValueKey('not sliver'),
+        suppliers: suppliers,
+        isSliver: isSliver,
+        onTap: onTap,
+      ),
+      tryAgain: null,
+    );
+  }
+}
+
+class _Items extends StatelessWidget {
+  final List<SupplierEntity>? suppliers;
+  final bool isSliver;
+  final void Function(SupplierEntity? supplier) onTap;
+  const _Items({
+    super.key,
+    required this.suppliers,
+    required this.isSliver,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveListFlow(
+      isSliver: isSliver,
+      itemCount: suppliers?.length ?? 0,
+      // maxItemWidth: 400,
+      itemBuilder: (_, index) {
+        final supplier = suppliers![index];
+        return SupplierItem(
+          key: ValueKey(supplier.Code),
+          supplier: supplier,
+          onTap: () => onTap(supplier),
+          enabled: true,
         );
       },
-      tryAgain: null,
     );
   }
 }
