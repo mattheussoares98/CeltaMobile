@@ -19,9 +19,9 @@ class IdentificationPage extends ConsumerWidget {
           child: CustomScrollView(
             physics: ClampingScrollPhysics(),
             slivers: [
-              BuyersDropdown(),
+              BuyersDropdown(isSliver: true),
               gapSliverH8,
-              RequestTypeDropdown(),
+              RequestTypeDropdown(isSliver: true),
               gapSliverH8,
               SupplierSearcher(),
               SupplierItems(),

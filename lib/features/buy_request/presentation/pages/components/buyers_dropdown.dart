@@ -11,65 +11,92 @@ import 'components.dart';
 
 class BuyersDropdown extends ConsumerWidget {
   final bool enabled;
-  const BuyersDropdown({super.key, this.enabled = true});
+  final bool isSliver;
+  const BuyersDropdown({
+    super.key,
+    this.enabled = true,
+    required this.isSliver,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AsyncValueSliverWidget(
+    if (isSliver) {
+      return AsyncValueSliverWidget(
+        value: ref.watch(buyersStateControllerProvider),
+        tryAgain: () {
+          ref.invalidate(buyersStateControllerProvider);
+        },
+        data: (buyers) {
+          return SliverToBoxAdapter(
+            child: _BuyersDropdown(enabled: enabled, buyers: buyers),
+          );
+        },
+      );
+    }
+
+    return AsyncValueWidget(
       value: ref.watch(buyersStateControllerProvider),
       tryAgain: () {
         ref.invalidate(buyersStateControllerProvider);
       },
       data: (buyers) {
-        return SliverToBoxAdapter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DefaultSmallTitle(title: 'Comprador'.hardcoded),
-              gapH4,
-              Consumer(
-                builder: (_, ref, _) {
-                  final selectedBuyer = ref.watch(
-                    pendingBuyRequestStateControllerProvider.select(
-                      (s) => s.value?.selectedBuyer,
-                    ),
-                  );
-
-                  return DefaultSimpleDropDown<BuyerEntity?>(
-                    onChanged: enabled
-                        ? (buyer) {
-                            ref
-                                .read(
-                                  pendingBuyRequestStateControllerProvider
-                                      .notifier,
-                                )
-                                .updatePending(selectedBuyer: buyer);
-                          }
-                        : null,
-                    items: buyers
-                        .map(
-                          (e) => DropdownMenuItem(
-                            key: ValueKey(e.Code),
-                            value: e,
-                            child: Center(child: Text(e.Name)),
-                          ),
-                        )
-                        .toList(),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Selecione um comprador'.hardcoded;
-                      }
-                      return null;
-                    },
-                    value: selectedBuyer,
-                    hint: 'Selecione'.hardcoded,
-                  );
-                },
-              ),
-            ],
-          ),
-        );
+        return _BuyersDropdown(enabled: enabled, buyers: buyers);
       },
+    );
+  }
+}
+
+class _BuyersDropdown extends StatelessWidget {
+  final bool enabled;
+  final List<BuyerEntity> buyers;
+  const _BuyersDropdown({required this.enabled, required this.buyers});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DefaultSmallTitle(title: 'Comprador'.hardcoded),
+        gapH4,
+        Consumer(
+          builder: (_, ref, _) {
+            final selectedBuyer = ref.watch(
+              pendingBuyRequestStateControllerProvider.select(
+                (s) => s.value?.selectedBuyer,
+              ),
+            );
+
+            return DefaultSimpleDropDown<BuyerEntity?>(
+              onChanged: enabled
+                  ? (buyer) {
+                      ref
+                          .read(
+                            pendingBuyRequestStateControllerProvider.notifier,
+                          )
+                          .updatePending(selectedBuyer: buyer);
+                    }
+                  : null,
+              items: buyers
+                  .map(
+                    (e) => DropdownMenuItem(
+                      key: ValueKey(e.Code),
+                      value: e,
+                      child: Center(child: Text(e.Name)),
+                    ),
+                  )
+                  .toList(),
+              validator: (value) {
+                if (value == null) {
+                  return 'Selecione um comprador'.hardcoded;
+                }
+                return null;
+              },
+              value: selectedBuyer,
+              hint: 'Selecione'.hardcoded,
+            );
+          },
+        ),
+      ],
     );
   }
 }
