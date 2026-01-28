@@ -7,7 +7,7 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import '../../controllers/controllers.dart';
-import '../identification/components/components.dart';
+import '../components/components.dart';
 import 'components/components.dart';
 
 class ConfirmationPage extends ConsumerStatefulWidget {

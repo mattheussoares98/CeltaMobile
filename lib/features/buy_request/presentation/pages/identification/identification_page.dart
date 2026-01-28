@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../components/components.dart';
 import 'components/components.dart';
 
 class IdentificationPage extends ConsumerWidget {
