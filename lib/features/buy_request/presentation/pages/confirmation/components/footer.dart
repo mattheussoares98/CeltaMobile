@@ -4,15 +4,36 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import '../../../controllers/controllers.dart';
 
 class Footer extends ConsumerWidget {
   final TextEditingController observationsController;
-  const Footer({super.key, required this.observationsController});
+  final bool treatKeyboardIsOpenAndCanSave;
+  const Footer({
+    super.key,
+    required this.observationsController,
+    required this.treatKeyboardIsOpenAndCanSave,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+
+    final keyboardIsOpen =
+        treatKeyboardIsOpenAndCanSave &&
+        ref.watch(keyboardVisibilityStateControllerProvider);
+    final canSave =
+        treatKeyboardIsOpenAndCanSave &&
+        ref.watch(
+          pendingBuyRequestStateControllerProvider.select(
+            (s) => s.value?.canSave == true,
+          ),
+        );
+
+    if (treatKeyboardIsOpenAndCanSave && (!keyboardIsOpen || !canSave)) {
+      return const SizedBox.shrink();
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),

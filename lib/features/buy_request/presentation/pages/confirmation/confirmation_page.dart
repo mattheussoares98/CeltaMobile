@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import '../../controllers/controllers.dart';
 import '../components/components.dart';
 import 'components/components.dart';
@@ -69,43 +68,18 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   const SelectedEnterprise(),
                   const InformedProductsQuantity(),
                   const InformedProducts(),
-                  Consumer(
-                    builder: (_, ref, _) {
-                      final keyboardIsOpen = ref.watch(
-                        keyboardVisibilityStateControllerProvider,
-                      );
-                      final canSave = ref.read(
-                        pendingBuyRequestStateControllerProvider.select(
-                          (s) => s.value?.canSave == true,
-                        ),
-                      );
-
-                      if (!keyboardIsOpen || !canSave) {
-                        return const SliverToBoxAdapter(
-                          child: SizedBox.shrink(),
-                        );
-                      }
-
-                      return SliverToBoxAdapter(
-                        child: Footer(
-                          observationsController: observationsController,
-                        ),
-                      );
-                    },
+                  SliverToBoxAdapter(
+                    child: Footer(
+                      observationsController: observationsController,
+                      treatKeyboardIsOpenAndCanSave: true,
+                    ),
                   ),
                 ],
               ),
             ),
-            Consumer(
-              builder: (_, ref, _) {
-                final keyboardIsOpen = ref.watch(
-                  keyboardVisibilityStateControllerProvider,
-                );
-                if (keyboardIsOpen) {
-                  return const SizedBox.shrink();
-                }
-                return Footer(observationsController: observationsController);
-              },
+            Footer(
+              observationsController: observationsController,
+              treatKeyboardIsOpenAndCanSave: false,
             ),
           ],
         ),
