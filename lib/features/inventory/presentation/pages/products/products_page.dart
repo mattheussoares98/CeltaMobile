@@ -172,26 +172,37 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           appBar: AppBar(title: Text('Produtos'.hardcoded)),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-            child: CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                SearchProducts(
-                  searchProducts: () =>
-                      _searchProducts(searchProductKey, false),
-                  searchProductsController: searchProductsController,
-                  searchProductsFocusNode: searchProductsFocusNode,
-                  searchProductKey: searchProductKey,
+            child: Column(
+              children: [
+                Consumer(
+                  builder: (_, ref, _) {
+                    return DefaultSearchProducts(
+                      focusNode: searchProductsFocusNode,
+                      isLoading: ref.watch(
+                        searchProductsStateControllerProvider(
+                          searchProductKey,
+                        ).select((state) => state.isLoading),
+                      ),
+                      searchProducts: () =>
+                          _searchProducts(searchProductKey, false),
+                      searchValueController: searchProductsController,
+                      searchProductKey: searchProductKey,
+                      module: Modules.inventory,
+                    );
+                  },
                 ),
                 InsertIndividuallySwitch(
                   codigoInternoInventario: widget.codigoInternoInventario,
                 ),
-                ProductsItems(
-                  codigoInternoInventario: widget.codigoInternoInventario,
-                  codigoInternoInvCont: widget.codigoInternoInvCont,
-                  enterpriseCode: widget.enterpriseCode,
-                  searchProductKey: searchProductKey,
-                  quantityFocusNode: quantityFocusNode,
-                  quantityController: quantityController,
+                Expanded(
+                  child: ProductsItems(
+                    codigoInternoInventario: widget.codigoInternoInventario,
+                    codigoInternoInvCont: widget.codigoInternoInvCont,
+                    enterpriseCode: widget.enterpriseCode,
+                    searchProductKey: searchProductKey,
+                    quantityFocusNode: quantityFocusNode,
+                    quantityController: quantityController,
+                  ),
                 ),
               ],
             ),

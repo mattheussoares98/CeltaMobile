@@ -25,15 +25,13 @@ class SearchProducts extends ConsumerWidget {
         searchProductKey,
       ).select((state) => state.isLoading),
     );
-    return SliverToBoxAdapter(
-      child: DefaultSearchProducts(
-        focusNode: searchProductsFocusNode,
-        isLoading: isLoading,
-        searchProducts: searchProducts,
-        searchValueController: searchProductsController,
-        searchProductKey: searchProductKey,
-        module: Modules.inventory,
-      ),
+    return DefaultSearchProducts(
+      focusNode: searchProductsFocusNode,
+      isLoading: isLoading,
+      searchProducts: searchProducts,
+      searchValueController: searchProductsController,
+      searchProductKey: searchProductKey,
+      module: Modules.inventory,
     );
   }
 }

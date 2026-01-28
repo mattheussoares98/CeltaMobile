@@ -19,7 +19,8 @@ class InsertIndividuallySwitch extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     final widthScreen = MediaQuery.sizeOf(context).width;
-    return SliverToBoxAdapter(
+    return SizedBox(
+      width: Breakpoint.desktop,
       child: Padding(
         padding: const EdgeInsets.only(top: Sizes.p8),
         child: Row(
