@@ -70,7 +70,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   SliverToBoxAdapter(
                     child: Footer(
                       observationsController: observationsController,
-                      treatKeyboardIsOpenAndCanSave: true,
+                      treatCanSave: true,
                     ),
                   ),
                 ],
@@ -78,7 +78,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
             ),
             Footer(
               observationsController: observationsController,
-              treatKeyboardIsOpenAndCanSave: false,
+              treatCanSave: false,
             ),
           ],
         ),

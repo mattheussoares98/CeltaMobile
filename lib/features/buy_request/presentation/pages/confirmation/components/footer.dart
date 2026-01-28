@@ -9,11 +9,11 @@ import '../../../controllers/controllers.dart';
 
 class Footer extends ConsumerWidget {
   final TextEditingController observationsController;
-  final bool treatKeyboardIsOpenAndCanSave;
+  final bool treatCanSave;
   const Footer({
     super.key,
     required this.observationsController,
-    required this.treatKeyboardIsOpenAndCanSave,
+    required this.treatCanSave,
   });
 
   @override
@@ -25,18 +25,18 @@ class Footer extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final keyboardIsOpen =
-        treatKeyboardIsOpenAndCanSave &&
-        ref.watch(keyboardVisibilityStateControllerProvider);
+    final keyboardIsOpen = ref.watch(keyboardVisibilityStateControllerProvider);
     final canSave =
-        treatKeyboardIsOpenAndCanSave &&
+        treatCanSave &&
         ref.watch(
           pendingBuyRequestStateControllerProvider.select(
             (s) => s.value?.canSave == true,
           ),
         );
 
-    if (treatKeyboardIsOpenAndCanSave && (!keyboardIsOpen || !canSave)) {
+    if (!canSave && keyboardIsOpen) {
+      return const SizedBox.shrink();
+    } else if (canSave && !keyboardIsOpen) {
       return const SizedBox.shrink();
     }
 
