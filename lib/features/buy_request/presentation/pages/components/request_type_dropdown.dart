@@ -11,33 +11,10 @@ import 'components.dart';
 
 class RequestTypeDropdown extends ConsumerWidget {
   final bool enabled;
-  final bool isSliver;
-  const RequestTypeDropdown({
-    super.key,
-    this.enabled = true,
-    required this.isSliver,
-  });
+  const RequestTypeDropdown({super.key, this.enabled = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (isSliver) {
-      return AsyncValueSliverWidget(
-        value: ref.watch(
-          requestTypeStateControllerProvider(Modules.buyRequest),
-        ),
-        tryAgain: () {
-          ref.invalidate(
-            requestTypeStateControllerProvider(Modules.buyRequest),
-          );
-        },
-        data: (requests) {
-          return SliverToBoxAdapter(
-            child: _RequestDropdown(requests: requests, enabled: enabled),
-          );
-        },
-      );
-    }
-
     return AsyncValueWidget(
       value: ref.watch(requestTypeStateControllerProvider(Modules.buyRequest)),
       tryAgain: () {

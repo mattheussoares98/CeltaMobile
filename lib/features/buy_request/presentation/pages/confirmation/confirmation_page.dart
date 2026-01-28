@@ -34,6 +34,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
     });
 
     final screenWidth = MediaQuery.sizeOf(context).width;
+    final isDesktop = screenWidth > Breakpoint.desktop;
 
     return Scaffold(
       body: Padding(
@@ -44,7 +45,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
                 slivers: [
-                  if (screenWidth <= Breakpoint.desktop)
+                  if (!isDesktop)
                     SliverToBoxAdapter(
                       child: ClearRequestButton(
                         observationsController: observationsController,
@@ -58,10 +59,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                       maxLines: 4,
                     ),
                   ),
-                  gapSliverH8,
-                  const BuyersDropdown(enabled: false, isSliver: true),
-                  gapSliverH8,
-                  const RequestTypeDropdown(enabled: false, isSliver: true),
+                  const BuyersAndRequestsDropdown(enabled: false),
                   gapSliverH8,
                   const SelectedSupplier(),
                   const SelectedEnterprisesQuantity(),

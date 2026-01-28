@@ -11,29 +11,10 @@ import 'components.dart';
 
 class BuyersDropdown extends ConsumerWidget {
   final bool enabled;
-  final bool isSliver;
-  const BuyersDropdown({
-    super.key,
-    this.enabled = true,
-    required this.isSliver,
-  });
+  const BuyersDropdown({super.key, this.enabled = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (isSliver) {
-      return AsyncValueSliverWidget(
-        value: ref.watch(buyersStateControllerProvider),
-        tryAgain: () {
-          ref.invalidate(buyersStateControllerProvider);
-        },
-        data: (buyers) {
-          return SliverToBoxAdapter(
-            child: _BuyersDropdown(enabled: enabled, buyers: buyers),
-          );
-        },
-      );
-    }
-
     return AsyncValueWidget(
       value: ref.watch(buyersStateControllerProvider),
       tryAgain: () {
