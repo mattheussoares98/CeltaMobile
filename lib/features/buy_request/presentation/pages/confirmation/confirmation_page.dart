@@ -67,6 +67,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   const SelectedSupplier(),
                   const SelectedEnterprisesQuantity(),
                   const SelectedEnterprise(),
+                  const InformedProductsQuantity(),
                   const InformedProducts(),
                   Consumer(
                     builder: (_, ref, _) {

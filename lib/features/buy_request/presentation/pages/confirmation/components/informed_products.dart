@@ -3,12 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
-import 'components.dart';
 
 class InformedProducts extends ConsumerStatefulWidget {
   const InformedProducts({super.key});
@@ -86,19 +84,11 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
       ),
     );
 
-    if (products?.isEmpty ?? true) {
-      return UnselectedMessage(title: 'Nenhum produto informado'.hardcoded);
-    }
-
-    return SliverList.builder(
-      itemCount: products!.length + 1,
+    return ResponsiveListFlow(
+      isSliver: true,
+      itemCount: products?.length ?? 0,
       itemBuilder: (_, index) {
-        if (index == 0 && products.isNotEmpty) {
-          return DefaultSmallTitle(
-            title: 'Produtos (${products.length})'.hardcoded,
-          );
-        }
-        final product = products.toList()[index - 1];
+        final product = products!.toList()[index];
 
         return _ProductItem(
           key: ValueKey(
