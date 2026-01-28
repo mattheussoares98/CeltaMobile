@@ -24,7 +24,7 @@ class DocumentsItems extends StatelessWidget {
       onRefresh: () async {
         onRefresh?.call();
       },
-      child: ListView.builder(
+      child: ResponsiveListFlow(
         itemCount: documents.length,
         itemBuilder: (_, index) {
           final document = documents[index];
