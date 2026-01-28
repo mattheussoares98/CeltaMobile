@@ -50,6 +50,7 @@ class PendingBuyRequestStateController
     bool? annulProducts,
     bool? annulSelectedSupplier,
   }) async {
+    //TODO create different functions if customers complains about this
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final currentState = state.value!;
