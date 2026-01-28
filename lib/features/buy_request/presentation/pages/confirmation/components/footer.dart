@@ -19,6 +19,11 @@ class Footer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
+
+    if (isDesktop) {
+      return const SizedBox.shrink();
+    }
 
     final keyboardIsOpen =
         treatKeyboardIsOpenAndCanSave &&
