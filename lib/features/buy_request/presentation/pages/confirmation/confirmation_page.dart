@@ -51,7 +51,6 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                         observationsController: observationsController,
                       ),
                     ),
-                  const LastSavedRequestsNumbers(),
                   SliverToBoxAdapter(
                     child: DefaultTextFormField(
                       controller: observationsController,

@@ -5,4 +5,5 @@ export 'clear_request_button.dart';
 export './default_small_title.dart';
 export './enterprise_code_and_product_name.dart';
 export './fields_and_confirm.dart';
+export './last_saved_requests_numbers.dart';
 export './request_type_dropdown.dart';

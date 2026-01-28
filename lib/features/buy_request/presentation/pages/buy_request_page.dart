@@ -46,15 +46,22 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: Sizes.p32,
         title: FittedBox(
           child: Consumer(
             builder: (_, ref, _) {
-              return Text(
-                appBarTitles[ref.watch(
-                  uiStateControllerProvider.select(
-                    (s) => s.value?.currentPageIndex ?? 0,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    appBarTitles[ref.watch(
+                      uiStateControllerProvider.select(
+                        (s) => s.value?.currentPageIndex ?? 0,
+                      ),
+                    )],
                   ),
-                )],
+                  const LastSavedRequestsNumbers(),
+                ],
               );
             },
           ),
