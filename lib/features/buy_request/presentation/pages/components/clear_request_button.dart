@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../controllers/controllers.dart';
 
 class ClearRequestButton extends ConsumerWidget {
@@ -16,6 +17,7 @@ class ClearRequestButton extends ConsumerWidget {
     final pendingValue = pendingAsync.value;
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     bool hasSelectedValues =
         pendingValue?.selectedBuyer != null ||
@@ -23,7 +25,7 @@ class ClearRequestButton extends ConsumerWidget {
         pendingValue?.selectedSupplier != null;
 
     return Visibility(
-      visible: hasSelectedValues,
+      visible: hasSelectedValues || isDesktop,
       child: PrimaryTextButton(
         text: 'Limpar pedido'.hardcoded,
         onPressed: hasSelectedValues
