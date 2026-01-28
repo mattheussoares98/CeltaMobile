@@ -23,7 +23,10 @@ class SaveButton extends ConsumerWidget {
 
     return PrimaryTextButton(
       text: cartIsEmpty ? 'Insira produtos' : 'Salvar'.hardcoded,
-      icon: Icon(isIOS ? CupertinoIcons.checkmark : Icons.save),
+      icon: Icon(
+        isIOS ? CupertinoIcons.checkmark : Icons.save,
+        color: cartIsEmpty ? theme.disabledColor : null,
+      ),
       onPressed: cartIsEmpty
           ? null
           : () async {
