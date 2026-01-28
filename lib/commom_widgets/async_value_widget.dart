@@ -38,6 +38,10 @@ class AsyncValueWidget<T> extends StatelessWidget {
             Text(
               parseErrorMessage(e),
               textAlign: TextAlign.center,
+              maxLines: MediaQuery.sizeOf(context).width > Breakpoint.tablet
+                  ? 3
+                  : null,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: Colors.red,
                 fontStyle: FontStyle.italic,
