@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
 
@@ -14,6 +15,7 @@ class ClearLotButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     final hasProductsInCart = ref.watch(
       lotStateControllerProvider(
@@ -22,7 +24,7 @@ class ClearLotButton extends ConsumerWidget {
     );
 
     return PrimaryTextButton(
-      text: ''.hardcoded,
+      text: isDesktop ? 'Limpar lote'.hardcoded : '',
       color: Colors.red,
       icon: Icon(
         isIOS ? CupertinoIcons.delete : Icons.delete,
