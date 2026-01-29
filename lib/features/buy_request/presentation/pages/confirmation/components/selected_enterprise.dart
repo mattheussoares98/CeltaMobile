@@ -22,11 +22,7 @@ class SelectedEnterprise extends ConsumerWidget {
       itemBuilder: (_, index) {
         final enterprise = selectedEnterprises![index];
 
-        return EnterpriseItem(
-          enterprise: enterprise,
-          enabled: false,
-          onTap: () {},
-        );
+        return EnterpriseItem(enterprise: enterprise, onTap: null);
       },
     );
   }

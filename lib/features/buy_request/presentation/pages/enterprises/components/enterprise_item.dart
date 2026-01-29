@@ -8,14 +8,12 @@ import '../../../../../../core/domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 
 class EnterpriseItem extends ConsumerWidget {
-  final bool? enabled;
   final EnterpriseEntity enterprise;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   const EnterpriseItem({
     super.key,
     required this.enterprise,
     required this.onTap,
-    this.enabled = true,
   });
 
   @override
@@ -34,7 +32,7 @@ class EnterpriseItem extends ConsumerWidget {
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: enabled == false ? null : onTap,
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(Sizes.p8),
             child: Row(
@@ -59,10 +57,10 @@ class EnterpriseItem extends ConsumerWidget {
                     ],
                   ),
                 ),
-                if (enabled == true)
+                if (onTap != null)
                   Checkbox(
                     value: enterpriseIsSelected,
-                    onChanged: (_) => onTap(),
+                    onChanged: (_) => onTap!(),
                   ),
               ],
             ),

@@ -18,7 +18,9 @@ class SelectedEnterprisesQuantity extends ConsumerWidget {
     );
 
     if (enterprisesLength == 0) {
-      return UnselectedMessage(title: 'Nenhuma empresa selecionada'.hardcoded);
+      return UnselectedMessage(
+        title: 'Selecione pelo menos uma empresa'.hardcoded,
+      );
     }
     return SliverToBoxAdapter(
       child: DefaultSmallTitle(

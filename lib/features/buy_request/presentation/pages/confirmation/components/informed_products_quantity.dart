@@ -18,7 +18,9 @@ class InformedProductsQuantity extends ConsumerWidget {
     );
 
     if (products?.isEmpty ?? true) {
-      return UnselectedMessage(title: 'Nenhum produto informado'.hardcoded);
+      return UnselectedMessage(
+        title: 'Adicione pelo menos um produto'.hardcoded,
+      );
     }
 
     return SliverToBoxAdapter(

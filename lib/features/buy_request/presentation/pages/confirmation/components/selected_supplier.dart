@@ -20,9 +20,7 @@ class SelectedSupplier extends ConsumerWidget {
     );
 
     if (selectedSupplier == null) {
-      return UnselectedMessage(
-        title: 'Nenhum fornecedor selecionado'.hardcoded,
-      );
+      return UnselectedMessage(title: 'Selecione um fornecedor'.hardcoded);
     }
 
     return SliverToBoxAdapter(
