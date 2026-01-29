@@ -64,13 +64,20 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 );
               },
             ),
-            gapH8,
-            JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
-            gapH8,
-            OriginStocksDropdown(enterpriseCode: widget.enterpriseCode),
-            gapH8,
-            DestinyStocksDropdown(enterpriseCode: widget.enterpriseCode),
-            gapH8,
+            SizedBox(
+              width: Breakpoint.desktop,
+              child: Column(
+                children: [
+                  gapH8,
+                  JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
+                  gapH8,
+                  OriginStocksDropdown(enterpriseCode: widget.enterpriseCode),
+                  gapH8,
+                  DestinyStocksDropdown(enterpriseCode: widget.enterpriseCode),
+                  gapH8,
+                ],
+              ),
+            ),
             Flexible(
               child: ProductsItems(
                 searchProductKey: searchProductKey,
