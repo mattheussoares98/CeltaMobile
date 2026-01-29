@@ -23,6 +23,8 @@ class CartPage extends ConsumerWidget {
       ).select((s) => s.value?.length ?? 0),
     );
 
+    final isDesktop = MediaQuery.of(context).size.width > Breakpoint.desktop;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Column(
@@ -73,7 +75,7 @@ class CartPage extends ConsumerWidget {
                       );
                     },
                   ),
-                  if (productsInCartLength > 2) ...[
+                  if (productsInCartLength > 2 && !isDesktop) ...[
                     ClearCartButton(draftKey: draftKey),
                     gapSliverH16,
                   ],
