@@ -34,7 +34,8 @@ Future<void> _initFirebase() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (defaultTargetPlatform == TargetPlatform.windows ||
-      defaultTargetPlatform == TargetPlatform.macOS) {
+      defaultTargetPlatform == TargetPlatform.macOS ||
+      kDebugMode) {
     return;
   }
 
