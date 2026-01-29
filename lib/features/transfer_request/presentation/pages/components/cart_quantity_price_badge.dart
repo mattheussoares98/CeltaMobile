@@ -28,6 +28,7 @@ class CartQuantityPriceBadge extends ConsumerWidget {
         (s) => s.value?.fold(0.0, (p, e) => p + (e.value * e.quantity)) ?? 0.0,
       ),
     );
+    final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: () {
@@ -41,10 +42,23 @@ class CartQuantityPriceBadge extends ConsumerWidget {
         cupertinoIcon: CupertinoIcons.shopping_cart,
         isSelected: false,
         offset: const Offset(3, -3),
-        //TODO pass a String as param and receive a optional param indicating that the subtitle is a price
-        subtitle: Text(
-          'R\$ ${totalPrice.toStringAsFixed(2).toBrazilianNumber(2, true)}',
-          style: const TextStyle(fontSize: 9),
+        subtitle: Consumer(
+          builder: (_, ref, _) {
+            return RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'R\$ ',
+                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 9),
+                  ),
+                  TextSpan(
+                    text: (totalPrice).toStringAsFixed(2).toBrazilianNumber(),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
