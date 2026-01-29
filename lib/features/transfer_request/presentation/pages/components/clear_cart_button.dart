@@ -15,27 +15,36 @@ class ClearCartButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final cartIsEmpty = ref.watch(
+      cartProductsStateControllerProvider(
+        draftKey,
+      ).select((s) => s.value?.isEmpty ?? true),
+    );
 
     return PrimaryTextButton(
       text: 'Limpar carrinho'.hardcoded,
       icon: Icon(
         isIOS ? CupertinoIcons.delete : Icons.delete,
-        color: Colors.red,
+        color: cartIsEmpty ? theme.disabledColor : Colors.red,
       ),
       color: Colors.red,
-      onPressed: () {
-        showAlertDialog(
-          context: context,
-          title: 'Limpar carrinho?'.hardcoded,
-          defaultActionText: 'Limpar'.hardcoded,
-          cancelActionText: 'Cancelar'.hardcoded,
-          onOkPressed: () {
-            ref
-                .read(cartProductsStateControllerProvider(draftKey).notifier)
-                .clearLot();
-          },
-        );
-      },
+      onPressed: cartIsEmpty
+          ? null
+          : () {
+              showAlertDialog(
+                context: context,
+                title: 'Limpar carrinho?'.hardcoded,
+                defaultActionText: 'Limpar'.hardcoded,
+                cancelActionText: 'Cancelar'.hardcoded,
+                onOkPressed: () {
+                  ref
+                      .read(
+                        cartProductsStateControllerProvider(draftKey).notifier,
+                      )
+                      .clearLot();
+                },
+              );
+            },
     );
   }
 }
