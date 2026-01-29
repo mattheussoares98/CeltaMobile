@@ -143,11 +143,7 @@ class EntityFactory {
     Name: faker.food.dish(),
     PackingQuantity: faker.randomGenerator.integer(100).toString(),
     BalanceLabelType: faker.lorem.word(),
-    StorageAreaAddress: [
-      faker.address.streetAddress(),
-      faker.address.streetAddress(),
-      faker.address.streetAddress(),
-    ],
+    StorageAreaAddress: faker.address.streetAddress(),
     Value: faker.randomGenerator.decimal(),
     BalanceLabelQuantity: faker.randomGenerator.decimal(),
     RetailPracticedPrice:

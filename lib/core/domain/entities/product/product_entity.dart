@@ -11,7 +11,7 @@ class ProductEntity extends Equatable {
   final String? Name;
   final String? PackingQuantity;
   final String? BalanceLabelType;
-  final List<String>? StorageAreaAddress;
+  final String? StorageAreaAddress;
   final double? Value;
   final double? BalanceLabelQuantity;
   final double? RetailPracticedPrice;
@@ -164,7 +164,7 @@ class ProductEntity extends Equatable {
     String? Name,
     String? PackingQuantity,
     String? BalanceLabelType,
-    List<String>? StorageAreaAddress,
+    String? StorageAreaAddress,
     double? Value,
     double? BalanceLabelQuantity,
     double? RetailPracticedPrice,

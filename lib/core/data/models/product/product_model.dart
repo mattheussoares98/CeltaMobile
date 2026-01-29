@@ -13,7 +13,7 @@ class ProductModel extends Equatable implements ProductModelType {
   final String? Name;
   final String? PackingQuantity;
   final String? BalanceLabelType;
-  final List<String>? StorageAreaAddress;
+  final String? StorageAreaAddress;
   final double? Value;
   final double? BalanceLabelQuantity;
   final double? RetailPracticedPrice;
@@ -151,10 +151,7 @@ class ProductModel extends Equatable implements ProductModelType {
       Name: json['Name'],
       PackingQuantity: json['PackingQuantity'],
       BalanceLabelType: json['BalanceLabelType'],
-      StorageAreaAddress:
-          json['StorageAreaAddress'] == "" || json['StorageAreaAddress'] == null
-          ? null
-          : List<String>.from(json['StorageAreaAddress']),
+      StorageAreaAddress: json['StorageAreaAddress'],
       Value: json['Value'],
       BalanceLabelQuantity: json['BalanceLabelQuantity'],
       RetailPracticedPrice: json['RetailPracticedPrice'],
