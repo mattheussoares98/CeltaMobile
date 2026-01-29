@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
@@ -66,6 +65,7 @@ class CartPage extends ConsumerWidget {
                                 key: ValueKey(
                                   '${item.product.ProductPackingCode}${item.product.EnterpriseCode}',
                                 ),
+                                isLastItem: index == items.length - 1,
                                 item: item,
                                 index: index,
                                 draftKey: draftKey,
@@ -85,18 +85,6 @@ class CartPage extends ConsumerWidget {
                 ],
               ),
             ),
-          Consumer(
-            builder: (_, ref, _) {
-              final keyboardIsOpen = ref.watch(
-                keyboardVisibilityStateControllerProvider,
-              );
-
-              if (keyboardIsOpen) {
-                return const SizedBox.shrink();
-              }
-              return Footer(draftKey: draftKey);
-            },
-          ),
         ],
       ),
     );

@@ -76,6 +76,9 @@ class ProductsManagementPage extends ConsumerWidget {
         ],
       ),
       body: IndexedStack(index: pageIndex, children: pages),
+      floatingActionButton: pageIndex == 0
+          ? null
+          : SaveFloatingButton(draftKey: draftKey),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: pageIndex,
         onTap: ref
