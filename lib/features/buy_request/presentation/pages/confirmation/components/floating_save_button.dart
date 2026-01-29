@@ -19,7 +19,6 @@ class FloatingSaveButton extends ConsumerWidget {
     );
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-    //TODO test on desktop screen size
     return FloatingActionButton(
       onPressed: cartIsEmpty
           ? null
@@ -47,7 +46,7 @@ class FloatingSaveButton extends ConsumerWidget {
             },
       backgroundColor: cartIsEmpty
           ? Colors.grey
-          : theme.primaryColor.withAlpha(170),
+          : theme.primaryColor.withAlpha(200),
       child: Icon(isIOS ? CupertinoIcons.checkmark : Icons.save),
     );
   }

@@ -76,8 +76,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
           if (MediaQuery.sizeOf(context).width > Breakpoint.desktop) ...[
             ClearRequestButton(observationsController: observationsController),
             gapW24,
-            SaveButton(observationsController: observationsController),
-            gapW12,
           ],
           const CartPriceIcon(),
         ],
