@@ -5,6 +5,7 @@ import 'package:celta_inventario/core/presentation/controllers/user_session/user
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,10 +20,21 @@ class FakeSelectedEnterprise extends SelectedEnterpriseStateController {
   EnterpriseEntity? build() => enterpriseToReturn;
 }
 
+class FakePendingSaleRequestStateController
+    extends PendingSaleRequestStateController {
+  final PendingSaleRequestEntity pendingValue;
+  FakePendingSaleRequestStateController(this.pendingValue);
+
+  @override
+  Future<PendingSaleRequestEntity> build(int enterpriseCode) async =>
+      pendingValue;
+}
+
 class MockSoapCustomerRepository extends Mock
     implements ISoapCustomerRepository {}
 
 void main() {
+  late PendingSaleRequestEntity fakePendingSaleRequest;
   late MockSoapCustomerRepository mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
@@ -40,11 +52,13 @@ void main() {
     );
     fakeEnterprise = EntityFactory.makeEnterpriseEntity();
     fakeCustomers = [EntityFactory.makeCustomerEntity()];
+    fakePendingSaleRequest = EntityFactory.makePendingSaleRequestEntity();
   });
 
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
     EnterpriseEntity? enterprise,
+    PendingSaleRequestEntity? pendingSaleRequest,
   }) {
     return ProviderContainer(
       overrides: [
@@ -54,6 +68,13 @@ void main() {
         ),
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterprise(enterprise),
+        ),
+        pendingSaleRequestStateControllerProvider(
+          enterprise!.Code!,
+        ).overrideWith(
+          () => FakePendingSaleRequestStateController(
+            pendingSaleRequest ?? fakePendingSaleRequest,
+          ),
         ),
       ],
     );
@@ -75,6 +96,31 @@ void main() {
     });
   }
 
+  group('Build', () {
+    test('should the selected customer in pending sale request', () async {
+      // ARRANGE
+      final container = makeProviderContainer(enterprise: fakeEnterprise);
+      addTearDown(container.dispose);
+
+      final states = <AsyncValue<List<CustomerEntity>>>[];
+      container.listen(
+        customersStateControllerProvider(fakeEnterprise.Code!),
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      await container.read(
+        customersStateControllerProvider(fakeEnterprise.Code!).future,
+      );
+
+      // ASSERT
+      expect(states, [
+        isA<AsyncData>(), //return the pending sale request customer selected
+      ]);
+      expect(states.last.value, [fakePendingSaleRequest.customer]);
+    });
+  });
+
   group('CustomersStateController loadCustomer', () {
     test(
       'should call repository with "approximateName" for a regular string',
@@ -90,8 +136,10 @@ void main() {
 
         // ACT
         await container
-            .read(customersStateControllerProvider.notifier)
-            .loadCustomer(searchValue, false, fakeEnterprise.Code!);
+            .read(
+              customersStateControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .loadCustomer(searchValue, false);
 
         // ASSERT
         verify(
@@ -120,8 +168,10 @@ void main() {
 
         // ACT: Note the `true` in the provider call
         await container
-            .read(customersStateControllerProvider.notifier)
-            .loadCustomer(searchValue, true, fakeEnterprise.Code!);
+            .read(
+              customersStateControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .loadCustomer(searchValue, true);
 
         // ASSERT
         verify(
@@ -150,8 +200,10 @@ void main() {
 
         // ACT
         await container
-            .read(customersStateControllerProvider.notifier)
-            .loadCustomer(searchValue, false, fakeEnterprise.Code!);
+            .read(
+              customersStateControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .loadCustomer(searchValue, false);
 
         // ASSERT
         verify(
@@ -180,8 +232,10 @@ void main() {
 
         // ACT
         await container
-            .read(customersStateControllerProvider.notifier)
-            .loadCustomer(searchValue, false, fakeEnterprise.Code!);
+            .read(
+              customersStateControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .loadCustomer(searchValue, false);
 
         // ASSERT
         verify(
@@ -206,18 +260,73 @@ void main() {
 
       final states = <AsyncValue<List<CustomerEntity>>>[];
       container.listen(
-        customersStateControllerProvider,
+        customersStateControllerProvider(fakeEnterprise.Code!),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(customersStateControllerProvider.notifier)
-          .loadCustomer('Test', false, fakeEnterprise.Code!);
+          .read(customersStateControllerProvider(fakeEnterprise.Code!).notifier)
+          .loadCustomer('Test', false);
 
       // ASSERT
-      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+      expect(states, [
+        isA<AsyncData>(), //return the pending sale request customer selected
+        isA<AsyncError>(),
+      ]);
       expect(states.last.error, isA<AppException>());
     });
+    test(
+      'should return the selected pending sale request customer at first position',
+      () async {
+        // ARRANGE
+        final container = makeProviderContainer(enterprise: fakeEnterprise);
+        addTearDown(container.dispose);
+
+        final states = <AsyncValue<List<CustomerEntity>>>[];
+        container.listen(
+          customersStateControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(
+              customersStateControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .loadCustomer('Test', false);
+
+        // ASSERT
+        expect(states.last.value?.first, fakePendingSaleRequest.customer);
+      },
+    );
+    test(
+      'should return correct value when pending sale request customer is null',
+      () async {
+        // ARRANGE
+        final container = makeProviderContainer(
+          enterprise: fakeEnterprise,
+          pendingSaleRequest: EntityFactory.makePendingSaleRequestEntity()
+              .annulValues(customer: true),
+        );
+        addTearDown(container.dispose);
+
+        final states = <AsyncValue<List<CustomerEntity>>>[];
+        container.listen(
+          customersStateControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(
+              customersStateControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .loadCustomer('Test', false);
+
+        // ASSERT
+        expect(states.last.value, isEmpty);
+      },
+    );
   });
 }

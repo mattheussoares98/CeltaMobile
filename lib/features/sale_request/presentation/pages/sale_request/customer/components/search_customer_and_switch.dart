@@ -39,12 +39,8 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
       return;
     }
     ref
-        .read(customersStateControllerProvider.notifier)
-        .loadCustomer(
-          widget.searchController.text,
-          searchByPersonalizedCode,
-          widget.enterpriseCode,
-        );
+        .read(customersStateControllerProvider(widget.enterpriseCode).notifier)
+        .loadCustomer(widget.searchController.text, searchByPersonalizedCode);
   }
 
   @override
@@ -52,7 +48,7 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    ref.listen(customersStateControllerProvider, (p, n) {
+    ref.listen(customersStateControllerProvider(widget.enterpriseCode), (p, n) {
       n.doOnSuccess(p, () {
         widget.searchController.clear();
       });

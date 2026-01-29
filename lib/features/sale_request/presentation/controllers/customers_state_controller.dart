@@ -7,13 +7,14 @@ import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../core/providers/customer/customer.dart';
 import '../../../../core/validators/validators.dart';
+import 'controllers.dart';
 
 part 'customers_state_controller.g.dart';
 
 @riverpod
 class CustomersStateController extends _$CustomersStateController {
   @override
-  FutureOr<List<CustomerEntity>> build() {
+  FutureOr<List<CustomerEntity>> build(int enterpriseCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -28,14 +29,16 @@ class CustomersStateController extends _$CustomersStateController {
       timer?.cancel();
     });
 
-    return [];
+    final pendingSelectedCustomer = await ref.read(
+      pendingSaleRequestStateControllerProvider(
+        enterpriseCode,
+      ).selectAsync((s) => s.customer),
+    );
+
+    return [?pendingSelectedCustomer];
   }
 
-  Future<void> loadCustomer(
-    String value,
-    bool searchByPersonalizedCode,
-    int enterpriseCode,
-  ) async {
+  Future<void> loadCustomer(String value, bool searchByPersonalizedCode) async {
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
@@ -55,7 +58,7 @@ class CustomersStateController extends _$CustomersStateController {
         searchType = SearchCustomerType.approximateName;
       }
 
-      return await ref
+      final customers = await ref
           .read(soapCustomerRepositoryProvider)
           .loadCustomer(
             searchType: searchType,
@@ -64,6 +67,26 @@ class CustomersStateController extends _$CustomersStateController {
             workingUrl: validatedUserSession.enterprise!.workingUrl!,
             enterpriseCode: enterpriseCode,
           );
+
+      final pendingSelectedCustomer = ref.read(
+        pendingSaleRequestStateControllerProvider(
+          enterpriseCode,
+        ).select((s) => s.value?.customer),
+      );
+
+      if (pendingSelectedCustomer == null) {
+        return customers;
+      }
+
+      final List<CustomerEntity> result = [pendingSelectedCustomer];
+      // Using a for-in loop is O(n) and faster than .any() followed by .where()
+      for (final customer in customers) {
+        if (customer.Code != pendingSelectedCustomer.Code) {
+          result.add(customer);
+        }
+      }
+
+      return result;
     });
   }
 }

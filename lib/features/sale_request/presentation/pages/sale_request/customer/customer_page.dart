@@ -63,7 +63,9 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                 ),
                 gapSliverH8,
                 AsyncValueSliverWidget(
-                  value: ref.watch(customersStateControllerProvider),
+                  value: ref.watch(
+                    customersStateControllerProvider(widget.enterpriseCode),
+                  ),
                   tryAgain: null,
                   data: (customers) {
                     return ResponsiveListFlow(
