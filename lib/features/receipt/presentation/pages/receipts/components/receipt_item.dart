@@ -121,10 +121,20 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                       ),
                     ),
                     gapH8,
-                    CancelAndConfirmUpdateObservationButtons(
-                      index: widget.index,
-                      observationsController: widget.observationsController,
-                      updateObservations: updateObservations,
+                    AnimatedBuilder(
+                      animation: widget.observationsController,
+                      builder: (_, _) {
+                        bool updatedObservations =
+                            widget.receipt.Observacoes_ProcRecebDoc !=
+                            widget.observationsController.text;
+                        return CancelAndConfirmUpdateObservationButtons(
+                          index: widget.index,
+                          observationsController: widget.observationsController,
+                          updateObservations: updatedObservations
+                              ? updateObservations
+                              : null,
+                        );
+                      },
                     ),
                   ],
                 ),

@@ -8,7 +8,7 @@ import '../../../controllers/controllers.dart';
 class CancelAndConfirmUpdateObservationButtons extends ConsumerWidget {
   final int index;
   final TextEditingController observationsController;
-  final VoidCallback updateObservations;
+  final VoidCallback? updateObservations;
   const CancelAndConfirmUpdateObservationButtons({
     super.key,
     required this.index,
