@@ -26,7 +26,7 @@ class CartPage extends ConsumerWidget {
     final isDesktop = MediaQuery.of(context).size.width > Breakpoint.desktop;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+      padding: const EdgeInsets.all(Sizes.p4),
       child: Column(
         children: [
           if (productsInCartLength == 0)
