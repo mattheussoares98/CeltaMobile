@@ -27,7 +27,7 @@ class ResearchsPage extends ConsumerWidget {
             onRefresh: () async {
               ref.invalidate(researchsStateControllerProvider);
             },
-            child: ListView.builder(
+            child: ResponsiveListFlow(
               itemCount: researchs.length,
               itemBuilder: (context, index) {
                 final research = researchs[index];
