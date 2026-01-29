@@ -49,12 +49,7 @@ class SaleRequestPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: AppBarTitle(enterpriseCode: enterpriseCode),
-        actionsPadding: const EdgeInsets.fromLTRB(
-          0,
-          Sizes.p8,
-          Sizes.p12,
-          Sizes.p8,
-        ),
+        actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         actions: [
           if (screenWidth > 200) ...[
             ShowPdfButton(enterpriseCode: enterpriseCode),

@@ -60,12 +60,7 @@ class ProductsManagementPage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [Text(appBarTitles[pageIndex]), const LastSavedNumber()],
         ),
-        actionsPadding: const EdgeInsets.fromLTRB(
-          0,
-          Sizes.p8,
-          Sizes.p12,
-          Sizes.p8,
-        ),
+        actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         // leadingWidth: Sizes.p32,
         actions: [
           if (isDesktop) ClearCartButton(draftKey: draftKey),

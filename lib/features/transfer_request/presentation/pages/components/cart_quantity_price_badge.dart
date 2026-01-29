@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../utils/utils.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
@@ -28,7 +27,6 @@ class CartQuantityPriceBadge extends ConsumerWidget {
         (s) => s.value?.fold(0.0, (p, e) => p + (e.value * e.quantity)) ?? 0.0,
       ),
     );
-    final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: () {
@@ -41,25 +39,7 @@ class CartQuantityPriceBadge extends ConsumerWidget {
         materialIcon: Icons.shopping_cart,
         cupertinoIcon: CupertinoIcons.shopping_cart,
         isSelected: false,
-        offset: const Offset(3, -3),
-        subtitle: Consumer(
-          builder: (_, ref, _) {
-            return RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'R\$ ',
-                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 9),
-                  ),
-                  TextSpan(
-                    text: (totalPrice).toStringAsFixed(2).toBrazilianNumber(),
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+        totalPrice: totalPrice,
       ),
     );
   }

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/utils.dart';
+
 class QuantityBadge extends StatelessWidget {
   final int? quantity;
   final IconData materialIcon;
   final IconData cupertinoIcon;
   final bool isSelected;
-  final Widget? subtitle;
-  final Offset? offset;
+  final double? totalPrice;
   const QuantityBadge({
     super.key,
     required this.quantity,
     required this.materialIcon,
     required this.cupertinoIcon,
     required this.isSelected,
-    this.subtitle,
-    this.offset,
+    this.totalPrice,
   });
 
   @override
@@ -24,7 +24,8 @@ class QuantityBadge extends StatelessWidget {
 
     bool isSmall = (quantity?.toString() ?? '0').length <= 1;
     return Badge(
-      offset: offset ?? const Offset(8, -6),
+      //! if it is on AppBar actions, show put this padding below
+      //*actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
       backgroundColor: Colors.transparent,
       label: CircleAvatar(
         backgroundColor: Colors.red,
@@ -44,7 +45,23 @@ class QuantityBadge extends StatelessWidget {
             isIOS ? cupertinoIcon : materialIcon,
             color: isSelected ? theme.primaryColor : theme.disabledColor,
           ),
-          ?subtitle,
+          if (totalPrice != null)
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'R\$ ',
+                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 9),
+                    ),
+                    TextSpan(
+                      text: totalPrice.toString().toBrazilianNumber(),
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );

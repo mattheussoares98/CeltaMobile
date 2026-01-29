@@ -66,12 +66,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             },
           ),
         ),
-        actionsPadding: const EdgeInsets.fromLTRB(
-          0,
-          Sizes.p8,
-          Sizes.p12,
-          Sizes.p8,
-        ),
+        actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         actions: [
           if (MediaQuery.sizeOf(context).width > Breakpoint.desktop) ...[
             ClearRequestButton(observationsController: observationsController),
