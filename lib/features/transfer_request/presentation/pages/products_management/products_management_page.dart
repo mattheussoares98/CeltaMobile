@@ -92,11 +92,13 @@ class ProductsManagementPage extends ConsumerWidget {
             label: 'Carrinho'.hardcoded,
             icon: Consumer(
               builder: (_, ref, _) {
-                final pendingAsync = ref.watch(
-                  cartProductsStateControllerProvider(draftKey),
+                final productsLength = ref.watch(
+                  cartProductsStateControllerProvider(
+                    draftKey,
+                  ).select((s) => s.value?.length),
                 );
                 return QuantityBadge(
-                  quantity: pendingAsync.value?.length,
+                  quantity: productsLength,
                   materialIcon: Icons.shopping_cart,
                   cupertinoIcon: CupertinoIcons.shopping_cart,
                   isSelected: pageIndex == 1,
