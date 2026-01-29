@@ -9,7 +9,8 @@ enum SearchType {
 
   //* Buy quotation
   allProductsFromGoodsReceiving(19),
-  allProductsFromGoodsReceivingGoesForBalance(20);
+  allProductsFromGoodsReceivingGoesForBalance(20),
+  allCountedProductsFromGoodsReceiving(21);
 
   final int code;
   const SearchType(this.code);
