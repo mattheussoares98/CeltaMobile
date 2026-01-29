@@ -46,6 +46,7 @@ class Filters extends ConsumerWidget {
       iconColor: theme.primaryColorDark,
       collapsedIconColor: theme.primaryColor,
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
+      initiallyExpanded: false,
       title: RichText(
         text: TextSpan(
           children: [
@@ -76,7 +77,6 @@ class Filters extends ConsumerWidget {
           ],
         ),
       ),
-      initiallyExpanded: true,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
