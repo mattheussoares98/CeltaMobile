@@ -7,6 +7,7 @@ import '../../../../../../constants/constants.dart';
 import '../../../../../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
+import '../../components/components.dart';
 import 'components/components.dart';
 
 class CartPage extends ConsumerWidget {
@@ -76,7 +77,9 @@ class CartPage extends ConsumerWidget {
                     },
                   ),
                   if (productsInCartLength > 2 && !isDesktop) ...[
-                    ClearCartButton(draftKey: draftKey),
+                    SliverToBoxAdapter(
+                      child: ClearCartButton(draftKey: draftKey),
+                    ),
                     gapSliverH16,
                   ],
                 ],

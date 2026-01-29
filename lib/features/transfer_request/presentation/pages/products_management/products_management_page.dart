@@ -43,6 +43,7 @@ class ProductsManagementPage extends ConsumerWidget {
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     final pageIndex = ref.watch(
       uiStateControllerProvider(
@@ -67,6 +68,7 @@ class ProductsManagementPage extends ConsumerWidget {
         ),
         // leadingWidth: Sizes.p32,
         actions: [
+          if (isDesktop) ClearCartButton(draftKey: draftKey),
           CartQuantityPriceBadge(
             requestTypeCode: requestTypeCode,
             draftKey: draftKey,
