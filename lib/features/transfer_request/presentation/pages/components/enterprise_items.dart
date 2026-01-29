@@ -21,7 +21,7 @@ class EnterpriseItems extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return RefreshIndicator(
       onRefresh: () async => onRefresh(),
-      child: ListView.builder(
+      child: ResponsiveListFlow(
         itemCount: enterprises.length,
         itemBuilder: (_, index) {
           final enterprise = enterprises[index];
