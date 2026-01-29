@@ -45,6 +45,11 @@ class CartPage extends ConsumerWidget {
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
                 slivers: [
+                  if (productsInCartLength > 2 && !isDesktop) ...[
+                    SliverToBoxAdapter(
+                      child: ClearCartButton(draftKey: draftKey),
+                    ),
+                  ],
                   Consumer(
                     builder: (_, ref, _) {
                       return AsyncValueSliverWidget(
@@ -76,12 +81,6 @@ class CartPage extends ConsumerWidget {
                       );
                     },
                   ),
-                  if (productsInCartLength > 2 && !isDesktop) ...[
-                    SliverToBoxAdapter(
-                      child: ClearCartButton(draftKey: draftKey),
-                    ),
-                    gapSliverH16,
-                  ],
                 ],
               ),
             ),
