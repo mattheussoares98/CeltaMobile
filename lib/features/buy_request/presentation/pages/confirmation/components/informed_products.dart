@@ -85,20 +85,18 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
       ),
     );
 
+    final count = products?.length ?? 0;
     return ResponsiveListFlow(
       isSliver: true,
-      itemCount: (products?.length ?? 0) + 1,
+      itemCount: count,
       itemBuilder: (_, index) {
-        if (index == products?.length || products == null) {
-          return const SizedBox(height: Sizes.p80);
-        }
-        //TODO test this better
-        final product = products.toList()[index];
+        final product = products!.elementAt(index);
 
         return _ProductItem(
           key: ValueKey(
             '${product.product.ProductPackingCode}${product.product.EnterpriseCode}',
           ),
+          isLastItem: index == count - 1,
           product: product,
           index: index,
           onDelete: () => onDelete(product.product),
@@ -126,6 +124,7 @@ class _ProductItem extends ConsumerWidget {
   final TextEditingController costController;
   final FocusNode quantityFocusNode;
   final FocusNode costFocusNode;
+  final bool isLastItem;
   const _ProductItem({
     super.key,
     required this.product,
@@ -138,6 +137,7 @@ class _ProductItem extends ConsumerWidget {
     required this.costController,
     required this.quantityFocusNode,
     required this.costFocusNode,
+    required this.isLastItem,
   });
 
   @override
@@ -148,38 +148,41 @@ class _ProductItem extends ConsumerWidget {
       ),
     );
     return RepaintBoundary(
-      child: ProductItemWidget(
-        product: product.product,
-        routine: BsRoutine.buyRequest,
-        hideCost: true,
-        hideCurrentAndSaleStocks: true,
-        hideWholeInformations: true,
-        showDropIcon: true,
-        showInfoButton: false,
-        isSelected: isSelected,
-        onTap: onTap,
-        cartItemSummary: CartItemSummary(
-          cartQuantity: product.quantity,
-          cartValue: product.cost,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: isLastItem ? Sizes.p80 : 0),
+        child: ProductItemWidget(
           product: product.product,
-          priceDecimalHouses: 4,
+          routine: BsRoutine.buyRequest,
+          hideCost: true,
+          hideCurrentAndSaleStocks: true,
+          hideWholeInformations: true,
+          showDropIcon: true,
+          showInfoButton: false,
+          isSelected: isSelected,
+          onTap: onTap,
+          cartItemSummary: CartItemSummary(
+            cartQuantity: product.quantity,
+            cartValue: product.cost,
+            product: product.product,
+            priceDecimalHouses: 4,
+          ),
+          onDelete: onDelete,
+          itemBeforeProductName: EnterpriseCodeAndProductName(
+            product: product.product,
+          ),
+          notClickableBottom: isSelected
+              ? FieldsAndConfirm(
+                  isConfirmationPage: true,
+                  fieldsFormKey: fieldsFormKey,
+                  quantityFormKey: quantityFormKey,
+                  quantityController: quantityController,
+                  costController: costController,
+                  quantityFocusNode: quantityFocusNode,
+                  costFocusNode: costFocusNode,
+                  product: product.product,
+                )
+              : null,
         ),
-        onDelete: onDelete,
-        itemBeforeProductName: EnterpriseCodeAndProductName(
-          product: product.product,
-        ),
-        notClickableBottom: isSelected
-            ? FieldsAndConfirm(
-                isConfirmationPage: true,
-                fieldsFormKey: fieldsFormKey,
-                quantityFormKey: quantityFormKey,
-                quantityController: quantityController,
-                costController: costController,
-                quantityFocusNode: quantityFocusNode,
-                costFocusNode: costFocusNode,
-                product: product.product,
-              )
-            : null,
       ),
     );
   }
