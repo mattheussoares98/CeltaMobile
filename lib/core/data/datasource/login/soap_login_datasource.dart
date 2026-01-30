@@ -20,7 +20,7 @@ class SoapLoginDatasource implements ISoapLoginDatasource {
     required String password,
   }) async {
     final response = await soapAdapter.post(
-      parameters: {"user": user, "password": password},
+      parameters: {"user": user.trim(), "password": password},
       typeOfResponse: "UserCanLoginJsonResponse",
       soapAction: "UserCanLoginJson",
       serviceASMX: "CeltaSecurityService.asmx",
