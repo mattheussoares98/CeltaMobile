@@ -95,10 +95,10 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
                 gapH8,
                 StocksDropdown(enterpriseCode: widget.enterpriseCode),
               ],
+              gapH8,
               Expanded(
                 child: CustomScrollView(
                   slivers: [
-                    gapSliverH8,
                     ProductsItems(
                       quantityFocusNode: quantityFocusNode,
                       formKey: formKey,
