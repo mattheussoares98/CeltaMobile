@@ -31,7 +31,6 @@ class UserField extends StatelessWidget {
         passwordFocusNode.requestFocus();
       },
       validator: FormValidators.compose([NonEmptyValidator()]),
-      keyboardType: TextInputType.emailAddress,
       maxLength: 40,
       labelText: 'Usuário'.hardcoded,
       prefixIcon: Icon(
