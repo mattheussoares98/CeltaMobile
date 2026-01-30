@@ -7,11 +7,13 @@ class ReferenceField extends StatelessWidget {
   final bool isLoading;
   final FocusNode referenceFocusNode;
   final TextEditingController referenceController;
+  final VoidCallback addAddress;
   const ReferenceField({
     super.key,
     required this.isLoading,
     required this.referenceFocusNode,
     required this.referenceController,
+    required this.addAddress,
   });
 
   @override
@@ -22,6 +24,7 @@ class ReferenceField extends StatelessWidget {
       controller: referenceController,
       labelText: 'Referência'.hardcoded,
       hintText: 'Referência'.hardcoded,
+      onFieldSubmitted: (_) => addAddress(),
     );
   }
 }

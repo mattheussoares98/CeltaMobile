@@ -245,6 +245,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
                         isLoading: isLoading,
                         referenceFocusNode: referenceFocusNode,
                         referenceController: referenceController,
+                        addAddress: addAddress,
                       ),
                     ),
                   ],
