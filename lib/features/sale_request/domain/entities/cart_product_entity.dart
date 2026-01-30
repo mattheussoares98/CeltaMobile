@@ -154,7 +154,9 @@ class CartProductEntity extends Equatable {
   bool get getPriceIsManual {
     final minimumWholeQuantity = product?.MinimumWholeQuantity ?? 0;
 
-    if (minimumWholeQuantity > 0 && Quantity >= minimumWholeQuantity) {
+    if (minimumWholeQuantity > 0 &&
+        (product?.WholePracticedPrice ?? 0) > 0 &&
+        Quantity >= minimumWholeQuantity) {
       return Value != product?.WholePracticedPrice;
     } else {
       return Value != product?.RetailPracticedPrice;
