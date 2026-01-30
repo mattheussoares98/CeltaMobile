@@ -29,10 +29,15 @@ class _LotPageState extends ConsumerState<LotPage> {
     return Column(
       children: [
         Expanded(
-          child: LotItems(
-            quantityController: lotQuantityController,
-            enterpriseCode: widget.enterpriseCode,
-            quantityFocusNode: lotQuantityFocusNode,
+          child: CustomScrollView(
+            slivers: [
+              LotItems(
+                quantityController: lotQuantityController,
+                enterpriseCode: widget.enterpriseCode,
+                quantityFocusNode: lotQuantityFocusNode,
+              ),
+              gapSliverH48,
+            ],
           ),
         ),
         Consumer(

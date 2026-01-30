@@ -2,6 +2,7 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entities/entities.dart';
@@ -87,7 +88,8 @@ class _LotItemsState extends ConsumerState<LotItems> {
     final products = ref.watch(
       lotStateControllerProvider(widget.enterpriseCode).select((s) => s.value),
     );
-    return ListView.builder(
+    return ResponsiveListFlow(
+      isSliver: true,
       itemCount: products!.length,
       itemBuilder: (_, index) {
         final item = products[index];
