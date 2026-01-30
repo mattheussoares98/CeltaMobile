@@ -18,6 +18,7 @@ class CupertinoFormField extends ConsumerStatefulWidget {
 
 class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
   FormFieldState<String>? _formFieldState;
+  final overlayManager = OverlayManager();
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
     widget.defaultTextFormField.controller?.removeListener(
       _onControllerChanged,
     );
-    OverlayManager.hide();
+    overlayManager.hide();
     super.dispose();
   }
 
@@ -55,16 +56,18 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
       );
 
       if (hasFocus && isKeyboardOpen && isNumeric) {
+        debugPrint('show');
         _showOverlay();
       } else if (!hasFocus) {
-        OverlayManager.hide();
+        debugPrint('Hide');
+        overlayManager.hide();
       }
     });
   }
 
   void _showOverlay() {
     final dtf = widget.defaultTextFormField;
-    OverlayManager.showDoneBar(
+    overlayManager.showDoneBar(
       context: context,
       focusNode: dtf.focusNode,
       onDone: () {

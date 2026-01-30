@@ -7,7 +7,7 @@ import '../../localization/string_hardcoded.dart';
 /// that floats above the keyboard. It is isolated from the main widget tree
 /// to prevent full-page repaints during keyboard animations.
 class OverlayManager {
-  static OverlayEntry? _currentEntry;
+  OverlayEntry? _currentEntry;
 
   // PERFORMANCE: Constant height allows for stable scrollPadding calculations.
   static const double accessoryBarHeight = 44.0;
@@ -21,7 +21,7 @@ class OverlayManager {
       accessoryBarHeight + safeScrollMargin;
 
   /// Shows an iOS-style 'Done' bar above the keyboard.
-  static void showDoneBar({
+  void showDoneBar({
     required BuildContext context,
     required FocusNode? focusNode,
     required VoidCallback onDone,
@@ -87,7 +87,7 @@ class OverlayManager {
     overlay.insert(_currentEntry!);
   }
 
-  static void hide() {
+  void hide() {
     if (_currentEntry != null) {
       _currentEntry?.remove();
       _currentEntry = null;
