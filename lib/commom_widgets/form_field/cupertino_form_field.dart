@@ -2,20 +2,23 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/constants.dart';
+import '../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'form_field.dart';
 
-class CupertinoFormField extends StatefulWidget {
+class CupertinoFormField extends ConsumerStatefulWidget {
   final DefaultTextFormField defaultTextFormField;
 
   const CupertinoFormField({super.key, required this.defaultTextFormField});
 
   @override
-  State<CupertinoFormField> createState() => _CupertinoFormFieldState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CupertinoFormFieldState();
 }
 
-class _CupertinoFormFieldState extends State<CupertinoFormField> {
+class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
   FormFieldState<String>? _formFieldState;
 
   @override
@@ -40,12 +43,47 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
     }
   }
 
+  void _updateOverlayState() {
+    final isKeyboardOpen = ref.read(keyboardVisibilityStateControllerProvider);
+    final dtf = widget.defaultTextFormField;
+    final isNumeric =
+        dtf.keyboardType == TextInputType.number ||
+        dtf.keyboardType ==
+            const TextInputType.numberWithOptions(decimal: true) ||
+        dtf.keyboardType == const TextInputType.numberWithOptions();
+
+    if (isKeyboardOpen && isNumeric) {
+      _showOverlay();
+    } else {
+      OverlayManager.hide();
+    }
+  }
+
+  void _showOverlay() {
+    final dtf = widget.defaultTextFormField;
+    OverlayManager.showDoneBar(
+      context: context,
+      focusNode: dtf.focusNode,
+      onDone: () {
+        dtf.focusNode?.unfocus();
+        if (dtf.onFieldSubmitted != null) {
+          dtf.onFieldSubmitted!(dtf.controller?.text ?? '');
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final dtf = widget.defaultTextFormField;
     final isEnabled = dtf.enabled ?? true;
+
+    ref.listen(
+      keyboardVisibilityStateControllerProvider,
+      (p, n) => _updateOverlayState(),
+    );
 
     return FormField<String>(
       key: ValueKey(Random().nextDouble()),
@@ -83,6 +121,7 @@ class _CupertinoFormFieldState extends State<CupertinoFormField> {
                 ),
               ),
             CupertinoTextField(
+              scrollPadding: const EdgeInsets.only(bottom: Sizes.p80),
               onTap: dtf.onTap,
               onEditingComplete: dtf.onEditingComplete,
               inputFormatters: dtf.inputFormatters,
