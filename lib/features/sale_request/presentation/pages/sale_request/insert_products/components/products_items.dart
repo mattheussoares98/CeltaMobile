@@ -18,6 +18,7 @@ class ProductsItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
+      isSliver: true,
       value: ref.watch(
         searchProductsStateControllerProvider(
           SearchProductKey(
