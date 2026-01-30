@@ -151,7 +151,8 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
       slivers: [
-        AsyncValueSliverWidget(
+        AsyncValueWidget(
+          isSliver: true,
           value: ref.watch(
             searchProductsStateControllerProvider(widget.searchProductKey),
           ),

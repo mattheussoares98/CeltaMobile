@@ -85,7 +85,8 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                   enterpriseCode: widget.enterpriseCode,
                   product: selectedProduct,
                 ),
-              AsyncValueSliverWidget(
+              AsyncValueWidget(
+                isSliver: true,
                 value: selectedProductAsync,
                 tryAgain: () {
                   ref.invalidate(

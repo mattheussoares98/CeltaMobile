@@ -61,7 +61,8 @@ class SupplierItems extends ConsumerWidget {
     }
 
     if (isSliver) {
-      return AsyncValueSliverWidget(
+      return AsyncValueWidget(
+        isSliver: true,
         value: ref.watch(
           supplierStateControllerProvider(SearchSupplierType.buyRequest),
         ),

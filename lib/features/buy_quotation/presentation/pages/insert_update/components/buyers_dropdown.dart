@@ -27,7 +27,8 @@ class BuyersDropdown extends ConsumerWidget {
       ).select((s) => s.value?.Buyer),
     );
 
-    return AsyncValueSliverWidget(
+    return AsyncValueWidget(
+      isSliver: true,
       value: ref.watch(buyersStateControllerProvider),
       tryAgain: () => ref.invalidate(buyersStateControllerProvider),
       data: (buyers) {

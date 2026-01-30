@@ -79,7 +79,8 @@ class Enterprises extends ConsumerWidget {
 
     final theme = Theme.of(context);
 
-    return AsyncValueSliverWidget(
+    return AsyncValueWidget(
+      isSliver: true,
       value: ref.watch(enterprisesStateControllerProvider()),
       tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
       data: (enterprises) {

@@ -42,7 +42,8 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
             child: CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [
-                AsyncValueSliverWidget(
+                AsyncValueWidget(
+                  isSliver: true,
                   value: ref.watch(
                     consumerCustomerStasteControllerProvider(
                       widget.enterpriseCode,
@@ -62,7 +63,8 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                   },
                 ),
                 gapSliverH8,
-                AsyncValueSliverWidget(
+                AsyncValueWidget(
+                  isSliver: true,
                   value: ref.watch(
                     customersStateControllerProvider(widget.enterpriseCode),
                   ),

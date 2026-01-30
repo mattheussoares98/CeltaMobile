@@ -52,7 +52,8 @@ class CartPage extends ConsumerWidget {
                   ],
                   Consumer(
                     builder: (_, ref, _) {
-                      return AsyncValueSliverWidget(
+                      return AsyncValueWidget(
+                        isSliver: true,
                         value: ref.watch(
                           cartProductsStateControllerProvider(draftKey),
                         ),

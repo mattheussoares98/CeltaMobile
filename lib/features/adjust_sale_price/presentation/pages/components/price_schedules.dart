@@ -41,7 +41,8 @@ class PriceSchedules extends ConsumerWidget {
       next.showAlertDialogOnError(context);
     });
 
-    return AsyncValueSliverWidget(
+    return AsyncValueWidget(
+      isSliver: true,
       value: ref.watch(provider),
       tryAgain: loadSchedules,
       data: (schedules) {

@@ -14,103 +14,82 @@ class AsyncValueWidget<T> extends StatelessWidget {
     required this.value,
     required this.tryAgain,
     required this.data,
+    this.isSliver,
   });
   final AsyncValue<T> value;
   final Widget Function(T) data;
   final VoidCallback? tryAgain;
+  final bool? isSliver;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     if (value.isLoading) {
-      return const Center(child: LoadingWidget());
+      return _Loading(isSliver: isSliver);
     }
 
     return value.when(
       data: data,
-      loading: () => const Center(child: LoadingWidget()),
-      error: (e, st) => Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              parseErrorMessage(e),
-              textAlign: TextAlign.center,
-              maxLines: MediaQuery.sizeOf(context).width > Breakpoint.tablet
-                  ? 3
-                  : null,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.red,
-                fontStyle: FontStyle.italic,
-                fontSize: 12,
-              ),
-            ),
-            if (tryAgain != null)
-              PrimaryTextButton(
-                text: 'Tentar novamente'.hardcoded,
-                onPressed: tryAgain,
-                icon: Icon(
-                  theme.platform == TargetPlatform.iOS
-                      ? CupertinoIcons.refresh
-                      : Icons.refresh,
-                ),
-              ),
-          ],
-        ),
-      ),
+      loading: () => _Loading(isSliver: isSliver),
+      error: (e, st) => isSliver == true
+          ? SliverToBoxAdapter(
+              child: _Error(e: e, tryAgain: tryAgain),
+            )
+          : _Error(e: e, tryAgain: tryAgain),
     );
   }
 }
 
-/// Sliver equivalent of [AsyncValueWidget]
-class AsyncValueSliverWidget<T> extends StatelessWidget {
-  const AsyncValueSliverWidget({
-    super.key,
-    required this.value,
-    required this.data,
-    required this.tryAgain,
-  });
-  final AsyncValue<T> value;
-  final Widget Function(T) data;
+class _Loading extends StatelessWidget {
+  final bool? isSliver;
+  const _Loading({required this.isSliver});
+
+  @override
+  Widget build(BuildContext context) {
+    if (isSliver == true) {
+      return const SliverToBoxAdapter(child: Center(child: LoadingWidget()));
+    }
+    return const Center(child: LoadingWidget());
+  }
+}
+
+class _Error extends StatelessWidget {
+  final Object e;
   final VoidCallback? tryAgain;
+  const _Error({required this.e, required this.tryAgain});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return value.when(
-      data: data,
-      loading: () =>
-          const SliverToBoxAdapter(child: Center(child: LoadingWidget())),
-      error: (e, st) => SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                parseErrorMessage(e),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-              if (tryAgain != null)
-                TextButton.icon(
-                  onPressed: tryAgain,
-                  label: Text('Tentar novamente'.hardcoded),
-                  icon: Icon(
-                    theme.platform == TargetPlatform.iOS
-                        ? CupertinoIcons.refresh
-                        : Icons.refresh,
-                  ),
-                ),
-            ],
+    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.tablet;
+
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            parseErrorMessage(e),
+            textAlign: TextAlign.center,
+            maxLines: isDesktop ? 3 : null,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: Colors.red,
+              fontStyle: FontStyle.italic,
+              fontSize: 12,
+            ),
           ),
-        ),
+          if (tryAgain != null)
+            PrimaryTextButton(
+              text: 'Tentar novamente'.hardcoded,
+              onPressed: tryAgain,
+              icon: Icon(
+                theme.platform == TargetPlatform.iOS
+                    ? CupertinoIcons.refresh
+                    : Icons.refresh,
+              ),
+            ),
+        ],
       ),
     );
   }
