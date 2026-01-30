@@ -102,9 +102,7 @@ class _CovenantItem extends StatelessWidget {
         child: Column(
           children: [
             InkWell(
-              onTap: () {
-                changeSelectedIndex(index);
-              },
+              onTap: () => changeSelectedIndex(index),
               child: Padding(
                 padding: const EdgeInsets.all(Sizes.p8),
                 child: Column(
@@ -127,7 +125,10 @@ class _CovenantItem extends StatelessWidget {
                                 "${covenant.Logradouro_Convenio}, ${covenant.NumEndereco_Convenio}",
                           ),
                         ),
-                        SelectedIconIndicator(selected: selectedIndex == index),
+                        SelectedIconIndicator(
+                          selected: selectedIndex == index,
+                          onTap: () => changeSelectedIndex(index),
+                        ),
                       ],
                     ),
                   ],

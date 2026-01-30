@@ -44,6 +44,7 @@ class ProductItem extends ConsumerWidget {
         ) ==
         cartProduct.ProductPackingCode;
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
       child: Card(
@@ -53,7 +54,7 @@ class ProductItem extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InkWell(
-              onTap: onTap,
+              onTap: isIOS ? null : onTap,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
                   Sizes.p8,
@@ -78,7 +79,11 @@ class ProductItem extends ConsumerWidget {
                           color: theme.colorScheme.secondary,
                         ),
                       ),
-                    Values(product: cartProduct, isSelected: isSelected),
+                    Values(
+                      product: cartProduct,
+                      isSelected: isSelected,
+                      onTap: onTap,
+                    ),
                   ],
                 ),
               ),

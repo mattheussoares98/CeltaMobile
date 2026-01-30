@@ -155,7 +155,7 @@ class ProductItemWidget extends ConsumerWidget {
             Stack(
               children: [
                 InkWell(
-                  onTap: onTap == null
+                  onTap: onTap == null || isIOS
                       ? null
                       : () {
                           FocusManager.instance.primaryFocus?.unfocus();
@@ -236,7 +236,10 @@ class ProductItemWidget extends ConsumerWidget {
                       if (onDelete != null)
                         DeleteItemButton(onDelete: onDelete),
                       if (showDropIcon == true)
-                        SelectedIconIndicator(selected: isSelected ?? false),
+                        SelectedIconIndicator(
+                          selected: isSelected ?? false,
+                          onTap: onTap,
+                        ),
                     ],
                   ),
                 ),

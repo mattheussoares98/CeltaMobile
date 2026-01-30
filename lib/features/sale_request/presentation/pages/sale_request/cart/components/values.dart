@@ -8,7 +8,13 @@ import '../../../../../domain/entities/entities.dart';
 class Values extends StatelessWidget {
   final CartProductEntity product;
   final bool isSelected;
-  const Values({super.key, required this.product, required this.isSelected});
+  final VoidCallback onTap;
+  const Values({
+    super.key,
+    required this.product,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,7 @@ class Values extends StatelessWidget {
               value: product.getTotalLiquid,
               valueIsPrice: true,
             ),
-            SelectedIconIndicator(selected: isSelected),
+            SelectedIconIndicator(selected: isSelected, onTap: onTap),
           ],
         ),
       ],

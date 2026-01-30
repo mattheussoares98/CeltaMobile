@@ -85,7 +85,10 @@ class ProductInformations extends ConsumerWidget {
                         : product.quantidadeInvContProEmb ?? 0,
                   ),
                 ),
-                SelectedIconIndicator(selected: isSelected),
+                SelectedIconIndicator(
+                  selected: isSelected,
+                  onTap: onChangeSelectedIndex,
+                ),
               ],
             ),
           ],
