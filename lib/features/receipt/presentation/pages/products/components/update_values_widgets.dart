@@ -46,6 +46,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
 
   void update({bool? isSubtract, bool? isAnnul}) {
     if (isAnnul != true && formKey.currentState?.validate() != true) {
+      widget.quantityFocusNode.requestFocus();
       return;
     }
 
