@@ -31,7 +31,10 @@ class SelectedIconIndicator extends StatelessWidget {
     return PrimaryTextButton(
       text: isIOS ? 'Editar'.hardcoded : '',
       icon: selected ? selectedIcon : notSelectedIcon,
-      onPressed: onTap,
+      onPressed: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        onTap?.call();
+      },
     );
   }
 }
