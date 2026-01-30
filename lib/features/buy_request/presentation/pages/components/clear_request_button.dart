@@ -24,35 +24,31 @@ class ClearRequestButton extends ConsumerWidget {
         pendingValue?.selectedRequestType != null ||
         pendingValue?.selectedSupplier != null;
 
-    return Visibility(
-      visible: hasSelectedValues || isDesktop,
-      child: PrimaryTextButton(
-        text: 'Limpar pedido'.hardcoded,
-        onPressed: hasSelectedValues
-            ? () {
-                showAlertDialog(
-                  context: context,
-                  title: 'Apagar dados'.hardcoded,
-                  content:
-                      'Tem certeza que deseja remover todos dados inseridos?'
-                          .hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Confirmar'.hardcoded,
-                  onOkPressed: () {
-                    ref
-                        .read(pendingBuyRequestStateControllerProvider.notifier)
-                        .clearState(null);
-                    observationsController.clear();
-                  },
-                );
-              }
-            : null,
-        icon: Icon(
-          isIOS ? CupertinoIcons.delete : Icons.delete,
-          color: hasSelectedValues ? Colors.red : theme.disabledColor,
-        ),
+    return PrimaryTextButton(
+      text: isDesktop ? 'Limpar pedido'.hardcoded : '',
+      onPressed: hasSelectedValues
+          ? () {
+              showAlertDialog(
+                context: context,
+                title: 'Apagar dados'.hardcoded,
+                content: 'Tem certeza que deseja remover todos dados inseridos?'
+                    .hardcoded,
+                cancelActionText: 'Cancelar'.hardcoded,
+                defaultActionText: 'Confirmar'.hardcoded,
+                onOkPressed: () {
+                  ref
+                      .read(pendingBuyRequestStateControllerProvider.notifier)
+                      .clearState(null);
+                  observationsController.clear();
+                },
+              );
+            }
+          : null,
+      icon: Icon(
+        isIOS ? CupertinoIcons.delete : Icons.delete,
         color: hasSelectedValues ? Colors.red : theme.disabledColor,
       ),
+      color: hasSelectedValues ? Colors.red : theme.disabledColor,
     );
   }
 }

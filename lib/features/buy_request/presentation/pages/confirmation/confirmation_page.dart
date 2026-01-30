@@ -33,9 +33,6 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
       n.showAlertDialogOnError(context);
     });
 
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final isDesktop = screenWidth > Breakpoint.desktop;
-
     return Scaffold(
       floatingActionButton: FloatingSaveButton(
         observationsController: observationsController,
@@ -48,12 +45,6 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
               child: CustomScrollView(
                 physics: const ClampingScrollPhysics(),
                 slivers: [
-                  if (!isDesktop)
-                    SliverToBoxAdapter(
-                      child: ClearRequestButton(
-                        observationsController: observationsController,
-                      ),
-                    ),
                   SliverToBoxAdapter(
                     child: DefaultTextFormField(
                       controller: observationsController,

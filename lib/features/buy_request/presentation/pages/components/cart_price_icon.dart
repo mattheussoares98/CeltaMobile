@@ -24,10 +24,12 @@ class CartPriceIcon extends ConsumerWidget {
         isSelected: false,
         totalPrice: ref.watch(
           pendingBuyRequestStateControllerProvider.select(
-            (s) => s.value?.products?.values.fold(
-              0.0,
-              (p, e) => (p ?? 0) + (e.cost * e.quantity),
-            ),
+            (s) =>
+                s.value?.products?.values.fold(
+                  0.0,
+                  (p, e) => (p ?? 0) + (e.cost * e.quantity),
+                ) ??
+                0,
           ),
         ),
       ),

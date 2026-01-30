@@ -46,6 +46,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         leadingWidth: Sizes.p32,
         title: FittedBox(
           child: Consumer(
@@ -68,10 +69,9 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         ),
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         actions: [
-          if (MediaQuery.sizeOf(context).width > Breakpoint.desktop) ...[
-            ClearRequestButton(observationsController: observationsController),
-            gapW24,
-          ],
+          if (MediaQuery.sizeOf(context).width > Breakpoint.desktop) ...[],
+          ClearRequestButton(observationsController: observationsController),
+          gapW12,
           const CartPriceIcon(),
         ],
       ),
