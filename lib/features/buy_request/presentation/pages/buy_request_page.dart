@@ -46,7 +46,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         leadingWidth: Sizes.p32,
         title: FittedBox(
           child: Consumer(
