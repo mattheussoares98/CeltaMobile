@@ -33,9 +33,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
     widget.defaultTextFormField.controller?.removeListener(
       _onControllerChanged,
     );
-    if (widget.defaultTextFormField.focusNode?.hasFocus ?? false) {
-      OverlayManager.hide();
-    }
+    OverlayManager.hide();
     super.dispose();
   }
 
