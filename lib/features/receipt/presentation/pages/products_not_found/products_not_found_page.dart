@@ -26,6 +26,7 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
   final observationsController = TextEditingController();
   final quantityFocusNode = FocusNode();
   final observationsFocusNode = FocusNode();
+  final eanFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -36,6 +37,7 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
     observationsController.dispose();
     quantityFocusNode.dispose();
     observationsFocusNode.dispose();
+    eanFocusNode.dispose();
   }
 
   Future<void> onSubmit(int? internalCode) async {
@@ -81,6 +83,7 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
         formKey: formKey,
         quantityFocusNode: quantityFocusNode,
         observationsFocusNode: observationsFocusNode,
+        eanFocusNode: eanFocusNode,
         eanController: eanController,
         quantityController: quantityController,
         observationsController: observationsController,

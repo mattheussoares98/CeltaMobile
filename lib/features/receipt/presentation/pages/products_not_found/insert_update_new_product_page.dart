@@ -13,6 +13,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
   final GlobalKey<FormState> formKey;
   final FocusNode quantityFocusNode;
   final FocusNode observationsFocusNode;
+  final FocusNode eanFocusNode;
   final TextEditingController eanController;
   final TextEditingController quantityController;
   final TextEditingController observationsController;
@@ -24,6 +25,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
     required this.formKey,
     required this.quantityFocusNode,
     required this.observationsFocusNode,
+    required this.eanFocusNode,
     required this.eanController,
     required this.quantityController,
     required this.observationsController,
@@ -53,6 +55,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
               DefaultTextFormField(
                 controller: eanController,
                 enabled: !isLoading && !isEditing,
+                focusNode: eanFocusNode,
                 onFieldSubmitted: (_) => quantityFocusNode.requestFocus(),
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: false,
