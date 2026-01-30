@@ -121,6 +121,13 @@ class QuantityButtonsAndField extends ConsumerWidget {
                       labelText: 'Quantidade'.hardcoded,
                       hintText: 'Quantidade'.hardcoded,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onTap: () {
+                        if (quantityFocusNode.hasFocus) return;
+                        quantityController.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: quantityController.text.length,
+                        );
+                      },
                       validator: FormValidators.compose([
                         NonEmptyValidator(),
                         NumberValidator(allowDecimal: true),
