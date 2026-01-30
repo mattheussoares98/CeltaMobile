@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,14 +23,19 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
   void initState() {
     super.initState();
 
+    widget.defaultTextFormField.focusNode?.addListener(_updateOverlayState);
     widget.defaultTextFormField.controller?.addListener(_onControllerChanged);
   }
 
   @override
   void dispose() {
+    widget.defaultTextFormField.focusNode?.removeListener(_updateOverlayState);
     widget.defaultTextFormField.controller?.removeListener(
       _onControllerChanged,
     );
+    if (widget.defaultTextFormField.focusNode?.hasFocus ?? false) {
+      OverlayManager.hide();
+    }
     super.dispose();
   }
 
@@ -44,19 +47,21 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
   }
 
   void _updateOverlayState() {
-    final isKeyboardOpen = ref.read(keyboardVisibilityStateControllerProvider);
-    final dtf = widget.defaultTextFormField;
-    final isNumeric =
-        dtf.keyboardType == TextInputType.number ||
-        dtf.keyboardType ==
-            const TextInputType.numberWithOptions(decimal: true) ||
-        dtf.keyboardType == const TextInputType.numberWithOptions();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (!mounted) return;
+      final dtf = widget.defaultTextFormField;
+      final hasFocus = dtf.focusNode?.hasFocus ?? false;
+      final isKeyboardOpen = ref.read(
+        keyboardVisibilityStateControllerProvider,
+      );
 
-    if (isKeyboardOpen && isNumeric) {
-      _showOverlay();
-    } else {
-      OverlayManager.hide();
-    }
+      if (hasFocus && isKeyboardOpen && isNumeric) {
+        _showOverlay();
+      } else if (!hasFocus) {
+        OverlayManager.hide();
+      }
+    });
   }
 
   void _showOverlay() {
@@ -73,6 +78,13 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
     );
   }
 
+  bool get isNumeric =>
+      widget.defaultTextFormField.keyboardType == TextInputType.number ||
+      widget.defaultTextFormField.keyboardType ==
+          const TextInputType.numberWithOptions(decimal: true) ||
+      widget.defaultTextFormField.keyboardType ==
+          const TextInputType.numberWithOptions();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -80,13 +92,8 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
     final dtf = widget.defaultTextFormField;
     final isEnabled = dtf.enabled ?? true;
 
-    ref.listen(
-      keyboardVisibilityStateControllerProvider,
-      (p, n) => _updateOverlayState(),
-    );
-
     return FormField<String>(
-      key: ValueKey(Random().nextDouble()),
+      key: dtf.key,
       validator: dtf.validator,
       enabled: isEnabled,
       initialValue: dtf.controller?.text,

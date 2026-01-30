@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -59,15 +57,15 @@ class DefaultTextFormField extends StatelessWidget {
     final theme = Theme.of(context);
 
     if (theme.platform == TargetPlatform.iOS) {
-      return CupertinoFormField(defaultTextFormField: this);
+      return CupertinoFormField(defaultTextFormField: this, key: key);
     }
     return Padding(
       padding: const EdgeInsets.only(top: Sizes.p4),
       child: TextFormField(
+        key: key,
         scrollPadding: const EdgeInsets.only(bottom: Sizes.p80),
         textInputAction: textInputAction,
         onEditingComplete: onEditingComplete,
-        key: ValueKey(Random().nextDouble()),
         minLines: 1,
         maxLines: maxLines ?? 1,
         enabled: enabled,
