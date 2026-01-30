@@ -88,7 +88,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     );
 
     return AsyncValueWidget(
-      isSliver: true,
+      isSliver: false,
       value: ref.watch(
         searchProductsStateControllerProvider(widget.searchProductKey),
       ),
