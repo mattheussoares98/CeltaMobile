@@ -131,7 +131,6 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
               child: Form(
                 key: formKey,
                 child: DefaultTextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   hintText: 'Quantidade'.hardcoded,
                   labelText: 'Quantidade'.hardcoded,
                   controller: widget.quantityController,
