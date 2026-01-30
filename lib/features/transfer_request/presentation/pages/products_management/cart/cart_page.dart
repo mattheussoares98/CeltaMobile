@@ -6,7 +6,6 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
-import '../../components/components.dart';
 import 'components/components.dart';
 
 class CartPage extends ConsumerWidget {
@@ -23,70 +22,49 @@ class CartPage extends ConsumerWidget {
       ).select((s) => s.value?.length ?? 0),
     );
 
-    final isDesktop = MediaQuery.of(context).size.width > Breakpoint.desktop;
-
-    return Padding(
-      padding: const EdgeInsets.all(Sizes.p4),
-      child: Column(
-        children: [
-          if (productsInCartLength == 0)
-            Expanded(
-              child: Center(
-                child: Text(
-                  'Nenhum produto adicionado ao carrinho'.hardcoded,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.red,
-                  ),
-                ),
-              ),
-            )
-          else
-            Expanded(
-              child: CustomScrollView(
-                physics: const ClampingScrollPhysics(),
-                slivers: [
-                  if (productsInCartLength > 2 && !isDesktop) ...[
-                    SliverToBoxAdapter(
-                      child: ClearCartButton(draftKey: draftKey),
+    return productsInCartLength == 0
+        ? Center(
+            child: Text(
+              'Nenhum produto adicionado ao carrinho'.hardcoded,
+              style: theme.textTheme.titleMedium?.copyWith(color: Colors.red),
+            ),
+          )
+        : CustomScrollView(
+            physics: const ClampingScrollPhysics(),
+            slivers: [
+              Consumer(
+                builder: (_, ref, _) {
+                  return AsyncValueWidget(
+                    isSliver: true,
+                    value: ref.watch(
+                      cartProductsStateControllerProvider(draftKey),
                     ),
-                  ],
-                  Consumer(
-                    builder: (_, ref, _) {
-                      return AsyncValueWidget(
+                    tryAgain: () => ref.invalidate(
+                      cartProductsStateControllerProvider(draftKey),
+                    ),
+                    data: (items) {
+                      return ResponsiveListFlow(
                         isSliver: true,
-                        value: ref.watch(
-                          cartProductsStateControllerProvider(draftKey),
-                        ),
-                        tryAgain: () => ref.invalidate(
-                          cartProductsStateControllerProvider(draftKey),
-                        ),
-                        data: (items) {
-                          return ResponsiveListFlow(
-                            isSliver: true,
-                            itemCount: items.length,
-                            itemBuilder: (_, index) {
-                              final item = items[index];
+                        itemCount: items.length,
+                        itemBuilder: (_, index) {
+                          final item = items[index];
 
-                              return ProductItem(
-                                key: ValueKey(
-                                  '${item.product.ProductPackingCode}${item.product.EnterpriseCode}',
-                                ),
-                                isLastItem: index == items.length - 1,
-                                item: item,
-                                index: index,
-                                draftKey: draftKey,
-                              );
-                            },
+                          return ProductItem(
+                            key: ValueKey(
+                              '${item.product.ProductPackingCode}${item.product.EnterpriseCode}',
+                            ),
+                            item: item,
+                            index: index,
+                            draftKey: draftKey,
                           );
                         },
                       );
                     },
-                  ),
-                ],
+                  );
+                },
               ),
-            ),
-        ],
-      ),
-    );
+              gapSliverH100,
+            ],
+          );
   }
 }

@@ -54,7 +54,6 @@ class ProductsManagementPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: isIOS,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,

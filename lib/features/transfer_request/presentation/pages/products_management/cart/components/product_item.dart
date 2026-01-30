@@ -12,13 +12,11 @@ class ProductItem extends ConsumerStatefulWidget {
   final TransferRequestProductItemEntity item;
   final int index;
   final DraftKey draftKey;
-  final bool isLastItem;
   const ProductItem({
     super.key,
     required this.item,
     required this.index,
     required this.draftKey,
-    required this.isLastItem,
   });
 
   @override
@@ -100,7 +98,6 @@ class _ProductItemState extends ConsumerState<ProductItem> {
     return RepaintBoundary(
       child: Card(
         clipBehavior: Clip.antiAlias,
-        margin: EdgeInsets.only(bottom: widget.isLastItem ? Sizes.p80 : 0),
         child: Column(
           children: [
             InkWell(
