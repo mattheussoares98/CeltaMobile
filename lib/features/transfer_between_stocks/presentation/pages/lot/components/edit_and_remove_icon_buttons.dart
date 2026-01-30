@@ -11,11 +11,13 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
   final ProductLotInfoEntity item;
   final int enterpriseCode;
   final VoidCallback onTapEdit;
+  final int index;
   const EditAndRemoveIconButtons({
     super.key,
     required this.item,
     required this.enterpriseCode,
     required this.onTapEdit,
+    required this.index,
   });
 
   @override
@@ -23,9 +25,11 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
+    final selected =
+        ref.watch(selectedLotIndexStateControllerProvider) == index;
+
     return Row(
       children: [
-        Icon(isIOS ? CupertinoIcons.pencil : Icons.edit_outlined),
         IconButton(
           onPressed: () {
             showAlertDialog(
@@ -45,6 +49,7 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
             color: Colors.red,
           ),
         ),
+        SelectedIconIndicator(selected: selected, onTap: onTapEdit),
       ],
     );
   }

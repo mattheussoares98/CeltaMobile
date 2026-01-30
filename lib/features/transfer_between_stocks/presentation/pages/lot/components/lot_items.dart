@@ -155,6 +155,9 @@ class _LotItem extends ConsumerWidget {
       ).select((s) => s.value!.length == index + 1),
     );
 
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     return RepaintBoundary(
       child: Padding(
         padding: EdgeInsets.only(bottom: isLastItem ? Sizes.p16 : 0),
@@ -164,7 +167,7 @@ class _LotItem extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               InkWell(
-                onTap: () => changeSelectedIndex(index, item),
+                onTap: isIOS ? null : () => changeSelectedIndex(index, item),
                 child: Stack(
                   children: [
                     Padding(
@@ -184,6 +187,7 @@ class _LotItem extends ConsumerWidget {
                         item: item,
                         onTapEdit: () => changeSelectedIndex(index, item),
                         enterpriseCode: enterpriseCode,
+                        index: index,
                       ),
                     ),
                   ],
