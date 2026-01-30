@@ -128,6 +128,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
       child: Row(
         children: [
           Expanded(
+            flex: 2,
             child: Column(
               children: [
                 for (var x = 0; x < selectedUIControllers.length; x++)
@@ -198,10 +199,12 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
             ),
           ),
           gapW8,
-          PrimaryButton(
-            text: 'Confirmar'.hardcoded,
-            backgroundColor: theme.primaryColor,
-            onPressed: confirmQuantities,
+          Flexible(
+            child: PrimaryButton(
+              text: 'Confirmar'.hardcoded,
+              backgroundColor: theme.primaryColor,
+              onPressed: confirmQuantities,
+            ),
           ),
         ],
       ),
