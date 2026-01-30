@@ -137,7 +137,11 @@ class ProductItem extends ConsumerWidget {
                     : isIOS
                     ? CupertinoIcons.printer
                     : Icons.print,
-                color: product.PendantPrintLabel! ? Colors.red : null,
+                color: isLoading
+                    ? theme.disabledColor
+                    : product.PendantPrintLabel!
+                    ? Colors.red
+                    : null,
               ),
               color: product.PendantPrintLabel! ? Colors.red : null,
               isLoading: isLoading,
