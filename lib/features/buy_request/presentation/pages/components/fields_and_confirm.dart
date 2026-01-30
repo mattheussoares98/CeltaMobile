@@ -86,6 +86,16 @@ class FieldsAndConfirm extends ConsumerWidget {
                 labelText: 'Quantidade'.hardcoded,
                 hintText: 'Quantidade'.hardcoded,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                maxLength: 13,
+                onTap: () {
+                  if (quantityFocusNode.hasFocus) {
+                    return;
+                  }
+                  quantityController.selection = TextSelection(
+                    baseOffset: 0,
+                    extentOffset: quantityController.text.length,
+                  );
+                },
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
@@ -93,7 +103,6 @@ class FieldsAndConfirm extends ConsumerWidget {
                   NonEmptyValidator(),
                   NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
                 ]),
-                maxLength: 13,
                 onFieldSubmitted: (_) {
                   if (quantityFormKey.currentState?.validate() != true) {
                     quantityFocusNode.requestFocus();
