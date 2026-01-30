@@ -30,14 +30,21 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final totalProductsLength = ref.watch(
+      completeBuyQuotationsStateControllerProvider(
+        widget.enterpriseCode,
+        widget.code.toString(),
+      ).select((s) => s.value?.Products?.length ?? 0),
+    );
 
     return SliverToBoxAdapter(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
+              Flexible(
                 child: AnimatedBuilder(
                   animation: widget.filterProductsController,
                   builder: (_, _) {
@@ -50,8 +57,12 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
                         )
                         .filterProducts(widget.filterProductsController.text);
 
+                    final hasFiltered =
+                        filteredProducts.length != totalProductsLength;
+
                     return Text(
-                      'Produtos (${filteredProducts.length})'.hardcoded,
+                      'Produtos (${filteredProducts.length}${hasFiltered ? ' de $totalProductsLength' : ''})'
+                          .hardcoded,
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontStyle: FontStyle.italic,
                         color: theme.primaryColor,
@@ -60,9 +71,8 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
                   },
                 ),
               ),
-              const Spacer(),
-              Expanded(
-                flex: 2,
+              // const Spacer(),
+              Flexible(
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: PrimaryTextButton(
