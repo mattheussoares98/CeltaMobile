@@ -66,7 +66,6 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
             hintText: searchByPersonalizedCode
                 ? 'Cód personalizado'
                 : 'Nome | CPF | CNPJ | Código'.hardcoded,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLength: 50,
             validator: FormValidators.compose([NonEmptyValidator()]),
             onFieldSubmitted: (_) => searchCustomer(),
