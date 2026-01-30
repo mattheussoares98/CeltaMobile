@@ -54,24 +54,27 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-        child: Column(
-          children: [
+        child: CustomScrollView(
+          slivers: [
             Consumer(
               builder: (_, ref, _) {
-                return DefaultSearchProducts(
-                  searchProductKey: searchProductKey,
-                  isLoading: ref.watch(
-                    searchProductsStateControllerProvider(
-                      searchProductKey,
-                    ).select((state) => state.isLoading),
+                return SliverToBoxAdapter(
+                  child: DefaultSearchProducts(
+                    searchProductKey: searchProductKey,
+                    isLoading: ref.watch(
+                      searchProductsStateControllerProvider(
+                        searchProductKey,
+                      ).select((state) => state.isLoading),
+                    ),
+                    searchProducts: searchProducts,
+                    searchValueController: searchProductController,
                   ),
-                  searchProducts: searchProducts,
-                  searchValueController: searchProductController,
                 );
               },
             ),
-            gapH8,
-            const Expanded(child: ProductsItems()),
+            gapSliverH8,
+            const ProductsItems(),
+            gapSliverH48,
           ],
         ),
       ),
