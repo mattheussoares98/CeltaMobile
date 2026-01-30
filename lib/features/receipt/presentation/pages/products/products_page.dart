@@ -88,6 +88,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     ref.observeLoading([updateProductControllerProvider(searchProductKey)]);
 
+    const horizontalPadding = EdgeInsets.symmetric(horizontal: Sizes.p4);
+
     return Scaffold(
       appBar: AppBar(title: AppBarTitle(receipt: widget.receipt)),
       body: Column(
@@ -97,23 +99,29 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             enterpriseCode: widget.enterpriseCode,
             receiptCode: widget.receiptCode,
           ),
-          SearchProducts(
-            searchProductKey: searchProductKey,
-            searchValueController: searchValueController,
-            receiptCode: widget.receiptCode,
+          Padding(
+            padding: horizontalPadding,
+            child: SearchProducts(
+              searchProductKey: searchProductKey,
+              searchValueController: searchValueController,
+              receiptCode: widget.receiptCode,
+            ),
           ),
           gapH8,
           Expanded(
-            child: CustomScrollView(
-              slivers: [
-                ProductsItems(
-                  searchProductKey: searchProductKey,
-                  receiptCode: widget.receiptCode,
-                  quantityController: quantityController,
-                  quantityFocusNode: quantityFocusNode,
-                ),
-                gapSliverH48,
-              ],
+            child: Padding(
+              padding: horizontalPadding,
+              child: CustomScrollView(
+                slivers: [
+                  ProductsItems(
+                    searchProductKey: searchProductKey,
+                    receiptCode: widget.receiptCode,
+                    quantityController: quantityController,
+                    quantityFocusNode: quantityFocusNode,
+                  ),
+                  gapSliverH48,
+                ],
+              ),
             ),
           ),
         ],
