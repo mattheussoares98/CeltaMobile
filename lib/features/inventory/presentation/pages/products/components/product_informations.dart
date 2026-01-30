@@ -24,9 +24,10 @@ class ProductInformations extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return InkWell(
-      onTap: onChangeSelectedIndex,
+      onTap: isIOS ? null : onChangeSelectedIndex,
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
         child: Column(
