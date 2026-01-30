@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import '../constants/constants.dart';
 
 Future<void> showModalPage(Widget body, BuildContext context) async {
+  final theme = Theme.of(context);
+  final isIOS = theme.platform == TargetPlatform.iOS;
+
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true, // Allows the modal to be full-screen
@@ -21,45 +24,48 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
             minChildSize: 0.5,
             maxChildSize: 0.95,
             builder: (_, controller) {
-              return SafeArea(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      //dragglable indicator
-                      Center(
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                            vertical: Sizes.p12,
-                          ),
-                          height: 5,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Scaffold(
-                          backgroundColor: Colors.transparent,
-                          body: body,
-                        ),
-                      ),
-                      // const SizedBox(height: Sizes.p12),
-                    ],
-                  ),
-                ),
-              );
+              return isIOS
+                  ? _Body(body: body)
+                  : SafeArea(child: _Body(body: body));
             },
           ),
         ],
       );
     },
   );
+}
+
+class _Body extends StatelessWidget {
+  final Widget body;
+  const _Body({required this.body});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          //dragglable indicator
+          Center(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: Sizes.p12),
+              height: 5,
+              width: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Scaffold(backgroundColor: Colors.transparent, body: body),
+          ),
+          // const SizedBox(height: Sizes.p12),
+        ],
+      ),
+    );
+  }
 }
