@@ -60,6 +60,7 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
                   },
                 ),
               ),
+              const Spacer(),
               Expanded(
                 flex: 2,
                 child: Align(
