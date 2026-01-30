@@ -39,6 +39,39 @@ class AsyncValueWidget<T> extends StatelessWidget {
   }
 }
 
+class OptimazedAsyncValueWidget<T> extends ConsumerWidget {
+  //!this widget was made for largest pages below to avoid rebuild unecessary
+  const OptimazedAsyncValueWidget({
+    super.key,
+    required this.provider,
+    required this.tryAgain,
+    required this.child,
+    this.isSliver,
+  });
+  final ProviderListenable<AsyncValue<T>> provider;
+  final Widget child;
+  final VoidCallback? tryAgain;
+  final bool? isSliver;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(provider.select((s) => s.isLoading));
+    final error = ref.watch(provider.select((s) => s.error));
+
+    if (isLoading) {
+      return _Loading(isSliver: isSliver);
+    } else if (error != null) {
+      return isSliver == true
+          ? SliverToBoxAdapter(
+              child: _Error(e: error, tryAgain: tryAgain),
+            )
+          : _Error(e: error, tryAgain: tryAgain);
+    }
+
+    return child;
+  }
+}
+
 class _Loading extends StatelessWidget {
   final bool? isSliver;
   const _Loading({required this.isSliver});
