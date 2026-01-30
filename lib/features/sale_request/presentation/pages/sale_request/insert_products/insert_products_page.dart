@@ -40,9 +40,14 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
           ),
           gapH8,
           Expanded(
-            child: ProductsItems(
-              enterpriseCode: widget.enterpriseCode,
-              requestCode: widget.selectedRequest.Code,
+            child: CustomScrollView(
+              slivers: [
+                ProductsItems(
+                  enterpriseCode: widget.enterpriseCode,
+                  requestCode: widget.selectedRequest.Code,
+                ),
+                gapSliverH48,
+              ],
             ),
           ),
         ],

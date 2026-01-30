@@ -30,6 +30,7 @@ class ProductsItems extends ConsumerWidget {
       tryAgain: null,
       data: (products) {
         return ResponsiveListFlow(
+          isSliver: true,
           itemCount: products.length,
           itemBuilder: (_, index) {
             final product = products[index];
