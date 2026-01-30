@@ -85,9 +85,12 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                   enterpriseCode: widget.enterpriseCode,
                   product: selectedProduct,
                 ),
-              AsyncValueWidget(
+              OptimazedAsyncValueWidget(
                 isSliver: true,
-                value: selectedProductAsync,
+                provider: selectedProductStateControllerProvider(
+                  widget.enterpriseCode,
+                  widget.plu,
+                ),
                 tryAgain: () {
                   ref.invalidate(
                     selectedProductStateControllerProvider(
@@ -96,40 +99,38 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                     ),
                   );
                 },
-                data: (product) {
-                  return SliverToBoxAdapter(
-                    child: ResponsiveScrollableWidget(
-                      child: Column(
-                        children: [
-                          _DefaultDivider(),
-                          SalesTypeWidget(plu: widget.plu),
-                          _DefaultDivider(),
-                          PricesTypesWidget(plu: widget.plu),
-                          _DefaultDivider(),
-                          ReplicationTypesWidget(plu: widget.plu),
-                          _DefaultDivider(),
-                          StartAndEndDates(plu: widget.plu),
-                          _DefaultDivider(),
-                          InfoButton(
-                            ProductItemWidget(
-                              product: selectedProduct!,
-                              routine: BsRoutine.adjustSalePrice,
-                            ),
+                child: SliverToBoxAdapter(
+                  child: ResponsiveScrollableWidget(
+                    child: Column(
+                      children: [
+                        _DefaultDivider(),
+                        SalesTypeWidget(plu: widget.plu),
+                        _DefaultDivider(),
+                        PricesTypesWidget(plu: widget.plu),
+                        _DefaultDivider(),
+                        ReplicationTypesWidget(plu: widget.plu),
+                        _DefaultDivider(),
+                        StartAndEndDates(plu: widget.plu),
+                        _DefaultDivider(),
+                        InfoButton(
+                          ProductItemWidget(
+                            product: selectedProduct!,
+                            routine: BsRoutine.adjustSalePrice,
                           ),
-                          PracticedSuggestionAndMinimumPrices(
-                            product: selectedProduct,
-                          ),
-                          _DefaultDivider(),
-                          PriceFieldAndConfirmButton(
-                            enterpriseCode: widget.enterpriseCode,
-                            plu: widget.plu,
-                          ),
-                          gapH32,
-                        ],
-                      ),
+                        ),
+                        PracticedSuggestionAndMinimumPrices(
+                          product: selectedProduct,
+                        ),
+                        _DefaultDivider(),
+                        PriceFieldAndConfirmButton(
+                          enterpriseCode: widget.enterpriseCode,
+                          plu: widget.plu,
+                        ),
+                        gapH48,
+                      ],
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
             ],
           ),
