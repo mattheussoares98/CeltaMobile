@@ -97,32 +97,23 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             enterpriseCode: widget.enterpriseCode,
             receiptCode: widget.receiptCode,
           ),
+          SearchProducts(
+            searchProductKey: searchProductKey,
+            searchValueController: searchValueController,
+            receiptCode: widget.receiptCode,
+          ),
+          gapH8,
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sizes.p8,
-                0,
-                Sizes.p8,
-                Sizes.p8,
-              ),
-              child: Column(
-                children: [
-                  SearchProducts(
-                    searchProductKey: searchProductKey,
-                    searchValueController: searchValueController,
-                    receiptCode: widget.receiptCode,
-                  ),
-                  gapH8,
-                  Expanded(
-                    child: ProductsItems(
-                      searchProductKey: searchProductKey,
-                      receiptCode: widget.receiptCode,
-                      quantityController: quantityController,
-                      quantityFocusNode: quantityFocusNode,
-                    ),
-                  ),
-                ],
-              ),
+            child: CustomScrollView(
+              slivers: [
+                ProductsItems(
+                  searchProductKey: searchProductKey,
+                  receiptCode: widget.receiptCode,
+                  quantityController: quantityController,
+                  quantityFocusNode: quantityFocusNode,
+                ),
+                gapSliverH48,
+              ],
             ),
           ),
         ],
