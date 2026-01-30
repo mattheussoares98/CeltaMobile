@@ -60,6 +60,7 @@ class _LoadingOverlayController extends Notifier<void> {
 
   void show(BuildContext context) {
     if (_entry != null) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
