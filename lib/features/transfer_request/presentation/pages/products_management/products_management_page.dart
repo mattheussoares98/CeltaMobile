@@ -43,7 +43,6 @@ class ProductsManagementPage extends ConsumerWidget {
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     final pageIndex = ref.watch(
       uiStateControllerProvider(
@@ -55,6 +54,7 @@ class ProductsManagementPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: isIOS,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +63,8 @@ class ProductsManagementPage extends ConsumerWidget {
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         // leadingWidth: Sizes.p32,
         actions: [
-          if (isDesktop) ClearCartButton(draftKey: draftKey),
+          ClearCartButton(draftKey: draftKey),
+          gapW12,
           CartQuantityPriceBadge(
             requestTypeCode: requestTypeCode,
             draftKey: draftKey,

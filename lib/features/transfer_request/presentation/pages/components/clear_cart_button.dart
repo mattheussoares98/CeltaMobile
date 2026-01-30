@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
@@ -20,9 +21,10 @@ class ClearCartButton extends ConsumerWidget {
         draftKey,
       ).select((s) => s.value?.isEmpty ?? true),
     );
+    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     return PrimaryTextButton(
-      text: 'Limpar carrinho'.hardcoded,
+      text: isDesktop ? 'Limpar carrinho'.hardcoded : '',
       icon: Icon(
         isIOS ? CupertinoIcons.delete : Icons.delete,
         color: cartIsEmpty ? theme.disabledColor : Colors.red,
