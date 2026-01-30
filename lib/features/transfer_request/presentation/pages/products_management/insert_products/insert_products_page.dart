@@ -40,47 +40,48 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      child: Column(
-        children: [
+      child: CustomScrollView(
+        slivers: [
           Consumer(
             builder: (_, ref, _) {
-              return DefaultSearchProducts(
-                isLoading: ref.watch(
-                  searchProductsStateControllerProvider(
-                    searchProductKey,
-                  ).select((value) => value.isLoading),
+              return SliverToBoxAdapter(
+                child: DefaultSearchProducts(
+                  isLoading: ref.watch(
+                    searchProductsStateControllerProvider(
+                      searchProductKey,
+                    ).select((value) => value.isLoading),
+                  ),
+                  searchProductKey: searchProductKey,
+                  focusNode: searchValueFocusNode,
+                  searchProducts: () {
+                    ref
+                        .read(
+                          searchProductsStateControllerProvider(
+                            searchProductKey,
+                          ).notifier,
+                        )
+                        .loadProducts(
+                          GetProductsByRequestTypeParams(
+                            searchValue: searchValueController.text,
+                            enterpriseOriginCode:
+                                widget.draftKey.enterpriseOrigin,
+                            enterpriseDestinyCode:
+                                widget.draftKey.enterpriseDestinyCode,
+                            requestTypeCode: widget.draftKey.requestTypeCode,
+                          ),
+                        );
+                  },
+                  searchValueController: searchValueController,
                 ),
-                searchProductKey: searchProductKey,
-                focusNode: searchValueFocusNode,
-                searchProducts: () {
-                  ref
-                      .read(
-                        searchProductsStateControllerProvider(
-                          searchProductKey,
-                        ).notifier,
-                      )
-                      .loadProducts(
-                        GetProductsByRequestTypeParams(
-                          searchValue: searchValueController.text,
-                          enterpriseOriginCode:
-                              widget.draftKey.enterpriseOrigin,
-                          enterpriseDestinyCode:
-                              widget.draftKey.enterpriseDestinyCode,
-                          requestTypeCode: widget.draftKey.requestTypeCode,
-                        ),
-                      );
-                },
-                searchValueController: searchValueController,
               );
             },
           ),
-          gapH8,
-          Expanded(
-            child: ProductsItems(
-              draftKey: widget.draftKey,
-              searchProductKey: searchProductKey,
-            ),
+          gapSliverH8,
+          ProductsItems(
+            draftKey: widget.draftKey,
+            searchProductKey: searchProductKey,
           ),
+          gapSliverH48,
         ],
       ),
     );

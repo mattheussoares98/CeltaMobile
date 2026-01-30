@@ -148,89 +148,83 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       ).select((s) => s.value?.selectedInsertProductIndex),
     );
 
-    return CustomScrollView(
-      physics: const ClampingScrollPhysics(),
-      slivers: [
-        AsyncValueWidget(
+    return AsyncValueWidget(
+      isSliver: true,
+      value: ref.watch(
+        searchProductsStateControllerProvider(widget.searchProductKey),
+      ),
+      tryAgain: null,
+      data: (products) {
+        return ResponsiveListFlow(
           isSliver: true,
-          value: ref.watch(
-            searchProductsStateControllerProvider(widget.searchProductKey),
-          ),
-          tryAgain: null,
-          data: (products) {
-            return ResponsiveListFlow(
-              isSliver: true,
-              itemCount: products.length,
-              itemBuilder: (_, index) {
-                final product = products[index];
+          itemCount: products.length,
+          itemBuilder: (_, index) {
+            final product = products[index];
 
-                final transferRequestProductItem = pendingAsync.value
-                    ?.firstWhereOrNull(
-                      (element) =>
-                          element.product.ProductPackingCode ==
-                          product.ProductPackingCode,
-                    );
-
-                bool hasInCart = transferRequestProductItem != null;
-
-                return RepaintBoundary(
-                  key: ValueKey(
-                    '${product.ProductPackingCode}${product.EnterpriseCode}',
-                  ),
-                  child: ProductItemWidget(
-                    product: product,
-                    routine: BsRoutine.transferRequest,
-                    isSelected: selectedIndex == index,
-                    showDropIcon: true,
-                    onTap: () {
-                      onTapProductItem(
-                        index: index,
-                        product: product,
-                        transferRequestProductItem: transferRequestProductItem,
-                        requestTypeAllowChangePrice:
-                            requestTypeAllowChangePrice,
-                      );
-                    },
-                    onDelete: hasInCart == true
-                        ? () {
-                            removeProductItem(transferRequestProductItem!);
-                          }
-                        : null,
-                    cartItemSummary: hasInCart
-                        ? CartItemSummary(
-                            cartQuantity: transferRequestProductItem.quantity,
-                            cartValue: transferRequestProductItem.value,
-                            product: product,
-                          )
-                        : null,
-                    notClickableBottom: selectedIndex == index
-                        ? Form(
-                            key: formKey,
-                            child: UpdateItemWidget(
-                              isAlreadyInCart: hasInCart,
-                              update: () {
-                                update(
-                                  product: product,
-                                  quantityInCart:
-                                      transferRequestProductItem?.quantity,
-                                );
-                              },
-                              draftKey: widget.draftKey,
-                              price: product.Value ?? 0,
-                              quantityController: quantityController,
-                              priceController: priceController,
-                              quantityFocusNode: quantityFocusNode,
-                              priceFocusNode: priceFocusNode,
-                            ),
-                          )
-                        : null,
-                  ),
+            final transferRequestProductItem = pendingAsync.value
+                ?.firstWhereOrNull(
+                  (element) =>
+                      element.product.ProductPackingCode ==
+                      product.ProductPackingCode,
                 );
-              },
+
+            bool hasInCart = transferRequestProductItem != null;
+
+            return RepaintBoundary(
+              key: ValueKey(
+                '${product.ProductPackingCode}${product.EnterpriseCode}',
+              ),
+              child: ProductItemWidget(
+                product: product,
+                routine: BsRoutine.transferRequest,
+                isSelected: selectedIndex == index,
+                showDropIcon: true,
+                onTap: () {
+                  onTapProductItem(
+                    index: index,
+                    product: product,
+                    transferRequestProductItem: transferRequestProductItem,
+                    requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+                  );
+                },
+                onDelete: hasInCart == true
+                    ? () {
+                        removeProductItem(transferRequestProductItem!);
+                      }
+                    : null,
+                cartItemSummary: hasInCart
+                    ? CartItemSummary(
+                        cartQuantity: transferRequestProductItem.quantity,
+                        cartValue: transferRequestProductItem.value,
+                        product: product,
+                      )
+                    : null,
+                notClickableBottom: selectedIndex == index
+                    ? Form(
+                        key: formKey,
+                        child: UpdateItemWidget(
+                          isAlreadyInCart: hasInCart,
+                          update: () {
+                            update(
+                              product: product,
+                              quantityInCart:
+                                  transferRequestProductItem?.quantity,
+                            );
+                          },
+                          draftKey: widget.draftKey,
+                          price: product.Value ?? 0,
+                          quantityController: quantityController,
+                          priceController: priceController,
+                          quantityFocusNode: quantityFocusNode,
+                          priceFocusNode: priceFocusNode,
+                        ),
+                      )
+                    : null,
+              ),
             );
           },
-        ),
-      ],
+        );
+      },
     );
   }
 }
