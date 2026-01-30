@@ -15,11 +15,13 @@ class AsyncValueWidget<T> extends StatelessWidget {
     required this.tryAgain,
     required this.data,
     this.isSliver,
+    this.errorMaxLines,
   });
   final AsyncValue<T> value;
   final Widget Function(T) data;
   final VoidCallback? tryAgain;
   final bool? isSliver;
+  final int? errorMaxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +34,9 @@ class AsyncValueWidget<T> extends StatelessWidget {
       loading: () => _Loading(isSliver: isSliver),
       error: (e, st) => isSliver == true
           ? SliverToBoxAdapter(
-              child: _Error(e: e, tryAgain: tryAgain),
+              child: _Error(e: e, tryAgain: tryAgain, maxLines: errorMaxLines),
             )
-          : _Error(e: e, tryAgain: tryAgain),
+          : _Error(e: e, tryAgain: tryAgain, maxLines: errorMaxLines),
     );
   }
 }
@@ -47,11 +49,13 @@ class OptimazedAsyncValueWidget<T> extends ConsumerWidget {
     required this.tryAgain,
     required this.child,
     this.isSliver,
+    this.errorMaxLines,
   });
   final ProviderListenable<AsyncValue<T>> provider;
   final Widget child;
   final VoidCallback? tryAgain;
   final bool? isSliver;
+  final int? errorMaxLines;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,9 +67,13 @@ class OptimazedAsyncValueWidget<T> extends ConsumerWidget {
     } else if (error != null) {
       return isSliver == true
           ? SliverToBoxAdapter(
-              child: _Error(e: error, tryAgain: tryAgain),
+              child: _Error(
+                e: error,
+                tryAgain: tryAgain,
+                maxLines: errorMaxLines,
+              ),
             )
-          : _Error(e: error, tryAgain: tryAgain);
+          : _Error(e: error, tryAgain: tryAgain, maxLines: errorMaxLines);
     }
 
     return child;
@@ -88,12 +96,16 @@ class _Loading extends StatelessWidget {
 class _Error extends StatelessWidget {
   final Object e;
   final VoidCallback? tryAgain;
-  const _Error({required this.e, required this.tryAgain});
+  final int? maxLines;
+  const _Error({
+    required this.e,
+    required this.tryAgain,
+    required this.maxLines,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.tablet;
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
@@ -104,8 +116,7 @@ class _Error extends StatelessWidget {
           Text(
             parseErrorMessage(e),
             textAlign: TextAlign.center,
-            maxLines: isDesktop ? 3 : null,
-            overflow: TextOverflow.ellipsis,
+            maxLines: maxLines,
             style: const TextStyle(
               color: Colors.red,
               fontStyle: FontStyle.italic,
