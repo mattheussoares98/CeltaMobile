@@ -95,6 +95,7 @@ class _CovenantItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
       child: Card(
@@ -102,7 +103,7 @@ class _CovenantItem extends StatelessWidget {
         child: Column(
           children: [
             InkWell(
-              onTap: () => changeSelectedIndex(index),
+              onTap: isIOS ? null : () => changeSelectedIndex(index),
               child: Padding(
                 padding: const EdgeInsets.all(Sizes.p8),
                 child: Column(
