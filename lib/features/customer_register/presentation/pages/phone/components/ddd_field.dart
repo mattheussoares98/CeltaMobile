@@ -8,15 +8,19 @@ class DddField extends StatelessWidget {
     super.key,
     required this.dddController,
     required this.phoneFocusNode,
+    required this.dddFocusNode,
   });
 
   final TextEditingController dddController;
   final FocusNode phoneFocusNode;
+  final FocusNode dddFocusNode;
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextFormField(
+      key: const ValueKey('DDD'),
       controller: dddController,
+      focusNode: dddFocusNode,
       labelText: 'DDD',
       hintText: 'DDD',
       maxLength: 2,

@@ -19,6 +19,7 @@ class PhoneField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTextFormField(
+      key: const ValueKey('Phone'),
       controller: phoneController,
       focusNode: phoneFocusNode,
       maxLength: 10,

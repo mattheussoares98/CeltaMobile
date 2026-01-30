@@ -10,16 +10,20 @@ import 'components.dart';
 class CpfCnpjField extends ConsumerWidget {
   final TextEditingController cpfCnpjController;
   final FocusNode nameFocusNode;
+  final FocusNode cpfCnpjFocusNode;
   const CpfCnpjField({
     super.key,
     required this.cpfCnpjController,
     required this.nameFocusNode,
+    required this.cpfCnpjFocusNode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTextFormField(
+      key: const ValueKey('CPF/CNPJ'),
       controller: cpfCnpjController,
+      focusNode: cpfCnpjFocusNode,
       maxLength: 14,
       hintText: 'CPF/CNPJ'.hardcoded,
       labelText: 'CPF/CNPJ'.hardcoded,

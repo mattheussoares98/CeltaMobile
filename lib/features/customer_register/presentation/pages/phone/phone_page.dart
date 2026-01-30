@@ -91,6 +91,7 @@ class _PhonePageState extends ConsumerState<PhonePage> {
                             child: DddField(
                               dddController: dddController,
                               phoneFocusNode: phoneFocusNode,
+                              dddFocusNode: dddFocusNode,
                             ),
                           ),
                           gapW8,

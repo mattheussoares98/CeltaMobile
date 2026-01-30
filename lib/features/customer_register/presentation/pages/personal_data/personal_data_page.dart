@@ -27,6 +27,7 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
   final birthDateController = TextEditingController();
   final inscriptionController = TextEditingController();
   final nameFocusNode = FocusNode();
+  final cpfCnpjFocusNode = FocusNode();
   final reducedNameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final passwordConfirmationFocusNode = FocusNode();
@@ -54,6 +55,7 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
     birthDateController.dispose();
     inscriptionController.dispose();
     nameFocusNode.dispose();
+    cpfCnpjFocusNode.dispose();
     reducedNameFocusNode.dispose();
     passwordFocusNode.dispose();
     passwordConfirmationFocusNode.dispose();
@@ -137,6 +139,7 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                 CpfCnpjField(
                   cpfCnpjController: cpfCnpjController,
                   nameFocusNode: nameFocusNode,
+                  cpfCnpjFocusNode: cpfCnpjFocusNode,
                 ),
                 if (customer != null) ...[
                   if (cpfCnpjController.text.length == 14) ...[
