@@ -87,11 +87,7 @@ class ProductItem extends ConsumerWidget {
           productEnterprises: productEnterprises,
         ),
         clickableBottom: SizedBox(
-          height:
-              product.Product!.EANs != null &&
-                  product.Product!.EANs!.length <= 1
-              ? Sizes.p20
-              : 0,
+          height: (product.Product!.EANs?.length ?? 0) <= 1 ? Sizes.p20 : 0,
         ),
         notClickableBottom: isSelected
             ? UpdateQuantities(
