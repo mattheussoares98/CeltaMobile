@@ -60,6 +60,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     });
 
     ref.observeLoading([confirmAdjustStockControllerProvider]);
+    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     return Scaffold(
       appBar: AppBar(
@@ -71,13 +72,41 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
           child: Column(
             children: [
-              HeaderFilters(enterpriseCode: widget.enterpriseCode),
+              SearchProductField(enterpriseCode: widget.enterpriseCode),
+              gapH8,
+              if (isDesktop) ...[
+                Row(
+                  children: [
+                    Expanded(
+                      child: JustificationsDropdown(
+                        enterpriseCode: widget.enterpriseCode,
+                      ),
+                    ),
+                    gapW8,
+                    Expanded(
+                      child: StocksDropdown(
+                        enterpriseCode: widget.enterpriseCode,
+                      ),
+                    ),
+                  ],
+                ),
+              ] else ...[
+                JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
+                gapH8,
+                StocksDropdown(enterpriseCode: widget.enterpriseCode),
+              ],
               Expanded(
-                child: ProductsItems(
-                  quantityFocusNode: quantityFocusNode,
-                  formKey: formKey,
-                  enterpriseCode: widget.enterpriseCode,
-                  quantityController: quantityController,
+                child: CustomScrollView(
+                  slivers: [
+                    gapSliverH8,
+                    ProductsItems(
+                      quantityFocusNode: quantityFocusNode,
+                      formKey: formKey,
+                      enterpriseCode: widget.enterpriseCode,
+                      quantityController: quantityController,
+                    ),
+                    gapSliverH48,
+                  ],
                 ),
               ),
             ],
