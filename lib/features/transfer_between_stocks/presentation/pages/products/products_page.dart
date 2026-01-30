@@ -50,24 +50,24 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         key: formKey,
         child: Column(
           children: [
-            Consumer(
-              builder: (_, ref, _) {
-                return DefaultSearchProducts(
-                  searchValueController: searchValueController,
-                  searchProductKey: searchProductKey,
-                  isLoading: ref.watch(
-                    searchProductsStateControllerProvider(
-                      searchProductKey,
-                    ).select((state) => state.isLoading),
-                  ),
-                  searchProducts: () => _searchProducts(searchProductKey),
-                );
-              },
-            ),
             SizedBox(
               width: Breakpoint.desktop,
               child: Column(
                 children: [
+                  Consumer(
+                    builder: (_, ref, _) {
+                      return DefaultSearchProducts(
+                        searchValueController: searchValueController,
+                        searchProductKey: searchProductKey,
+                        isLoading: ref.watch(
+                          searchProductsStateControllerProvider(
+                            searchProductKey,
+                          ).select((state) => state.isLoading),
+                        ),
+                        searchProducts: () => _searchProducts(searchProductKey),
+                      );
+                    },
+                  ),
                   gapH8,
                   JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
                   gapH8,
@@ -78,11 +78,16 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 ],
               ),
             ),
-            Flexible(
-              child: ProductsItems(
-                searchProductKey: searchProductKey,
-                enterpriseCode: widget.enterpriseCode,
-                formKey: formKey,
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  ProductsItems(
+                    searchProductKey: searchProductKey,
+                    enterpriseCode: widget.enterpriseCode,
+                    formKey: formKey,
+                  ),
+                  gapSliverH48,
+                ],
               ),
             ),
           ],
