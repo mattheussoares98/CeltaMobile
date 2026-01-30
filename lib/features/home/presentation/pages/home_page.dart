@@ -45,7 +45,10 @@ class HomePage extends ConsumerWidget {
         ),
       ),
 
-      body: enterprisesAsync.hasValue && !enterprisesAsync.isLoading
+      body:
+          enterprisesAsync.hasValue &&
+              !enterprisesAsync.isLoading &&
+              !enterprisesAsync.hasError
           ? AsyncValueWidget(
               value: ref.watch(
                 enabledModulesByEnterpriseNameStateControllerProvider(
