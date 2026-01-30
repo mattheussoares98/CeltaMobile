@@ -83,6 +83,7 @@ class InfoButton extends StatelessWidget {
         color: theme.primaryColor,
       ),
       onPressed: () {
+        FocusManager.instance.primaryFocus?.unfocus();
         showModalPage(
           ProductInfoModal(
             product: widget.product,
