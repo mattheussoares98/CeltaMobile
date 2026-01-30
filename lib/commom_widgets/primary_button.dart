@@ -52,7 +52,12 @@ class PrimaryButton extends StatelessWidget {
           final canShowIcon = constraints.maxWidth > minimumIconSize;
 
           return CupertinoButton.filled(
-            onPressed: isLoading ? null : onPressed,
+            onPressed: onPressed == null || isLoading
+                ? null
+                : () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    onPressed?.call();
+                  },
             sizeStyle: CupertinoButtonSize.medium,
             padding: const EdgeInsets.all(0),
             color: buttonColor,
@@ -86,7 +91,12 @@ class PrimaryButton extends StatelessWidget {
         return SizedBox(
           height: Sizes.p40,
           child: ElevatedButton.icon(
-            onPressed: isLoading ? null : onPressed,
+            onPressed: onPressed == null || isLoading
+                ? null
+                : () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    onPressed?.call();
+                  },
             icon: canShowIcon ? icon : null,
             iconAlignment: iconAlignment,
             style: ButtonStyle(

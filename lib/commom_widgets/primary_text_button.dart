@@ -72,7 +72,12 @@ class PrimaryTextButton extends StatelessWidget {
           final canShowIcon = constraints.maxWidth > minimumSizeToShowIcon;
 
           return CupertinoButton(
-            onPressed: isLoading ? null : onPressed,
+            onPressed: onPressed == null || isLoading
+                ? null
+                : () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    onPressed?.call();
+                  },
             sizeStyle: CupertinoButtonSize.small,
             padding: const EdgeInsets.all(0),
             child: Stack(
@@ -99,7 +104,12 @@ class PrimaryTextButton extends StatelessWidget {
         final canShowIcon = constraints.maxWidth > minimumSizeToShowIcon;
 
         return TextButton.icon(
-          onPressed: isLoading ? null : onPressed,
+          onPressed: onPressed == null || isLoading
+              ? null
+              : () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  onPressed?.call();
+                },
           icon: canShowIcon ? iconWidget : null,
           iconAlignment: iconAlignment,
           label: Stack(
