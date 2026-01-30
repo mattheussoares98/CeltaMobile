@@ -70,6 +70,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                   const SelectedEnterprise(),
                   const InformedProductsQuantity(),
                   const InformedProducts(),
+                  gapSliverH48,
                 ],
               ),
             ),
