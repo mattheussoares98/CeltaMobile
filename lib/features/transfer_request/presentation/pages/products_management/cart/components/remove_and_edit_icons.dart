@@ -10,10 +10,12 @@ import '../../../../controllers/controllers.dart';
 class RemoveAndEditIcons extends ConsumerWidget {
   final DraftKey draftKey;
   final TransferRequestProductItemEntity item;
+  final VoidCallback changeSelectedIndex;
   const RemoveAndEditIcons({
     super.key,
     required this.draftKey,
     required this.item,
+    required this.changeSelectedIndex,
   });
 
   @override
@@ -43,7 +45,11 @@ class RemoveAndEditIcons extends ConsumerWidget {
             color: Colors.red,
           ),
         ),
-        Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+        PrimaryTextButton(
+          text: isIOS ? 'Editar'.hardcoded : '',
+          onPressed: changeSelectedIndex,
+          icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+        ),
       ],
     );
   }

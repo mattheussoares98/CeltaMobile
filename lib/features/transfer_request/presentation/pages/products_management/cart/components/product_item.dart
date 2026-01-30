@@ -95,6 +95,8 @@ class _ProductItemState extends ConsumerState<ProductItem> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
     return RepaintBoundary(
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -102,7 +104,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
         child: Column(
           children: [
             InkWell(
-              onTap: changeSelectedIndex,
+              onTap: isIOS ? null : changeSelectedIndex,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
                   Sizes.p8,
@@ -116,6 +118,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                     RemoveAndEditIcons(
                       draftKey: widget.draftKey,
                       item: widget.item,
+                      changeSelectedIndex: changeSelectedIndex,
                     ),
                   ],
                 ),
