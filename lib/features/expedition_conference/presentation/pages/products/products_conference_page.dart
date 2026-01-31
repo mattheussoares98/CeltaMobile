@@ -118,48 +118,44 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
             },
           ),
         ),
-        body: AsyncValueWidget(
-          value: ref.watch(
-            expeditionConferenceControllerProvider(
-              widget.expeditionControlCode,
-            ),
+        body: OptimazedAsyncValueWidget(
+          provider: expeditionConferenceControllerProvider(
+            widget.expeditionControlCode,
           ),
           tryAgain: () => ref.invalidate(
             expeditionConferenceControllerProvider(
               widget.expeditionControlCode,
             ),
           ),
-          data: (_) {
-            return ref.watch(
-                  confirmConferenceControllerProvider.select(
-                    (state) => state.hasError,
-                  ),
+          child:
+              ref.watch(
+                confirmConferenceControllerProvider.select(
+                  (state) => state.hasError,
+                ),
+              )
+              ? TryConfirmAgain(
+                  expeditionControlCode: widget.expeditionControlCode,
+                  stepCode: widget.stepCode,
                 )
-                ? TryConfirmAgain(
-                    expeditionControlCode: widget.expeditionControlCode,
-                    stepCode: widget.stepCode,
-                  )
-                : Consumer(
-                    builder: (_, ref, _) {
-                      return IndexedStack(
-                        index: ref.watch(pageIndexStateControllerProvider),
-                        children: [
-                          PendingProductsPage(
-                            focusNode: searchProductFocusNode,
-                            searchProductController: searchProductController,
-                            enterpriseCode: widget.enterpriseCode,
-                            expeditionControlCode: widget.expeditionControlCode,
-                          ),
-                          ConferedProductsPage(
-                            expeditionControlCode: widget.expeditionControlCode,
-                          ),
-                        ],
-                      );
-                    },
-                  );
-          },
+              : Consumer(
+                  builder: (_, ref, _) {
+                    return IndexedStack(
+                      index: ref.watch(pageIndexStateControllerProvider),
+                      children: [
+                        PendingProductsPage(
+                          focusNode: searchProductFocusNode,
+                          searchProductController: searchProductController,
+                          enterpriseCode: widget.enterpriseCode,
+                          expeditionControlCode: widget.expeditionControlCode,
+                        ),
+                        ConferedProductsPage(
+                          expeditionControlCode: widget.expeditionControlCode,
+                        ),
+                      ],
+                    );
+                  },
+                ),
         ),
-
         bottomNavigationBar: BottomNavBar(
           expeditionControlCode: widget.expeditionControlCode,
         ),
