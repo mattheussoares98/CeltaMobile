@@ -134,78 +134,69 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
             ),
           ],
         ),
-        body: Consumer(
-          builder: (_, ref, _) {
-            return AsyncValueWidget(
-              value: ref.watch(
-                completeBuyQuotationsStateControllerProvider(
-                  widget.enterpriseCode,
-                  widget.code.toString(),
+        body: OptimazedAsyncValueWidget(
+          provider: completeBuyQuotationsStateControllerProvider(
+            widget.enterpriseCode,
+            widget.code.toString(),
+          ),
+          tryAgain: () => ref.invalidate(
+            completeBuyQuotationsStateControllerProvider(
+              widget.enterpriseCode,
+              widget.code.toString(),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: CustomScrollView(
+              physics: const ClampingScrollPhysics(),
+              slivers: [
+                Code(code: widget.code),
+                CreationDate(
+                  enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
                 ),
-              ),
-              tryAgain: () => ref.invalidate(
-                completeBuyQuotationsStateControllerProvider(
-                  widget.enterpriseCode,
-                  widget.code.toString(),
+                LimitDate(
+                  code: widget.code,
+                  enterpriseCode: widget.enterpriseCode,
                 ),
-              ),
-              data: (_) {
-                //TODO use OptimazedAsyncValueWidget
-                return Padding(
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  child: CustomScrollView(
-                    physics: const ClampingScrollPhysics(),
-                    slivers: [
-                      Code(code: widget.code),
-                      CreationDate(
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
-                      ),
-                      LimitDate(
-                        code: widget.code,
-                        enterpriseCode: widget.enterpriseCode,
-                      ),
-                      gapSliverH8,
-                      BuyersDropdown(
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
-                      ),
-                      gapSliverH8,
-                      ObservationField(
-                        observationController: observationController,
-                        observationsFocusNode: observationsFocusNode,
-                      ),
-                      const SliverToBoxAdapter(child: Divider()),
-                      Enterprises(
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
-                      ),
-                      const SliverToBoxAdapter(child: Divider()),
-                      FilterProducts(
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
-                        filterProductsFocusNode: filterProductsFocusNode,
-                        filterProductsController: filterProductsController,
-                      ),
-                      SearchProductField(
-                        enterpriseCode: widget.enterpriseCode,
-                        code: widget.code,
-                        searchValueController: searchValueController,
-                      ),
-                      gapSliverH8,
-                      ProductsItems(
-                        uiControllers: uiControllers,
-                        widget: widget,
-                        observationsFocusNode: observationsFocusNode,
-                        filterProductsController: filterProductsController,
-                      ),
-                      gapSliverH32,
-                    ],
-                  ),
-                );
-              },
-            );
-          },
+                gapSliverH8,
+                BuyersDropdown(
+                  enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
+                ),
+                gapSliverH8,
+                ObservationField(
+                  observationController: observationController,
+                  observationsFocusNode: observationsFocusNode,
+                ),
+                const SliverToBoxAdapter(child: Divider()),
+                Enterprises(
+                  enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
+                ),
+                const SliverToBoxAdapter(child: Divider()),
+                FilterProducts(
+                  enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
+                  filterProductsFocusNode: filterProductsFocusNode,
+                  filterProductsController: filterProductsController,
+                ),
+                SearchProductField(
+                  enterpriseCode: widget.enterpriseCode,
+                  code: widget.code,
+                  searchValueController: searchValueController,
+                ),
+                gapSliverH8,
+                ProductsItems(
+                  uiControllers: uiControllers,
+                  widget: widget,
+                  observationsFocusNode: observationsFocusNode,
+                  filterProductsController: filterProductsController,
+                ),
+                gapSliverH32,
+              ],
+            ),
+          ),
         ),
       ),
     );
