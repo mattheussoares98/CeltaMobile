@@ -60,28 +60,13 @@ class SupplierItems extends ConsumerWidget {
       }
     }
 
-    if (isSliver) {
-      return AsyncValueWidget(
-        isSliver: true,
-        value: ref.watch(
-          supplierStateControllerProvider(SearchSupplierType.buyRequest),
-        ),
-        data: (suppliers) => _Items(
-          key: const ValueKey('sliver'),
-          suppliers: suppliers,
-          isSliver: isSliver,
-          onTap: onTap,
-        ),
-        tryAgain: null,
-      );
-    }
-
     return AsyncValueWidget(
+      isSliver: true,
       value: ref.watch(
         supplierStateControllerProvider(SearchSupplierType.buyRequest),
       ),
       data: (suppliers) => _Items(
-        key: const ValueKey('not sliver'),
+        key: const ValueKey('sliver'),
         suppliers: suppliers,
         isSliver: isSliver,
         onTap: onTap,
