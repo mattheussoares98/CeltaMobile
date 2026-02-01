@@ -36,6 +36,12 @@ class TopButtons extends ConsumerWidget {
           );
     }
 
+    bool isLoading = ref.watch(
+      searchProductsStateControllerProvider(
+        searchProductKey,
+      ).select((s) => s.isLoading),
+    );
+
     return Row(
       children: [
         Expanded(
@@ -45,9 +51,11 @@ class TopButtons extends ConsumerWidget {
             isSmall: true,
             icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
             iconAlignment: IconAlignment.start,
-            onPressed: () => searchProduct(
-              SearchType.allProductsFromGoodsReceivingGoesForBalance,
-            ),
+            onPressed: isLoading
+                ? null
+                : () => searchProduct(
+                    SearchType.allProductsFromGoodsReceivingGoesForBalance,
+                  ),
           ),
         ),
         Expanded(
@@ -57,8 +65,9 @@ class TopButtons extends ConsumerWidget {
             isSmall: true,
             icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
             iconAlignment: IconAlignment.start,
-            onPressed: () =>
-                searchProduct(SearchType.allProductsFromGoodsReceiving),
+            onPressed: isLoading
+                ? null
+                : () => searchProduct(SearchType.allProductsFromGoodsReceiving),
           ),
         ),
         Expanded(
