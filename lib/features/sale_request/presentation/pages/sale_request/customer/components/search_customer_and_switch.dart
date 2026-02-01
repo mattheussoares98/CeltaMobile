@@ -60,9 +60,7 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
           key: widget.formKey,
           child: DefaultTextFormField(
             controller: widget.searchController,
-            labelText: searchByPersonalizedCode
-                ? 'Cód personalizado'
-                : 'Nome | CPF | CNPJ | Código'.hardcoded,
+            labelText: 'Pesquisar cliente'.hardcoded,
             hintText: searchByPersonalizedCode
                 ? 'Cód personalizado'
                 : 'Nome | CPF | CNPJ | Código'.hardcoded,
