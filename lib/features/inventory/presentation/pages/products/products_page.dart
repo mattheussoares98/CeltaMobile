@@ -195,13 +195,18 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   codigoInternoInventario: widget.codigoInternoInventario,
                 ),
                 Expanded(
-                  child: ProductsItems(
-                    codigoInternoInventario: widget.codigoInternoInventario,
-                    codigoInternoInvCont: widget.codigoInternoInvCont,
-                    enterpriseCode: widget.enterpriseCode,
-                    searchProductKey: searchProductKey,
-                    quantityFocusNode: quantityFocusNode,
-                    quantityController: quantityController,
+                  child: CustomScrollView(
+                    slivers: [
+                      ProductsItems(
+                        codigoInternoInventario: widget.codigoInternoInventario,
+                        codigoInternoInvCont: widget.codigoInternoInvCont,
+                        enterpriseCode: widget.enterpriseCode,
+                        searchProductKey: searchProductKey,
+                        quantityFocusNode: quantityFocusNode,
+                        quantityController: quantityController,
+                      ),
+                      gapSliverH48,
+                    ],
                   ),
                 ),
               ],

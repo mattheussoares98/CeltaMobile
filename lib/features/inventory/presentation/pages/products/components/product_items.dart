@@ -88,13 +88,14 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     );
 
     return AsyncValueWidget(
-      isSliver: false,
+      isSliver: true,
       value: ref.watch(
         searchProductsStateControllerProvider(widget.searchProductKey),
       ),
       tryAgain: null,
       data: (products) {
         return ResponsiveListFlow(
+          isSliver: true,
           itemCount: products.length,
           itemBuilder: (_, index) {
             final product = products[index];
