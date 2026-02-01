@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
@@ -68,31 +67,14 @@ class _LotItemsState extends ConsumerState<LotItems> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final productsAreEmpty = ref.watch(
-      lotStateControllerProvider(
-        widget.enterpriseCode,
-      ).select((s) => s.value?.isEmpty ?? true),
-    );
-
-    if (productsAreEmpty) {
-      return Center(
-        child: Text(
-          'Lote vazio'.hardcoded,
-          style: theme.textTheme.titleLarge?.copyWith(color: Colors.red),
-        ),
-      );
-    }
-
     final products = ref.watch(
       lotStateControllerProvider(widget.enterpriseCode).select((s) => s.value),
     );
     return ResponsiveListFlow(
       isSliver: true,
-      itemCount: products!.length,
+      itemCount: products?.length ?? 0,
       itemBuilder: (_, index) {
-        final item = products[index];
+        final item = products![index];
 
         final packingCode = item.product.ProductPackingCode;
         final destinyCode = item.selectedDestinyStock.CodigoInterno_TipoEstoque;
@@ -146,7 +128,7 @@ class _LotItem extends ConsumerWidget {
     );
 
     if (item == null) {
-      return const SizedBox.shrink();
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
     final isLastItem = ref.watch(

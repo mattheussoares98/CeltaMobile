@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../constants/constants.dart';
+import '../../../../../localization/string_hardcoded.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -26,7 +27,25 @@ class _LotPageState extends ConsumerState<LotPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final productsAreEmpty = ref.watch(
+      lotStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.value?.isEmpty ?? true),
+    );
+
+    if (productsAreEmpty) {
+      return Center(
+        child: Text(
+          'Lote vazio'.hardcoded,
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.red),
+        ),
+      );
+    }
+
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
           child: CustomScrollView(
