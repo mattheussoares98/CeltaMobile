@@ -94,7 +94,7 @@ class _ProductItem extends ConsumerWidget {
             if (isIOS) const Expanded(flex: 55, child: Text('')),
             Flexible(
               flex: 45,
-              child: PrimaryButton(
+              child: PrimaryTextButton(
                 text: 'Alterar preços'.hardcoded,
                 icon: Icon(
                   theme.platform == TargetPlatform.iOS
