@@ -77,7 +77,7 @@ class _LotPageState extends ConsumerState<LotPage> {
 
             if (!hasInsertedProduct) {
               return const SizedBox.shrink();
-            }
+            } //TODO fix when tap the button after close the keyboard
 
             return Padding(
               padding: const EdgeInsets.fromLTRB(

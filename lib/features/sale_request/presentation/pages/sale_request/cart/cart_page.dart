@@ -211,6 +211,7 @@ class _CartPageState extends ConsumerState<CartPage>
                           final keyboardIsOpen = ref.watch(
                             keyboardVisibilityStateControllerProvider,
                           );
+                          //TODO fix when tap the button after close the keyboard
                           if (!keyboardIsOpen) {
                             return const SliverToBoxAdapter(
                               child: SizedBox.shrink(),
@@ -251,6 +252,7 @@ class _CartPageState extends ConsumerState<CartPage>
                 );
 
                 if (keyboardIsOpen) {
+                  //TODO fix when tap the button after close the keyboard
                   return const SizedBox.shrink();
                 }
 
