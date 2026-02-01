@@ -205,6 +205,7 @@ class _CartPageState extends ConsumerState<CartPage>
                           );
                         },
                       ),
+                      gapSliverH48,
                     ],
                   ),
                 );
