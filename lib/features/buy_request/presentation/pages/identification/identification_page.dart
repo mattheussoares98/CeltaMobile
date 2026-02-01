@@ -13,13 +13,21 @@ class IdentificationPage extends ConsumerWidget {
     return const Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: Sizes.p4),
-        child: CustomScrollView(
-          physics: ClampingScrollPhysics(),
-          slivers: [
-            BuyersAndRequestsDropdown(enabled: true),
-            gapSliverH8,
-            SliverToBoxAdapter(child: SupplierSearcher()),
-            SupplierItems(isSliver: true),
+        child: Column(
+          children: [
+            Column(
+              children: [
+                BuyersAndRequestsDropdown(enabled: true),
+                gapH8,
+                SupplierSearcher(),
+              ],
+            ),
+            Expanded(
+              child: CustomScrollView(
+                physics: ClampingScrollPhysics(),
+                slivers: [SupplierItems(isSliver: true)],
+              ),
+            ),
           ],
         ),
       ),

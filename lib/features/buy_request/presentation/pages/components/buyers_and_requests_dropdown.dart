@@ -11,12 +11,10 @@ class BuyersAndRequestsDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
-    return SliverToBoxAdapter(
-      child: RepaintBoundary(
-        child: isDesktop
-            ? _DesktopView(key: const ValueKey('desktop'), enabled: enabled)
-            : _MobileView(key: const ValueKey('mobile'), enabled: enabled),
-      ),
+    return RepaintBoundary(
+      child: isDesktop
+          ? _DesktopView(key: const ValueKey('desktop'), enabled: enabled)
+          : _MobileView(key: const ValueKey('mobile'), enabled: enabled),
     );
   }
 }
