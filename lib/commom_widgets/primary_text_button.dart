@@ -35,7 +35,7 @@ class PrimaryTextButton extends StatelessWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final iconColor = isLoading
+    final iconColor = isLoading || onPressed == null
         ? theme.disabledColor
         : color ?? theme.primaryColor;
 
