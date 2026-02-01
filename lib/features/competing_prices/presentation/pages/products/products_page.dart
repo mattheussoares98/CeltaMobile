@@ -66,6 +66,7 @@ class ProductsPage extends ConsumerWidget {
               ),
             ),
             ProductsItems(widget: this),
+            gapH48,
           ],
         ),
       ),
