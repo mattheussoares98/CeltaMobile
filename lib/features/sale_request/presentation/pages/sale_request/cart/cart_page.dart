@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard_visibility_state_controller.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -205,6 +206,38 @@ class _CartPageState extends ConsumerState<CartPage>
                           );
                         },
                       ),
+                      Consumer(
+                        builder: (_, ref, _) {
+                          final keyboardIsOpen = ref.watch(
+                            keyboardVisibilityStateControllerProvider,
+                          );
+                          if (!keyboardIsOpen) {
+                            return const SliverToBoxAdapter(
+                              child: SizedBox.shrink(),
+                            );
+                          }
+
+                          return AnimatedBuilder(
+                            animation: Listenable.merge([
+                              quantityFocusNode,
+                              priceFocusNode,
+                              discountFocusNode,
+                            ]),
+                            builder: (_, _) {
+                              return SliverToBoxAdapter(
+                                child: TotalCalculateAndSave(
+                                  enterpriseCode: widget.enterpriseCode,
+                                  selectedRequest: widget.selectedRequest,
+                                  instructionsController:
+                                      instructionsController,
+                                  observationsController:
+                                      observationsController,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                       gapSliverH48,
                     ],
                   ),
@@ -213,32 +246,19 @@ class _CartPageState extends ConsumerState<CartPage>
             ),
             Consumer(
               builder: (_, ref, _) {
-                final hasSelectedCartProductIndex = ref.watch(
-                  selectedItemUIControllerProvider(
-                    isCartPage: true,
-                  ).select((s) => s.productPackingCode != null),
+                final keyboardIsOpen = ref.watch(
+                  keyboardVisibilityStateControllerProvider,
                 );
-                if (hasSelectedCartProductIndex) {
+
+                if (keyboardIsOpen) {
                   return const SizedBox.shrink();
                 }
 
-                return AnimatedBuilder(
-                  animation: Listenable.merge([
-                    observationsFocusNode,
-                    instructionsFocusNode,
-                  ]),
-                  builder: (_, _) {
-                    if (observationsFocusNode.hasFocus ||
-                        instructionsFocusNode.hasFocus) {
-                      return const SizedBox.shrink();
-                    }
-                    return TotalCalculateAndSave(
-                      enterpriseCode: widget.enterpriseCode,
-                      selectedRequest: widget.selectedRequest,
-                      instructionsController: instructionsController,
-                      observationsController: observationsController,
-                    );
-                  },
+                return TotalCalculateAndSave(
+                  enterpriseCode: widget.enterpriseCode,
+                  selectedRequest: widget.selectedRequest,
+                  instructionsController: instructionsController,
+                  observationsController: observationsController,
                 );
               },
             ),
