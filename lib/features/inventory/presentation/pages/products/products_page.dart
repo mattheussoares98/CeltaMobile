@@ -125,7 +125,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       next,
     ) {
       next.doOnSuccess(previous, () {
-        if (next.value?.length == 1 && !_isContinuousScan) {
+        if (next.value?.length == 1) {
           changeSelectedIndex(0);
           quantityController.clear();
         }
