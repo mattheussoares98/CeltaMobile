@@ -161,36 +161,38 @@ class ProductItemWidget extends ConsumerWidget {
                           FocusManager.instance.primaryFocus?.unfocus();
                           onTap!();
                         },
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      Sizes.p8,
-                      Sizes.p8,
-                      Sizes.p8,
-                      showingLittleInformations && showEans
-                          ? Sizes.p40
-                          : Sizes.p8,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              ?itemBeforeProductName,
-                              TitleAndSubTitle(
-                                title: product.Name,
-                                subTitle: product.PackingQuantity == null
-                                    ? null
-                                    : " (${product.PackingQuantity.toString().formattedPacking()})",
-                                titleStyle: theme.textTheme.titleMedium,
-                                subTitleStyle: theme.textTheme.bodyMedium,
-                              ),
-                              Stack(
-                                children: [
-                                  Column(
+                  child: Row(
+                    //TODO check if should remove the last commit
+                    children: [
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                    Sizes.p8,
+                                    Sizes.p8,
+                                    Sizes.p8,
+                                    showingLittleInformations && showEans
+                                        ? Sizes.p40
+                                        : Sizes.p8,
+                                  ),
+                                  child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      ?itemBeforeProductName,
+                                      TitleAndSubTitle(
+                                        title: product.Name,
+                                        subTitle:
+                                            product.PackingQuantity == null
+                                            ? null
+                                            : " (${product.PackingQuantity.toString().formattedPacking()})",
+                                        titleStyle: theme.textTheme.titleMedium,
+                                        subTitleStyle:
+                                            theme.textTheme.bodyMedium,
+                                      ),
                                       TitleAndSubTitle(
                                         title: "PLU ",
                                         subTitle: product.PLU,
@@ -208,19 +210,20 @@ class ProductItemWidget extends ConsumerWidget {
                                       ?clickableBottom,
                                     ],
                                   ),
-                                  if (!showingLittleInformations)
-                                    Positioned(
-                                      right: 0,
-                                      child: InfoButton(this),
-                                    ),
-                                ],
+                                ),
+                              ],
+                            ),
+                            if (!showingLittleInformations)
+                              Positioned(
+                                right: 0,
+                                bottom: Sizes.p8,
+                                child: InfoButton(this),
                               ),
-                            ],
-                          ),
+                          ],
                         ),
-                        ?rightWidget,
-                      ],
-                    ),
+                      ),
+                      ?rightWidget,
+                    ],
                   ),
                 ),
                 Positioned(
