@@ -78,42 +78,44 @@ class _PhonePageState extends ConsumerState<PhonePage> {
           isSliverPage: true,
           child: Form(
             key: phoneFormKey,
-            child: CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: DddField(
-                              dddController: dddController,
-                              phoneFocusNode: phoneFocusNode,
-                              dddFocusNode: dddFocusNode,
-                            ),
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: DddField(
+                            dddController: dddController,
+                            phoneFocusNode: phoneFocusNode,
+                            dddFocusNode: dddFocusNode,
                           ),
-                          gapW8,
-                          Expanded(
-                            flex: 3,
-                            child: PhoneField(
-                              phoneController: phoneController,
-                              phoneFocusNode: phoneFocusNode,
-                              addPhone: addPhone,
-                            ),
+                        ),
+                        gapW8,
+                        Expanded(
+                          flex: 3,
+                          child: PhoneField(
+                            phoneController: phoneController,
+                            phoneFocusNode: phoneFocusNode,
+                            addPhone: addPhone,
                           ),
-                        ],
-                      ),
-                      gapH32,
-                      PrimaryButton(
-                        text: 'Adicionar telefone'.hardcoded,
-                        onPressed: addPhone,
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
+                    gapH32,
+                    PrimaryButton(
+                      text: 'Adicionar telefone'.hardcoded,
+                      onPressed: addPhone,
+                    ),
+                  ],
+                ),
+                const Expanded(
+                  child: CustomScrollView(
+                    physics: ClampingScrollPhysics(),
+                    slivers: [InformedPhones()],
                   ),
                 ),
-                const InformedPhones(),
               ],
             ),
           ),

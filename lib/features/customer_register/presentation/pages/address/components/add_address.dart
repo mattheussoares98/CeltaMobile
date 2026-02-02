@@ -38,11 +38,9 @@ class AddAddress extends ConsumerWidget {
       return true;
     }
 
-    return SliverToBoxAdapter(
-      child: AddressForm(
-        module: Modules.customerRegister,
-        addAddress: addAddress,
-      ),
+    return AddressForm(
+      module: Modules.customerRegister,
+      addAddress: addAddress,
     );
   }
 }

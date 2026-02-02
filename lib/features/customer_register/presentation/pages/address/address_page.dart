@@ -17,9 +17,16 @@ class AddressPage extends ConsumerWidget {
         padding: EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: ResponsiveScrollableWidget(
           isSliverPage: true,
-          child: CustomScrollView(
-            physics: ClampingScrollPhysics(),
-            slivers: [AddAddress(), InformedAddressess()],
+          child: Column(
+            children: [
+              AddAddress(),
+              Expanded(
+                child: CustomScrollView(
+                  physics: ClampingScrollPhysics(),
+                  slivers: [InformedAddressess()],
+                ),
+              ),
+            ],
           ),
         ),
       ),

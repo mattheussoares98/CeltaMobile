@@ -17,9 +17,16 @@ class EmailPage extends ConsumerWidget {
         padding: EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: ResponsiveScrollableWidget(
           isSliverPage: true,
-          child: CustomScrollView(
-            physics: ClampingScrollPhysics(),
-            slivers: [EmailField(), InformedEmails()],
+          child: Column(
+            children: [
+              EmailField(),
+              Expanded(
+                child: CustomScrollView(
+                  physics: ClampingScrollPhysics(),
+                  slivers: [InformedEmails()],
+                ),
+              ),
+            ],
           ),
         ),
       ),

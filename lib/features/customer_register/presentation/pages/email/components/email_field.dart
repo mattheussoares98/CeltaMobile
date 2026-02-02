@@ -57,39 +57,34 @@ class _EmailFieldState extends ConsumerState<EmailField> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          Form(
-            key: formKey,
-            child: DefaultTextFormField(
-              controller: emailController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              hintText: 'E-mail'.hardcoded,
-              labelText: 'E-mail'.hardcoded,
-              keyboardType: TextInputType.emailAddress,
-              maxLength: 50,
-              onFieldSubmitted: (_) => insertEmail(),
-              suffixIcon: IconButton(
-                onPressed: emailController.clear,
-                icon: Icon(
-                  isIOS ? CupertinoIcons.delete : Icons.delete,
-                  color: Colors.red,
-                ),
+    return Column(
+      children: [
+        Form(
+          key: formKey,
+          child: DefaultTextFormField(
+            controller: emailController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            hintText: 'E-mail'.hardcoded,
+            labelText: 'E-mail'.hardcoded,
+            keyboardType: TextInputType.emailAddress,
+            maxLength: 50,
+            onFieldSubmitted: (_) => insertEmail(),
+            suffixIcon: IconButton(
+              onPressed: emailController.clear,
+              icon: Icon(
+                isIOS ? CupertinoIcons.delete : Icons.delete,
+                color: Colors.red,
               ),
-              validator: FormValidators.compose([
-                NonEmptyValidator(),
-                EmailValidator(),
-              ]),
             ),
+            validator: FormValidators.compose([
+              NonEmptyValidator(),
+              EmailValidator(),
+            ]),
           ),
-          gapH32,
-          PrimaryButton(
-            text: 'Inserir e-mail'.hardcoded,
-            onPressed: insertEmail,
-          ),
-        ],
-      ),
+        ),
+        gapH32,
+        PrimaryButton(text: 'Inserir e-mail'.hardcoded, onPressed: insertEmail),
+      ],
     );
   }
 }
