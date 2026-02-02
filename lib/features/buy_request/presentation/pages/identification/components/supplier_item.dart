@@ -8,14 +8,12 @@ import '../../../controllers/controllers.dart';
 
 class SupplierItem extends ConsumerWidget {
   final SupplierEntity supplier;
-  final bool? enabled; //TODO remove this param and treat using if onTap is null
   final VoidCallback? onTap;
   final int enterpriseCode;
   const SupplierItem({
     super.key,
     required this.supplier,
     required this.onTap,
-    required this.enabled,
     required this.enterpriseCode,
   });
 
@@ -32,7 +30,7 @@ class SupplierItem extends ConsumerWidget {
         clipBehavior: Clip.antiAlias,
         margin: const EdgeInsets.only(top: Sizes.p8),
         child: InkWell(
-          onTap: enabled == false ? null : onTap,
+          onTap: onTap,
           child: RadioGroup<SupplierEntity>(
             groupValue: selectedSupplier,
             onChanged: (_) => onTap?.call(),
@@ -68,7 +66,7 @@ class SupplierItem extends ConsumerWidget {
                   right: 0,
                   child: Radio(
                     value: supplier,
-                    enabled: enabled,
+                    enabled: onTap != null,
                     visualDensity: VisualDensity.compact,
                   ),
                 ),

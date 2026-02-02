@@ -31,8 +31,7 @@ class SelectedSupplier extends ConsumerWidget {
           DefaultSmallTitle(title: 'Fornecedor'.hardcoded),
           SupplierItem(
             supplier: selectedSupplier,
-            enabled: false,
-            onTap: () {},
+            onTap: null,
             enterpriseCode: enterpriseCode,
           ),
           gapH8,

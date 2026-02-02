@@ -116,7 +116,6 @@ class _Items extends StatelessWidget {
           key: ValueKey(supplier.Code),
           supplier: supplier,
           onTap: () => onTap(supplier),
-          enabled: true,
           enterpriseCode: enterpriseCode,
         );
       },
