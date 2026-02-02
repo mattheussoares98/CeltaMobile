@@ -32,6 +32,8 @@
 	<string>Libere o acesso da câmera para ler código de barras</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Libere o acesso para acessar as imagens</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Libere o acesso para conseguir imprimir pedidos de vendas</string>	
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIFileSharingEnabled</key>
