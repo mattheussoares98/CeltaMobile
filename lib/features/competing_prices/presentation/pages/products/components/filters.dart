@@ -82,59 +82,82 @@ class Filters extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (!restrictProducts)
-              DefaultSwitch(
-                title: 'Somente associados'.hardcoded,
-                value: selectedItem.onlyAssociateds,
-                onChanged: (value) {
-                  ref
-                      .read(selectedItemUIControllerProvider.notifier)
-                      .update(selectedItem.copyWith(onlyAssociateds: value));
+              Consumer(
+                builder: (_, ref, _) {
+                  return DefaultSwitch(
+                    title: 'Somente associados'.hardcoded,
+                    value: selectedItem.onlyAssociateds,
+                    onChanged: (value) {
+                      ref
+                          .read(selectedItemUIControllerProvider.notifier)
+                          .update(
+                            selectedItem.copyWith(onlyAssociateds: value),
+                          );
+                    },
+                  );
                 },
               ),
             gapH4,
             if (selectedItem.onlyAssociateds)
-              DefaultSegmentedButtons<SearchProductCompetingPriceType>(
-                selectedValue: selectedItem.searchType,
-                onChanged: (value) {
-                  ref
-                      .read(selectedItemUIControllerProvider.notifier)
-                      .update(selectedItem.copyWith(searchType: value));
+              Consumer(
+                builder: (_, ref, _) {
+                  return DefaultSegmentedButtons<
+                    SearchProductCompetingPriceType
+                  >(
+                    selectedValue: selectedItem.searchType,
+                    onChanged: (value) {
+                      ref
+                          .read(selectedItemUIControllerProvider.notifier)
+                          .update(selectedItem.copyWith(searchType: value));
+                    },
+                    items: SearchProductCompetingPriceType.values,
+                  );
                 },
-                items: SearchProductCompetingPriceType.values,
               ),
             gapH8,
-            SizedBox(
-              child: PrimaryButton(
-                text: selectedItem.onlyAssociateds
-                    ? 'Consultar${selectedItem.searchType == SearchProductCompetingPriceType.all ? '' : ' todos'.hardcoded} ${selectedItem.searchType.name.toLowerCase()}'
-                          .hardcoded
-                    : 'Consultar todos não associados'.hardcoded,
-                icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
-                onPressed: () {
-                  ref
-                      .read(
-                        searchProductsStateControllerProvider(
-                          SearchProductKey(
-                            widget.enterpriseCode,
-                            BsRoutine.researchOfPrice,
-                            Modules.competingPrices,
+            Consumer(
+              builder: (_, ref, _) {
+                return PrimaryButton(
+                  isLoading: ref.watch(
+                    searchProductsStateControllerProvider(
+                      SearchProductKey(
+                        widget.enterpriseCode,
+                        BsRoutine.researchOfPrice,
+                        Modules.competingPrices,
+                      ),
+                    ).select((s) => s.isLoading),
+                  ),
+                  text: selectedItem.onlyAssociateds
+                      ? 'Consultar${selectedItem.searchType == SearchProductCompetingPriceType.all ? '' : ' todos'.hardcoded} ${selectedItem.searchType.name.toLowerCase()}'
+                            .hardcoded
+                      : 'Consultar todos não associados'.hardcoded,
+                  icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+                  onPressed: () {
+                    ref
+                        .read(
+                          searchProductsStateControllerProvider(
+                            SearchProductKey(
+                              widget.enterpriseCode,
+                              BsRoutine.researchOfPrice,
+                              Modules.competingPrices,
+                            ),
+                          ).notifier,
+                        )
+                        .loadProducts(
+                          GetProductsJsonParams(
+                            enterpriseCodes: [widget.enterpriseCode],
+                            searchValue: '%',
+                            competingPricesParams: CompetingPricesParams(
+                              ResearchOfPriceCode: widget.researchCode,
+                              ConcurrentCode: widget.concurrentCode,
+                              OnlyAssociated: restrictProducts,
+                              searchType: selectedItem.searchType,
+                            ),
                           ),
-                        ).notifier,
-                      )
-                      .loadProducts(
-                        GetProductsJsonParams(
-                          enterpriseCodes: [widget.enterpriseCode],
-                          searchValue: '%',
-                          competingPricesParams: CompetingPricesParams(
-                            ResearchOfPriceCode: widget.researchCode,
-                            ConcurrentCode: widget.concurrentCode,
-                            OnlyAssociated: restrictProducts,
-                            searchType: selectedItem.searchType,
-                          ),
-                        ),
-                      );
-                },
-              ),
+                        );
+                  },
+                );
+              },
             ),
           ],
         ),
