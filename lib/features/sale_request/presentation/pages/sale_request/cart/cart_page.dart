@@ -268,7 +268,6 @@ class _CartPageState extends ConsumerState<CartPage>
                 );
 
                 if (keyboardIsOpen) {
-                  //TODO fix when tap the button after close the keyboard
                   return const SizedBox.shrink();
                 }
 

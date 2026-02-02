@@ -30,7 +30,6 @@ class ResponsiveListFlow extends StatelessWidget {
           ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
           : ListView.builder(
               padding: padding,
-              // physics: const ClampingScrollPhysics(),//TODO in iOS, test if work even use this
               itemBuilder: itemBuilder,
               itemCount: itemCount,
             );
