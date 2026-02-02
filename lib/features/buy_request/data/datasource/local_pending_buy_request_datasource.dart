@@ -15,6 +15,11 @@ class LocalPendingBuyRequestDatasource
       return {};
     }
 
+    if (value != Map) {
+      await box.delete(DatabaseConstants.buyRequest.name);
+      return {};
+    }
+
     return (value as Map).map(
       (key, value) => MapEntry(key, PendingBuyRequestModel.fromJson(value)),
     );
