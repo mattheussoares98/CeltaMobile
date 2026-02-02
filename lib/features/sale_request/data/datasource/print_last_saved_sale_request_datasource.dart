@@ -10,6 +10,8 @@ import 'datasource.dart';
 
 class PrintLastSavedSaleRequestDatasource
     implements IPrintLastSavedSaleRequestDatasource {
+  CapabilityProfile? _cachedProfile;
+
   @override
   Future<void> print({
     required LastSavedSaleRequestModel saleRequest,
@@ -32,8 +34,29 @@ class PrintLastSavedSaleRequestDatasource
       );
     }
 
-    final profile = await CapabilityProfile.load();
-    final generator = Generator(PaperSize.mm80, profile);
+    try {
+      _cachedProfile ??= await CapabilityProfile.load();
+
+      final List<int> bytes = _generateTicket(
+        saleRequest: saleRequest,
+        userName: userName,
+        profile: _cachedProfile!,
+      );
+
+      await printer.printTicket(bytes);
+    } catch (e) {
+      throw Exception('Ocorreu um erro ao imprimir o pedido\n\n$e');
+    } finally {
+      await printer.disconnect();
+    }
+  }
+
+  List<int> _generateTicket({
+    required LastSavedSaleRequestModel saleRequest,
+    required String userName,
+    required CapabilityProfile profile,
+  }) {
+    final generator = Generator(PaperSize.mm80, _cachedProfile!);
     List<int> bytes = [];
 
     final saleRequestNumber = saleRequest.saleRequestNumber.replaceAll(
@@ -220,8 +243,6 @@ class PrintLastSavedSaleRequestDatasource
 
     bytes += generator.feed(2);
     bytes += generator.cut();
-
-    await printer.printTicket(bytes);
-    await printer.disconnect();
+    return bytes;
   }
 }
