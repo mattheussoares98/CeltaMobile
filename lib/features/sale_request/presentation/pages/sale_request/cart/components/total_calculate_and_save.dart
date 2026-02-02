@@ -9,16 +9,14 @@ import '../../../../../../../core/presentation/controllers/resource/resource.dar
 import '../../../../controllers/controllers.dart';
 
 class TotalCalculateAndSave extends ConsumerWidget {
-  final RequestTypeEntity selectedRequest;
-  final TextEditingController instructionsController;
-  final TextEditingController observationsController;
   final int enterpriseCode;
+  final VoidCallback calculatePrices;
+  final VoidCallback saveSaleRequest;
   const TotalCalculateAndSave({
     super.key,
-    required this.selectedRequest,
-    required this.instructionsController,
-    required this.observationsController,
     required this.enterpriseCode,
+    required this.calculatePrices,
+    required this.saveSaleRequest,
   });
 
   @override
@@ -110,16 +108,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                                 content:
                                     'Ao calcular os preços, serão obtidos os preços calculados pelo BS de acordo com promoções, negociações de vendas, oferta, atacado de acordo com a quantidade mínima, etc'
                                         .hardcoded,
-                                onOkPressed: () {
-                                  ref
-                                      .read(
-                                        processCartControllerProvider.notifier,
-                                      )
-                                      .process(
-                                        enterpriseCode: enterpriseCode,
-                                        requestTypeCode: selectedRequest.Code,
-                                      );
-                                },
+                                onOkPressed: calculatePrices,
                               );
                             },
                           ),
@@ -146,22 +135,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                                         : null,
                                     defaultActionText: 'Salvar'.hardcoded,
                                     cancelActionText: 'Cancelar'.hardcoded,
-                                    onOkPressed: () {
-                                      ref
-                                          .read(
-                                            saveSaleRequestControllerProvider
-                                                .notifier,
-                                          )
-                                          .save(
-                                            enterpriseCode: enterpriseCode,
-                                            requestTypeCode:
-                                                selectedRequest.Code,
-                                            instructions:
-                                                instructionsController.text,
-                                            observations:
-                                                observationsController.text,
-                                          );
-                                    },
+                                    onOkPressed: saveSaleRequest,
                                   );
                                 },
                         ),

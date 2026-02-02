@@ -130,6 +130,26 @@ class _CartPageState extends ConsumerState<CartPage>
     });
   }
 
+  void calculatePrices() {
+    ref
+        .read(processCartControllerProvider.notifier)
+        .process(
+          enterpriseCode: widget.enterpriseCode,
+          requestTypeCode: widget.selectedRequest.Code,
+        );
+  }
+
+  void saveSaleRequest() {
+    ref
+        .read(saveSaleRequestControllerProvider.notifier)
+        .save(
+          enterpriseCode: widget.enterpriseCode,
+          requestTypeCode: widget.selectedRequest.Code,
+          instructions: instructionsController.text,
+          observations: observationsController.text,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(processCartControllerProvider, (p, n) {
@@ -211,7 +231,6 @@ class _CartPageState extends ConsumerState<CartPage>
                           final keyboardIsOpen = ref.watch(
                             keyboardVisibilityStateControllerProvider,
                           );
-                          //TODO fix when tap the button after close the keyboard
                           if (!keyboardIsOpen) {
                             return const SliverToBoxAdapter(
                               child: SizedBox.shrink(),
@@ -228,11 +247,8 @@ class _CartPageState extends ConsumerState<CartPage>
                               return SliverToBoxAdapter(
                                 child: TotalCalculateAndSave(
                                   enterpriseCode: widget.enterpriseCode,
-                                  selectedRequest: widget.selectedRequest,
-                                  instructionsController:
-                                      instructionsController,
-                                  observationsController:
-                                      observationsController,
+                                  saveSaleRequest: saveSaleRequest,
+                                  calculatePrices: calculatePrices,
                                 ),
                               );
                             },
@@ -258,9 +274,8 @@ class _CartPageState extends ConsumerState<CartPage>
 
                 return TotalCalculateAndSave(
                   enterpriseCode: widget.enterpriseCode,
-                  selectedRequest: widget.selectedRequest,
-                  instructionsController: instructionsController,
-                  observationsController: observationsController,
+                  saveSaleRequest: saveSaleRequest,
+                  calculatePrices: calculatePrices,
                 );
               },
             ),
