@@ -27,6 +27,8 @@ class QuantityButtonsAndField extends ConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
@@ -120,6 +122,9 @@ class QuantityButtonsAndField extends ConsumerWidget {
                       controller: quantityController,
                       labelText: 'Quantidade'.hardcoded,
                       hintText: 'Quantidade'.hardcoded,
+                      autovalidateMode: isIOS
+                          ? null
+                          : AutovalidateMode.onUserInteraction,
                       onTap: () {
                         if (quantityFocusNode.hasFocus) return;
                         quantityController.selection = TextSelection(
@@ -129,7 +134,10 @@ class QuantityButtonsAndField extends ConsumerWidget {
                       },
                       validator: FormValidators.compose([
                         NonEmptyValidator(),
-                        NumberValidator(allowDecimal: true),
+                        NumberValidator(
+                          allowDecimal: true,
+                          maxDecimalHouses: 3,
+                        ),
                       ]),
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
