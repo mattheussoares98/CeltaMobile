@@ -38,12 +38,14 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
   Widget build(BuildContext context) {
     final pages = [
       IdentificationPage(enterpriseCode: widget.enterpriseCode),
-      const EnterprisesPage(),
-      const ProductsPage(),
+      EnterprisesPage(enterpriseCode: widget.enterpriseCode),
+      ProductsPage(enterpriseCode: widget.enterpriseCode),
       ConfirmationPage(enterpriseCode: widget.enterpriseCode),
     ];
 
-    ref.observeLoading([insertBuyRequestControllerProvider]);
+    ref.observeLoading([
+      insertBuyRequestControllerProvider(widget.enterpriseCode),
+    ]);
 
     return Scaffold(
       appBar: AppBar(
@@ -56,12 +58,14 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
                 children: [
                   Text(
                     appBarTitles[ref.watch(
-                      uiStateControllerProvider.select(
-                        (s) => s.value?.currentPageIndex ?? 0,
-                      ),
+                      uiStateControllerProvider(
+                        widget.enterpriseCode,
+                      ).select((s) => s.value?.currentPageIndex ?? 0),
                     )],
                   ),
-                  const LastSavedRequestsNumbers(),
+                  LastSavedRequestsNumbers(
+                    enterpriseCode: widget.enterpriseCode,
+                  ),
                 ],
               );
             },
@@ -70,24 +74,27 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         actions: [
           if (MediaQuery.sizeOf(context).width > Breakpoint.desktop) ...[],
-          ClearRequestButton(observationsController: observationsController),
+          ClearRequestButton(
+            observationsController: observationsController,
+            enterpriseCode: widget.enterpriseCode,
+          ),
           gapW12,
-          const CartPriceIcon(),
+          CartPriceIcon(enterpriseCode: widget.enterpriseCode),
         ],
       ),
       body: Consumer(
         builder: (_, ref, _) {
           return IndexedStack(
             index: ref.watch(
-              uiStateControllerProvider.select(
-                (s) => s.value?.currentPageIndex ?? 0,
-              ),
+              uiStateControllerProvider(
+                widget.enterpriseCode,
+              ).select((s) => s.value?.currentPageIndex ?? 0),
             ),
             children: pages,
           );
         },
       ),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(enterpriseCode: widget.enterpriseCode),
     );
   }
 }

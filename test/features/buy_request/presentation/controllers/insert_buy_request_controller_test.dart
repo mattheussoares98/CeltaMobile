@@ -22,7 +22,7 @@ class FakePendingBuyRequest extends PendingBuyRequestStateController {
   bool _clearedState = false;
 
   @override
-  Future<PendingBuyRequestEntity> build() async {
+  Future<PendingBuyRequestEntity> build(int enterpriseCode) async {
     if (requestToReturn == null) {
       throw AppException('Pedido pendente inválido.');
     }
@@ -75,6 +75,7 @@ void main() {
   late PendingBuyRequestEntity fakePendingRequest;
   late String fakeObservations;
   late String fakeLastSavedRequestNumber;
+  late int enterpriseCode;
 
   setUpAll(() {
     registerFallbackValue(<BuyRequestProductItemEntity>[]);
@@ -88,6 +89,7 @@ void main() {
     fakePendingRequest = EntityFactory.makePendingBuyRequestEntity();
     fakeObservations = faker.lorem.sentence();
     fakeLastSavedRequestNumber = faker.lorem.word();
+    enterpriseCode = faker.randomGenerator.integer(100);
   });
 
   ProviderContainer makeProviderContainer({
@@ -103,7 +105,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        pendingBuyRequestStateControllerProvider.overrideWith(
+        pendingBuyRequestStateControllerProvider(enterpriseCode).overrideWith(
           () =>
               pendingBuyRequestStateController ??
               FakePendingBuyRequest(pendingRequest),
@@ -138,17 +140,19 @@ void main() {
           pendingRequest: fakePendingRequest,
         );
         addTearDown(container.dispose);
-        await container.read(insertBuyRequestControllerProvider.future);
+        await container.read(
+          insertBuyRequestControllerProvider(enterpriseCode).future,
+        );
 
         final states = <AsyncValue<void>>[];
         container.listen(
-          insertBuyRequestControllerProvider,
+          insertBuyRequestControllerProvider(enterpriseCode),
           (_, next) => states.add(next),
         );
 
         // ACT: Call the 'insert' method, not read the provider's future
         bool succeeds = await container
-            .read(insertBuyRequestControllerProvider.notifier)
+            .read(insertBuyRequestControllerProvider(enterpriseCode).notifier)
             .insert(fakeObservations);
         expect(succeeds, isTrue);
 
@@ -178,17 +182,19 @@ void main() {
         pendingRequest: fakePendingRequest,
       );
       addTearDown(container.dispose);
-      await container.read(insertBuyRequestControllerProvider.future);
+      await container.read(
+        insertBuyRequestControllerProvider(enterpriseCode).future,
+      );
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        insertBuyRequestControllerProvider,
+        insertBuyRequestControllerProvider(enterpriseCode),
         (_, next) => states.add(next),
       );
 
       // ACT
       final succeeds = await container
-          .read(insertBuyRequestControllerProvider.notifier)
+          .read(insertBuyRequestControllerProvider(enterpriseCode).notifier)
           .insert(fakeObservations);
       expect(succeeds, isFalse);
 
@@ -205,17 +211,19 @@ void main() {
           pendingRequest: null,
         );
         addTearDown(container.dispose);
-        await container.read(insertBuyRequestControllerProvider.future);
+        await container.read(
+          insertBuyRequestControllerProvider(enterpriseCode).future,
+        );
 
         final states = <AsyncValue<void>>[];
         container.listen(
-          insertBuyRequestControllerProvider,
+          insertBuyRequestControllerProvider(enterpriseCode),
           (_, next) => states.add(next),
         );
 
         // ACT
         final succeeds = await container
-            .read(insertBuyRequestControllerProvider.notifier)
+            .read(insertBuyRequestControllerProvider(enterpriseCode).notifier)
             .insert(fakeObservations);
         expect(succeeds, isFalse);
 
@@ -250,7 +258,7 @@ void main() {
 
         // ACT
         final succeeds = await container
-            .read(insertBuyRequestControllerProvider.notifier)
+            .read(insertBuyRequestControllerProvider(enterpriseCode).notifier)
             .insert(fakeObservations);
         expect(succeeds, isTrue);
 

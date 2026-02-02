@@ -8,14 +8,15 @@ import '../../../../../utils/utils.dart';
 import '../../controllers/controllers.dart';
 
 class LastSavedRequestsNumbers extends ConsumerWidget {
-  const LastSavedRequestsNumbers({super.key});
+  final int enterpriseCode;
+  const LastSavedRequestsNumbers({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final lastSavedRequestNumber = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.lastSavedRequestNumber,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.lastSavedRequestNumber),
     );
 
     if (lastSavedRequestNumber == null) {

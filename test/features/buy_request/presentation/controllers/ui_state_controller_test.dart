@@ -7,6 +7,7 @@ import 'package:celta_inventario/core/presentation/controllers/user_session/user
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/models/models.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -18,7 +19,7 @@ class FakePendingBuyRequest extends PendingBuyRequestStateController {
   FakePendingBuyRequest(this.requestToReturn);
 
   @override
-  Future<PendingBuyRequestEntity> build() async {
+  Future<PendingBuyRequestEntity> build(int enterpriseCode) async {
     return requestToReturn;
   }
 }
@@ -28,7 +29,10 @@ class FakeSupplierStateController extends SupplierStateController {
   FakeSupplierStateController(this.fakeSuppliers);
 
   @override
-  FutureOr<List<SupplierEntity>?> build(SearchSupplierType searchType) async {
+  FutureOr<List<SupplierEntity>?> build(
+    SearchSupplierType searchType,
+    int enterpriseCode,
+  ) async {
     return fakeSuppliers;
   }
 }
@@ -37,6 +41,7 @@ void main() {
   late List<SupplierEntity> fakeSuppliers;
   late PendingBuyRequestEntity fakePendingRequest;
   late UserSessionModel fakeSession;
+  late int enterpriseCode;
 
   setUpAll(() {
     registerFallbackValue(SearchSupplierType.buyRequest);
@@ -57,6 +62,7 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    enterpriseCode = faker.randomGenerator.integer(100);
   });
 
   ProviderContainer makeProviderContainer({
@@ -70,9 +76,10 @@ void main() {
         // Overriding the supplier list dependency
         supplierStateControllerProvider(
           SearchSupplierType.buyRequest,
+          enterpriseCode,
         ).overrideWith(() => FakeSupplierStateController(suppliers)),
         // Overriding the pending request dependency
-        pendingBuyRequestStateControllerProvider.overrideWith(
+        pendingBuyRequestStateControllerProvider(enterpriseCode).overrideWith(
           () => FakePendingBuyRequest(pendingRequest ?? fakePendingRequest),
         ),
       ],
@@ -91,7 +98,9 @@ void main() {
         addTearDown(container.dispose);
 
         // ACT
-        final result = await container.read(uiStateControllerProvider.future);
+        final result = await container.read(
+          uiStateControllerProvider(enterpriseCode).future,
+        );
 
         // ASSERT
         // The result should contain the 2 from the list + 1 from the pending request
@@ -121,7 +130,9 @@ void main() {
         addTearDown(container.dispose);
 
         // ACT
-        final result = await container.read(uiStateControllerProvider.future);
+        final result = await container.read(
+          uiStateControllerProvider(enterpriseCode).future,
+        );
 
         // ASSERT
         // Length should remain 2 because the supplier code matched
@@ -137,16 +148,18 @@ void main() {
       addTearDown(container.dispose);
 
       // Wait for initial build to settle
-      await container.read(uiStateControllerProvider.future);
+      await container.read(uiStateControllerProvider(enterpriseCode).future);
 
       final states = <AsyncValue<UiStateModel>>[];
       container.listen(
-        uiStateControllerProvider,
+        uiStateControllerProvider(enterpriseCode),
         (_, next) => states.add(next),
       );
 
       // ACT
-      container.read(uiStateControllerProvider.notifier).updatePageIndex(2);
+      container
+          .read(uiStateControllerProvider(enterpriseCode).notifier)
+          .updatePageIndex(2);
 
       // ASSERT
       expect(states.last.value?.currentPageIndex, 2);
@@ -161,14 +174,19 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
 
-        await container.read(uiStateControllerProvider.future);
+        await container.read(uiStateControllerProvider(enterpriseCode).future);
 
-        final notifier = container.read(uiStateControllerProvider.notifier);
+        final notifier = container.read(
+          uiStateControllerProvider(enterpriseCode).notifier,
+        );
 
         // ACT 1: Select an index
         notifier.updateSelectedProductIndex(5);
         expect(
-          container.read(uiStateControllerProvider).value?.selectedProductIndex,
+          container
+              .read(uiStateControllerProvider(enterpriseCode))
+              .value
+              ?.selectedProductIndex,
           5,
         );
 
@@ -177,7 +195,10 @@ void main() {
 
         // ASSERT
         expect(
-          container.read(uiStateControllerProvider).value?.selectedProductIndex,
+          container
+              .read(uiStateControllerProvider(enterpriseCode))
+              .value
+              ?.selectedProductIndex,
           isNull,
         );
       },
@@ -189,8 +210,10 @@ void main() {
         // ARRANGE
         final container = makeProviderContainer();
         addTearDown(container.dispose);
-        await container.read(uiStateControllerProvider.future);
-        final notifier = container.read(uiStateControllerProvider.notifier);
+        await container.read(uiStateControllerProvider(enterpriseCode).future);
+        final notifier = container.read(
+          uiStateControllerProvider(enterpriseCode).notifier,
+        );
 
         // ACT
         notifier.updateSelectedProductIndex(1);
@@ -198,7 +221,10 @@ void main() {
 
         // ASSERT
         expect(
-          container.read(uiStateControllerProvider).value?.selectedProductIndex,
+          container
+              .read(uiStateControllerProvider(enterpriseCode))
+              .value
+              ?.selectedProductIndex,
           2,
         );
       },
@@ -212,15 +238,17 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
 
-        await container.read(uiStateControllerProvider.future);
+        await container.read(uiStateControllerProvider(enterpriseCode).future);
 
-        final notifier = container.read(uiStateControllerProvider.notifier);
+        final notifier = container.read(
+          uiStateControllerProvider(enterpriseCode).notifier,
+        );
 
         // ACT 1: Select an index
         notifier.updateSelectedCartProductIndex(5);
         expect(
           container
-              .read(uiStateControllerProvider)
+              .read(uiStateControllerProvider(enterpriseCode))
               .value
               ?.selectedCartProductIndex,
           5,
@@ -232,7 +260,7 @@ void main() {
         // ASSERT
         expect(
           container
-              .read(uiStateControllerProvider)
+              .read(uiStateControllerProvider(enterpriseCode))
               .value
               ?.selectedCartProductIndex,
           isNull,
@@ -246,8 +274,10 @@ void main() {
         // ARRANGE
         final container = makeProviderContainer();
         addTearDown(container.dispose);
-        await container.read(uiStateControllerProvider.future);
-        final notifier = container.read(uiStateControllerProvider.notifier);
+        await container.read(uiStateControllerProvider(enterpriseCode).future);
+        final notifier = container.read(
+          uiStateControllerProvider(enterpriseCode).notifier,
+        );
 
         // ACT
         notifier.updateSelectedCartProductIndex(1);
@@ -256,7 +286,7 @@ void main() {
         // ASSERT
         expect(
           container
-              .read(uiStateControllerProvider)
+              .read(uiStateControllerProvider(enterpriseCode))
               .value
               ?.selectedCartProductIndex,
           2,

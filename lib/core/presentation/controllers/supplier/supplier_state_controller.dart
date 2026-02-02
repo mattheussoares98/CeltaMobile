@@ -10,11 +10,14 @@ part 'supplier_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class SupplierStateController extends _$SupplierStateController {
   @override
-  FutureOr<List<SupplierEntity>?> build(SearchSupplierType searchType) async {
+  FutureOr<List<SupplierEntity>?> build(
+    SearchSupplierType searchType,
+    int enterpriseCode,
+  ) async {
     final selectedSupplier = await ref.read(
-      pendingBuyRequestStateControllerProvider.selectAsync(
-        (s) => s.selectedSupplier,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).selectAsync((s) => s.selectedSupplier),
     );
     return [?selectedSupplier];
   }

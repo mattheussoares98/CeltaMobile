@@ -10,14 +10,20 @@ class LocalPendingBuyRequestRepositoryImpl
   LocalPendingBuyRequestRepositoryImpl(this.datasource);
 
   @override
-  Future<PendingBuyRequestEntity?> load() async {
-    final response = await datasource.load();
+  Future<PendingBuyRequestEntity?> load(int enterpriseCode) async {
+    final response = await datasource.load(enterpriseCode);
 
     return response?.toEntity();
   }
 
   @override
-  Future<void> update(PendingBuyRequestEntity entity) async {
-    await datasource.update(PendingBuyRequestModel.fromEntity(entity));
+  Future<void> update(
+    PendingBuyRequestEntity entity,
+    int enterpriseCode,
+  ) async {
+    await datasource.update(
+      PendingBuyRequestModel.fromEntity(entity),
+      enterpriseCode,
+    );
   }
 }

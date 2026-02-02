@@ -10,14 +10,19 @@ import '../../../controllers/controllers.dart';
 
 class FloatingSaveButton extends ConsumerWidget {
   final TextEditingController observationsController;
-  const FloatingSaveButton({super.key, required this.observationsController});
+  final int enterpriseCode;
+  const FloatingSaveButton({
+    super.key,
+    required this.observationsController,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartIsEmpty = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.products?.isEmpty ?? true,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.products?.isEmpty ?? true),
     );
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
@@ -39,7 +44,11 @@ class FloatingSaveButton extends ConsumerWidget {
                   onOkPressed: () async {
                     FocusManager.instance.primaryFocus?.unfocus();
                     final succeeds = await ref
-                        .read(insertBuyRequestControllerProvider.notifier)
+                        .read(
+                          insertBuyRequestControllerProvider(
+                            enterpriseCode,
+                          ).notifier,
+                        )
                         .insert(observationsController.text);
 
                     if (succeeds) {

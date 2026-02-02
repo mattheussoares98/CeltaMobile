@@ -10,10 +10,10 @@ part 'enterprises_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class EnterprisesStateController extends _$EnterprisesStateController {
   @override
-  FutureOr<List<EnterpriseEntity>> build() async {
+  FutureOr<List<EnterpriseEntity>> build(int enterpriseCode) async {
     final repository = ref.read(soapLoadEnterpriseByFiltersRepositoryProvider);
     final pending = await ref.read(
-      pendingBuyRequestStateControllerProvider.future,
+      pendingBuyRequestStateControllerProvider(enterpriseCode).future,
     );
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 

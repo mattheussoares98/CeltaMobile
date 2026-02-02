@@ -8,21 +8,23 @@ import '../../../controllers/controllers.dart';
 
 class SupplierItem extends ConsumerWidget {
   final SupplierEntity supplier;
-  final bool? enabled;
+  final bool? enabled; //TODO remove this param and treat using if onTap is null
   final VoidCallback? onTap;
+  final int enterpriseCode;
   const SupplierItem({
     super.key,
     required this.supplier,
     required this.onTap,
     required this.enabled,
+    required this.enterpriseCode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedSupplier = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.selectedSupplier,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.selectedSupplier),
     );
 
     return RepaintBoundary(

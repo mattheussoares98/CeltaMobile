@@ -23,13 +23,15 @@ class IdentificationPage extends ConsumerWidget {
                   enterpriseCode: enterpriseCode,
                 ),
                 gapH8,
-                const SupplierSearcher(),
+                SupplierSearcher(enterpriseCode: enterpriseCode),
               ],
             ),
-            const Expanded(
+            Expanded(
               child: CustomScrollView(
-                physics: ClampingScrollPhysics(),
-                slivers: [SupplierItems(isSliver: true)],
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  SupplierItems(isSliver: true, enterpriseCode: enterpriseCode),
+                ],
               ),
             ),
           ],

@@ -6,6 +6,7 @@ import 'package:celta_inventario/features/buy_request/domain/entities/entities.d
 import 'package:celta_inventario/features/buy_request/domain/repository/repository.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/providers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,7 +18,7 @@ class FakePendingBuyRequestStateController
   final PendingBuyRequestEntity? pendingRequest;
   FakePendingBuyRequestStateController(this.pendingRequest);
   @override
-  Future<PendingBuyRequestEntity> build() async {
+  Future<PendingBuyRequestEntity> build(int enterpriseCode) async {
     if (pendingRequest == null) throw AppException('Pedido pendente inválido.');
     return pendingRequest!;
   }
@@ -31,6 +32,7 @@ void main() {
   late UserSessionModel fakeSession;
   late PendingBuyRequestEntity fakePendingRequest;
   late List<EnterpriseEntity> fakeEnterprises;
+  late int enterpriseCode;
 
   setUp(() {
     mockRepository = MockSoapLoadEnterpriseByFiltersRepository();
@@ -39,6 +41,7 @@ void main() {
     );
     fakePendingRequest = EntityFactory.makePendingBuyRequestEntity();
     fakeEnterprises = [EntityFactory.makeEnterpriseEntity()];
+    enterpriseCode = faker.randomGenerator.integer(100);
   });
 
   ProviderContainer makeProviderContainer({
@@ -53,7 +56,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        pendingBuyRequestStateControllerProvider.overrideWith(
+        pendingBuyRequestStateControllerProvider(enterpriseCode).overrideWith(
           () => FakePendingBuyRequestStateController(pendingRequest),
         ),
       ],
@@ -82,7 +85,7 @@ void main() {
 
         // ACT: Wait for the build method to complete
         final result = await container.read(
-          enterprisesStateControllerProvider.future,
+          enterprisesStateControllerProvider(enterpriseCode).future,
         );
 
         // ASSERT
@@ -108,7 +111,9 @@ void main() {
 
       // ACT & ASSERT: Expect the future to throw an AppException
       await expectLater(
-        container.read(enterprisesStateControllerProvider.future),
+        container.read(
+          enterprisesStateControllerProvider(enterpriseCode).future,
+        ),
         throwsA(isA<AppException>()),
       );
 
@@ -133,7 +138,9 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(enterprisesStateControllerProvider.future),
+        container.read(
+          enterprisesStateControllerProvider(enterpriseCode).future,
+        ),
         throwsA(isA<AppException>()),
       );
 

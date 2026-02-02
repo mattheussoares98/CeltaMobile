@@ -25,7 +25,7 @@ class FakePendingBuyRequestStateController
 
   // 2. Override the build method to return your fake data instantly
   @override
-  FutureOr<PendingBuyRequestEntity> build() async {
+  FutureOr<PendingBuyRequestEntity> build(int enterpriseCode) async {
     return dataToReturn;
   }
 }
@@ -36,6 +36,7 @@ void main() {
   late List<SupplierEntity> fakeSuppliers;
   late String fakeSearchValue;
   late PendingBuyRequestEntity fakePendingBuyRequest;
+  late int enterpriseCode;
 
   const searchType = SearchSupplierType.buyQuotation;
 
@@ -51,6 +52,7 @@ void main() {
     fakeSuppliers = [EntityFactory.makeSupplierEntity()];
     fakeSearchValue = faker.company.name();
     fakePendingBuyRequest = EntityFactory.makePendingBuyRequestEntity();
+    enterpriseCode = faker.randomGenerator.integer(100);
   });
 
   ProviderContainer makeProviderContainer({
@@ -63,7 +65,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        pendingBuyRequestStateControllerProvider.overrideWith(
+        pendingBuyRequestStateControllerProvider(enterpriseCode).overrideWith(
           () => FakePendingBuyRequestStateController(
             pendingBuyRequest ?? fakePendingBuyRequest,
           ),
@@ -87,7 +89,7 @@ void main() {
 
         // Wait for the initial build to complete (it returns null)
         final state = await container.read(
-          supplierStateControllerProvider(searchType).future,
+          supplierStateControllerProvider(searchType, enterpriseCode).future,
         );
 
         expect(state, []);
@@ -102,7 +104,7 @@ void main() {
 
         // Wait for the initial build to complete (it returns null)
         final state = await container.read(
-          supplierStateControllerProvider(searchType).future,
+          supplierStateControllerProvider(searchType, enterpriseCode).future,
         );
 
         expect(state, [fakePendingBuyRequest.selectedSupplier!]);
@@ -129,18 +131,23 @@ void main() {
 
         // Wait for the initial build to complete (it returns null)
         await container.read(
-          supplierStateControllerProvider(searchType).future,
+          supplierStateControllerProvider(searchType, enterpriseCode).future,
         );
 
         final states = <AsyncValue<List<SupplierEntity>?>>[];
         container.listen(
-          supplierStateControllerProvider(searchType),
+          supplierStateControllerProvider(searchType, enterpriseCode),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
-            .read(supplierStateControllerProvider(searchType).notifier)
+            .read(
+              supplierStateControllerProvider(
+                searchType,
+                enterpriseCode,
+              ).notifier,
+            )
             .load(fakeSearchValue);
 
         // ASSERT
@@ -163,17 +170,24 @@ void main() {
       addTearDown(container.dispose);
 
       // Wait for the initial build
-      await container.read(supplierStateControllerProvider(searchType).future);
+      await container.read(
+        supplierStateControllerProvider(searchType, enterpriseCode).future,
+      );
 
       final states = <AsyncValue<List<SupplierEntity>?>>[];
       container.listen(
-        supplierStateControllerProvider(searchType),
+        supplierStateControllerProvider(searchType, enterpriseCode),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(supplierStateControllerProvider(searchType).notifier)
+          .read(
+            supplierStateControllerProvider(
+              searchType,
+              enterpriseCode,
+            ).notifier,
+          )
           .load(fakeSearchValue);
 
       // ASSERT

@@ -10,7 +10,8 @@ import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class ProductsItems extends ConsumerStatefulWidget {
-  const ProductsItems({super.key});
+  final int enterpriseCode;
+  const ProductsItems({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
@@ -46,7 +47,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     ref
-        .read(uiStateControllerProvider.notifier)
+        .read(uiStateControllerProvider(widget.enterpriseCode).notifier)
         .updateSelectedProductIndex(index);
 
     if ((product.PriceCost!.LiquidCost ?? 0) > 0) {
@@ -64,7 +65,9 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
   void onDelete(ProductEntity product) {
     final products = ref.read(
-      pendingBuyRequestStateControllerProvider.select((s) => s.value?.products),
+      pendingBuyRequestStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.value?.products),
     );
     final updatedProducts = {...?products};
     updatedProducts.removeWhere((key, value) {
@@ -76,14 +79,18 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     });
 
     ref
-        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .read(
+          pendingBuyRequestStateControllerProvider(
+            widget.enterpriseCode,
+          ).notifier,
+        )
         .updatePending(products: updatedProducts);
   }
 
   @override
   Widget build(BuildContext context) {
     final selectedEnterprisesCodes = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
+      pendingBuyRequestStateControllerProvider(widget.enterpriseCode).select(
         (s) => s.value?.selectedEnterprises?.map((e) => e.Code).toSet() ?? {},
       ),
     );
@@ -125,6 +132,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
               costController: costController,
               quantityFocusNode: quantityFocusNode,
               costFocusNode: costFocusNode,
+              enterpriseCode: widget.enterpriseCode,
             );
           },
         );
@@ -144,6 +152,7 @@ class _ProductItem extends ConsumerWidget {
   final TextEditingController costController;
   final FocusNode quantityFocusNode;
   final FocusNode costFocusNode;
+  final int enterpriseCode;
 
   const _ProductItem({
     super.key,
@@ -157,18 +166,19 @@ class _ProductItem extends ConsumerWidget {
     required this.costController,
     required this.quantityFocusNode,
     required this.costFocusNode,
+    required this.enterpriseCode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isSelected = ref.watch(
-      uiStateControllerProvider.select(
-        (s) => s.value?.selectedProductIndex == index,
-      ),
+      uiStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.selectedProductIndex == index),
     );
 
     final insertedItem = ref.watch(
-      pendingBuyRequestStateControllerProvider.select((s) {
+      pendingBuyRequestStateControllerProvider(enterpriseCode).select((s) {
         final key = ProductKey(
           enterpriseCode: product.EnterpriseCode!,
           productPackingCode: product.ProductPackingCode!,
@@ -185,7 +195,10 @@ class _ProductItem extends ConsumerWidget {
         showDropIcon: true,
         isSelected: isSelected,
         onDelete: insertedItem == null ? null : onDelete,
-        itemBeforeProductName: EnterpriseCodeAndProductName(product: product),
+        itemBeforeProductName: EnterpriseCodeAndProductName(
+          product: product,
+          enterpriseCode: enterpriseCode,
+        ),
         cartItemSummary: insertedItem == null
             ? null
             : CartItemSummary(
@@ -203,6 +216,7 @@ class _ProductItem extends ConsumerWidget {
                 quantityFocusNode: quantityFocusNode,
                 costFocusNode: costFocusNode,
                 product: product,
+                enterpriseCode: enterpriseCode,
               )
             : null,
       ),

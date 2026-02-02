@@ -7,14 +7,15 @@ import '../../components/components.dart';
 import 'components.dart';
 
 class InformedProductsQuantity extends ConsumerWidget {
-  const InformedProductsQuantity({super.key});
+  final int enterpriseCode;
+  const InformedProductsQuantity({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final products = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.products?.values,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.products?.values),
     );
 
     if (products?.isEmpty ?? true) {

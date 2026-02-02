@@ -7,19 +7,22 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
-  const BottomNavBar({super.key});
+  final int enterpriseCode;
+  const BottomNavBar({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(
-      uiStateControllerProvider.select((s) => s.value?.currentPageIndex ?? 0),
+      uiStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.currentPageIndex ?? 0),
     );
 
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) async {
         final pendingValue = await ref.read(
-          pendingBuyRequestStateControllerProvider.future,
+          pendingBuyRequestStateControllerProvider(enterpriseCode).future,
         );
 
         bool buyerIsSelected = pendingValue.selectedBuyer != null;
@@ -63,7 +66,9 @@ class BottomNavBar extends ConsumerWidget {
           return;
         }
 
-        ref.read(uiStateControllerProvider.notifier).updatePageIndex(index);
+        ref
+            .read(uiStateControllerProvider(enterpriseCode).notifier)
+            .updatePageIndex(index);
       },
       items: [
         BottomNavigationBarItem(
@@ -71,7 +76,7 @@ class BottomNavBar extends ConsumerWidget {
           icon: Consumer(
             builder: (_, ref, _) {
               final isValid = ref.watch(
-                pendingBuyRequestStateControllerProvider.select(
+                pendingBuyRequestStateControllerProvider(enterpriseCode).select(
                   (s) =>
                       (s.value?.selectedBuyer != null) &&
                       (s.value?.selectedRequestType != null) &&
@@ -93,9 +98,9 @@ class BottomNavBar extends ConsumerWidget {
             builder: (_, ref, _) {
               return QuantityBadge(
                 quantity: ref.watch(
-                  pendingBuyRequestStateControllerProvider.select(
-                    (s) => s.value?.selectedEnterprises?.length,
-                  ),
+                  pendingBuyRequestStateControllerProvider(
+                    enterpriseCode,
+                  ).select((s) => s.value?.selectedEnterprises?.length),
                 ),
                 materialIcon: Icons.business,
                 cupertinoIcon: CupertinoIcons.building_2_fill,
@@ -110,9 +115,9 @@ class BottomNavBar extends ConsumerWidget {
             builder: (_, ref, _) {
               return QuantityBadge(
                 quantity: ref.watch(
-                  pendingBuyRequestStateControllerProvider.select(
-                    (s) => s.value?.products?.length,
-                  ),
+                  pendingBuyRequestStateControllerProvider(
+                    enterpriseCode,
+                  ).select((s) => s.value?.products?.length),
                 ),
                 materialIcon: Icons.shopping_cart,
                 cupertinoIcon: CupertinoIcons.shopping_cart,
@@ -126,7 +131,7 @@ class BottomNavBar extends ConsumerWidget {
           icon: Consumer(
             builder: (_, ref, _) {
               final isValid = ref.watch(
-                pendingBuyRequestStateControllerProvider.select(
+                pendingBuyRequestStateControllerProvider(enterpriseCode).select(
                   (s) =>
                       (s.value?.selectedBuyer != null) &&
                       (s.value?.selectedRequestType != null) &&

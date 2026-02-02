@@ -45,7 +45,12 @@ class _DesktopView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: BuyersDropdown(enabled: enabled)),
+        Expanded(
+          child: BuyersDropdown(
+            enabled: enabled,
+            enterpriseCode: enterpriseCode,
+          ),
+        ),
         gapW8,
         Expanded(
           child: RequestTypeDropdown(
@@ -71,7 +76,7 @@ class _MobileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BuyersDropdown(enabled: enabled),
+        BuyersDropdown(enabled: enabled, enterpriseCode: enterpriseCode),
         gapH8,
         RequestTypeDropdown(enabled: enabled, enterpriseCode: enterpriseCode),
       ],

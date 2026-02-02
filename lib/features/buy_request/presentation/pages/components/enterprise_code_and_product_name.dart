@@ -7,7 +7,12 @@ import '../../controllers/controllers.dart';
 
 class EnterpriseCodeAndProductName extends ConsumerWidget {
   final ProductEntity product;
-  const EnterpriseCodeAndProductName({super.key, required this.product});
+  final int enterpriseCode;
+  const EnterpriseCodeAndProductName({
+    super.key,
+    required this.product,
+    required this.enterpriseCode,
+  });
 
   static const List<Color> _enterpriseColors = [
     Colors.blue,
@@ -27,7 +32,9 @@ class EnterpriseCodeAndProductName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+    final pendingAsync = ref.watch(
+      pendingBuyRequestStateControllerProvider(enterpriseCode),
+    );
     final correspondentEnterprise = pendingAsync.value?.selectedEnterprises
         ?.firstWhere((e) => e.Code == product.EnterpriseCode);
 

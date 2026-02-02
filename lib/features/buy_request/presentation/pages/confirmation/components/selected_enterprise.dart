@@ -6,14 +6,15 @@ import '../../../controllers/controllers.dart';
 import '../../enterprises/components/components.dart';
 
 class SelectedEnterprise extends ConsumerWidget {
-  const SelectedEnterprise({super.key});
+  final int enterpriseCode;
+  const SelectedEnterprise({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedEnterprises = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.selectedEnterprises,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.selectedEnterprises),
     );
 
     return ResponsiveListFlow(
@@ -22,7 +23,11 @@ class SelectedEnterprise extends ConsumerWidget {
       itemBuilder: (_, index) {
         final enterprise = selectedEnterprises![index];
 
-        return EnterpriseItem(enterprise: enterprise, onTap: null);
+        return EnterpriseItem(
+          enterprise: enterprise,
+          onTap: null,
+          enterpriseCode: enterpriseCode,
+        );
       },
     );
   }

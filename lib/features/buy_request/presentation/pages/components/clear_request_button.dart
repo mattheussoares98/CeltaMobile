@@ -9,11 +9,18 @@ import '../../controllers/controllers.dart';
 
 class ClearRequestButton extends ConsumerWidget {
   final TextEditingController observationsController;
-  const ClearRequestButton({super.key, required this.observationsController});
+  final int enterpriseCode;
+  const ClearRequestButton({
+    super.key,
+    required this.observationsController,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
+    final pendingAsync = ref.watch(
+      pendingBuyRequestStateControllerProvider(enterpriseCode),
+    );
     final pendingValue = pendingAsync.value;
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
@@ -37,7 +44,11 @@ class ClearRequestButton extends ConsumerWidget {
                 defaultActionText: 'Confirmar'.hardcoded,
                 onOkPressed: () {
                   ref
-                      .read(pendingBuyRequestStateControllerProvider.notifier)
+                      .read(
+                        pendingBuyRequestStateControllerProvider(
+                          enterpriseCode,
+                        ).notifier,
+                      )
                       .clearState(null);
                   observationsController.clear();
                 },

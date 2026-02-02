@@ -1011,10 +1011,10 @@ class SoapLoadEnterpriseByFiltersDatasourceSpy extends Mock
 class LocalPendingBuyRequestDatasourceSpy extends Mock
     implements ILocalPendingBuyRequestDatasource {
   LocalPendingBuyRequestDatasourceSpy() {
-    when(() => this.update(any())).thenAnswer((_) async {});
+    when(() => this.update(any(), any())).thenAnswer((_) async {});
   }
   void mockLoad(PendingBuyRequestModel? response) {
-    when(() => this.load()).thenAnswer((_) async => response);
+    when(() => this.load(any())).thenAnswer((_) async => response);
   }
 }
 

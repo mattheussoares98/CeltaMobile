@@ -10,18 +10,23 @@ import 'components.dart';
 
 class SupplierItems extends ConsumerWidget {
   final bool isSliver;
-  const SupplierItems({super.key, required this.isSliver});
+  final int enterpriseCode;
+  const SupplierItems({
+    super.key,
+    required this.isSliver,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onTap(SupplierEntity? supplier) async {
       final selectedSupplier = ref.read(
-        pendingBuyRequestStateControllerProvider.select(
-          (s) => s.value?.selectedSupplier,
-        ),
+        pendingBuyRequestStateControllerProvider(
+          enterpriseCode,
+        ).select((s) => s.value?.selectedSupplier),
       );
       final hasSelectedEnterprisesOrProducts = await ref.read(
-        pendingBuyRequestStateControllerProvider.selectAsync(
+        pendingBuyRequestStateControllerProvider(enterpriseCode).selectAsync(
           (s) =>
               (s.selectedEnterprises?.isNotEmpty ?? false) ||
               (s.products?.isNotEmpty ?? false),
@@ -39,7 +44,11 @@ class SupplierItems extends ConsumerWidget {
                   .hardcoded,
           onOkPressed: () {
             ref
-                .read(pendingBuyRequestStateControllerProvider.notifier)
+                .read(
+                  pendingBuyRequestStateControllerProvider(
+                    enterpriseCode,
+                  ).notifier,
+                )
                 .updatePending(
                   selectedSupplier: supplier,
                   annulSelectedEnterprises: true,
@@ -50,7 +59,9 @@ class SupplierItems extends ConsumerWidget {
         );
       } else {
         ref
-            .read(pendingBuyRequestStateControllerProvider.notifier)
+            .read(
+              pendingBuyRequestStateControllerProvider(enterpriseCode).notifier,
+            )
             .updatePending(
               selectedSupplier: supplier,
               annulSelectedEnterprises: true,
@@ -63,13 +74,17 @@ class SupplierItems extends ConsumerWidget {
     return AsyncValueWidget(
       isSliver: true,
       value: ref.watch(
-        supplierStateControllerProvider(SearchSupplierType.buyRequest),
+        supplierStateControllerProvider(
+          SearchSupplierType.buyRequest,
+          enterpriseCode,
+        ),
       ),
       data: (suppliers) => _Items(
         key: const ValueKey('sliver'),
         suppliers: suppliers,
         isSliver: isSliver,
         onTap: onTap,
+        enterpriseCode: enterpriseCode,
       ),
       tryAgain: null,
     );
@@ -80,11 +95,13 @@ class _Items extends StatelessWidget {
   final List<SupplierEntity>? suppliers;
   final bool isSliver;
   final void Function(SupplierEntity? supplier) onTap;
+  final int enterpriseCode;
   const _Items({
     super.key,
     required this.suppliers,
     required this.isSliver,
     required this.onTap,
+    required this.enterpriseCode,
   });
 
   @override
@@ -100,6 +117,7 @@ class _Items extends StatelessWidget {
           supplier: supplier,
           onTap: () => onTap(supplier),
           enabled: true,
+          enterpriseCode: enterpriseCode,
         );
       },
     );

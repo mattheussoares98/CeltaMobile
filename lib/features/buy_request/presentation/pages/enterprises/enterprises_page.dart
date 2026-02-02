@@ -10,7 +10,8 @@ import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class EnterprisesPage extends ConsumerWidget {
-  const EnterprisesPage({super.key});
+  final int enterpriseCode;
+  const EnterprisesPage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,17 +34,17 @@ class EnterprisesPage extends ConsumerWidget {
       }
 
       final selectedEnterprises = ref.read(
-        pendingBuyRequestStateControllerProvider.select(
-          (s) => s.value?.selectedEnterprises,
-        ),
+        pendingBuyRequestStateControllerProvider(
+          enterpriseCode,
+        ).select((s) => s.value?.selectedEnterprises),
       );
       final updatedEnterprises = [...?selectedEnterprises];
       final Map<ProductKey, BuyRequestProductItemEntity> updatedProducts =
           Map.from(
             ref.read(
-                  pendingBuyRequestStateControllerProvider.select(
-                    (s) => s.value?.products,
-                  ),
+                  pendingBuyRequestStateControllerProvider(
+                    enterpriseCode,
+                  ).select((s) => s.value?.products),
                 ) ??
                 {},
           );
@@ -79,7 +80,9 @@ class EnterprisesPage extends ConsumerWidget {
       }
 
       ref
-          .read(pendingBuyRequestStateControllerProvider.notifier)
+          .read(
+            pendingBuyRequestStateControllerProvider(enterpriseCode).notifier,
+          )
           .updatePending(
             selectedEnterprises: updatedEnterprises,
             products: updatedProducts,
@@ -88,9 +91,9 @@ class EnterprisesPage extends ConsumerWidget {
 
     return Scaffold(
       body: AsyncValueWidget(
-        value: ref.watch(enterprisesStateControllerProvider),
+        value: ref.watch(enterprisesStateControllerProvider(enterpriseCode)),
         tryAgain: () {
-          ref.invalidate(enterprisesStateControllerProvider);
+          ref.invalidate(enterprisesStateControllerProvider(enterpriseCode));
         },
         data: (enterprises) {
           return ResponsiveListFlow(
@@ -100,6 +103,7 @@ class EnterprisesPage extends ConsumerWidget {
               return EnterpriseItem(
                 key: ValueKey(enterprise.Code),
                 enterprise: enterprise,
+                enterpriseCode: enterpriseCode,
                 onTap: () => changeSelectedEnterprise(enterprise),
               );
             },

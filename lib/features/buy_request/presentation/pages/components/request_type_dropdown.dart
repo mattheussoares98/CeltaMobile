@@ -33,7 +33,11 @@ class RequestTypeDropdown extends ConsumerWidget {
         );
       },
       data: (requests) {
-        return _RequestDropdown(requests: requests, enabled: enabled);
+        return _RequestDropdown(
+          requests: requests,
+          enabled: enabled,
+          enterpriseCode: enterpriseCode,
+        );
       },
     );
   }
@@ -42,7 +46,12 @@ class RequestTypeDropdown extends ConsumerWidget {
 class _RequestDropdown extends ConsumerWidget {
   final List<RequestTypeEntity>? requests;
   final bool enabled;
-  const _RequestDropdown({required this.requests, required this.enabled});
+  final int enterpriseCode;
+  const _RequestDropdown({
+    required this.requests,
+    required this.enabled,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,19 +63,23 @@ class _RequestDropdown extends ConsumerWidget {
         Consumer(
           builder: (_, ref, _) {
             final selectedSaleRequest = ref.watch(
-              pendingBuyRequestStateControllerProvider.select(
-                (s) => s.value?.selectedRequestType,
-              ),
+              pendingBuyRequestStateControllerProvider(
+                enterpriseCode,
+              ).select((s) => s.value?.selectedRequestType),
             );
             final hasSelectedEnterprises = ref.watch(
-              pendingBuyRequestStateControllerProvider.select(
+              pendingBuyRequestStateControllerProvider(enterpriseCode).select(
                 (s) => s.value?.selectedEnterprises?.isNotEmpty ?? false,
               ),
             );
 
             void update(RequestTypeEntity? request) {
               ref
-                  .read(pendingBuyRequestStateControllerProvider.notifier)
+                  .read(
+                    pendingBuyRequestStateControllerProvider(
+                      enterpriseCode,
+                    ).notifier,
+                  )
                   .updatePending(
                     selectedRequestType: request,
                     annulSelectedEnterprises: selectedSaleRequest != request,
@@ -90,7 +103,7 @@ class _RequestDropdown extends ConsumerWidget {
               items: requests
                   ?.map(
                     (e) => DropdownMenuItem(
-                      key: ValueKey(e.Code),
+                      key: ValueKey(e),
                       value: e,
                       child: Center(child: Text(e.Name)),
                     ),

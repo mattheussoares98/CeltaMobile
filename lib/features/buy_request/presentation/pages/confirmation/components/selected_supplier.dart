@@ -9,14 +9,15 @@ import '../../identification/components/components.dart';
 import 'components.dart';
 
 class SelectedSupplier extends ConsumerWidget {
-  const SelectedSupplier({super.key});
+  final int enterpriseCode;
+  const SelectedSupplier({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedSupplier = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.selectedSupplier,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.selectedSupplier),
     );
 
     if (selectedSupplier == null) {
@@ -32,6 +33,7 @@ class SelectedSupplier extends ConsumerWidget {
             supplier: selectedSupplier,
             enabled: false,
             onTap: () {},
+            enterpriseCode: enterpriseCode,
           ),
           gapH8,
         ],

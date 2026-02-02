@@ -10,16 +10,18 @@ import '../../../controllers/controllers.dart';
 class EnterpriseItem extends ConsumerWidget {
   final EnterpriseEntity enterprise;
   final VoidCallback? onTap;
+  final int enterpriseCode;
   const EnterpriseItem({
     super.key,
     required this.enterprise,
     required this.onTap,
+    required this.enterpriseCode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final enterpriseIsSelected = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
+      pendingBuyRequestStateControllerProvider(enterpriseCode).select(
         (s) =>
             s.value?.selectedEnterprises?.any(
               (x) => x.Code == enterprise.Code,

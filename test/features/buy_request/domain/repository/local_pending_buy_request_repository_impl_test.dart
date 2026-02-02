@@ -1,6 +1,7 @@
 import 'package:celta_inventario/features/buy_request/data/models/models.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/domain/repository/repository.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -12,6 +13,7 @@ void main() {
   late LocalPendingBuyRequestDatasourceSpy datasource;
 
   late PendingBuyRequestEntity entity;
+  late int enterpriseCode;
 
   void initSut() {
     sut = LocalPendingBuyRequestRepositoryImpl(datasource);
@@ -27,6 +29,7 @@ void main() {
 
   void initEntities() {
     entity = EntityFactory.makePendingBuyRequestEntity();
+    enterpriseCode = faker.randomGenerator.integer(100);
   }
 
   setUp(() {
@@ -46,10 +49,13 @@ void main() {
 
   group('Update', () {
     test('should behave correctly on success', () async {
-      await sut.update(entity);
+      await sut.update(entity, enterpriseCode);
 
       verify(
-        () => datasource.update(PendingBuyRequestModel.fromEntity(entity)),
+        () => datasource.update(
+          PendingBuyRequestModel.fromEntity(entity),
+          enterpriseCode,
+        ),
       ).called(1);
 
       verifyNoMoreInteractions(datasource);
@@ -58,11 +64,11 @@ void main() {
 
   group('Load', () {
     test('should behave correctly on success', () async {
-      final result = await sut.load();
+      final result = await sut.load(enterpriseCode);
 
       expect(result, entity);
 
-      verify(() => datasource.load()).called(1);
+      verify(() => datasource.load(enterpriseCode)).called(1);
 
       verifyNoMoreInteractions(datasource);
     });
@@ -70,11 +76,11 @@ void main() {
     test('should return null when doesnt has local data', () async {
       datasource.mockLoad(null);
 
-      final result = await sut.load();
+      final result = await sut.load(enterpriseCode);
 
       expect(result, null);
 
-      verify(() => datasource.load()).called(1);
+      verify(() => datasource.load(enterpriseCode)).called(1);
 
       verifyNoMoreInteractions(datasource);
     });

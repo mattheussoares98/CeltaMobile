@@ -11,20 +11,23 @@ part 'ui_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class UiStateController extends _$UiStateController {
   @override
-  FutureOr<UiStateModel> build() async {
+  FutureOr<UiStateModel> build(int enterpriseCode) async {
     await ref.watch(
       userSessionProvider.future,
     ); //force update the data when do logout
     final suppliers = await ref
         .read(
-          supplierStateControllerProvider(SearchSupplierType.buyRequest).future,
+          supplierStateControllerProvider(
+            SearchSupplierType.buyRequest,
+            enterpriseCode,
+          ).future,
         )
         .then((value) {
           return [...?value];
         });
 
     final pendingAsync = await ref.read(
-      pendingBuyRequestStateControllerProvider.future,
+      pendingBuyRequestStateControllerProvider(enterpriseCode).future,
     );
 
     if (pendingAsync.selectedSupplier != null &&

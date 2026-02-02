@@ -11,7 +11,12 @@ import 'components.dart';
 
 class BuyersDropdown extends ConsumerWidget {
   final bool enabled;
-  const BuyersDropdown({super.key, this.enabled = true});
+  final int enterpriseCode;
+  const BuyersDropdown({
+    super.key,
+    this.enabled = true,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +26,11 @@ class BuyersDropdown extends ConsumerWidget {
         ref.invalidate(buyersStateControllerProvider);
       },
       data: (buyers) {
-        return _BuyersDropdown(enabled: enabled, buyers: buyers);
+        return _BuyersDropdown(
+          enabled: enabled,
+          buyers: buyers,
+          enterpriseCode: enterpriseCode,
+        );
       },
     );
   }
@@ -30,7 +39,12 @@ class BuyersDropdown extends ConsumerWidget {
 class _BuyersDropdown extends StatelessWidget {
   final bool enabled;
   final List<BuyerEntity> buyers;
-  const _BuyersDropdown({required this.enabled, required this.buyers});
+  final int enterpriseCode;
+  const _BuyersDropdown({
+    required this.enabled,
+    required this.buyers,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +56,9 @@ class _BuyersDropdown extends StatelessWidget {
         Consumer(
           builder: (_, ref, _) {
             final selectedBuyer = ref.watch(
-              pendingBuyRequestStateControllerProvider.select(
-                (s) => s.value?.selectedBuyer,
-              ),
+              pendingBuyRequestStateControllerProvider(
+                enterpriseCode,
+              ).select((s) => s.value?.selectedBuyer),
             );
 
             return DefaultSimpleDropDown<BuyerEntity?>(
@@ -52,7 +66,9 @@ class _BuyersDropdown extends StatelessWidget {
                   ? (buyer) {
                       ref
                           .read(
-                            pendingBuyRequestStateControllerProvider.notifier,
+                            pendingBuyRequestStateControllerProvider(
+                              enterpriseCode,
+                            ).notifier,
                           )
                           .updatePending(selectedBuyer: buyer);
                     }

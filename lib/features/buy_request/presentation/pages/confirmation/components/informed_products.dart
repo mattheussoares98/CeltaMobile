@@ -10,7 +10,8 @@ import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class InformedProducts extends ConsumerStatefulWidget {
-  const InformedProducts({super.key});
+  final int enterpriseCode;
+  const InformedProducts({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -36,7 +37,9 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
 
   void onDelete(ProductEntity product) {
     final products = ref.read(
-      pendingBuyRequestStateControllerProvider.select((s) => s.value?.products),
+      pendingBuyRequestStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.value?.products),
     );
 
     final updatedProducts = {...?products};
@@ -49,7 +52,11 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
     });
 
     ref
-        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .read(
+          pendingBuyRequestStateControllerProvider(
+            widget.enterpriseCode,
+          ).notifier,
+        )
         .updatePending(products: updatedProducts);
   }
 
@@ -67,7 +74,7 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
       extentOffset: quantityController.text.length,
     );
     ref
-        .read(uiStateControllerProvider.notifier)
+        .read(uiStateControllerProvider(widget.enterpriseCode).notifier)
         .updateSelectedCartProductIndex(index);
 
     FocusManager.instance.primaryFocus?.unfocus();
@@ -80,9 +87,9 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
   @override
   Widget build(BuildContext context) {
     final products = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.products?.values,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.value?.products?.values),
     );
 
     final count = products?.length ?? 0;
@@ -107,6 +114,7 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
           costController: costController,
           quantityFocusNode: quantityFocusNode,
           costFocusNode: costFocusNode,
+          enterpriseCode: widget.enterpriseCode,
         );
       },
     );
@@ -125,6 +133,7 @@ class _ProductItem extends ConsumerWidget {
   final FocusNode quantityFocusNode;
   final FocusNode costFocusNode;
   final bool isLastItem;
+  final int enterpriseCode;
   const _ProductItem({
     super.key,
     required this.product,
@@ -138,18 +147,20 @@ class _ProductItem extends ConsumerWidget {
     required this.quantityFocusNode,
     required this.costFocusNode,
     required this.isLastItem,
+    required this.enterpriseCode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isSelected = ref.watch(
-      uiStateControllerProvider.select(
-        (s) => s.value?.selectedCartProductIndex == index,
-      ),
+      uiStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.selectedCartProductIndex == index),
     );
     return RepaintBoundary(
       child: Padding(
         padding: EdgeInsets.only(bottom: isLastItem ? Sizes.p80 : 0),
+        //TODO remove this
         child: ProductItemWidget(
           product: product.product,
           routine: BsRoutine.buyRequest,
@@ -169,6 +180,7 @@ class _ProductItem extends ConsumerWidget {
           onDelete: onDelete,
           itemBeforeProductName: EnterpriseCodeAndProductName(
             product: product.product,
+            enterpriseCode: enterpriseCode,
           ),
           notClickableBottom: isSelected
               ? FieldsAndConfirm(
@@ -179,6 +191,7 @@ class _ProductItem extends ConsumerWidget {
                   costController: costController,
                   quantityFocusNode: quantityFocusNode,
                   costFocusNode: costFocusNode,
+                  enterpriseCode: enterpriseCode,
                   product: product.product,
                 )
               : null,

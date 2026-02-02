@@ -30,13 +30,17 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
   @override
   Widget build(BuildContext context) {
     // final pendingAsync = ref.watch(pendingBuyRequestStateControllerProvider);
-    ref.listen(insertBuyRequestControllerProvider, (p, n) {
+    ref.listen(insertBuyRequestControllerProvider(widget.enterpriseCode), (
+      p,
+      n,
+    ) {
       n.showAlertDialogOnError(context);
     });
 
     return Scaffold(
       floatingActionButton: FloatingSaveButton(
         observationsController: observationsController,
+        enterpriseCode: widget.enterpriseCode,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
@@ -59,11 +63,11 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
               ),
             ),
             gapSliverH8,
-            const SelectedSupplier(),
-            const SelectedEnterprisesQuantity(),
-            const SelectedEnterprise(),
-            const InformedProductsQuantity(),
-            const InformedProducts(),
+            SelectedSupplier(enterpriseCode: widget.enterpriseCode),
+            SelectedEnterprisesQuantity(enterpriseCode: widget.enterpriseCode),
+            SelectedEnterprise(enterpriseCode: widget.enterpriseCode),
+            InformedProductsQuantity(enterpriseCode: widget.enterpriseCode),
+            InformedProducts(enterpriseCode: widget.enterpriseCode),
             gapSliverH48,
           ],
         ),

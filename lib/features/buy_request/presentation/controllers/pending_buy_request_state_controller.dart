@@ -12,12 +12,13 @@ part 'pending_buy_request_state_controller.g.dart';
 class PendingBuyRequestStateController
     extends _$PendingBuyRequestStateController {
   @override
-  FutureOr<PendingBuyRequestEntity> build() async {
+  FutureOr<PendingBuyRequestEntity> build(int enterpriseCode) async {
+    //!Use by enterpriseCode because of the requests. The enterprise can be linked or not by the request
     await ref.watch(
       userSessionProvider.future,
     ); //force update the data when do logout
     final repository = ref.read(localPendingBuyRequestRepositoryProvider);
-    final localData = await repository.load();
+    final localData = await repository.load(enterpriseCode);
 
     return localData ?? PendingBuyRequestEntity.empty();
   }
@@ -33,7 +34,7 @@ class PendingBuyRequestStateController
         //called by insertBuyRequestStateController when save the new request. This is the
         //reason why update the number here
       );
-      await repository.update(newState);
+      await repository.update(newState, enterpriseCode);
 
       return newState;
     });
@@ -77,7 +78,7 @@ class PendingBuyRequestStateController
           );
 
       final repository = ref.read(localPendingBuyRequestRepositoryProvider);
-      await repository.update(newState);
+      await repository.update(newState, enterpriseCode);
 
       return newState;
     });

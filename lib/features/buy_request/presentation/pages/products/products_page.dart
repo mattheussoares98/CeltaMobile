@@ -9,7 +9,8 @@ import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
-  const ProductsPage({super.key});
+  final int enterpriseCode;
+  const ProductsPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProductsPageState();
@@ -31,12 +32,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
   Future<void> searchProducts() async {
     ref
-        .read(uiStateControllerProvider.notifier)
+        .read(uiStateControllerProvider(widget.enterpriseCode).notifier)
         .updateSelectedProductIndex(null);
     final selectedEnterprises = ref.read(
-      pendingBuyRequestStateControllerProvider.select(
-        (s) => s.value?.selectedEnterprises,
-      ),
+      pendingBuyRequestStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.value?.selectedEnterprises),
     );
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
@@ -73,7 +74,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               },
             ),
             gapSliverH8,
-            const ProductsItems(),
+            ProductsItems(enterpriseCode: widget.enterpriseCode),
             gapSliverH48,
           ],
         ),

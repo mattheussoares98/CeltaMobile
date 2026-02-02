@@ -9,7 +9,7 @@ part 'insert_buy_request_controller.g.dart';
 @Riverpod(keepAlive: true)
 class InsertBuyRequestController extends _$InsertBuyRequestController {
   @override
-  FutureOr<void> build() async {}
+  FutureOr<void> build(int enterpriseCode) async {}
 
   Future<bool> insert(String observations) async {
     bool succeeds = false;
@@ -17,7 +17,7 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(validatedUserSessionProvider.future);
       final pending = await ref.read(
-        pendingBuyRequestStateControllerProvider.future,
+        pendingBuyRequestStateControllerProvider(enterpriseCode).future,
       );
 
       final response = await ref
@@ -36,7 +36,9 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
           );
 
       ref
-          .read(pendingBuyRequestStateControllerProvider.notifier)
+          .read(
+            pendingBuyRequestStateControllerProvider(enterpriseCode).notifier,
+          )
           .clearState(response);
       succeeds = true;
     });

@@ -19,6 +19,7 @@ class FieldsAndConfirm extends ConsumerWidget {
   final FocusNode costFocusNode;
   final ProductEntity product;
   final bool isConfirmationPage;
+  final int enterpriseCode;
   const FieldsAndConfirm({
     super.key,
     required this.fieldsFormKey,
@@ -29,6 +30,7 @@ class FieldsAndConfirm extends ConsumerWidget {
     required this.costFocusNode,
     required this.product,
     required this.isConfirmationPage,
+    required this.enterpriseCode,
   });
 
   @override
@@ -43,7 +45,7 @@ class FieldsAndConfirm extends ConsumerWidget {
       }
 
       final pending = await ref.read(
-        pendingBuyRequestStateControllerProvider.future,
+        pendingBuyRequestStateControllerProvider(enterpriseCode).future,
       );
       final products = pending.products ?? {};
       products.addAll({
@@ -57,18 +59,20 @@ class FieldsAndConfirm extends ConsumerWidget {
         ),
       });
       ref
-          .read(pendingBuyRequestStateControllerProvider.notifier)
+          .read(
+            pendingBuyRequestStateControllerProvider(enterpriseCode).notifier,
+          )
           .updatePending(products: products);
       quantityController.clear();
       costController.clear();
 
       if (isConfirmationPage) {
         ref
-            .read(uiStateControllerProvider.notifier)
+            .read(uiStateControllerProvider(enterpriseCode).notifier)
             .updateSelectedCartProductIndex(null);
       } else {
         ref
-            .read(uiStateControllerProvider.notifier)
+            .read(uiStateControllerProvider(enterpriseCode).notifier)
             .updateSelectedProductIndex(null);
       }
     }

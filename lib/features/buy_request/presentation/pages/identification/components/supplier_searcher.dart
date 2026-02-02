@@ -13,7 +13,8 @@ import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class SupplierSearcher extends ConsumerStatefulWidget {
-  const SupplierSearcher({super.key});
+  final int enterpriseCode;
+  const SupplierSearcher({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SupplierItemsState();
@@ -35,7 +36,11 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
     }
 
     await ref
-        .read(pendingBuyRequestStateControllerProvider.notifier)
+        .read(
+          pendingBuyRequestStateControllerProvider(
+            widget.enterpriseCode,
+          ).notifier,
+        )
         .updatePending(
           annulSelectedSupplier: true,
           annulSelectedEnterprises: true,
@@ -46,6 +51,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
         .read(
           supplierStateControllerProvider(
             SearchSupplierType.buyRequest,
+            widget.enterpriseCode,
           ).notifier,
         )
         .load(supplierController.text);
@@ -54,22 +60,25 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
   @override
   Widget build(BuildContext context) {
     final hasSelectedEnterprisesOrProducts = ref.watch(
-      pendingBuyRequestStateControllerProvider.select(
+      pendingBuyRequestStateControllerProvider(widget.enterpriseCode).select(
         (s) =>
             (s.value?.selectedEnterprises?.isNotEmpty ?? false) ||
             (s.value?.products?.isNotEmpty ?? false),
       ),
     );
 
-    ref.listen(supplierStateControllerProvider(SearchSupplierType.buyRequest), (
-      p,
-      n,
-    ) {
-      n.showSnackbarOnError(context, p);
-      n.doOnSuccess(p, () {
-        supplierController.clear();
-      });
-    });
+    ref.listen(
+      supplierStateControllerProvider(
+        SearchSupplierType.buyRequest,
+        widget.enterpriseCode,
+      ),
+      (p, n) {
+        n.showSnackbarOnError(context, p);
+        n.doOnSuccess(p, () {
+          supplierController.clear();
+        });
+      },
+    );
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
@@ -82,9 +91,9 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
         Consumer(
           builder: (_, ref, _) {
             final selectedSupplier = ref.watch(
-              pendingBuyRequestStateControllerProvider.select(
-                (s) => s.value?.selectedSupplier,
-              ),
+              pendingBuyRequestStateControllerProvider(
+                widget.enterpriseCode,
+              ).select((s) => s.value?.selectedSupplier),
             );
 
             return Form(
