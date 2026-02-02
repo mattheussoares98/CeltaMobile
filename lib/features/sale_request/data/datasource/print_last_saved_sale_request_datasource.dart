@@ -16,10 +16,14 @@ class PrintLastSavedSaleRequestDatasource
     required String ip,
     required String userName,
   }) async {
-    final printer = PrinterNetworkManager(ip, port: 9100);
+    final printer = PrinterNetworkManager(
+      ip,
+      port: 9100,
+      timeout: const Duration(seconds: 30),
+    );
 
     final PosPrintResult res = await printer.connect(
-      timeout: const Duration(seconds: 5),
+      timeout: const Duration(seconds: 30),
     );
 
     if (res != PosPrintResult.success) {
