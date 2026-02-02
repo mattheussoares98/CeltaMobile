@@ -28,13 +28,17 @@ class SelectedIconIndicator extends StatelessWidget {
       color: theme.colorScheme.primary,
     );
 
-    return PrimaryTextButton(
-      text: isIOS ? 'Editar'.hardcoded : '',
-      icon: selected ? selectedIcon : notSelectedIcon,
-      onPressed: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-        onTap?.call();
-      },
-    );
+    if (isIOS) {
+      return PrimaryTextButton(
+        text: isIOS ? 'Editar'.hardcoded : '',
+        icon: selected ? selectedIcon : notSelectedIcon,
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          onTap?.call();
+        },
+      );
+    } else {
+      return selected ? selectedIcon : notSelectedIcon;
+    }
   }
 }
