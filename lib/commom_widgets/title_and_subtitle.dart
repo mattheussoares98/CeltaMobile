@@ -53,7 +53,7 @@ class TitleAndSubTitle extends StatelessWidget {
         if (subTitle.toString().toInt() != null) {
           return subTitle.toString().toInt().toString();
         }
-        return subTitle.toString().toBrazilianNumber();
+        return subTitle.toString().toBrazilianNumber(3);
       } else {
         return subTitle.toString();
       }
