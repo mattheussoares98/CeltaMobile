@@ -98,6 +98,7 @@ class ModulesWidget extends ConsumerWidget {
         module: Modules.reports,
         materialIcon: Icons.analytics_outlined,
         cupertinoIcon: CupertinoIcons.chart_bar_square,
+        passEnterpriseToNextRoute: false,
       ),
     ];
 
