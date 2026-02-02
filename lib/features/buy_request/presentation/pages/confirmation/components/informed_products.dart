@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
@@ -103,7 +102,6 @@ class _InformedProductsState extends ConsumerState<InformedProducts> {
           key: ValueKey(
             '${product.product.ProductPackingCode}${product.product.EnterpriseCode}',
           ),
-          isLastItem: index == count - 1,
           product: product,
           index: index,
           onDelete: () => onDelete(product.product),
@@ -132,7 +130,6 @@ class _ProductItem extends ConsumerWidget {
   final TextEditingController costController;
   final FocusNode quantityFocusNode;
   final FocusNode costFocusNode;
-  final bool isLastItem;
   final int enterpriseCode;
   const _ProductItem({
     super.key,
@@ -146,7 +143,6 @@ class _ProductItem extends ConsumerWidget {
     required this.costController,
     required this.quantityFocusNode,
     required this.costFocusNode,
-    required this.isLastItem,
     required this.enterpriseCode,
   });
 
@@ -158,44 +154,40 @@ class _ProductItem extends ConsumerWidget {
       ).select((s) => s.value?.selectedCartProductIndex == index),
     );
     return RepaintBoundary(
-      child: Padding(
-        padding: EdgeInsets.only(bottom: isLastItem ? Sizes.p80 : 0),
-        //TODO remove this
-        child: ProductItemWidget(
+      child: ProductItemWidget(
+        product: product.product,
+        routine: BsRoutine.buyRequest,
+        hideCost: true,
+        hideCurrentAndSaleStocks: true,
+        hideWholeInformations: true,
+        showDropIcon: true,
+        showInfoButton: false,
+        isSelected: isSelected,
+        onTap: onTap,
+        cartItemSummary: CartItemSummary(
+          cartQuantity: product.quantity,
+          cartValue: product.cost,
           product: product.product,
-          routine: BsRoutine.buyRequest,
-          hideCost: true,
-          hideCurrentAndSaleStocks: true,
-          hideWholeInformations: true,
-          showDropIcon: true,
-          showInfoButton: false,
-          isSelected: isSelected,
-          onTap: onTap,
-          cartItemSummary: CartItemSummary(
-            cartQuantity: product.quantity,
-            cartValue: product.cost,
-            product: product.product,
-            priceDecimalHouses: 4,
-          ),
-          onDelete: onDelete,
-          itemBeforeProductName: EnterpriseCodeAndProductName(
-            product: product.product,
-            enterpriseCode: enterpriseCode,
-          ),
-          notClickableBottom: isSelected
-              ? FieldsAndConfirm(
-                  isConfirmationPage: true,
-                  fieldsFormKey: fieldsFormKey,
-                  quantityFormKey: quantityFormKey,
-                  quantityController: quantityController,
-                  costController: costController,
-                  quantityFocusNode: quantityFocusNode,
-                  costFocusNode: costFocusNode,
-                  enterpriseCode: enterpriseCode,
-                  product: product.product,
-                )
-              : null,
+          priceDecimalHouses: 4,
         ),
+        onDelete: onDelete,
+        itemBeforeProductName: EnterpriseCodeAndProductName(
+          product: product.product,
+          enterpriseCode: enterpriseCode,
+        ),
+        notClickableBottom: isSelected
+            ? FieldsAndConfirm(
+                isConfirmationPage: true,
+                fieldsFormKey: fieldsFormKey,
+                quantityFormKey: quantityFormKey,
+                quantityController: quantityController,
+                costController: costController,
+                quantityFocusNode: quantityFocusNode,
+                costFocusNode: costFocusNode,
+                enterpriseCode: enterpriseCode,
+                product: product.product,
+              )
+            : null,
       ),
     );
   }
