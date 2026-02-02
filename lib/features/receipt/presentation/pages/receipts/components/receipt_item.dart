@@ -84,6 +84,14 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                       title: 'Emitente'.hardcoded,
                       subTitle: widget.receipt.EmitterName,
                     ),
+                  if (widget.receipt.Grupo != null)
+                    TitleAndSubTitle(
+                      title: 'Grupo'.hardcoded,
+                      subTitle: widget.receipt.Grupo,
+                      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                        color: Colors.amber,
+                      ),
+                    ),
                   if (!isSelected) ...[
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
