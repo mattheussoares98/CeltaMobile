@@ -69,6 +69,8 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     final bool hasInsertedQuantity =
         widget.product.Quantidade_ProcRecebDocProEmb != null &&
         widget.product.Quantidade_ProcRecebDocProEmb! > 0;
@@ -136,6 +138,9 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
                   labelText: 'Quantidade'.hardcoded,
                   controller: widget.quantityController,
                   focusNode: widget.quantityFocusNode,
+                  autovalidateMode: isIOS
+                      ? null
+                      : AutovalidateMode.onUserInteraction,
                   maxLength: 10,
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
