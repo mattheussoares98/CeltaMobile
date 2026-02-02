@@ -66,6 +66,7 @@ class DestinyEnterprisesPage extends ConsumerWidget {
                   'requestTypeCode': requestTypeCode.toString(),
                   'enterpriseOriginCode': enterpriseOriginCode.toString(),
                   'enterpriseDestinyCode': enterprise.Code.toString(),
+                  'enterpriseCode': enterpriseOriginCode.toString(),
                 },
               );
             },

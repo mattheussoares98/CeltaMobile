@@ -21,7 +21,10 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
     void onTap(RequestTypeEntity request) {
       context.goNamed(
         Routes.transferRequestOriginEnterprises.name,
-        pathParameters: {'requestTypeCode': request.Code.toString()},
+        pathParameters: {
+          'requestTypeCode': request.Code.toString(),
+          'enterpriseCode': enterpriseCode.toString(),
+        },
       );
     }
 

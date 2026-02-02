@@ -49,6 +49,7 @@ class OriginEnterprisesPage extends ConsumerWidget {
                 pathParameters: {
                   'requestTypeCode': requestTypeCode.toString(),
                   'enterpriseOriginCode': enterprise.Code.toString(),
+                  'enterpriseCode': enterprise.Code.toString(),
                 },
               );
             },
