@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../constants/constants.dart';
+import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
+import '../../../../../core/presentation/controllers/stock/stock.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
@@ -23,6 +26,34 @@ class _LotPageState extends ConsumerState<LotPage> {
     lotQuantityController.dispose();
     lotQuantityFocusNode.dispose();
     super.dispose();
+  }
+
+  void confirmRequest(bool isRequest) async {
+    final items = await ref.read(
+      lotStateControllerProvider(widget.enterpriseCode).future,
+    );
+
+    ref
+        .read(confirmAdjustStockControllerProvider.notifier)
+        .confirm(
+          items
+              .map(
+                (e) => AdjustStockItemEntity(
+                  EnterpriseCode: e.product.EnterpriseCode!,
+                  ProductCode: e.product.ProductCode!,
+                  ProductPackingCode: e.product.ProductPackingCode!,
+                  JustificationCode:
+                      e.selectedJustification.CodigoInterno_JustMov,
+                  StockTypeCode:
+                      e.selectedOriginStock.CodigoInterno_TipoEstoque!,
+                  StockTypeRecipientCode:
+                      e.selectedDestinyStock.CodigoInterno_TipoEstoque,
+                  IsPendingAdjust: isRequest,
+                  Quantity: e.quantity,
+                ),
+              )
+              .toList(),
+        );
   }
 
   @override
@@ -55,29 +86,42 @@ class _LotPageState extends ConsumerState<LotPage> {
                 enterpriseCode: widget.enterpriseCode,
                 quantityFocusNode: lotQuantityFocusNode,
               ),
+              Consumer(
+                builder: (_, ref, _) {
+                  final keyboardIsOpen = ref.watch(
+                    keyboardVisibilityStateControllerProvider,
+                  );
+                  if (!keyboardIsOpen) {
+                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                  }
+
+                  return AnimatedBuilder(
+                    animation: lotQuantityFocusNode,
+                    builder: (_, _) {
+                      return SliverToBoxAdapter(
+                        child: ConfirmAndRequestButtons(
+                          enterpriseCode: widget.enterpriseCode,
+                          confirmRequest: confirmRequest,
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
               gapSliverH48,
             ],
           ),
         ),
         Consumer(
           builder: (_, ref, _) {
-            final hasItemSelected = ref.watch(
-              selectedLotIndexStateControllerProvider.select((s) => s != null),
+            final keyboardIsOpen = ref.watch(
+              keyboardVisibilityStateControllerProvider,
             );
 
-            if (hasItemSelected) {
+            if (keyboardIsOpen) {
+              //TODO fix when tap the button after close the keyboard
               return const SizedBox.shrink();
             }
-
-            final hasInsertedProduct = ref.watch(
-              lotStateControllerProvider(
-                widget.enterpriseCode,
-              ).select((s) => s.value?.isNotEmpty == true),
-            );
-
-            if (!hasInsertedProduct) {
-              return const SizedBox.shrink();
-            } //TODO fix when tap the button after close the keyboard
 
             return Padding(
               padding: const EdgeInsets.fromLTRB(
@@ -86,22 +130,9 @@ class _LotPageState extends ConsumerState<LotPage> {
                 Sizes.p4,
                 Sizes.p4,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ConfirmOrRequestButton(
-                      isRequest: true,
-                      enterpriseCode: widget.enterpriseCode,
-                    ),
-                  ),
-                  gapW8,
-                  Expanded(
-                    child: ConfirmOrRequestButton(
-                      isRequest: false,
-                      enterpriseCode: widget.enterpriseCode,
-                    ),
-                  ),
-                ],
+              child: ConfirmAndRequestButtons(
+                enterpriseCode: widget.enterpriseCode,
+                confirmRequest: confirmRequest,
               ),
             );
           },

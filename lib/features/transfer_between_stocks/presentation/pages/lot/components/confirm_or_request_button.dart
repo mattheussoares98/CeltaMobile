@@ -3,21 +3,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../core/presentation/controllers/stock/stock.dart';
-import '../../../controllers/controllers.dart';
+import '../../../../../../constants/constants.dart';
 
-class ConfirmOrRequestButton extends ConsumerWidget {
-  final bool isRequest;
+class ConfirmAndRequestButtons extends ConsumerWidget {
   final int enterpriseCode;
-  const ConfirmOrRequestButton({
+  final void Function(bool isRequest) confirmRequest;
+  const ConfirmAndRequestButtons({
     super.key,
-    required this.isRequest,
     required this.enterpriseCode,
+    required this.confirmRequest,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      children: [
+        Expanded(
+          child: _ConfirmOrRequestButton(
+            isRequest: true,
+            confirmRequest: confirmRequest,
+          ),
+        ),
+        gapW8,
+        Expanded(
+          child: _ConfirmOrRequestButton(
+            isRequest: false,
+            confirmRequest: confirmRequest,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ConfirmOrRequestButton extends StatelessWidget {
+  final bool isRequest;
+  final void Function(bool isRequest) confirmRequest;
+  const _ConfirmOrRequestButton({
+    required this.isRequest,
+    required this.confirmRequest,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return PrimaryButton(
       text: isRequest ? 'Solicitar'.hardcoded : 'Confirmar'.hardcoded,
       onPressed: () async {
@@ -26,33 +54,7 @@ class ConfirmOrRequestButton extends ConsumerWidget {
           title: isRequest ? 'Solicitar?'.hardcoded : 'Confirmar?'.hardcoded,
           cancelActionText: 'Cancelar'.hardcoded,
           defaultActionText: 'Sim'.hardcoded,
-          onOkPressed: () async {
-            final items = await ref.read(
-              lotStateControllerProvider(enterpriseCode).future,
-            );
-
-            ref
-                .read(confirmAdjustStockControllerProvider.notifier)
-                .confirm(
-                  items
-                      .map(
-                        (e) => AdjustStockItemEntity(
-                          EnterpriseCode: e.product.EnterpriseCode!,
-                          ProductCode: e.product.ProductCode!,
-                          ProductPackingCode: e.product.ProductPackingCode!,
-                          JustificationCode:
-                              e.selectedJustification.CodigoInterno_JustMov,
-                          StockTypeCode:
-                              e.selectedOriginStock.CodigoInterno_TipoEstoque!,
-                          StockTypeRecipientCode:
-                              e.selectedDestinyStock.CodigoInterno_TipoEstoque,
-                          IsPendingAdjust: isRequest,
-                          Quantity: e.quantity,
-                        ),
-                      )
-                      .toList(),
-                );
-          },
+          onOkPressed: () => confirmRequest(isRequest),
         );
       },
     );

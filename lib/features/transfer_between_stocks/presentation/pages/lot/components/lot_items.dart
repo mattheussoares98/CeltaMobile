@@ -131,60 +131,51 @@ class _LotItem extends ConsumerWidget {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
-    final isLastItem = ref.watch(
-      lotStateControllerProvider(
-        enterpriseCode,
-      ).select((s) => s.value!.length == index + 1),
-    );
-
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
-      child: Padding(
-        padding: EdgeInsets.only(bottom: isLastItem ? Sizes.p16 : 0),
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              InkWell(
-                onTap: isIOS ? null : () => changeSelectedIndex(index, item),
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(Sizes.p8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NameAndJustification(item: item),
-                          OriginAndDestinyWithQuantities(item: item),
-                        ],
-                      ),
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            InkWell(
+              onTap: isIOS ? null : () => changeSelectedIndex(index, item),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(Sizes.p8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        NameAndJustification(item: item),
+                        OriginAndDestinyWithQuantities(item: item),
+                      ],
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: EditAndRemoveIconButtons(
-                        item: item,
-                        onTapEdit: () => changeSelectedIndex(index, item),
-                        enterpriseCode: enterpriseCode,
-                        index: index,
-                      ),
+                  ),
+                  Positioned(
+                    bottom: -Sizes.p4,
+                    right: 0,
+                    child: EditAndRemoveIconButtons(
+                      item: item,
+                      onTapEdit: () => changeSelectedIndex(index, item),
+                      enterpriseCode: enterpriseCode,
+                      index: index,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              UpdateQuantityField(
-                index: index,
-                formKey: formKey,
-                quantityController: quantityController,
-                quantityFocusNode: quantityFocusNode,
-                item: item,
-                onSubmit: () => onSubmit(item),
-              ),
-            ],
-          ),
+            ),
+            UpdateQuantityField(
+              index: index,
+              formKey: formKey,
+              quantityController: quantityController,
+              quantityFocusNode: quantityFocusNode,
+              item: item,
+              onSubmit: () => onSubmit(item),
+            ),
+          ],
         ),
       ),
     );
