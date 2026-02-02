@@ -7,5 +7,6 @@ abstract class ISoapLoadRequestTypeDatasource {
     required bool inclusiveBuy,
     required bool inclusiveTransfer,
     required bool inclusiveSale,
+    required int enterpriseCode,
   });
 }

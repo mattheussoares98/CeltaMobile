@@ -14,6 +14,7 @@ class SoapLoadRequestTypeRepositoryImpl
     required bool inclusiveBuy,
     required bool inclusiveTransfer,
     required bool inclusiveSale,
+    required int enterpriseCode,
   }) async {
     final result = await datasource.load(
       workingUrl: workingUrl,
@@ -21,6 +22,7 @@ class SoapLoadRequestTypeRepositoryImpl
       inclusiveBuy: inclusiveBuy,
       inclusiveTransfer: inclusiveTransfer,
       inclusiveSale: inclusiveSale,
+      enterpriseCode: enterpriseCode,
     );
 
     return result.map((e) => e.toEntity()).toList();

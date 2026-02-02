@@ -11,14 +11,26 @@ import 'components.dart';
 
 class RequestTypeDropdown extends ConsumerWidget {
   final bool enabled;
-  const RequestTypeDropdown({super.key, this.enabled = true});
+  final int enterpriseCode;
+  const RequestTypeDropdown({
+    super.key,
+    this.enabled = true,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-      value: ref.watch(requestTypeStateControllerProvider(Modules.buyRequest)),
+      value: ref.watch(
+        requestTypeStateControllerProvider(Modules.buyRequest, enterpriseCode),
+      ),
       tryAgain: () {
-        ref.invalidate(requestTypeStateControllerProvider(Modules.buyRequest));
+        ref.invalidate(
+          requestTypeStateControllerProvider(
+            Modules.buyRequest,
+            enterpriseCode,
+          ),
+        );
       },
       data: (requests) {
         return _RequestDropdown(requests: requests, enabled: enabled);

@@ -5,7 +5,12 @@ import 'components.dart';
 
 class BuyersAndRequestsDropdown extends StatelessWidget {
   final bool enabled;
-  const BuyersAndRequestsDropdown({super.key, required this.enabled});
+  final int enterpriseCode;
+  const BuyersAndRequestsDropdown({
+    super.key,
+    required this.enabled,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +18,28 @@ class BuyersAndRequestsDropdown extends StatelessWidget {
 
     return RepaintBoundary(
       child: isDesktop
-          ? _DesktopView(key: const ValueKey('desktop'), enabled: enabled)
-          : _MobileView(key: const ValueKey('mobile'), enabled: enabled),
+          ? _DesktopView(
+              key: const ValueKey('desktop'),
+              enabled: enabled,
+              enterpriseCode: enterpriseCode,
+            )
+          : _MobileView(
+              key: const ValueKey('mobile'),
+              enabled: enabled,
+              enterpriseCode: enterpriseCode,
+            ),
     );
   }
 }
 
 class _DesktopView extends StatelessWidget {
   final bool enabled;
-  const _DesktopView({super.key, required this.enabled});
+  final int enterpriseCode;
+  const _DesktopView({
+    super.key,
+    required this.enabled,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +47,12 @@ class _DesktopView extends StatelessWidget {
       children: [
         Expanded(child: BuyersDropdown(enabled: enabled)),
         gapW8,
-        Expanded(child: RequestTypeDropdown(enabled: enabled)),
+        Expanded(
+          child: RequestTypeDropdown(
+            enabled: enabled,
+            enterpriseCode: enterpriseCode,
+          ),
+        ),
       ],
     );
   }
@@ -37,7 +60,12 @@ class _DesktopView extends StatelessWidget {
 
 class _MobileView extends StatelessWidget {
   final bool enabled;
-  const _MobileView({super.key, required this.enabled});
+  final int enterpriseCode;
+  const _MobileView({
+    super.key,
+    required this.enabled,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +73,7 @@ class _MobileView extends StatelessWidget {
       children: [
         BuyersDropdown(enabled: enabled),
         gapH8,
-        RequestTypeDropdown(enabled: enabled),
+        RequestTypeDropdown(enabled: enabled, enterpriseCode: enterpriseCode),
       ],
     );
   }

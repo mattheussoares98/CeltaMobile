@@ -13,12 +13,14 @@ class PriceField extends ConsumerWidget {
   final FocusNode priceFocusNode;
   final VoidCallback update;
   final int requestTypeCode;
+  final int enterpriseCode;
   const PriceField({
     super.key,
     required this.priceController,
     required this.priceFocusNode,
     required this.update,
     required this.requestTypeCode,
+    required this.enterpriseCode,
   });
 
   @override
@@ -26,6 +28,7 @@ class PriceField extends ConsumerWidget {
     final requestTypeAllowChangePrice = ref.watch(
       uiStateControllerProvider(
         requestTypeCode,
+        enterpriseCode,
       ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
     );
     final theme = Theme.of(context);

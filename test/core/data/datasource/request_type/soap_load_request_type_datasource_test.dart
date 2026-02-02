@@ -19,6 +19,7 @@ void main() {
   late bool inclusiveBuy;
   late bool inclusiveTransfer;
   late bool inclusiveSale;
+  late int enterpriseCode;
 
   void initSut() {
     sut = SoapLoadRequestTypeDatasource(soapAdapter);
@@ -45,6 +46,7 @@ void main() {
     inclusiveBuy = faker.randomGenerator.boolean();
     inclusiveTransfer = faker.randomGenerator.boolean();
     inclusiveSale = faker.randomGenerator.boolean();
+    enterpriseCode = faker.randomGenerator.integer(100);
   }
 
   setUp(() {
@@ -61,6 +63,7 @@ void main() {
       inclusiveBuy: inclusiveBuy,
       inclusiveTransfer: inclusiveTransfer,
       inclusiveSale: inclusiveSale,
+      enterpriseCode: enterpriseCode,
     );
 
     expect(requests, requestTypeModels);
@@ -77,6 +80,7 @@ void main() {
           "inclusiveBuy": inclusiveBuy,
           "inclusiveTransfer": inclusiveTransfer,
           "inclusiveSale": inclusiveSale,
+          "enterpriseCode": enterpriseCode,
         },
       ),
     ).called(1);

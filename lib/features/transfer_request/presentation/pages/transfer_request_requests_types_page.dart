@@ -10,7 +10,11 @@ import '../../../../core/presentation/controllers/request_type/request_type.dart
 import '../../../../routing/routing.dart';
 
 class TransferRequestRequestsTypesPage extends ConsumerWidget {
-  const TransferRequestRequestsTypesPage({super.key});
+  final int enterpriseCode;
+  const TransferRequestRequestsTypesPage({
+    super.key,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +27,7 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
 
     final provider = requestTypeStateControllerProvider(
       Modules.transferRequest,
+      enterpriseCode,
     );
 
     return Scaffold(

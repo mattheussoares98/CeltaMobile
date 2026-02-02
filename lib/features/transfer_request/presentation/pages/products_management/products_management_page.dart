@@ -47,6 +47,7 @@ class ProductsManagementPage extends ConsumerWidget {
     final pageIndex = ref.watch(
       uiStateControllerProvider(
         requestTypeCode,
+        enterpriseOriginCode,
       ).select((s) => s.value?.pageIndex ?? 0),
     );
 
@@ -77,7 +78,12 @@ class ProductsManagementPage extends ConsumerWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: pageIndex,
         onTap: ref
-            .read(uiStateControllerProvider(requestTypeCode).notifier)
+            .read(
+              uiStateControllerProvider(
+                requestTypeCode,
+                enterpriseOriginCode,
+              ).notifier,
+            )
             .updatePageIndex,
         items: [
           BottomNavigationBarItem(

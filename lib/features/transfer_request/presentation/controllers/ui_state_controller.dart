@@ -10,9 +10,12 @@ part 'ui_state_controller.g.dart';
 @riverpod
 class UiStateController extends _$UiStateController {
   @override
-  FutureOr<UiModel> build(int requestTypeCode) async {
+  FutureOr<UiModel> build(int requestTypeCode, int enterpriseCode) async {
     final requests = await ref.read(
-      requestTypeStateControllerProvider(Modules.transferRequest).future,
+      requestTypeStateControllerProvider(
+        Modules.transferRequest,
+        enterpriseCode,
+      ).future,
     );
 
     final allowChangePrice =

@@ -9,7 +9,10 @@ part 'request_type_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class RequestTypeStateController extends _$RequestTypeStateController {
   @override
-  FutureOr<List<RequestTypeEntity>?> build(Modules module) async {
+  FutureOr<List<RequestTypeEntity>?> build(
+    Modules module,
+    int enterpriseCode,
+  ) async {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
     return await ref
@@ -20,6 +23,7 @@ class RequestTypeStateController extends _$RequestTypeStateController {
           inclusiveBuy: module == Modules.buyRequest,
           inclusiveTransfer: module == Modules.transferRequest,
           inclusiveSale: module == Modules.saleRequest,
+          enterpriseCode: enterpriseCode,
         );
   }
 }

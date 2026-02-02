@@ -16,7 +16,10 @@ class RequestsTypePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = requestTypeStateControllerProvider(Modules.saleRequest);
+    final provider = requestTypeStateControllerProvider(
+      Modules.saleRequest,
+      enterpriseCode,
+    );
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text('Modelos de pedido'.hardcoded)),
@@ -28,9 +31,7 @@ class RequestsTypePage extends ConsumerWidget {
         },
         data: (requests) {
           return RefreshIndicator(
-            onRefresh: () async {
-              ref.invalidate(provider);
-            },
+            onRefresh: () async => ref.invalidate(provider),
             child: ResponsiveListFlow(
               itemCount: requests?.length ?? 0,
               itemBuilder: (_, index) {

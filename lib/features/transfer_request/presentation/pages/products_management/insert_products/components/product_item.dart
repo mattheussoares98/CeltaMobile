@@ -41,6 +41,7 @@ class ProductItem extends ConsumerWidget {
     final isSelected = ref.watch(
       uiStateControllerProvider(
         draftKey.requestTypeCode,
+        draftKey.enterpriseOrigin,
       ).select((s) => s.value?.selectedInsertProductIndex == index),
     );
 

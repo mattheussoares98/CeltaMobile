@@ -54,7 +54,10 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       );
       ref
           .read(
-            uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+            uiStateControllerProvider(
+              widget.draftKey.requestTypeCode,
+              widget.draftKey.enterpriseOrigin,
+            ).notifier,
           )
           .updateSelectedInsertProductIndex(null);
       return;
@@ -63,7 +66,10 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     FocusManager.instance.primaryFocus?.unfocus();
     ref
         .read(
-          uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+          uiStateControllerProvider(
+            widget.draftKey.requestTypeCode,
+            widget.draftKey.enterpriseOrigin,
+          ).notifier,
         )
         .updateSelectedInsertProductIndex(index);
 
@@ -118,7 +124,10 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
 
     ref
         .read(
-          uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+          uiStateControllerProvider(
+            widget.draftKey.requestTypeCode,
+            widget.draftKey.enterpriseOrigin,
+          ).notifier,
         )
         .updateSelectedInsertProductIndex(null);
   }
@@ -128,6 +137,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     final requestTypeAllowChangePrice = ref.watch(
       uiStateControllerProvider(
         widget.draftKey.requestTypeCode,
+        widget.draftKey.enterpriseOrigin,
       ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
     );
 

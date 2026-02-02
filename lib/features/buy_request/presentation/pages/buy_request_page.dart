@@ -9,7 +9,8 @@ import 'components/components.dart';
 import 'pages.dart';
 
 class BuyRequestPage extends ConsumerStatefulWidget {
-  const BuyRequestPage({super.key});
+  final int enterpriseCode;
+  const BuyRequestPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _BuyRequestPageState();
@@ -35,11 +36,11 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
 
   @override
   Widget build(BuildContext context) {
-    const pages = [
-      IdentificationPage(),
-      EnterprisesPage(),
-      ProductsPage(),
-      ConfirmationPage(),
+    final pages = [
+      IdentificationPage(enterpriseCode: widget.enterpriseCode),
+      const EnterprisesPage(),
+      const ProductsPage(),
+      ConfirmationPage(enterpriseCode: widget.enterpriseCode),
     ];
 
     ref.observeLoading([insertBuyRequestControllerProvider]);

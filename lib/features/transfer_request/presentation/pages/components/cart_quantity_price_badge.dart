@@ -31,7 +31,12 @@ class CartQuantityPriceBadge extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         ref
-            .read(uiStateControllerProvider(requestTypeCode).notifier)
+            .read(
+              uiStateControllerProvider(
+                requestTypeCode,
+                draftKey.enterpriseOrigin,
+              ).notifier,
+            )
             .updatePageIndex(1);
       },
       child: QuantityBadge(

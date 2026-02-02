@@ -10,7 +10,8 @@ import '../components/components.dart';
 import 'components/components.dart';
 
 class ConfirmationPage extends ConsumerStatefulWidget {
-  const ConfirmationPage({super.key});
+  final int enterpriseCode;
+  const ConfirmationPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -51,8 +52,11 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
                 maxLength: 500,
               ),
             ),
-            const SliverToBoxAdapter(
-              child: BuyersAndRequestsDropdown(enabled: false),
+            SliverToBoxAdapter(
+              child: BuyersAndRequestsDropdown(
+                enabled: false,
+                enterpriseCode: widget.enterpriseCode,
+              ),
             ),
             gapSliverH8,
             const SelectedSupplier(),

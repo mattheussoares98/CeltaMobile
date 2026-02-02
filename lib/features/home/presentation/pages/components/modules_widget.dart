@@ -27,12 +27,11 @@ class ModulesWidget extends ConsumerWidget {
         cupertinoIcon: CupertinoIcons.archivebox,
       ),
       const DefaultModuleButton(
+        passEnterpriseToNextRoute: false,
         route: Routes.customerRegister,
         module: Modules.customerRegister,
         materialIcon: Icons.person_add_outlined,
         cupertinoIcon: CupertinoIcons.person_badge_plus,
-
-        passEnterpriseToNextRoute: false,
       ),
       const DefaultModuleButton(
         route: Routes.transferBetweenStocks,
@@ -59,7 +58,6 @@ class ModulesWidget extends ConsumerWidget {
         cupertinoIcon: CupertinoIcons.cube_box,
       ),
       const DefaultModuleButton(
-        passEnterpriseToNextRoute: false,
         route: Routes.buyRequest,
         module: Modules.buyRequest,
         materialIcon: Icons.add_shopping_cart_outlined,
@@ -72,7 +70,6 @@ class ModulesWidget extends ConsumerWidget {
         cupertinoIcon: CupertinoIcons.doc_text_search,
       ),
       const DefaultModuleButton(
-        passEnterpriseToNextRoute: false,
         route: Routes.transferRequestRequestsTypes,
         module: Modules.transferRequest,
         materialIcon: Icons.sync_alt_outlined,
@@ -101,7 +98,6 @@ class ModulesWidget extends ConsumerWidget {
         module: Modules.reports,
         materialIcon: Icons.analytics_outlined,
         cupertinoIcon: CupertinoIcons.chart_bar_square,
-        passEnterpriseToNextRoute: false,
       ),
     ];
 

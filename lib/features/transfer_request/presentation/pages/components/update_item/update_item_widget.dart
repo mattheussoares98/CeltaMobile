@@ -36,6 +36,7 @@ class UpdateItemWidget extends ConsumerWidget {
     final requestTypeAllowChangePrice = ref.watch(
       uiStateControllerProvider(
         draftKey.requestTypeCode,
+        draftKey.enterpriseOrigin,
       ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
     );
 
@@ -63,6 +64,7 @@ class UpdateItemWidget extends ConsumerWidget {
                 priceFocusNode: priceFocusNode,
                 update: update,
                 requestTypeCode: draftKey.requestTypeCode,
+                enterpriseCode: draftKey.enterpriseOrigin,
               ),
             ),
             gapW4,

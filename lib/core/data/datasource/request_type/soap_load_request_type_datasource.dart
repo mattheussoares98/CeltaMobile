@@ -16,6 +16,7 @@ class SoapLoadRequestTypeDatasource implements ISoapLoadRequestTypeDatasource {
     required bool inclusiveBuy,
     required bool inclusiveTransfer,
     required bool inclusiveSale,
+    required int enterpriseCode,
   }) async {
     final result = await soapRequest.post(
       url: workingUrl,
@@ -28,6 +29,7 @@ class SoapLoadRequestTypeDatasource implements ISoapLoadRequestTypeDatasource {
         "inclusiveBuy": inclusiveBuy,
         "inclusiveTransfer": inclusiveTransfer,
         "inclusiveSale": inclusiveSale,
+        "enterpriseCode": enterpriseCode,
       },
     );
 

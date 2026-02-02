@@ -42,7 +42,10 @@ class _ProductItemState extends ConsumerState<ProductItem> {
   void changeSelectedIndex() {
     ref
         .read(
-          uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+          uiStateControllerProvider(
+            widget.draftKey.requestTypeCode,
+            widget.draftKey.enterpriseOrigin,
+          ).notifier,
         )
         .updateSelectedCartProductIndex(widget.index);
 
@@ -70,7 +73,10 @@ class _ProductItemState extends ConsumerState<ProductItem> {
     }
 
     final uiState = await ref.read(
-      uiStateControllerProvider(widget.draftKey.requestTypeCode).future,
+      uiStateControllerProvider(
+        widget.draftKey.requestTypeCode,
+        widget.draftKey.enterpriseOrigin,
+      ).future,
     );
 
     ref
@@ -86,7 +92,10 @@ class _ProductItemState extends ConsumerState<ProductItem> {
 
     ref
         .read(
-          uiStateControllerProvider(widget.draftKey.requestTypeCode).notifier,
+          uiStateControllerProvider(
+            widget.draftKey.requestTypeCode,
+            widget.draftKey.enterpriseOrigin,
+          ).notifier,
         )
         .updateSelectedCartProductIndex(null);
   }
@@ -127,6 +136,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                     ref.watch(
                       uiStateControllerProvider(
                         widget.draftKey.requestTypeCode,
+                        widget.draftKey.enterpriseOrigin,
                       ).select((s) => s.value?.selectedCartProductIndex),
                     ) ==
                     widget.index;

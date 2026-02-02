@@ -972,6 +972,7 @@ class SoapLoadRequestTypeDatasourceSpy extends Mock
         inclusiveBuy: any(named: 'inclusiveBuy'),
         inclusiveTransfer: any(named: 'inclusiveTransfer'),
         inclusiveSale: any(named: 'inclusiveSale'),
+        enterpriseCode: any(named: 'enterpriseCode'),
       ),
     ).thenAnswer((_) async => response);
   }

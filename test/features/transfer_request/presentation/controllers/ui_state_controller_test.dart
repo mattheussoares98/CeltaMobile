@@ -16,7 +16,10 @@ class SpyRequestTypeStateController extends RequestTypeStateController {
   SpyRequestTypeStateController(this.requestsToReturn);
 
   @override
-  FutureOr<List<RequestTypeEntity>?> build(Modules module) async {
+  FutureOr<List<RequestTypeEntity>?> build(
+    Modules module,
+    int enterpriseCode,
+  ) async {
     return requestsToReturn;
   }
 }
@@ -24,6 +27,7 @@ class SpyRequestTypeStateController extends RequestTypeStateController {
 void main() {
   late int requestTypeCode;
   late List<RequestTypeEntity> fakeRequests;
+  late int enterpriseCode;
 
   setUpAll(() {
     // Registering fallback for AsyncValue if using verify with any()
@@ -42,6 +46,7 @@ void main() {
         AllowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
       );
     });
+    enterpriseCode = faker.randomGenerator.integer(100);
   });
 
   ProviderContainer makeProviderContainer({
@@ -51,6 +56,7 @@ void main() {
       overrides: [
         requestTypeStateControllerProvider(
           Modules.transferRequest,
+          enterpriseCode,
         ).overrideWith(() => SpyRequestTypeStateController(requestTypes ?? [])),
       ],
     );
@@ -70,7 +76,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          uiStateControllerProvider(requestTypeCode).future,
+          uiStateControllerProvider(requestTypeCode, enterpriseCode).future,
         );
 
         // ASSERT
@@ -89,7 +95,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          uiStateControllerProvider(requestTypeCode).future,
+          uiStateControllerProvider(requestTypeCode, enterpriseCode).future,
         );
 
         // ASSERT
@@ -109,16 +115,20 @@ void main() {
       final newPageIndex = faker.randomGenerator.integer(10);
 
       // Wait for build
-      await container.read(uiStateControllerProvider(requestTypeCode).future);
+      await container.read(
+        uiStateControllerProvider(requestTypeCode, enterpriseCode).future,
+      );
 
       // ACT
       container
-          .read(uiStateControllerProvider(requestTypeCode).notifier)
+          .read(
+            uiStateControllerProvider(requestTypeCode, enterpriseCode).notifier,
+          )
           .updatePageIndex(newPageIndex);
 
       // ASSERT
       final state = container
-          .read(uiStateControllerProvider(requestTypeCode))
+          .read(uiStateControllerProvider(requestTypeCode, enterpriseCode))
           .value;
       expect(state?.pageIndex, newPageIndex);
     });
@@ -129,10 +139,12 @@ void main() {
         // ARRANGE
         final container = makeProviderContainer(requestTypes: fakeRequests);
         addTearDown(container.dispose);
-        await container.read(uiStateControllerProvider(requestTypeCode).future);
+        await container.read(
+          uiStateControllerProvider(requestTypeCode, enterpriseCode).future,
+        );
 
         final notifier = container.read(
-          uiStateControllerProvider(requestTypeCode).notifier,
+          uiStateControllerProvider(requestTypeCode, enterpriseCode).notifier,
         );
         final selectionIndex = faker.randomGenerator.integer(50, min: 1);
 
@@ -142,7 +154,7 @@ void main() {
         // ASSERT 1
         expect(
           container
-              .read(uiStateControllerProvider(requestTypeCode))
+              .read(uiStateControllerProvider(requestTypeCode, enterpriseCode))
               .value
               ?.selectedInsertProductIndex,
           selectionIndex,
@@ -154,7 +166,7 @@ void main() {
         // ASSERT 2: Should annul (based on your copyWith logic)
         expect(
           container
-              .read(uiStateControllerProvider(requestTypeCode))
+              .read(uiStateControllerProvider(requestTypeCode, enterpriseCode))
               .value
               ?.selectedInsertProductIndex,
           isNull,
@@ -168,10 +180,12 @@ void main() {
         // ARRANGE
         final container = makeProviderContainer(requestTypes: fakeRequests);
         addTearDown(container.dispose);
-        await container.read(uiStateControllerProvider(requestTypeCode).future);
+        await container.read(
+          uiStateControllerProvider(requestTypeCode, enterpriseCode).future,
+        );
 
         final notifier = container.read(
-          uiStateControllerProvider(requestTypeCode).notifier,
+          uiStateControllerProvider(requestTypeCode, enterpriseCode).notifier,
         );
         final selectionIndex = faker.randomGenerator.integer(50);
 
@@ -181,7 +195,7 @@ void main() {
         // ASSERT 1
         expect(
           container
-              .read(uiStateControllerProvider(requestTypeCode))
+              .read(uiStateControllerProvider(requestTypeCode, enterpriseCode))
               .value
               ?.selectedCartProductIndex,
           selectionIndex,
@@ -193,7 +207,7 @@ void main() {
         // ASSERT 2
         expect(
           container
-              .read(uiStateControllerProvider(requestTypeCode))
+              .read(uiStateControllerProvider(requestTypeCode, enterpriseCode))
               .value
               ?.selectedCartProductIndex,
           isNull,

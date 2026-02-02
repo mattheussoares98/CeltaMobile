@@ -60,11 +60,17 @@ class SaleRequestPage extends ConsumerWidget {
       ),
       body: AsyncValueWidget(
         value: ref.watch(
-          requestTypeStateControllerProvider(Modules.saleRequest),
+          requestTypeStateControllerProvider(
+            Modules.saleRequest,
+            enterpriseCode,
+          ),
         ),
         tryAgain: () {
           ref.invalidate(
-            requestTypeStateControllerProvider(Modules.saleRequest),
+            requestTypeStateControllerProvider(
+              Modules.saleRequest,
+              enterpriseCode,
+            ),
           );
         },
         data: (requests) {

@@ -49,6 +49,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
     final selectedRequest = await ref.read(
       requestTypeStateControllerProvider(
         Modules.saleRequest,
+        widget.enterpriseCode,
       ).selectAsync((s) => s!.firstWhere((x) => x.Code == widget.requestCode)),
     );
 
@@ -140,6 +141,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                   final selectedRequest = ref.watch(
                     requestTypeStateControllerProvider(
                       Modules.saleRequest,
+                      widget.enterpriseCode,
                     ).select(
                       (s) => s.value!.firstWhere(
                         (x) => x.Code == widget.requestCode,

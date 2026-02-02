@@ -20,6 +20,7 @@ void main() {
   late UserSessionModel fakeSession;
   late List<RequestTypeEntity> requestTypeEntities;
   late Modules module;
+  late int enterpriseCode;
 
   setUp(() {
     mockRepository = MockSoapLoadRequestTypeRepository();
@@ -36,6 +37,7 @@ void main() {
       Modules.transferRequest,
       Modules.saleRequest,
     ][faker.randomGenerator.integer(3)];
+    enterpriseCode = faker.randomGenerator.integer(100);
   });
 
   setUpAll(() {
@@ -67,6 +69,7 @@ void main() {
             inclusiveBuy: any(named: 'inclusiveBuy'),
             inclusiveTransfer: any(named: 'inclusiveTransfer'),
             inclusiveSale: any(named: 'inclusiveSale'),
+            enterpriseCode: any(named: 'enterpriseCode'),
           ),
         ).thenAnswer((_) async => requestTypeEntities);
 
@@ -75,7 +78,7 @@ void main() {
 
         // ACT: Reading the future triggers the build and waits for completion.
         final result = await container.read(
-          requestTypeStateControllerProvider(module).future,
+          requestTypeStateControllerProvider(module, enterpriseCode).future,
         );
 
         // ASSERT
@@ -87,6 +90,7 @@ void main() {
             inclusiveBuy: module == Modules.buyRequest,
             inclusiveTransfer: module == Modules.transferRequest,
             inclusiveSale: module == Modules.saleRequest,
+            enterpriseCode: enterpriseCode,
           ),
         ).called(1);
       },
@@ -99,7 +103,9 @@ void main() {
 
       // ACT & ASSERT: Expect the future to throw an AppException.
       await expectLater(
-        container.read(requestTypeStateControllerProvider(module).future),
+        container.read(
+          requestTypeStateControllerProvider(module, enterpriseCode).future,
+        ),
         throwsA(isA<AppException>()),
       );
 
@@ -111,6 +117,7 @@ void main() {
           inclusiveBuy: any(named: 'inclusiveBuy'),
           inclusiveTransfer: any(named: 'inclusiveTransfer'),
           inclusiveSale: any(named: 'inclusiveSale'),
+          enterpriseCode: any(named: 'enterpriseCode'),
         ),
       );
     });

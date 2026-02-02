@@ -4,10 +4,11 @@ import '../../../features/transfer_request/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase transferRequestRquestsTypesRoute(List<RouteBase> routes) => GoRoute(
-  path: 'transfer-request',
+  path: ':enterpriseCode/transfer-request',
   name: Routes.transferRequestRequestsTypes.name,
   routes: routes,
   builder: (context, state) {
-    return const TransferRequestRequestsTypesPage();
+    final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
+    return TransferRequestRequestsTypesPage(enterpriseCode: enterpriseCode);
   },
 );

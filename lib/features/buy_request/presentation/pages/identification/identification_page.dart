@@ -6,23 +6,27 @@ import '../components/components.dart';
 import 'components/components.dart';
 
 class IdentificationPage extends ConsumerWidget {
-  const IdentificationPage({super.key});
+  final int enterpriseCode;
+  const IdentificationPage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
+    return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Sizes.p4),
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
         child: Column(
           children: [
             Column(
               children: [
-                BuyersAndRequestsDropdown(enabled: true),
+                BuyersAndRequestsDropdown(
+                  enabled: true,
+                  enterpriseCode: enterpriseCode,
+                ),
                 gapH8,
-                SupplierSearcher(),
+                const SupplierSearcher(),
               ],
             ),
-            Expanded(
+            const Expanded(
               child: CustomScrollView(
                 physics: ClampingScrollPhysics(),
                 slivers: [SupplierItems(isSliver: true)],
