@@ -125,6 +125,7 @@ class _ProductItem extends ConsumerWidget {
     );
 
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     void toggleSelection() {
       final currentMap = Map<String, ProductEntity>.from(
@@ -139,28 +140,31 @@ class _ProductItem extends ConsumerWidget {
     }
 
     return RepaintBoundary(
-      child: ProductItemWidget(
-        product: product,
-        routine: BsRoutine.buyQuotation,
-        showInfoButton: false,
-        onTap: toggleSelection,
-        clickableBottom: alreadyInBuyQuotation
-            ? Text(
-                'Esse produto já foi inserido!'.hardcoded,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: theme.primaryColor,
-                  fontStyle: FontStyle.italic,
-                ),
-              )
-            : null,
-        rightWidget: ValueListenableBuilder<Map<String, ProductEntity>>(
-          valueListenable: selectedProductsNotifier,
-          builder: (context, selectedMap, _) {
-            return Checkbox(
-              value: selectedMap.containsKey(productPacking),
-              onChanged: (_) => toggleSelection(),
-            );
-          },
+      child: GestureDetector(
+        //is not using ProductItemWidget property because behave differently in iOS
+        onTap: isIOS ? toggleSelection : null,
+        child: ProductItemWidget(
+          product: product,
+          routine: BsRoutine.buyQuotation,
+          showInfoButton: false,
+          clickableBottom: alreadyInBuyQuotation
+              ? Text(
+                  'Esse produto já foi inserido!'.hardcoded,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: theme.primaryColor,
+                    fontStyle: FontStyle.italic,
+                  ),
+                )
+              : null,
+          rightWidget: ValueListenableBuilder<Map<String, ProductEntity>>(
+            valueListenable: selectedProductsNotifier,
+            builder: (context, selectedMap, _) {
+              return Checkbox(
+                value: selectedMap.containsKey(productPacking),
+                onChanged: (_) => toggleSelection(),
+              );
+            },
+          ),
         ),
       ),
     );
