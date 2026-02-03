@@ -71,4 +71,29 @@ void main() {
       ),
     ).called(1);
   });
+  test('should behave correctly when return a single item', () async {
+    soapRequest.mockPost({"ProcRecebDocumentos": receiptModels.first.toJson()});
+
+    final response = await sut.loadReceipts(
+      workingUrl: workingUrl,
+      crossIdentity: crossIdentity,
+      enterpriseCode: enterpriseCode,
+    );
+
+    expect(response, [receiptModels.first]);
+
+    verify(
+      () => soapRequest.post(
+        url: workingUrl,
+        typeOfResponse: "GetActiveGRDocsStatusResponse",
+        soapAction: "GetActiveGRDocsStatus",
+        serviceASMX: "CeltaGoodsReceivingService.asmx",
+        typeOfResult: "GetActiveGRDocsStatusResult",
+        parameters: {
+          "crossIdentity": crossIdentity,
+          "enterpriseCode": enterpriseCode,
+        },
+      ),
+    ).called(1);
+  });
 }

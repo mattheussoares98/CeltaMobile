@@ -24,6 +24,10 @@ class SoapLoadReceiptsDatasource implements ISoapLoadReceiptsDatasource {
       },
     );
 
+    if (response["ProcRecebDocumentos"] is Map) {
+      return [ReceiptModel.fromJson(response["ProcRecebDocumentos"] as Map)];
+    }
+
     return (response["ProcRecebDocumentos"] as List)
         .map((e) => ReceiptModel.fromJson(e))
         .toList();
