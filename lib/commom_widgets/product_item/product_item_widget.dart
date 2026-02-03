@@ -152,101 +152,93 @@ class ProductItemWidget extends ConsumerWidget {
         margin: const EdgeInsets.only(bottom: Sizes.p8),
         child: Column(
           children: [
-            Stack(
-              children: [
-                InkWell(
-                  onTap: onTap == null || isIOS
-                      ? null
-                      : () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          onTap!();
-                        },
-                  child: Row(
-                    //TODO check if should remove the last commit
-                    children: [
-                      Expanded(
-                        child: Stack(
+            InkWell(
+              onTap: onTap == null || isIOS
+                  ? null
+                  : () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      onTap!();
+                    },
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Column(
                           children: [
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                    Sizes.p8,
-                                    Sizes.p8,
-                                    Sizes.p8,
-                                    showingLittleInformations && showEans
-                                        ? Sizes.p40
-                                        : Sizes.p8,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ?itemBeforeProductName,
-                                      TitleAndSubTitle(
-                                        title: product.Name,
-                                        subTitle:
-                                            product.PackingQuantity == null
-                                            ? null
-                                            : " (${product.PackingQuantity.toString().formattedPacking()})",
-                                        titleStyle: theme.textTheme.titleMedium,
-                                        subTitleStyle:
-                                            theme.textTheme.bodyMedium,
-                                      ),
-                                      TitleAndSubTitle(
-                                        title: "PLU ",
-                                        subTitle: product.PLU,
-                                      ),
-                                      if (showPracticedPrices)
-                                        PracticedPriceProperty(this),
-                                      if (showWholePrices)
-                                        WholePriceAndMinQuantity(this),
-                                      if (showLiquidCosts)
-                                        LiquidCostProperty(this),
-                                      if (showCurrentAndSaleStocks)
-                                        CurrentAndSaleStocks(this),
-                                      if (showEans) EansProperty(this),
-                                      ?cartItemSummary,
-                                      ?clickableBottom,
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (!showingLittleInformations)
-                              Positioned(
-                                right: 0,
-                                bottom: Sizes.p8,
-                                child: InfoButton(this),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                Sizes.p8,
+                                Sizes.p8,
+                                Sizes.p8,
+                                showingLittleInformations && showEans
+                                    ? Sizes.p40
+                                    : Sizes.p8,
                               ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ?itemBeforeProductName,
+                                  TitleAndSubTitle(
+                                    title: product.Name,
+                                    subTitle: product.PackingQuantity == null
+                                        ? null
+                                        : " (${product.PackingQuantity.toString().formattedPacking()})",
+                                    titleStyle: theme.textTheme.titleMedium,
+                                    subTitleStyle: theme.textTheme.bodyMedium,
+                                  ),
+                                  TitleAndSubTitle(
+                                    title: "PLU ",
+                                    subTitle: product.PLU,
+                                  ),
+                                  if (showPracticedPrices)
+                                    PracticedPriceProperty(this),
+                                  if (showWholePrices)
+                                    WholePriceAndMinQuantity(this),
+                                  if (showLiquidCosts) LiquidCostProperty(this),
+                                  if (showCurrentAndSaleStocks)
+                                    CurrentAndSaleStocks(this),
+                                  if (showEans) EansProperty(this),
+                                  ?cartItemSummary,
+                                  ?clickableBottom,
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      ?rightWidget,
-                    ],
-                  ),
-                ),
-                Positioned(
-                  right: isIOS ? Sizes.p4 : 0,
-                  bottom: isIOS
-                      ? Sizes.p4
-                      : routine == BsRoutine.buyQuotation
-                      ? -Sizes.p4
-                      : 0,
-                  child: Row(
-                    children: [
-                      if (showingLittleInformations) InfoButton(this),
-                      if (onDelete != null)
-                        DeleteItemButton(onDelete: onDelete),
-                      if (showDropIcon == true)
-                        SelectedIconIndicator(
-                          selected: isSelected ?? false,
-                          onTap: onTap,
+                        Positioned(
+                          right: isIOS ? Sizes.p4 : 0,
+                          bottom: isIOS
+                              ? Sizes.p4
+                              : routine == BsRoutine.buyQuotation
+                              ? -Sizes.p4
+                              : 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              if (!showingLittleInformations) InfoButton(this),
+                              Row(
+                                children: [
+                                  if (showingLittleInformations)
+                                    InfoButton(this),
+                                  if (onDelete != null)
+                                    DeleteItemButton(onDelete: onDelete),
+                                  if (showDropIcon == true)
+                                    SelectedIconIndicator(
+                                      selected: isSelected ?? false,
+                                      onTap: onTap,
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  ?rightWidget,
+                ],
+              ),
             ),
             if (notClickableBottom != null)
               Padding(
