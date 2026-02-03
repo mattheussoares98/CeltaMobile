@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/presentation/controllers/user_session/user_session.dart';
 import '../features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'not_found_page.dart';
 import 'routes/routes.dart';
@@ -23,6 +24,7 @@ class Bridge<T> extends ChangeNotifier {
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
   final enterpriseManagerBridge = Bridge<Object?>();
+  final userSessionBridge = Bridge<Object?>();
 
   ref.listen<AsyncValue<Object?>>(
     authManagerStateProvider,
@@ -30,10 +32,41 @@ GoRouter goRouter(Ref ref) {
     fireImmediately: true,
   );
 
+  ref.listen<AsyncValue<Object?>>(
+    userSessionProvider,
+    (prev, next) => userSessionBridge.value = next.valueOrNull,
+    fireImmediately: true,
+  );
+
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: false,
-    refreshListenable: Listenable.merge([enterpriseManagerBridge]),
+    refreshListenable: Listenable.merge([
+      enterpriseManagerBridge,
+      userSessionBridge,
+    ]),
+    redirect: (context, state) async {
+      final session = await ref.read(userSessionProvider.future);
+
+      final isLoggingIn = state.matchedLocation == '/auth';
+      final isInSplash = state.matchedLocation == '/splash';
+      final isManagingEnterprise =
+          state.matchedLocation == '/enterprise-manager';
+
+      if (isInSplash || isManagingEnterprise) {
+        return null;
+      }
+
+      final isLogged = session?.user.CrossIdentity_Usuario != null;
+
+      if (isLoggingIn && isLogged) {
+        return '/splash'; //there treat if goes to home or auth page
+      } else if (!isLoggingIn && !isLogged) {
+        return '/splash'; //there treat if goes to home or auth page
+      }
+
+      return null; // No redirection needed
+    },
     routes: [
       authRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
