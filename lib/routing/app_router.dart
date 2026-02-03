@@ -48,10 +48,11 @@ GoRouter goRouter(Ref ref) {
     redirect: (context, state) async {
       final session = await ref.read(userSessionProvider.future);
 
-      final isLoggingIn = state.matchedLocation == '/auth';
-      final isInSplash = state.matchedLocation == '/splash';
-      final isManagingEnterprise =
-          state.matchedLocation == '/enterprise-manager';
+      final isLoggingIn = state.matchedLocation.contains('/auth');
+      final isInSplash = state.matchedLocation.contains('/splash');
+      final isManagingEnterprise = state.matchedLocation.contains(
+        'enterprise-manager',
+      );
 
       if (isInSplash || isManagingEnterprise) {
         return null;
