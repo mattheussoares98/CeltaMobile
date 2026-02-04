@@ -58,7 +58,7 @@ class UpdateItemWidget extends ConsumerWidget {
             ),
             gapW4,
             Expanded(
-              flex: 25,
+              flex: 30,
               child: PriceField(
                 priceController: priceController,
                 priceFocusNode: priceFocusNode,

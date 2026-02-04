@@ -65,8 +65,9 @@ class PriceField extends ConsumerWidget {
         ),
         if (!requestTypeAllowChangePrice)
           Positioned(
-            right: Sizes.p8,
-            bottom: Sizes.p8,
+            right: Sizes.p4,
+            top: 0,
+            bottom: 0,
             child: Tooltip(
               showDuration: const Duration(seconds: 5),
               triggerMode: TooltipTriggerMode.tap,
