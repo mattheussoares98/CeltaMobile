@@ -1,6 +1,7 @@
 import 'package:celta_inventario/features/transfer_request/domain/entities/draft_key.dart';
 
 import 'package:celta_inventario/features/transfer_request/domain/entities/transfer_request_product_item_entity.dart';
+import 'package:collection/collection.dart';
 
 import '../../data/datasource/datasource.dart';
 import '../../data/models/models.dart';
@@ -15,9 +16,18 @@ class LocalCartRepositoryImpl implements ILocalCartRepository {
     DraftKey key,
     TransferRequestProductItemEntity item,
   ) async {
+    final local = await load(key);
+    final existingProduct = local.firstWhereOrNull(
+      (e) => e.product.ProductPackingCode == item.product.ProductPackingCode,
+    );
+
     await datasource.addItem(
       key,
-      TransferRequestProductItemModel.fromEntity(item),
+      TransferRequestProductItemModel.fromEntity(
+        item.copyWith(
+          quantity: (existingProduct?.quantity ?? 0) + item.quantity,
+        ),
+      ),
     );
   }
 

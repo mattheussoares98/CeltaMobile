@@ -82,19 +82,44 @@ void main() {
     test('should map entity to model and call datasource.addItem', () async {
       // ARRANGE
       when(() => mockDatasource.addItem(any(), any())).thenAnswer((_) async {});
+      when(() => mockDatasource.load(any())).thenAnswer((_) async => []);
 
       // ACT
       await sut.addItem(fakeDraftKey, fakeEntity);
 
       // ASSERT
-      final captured = verify(
-        () => mockDatasource.addItem(fakeDraftKey, captureAny()),
-      ).captured;
-      final capturedModel = captured.first as TransferRequestProductItemModel;
-
-      expect(capturedModel, isA<TransferRequestProductItemModel>());
-      expect(capturedModel.product.ProductCode, fakeEntity.product.ProductCode);
+      verify(
+        () => mockDatasource.addItem(
+          fakeDraftKey,
+          TransferRequestProductItemModel.fromEntity(fakeEntity),
+        ),
+      ).called(1);
     });
+    test(
+      'should update the quantity when add a product that already exists',
+      () async {
+        // ARRANGE
+        when(
+          () => mockDatasource.addItem(any(), any()),
+        ).thenAnswer((_) async {});
+        when(() => mockDatasource.load(any())).thenAnswer(
+          (_) async => [TransferRequestProductItemModel.fromEntity(fakeEntity)],
+        );
+
+        // ACT
+        await sut.addItem(fakeDraftKey, fakeEntity.copyWith(quantity: 10));
+
+        // ASSERT
+        verify(
+          () => mockDatasource.addItem(
+            fakeDraftKey,
+            TransferRequestProductItemModel.fromEntity(
+              fakeEntity.copyWith(quantity: fakeEntity.quantity + 10),
+            ),
+          ),
+        ).called(1);
+      },
+    );
   });
 
   group('removeItem', () {
