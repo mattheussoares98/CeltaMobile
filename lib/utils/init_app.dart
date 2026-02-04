@@ -36,11 +36,8 @@ Future<void> _initFirebase() async {
   if (defaultTargetPlatform == TargetPlatform.windows ||
       defaultTargetPlatform == TargetPlatform.macOS ||
       kDebugMode) {
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     return;
   }
-
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
 
   FlutterError.onError = (errorDetails) {
     // PERFORMANCE: Silent errors are flagged by the framework to be ignored.
