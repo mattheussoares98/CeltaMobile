@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../core/presentation/controllers/bs_version/bs_version.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 
@@ -21,6 +22,20 @@ class TopButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void searchProduct(SearchType searchType) async {
+      if (searchType == SearchType.allCountedProductsFromGoodsReceiving) {
+        final bsDate = await ref.read(bsVersionStateControllerProvider.future);
+
+        if (bsDate?.isBefore(DateTime(2026, 02, 01)) ?? false) {
+          showAlertDialog(
+            context: context,
+            title: 'Atualização necesssária!'.hardcoded,
+            content:
+                'Para utilizar essa funcionalidade, peça para o suporte do BS atualizar o sistema'
+                    .hardcoded,
+          );
+          return;
+        }
+      }
       ref
           .read(
             searchProductsStateControllerProvider(searchProductKey).notifier,
@@ -51,10 +66,14 @@ class TopButtons extends ConsumerWidget {
         ),
         Expanded(
           flex: 30,
-          child: _DefaultSearchProduct(
-            widget: this,
-            searchType: SearchType.allCountedProductsFromGoodsReceiving,
-            searchProduct: searchProduct,
+          child: OptimazedAsyncValueWidget(
+            provider: bsVersionStateControllerProvider,
+            tryAgain: () => ref.invalidate(bsVersionStateControllerProvider),
+            child: _DefaultSearchProduct(
+              widget: this,
+              searchType: SearchType.allCountedProductsFromGoodsReceiving,
+              searchProduct: searchProduct,
+            ),
           ),
         ),
       ],
