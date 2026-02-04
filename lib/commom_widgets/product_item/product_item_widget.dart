@@ -130,7 +130,9 @@ class ProductItemWidget extends ConsumerWidget {
   }
 
   double get bottomPadding {
-    if (routine == BsRoutine.priceConference) {
+    if (routine == BsRoutine.goodsReceiving) {
+      return Sizes.p8;
+    } else if (routine == BsRoutine.priceConference) {
       return 0;
     } else if (routine == BsRoutine.adjustSalePrice) {
       return 0;
