@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../core/presentation/controllers/scanner/scanner.dart';
+import '../../../../../routing/routing.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../settings/presentation/controllers/controllers.dart';
 import '../../../domain/entity/entity.dart';
@@ -90,8 +93,23 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     const horizontalPadding = EdgeInsets.symmetric(horizontal: Sizes.p4);
 
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     return Scaffold(
       appBar: AppBar(title: AppBarTitle(receipt: widget.receipt)),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.goNamed(
+            Routes.receiptProductsNotFound.name,
+            pathParameters: {
+              'enterpriseCode': widget.enterpriseCode.toString(),
+              'receiptCode': widget.receiptCode.toString(),
+            },
+          );
+        },
+        child: Icon(!isIOS ? CupertinoIcons.add : Icons.add),
+      ),
       body: Column(
         children: [
           TopButtons(
