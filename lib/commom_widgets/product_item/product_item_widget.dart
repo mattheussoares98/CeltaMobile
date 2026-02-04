@@ -167,14 +167,7 @@ class ProductItemWidget extends ConsumerWidget {
                         Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                Sizes.p8,
-                                Sizes.p8,
-                                Sizes.p8,
-                                showingLittleInformations && showEans
-                                    ? Sizes.p40
-                                    : Sizes.p8,
-                              ),
+                              padding: const EdgeInsets.all(Sizes.p8),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -187,20 +180,37 @@ class ProductItemWidget extends ConsumerWidget {
                                     titleStyle: theme.textTheme.titleMedium,
                                     subTitleStyle: theme.textTheme.bodyMedium,
                                   ),
-                                  TitleAndSubTitle(
-                                    title: "PLU ",
-                                    subTitle: product.PLU,
+                                  Stack(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          TitleAndSubTitle(
+                                            title: "PLU ",
+                                            subTitle: product.PLU,
+                                          ),
+                                          if (showPracticedPrices)
+                                            PracticedPriceProperty(this),
+                                          if (showWholePrices)
+                                            WholePriceAndMinQuantity(this),
+                                          if (showLiquidCosts)
+                                            LiquidCostProperty(this),
+                                          if (showCurrentAndSaleStocks)
+                                            CurrentAndSaleStocks(this),
+                                          if (showEans) EansProperty(this),
+                                          ?cartItemSummary,
+                                          ?clickableBottom,
+                                        ],
+                                      ),
+                                      if (!showingLittleInformations)
+                                        Positioned(
+                                          top: 0,
+                                          right: 0,
+                                          child: InfoButton(this),
+                                        ),
+                                    ],
                                   ),
-                                  if (showPracticedPrices)
-                                    PracticedPriceProperty(this),
-                                  if (showWholePrices)
-                                    WholePriceAndMinQuantity(this),
-                                  if (showLiquidCosts) LiquidCostProperty(this),
-                                  if (showCurrentAndSaleStocks)
-                                    CurrentAndSaleStocks(this),
-                                  if (showEans) EansProperty(this),
-                                  ?cartItemSummary,
-                                  ?clickableBottom,
                                 ],
                               ),
                             ),
@@ -216,7 +226,6 @@ class ProductItemWidget extends ConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              if (!showingLittleInformations) InfoButton(this),
                               Row(
                                 children: [
                                   if (showingLittleInformations)
