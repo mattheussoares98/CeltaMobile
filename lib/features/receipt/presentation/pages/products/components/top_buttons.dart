@@ -20,9 +20,6 @@ class TopButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themne = Theme.of(context);
-    final isIOS = themne.platform == TargetPlatform.iOS;
-
     void searchProduct(SearchType searchType) async {
       ref
           .read(
@@ -34,55 +31,77 @@ class TopButtons extends ConsumerWidget {
           );
     }
 
-    bool isLoading = ref.watch(
-      searchProductsStateControllerProvider(
-        searchProductKey,
-      ).select((s) => s.isLoading),
-    );
-
     return Row(
       children: [
         Expanded(
           flex: 30,
-          child: PrimaryTextButton(
-            text: 'Pesáveis'.hardcoded,
-            isSmall: true,
-            icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
-            iconAlignment: IconAlignment.start,
-            onPressed: isLoading
-                ? null
-                : () => searchProduct(
-                    SearchType.allProductsFromGoodsReceivingGoesForBalance,
-                  ),
+          child: _DefaultSearchProduct(
+            widget: this,
+            searchType: SearchType.allProductsFromGoodsReceivingGoesForBalance,
+            searchProduct: searchProduct,
           ),
         ),
         Expanded(
           flex: 30,
-          child: PrimaryTextButton(
-            text: 'Sem EAN'.hardcoded,
-            isSmall: true,
-            icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
-            iconAlignment: IconAlignment.start,
-            onPressed: isLoading
-                ? null
-                : () => searchProduct(SearchType.allProductsFromGoodsReceiving),
+          child: _DefaultSearchProduct(
+            widget: this,
+            searchType: SearchType.allProductsFromGoodsReceiving,
+            searchProduct: searchProduct,
           ),
         ),
         Expanded(
-          flex: 35,
-          child: PrimaryTextButton(
-            text: 'Já contados'.hardcoded,
-            isSmall: true,
-            icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
-            iconAlignment: IconAlignment.start,
-            onPressed: isLoading
-                ? null
-                : () => searchProduct(
-                    SearchType.allCountedProductsFromGoodsReceiving,
-                  ),
+          flex: 30,
+          child: _DefaultSearchProduct(
+            widget: this,
+            searchType: SearchType.allCountedProductsFromGoodsReceiving,
+            searchProduct: searchProduct,
           ),
         ),
       ],
+    );
+  }
+}
+
+class _DefaultSearchProduct extends ConsumerWidget {
+  final TopButtons widget;
+  final SearchType searchType;
+  final void Function(SearchType searchType) searchProduct;
+  const _DefaultSearchProduct({
+    required this.widget,
+    required this.searchType,
+    required this.searchProduct,
+  });
+
+  String get title {
+    switch (searchType) {
+      case SearchType.allProductsFromGoodsReceivingGoesForBalance:
+        return 'Pesáveis'.hardcoded;
+      case SearchType.allProductsFromGoodsReceiving:
+        return 'Sem EAN'.hardcoded;
+      case SearchType.allCountedProductsFromGoodsReceiving:
+        return 'Já contados'.hardcoded;
+      default:
+        return '';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool isLoading = ref.watch(
+      searchProductsStateControllerProvider(
+        widget.searchProductKey,
+      ).select((s) => s.isLoading),
+    );
+
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    return PrimaryTextButton(
+      text: title,
+      isSmall: true,
+      icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+      iconAlignment: IconAlignment.start,
+      onPressed: isLoading ? null : () => searchProduct(searchType),
     );
   }
 }
