@@ -13,10 +13,13 @@ class CartProductsStateController extends _$CartProductsStateController {
     return ref.watch(localCartRepositoryProvider).load(draftKey);
   }
 
-  Future<void> addItem(TransferRequestProductItemEntity item) async {
+  Future<void> addItem(
+    TransferRequestProductItemEntity item,
+    CartAdditionStrategy additionStrategy,
+  ) async {
     final repository = ref.read(localCartRepositoryProvider);
 
-    await repository.addItem(draftKey, item);
+    await repository.addItem(draftKey, item, additionStrategy);
 
     ref.invalidateSelf();
 

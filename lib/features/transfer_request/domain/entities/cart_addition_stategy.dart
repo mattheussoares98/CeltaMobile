@@ -1,0 +1,1 @@
+enum CartAdditionStrategy { increase, overwrite }

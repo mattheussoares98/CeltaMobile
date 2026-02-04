@@ -18,7 +18,7 @@ class UpdateItemWidget extends ConsumerWidget {
   final TextEditingController priceController;
   final FocusNode quantityFocusNode;
   final FocusNode priceFocusNode;
-  final bool isAlreadyInCart;
+  final bool isCartPage;
   const UpdateItemWidget({
     super.key,
     required this.update,
@@ -28,7 +28,7 @@ class UpdateItemWidget extends ConsumerWidget {
     required this.priceController,
     required this.quantityFocusNode,
     required this.priceFocusNode,
-    required this.isAlreadyInCart,
+    required this.isCartPage,
   });
 
   @override
@@ -86,7 +86,7 @@ class UpdateItemWidget extends ConsumerWidget {
                       .toBrazilianNumber()
                       .addBrazilianCoin();
                   return PrimaryButton(
-                    text: isAlreadyInCart
+                    text: isCartPage
                         ? 'Alterar $newValue'.hardcoded
                         : 'Adicionar $newValue'.hardcoded,
                     onPressed: update,

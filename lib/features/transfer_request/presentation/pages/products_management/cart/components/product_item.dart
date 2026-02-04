@@ -88,6 +88,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                 ? priceController.text.toDouble() ?? 0
                 : null,
           ),
+          CartAdditionStrategy.overwrite,
         );
 
     ref
@@ -155,7 +156,6 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                   child: Form(
                     key: formKey,
                     child: UpdateItemWidget(
-                      isAlreadyInCart: true,
                       update: update,
                       draftKey: widget.draftKey,
                       price: widget.item.value,
@@ -163,6 +163,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                       priceController: priceController,
                       quantityFocusNode: quantityFocusNode,
                       priceFocusNode: priceFocusNode,
+                      isCartPage: true,
                     ),
                   ),
                 );

@@ -80,7 +80,7 @@ class ProductItem extends ConsumerWidget {
             ? Form(
                 key: formKey,
                 child: UpdateItemWidget(
-                  isAlreadyInCart: transferRequestProductItem != null,
+                  isCartPage: false,
                   update: () => update(transferRequestProductItem?.quantity),
                   draftKey: draftKey,
                   price: product.Value ?? 0,

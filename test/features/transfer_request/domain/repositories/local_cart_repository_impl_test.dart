@@ -35,6 +35,9 @@ void main() {
         ),
       ),
     );
+    for (var value in CartAdditionStrategy.values) {
+      registerFallbackValue(value);
+    }
   });
 
   setUp(() {
@@ -79,15 +82,22 @@ void main() {
   });
 
   group('addItem', () {
-    test('should map entity to model and call datasource.addItem', () async {
+    test('should behave correctly on CartAdditionStrategy.overrite', () async {
       // ARRANGE
       when(() => mockDatasource.addItem(any(), any())).thenAnswer((_) async {});
-      when(() => mockDatasource.load(any())).thenAnswer((_) async => []);
+      when(() => mockDatasource.load(any())).thenAnswer(
+        (_) async => [TransferRequestProductItemModel.fromEntity(fakeEntity)],
+      );
 
       // ACT
-      await sut.addItem(fakeDraftKey, fakeEntity);
+      await sut.addItem(
+        fakeDraftKey,
+        fakeEntity,
+        CartAdditionStrategy.overwrite,
+      );
 
       // ASSERT
+      verifyNever(() => mockDatasource.load(any()));
       verify(
         () => mockDatasource.addItem(
           fakeDraftKey,
@@ -95,31 +105,32 @@ void main() {
         ),
       ).called(1);
     });
-    test(
-      'should update the quantity when add a product that already exists',
-      () async {
-        // ARRANGE
-        when(
-          () => mockDatasource.addItem(any(), any()),
-        ).thenAnswer((_) async {});
-        when(() => mockDatasource.load(any())).thenAnswer(
-          (_) async => [TransferRequestProductItemModel.fromEntity(fakeEntity)],
-        );
+    test('should behave correctly on CartAdditionStrategy.increase', () async {
+      // ARRANGE
+      when(() => mockDatasource.addItem(any(), any())).thenAnswer((_) async {});
+      when(() => mockDatasource.load(any())).thenAnswer(
+        (_) async => [TransferRequestProductItemModel.fromEntity(fakeEntity)],
+      );
 
-        // ACT
-        await sut.addItem(fakeDraftKey, fakeEntity.copyWith(quantity: 10));
+      // ACT
+      await sut.addItem(
+        fakeDraftKey,
+        fakeEntity.copyWith(quantity: 10),
+        CartAdditionStrategy.increase,
+      );
 
-        // ASSERT
-        verify(
-          () => mockDatasource.addItem(
-            fakeDraftKey,
-            TransferRequestProductItemModel.fromEntity(
-              fakeEntity.copyWith(quantity: fakeEntity.quantity + 10),
-            ),
+      // ASSERT
+
+      verify(() => mockDatasource.load(fakeDraftKey)).called(1);
+      verify(
+        () => mockDatasource.addItem(
+          fakeDraftKey,
+          TransferRequestProductItemModel.fromEntity(
+            fakeEntity.copyWith(quantity: fakeEntity.quantity + 10),
           ),
-        ).called(1);
-      },
-    );
+        ),
+      ).called(1);
+    });
   });
 
   group('removeItem', () {

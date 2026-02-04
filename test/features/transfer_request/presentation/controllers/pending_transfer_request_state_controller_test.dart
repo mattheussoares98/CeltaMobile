@@ -33,6 +33,9 @@ void main() {
         value: 0,
       ),
     );
+    for (var value in CartAdditionStrategy.values) {
+      registerFallbackValue(value);
+    }
   });
 
   setUp(() {
@@ -90,50 +93,61 @@ void main() {
     });
 
     group('addItem', () {
-      test('should call repository.addItem and invalidate the state', () async {
-        // ARRANGE
-        // 1. Initial load
-        when(
-          () => mockRepository.load(fakeDraftKey),
-        ).thenAnswer((_) async => fakeItems);
-        // 2. addItem call
-        when(
-          () => mockRepository.addItem(any(), any()),
-        ).thenAnswer((_) async {});
-        // 3. The second load (from invalidateSelf)
-        when(
-          () => mockRepository.load(fakeDraftKey),
-        ).thenAnswer((_) async => fakeItems);
+      test(
+        'should call repository.addItem with correct values and invalidate the state',
+        () async {
+          // ARRANGE
+          // 1. Initial load
+          when(
+            () => mockRepository.load(fakeDraftKey),
+          ).thenAnswer((_) async => fakeItems);
+          // 2. addItem call
+          when(
+            () => mockRepository.addItem(any(), any(), any()),
+          ).thenAnswer((_) async {});
+          // 3. The second load (from invalidateSelf)
+          when(
+            () => mockRepository.load(fakeDraftKey),
+          ).thenAnswer((_) async => fakeItems);
+          final cartAdditionStrategy =
+              CartAdditionStrategy.values[faker.randomGenerator.integer(
+                CartAdditionStrategy.values.length,
+              )];
 
-        final container = makeProviderContainer();
-        addTearDown(container.dispose);
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
 
-        // Wait for the initial build
-        await container.read(
-          cartProductsStateControllerProvider(fakeDraftKey).future,
-        );
+          // Wait for the initial build
+          await container.read(
+            cartProductsStateControllerProvider(fakeDraftKey).future,
+          );
 
-        // ACT
-        await container
-            .read(cartProductsStateControllerProvider(fakeDraftKey).notifier)
-            .addItem(fakeItems[1]);
+          // ACT
+          await container
+              .read(cartProductsStateControllerProvider(fakeDraftKey).notifier)
+              .addItem(fakeItems[1], cartAdditionStrategy);
 
-        // ASSERT
-        // Verify the repository methods were called
-        verify(
-          () => mockRepository.addItem(fakeDraftKey, fakeItems[1]),
-        ).called(1);
-        verify(
-          () => mockRepository.load(fakeDraftKey),
-        ).called(2); // Called once in build, once for invalidate
+          // ASSERT
+          // Verify the repository methods were called
+          verify(
+            () => mockRepository.addItem(
+              fakeDraftKey,
+              fakeItems[1],
+              cartAdditionStrategy,
+            ),
+          ).called(1);
+          verify(
+            () => mockRepository.load(fakeDraftKey),
+          ).called(2); // Called once in build, once for invalidate
 
-        // Verify the final state is the new list
-        final finalState = container.read(
-          cartProductsStateControllerProvider(fakeDraftKey),
-        );
-        expect(finalState.value, hasLength(2));
-        expect(finalState.value, fakeItems);
-      });
+          // Verify the final state is the new list
+          final finalState = container.read(
+            cartProductsStateControllerProvider(fakeDraftKey),
+          );
+          expect(finalState.value, hasLength(2));
+          expect(finalState.value, fakeItems);
+        },
+      );
     });
 
     group('removeItem', () {
