@@ -43,19 +43,16 @@ class ProductItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isSelected = ref.watch(
+      selectedItemUIControllerProvider.select((s) => s.selectedIndex == index),
+    );
     return RepaintBoundary(
       child: ProductItemWidget(
         product: product,
         routine: BsRoutine.researchOfPrice,
         showDropIcon: true,
-        notClickableBottom: Consumer(
-          builder: (_, ref, _) {
-            final selectedIndex = ref.watch(
-              selectedItemUIControllerProvider.select((s) => s.selectedIndex),
-            );
-
-            if (selectedIndex == index) {
-              return PricesFieldsAndSubmit(
+        notClickableBottom: isSelected
+            ? PricesFieldsAndSubmit(
                 product: product,
                 retailController: retailController,
                 retailOfferController: retailOfferController,
@@ -70,12 +67,8 @@ class ProductItem extends ConsumerWidget {
                 ecommerceFocusNode: ecommerceFocusNode,
                 ecommerceOfferFocusNode: ecommerceOfferFocusNode,
                 widget: widget,
-              );
-            }
-
-            return const SizedBox.shrink();
-          },
-        ),
+              )
+            : null,
         onTap: () {
           final selectedItemAsync = ref.read(selectedItemUIControllerProvider);
 
