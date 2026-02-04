@@ -147,6 +147,7 @@ class _ProductItem extends ConsumerWidget {
           product: product,
           routine: BsRoutine.buyQuotation,
           showInfoButton: false,
+          onTap: isIOS ? null : toggleSelection,
           clickableBottom: alreadyInBuyQuotation
               ? Text(
                   'Esse produto já foi inserido!'.hardcoded,
