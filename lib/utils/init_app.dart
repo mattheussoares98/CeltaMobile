@@ -36,16 +36,18 @@ Future<void> _initFirebase() async {
   if (defaultTargetPlatform == TargetPlatform.windows ||
       defaultTargetPlatform == TargetPlatform.macOS ||
       kDebugMode) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     return;
   }
 
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+
   FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
+    // PERFORMANCE: Silent errors are flagged by the framework to be ignored.
+    // Checking this avoids unnecessary network traffic for non-breaking issues.
+    if (errorDetails.silent) return;
+
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   };
 }
 
