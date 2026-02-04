@@ -118,7 +118,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                     Form(
                       key: formKey,
                       child: DefaultTextFormField(
-                        maxLines: 5,
+                        maxLines: 13,
                         maxLength: 500,
                         controller: widget.observationsController,
                         hintText: 'Nova observação'.hardcoded,
