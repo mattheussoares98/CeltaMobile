@@ -129,6 +129,22 @@ class ProductItemWidget extends ConsumerWidget {
     return value <= 1;
   }
 
+  double get bottomPadding {
+    if (routine == BsRoutine.priceConference) {
+      return 0;
+    } else if (routine == BsRoutine.adjustSalePrice) {
+      return 0;
+    } else if (cartItemSummary != null) {
+      return Sizes.p8;
+    } else if (showEans && showingLittleInformations) {
+      return Sizes.p32;
+    } else if (showEans) {
+      return Sizes.p16;
+    }
+
+    return Sizes.p8;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(finishOfferControllerProvider, (p, n) {
@@ -167,7 +183,12 @@ class ProductItemWidget extends ConsumerWidget {
                         Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(Sizes.p8),
+                              padding: EdgeInsets.fromLTRB(
+                                Sizes.p8,
+                                Sizes.p8,
+                                Sizes.p8,
+                                bottomPadding,
+                              ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -219,9 +240,9 @@ class ProductItemWidget extends ConsumerWidget {
                         Positioned(
                           right: isIOS ? Sizes.p4 : 0,
                           bottom: isIOS
-                              ? Sizes.p4
-                              : routine == BsRoutine.buyQuotation
-                              ? -Sizes.p4
+                              ? routine == BsRoutine.buyQuotation
+                                    ? -Sizes.p4
+                                    : Sizes.p4
                               : 0,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
