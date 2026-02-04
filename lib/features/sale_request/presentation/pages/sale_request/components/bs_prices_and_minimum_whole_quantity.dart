@@ -29,6 +29,20 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
       color: Colors.black,
     );
 
+    TextStyle getMinWholeStyle(PracticedPriceType practicedPriceType) {
+      final style = practicedPriceType == PracticedPriceType.whole
+          ? subtitleSelected
+          : subtitleNotSelected;
+
+      return style!.copyWith(
+        color: (widget.product.MinimumWholeQuantity ?? 0) == 0
+            ? Colors.red
+            : practicedPriceType == PracticedPriceType.whole
+            ? Colors.green
+            : theme.colorScheme.secondary,
+      );
+    }
+
     return AnimatedBuilder(
       animation: Listenable.merge([
         widget.priceController,
@@ -39,6 +53,8 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
           manualPrice: widget.priceController.text.toDouble(),
           quantity: widget.quantityController.text.toDouble() ?? 0,
         );
+
+        final minWholeStyle = getMinWholeStyle(practicedPriceType);
 
         return Padding(
           padding: const EdgeInsets.only(left: Sizes.p8),
@@ -60,34 +76,31 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
                       : subtitleNotSelected,
                 ),
                 if (widget.product.WholePracticedPrice! > 0) ...[
-                  TitleAndSubTitle(
-                    title: 'Preço atacado'.hardcoded,
-                    subTitle: widget.product.WholePracticedPrice
-                        .toString()
-                        .toBrazilianNumber(2),
-                    subTitleIsPrice: true,
-                    titleStyle: practicedPriceType == PracticedPriceType.whole
-                        ? titleStyle
-                        : null,
-                    subTitleStyle:
-                        practicedPriceType == PracticedPriceType.whole
-                        ? subtitleSelected
-                        : subtitleNotSelected,
-                  ),
-                  TitleAndSubTitle(
-                    title: 'Qtd mín atacado'.hardcoded,
-                    subTitle: widget.product.MinimumWholeQuantity
-                        .toString()
-                        .toBrazilianNumber(2),
-                    emptyMessage:
-                        'Não foi definido qtd mín p/ atacado'.hardcoded,
-                    titleStyle: practicedPriceType == PracticedPriceType.whole
-                        ? titleStyle
-                        : null,
-                    subTitleStyle:
-                        practicedPriceType == PracticedPriceType.whole
-                        ? subtitleSelected
-                        : subtitleNotSelected,
+                  Row(
+                    children: [
+                      Flexible(
+                        child: TitleAndSubTitle(
+                          title: 'Preço atacado',
+                          subTitle: widget.product.WholePracticedPrice,
+                          subTitleIsPrice: true,
+                          titleStyle:
+                              practicedPriceType == PracticedPriceType.whole
+                              ? titleStyle
+                              : null,
+                          subTitleStyle:
+                              practicedPriceType == PracticedPriceType.whole
+                              ? subtitleSelected
+                              : subtitleNotSelected,
+                        ),
+                      ),
+                      TitleAndSubTitle(
+                        title: ' (mín'.hardcoded,
+                        subTitle:
+                            '${(widget.product.MinimumWholeQuantity ?? 0).toString().toBrazilianNumber(2, true)})',
+                        titleStyle: minWholeStyle,
+                        subTitleStyle: minWholeStyle,
+                      ),
+                    ],
                   ),
                 ],
               ],
