@@ -5,13 +5,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
 class AdjustStocksPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  const AdjustStocksPage({super.key, required this.enterpriseCode});
+  final ProductEntity? product;
+  const AdjustStocksPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.product,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -22,6 +29,26 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
   final quantityController = TextEditingController();
   final quantityFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
+
+  @override
+  initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (widget.product != null) {
+        final provider = searchProductsStateControllerProvider(
+          SearchProductKey(
+            widget.enterpriseCode,
+            BsRoutine.adjustStock,
+            Modules.adjustStock,
+          ),
+        );
+        await ref.read(provider.future);
+        //necessary await build first
+        ref.read(provider.notifier).addProduct(widget.product!);
+      }
+    });
+  }
 
   @override
   void dispose() {
