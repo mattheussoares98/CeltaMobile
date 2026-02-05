@@ -1,5 +1,6 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,6 +9,7 @@ import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
+import '../../../enterprises/presentation/controllers/controllers.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -88,10 +90,37 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
 
     ref.observeLoading([confirmAdjustStockControllerProvider]);
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: FittedBox(child: Text("Ajuste de estoque".hardcoded)),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FittedBox(child: Text("Ajuste de estoque".hardcoded)),
+            Consumer(
+              builder: (_, ref, _) {
+                //TODO add this in others pages
+                final correspondentEnterprise = ref.watch(
+                  enterprisesStateControllerProvider().select(
+                    (s) => s.value?.firstWhereOrNull(
+                      (x) => x.Code == widget.enterpriseCode,
+                    ),
+                  ),
+                );
+
+                if (correspondentEnterprise == null) {
+                  return const SizedBox.shrink();
+                }
+
+                return Text(
+                  '${correspondentEnterprise.PersonalizedCode} - ${correspondentEnterprise.name}',
+                  style: theme.textTheme.bodySmall,
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Form(
         key: formKey,
