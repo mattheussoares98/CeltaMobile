@@ -1,21 +1,15 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/enterprises/enterprises.dart';
-import '../../../../../core/presentation/controllers/resource/resource.dart';
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../../../../core/presentation/mixins/mixins.dart';
 import '../../../../../routing/routing.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../controllers/controllers.dart';
 
-class DefaultModuleButton extends ConsumerWidget {
+class DefaultModuleButton extends ConsumerStatefulWidget {
   final Routes route;
   final Modules module;
   final IconData cupertinoIcon;
@@ -32,81 +26,23 @@ class DefaultModuleButton extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DefaultModuleButtonState();
+}
+
+class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
+    with TryAccessRouteMixin {
+  @override
+  Widget build(BuildContext context) {
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
     );
-    void showDisabledModuleMessage() {
-      showAlertDialog(
-        context: context,
-        title: 'Módulo desabilitado'.hardcoded,
-        content:
-            'O módulo ${route.module.toUpperCase()} está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo'
-                .hardcoded,
-      );
-    }
-
-    void showUserWithoutPermissionMessage() {
-      showAlertDialog(
-        context: context,
-        title: 'Usuário sem permissão'.hardcoded,
-        content:
-            'Seu usuário não possui permissão para alterar preços'.hardcoded,
-      );
-    }
-
-    void onTap() async {
-      final enterpriseName = ref.read(
-        validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
-      );
-      final enabledModulesByEnterprise = await ref.read(
-        enabledModulesByEnterpriseNameStateControllerProvider(
-          enterpriseName,
-        ).future,
-      );
-
-      final correspondentEnterprise = enabledModulesByEnterprise
-          .firstWhereOrNull(
-            (e) => e.cnpjNumber == selectedEnterprise?.CnpjNumber,
-          );
-      if (correspondentEnterprise == null) {
-        showDisabledModuleMessage();
-        return;
-      }
-
-      final enabledModules = correspondentEnterprise.enabledModules;
-      bool moduleIsEnabled = enabledModules.contains(module);
-      if (!moduleIsEnabled) {
-        showDisabledModuleMessage();
-        return;
-      }
-
-      if (module == Modules.adjustPrice) {
-        final canAccess = await ref.read(
-          canAccessResourceStateControllerProvider(
-            BsRoutine.adjustSalePrice,
-            BsResource.adjustSalePrice,
-          ).future,
-        );
-        if (!canAccess) {
-          showUserWithoutPermissionMessage();
-          return;
-        }
-      }
-
-      context.goNamed(
-        route.name,
-        pathParameters: passEnterpriseToNextRoute
-            ? {'enterpriseCode': selectedEnterprise!.Code.toString()}
-            : {},
-      );
-    }
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     final isFavorite = ref.watch(
       favoriteModulesStateControllerProvider.select(
-        (s) => s.value?.any((x) => x == module) ?? false,
+        (s) => s.value?.any((x) => x == widget.module) ?? false,
       ),
     );
 
@@ -122,7 +58,17 @@ class DefaultModuleButton extends ConsumerWidget {
             child: Consumer(
               builder: (_, ref, _) {
                 return InkWell(
-                  onTap: selectedEnterprise == null ? null : onTap,
+                  onTap: selectedEnterprise == null
+                      ? null
+                      : () => tryAccessRoute(
+                          widget.route,
+                          widget.module,
+                          pathParameters: {
+                            if (widget.passEnterpriseToNextRoute)
+                              'enterpriseCode':
+                                  selectedEnterprise.Code.toString(),
+                          },
+                        ),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -136,13 +82,13 @@ class DefaultModuleButton extends ConsumerWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            isIOS ? cupertinoIcon : materialIcon,
+                            isIOS ? widget.cupertinoIcon : widget.materialIcon,
                             color: theme.primaryColor,
                           ),
                         ),
                         const SizedBox(height: Sizes.p12),
                         Text(
-                          route.module,
+                          widget.route.module,
                           textAlign: TextAlign.center,
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.w600,
@@ -162,7 +108,7 @@ class DefaultModuleButton extends ConsumerWidget {
             child: IconButton(
               onPressed: () => ref
                   .read(favoriteModulesStateControllerProvider.notifier)
-                  .toggle(module),
+                  .toggle(widget.module),
               icon: isFavorite
                   ? Icon(
                       isIOS ? CupertinoIcons.star_fill : Icons.star,
