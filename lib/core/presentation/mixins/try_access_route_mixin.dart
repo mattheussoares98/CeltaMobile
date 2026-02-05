@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +21,15 @@ mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
     Map<String, String>? pathParameters,
     Object? extra,
   }) async {
+    final router = GoRouter.of(context);
+    final String? currentRouteName =
+        router.routerDelegate.currentConfiguration.last.route.name;
+
+    if (currentRouteName == route.name) {
+      debugPrint('Navigation Cancelled: User already on ${route.name}');
+      return;
+    }
+
     final enterpriseName = ref.read(
       validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
     );
