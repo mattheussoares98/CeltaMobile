@@ -68,16 +68,11 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
   String getHintText(AppSettingsEntity? settings) {
     final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
 
-    switch (settings?.searchPreference) {
-      case SearchProductTypePreference.dynamic:
-        return defaultHint;
-      case SearchProductTypePreference.personalizedCode:
-        return SearchProductTypePreference.personalizedCode.name;
-      case SearchProductTypePreference.legacyCode:
-        return SearchProductTypePreference.legacyCode.name;
-      default:
-        return defaultHint;
+    if (settings?.searchPreference == SearchProductTypePreference.dynamic) {
+      return defaultHint;
     }
+
+    return settings?.searchPreference.name ?? defaultHint;
   }
 
   @override
