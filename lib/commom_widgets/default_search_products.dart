@@ -109,10 +109,11 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                 focusNode: widget.focusNode,
                 validator: FormValidators.compose([
                   if (widget.allowEmptySearchValue != true) NonEmptyValidator(),
+                  if (settings?.searchPreference ==
+                      SearchProductTypePreference.ean)
+                    NumberValidator(allowDecimal: false),
                 ]),
-                onFieldSubmitted: (_) {
-                  searchProducts();
-                },
+                onFieldSubmitted: (_) => searchProducts(),
                 prefixIcon: width < 220
                     ? null
                     : _DefaultIcon(
@@ -182,7 +183,9 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                     ],
                   ),
                 ),
-                labelText: 'Consultar produtos'.hardcoded,
+                labelText:
+                    'Consultar produtos (${settings?.searchPreference.name ?? 'Dinâmico'})'
+                        .hardcoded,
                 hintText: hintText,
               ),
             ),
