@@ -16,9 +16,9 @@ mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
   void tryAccessRoute(
     Routes route,
     Modules module, {
+    required bool? replace,
     Map<String, String>? pathParameters,
     Object? extra,
-    bool? replace,
   }) async {
     final enterpriseName = ref.read(
       validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
