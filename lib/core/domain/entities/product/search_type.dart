@@ -3,6 +3,7 @@ enum SearchType {
   dynamic(0),
   approximatePersonalizedCode(5),
   approximateLegacyCode(11),
+  ean(4),
   // exactPriceLookUp(2),
   // exactEan(4),
   // approximateName(6),
