@@ -468,4 +468,53 @@ void main() {
       },
     );
   });
+
+  group('Add product', () {
+    test('should add the product when doesn"t exist yet', () async {
+      final container = makeProviderContainer();
+
+      await container.read(
+        searchProductsStateControllerProvider(searchProductKey).future,
+      );
+
+      container
+          .read(
+            searchProductsStateControllerProvider(searchProductKey).notifier,
+          )
+          .addProduct(productsEntities.first);
+
+      final state = container.read(
+        searchProductsStateControllerProvider(searchProductKey),
+      );
+
+      expect(state.value, [productsEntities.first]);
+    });
+    test('should NOT add the product when already exists', () async {
+      final container = makeProviderContainer();
+
+      await container
+          .read(
+            searchProductsStateControllerProvider(searchProductKey).notifier,
+          )
+          .loadProducts(
+            GetProductsJsonParams(
+              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              searchValue: searchValue,
+              enterpriseCodes: [enterpriseEntity.Code!],
+            ),
+          );
+
+      container
+          .read(
+            searchProductsStateControllerProvider(searchProductKey).notifier,
+          )
+          .addProduct(productsEntities.first);
+
+      final state = container.read(
+        searchProductsStateControllerProvider(searchProductKey),
+      );
+
+      expect(state.value, productsEntities);
+    });
+  });
 }

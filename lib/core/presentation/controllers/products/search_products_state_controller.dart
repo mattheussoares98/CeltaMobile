@@ -95,4 +95,17 @@ class SearchProductsStateController extends _$SearchProductsStateController {
       state = AsyncData(newList);
     }
   }
+
+  void addProduct(ProductEntity newProduct) {
+    final currentState = state.valueOrNull;
+    if (currentState?.any(
+          (e) => e.ProductPackingCode == newProduct.ProductPackingCode,
+        ) ??
+        false) {
+      return;
+    }
+    state = AsyncData(
+      (state as AsyncData<List<ProductEntity>>).value..add(newProduct),
+    );
+  }
 }
