@@ -29,10 +29,23 @@ class ProductsItems extends ConsumerWidget {
       if (formKey.currentState?.validate() != true) {
         return;
       }
-
       final selectedUIState = ref.read(
         selectedUIStateControllerProvider(enterpriseCode),
       );
+
+      if (selectedUIState.selectedJustification == null ||
+          selectedUIState.selectedStockType == null) {
+        //*if the user doesn't has permission to load justifications or stocks, the formKey will be valid.
+        //*Because of this, should create this validation
+        showAlertDialog(
+          context: context,
+          title: 'Atenção!'.hardcoded,
+          content:
+              'Você precisa selecionar a justificativa e o estoque!'.hardcoded,
+        );
+        return;
+      }
+
       await ref.read(confirmAdjustStockControllerProvider.notifier).confirm([
         AdjustStockItemEntity(
           EnterpriseCode: enterpriseCode,
