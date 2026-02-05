@@ -516,5 +516,35 @@ void main() {
 
       expect(state.value, productsEntities);
     });
+
+    test('should add in first position when already others products', () async {
+      final container = makeProviderContainer();
+
+      await container
+          .read(
+            searchProductsStateControllerProvider(searchProductKey).notifier,
+          )
+          .loadProducts(
+            GetProductsJsonParams(
+              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              searchValue: searchValue,
+              enterpriseCodes: [enterpriseEntity.Code!],
+            ),
+          );
+
+      final newProduct = EntityFactory.makeProductEntity();
+
+      container
+          .read(
+            searchProductsStateControllerProvider(searchProductKey).notifier,
+          )
+          .addProduct(newProduct);
+
+      final state = container.read(
+        searchProductsStateControllerProvider(searchProductKey),
+      );
+
+      expect(state.value, [newProduct, ...productsEntities]);
+    });
   });
 }

@@ -104,8 +104,10 @@ class SearchProductsStateController extends _$SearchProductsStateController {
         false) {
       return;
     }
-    state = AsyncData(
-      (state as AsyncData<List<ProductEntity>>).value..add(newProduct),
+    currentState?.removeWhere(
+      (e) => e.ProductPackingCode == newProduct.ProductPackingCode,
+      //should remove to put the product as first in the list
     );
+    state = AsyncData([newProduct, ...?currentState]);
   }
 }
