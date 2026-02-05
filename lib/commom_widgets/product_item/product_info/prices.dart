@@ -1,21 +1,29 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
 import '../../../core/domain/entities/entities.dart';
 import '../../../core/presentation/controllers/resource/resource.dart';
+import '../../../core/presentation/mixins/mixins.dart';
 import '../../../core/providers/resource/resource.dart';
 import '../../../features/adjust_sale_price/domain/entities/entities.dart';
+import '../../../routing/routing.dart';
 import '../../commom_widgets.dart';
 
-class Prices extends ConsumerWidget {
+class Prices extends ConsumerStatefulWidget {
   const Prices({super.key, required this.widget});
   final ProductInfoModal widget;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final cost = widget.product.PriceCost;
+  ConsumerState<ConsumerStatefulWidget> createState() => _PricesState();
+}
+
+class _PricesState extends ConsumerState<Prices> with TryAccessRouteMixin {
+  @override
+  Widget build(BuildContext context) {
+    final cost = widget.widget.product.PriceCost;
     final retailSuggestion = cost?.RetailSuggestionPrice ?? 0;
     final wholeSuggestion = cost?.WholeSuggestionPrice ?? 0;
     final ecommerceSuggestion = cost?.ECommerceSuggestionPrice ?? 0;
@@ -31,11 +39,36 @@ class Prices extends ConsumerWidget {
       ),
     );
 
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
     return ResponsiveScrollableWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          DefaultTitle(title: 'Preços praticados'.hardcoded),
+          Row(
+            children: [
+              Flexible(
+                child: DefaultTitle(title: 'Preços praticados'.hardcoded),
+              ),
+              IconButton(
+                onPressed: () {
+                  tryAccessRoute(
+                    Routes.adjustSalePrice,
+                    Modules.adjustPrice,
+                    replace: false,
+                    extra: widget.widget.product,
+                    pathParameters: {
+                      'enterpriseCode': widget.widget.product.EnterpriseCode
+                          .toString(),
+                      'plu': widget.widget.product.PLU!,
+                    },
+                  );
+                },
+                icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+              ),
+            ],
+          ),
           if (canAdjustSalePrice.hasError)
             Padding(
               padding: const EdgeInsets.all(Sizes.p8),
@@ -48,9 +81,18 @@ class Prices extends ConsumerWidget {
               ),
             ),
           gapH8,
-          PracticedPrice(saleType: SaleType.retail, product: widget.product),
-          PracticedPrice(saleType: SaleType.whole, product: widget.product),
-          PracticedPrice(saleType: SaleType.ecommerce, product: widget.product),
+          PracticedPrice(
+            saleType: SaleType.retail,
+            product: widget.widget.product,
+          ),
+          PracticedPrice(
+            saleType: SaleType.whole,
+            product: widget.widget.product,
+          ),
+          PracticedPrice(
+            saleType: SaleType.ecommerce,
+            product: widget.widget.product,
+          ),
           if (retailSuggestion > 0 ||
               wholeSuggestion > 0 ||
               ecommerceSuggestion > 0) ...[

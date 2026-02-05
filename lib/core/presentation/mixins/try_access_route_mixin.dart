@@ -18,6 +18,7 @@ mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
     Modules module, {
     Map<String, String>? pathParameters,
     Object? extra,
+    bool? replace,
   }) async {
     final enterpriseName = ref.read(
       validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
@@ -59,11 +60,19 @@ mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
       }
     }
 
-    context.goNamed(
-      route.name,
-      pathParameters: pathParameters ?? {},
-      extra: extra,
-    );
+    if (replace == true) {
+      context.goNamed(
+        route.name,
+        pathParameters: pathParameters ?? {},
+        extra: extra,
+      );
+    } else {
+      context.pushNamed(
+        route.name,
+        pathParameters: pathParameters ?? {},
+        extra: extra,
+      );
+    }
   }
 
   void _showDisabledModuleMessage(Routes route) {

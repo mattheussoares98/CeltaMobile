@@ -1,23 +1,33 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
 import '../../../core/domain/entities/entities.dart';
+import '../../../core/presentation/mixins/mixins.dart';
+import '../../../routing/routing.dart';
 import '../../commom_widgets.dart';
 
-class Stocks extends StatelessWidget {
+class Stocks extends ConsumerStatefulWidget {
   const Stocks({super.key, required this.widget});
 
   final ProductInfoModal widget;
 
   @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _StocksState();
+}
+
+class _StocksState extends ConsumerState<Stocks> with TryAccessRouteMixin {
+  @override
   Widget build(BuildContext context) {
     final groupedStocks = groupBy(
-      widget.product.Stocks ?? <StockEntity>[],
+      widget.widget.product.Stocks ?? <StockEntity>[],
       (stock) => (stock).Enterprise,
     );
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final enterpriseNames = groupedStocks.keys.toList();
 
@@ -27,7 +37,26 @@ class Stocks extends StatelessWidget {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: DefaultTitle(title: 'Estoques'.hardcoded),
+            child: Row(
+              children: [
+                Flexible(child: DefaultTitle(title: 'Estoques'.hardcoded)),
+                IconButton(
+                  onPressed: () {
+                    tryAccessRoute(
+                      Routes.adjustStocks,
+                      Modules.adjustStock,
+                      replace: false,
+                      extra: widget.widget.product,
+                      pathParameters: {
+                        'enterpriseCode': widget.widget.product.EnterpriseCode
+                            .toString(),
+                      },
+                    );
+                  },
+                  icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                ),
+              ],
+            ),
           ),
         ),
 
