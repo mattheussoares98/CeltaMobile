@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../constants/constants.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../../domain/entities/entities.dart';
 import 'components.dart';
 
@@ -40,8 +41,8 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
     final theme = Theme.of(context);
 
     final filteredEnterprises = (widget.enterprises.where((e) {
-      return e.name.toLowerCase().contains(
-        widget.filterController.text.toLowerCase(),
+      return e.name.toLowerCase().removeWhiteSpaces().contains(
+        widget.filterController.text.toLowerCase().removeWhiteSpaces(),
       );
     }).toList())..sort((a, b) => a.name.compareTo(b.name));
 
