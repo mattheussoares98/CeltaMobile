@@ -6,6 +6,7 @@ export './action_text_button.dart';
 export './alert_dialogs.dart';
 export './async_value_widget.dart';
 export './default_check_box.dart';
+export './default_choice_chip.dart';
 export './default_drop_down.dart';
 export './default_search_products.dart';
 export './default_segmented_buttons.dart';

@@ -2,7 +2,7 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../commom_widgets/default_choice_chip.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
@@ -29,7 +29,7 @@ class ProductSearchTypeWidget extends ConsumerWidget {
             style: theme.textTheme.titleMedium,
           ),
           gapH8,
-          DefaultSegmentedButtons(
+          DefaultChoiceChip(
             items: SearchProductTypePreference.values,
             selectedValue: searchPreference,
             onChanged: (searchPreference) async {
