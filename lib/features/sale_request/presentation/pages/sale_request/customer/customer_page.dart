@@ -84,6 +84,7 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                     );
                   },
                 ),
+                gapSliverH80,
               ],
             ),
           ),
