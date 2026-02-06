@@ -31,6 +31,7 @@ enum Routes {
   saleRequestRequestsTypes('Pedido de vendas'),
   searchProducts('Pesquisar produtos'),
   splash('Splash'),
+  stockReplacement('Substituição de estoque'),
   transferRequestDestinyEnterprises('Empresas de destino'),
   transferRequestOriginEnterprises('Empresas de origem'),
   transferRequestProductsManagement('Manuseio de produtos'),
