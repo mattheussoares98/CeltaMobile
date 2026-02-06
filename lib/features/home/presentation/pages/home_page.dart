@@ -21,40 +21,39 @@ class HomePage extends ConsumerWidget {
       ),
     ]);
 
-    final enterprisesAsync = ref.watch(enterprisesStateControllerProvider());
-
     return Scaffold(
       drawer: const CompleteDrawer(),
       appBar: AppBar(
         leadingWidth: 40,
         title: AsyncValueWidget(
-          value: enterprisesAsync,
-          tryAgain: () => ref.invalidate(validatedUserSessionProvider),
-          errorMaxLines: 2,
+          value: ref.watch(enterprisesStateControllerProvider()),
+          tryAgain: null,
+          errorMaxLines: 1,
           data: (enterprises) {
             return SelectEnterpriseDropDown(enterprises: enterprises);
           },
         ),
       ),
 
-      body:
-          enterprisesAsync.hasValue &&
-              !enterprisesAsync.isLoading &&
-              !enterprisesAsync.hasError
-          ? AsyncValueWidget(
-              value: ref.watch(
-                enabledModulesByEnterpriseNameStateControllerProvider(
-                  selectedEnterpriseStateControllerProvider.name!,
-                ),
+      body: OptimazedAsyncValueWidget(
+        provider: enterprisesStateControllerProvider(),
+        tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
+        child: OptimazedAsyncValueWidget(
+          provider: enabledModulesByEnterpriseNameStateControllerProvider(
+            ref.watch(
+              userSessionProvider.select((s) => s.value!.enterprise!.name),
+            ),
+          ),
+          tryAgain: () => ref.invalidate(
+            enabledModulesByEnterpriseNameStateControllerProvider(
+              ref.watch(
+                userSessionProvider.select((s) => s.value!.enterprise!.name),
               ),
-              tryAgain: () => ref.invalidate(
-                enabledModulesByEnterpriseNameStateControllerProvider(
-                  selectedEnterpriseStateControllerProvider.name!,
-                ),
-              ),
-              data: (_) => const ModulesWidget(),
-            )
-          : null,
+            ),
+          ),
+          child: const ModulesWidget(),
+        ),
+      ),
     );
   }
 }

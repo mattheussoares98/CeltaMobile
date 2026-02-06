@@ -4,7 +4,7 @@ import '../../../providers/enterprise/enterprise.dart';
 
 part 'enabled_modules_by_enterprise_name_state_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class EnabledModulesByEnterpriseNameStateController
     extends _$EnabledModulesByEnterpriseNameStateController {
   @override
