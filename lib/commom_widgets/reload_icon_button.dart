@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'commom_widgets.dart';
+
 class ReloadIconButton<T> extends ConsumerWidget {
-  final ProviderOrFamily provider;
-  const ReloadIconButton({super.key, required this.provider});
+  final Refreshable<AsyncValue<T>> provider;
+  final VoidCallback tryAgain;
+
+  const ReloadIconButton({
+    super.key,
+    required this.provider,
+    required this.tryAgain,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,9 +25,10 @@ class ReloadIconButton<T> extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    return IconButton(
-      onPressed: () => ref.invalidate(provider),
-      icon: const Icon(Icons.refresh),
+    return OptimazedAsyncValueWidget(
+      provider: provider,
+      tryAgain: null,
+      child: IconButton(onPressed: tryAgain, icon: const Icon(Icons.refresh)),
     );
   }
 }
