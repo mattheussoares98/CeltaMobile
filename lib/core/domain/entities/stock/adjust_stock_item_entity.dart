@@ -10,6 +10,7 @@ class AdjustStockItemEntity extends Equatable {
   final int? StockTypeRecipientCode;
   final bool IsPendingAdjust;
   final double Quantity;
+  final bool? IsStockCounting;
 
   const AdjustStockItemEntity({
     required this.EnterpriseCode,
@@ -20,6 +21,7 @@ class AdjustStockItemEntity extends Equatable {
     required this.StockTypeRecipientCode,
     required this.IsPendingAdjust,
     required this.Quantity,
+    this.IsStockCounting, //*used to replace the stock quantity
   });
 
   @override
@@ -32,6 +34,7 @@ class AdjustStockItemEntity extends Equatable {
     StockTypeRecipientCode,
     IsPendingAdjust,
     Quantity,
+    IsStockCounting,
   ];
 
   AdjustStockItemEntity copyWith({
@@ -43,6 +46,7 @@ class AdjustStockItemEntity extends Equatable {
     int? StockTypeRecipientCode,
     bool? IsPendingAdjust,
     double? Quantity,
+    bool? IsStockCounting,
   }) {
     return AdjustStockItemEntity(
       EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
@@ -54,6 +58,7 @@ class AdjustStockItemEntity extends Equatable {
           StockTypeRecipientCode ?? this.StockTypeRecipientCode,
       IsPendingAdjust: IsPendingAdjust ?? this.IsPendingAdjust,
       Quantity: Quantity ?? this.Quantity,
+      IsStockCounting: IsStockCounting ?? this.IsStockCounting,
     );
   }
 }

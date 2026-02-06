@@ -11,6 +11,7 @@ class AdjustStockItemModel extends Equatable {
   final int? StockTypeRecipientCode;
   final bool IsPendingAdjust;
   final double Quantity;
+  final bool? IsStockCounting;
 
   const AdjustStockItemModel({
     required this.EnterpriseCode,
@@ -21,6 +22,7 @@ class AdjustStockItemModel extends Equatable {
     required this.StockTypeRecipientCode,
     required this.IsPendingAdjust,
     required this.Quantity,
+    required this.IsStockCounting,
   });
 
   @override
@@ -33,6 +35,7 @@ class AdjustStockItemModel extends Equatable {
     StockTypeRecipientCode,
     IsPendingAdjust,
     Quantity,
+    IsStockCounting,
   ];
 
   factory AdjustStockItemModel.fromJson(Map json) => AdjustStockItemModel(
@@ -44,17 +47,19 @@ class AdjustStockItemModel extends Equatable {
     StockTypeRecipientCode: json['StockTypeRecipientCode'],
     IsPendingAdjust: json['IsPendingAdjust'],
     Quantity: json['Quantity'],
+    IsStockCounting: json['IsStockCounting'],
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'EnterpriseCode': EnterpriseCode,
     'ProductCode': ProductCode,
     'ProductPackingCode': ProductPackingCode,
-    'JustificationCode': JustificationCode,
+    'JustificationCode': ?JustificationCode,
     'StockTypeCode': StockTypeCode,
     'StockTypeRecipientCode': StockTypeRecipientCode,
-    'IsPendingAdjust': IsPendingAdjust,
+    'IsPendingAdjust': false,
     'Quantity': Quantity,
+    'IsStockCounting': ?IsStockCounting,
   };
 
   factory AdjustStockItemModel.fromEntity(AdjustStockItemEntity entity) =>
@@ -67,6 +72,7 @@ class AdjustStockItemModel extends Equatable {
         StockTypeRecipientCode: entity.StockTypeRecipientCode,
         IsPendingAdjust: entity.IsPendingAdjust,
         Quantity: entity.Quantity,
+        IsStockCounting: entity.IsStockCounting,
       );
 
   AdjustStockItemEntity toEntity() => AdjustStockItemEntity(
@@ -78,5 +84,6 @@ class AdjustStockItemModel extends Equatable {
     StockTypeRecipientCode: StockTypeRecipientCode,
     IsPendingAdjust: IsPendingAdjust,
     Quantity: Quantity,
+    IsStockCounting: IsStockCounting,
   );
 }
