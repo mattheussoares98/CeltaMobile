@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/bs_version/bs_version.dart';
 import '../../../../../core/presentation/controllers/resource/resource.dart';
 import '../../../../../core/presentation/mixins/mixins.dart';
 import '../../../../../routing/routing.dart';
@@ -34,6 +36,7 @@ class DefaultModuleButton extends ConsumerStatefulWidget {
 
 class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
     with TryAccessRouteMixin {
+  final now = DateTime.now();
   @override
   Widget build(BuildContext context) {
     final selectedEnterprise = ref.watch(
@@ -48,15 +51,6 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
       ),
     );
 
-    final isLoading =
-        widget.module == Modules.adjustPrice &&
-        ref.watch(
-          canAccessResourceStateControllerProvider(
-            BsRoutine.adjustSalePrice,
-            BsResource.adjustSalePrice,
-          ).select((s) => s.isLoading),
-        );
-
     return InkWell(
       child: Stack(
         children: [
@@ -68,6 +62,22 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
             ),
             child: Consumer(
               builder: (_, ref, _) {
+                final isLoading =
+                    (widget.module == Modules.adjustPrice &&
+                        ref.watch(
+                          canAccessResourceStateControllerProvider(
+                            BsRoutine.adjustSalePrice,
+                            BsResource.adjustSalePrice,
+                          ).select((s) => s.isLoading),
+                        )) ||
+                    //TODO remove this logic below when all customers are updated
+                    (ref.watch(
+                          bsVersionStateControllerProvider.select(
+                            (s) => s.isLoading,
+                          ),
+                        ) &&
+                        widget.module == Modules.stockReplacement);
+
                 return InkWell(
                   onTap: selectedEnterprise == null || isLoading
                       ? null
@@ -124,6 +134,33 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
               },
             ),
           ),
+          if (widget.module == Modules.stockReplacement &&
+              now.isBefore(DateTime(2026, 4, 1)))
+            //TODO remove this logic after that day above
+            Positioned(
+              top: 0,
+              left: 0,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(Sizes.p8),
+                  bottomRight: Radius.circular(Sizes.p8),
+                ),
+                child: Container(
+                  color: Colors.red,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: Sizes.p4,
+                    horizontal: Sizes.p16,
+                  ),
+                  child: Text(
+                    'Novo'.hardcoded,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           Positioned(
             top: 0,
             right: 0,
