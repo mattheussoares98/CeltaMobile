@@ -16,15 +16,18 @@ class DefaultAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final centerTitle = theme.platform != TargetPlatform.android;
 
     return Column(
-      crossAxisAlignment: isIOS
+      crossAxisAlignment: centerTitle
           ? CrossAxisAlignment.center
           : CrossAxisAlignment.start,
       children: [
         if (title != null) FittedBox(child: Text(title!)),
-        CorrespondentEnterpriseByEnterpriseCode(enterpriseCode),
+        CorrespondentEnterpriseByEnterpriseCode(
+          enterpriseCode,
+          centerTitle: centerTitle,
+        ),
       ],
     );
   }
@@ -32,8 +35,10 @@ class DefaultAppBarTitle extends StatelessWidget {
 
 class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
   final int enterpriseCode;
+  final bool centerTitle;
   const CorrespondentEnterpriseByEnterpriseCode(
     this.enterpriseCode, {
+    this.centerTitle = false,
     super.key,
   });
 
@@ -58,6 +63,7 @@ class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
           child: Text(
             '${correspondentEnterprise.PersonalizedCode} - ${correspondentEnterprise.name}',
             style: theme.textTheme.bodySmall,
+            textAlign: centerTitle ? TextAlign.center : null,
           ),
         ),
       ],
