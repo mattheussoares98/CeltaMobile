@@ -46,7 +46,7 @@ class ProductsItems extends ConsumerWidget {
         context: context,
         title: 'Atenção!!!'.hardcoded,
         content:
-            'Ao confirmar, o estoque do produto será atualizado para o que você informou!\n\nDeseja continuar?'
+            'Ao confirmar, o estoque do produto será atualizado para a quantidade que você informou!\n\nDeseja continuar?'
                 .hardcoded,
         defaultActionText: 'Sim'.hardcoded,
         cancelActionText: 'Cancelar'.hardcoded,
