@@ -37,26 +37,7 @@ class _StocksState extends ConsumerState<Stocks> with TryAccessRouteMixin {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: Row(
-              children: [
-                Flexible(child: DefaultTitle(title: 'Estoques'.hardcoded)),
-                IconButton(
-                  onPressed: () {
-                    tryAccessRoute(
-                      Routes.adjustStocks,
-                      Modules.adjustStock,
-                      replace: false,
-                      extra: widget.widget.product,
-                      pathParameters: {
-                        'enterpriseCode': widget.widget.product.EnterpriseCode
-                            .toString(),
-                      },
-                    );
-                  },
-                  icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
-                ),
-              ],
-            ),
+            child: DefaultTitle(title: 'Estoques'.hardcoded),
           ),
         ),
 
@@ -82,9 +63,32 @@ class _StocksState extends ConsumerState<Stocks> with TryAccessRouteMixin {
                 iconColor: theme.primaryColorDark,
                 collapsedIconColor: theme.primaryColor,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                title: Text(
-                  enterpriseName,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                title: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        enterpriseName,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        tryAccessRoute(
+                          Routes.adjustStocks,
+                          Modules.adjustStock,
+                          replace: false,
+                          extra: widget.widget.product,
+                          pathParameters: {
+                            'enterpriseCode': stocksForEnterprise
+                                .first
+                                .EnterpriseCode
+                                .toString(),
+                          },
+                        );
+                      },
+                      icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                    ),
+                  ],
                 ),
                 initiallyExpanded: true,
                 children: stocksForEnterprise.map((stock) {
