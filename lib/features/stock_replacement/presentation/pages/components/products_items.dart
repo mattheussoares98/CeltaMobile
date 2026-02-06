@@ -53,6 +53,7 @@ class ProductsItems extends ConsumerWidget {
           StockTypeRecipientCode: null,
           IsPendingAdjust: false,
           Quantity: quantityController.text.toDouble() ?? 0,
+          IsStockCounting: true,
         ),
       ]);
     }
@@ -149,10 +150,8 @@ class _ProductItem extends ConsumerWidget {
             lastConfirmedAdjust?.productPackingCode ==
                 product.ProductPackingCode
             ? TitleAndSubTitle(
-                title:
-                    'Última qtd alterada ${lastConfirmedAdjust!.operationType == OperationType.entrance ? "+" : "-"}'
-                        .hardcoded,
-                subTitle: lastConfirmedAdjust.quantity
+                title: 'Última qtd ASSUMIDA'.hardcoded,
+                subTitle: lastConfirmedAdjust?.quantity
                     .toString()
                     .toBrazilianNumber(3, true),
                 titleStyle: theme.textTheme.titleMedium?.copyWith(
