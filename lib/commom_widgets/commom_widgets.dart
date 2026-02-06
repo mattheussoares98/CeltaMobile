@@ -2,9 +2,11 @@ export 'badges/badges.dart';
 export 'form_field/form_field.dart';
 export 'loading_extension/loading_extension.dart';
 export 'product_item/product_item.dart';
+
 export './action_text_button.dart';
 export './alert_dialogs.dart';
 export './async_value_widget.dart';
+export 'default_app_bar_title.dart';
 export './default_check_box.dart';
 export './default_choice_chip.dart';
 export './default_drop_down.dart';

@@ -26,6 +26,7 @@ class CartPage extends ConsumerWidget {
         ? Center(
             child: Text(
               'Nenhum produto adicionado ao carrinho'.hardcoded,
+              textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium?.copyWith(color: Colors.red),
             ),
           )

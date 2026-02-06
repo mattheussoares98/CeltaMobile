@@ -14,7 +14,10 @@ class ResearchsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: FittedBox(child: Text('Pesquisas cadastradas'.hardcoded)),
+        title: DefaultAppBarTitle(
+          title: 'Pesquisas cadastradas'.hardcoded,
+          enterpriseCode: enterpriseCode,
+        ),
         actions: [InsertResearchButton(enterpriseCode: enterpriseCode)],
       ),
       body: AsyncValueWidget(

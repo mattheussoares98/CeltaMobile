@@ -169,7 +169,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(title: Text('Produtos'.hardcoded)),
+          appBar: AppBar(
+            title: DefaultAppBarTitle(
+              enterpriseCode: widget.enterpriseCode,
+              title: 'Produtos'.hardcoded,
+            ),
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
             child: Column(

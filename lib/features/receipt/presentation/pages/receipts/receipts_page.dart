@@ -33,7 +33,12 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
     ]);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Recebimentos'.hardcoded)),
+      appBar: AppBar(
+        title: DefaultAppBarTitle(
+          title: 'Recebimentos'.hardcoded,
+          enterpriseCode: widget.enterpriseCode,
+        ),
+      ),
       body: AsyncValueWidget(
         value: ref.watch(
           receiptsStateControllerProvider(widget.enterpriseCode),

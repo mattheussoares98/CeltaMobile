@@ -34,7 +34,12 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('Modelos de pedido'.hardcoded)),
+      appBar: AppBar(
+        title: DefaultAppBarTitle(
+          title: 'Modelos de pedido'.hardcoded,
+          enterpriseCode: enterpriseCode,
+        ),
+      ),
       body: AsyncValueWidget(
         value: ref.watch(provider),
         tryAgain: () {

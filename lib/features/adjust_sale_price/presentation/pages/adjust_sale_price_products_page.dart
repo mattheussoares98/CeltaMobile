@@ -26,7 +26,10 @@ class AdjustSalePriceProductsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: FittedBox(child: Text("Produtos (ajuste de preço)".hardcoded)),
+        title: DefaultAppBarTitle(
+          enterpriseCode: enterpriseCode,
+          title: 'Produtos (ajuste de preços)'.hardcoded,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),

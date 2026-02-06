@@ -50,35 +50,33 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: Sizes.p32,
-        title: FittedBox(
-          child: Consumer(
-            builder: (_, ref, _) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    appBarTitles[ref.watch(
-                      uiStateControllerProvider(
-                        widget.enterpriseCode,
-                      ).select((s) => s.value?.currentPageIndex ?? 0),
-                    )],
-                  ),
-                  LastSavedRequestsNumbers(
-                    enterpriseCode: widget.enterpriseCode,
-                  ),
-                ],
-              );
-            },
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Consumer(
+              builder: (_, ref, _) {
+                return DefaultAppBarTitle(
+                  enterpriseCode: widget.enterpriseCode,
+                  title:
+                      appBarTitles[ref.watch(
+                        uiStateControllerProvider(
+                          widget.enterpriseCode,
+                        ).select((s) => s.value?.currentPageIndex ?? 0),
+                      )],
+                );
+              },
+            ),
+            LastSavedRequestsNumbers(enterpriseCode: widget.enterpriseCode),
+          ],
         ),
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         actions: [
-          if (MediaQuery.sizeOf(context).width > Breakpoint.desktop) ...[],
-          ClearRequestButton(
-            observationsController: observationsController,
-            enterpriseCode: widget.enterpriseCode,
-          ),
-          gapW12,
+          if (MediaQuery.sizeOf(context).width > 200) ...[
+            ClearRequestButton(
+              observationsController: observationsController,
+              enterpriseCode: widget.enterpriseCode,
+            ),
+          ],
           CartPriceIcon(enterpriseCode: widget.enterpriseCode),
         ],
       ),

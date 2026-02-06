@@ -13,7 +13,9 @@ class FrozenProcessesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text('Processos congelados'.hardcoded)),
+      appBar: AppBar(
+        title: FittedBox(child: Text('Processos congelados'.hardcoded)),
+      ),
       body: AsyncValueWidget(
         value: ref.watch(inventoryStateControllerProvider(enterpriseCode)),
         tryAgain: () {

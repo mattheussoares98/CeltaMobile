@@ -19,7 +19,12 @@ class DocumentsPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Documentos'.hardcoded)),
+      appBar: AppBar(
+        title: DefaultAppBarTitle(
+          enterpriseCode: enterpriseCode,
+          title: 'Documentos'.hardcoded,
+        ),
+      ),
       body: AsyncValueWidget(
         value: ref.watch(
           expeditionDocumentsStateControllerProvider(enterpriseCode),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../routing/routing.dart';
 import 'components/components.dart';
 
@@ -16,7 +17,12 @@ class QuotationsPage extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     return Scaffold(
-      appBar: AppBar(title: Text('Cotações'.hardcoded)),
+      appBar: AppBar(
+        title: DefaultAppBarTitle(
+          enterpriseCode: enterpriseCode,
+          title: 'Cotações'.hardcoded,
+        ),
+      ),
       body: QuotationsItems(enterpriseCode: enterpriseCode),
       floatingActionButton: FloatingActionButton(
         child: Icon(isIOS ? CupertinoIcons.add : Icons.add),

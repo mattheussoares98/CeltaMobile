@@ -43,7 +43,10 @@ class TransferBetweenStocksPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: FittedBox(child: Text("Transferência entre estoques".hardcoded)),
+        title: DefaultAppBarTitle(
+          title: "Transferência entre estoques".hardcoded,
+          enterpriseCode: enterpriseCode,
+        ),
         actions: [ClearLotButton(enterpriseCode: enterpriseCode)],
       ),
       body: Consumer(

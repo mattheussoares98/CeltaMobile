@@ -26,8 +26,9 @@ class ConcurrentsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: FittedBox(
-          child: Text('Concorrentes (pesquisa $researchCode)'.hardcoded),
+        title: DefaultAppBarTitle(
+          title: 'Concorrentes (pesquisa $researchCode)'.hardcoded,
+          enterpriseCode: enterpriseCode,
         ),
         actions: const [InsertConcurrentButton()],
       ),

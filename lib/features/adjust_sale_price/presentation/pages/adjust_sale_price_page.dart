@@ -66,12 +66,12 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 40,
-        title: FittedBox(
-          child: Text(
-            selectedProduct == null
-                ? ""
-                : "(${selectedProduct.PLU}) ${selectedProduct.Name}",
-          ),
+        titleSpacing: Sizes.p4,
+        title: DefaultAppBarTitle(
+          enterpriseCode: widget.enterpriseCode,
+          title: selectedProduct == null
+              ? ""
+              : "(${selectedProduct.PLU}) ${selectedProduct.Name}",
         ),
       ),
       body: SafeArea(

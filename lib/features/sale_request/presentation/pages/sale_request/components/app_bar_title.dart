@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
@@ -12,24 +13,10 @@ class AppBarTitle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appBarTitles = [
-      'Inserir produtos'.hardcoded,
-      'Cliente'.hardcoded,
-      'Carrinho'.hardcoded,
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FittedBox(
-          child: Consumer(
-            builder: (_, ref, _) {
-              return Text(
-                appBarTitles[ref.watch(pageIndexStateControllerProvider)],
-              );
-            },
-          ),
-        ),
+        DefaultAppBarTitle(enterpriseCode: enterpriseCode),
         Consumer(
           builder: (_, ref, _) {
             final lastSavedNumber = ref.watch(
@@ -57,6 +44,7 @@ class AppBarTitle extends ConsumerWidget {
             );
           },
         ),
+        gapH4,
       ],
     );
   }

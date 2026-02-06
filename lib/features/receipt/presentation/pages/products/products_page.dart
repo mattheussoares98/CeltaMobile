@@ -36,6 +36,14 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   final quantityController = TextEditingController();
   final quantityFocusNode = FocusNode();
 
+  ReceiptEntity? receiptState;
+
+  @override
+  void initState() {
+    receiptState = widget.receipt;
+    super.initState();
+  }
+
   @override
   void dispose() {
     quantityController.dispose();
@@ -97,7 +105,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Scaffold(
-      appBar: AppBar(title: AppBarTitle(receipt: widget.receipt)),
+      appBar: AppBar(
+        title: AppBarTitle(
+          receipt: receiptState,
+          enterpriseCode: widget.enterpriseCode,
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.goNamed(

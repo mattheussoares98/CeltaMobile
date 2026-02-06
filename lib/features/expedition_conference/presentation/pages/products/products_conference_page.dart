@@ -109,11 +109,11 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
         appBar: AppBar(
           title: Consumer(
             builder: (_, ref, _) {
-              return FittedBox(
-                child: Text(
-                  '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
-                      .hardcoded,
-                ),
+              return DefaultAppBarTitle(
+                enterpriseCode: widget.enterpriseCode,
+                title:
+                    '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
+                        .hardcoded,
               );
             },
           ),

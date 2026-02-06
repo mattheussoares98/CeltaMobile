@@ -62,6 +62,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage>
       appBar: AppBar(
         title: AppBarTitle(enterpriseCode: widget.enterpriseCode),
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
+        titleSpacing: 0,
         actions: [
           if (screenWidth > 200) ...[
             ShowPdfButton(enterpriseCode: widget.enterpriseCode),

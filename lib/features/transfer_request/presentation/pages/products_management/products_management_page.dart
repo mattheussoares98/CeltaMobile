@@ -30,6 +30,7 @@ class ProductsManagementPage extends ConsumerWidget {
     );
 
     ref.listen(insertTransferRequestControllerProvider(draftKey), (p, n) {
+      n.showAlertDialogOnError(context);
       n.doOnSuccess(p, () {
         showSnackBarMessage(context, 'Pedido salvo com sucesso'.hardcoded);
       });
@@ -39,7 +40,6 @@ class ProductsManagementPage extends ConsumerWidget {
       InsertProductsPage(draftKey: draftKey),
       CartPage(draftKey: draftKey),
     ];
-    final appBarTitles = ['Inserir produtos'.hardcoded, 'Carrinho'.hardcoded];
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
@@ -53,18 +53,44 @@ class ProductsManagementPage extends ConsumerWidget {
 
     ref.observeLoading([insertTransferRequestControllerProvider(draftKey)]);
 
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text(appBarTitles[pageIndex]), const LastSavedNumber()],
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (screenWidth > 250) ...[
+              Row(
+                children: [
+                  Text('De '.hardcoded, style: theme.textTheme.bodySmall),
+                  Expanded(
+                    child: CorrespondentEnterpriseByEnterpriseCode(
+                      enterpriseOriginCode,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text('Para '.hardcoded, style: theme.textTheme.bodySmall),
+                  Expanded(
+                    child: CorrespondentEnterpriseByEnterpriseCode(
+                      enterpriseDestinyCode,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+            const LastSavedNumber(),
+          ],
         ),
+        titleSpacing: 0,
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
-        // leadingWidth: Sizes.p32,
         actions: [
-          ClearCartButton(draftKey: draftKey),
-          gapW12,
+          if (MediaQuery.sizeOf(context).width > 250)
+            ClearCartButton(draftKey: draftKey),
           CartQuantityPriceBadge(
             requestTypeCode: requestTypeCode,
             draftKey: draftKey,
