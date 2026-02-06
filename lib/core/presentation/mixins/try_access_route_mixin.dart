@@ -11,6 +11,7 @@ import '../../domain/entities/entities.dart';
 import '../controllers/enterprises/enterprises.dart';
 import '../controllers/resource/resource.dart';
 import '../controllers/user_session/user_session.dart';
+import '../helpers/helpers.dart';
 
 mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
     on ConsumerState<T> {
@@ -56,8 +57,7 @@ mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
 
     final moduleIsFree =
         module == Modules.stockReplacement &&
-        DateTime.now().isBefore(DateTime(2026, 4, 2));
-    //TODO remove this
+        ModuleIsFreeUntil.stockReplacementIsFree;
 
     if (!moduleIsFree &&
         (enabledModulesBySelectedEnterprise == null ||

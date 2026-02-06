@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
+import '../../../../core/presentation/helpers/helpers.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -23,8 +24,6 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
   final quantityController = TextEditingController();
   final quantityFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
-  final freeUntil = DateTime(2026, 4, 1);
-  //TODO delete after this date
   final now = DateTime.now();
 
   @override
@@ -76,7 +75,7 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
                 title: 'Substituição de estoque'.hardcoded,
               ),
             ),
-            if (freeUntil.isAfter(now.subtract(const Duration(days: 1))))
+            if (ModuleIsFreeUntil.stockReplacementIsFree)
               Column(
                 children: [
                   Text(
@@ -84,7 +83,9 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
                     style: const TextStyle(fontSize: 11, color: Colors.green),
                   ),
                   Text(
-                    DateFormat('dd/MM').format(freeUntil),
+                    DateFormat(
+                      'dd/MM',
+                    ).format(ModuleIsFreeUntil.stockReplacementDate),
                     style: const TextStyle(fontSize: 11, color: Colors.green),
                   ),
                 ],

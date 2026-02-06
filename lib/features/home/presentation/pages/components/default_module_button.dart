@@ -8,6 +8,7 @@ import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/bs_version/bs_version.dart';
 import '../../../../../core/presentation/controllers/resource/resource.dart';
+import '../../../../../core/presentation/helpers/helpers.dart';
 import '../../../../../core/presentation/mixins/mixins.dart';
 import '../../../../../routing/routing.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
@@ -135,8 +136,7 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
             ),
           ),
           if (widget.module == Modules.stockReplacement &&
-              now.isBefore(DateTime(2026, 4, 2)))
-            //TODO remove this logic after that day above
+              ModuleIsFreeUntil.stockReplacementIsFree)
             Positioned(
               top: 0,
               left: 0,
