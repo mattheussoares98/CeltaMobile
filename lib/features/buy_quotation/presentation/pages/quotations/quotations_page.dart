@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../routing/routing.dart';
+import '../../controllers/controller.dart';
 import 'components/components.dart';
 
 class QuotationsPage extends ConsumerWidget {
@@ -22,6 +23,11 @@ class QuotationsPage extends ConsumerWidget {
           enterpriseCode: enterpriseCode,
           title: 'Cotações'.hardcoded,
         ),
+        actions: [
+          ReloadIconButton(
+            provider: buyQuotationsStateControllerProvider(enterpriseCode),
+          ),
+        ],
       ),
       body: QuotationsItems(enterpriseCode: enterpriseCode),
       floatingActionButton: FloatingActionButton(

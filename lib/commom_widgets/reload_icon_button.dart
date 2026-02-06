@@ -4,14 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'commom_widgets.dart';
 
 class ReloadIconButton<T> extends ConsumerWidget {
-  final ProviderListenable<AsyncValue<T>> provider;
-  final VoidCallback tryAgain;
+  final ProviderBase<AsyncValue<T>> provider;
 
-  const ReloadIconButton({
-    super.key,
-    required this.provider,
-    required this.tryAgain,
-  });
+  const ReloadIconButton({super.key, required this.provider});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +23,10 @@ class ReloadIconButton<T> extends ConsumerWidget {
     return OptimazedAsyncValueWidget(
       provider: provider,
       tryAgain: null,
-      child: IconButton(onPressed: tryAgain, icon: const Icon(Icons.refresh)),
+      child: IconButton(
+        onPressed: () => ref.invalidate(provider),
+        icon: const Icon(Icons.refresh),
+      ),
     );
   }
 }
