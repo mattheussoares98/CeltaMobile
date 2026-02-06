@@ -97,6 +97,7 @@ GoRouter goRouter(Ref ref) {
         ]),
         reportsRoute(),
         saleRequestRequestsTypesRoute([saleRequestRoute()]),
+        stockReplacementRoute(),
         searchProductsRoute(),
         transferBetweenStocksRoute(),
         pdfViewerRoute(),

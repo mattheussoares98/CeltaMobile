@@ -100,6 +100,12 @@ class ModulesWidget extends ConsumerWidget {
         cupertinoIcon: CupertinoIcons.chart_bar_square,
         passEnterpriseToNextRoute: false,
       ),
+      const DefaultModuleButton(
+        route: Routes.stockReplacement,
+        module: Modules.stockReplacement,
+        materialIcon: Icons.published_with_changes_outlined,
+        cupertinoIcon: CupertinoIcons.arrow_2_circlepath_circle,
+      ),
     ];
 
     int getCrossAxisCount(BoxConstraints constraints) {
