@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/resource/resource.dart';
 import '../../../../../core/presentation/mixins/mixins.dart';
 import '../../../../../routing/routing.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
@@ -46,6 +48,15 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
       ),
     );
 
+    final isLoading =
+        widget.module == Modules.adjustPrice &&
+        ref.watch(
+          canAccessResourceStateControllerProvider(
+            BsRoutine.adjustSalePrice,
+            BsResource.adjustSalePrice,
+          ).select((s) => s.isLoading),
+        );
+
     return InkWell(
       child: Stack(
         children: [
@@ -58,7 +69,7 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
             child: Consumer(
               builder: (_, ref, _) {
                 return InkWell(
-                  onTap: selectedEnterprise == null
+                  onTap: selectedEnterprise == null || isLoading
                       ? null
                       : () => tryAccessRoute(
                           widget.route,
@@ -77,25 +88,34 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Using a circular container with a subtle background instead of a full image card
-                        Container(
-                          padding: const EdgeInsets.all(Sizes.p8),
-                          decoration: BoxDecoration(
-                            color: theme.primaryColor.withAlpha(50),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            isIOS ? widget.cupertinoIcon : widget.materialIcon,
-                            color: theme.primaryColor,
-                          ),
-                        ),
+                        isLoading
+                            ? const LoadingWidget()
+                            : Container(
+                                padding: const EdgeInsets.all(Sizes.p8),
+                                decoration: BoxDecoration(
+                                  color: theme.primaryColor.withAlpha(50),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  isIOS
+                                      ? widget.cupertinoIcon
+                                      : widget.materialIcon,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
                         const SizedBox(height: Sizes.p12),
-                        Text(
-                          widget.route.module,
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Sizes.p4,
                           ),
-                          overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            widget.route.module,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
