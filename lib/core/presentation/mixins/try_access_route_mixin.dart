@@ -54,8 +54,16 @@ mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
           return e.idFromErp == enterpriseCode;
         });
 
-    if (enabledModulesBySelectedEnterprise == null ||
-        !enabledModulesBySelectedEnterprise.enabledModules.contains(module)) {
+    final moduleIsFree =
+        module == Modules.stockReplacement &&
+        DateTime.now().isBefore(DateTime(2026, 4, 2));
+    //TODO remove this
+
+    if (!moduleIsFree &&
+        (enabledModulesBySelectedEnterprise == null ||
+            !enabledModulesBySelectedEnterprise.enabledModules.contains(
+              module,
+            ))) {
       _showDisabledModuleMessage(route);
       return;
     }
