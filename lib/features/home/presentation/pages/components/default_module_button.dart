@@ -135,7 +135,7 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
             ),
           ),
           if (widget.module == Modules.stockReplacement &&
-              now.isBefore(DateTime(2026, 4, 1)))
+              now.isBefore(DateTime(2026, 4, 2)))
             //TODO remove this logic after that day above
             Positioned(
               top: 0,

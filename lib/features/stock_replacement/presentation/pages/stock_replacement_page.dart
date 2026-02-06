@@ -2,6 +2,7 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
@@ -22,6 +23,9 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
   final quantityController = TextEditingController();
   final quantityFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
+  final freeUntil = DateTime(2026, 4, 1);
+  //TODO delete after this date
+  final now = DateTime.now();
 
   @override
   void dispose() {
@@ -63,9 +67,29 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          enterpriseCode: widget.enterpriseCode,
-          title: 'Substituição de estoque'.hardcoded,
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Flexible(
+              child: DefaultAppBarTitle(
+                enterpriseCode: widget.enterpriseCode,
+                title: 'Substituição de estoque'.hardcoded,
+              ),
+            ),
+            if (freeUntil.isAfter(now.subtract(const Duration(days: 1))))
+              Column(
+                children: [
+                  Text(
+                    'Grátis até'.hardcoded,
+                    style: const TextStyle(fontSize: 11, color: Colors.green),
+                  ),
+                  Text(
+                    DateFormat('dd/MM').format(freeUntil),
+                    style: const TextStyle(fontSize: 11, color: Colors.green),
+                  ),
+                ],
+              ),
+          ],
         ),
       ),
       body: Form(
