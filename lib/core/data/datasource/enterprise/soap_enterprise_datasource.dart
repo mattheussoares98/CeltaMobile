@@ -23,9 +23,8 @@ class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
       "simpleSearchValue": "",
     };
     parameters.addAll({
-      if (enterpriseOriginCode != null)
-        "enterpriseOriginCode": enterpriseOriginCode,
-      if (requestTypeCode != null) "requestTypeCode": requestTypeCode,
+      "enterpriseOriginCode": ?enterpriseOriginCode,
+      "requestTypeCode": ?requestTypeCode,
     });
 
     final response = await soapAdapter.post(
