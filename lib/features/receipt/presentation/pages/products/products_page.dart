@@ -111,17 +111,26 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           enterpriseCode: widget.enterpriseCode,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.goNamed(
-            Routes.receiptProductsNotFound.name,
-            pathParameters: {
-              'enterpriseCode': widget.enterpriseCode.toString(),
-              'receiptCode': widget.receiptCode.toString(),
-            },
+      floatingActionButton: AnimatedBuilder(
+        animation: quantityFocusNode,
+        builder: (_, _) {
+          final padding = quantityFocusNode.hasFocus ? Sizes.p48 : 0.0;
+          return Padding(
+            padding: EdgeInsets.only(bottom: padding),
+            child: FloatingActionButton(
+              onPressed: () {
+                context.goNamed(
+                  Routes.receiptProductsNotFound.name,
+                  pathParameters: {
+                    'enterpriseCode': widget.enterpriseCode.toString(),
+                    'receiptCode': widget.receiptCode.toString(),
+                  },
+                );
+              },
+              child: Icon(!isIOS ? CupertinoIcons.add : Icons.add),
+            ),
           );
         },
-        child: Icon(!isIOS ? CupertinoIcons.add : Icons.add),
       ),
       body: Column(
         children: [
@@ -150,7 +159,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     quantityController: quantityController,
                     quantityFocusNode: quantityFocusNode,
                   ),
-                  gapSliverH48,
+                  gapSliverH120,
                 ],
               ),
             ),
