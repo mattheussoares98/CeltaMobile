@@ -56,6 +56,7 @@ class _PricesState extends ConsumerState<Prices> with TryAccessRouteMixin {
                   tryAccessRoute(
                     Routes.adjustSalePrice,
                     Modules.adjustPrice,
+                    widget.widget.product.EnterpriseCode,
                     replace: false,
                     extra: widget.widget.product,
                     pathParameters: {

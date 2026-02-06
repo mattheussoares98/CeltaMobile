@@ -16,7 +16,8 @@ mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
     on ConsumerState<T> {
   void tryAccessRoute(
     Routes route,
-    Modules module, {
+    Modules module,
+    int? enterpriseCode, {
     required bool? replace,
     Map<String, String>? pathParameters,
     Object? extra,
@@ -38,21 +39,23 @@ mixin TryAccessRouteMixin<T extends ConsumerStatefulWidget>
         enterpriseName,
       ).future,
     );
-    final selectedEnterprise = ref.read(
-      selectedEnterpriseStateControllerProvider,
-    );
 
-    final correspondentEnterprise = enabledModulesByEnterprise.firstWhereOrNull(
-      (e) => e.cnpjNumber == selectedEnterprise?.CnpjNumber,
-    );
-    if (correspondentEnterprise == null) {
-      _showDisabledModuleMessage(route);
-      return;
-    }
+    final enabledModulesBySelectedEnterprise = enabledModulesByEnterprise
+        .firstWhereOrNull((e) {
+          if (enterpriseCode == null) {
+            return e.idFromErp ==
+                ref.read(
+                  selectedEnterpriseStateControllerProvider.select(
+                    (s) => s?.Code,
+                  ),
+                );
+          }
 
-    final enabledModules = correspondentEnterprise.enabledModules;
-    bool moduleIsEnabled = enabledModules.contains(module);
-    if (!moduleIsEnabled) {
+          return e.idFromErp == enterpriseCode;
+        });
+
+    if (enabledModulesBySelectedEnterprise == null ||
+        !enabledModulesBySelectedEnterprise.enabledModules.contains(module)) {
       _showDisabledModuleMessage(route);
       return;
     }

@@ -76,6 +76,7 @@ class _StocksState extends ConsumerState<Stocks> with TryAccessRouteMixin {
                         tryAccessRoute(
                           Routes.adjustStocks,
                           Modules.adjustStock,
+                          stocksForEnterprise.first.EnterpriseCode,
                           replace: false,
                           extra: widget.widget.product,
                           pathParameters: {

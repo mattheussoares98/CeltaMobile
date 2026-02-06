@@ -63,6 +63,7 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
                       : () => tryAccessRoute(
                           widget.route,
                           widget.module,
+                          selectedEnterprise.Code,
                           replace: true,
                           pathParameters: {
                             if (widget.passEnterpriseToNextRoute)

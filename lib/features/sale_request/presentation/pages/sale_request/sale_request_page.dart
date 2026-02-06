@@ -87,6 +87,7 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage>
               tryAccessRoute(
                 Routes.customerRegister,
                 Modules.customerRegister,
+                widget.enterpriseCode,
                 replace: false,
               );
             },
