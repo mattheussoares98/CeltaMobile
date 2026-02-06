@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'commom_widgets.dart';
 
 class ReloadIconButton<T> extends ConsumerWidget {
-  final Refreshable<AsyncValue<T>> provider;
+  final ProviderListenable<AsyncValue<T>> provider;
   final VoidCallback tryAgain;
 
   const ReloadIconButton({
