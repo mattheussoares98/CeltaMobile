@@ -17,7 +17,12 @@ class OriginEnterprisesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text('Empresa de origem'.hardcoded)),
+      appBar: AppBar(
+        title: Text('Empresa de origem'.hardcoded),
+        actions: [
+          ReloadIconButton(provider: enterprisesStateControllerProvider()),
+        ],
+      ),
       body: AsyncValueWidget(
         value: ref.watch(enterprisesStateControllerProvider()),
         tryAgain: () {
