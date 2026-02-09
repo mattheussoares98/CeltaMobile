@@ -11,6 +11,7 @@ export 'adjust_stocks_route.dart';
 export './auth_route.dart';
 export './buy_request_route.dart';
 export './customer_register_route.dart';
+export './download_app_route.dart';
 export './enterprise_manager_route.dart';
 export './home_route.dart';
 export './pdf_viewer_route.dart';

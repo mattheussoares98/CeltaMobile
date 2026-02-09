@@ -11,6 +11,7 @@ enum Routes {
   competingPricesProducts('Preços concorrentes (produtos)'),
   competingPricesResearchs('Preços concorrentes'),
   createEnterprise('Criar empresa'),
+  downloadApp('Baixar app'),
   enterpriseManager('Gerenciamento de empresas'),
   enterpriseManagerAuth('Autenticação'),
   enterpriseManagerChangeModulesPermissions('Permissões de módulos'),

@@ -82,6 +82,7 @@ GoRouter goRouter(Ref ref) {
           concurrentsRoute([competingPricesProductsRoute()]),
         ]),
         customerRegisterRoute(),
+        downloadAppRoute(),
         expeditionConferenceDocumentsRoute([
           expeditionConferenceProductsRoute(),
         ]),
