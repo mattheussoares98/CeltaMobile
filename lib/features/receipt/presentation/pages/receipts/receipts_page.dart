@@ -38,6 +38,11 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
           title: 'Recebimentos'.hardcoded,
           enterpriseCode: widget.enterpriseCode,
         ),
+        actions: [
+          ReloadIconButton(
+            provider: receiptsStateControllerProvider(widget.enterpriseCode),
+          ),
+        ],
       ),
       body: AsyncValueWidget(
         value: ref.watch(
