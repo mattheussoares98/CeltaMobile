@@ -24,6 +24,13 @@ class DocumentsPage extends ConsumerWidget {
           enterpriseCode: enterpriseCode,
           title: 'Documentos'.hardcoded,
         ),
+        actions: [
+          ReloadIconButton(
+            provider: expeditionDocumentsStateControllerProvider(
+              enterpriseCode,
+            ),
+          ),
+        ],
       ),
       body: AsyncValueWidget(
         value: ref.watch(
