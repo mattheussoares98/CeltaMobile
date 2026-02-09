@@ -100,11 +100,16 @@ class ModulesWidget extends ConsumerWidget {
         cupertinoIcon: CupertinoIcons.chart_bar_square,
         passEnterpriseToNextRoute: false,
       ),
-      const DefaultModuleButton(
+      DefaultModuleButton(
         route: Routes.stockReplacement,
         module: Modules.stockReplacement,
         materialIcon: Icons.published_with_changes_outlined,
         cupertinoIcon: CupertinoIcons.arrow_2_circlepath_circle,
+        minimumBsVersionDate: DateTime(
+          2026,
+          02,
+          09,
+        ), //TODO change this when my father fix the bug
       ),
     ];
 

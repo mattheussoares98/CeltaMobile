@@ -20,6 +20,7 @@ class DefaultModuleButton extends ConsumerStatefulWidget {
   final IconData cupertinoIcon;
   final IconData materialIcon;
   final bool passEnterpriseToNextRoute;
+  final DateTime? minimumBsVersionDate;
 
   const DefaultModuleButton({
     super.key,
@@ -28,6 +29,7 @@ class DefaultModuleButton extends ConsumerStatefulWidget {
     required this.cupertinoIcon,
     required this.materialIcon,
     this.passEnterpriseToNextRoute = true,
+    this.minimumBsVersionDate,
   });
 
   @override
@@ -63,36 +65,61 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
             ),
             child: Consumer(
               builder: (_, ref, _) {
-                final isLoading =
+                final loadingAdjustPricePermission =
                     (widget.module == Modules.adjustPrice &&
-                        ref.watch(
-                          canAccessResourceStateControllerProvider(
-                            BsRoutine.adjustSalePrice,
-                            BsResource.adjustSalePrice,
-                          ).select((s) => s.isLoading),
-                        )) ||
-                    //TODO remove this logic below when all customers are updated
-                    (ref.watch(
-                          bsVersionStateControllerProvider.select(
-                            (s) => s.isLoading,
-                          ),
-                        ) &&
-                        widget.module == Modules.stockReplacement);
+                    ref.watch(
+                      canAccessResourceStateControllerProvider(
+                        BsRoutine.adjustSalePrice,
+                        BsResource.adjustSalePrice,
+                      ).select((s) => s.isLoading),
+                    ));
+
+                final loadingBsVersion =
+                    widget.minimumBsVersionDate != null &&
+                    ref.watch(
+                      bsVersionStateControllerProvider.select(
+                        (s) => s.isLoading,
+                      ),
+                    );
+
+                final isLoading =
+                    loadingAdjustPricePermission || loadingBsVersion;
 
                 return InkWell(
                   onTap: selectedEnterprise == null || isLoading
                       ? null
-                      : () => tryAccessRoute(
-                          widget.route,
-                          widget.module,
-                          selectedEnterprise.Code,
-                          replace: true,
-                          pathParameters: {
-                            if (widget.passEnterpriseToNextRoute)
-                              'enterpriseCode':
-                                  selectedEnterprise.Code.toString(),
-                          },
-                        ),
+                      : () async {
+                          if (widget.minimumBsVersionDate != null) {
+                            final bsVersionDate = await ref.read(
+                              bsVersionStateControllerProvider.future,
+                            );
+
+                            if (bsVersionDate?.isBefore(
+                                  widget.minimumBsVersionDate!,
+                                ) ??
+                                false) {
+                              showAlertDialog(
+                                context: context,
+                                title: 'Atualize o BS'.hardcoded,
+                                content:
+                                    'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
+                                        .hardcoded,
+                              );
+                              return;
+                            }
+                          }
+                          tryAccessRoute(
+                            widget.route,
+                            widget.module,
+                            selectedEnterprise.Code,
+                            replace: true,
+                            pathParameters: {
+                              if (widget.passEnterpriseToNextRoute)
+                                'enterpriseCode':
+                                    selectedEnterprise.Code.toString(),
+                            },
+                          );
+                        },
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
