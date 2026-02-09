@@ -38,20 +38,34 @@ class HomePage extends ConsumerWidget {
       body: OptimazedAsyncValueWidget(
         provider: enterprisesStateControllerProvider(),
         tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
-        child: OptimazedAsyncValueWidget(
-          provider: enabledModulesByEnterpriseNameStateControllerProvider(
-            ref.watch(
-              userSessionProvider.select((s) => s.value!.enterprise!.name),
-            ),
-          ),
-          tryAgain: () => ref.invalidate(
-            enabledModulesByEnterpriseNameStateControllerProvider(
-              ref.watch(
-                userSessionProvider.select((s) => s.value!.enterprise!.name),
+        child: Consumer(
+          builder: (_, ref, _) {
+            final enterpriseName = ref.watch(
+              userSessionProvider.select((s) => s.value?.enterprise?.name),
+            );
+
+            if (enterpriseName?.isEmpty ?? true) {
+              return const SizedBox.shrink();
+            }
+
+            return OptimazedAsyncValueWidget(
+              provider: enabledModulesByEnterpriseNameStateControllerProvider(
+                ref.watch(
+                  userSessionProvider.select((s) => s.value!.enterprise!.name),
+                ),
               ),
-            ),
-          ),
-          child: const ModulesWidget(),
+              tryAgain: () => ref.invalidate(
+                enabledModulesByEnterpriseNameStateControllerProvider(
+                  ref.watch(
+                    userSessionProvider.select(
+                      (s) => s.value!.enterprise!.name,
+                    ),
+                  ),
+                ),
+              ),
+              child: const ModulesWidget(),
+            );
+          },
         ),
       ),
     );
