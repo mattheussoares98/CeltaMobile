@@ -14,7 +14,10 @@ class ReportsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text('Relatórios'.hardcoded)),
+      appBar: AppBar(
+        title: Text('Relatórios'.hardcoded),
+        actions: [ReloadIconButton(provider: reportsStateControllerProvider)],
+      ),
       body: AsyncValueWidget(
         value: ref.watch(reportsStateControllerProvider),
         tryAgain: () => ref.invalidate(reportsStateControllerProvider),
