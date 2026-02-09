@@ -24,7 +24,8 @@ class EnabledModulesByCnpjModel extends Equatable {
       cnpjNumber: json['cnpj_number'],
       name: json['name'],
       enabledModules: (json['enabled_modules'] as List)
-          .map((e) => Modules.values.firstWhere((element) => element.name == e))
+          .where((e) => Modules.values.map((x) => x.name).contains(e))
+          .map((z) => Modules.values.firstWhere((element) => element.name == z))
           .toList(),
     );
   }
