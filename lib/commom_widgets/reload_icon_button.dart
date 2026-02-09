@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'commom_widgets.dart';
-
 class ReloadIconButton<T> extends ConsumerWidget {
   final ProviderBase<AsyncValue<T>> provider;
 
@@ -20,13 +18,11 @@ class ReloadIconButton<T> extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    return OptimazedAsyncValueWidget(
-      provider: provider,
-      tryAgain: null,
-      child: IconButton(
-        onPressed: () => ref.invalidate(provider),
-        icon: const Icon(Icons.refresh),
-      ),
+    return IconButton(
+      onPressed: ref.watch(provider.select((s) => s.isLoading))
+          ? null
+          : () => ref.invalidate(provider),
+      icon: const Icon(Icons.refresh),
     );
   }
 }
