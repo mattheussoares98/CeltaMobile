@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/presentation/controllers/user_session/user_session.dart';
 import '../features/enterprise_manager/presentation/controllers/controllers.dart';
+import '../utils/utils.dart';
 import 'not_found_page.dart';
 import 'routes/routes.dart';
 
@@ -41,6 +42,7 @@ GoRouter goRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: false,
+    observers: [CrashlyticsRouteObserver()],
     refreshListenable: Listenable.merge([
       enterpriseManagerBridge,
       userSessionBridge,
