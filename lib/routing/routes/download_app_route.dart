@@ -4,7 +4,7 @@ import '../../core/presentation/pages/pages.dart';
 import '../routing.dart';
 
 RouteBase downloadAppRoute() => GoRoute(
-  path: 'download-app',
+  path: '/download-app',
   name: Routes.downloadApp.name,
   builder: (context, state) => const DownloadAppPage(),
 );

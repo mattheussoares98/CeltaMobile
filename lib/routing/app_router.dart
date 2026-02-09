@@ -48,7 +48,19 @@ GoRouter goRouter(Ref ref) {
       userSessionBridge,
     ]),
     redirect: (context, state) async {
-      final session = await ref.read(userSessionProvider.future);
+      final bool isMobileWeb =
+          kIsWeb &&
+          (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.android);
+
+      final bool isAlreadyOnDownloadPage = state.matchedLocation.contains(
+        '/download-app',
+      );
+
+      if (isMobileWeb && !isAlreadyOnDownloadPage) {
+        debugPrint('System: Mobile Web detected. Redirecting...');
+        return '/download-app';
+      }
 
       final isLoggingIn = state.matchedLocation.contains('/auth');
       final isInSplash = state.matchedLocation.contains('/splash');
@@ -60,6 +72,7 @@ GoRouter goRouter(Ref ref) {
         return null;
       }
 
+      final session = await ref.read(userSessionProvider.future);
       final isLogged = session?.user.CrossIdentity_Usuario != null;
 
       if (isLoggingIn && isLogged) {
@@ -72,6 +85,7 @@ GoRouter goRouter(Ref ref) {
     },
     routes: [
       authRoute(),
+      downloadAppRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
       homeRoute([
         adjustSalePriceProducts([adjustSalePrice()]),
@@ -82,7 +96,6 @@ GoRouter goRouter(Ref ref) {
           concurrentsRoute([competingPricesProductsRoute()]),
         ]),
         customerRegisterRoute(),
-        downloadAppRoute(),
         expeditionConferenceDocumentsRoute([
           expeditionConferenceProductsRoute(),
         ]),
