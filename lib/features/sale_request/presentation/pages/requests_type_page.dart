@@ -26,6 +26,7 @@ class RequestsTypePage extends ConsumerWidget {
           enterpriseCode: enterpriseCode,
           title: 'Modelos de pedido'.hardcoded,
         ),
+        actions: [ReloadIconButton(provider: provider)],
       ),
       body: AsyncValueWidget(
         value: ref.watch(provider),
