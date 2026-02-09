@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../../../utils/utils.dart';
 import '../../controllers/controllers.dart';
@@ -30,7 +31,13 @@ class ConcurrentsPage extends ConsumerWidget {
           title: 'Concorrentes (pesquisa $researchCode)'.hardcoded,
           enterpriseCode: enterpriseCode,
         ),
-        actions: const [InsertConcurrentButton()],
+        actions: [
+          ReloadIconButton(
+            provider: researchsStateControllerProvider(enterpriseCode),
+          ),
+          gapW24,
+          const InsertConcurrentButton(),
+        ],
       ),
       body: AsyncValueWidget(
         value: ref.watch(researchsStateControllerProvider(enterpriseCode)),
