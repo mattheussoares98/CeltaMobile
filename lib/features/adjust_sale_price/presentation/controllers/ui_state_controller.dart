@@ -14,6 +14,9 @@ class UIStateController extends _$UIStateController {
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
     );
+    if (selectedEnterprise == null) {
+      await Future.delayed(const Duration(days: 1));
+    }
     final product = await ref.watch(
       selectedProductStateControllerProvider(
         selectedEnterprise!.Code!,

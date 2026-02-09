@@ -47,9 +47,11 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedProductAsync = ref.watch(
-      selectedProductStateControllerProvider(widget.enterpriseCode, widget.plu),
+    final provider = selectedProductStateControllerProvider(
+      widget.enterpriseCode,
+      widget.plu,
     );
+    final selectedProductAsync = ref.watch(provider);
 
     ref.listen(confirmAdjustControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
@@ -87,18 +89,8 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                 ),
               OptimazedAsyncValueWidget(
                 isSliver: true,
-                provider: selectedProductStateControllerProvider(
-                  widget.enterpriseCode,
-                  widget.plu,
-                ),
-                tryAgain: () {
-                  ref.invalidate(
-                    selectedProductStateControllerProvider(
-                      widget.enterpriseCode,
-                      widget.plu,
-                    ),
-                  );
-                },
+                provider: provider,
+                tryAgain: null,
                 child: SliverToBoxAdapter(
                   child: ResponsiveScrollableWidget(
                     child: Column(
@@ -112,16 +104,18 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                         _DefaultDivider(),
                         StartAndEndDates(plu: widget.plu),
                         _DefaultDivider(),
-                        InfoButton(
-                          ProductItemWidget(
-                            product: selectedProduct!,
-                            routine: BsRoutine.adjustSalePrice,
+                        if (selectedProduct != null) ...[
+                          InfoButton(
+                            ProductItemWidget(
+                              product: selectedProduct,
+                              routine: BsRoutine.adjustSalePrice,
+                            ),
                           ),
-                        ),
-                        PracticedSuggestionAndMinimumPrices(
-                          product: selectedProduct,
-                        ),
-                        _DefaultDivider(),
+                          PracticedSuggestionAndMinimumPrices(
+                            product: selectedProduct,
+                          ),
+                          _DefaultDivider(),
+                        ],
                         PriceFieldAndConfirmButton(
                           enterpriseCode: widget.enterpriseCode,
                           plu: widget.plu,
