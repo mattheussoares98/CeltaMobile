@@ -19,6 +19,7 @@ class ExpeditionConferenceController extends _$ExpeditionConferenceController {
           crossIdentity: userSession.user.CrossIdentity_Usuario!,
           expeditionControlCode: expeditionControlCode,
         );
+    //TODO throw if return empty products
 
     return ExpeditionConferenceState(
       initialProducts: initialProducts,
