@@ -39,6 +39,7 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
           title: 'Modelos de pedido'.hardcoded,
           enterpriseCode: enterpriseCode,
         ),
+        actions: [ReloadIconButton(provider: provider)],
       ),
       body: AsyncValueWidget(
         value: ref.watch(provider),
