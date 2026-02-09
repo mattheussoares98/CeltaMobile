@@ -37,7 +37,7 @@ class SoapAdapter implements contracts.SoapRequest {
             body: soapEnvelope,
             headers: soapHeaders,
           )
-          .timeout(const Duration(seconds: 30));
+          .timeout(const Duration(minutes: 5));
 
       if (response.statusCode != 200) {
         throw HttpError.serverError(response.body);

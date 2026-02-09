@@ -49,7 +49,7 @@ class HttpAdapter implements HttpClient {
         );
       }
       if (futureResponse != null) {
-        response = await futureResponse.timeout(const Duration(seconds: 60));
+        response = await futureResponse.timeout(const Duration(minutes: 5));
       }
     } catch (error) {
       debugPrint(error.toString());
