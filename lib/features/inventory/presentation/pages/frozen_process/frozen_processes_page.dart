@@ -15,6 +15,11 @@ class FrozenProcessesPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text('Processos congelados'.hardcoded)),
+        actions: [
+          ReloadIconButton(
+            provider: inventoryStateControllerProvider(enterpriseCode),
+          ),
+        ],
       ),
       body: AsyncValueWidget(
         value: ref.watch(inventoryStateControllerProvider(enterpriseCode)),
