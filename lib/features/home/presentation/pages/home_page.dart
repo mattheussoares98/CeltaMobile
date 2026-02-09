@@ -44,23 +44,17 @@ class HomePage extends ConsumerWidget {
               userSessionProvider.select((s) => s.value?.enterprise?.name),
             );
 
-            if (enterpriseName?.isEmpty ?? true) {
+            if (enterpriseName == null) {
               return const SizedBox.shrink();
             }
 
             return OptimazedAsyncValueWidget(
               provider: enabledModulesByEnterpriseNameStateControllerProvider(
-                ref.watch(
-                  userSessionProvider.select((s) => s.value!.enterprise!.name),
-                ),
+                ref.watch(userSessionProvider.select((s) => enterpriseName)),
               ),
               tryAgain: () => ref.invalidate(
                 enabledModulesByEnterpriseNameStateControllerProvider(
-                  ref.watch(
-                    userSessionProvider.select(
-                      (s) => s.value!.enterprise!.name,
-                    ),
-                  ),
+                  ref.watch(userSessionProvider.select((s) => enterpriseName)),
                 ),
               ),
               child: const ModulesWidget(),
