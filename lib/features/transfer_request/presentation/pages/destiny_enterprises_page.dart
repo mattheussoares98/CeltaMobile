@@ -21,22 +21,19 @@ class DestinyEnterprisesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final provider = destinyEnterprisesStateControllerProvider(
+      enterpriseOriginCode: enterpriseOriginCode,
+      requestTypeCode: requestTypeCode,
+    );
     return Scaffold(
-      appBar: AppBar(title: Text('Empresa de destino'.hardcoded)),
+      appBar: AppBar(
+        title: Text('Empresa de destino'.hardcoded),
+        actions: [ReloadIconButton(provider: provider)],
+      ),
       body: AsyncValueWidget(
-        value: ref.watch(
-          destinyEnterprisesStateControllerProvider(
-            enterpriseOriginCode: enterpriseOriginCode,
-            requestTypeCode: requestTypeCode,
-          ),
-        ),
+        value: ref.watch(provider),
         tryAgain: () {
-          ref.invalidate(
-            destinyEnterprisesStateControllerProvider(
-              enterpriseOriginCode: enterpriseOriginCode,
-              requestTypeCode: requestTypeCode,
-            ),
-          );
+          ref.invalidate(provider);
         },
         data: (enterprises) {
           return EnterpriseItems(
@@ -71,12 +68,7 @@ class DestinyEnterprisesPage extends ConsumerWidget {
               );
             },
             onRefresh: () {
-              ref.invalidate(
-                destinyEnterprisesStateControllerProvider(
-                  enterpriseOriginCode: enterpriseOriginCode,
-                  requestTypeCode: requestTypeCode,
-                ),
-              );
+              ref.invalidate(provider);
             },
           );
         },
