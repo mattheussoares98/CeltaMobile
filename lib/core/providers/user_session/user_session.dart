@@ -9,15 +9,13 @@ import '../supabase/supabase.dart';
 part 'user_session.g.dart';
 
 @riverpod
-ILocalUserSessionDatasource localUserSessionDatasource(Ref ref) {
+ILocalUserSessionDatasource userSessionDatasource(Ref ref) {
   return LocalUserSessionDatasource(ref.watch(hiveBoxUserSessionProvider));
 }
 
 @riverpod
-ILocalUserSessionRepository localUserSessionRepository(Ref ref) {
-  return LocalUserSessionRepositoryImpl(
-    ref.watch(localUserSessionDatasourceProvider),
-  );
+IUserSessionRepository userSessionRepository(Ref ref) {
+  return UserSessionRepositoryImpl(ref.watch(userSessionDatasourceProvider));
 }
 
 @riverpod

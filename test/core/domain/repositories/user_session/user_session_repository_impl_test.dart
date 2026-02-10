@@ -7,14 +7,14 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late ILocalUserSessionRepository sut;
+  late IUserSessionRepository sut;
 
   late LocalUserSessionDatasourceSpy localSessionDatasource;
 
   late UserSessionEntity userSessionEntity;
 
   void initSut() {
-    sut = LocalUserSessionRepositoryImpl(localSessionDatasource);
+    sut = UserSessionRepositoryImpl(localSessionDatasource);
   }
 
   void initInjections() {

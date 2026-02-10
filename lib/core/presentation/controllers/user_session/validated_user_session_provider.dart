@@ -12,9 +12,7 @@ part 'validated_user_session_provider.g.dart';
 class ValidatedUserSession extends _$ValidatedUserSession {
   @override
   Future<UserSessionModel?> build() async {
-    final userSession = await ref
-        .read(localUserSessionRepositoryProvider)
-        .get();
+    final userSession = await ref.read(userSessionRepositoryProvider).get();
 
     if (userSession == null ||
         userSession.user.CrossIdentity_Usuario == null ||

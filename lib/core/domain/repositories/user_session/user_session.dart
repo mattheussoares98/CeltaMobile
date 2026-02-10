@@ -1,2 +1,2 @@
-export './i_local_user_session_repository.dart';
-export './local_user_session_repository_impl.dart';
+export 'i_user_session_repository.dart';
+export 'user_session_repository_impl.dart';

@@ -11,13 +11,13 @@ class UserSession extends _$UserSession {
   @override
   Future<UserSessionModel?> build() async {
     //dont need to use guard because the riverpor already treat this and return async error if throws
-    return await ref.read(localUserSessionRepositoryProvider).get();
+    return await ref.read(userSessionRepositoryProvider).get();
   }
 
   Future<void> saveSession(UserSessionModel value) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await ref.read(localUserSessionRepositoryProvider).save(value);
+      await ref.read(userSessionRepositoryProvider).save(value);
       return value;
     });
   }
@@ -25,7 +25,7 @@ class UserSession extends _$UserSession {
   Future<void> logout() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await ref.read(localUserSessionRepositoryProvider).logout();
+      await ref.read(userSessionRepositoryProvider).logout();
 
       final boxesToClear = ref.read(boxesToClearOnLogoutProvider);
       for (final box in boxesToClear) {

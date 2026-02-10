@@ -423,8 +423,7 @@ class SoapProductsRepositorySpy extends Mock
   }
 }
 
-class LocalSessionRepositorySpy extends Mock
-    implements ILocalUserSessionRepository {
+class LocalSessionRepositorySpy extends Mock implements IUserSessionRepository {
   void mockGetSession(UserSessionModel? response) {
     when(() => this.get()).thenAnswer((_) async => response);
   }
