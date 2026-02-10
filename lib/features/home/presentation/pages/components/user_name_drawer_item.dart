@@ -1,0 +1,24 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../../core/presentation/controllers/user_session/user_session.dart';
+import 'components.dart';
+
+class UserNameDrawerItem extends ConsumerWidget {
+  const UserNameDrawerItem({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userName = ref.watch(
+      userSessionProvider.select((s) => s.value?.user.name ?? ''),
+    );
+
+    return DrawerItem(
+      message: userName,
+      materialIcon: Icons.person,
+      cupertinoIcon: CupertinoIcons.person,
+      onTap: null,
+    );
+  }
+}

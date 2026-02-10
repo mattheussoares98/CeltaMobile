@@ -1,17 +1,18 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import 'components.dart';
 
-class ExitDrawerItem extends StatelessWidget {
-  final VoidCallback logout;
-  const ExitDrawerItem({super.key, required this.logout});
+class ExitDrawerItem extends ConsumerWidget {
+  const ExitDrawerItem({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DrawerItem(
       message: 'Sair',
       onTap: () async {
@@ -22,7 +23,7 @@ class ExitDrawerItem extends StatelessWidget {
           content: 'Tem certeza que deseja sair?'.hardcoded,
           cancelActionText: 'Cancelar'.hardcoded,
           defaultActionText: 'Sim'.hardcoded,
-          onOkPressed: logout,
+          onOkPressed: ref.read(userSessionProvider.notifier).logout,
         );
       },
       materialIcon: Icons.logout,

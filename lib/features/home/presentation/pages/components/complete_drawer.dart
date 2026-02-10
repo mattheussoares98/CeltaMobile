@@ -1,10 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import 'components.dart';
 
 class CompleteDrawer extends ConsumerWidget {
@@ -13,39 +11,25 @@ class CompleteDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaSize = MediaQuery.sizeOf(context);
-    final mediaPedding = MediaQuery.paddingOf(context);
-    const exitHeight = 40.0;
-
-    final userSession = ref.watch(userSessionProvider);
 
     return Drawer(
       width: min(mediaSize.width * 0.85, 400),
-      child: Column(
-        children: [
-          const CeltaImage(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DrawerItem(
-                    message: userSession.value?.user.name ?? "",
-                    materialIcon: Icons.person,
-                    cupertinoIcon: CupertinoIcons.person,
-                    onTap: null,
-                  ),
-                ],
+      child: const SafeArea(
+        child: Column(
+          children: [
+            Flexible(child: CeltaImage()),
+            Expanded(
+              flex: 3,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [UserNameDrawerItem()],
+                ),
               ),
             ),
-          ),
-          Container(
-            height: exitHeight + mediaPedding.bottom,
-            padding: EdgeInsets.only(bottom: mediaPedding.bottom),
-            child: ExitDrawerItem(
-              logout: ref.read(userSessionProvider.notifier).logout,
-            ),
-          ),
-        ],
+            ExitDrawerItem(),
+          ],
+        ),
       ),
     );
   }
