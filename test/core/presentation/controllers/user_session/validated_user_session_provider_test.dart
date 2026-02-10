@@ -1,5 +1,5 @@
 import 'package:celta_inventario/core/data/models/models.dart';
-import 'package:celta_inventario/core/domain/entities/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/enterprise/enterprise.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/enterprise/enterprise.dart';
@@ -22,6 +22,7 @@ class SoapUrlValidationRepositorySpy extends Mock
 
 void main() {
   late LocalUserSessionDatasourceSpy localUserSessionDatasource;
+  late SupabaseUserSessionDatasourceSpy supabaseUserSessionDatasource;
   late UserSessionModel userSession;
   late EnterpriseRepositorySpy enterpriseRepository;
   late EnterpriseEntity enterprise;
@@ -29,6 +30,8 @@ void main() {
 
   setUp(() {
     localUserSessionDatasource = LocalUserSessionDatasourceSpy();
+    supabaseUserSessionDatasource = SupabaseUserSessionDatasourceSpy();
+
     userSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -47,8 +50,11 @@ void main() {
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
       overrides: [
-        localUserSessionDatasourceProvider.overrideWithValue(
+        userSessionDatasourceProvider.overrideWithValue(
           localUserSessionDatasource,
+        ),
+        supabaseUserSessionDatasourceProvider.overrideWithValue(
+          supabaseUserSessionDatasource,
         ),
         enterpriseRepositoryProvider.overrideWithValue(enterpriseRepository),
         soapUrlValidationRepositoryProvider.overrideWithValue(
@@ -62,6 +68,9 @@ void main() {
     registerFallbackValue(
       UserSessionModel.fromEntity(EntityFactory.makeUserSessionEntity()),
     );
+    for (var value in DeviceType.values) {
+      registerFallbackValue(value);
+    }
   });
 
   group('Validated UserSession Controller', () {

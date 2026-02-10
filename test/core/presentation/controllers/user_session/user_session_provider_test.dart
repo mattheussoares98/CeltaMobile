@@ -1,20 +1,43 @@
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/repositories/user_session/user_session.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/hive/hive.dart';
 import 'package:celta_inventario/core/providers/user_session/user_session.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
+class UserSessionRepositorySpy extends Mock implements IUserSessionRepository {
+  UserSessionRepositorySpy() {
+    when(() => this.save(any())).thenAnswer((_) async => {});
+    when(
+      () => this.logout(
+        userName: any(named: 'userName'),
+        deviceType: any(named: 'deviceType'),
+        enterpriseId: any(named: 'enterpriseId'),
+      ),
+    ).thenAnswer((_) async => {});
+  }
+
+  void mockGet(UserSessionModel? response) {
+    when(() => this.get()).thenAnswer((_) async => response);
+  }
+}
+
 void main() {
-  late LocalUserSessionDatasourceSpy localUserSessionDatasource;
+  late UserSessionRepositorySpy userSessionRepository;
+  late SupabaseUserSessionDatasourceSpy supabaseUserSessionDatasource;
   late UserSessionModel userSession;
   late List<MockBox> mockBoxesToClearOnLogout;
+  late DeviceType deviceType;
 
   setUp(() {
-    localUserSessionDatasource = LocalUserSessionDatasourceSpy();
+    userSessionRepository = UserSessionRepositorySpy();
+    supabaseUserSessionDatasource = SupabaseUserSessionDatasourceSpy();
     userSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -23,17 +46,20 @@ void main() {
 
     registerFallbackValue(userSession);
 
-    localUserSessionDatasource.mockGetSession(userSession);
+    userSessionRepository.mockGet(userSession);
+    deviceType = DeviceType
+        .values[faker.randomGenerator.integer(DeviceType.values.length)];
   });
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
       overrides: [
-        localUserSessionDatasourceProvider.overrideWithValue(
-          localUserSessionDatasource,
-        ),
+        userSessionRepositoryProvider.overrideWithValue(userSessionRepository),
         boxesToClearOnLogoutProvider.overrideWithValue(
           mockBoxesToClearOnLogout,
+        ),
+        supabaseUserSessionDatasourceProvider.overrideWithValue(
+          supabaseUserSessionDatasource,
         ),
       ],
     );
@@ -43,6 +69,9 @@ void main() {
     registerFallbackValue(
       UserSessionModel.fromEntity(EntityFactory.makeUserSessionEntity()),
     );
+    for (var value in DeviceType.values) {
+      registerFallbackValue(value);
+    }
   });
 
   group('UserSession Controller', () {
@@ -58,12 +87,12 @@ void main() {
 
           // ASSERT
           expect(result, userSession);
-          verify(() => localUserSessionDatasource.get()).called(1);
+          verify(() => userSessionRepository.get()).called(1);
         },
       );
 
       test('should return null when datasource.get returns null', () async {
-        localUserSessionDatasource.mockGetSession(null);
+        userSessionRepository.mockGet(null);
 
         final container = makeProviderContainer();
         addTearDown(container.dispose);
@@ -80,7 +109,7 @@ void main() {
       test(
         'should emit [loading, data] and call datasource.save on success',
         () async {
-          localUserSessionDatasource.mockGetSession(null);
+          userSessionRepository.mockGet(null);
 
           final container = makeProviderContainer();
           addTearDown(container.dispose);
@@ -102,7 +131,7 @@ void main() {
             isA<AsyncData<UserSessionModel?>>(),
           ]);
 
-          verify(() => localUserSessionDatasource.save(userSession)).called(1);
+          verify(() => userSessionRepository.save(userSession)).called(1);
         },
       );
     });
@@ -119,17 +148,53 @@ void main() {
           container.listen(userSessionProvider, (_, next) => states.add(next));
 
           // ACT
-          await container.read(userSessionProvider.notifier).logout();
+          await container.read(userSessionProvider.notifier).logout(deviceType);
 
           // ASSERT
           expect(states, [
             isA<AsyncLoading>(),
             isA<AsyncData<UserSessionModel?>>(),
           ]);
-          verify(() => localUserSessionDatasource.logout()).called(1);
+          verify(
+            () => userSessionRepository.logout(
+              userName: userSession.user.name!,
+              deviceType: deviceType,
+              enterpriseId: userSession.enterprise!.id!,
+            ),
+          ).called(1);
 
           for (var box in mockBoxesToClearOnLogout) {
             verify(() => box.clear()).called(1);
+          }
+        },
+      );
+      test(
+        'should not clear boxes if supabaseUserSessionDatasourceProvider fails',
+        () async {
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+          await container.read(userSessionProvider.future);
+          when(
+            () => userSessionRepository.logout(
+              userName: any(named: 'userName'),
+              deviceType: any(named: 'deviceType'),
+              enterpriseId: any(named: 'enterpriseId'),
+            ),
+          ).thenThrow(Exception());
+
+          // ACT
+          await container.read(userSessionProvider.notifier).logout(deviceType);
+
+          verify(
+            () => userSessionRepository.logout(
+              userName: userSession.user.name!,
+              deviceType: deviceType,
+              enterpriseId: userSession.enterprise!.id!,
+            ),
+          ).called(1);
+
+          for (var box in mockBoxesToClearOnLogout) {
+            verifyNever(() => box.clear());
           }
         },
       );

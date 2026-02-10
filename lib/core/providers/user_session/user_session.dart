@@ -15,7 +15,10 @@ ILocalUserSessionDatasource userSessionDatasource(Ref ref) {
 
 @riverpod
 IUserSessionRepository userSessionRepository(Ref ref) {
-  return UserSessionRepositoryImpl(ref.watch(userSessionDatasourceProvider));
+  return UserSessionRepositoryImpl(
+    ref.watch(userSessionDatasourceProvider),
+    ref.watch(supabaseUserSessionDatasourceProvider),
+  );
 }
 
 @riverpod

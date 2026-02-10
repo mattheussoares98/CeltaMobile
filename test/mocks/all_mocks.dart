@@ -394,6 +394,27 @@ class LocalUserSessionDatasourceSpy extends Mock
   }
 }
 
+class SupabaseUserSessionDatasourceSpy extends Mock
+    implements ISupabaseUserSessionDatasource {
+  SupabaseUserSessionDatasourceSpy() {
+    when(
+      () => this.handleUserSession(
+        userName: any(named: 'userName'),
+        deviceType: any(named: 'deviceType'),
+        firebaseEnterpriseId: any(named: 'firebaseEnterpriseId'),
+        fcmToken: any(named: 'fcmToken'),
+      ),
+    ).thenAnswer((_) async => {});
+    when(
+      () => this.removeUserSession(
+        userName: any(named: 'userName'),
+        deviceType: any(named: 'deviceType'),
+        enterpriseId: any(named: 'enterpriseId'),
+      ),
+    ).thenAnswer((_) async {});
+  }
+}
+
 class SoapProductsDatasourceSpy extends Mock
     implements ISoapGetProductsJsonDatasource {
   void mockGetProductsJson(List<ProductModel> response) {

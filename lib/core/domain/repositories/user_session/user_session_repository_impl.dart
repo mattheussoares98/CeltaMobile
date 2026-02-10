@@ -1,13 +1,27 @@
 import '../../../data/models/user_session_model.dart';
 import '../../../data/datasource/user_session/user_session.dart';
+import '../../entities/entities.dart';
 import 'user_session.dart';
 
 class UserSessionRepositoryImpl implements IUserSessionRepository {
   final ILocalUserSessionDatasource localUserSessionDatasource;
-  UserSessionRepositoryImpl(this.localUserSessionDatasource);
+  final ISupabaseUserSessionDatasource supabaseUserSessionDatasource;
+  UserSessionRepositoryImpl(
+    this.localUserSessionDatasource,
+    this.supabaseUserSessionDatasource,
+  );
 
   @override
-  Future<void> logout() async {
+  Future<void> logout({
+    required String userName,
+    required DeviceType deviceType,
+    required int enterpriseId,
+  }) async {
+    await supabaseUserSessionDatasource.removeUserSession(
+      userName: userName,
+      deviceType: deviceType,
+      enterpriseId: enterpriseId,
+    );
     return await localUserSessionDatasource.logout();
   }
 

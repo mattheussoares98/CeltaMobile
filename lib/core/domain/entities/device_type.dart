@@ -1,1 +1,1 @@
-enum DeviceType { android, ios, web }
+enum DeviceType { android, ios, web, macOS, windows }
