@@ -22,6 +22,7 @@ class AuthManagerDatasource implements IAuthManagerDatasource {
   }
 
   @override
-  Stream<User?> get onAuthStateChange =>
-      supabase.auth.onAuthStateChange.map((event) => event.session?.user);
+  Stream<User?> get onAuthStateChange => supabase.auth.onAuthStateChange
+      .map((event) => event.session?.user)
+      .distinct();
 }
