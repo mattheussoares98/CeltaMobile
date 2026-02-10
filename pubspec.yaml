@@ -62,7 +62,6 @@ dependencies:
   firebase_crashlytics: ^5.0.7
   firebase_analytics: ^12.1.1
   icons_launcher: ^3.0.3 #dart run icons_launcher:create
-  shared_preferences: ^2.5.4
   url_launcher: ^6.3.2
 
 icons_launcher:
