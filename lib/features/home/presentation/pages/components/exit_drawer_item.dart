@@ -2,7 +2,6 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
@@ -32,7 +31,6 @@ class ExitDrawerItem extends ConsumerWidget {
     return DrawerItem(
       message: 'Sair',
       onTap: () async {
-        context.pop();
         await showAlertDialog(
           context: context,
           title: 'Sair'.hardcoded,
