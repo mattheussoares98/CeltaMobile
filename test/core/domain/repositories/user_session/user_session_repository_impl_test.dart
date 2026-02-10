@@ -100,13 +100,10 @@ void main() {
       ),
     ).thenThrow(Exception());
 
-    expect(
-      sut.logout(
-        userName: userName,
-        deviceType: deviceType,
-        enterpriseId: enterpriseId,
-      ),
-      throwsA(isA<Exception>()),
+    await sut.logout(
+      userName: userName,
+      deviceType: deviceType,
+      enterpriseId: enterpriseId,
     );
 
     verify(
@@ -116,6 +113,6 @@ void main() {
         enterpriseId: enterpriseId,
       ),
     ).called(1);
-    verifyNever(() => localSessionDatasource.logout());
+    verify(() => localSessionDatasource.logout()).called(1);
   });
 }

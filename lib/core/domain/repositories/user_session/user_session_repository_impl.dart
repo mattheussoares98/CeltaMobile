@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../data/models/user_session_model.dart';
 import '../../../data/datasource/user_session/user_session.dart';
 import '../../entities/entities.dart';
@@ -17,11 +19,16 @@ class UserSessionRepositoryImpl implements IUserSessionRepository {
     required DeviceType deviceType,
     required int enterpriseId,
   }) async {
-    await supabaseUserSessionDatasource.removeUserSession(
-      userName: userName,
-      deviceType: deviceType,
-      enterpriseId: enterpriseId,
-    );
+    try {
+      supabaseUserSessionDatasource.removeUserSession(
+        userName: userName,
+        deviceType: deviceType,
+        enterpriseId: enterpriseId,
+      );
+      //*should call local logout event supabase throws because can't disable the user to do logout
+    } catch (e) {
+      debugPrint(e.toString());
+    }
     return await localUserSessionDatasource.logout();
   }
 
