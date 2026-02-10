@@ -7,9 +7,10 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../core/config/secrets.dart';
-import '../core/infraestructure/infrastructure.dart' show DatabaseConstants;
-import '../firebase_options.dart';
+import '../../core/config/secrets.dart';
+import '../../core/infraestructure/infrastructure.dart' show DatabaseConstants;
+import '../../firebase_options.dart';
+import '../utils.dart';
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,10 +27,15 @@ Future<void> _initFirebase() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (defaultTargetPlatform == TargetPlatform.windows ||
-      defaultTargetPlatform == TargetPlatform.macOS ||
-      kDebugMode) {
+      defaultTargetPlatform ==
+          TargetPlatform
+              .macOS /*  ||
+      TODO remove this
+      kDebugMode */ ) {
     return;
   }
+
+  _startNotificationService();
 
   FlutterError.onError = (errorDetails) {
     // PERFORMANCE: Silent errors are flagged by the framework to be ignored.
@@ -38,6 +44,19 @@ Future<void> _initFirebase() async {
 
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   };
+}
+
+void _startNotificationService() {
+  // We call this without 'await' so the main thread can continue
+  // to the next initialization step or the first frame.
+  NotificationsService.instance
+      .initialize()
+      .then((_) {
+        debugPrint('Notifications: Async Init Complete');
+      })
+      .catchError((e) {
+        debugPrint('Notifications Error: Async Init Failed - $e');
+      });
 }
 
 Future<void> _setOnlyPortraitMode() async {
