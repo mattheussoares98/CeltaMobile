@@ -55,39 +55,8 @@ class NotificationsService {
     if (!kIsWeb) {
       await _setupLocalNotifications();
     }
-    await Future.delayed(const Duration(seconds: 3));
-    await getFcmToken();
 
     _isInitialized = true;
-  }
-
-  /// PERFORMANCE: Retrieves the FCM token for session synchronization.
-  /// This works on Android, iOS, and Web.
-  Future<String?> getFcmToken() async {
-    try {
-      if (kIsWeb) {
-        // Web requires a VAPID key from the Firebase Console
-        return await FirebaseMessaging.instance.getToken(
-          vapidKey: 'YOUR_PUBLIC_VAPID_KEY',
-        );
-      }
-
-      // On iOS/macOS, we can check APNS status, but getToken()
-      // generally handles the mapping internally for FCM.
-      final String? token;
-      if (defaultTargetPlatform == TargetPlatform.iOS ||
-          defaultTargetPlatform == TargetPlatform.macOS) {
-        token = await FirebaseMessaging.instance.getAPNSToken();
-        debugPrint('Notifications: APNs Token retrieved: $token');
-      } else {
-        token = await FirebaseMessaging.instance.getToken();
-      }
-      debugPrint('Notifications: FCM Token retrieved: $token');
-      return token;
-    } catch (e) {
-      debugPrint('Notifications Error: Failed to get FCM token - $e');
-      return null;
-    }
   }
 
   Future<void> _setupLocalNotifications() async {
