@@ -15,16 +15,7 @@ class NotificationDatasource implements INotificationDatasource {
         );
       }
 
-      // On iOS/macOS, we can check APNS status, but getToken()
-      // generally handles the mapping internally for FCM.
-      final String? token;
-      if (defaultTargetPlatform == TargetPlatform.iOS ||
-          defaultTargetPlatform == TargetPlatform.macOS) {
-        token = await FirebaseMessaging.instance.getAPNSToken();
-        debugPrint('Notifications: APNs Token retrieved: $token');
-      } else {
-        token = await FirebaseMessaging.instance.getToken();
-      }
+      final token = await FirebaseMessaging.instance.getToken();
       debugPrint('Notifications: FCM Token retrieved: $token');
       return token;
     } catch (e) {
