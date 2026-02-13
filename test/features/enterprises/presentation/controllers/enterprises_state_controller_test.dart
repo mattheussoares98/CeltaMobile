@@ -71,10 +71,10 @@ void main() {
           url: userSessionEntity.supabaseEnterprise!.workingUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
           enterpriseIdInSupabase: userSessionEntity.supabaseEnterprise!.id!,
-          existingCnpjsInSupabase: userSessionEntity
+          existingEnterpriseCodesOnSupabase: userSessionEntity
               .supabaseEnterprise!
               .subEnterprises!
-              .map((e) => e.cnpjNumber)
+              .map((e) => e.idFromErp)
               .toSet()
               .toList(),
         ),

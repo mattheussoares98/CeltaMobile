@@ -99,8 +99,8 @@ void main() {
           requestTypeCode: requestTypeCode,
           enterpriseIdInSupabase: enterpriseIdInSupabase,
           enterpriseOriginCode: enterpriseOriginCode,
-          existingCnpjsInSupabase: enterpriseEntities
-              .map((e) => e.CnpjNumber!)
+          existingEnterpriseCodesOnSupabase: enterpriseEntities
+              .map((e) => e.Code!)
               .toList(),
         );
 
@@ -135,7 +135,7 @@ void main() {
           requestTypeCode: requestTypeCode,
           enterpriseOriginCode: enterpriseOriginCode,
           enterpriseIdInSupabase: enterpriseIdInSupabase,
-          existingCnpjsInSupabase: [],
+          existingEnterpriseCodesOnSupabase: [],
         );
 
         expect(

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../../data/datasource/enterprise/enterprise.dart';
 import '../../../data/models/models.dart';
 import '../../entities/entities.dart';
@@ -21,7 +23,7 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
   Future<List<EnterpriseEntity>> getSoapEnterprises({
     required String url,
     required String crossIdentity,
-    required List<String> existingCnpjsInSupabase,
+    required List<int> existingEnterpriseCodesOnSupabase,
     required int enterpriseIdInSupabase,
     int? enterpriseOriginCode,
     int? requestTypeCode,
@@ -36,7 +38,7 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
     if (erpEnterprises.isNotEmpty) {
       await _syncMissingEnterprisesWithSupabase(
         erpList: erpEnterprises,
-        existingCnpjs: existingCnpjsInSupabase.toSet(),
+        existingCodes: existingEnterpriseCodesOnSupabase.toSet(),
         enterpriseIdInSupabase: enterpriseIdInSupabase,
       );
     }
@@ -46,16 +48,12 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
 
   Future<void> _syncMissingEnterprisesWithSupabase({
     required List<SoapEnterpriseModel> erpList,
-    required Set<String> existingCnpjs,
+    required Set<int> existingCodes,
     required int enterpriseIdInSupabase,
   }) async {
     try {
       final missingModels = erpList
-          .where(
-            (erp) =>
-                erp.CnpjNumber != null &&
-                !existingCnpjs.contains(erp.CnpjNumber),
-          )
+          .where((erp) => erp.Code != null && !existingCodes.contains(erp.Code))
           .map(
             (erp) => SupabaseSubEnterpriseModel(
               id: null,
@@ -74,6 +72,7 @@ class EnterpriseRepositoryImpl implements IEnterpriseRepository {
         );
       }
     } catch (e) {
+      debugPrint(e.toString());
       // Silent fail to avoid blocking the ERP data display
     }
   }

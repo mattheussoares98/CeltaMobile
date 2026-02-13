@@ -290,7 +290,9 @@ class EnterpriseRepositorySpy extends Mock implements IEnterpriseRepository {
       () => this.getSoapEnterprises(
         url: any(named: "url"),
         crossIdentity: any(named: "crossIdentity"),
-        existingCnpjsInSupabase: any(named: "existingCnpjsInSupabase"),
+        existingEnterpriseCodesOnSupabase: any(
+          named: "existingEnterpriseCodesOnSupabase",
+        ),
         enterpriseOriginCode: any(named: "enterpriseOriginCode"),
         requestTypeCode: any(named: "requestTypeCode"),
         enterpriseIdInSupabase: any(named: "enterpriseIdInSupabase"),

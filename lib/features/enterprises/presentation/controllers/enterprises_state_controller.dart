@@ -25,9 +25,9 @@ class EnterprisesStateController extends _$EnterprisesStateController {
           crossIdentity: crossIdentity,
           enterpriseOriginCode: enterpriseCode,
           enterpriseIdInSupabase: validatedUser.enterprise!.id!,
-          existingCnpjsInSupabase:
+          existingEnterpriseCodesOnSupabase:
               validatedUser.enterprise!.subEnterprises
-                  ?.map((e) => e.cnpjNumber)
+                  ?.map((e) => e.idFromErp)
                   .toSet()
                   .toList() ??
               [],
