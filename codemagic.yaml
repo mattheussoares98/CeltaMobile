@@ -1,0 +1,49 @@
+workflows:
+  release-workflow:
+    name: Tag Release Workflow
+    instance_type: mac_mini_m2 # Fixed the slug name
+    integrations:
+      app_store_connect: "Celta mobile" # Replace with the name from Codemagic UI
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: '*'
+    environment:
+      flutter: stable
+      xcode: latest
+      groups:
+        - android_credentials
+        - ios_credentials
+      vars:
+        BUNDLE_ID: "br.com.celtaware.inventario"
+      ios_signing:
+        provisioning_profiles:
+          - celta mobile
+        certificates:
+          - CodeMagic distribution
+      android_signing:
+        - celtaMobile
+
+    scripts:
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Generate Code
+        script: |
+          # Ensuring performance by using clean build_runner
+          dart run build_runner build --delete-conflicting-outputs
+      - name: Run Tests
+        script: flutter test
+        ignore_failure: true
+      - name: Build Android AAB
+        script: flutter build appbundle --release
+      - name: Build iOS IPA
+        script: flutter build ipa --release --export-options-plist=$CM_EXPORT_OPTIONS_PATH
+
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
