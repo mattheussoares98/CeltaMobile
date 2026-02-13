@@ -85,8 +85,8 @@ dev_dependencies:
   build_runner: ^2.5.4 #dart run build_runner watch -d
   mocktail: ^1.0.4
   faker: ^2.2.0
-  riverpod_generator: ^2.6.5
-  riverpod_test: ^0.1.9
+  riverpod_generator: ^2.4.0
+  riverpod_test: ^0.1.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -95,8 +95,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
 
-dependency_overrides:
-  analyzer: ^7.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
