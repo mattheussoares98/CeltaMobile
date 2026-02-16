@@ -152,4 +152,39 @@ void main() {
       },
     );
   });
+
+  test('build sasd =NULL', () async {
+    // ARRANGE
+    when(
+      () => mockRepository.load(
+        workingUrl: any(named: 'workingUrl'),
+        crossIdentity: any(named: 'crossIdentity'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        codeForFullSearch: null, // CRITICAL: Must be null for initial load
+      ),
+    ).thenAnswer((_) async {
+      await Future.delayed(Duration.zero);
+      throw Exception('haha');
+    });
+
+    final container = makeProviderContainer(session: fakeSession);
+    addTearDown(container.dispose);
+
+    final states = <AsyncValue<List<BuyQuotationEntity>>>[];
+    container.listen<AsyncValue<List<BuyQuotationEntity>>>(
+      buyQuotationsStateControllerProvider(fakeEnterpriseCode),
+      (previous, next) {
+        states.add(next);
+      },
+      fireImmediately: true,
+    );
+
+    // ACT
+    await container.read(
+      buyQuotationsStateControllerProvider(fakeEnterpriseCode).future,
+    );
+
+    // ASSERT
+    expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+  });
 }

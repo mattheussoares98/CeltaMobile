@@ -28,9 +28,12 @@ workflows:
     scripts:
       - name: Get Flutter packages
         script: flutter pub get
+      - name: Install FlutterFire CLI
+        script: dart pub global activate flutterfire_cli
       - name: Generate Code
         script: |
           # Clean old generated files and metadata first
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
           dart run build_runner clean
           dart run build_runner build --delete-conflicting-outputs
       - name: Run Tests
@@ -39,7 +42,7 @@ workflows:
       - name: Build Android AAB
         script: flutter build appbundle
       - name: Build iOS IPA
-        script: flutter build ipa --release --export-options-plist=$CM_EXPORT_OPTIONS_PATH
+        script: flutter build ios --release --no-codesign
 
     publishing:
       google_play:
