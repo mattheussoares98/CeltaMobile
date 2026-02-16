@@ -37,7 +37,7 @@ workflows:
         script: flutter test
         ignore_failure: true
       - name: Build Android AAB
-        script: flutter build appbundle --release
+        script: flutter build appbundle
       - name: Build iOS IPA
         script: flutter build ipa --release --export-options-plist=$CM_EXPORT_OPTIONS_PATH
 
