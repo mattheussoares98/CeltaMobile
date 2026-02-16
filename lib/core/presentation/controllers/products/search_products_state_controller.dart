@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/providers/products/products.dart';
@@ -97,7 +96,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   }
 
   void addProduct(ProductEntity newProduct) {
-    final currentState = state.valueOrNull;
+    final currentState = state.value;
     if (currentState?.any(
           (e) => e.ProductPackingCode == newProduct.ProductPackingCode,
         ) ??

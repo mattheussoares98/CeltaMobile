@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,13 +28,13 @@ GoRouter goRouter(Ref ref) {
 
   ref.listen<AsyncValue<Object?>>(
     authManagerStateProvider,
-    (prev, next) => enterpriseManagerBridge.value = next.valueOrNull,
+    (prev, next) => enterpriseManagerBridge.value = next.value,
     fireImmediately: true,
   );
 
   ref.listen<AsyncValue<Object?>>(
     userSessionProvider,
-    (prev, next) => userSessionBridge.value = next.valueOrNull,
+    (prev, next) => userSessionBridge.value = next.value,
     fireImmediately: true,
   );
 

@@ -33,7 +33,7 @@ class LotStateController extends _$LotStateController {
       final repository = ref.read(localItemsLotRepositoryProvider);
       await repository.addItem(item);
 
-      final previousState = state.valueOrNull ?? [];
+      final previousState = state.value ?? [];
       final updatedList = [...previousState];
 
       int productIndex = updatedList.indexWhere(
@@ -58,7 +58,7 @@ class LotStateController extends _$LotStateController {
         enterpriseCode: enterpriseCode,
       );
 
-      final previousState = state.valueOrNull ?? [];
+      final previousState = state.value ?? [];
       final newState = previousState
           .where((i) => i.product.ProductPackingCode != productPackingCode)
           .toList();

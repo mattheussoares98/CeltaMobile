@@ -1,5 +1,4 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';

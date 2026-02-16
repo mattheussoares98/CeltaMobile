@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 
 class ReloadIconButton<T> extends ConsumerWidget {
   final ProviderBase<AsyncValue<T>> provider;

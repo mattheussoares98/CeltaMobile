@@ -56,7 +56,7 @@ class ResearchsStateController extends _$ResearchsStateController {
     required String? observations,
     ConcurrentEntity? newConcurrent,
   }) {
-    final currentState = state.valueOrNull;
+    final currentState = state.value;
     if (currentState == null) return;
 
     final index = currentState.indexWhere((e) => e.Code == code);

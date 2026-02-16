@@ -58,14 +58,14 @@ class TotalCalculateAndSave extends ConsumerWidget {
             flex: 7,
             child: AsyncValueWidget(
               value: ref.watch(
-                CanAccessResourceStateControllerProvider(
+                canAccessResourceStateControllerProvider(
                   BsRoutine.generic,
                   BsResource.saleRequestChangeTPrice,
                 ),
               ),
               tryAgain: () {
                 ref.invalidate(
-                  CanAccessResourceStateControllerProvider(
+                  canAccessResourceStateControllerProvider(
                     BsRoutine.generic,
                     BsResource.saleRequestChangeTPrice,
                   ),
