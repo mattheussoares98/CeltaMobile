@@ -45,7 +45,12 @@ void main() {
         " ${enterpriseEntity.name} ".toUpperCase(),
       );
 
-      expect(result, SupabaseEnterpriseModel.fromEntity(enterpriseEntity));
+      expect(
+        result,
+        SupabaseEnterpriseModel.fromEntity(
+          enterpriseEntity.copyWith(annulWorkingUrl: true),
+        ),
+      );
       expect(supabaseClient.lastRpcFunction, 'get_enterprise_by_name');
       expect(supabaseClient.lastRpcParams, {
         'p_enterprise_name': enterpriseEntity.name

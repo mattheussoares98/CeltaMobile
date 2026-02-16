@@ -96,12 +96,15 @@ class EnterpriseEntity extends Equatable {
     String? remoteHttpsUrl,
     String? localHttpUrl,
     String? localHttpsUrl,
+    bool? annulWorkingUrl,
   }) {
     return EnterpriseEntity(
       name: name ?? this.name,
       id: id ?? this.id,
       subEnterprises: subEnterprises ?? this.subEnterprises,
-      workingUrl: workingUrl ?? this.workingUrl,
+      workingUrl: annulWorkingUrl == true
+          ? null
+          : workingUrl ?? this.workingUrl,
       Code: Code ?? this.Code,
       PersonalizedCode: PersonalizedCode ?? this.PersonalizedCode,
       CnpjNumber: CnpjNumber ?? this.CnpjNumber,
