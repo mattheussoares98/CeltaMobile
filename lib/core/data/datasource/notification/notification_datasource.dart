@@ -9,10 +9,7 @@ class NotificationDatasource implements INotificationDatasource {
     try {
       if (kIsWeb) {
         // Web requires a VAPID key from the Firebase Console
-        return await FirebaseMessaging.instance.getToken(
-          vapidKey: 'YOUR_PUBLIC_VAPID_KEY',
-          //TODO fix
-        );
+        return null;
       }
 
       final token = await FirebaseMessaging.instance.getToken();

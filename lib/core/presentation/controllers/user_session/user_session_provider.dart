@@ -10,6 +10,8 @@ import '../../../providers/user_session/user_session.dart';
 part 'user_session_provider.g.dart';
 
 DeviceType get deviceType {
+  if (kIsWeb) return DeviceType.web;
+
   switch (defaultTargetPlatform) {
     case TargetPlatform.android:
       return DeviceType.android;
