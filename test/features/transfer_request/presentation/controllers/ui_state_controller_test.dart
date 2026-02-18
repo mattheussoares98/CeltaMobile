@@ -53,6 +53,7 @@ void main() {
     List<RequestTypeEntity>? requestTypes,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         requestTypeStateControllerProvider(
           Modules.transferRequest,

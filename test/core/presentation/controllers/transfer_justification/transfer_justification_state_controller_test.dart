@@ -46,6 +46,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         // Override the two dependencies
         soapTransferJustificationRepositoryProvider.overrideWithValue(

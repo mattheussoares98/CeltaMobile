@@ -18,6 +18,7 @@
 
 //   ProviderContainer makeProviderContainer() {
 //     final container = ProviderContainer(
+// retry: (retryCount, error) => null,
 //       overrides: [
 //         enterpriseManagerRepositoryProvider.overrideWithValue(
 //           mockEnterpriseManagerRepository,

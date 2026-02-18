@@ -82,6 +82,7 @@ void main() {
   /// Helper to create the container with mocked dependencies.
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         expeditionConferenceControllerProvider(
           fakeControlCode,

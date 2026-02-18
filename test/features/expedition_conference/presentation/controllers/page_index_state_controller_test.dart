@@ -7,7 +7,7 @@ void main() {
   late ProviderContainer container;
 
   setUp(() {
-    container = ProviderContainer();
+    container = ProviderContainer(retry: (retryCount, error) => null);
   });
 
   group('ExpeditionDocumentsStateController', () {

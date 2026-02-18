@@ -8,7 +8,7 @@ void main() {
   late Faker faker;
 
   setUp(() {
-    container = ProviderContainer();
+    container = ProviderContainer(retry: (retryCount, error) => null);
     faker = Faker();
     addTearDown(container.dispose);
   });

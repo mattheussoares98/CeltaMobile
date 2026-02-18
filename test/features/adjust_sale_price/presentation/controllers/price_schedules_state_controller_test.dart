@@ -31,6 +31,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapGetPriceSchedulesRepositoryProvider.overrideWithValue(
           mockRepository,

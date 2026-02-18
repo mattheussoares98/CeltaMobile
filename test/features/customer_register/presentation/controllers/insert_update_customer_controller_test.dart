@@ -40,6 +40,7 @@ void main() {
     CustomerEntity? customer,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapInsertUpdateCustomerRepositoryProvider.overrideWithValue(
           mockRepository,

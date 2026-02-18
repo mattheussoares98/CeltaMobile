@@ -48,6 +48,7 @@ void main() {
   }) {
     // We create a new container for each test to avoid keepAlive conflicts
     final container = ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapLoadResearchsRepositoryProvider.overrideWithValue(mockRepository),
         // Override the keepAlive providers

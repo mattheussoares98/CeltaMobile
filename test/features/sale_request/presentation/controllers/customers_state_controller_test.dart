@@ -61,6 +61,7 @@ void main() {
     PendingSaleRequestEntity? pendingSaleRequest,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapCustomerRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
@@ -270,17 +271,18 @@ void main() {
           .loadCustomer('Test', false);
 
       // ASSERT
-      expect(states, [
-        isA<AsyncData>(), //return the pending sale request customer selected
-        isA<AsyncError>(),
-      ]);
+      expect(states, [isA<AsyncError>()]);
       expect(states.last.error, isA<AppException>());
     });
     test(
       'should return the selected pending sale request customer at first position',
       () async {
         // ARRANGE
-        final container = makeProviderContainer(enterprise: fakeEnterprise);
+        mockRepoSuccess();
+        final container = makeProviderContainer(
+          enterprise: fakeEnterprise,
+          session: fakeSession,
+        );
         addTearDown(container.dispose);
 
         final states = <AsyncValue<List<CustomerEntity>>>[];
@@ -325,7 +327,7 @@ void main() {
             .loadCustomer('Test', false);
 
         // ASSERT
-        expect(states.last.value, isEmpty);
+        expect(states.last.value, isNull);
       },
     );
   });

@@ -72,6 +72,7 @@ void main() {
     EnterpriseEntity? enterprise,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapCustomerRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
@@ -94,10 +95,7 @@ void main() {
 
       await container.read(customerStateControllerProvider.future);
 
-      expect(
-        container.read(customerStateControllerProvider).value,
-        CustomerEntity.empty(),
-      );
+      expect(container.read(customerStateControllerProvider).value, null);
     });
     test(
       'should emit [loading, data] and call repository on success',

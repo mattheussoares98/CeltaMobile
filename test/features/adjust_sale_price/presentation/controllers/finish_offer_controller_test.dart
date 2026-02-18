@@ -47,6 +47,7 @@ void main() async {
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapAdjustSalePriceRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(

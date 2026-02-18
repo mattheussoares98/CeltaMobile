@@ -63,6 +63,7 @@ void main() {
     required SpyResearchsStateController spyResearchs,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapInsertUpdateResearchRepositoryProvider.overrideWithValue(
           mockRepository,

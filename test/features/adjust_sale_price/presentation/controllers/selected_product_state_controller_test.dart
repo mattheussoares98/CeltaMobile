@@ -38,6 +38,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapLoadProductsRepositoryProvider.overrideWithValue(
           mockSoapProductsRepository,
@@ -119,7 +120,7 @@ void main() {
           .read(provider.notifier)
           .updateSelectedProduct(productEntity);
 
-      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+      expect(states, [isA<AsyncData>()]);
 
       final state = await container.read(provider.future);
       expect(state, productEntity);

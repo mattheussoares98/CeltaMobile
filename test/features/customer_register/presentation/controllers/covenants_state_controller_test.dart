@@ -38,6 +38,7 @@ void main() {
   // THE FIX 1: Make your container helper flexible
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapLoadCovenantsRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(

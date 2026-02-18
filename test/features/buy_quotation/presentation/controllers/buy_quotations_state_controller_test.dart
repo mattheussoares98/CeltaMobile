@@ -45,6 +45,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapLoadBuyQuotationsRepositoryProvider.overrideWithValue(
           mockRepository,
@@ -153,38 +154,26 @@ void main() {
     );
   });
 
-  test('build sasd =NULL', () async {
+  test('build throws if repository fails', () async {
     // ARRANGE
+    final exception = Exception(faker.lorem.sentence());
     when(
       () => mockRepository.load(
         workingUrl: any(named: 'workingUrl'),
         crossIdentity: any(named: 'crossIdentity'),
         enterpriseCode: any(named: 'enterpriseCode'),
-        codeForFullSearch: null, // CRITICAL: Must be null for initial load
+        codeForFullSearch: any(named: 'codeForFullSearch'),
       ),
-    ).thenAnswer((_) async {
-      await Future.delayed(Duration.zero);
-      throw Exception('haha');
-    });
+    ).thenThrow(exception);
 
     final container = makeProviderContainer(session: fakeSession);
     addTearDown(container.dispose);
 
-    final states = <AsyncValue<List<BuyQuotationEntity>>>[];
-    container.listen<AsyncValue<List<BuyQuotationEntity>>>(
-      buyQuotationsStateControllerProvider(fakeEnterpriseCode),
-      (previous, next) {
-        states.add(next);
-      },
-      fireImmediately: true,
+    expectLater(
+      container.read(
+        buyQuotationsStateControllerProvider(fakeEnterpriseCode).future,
+      ),
+      throwsA(exception),
     );
-
-    // ACT
-    await container.read(
-      buyQuotationsStateControllerProvider(fakeEnterpriseCode).future,
-    );
-
-    // ASSERT
-    expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
   });
 }

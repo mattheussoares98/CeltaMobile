@@ -98,6 +98,7 @@ void main() {
     FakePendingBuyRequest? pendingBuyRequestStateController,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapInsertBuyRequestRepositoryProvider.overrideWithValue(
           mockRepository,

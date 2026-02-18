@@ -70,6 +70,7 @@ void main() {
     PendingBuyRequestEntity? pendingRequest,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         // Mocking user session to satisfy the dependency inside build()
         userSessionProvider.overrideWith(() => FakeUserSession(fakeSession)),

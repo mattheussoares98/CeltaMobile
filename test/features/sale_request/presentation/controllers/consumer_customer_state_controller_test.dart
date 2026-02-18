@@ -39,6 +39,7 @@ void main() {
     EnterpriseEntity? enterprise,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapCustomerRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(

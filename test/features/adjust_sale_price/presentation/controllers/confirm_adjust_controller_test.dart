@@ -51,6 +51,7 @@ void main() async {
     required AdjustPriceUIModel uiState,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapAdjustSalePriceRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(

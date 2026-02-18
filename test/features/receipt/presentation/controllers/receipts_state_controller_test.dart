@@ -53,6 +53,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapLoadReceiptsRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(

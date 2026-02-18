@@ -10,7 +10,7 @@ void main() {
   late int codigoInternoInvCont;
 
   setUp(() {
-    container = ProviderContainer();
+    container = ProviderContainer(retry: (retryCount, error) => null);
     faker = Faker();
     codigoInternoInvCont = faker.randomGenerator.integer(100);
     addTearDown(container.dispose);

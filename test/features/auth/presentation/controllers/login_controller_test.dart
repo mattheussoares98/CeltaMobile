@@ -24,6 +24,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [authRepositoryProvider.overrideWithValue(mockAuthRepository)],
     );
     addTearDown(container.dispose);

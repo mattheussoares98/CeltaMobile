@@ -49,6 +49,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         userSessionDatasourceProvider.overrideWithValue(
           localUserSessionDatasource,

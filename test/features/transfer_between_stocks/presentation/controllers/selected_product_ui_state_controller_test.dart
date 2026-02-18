@@ -35,6 +35,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         // Override the stock provider so the UI controller can read the future
         stockTypeStateControllerProvider(

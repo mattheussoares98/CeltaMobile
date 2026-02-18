@@ -44,6 +44,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         // Override all the dependencies that the controller watches
         soapResourceRepositoryProvider.overrideWithValue(resourceRepositorySpy),

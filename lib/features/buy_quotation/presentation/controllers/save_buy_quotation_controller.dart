@@ -46,10 +46,9 @@ class SaveBuyQuotationController extends _$SaveBuyQuotationController {
             observations: observations,
           );
 
-      ref.invalidateSelf();
       ref.invalidate(buyQuotationsStateControllerProvider(enterpriseCode));
+      ref.invalidateSelf();
       saved = true;
-      return;
     });
     return saved;
   }

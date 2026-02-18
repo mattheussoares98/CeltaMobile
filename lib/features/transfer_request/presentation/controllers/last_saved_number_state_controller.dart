@@ -11,7 +11,7 @@ part 'last_saved_number_state_controller.g.dart';
 class LastSavedNumberStateController extends _$LastSavedNumberStateController {
   @override
   Future<String?> build() async {
-    ref.watch(userSessionProvider);
+    ref.watch(validatedUserSessionProvider);
     return await ref.read(localLastSavedNumberRepositoryProvider).load();
   }
 

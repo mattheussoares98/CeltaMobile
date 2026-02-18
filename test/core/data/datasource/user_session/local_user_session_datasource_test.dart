@@ -66,7 +66,16 @@ void main() {
   });
   group('Get', () {
     test('Should behave correctly', () async {
-      expect(await sut.get(), UserSessionModel.fromEntity(userSessionEntity));
+      expect(
+        await sut.get(),
+        UserSessionModel.fromEntity(
+          userSessionEntity.copyWith(
+            supabaseEnterprise: userSessionEntity.supabaseEnterprise?.copyWith(
+              annulWorkingUrl: true,
+            ),
+          ),
+        ),
+      );
 
       verify(() => hive.get(DatabaseConstants.userSession.name)).called(1);
     });

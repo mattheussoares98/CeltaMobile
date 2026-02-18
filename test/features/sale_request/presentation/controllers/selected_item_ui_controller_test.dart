@@ -7,7 +7,7 @@ import '../../../../mocks/mocks.dart';
 
 void main() {
   ProviderContainer makeProviderContainer() {
-    final container = ProviderContainer();
+    final container = ProviderContainer(retry: (retryCount, error) => null);
     addTearDown(container.dispose);
     return container;
   }

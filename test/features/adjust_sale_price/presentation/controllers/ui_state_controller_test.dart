@@ -37,6 +37,7 @@ void main() {
     ProductEntity? product,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterprise),

@@ -80,6 +80,7 @@ void main() {
     required SpySearchProductsStateController spySearchProducts,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapInsertUpdatePricesDatasourceProvider.overrideWithValue(
           mockDatasource,

@@ -54,6 +54,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapConcurrentsRepositoryProvider.overrideWithValue(mockRepository),
         // Override the keepAlive provider
@@ -247,7 +248,7 @@ void main() {
 
         expect(
           container.read(concurrentsStateControllerProvider).value,
-          isNull, //because invalidate
+          isEmpty, //because invalidate
         );
         // ASSERT
         // 1. Verify repository was called with null code

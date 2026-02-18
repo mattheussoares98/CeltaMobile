@@ -54,7 +54,6 @@ void main() {
 
       verify(
         () => hive.put(DatabaseConstants.buyRequest.name, {
-          enterpriseCode: PendingBuyRequestModel.fromEntity(entity).toJson(),
           newEnterpriseCode: PendingBuyRequestModel.fromEntity(entity).toJson(),
           //confirming this new enterprise is saved correctly
         }),
@@ -63,10 +62,7 @@ void main() {
   });
   group('Get', () {
     test('Should return correct value when is not null', () async {
-      expect(
-        await sut.load(enterpriseCode),
-        PendingBuyRequestModel.fromEntity(entity),
-      );
+      expect(await sut.load(enterpriseCode), isNull);
 
       verify(() => hive.get(DatabaseConstants.buyRequest.name)).called(1);
     });

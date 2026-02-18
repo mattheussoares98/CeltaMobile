@@ -11,7 +11,7 @@ void main() {
 
   // This runs before each test, ensuring a clean state.
   setUp(() {
-    container = ProviderContainer();
+    container = ProviderContainer(retry: (retryCount, error) => null);
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     // Clean up the container after each test.
     addTearDown(container.dispose);

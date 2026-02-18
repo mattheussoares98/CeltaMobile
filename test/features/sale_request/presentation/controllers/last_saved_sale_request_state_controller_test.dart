@@ -41,6 +41,7 @@ void main() {
 
     // 4. Create the container ONCE with the base overrides
     container = ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         localLastSavedSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalLastSavedSaleRequestRepository,

@@ -43,6 +43,7 @@ void main() {
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     // We create a new container for each test to avoid keepAlive conflicts
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapLoadReportsRepositoryProvider.overrideWithValue(mockRepository),
         // Override the keepAlive provider

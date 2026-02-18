@@ -39,6 +39,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapBsVersionDatasourceProvider.overrideWithValue(mockDatasource),
         validatedUserSessionProvider.overrideWith(
@@ -63,7 +64,7 @@ void main() {
       expect(result, bsVersion);
       verify(() => mockDatasource.get(any())).called(1);
     });
-    test('should return throw on error', () async {
+    test('should throw on error', () async {
       // ARRANGE
       when(() => mockDatasource.get(any())).thenThrow(Exception());
 

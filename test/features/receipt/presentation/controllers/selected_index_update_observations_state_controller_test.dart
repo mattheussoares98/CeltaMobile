@@ -48,7 +48,7 @@ void main() {
   late ProviderContainer container;
 
   setUp(() {
-    container = ProviderContainer();
+    container = ProviderContainer(retry: (retryCount, error) => null);
     addTearDown(container.dispose);
 
     mockUpdateDatasource = MockSoapUpdateObservationsDatasource();
@@ -70,6 +70,7 @@ void main() {
     final actualEnterpriseCode = enterpriseCodeForSpy ?? fakeEnterpriseCode;
 
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapUpdateObservationsDatasourceProvider.overrideWithValue(
           mockUpdateDatasource,

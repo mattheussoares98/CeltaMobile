@@ -50,6 +50,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         localPendingBuyRequestRepositoryProvider.overrideWithValue(
           mockRepository,

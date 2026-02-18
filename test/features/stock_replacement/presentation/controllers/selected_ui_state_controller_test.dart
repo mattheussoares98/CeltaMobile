@@ -50,6 +50,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({SelectedItemUIState? state}) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         // 2. Override the internal provider dependency
         validatedUserSessionProvider.overrideWith(

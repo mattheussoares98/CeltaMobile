@@ -61,6 +61,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         localCartRepositoryProvider.overrideWithValue(mockRepository),
       ],

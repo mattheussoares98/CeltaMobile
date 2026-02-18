@@ -13,7 +13,7 @@ class BsVersionStateController extends _$BsVersionStateController {
       validatedUserSessionProvider.future,
     );
     return await ref
-        .watch(soapBsVersionDatasourceProvider)
+        .read(soapBsVersionDatasourceProvider)
         .get(validatedUserSession!.enterprise!.workingUrl!);
   }
 }

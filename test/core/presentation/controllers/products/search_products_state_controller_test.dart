@@ -114,6 +114,7 @@ void main() {
     bool? mockSelectedEnterprise = true,
   }) {
     final container = ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapLoadProductsRepositoryProvider.overrideWithValue(sut),
         if (mockSession == true)

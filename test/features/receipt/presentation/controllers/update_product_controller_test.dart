@@ -100,6 +100,7 @@ void main() {
     required FakeSearchProductsStateController spySearchProducts,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapUpdateProductDatasourceProvider.overrideWithValue(mockDatasource),
         validatedUserSessionProvider.overrideWith(

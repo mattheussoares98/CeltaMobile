@@ -29,6 +29,7 @@ void main() {
   ProviderContainer makeProviderContainer({UserSessionModel? user}) {
     // We pass the fake data to the container setup
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         enterpriseRepositoryProvider.overrideWithValue(enterpriseRepositorySpy),
         selectedEnterpriseStateControllerProvider.overrideWith(

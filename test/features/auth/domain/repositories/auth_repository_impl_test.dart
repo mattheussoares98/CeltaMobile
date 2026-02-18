@@ -17,7 +17,7 @@ class SoapUrlValidationDatasourceSpy extends Mock
   }
 
   void mockWorkingUrlError() {
-    _findWorkingUrlCall().thenThrow(Exception());
+    _findWorkingUrlCall().thenAnswer((_) async => throw Exception());
   }
 
   When _findWorkingUrlCall() => when(() => this.findWorkingUrl(any()));
@@ -155,13 +155,14 @@ void main() {
     test('should throw when doesnt has working url', () async {
       soapUrlValidationDatasource.mockWorkingUrlError();
 
-      final response = sut.login(
-        enterpriseName: userSessionEntity.supabaseEnterprise!.name,
-        userName: userSessionEntity.user.name!,
-        password: password,
+      expect(
+        sut.login(
+          enterpriseName: userSessionEntity.supabaseEnterprise!.name,
+          userName: userSessionEntity.user.name!,
+          password: password,
+        ),
+        throwsA(isA<Exception>()),
       );
-
-      expectLater(response, throwsA(isA<AppException>()));
     });
   });
 }

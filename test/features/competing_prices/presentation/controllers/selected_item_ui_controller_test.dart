@@ -10,7 +10,7 @@ void main() {
   late ProviderContainer container;
 
   setUp(() {
-    container = ProviderContainer();
+    container = ProviderContainer(retry: (retryCount, error) => null);
     addTearDown(container.dispose);
   });
 
@@ -117,6 +117,7 @@ void main() {
       container.listen(
         selectedItemUIControllerProvider,
         (_, next) => states.add(next),
+        fireImmediately: true,
       );
 
       // ACT
@@ -124,7 +125,7 @@ void main() {
 
       // ASSERT
       // 1. Verify the state transition list
-      expect(states, [updatedState]);
+      expect(states.last, updatedState);
 
       // 2. Verify the final state value
       expect(

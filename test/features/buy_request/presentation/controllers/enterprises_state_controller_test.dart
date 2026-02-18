@@ -49,6 +49,7 @@ void main() {
     PendingBuyRequestEntity? pendingRequest,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapLoadEnterpriseByFiltersRepositoryProvider.overrideWithValue(
           mockRepository,

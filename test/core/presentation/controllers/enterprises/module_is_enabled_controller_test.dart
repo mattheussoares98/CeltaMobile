@@ -50,6 +50,7 @@ void main() {
     List<EnabledModulesByCnpjEntity>? permissions,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),

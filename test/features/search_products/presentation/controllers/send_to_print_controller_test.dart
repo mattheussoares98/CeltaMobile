@@ -52,6 +52,7 @@ void main() {
     EnterpriseEntity? enterprise,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapSendToPrintRepositoryProvider.overrideWithValue(mockRepository),
         // Override all the controller's dependencies

@@ -94,6 +94,7 @@ void main() {
     EnterpriseEntity? enterprise,
   }) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapExecuteOrDownloadScheduleRepositoryProvider.overrideWithValue(
           mockRepository,

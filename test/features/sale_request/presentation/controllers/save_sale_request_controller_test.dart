@@ -83,6 +83,7 @@ void main() {
 
     // --- Create the single container ONCE with ALL providers ---
     container = ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         // Dependencies for the controller
         soapSaveSaleRequestRepositoryProvider.overrideWithValue(

@@ -35,6 +35,7 @@ void main() {
 
   ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         authManagerRepositoryProvider.overrideWithValue(
           mockAuthManagerRepository,

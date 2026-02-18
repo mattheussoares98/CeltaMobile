@@ -62,6 +62,7 @@ void main() {
 
     // Create the single container ONCE with all providers
     container = ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         printLastSavedSaleRequestRepositoryProvider.overrideWithValue(
           mockRepository,

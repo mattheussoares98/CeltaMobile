@@ -30,6 +30,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
+      retry: (retryCount, error) => null,
       overrides: [
         soapConfirmConferenceRepositoryProvider.overrideWithValue(
           mockRepository,

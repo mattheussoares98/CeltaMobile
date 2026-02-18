@@ -147,7 +147,10 @@ void main() {
 
       expect(supabaseClient.lastRpcParams, {
         'p_enterprise_id': enterpriseId,
-        'p_base_url': remoteHttpUrl,
+        'p_remote_http_url': remoteHttpUrl.toLowerCase().removeWhiteSpaces(),
+        'p_remote_https_url': remoteHttpsUrl.toLowerCase().removeWhiteSpaces(),
+        'p_local_http_url': localHttpUrl.toLowerCase().removeWhiteSpaces(),
+        'p_local_https_url': localHttpsUrl.toLowerCase().removeWhiteSpaces(),
         'p_permissions_payload': permissions.map((e) => e.toJson()).toList(),
       });
     });
