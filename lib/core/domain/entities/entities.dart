@@ -1,4 +1,5 @@
 export 'address/address.dart';
+export 'app_usage/app_usage.dart';
 export 'buyer/buyer.dart';
 export 'customer/customer.dart';
 export 'enterprise/enterprise.dart';
