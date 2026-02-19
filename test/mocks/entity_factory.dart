@@ -980,4 +980,12 @@ class EntityFactory {
     selectedReplications: selectedReplications ?? {},
     availableReplications: availableReplications ?? [],
   );
+
+  static AppUsageEntity makeAppUsageEntity() => AppUsageEntity(
+    userName: faker.person.name(),
+    enterpriseId: faker.randomGenerator.integer(100),
+    usageType: UsageType
+        .values[faker.randomGenerator.integer(UsageType.values.length)],
+    requestCount: faker.randomGenerator.integer(100),
+  );
 }

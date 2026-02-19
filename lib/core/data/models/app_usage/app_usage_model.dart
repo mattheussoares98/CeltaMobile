@@ -30,7 +30,7 @@ class AppUsageModel extends Equatable {
       userName: map['user_name'],
       enterpriseId: map['enterprise_id'],
       usageType: UsageType.values.firstWhere(
-        (e) => e.toString() == map['usage_type'],
+        (e) => e.name == map['usage_type'],
       ),
       requestCount: map['request_count'],
     );
