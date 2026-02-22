@@ -12,7 +12,6 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final selectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider,
     );
@@ -29,6 +28,8 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
             .selectEnterprise(enterprise);
       },
       items: enterprises.map((e) {
+        final theme = Theme.of(context);
+
         Color getColor(bool enabled) {
           if (theme.platform != TargetPlatform.iOS) {
             return theme.textTheme.bodyMedium!.color!;

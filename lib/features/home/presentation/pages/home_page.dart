@@ -25,41 +25,45 @@ class HomePage extends ConsumerWidget {
       drawer: const CompleteDrawer(),
       appBar: AppBar(
         leadingWidth: 40,
-        title: AsyncValueWidget(
-          value: ref.watch(enterprisesStateControllerProvider()),
-          tryAgain: null,
-          errorMaxLines: 1,
-          data: (enterprises) {
-            return SelectEnterpriseDropDown(enterprises: enterprises);
-          },
+        title: RepaintBoundary(
+          child: AsyncValueWidget(
+            value: ref.watch(enterprisesStateControllerProvider()),
+            tryAgain: null,
+            errorMaxLines: 1,
+            data: (enterprises) {
+              return SelectEnterpriseDropDown(enterprises: enterprises);
+            },
+          ),
         ),
       ),
 
-      body: OptimazedAsyncValueWidget(
-        provider: enterprisesStateControllerProvider(),
-        tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
-        child: Consumer(
-          builder: (_, ref, _) {
-            final enterpriseName = ref.watch(
-              userSessionProvider.select((s) => s.value?.enterprise?.name),
-            );
+      body: RepaintBoundary(
+        child: OptimazedAsyncValueWidget(
+          provider: enterprisesStateControllerProvider(),
+          tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
+          child: Consumer(
+            builder: (_, ref, _) {
+              final enterpriseName = ref.watch(
+                userSessionProvider.select((s) => s.value?.enterprise?.name),
+              );
 
-            if (enterpriseName == null) {
-              return const SizedBox.shrink();
-            }
+              if (enterpriseName == null) {
+                return const SizedBox.shrink();
+              }
 
-            return OptimazedAsyncValueWidget(
-              provider: enabledModulesByEnterpriseNameStateControllerProvider(
-                ref.watch(userSessionProvider.select((s) => enterpriseName)),
-              ),
-              tryAgain: () => ref.invalidate(
-                enabledModulesByEnterpriseNameStateControllerProvider(
-                  ref.watch(userSessionProvider.select((s) => enterpriseName)),
+              return OptimazedAsyncValueWidget(
+                provider: enabledModulesByEnterpriseNameStateControllerProvider(
+                  enterpriseName,
                 ),
-              ),
-              child: const ModulesWidget(),
-            );
-          },
+                tryAgain: () => ref.invalidate(
+                  enabledModulesByEnterpriseNameStateControllerProvider(
+                    enterpriseName,
+                  ),
+                ),
+                child: const ModulesWidget(),
+              );
+            },
+          ),
         ),
       ),
     );

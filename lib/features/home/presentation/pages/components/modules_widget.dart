@@ -124,8 +124,9 @@ class ModulesWidget extends ConsumerWidget {
       }
     }
 
-    final favoriteModules =
-        ref.watch(favoriteModulesStateControllerProvider).value ?? [];
+    final favoriteModules = ref.watch(
+      favoriteModulesStateControllerProvider.select((s) => s.value ?? []),
+    );
 
     final sortedButtons = [...buttons]
       ..sort((a, b) {

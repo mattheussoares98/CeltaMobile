@@ -11,7 +11,7 @@ class EnabledModulesByEnterpriseNameStateController
   FutureOr<List<EnabledModulesByCnpjEntity>> build(
     String enterpriseName,
   ) async {
-    final repository = ref.watch(enterpriseRepositoryProvider);
+    final repository = ref.read(enterpriseRepositoryProvider);
 
     return await repository.getEnabledModulesByEnterpriseName(enterpriseName);
   }
