@@ -105,10 +105,12 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
                         StartAndEndDates(plu: widget.plu),
                         _DefaultDivider(),
                         if (selectedProduct != null) ...[
-                          InfoButton(
-                            ProductItemWidget(
-                              product: selectedProduct,
-                              routine: BsRoutine.adjustSalePrice,
+                          RepaintBoundary(
+                            child: InfoButton(
+                              ProductItemWidget(
+                                product: selectedProduct,
+                                routine: BsRoutine.adjustSalePrice,
+                              ),
                             ),
                           ),
                           PracticedSuggestionAndMinimumPrices(

@@ -22,8 +22,10 @@ class StartAndEndDates extends ConsumerWidget {
       uIStateControllerProvider(plu).select((s) => s.value?.selectedEndDate),
     );
 
-    final selectedPriceType = ref.watch(
-      uIStateControllerProvider(plu).select((s) => s.value?.selectedPriceType),
+    final enableEndDate = ref.watch(
+      uIStateControllerProvider(
+        plu,
+      ).select((s) => s.value?.selectedPriceType == PriceType.offer),
     );
 
     void changeStartDate(DateTime? date) {
@@ -73,7 +75,7 @@ class StartAndEndDates extends ConsumerWidget {
           const VerticalDivider(),
           Expanded(
             child: _GetDateItem(
-              enabled: selectedPriceType == PriceType.offer,
+              enabled: enableEndDate,
               title: 'Término ',
               isEndDate: true,
               currentSelectedDate: selectedEndDate,
@@ -118,57 +120,59 @@ class _GetDateItem extends StatelessWidget {
       }
     }
 
-    return InkWell(
-      onTap: enabled ? updateDate : null,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(
-                child: TitleWidget(title: title.hardcoded, enabled: enabled),
-              ),
-              IconButton(
-                onPressed: !enabled ? null : updateDate,
-                icon: Icon(
-                  theme.platform == TargetPlatform.iOS
-                      ? CupertinoIcons.calendar_badge_plus
-                      : Icons.calendar_month,
-                  color: enabled ? null : theme.disabledColor,
+    return RepaintBoundary(
+      child: InkWell(
+        onTap: enabled ? updateDate : null,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Flexible(
+                  child: TitleWidget(title: title.hardcoded, enabled: enabled),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Text(
-                  currentSelectedDate == null && isEndDate
-                      ? "Não definido".hardcoded
-                      : DateFormat(
-                          'dd/MM/yyyy HH:mm',
-                        ).format(currentSelectedDate ?? now),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: enabled ? null : theme.disabledColor,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              if (isEndDate && currentSelectedDate != null)
                 IconButton(
-                  onPressed: () => onDateChanged(null),
+                  onPressed: !enabled ? null : updateDate,
                   icon: Icon(
                     theme.platform == TargetPlatform.iOS
-                        ? CupertinoIcons.clear
-                        : Icons.clear,
-                    color: Colors.red,
+                        ? CupertinoIcons.calendar_badge_plus
+                        : Icons.calendar_month,
+                    color: enabled ? null : theme.disabledColor,
                   ),
                 ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Text(
+                    currentSelectedDate == null && isEndDate
+                        ? "Não definido".hardcoded
+                        : DateFormat(
+                            'dd/MM/yyyy HH:mm',
+                          ).format(currentSelectedDate ?? now),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: enabled ? null : theme.disabledColor,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                if (isEndDate && currentSelectedDate != null)
+                  IconButton(
+                    onPressed: () => onDateChanged(null),
+                    icon: Icon(
+                      theme.platform == TargetPlatform.iOS
+                          ? CupertinoIcons.clear
+                          : Icons.clear,
+                      color: Colors.red,
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

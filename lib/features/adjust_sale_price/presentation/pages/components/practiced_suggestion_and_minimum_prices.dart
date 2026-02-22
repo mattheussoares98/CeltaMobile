@@ -64,42 +64,46 @@ class PracticedSuggestionAndMinimumPrices extends ConsumerWidget {
     final suggestionPrice = product.getSuggestion(selectedSaleType);
     final minimumPrice = product.getMinimumPrice(selectedSaleType);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _SuggestionItem(
-          title: 'Praticado '.hardcoded,
-          value: practicedPrice,
-          emptyMessage:
-              "Sem preço ${selectedPriceType?.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} praticado"
-                  .hardcoded,
-          anotherMessage:
-              minimumPrice != null &&
-                  minimumPrice > 0 &&
-                  practicedPrice != null &&
-                  practicedPrice < minimumPrice
-              ? TextSpan(
-                  text: " MENOR QUE O MÍNIMO".hardcoded,
-                  style: theme.textTheme.titleSmall!.copyWith(
-                    color: Colors.red,
-                  ),
-                )
-              : null,
-        ),
-        _SuggestionItem(
-          title: 'Sugerido '.hardcoded,
-          value: suggestionPrice,
-          emptyMessage:
-              "Sem preço ${selectedPriceType?.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} sugerido"
-                  .hardcoded,
-        ),
-        if (minimumPrice != null && minimumPrice > 0)
-          _SuggestionItem(
-            title: 'Mínimo '.hardcoded,
-            value: minimumPrice,
-            emptyMessage: "",
+    return RepaintBoundary(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          RepaintBoundary(
+            child: _SuggestionItem(
+              title: 'Praticado '.hardcoded,
+              value: practicedPrice,
+              emptyMessage:
+                  "Sem preço ${selectedPriceType?.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} praticado"
+                      .hardcoded,
+              anotherMessage:
+                  minimumPrice != null &&
+                      minimumPrice > 0 &&
+                      practicedPrice != null &&
+                      practicedPrice < minimumPrice
+                  ? TextSpan(
+                      text: " MENOR QUE O MÍNIMO".hardcoded,
+                      style: theme.textTheme.titleSmall!.copyWith(
+                        color: Colors.red,
+                      ),
+                    )
+                  : null,
+            ),
           ),
-      ],
+          _SuggestionItem(
+            title: 'Sugerido '.hardcoded,
+            value: suggestionPrice,
+            emptyMessage:
+                "Sem preço ${selectedPriceType?.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} sugerido"
+                    .hardcoded,
+          ),
+          if (minimumPrice != null && minimumPrice > 0)
+            _SuggestionItem(
+              title: 'Mínimo '.hardcoded,
+              value: minimumPrice,
+              emptyMessage: "",
+            ),
+        ],
+      ),
     );
   }
 }

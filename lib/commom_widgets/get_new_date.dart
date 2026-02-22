@@ -19,6 +19,8 @@ class GetNewDate {
     DateTime? selectedDate;
     final theme = Theme.of(context);
 
+    FocusManager.instance.primaryFocus?.unfocus();
+
     final currentSelectedIsBeforeMinimumDate =
         currentSelectedDate?.isBefore(minimumDate) ?? true;
     final correctMinimumDate = currentSelectedIsBeforeMinimumDate

@@ -33,11 +33,14 @@ class ReplicationTypesWidget extends ConsumerWidget {
           children: [
             TitleWidget(title: 'Parâmetros de replicação'.hardcoded),
             ...?availableReplications?.map((replication) {
-              return DefaultCheckBox(
-                name: replication.name,
-                enabled:
-                    uiState.selectedReplications.contains(replication) == true,
-                onChanged: (_) => onChanged(replication),
+              return RepaintBoundary(
+                child: DefaultCheckBox(
+                  name: replication.name,
+                  enabled:
+                      uiState.selectedReplications.contains(replication) ==
+                      true,
+                  onChanged: (_) => onChanged(replication),
+                ),
               );
             }),
           ],
