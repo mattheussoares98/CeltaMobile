@@ -16,50 +16,55 @@ class StocksDropdown extends ConsumerWidget {
     final stocksAsync = ref.watch(
       stockTypeStateControllerProvider(enterpriseCode),
     );
-    final selectedUIState = ref.watch(
-      selectedUIStateControllerProvider(enterpriseCode),
+    final selectedStockType = ref.watch(
+      selectedUIStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.selectedStockType),
+    );
+    final selectedJustificationInternalCode = ref.watch(
+      selectedUIStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.selectedJustification?.CodigoInterno_TipoEstoque),
     );
 
-    return AsyncValueWidget(
-      value: stocksAsync,
-      tryAgain: () {
-        ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
-      },
-      data: (stocks) {
-        return DefaultSimpleDropDown<StockTypeEntity?>(
-          isLoading: stocksAsync.isLoading,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          onChanged:
-              selectedUIState
-                      .selectedJustification
-                      ?.CodigoInterno_TipoEstoque !=
-                  null
-              ? null
-              : (value) {
-                  ref
-                      .read(
-                        selectedUIStateControllerProvider(
-                          enterpriseCode,
-                        ).notifier,
-                      )
-                      .updateValues(selectedStockType: value);
-                },
-          validator: (value) {
-            if (value == null) {
-              return 'Estoque obrigatório'.hardcoded;
-            }
-            return null;
-          },
-          items: stocks.map((e) {
-            return DropdownMenuItem(
-              value: e,
-              child: Center(child: Text(e.Nome_TipoEstoque)),
-            );
-          }).toList(),
-          value: selectedUIState.selectedStockType,
-          hint: 'Estoque de destino'.hardcoded,
-        );
-      },
+    return RepaintBoundary(
+      child: AsyncValueWidget(
+        value: stocksAsync,
+        tryAgain: () {
+          ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
+        },
+        data: (stocks) {
+          return DefaultSimpleDropDown<StockTypeEntity?>(
+            isLoading: stocksAsync.isLoading,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: selectedJustificationInternalCode != null
+                ? null
+                : (value) {
+                    ref
+                        .read(
+                          selectedUIStateControllerProvider(
+                            enterpriseCode,
+                          ).notifier,
+                        )
+                        .updateValues(selectedStockType: value);
+                  },
+            validator: (value) {
+              if (value == null) {
+                return 'Estoque obrigatório'.hardcoded;
+              }
+              return null;
+            },
+            items: stocks.map((e) {
+              return DropdownMenuItem(
+                value: e,
+                child: Center(child: Text(e.Nome_TipoEstoque)),
+              );
+            }).toList(),
+            value: selectedStockType,
+            hint: 'Estoque de destino'.hardcoded,
+          );
+        },
+      ),
     );
   }
 }

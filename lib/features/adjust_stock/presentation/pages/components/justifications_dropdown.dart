@@ -25,43 +25,45 @@ class JustificationsDropdown extends ConsumerWidget {
       ).select((s) => s.selectedJustification),
     );
 
-    return AsyncValueWidget(
-      value: justificationsAsync,
-      tryAgain: () {
-        ref.invalidate(
-          transferJustificationStateControllerProvider(
-            enterpriseCode,
-            TransferJustificationType.adjustStock,
-          ),
-        );
-      },
-      data: (justifications) {
-        return DefaultSimpleDropDown<TransferJustificationEntity?>(
-          isLoading: justificationsAsync.isLoading,
-          onChanged: (value) async {
-            ref
-                .read(
-                  selectedUIStateControllerProvider(enterpriseCode).notifier,
-                )
-                .updateValues(selectedJustification: value);
-          },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) {
-            if (value == null) {
-              return 'Justificativa obrigatória'.hardcoded;
-            }
-            return null;
-          },
-          items: justifications.map((e) {
-            return DropdownMenuItem(
-              value: e,
-              child: Center(child: Text(e.Descricao_JustMov)),
-            );
-          }).toList(),
-          value: selectedJustification,
-          hint: 'Justificativas'.hardcoded,
-        );
-      },
+    return RepaintBoundary(
+      child: AsyncValueWidget(
+        value: justificationsAsync,
+        tryAgain: () {
+          ref.invalidate(
+            transferJustificationStateControllerProvider(
+              enterpriseCode,
+              TransferJustificationType.adjustStock,
+            ),
+          );
+        },
+        data: (justifications) {
+          return DefaultSimpleDropDown<TransferJustificationEntity?>(
+            isLoading: justificationsAsync.isLoading,
+            onChanged: (value) async {
+              ref
+                  .read(
+                    selectedUIStateControllerProvider(enterpriseCode).notifier,
+                  )
+                  .updateValues(selectedJustification: value);
+            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) {
+              if (value == null) {
+                return 'Justificativa obrigatória'.hardcoded;
+              }
+              return null;
+            },
+            items: justifications.map((e) {
+              return DropdownMenuItem(
+                value: e,
+                child: Center(child: Text(e.Descricao_JustMov)),
+              );
+            }).toList(),
+            value: selectedJustification,
+            hint: 'Justificativas'.hardcoded,
+          );
+        },
+      ),
     );
   }
 }
