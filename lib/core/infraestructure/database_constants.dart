@@ -7,6 +7,7 @@ class DatabaseConstants {
     appSettings,
     buyRequest,
     favoriteModules,
+    lastSelectedEnterpriseCode,
     saleRequest,
     transferBetweenStocks,
     transferRequest,
