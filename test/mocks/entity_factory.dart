@@ -26,8 +26,11 @@ class EntityFactory {
     String? name,
     int? code,
     bool? enterpriseParticipateEnterpriseGroup,
+    bool? annulEnterpriseId,
   }) => EnterpriseEntity(
-    id: id ?? faker.randomGenerator.integer(100),
+    id: annulEnterpriseId == true
+        ? null
+        : id ?? faker.randomGenerator.integer(100),
     name: name ?? faker.company.name(),
     workingUrl: faker.internet.httpsUrl(),
     localHttpUrl: faker.internet.httpUrl(),
@@ -64,8 +67,8 @@ class EntityFactory {
         cnpjNumber: cnpjNumber ?? faker.randomGenerator.numberOfLength(14),
       );
 
-  static UserEntity makeUserEntity() => UserEntity(
-    name: faker.person.name(),
+  static UserEntity makeUserEntity({bool? annullName}) => UserEntity(
+    name: annullName == true ? null : faker.person.name(),
     enterpriseName: faker.company.name(),
     AccessKey: faker.guid.guid(),
     CrossIdentity_Usuario: faker.guid.guid(),
