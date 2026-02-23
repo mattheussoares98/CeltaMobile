@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
@@ -27,6 +29,10 @@ class ConfirmAdjustController extends _$ConfirmAdjustController {
         selectedProductStateControllerProvider(enterpriseCode, plu).future,
       );
       final uiState = await ref.read(uIStateControllerProvider(plu).future);
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.adjustSalePrice);
 
       await ref
           .read(soapAdjustSalePriceRepositoryProvider)

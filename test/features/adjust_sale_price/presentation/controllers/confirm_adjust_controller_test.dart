@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
@@ -24,6 +25,7 @@ class FakeUIStateController extends UIStateController {
 
 void main() async {
   late SoapAdjustSalePriceRepositorySpy mockRepository;
+  late FakeAppUsageStateController fakeUsageController;
 
   late int enterpriseCode;
   late UserSessionEntity userSessionEntity;
@@ -38,6 +40,9 @@ void main() async {
     for (final priceType in PriceType.values) {
       registerFallbackValue(priceType);
     }
+    for (final value in UsageType.values) {
+      registerFallbackValue(value);
+    }
 
     enterpriseCode = faker.randomGenerator.integer(100);
     userSessionEntity = EntityFactory.makeUserSessionEntity();
@@ -45,6 +50,7 @@ void main() async {
     productEntity = EntityFactory.makeProductEntity();
     price = faker.randomGenerator.decimal();
     mockRepository = SoapAdjustSalePriceRepositorySpy();
+    fakeUsageController = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({
@@ -66,6 +72,7 @@ void main() async {
         uIStateControllerProvider(
           productEntity.PLU!,
         ).overrideWith(() => FakeUIStateController(uiState)),
+        appUsageStateControllerProvider.overrideWith(() => fakeUsageController),
       ],
     );
   }
@@ -125,6 +132,7 @@ void main() async {
           now: now,
         ),
       ).called(1);
+      expect(fakeUsageController.lastUsageType, UsageType.adjustSalePrice);
     });
 
     test('should emit [loading, error] on failure', () async {
