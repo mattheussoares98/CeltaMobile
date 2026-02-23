@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../exceptions/exceptions.dart';
 import '../../providers.dart';
@@ -35,6 +37,10 @@ class SaveBuyQuotationController extends _$SaveBuyQuotationController {
           buyQuotation.Products!.isEmpty) {
         throw AppException('Ao menos um produto deve ser informado');
       }
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.insertUpdateBuyQuotation);
 
       await ref
           .read(soapInsertUpdateBuyQuotationRepositoryProvider)

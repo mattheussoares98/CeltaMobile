@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/repository/repository.dart';
@@ -56,6 +58,7 @@ class MockBuyQuotationsStateController extends BuyQuotationsStateController {
 
 void main() {
   late MockSoapInsertUpdateBuyQuotationRepository mockRepository;
+  late FakeAppUsageStateController fakeUsageController;
   late UserSessionModel fakeSession;
   late int fakeEnterpriseCode;
   late String fakeCode;
@@ -67,6 +70,9 @@ void main() {
     registerFallbackValue(BuyQuotationEntity.empty());
     registerFallbackValue(1);
     registerFallbackValue('any_string');
+    for (var value in UsageType.values) {
+      registerFallbackValue(value);
+    }
   });
 
   setUp(() {
@@ -78,6 +84,7 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     observations = faker.lorem.sentence();
+    fakeUsageController = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({
@@ -114,6 +121,9 @@ void main() {
         buyQuotationsStateControllerProvider(
           fakeEnterpriseCode,
         ).overrideWith(() => spyNotifier),
+
+        // Mock the usage provider
+        appUsageStateControllerProvider.overrideWith(() => fakeUsageController),
       ],
     );
   }
@@ -175,6 +185,10 @@ void main() {
             observations: observations,
           ),
         ).called(1);
+        expect(
+          fakeUsageController.lastUsageType,
+          UsageType.insertUpdateBuyQuotation,
+        );
       },
     );
 
