@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../core/providers/enterprise/enterprise.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../core/domain/entities/entities.dart';
+import '../../providers.dart';
 
 part 'enterprises_state_controller.g.dart';
 
@@ -34,9 +36,17 @@ class EnterprisesStateController extends _$EnterprisesStateController {
         );
 
     if (enterprises.isNotEmpty) {
+      int? lastSelectedEnterpriseCode = await ref
+          .read(lastSelectedEnterpriseCodeRepositoryProvider)
+          .load();
+
+      final lastSelectedEnterprise = enterprises.firstWhereOrNull(
+        (e) => e.Code == lastSelectedEnterpriseCode,
+      );
+
       ref
           .read(selectedEnterpriseStateControllerProvider.notifier)
-          .selectEnterprise(enterprises.first);
+          .selectEnterprise(lastSelectedEnterprise ?? enterprises.first);
     }
 
     return enterprises;
