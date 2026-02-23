@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/providers.dart';
@@ -19,12 +20,16 @@ class FakeCustomerStateController extends CustomerStateController {
 
 void main() {
   late SoapInsertUpdateCustomerRepositorySpy mockRepository;
+  late FakeAppUsageStateController fakeUsageController;
   late UserSessionModel fakeSession;
   late CustomerEntity fakeCustomer;
 
   setUpAll(() {
     // Register the entity as a fallback value for mocktail's `any()`
     registerFallbackValue(EntityFactory.makeCustomerEntity());
+    for (var value in UsageType.values) {
+      registerFallbackValue(value);
+    }
   });
 
   setUp(() {
@@ -33,6 +38,7 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeCustomer = EntityFactory.makeCustomerEntity();
+    fakeUsageController = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({
@@ -52,6 +58,7 @@ void main() {
         customerStateControllerProvider.overrideWith(
           () => FakeCustomerStateController(customer),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeUsageController),
       ],
     );
   }
@@ -86,6 +93,10 @@ void main() {
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           ),
         ).called(1);
+        expect(
+          fakeUsageController.lastUsageType,
+          UsageType.insertUpdateCustomer,
+        );
       },
     );
 
