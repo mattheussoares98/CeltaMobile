@@ -15,7 +15,7 @@ enum Status {
     Colors.purple,
     [5, 6],
   ),
-  awaitingEntryLiberation("Agua rdando liberação para entrada", Colors.black, [
+  awaitingEntryLiberation("Aguardando liberação para entrada", Colors.black, [
     8,
   ]),
   unknownStatus("Status desconhecido. Avise o suporte", Colors.red, [0]);
