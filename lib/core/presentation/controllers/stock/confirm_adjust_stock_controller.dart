@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../../../providers/stock/stock.dart';
+import '../app_usage/app_usage.dart';
 import '../user_session/user_session.dart';
 
 part 'confirm_adjust_stock_controller.g.dart';
@@ -35,12 +36,20 @@ class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
 
       if (items.length == 1) {
         //!return only when has one item in the list because is adjustStock feature. If has more than one, is transfer between stocks feature and this feature creates a lot
+        ref
+            .read(appUsageStateControllerProvider.notifier)
+            .addUsage(UsageType.adjustStock);
+        //TODO create test
         return LastConfirmedAdjustEntity(
           productPackingCode: items[0].ProductPackingCode,
           quantity: items[0].Quantity,
           operationType: operationType ?? OperationType.entrance,
         );
       }
+      //TODO create test
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.transferBetweenStocks);
       return null;
     });
   }
