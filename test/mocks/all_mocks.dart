@@ -636,11 +636,6 @@ class FakeSelectedEnterpriseStateController
   void selectEnterprise(EnterpriseEntity enterprise) {
     state = enterprise;
   }
-
-  @override
-  void clear() {
-    state = null;
-  }
 }
 
 class SoapResourceDatasourceSpy extends Mock

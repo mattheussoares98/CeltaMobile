@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
+import '../../providers.dart';
 
 part 'selected_enterprise_state_controller.g.dart';
 
@@ -14,9 +15,7 @@ class SelectedEnterpriseStateController
 
   void selectEnterprise(EnterpriseEntity enterprise) {
     state = enterprise;
-  }
-
-  void clear() {
-    state = null;
+    final repository = ref.read(lastSelectedEnterpriseCodeRepositoryProvider);
+    repository.update(enterprise.Code!);
   }
 }

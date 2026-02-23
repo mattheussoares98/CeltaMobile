@@ -1,17 +1,32 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprises/domain/repository/repository.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/enterprises/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart'; // Assuming EntityFactory is here
+
+class MockLastSelectedEnterpriseCodeRepository extends Mock
+    implements ILastSelectedEnterpriseCodeRepository {}
 
 void main() {
   late ProviderContainer container;
   late EnterpriseEntity enterpriseEntity;
+  late MockLastSelectedEnterpriseCodeRepository mockRepository;
 
   // This runs before each test, ensuring a clean state.
   setUp(() {
-    container = ProviderContainer(retry: (retryCount, error) => null);
+    mockRepository = MockLastSelectedEnterpriseCodeRepository();
+    container = ProviderContainer(
+      retry: (retryCount, error) => null,
+      overrides: [
+        lastSelectedEnterpriseCodeRepositoryProvider.overrideWithValue(
+          mockRepository,
+        ),
+      ],
+    );
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
     // Clean up the container after each test.
     addTearDown(container.dispose);
@@ -25,44 +40,20 @@ void main() {
     expect(state, isNull);
   });
 
-  test(
-    'selectEnterprise should update the state with the provided enterprise',
-    () {
-      // ARRANGE: Get the controller (notifier) from the container.
-      final controller = container.read(
-        selectedEnterpriseStateControllerProvider.notifier,
-      );
-
-      // ACT: Call the method to change the state.
-      controller.selectEnterprise(enterpriseEntity);
-
-      // ASSERT: Read the provider again and verify the state has been updated.
-      final newState = container.read(
-        selectedEnterpriseStateControllerProvider,
-      );
-      expect(newState, enterpriseEntity);
-    },
-  );
-
-  test('clear should reset the state to null', () {
-    // ARRANGE: First, set an initial state.
-    container
-        .read(selectedEnterpriseStateControllerProvider.notifier)
-        .selectEnterprise(enterpriseEntity);
-
-    // Check that the state was set correctly (optional sanity check).
-    expect(
-      container.read(selectedEnterpriseStateControllerProvider),
-      enterpriseEntity,
+  test('selectEnterprise should behave correctly', () {
+    when(() => mockRepository.update(any())).thenAnswer((_) async {});
+    // ARRANGE: Get the controller (notifier) from the container.
+    final controller = container.read(
+      selectedEnterpriseStateControllerProvider.notifier,
     );
 
-    // ACT: Call the clear method.
-    container.read(selectedEnterpriseStateControllerProvider.notifier).clear();
+    // ACT: Call the method to change the state.
+    controller.selectEnterprise(enterpriseEntity);
 
-    // ASSERT: Verify the state is now null.
-    final clearedState = container.read(
-      selectedEnterpriseStateControllerProvider,
-    );
-    expect(clearedState, isNull);
+    // ASSERT: Read the provider again and verify the state has been updated.
+    final newState = container.read(selectedEnterpriseStateControllerProvider);
+    expect(newState, enterpriseEntity);
+
+    verify(() => mockRepository.update(enterpriseEntity.Code!)).called(1);
   });
 }
