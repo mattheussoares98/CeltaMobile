@@ -18,7 +18,7 @@ class RemoteAppUsageDatasource implements IRemoteAppUsageDatasource {
 
   @override
   Future<List<AppUsageModel>> load({
-    required int enterpriseId,
+    required int? enterpriseId,
     required DateTime startDate,
     required DateTime endDate,
   }) async {

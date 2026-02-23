@@ -65,7 +65,6 @@ void main() {
 
     group('loadRemoteUsageReport', () {
       test('should emit [loading, data] and return list on success', () async {
-        final enterpriseId = fakerInstance.randomGenerator.integer(1000);
         final start = fakerInstance.date.dateTime();
         final end = fakerInstance.date.dateTime();
         final fakeList = List.generate(
@@ -96,11 +95,7 @@ void main() {
           (previous, next) => states.add(next),
         );
 
-        await notifier.loadRemoteUsageReport(
-          enterpriseId: enterpriseId,
-          start: start,
-          end: end,
-        );
+        await notifier.loadRemoteUsageReport(start: start, end: end);
 
         expect(states, [
           isA<AsyncLoading>(),
@@ -109,7 +104,7 @@ void main() {
 
         verify(
           () => mockRepository.loadRemoteUsageReport(
-            enterpriseId: enterpriseId,
+            enterpriseId: null,
             start: start,
             end: end,
           ),
@@ -135,7 +130,6 @@ void main() {
         );
 
         await notifier.loadRemoteUsageReport(
-          enterpriseId: 1,
           start: DateTime.now(),
           end: DateTime.now(),
         );

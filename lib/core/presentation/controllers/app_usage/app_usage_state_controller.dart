@@ -9,36 +9,20 @@ import '../user_session/user_session.dart';
 
 part 'app_usage_state_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AppUsageStateController extends _$AppUsageStateController {
   @override
-  FutureOr<List<AppUsageEntity>?> build() async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
-    return null;
-  }
+  FutureOr<List<AppUsageEntity>?> build() => null;
 
   Future<void> loadRemoteUsageReport({
     required DateTime start,
     required DateTime end,
-    required int enterpriseId,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(appUsageRepositoryProvider);
       return await repository.loadRemoteUsageReport(
-        enterpriseId: enterpriseId,
+        enterpriseId: null, //load from all enterprises if it is null
         start: start,
         end: end,
       );

@@ -13,7 +13,7 @@ class AppUsageRepositoryImpl implements IAppUsageRepository {
 
   @override
   Future<List<AppUsageEntity>> loadRemoteUsageReport({
-    required int enterpriseId,
+    required int? enterpriseId,
     required DateTime start,
     required DateTime end,
   }) async {
