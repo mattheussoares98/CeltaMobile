@@ -18,4 +18,18 @@ class AppUsageEntity extends Equatable {
 
   @override
   List<Object?> get props => [userName, enterpriseId, usageType, requestCount];
+
+  AppUsageEntity copyWith({
+    String? userName,
+    int? enterpriseId,
+    UsageType? usageType,
+    int? requestCount,
+  }) {
+    return AppUsageEntity(
+      userName: userName ?? this.userName,
+      enterpriseId: enterpriseId ?? this.enterpriseId,
+      usageType: usageType ?? this.usageType,
+      requestCount: requestCount ?? this.requestCount,
+    );
+  }
 }
