@@ -74,6 +74,7 @@ class _ProductItem extends ConsumerWidget {
     final isSelected = ref.watch(
       selectedProductIndeStateControllerProvider.select((s) => s == index),
     );
+    final theme = Theme.of(context);
 
     return RepaintBoundary(
       child: ProductItemWidget(
@@ -116,6 +117,14 @@ class _ProductItem extends ConsumerWidget {
             ),
             TitleAndSubTitle(
               title: 'Quantidade contada'.hardcoded,
+              titleStyle: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.secondary,
+                fontStyle: FontStyle.italic,
+              ),
+              subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.secondary,
+                fontStyle: FontStyle.italic,
+              ),
               subTitle: product.Quantidade_ProcRecebDocProEmb,
               emptyMessage: 'Sem quantidade contada'.hardcoded,
             ),
