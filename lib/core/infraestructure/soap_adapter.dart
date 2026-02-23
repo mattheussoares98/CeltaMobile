@@ -79,11 +79,29 @@ class SoapAdapter implements contracts.SoapRequest {
     );
     buffer.write('<soap12:Body>');
     buffer.write('<$soapAction xmlns="http://celtaware.com.br/">');
-    params.forEach((key, value) => buffer.write('<$key>$value</$key>'));
+    params.forEach((key, value) {
+      buffer
+        ..write('<')
+        ..write(key)
+        ..write('>')
+        ..write(_escapeXml(value.toString()))
+        ..write('</')
+        ..write(key)
+        ..write('>');
+    });
     buffer.write('</$soapAction>');
     buffer.write('</soap12:Body>');
     buffer.write('</soap12:Envelope>');
     return buffer.toString();
+  }
+
+  String _escapeXml(String input) {
+    return input
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&apos;');
   }
 
   dynamic _handleSuccessResponse(
