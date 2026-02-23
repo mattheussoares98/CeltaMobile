@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../providers.dart';
 
@@ -19,6 +21,10 @@ class ConfirmConferenceController extends _$ConfirmConferenceController {
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(validatedUserSessionProvider.future);
       final repository = ref.read(soapConfirmConferenceRepositoryProvider);
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.finishedExpedition);
 
       await repository.confirm(
         workingUrl: userSession!.enterprise!.workingUrl!,

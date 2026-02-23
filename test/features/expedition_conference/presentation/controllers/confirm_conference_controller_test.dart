@@ -1,4 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/expedition_conference/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
@@ -15,6 +17,7 @@ class MockSoapConfirmConferenceRepository extends Mock
 
 void main() {
   late MockSoapConfirmConferenceRepository mockRepository;
+  late FakeAppUsageStateController fakeUsageController;
   late UserSessionModel fakeSession;
   late int fakeExpeditionCode;
   late int fakeStepCode;
@@ -26,6 +29,13 @@ void main() {
     );
     fakeExpeditionCode = faker.randomGenerator.integer(1000);
     fakeStepCode = faker.randomGenerator.integer(10);
+    fakeUsageController = FakeAppUsageStateController();
+  });
+
+  setUpAll(() {
+    for (var value in UsageType.values) {
+      registerFallbackValue(value);
+    }
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -38,6 +48,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeUsageController),
       ],
     );
   }
@@ -84,6 +95,7 @@ void main() {
             stepCode: fakeStepCode,
           ),
         ).called(1);
+        expect(fakeUsageController.lastUsageType, UsageType.finishedExpedition);
       },
     );
 
