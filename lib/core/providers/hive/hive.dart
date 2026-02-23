@@ -40,6 +40,11 @@ Box hiveBoxFavoriteModules(Ref ref) {
   return Hive.box(DatabaseConstants.favoriteModules.name);
 }
 
+@Riverpod(keepAlive: true)
+Box hiveBoxLastSelectedEnterpriseCode(Ref ref) {
+  return Hive.box(DatabaseConstants.lastSelectedEnterpriseCode.name);
+}
+
 @riverpod
 List<Box> boxesToClearOnLogout(Ref ref) {
   return [
@@ -48,5 +53,6 @@ List<Box> boxesToClearOnLogout(Ref ref) {
     ref.watch(hiveBoxSaleRequestProvider),
     ref.watch(hiveBoxTransferBetweenStocksProvider),
     ref.watch(hiveBoxTransferRequestProvider),
+    ref.watch(hiveBoxLastSelectedEnterpriseCodeProvider),
   ];
 }
