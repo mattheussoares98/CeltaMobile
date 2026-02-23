@@ -50,6 +50,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: Sizes.p32,
+        toolbarHeight: Sizes.p64,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
