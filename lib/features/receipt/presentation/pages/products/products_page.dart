@@ -87,6 +87,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       widget.enterpriseCode,
       BsRoutine.goodsReceiving,
       Modules.receipt,
+      anotherKey: widget.receiptCode.toString(),
     );
 
     ref.listen(updateProductControllerProvider(searchProductKey), (p, n) {
