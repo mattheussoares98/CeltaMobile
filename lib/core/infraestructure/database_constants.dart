@@ -5,6 +5,7 @@ class DatabaseConstants {
 
   static List<_HiveBoxConfig> get values => <_HiveBoxConfig>[
     appSettings,
+    appUsage,
     buyRequest,
     favoriteModules,
     lastSelectedEnterpriseCode,
@@ -15,6 +16,7 @@ class DatabaseConstants {
   ];
 
   static const appSettings = _HiveBoxConfig('app_settings');
+  static const appUsage = _HiveBoxConfig('app_usage');
   static const buyRequest = _HiveBoxConfig('buy_request');
   static const favoriteModules = _HiveBoxConfig('favorite_modules');
   static const lastSelectedEnterpriseCode = _HiveBoxConfig(

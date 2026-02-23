@@ -45,6 +45,11 @@ Box hiveBoxLastSelectedEnterpriseCode(Ref ref) {
   return Hive.box(DatabaseConstants.lastSelectedEnterpriseCode.name);
 }
 
+@Riverpod(keepAlive: true)
+Box hiveBoxAppUsage(Ref ref) {
+  return Hive.box(DatabaseConstants.appUsage.name);
+}
+
 @riverpod
 List<Box> boxesToClearOnLogout(Ref ref) {
   return [
