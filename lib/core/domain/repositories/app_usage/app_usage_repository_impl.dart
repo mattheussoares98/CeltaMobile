@@ -6,8 +6,7 @@ import '../../entities/entities.dart';
 import 'app_usage.dart';
 
 class AppUsageRepositoryImpl implements IAppUsageRepository {
-  final ISupabaseAppUsageDatasource
-  remoteDs; //TODO change to removeAppUsageDatasource
+  final IRemoteAppUsageDatasource remoteDs;
   final ILocalAppUsageDatasource localDs;
 
   AppUsageRepositoryImpl(this.remoteDs, this.localDs);

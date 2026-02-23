@@ -10,14 +10,14 @@ import '../../../../mocks/mocks.dart';
 class LocalAppUsageDatasourceSpy extends Mock
     implements ILocalAppUsageDatasource {}
 
-class SupabaseAppUsageDatasourceSpy extends Mock
-    implements ISupabaseAppUsageDatasource {}
+class RemoteAppUsageDatasourceSpy extends Mock
+    implements IRemoteAppUsageDatasource {}
 
 void main() {
   late IAppUsageRepository sut;
 
   late LocalAppUsageDatasourceSpy localDs;
-  late SupabaseAppUsageDatasourceSpy remoteDs;
+  late RemoteAppUsageDatasourceSpy remoteDs;
 
   late List<AppUsageModel> usageModels;
   late int enterpriseId;
@@ -30,7 +30,7 @@ void main() {
 
   void initInjections() {
     localDs = LocalAppUsageDatasourceSpy();
-    remoteDs = SupabaseAppUsageDatasourceSpy();
+    remoteDs = RemoteAppUsageDatasourceSpy();
   }
 
   void mockSuccess() {

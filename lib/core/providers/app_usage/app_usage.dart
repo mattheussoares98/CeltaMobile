@@ -8,8 +8,8 @@ import '../supabase/supabase.dart';
 part 'app_usage.g.dart';
 
 @riverpod
-ISupabaseAppUsageDatasource supabaseAppUsageDatasource(Ref ref) {
-  return SupabaseAppUsageDatasource(ref.watch(supabaseClientProvider));
+IRemoteAppUsageDatasource remoteAppUsageDatasource(Ref ref) {
+  return RemoteAppUsageDatasource(ref.watch(supabaseClientProvider));
   //TODO ask gemini about change how is organized this core path. Maybe will be better if create files like feature first separation
 }
 
@@ -21,7 +21,7 @@ ILocalAppUsageDatasource localAppUsageDatasource(Ref ref) {
 @riverpod
 IAppUsageRepository appUsageRepository(Ref ref) {
   return AppUsageRepositoryImpl(
-    ref.watch(supabaseAppUsageDatasourceProvider),
+    ref.watch(remoteAppUsageDatasourceProvider),
     ref.watch(localAppUsageDatasourceProvider),
   );
 }

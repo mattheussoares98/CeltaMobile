@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late ISupabaseAppUsageDatasource sut;
+  late IRemoteAppUsageDatasource sut;
 
   late SupabaseClientSpy supabaseClient;
 
@@ -29,7 +29,7 @@ void main() {
   }
 
   void initSut() {
-    sut = SupabaseAppUsageDatasource(supabaseClient);
+    sut = RemoteAppUsageDatasource(supabaseClient);
   }
 
   void initInjections() {

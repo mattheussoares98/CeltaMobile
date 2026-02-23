@@ -3,10 +3,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app_usage.dart';
 
-class SupabaseAppUsageDatasource implements ISupabaseAppUsageDatasource {
+class RemoteAppUsageDatasource implements IRemoteAppUsageDatasource {
   final SupabaseClient _supabase;
 
-  SupabaseAppUsageDatasource(this._supabase);
+  RemoteAppUsageDatasource(this._supabase);
 
   @override
   Future<void> insert(List<AppUsageModel> model) async {
