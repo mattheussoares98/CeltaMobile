@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants/constants.dart';
+
 class AppTheme {
   AppTheme._();
 
@@ -71,6 +73,17 @@ class AppTheme {
           foregroundColor: primaryColor,
           disabledForegroundColor: disabledColor,
         ),
+      ),
+      cardTheme: CardThemeData(
+        margin: const EdgeInsets.symmetric(
+          vertical: Sizes.p8,
+          horizontal: Sizes.p4,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: const BorderSide(color: primaryColorLight, width: 1.0),
+        ),
+        elevation: 2,
       ),
     );
   }
