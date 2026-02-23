@@ -45,47 +45,49 @@ class _ValidityState extends State<Validity> {
     final theme = Theme.of(context);
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
-    return Row(
-      children: [
-        Expanded(
-          flex: 6,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: PrimaryTextButton(
-              text: 'Nova validade'.hardcoded,
-              icon: Icon(
-                isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
-              ),
-              onPressed: () async {
-                newValidity = await GetNewDate.get(
-                  minimumDate: now,
-                  maximumDate: now.add(const Duration(days: 365 * 10)),
-                  context: context,
-                  currentSelectedDate: newValidity,
-                  insertHoursAndMinutes: false,
-                );
-                widget.onValidityDateChanged(newValidity);
-                setState(() {});
-              },
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 4,
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              newValidity != null
-                  ? DateFormat('dd/MM/yyyy').format(newValidity!)
-                  : 'Nenhuma'.hardcoded,
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontStyle: FontStyle.italic,
-                color: newValidity == null ? Colors.red : theme.primaryColor,
+    return RepaintBoundary(
+      child: Row(
+        children: [
+          Expanded(
+            flex: 6,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: PrimaryTextButton(
+                text: 'Nova validade'.hardcoded,
+                icon: Icon(
+                  isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
+                ),
+                onPressed: () async {
+                  newValidity = await GetNewDate.get(
+                    minimumDate: now,
+                    maximumDate: now.add(const Duration(days: 365 * 10)),
+                    context: context,
+                    currentSelectedDate: newValidity,
+                    insertHoursAndMinutes: false,
+                  );
+                  widget.onValidityDateChanged(newValidity);
+                  setState(() {});
+                },
               ),
             ),
           ),
-        ),
-      ],
+          Expanded(
+            flex: 4,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                newValidity != null
+                    ? DateFormat('dd/MM/yyyy').format(newValidity!)
+                    : 'Nenhuma'.hardcoded,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: newValidity == null ? Colors.red : theme.primaryColor,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

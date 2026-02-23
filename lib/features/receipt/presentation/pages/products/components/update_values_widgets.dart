@@ -69,7 +69,6 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final bool hasInsertedQuantity =
         widget.product.Quantidade_ProcRecebDocProEmb != null &&
@@ -131,23 +130,22 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
             gapW8,
             Expanded(
               flex: 3,
-              child: Form(
-                key: formKey,
-                child: DefaultTextFormField(
-                  hintText: 'Quantidade'.hardcoded,
-                  labelText: 'Quantidade'.hardcoded,
-                  controller: widget.quantityController,
-                  focusNode: widget.quantityFocusNode,
-                  autovalidateMode: isIOS
-                      ? null
-                      : AutovalidateMode.onUserInteraction,
-                  maxLength: 10,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
+              child: RepaintBoundary(
+                child: Form(
+                  key: formKey,
+                  child: DefaultTextFormField(
+                    hintText: 'Quantidade'.hardcoded,
+                    labelText: 'Quantidade'.hardcoded,
+                    controller: widget.quantityController,
+                    focusNode: widget.quantityFocusNode,
+                    maxLength: 10,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    validator: FormValidators.compose([
+                      NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
+                    ]),
                   ),
-                  validator: FormValidators.compose([
-                    NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
-                  ]),
                 ),
               ),
             ),
