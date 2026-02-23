@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'liberate_document_controller.g.dart';
 
@@ -26,6 +27,7 @@ class LiberateDocumentController extends _$LiberateDocumentController {
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             CodigoInterno_ProcRecebDoc: CodigoInterno_ProcRecebDoc,
           );
+      ref.invalidate(receiptsStateControllerProvider);
     });
   }
 }
