@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/repositories/stock/stock.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/confirm_adjust_stock_controller.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/stock/stock.dart';
@@ -16,11 +17,13 @@ class MockSoapAdjustStockRepository extends Mock
 
 void main() {
   late MockSoapAdjustStockRepository mockRepository;
+  late FakeAppUsageStateController fakeUsageController;
   late UserSessionModel fakeSession;
   late List<AdjustStockItemEntity> items;
 
   setUp(() {
     mockRepository = MockSoapAdjustStockRepository();
+    fakeUsageController = FakeAppUsageStateController();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -31,6 +34,12 @@ void main() {
     ];
   });
 
+  setUpAll(() {
+    for (var value in UsageType.values) {
+      registerFallbackValue(value);
+    }
+  });
+
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
       retry: (retryCount, error) => null,
@@ -39,13 +48,14 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeUsageController),
       ],
     );
   }
 
   group('StockTypeStateController', () {
     test(
-      'should emit [loading, data] and call repository on success',
+      'should behave correctly on success when has more than one item',
       () async {
         // ARRANGE
         when(
@@ -79,6 +89,11 @@ void main() {
             items: items,
           ),
         ).called(1);
+        expect(
+          fakeUsageController.lastUsageType,
+          UsageType.transferBetweenStocks,
+        );
+        expect(fakeUsageController.lastUsageType, isNot(UsageType.adjustStock));
       },
     );
 
@@ -108,54 +123,56 @@ void main() {
         ),
       );
     });
-    test(
-      'should return correct LastConfirmedAdjustEntity on confirm and has only one item in the list',
-      () async {
-        // ARRANGE: Pass null for the session to simulate a failure condition.
-        when(
-          () => mockRepository.confirm(
-            workingUrl: any(named: 'workingUrl'),
-            crossIdentity: any(named: 'crossIdentity'),
-            items: any(named: 'items'),
-          ),
-        ).thenAnswer((_) async {});
-        final container = makeProviderContainer(session: fakeSession);
-        addTearDown(container.dispose);
+    test('should behave correctly on success when has only one item', () async {
+      // ARRANGE: Pass null for the session to simulate a failure condition.
+      when(
+        () => mockRepository.confirm(
+          workingUrl: any(named: 'workingUrl'),
+          crossIdentity: any(named: 'crossIdentity'),
+          items: any(named: 'items'),
+        ),
+      ).thenAnswer((_) async {});
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
 
-        final states = <AsyncValue<void>>[];
-        container.listen(
-          confirmAdjustStockControllerProvider,
-          (_, next) => states.add(next),
-        );
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        confirmAdjustStockControllerProvider,
+        (_, next) => states.add(next),
+      );
 
-        final operationType = OperationType
-            .values[faker.randomGenerator.integer(OperationType.values.length)];
+      final operationType = OperationType
+          .values[faker.randomGenerator.integer(OperationType.values.length)];
 
-        // ACT & ASSERT: Expect the future to complete with an AppException
-        await container.read(confirmAdjustStockControllerProvider.notifier).confirm(
-          [items[0]],
+      // ACT & ASSERT: Expect the future to complete with an AppException
+      await container.read(confirmAdjustStockControllerProvider.notifier).confirm(
+        [items[0]],
+        operationType: operationType,
+      ); //return only when has one item in the list because is adjustStock feature. If has more than one, is transfer between stocks feature and this feature creates a lot
+
+      expect(
+        container.read(confirmAdjustStockControllerProvider).value,
+        LastConfirmedAdjustEntity(
+          productPackingCode: items[0].ProductPackingCode,
+          quantity: items[0].Quantity,
           operationType: operationType,
-        ); //return only when has one item in the list because is adjustStock feature. If has more than one, is transfer between stocks feature and this feature creates a lot
-
-        expect(
-          container.read(confirmAdjustStockControllerProvider).value,
-          LastConfirmedAdjustEntity(
-            productPackingCode: items[0].ProductPackingCode,
-            quantity: items[0].Quantity,
-            operationType: operationType,
-          ),
-        );
-        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-        // Verify the repository was never called because the session was invalid
-        verify(
-          () => mockRepository.confirm(
-            workingUrl: fakeSession.enterprise!.workingUrl!,
-            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            items: [items[0]],
-          ),
-        ).called(1);
-      },
-    );
+        ),
+      );
+      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+      // Verify the repository was never called because the session was invalid
+      verify(
+        () => mockRepository.confirm(
+          workingUrl: fakeSession.enterprise!.workingUrl!,
+          crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
+          items: [items[0]],
+        ),
+      ).called(1);
+      expect(fakeUsageController.lastUsageType, UsageType.adjustStock);
+      expect(
+        fakeUsageController.lastUsageType,
+        isNot(UsageType.transferBetweenStocks),
+      );
+    });
     test(
       'should NOT return LastConfirmedAdjustEntity on confirm and has more than one item in the list',
       () async {

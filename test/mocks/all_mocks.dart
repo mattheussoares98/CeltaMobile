@@ -24,6 +24,7 @@ import 'package:celta_inventario/core/domain/repositories/products/products.dart
 import 'package:celta_inventario/core/domain/repositories/resource/resource.dart';
 import 'package:celta_inventario/core/domain/repositories/settings/settings.dart';
 import 'package:celta_inventario/core/domain/repositories/user_session/user_session.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
@@ -1084,5 +1085,18 @@ class FakeSearchProductsStateController extends SearchProductsStateController {
   Future<void> updateProduct(ProductEntity product) async {
     // Instead of doing real work, it just saves the product to our property.
     updatedProduct = product;
+  }
+}
+
+class FakeAppUsageStateController extends AppUsageStateController {
+  UsageType? _lastUsageType;
+  UsageType? get lastUsageType => _lastUsageType;
+
+  @override
+  FutureOr<List<AppUsageEntity>?> build() => null;
+
+  @override
+  Future<void> addUsage(UsageType usageType) async {
+    _lastUsageType = usageType;
   }
 }
