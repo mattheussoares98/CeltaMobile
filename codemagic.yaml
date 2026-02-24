@@ -50,7 +50,7 @@ workflows:
 
     publishing:
       google_play:
-        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
         track: internal
       app_store_connect:
         auth: integration
