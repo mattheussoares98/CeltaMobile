@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/data/datasource/share_download/share_download.dart';
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/share_download/share_download.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
@@ -25,6 +27,10 @@ class DownloadStateController extends _$DownloadStateController {
       final validatedUser = await ref.watch(
         validatedUserSessionProvider.future,
       );
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.downloadReport);
 
       final response = await ref
           .read(soapExecuteOrDownloadScheduleRepositoryProvider)

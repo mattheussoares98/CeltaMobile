@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/share_download/share_download.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
@@ -42,6 +43,7 @@ class FakeShareDownloadController extends ShareDownloadController {
 void main() {
   late MockSoapExecuteOrDownloadScheduleRepository mockRepository;
   late FakeShareDownloadController fakeShareDownloadController;
+  late FakeAppUsageStateController fakeAppUsage;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
   late DownloadExecutionEntity downloadExecutionEntity;
@@ -81,6 +83,8 @@ void main() {
     fakeShareDownloadController = FakeShareDownloadController(
       returnPath: downloadExecutionEntity.xlsxFilePath,
     );
+
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   setUpAll(() {
@@ -108,6 +112,7 @@ void main() {
         shareDownloadControllerProvider.overrideWith(
           () => fakeShareDownloadController,
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -195,6 +200,7 @@ void main() {
               downloadXlsx: true,
             ),
           ).called(1);
+          expect(fakeAppUsage.lastUsageType, UsageType.downloadReport);
         },
       );
 
