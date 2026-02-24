@@ -42,12 +42,11 @@ workflows:
       # - name: Build Android AAB
       #   script: flutter build appbundle
       - name: Build iOS IPA
-        script: flutter build ios --release --no-codesign --build-number=$BUILD_NUMBER
+        script: flutter build ipa --release --no-codesign --export-method ad-hoc --build-number=$BUILD_NUMBER
 
     artifacts:
       # - build/app/outputs/bundle/release/*.aab
       - build/ios/ipa/*.ipa
-      - build/ios/iphoneos/*.app
 
     publishing:
       # google_play:
