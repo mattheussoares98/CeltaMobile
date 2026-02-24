@@ -6,6 +6,7 @@ import '../../../../../core/providers/products/products.dart';
 import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../features/settings/presentation/controllers/controllers.dart';
+import '../app_usage/app_usage.dart';
 import '../user_session/user_session.dart';
 
 part 'search_products_state_controller.g.dart';
@@ -50,6 +51,10 @@ class SearchProductsStateController extends _$SearchProductsStateController {
       );
       final searchType =
           settings?.searchPreference.searchType ?? SearchType.dynamic;
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.searchProducts);
 
       final products = await ref
           .read(soapLoadProductsRepositoryProvider)

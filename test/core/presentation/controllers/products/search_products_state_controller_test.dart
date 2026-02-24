@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage_state_controller.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/products/products.dart';
@@ -14,6 +15,8 @@ import '../../../../mocks/mocks.dart';
 
 void main() {
   late SoapProductsRepositorySpy sut;
+
+  late FakeAppUsageStateController fakeAppUsage;
 
   late FakeUserSession fakeUserSession;
 
@@ -83,6 +86,7 @@ void main() {
     fakeUserSession = FakeUserSession(
       UserSessionModel.fromEntity(userSessionEntity),
     );
+    fakeAppUsage = FakeAppUsageStateController();
   }
 
   void mockSuccess() {
@@ -138,6 +142,7 @@ void main() {
           appSettingsStateControllerProvider.overrideWith(
             () => FakeAppSettingsStateController(appSettingsEntity),
           ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
     addTearDown(container.dispose);
@@ -193,6 +198,7 @@ void main() {
           ),
         ),
       ).called(1);
+      expect(fakeAppUsage.lastUsageType, UsageType.searchProducts);
     });
     test('should behave correctly when session is null', () async {
       final container = makeProviderContainer(mockSession: false);
