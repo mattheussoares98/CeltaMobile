@@ -36,17 +36,21 @@ class ConfirmAdjustStockController extends _$ConfirmAdjustStockController {
 
       if (items.length == 1) {
         //!return only when has one item in the list because is adjustStock feature. If has more than one, is transfer between stocks feature and this feature creates a lot
+
         ref
             .read(appUsageStateControllerProvider.notifier)
-            .addUsage(UsageType.adjustStock);
-        //TODO create test
+            .addUsage(
+              items[0].IsStockCounting == true
+                  ? UsageType.stockReplacement
+                  : UsageType.adjustStock,
+            );
+
         return LastConfirmedAdjustEntity(
           productPackingCode: items[0].ProductPackingCode,
           quantity: items[0].Quantity,
           operationType: operationType ?? OperationType.entrance,
         );
       }
-      //TODO create test
       ref
           .read(appUsageStateControllerProvider.notifier)
           .addUsage(UsageType.transferBetweenStocks);

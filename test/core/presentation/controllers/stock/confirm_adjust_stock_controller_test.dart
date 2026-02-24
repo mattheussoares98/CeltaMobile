@@ -167,7 +167,12 @@ void main() {
           items: [items[0]],
         ),
       ).called(1);
-      expect(fakeUsageController.lastUsageType, UsageType.adjustStock);
+      expect(
+        fakeUsageController.lastUsageType,
+        items[0].IsStockCounting == true
+            ? UsageType.stockReplacement
+            : UsageType.adjustStock,
+      );
       expect(
         fakeUsageController.lastUsageType,
         isNot(UsageType.transferBetweenStocks),
