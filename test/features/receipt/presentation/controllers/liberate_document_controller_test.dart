@@ -1,4 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/receipt/data/datasource/datasource.dart';
@@ -19,6 +21,7 @@ class MockSoapLiberateDocumentDatasource extends Mock
 void main() {
   late MockSoapLiberateDocumentDatasource mockDatasource;
   late UserSessionModel fakeSession;
+  late FakeAppUsageStateController fakeAppUsage;
 
   // Test data variables
   late int fakeDocCode;
@@ -36,6 +39,7 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -48,6 +52,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -93,6 +98,7 @@ void main() {
             CodigoInterno_ProcRecebDoc: fakeDocCode,
           ),
         ).called(1);
+        expect(fakeAppUsage.lastUsageType, UsageType.liberateReceiptDocument);
       },
     );
 

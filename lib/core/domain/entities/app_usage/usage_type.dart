@@ -14,6 +14,7 @@ enum UsageType {
   insertUpdateBuyQuotation,
   insertUpdateCustomer,
   insertUpdateCompetingPrices,
+  liberateReceiptDocument,
   searchProducts,
   sendToPrint,
   stockReplacement,
