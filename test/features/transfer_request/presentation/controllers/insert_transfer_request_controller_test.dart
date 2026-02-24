@@ -1,4 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage_state_controller.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/domain/repositories/repositories.dart';
@@ -48,6 +50,7 @@ class MockSoapInsertTransferRequestRepository extends Mock
 
 void main() {
   late MockSoapInsertTransferRequestRepository mockRepository;
+  late FakeAppUsageStateController fakeAppUsageStateController;
   late SpyCartProductsStateController spyCartController;
   late SpyLastSavedNumberStateController spyLastSavedNumberController;
 
@@ -82,6 +85,7 @@ void main() {
     // Create new spies for each test
     spyCartController = SpyCartProductsStateController(fakeProducts);
     spyLastSavedNumberController = SpyLastSavedNumberStateController();
+    fakeAppUsageStateController = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -100,6 +104,9 @@ void main() {
         ).overrideWith(() => spyCartController),
         lastSavedNumberStateControllerProvider.overrideWith(
           () => spyLastSavedNumberController,
+        ),
+        appUsageStateControllerProvider.overrideWith(
+          () => fakeAppUsageStateController,
         ),
       ],
     );
@@ -148,6 +155,10 @@ void main() {
         // 2. Verify the side-effects
         expect(spyLastSavedNumberController.savedNumber, fakeResponseNumber);
         expect(spyCartController.clearLotCalled, isTrue);
+        expect(
+          fakeAppUsageStateController.lastUsageType,
+          UsageType.insertTransferRequest,
+        );
       },
     );
 
