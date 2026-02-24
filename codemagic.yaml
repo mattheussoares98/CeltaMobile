@@ -19,9 +19,10 @@ workflows:
         BUNDLE_ID: "br.com.celtaware.inventario"
       ios_signing:
         provisioning_profiles:
-          - celta mobile
+          - Celta mobile AppStore
         certificates:
-          - CodeMagic distribution
+          - CeltaMobile publish
+        distribution_type: app_store
       android_signing:
         - celtaMobile
 
@@ -32,27 +33,14 @@ workflows:
         script: dart pub global activate flutterfire_cli
       - name: Generate Code
         script: |
-          # Clean old generated files and metadata first
           export PATH="$PATH":"$HOME/.pub-cache/bin"
-          dart run build_runner clean
           dart run build_runner build --delete-conflicting-outputs
-      # - name: Run Tests
-      #   script: flutter test
-      #   ignore_failure: true
-      # - name: Build Android AAB
-      #   script: flutter build appbundle
-      - name: Set up code signing
-        script: |
-          # 1. Initialize keychain
-          keychain initialize
-          # 2. Fetch signing files. 
-          # Based on your error log, the correct syntax for your CLI version is:
-          app-store-connect fetch-signing-files
-          
+      
       - name: Build iOS IPA
         script: |
-          # We use the '--upload' method implicitly by just building the IPA.
-          # Since the profiles are now in the system library, Flutter will find them.
+          keychain initialize
+          keychain add-certificates
+
           flutter build ipa --release --build-number=$BUILD_NUMBER
 
     artifacts:
