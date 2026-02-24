@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/receipt/data/datasource/datasource.dart';
@@ -32,6 +33,7 @@ class MockSoapUpdateProductDatasource extends Mock
 void main() {
   late MockSoapUpdateProductDatasource mockDatasource;
   late UserSessionModel fakeSession;
+  late FakeAppUsageStateController fakeAppUsage;
 
   // Test data variables
   late int fakeGrDocCode;
@@ -81,6 +83,8 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
 
+    fakeAppUsage = FakeAppUsageStateController();
+
     // Stub the repository update method to succeed for all tests
     when(
       () => mockDatasource.update(
@@ -110,6 +114,7 @@ void main() {
         searchProductsStateControllerProvider(
           fakeSearchKey,
         ).overrideWith(() => spySearchProducts),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -167,6 +172,7 @@ void main() {
         spySearchProducts.updatedProduct!.Quantidade_ProcRecebDocProEmb,
         isSubtract ? 10 : 30, //20 - 10 = 10 || 20 + 10 = 30
       );
+      expect(fakeAppUsage.lastUsageType, UsageType.countReceiptProduct);
     });
 
     test('should not update when session is invalid', () async {

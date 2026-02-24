@@ -4,6 +4,7 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../exceptions/exceptions.dart';
@@ -42,6 +43,10 @@ class UpdateProductController extends _$UpdateProductController {
           'A nova quantidade não pode ser menor que zero'.hardcoded,
         );
       }
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.countReceiptProduct);
 
       await ref
           .read(soapUpdateProductDatasourceProvider)
