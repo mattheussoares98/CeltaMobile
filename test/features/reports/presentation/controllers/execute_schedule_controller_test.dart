@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
@@ -38,6 +39,7 @@ void main() {
   late SpyReportsStateController spyReportsController;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
+  late FakeAppUsageStateController fakeAppUsage;
 
   late int fakeReportScheduleCode;
   late bool sendEmailOnExecution;
@@ -52,6 +54,8 @@ void main() {
     );
     fakeEnterprise = EntityFactory.makeEnterpriseEntity();
     sendEmailOnExecution = faker.randomGenerator.boolean();
+
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({
@@ -71,6 +75,7 @@ void main() {
           () => FakeSelectedEnterpriseStateController(enterprise),
         ),
         reportsStateControllerProvider.overrideWith(() => spyReportsController),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -134,6 +139,7 @@ void main() {
         ).called(1);
 
         expect(spyReportsController.capturedUpdateCode, fakeReportScheduleCode);
+        expect(fakeAppUsage.lastUsageType, UsageType.generateReport);
       },
     );
 
