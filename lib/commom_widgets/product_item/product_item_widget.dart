@@ -149,17 +149,23 @@ class ProductItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(finishOfferControllerProvider, (p, n) {
-      n.showAlertDialogOnError(context);
-      n.showAlertDialogOnSuccess(
-        context,
-        previous: p,
-        title: 'Oferta encerrada'.hardcoded,
-        message:
-            'Oferta encerrada com sucesso. Consulte o produto novamente para atualizar as informações'
-                .hardcoded,
-      );
-    });
+    ref.listen(
+      finishOfferControllerProvider(
+        product.ProductPackingCode!,
+        product.EnterpriseCode!,
+      ),
+      (p, n) {
+        n.showAlertDialogOnError(context);
+        n.showAlertDialogOnSuccess(
+          context,
+          previous: p,
+          title: 'Oferta encerrada'.hardcoded,
+          message:
+              'Oferta encerrada com sucesso. Consulte o produto novamente para atualizar as informações'
+                  .hardcoded,
+        );
+      },
+    );
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;

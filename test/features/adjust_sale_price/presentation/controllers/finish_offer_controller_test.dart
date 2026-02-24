@@ -21,6 +21,7 @@ void main() async {
   late DateTime now;
   late ProductEntity productEntity;
   late EnterpriseEntity enterpriseEntity;
+  late int productPackingCode;
 
   setUp(() {
     for (final saleType in SaleType.values) {
@@ -43,6 +44,7 @@ void main() async {
     userSessionEntity = EntityFactory.makeUserSessionEntity();
     productEntity = EntityFactory.makeProductEntity();
     enterpriseEntity = EntityFactory.makeEnterpriseEntity();
+    productPackingCode = faker.randomGenerator.integer(100);
   });
 
   ProviderContainer makeProviderContainer() {
@@ -68,12 +70,20 @@ void main() async {
       addTearDown(container.dispose);
       final states = <AsyncValue<void>>[];
       container.listen(
-        finishOfferControllerProvider,
+        finishOfferControllerProvider(
+          productPackingCode,
+          productEntity.EnterpriseCode!,
+        ),
         (_, next) => states.add(next),
       );
 
       await container
-          .read(finishOfferControllerProvider.notifier)
+          .read(
+            finishOfferControllerProvider(
+              productPackingCode,
+              productEntity.EnterpriseCode!,
+            ).notifier,
+          )
           .finish(product: productEntity, saleType: saleType, now: now);
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -81,9 +91,9 @@ void main() async {
         () => mockRepository.confirm(
           workingUrl: userSessionEntity.supabaseEnterprise!.workingUrl!,
           crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
-          enterpriseCode: enterpriseEntity.Code!,
+          enterpriseCode: productEntity.EnterpriseCode!,
           productCode: productEntity.ProductCode!,
-          productPackingCode: productEntity.ProductPackingCode!,
+          productPackingCode: productPackingCode,
           offerParams: offerParams,
           replications: [],
           retailParams: null,
@@ -100,12 +110,20 @@ void main() async {
       addTearDown(container.dispose);
       final states = <AsyncValue<void>>[];
       container.listen(
-        finishOfferControllerProvider,
+        finishOfferControllerProvider(
+          productPackingCode,
+          productEntity.EnterpriseCode!,
+        ),
         (_, next) => states.add(next),
       );
 
       await container
-          .read(finishOfferControllerProvider.notifier)
+          .read(
+            finishOfferControllerProvider(
+              productPackingCode,
+              productEntity.EnterpriseCode!,
+            ).notifier,
+          )
           .finish(product: productEntity, saleType: saleType, now: now);
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);

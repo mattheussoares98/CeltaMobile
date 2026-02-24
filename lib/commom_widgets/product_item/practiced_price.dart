@@ -46,8 +46,6 @@ class PracticedPrice extends ConsumerWidget {
     final theme = Theme.of(context);
     final mediaSize = MediaQuery.sizeOf(context);
 
-    final finishOfferAsync = ref.watch(finishOfferControllerProvider);
-
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p8),
       child: Padding(
@@ -90,36 +88,51 @@ class PracticedPrice extends ConsumerWidget {
             if (offerPrice > 0)
               Expanded(
                 flex: 40,
-                child: PrimaryTextButton(
-                  text: 'Encerrar'.hardcoded,
-                  color: Colors.red,
-                  isLoading: finishOfferAsync.isLoading,
-                  icon: mediaSize.width < 300
-                      ? null
-                      : Icon(
-                          theme.platform == TargetPlatform.iOS
-                              ? CupertinoIcons.clear
-                              : Icons.close,
-                          color: Colors.red,
-                        ),
-                  onPressed: () {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Encerrar oferta ${saleType.name.toUpperCase()}'
-                          .hardcoded,
-                      cancelActionText: 'Cancelar'.hardcoded,
-                      defaultActionText: 'Sim'.hardcoded,
-                      content:
-                          'Tem certeza que deseja encerrar a oferta ${saleType.name.toUpperCase()}?'
-                              .hardcoded,
-                      onOkPressed: () {
-                        ref
-                            .read(finishOfferControllerProvider.notifier)
-                            .finish(
-                              product: product,
-                              saleType: saleType,
-                              now: DateTime.now(),
-                            );
+                child: Consumer(
+                  builder: (_, ref, _) {
+                    return PrimaryTextButton(
+                      text: 'Encerrar'.hardcoded,
+                      color: Colors.red,
+                      isLoading: ref.watch(
+                        finishOfferControllerProvider(
+                          product.ProductPackingCode!,
+                          product.EnterpriseCode!,
+                        ).select((s) => s.isLoading),
+                      ),
+                      icon: mediaSize.width < 300
+                          ? null
+                          : Icon(
+                              theme.platform == TargetPlatform.iOS
+                                  ? CupertinoIcons.clear
+                                  : Icons.close,
+                              color: Colors.red,
+                            ),
+                      onPressed: () {
+                        showAlertDialog(
+                          context: context,
+                          title:
+                              'Encerrar oferta ${saleType.name.toUpperCase()}'
+                                  .hardcoded,
+                          cancelActionText: 'Cancelar'.hardcoded,
+                          defaultActionText: 'Sim'.hardcoded,
+                          content:
+                              'Tem certeza que deseja encerrar a oferta ${saleType.name.toUpperCase()}?'
+                                  .hardcoded,
+                          onOkPressed: () {
+                            ref
+                                .read(
+                                  finishOfferControllerProvider(
+                                    product.ProductPackingCode!,
+                                    product.EnterpriseCode!,
+                                  ).notifier,
+                                )
+                                .finish(
+                                  product: product,
+                                  saleType: saleType,
+                                  now: DateTime.now(),
+                                );
+                          },
+                        );
                       },
                     );
                   },
