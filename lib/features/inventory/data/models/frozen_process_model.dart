@@ -40,10 +40,12 @@ class FrozenProcessModel extends Equatable {
 
   factory FrozenProcessModel.fromJson(Map json) {
     return FrozenProcessModel(
-      CataCriacaoInventario: DateTime.parse(json['DataCriacao_Inventario']),
+      CataCriacaoInventario: DateTime.parse(
+        json['DataCriacao_Inventario'],
+      ).toLocal(),
       DataCongelamentoInventario: DateTime.parse(
         json['DataCongelamento_Inventario'],
-      ),
+      ).toLocal(),
       CodigoInternoInventario: int.parse(json['CodigoInterno_Inventario']),
       CodigoInternoEmpresa: int.parse(json['CodigoInterno_Empresa1']),
       CodigoEmpresa: json['Codigo_Empresa'],
