@@ -42,7 +42,7 @@ workflows:
       - name: Build Android AAB
         script: flutter build appbundle
       - name: Build iOS IPA
-        script: flutter build ipa --release --no-codesign
+        script: flutter build ipa --no-codesign
 
     artifacts:
       - build/app/outputs/bundle/release/*.aab
@@ -50,7 +50,7 @@ workflows:
 
     publishing:
       google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS
         track: internal
       app_store_connect:
         auth: integration
