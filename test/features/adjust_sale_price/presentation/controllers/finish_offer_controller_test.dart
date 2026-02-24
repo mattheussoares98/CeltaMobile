@@ -128,5 +128,40 @@ void main() async {
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
+
+    test(
+      'should call with correct enterprise code when enterprise code is null',
+      () async {
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          finishOfferControllerProvider(productPackingCode, null),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(
+              finishOfferControllerProvider(productPackingCode, null).notifier,
+            )
+            .finish(product: productEntity, saleType: saleType, now: now);
+
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        verify(
+          () => mockRepository.confirm(
+            workingUrl: userSessionEntity.supabaseEnterprise!.workingUrl!,
+            crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
+            enterpriseCode: enterpriseEntity.Code!,
+            productCode: productEntity.ProductCode!,
+            productPackingCode: productPackingCode,
+            offerParams: offerParams,
+            replications: [],
+            retailParams: null,
+            saleType: saleType,
+            now: now,
+          ),
+        ).called(1);
+      },
+    );
   });
 }

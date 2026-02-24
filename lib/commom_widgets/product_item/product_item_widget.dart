@@ -152,7 +152,7 @@ class ProductItemWidget extends ConsumerWidget {
     ref.listen(
       finishOfferControllerProvider(
         product.ProductPackingCode!,
-        product.EnterpriseCode!,
+        product.EnterpriseCode,
       ),
       (p, n) {
         n.showAlertDialogOnError(context);
