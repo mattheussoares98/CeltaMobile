@@ -41,23 +41,22 @@ workflows:
       #   ignore_failure: true
       # - name: Build Android AAB
       #   script: flutter build appbundle
-      - name: Set up code signing
+      - nname: Set up code signing
         script: |
-          # 1. Initialize keychain
           keychain initialize
-          # 2. Fetch signing files. 
-          # Based on your error log, the correct syntax for your CLI version is:
-          app-store-connect fetch-signing-files
+          # We provide the Bundle ID explicitly as required by your CLI version
+          # and specify the type to ensure it gets the Distribution profile.
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE
           
-      - name: Build iOS IPA
+      - name: Build iOS
         script: |
-          # We use the '--upload' method implicitly by just building the IPA.
-          # Since the profiles are now in the system library, Flutter will find them.
-          flutter build ipa --release --build-number=$BUILD_NUMBER
+          # We build the 'ios' bundle. This is the most stable command.
+          # It generates the Runner.app which Codemagic can then sign.
+          flutter build ios --release --no-codesign --build-number=$BUILD_NUMBER
 
     artifacts:
       # - build/app/outputs/bundle/release/*.aab
-      - build/ios/ipa/*.ipa
+      - build/ios/iphoneos/*.app
 
     publishing:
       # google_play:
