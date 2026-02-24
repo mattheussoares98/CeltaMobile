@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -27,13 +28,17 @@ Future<void> _initFirebase() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (defaultTargetPlatform == TargetPlatform.windows ||
-      defaultTargetPlatform ==
-          TargetPlatform
-              .macOS /*  ||
-      TODO remove this
-      kDebugMode */ ) {
+      defaultTargetPlatform == TargetPlatform.macOS ||
+      kIsWeb ||
+      kDebugMode) {
     return;
   }
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   _startNotificationService();
 
