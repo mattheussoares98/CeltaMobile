@@ -48,8 +48,9 @@ workflows:
       #   script: flutter build appbundle
       - name: Build iOS IPA
         script: |
-            flutter build ipa --release \
-            --bundle-sksl-path flutter_01.sksl.json \
+          # Codemagic automatically places the profile at /Users/builder/export_options.plist
+          # when you use the 'ios_signing' block.
+          flutter build ipa --release \
             --build-number=$BUILD_NUMBER \
             --export-options-plist=$HOME/export_options.plist
 
