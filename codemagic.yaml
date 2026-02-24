@@ -42,7 +42,7 @@ workflows:
       # - name: Build Android AAB
       #   script: flutter build appbundle
       - name: Build iOS IPA
-        script: flutter build ipa --no-codesign
+        script: flutter build ipa --no-codesign --release
 
     artifacts:
       # - build/app/outputs/bundle/release/*.aab
