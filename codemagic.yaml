@@ -44,6 +44,11 @@ workflows:
       - name: Build iOS IPA
         script: flutter build ios --release --no-codesign
 
+    artifacts:
+      - build/app/outputs/bundle/release/*.aab
+      - build/ios/iphoneos/*.app
+      - /tmp/build/ipa/*.ipa    
+
     publishing:
       google_play:
         credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
