@@ -47,6 +47,7 @@ class AdjustStockItemEntity extends Equatable {
     bool? IsPendingAdjust,
     double? Quantity,
     bool? IsStockCounting,
+    bool? annulStockRecepientCode,
   }) {
     return AdjustStockItemEntity(
       EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
@@ -54,8 +55,9 @@ class AdjustStockItemEntity extends Equatable {
       ProductPackingCode: ProductPackingCode ?? this.ProductPackingCode,
       JustificationCode: JustificationCode ?? this.JustificationCode,
       StockTypeCode: StockTypeCode ?? this.StockTypeCode,
-      StockTypeRecipientCode:
-          StockTypeRecipientCode ?? this.StockTypeRecipientCode,
+      StockTypeRecipientCode: annulStockRecepientCode == true
+          ? null
+          : StockTypeRecipientCode ?? this.StockTypeRecipientCode,
       IsPendingAdjust: IsPendingAdjust ?? this.IsPendingAdjust,
       Quantity: Quantity ?? this.Quantity,
       IsStockCounting: IsStockCounting ?? this.IsStockCounting,

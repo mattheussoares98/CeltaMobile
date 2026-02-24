@@ -89,11 +89,6 @@ void main() {
             items: items,
           ),
         ).called(1);
-        expect(
-          fakeUsageController.lastUsageType,
-          UsageType.transferBetweenStocks,
-        );
-        expect(fakeUsageController.lastUsageType, isNot(UsageType.adjustStock));
       },
     );
 
@@ -167,16 +162,6 @@ void main() {
           items: [items[0]],
         ),
       ).called(1);
-      expect(
-        fakeUsageController.lastUsageType,
-        items[0].IsStockCounting == true
-            ? UsageType.stockReplacement
-            : UsageType.adjustStock,
-      );
-      expect(
-        fakeUsageController.lastUsageType,
-        isNot(UsageType.transferBetweenStocks),
-      );
     });
     test(
       'should NOT return LastConfirmedAdjustEntity on confirm and has more than one item in the list',
@@ -218,6 +203,103 @@ void main() {
             items: items,
           ),
         ).called(1);
+      },
+    );
+  });
+
+  group('Add correct UsageType', () {
+    test(
+      'should add UsageType.stockReplacement when IsStockCounting is true',
+      () async {
+        // ARRANGE
+        when(
+          () => mockRepository.confirm(
+            workingUrl: any(named: 'workingUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            items: any(named: 'items'),
+          ),
+        ).thenAnswer((_) async {});
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // ACT: Wait for the build method to complete
+        await container
+            .read(confirmAdjustStockControllerProvider.notifier)
+            .confirm(
+              items.map((e) => e.copyWith(IsStockCounting: true)).toList(),
+            );
+
+        expect(fakeUsageController.lastUsageType, UsageType.stockReplacement);
+      },
+    );
+    test(
+      'should add UsageType.transferBetweenStocks when StockTypeRecipientCode is not null',
+      () async {
+        // ARRANGE
+        when(
+          () => mockRepository.confirm(
+            workingUrl: any(named: 'workingUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            items: any(named: 'items'),
+          ),
+        ).thenAnswer((_) async {});
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // ACT: Wait for the build method to complete
+        await container
+            .read(confirmAdjustStockControllerProvider.notifier)
+            .confirm(
+              items
+                  .map(
+                    (e) => e.copyWith(
+                      IsStockCounting: false,
+                      StockTypeRecipientCode: faker.randomGenerator.integer(
+                        100,
+                      ),
+                    ),
+                  )
+                  .toList(),
+            );
+
+        expect(
+          fakeUsageController.lastUsageType,
+          UsageType.transferBetweenStocks,
+        );
+      },
+    );
+    test(
+      'should add UsageType.adjustStock when StockTypeRecipientCode is null and is not counting',
+      () async {
+        // ARRANGE
+        when(
+          () => mockRepository.confirm(
+            workingUrl: any(named: 'workingUrl'),
+            crossIdentity: any(named: 'crossIdentity'),
+            items: any(named: 'items'),
+          ),
+        ).thenAnswer((_) async {});
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        // ACT: Wait for the build method to complete
+        await container
+            .read(confirmAdjustStockControllerProvider.notifier)
+            .confirm(
+              items
+                  .map(
+                    (e) => e.copyWith(
+                      IsStockCounting: false,
+                      annulStockRecepientCode: true,
+                    ),
+                  )
+                  .toList(),
+            );
+
+        expect(fakeUsageController.lastUsageType, UsageType.adjustStock);
       },
     );
   });
