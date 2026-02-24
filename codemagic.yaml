@@ -39,19 +39,19 @@ workflows:
       # - name: Run Tests
       #   script: flutter test
       #   ignore_failure: true
-      - name: Build Android AAB
-        script: flutter build appbundle
+      # - name: Build Android AAB
+      #   script: flutter build appbundle
       - name: Build iOS IPA
         script: flutter build ipa --no-codesign
 
     artifacts:
-      - build/app/outputs/bundle/release/*.aab
+      # - build/app/outputs/bundle/release/*.aab
       - build/ios/ipa/*.ipa   
 
     publishing:
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal
+      # google_play:
+      #   credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+      #   track: internal
       app_store_connect:
         auth: integration
         submit_to_testflight: true
