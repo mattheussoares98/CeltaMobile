@@ -1,4 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage_state_controller.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
@@ -71,6 +73,7 @@ class MockSoapInsertBuyRequestRepository extends Mock
 
 void main() {
   late MockSoapInsertBuyRequestRepository mockRepository;
+  late FakeAppUsageStateController fakeAppUsageStateController;
   late UserSessionModel fakeSession;
   late PendingBuyRequestEntity fakePendingRequest;
   late String fakeObservations;
@@ -90,6 +93,7 @@ void main() {
     fakeObservations = faker.lorem.sentence();
     fakeLastSavedRequestNumber = faker.lorem.word();
     enterpriseCode = faker.randomGenerator.integer(100);
+    fakeAppUsageStateController = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({
@@ -110,6 +114,9 @@ void main() {
           () =>
               pendingBuyRequestStateController ??
               FakePendingBuyRequest(pendingRequest),
+        ),
+        appUsageStateControllerProvider.overrideWith(
+          () => fakeAppUsageStateController,
         ),
       ],
     );
@@ -173,6 +180,10 @@ void main() {
             products: fakePendingRequest.products!.values.toList(),
           ),
         ).called(1);
+        expect(
+          fakeAppUsageStateController.lastUsageType,
+          UsageType.insertBuyRequest,
+        );
       },
     );
 
