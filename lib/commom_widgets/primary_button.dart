@@ -51,35 +51,33 @@ class PrimaryButton extends StatelessWidget {
         builder: (context, constraints) {
           final canShowIcon = constraints.maxWidth > minimumIconSize;
 
-          return RepaintBoundary(
-            child: CupertinoButton.filled(
-              onPressed: onPressed == null || isLoading
-                  ? null
-                  : () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      onPressed?.call();
-                    },
-              sizeStyle: CupertinoButtonSize.medium,
-              padding: const EdgeInsets.all(0),
-              color: buttonColor,
-              child: Stack(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(child: textWidget),
-                      if (icon != null && canShowIcon)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Sizes.p16,
-                          ),
-                          child: icon!,
+          return CupertinoButton.filled(
+            onPressed: onPressed == null || isLoading
+                ? null
+                : () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    onPressed?.call();
+                  },
+            sizeStyle: CupertinoButtonSize.medium,
+            padding: const EdgeInsets.all(0),
+            color: buttonColor,
+            child: Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: textWidget),
+                    if (icon != null && canShowIcon)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.p16,
                         ),
-                    ],
-                  ),
-                  if (isLoading) loadingWidget,
-                ],
-              ),
+                        child: icon!,
+                      ),
+                  ],
+                ),
+                if (isLoading) loadingWidget,
+              ],
             ),
           );
         },
@@ -90,30 +88,28 @@ class PrimaryButton extends StatelessWidget {
       builder: (context, constraints) {
         final canShowIcon = constraints.maxWidth > minimumIconSize;
 
-        return RepaintBoundary(
-          child: SizedBox(
-            height: Sizes.p40,
-            child: ElevatedButton.icon(
-              onPressed: onPressed == null || isLoading
-                  ? null
-                  : () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      onPressed?.call();
-                    },
-              icon: canShowIcon ? icon : null,
-              iconAlignment: iconAlignment,
-              style: ButtonStyle(
-                padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(horizontal: Sizes.p8),
-                ),
-                backgroundColor: WidgetStateProperty.all(buttonColor),
+        return SizedBox(
+          height: Sizes.p40,
+          child: ElevatedButton.icon(
+            onPressed: onPressed == null || isLoading
+                ? null
+                : () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    onPressed?.call();
+                  },
+            icon: canShowIcon ? icon : null,
+            iconAlignment: iconAlignment,
+            style: ButtonStyle(
+              padding: WidgetStateProperty.all(
+                const EdgeInsets.symmetric(horizontal: Sizes.p8),
               ),
-              label: Stack(
-                children: [
-                  FittedBox(child: textWidget),
-                  if (isLoading) loadingWidget,
-                ],
-              ),
+              backgroundColor: WidgetStateProperty.all(buttonColor),
+            ),
+            label: Stack(
+              children: [
+                FittedBox(child: textWidget),
+                if (isLoading) loadingWidget,
+              ],
             ),
           ),
         );

@@ -29,48 +29,42 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return RepaintBoundary(
-      // Using RepaintBoundary isolates the InkWell splash animation and the
-      // dropdown's internal state changes from the rest of the form.
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        margin: EdgeInsets.zero,
-        child: InkWell(
-          onTap: onChanged == null ? null : () {},
-          child: DropdownButtonFormField<T>(
-            onTap: onTap == null ? null : () => onTap!(value),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide.none,
-              ),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: EdgeInsets.zero,
+      child: InkWell(
+        onTap: onChanged == null ? null : () {},
+        child: DropdownButtonFormField<T>(
+          onTap: onTap == null ? null : () => onTap!(value),
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+            focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+          ),
+          initialValue: value,
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
+          items: items,
+          alignment: Alignment.center,
+          isExpanded: true,
+          onChanged: onChanged,
+          autovalidateMode: autovalidateMode,
+          isDense: true,
+          dropdownColor: Colors.white,
+          validator: validator,
+          icon: Padding(
+            padding: const EdgeInsets.only(right: Sizes.p8),
+            child: SizedBox(
+              child: isLoading == true
+                  ? const LoadingWidget(size: Sizes.p16, padding: Sizes.p4)
+                  : _IconWidget(),
             ),
-            initialValue: value,
-            padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
-            items: items,
-            alignment: Alignment.center,
-            isExpanded: true,
-            onChanged: onChanged,
-            autovalidateMode: autovalidateMode,
-            isDense: true,
-            dropdownColor: Colors.white,
-            validator: validator,
-            icon: Padding(
-              padding: const EdgeInsets.only(right: Sizes.p8),
-              child: SizedBox(
-                child: isLoading == true
-                    ? const LoadingWidget(size: Sizes.p16, padding: Sizes.p4)
-                    : _IconWidget(),
-              ),
-            ),
-            hint: Center(
-              child: Text(
-                hint,
-                style: onChanged == null
-                    ? TextStyle(color: theme.disabledColor)
-                    : null,
-              ),
+          ),
+          hint: Center(
+            child: Text(
+              hint,
+              style: onChanged == null
+                  ? TextStyle(color: theme.disabledColor)
+                  : null,
             ),
           ),
         ),

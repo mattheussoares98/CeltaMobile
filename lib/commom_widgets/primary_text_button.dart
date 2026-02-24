@@ -67,57 +67,28 @@ class PrimaryTextButton extends StatelessWidget {
     final minimumSizeToShowIcon = isSmall == true ? 60 : 150;
 
     if (isIOS) {
-      return RepaintBoundary(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final canShowIcon = constraints.maxWidth > minimumSizeToShowIcon;
-
-            return CupertinoButton(
-              onPressed: onPressed == null || isLoading
-                  ? null
-                  : () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      onPressed?.call();
-                    },
-              sizeStyle: CupertinoButtonSize.small,
-              padding: const EdgeInsets.all(0),
-              child: Stack(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      textWidget,
-                      if (icon != null && canShowIcon) ...[gapW8, iconWidget!],
-                    ],
-                  ),
-                  if (isLoading)
-                    const Positioned.fill(
-                      child: FittedBox(child: LoadingWidget(padding: 0)),
-                    ),
-                ],
-              ),
-            );
-          },
-        ),
-      );
-    }
-    return RepaintBoundary(
-      child: LayoutBuilder(
+      return LayoutBuilder(
         builder: (context, constraints) {
           final canShowIcon = constraints.maxWidth > minimumSizeToShowIcon;
 
-          return TextButton.icon(
+          return CupertinoButton(
             onPressed: onPressed == null || isLoading
                 ? null
                 : () {
                     FocusManager.instance.primaryFocus?.unfocus();
                     onPressed?.call();
                   },
-            icon: canShowIcon ? iconWidget : null,
-            iconAlignment: iconAlignment,
-            label: Stack(
+            sizeStyle: CupertinoButtonSize.small,
+            padding: const EdgeInsets.all(0),
+            child: Stack(
               children: [
-                FittedBox(child: textWidget),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textWidget,
+                    if (icon != null && canShowIcon) ...[gapW8, iconWidget!],
+                  ],
+                ),
                 if (isLoading)
                   const Positioned.fill(
                     child: FittedBox(child: LoadingWidget(padding: 0)),
@@ -126,7 +97,32 @@ class PrimaryTextButton extends StatelessWidget {
             ),
           );
         },
-      ),
+      );
+    }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final canShowIcon = constraints.maxWidth > minimumSizeToShowIcon;
+
+        return TextButton.icon(
+          onPressed: onPressed == null || isLoading
+              ? null
+              : () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  onPressed?.call();
+                },
+          icon: canShowIcon ? iconWidget : null,
+          iconAlignment: iconAlignment,
+          label: Stack(
+            children: [
+              FittedBox(child: textWidget),
+              if (isLoading)
+                const Positioned.fill(
+                  child: FittedBox(child: LoadingWidget(padding: 0)),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
