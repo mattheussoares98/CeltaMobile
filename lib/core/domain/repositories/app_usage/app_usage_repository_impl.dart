@@ -57,7 +57,7 @@ class AppUsageRepositoryImpl implements IAppUsageRepository {
       await localDs.insert(newData, newCounter);
     }
 
-    if (newCounter >= 5) {
+    if (newCounter >= 10) {
       await remoteDs.insert(newData);
       await localDs.clear();
     }

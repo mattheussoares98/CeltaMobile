@@ -126,10 +126,10 @@ void main() {
       ).called(1);
     });
 
-    test('Should behave correctly when counter is >= 5', () async {
+    test('Should behave correctly when counter is >= 10', () async {
       when(
         () => localDs.getCounter(),
-      ).thenAnswer((_) async => faker.randomGenerator.integer(100, min: 5));
+      ).thenAnswer((_) async => faker.randomGenerator.integer(100, min: 10));
       when(() => remoteDs.insert(any())).thenAnswer((_) async {});
 
       await sut.addUsage(usageModels.first.toEntity());
@@ -146,10 +146,10 @@ void main() {
       ).called(1);
       verify(() => localDs.clear()).called(1);
     });
-    test('Should behave correctly when counter is < 5', () async {
+    test('Should behave correctly when counter is < 10', () async {
       when(
         () => localDs.getCounter(),
-      ).thenAnswer((_) async => faker.randomGenerator.integer(4));
+      ).thenAnswer((_) async => faker.randomGenerator.integer(9));
       when(() => remoteDs.insert(any())).thenAnswer((_) async {});
 
       await sut.addUsage(usageModels.first.toEntity());
