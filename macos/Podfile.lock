@@ -10,7 +10,10 @@ PODS:
   - Firebase/Crashlytics (12.8.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 12.8.0)
-  - firebase_analytics (12.1.1):
+  - Firebase/Messaging (12.8.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 12.8.0)
+  - firebase_analytics (12.1.2):
     - firebase_core
     - FirebaseAnalytics (= 12.8.0)
     - FlutterMacOS
@@ -20,6 +23,11 @@ PODS:
   - firebase_crashlytics (5.0.7):
     - Firebase/CoreOnly (~> 12.8.0)
     - Firebase/Crashlytics (~> 12.8.0)
+    - firebase_core
+    - FlutterMacOS
+  - firebase_messaging (16.1.1):
+    - Firebase/CoreOnly (~> 12.8.0)
+    - Firebase/Messaging (~> 12.8.0)
     - firebase_core
     - FlutterMacOS
   - FirebaseAnalytics (12.8.0):
@@ -62,6 +70,15 @@ PODS:
     - GoogleUtilities/Environment (~> 8.1)
     - GoogleUtilities/UserDefaults (~> 8.1)
     - PromisesObjC (~> 2.4)
+  - FirebaseMessaging (12.8.0):
+    - FirebaseCore (~> 12.8.0)
+    - FirebaseInstallations (~> 12.8.0)
+    - GoogleDataTransport (~> 10.1)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/Reachability (~> 8.1)
+    - GoogleUtilities/UserDefaults (~> 8.1)
+    - nanopb (~> 3.30910.0)
   - FirebaseRemoteConfigInterop (12.8.0)
   - FirebaseSessions (12.8.0):
     - FirebaseCore (~> 12.8.0)
@@ -72,6 +89,8 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 8.1)
     - nanopb (~> 3.30910.0)
     - PromisesSwift (~> 2.1)
+  - flutter_local_notifications (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - GoogleAppMeasurement/Core (12.8.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
@@ -150,6 +169,8 @@ DEPENDENCIES:
   - firebase_analytics (from `Flutter/ephemeral/.symlinks/plugins/firebase_analytics/macos`)
   - firebase_core (from `Flutter/ephemeral/.symlinks/plugins/firebase_core/macos`)
   - firebase_crashlytics (from `Flutter/ephemeral/.symlinks/plugins/firebase_crashlytics/macos`)
+  - firebase_messaging (from `Flutter/ephemeral/.symlinks/plugins/firebase_messaging/macos`)
+  - flutter_local_notifications (from `Flutter/ephemeral/.symlinks/plugins/flutter_local_notifications/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - share_plus (from `Flutter/ephemeral/.symlinks/plugins/share_plus/macos`)
   - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -165,6 +186,7 @@ SPEC REPOS:
     - FirebaseCoreInternal
     - FirebaseCrashlytics
     - FirebaseInstallations
+    - FirebaseMessaging
     - FirebaseRemoteConfigInterop
     - FirebaseSessions
     - GoogleAppMeasurement
@@ -187,6 +209,10 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/firebase_core/macos
   firebase_crashlytics:
     :path: Flutter/ephemeral/.symlinks/plugins/firebase_crashlytics/macos
+  firebase_messaging:
+    :path: Flutter/ephemeral/.symlinks/plugins/firebase_messaging/macos
+  flutter_local_notifications:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_local_notifications/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   share_plus:
@@ -203,17 +229,20 @@ SPEC CHECKSUMS:
   device_info_plus: 1b14eed9bf95428983aed283a8d51cce3d8c4215
   file_picker: e716a70a9fe5fd9e09ebc922d7541464289443af
   Firebase: 9a58fdbc9d8655ed7b79a19cf9690bb007d3d46d
-  firebase_analytics: 63483484b186d55d32f2f11b81cbe5e1aec18f85
+  firebase_analytics: 2db58a9fd5aa268197f5cf96d599e2b4e72c363d
   firebase_core: bfb0f39fc760d20fa81c965531638d20752b0066
   firebase_crashlytics: 44e917e58918b145f2dfe9a0edc1d914500d0919
+  firebase_messaging: efb99556e604e5194c0e5c0fb468aae1f65c6e12
   FirebaseAnalytics: f20bbad8cb7f65d8a5eaefeb424ae8800a31bdfc
   FirebaseCore: 0dbad74bda10b8fb9ca34ad8f375fb9dd3ebef7c
   FirebaseCoreExtension: 6605938d51f765d8b18bfcafd2085276a252bee2
   FirebaseCoreInternal: fe5fa466aeb314787093a7dce9f0beeaad5a2a21
   FirebaseCrashlytics: fb31c6907e5b52aa252668394d3f1ab326df1511
   FirebaseInstallations: 6a14ab3d694ebd9f839c48d330da5547e9ca9dc0
+  FirebaseMessaging: 7f42cfd10ec64181db4e01b305a613791c8e782c
   FirebaseRemoteConfigInterop: 869ddca16614f979e5c931ece11fbb0b8729ed41
   FirebaseSessions: d614ca154c63dbbc6c10d6c38259c2162c4e7c9b
+  flutter_local_notifications: 4ccab5b7a22835214a6672e3f9c5e8ae207dab36
   FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
   GoogleAppMeasurement: 72c9a682fec6290327ea5e3c4b829b247fcb2c17
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
