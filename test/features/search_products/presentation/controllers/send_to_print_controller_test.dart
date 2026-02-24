@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
@@ -20,6 +21,7 @@ class MockSoapSendToPrintRepository extends Mock
 
 void main() {
   late MockSoapSendToPrintRepository mockRepository;
+  late FakeAppUsageStateController fakeAppUsage;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
   late int fakeProductPackingCode;
@@ -41,6 +43,7 @@ void main() {
     fakeSearchProductStateController = FakeSearchProductsStateController([
       fakeProduct,
     ]);
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   setUpAll(() {
@@ -69,6 +72,7 @@ void main() {
             Modules.searchProducts,
           ),
         ).overrideWith(() => fakeSearchProductStateController),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -127,6 +131,7 @@ void main() {
             newValue: fakeNewValue,
           ),
         ).called(1);
+        expect(fakeAppUsage.lastUsageType, UsageType.sendToPrint);
       },
     );
 

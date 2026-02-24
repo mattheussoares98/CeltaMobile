@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
@@ -28,6 +29,10 @@ class SendToPrintController extends _$SendToPrintController {
       final selectedEnterprise = ref.read(
         selectedEnterpriseStateControllerProvider,
       );
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.sendToPrint);
 
       await ref
           .read(soapSendToPrintRepositoryProvider)

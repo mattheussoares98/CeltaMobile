@@ -15,6 +15,7 @@ enum UsageType {
   insertUpdateCustomer,
   insertUpdateCompetingPrices,
   searchProducts,
+  sendToPrint,
   stockReplacement,
   transferBetweenStocks,
 }
