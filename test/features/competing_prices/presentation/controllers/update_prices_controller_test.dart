@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
@@ -34,6 +35,7 @@ class SpySearchProductsStateController extends SearchProductsStateController {
 void main() {
   late MockSoapInsertUpdatePricesDatasource mockDatasource;
   late UserSessionModel fakeSession;
+  late FakeAppUsageStateController fakeAppUsage;
 
   // Test data variables
   late int researchCode;
@@ -73,6 +75,7 @@ void main() {
     priceECommerce = faker.randomGenerator.decimal();
     offerECommerce = faker.randomGenerator.decimal();
     product = EntityFactory.makeProductEntity(enterpriseCode: enterpriseCode);
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({
@@ -91,6 +94,7 @@ void main() {
         searchProductsStateControllerProvider(
           SearchProductKey(enterpriseCode, fakeRoutine, fakeModule),
         ).overrideWith(() => spySearchProducts),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -180,6 +184,10 @@ void main() {
         expect(capturedProduct.ECommercePracticedPrice, priceECommerce);
         expect(capturedProduct.ECommerceOfferPrice, offerECommerce);
         expect(capturedProduct.Name, product.Name);
+        expect(
+          fakeAppUsage.lastUsageType,
+          UsageType.insertUpdateCompetingPrices,
+        );
       },
     );
 
