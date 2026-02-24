@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
@@ -46,7 +47,8 @@ class MockLocalPendingSaleRequestRepository extends Mock
 
 void main() {
   late MockSoapSaveSaleRequestRepository mockSoapSaveSaleRequestRepository;
-  late MockLocalPendingSaleRequestRepository mockLocalPendingRepo; // New
+  late MockLocalPendingSaleRequestRepository mockLocalPendingRepo;
+  late FakeAppUsageStateController fakeAppUsage;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
   late PendingSaleRequestEntity fakePendingRequest;
@@ -80,6 +82,7 @@ void main() {
     fakeRequestTypeCode = faker.randomGenerator.integer(100);
     instructions = faker.lorem.sentence();
     observations = faker.lorem.sentence();
+    fakeAppUsage = FakeAppUsageStateController();
 
     // --- Create the single container ONCE with ALL providers ---
     container = ProviderContainer(
@@ -106,6 +109,7 @@ void main() {
         localPendingSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   });
@@ -147,6 +151,7 @@ void main() {
         localPendingSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ]);
 
       // Stub all async calls
@@ -214,6 +219,7 @@ void main() {
 
       // 4. Verify local repo was cleared
       verify(() => mockLocalPendingRepo.clear(fakeEnterprise.Code!)).called(1);
+      expect(fakeAppUsage.lastUsageType, UsageType.insertSaleRequest);
     });
 
     test('should emit [loading, error] if customer is null', () async {
@@ -241,6 +247,7 @@ void main() {
         localPendingSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ]);
 
       final states = <AsyncValue<void>>[];
@@ -306,6 +313,7 @@ void main() {
         localPendingSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ]);
 
       final states = <AsyncValue<void>>[];
