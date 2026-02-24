@@ -46,7 +46,7 @@ workflows:
 
     artifacts:
       # - build/app/outputs/bundle/release/*.aab
-      - build/ios/ipa/*.ipa   
+      - build/ios/iphoneos/*.app
 
     publishing:
       # google_play:
