@@ -7,22 +7,31 @@ class AppUsageModel extends Equatable {
   final int? enterpriseId;
   final UsageType usageType;
   final int requestCount;
+  final String? enterpriseName;
 
   const AppUsageModel({
     required this.userName,
     required this.enterpriseId,
     required this.usageType,
     required this.requestCount,
+    required this.enterpriseName,
   });
 
   @override
-  List<Object?> get props => [userName, enterpriseId, usageType, requestCount];
+  List<Object?> get props => [
+    userName,
+    enterpriseId,
+    usageType,
+    requestCount,
+    enterpriseName,
+  ];
 
   Map<String, dynamic> toJson() => {
     'user_name': userName,
     'enterprise_id': enterpriseId,
     'usage_type': usageType.name,
     'request_count': requestCount,
+    'enterprise_name': enterpriseName,
   };
 
   factory AppUsageModel.fromJson(Map map) {
@@ -33,6 +42,7 @@ class AppUsageModel extends Equatable {
         (e) => e.name == map['usage_type'],
       ),
       requestCount: map['request_count'],
+      enterpriseName: map['enterprise_name'],
     );
   }
 
@@ -41,6 +51,7 @@ class AppUsageModel extends Equatable {
     enterpriseId: enterpriseId,
     usageType: usageType,
     requestCount: requestCount,
+    enterpriseName: enterpriseName,
   );
 
   factory AppUsageModel.fromEntity(AppUsageEntity entity) {
@@ -49,6 +60,7 @@ class AppUsageModel extends Equatable {
       enterpriseId: entity.enterpriseId,
       usageType: entity.usageType,
       requestCount: entity.requestCount,
+      enterpriseName: entity.enterpriseName,
     );
   }
 }

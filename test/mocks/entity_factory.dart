@@ -990,5 +990,6 @@ class EntityFactory {
     usageType: UsageType
         .values[faker.randomGenerator.integer(UsageType.values.length)],
     requestCount: faker.randomGenerator.integer(100),
+    enterpriseName: faker.company.name(),
   );
 }
