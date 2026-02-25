@@ -59,8 +59,8 @@ void main() {
       expect(supabaseClient.lastRpcFunction, 'get_app_usage_report');
       expect(supabaseClient.lastRpcParams, {
         'p_enterprise_id': enterpriseId,
-        'p_start_date': startDate,
-        'p_end_date': endDate,
+        'p_start_date': startDate.toIso8601String(),
+        'p_end_date': endDate.toIso8601String(),
       });
     });
   });
