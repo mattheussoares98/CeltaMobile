@@ -54,6 +54,7 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
           return Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
             child: ExpansionTile(
+              tilePadding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Sizes.p12),
               ),
