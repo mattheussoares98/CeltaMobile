@@ -13,6 +13,8 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
   final bool? isLoading;
   final AutovalidateMode? autovalidateMode;
   final void Function(T?)? onTap;
+  final EdgeInsetsGeometry? padding;
+  final double? iconSize;
 
   const DefaultSimpleDropDown({
     super.key,
@@ -24,6 +26,8 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
     this.isLoading,
     this.autovalidateMode,
     this.onTap,
+    this.padding,
+    this.iconSize,
   });
 
   @override
@@ -42,7 +46,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
             focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide.none),
           ),
           initialValue: value,
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
+          padding: padding ?? const EdgeInsets.symmetric(horizontal: Sizes.p16),
           items: items,
           alignment: Alignment.center,
           isExpanded: true,
@@ -51,6 +55,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
           isDense: true,
           dropdownColor: Colors.white,
           validator: validator,
+          iconSize: iconSize ?? 24,
           icon: Padding(
             padding: const EdgeInsets.only(right: Sizes.p8),
             child: SizedBox(
