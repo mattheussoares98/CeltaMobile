@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../routing/routing.dart';
-import '../../../../domain/entities/entities.dart';
+import '../../../../../../../routing/routing.dart';
+import '../../../../../domain/entities/entities.dart';
 
 class EditEnterpriseButton extends StatelessWidget {
   final EnterprisePermissionEntity enterprise;

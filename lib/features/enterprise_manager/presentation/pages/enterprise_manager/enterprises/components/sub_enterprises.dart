@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../constants/constants.dart';
-import '../../../../../../routing/routing.dart';
-import '../../../../domain/entities/entities.dart';
+import '../../../../../../../constants/constants.dart';
+import '../../../../../../../routing/routing.dart';
+import '../../../../../domain/entities/entities.dart';
 
 class SubEnterprises extends StatelessWidget {
   final EnterprisePermissionEntity enterprise;

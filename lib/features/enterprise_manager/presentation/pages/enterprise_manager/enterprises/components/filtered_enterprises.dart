@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../constants/constants.dart';
-import '../../../../../../utils/utils.dart';
-import '../../../../domain/entities/entities.dart';
+import '../../../../../../../constants/constants.dart';
+import '../../../../../../../utils/utils.dart';
+import '../../../../../domain/entities/entities.dart';
 import 'components.dart';
 
 class FilteredEnterprises extends StatefulWidget {

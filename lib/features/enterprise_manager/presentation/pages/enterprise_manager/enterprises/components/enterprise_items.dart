@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
-import '../../../../domain/entities/entities.dart';
+import '../../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../../constants/constants.dart';
+import '../../../../../domain/entities/entities.dart';
 import 'components.dart';
 
 class EnterpriseItems extends ConsumerStatefulWidget {

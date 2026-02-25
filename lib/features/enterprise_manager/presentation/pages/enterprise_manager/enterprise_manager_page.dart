@@ -10,6 +10,7 @@ import '../../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
+import 'enterprises/enterprises.dart';
 
 class EnterpriseManagerPage extends ConsumerStatefulWidget {
   const EnterpriseManagerPage({super.key});
@@ -133,22 +134,8 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
           return IndexedStack(
             index: ref.watch(pageIndexStateControllerProvider),
             children: [
-              AsyncValueWidget(
-                value: ref.watch(enterpriseManagerControllerProvider),
-                tryAgain: () =>
-                    ref.invalidate(enterpriseManagerControllerProvider),
-                data: (enterprises) {
-                  if (enterprises.isEmpty) {
-                    return Center(
-                      child: Text('Nenhuma empresa encontrada.'.hardcoded),
-                    );
-                  }
-                  return EnterpriseItems(
-                    enterprises: enterprises,
-                    filterEnterpriseNameController:
-                        filterEnterpriseNameController,
-                  );
-                },
+              EnterprisesPage(
+                filterEnterpriseNameController: filterEnterpriseNameController,
               ),
               //TODO create separated file and organize better
               Consumer(
