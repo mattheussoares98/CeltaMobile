@@ -23,4 +23,11 @@ class AuthManagerController extends _$AuthManagerController {
 
     return authResponse;
   }
+
+  Future<void> logout() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      ref.read(authManagerRepositoryProvider).logout();
+    });
+  }
 }

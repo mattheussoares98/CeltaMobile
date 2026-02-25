@@ -88,4 +88,15 @@ void main() {
       verify(() => mockAuthManagerRepository.login(email, password)).called(1);
     });
   });
+
+  group('Logout', () {
+    test('should call the repository correctly', () async {
+      final container = makeProviderContainer();
+      await container.read(authManagerControllerProvider.future);
+
+      await container.read(authManagerControllerProvider.notifier).logout();
+
+      verify(() => mockAuthManagerRepository.logout()).called(1);
+    });
+  });
 }

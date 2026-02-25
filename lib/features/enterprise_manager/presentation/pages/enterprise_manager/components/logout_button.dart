@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../providers.dart';
+import '../../../controllers/controllers.dart';
 
 class LogoutButton extends ConsumerWidget {
   const LogoutButton({super.key});
@@ -23,7 +23,7 @@ class LogoutButton extends ConsumerWidget {
           defaultActionText: "Sair".hardcoded,
           content: "Tem certeza que deseja sair?".hardcoded,
           onOkPressed: () {
-            ref.read(authManagerRepositoryProvider).logout();
+            ref.read(authManagerControllerProvider.notifier).logout();
             context.pop();
           },
         );
