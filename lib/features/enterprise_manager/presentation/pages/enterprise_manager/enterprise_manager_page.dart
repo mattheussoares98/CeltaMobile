@@ -1,16 +1,15 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 import 'enterprises/enterprises.dart';
+import 'reports/reports.dart';
 
 class EnterpriseManagerPage extends ConsumerStatefulWidget {
   const EnterpriseManagerPage({super.key});
@@ -137,62 +136,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
               EnterprisesPage(
                 filterEnterpriseNameController: filterEnterpriseNameController,
               ),
-              //TODO create separated file and organize better
-              Consumer(
-                builder: (_, ref, _) {
-                  return AsyncValueWidget(
-                    value: ref.watch(appUsageStateControllerProvider),
-                    tryAgain: () => ref
-                        .read(appUsageStateControllerProvider.notifier)
-                        .loadRemoteUsageReport(start: start, end: end),
-                    data: (usageReports) {
-                      if (usageReports?.isEmpty ?? true) {
-                        return Center(
-                          child: Column(
-                            children: [
-                              Text('Nenhum uso encontrado'.hardcoded),
-                              ElevatedButton(
-                                onPressed: loadReports,
-                                child: Text('Carregar novamente'.hardcoded),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-
-                      final usageByEnterprise = groupBy(
-                        usageReports!,
-                        (e) => e.enterpriseName ?? 'No group',
-                      );
-
-                      final groupEntries = usageByEnterprise.entries.toList()
-                        ..sort((a, b) => a.key.compareTo(b.key));
-
-                      return ResponsiveListFlow(
-                        itemCount: groupEntries.length,
-                        itemBuilder: (_, enterpriseIndex) {
-                          final enterpriseName =
-                              groupEntries[enterpriseIndex].key;
-                          final reports = groupEntries[enterpriseIndex].value;
-
-                          return Card(
-                            child: Column(
-                              children: [
-                                Text(enterpriseName),
-                                ...reports.map((e) {
-                                  return Text(
-                                    '${e.usageType.name}-${e.requestCount}',
-                                  );
-                                }),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
+              const ReportsPage(),
             ],
           );
         },
