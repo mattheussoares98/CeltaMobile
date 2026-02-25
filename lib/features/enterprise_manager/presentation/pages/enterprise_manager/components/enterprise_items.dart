@@ -41,6 +41,7 @@ class _EnterpriseItemsState extends ConsumerState<EnterpriseItems> {
           enterprises: widget.enterprises,
           filterController: widget.filterEnterpriseNameController,
         ),
+        gapSliverH120,
       ],
     );
   }
