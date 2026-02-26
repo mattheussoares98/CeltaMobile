@@ -31,7 +31,8 @@ class ProductsPage extends ConsumerStatefulWidget {
 }
 
 class _ProductsPageState extends ConsumerState<ProductsPage> {
-  final searchValueController = TextEditingController();
+  final searchProductController = TextEditingController();
+  final searchProductFocusNode = FocusNode();
 
   final quantityController = TextEditingController();
   final quantityFocusNode = FocusNode();
@@ -48,7 +49,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   void dispose() {
     quantityController.dispose();
     quantityFocusNode.dispose();
-    searchValueController.dispose();
+    searchProductController.dispose();
+    searchProductFocusNode.dispose();
     super.dispose();
   }
 
@@ -66,14 +68,14 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       if (value == null) {
         return;
       } else {
-        searchValueController.text = value;
+        searchProductController.text = value;
         ref
             .read(
               searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
               GetProductsReceiptParams(
-                searchValue: searchValueController.text,
+                searchValue: searchProductController.text,
                 grDocCode: widget.receiptCode,
               ),
             );
@@ -94,6 +96,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       n.showAlertDialogOnError(context);
       n.doOnSuccess(p, () {
         quantityController.clear();
+        searchProductFocusNode.requestFocus();
         searchProductByAutoScan(searchProductKey);
       });
     });
@@ -144,7 +147,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             padding: horizontalPadding,
             child: SearchProducts(
               searchProductKey: searchProductKey,
-              searchValueController: searchValueController,
+              searchProductController: searchProductController,
+              searchProductFocusNode: searchProductFocusNode,
               receiptCode: widget.receiptCode,
             ),
           ),

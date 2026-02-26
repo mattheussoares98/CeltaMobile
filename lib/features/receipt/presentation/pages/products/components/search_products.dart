@@ -8,13 +8,15 @@ import '../../../controllers/controllers.dart';
 
 class SearchProducts extends ConsumerWidget {
   final SearchProductKey searchProductKey;
-  final TextEditingController searchValueController;
+  final TextEditingController searchProductController;
+  final FocusNode searchProductFocusNode;
   final int receiptCode;
   const SearchProducts({
     super.key,
     required this.searchProductKey,
     required this.receiptCode,
-    required this.searchValueController,
+    required this.searchProductFocusNode,
+    required this.searchProductController,
   });
 
   @override
@@ -26,7 +28,7 @@ class SearchProducts extends ConsumerWidget {
           )
           .loadProducts(
             GetProductsReceiptParams(
-              searchValue: searchValueController.text,
+              searchValue: searchProductController.text,
               grDocCode: receiptCode,
             ),
           );
@@ -34,13 +36,14 @@ class SearchProducts extends ConsumerWidget {
 
     return DefaultSearchProducts(
       module: Modules.receipt,
+      focusNode: searchProductFocusNode,
       isLoading: ref.watch(
         searchProductsStateControllerProvider(
           searchProductKey,
         ).select((s) => s.isLoading),
       ),
       searchProducts: searchProduct,
-      searchValueController: searchValueController,
+      searchValueController: searchProductController,
       searchProductKey: searchProductKey,
       doOnSearchSucceeds: () {
         ref
