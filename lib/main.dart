@@ -18,6 +18,7 @@ void main() async {
   // * https://docs.flutter.dev/testing/errors
   // * Create ProviderContainer with any required overrides
   final container = ProviderContainer(
+    retry: (retryCount, error) => null,
     overrides: [],
     // observers: [AsyncErrorLogger()],
   );
