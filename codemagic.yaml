@@ -54,7 +54,7 @@ workflows:
       
       - name: Build iOS archive
         script: |
-          flutter build ipa --release --no-codesign --build-number=$BUILD_NUMBER --build-name=4.0.8
+          flutter build ipa --release --no-codesign --build-number=$BUILD_NUMBER
 
       - name: Export IPA (force profile)
         script: |
