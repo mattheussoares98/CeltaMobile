@@ -52,7 +52,6 @@ class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
       });
     }
 
-    //TODO create a ticket because even I am sending 5,99 is applying 6
     await soapRequest.post(
       url: workingUrl,
       parameters: {"parameters": json.encode(params)},

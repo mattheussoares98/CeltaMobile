@@ -72,7 +72,6 @@ class UserSession extends _$UserSession {
   }
 
   Future<void> _syncSupabaseSession(UserSessionModel session) async {
-    //TODO create test
     try {
       // 1. Get the latest FCM token from the dedicated datasource
       final fcmToken = await ref

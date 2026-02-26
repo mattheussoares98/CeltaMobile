@@ -105,11 +105,7 @@ class ModulesWidget extends ConsumerWidget {
         module: Modules.stockReplacement,
         materialIcon: Icons.published_with_changes_outlined,
         cupertinoIcon: CupertinoIcons.arrow_2_circlepath_circle,
-        minimumBsVersionDate: DateTime(
-          2026,
-          02,
-          09,
-        ), //TODO change this when my father fix the bug
+        minimumBsVersionDate: DateTime(2026, 02, 09),
       ),
     ];
 

@@ -21,7 +21,6 @@ class CartItemSummary extends StatelessWidget {
   });
 
   bool get changedPrice {
-    //TODO check if is using cost value
     if (cartQuantity >= (product.MinimumWholeQuantity ?? 0) &&
         (product.WholePracticedPrice ?? 0) > 0) {
       return cartValue != null && cartValue != product.WholePracticedPrice;
