@@ -173,7 +173,7 @@ class ProductItemWidget extends ConsumerWidget {
     return RepaintBoundary(
       child: Card(
         clipBehavior: Clip.antiAlias,
-        margin: const EdgeInsets.only(bottom: Sizes.p8),
+        margin: const EdgeInsets.only(bottom: Sizes.p12),
         child: Column(
           children: [
             InkWell(

@@ -76,7 +76,7 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         margin: const EdgeInsets.symmetric(
-          vertical: Sizes.p4,
+          vertical: Sizes.p8,
           horizontal: Sizes.p4,
         ),
         shape: RoundedRectangleBorder(
