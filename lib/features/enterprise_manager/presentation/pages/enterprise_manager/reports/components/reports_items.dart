@@ -9,77 +9,149 @@ import '../../../../../../../core/presentation/controllers/app_usage/app_usage.d
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
 
-class ReportsItems extends ConsumerWidget {
+class ReportsItems extends ConsumerStatefulWidget {
   const ReportsItems({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ReportsItems> createState() => _ReportsItemsState();
+}
+
+class _ReportsItemsState extends ConsumerState<ReportsItems> {
+  final filterController = TextEditingController();
+
+  @override
+  void dispose() {
+    filterController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return AsyncValueWidget(
-      isSliver: true,
-      value: ref.watch(appUsageStateControllerProvider),
-      tryAgain: null,
-      data: (usageReports) {
-        if (usageReports?.isEmpty ?? true) {
-          return SliverToBoxAdapter(
-            child: Center(child: Text('Nenhum uso encontrado'.hardcoded)),
-          );
-        }
+    return Column(
+      children: [
+        DefaultTextFormField(
+          controller: filterController,
+          hintText: 'Filtrar empresa|usuário|tipo'.hardcoded,
+          labelText: 'Filtrar'.hardcoded,
+        ),
+        Expanded(
+          child: AsyncValueWidget(
+            value: ref.watch(appUsageStateControllerProvider),
+            tryAgain: null,
+            data: (usageReports) {
+              if (usageReports?.isEmpty ?? true) {
+                return Center(child: Text('Nenhum uso encontrado'.hardcoded));
+              }
 
-        final usageByEnterprise = groupBy(
-          usageReports!,
-          (e) => e.enterpriseName ?? 'No group',
-        );
+              return AnimatedBuilder(
+                animation: filterController,
+                builder: (_, _) {
+                  final usageByEnterprise = groupBy(
+                    usageReports!.nonNulls.where((e) {
+                      final filter = filterController.text
+                          .toLowerCase()
+                          .removeWhiteSpaces();
+                      final enterpriseName = e.enterpriseName!
+                          .toLowerCase()
+                          .removeWhiteSpaces();
 
-        final groupEntries = usageByEnterprise.entries.toList()
-          ..sort((a, b) => a.key.compareTo(b.key));
+                      return filterController.text.isEmpty ||
+                          enterpriseName.contains(filter);
+                    }),
+                    (e) => e.enterpriseName!,
+                  );
 
-        return ResponsiveListFlow(
-          isSliver: true,
-          itemCount: groupEntries.length,
-          itemBuilder: (_, enterpriseIndex) {
-            final enterpriseName = groupEntries[enterpriseIndex].key;
-            final reports = groupEntries[enterpriseIndex].value;
+                  final groupEntries = usageByEnterprise.entries.toList()
+                    ..sort((a, b) => a.key.compareTo(b.key));
+                  final totalRequests = groupEntries.fold<int>(
+                    0,
+                    (sum, e) =>
+                        sum +
+                        e.value.fold<int>(0, (sum, r) => sum + r.requestCount),
+                  );
 
-            final typeTotals = groupBy(reports, (e) => e.usageType).entries.map(
-              (entry) {
-                final type = entry.key;
-                final total = entry.value.fold<int>(
-                  0,
-                  (sum, r) => sum + r.requestCount,
-                );
-                return (name: type.name, total: total);
-              },
-            ).toList()..sort((a, b) => b.total.compareTo(a.total));
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              '${groupEntries.length} clientes'.hardcoded,
+                            ),
+                          ),
+                          gapW8,
+                          Flexible(
+                            flex: 2,
+                            child: Text('$totalRequests requisições'.hardcoded),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: ResponsiveListFlow(
+                          itemCount: groupEntries.length,
+                          itemBuilder: (_, enterpriseIndex) {
+                            final enterpriseName =
+                                groupEntries[enterpriseIndex].key;
+                            final reports = groupEntries[enterpriseIndex].value;
 
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${enterpriseName.toUpperCase()} (${typeTotals.fold<int>(0, (s, t) => s + t.total).toString().toBrazilianNumber(0)})',
-                      style: theme.textTheme.titleMedium,
-                    ),
+                            final typeTotals =
+                                groupBy(
+                                    reports,
+                                    (e) => e.usageType,
+                                  ).entries.map((entry) {
+                                    final type = entry.key;
+                                    final total = entry.value.fold<int>(
+                                      0,
+                                      (sum, r) => sum + r.requestCount,
+                                    );
+                                    return (
+                                      name: type.description,
+                                      total: total,
+                                    );
+                                  }).toList()
+                                  ..sort((a, b) => b.total.compareTo(a.total));
 
-                    _RequestsByTypeOrUser(
-                      groupingByType: true,
-                      reports: reports,
-                    ),
-                    const Divider(),
-                    _RequestsByTypeOrUser(
-                      groupingByType: false,
-                      reports: reports,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
+                            return Card(
+                              margin: const EdgeInsets.symmetric(
+                                vertical: Sizes.p4,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(Sizes.p8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${enterpriseName.toUpperCase()} (${typeTotals.fold<int>(0, (s, t) => s + t.total).toString().toBrazilianNumber(0)})',
+                                      style: theme.textTheme.titleMedium,
+                                    ),
+
+                                    _RequestsByTypeOrUser(
+                                      groupingByType: true,
+                                      reports: reports,
+                                    ),
+                                    const Divider(),
+                                    _RequestsByTypeOrUser(
+                                      groupingByType: false,
+                                      reports: reports,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -98,7 +170,7 @@ class _RequestsByTypeOrUser extends StatelessWidget {
     final groupedValues =
         groupBy(
             reports,
-            (e) => groupingByType ? e.usageType.name : e.userName,
+            (e) => groupingByType ? e.usageType.description : e.userName,
           ).entries.map((entry) {
             final name = entry.key;
             final total = entry.value.fold(0, (sum, r) => sum + r.requestCount);

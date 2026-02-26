@@ -9,8 +9,16 @@ class ReportsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const CustomScrollView(
-      slivers: [gapSliverH8, StartAndEndDate(), gapSliverH8, ReportsItems()],
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: Sizes.p4),
+      child: Column(
+        children: [
+          gapH8,
+          StartAndEndDate(),
+          gapH8,
+          Expanded(child: ReportsItems()),
+        ],
+      ),
     );
   }
 }

@@ -12,44 +12,37 @@ class StartAndEndDate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _SelectPeriod(isStart: true, key: ValueKey('start')),
-                gapW16,
-                _SelectPeriod(isStart: false, key: ValueKey('end')),
-              ],
-            ),
-            gapH8,
-            Consumer(
-              builder: (_, ref, _) {
-                return PrimaryButton(
-                  text: 'Atualizar'.hardcoded,
-                  isLoading: ref.watch(
-                    appUsageStateControllerProvider.select((s) => s.isLoading),
-                  ),
-                  onPressed: () async {
-                    ref
-                        .read(appUsageStateControllerProvider.notifier)
-                        .loadRemoteUsageReport(
-                          start: ref
-                              .read(reportPeriodStateControllerProvider)
-                              .$1,
-                          end: ref.read(reportPeriodStateControllerProvider).$2,
-                        );
-                  },
-                );
-              },
-            ),
+            _SelectPeriod(isStart: true, key: ValueKey('start')),
+            gapW16,
+            _SelectPeriod(isStart: false, key: ValueKey('end')),
           ],
         ),
-      ),
+        gapH8,
+        Consumer(
+          builder: (_, ref, _) {
+            return PrimaryButton(
+              text: 'Atualizar'.hardcoded,
+              isLoading: ref.watch(
+                appUsageStateControllerProvider.select((s) => s.isLoading),
+              ),
+              onPressed: () async {
+                ref
+                    .read(appUsageStateControllerProvider.notifier)
+                    .loadRemoteUsageReport(
+                      start: ref.read(reportPeriodStateControllerProvider).$1,
+                      end: ref.read(reportPeriodStateControllerProvider).$2,
+                    );
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }
