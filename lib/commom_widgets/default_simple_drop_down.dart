@@ -36,6 +36,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onChanged == null ? null : () {},
         child: DropdownButtonFormField<T>(
