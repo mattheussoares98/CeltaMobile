@@ -20,7 +20,7 @@ class EditEnterpriseSwitch extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isAdminLogin = ref.watch(
       authManagerStateProvider.select(
-        (s) => s.value?.email?.toLowerCase() == 'telma@celtaware.com.br',
+        (s) => s.value?.email?.toLowerCase() == 'admin@celtaware.com.br',
       ),
     );
     return ResponsiveListFlow(
