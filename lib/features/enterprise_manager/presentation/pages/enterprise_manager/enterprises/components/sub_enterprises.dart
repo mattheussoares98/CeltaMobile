@@ -1,31 +1,46 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../routing/routing.dart';
 import '../../../../../domain/entities/entities.dart';
+import '../../../../controllers/controllers.dart';
 
-class SubEnterprises extends StatelessWidget {
+class SubEnterprises extends ConsumerWidget {
   final EnterprisePermissionEntity enterprise;
   const SubEnterprises({super.key, required this.enterprise});
 
-  void onTap(
-    BuildContext context,
-    SubEnterprisePermissionEntity subEnterprise,
-  ) {
-    context.pushNamed(
-      Routes.enterpriseManagerChangeModulesPermissions.name,
-      pathParameters: {
-        'enterpriseId': enterprise.id.toString(),
-        'subEnterpriseId': subEnterprise.id.toString(),
-      },
-    );
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+
+    void onTap(SubEnterprisePermissionEntity subEnterprise) {
+      final isAdminLogin = ref.read(
+        authManagerStateProvider.select(
+          (s) => s.value?.email?.toLowerCase() == 'admin@celtaware.com.br',
+        ),
+      );
+      if (isAdminLogin) {
+        context.pushNamed(
+          Routes.enterpriseManagerChangeModulesPermissions.name,
+          pathParameters: {
+            'enterpriseId': enterprise.id.toString(),
+            'subEnterpriseId': subEnterprise.id.toString(),
+          },
+        );
+      } else {
+        showAlertDialog(
+          context: context,
+          title: 'Sem permissão'.hardcoded,
+          content:
+              'Somente administradores podem fazer essa alteração'.hardcoded,
+        );
+      }
+    }
 
     return ListView.separated(
       itemCount: enterprise.subEnterprises.length,
@@ -37,7 +52,7 @@ class SubEnterprises extends StatelessWidget {
       itemBuilder: (_, index) {
         final subEnterprise = enterprise.subEnterprises[index];
         return InkWell(
-          onTap: () => onTap(context, subEnterprise),
+          onTap: () => onTap(subEnterprise),
           child: Column(
             children: [
               if (index == 0) _MyDivider(),
@@ -87,9 +102,7 @@ class SubEnterprises extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        onTap(context, subEnterprise);
-                      },
+                      onPressed: () => onTap(subEnterprise),
                       icon: Icon(
                         theme.platform == TargetPlatform.iOS
                             ? CupertinoIcons.pencil
