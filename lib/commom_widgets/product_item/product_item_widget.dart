@@ -207,7 +207,10 @@ class ProductItemWidget extends ConsumerWidget {
                                         ? null
                                         : " (${product.PackingQuantity.toString().formattedPacking()})",
                                     titleStyle: theme.textTheme.titleMedium,
-                                    subTitleStyle: theme.textTheme.bodyMedium,
+                                    subTitleStyle: theme.textTheme.titleMedium
+                                        ?.copyWith(
+                                          color: theme.colorScheme.secondary,
+                                        ),
                                   ),
                                   Stack(
                                     children: [
