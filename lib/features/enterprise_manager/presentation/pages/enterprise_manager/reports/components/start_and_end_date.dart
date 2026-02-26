@@ -14,20 +14,22 @@ class StartAndEndDate extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const _SelectPeriod(isStart: true, key: ValueKey('start')),
-            gapW16,
-            const _SelectPeriod(isStart: false, key: ValueKey('end')),
-            if (isDesktop) ...[gapW16, _UpdateButton()],
-          ],
-        ),
-        if (!isDesktop) ...[gapH8, _UpdateButton()],
-      ],
+    return SliverToBoxAdapter(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const _SelectPeriod(isStart: true, key: ValueKey('start')),
+              gapW16,
+              const _SelectPeriod(isStart: false, key: ValueKey('end')),
+              if (isDesktop) ...[gapW16, _UpdateButton()],
+            ],
+          ),
+          if (!isDesktop) ...[gapH8, _UpdateButton()],
+        ],
+      ),
     );
   }
 }
