@@ -14,25 +14,11 @@ class ReportsItems extends ConsumerWidget {
     return AsyncValueWidget(
       isSliver: true,
       value: ref.watch(appUsageStateControllerProvider),
-      tryAgain: () {
-        //TODO reload the reports
-      },
+      tryAgain: null,
       data: (usageReports) {
         if (usageReports?.isEmpty ?? true) {
           return SliverToBoxAdapter(
-            child: Center(
-              child: Column(
-                children: [
-                  Text('Nenhum uso encontrado'.hardcoded),
-                  ElevatedButton(
-                    onPressed: () {
-                      //TODO reload
-                    },
-                    child: Text('Carregar novamente'.hardcoded),
-                  ),
-                ],
-              ),
-            ),
+            child: Center(child: Text('Nenhum uso encontrado'.hardcoded)),
           );
         }
 

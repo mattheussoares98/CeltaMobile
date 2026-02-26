@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../controllers/controllers.dart';
 
@@ -11,15 +12,63 @@ class StartAndEndDate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final now = DateTime.now();
-    //TODO finish this widget
-
     return SliverToBoxAdapter(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            child: Row(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _SelectPeriod(isStart: true, key: ValueKey('start')),
+                gapW16,
+                _SelectPeriod(isStart: false, key: ValueKey('end')),
+              ],
+            ),
+            gapH8,
+            Consumer(
+              builder: (_, ref, _) {
+                return PrimaryButton(
+                  text: 'Atualizar'.hardcoded,
+                  isLoading: ref.watch(
+                    appUsageStateControllerProvider.select((s) => s.isLoading),
+                  ),
+                  onPressed: () async {
+                    ref
+                        .read(appUsageStateControllerProvider.notifier)
+                        .loadRemoteUsageReport(
+                          start: ref
+                              .read(reportPeriodStateControllerProvider)
+                              .$1,
+                          end: ref.read(reportPeriodStateControllerProvider).$2,
+                        );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SelectPeriod extends ConsumerWidget {
+  final bool isStart;
+  const _SelectPeriod({super.key, required this.isStart});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final now = DateTime.now();
+
+    return Flexible(
+      child: SizedBox(
+        width: 200,
+        child: Column(
+          children: [
+            Text('Mês/ano ${isStart ? 'início' : 'final'}'.hardcoded),
+            Row(
               children: [
                 Flexible(
                   child: DefaultSimpleDropDown<int>(
@@ -27,7 +76,10 @@ class StartAndEndDate extends ConsumerWidget {
                     iconSize: 0,
                     onChanged: (month) => ref
                         .read(reportPeriodStateControllerProvider.notifier)
-                        .update(startMonth: month),
+                        .update(
+                          startMonth: isStart ? month : null,
+                          endMonth: isStart ? null : month,
+                        ),
                     items: List.generate(
                       12,
                       (index) => DropdownMenuItem(
@@ -37,7 +89,7 @@ class StartAndEndDate extends ConsumerWidget {
                     ),
                     value: ref.watch(
                       reportPeriodStateControllerProvider.select(
-                        (s) => s.$1.month,
+                        (s) => isStart ? s.$1.month : s.$2.month,
                       ),
                     ),
                     hint: '',
@@ -51,7 +103,10 @@ class StartAndEndDate extends ConsumerWidget {
                     iconSize: 0,
                     onChanged: (year) => ref
                         .read(reportPeriodStateControllerProvider.notifier)
-                        .update(startYear: year),
+                        .update(
+                          startYear: isStart ? year : null,
+                          endYear: isStart ? null : year,
+                        ),
                     items: List.generate(
                       2,
                       (index) => DropdownMenuItem(
@@ -61,7 +116,7 @@ class StartAndEndDate extends ConsumerWidget {
                     ),
                     value: ref.watch(
                       reportPeriodStateControllerProvider.select(
-                        (s) => s.$1.year,
+                        (s) => isStart ? s.$1.year : s.$2.year,
                       ),
                     ),
                     hint: '',
@@ -69,22 +124,8 @@ class StartAndEndDate extends ConsumerWidget {
                 ),
               ],
             ),
-          ),
-          const Spacer(),
-          Flexible(
-            child: PrimaryButton(
-              text: 'Gerar'.hardcoded,
-              onPressed: () async {
-                // final newDate = await GetNewDate.get(
-                //   minimumDate: DateTime(2026, 2, 1),
-                //   maximumDate: now,
-                //   context: context,
-                // );
-                //TODO change in the controller
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
