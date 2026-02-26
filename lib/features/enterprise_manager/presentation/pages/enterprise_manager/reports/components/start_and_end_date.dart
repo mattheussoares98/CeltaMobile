@@ -12,37 +12,42 @@ class StartAndEndDate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _SelectPeriod(isStart: true, key: ValueKey('start')),
+            const _SelectPeriod(isStart: true, key: ValueKey('start')),
             gapW16,
-            _SelectPeriod(isStart: false, key: ValueKey('end')),
+            const _SelectPeriod(isStart: false, key: ValueKey('end')),
+            if (isDesktop) ...[gapW16, _UpdateButton()],
           ],
         ),
-        gapH8,
-        Consumer(
-          builder: (_, ref, _) {
-            return PrimaryButton(
-              text: 'Atualizar'.hardcoded,
-              isLoading: ref.watch(
-                appUsageStateControllerProvider.select((s) => s.isLoading),
-              ),
-              onPressed: () async {
-                ref
-                    .read(appUsageStateControllerProvider.notifier)
-                    .loadRemoteUsageReport(
-                      start: ref.read(reportPeriodStateControllerProvider).$1,
-                      end: ref.read(reportPeriodStateControllerProvider).$2,
-                    );
-              },
-            );
-          },
-        ),
+        if (!isDesktop) ...[gapH8, _UpdateButton()],
       ],
+    );
+  }
+}
+
+class _UpdateButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return PrimaryButton(
+      text: 'Atualizar'.hardcoded,
+      isLoading: ref.watch(
+        appUsageStateControllerProvider.select((s) => s.isLoading),
+      ),
+      onPressed: () async {
+        ref
+            .read(appUsageStateControllerProvider.notifier)
+            .loadRemoteUsageReport(
+              start: ref.read(reportPeriodStateControllerProvider).$1,
+              end: ref.read(reportPeriodStateControllerProvider).$2,
+            );
+      },
     );
   }
 }
