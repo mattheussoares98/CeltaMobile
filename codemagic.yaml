@@ -56,9 +56,6 @@ workflows:
         script: |
           flutter build ipa --release --no-codesign --build-number=$BUILD_NUMBER --build-name=4.0.8
 
-      - name: Build Android AAB
-        script: flutter build appbundle
-        
       - name: Export IPA (force profile)
         script: |
           PROFILE=$(ls -1 ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -n 1)
@@ -93,6 +90,9 @@ workflows:
             -archivePath build/ios/archive/Runner.xcarchive \
             -exportPath build/ios/ipa \
             -exportOptionsPlist $HOME/export_options.plist
+
+      - name: Build Android AAB
+        script: flutter build appbundle
 
     artifacts:
       - build/app/outputs/bundle/release/*.aab
