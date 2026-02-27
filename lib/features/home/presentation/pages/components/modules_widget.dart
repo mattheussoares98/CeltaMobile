@@ -7,18 +7,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../controllers/controllers.dart';
 import 'components.dart';
 
-/// This prevents the UI from re-calculating the order on every rebuild cycle.
-final favoriteModulesSetProvider = Provider<Set<Modules>>((ref) {
-  final list = ref.watch(
-    favoriteModulesStateControllerProvider.select(
-      (s) => s.value ?? const <Modules>[],
-    ),
-  );
-  return list.toSet();
-});
+/// PERFORMANCE: Pre-computing the sorted list and an index map.
+/// Storing the map allows findChildIndexCallback to work in O(1) time.
+class SortedModulesData {
+  final List<Modules> list;
+  final Map<Modules, int> indexMap;
+  SortedModulesData(this.list, this.indexMap);
+}
 
-/// Prevents the UI from re-calculating the order on every rebuild cycle.
-final sortedModulesProvider = Provider<List<Modules>>((ref) {
+final sortedModulesProvider = Provider<SortedModulesData>((ref) {
   final favoriteModules = ref.watch(
     favoriteModulesStateControllerProvider.select(
       (s) => s.value ?? const <Modules>[],
@@ -33,23 +30,20 @@ final sortedModulesProvider = Provider<List<Modules>>((ref) {
   modules.sort((a, b) {
     final ia = favIndex[a];
     final ib = favIndex[b];
-    if (ia != null && ib != null) return ib.compareTo(ia); // newest first
+    if (ia != null && ib != null) return ib.compareTo(ia);
     if (ia != null) return -1;
     if (ib != null) return 1;
     return a.index.compareTo(b.index);
   });
 
-  return modules;
+  final indexMap = {for (int i = 0; i < modules.length; i++) modules[i]: i};
+  return SortedModulesData(modules, indexMap);
 });
 
-class ModulesWidget extends ConsumerStatefulWidget {
+class ModulesWidget extends StatelessWidget {
   const ModulesWidget({super.key});
 
-  @override
-  ConsumerState<ModulesWidget> createState() => _ModulesWidgetState();
-}
-
-class _ModulesWidgetState extends ConsumerState<ModulesWidget> {
+  /// PERFORMANCE: Using a static map to avoid widget recreation.
   static final Map<Modules, DefaultModuleButton> _buttonByModule = {
     Modules.adjustPrice: const DefaultModuleButton(
       route: Routes.adjustSalePriceProducts,
@@ -146,110 +140,156 @@ class _ModulesWidgetState extends ConsumerState<ModulesWidget> {
     ),
   };
 
-  int _calculateCrossAxisCount(double width) {
-    if (width > 700) return 4;
-    final floor = (width / 160).floor();
-    return floor < 2 ? 1 : floor;
-  }
-
-  double _calculateTotalHeight(
-    int itemCount,
-    int crossAxisCount,
-    double height,
-    double spacing,
-  ) {
-    final rowCount = (itemCount / crossAxisCount).ceil();
-    return (rowCount * (height + spacing)) + spacing;
-  }
-
   @override
   Widget build(BuildContext context) {
-    // when the actual order changes.
-    final currentOrder = ref.watch(sortedModulesProvider);
+    // PERFORMANCE: Use sizeOf for optimized rebuilds on screen width change only.
+    final width = MediaQuery.sizeOf(context).width;
+    final isMobile = width < Breakpoint.tablet;
+    const double spacing = Sizes.p4;
+
+    if (isMobile) {
+      return const MyGridView(spacing: spacing, crossAxisCount: 2);
+    }
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final crossAxisCount = _calculateCrossAxisCount(width);
-
-        const double itemHeight = 90;
-        const double spacing = Sizes.p4;
-        final double itemWidth =
-            (width - (spacing * (crossAxisCount + 1))) / crossAxisCount;
-
-        final double totalHeight = _calculateTotalHeight(
-          currentOrder.length,
-          crossAxisCount,
-          itemHeight,
-          spacing,
-        );
-
-        return SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(spacing),
-            child: SizedBox(
-              height: totalHeight,
-              child: RepaintBoundary(
-                child: Stack(
-                  children: [
-                    for (int i = 0; i < currentOrder.length; i++)
-                      _AnimatedModuleTile(
-                        key: ValueKey(currentOrder[i]),
-                        module: currentOrder[i],
-                        index: i,
-                        itemWidth: itemWidth,
-                        itemHeight: itemHeight,
-                        spacing: spacing,
-                        crossAxisCount: crossAxisCount,
-                        child: _buttonByModule[currentOrder[i]]!,
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
+        final crossAxisCount = constraints.maxWidth > 700
+            ? 4
+            : (constraints.maxWidth / 160).floor().clamp(1, 4);
+        return MyGridView(spacing: spacing, crossAxisCount: crossAxisCount);
       },
     );
   }
 }
 
-class _AnimatedModuleTile extends StatelessWidget {
-  final Modules module;
-  final int index;
-  final double itemWidth;
-  final double itemHeight;
-  final double spacing;
-  final int crossAxisCount;
-  final Widget child;
-
-  const _AnimatedModuleTile({
+class MyGridView extends StatelessWidget {
+  const MyGridView({
     super.key,
-    required this.module,
-    required this.index,
-    required this.itemWidth,
-    required this.itemHeight,
     required this.spacing,
     required this.crossAxisCount,
+  });
+
+  final double spacing;
+  final int crossAxisCount;
+
+  @override
+  Widget build(BuildContext context) {
+    // PERFORMANCE: RepaintBoundary on the entire Grid prevents parent elements
+    // from repainting during reorder animations.
+    return RepaintBoundary(
+      child: Consumer(
+        builder: (context, ref, child) {
+          // PERFORMANCE: Re-ordering logic is localized here. Toggling a favorite
+          // ONLY rebuilds the GridView, not the whole ModulesWidget or LayoutBuilder.
+          final data = ref.watch(sortedModulesProvider);
+
+          return GridView.custom(
+            padding: EdgeInsets.all(spacing),
+            physics: const ClampingScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              mainAxisSpacing: spacing,
+              crossAxisSpacing: spacing,
+              mainAxisExtent: 90,
+            ),
+            childrenDelegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final module = data.list[index];
+                return _PulsingModuleTile(
+                  // PERFORMANCE: Stable identity-based key.
+                  key: ValueKey(module),
+                  module: module,
+                  child: ModulesWidget._buttonByModule[module]!,
+                );
+              },
+              childCount: data.list.length,
+              // PERFORMANCE: findChildIndexCallback allows Flutter to relocate
+              // the existing Element in O(1) time using our pre-computed Map.
+              findChildIndexCallback: (Key key) {
+                if (key is ValueKey<Modules>) {
+                  return data.indexMap[key.value];
+                }
+                return null;
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _PulsingModuleTile extends ConsumerStatefulWidget {
+  final Modules module;
+  final Widget child;
+
+  const _PulsingModuleTile({
+    super.key,
+    required this.module,
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final row = index ~/ crossAxisCount;
-    final col = index % crossAxisCount;
-    final double left = col * (itemWidth + spacing);
-    final double top = row * (itemHeight + spacing);
+  ConsumerState<_PulsingModuleTile> createState() => _PulsingModuleTileState();
+}
 
-    return AnimatedPositioned(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeOutCubic,
-      left: left,
-      top: top,
-      width: itemWidth,
-      height: itemHeight,
-      child: RepaintBoundary(child: child),
+class _PulsingModuleTileState extends ConsumerState<_PulsingModuleTile>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _pulseController;
+  late final Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+
+    _scaleAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween(
+          begin: 1.0,
+          end: 1.15,
+        ).chain(CurveTween(curve: Curves.easeOut)),
+        weight: 50,
+      ),
+      TweenSequenceItem(
+        tween: Tween(
+          begin: 1.15,
+          end: 1.0,
+        ).chain(CurveTween(curve: Curves.easeIn)),
+        weight: 50,
+      ),
+    ]).animate(_pulseController);
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // PERFORMANCE: Pulse logic is isolated to this specific widget.
+    ref.listen<bool>(
+      favoriteModulesStateControllerProvider.select(
+        (s) => s.value?.contains(widget.module) ?? false,
+      ),
+      (previous, next) {
+        if (previous != null && previous != next) {
+          _pulseController.forward(from: 0);
+        }
+      },
+    );
+
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      // PERFORMANCE: Each tile is cached, so the Move/Snap reorder
+      // only requires updating the GPU position matrix.
+      child: RepaintBoundary(child: widget.child),
     );
   }
 }
