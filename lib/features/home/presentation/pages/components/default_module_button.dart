@@ -39,7 +39,7 @@ class DefaultModuleButton extends ConsumerStatefulWidget {
 
 class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
     with TryAccessRouteMixin {
-  Future<void> toggleFavorite(EnterpriseEntity selectedEnterprise) async {
+  Future<void> toggleFavorite() async {
     if (widget.minimumBsVersionDate != null) {
       final bsVersionDate = await ref.read(
         bsVersionStateControllerProvider.future,
@@ -56,14 +56,17 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
         return;
       }
     }
+    final enterpriseCode = ref.read(
+      selectedEnterpriseStateControllerProvider.select((s) => s!.Code),
+    );
     tryAccessRoute(
       widget.route,
       widget.module,
-      selectedEnterprise.Code,
+      enterpriseCode,
       replace: true,
       pathParameters: {
         if (widget.passEnterpriseToNextRoute)
-          'enterpriseCode': selectedEnterprise.Code.toString(),
+          'enterpriseCode': enterpriseCode.toString(),
       },
     );
   }
@@ -101,15 +104,13 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
 
           final isLoading = loadingAdjustPricePermission || loadingBsVersion;
 
-          final selectedEnterprise = ref.watch(
-            selectedEnterpriseStateControllerProvider,
+          final hasSelectedEnterprise = ref.watch(
+            selectedEnterpriseStateControllerProvider.select((s) => s != null),
           );
 
           return InkWell(
             borderRadius: BorderRadius.circular(Sizes.p12),
-            onTap: selectedEnterprise == null || isLoading
-                ? null
-                : () => toggleFavorite(selectedEnterprise),
+            onTap: !hasSelectedEnterprise || isLoading ? null : toggleFavorite,
             child: Stack(
               children: [
                 Center(
@@ -203,21 +204,23 @@ class FavoriteIconButton extends ConsumerWidget {
     return Positioned(
       top: 0,
       right: 0,
-      child: IconButton(
-        onPressed: () => ref
-            .read(favoriteModulesStateControllerProvider.notifier)
-            .toggle(widget.module),
-        icon: isFavorite
-            ? Icon(
-                isIOS ? CupertinoIcons.star_fill : Icons.star,
-                color: theme.primaryColorDark,
-                size: 14,
-              )
-            : Icon(
-                isIOS ? CupertinoIcons.star : Icons.star_border,
-                color: theme.disabledColor,
-                size: 14,
-              ),
+      child: RepaintBoundary(
+        child: IconButton(
+          onPressed: () => ref
+              .read(favoriteModulesStateControllerProvider.notifier)
+              .toggle(widget.module),
+          icon: isFavorite
+              ? Icon(
+                  isIOS ? CupertinoIcons.star_fill : Icons.star,
+                  color: theme.primaryColorDark,
+                  size: 14,
+                )
+              : Icon(
+                  isIOS ? CupertinoIcons.star : Icons.star_border,
+                  color: theme.disabledColor,
+                  size: 14,
+                ),
+        ),
       ),
     );
   }

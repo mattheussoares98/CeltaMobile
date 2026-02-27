@@ -42,18 +42,20 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
             final selectedEnterprise = ref.watch(
               selectedEnterpriseStateControllerProvider,
             );
-            return DefaultDropDown<EnterpriseEntity>(
-              hint: Text('Selecione a empresa'.hardcoded),
-              selectedItem: selectedEnterprise,
-              label: selectedEnterprise != null
-                  ? '${selectedEnterprise.PersonalizedCode} - ${selectedEnterprise.name}'
-                  : null,
-              onChanged: (enterprise) {
-                ref
-                    .read(selectedEnterpriseStateControllerProvider.notifier)
-                    .selectEnterprise(enterprise);
-              },
-              items: items,
+            return RepaintBoundary(
+              child: DefaultDropDown<EnterpriseEntity>(
+                hint: Text('Selecione a empresa'.hardcoded),
+                selectedItem: selectedEnterprise,
+                label: selectedEnterprise != null
+                    ? '${selectedEnterprise.PersonalizedCode} - ${selectedEnterprise.name}'
+                    : null,
+                onChanged: (enterprise) {
+                  ref
+                      .read(selectedEnterpriseStateControllerProvider.notifier)
+                      .selectEnterprise(enterprise);
+                },
+                items: items,
+              ),
             );
           },
         );
