@@ -1,12 +1,46 @@
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
 import 'components.dart';
+
+/// This prevents the UI from re-calculating the order on every rebuild cycle.
+final favoriteModulesSetProvider = Provider<Set<Modules>>((ref) {
+  final list = ref.watch(
+    favoriteModulesStateControllerProvider.select(
+      (s) => s.value ?? const <Modules>[],
+    ),
+  );
+  return list.toSet();
+});
+
+/// Prevents the UI from re-calculating the order on every rebuild cycle.
+final sortedModulesProvider = Provider<List<Modules>>((ref) {
+  final favoriteModules = ref.watch(
+    favoriteModulesStateControllerProvider.select(
+      (s) => s.value ?? const <Modules>[],
+    ),
+  );
+
+  final modules = Modules.values.toList();
+  final favIndex = {
+    for (int i = 0; i < favoriteModules.length; i++) favoriteModules[i]: i,
+  };
+
+  modules.sort((a, b) {
+    final ia = favIndex[a];
+    final ib = favIndex[b];
+    if (ia != null && ib != null) return ib.compareTo(ia); // newest first
+    if (ia != null) return -1;
+    if (ib != null) return 1;
+    return a.index.compareTo(b.index);
+  });
+
+  return modules;
+});
 
 class ModulesWidget extends ConsumerStatefulWidget {
   const ModulesWidget({super.key});
@@ -16,14 +50,6 @@ class ModulesWidget extends ConsumerStatefulWidget {
 }
 
 class _ModulesWidgetState extends ConsumerState<ModulesWidget> {
-  // Track previous order so we only animate when positions change.
-  List<Modules> _prevOrder = const [];
-  bool _firstBuild = true;
-
-  static final DateTime _minStockReplacementVersion = DateTime(2026, 2, 9);
-
-  // Build the buttons ONCE and reuse the same widget instances.
-  // The keys must be stable and unique.
   static final Map<Modules, DefaultModuleButton> _buttonByModule = {
     Modules.adjustPrice: const DefaultModuleButton(
       route: Routes.adjustSalePriceProducts,
@@ -116,123 +142,114 @@ class _ModulesWidgetState extends ConsumerState<ModulesWidget> {
       module: Modules.stockReplacement,
       materialIcon: Icons.published_with_changes_outlined,
       cupertinoIcon: CupertinoIcons.arrow_2_circlepath_circle,
-      minimumBsVersionDate: _minStockReplacementVersion,
+      minimumBsVersionDate: DateTime(2026, 2, 9),
     ),
   };
 
-  static int _getCrossAxisCount(BoxConstraints constraints) {
-    final floor = (constraints.maxWidth / 160).floor();
-    if (floor < 2) return 1;
-    if (constraints.maxWidth > 700) return 4;
-    return floor;
+  int _calculateCrossAxisCount(double width) {
+    if (width > 700) return 4;
+    final floor = (width / 160).floor();
+    return floor < 2 ? 1 : floor;
   }
 
-  List<Modules> _sortedModules(List<Modules> favoriteModules) {
-    final favIndex = <Modules, int>{
-      for (int i = 0; i < favoriteModules.length; i++) favoriteModules[i]: i,
-    };
-
-    final modules = _buttonByModule.keys.toList();
-
-    modules.sort((a, b) {
-      final ia = favIndex[a];
-      final ib = favIndex[b];
-
-      final aFav = ia != null;
-      final bFav = ib != null;
-
-      if (aFav && bFav) return ib.compareTo(ia); // newest first
-      if (aFav) return -1;
-      if (bFav) return 1;
-
-      // fallback alphabetical by route.module
-      final ra = _buttonByModule[a]!.route.module;
-      final rb = _buttonByModule[b]!.route.module;
-      return ra.compareTo(rb);
-    });
-
-    return modules;
-  }
-
-  bool _sameOrder(List<Modules> a, List<Modules> b) {
-    if (a.length != b.length) return false;
-    for (int i = 0; i < a.length; i++) {
-      if (a[i] != b[i]) return false;
-    }
-    return true;
+  double _calculateTotalHeight(
+    int itemCount,
+    int crossAxisCount,
+    double height,
+    double spacing,
+  ) {
+    final rowCount = (itemCount / crossAxisCount).ceil();
+    return (rowCount * (height + spacing)) + spacing;
   }
 
   @override
   Widget build(BuildContext context) {
-    final favoriteModules = ref.watch(
-      favoriteModulesStateControllerProvider.select(
-        (s) => s.value ?? const <Modules>[],
-      ),
-    );
+    // when the actual order changes.
+    final currentOrder = ref.watch(sortedModulesProvider);
 
-    final order = _sortedModules(favoriteModules);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final crossAxisCount = _calculateCrossAxisCount(width);
 
-    // Animate ONLY when order actually changed, and skip first build animation.
-    final shouldAnimate = !_firstBuild && !_sameOrder(order, _prevOrder);
-    final duration = shouldAnimate
-        ? const Duration(milliseconds: 600)
-        : Duration.zero;
+        const double itemHeight = 90;
+        const double spacing = Sizes.p4;
+        final double itemWidth =
+            (width - (spacing * (crossAxisCount + 1))) / crossAxisCount;
 
-    _prevOrder = order;
-    _firstBuild = false;
+        final double totalHeight = _calculateTotalHeight(
+          currentOrder.length,
+          crossAxisCount,
+          itemHeight,
+          spacing,
+        );
 
-    return RepaintBoundary(
-      child: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
-            final crossAxisCount = _getCrossAxisCount(constraints);
-
-            const double itemHeight = 90;
-            const double spacing = Sizes.p4;
-
-            final double itemWidth =
-                (width - (spacing * (crossAxisCount + 1))) / crossAxisCount;
-
-            final int rowCount = (order.length / crossAxisCount).ceil();
-            final double totalHeight =
-                rowCount * (itemHeight + spacing) + spacing;
-
-            return SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: SizedBox(
-                height: totalHeight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: spacing),
-                  child: Stack(
-                    children: List.generate(order.length, (index) {
-                      final module = order[index];
-                      final button = _buttonByModule[module]!;
-
-                      final row = index ~/ crossAxisCount;
-                      final col = index % crossAxisCount;
-
-                      final left = col * (itemWidth + spacing);
-                      final top = row * (itemHeight + spacing);
-
-                      return AnimatedPositioned(
-                        key: ValueKey('anim_module_${button.route.name}'),
-                        duration: duration,
-                        curve: Curves.easeInOutCubic,
-                        left: left,
-                        top: top,
-                        width: itemWidth,
-                        height: itemHeight,
-                        child: RepaintBoundary(child: button),
-                      );
-                    }),
-                  ),
+        return SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.all(spacing),
+            child: SizedBox(
+              height: totalHeight,
+              child: RepaintBoundary(
+                child: Stack(
+                  children: [
+                    for (int i = 0; i < currentOrder.length; i++)
+                      _AnimatedModuleTile(
+                        key: ValueKey(currentOrder[i]),
+                        module: currentOrder[i],
+                        index: i,
+                        itemWidth: itemWidth,
+                        itemHeight: itemHeight,
+                        spacing: spacing,
+                        crossAxisCount: crossAxisCount,
+                        child: _buttonByModule[currentOrder[i]]!,
+                      ),
+                  ],
                 ),
               ),
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _AnimatedModuleTile extends StatelessWidget {
+  final Modules module;
+  final int index;
+  final double itemWidth;
+  final double itemHeight;
+  final double spacing;
+  final int crossAxisCount;
+  final Widget child;
+
+  const _AnimatedModuleTile({
+    super.key,
+    required this.module,
+    required this.index,
+    required this.itemWidth,
+    required this.itemHeight,
+    required this.spacing,
+    required this.crossAxisCount,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final row = index ~/ crossAxisCount;
+    final col = index % crossAxisCount;
+    final double left = col * (itemWidth + spacing);
+    final double top = row * (itemHeight + spacing);
+
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeOutCubic,
+      left: left,
+      top: top,
+      width: itemWidth,
+      height: itemHeight,
+      child: RepaintBoundary(child: child),
     );
   }
 }
