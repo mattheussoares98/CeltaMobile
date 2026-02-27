@@ -39,6 +39,7 @@ class DefaultModuleButton extends ConsumerStatefulWidget {
 
 class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
     with TryAccessRouteMixin {
+  //TODO separate in more files
   Future<void> toggleFavorite() async {
     if (widget.minimumBsVersionDate != null) {
       final bsVersionDate = await ref.read(
@@ -122,7 +123,7 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
                       if (isLoading)
                         const LoadingWidget()
                       else
-                        ModuleIcon(
+                        _ModuleIcon(
                           widget: widget,
                           icon: icon,
                           color: theme.primaryColor,
@@ -147,7 +148,7 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
                 if (widget.module == Modules.stockReplacement &&
                     ModuleIsFreeUntil.stockReplacementIsFree)
                   const NewModuleBadge(),
-                FavoriteIconButton(
+                _FavoriteIconButton(
                   widget: widget,
                   key: ValueKey('favorite${widget.module}'),
                 ),
@@ -160,9 +161,8 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
   }
 }
 
-class ModuleIcon extends StatelessWidget {
-  const ModuleIcon({
-    super.key,
+class _ModuleIcon extends StatelessWidget {
+  const _ModuleIcon({
     required this.widget,
     required this.color,
     required this.icon,
@@ -185,8 +185,8 @@ class ModuleIcon extends StatelessWidget {
   }
 }
 
-class FavoriteIconButton extends ConsumerWidget {
-  const FavoriteIconButton({super.key, required this.widget});
+class _FavoriteIconButton extends ConsumerWidget {
+  const _FavoriteIconButton({super.key, required this.widget});
 
   final DefaultModuleButton widget;
 
