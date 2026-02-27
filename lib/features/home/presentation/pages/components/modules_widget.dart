@@ -181,55 +181,57 @@ class _ModulesWidgetState extends ConsumerState<ModulesWidget> {
     _prevOrder = order;
     _firstBuild = false;
 
-    return SafeArea(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final crossAxisCount = _getCrossAxisCount(constraints);
+    return RepaintBoundary(
+      child: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final crossAxisCount = _getCrossAxisCount(constraints);
 
-          const double itemHeight = 90;
-          const double spacing = Sizes.p4;
+            const double itemHeight = 90;
+            const double spacing = Sizes.p4;
 
-          final double itemWidth =
-              (width - (spacing * (crossAxisCount + 1))) / crossAxisCount;
+            final double itemWidth =
+                (width - (spacing * (crossAxisCount + 1))) / crossAxisCount;
 
-          final int rowCount = (order.length / crossAxisCount).ceil();
-          final double totalHeight =
-              rowCount * (itemHeight + spacing) + spacing;
+            final int rowCount = (order.length / crossAxisCount).ceil();
+            final double totalHeight =
+                rowCount * (itemHeight + spacing) + spacing;
 
-          return SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: SizedBox(
-              height: totalHeight,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: spacing),
-                child: Stack(
-                  children: List.generate(order.length, (index) {
-                    final module = order[index];
-                    final button = _buttonByModule[module]!;
+            return SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: SizedBox(
+                height: totalHeight,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: spacing),
+                  child: Stack(
+                    children: List.generate(order.length, (index) {
+                      final module = order[index];
+                      final button = _buttonByModule[module]!;
 
-                    final row = index ~/ crossAxisCount;
-                    final col = index % crossAxisCount;
+                      final row = index ~/ crossAxisCount;
+                      final col = index % crossAxisCount;
 
-                    final left = col * (itemWidth + spacing);
-                    final top = row * (itemHeight + spacing);
+                      final left = col * (itemWidth + spacing);
+                      final top = row * (itemHeight + spacing);
 
-                    return AnimatedPositioned(
-                      key: ValueKey('anim_module_${button.route.name}'),
-                      duration: duration,
-                      curve: Curves.easeInOutCubic,
-                      left: left,
-                      top: top,
-                      width: itemWidth,
-                      height: itemHeight,
-                      child: RepaintBoundary(child: button),
-                    );
-                  }),
+                      return AnimatedPositioned(
+                        key: ValueKey('anim_module_${button.route.name}'),
+                        duration: duration,
+                        curve: Curves.easeInOutCubic,
+                        left: left,
+                        top: top,
+                        width: itemWidth,
+                        height: itemHeight,
+                        child: RepaintBoundary(child: button),
+                      );
+                    }),
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -25,45 +25,34 @@ class HomePage extends ConsumerWidget {
       drawer: const CompleteDrawer(),
       appBar: AppBar(
         leadingWidth: 40,
-        title: RepaintBoundary(
-          child: AsyncValueWidget(
-            value: ref.watch(enterprisesStateControllerProvider()),
-            tryAgain: null,
-            errorMaxLines: 1,
-            data: (enterprises) {
-              return SelectEnterpriseDropDown(enterprises: enterprises);
-            },
-          ),
-        ),
+        title: const RepaintBoundary(child: SelectEnterpriseDropDown()),
       ),
 
-      body: RepaintBoundary(
-        child: OptimazedAsyncValueWidget(
-          provider: enterprisesStateControllerProvider(),
-          tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
-          child: Consumer(
-            builder: (_, ref, _) {
-              final enterpriseName = ref.watch(
-                userSessionProvider.select((s) => s.value?.enterprise?.name),
-              );
+      body: OptimazedAsyncValueWidget(
+        provider: enterprisesStateControllerProvider(),
+        tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
+        child: Consumer(
+          builder: (_, ref, _) {
+            final enterpriseName = ref.watch(
+              userSessionProvider.select((s) => s.value?.enterprise?.name),
+            );
 
-              if (enterpriseName == null) {
-                return const SizedBox.shrink();
-              }
+            if (enterpriseName == null) {
+              return const SizedBox.shrink();
+            }
 
-              return OptimazedAsyncValueWidget(
-                provider: enabledModulesByEnterpriseNameStateControllerProvider(
+            return OptimazedAsyncValueWidget(
+              provider: enabledModulesByEnterpriseNameStateControllerProvider(
+                enterpriseName,
+              ),
+              tryAgain: () => ref.invalidate(
+                enabledModulesByEnterpriseNameStateControllerProvider(
                   enterpriseName,
                 ),
-                tryAgain: () => ref.invalidate(
-                  enabledModulesByEnterpriseNameStateControllerProvider(
-                    enterpriseName,
-                  ),
-                ),
-                child: const ModulesWidget(),
-              );
-            },
-          ),
+              ),
+              child: const ModulesWidget(),
+            );
+          },
         ),
       ),
     );

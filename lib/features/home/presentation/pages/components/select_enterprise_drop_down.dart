@@ -7,65 +7,57 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
 
 class SelectEnterpriseDropDown extends ConsumerWidget {
-  final List<EnterpriseEntity> enterprises;
-  const SelectEnterpriseDropDown({super.key, required this.enterprises});
+  const SelectEnterpriseDropDown({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedEnterprise = ref.watch(
-      selectedEnterpriseStateControllerProvider,
-    );
-
-    return DefaultDropDown<EnterpriseEntity>(
-      hint: Text('Selecione a empresa'.hardcoded),
-      selectedItem: selectedEnterprise,
-      label: selectedEnterprise != null
-          ? '${selectedEnterprise.PersonalizedCode} - ${selectedEnterprise.name}'
-          : null,
-      onChanged: (enterprise) {
-        ref
-            .read(selectedEnterpriseStateControllerProvider.notifier)
-            .selectEnterprise(enterprise);
-      },
-      items: enterprises.map((e) {
+    return AsyncValueWidget(
+      value: ref.watch(enterprisesStateControllerProvider()),
+      tryAgain: null,
+      errorMaxLines: 1,
+      data: (enterprises) {
         final theme = Theme.of(context);
 
-        Color getColor(bool enabled) {
-          if (theme.platform != TargetPlatform.iOS) {
-            return theme.textTheme.bodyMedium!.color!;
-          } else if (enabled == false) {
-            return Colors.red;
-          } else if (e.Code == selectedEnterprise?.Code) {
-            return theme.primaryColor;
-          }
+        final items = enterprises
+            .map((e) {
+              // Keep it simple: a single Text is much cheaper than RichText/TextSpan
+              final text =
+                  '${e.PersonalizedCode} - ${e.name} (${e.CnpjNumber})';
 
-          return theme.disabledColor;
-        }
+              return DropdownMenuItem<EnterpriseEntity>(
+                value: e,
+                enabled: true,
+                child: Text(
+                  text,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleSmall,
+                ),
+              );
+            })
+            .toList(growable: false);
 
-        return DropdownMenuItem(
-          value: e,
-          enabled: true,
-          child: RichText(
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: "${e.PersonalizedCode} - ${e.name}",
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: getColor(true),
-                  ),
-                ),
-                TextSpan(
-                  text: " (${e.CnpjNumber})",
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: getColor(true),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        return Consumer(
+          builder: (context, ref, child) {
+            final selectedEnterprise = ref.watch(
+              selectedEnterpriseStateControllerProvider,
+            );
+            return DefaultDropDown<EnterpriseEntity>(
+              hint: Text('Selecione a empresa'.hardcoded),
+              selectedItem: selectedEnterprise,
+              label: selectedEnterprise != null
+                  ? '${selectedEnterprise.PersonalizedCode} - ${selectedEnterprise.name}'
+                  : null,
+              onChanged: (enterprise) {
+                ref
+                    .read(selectedEnterpriseStateControllerProvider.notifier)
+                    .selectEnterprise(enterprise);
+              },
+              items: items,
+            );
+          },
         );
-      }).toList(),
+      },
     );
   }
 }
