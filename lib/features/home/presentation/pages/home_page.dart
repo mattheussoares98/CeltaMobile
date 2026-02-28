@@ -23,10 +23,7 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       drawer: const CompleteDrawer(),
-      appBar: AppBar(
-        leadingWidth: 40,
-        title: const RepaintBoundary(child: SelectEnterpriseDropDown()),
-      ),
+      appBar: AppBar(leadingWidth: 40, title: const SelectEnterpriseDropDown()),
 
       body: OptimazedAsyncValueWidget(
         provider: enterprisesStateControllerProvider(),
