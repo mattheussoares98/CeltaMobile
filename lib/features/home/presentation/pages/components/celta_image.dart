@@ -14,9 +14,16 @@ class CeltaImage extends StatelessWidget {
         context.pop();
         context.pushNamed(Routes.enterpriseManager.name);
       },
-      child: ResponsiveCenter(
-        maxContentWidth: 300,
-        child: Image.asset("lib/core/assets/images/logoCeltaTransparente.png"),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return ResponsiveCenter(
+            maxContentWidth: 300,
+            child: Image.asset(
+              "lib/core/assets/images/logoCeltaTransparente.png",
+              cacheHeight: constraints.maxHeight.toInt(),
+            ),
+          );
+        },
       ),
     );
   }
