@@ -88,22 +88,18 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
       clipBehavior: Clip.none,
       child: Consumer(
         builder: (_, ref, _) {
-          final loadingAdjustPricePermission =
+          final isLoading =
               (widget.module == Modules.adjustPrice &&
-              ref.watch(
-                canAccessResourceStateControllerProvider(
-                  BsRoutine.adjustSalePrice,
-                  BsResource.adjustSalePrice,
-                ).select((s) => s.isLoading),
-              ));
-
-          final loadingBsVersion =
-              widget.minimumBsVersionDate != null &&
-              ref.watch(
-                bsVersionStateControllerProvider.select((s) => s.isLoading),
-              );
-
-          final isLoading = loadingAdjustPricePermission || loadingBsVersion;
+                  ref.watch(
+                    canAccessResourceStateControllerProvider(
+                      BsRoutine.adjustSalePrice,
+                      BsResource.adjustSalePrice,
+                    ).select((s) => s.isLoading),
+                  )) ||
+              (widget.minimumBsVersionDate != null &&
+                  ref.watch(
+                    bsVersionStateControllerProvider.select((s) => s.isLoading),
+                  ));
 
           final hasSelectedEnterprise = ref.watch(
             selectedEnterpriseStateControllerProvider.select((s) => s != null),
