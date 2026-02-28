@@ -76,8 +76,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       });
     });
 
-    final loginAsync = ref.watch(loginControllerProvider);
-
     return Scaffold(
       body: Center(
         child: Padding(
@@ -91,36 +89,23 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 children: [
                   const CeltaImage(),
                   EnterpriseField(
-                    isLoading: loginAsync.isLoading,
                     enterpriseController: enterpriseController,
                     userFocusNode: userFocusNode,
                   ),
                   gapH8,
                   UserField(
-                    isLoading: loginAsync.isLoading,
                     userController: userController,
                     userFocusNode: userFocusNode,
                     passwordFocusNode: passwordFocusNode,
                   ),
                   gapH8,
                   PasswordField(
-                    isLoading: loginAsync.isLoading,
                     passwordController: passwordController,
                     passwordFocusNode: passwordFocusNode,
-                    onSubmit: loginAsync.isLoading ? null : onSubmit,
-                    showPassword: showPassword,
-                    changeShowPassword: () {
-                      setState(() {
-                        showPassword = !showPassword;
-                      });
-                    },
+                    onSubmit: onSubmit,
                   ),
                   gapH32,
-                  PrimaryButton(
-                    text: 'Entrar'.hardcoded,
-                    isLoading: loginAsync.isLoading,
-                    onPressed: loginAsync.isLoading ? null : onSubmit,
-                  ),
+                  PrimaryButton(text: 'Entrar'.hardcoded, onPressed: onSubmit),
                 ],
               ),
             ),

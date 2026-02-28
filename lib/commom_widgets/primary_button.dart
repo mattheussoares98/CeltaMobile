@@ -1,15 +1,11 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../features/auth/presentation/controllers/controllers.dart';
 import '/constants/app_sizes.dart';
 import 'commom_widgets.dart';
 
-/// Primary button based on [ElevatedButton].
-/// Useful for CTAs in the app.
-/// @param text - text to display on the button.
-/// @param isLoading - if true, a loading indicator will be displayed instead of
-/// the text.
-/// @param onPressed - callback to be called when the button is pressed.
-class PrimaryButton extends StatelessWidget {
+class PrimaryButton extends ConsumerWidget {
   const PrimaryButton({
     super.key,
     required this.text,
@@ -26,9 +22,13 @@ class PrimaryButton extends StatelessWidget {
   final IconAlignment? iconAlignment;
   final Color? backgroundColor;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    final isLoading = ref.watch(
+      loginControllerProvider.select((s) => s.isLoading),
+    );
 
     final textWidget = Text(
       text,

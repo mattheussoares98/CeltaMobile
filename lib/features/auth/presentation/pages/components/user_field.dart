@@ -1,26 +1,29 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/validators/validators.dart';
+import '../../controllers/controllers.dart';
 
-class UserField extends StatelessWidget {
+class UserField extends ConsumerWidget {
   final TextEditingController userController;
   final FocusNode userFocusNode;
   final FocusNode passwordFocusNode;
-  final bool isLoading;
   const UserField({
     super.key,
     required this.userController,
     required this.userFocusNode,
     required this.passwordFocusNode,
-    required this.isLoading,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isLoading = ref.watch(
+      loginControllerProvider.select((s) => s.isLoading),
+    );
 
     return DefaultTextFormField(
       enabled: !isLoading,
