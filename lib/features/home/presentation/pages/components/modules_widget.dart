@@ -162,7 +162,7 @@ class ModulesWidget extends StatelessWidget {
   }
 }
 
-class MyGridView extends StatelessWidget {
+class MyGridView extends ConsumerWidget {
   const MyGridView({
     super.key,
     required this.spacing,
@@ -173,47 +173,38 @@ class MyGridView extends StatelessWidget {
   final int crossAxisCount;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // PERFORMANCE: RepaintBoundary on the entire Grid prevents parent elements
     // from repainting during reorder animations.
-    return RepaintBoundary(
-      child: Consumer(
-        builder: (context, ref, child) {
-          // PERFORMANCE: Re-ordering logic is localized here. Toggling a favorite
-          // ONLY rebuilds the GridView, not the whole ModulesWidget or LayoutBuilder.
-          final data = ref.watch(sortedModulesProvider);
-
-          return GridView.custom(
-            padding: EdgeInsets.all(spacing),
-            physics: const ClampingScrollPhysics(),
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: spacing,
-              crossAxisSpacing: spacing,
-              mainAxisExtent: 90,
-            ),
-            childrenDelegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final module = data.list[index];
-                return _PulsingModuleTile(
-                  // PERFORMANCE: Stable identity-based key.
-                  key: ValueKey(module),
-                  module: module,
-                  child: ModulesWidget._buttonByModule[module]!,
-                );
-              },
-              childCount: data.list.length,
-              // PERFORMANCE: findChildIndexCallback allows Flutter to relocate
-              // the existing Element in O(1) time using our pre-computed Map.
-              findChildIndexCallback: (Key key) {
-                if (key is ValueKey<Modules>) {
-                  return data.indexMap[key.value];
-                }
-                return null;
-              },
-            ),
+    final data = ref.watch(sortedModulesProvider);
+    return GridView.custom(
+      padding: EdgeInsets.all(spacing),
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        mainAxisSpacing: spacing,
+        crossAxisSpacing: spacing,
+        mainAxisExtent: 90,
+      ),
+      childrenDelegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final module = data.list[index];
+          return _PulsingModuleTile(
+            // PERFORMANCE: Stable identity-based key.
+            key: ValueKey(module),
+            module: module,
+            child: ModulesWidget._buttonByModule[module]!,
           );
+        },
+        childCount: data.list.length,
+        // PERFORMANCE: findChildIndexCallback allows Flutter to relocate
+        // the existing Element in O(1) time using our pre-computed Map.
+        findChildIndexCallback: (Key key) {
+          if (key is ValueKey<Modules>) {
+            return data.indexMap[key.value];
+          }
+          return null;
         },
       ),
     );
