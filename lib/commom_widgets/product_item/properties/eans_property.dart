@@ -12,6 +12,7 @@ class EansProperty extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 0),
       child: TitleAndSubTitle(
+        copyableSubtitle: true,
         title: 'EANs'.hardcoded,
         subTitle: widget.product.EANs?.map((e) => e.toString()).join(', '),
       ),

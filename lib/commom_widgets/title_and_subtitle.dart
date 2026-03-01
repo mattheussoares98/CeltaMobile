@@ -1,5 +1,9 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../localization/string_hardcoded.dart';
+import 'commom_widgets.dart';
 
 class TitleAndSubTitle extends StatelessWidget {
   final String? title;
@@ -10,6 +14,8 @@ class TitleAndSubTitle extends StatelessWidget {
   final bool? subTitleIsPrice;
   final bool? subTitleIsPercentage;
   final TextAlign? textAlign;
+  final bool copyableTitle;
+  final bool copyableSubtitle;
   const TitleAndSubTitle({
     super.key,
     required this.title,
@@ -20,7 +26,45 @@ class TitleAndSubTitle extends StatelessWidget {
     this.subTitleIsPrice,
     this.subTitleIsPercentage,
     this.textAlign,
+    this.copyableTitle = false,
+    this.copyableSubtitle = false,
   });
+
+  void _copyToClipboard({
+    required TitleAndSubTitle titleAndSubtitle,
+    required BuildContext context,
+    required bool copyTitle,
+    required bool copySubtitle,
+  }) async {
+    // PERFORMANCE: Using HapticFeedback provides instant physical
+    // confirmation to the user on older devices.
+
+    if (!copyTitle && !copySubtitle) return;
+
+    await HapticFeedback.mediumImpact();
+
+    late String text;
+
+    if (copyTitle && copySubtitle) {
+      text = '${titleAndSubtitle.title} ${titleAndSubtitle.subTitle}';
+    } else if (copyTitle) {
+      text = titleAndSubtitle.title!;
+    } else {
+      text = titleAndSubtitle.subTitle;
+    }
+
+    // Copy the text to the system clipboard
+    await Clipboard.setData(ClipboardData(text: text));
+
+    if (!context.mounted) return;
+
+    // Provide visual feedback
+    showSnackBarMessage(
+      context,
+      'Copiado: $text'.hardcoded,
+      duration: const Duration(seconds: 2),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,46 +121,69 @@ class TitleAndSubTitle extends StatelessWidget {
 
     if (title == null && subtitleText == null) return const SizedBox.shrink();
 
-    return RichText(
+    final span = TextSpan(
+      children: [
+        if (!showErrorMessage && title != null)
+          TextSpan(
+            text: "${title!.trimRight()} ",
+            style: titleStyle ?? theme.textTheme.bodyMedium,
+          ),
+        if (subTitleIsPrice == true && !showErrorMessage)
+          TextSpan(
+            text: "R\$ ",
+            style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
+              color: subtitleColor,
+              fontSize: 11,
+            ),
+          ),
+        if (subtitleText != null)
+          TextSpan(
+            text: subTitleIsNumber && subTitleIsPrice == true
+                ? subtitleText.toBrazilianNumber(2, false)
+                : subtitleText,
+            style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
+              color: subtitleColor,
+            ),
+          ),
+        if (subTitleIsPercentage == true && !showErrorMessage)
+          TextSpan(
+            text: ' %',
+            style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
+              color: subtitleColor,
+              fontSize: 11,
+            ),
+          ),
+      ],
+    );
+
+    final richText = RichText(
       textAlign: textAlign ?? TextAlign.start,
       textHeightBehavior: const TextHeightBehavior(
         applyHeightToFirstAscent: false,
         applyHeightToLastDescent: false,
       ),
-      text: TextSpan(
-        children: [
-          if (!showErrorMessage && title != null)
-            TextSpan(
-              text: "${title!.trimRight()} ",
-              style: titleStyle ?? theme.textTheme.bodyMedium,
-            ),
-          if (subTitleIsPrice == true && !showErrorMessage)
-            TextSpan(
-              text: "R\$ ",
-              style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
-                color: subtitleColor,
-                fontSize: 11,
-              ),
-            ),
-          if (subtitleText != null)
-            TextSpan(
-              text: subTitleIsNumber && subTitleIsPrice == true
-                  ? subtitleText.toBrazilianNumber(2, false)
-                  : subtitleText,
-              style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
-                color: subtitleColor,
-              ),
-            ),
-          if (subTitleIsPercentage == true && !showErrorMessage)
-            TextSpan(
-              text: ' %',
-              style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
-                color: subtitleColor,
-                fontSize: 11,
-              ),
-            ),
-        ],
-      ),
+      text: span,
     );
+
+    final copyTitle =
+        copyableTitle && (title?.isNotEmpty ?? false) && !showErrorMessage;
+    final copySubtitle =
+        copyableSubtitle &&
+        (subTitle?.isNotEmpty ?? false) &&
+        !showErrorMessage;
+    if (copyTitle || copySubtitle) {
+      return GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onLongPress: () => _copyToClipboard(
+          titleAndSubtitle: this,
+          context: context,
+          copyTitle: copyTitle,
+          copySubtitle: copySubtitle,
+        ),
+        child: richText,
+      );
+    }
+
+    return richText;
   }
 }

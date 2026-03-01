@@ -202,6 +202,7 @@ class ProductItemWidget extends ConsumerWidget {
                                 children: [
                                   ?itemBeforeProductName,
                                   TitleAndSubTitle(
+                                    copyableTitle: true,
                                     title: product.Name,
                                     subTitle: product.PackingQuantity == null
                                         ? null
@@ -219,6 +220,7 @@ class ProductItemWidget extends ConsumerWidget {
                                             CrossAxisAlignment.stretch,
                                         children: [
                                           TitleAndSubTitle(
+                                            copyableSubtitle: true,
                                             title: "PLU ",
                                             subTitle: product.PLU,
                                           ),
