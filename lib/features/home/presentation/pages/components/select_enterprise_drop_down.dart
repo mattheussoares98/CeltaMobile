@@ -1,9 +1,11 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
 
 class SelectEnterpriseDropDown extends ConsumerWidget {
@@ -49,10 +51,24 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
                 label: selectedEnterprise != null
                     ? '${selectedEnterprise.PersonalizedCode} - ${selectedEnterprise.name}'
                     : null,
-                onChanged: (enterprise) {
+                onChanged: (enterprise) async {
                   ref
                       .read(selectedEnterpriseStateControllerProvider.notifier)
                       .selectEnterprise(enterprise);
+
+                  final enterpriseName = ref.read(
+                    userSessionProvider.select(
+                      (s) => s.value?.enterprise?.name,
+                    ),
+                  );
+                  FirebaseCrashlytics.instance.setCustomKey(
+                    'enterprise',
+                    '$enterpriseName',
+                  );
+                  FirebaseCrashlytics.instance.setCustomKey(
+                    'selected_enterprise',
+                    enterprise.name,
+                  );
                 },
                 items: items,
               ),
