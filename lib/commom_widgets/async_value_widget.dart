@@ -106,31 +106,33 @@ class _Error extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            parseErrorMessage(e),
-            textAlign: TextAlign.center,
-            maxLines: maxLines,
-            style: const TextStyle(
-              color: Colors.red,
-              fontStyle: FontStyle.italic,
-              fontSize: 12,
-            ),
-          ),
-          if (tryAgain != null)
-            PrimaryTextButton(
-              text: 'Tentar novamente'.hardcoded,
-              onPressed: tryAgain,
-              icon: Icon(
-                theme.platform == TargetPlatform.iOS
-                    ? CupertinoIcons.refresh
-                    : Icons.refresh,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              parseErrorMessage(e),
+              textAlign: TextAlign.center,
+              maxLines: maxLines,
+              style: const TextStyle(
+                color: Colors.red,
+                fontStyle: FontStyle.italic,
+                fontSize: 12,
               ),
             ),
-        ],
+            if (tryAgain != null)
+              PrimaryTextButton(
+                text: 'Tentar novamente'.hardcoded,
+                onPressed: tryAgain,
+                icon: Icon(
+                  theme.platform == TargetPlatform.iOS
+                      ? CupertinoIcons.refresh
+                      : Icons.refresh,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
