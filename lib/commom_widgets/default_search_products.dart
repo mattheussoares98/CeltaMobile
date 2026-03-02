@@ -75,6 +75,13 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
     return settings?.searchPreference.name ?? defaultHint;
   }
 
+  void onTapDeleteIcon() {
+    widget.searchValueController.clear();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      widget.focusNode?.requestFocus();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -103,6 +110,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
             child: Padding(
               padding: const EdgeInsets.only(top: Sizes.p4),
               child: DefaultTextFormField(
+                key: const ValueKey('search_products'),
                 maxLength: 40,
                 enabled: !widget.isLoading,
                 controller: widget.searchValueController,
@@ -117,17 +125,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                 prefixIcon: width < 220
                     ? null
                     : _DefaultIcon(
-                        onPress: widget.isLoading
-                            ? null
-                            : () {
-                                widget.searchValueController.clear();
-                                Future.delayed(
-                                  const Duration(milliseconds: 100),
-                                  () {
-                                    widget.focusNode?.requestFocus();
-                                  },
-                                );
-                              },
+                        onPress: widget.isLoading ? null : onTapDeleteIcon,
                         materialIcon: Icons.delete,
                         cupertinoIcon: CupertinoIcons.delete,
                         iconColor: widget.isLoading

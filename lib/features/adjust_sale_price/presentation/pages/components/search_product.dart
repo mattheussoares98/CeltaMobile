@@ -28,28 +28,28 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
     searchValueController.dispose();
   }
 
+  Future<void> searchProducts() async {
+    await ref
+        .read(
+          searchProductsStateControllerProvider(
+            SearchProductKey(
+              widget.enterpriseCode,
+              BsRoutine.adjustSalePrice,
+              Modules.adjustPrice,
+            ),
+          ).notifier,
+        )
+        .loadProducts(
+          GetProductsJsonParams(
+            searchValue: searchValueController.text,
+            enterpriseCodes: [widget.enterpriseCode],
+            routine: BsRoutine.adjustSalePrice,
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> searchProducts() async {
-      await ref
-          .read(
-            searchProductsStateControllerProvider(
-              SearchProductKey(
-                widget.enterpriseCode,
-                BsRoutine.adjustSalePrice,
-                Modules.adjustPrice,
-              ),
-            ).notifier,
-          )
-          .loadProducts(
-            GetProductsJsonParams(
-              searchValue: searchValueController.text,
-              enterpriseCodes: [widget.enterpriseCode],
-              routine: BsRoutine.adjustSalePrice,
-            ),
-          );
-    }
-
     return DefaultSearchProducts(
       searchValueController: searchValueController,
       searchProductKey: widget.searchProductKey,
