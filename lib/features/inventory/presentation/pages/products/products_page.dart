@@ -6,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/infraestructure/infrastructure.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../core/presentation/controllers/scanner/scanner.dart';
 import '../../../../settings/presentation/controllers/controllers.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
@@ -59,20 +59,20 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     bool searchByCamera,
   ) async {
     changeSelectedIndex(null);
-    String? barcode;
     if (searchByCamera) {
-      barcode = await ref.read(barcodeScannerStateControllerProvider.future);
-      if (barcode == null) {
-        return;
-      } else {
-        searchProductsController.text = barcode;
-      }
+      await BarcodeScannerService.scanBarcode(
+        context,
+        onScan: (code) {
+          if (code == null) return;
+          searchProductsController.text = code;
+        },
+      );
     }
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
           GetProductsInventoryParams(
-            searchValue: barcode ?? searchProductsController.text,
+            searchValue: searchProductsController.text,
             inventoryProcessCode: widget.codigoInternoInventario,
             inventoryCountingCode: widget.codigoInternoInvCont,
           ),

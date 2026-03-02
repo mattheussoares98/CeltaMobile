@@ -6,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/constants.dart';
 import '../core/domain/entities/entities.dart';
+import '../core/infraestructure/infrastructure.dart';
 import '../core/presentation/controllers/products/products.dart';
-import '../core/presentation/controllers/scanner/scanner.dart';
 import '../core/validators/validators.dart';
 import '../features/settings/presentation/pages/pages.dart';
 import '../utils/utils.dart';
@@ -50,13 +50,14 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
 
   void searchProducts({bool? searchByCamera}) async {
     if (searchByCamera == true) {
-      final value = await ref.read(
-        barcodeScannerStateControllerProvider.future,
+      await BarcodeScannerService.scanBarcode(
+        context,
+        onScan: (value) {
+          if (value == null) return;
+          widget.searchValueController.text = value;
+          widget.searchProducts();
+        },
       );
-      if (value != null) {
-        widget.searchValueController.text = value;
-        widget.searchProducts();
-      }
     } else {
       if (formKey.currentState?.validate() != true) {
         return;
