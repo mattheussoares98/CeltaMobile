@@ -46,7 +46,7 @@ GoRouter goRouter(Ref ref) {
       enterpriseManagerBridge,
       userSessionBridge,
     ]),
-    redirect: (context, state) async {
+    redirect: (context, state) {
       final bool isMobileWeb =
           kIsWeb &&
           (defaultTargetPlatform == TargetPlatform.iOS ||
@@ -71,8 +71,13 @@ GoRouter goRouter(Ref ref) {
         return null;
       }
 
-      final session = await ref.read(userSessionProvider.future);
-      final isLogged = session?.user.CrossIdentity_Usuario != null;
+      final userSessionState = ref.read(userSessionProvider);
+      if (userSessionState.isLoading) {
+        return isInSplash ? null : '/splash';
+      }
+
+      final isLogged =
+          userSessionState.value?.user.CrossIdentity_Usuario != null;
 
       if (isLoggingIn && isLogged) {
         return '/splash'; //there treat if goes to home or auth page

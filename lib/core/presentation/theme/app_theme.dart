@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
 
+const _smoothPageTransitionsTheme = PageTransitionsTheme(
+  builders: {
+    TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
+    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.windows: FadeForwardsPageTransitionsBuilder(),
+    TargetPlatform.linux: FadeForwardsPageTransitionsBuilder(),
+    TargetPlatform.fuchsia: FadeForwardsPageTransitionsBuilder(),
+  },
+);
+
 class AppTheme {
   AppTheme._();
 
@@ -16,6 +27,7 @@ class AppTheme {
     return ThemeData(
       // * Use this to toggle Material 3 (defaults to true since Flutter 3.16)
       useMaterial3: true,
+      pageTransitionsTheme: _smoothPageTransitionsTheme,
       primarySwatch: Colors.grey,
       primaryColor: primaryColor,
       primaryColorLight: primaryColorLight,
