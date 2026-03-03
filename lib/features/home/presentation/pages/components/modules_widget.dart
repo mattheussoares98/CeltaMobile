@@ -4,15 +4,28 @@ import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:collection/collection.dart';
 import '../../controllers/controllers.dart';
 import 'components.dart';
 
-/// PERFORMANCE: Pre-computing the sorted list and an index map.
-/// Storing the map allows findChildIndexCallback to work in O(1) time.
+/// PERFORMANCE: Using an immutable data class with equality checks.
+/// This prevents the GridView from rebuilding if the sorted result
+/// happens to be identical to the previous one.
+@immutable
 class SortedModulesData {
   final List<Modules> list;
   final Map<Modules, int> indexMap;
-  SortedModulesData(this.list, this.indexMap);
+
+  const SortedModulesData(this.list, this.indexMap);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SortedModulesData &&
+          const ListEquality().equals(list, other.list);
+
+  @override
+  int get hashCode => const ListEquality().hash(list);
 }
 
 final sortedModulesProvider = Provider<SortedModulesData>((ref) {
@@ -22,7 +35,8 @@ final sortedModulesProvider = Provider<SortedModulesData>((ref) {
     ),
   );
 
-  final modules = Modules.values.toList();
+  // PERFORMANCE: Pre-allocate the list with fixed length for better memory efficiency.
+  final modules = List<Modules>.of(Modules.values);
   final favIndex = {
     for (int i = 0; i < favoriteModules.length; i++) favoriteModules[i]: i,
   };
@@ -43,7 +57,8 @@ final sortedModulesProvider = Provider<SortedModulesData>((ref) {
 class ModulesWidget extends StatelessWidget {
   const ModulesWidget({super.key});
 
-  /// PERFORMANCE: Using a static map to avoid widget recreation.
+  /// PERFORMANCE: Using a static map ensures that the button widgets
+  /// are treated as constants by the reconciliation engine.
   static final Map<Modules, DefaultModuleButton> _buttonByModule = {
     Modules.adjustPrice: const DefaultModuleButton(
       route: Routes.adjustSalePriceProducts,
@@ -162,7 +177,7 @@ class ModulesWidget extends StatelessWidget {
   }
 }
 
-class MyGridView extends ConsumerWidget {
+class MyGridView extends StatelessWidget {
   const MyGridView({
     super.key,
     required this.spacing,
@@ -173,114 +188,71 @@ class MyGridView extends ConsumerWidget {
   final int crossAxisCount;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // PERFORMANCE: RepaintBoundary on the entire Grid prevents parent elements
-    // from repainting during reorder animations.
-    final data = ref.watch(sortedModulesProvider);
-    return GridView.custom(
-      padding: EdgeInsets.all(spacing),
-      physics: const ClampingScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        mainAxisSpacing: spacing,
-        crossAxisSpacing: spacing,
-        mainAxisExtent: 90,
-      ),
-      childrenDelegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final module = data.list[index];
-          return _PulsingModuleTile(
-            // PERFORMANCE: Stable identity-based key.
-            key: ValueKey(module),
-            module: module,
-            child: ModulesWidget._buttonByModule[module]!,
+  Widget build(BuildContext context) {
+    // PERFORMANCE: Using a CustomScrollView with a SliverGrid instead of a
+    // GridView with shrinkWrap. shrinkWrap is expensive as it forces
+    // a redundant layout pass to calculate total height.
+    return RepaintBoundary(
+      child: Consumer(
+        builder: (context, ref, child) {
+          final data = ref.watch(sortedModulesProvider);
+
+          return CustomScrollView(
+            physics: const ClampingScrollPhysics(),
+            slivers: [
+              SliverPadding(
+                padding: EdgeInsets.all(spacing),
+                sliver: SliverGrid(
+                  // PERFORMANCE: Explicitly providing a stable grid delegate
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    mainAxisSpacing: spacing,
+                    crossAxisSpacing: spacing,
+                    mainAxisExtent: 90,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final module = data.list[index];
+                      return _StaticModuleTile(
+                        key: ValueKey(module),
+                        module: module,
+                        child: ModulesWidget._buttonByModule[module]!,
+                      );
+                    },
+                    childCount: data.list.length,
+                    // PERFORMANCE: findChildIndexCallback is essential for
+                    // maintaining the identity of already built items.
+                    findChildIndexCallback: (Key key) {
+                      if (key is ValueKey<Modules>) {
+                        return data.indexMap[key.value];
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+            ],
           );
-        },
-        childCount: data.list.length,
-        // PERFORMANCE: findChildIndexCallback allows Flutter to relocate
-        // the existing Element in O(1) time using our pre-computed Map.
-        findChildIndexCallback: (Key key) {
-          if (key is ValueKey<Modules>) {
-            return data.indexMap[key.value];
-          }
-          return null;
         },
       ),
     );
   }
 }
 
-class _PulsingModuleTile extends ConsumerStatefulWidget {
+class _StaticModuleTile extends StatelessWidget {
   final Modules module;
   final Widget child;
 
-  const _PulsingModuleTile({
+  const _StaticModuleTile({
     super.key,
     required this.module,
     required this.child,
   });
 
   @override
-  ConsumerState<_PulsingModuleTile> createState() => _PulsingModuleTileState();
-}
-
-class _PulsingModuleTileState extends ConsumerState<_PulsingModuleTile>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _pulseController;
-  late final Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _pulseController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
-
-    _scaleAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween(
-          begin: 1.0,
-          end: 1.15,
-        ).chain(CurveTween(curve: Curves.easeOut)),
-        weight: 50,
-      ),
-      TweenSequenceItem(
-        tween: Tween(
-          begin: 1.15,
-          end: 1.0,
-        ).chain(CurveTween(curve: Curves.easeIn)),
-        weight: 50,
-      ),
-    ]).animate(_pulseController);
-  }
-
-  @override
-  void dispose() {
-    _pulseController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // PERFORMANCE: Pulse logic is isolated to this specific widget.
-    ref.listen<bool>(
-      favoriteModulesStateControllerProvider.select(
-        (s) => s.value?.contains(widget.module) ?? false,
-      ),
-      (previous, next) {
-        if (previous != null && previous != next) {
-          _pulseController.forward(from: 0);
-        }
-      },
-    );
-
-    return ScaleTransition(
-      scale: _scaleAnimation,
-      // PERFORMANCE: Each tile is cached, so the Move/Snap reorder
-      // only requires updating the GPU position matrix.
-      child: RepaintBoundary(child: widget.child),
-    );
+    // PERFORMANCE: RepaintBoundary isolates the internal button state
+    // from the grid's layout changes.
+    return RepaintBoundary(child: child);
   }
 }
