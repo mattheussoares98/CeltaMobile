@@ -46,9 +46,31 @@ class SearchProducts extends ConsumerWidget {
       searchValueController: searchProductController,
       searchProductKey: searchProductKey,
       doOnSearchSucceeds: () {
-        ref
-            .read(selectedProductIndeStateControllerProvider.notifier)
-            .updateIndex(null);
+        final products = ref.read(
+          searchProductsStateControllerProvider(
+            searchProductKey,
+          ).select((state) => state.value),
+        );
+
+        if (products?.isEmpty ?? true) return;
+
+        if (products?.length == 1) {
+          ref
+              .read(
+                selectedProductIndeStateControllerProvider(
+                  receiptCode,
+                ).notifier,
+              )
+              .updateIndex(0, annulWhenIsSame: false);
+        } else {
+          ref
+              .read(
+                selectedProductIndeStateControllerProvider(
+                  receiptCode,
+                ).notifier,
+              )
+              .updateIndex(null);
+        }
       },
     );
   }

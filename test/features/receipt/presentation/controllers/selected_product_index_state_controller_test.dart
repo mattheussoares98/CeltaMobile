@@ -6,17 +6,21 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   late ProviderContainer container;
   late Faker faker;
+  late int receiptCode;
 
   setUp(() {
     container = ProviderContainer(retry: (retryCount, error) => null);
     faker = Faker();
+    receiptCode = faker.randomGenerator.integer(100);
     addTearDown(container.dispose);
   });
 
   group('SelectedIndexStateController', () {
     test('build should have an initial state of null', () {
       // ARRANGE / ACT
-      final state = container.read(selectedProductIndeStateControllerProvider);
+      final state = container.read(
+        selectedProductIndeStateControllerProvider(receiptCode),
+      );
 
       // ASSERT
       expect(state, isNull);
@@ -28,13 +32,13 @@ void main() {
         // ARRANGE
         final newIndex = faker.randomGenerator.integer(100);
         final notifier = container.read(
-          selectedProductIndeStateControllerProvider.notifier,
+          selectedProductIndeStateControllerProvider(receiptCode).notifier,
         );
 
         final states = <int?>[];
         // Listen to capture the state change
         container.listen(
-          selectedProductIndeStateControllerProvider,
+          selectedProductIndeStateControllerProvider(receiptCode),
           (_, next) => states.add(next),
         );
 
@@ -47,7 +51,9 @@ void main() {
 
         // 2. Verify the final state value
         expect(
-          container.read(selectedProductIndeStateControllerProvider),
+          container.read(
+            selectedProductIndeStateControllerProvider(receiptCode),
+          ),
           newIndex,
         );
       },
@@ -59,7 +65,7 @@ void main() {
         // ARRANGE
         const indexToToggle = 10;
         final notifier = container.read(
-          selectedProductIndeStateControllerProvider.notifier,
+          selectedProductIndeStateControllerProvider(receiptCode).notifier,
         );
 
         // Set the initial selection (pre-condition)
@@ -67,7 +73,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedProductIndeStateControllerProvider,
+          selectedProductIndeStateControllerProvider(receiptCode),
           (_, next) => states.add(next),
         );
 
@@ -78,7 +84,9 @@ void main() {
         // The state transitions from 10 back to null
         expect(states, [isNull]);
         expect(
-          container.read(selectedProductIndeStateControllerProvider),
+          container.read(
+            selectedProductIndeStateControllerProvider(receiptCode),
+          ),
           isNull,
         );
       },
@@ -89,12 +97,12 @@ void main() {
         // ARRANGE
         const indexToToggle = 10;
         final notifier = container.read(
-          selectedProductIndeStateControllerProvider.notifier,
+          selectedProductIndeStateControllerProvider(receiptCode).notifier,
         );
 
         final states = <int?>[];
         container.listen(
-          selectedProductIndeStateControllerProvider,
+          selectedProductIndeStateControllerProvider(receiptCode),
           (_, next) => states.add(next),
         );
 
@@ -107,7 +115,9 @@ void main() {
         // The state transitions from 10 back to null
         expect(states, [indexToToggle]);
         expect(
-          container.read(selectedProductIndeStateControllerProvider),
+          container.read(
+            selectedProductIndeStateControllerProvider(receiptCode),
+          ),
           indexToToggle,
         );
       },
@@ -120,7 +130,7 @@ void main() {
         const initialIndex = 1;
         const newIndex = 2;
         final notifier = container.read(
-          selectedProductIndeStateControllerProvider.notifier,
+          selectedProductIndeStateControllerProvider(receiptCode).notifier,
         );
 
         // Set initial selection
@@ -128,7 +138,7 @@ void main() {
 
         final states = <int?>[];
         container.listen(
-          selectedProductIndeStateControllerProvider,
+          selectedProductIndeStateControllerProvider(receiptCode),
           (_, next) => states.add(next),
         );
 
@@ -139,7 +149,9 @@ void main() {
         // State transitions from 1 to 2
         expect(states, [newIndex]);
         expect(
-          container.read(selectedProductIndeStateControllerProvider),
+          container.read(
+            selectedProductIndeStateControllerProvider(receiptCode),
+          ),
           newIndex,
         );
       },

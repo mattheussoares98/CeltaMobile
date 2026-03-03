@@ -72,7 +72,9 @@ class _ProductItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isSelected = ref.watch(
-      selectedProductIndeStateControllerProvider.select((s) => s == index),
+      selectedProductIndeStateControllerProvider(
+        receiptCode,
+      ).select((s) => s == index),
     );
     final theme = Theme.of(context);
 
@@ -86,7 +88,11 @@ class _ProductItem extends ConsumerWidget {
           quantityController.clear();
 
           ref
-              .read(selectedProductIndeStateControllerProvider.notifier)
+              .read(
+                selectedProductIndeStateControllerProvider(
+                  receiptCode,
+                ).notifier,
+              )
               .updateIndex(index);
 
           quantityFocusNode.unfocus();

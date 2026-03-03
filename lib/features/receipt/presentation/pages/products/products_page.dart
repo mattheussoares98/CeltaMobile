@@ -55,20 +55,20 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   }
 
   void searchProductByAutoScan(SearchProductKey searchProductKey) async {
-    bool searchByCamera = await ref.read(
+    bool isContinuousScan = await ref.read(
       appSettingsStateControllerProvider.select(
         (s) => s.value?.receiptUseContinuousScan == true,
       ),
     );
 
-    if (searchByCamera == true) {
+    if (isContinuousScan == true) {
       final value = await BarcodeScannerService.scanBarcode(context);
 
       if (value == null) {
         return;
       } else {
         searchProductController.text = value;
-        ref
+        await ref
             .read(
               searchProductsStateControllerProvider(searchProductKey).notifier,
             )
@@ -78,6 +78,22 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 grDocCode: widget.receiptCode,
               ),
             );
+
+        final selectFirstItem = ref.read(
+          searchProductsStateControllerProvider(
+            searchProductKey,
+          ).select((s) => !s.hasError && s.value?.length == 1),
+        );
+
+        if (selectFirstItem) {
+          ref
+              .read(
+                selectedProductIndeStateControllerProvider(
+                  widget.receiptCode,
+                ).notifier,
+              )
+              .updateIndex(0, annulWhenIsSame: false);
+        }
       }
     }
   }
