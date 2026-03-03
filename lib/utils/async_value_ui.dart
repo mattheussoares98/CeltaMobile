@@ -15,8 +15,14 @@ extension AsyncValueUI on AsyncValue {
     }
   }
 
-  void doOnSuccess(AsyncValue<void>? previous, VoidCallback action) {
-    if (previous is AsyncLoading && !isLoading && !hasError) {
+  void doOnSuccess(
+    AsyncValue<void>? previous,
+    VoidCallback action, {
+    bool previousMustBeLoading = true,
+  }) {
+    if ((!previousMustBeLoading || previous is AsyncLoading) &&
+        !isLoading &&
+        !hasError) {
       action();
     }
   }

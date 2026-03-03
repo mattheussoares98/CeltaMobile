@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/infraestructure/infrastructure.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../core/presentation/controllers/scanner/scanner.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../settings/presentation/controllers/controllers.dart';
 import '../../../domain/entities/entities.dart';
@@ -39,7 +39,7 @@ class PendingProductsPage extends ConsumerWidget {
 
       String? barcode;
       if (searchByCamera) {
-        barcode = await ref.read(barcodeScannerStateControllerProvider.future);
+        final barcode = await BarcodeScannerService.scanBarcode(context);
         if (barcode == null) {
           return;
         } else {
@@ -58,7 +58,7 @@ class PendingProductsPage extends ConsumerWidget {
           );
     }
 
-    final isContinuousScan = ref.watch(
+    final isContinuousScan = ref.read(
       appSettingsStateControllerProvider.select(
         (s) => s.value?.expeditionUseContinuousScan == true,
       ),
@@ -69,7 +69,7 @@ class PendingProductsPage extends ConsumerWidget {
       n,
     ) {
       n.showAlertDialogOnError(context);
-      n.doOnSuccess(p, () async {
+      n.doOnSuccess(previousMustBeLoading: false, p, () async {
         double sumTotal(List<ExpeditionProductEntity> list) {
           return list.fold<double>(0.0, (p, e) => p + e.Quantity);
         }
