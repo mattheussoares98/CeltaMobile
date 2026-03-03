@@ -51,7 +51,8 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
       widget.enterpriseCode,
       widget.plu,
     );
-    final selectedProductAsync = ref.watch(provider);
+    final selectedProduct =
+        widget.product ?? ref.watch(provider.select((s) => s.value));
 
     ref.listen(confirmAdjustControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
@@ -60,8 +61,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
         context.pop();
       });
     });
-
-    final selectedProduct = widget.product ?? selectedProductAsync.value;
 
     ref.observeLoading([confirmAdjustControllerProvider]);
 
