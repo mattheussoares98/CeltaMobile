@@ -18,7 +18,6 @@ coverage
 android/build
 android/app/build
 android/local.properties
-android/.gradle
 
 ############################
 # IOS BUILD

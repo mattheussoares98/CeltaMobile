@@ -60,13 +60,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   ) async {
     changeSelectedIndex(null);
     if (searchByCamera) {
-      await BarcodeScannerService.scanBarcode(
-        context,
-        onScan: (code) {
-          if (code == null) return;
-          searchProductsController.text = code;
-        },
-      );
+      final code = await BarcodeScannerService.scanBarcode(context);
+      if (code == null) return;
+      searchProductsController.text = code;
     }
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
@@ -79,10 +75,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         );
 
     final products = ref.read(
-      searchProductsStateControllerProvider(searchProductKey),
+      searchProductsStateControllerProvider(
+        searchProductKey,
+      ).select((s) => s.hasError ? null : s.value),
     );
 
-    if (_insertIndividually && products.value?.length == 1) {
+    if (_insertIndividually && products?.length == 1) {
       ref
           .read(
             entryQuantityStateControllerProvider(
@@ -90,7 +88,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
             ).notifier,
           )
           .entry(
-            codigoInternoProEmb: products.value!.first.codigoInternoProEmb!,
+            codigoInternoProEmb: products!.first.codigoInternoProEmb!,
             quantity: 1,
             isSubtract: false,
             enterpriseCode: widget.enterpriseCode,
@@ -103,11 +101,12 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     final provider = uiStateControllerProvider(widget.codigoInternoInventario);
     ref.read(provider.notifier).updateProductIndex(index);
 
-    if (ref.read(provider.select((s) => s.selectedProductIndex)) != null) {}
-    quantityController.clear();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      quantityFocusNode.requestFocus();
-    });
+    if (ref.read(provider.select((s) => s.selectedProductIndex)) != null) {
+      quantityController.clear();
+      Future.delayed(const Duration(milliseconds: 100), () {
+        quantityFocusNode.requestFocus();
+      });
+    }
   }
 
   @override
@@ -136,7 +135,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
       (p, n) async {
         final products = await ref.watch(
-          searchProductsStateControllerProvider(searchProductKey).future,
+          searchProductsStateControllerProvider(
+            searchProductKey,
+          ).selectAsync((s) => s),
         );
 
         n.showAlertDialogOnError(context);

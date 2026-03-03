@@ -42,7 +42,9 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
       List<ProductEntity> products = [];
       try {
         products = await ref.read(
-          searchProductsStateControllerProvider(searchProductKey).future,
+          searchProductsStateControllerProvider(
+            searchProductKey,
+          ).selectAsync((s) => s),
         );
       } catch (e) {
         return state.value;

@@ -50,20 +50,15 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
 
   void searchProducts({bool? searchByCamera}) async {
     if (searchByCamera == true) {
-      await BarcodeScannerService.scanBarcode(
-        context,
-        onScan: (value) {
-          if (value == null) return;
-          widget.searchValueController.text = value;
-          widget.searchProducts();
-        },
-      );
-    } else {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      }
-      widget.searchProducts();
+      final code = await BarcodeScannerService.scanBarcode(context);
+      if (code == null) return;
+      widget.searchValueController.text = code;
     }
+
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+    widget.searchProducts();
   }
 
   String getHintText(AppSettingsEntity? settings) {

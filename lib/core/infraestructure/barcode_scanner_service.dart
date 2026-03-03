@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 /// PERFORMANCE: In Flutter, camera scanning is a 'Device Capability'.
@@ -10,27 +11,24 @@ class BarcodeScannerService {
   /// Triggers the scanner UI and returns the result.
   /// PERFORMANCE: Using showModalBottomSheet keeps the app state alive
   /// and avoids the heavy Activity-switch overhead of previous plugins.
-  static Future<void> scanBarcode(
-    BuildContext context, {
-    required void Function(String? value) onScan,
-  }) async {
-    await showModalBottomSheet<String>(
+  static Future<String?> scanBarcode(BuildContext context) async {
+    final result = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.black,
       // PERFORMANCE: Using UseRootNavigator=true ensures the bottom sheet
       // is not blocked by local navigation logic.
       useRootNavigator: true,
-      builder: (context) => _BarcodeScannerWidget(onScan),
+      builder: (context) => const _BarcodeScannerWidget(),
     );
+    return result;
   }
 }
 
 /// PERFORMANCE: Extracted the UI into a private widget to ensure
 /// that only the camera portion rebuilds during a scan session.
 class _BarcodeScannerWidget extends StatefulWidget {
-  final void Function(String? value) onScan;
-  const _BarcodeScannerWidget(this.onScan);
+  const _BarcodeScannerWidget();
 
   @override
   State<_BarcodeScannerWidget> createState() => _BarcodeScannerWidgetState();
@@ -74,8 +72,7 @@ class _BarcodeScannerWidgetState extends State<_BarcodeScannerWidget> {
                   final code = barcodes.first.rawValue;
                   debugPrint('Scanner: Success [$code]');
 
-                  widget.onScan(code);
-                  Navigator.pop(context, code);
+                  context.pop(code);
                 }
               },
             ),
@@ -98,7 +95,7 @@ class _BarcodeScannerWidgetState extends State<_BarcodeScannerWidget> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.close, color: Colors.white, size: 30),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: context.pop,
                 ),
               ],
             ),
