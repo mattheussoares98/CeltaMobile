@@ -83,6 +83,35 @@ void main() {
         );
       },
     );
+    test(
+      'updateIndex maintain the same index when dont annul when is same',
+      () {
+        // ARRANGE
+        const indexToToggle = 10;
+        final notifier = container.read(
+          selectedProductIndeStateControllerProvider.notifier,
+        );
+
+        final states = <int?>[];
+        container.listen(
+          selectedProductIndeStateControllerProvider,
+          (_, next) => states.add(next),
+        );
+
+        // ACT: Call the update method with the *same* value
+        notifier.updateIndex(indexToToggle, annulWhenIsSame: false);
+        notifier.updateIndex(indexToToggle, annulWhenIsSame: false);
+        notifier.updateIndex(indexToToggle, annulWhenIsSame: false);
+
+        // ASSERT
+        // The state transitions from 10 back to null
+        expect(states, [indexToToggle]);
+        expect(
+          container.read(selectedProductIndeStateControllerProvider),
+          indexToToggle,
+        );
+      },
+    );
 
     test(
       'updateIndex should change state to a new index if a different one is already selected',

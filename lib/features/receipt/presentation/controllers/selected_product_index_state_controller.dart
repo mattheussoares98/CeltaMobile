@@ -10,8 +10,8 @@ class SelectedProductIndeStateController
     return null;
   }
 
-  void updateIndex(int? index) {
-    if (index == state) {
+  void updateIndex(int? index, {bool annulWhenIsSame = true}) {
+    if (index == state && annulWhenIsSame) {
       state = null;
     } else {
       state = index;
