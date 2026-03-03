@@ -26,6 +26,10 @@ class AsyncValueWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (value.isLoading) {
+      return _Loading(isSliver: isSliver);
+    }
+
     return value.when(
       data: data,
       loading: () => _Loading(isSliver: isSliver),
