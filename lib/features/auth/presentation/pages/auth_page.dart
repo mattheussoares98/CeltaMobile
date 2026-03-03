@@ -25,7 +25,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   final userFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
-  bool showPassword = false;
 
   @override
   void dispose() {
