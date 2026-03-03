@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/infraestructure/infrastructure.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../core/presentation/controllers/scanner/scanner.dart';
 import '../../../../../routing/routing.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../settings/presentation/controllers/controllers.dart';
@@ -62,9 +62,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     );
 
     if (searchByCamera == true) {
-      final value = await ref.read(
-        barcodeScannerStateControllerProvider.future,
-      );
+      final value = await BarcodeScannerService.scanBarcode(context);
+
       if (value == null) {
         return;
       } else {
