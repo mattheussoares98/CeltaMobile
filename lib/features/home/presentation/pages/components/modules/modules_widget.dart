@@ -43,39 +43,34 @@ class MyGridView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(sortedModulesStateControllerProvider);
-    return RepaintBoundary(
-      child: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
-        slivers: [
-          SliverPadding(
-            padding: EdgeInsets.all(spacing),
-            sliver: SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                mainAxisSpacing: spacing,
-                crossAxisSpacing: spacing,
-                mainAxisExtent: 90,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final module = data.list[index];
-                  return StaticModuleItem(
-                    key: ValueKey(module),
-                    module: module,
-                  );
-                },
-                childCount: data.list.length,
-                findChildIndexCallback: (Key key) {
-                  if (key is ValueKey<Modules>) {
-                    return data.indexMap[key.value];
-                  }
-                  return null;
-                },
-              ),
+    return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.all(spacing),
+          sliver: SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              mainAxisSpacing: spacing,
+              crossAxisSpacing: spacing,
+              mainAxisExtent: 90,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final module = data.list[index];
+                return StaticModuleItem(key: ValueKey(module), module: module);
+              },
+              childCount: data.list.length,
+              findChildIndexCallback: (Key key) {
+                if (key is ValueKey<Modules>) {
+                  return data.indexMap[key.value];
+                }
+                return null;
+              },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
