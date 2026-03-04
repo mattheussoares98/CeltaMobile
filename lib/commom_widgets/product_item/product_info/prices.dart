@@ -6,24 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/constants.dart';
 import '../../../core/domain/entities/entities.dart';
 import '../../../core/presentation/controllers/resource/resource.dart';
-import '../../../core/presentation/mixins/mixins.dart';
 import '../../../core/providers/resource/resource.dart';
 import '../../../features/adjust_sale_price/domain/entities/entities.dart';
 import '../../../routing/routing.dart';
 import '../../commom_widgets.dart';
 
-class Prices extends ConsumerStatefulWidget {
+class Prices extends ConsumerWidget {
   const Prices({super.key, required this.widget});
   final ProductInfoModal widget;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _PricesState();
-}
-
-class _PricesState extends ConsumerState<Prices> with TryAccessRouteMixin {
-  @override
-  Widget build(BuildContext context) {
-    final cost = widget.widget.product.PriceCost;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cost = widget.product.PriceCost;
     final retailSuggestion = cost?.RetailSuggestionPrice ?? 0;
     final wholeSuggestion = cost?.WholeSuggestionPrice ?? 0;
     final ecommerceSuggestion = cost?.ECommerceSuggestionPrice ?? 0;
@@ -31,13 +25,6 @@ class _PricesState extends ConsumerState<Prices> with TryAccessRouteMixin {
     final retailMinimum = cost?.RetailMinimumPrice ?? 0;
     final wholeMinimum = cost?.WholeMinimumPrice ?? 0;
     final ecommerceMinimum = cost?.ECommerceMinimumPrice ?? 0;
-
-    final canAdjustSalePrice = ref.watch(
-      canAccessResourceStateControllerProvider(
-        BsRoutine.adjustSalePrice,
-        BsResource.adjustSalePrice,
-      ),
-    );
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
@@ -53,47 +40,64 @@ class _PricesState extends ConsumerState<Prices> with TryAccessRouteMixin {
               ),
               IconButton(
                 onPressed: () {
-                  tryAccessRoute(
-                    Routes.adjustSalePrice,
-                    Modules.adjustPrice,
-                    widget.widget.product.EnterpriseCode,
-                    replace: false,
-                    extra: widget.widget.product,
-                    pathParameters: {
-                      'enterpriseCode': widget.widget.product.EnterpriseCode
-                          .toString(),
-                      'plu': widget.widget.product.PLU!,
-                    },
-                  );
+                  ref
+                      .read(
+                        tryAccessModuleControllerProvider(
+                          Modules.adjustPrice,
+                        ).notifier,
+                      )
+                      .tryAccess(
+                        context: context,
+                        route: Routes.adjustSalePrice,
+                        enterpriseCode: widget.product.EnterpriseCode,
+                        replace: false,
+                        extra: widget.product,
+                        pathParameters: {
+                          'enterpriseCode': widget.product.EnterpriseCode
+                              .toString(),
+                          'plu': widget.product.PLU!,
+                        },
+                      );
                 },
                 icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
               ),
             ],
           ),
-          if (canAdjustSalePrice.hasError)
-            Padding(
-              padding: const EdgeInsets.all(Sizes.p8),
-              child: PrimaryButton(
-                text: 'Atualizar permissão para encerrar oferta'.hardcoded,
-                isLoading: canAdjustSalePrice.isLoading,
-                onPressed: () {
-                  ref.invalidate(soapResourceDatasourceProvider);
-                },
-              ),
-            ),
+          Consumer(
+            builder: (context, ref, child) {
+              final hasError = ref.watch(
+                canAccessResourceStateControllerProvider(
+                  BsRoutine.adjustSalePrice,
+                  BsResource.adjustSalePrice,
+                ).select((s) => s.hasError),
+              );
+
+              final isLoading = ref.watch(
+                canAccessResourceStateControllerProvider(
+                  BsRoutine.adjustSalePrice,
+                  BsResource.adjustSalePrice,
+                ).select((s) => s.isLoading),
+              );
+
+              if (hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: PrimaryButton(
+                    text: 'Atualizar permissão para encerrar oferta'.hardcoded,
+                    isLoading: isLoading,
+                    onPressed: () =>
+                        ref.invalidate(soapResourceDatasourceProvider),
+                  ),
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
+          ),
           gapH8,
-          PracticedPrice(
-            saleType: SaleType.retail,
-            product: widget.widget.product,
-          ),
-          PracticedPrice(
-            saleType: SaleType.whole,
-            product: widget.widget.product,
-          ),
-          PracticedPrice(
-            saleType: SaleType.ecommerce,
-            product: widget.widget.product,
-          ),
+          PracticedPrice(saleType: SaleType.retail, product: widget.product),
+          PracticedPrice(saleType: SaleType.whole, product: widget.product),
+          PracticedPrice(saleType: SaleType.ecommerce, product: widget.product),
           if (retailSuggestion > 0 ||
               wholeSuggestion > 0 ||
               ecommerceSuggestion > 0) ...[

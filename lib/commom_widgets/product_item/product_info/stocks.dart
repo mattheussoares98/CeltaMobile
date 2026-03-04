@@ -6,24 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
 import '../../../core/domain/entities/entities.dart';
-import '../../../core/presentation/mixins/mixins.dart';
 import '../../../routing/routing.dart';
 import '../../commom_widgets.dart';
 
-class Stocks extends ConsumerStatefulWidget {
+class Stocks extends ConsumerWidget {
   const Stocks({super.key, required this.widget});
 
   final ProductInfoModal widget;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _StocksState();
-}
-
-class _StocksState extends ConsumerState<Stocks> with TryAccessRouteMixin {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final groupedStocks = groupBy(
-      widget.widget.product.Stocks ?? <StockEntity>[],
+      widget.product.Stocks ?? <StockEntity>[],
       (stock) => (stock).Enterprise,
     );
     final theme = Theme.of(context);
@@ -73,19 +67,26 @@ class _StocksState extends ConsumerState<Stocks> with TryAccessRouteMixin {
                     ),
                     IconButton(
                       onPressed: () {
-                        tryAccessRoute(
-                          Routes.adjustStocks,
-                          Modules.adjustStock,
-                          stocksForEnterprise.first.EnterpriseCode,
-                          replace: false,
-                          extra: widget.widget.product,
-                          pathParameters: {
-                            'enterpriseCode': stocksForEnterprise
-                                .first
-                                .EnterpriseCode
-                                .toString(),
-                          },
-                        );
+                        ref
+                            .read(
+                              tryAccessModuleControllerProvider(
+                                Modules.adjustStock,
+                              ).notifier,
+                            )
+                            .tryAccess(
+                              context: context,
+                              route: Routes.adjustStocks,
+                              enterpriseCode:
+                                  stocksForEnterprise.first.EnterpriseCode,
+                              replace: false,
+                              extra: widget.product,
+                              pathParameters: {
+                                'enterpriseCode': stocksForEnterprise
+                                    .first
+                                    .EnterpriseCode
+                                    .toString(),
+                              },
+                            );
                       },
                       icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
                     ),

@@ -1,4 +1,3 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,12 +7,11 @@ import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/bs_version/bs_version.dart';
 import '../../../../../../core/presentation/controllers/resource/resource.dart';
 import '../../../../../../core/presentation/helpers/helpers.dart';
-import '../../../../../../core/presentation/mixins/mixins.dart';
 import '../../../../../../routing/routing.dart';
 import '../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../components.dart';
 
-class DefaultModuleButton extends ConsumerStatefulWidget {
+class DefaultModuleButton extends ConsumerWidget {
   final Routes route;
   final Modules module;
   final IconData cupertinoIcon;
@@ -32,62 +30,21 @@ class DefaultModuleButton extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DefaultModuleButtonState();
-}
-
-class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
-    with TryAccessRouteMixin {
-  Future<void> toggleFavorite() async {
-    if (widget.minimumBsVersionDate != null) {
-      final bsVersionDate = await ref.read(
-        bsVersionStateControllerProvider.future,
-      );
-
-      if (bsVersionDate?.isBefore(widget.minimumBsVersionDate!) ?? false) {
-        showAlertDialog(
-          context: context,
-          title: 'Atualize o BS'.hardcoded,
-          content:
-              'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
-                  .hardcoded,
-        );
-        return;
-      }
-    }
-    final enterpriseCode = ref.read(
-      selectedEnterpriseStateControllerProvider.select((s) => s!.Code),
-    );
-
-    //TODO create a provider for this
-    tryAccessRoute(
-      widget.route,
-      widget.module,
-      enterpriseCode,
-      replace: true,
-      pathParameters: {
-        if (widget.passEnterpriseToNextRoute)
-          'enterpriseCode': enterpriseCode.toString(),
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     final isIOS = theme.platform == TargetPlatform.iOS;
-    final icon = isIOS ? widget.cupertinoIcon : widget.materialIcon;
+    final icon = isIOS ? cupertinoIcon : materialIcon;
 
     final isLoading =
-        (widget.module == Modules.adjustPrice &&
+        (module == Modules.adjustPrice &&
             ref.watch(
               canAccessResourceStateControllerProvider(
                 BsRoutine.adjustSalePrice,
                 BsResource.adjustSalePrice,
               ).select((s) => s.isLoading),
             )) ||
-        (widget.minimumBsVersionDate != null &&
+        (minimumBsVersionDate != null &&
             ref.watch(
               bsVersionStateControllerProvider.select((s) => s.isLoading),
             ));
@@ -95,6 +52,25 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
     final hasSelectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider.select((s) => s != null),
     );
+
+    void accessModule() {
+      final enterpriseCode = ref.read(
+        selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
+      );
+
+      ref
+          .read(tryAccessModuleControllerProvider(module).notifier)
+          .tryAccess(
+            context: context,
+            route: route,
+            enterpriseCode: enterpriseCode,
+            replace: true,
+            pathParameters: {
+              if (passEnterpriseToNextRoute)
+                'enterpriseCode': enterpriseCode.toString(),
+            },
+          );
+    }
 
     return Material(
       color: Colors.transparent,
@@ -105,7 +81,7 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
       clipBehavior: Clip.none,
       child: InkWell(
         borderRadius: BorderRadius.circular(Sizes.p12),
-        onTap: !hasSelectedEnterprise || isLoading ? null : toggleFavorite,
+        onTap: !hasSelectedEnterprise || isLoading ? null : accessModule,
         child: Stack(
           children: [
             Center(
@@ -119,16 +95,16 @@ class _DefaultModuleButtonState extends ConsumerState<DefaultModuleButton>
                   else
                     ModuleIcon(icon: icon),
                   const SizedBox(height: Sizes.p12),
-                  ModuleName(route: widget.route),
+                  ModuleName(route: route),
                 ],
               ),
             ),
-            if (widget.module == Modules.stockReplacement &&
+            if (module == Modules.stockReplacement &&
                 ModuleIsFreeUntil.stockReplacementIsFree)
               const NewModuleBadge(),
             FavoriteIconButton(
-              module: widget.module,
-              key: ValueKey('favorite_${widget.module}'),
+              module: module,
+              key: ValueKey('favorite_$module'),
             ),
           ],
         ),

@@ -8,13 +8,12 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
-import '../../../../../core/presentation/mixins/mixins.dart';
-import '../../../../../routing/routes.dart';
+import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 import 'sale_request.dart';
 
-class SaleRequestPage extends ConsumerStatefulWidget {
+class SaleRequestPage extends ConsumerWidget {
   final int enterpriseCode;
   final int requestCode;
   const SaleRequestPage({
@@ -23,20 +22,13 @@ class SaleRequestPage extends ConsumerStatefulWidget {
     required this.requestCode,
   });
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SaleRequestPageState();
-}
-
-class _SaleRequestPageState extends ConsumerState<SaleRequestPage>
-    with TryAccessRouteMixin {
-  @override
-  Widget build(BuildContext context) {
-    ref.listen(
-      pendingSaleRequestStateControllerProvider(widget.enterpriseCode),
-      (p, n) {
-        n.showAlertDialogOnError(context);
-      },
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(pendingSaleRequestStateControllerProvider(enterpriseCode), (
+      p,
+      n,
+    ) {
+      n.showAlertDialogOnError(context);
+    });
     ref.listen(saveSaleRequestControllerProvider, (p, n) {
       n.showSnackbarOnSuccess(
         context,
@@ -60,15 +52,15 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: AppBarTitle(enterpriseCode: widget.enterpriseCode),
+        title: AppBarTitle(enterpriseCode: enterpriseCode),
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         titleSpacing: 0,
         actions: [
           if (screenWidth > 200) ...[
-            ShowPdfButton(enterpriseCode: widget.enterpriseCode),
-            PrintButton(enterpriseCode: widget.enterpriseCode),
+            ShowPdfButton(enterpriseCode: enterpriseCode),
+            PrintButton(enterpriseCode: enterpriseCode),
           ],
-          CartBadge(enterpriseCode: widget.enterpriseCode),
+          CartBadge(enterpriseCode: enterpriseCode),
         ],
       ),
       floatingActionButton: Consumer(
@@ -84,53 +76,62 @@ class _SaleRequestPageState extends ConsumerState<SaleRequestPage>
                   : Icons.person_add_alt_1_outlined,
             ),
             onPressed: () {
-              tryAccessRoute(
-                Routes.customerRegister,
-                Modules.customerRegister,
-                widget.enterpriseCode,
-                replace: false,
+              ref
+                  .read(
+                    tryAccessModuleControllerProvider(
+                      Modules.customerRegister,
+                    ).notifier,
+                  )
+                  .tryAccess(
+                    context: context,
+                    route: Routes.customerRegister,
+                    enterpriseCode: enterpriseCode,
+                  );
+            },
+          );
+        },
+      ),
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(
+              requestTypeStateControllerProvider(
+                Modules.saleRequest,
+                enterpriseCode,
+              ),
+            ),
+            tryAgain: () {
+              ref.invalidate(
+                requestTypeStateControllerProvider(
+                  Modules.saleRequest,
+                  enterpriseCode,
+                ),
+              );
+            },
+            data: (requests) {
+              final selectedRequest = requests!.firstWhere(
+                (e) => e.Code == requestCode,
+              );
+
+              return IndexedStack(
+                index: ref.watch(pageIndexStateControllerProvider),
+                children: [
+                  InsertProductsPage(
+                    enterpriseCode: enterpriseCode,
+                    selectedRequest: selectedRequest,
+                  ),
+                  CustomerPage(enterpriseCode: enterpriseCode),
+                  CartPage(
+                    selectedRequest: selectedRequest,
+                    enterpriseCode: enterpriseCode,
+                  ),
+                ],
               );
             },
           );
         },
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(
-          requestTypeStateControllerProvider(
-            Modules.saleRequest,
-            widget.enterpriseCode,
-          ),
-        ),
-        tryAgain: () {
-          ref.invalidate(
-            requestTypeStateControllerProvider(
-              Modules.saleRequest,
-              widget.enterpriseCode,
-            ),
-          );
-        },
-        data: (requests) {
-          final selectedRequest = requests!.firstWhere(
-            (e) => e.Code == widget.requestCode,
-          );
-
-          return IndexedStack(
-            index: ref.watch(pageIndexStateControllerProvider),
-            children: [
-              InsertProductsPage(
-                enterpriseCode: widget.enterpriseCode,
-                selectedRequest: selectedRequest,
-              ),
-              CustomerPage(enterpriseCode: widget.enterpriseCode),
-              CartPage(
-                selectedRequest: selectedRequest,
-                enterpriseCode: widget.enterpriseCode,
-              ),
-            ],
-          );
-        },
-      ),
-      bottomNavigationBar: BottomNavBar(enterpriseCode: widget.enterpriseCode),
+      bottomNavigationBar: BottomNavBar(enterpriseCode: enterpriseCode),
     );
   }
 }
