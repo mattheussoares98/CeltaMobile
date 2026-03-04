@@ -113,41 +113,39 @@ class DefaultDropDown<T> extends StatelessWidget {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
-      child: SizedBox(
-        height: dropdownHeight,
-        child: Material(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Sizes.p8),
+    return SizedBox(
+      height: dropdownHeight,
+      child: Material(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Sizes.p8),
+        ),
+        color: theme.disabledColor.withAlpha(50),
+        child: DropdownButtonFormField<T>(
+          decoration: const InputDecoration(border: InputBorder.none),
+          isDense: true,
+          padding: const EdgeInsets.only(left: Sizes.p8),
+          dropdownColor: Colors.white,
+          validator: validator,
+          initialValue: selectedItem,
+          isExpanded: true,
+          alignment: Alignment.center,
+          iconSize: 17,
+          hint: hint,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: theme.textTheme.titleMedium!.fontSize,
+            color: Colors.black,
+            height: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-          color: theme.disabledColor.withAlpha(50),
-          child: DropdownButtonFormField<T>(
-            decoration: const InputDecoration(border: InputBorder.none),
-            isDense: true,
-            dropdownColor: Colors.white,
-            validator: validator,
-            initialValue: selectedItem,
-            isExpanded: true,
-            alignment: Alignment.center,
-            iconSize: 17,
-            hint: hint,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: theme.textTheme.titleMedium!.fontSize,
-              color: Colors.black,
-              height: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            items: items,
-            onChanged: onChanged == null || (items?.length ?? 0) < 1
-                ? null
-                : (value) {
-                    if (value != null && onChanged != null) {
-                      onChanged!(value);
-                    }
-                  },
-          ),
+          items: items,
+          onChanged: onChanged == null || (items?.length ?? 0) < 1
+              ? null
+              : (value) {
+                  if (value != null && onChanged != null) {
+                    onChanged!(value);
+                  }
+                },
         ),
       ),
     );
