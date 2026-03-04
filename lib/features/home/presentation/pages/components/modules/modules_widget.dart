@@ -11,7 +11,6 @@ class ModulesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // PERFORMANCE: Use sizeOf for optimized rebuilds on screen width change only.
     final width = MediaQuery.sizeOf(context).width;
     final isMobile = width < Breakpoint.tablet;
     const double spacing = Sizes.p4;
@@ -31,7 +30,7 @@ class ModulesWidget extends StatelessWidget {
   }
 }
 
-class MyGridView extends StatelessWidget {
+class MyGridView extends ConsumerWidget {
   const MyGridView({
     super.key,
     required this.spacing,
@@ -42,51 +41,52 @@ class MyGridView extends StatelessWidget {
   final int crossAxisCount;
 
   @override
-  Widget build(BuildContext context) {
-    // PERFORMANCE: Using a CustomScrollView with a SliverGrid instead of a
-    // GridView with shrinkWrap. shrinkWrap is expensive as it forces
-    // a redundant layout pass to calculate total height.
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(sortedModulesStateControllerProvider);
     return RepaintBoundary(
-      child: Consumer(
-        builder: (context, ref, child) {
-          final data = ref.watch(sortedModulesStateControllerProvider);
-
-          return CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            slivers: [
-              SliverPadding(
-                padding: EdgeInsets.all(spacing),
-                sliver: SliverGrid(
-                  // PERFORMANCE: Explicitly providing a stable grid delegate
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: spacing,
-                    crossAxisSpacing: spacing,
-                    mainAxisExtent: 90,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final module = data.list[index];
-                      return RepaintBoundary(
-                        child: ButtonsByModuleItems.buttonByModule[module]!,
-                      );
-                    },
-                    childCount: data.list.length,
-                    // PERFORMANCE: findChildIndexCallback is essential for
-                    // maintaining the identity of already built items.
-                    findChildIndexCallback: (Key key) {
-                      if (key is ValueKey<Modules>) {
-                        return data.indexMap[key.value];
-                      }
-                      return null;
-                    },
-                  ),
-                ),
+      child: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.all(spacing),
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                mainAxisSpacing: spacing,
+                crossAxisSpacing: spacing,
+                mainAxisExtent: 90,
               ),
-            ],
-          );
-        },
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final module = data.list[index];
+                  return StaticModuleItem(
+                    key: ValueKey(module),
+                    module: module,
+                  );
+                },
+                childCount: data.list.length,
+                findChildIndexCallback: (Key key) {
+                  if (key is ValueKey<Modules>) {
+                    return data.indexMap[key.value];
+                  }
+                  return null;
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class StaticModuleItem extends StatelessWidget {
+  const StaticModuleItem({super.key, required this.module});
+
+  final Modules module;
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(child: ButtonsByModuleItems.buttonByModule[module]!);
   }
 }
