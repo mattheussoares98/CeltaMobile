@@ -34,15 +34,17 @@ class LoadingWidget extends StatelessWidget {
           ),
           gapH16,
         ],
-        Padding(
-          padding: EdgeInsets.all(padding ?? Sizes.p16),
-          child: isIos
-              ? CupertinoActivityIndicator(radius: size! * 0.5)
-              : SizedBox(
-                  width: size,
-                  height: size,
-                  child: const CircularProgressIndicator(),
-                ),
+        RepaintBoundary(
+          child: Padding(
+            padding: EdgeInsets.all(padding ?? Sizes.p16),
+            child: isIos
+                ? CupertinoActivityIndicator(radius: size! * 0.5)
+                : SizedBox(
+                    width: size,
+                    height: size,
+                    child: const CircularProgressIndicator(),
+                  ),
+          ),
         ),
       ],
     );
