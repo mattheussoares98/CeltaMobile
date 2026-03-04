@@ -46,7 +46,6 @@ class ContinuousScanCheckbox extends ConsumerWidget {
 
     final theme = Theme.of(context);
     return Card(
-      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: updateValue,
         child: Padding(

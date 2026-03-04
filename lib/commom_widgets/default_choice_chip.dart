@@ -32,15 +32,16 @@ class DefaultChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
         // If the calculated width per item is smaller than our threshold,
         // we switch to a Wrap layout to maintain legibility.
         if (widthPerItem < minItemWidth) {
-          return RepaintBoundary(
-            child: Wrap(
-              key: const ValueKey('wrap'),
-              spacing: Sizes.p8,
-              runSpacing: Sizes.p8,
-              alignment: WrapAlignment.center,
-              children: items.map((item) {
-                final isSelected = item.value == selectedValue;
-                return ChoiceChip(
+          return Wrap(
+            key: const ValueKey('wrap'),
+            spacing: Sizes.p8,
+            runSpacing: Sizes.p8,
+            alignment: WrapAlignment.center,
+            children: items.map((item) {
+              final isSelected = item.value == selectedValue;
+              return RepaintBoundary(
+                child: ChoiceChip(
+                  key: ValueKey(item),
                   label: Text(item.name),
                   selected: isSelected,
                   onSelected: (selected) {
@@ -54,9 +55,9 @@ class DefaultChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
                         : theme.textTheme.bodyMedium?.color,
                     fontSize: 12,
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
           );
         }
 

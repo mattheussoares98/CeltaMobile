@@ -61,14 +61,18 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
     widget.searchProducts();
   }
 
-  String getHintText(AppSettingsEntity? settings) {
+  SearchProductTypePreference? get _searchPreference => ref.watch(
+    appSettingsStateControllerProvider.select((s) => s.value?.searchPreference),
+  );
+
+  String get hintText {
     final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
 
-    if (settings?.searchPreference == SearchProductTypePreference.dynamic) {
+    if (_searchPreference == SearchProductTypePreference.dynamic) {
       return defaultHint;
     }
 
-    return settings?.searchPreference.name ?? defaultHint;
+    return _searchPreference?.name ?? defaultHint;
   }
 
   void onTapDeleteIcon() {
@@ -81,9 +85,6 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    final settings = ref.watch(appSettingsStateControllerProvider).value;
-    final hintText = getHintText(settings);
 
     ref.listen(searchProductsStateControllerProvider(widget.searchProductKey), (
       p,
@@ -113,8 +114,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                 focusNode: widget.focusNode,
                 validator: FormValidators.compose([
                   if (widget.allowEmptySearchValue != true) NonEmptyValidator(),
-                  if (settings?.searchPreference ==
-                      SearchProductTypePreference.ean)
+                  if (_searchPreference == SearchProductTypePreference.ean)
                     NumberValidator(allowDecimal: false),
                 ]),
                 onFieldSubmitted: (_) => searchProducts(),
@@ -178,7 +178,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                   ),
                 ),
                 labelText:
-                    'Consultar produtos (${settings?.searchPreference.name ?? 'Dinâmico'})'
+                    'Consultar produtos (${_searchPreference?.name ?? 'Dinâmico'})'
                         .hardcoded,
                 hintText: hintText,
               ),

@@ -7,38 +7,44 @@ import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
-class ProductSearchTypeWidget extends ConsumerWidget {
+class ProductSearchTypeWidget extends StatelessWidget {
   const ProductSearchTypeWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final searchPreference = ref.watch(
-      appSettingsStateControllerProvider.select(
-        (s) => s.value?.searchPreference,
-      ),
-    );
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(Sizes.p4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Tipo de pesquisa de produtos'.hardcoded,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.titleMedium,
-          ),
-          gapH8,
-          DefaultChoiceChip(
-            items: SearchProductTypePreference.values,
-            selectedValue: searchPreference,
-            onChanged: (searchPreference) async {
-              await ref
-                  .read(appSettingsStateControllerProvider.notifier)
-                  .changeSettings(searchPreference: searchPreference);
-            },
-          ),
-        ],
+    return RepaintBoundary(
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Tipo de pesquisa de produtos'.hardcoded,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleMedium,
+            ),
+            gapH8,
+            Consumer(
+              builder: (context, ref, _) {
+                final searchPreference = ref.watch(
+                  appSettingsStateControllerProvider.select(
+                    (s) => s.value?.searchPreference,
+                  ),
+                );
+                return DefaultChoiceChip(
+                  items: SearchProductTypePreference.values,
+                  selectedValue: searchPreference,
+                  onChanged: (searchPreference) async {
+                    await ref
+                        .read(appSettingsStateControllerProvider.notifier)
+                        .changeSettings(searchPreference: searchPreference);
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

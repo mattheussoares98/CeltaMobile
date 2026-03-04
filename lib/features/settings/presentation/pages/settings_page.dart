@@ -7,12 +7,12 @@ import '../../../../core/domain/entities/entities.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
-class SettingsPage extends ConsumerWidget {
+class SettingsPage extends StatelessWidget {
   final Modules? module;
   const SettingsPage({super.key, required this.module});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
     final isAndroid = theme.platform == TargetPlatform.android;
@@ -24,32 +24,36 @@ class SettingsPage extends ConsumerWidget {
         leadingWidth: 0,
         leading: const SizedBox.shrink(),
       ),
-      body:
-          ref.watch(
+      body: Consumer(
+        builder: (_, ref, _) {
+          final hasError = ref.watch(
             appSettingsStateControllerProvider.select((s) => s.hasError),
-          )
-          ? Center(
+          );
+          if (hasError) {
+            return Center(
               child: PrimaryTextButton(
                 text: 'Recarregar configurações'.hardcoded,
                 onPressed: () =>
                     ref.invalidate(appSettingsStateControllerProvider),
               ),
-            )
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  const ProductSearchTypeWidget(),
-                  if ([
-                        Modules.inventory,
-                        Modules.expeditionConference,
-                        Modules.receipt,
-                      ].any((x) => x == module) &&
-                      (isIOS || isAndroid)) ...[
-                    ContinuousScanCheckbox(module: module!),
-                  ],
-                ],
-              ),
-            ),
+            );
+          }
+
+          return Column(
+            children: [
+              const ProductSearchTypeWidget(),
+              if ([
+                    Modules.inventory,
+                    Modules.expeditionConference,
+                    Modules.receipt,
+                  ].any((x) => x == module) &&
+                  (isIOS || isAndroid)) ...[
+                ContinuousScanCheckbox(module: module!),
+              ],
+            ],
+          );
+        },
+      ),
     );
   }
 }

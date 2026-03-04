@@ -87,46 +87,44 @@ class _ProductItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-    return RepaintBoundary(
-      child: ProductItemWidget(
-        product: product,
-        routine: BsRoutine.adjustSalePrice,
-        notClickableBottom: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (isIOS) const Expanded(flex: 55, child: Text('')),
-            Flexible(
-              flex: 45,
-              child: PrimaryTextButton(
-                text: 'Alterar preços'.hardcoded,
-                icon: Icon(
-                  theme.platform == TargetPlatform.iOS
-                      ? CupertinoIcons.pencil
-                      : Icons.edit,
-                ),
-                iconAlignment: IconAlignment.end,
-                onPressed: () {
-                  ref
-                      .read(
-                        selectedProductStateControllerProvider(
-                          enterpriseCode,
-                          product.PLU!,
-                        ).notifier,
-                      )
-                      .updateSelectedProduct(product);
-                  context.goNamed(
-                    Routes.adjustSalePrice.name,
-                    pathParameters: {
-                      'enterpriseCode': enterpriseCode.toString(),
-                      'plu': product.PLU!,
-                    },
-                    extra: product,
-                  );
-                },
+    return ProductItemWidget(
+      product: product,
+      routine: BsRoutine.adjustSalePrice,
+      notClickableBottom: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if (isIOS) const Expanded(flex: 55, child: Text('')),
+          Flexible(
+            flex: 45,
+            child: PrimaryTextButton(
+              text: 'Alterar preços'.hardcoded,
+              icon: Icon(
+                theme.platform == TargetPlatform.iOS
+                    ? CupertinoIcons.pencil
+                    : Icons.edit,
               ),
+              iconAlignment: IconAlignment.end,
+              onPressed: () {
+                ref
+                    .read(
+                      selectedProductStateControllerProvider(
+                        enterpriseCode,
+                        product.PLU!,
+                      ).notifier,
+                    )
+                    .updateSelectedProduct(product);
+                context.goNamed(
+                  Routes.adjustSalePrice.name,
+                  pathParameters: {
+                    'enterpriseCode': enterpriseCode.toString(),
+                    'plu': product.PLU!,
+                  },
+                  extra: product,
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
