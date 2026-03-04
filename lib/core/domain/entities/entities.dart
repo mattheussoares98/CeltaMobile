@@ -12,6 +12,7 @@ export 'transfer_justification/transfer_justification.dart';
 
 export './bs_resource.dart';
 export 'bs_routine.dart';
+export './crashlytics_custom_key_entity.dart';
 export './device_type.dart';
 export './modules.dart';
 export 'selectable_item.dart';

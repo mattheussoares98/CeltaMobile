@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/presentation/controllers/user_session/user_session.dart';
+import '../core/providers/services/services.dart';
 import '../features/enterprise_manager/presentation/controllers/controllers.dart';
 import '../utils/utils.dart';
 import 'not_found_page.dart';
@@ -41,7 +42,9 @@ GoRouter goRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: false,
-    observers: [CrashlyticsRouteObserver()],
+    observers: [
+      CrashlyticsRouteObserver(ref.watch(crashlyticsServiceProvider)),
+    ],
     refreshListenable: Listenable.merge([
       enterpriseManagerBridge,
       userSessionBridge,
