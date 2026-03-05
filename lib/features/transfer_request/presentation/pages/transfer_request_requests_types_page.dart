@@ -35,10 +35,7 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          title: 'Modelos de pedido'.hardcoded,
-          enterpriseCode: enterpriseCode,
-        ),
+        title: DefaultAppBarTitle(title: 'Modelos de pedido'.hardcoded),
         actions: [ReloadIconButton(provider: provider)],
       ),
       body: AsyncValueWidget(

@@ -69,7 +69,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
         leadingWidth: 40,
         titleSpacing: Sizes.p4,
         title: DefaultAppBarTitle(
-          enterpriseCode: widget.enterpriseCode,
           title: selectedProduct == null
               ? ""
               : "(${selectedProduct.PLU}) ${selectedProduct.Name}",

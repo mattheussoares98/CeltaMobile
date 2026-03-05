@@ -29,7 +29,6 @@ class ConcurrentsPage extends ConsumerWidget {
       appBar: AppBar(
         title: DefaultAppBarTitle(
           title: 'Concorrentes (pesquisa $researchCode)'.hardcoded,
-          enterpriseCode: enterpriseCode,
         ),
         actions: [
           ReloadIconButton(

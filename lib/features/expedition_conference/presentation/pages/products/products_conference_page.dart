@@ -110,7 +110,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
           title: Consumer(
             builder: (_, ref, _) {
               return DefaultAppBarTitle(
-                enterpriseCode: widget.enterpriseCode,
                 title:
                     '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
                         .hardcoded,

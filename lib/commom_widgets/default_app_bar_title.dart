@@ -5,13 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/enterprises/presentation/controllers/controllers.dart';
 
 class DefaultAppBarTitle extends StatelessWidget {
-  final int enterpriseCode;
   final String? title;
-  const DefaultAppBarTitle({
-    super.key,
-    required this.enterpriseCode,
-    this.title,
-  });
+  const DefaultAppBarTitle({super.key, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -24,44 +19,49 @@ class DefaultAppBarTitle extends StatelessWidget {
           : CrossAxisAlignment.start,
       children: [
         if (title != null) FittedBox(child: Text(title!)),
-        CorrespondentEnterpriseByEnterpriseCode(
-          enterpriseCode,
-          centerTitle: centerTitle,
-        ),
+        const CorrespondentEnterpriseByEnterpriseCode(),
       ],
     );
   }
 }
 
 class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
-  final int enterpriseCode;
-  final bool centerTitle;
-  const CorrespondentEnterpriseByEnterpriseCode(
-    this.enterpriseCode, {
-    this.centerTitle = false,
-    super.key,
-  });
+  const CorrespondentEnterpriseByEnterpriseCode({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final correspondentEnterprise = ref.watch(
+    final selectedEnterpriseCode = ref.watch(
+      selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
+    );
+
+    final personalizedCode = ref.watch(
       enterprisesStateControllerProvider().select(
-        (s) => s.value?.firstWhereOrNull((x) => x.Code == enterpriseCode),
+        (s) => s.value
+            ?.firstWhereOrNull((x) => x.Code == selectedEnterpriseCode)
+            ?.PersonalizedCode,
+      ),
+    );
+    final enterpriseName = ref.watch(
+      enterprisesStateControllerProvider().select(
+        (s) => s.value
+            ?.firstWhereOrNull((x) => x.Code == selectedEnterpriseCode)
+            ?.name,
       ),
     );
 
-    if (correspondentEnterprise == null) {
+    if (enterpriseName == null || personalizedCode == null) {
       return const SizedBox.shrink();
     }
 
     final theme = Theme.of(context);
+    final centerTitle = theme.platform != TargetPlatform.android;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
           child: Text(
-            '${correspondentEnterprise.PersonalizedCode} - ${correspondentEnterprise.name}',
+            '$personalizedCode - $enterpriseName',
             style: theme.textTheme.bodySmall,
             textAlign: centerTitle ? TextAlign.center : null,
           ),

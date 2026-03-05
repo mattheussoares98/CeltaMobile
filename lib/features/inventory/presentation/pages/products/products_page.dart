@@ -171,10 +171,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       children: [
         Scaffold(
           appBar: AppBar(
-            title: DefaultAppBarTitle(
-              enterpriseCode: widget.enterpriseCode,
-              title: 'Produtos'.hardcoded,
-            ),
+            title: DefaultAppBarTitle(title: 'Produtos'.hardcoded),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),

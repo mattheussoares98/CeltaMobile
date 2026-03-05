@@ -57,7 +57,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
             Consumer(
               builder: (_, ref, _) {
                 return DefaultAppBarTitle(
-                  enterpriseCode: widget.enterpriseCode,
                   title:
                       appBarTitles[ref.watch(
                         uiStateControllerProvider(

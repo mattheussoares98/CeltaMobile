@@ -34,10 +34,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          title: 'Recebimentos'.hardcoded,
-          enterpriseCode: widget.enterpriseCode,
-        ),
+        title: DefaultAppBarTitle(title: 'Recebimentos'.hardcoded),
         actions: [
           ReloadIconButton(
             provider: receiptsStateControllerProvider(widget.enterpriseCode),

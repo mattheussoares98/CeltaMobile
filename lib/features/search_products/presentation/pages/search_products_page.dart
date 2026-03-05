@@ -47,10 +47,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          enterpriseCode: widget.enterpriseCode,
-          title: 'Pesquisar produtos'.hardcoded,
-        ),
+        title: DefaultAppBarTitle(title: 'Pesquisar produtos'.hardcoded),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),

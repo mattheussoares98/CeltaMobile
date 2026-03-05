@@ -45,7 +45,6 @@ class TransferBetweenStocksPage extends ConsumerWidget {
       appBar: AppBar(
         title: DefaultAppBarTitle(
           title: "Transferência entre estoques".hardcoded,
-          enterpriseCode: enterpriseCode,
         ),
         actions: [ClearLotButton(enterpriseCode: enterpriseCode)],
       ),

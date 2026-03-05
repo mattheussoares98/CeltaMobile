@@ -20,10 +20,7 @@ class DocumentsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          enterpriseCode: enterpriseCode,
-          title: 'Documentos'.hardcoded,
-        ),
+        title: DefaultAppBarTitle(title: 'Documentos'.hardcoded),
         actions: [
           ReloadIconButton(
             provider: expeditionDocumentsStateControllerProvider(

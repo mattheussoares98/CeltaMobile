@@ -91,10 +91,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          enterpriseCode: widget.enterpriseCode,
-          title: 'Ajuste de estoque'.hardcoded,
-        ),
+        title: DefaultAppBarTitle(title: 'Ajuste de estoque'.hardcoded),
       ),
       body: Form(
         key: formKey,

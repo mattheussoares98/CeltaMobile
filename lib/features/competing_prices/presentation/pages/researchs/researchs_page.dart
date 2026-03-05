@@ -17,10 +17,7 @@ class ResearchsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          title: 'Pesquisas cadastradas'.hardcoded,
-          enterpriseCode: enterpriseCode,
-        ),
+        title: DefaultAppBarTitle(title: 'Pesquisas cadastradas'.hardcoded),
         actions: [
           ReloadIconButton(provider: provider),
           gapW24,

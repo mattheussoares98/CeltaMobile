@@ -19,10 +19,7 @@ class QuotationsPage extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          enterpriseCode: enterpriseCode,
-          title: 'Cotações'.hardcoded,
-        ),
+        title: DefaultAppBarTitle(title: 'Cotações'.hardcoded),
         actions: [
           ReloadIconButton(
             provider: buyQuotationsStateControllerProvider(enterpriseCode),

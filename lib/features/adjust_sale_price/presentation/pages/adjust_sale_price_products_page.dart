@@ -27,7 +27,6 @@ class AdjustSalePriceProductsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: DefaultAppBarTitle(
-          enterpriseCode: enterpriseCode,
           title: 'Produtos (ajuste de preços)'.hardcoded,
         ),
       ),

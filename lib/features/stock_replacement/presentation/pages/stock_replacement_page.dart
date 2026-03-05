@@ -71,7 +71,6 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
           children: [
             Flexible(
               child: DefaultAppBarTitle(
-                enterpriseCode: widget.enterpriseCode,
                 title: 'Substituição de estoque'.hardcoded,
               ),
             ),

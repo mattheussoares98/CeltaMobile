@@ -22,10 +22,7 @@ class RequestsTypePage extends ConsumerWidget {
     );
     return Scaffold(
       appBar: AppBar(
-        title: DefaultAppBarTitle(
-          enterpriseCode: enterpriseCode,
-          title: 'Modelos de pedido'.hardcoded,
-        ),
+        title: DefaultAppBarTitle(title: 'Modelos de pedido'.hardcoded),
         actions: [ReloadIconButton(provider: provider)],
       ),
       body: AsyncValueWidget(

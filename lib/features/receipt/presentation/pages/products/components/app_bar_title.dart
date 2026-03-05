@@ -25,7 +25,6 @@ class AppBarTitle extends StatelessWidget {
 
     return DefaultAppBarTitle(
       title: buffer?.toString() ?? 'Produtos'.hardcoded,
-      enterpriseCode: enterpriseCode,
     );
   }
 }
