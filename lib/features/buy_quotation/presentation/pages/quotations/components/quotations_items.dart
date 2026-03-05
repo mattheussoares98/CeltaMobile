@@ -62,46 +62,44 @@ class _QuotationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleAndSubTitle(
+                title: 'Código'.hardcoded,
+                subTitle: quotation.Code.toString(),
+              ),
+              if (quotation.PersonalizedCode != null)
                 TitleAndSubTitle(
-                  title: 'Código'.hardcoded,
-                  subTitle: quotation.Code.toString(),
+                  title: 'Código personalizado'.hardcoded,
+                  subTitle: quotation.PersonalizedCode.toString(),
                 ),
-                if (quotation.PersonalizedCode != null)
-                  TitleAndSubTitle(
-                    title: 'Código personalizado'.hardcoded,
-                    subTitle: quotation.PersonalizedCode.toString(),
-                  ),
-                if (quotation.DateOfCreation != null)
-                  TitleAndSubTitle(
-                    title: 'Data de criação'.hardcoded,
-                    subTitle: DateFormat(
-                      'dd/MM/yyyy HH:mm',
-                    ).format(quotation.DateOfCreation!),
-                  ),
+              if (quotation.DateOfCreation != null)
                 TitleAndSubTitle(
-                  title: 'Data limite'.hardcoded,
-                  emptyMessage: 'Nenhuma data de limite'.hardcoded,
-                  subTitle: quotation.DateOfLimit == null
-                      ? null
-                      : DateFormat('dd/MM/yyyy').format(quotation.DateOfLimit!),
+                  title: 'Data de criação'.hardcoded,
+                  subTitle: DateFormat(
+                    'dd/MM/yyyy HH:mm',
+                  ).format(quotation.DateOfCreation!),
                 ),
-                TitleAndSubTitle(
-                  title: 'Observações'.hardcoded,
-                  subTitle: quotation.Observations,
-                  emptyMessage: 'Sem observações'.hardcoded,
-                ),
-              ],
-            ),
+              TitleAndSubTitle(
+                title: 'Data limite'.hardcoded,
+                emptyMessage: 'Nenhuma data de limite'.hardcoded,
+                subTitle: quotation.DateOfLimit == null
+                    ? null
+                    : DateFormat('dd/MM/yyyy').format(quotation.DateOfLimit!),
+              ),
+              TitleAndSubTitle(
+                title: 'Observações'.hardcoded,
+                subTitle: quotation.Observations,
+                emptyMessage: 'Sem observações'.hardcoded,
+              ),
+            ],
           ),
         ),
       ),
