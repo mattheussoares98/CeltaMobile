@@ -13,38 +13,36 @@ class ProductSearchTypeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return RepaintBoundary(
-      child: Padding(
-        padding: const EdgeInsets.all(Sizes.p4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Tipo de pesquisa de produtos'.hardcoded,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.titleMedium,
-            ),
-            gapH8,
-            Consumer(
-              builder: (context, ref, _) {
-                final searchPreference = ref.watch(
-                  appSettingsStateControllerProvider.select(
-                    (s) => s.value?.searchPreference,
-                  ),
-                );
-                return DefaultChoiceChip(
-                  items: SearchProductTypePreference.values,
-                  selectedValue: searchPreference,
-                  onChanged: (searchPreference) async {
-                    await ref
-                        .read(appSettingsStateControllerProvider.notifier)
-                        .changeSettings(searchPreference: searchPreference);
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Tipo de pesquisa de produtos'.hardcoded,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleMedium,
+          ),
+          gapH8,
+          Consumer(
+            builder: (context, ref, _) {
+              final searchPreference = ref.watch(
+                appSettingsStateControllerProvider.select(
+                  (s) => s.value?.searchPreference,
+                ),
+              );
+              return DefaultChoiceChip(
+                items: SearchProductTypePreference.values,
+                selectedValue: searchPreference,
+                onChanged: (searchPreference) async {
+                  await ref
+                      .read(appSettingsStateControllerProvider.notifier)
+                      .changeSettings(searchPreference: searchPreference);
+                },
+              );
+            },
+          ),
+        ],
       ),
     );
   }
