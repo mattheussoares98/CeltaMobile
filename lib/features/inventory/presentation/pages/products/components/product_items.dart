@@ -149,34 +149,32 @@ class _ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        margin: const EdgeInsets.only(top: Sizes.p8),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            ProductInformations(
-              onChangeSelectedIndex: onChangeSelectedIndex,
-              product: product,
-              isSelected: isSelected,
-              codigoInternoInvCont: codigoInternoInvCont,
-            ),
-            if (isSelected) ...[
-              Form(
-                key: formKeyQuantity,
-                child: QuantityButtonsAndField(
-                  quantityFocusNode: quantityFocusNode,
-                  quantityController: quantityController,
-                  codigoInternoInvCont: codigoInternoInvCont,
-                  codigoInternoProEmb: product.codigoInternoProEmb!,
-                  enterpriseCode: enterpriseCode,
-                  codigoInternoInventario: codigoInternoInventario,
-                  entryQuantity: entryQuantity,
-                ),
+    return Card(
+      margin: const EdgeInsets.only(top: Sizes.p8),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          ProductInformations(
+            onChangeSelectedIndex: onChangeSelectedIndex,
+            product: product,
+            isSelected: isSelected,
+            codigoInternoInvCont: codigoInternoInvCont,
+          ),
+          if (isSelected) ...[
+            Form(
+              key: formKeyQuantity,
+              child: QuantityButtonsAndField(
+                quantityFocusNode: quantityFocusNode,
+                quantityController: quantityController,
+                codigoInternoInvCont: codigoInternoInvCont,
+                codigoInternoProEmb: product.codigoInternoProEmb!,
+                enterpriseCode: enterpriseCode,
+                codigoInternoInventario: codigoInternoInventario,
+                entryQuantity: entryQuantity,
               ),
-            ],
+            ),
           ],
-        ),
+        ],
       ),
     );
   }

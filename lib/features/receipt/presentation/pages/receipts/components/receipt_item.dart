@@ -58,115 +58,112 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
         (widget.receipt.Observacoes_ProcRecebDoc == null ||
             widget.receipt.Observacoes_ProcRecebDoc!.isEmpty);
 
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TitleAndSubTitle(
-                    title: 'Recebimento'.hardcoded,
-                    subTitle: widget.receipt.Numero_ProcRecebDoc.toString(),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TitleAndSubTitle(
+                  title: 'Recebimento'.hardcoded,
+                  subTitle: widget.receipt.Numero_ProcRecebDoc.toString(),
+                ),
+                TitleAndSubTitle(
+                  title: null,
+                  subTitle: widget.receipt.status.description,
+                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                    color: widget.receipt.status.color,
                   ),
+                ),
+                if (widget.receipt.EmitterName != null)
                   TitleAndSubTitle(
-                    title: null,
-                    subTitle: widget.receipt.status.description,
+                    title: 'Emitente'.hardcoded,
+                    subTitle: widget.receipt.EmitterName,
+                  ),
+                if (widget.receipt.Grupo != null)
+                  TitleAndSubTitle(
+                    title: 'Grupo'.hardcoded,
+                    subTitle: widget.receipt.Grupo,
                     subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                      color: widget.receipt.status.color,
+                      color: Colors.amber,
                     ),
                   ),
-                  if (widget.receipt.EmitterName != null)
-                    TitleAndSubTitle(
-                      title: 'Emitente'.hardcoded,
-                      subTitle: widget.receipt.EmitterName,
-                    ),
-                  if (widget.receipt.Grupo != null)
-                    TitleAndSubTitle(
-                      title: 'Grupo'.hardcoded,
-                      subTitle: widget.receipt.Grupo,
-                      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.amber,
-                      ),
-                    ),
-                  if (!isSelected) ...[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        CurrentObservations(receipt: widget.receipt),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: ToggleUpdateObservationButton(
-                            receipt: widget.receipt,
-                            enterpriseCode: widget.enterpriseCode,
-                            index: widget.index,
-                            observationsController:
-                                widget.observationsController,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ],
-              ),
-              if (isSelected) ...[
-                Column(
-                  children: [
-                    Form(
-                      key: formKey,
-                      child: DefaultTextFormField(
-                        maxLines: 13,
-                        maxLength: 500,
-                        controller: widget.observationsController,
-                        hintText: 'Nova observação'.hardcoded,
-                        labelText: 'Nova observação'.hardcoded,
-                        validator: shouldInsertObservations
-                            ? FormValidators.compose([NonEmptyValidator()])
-                            : null,
-                      ),
-                    ),
-                    gapH8,
-                    AnimatedBuilder(
-                      animation: widget.observationsController,
-                      builder: (_, _) {
-                        bool updatedObservations =
-                            widget.receipt.Observacoes_ProcRecebDoc !=
-                            widget.observationsController.text;
-                        return CancelAndConfirmUpdateObservationButtons(
+                if (!isSelected) ...[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CurrentObservations(receipt: widget.receipt),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ToggleUpdateObservationButton(
+                          receipt: widget.receipt,
+                          enterpriseCode: widget.enterpriseCode,
                           index: widget.index,
                           observationsController: widget.observationsController,
-                          updateObservations: updatedObservations
-                              ? updateObservations
-                              : null,
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ],
+            ),
+            if (isSelected) ...[
               Column(
                 children: [
-                  const Divider(height: Sizes.p12, thickness: 2),
-                  if (shouldInsertObservations)
-                    Text(
-                      'Observação pendente'.hardcoded,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: Colors.red,
-                      ),
-                    )
-                  else
-                    LiberateAndConferButtons(
-                      receipt: widget.receipt,
-                      enterpriseCode: widget.enterpriseCode,
+                  Form(
+                    key: formKey,
+                    child: DefaultTextFormField(
+                      maxLines: 13,
+                      maxLength: 500,
+                      controller: widget.observationsController,
+                      hintText: 'Nova observação'.hardcoded,
+                      labelText: 'Nova observação'.hardcoded,
+                      validator: shouldInsertObservations
+                          ? FormValidators.compose([NonEmptyValidator()])
+                          : null,
                     ),
+                  ),
+                  gapH8,
+                  AnimatedBuilder(
+                    animation: widget.observationsController,
+                    builder: (_, _) {
+                      bool updatedObservations =
+                          widget.receipt.Observacoes_ProcRecebDoc !=
+                          widget.observationsController.text;
+                      return CancelAndConfirmUpdateObservationButtons(
+                        index: widget.index,
+                        observationsController: widget.observationsController,
+                        updateObservations: updatedObservations
+                            ? updateObservations
+                            : null,
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
-          ),
+            Column(
+              children: [
+                const Divider(height: Sizes.p12, thickness: 2),
+                if (shouldInsertObservations)
+                  Text(
+                    'Observação pendente'.hardcoded,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.red,
+                    ),
+                  )
+                else
+                  LiberateAndConferButtons(
+                    receipt: widget.receipt,
+                    enterpriseCode: widget.enterpriseCode,
+                  ),
+              ],
+            ),
+          ],
         ),
       ),
     );

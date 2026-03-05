@@ -20,26 +20,24 @@ class ProductItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return RepaintBoundary(
-      child: Card(
-        margin: const EdgeInsets.only(top: Sizes.p8),
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TitleAndSubTitle(title: null, subTitle: product.Name),
-              TitleAndSubTitle(
-                title: 'PLU'.hardcoded,
-                subTitle: product.PriceLookUp,
-              ),
-              TitleAndSubTitle(
-                title: 'Quantidade'.hardcoded,
-                subTitle: product.Quantity.toString().toBrazilianNumber(),
-              ),
-            ],
-          ),
+    return Card(
+      margin: const EdgeInsets.only(top: Sizes.p8),
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TitleAndSubTitle(title: null, subTitle: product.Name),
+            TitleAndSubTitle(
+              title: 'PLU'.hardcoded,
+              subTitle: product.PriceLookUp,
+            ),
+            TitleAndSubTitle(
+              title: 'Quantidade'.hardcoded,
+              subTitle: product.Quantity.toString().toBrazilianNumber(),
+            ),
+          ],
         ),
       ),
     );
