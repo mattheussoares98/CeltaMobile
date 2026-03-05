@@ -22,6 +22,7 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
   final SearchProductKey searchProductKey;
   final VoidCallback? doOnSearchSucceeds;
   final Modules? module;
+
   const DefaultSearchProducts({
     super.key,
     required this.isLoading,
@@ -44,38 +45,23 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
 
   @override
   void dispose() {
-    super.dispose();
     formKey.currentState?.dispose();
+    super.dispose();
   }
 
-  void searchProducts({bool? searchByCamera}) async {
+  void _onSearch({bool? searchByCamera}) async {
     if (searchByCamera == true) {
       final code = await BarcodeScannerService.scanBarcode(context);
       if (code == null) return;
       widget.searchValueController.text = code;
     }
 
-    if (formKey.currentState?.validate() != true) {
-      return;
+    if (formKey.currentState?.validate() == true) {
+      widget.searchProducts();
     }
-    widget.searchProducts();
   }
 
-  SearchProductTypePreference? get _searchPreference => ref.watch(
-    appSettingsStateControllerProvider.select((s) => s.value?.searchPreference),
-  );
-
-  String get hintText {
-    final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
-
-    if (_searchPreference == SearchProductTypePreference.dynamic) {
-      return defaultHint;
-    }
-
-    return _searchPreference?.name ?? defaultHint;
-  }
-
-  void onTapDeleteIcon() {
+  void _onTapDeleteIcon() {
     widget.searchValueController.clear();
     Future.delayed(const Duration(milliseconds: 100), () {
       widget.focusNode?.requestFocus();
@@ -96,92 +82,131 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
       });
     });
 
-    return SizedBox(
-      width: Breakpoint.desktop,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth;
+    return RepaintBoundary(
+      child: Container(
+        width: Breakpoint.desktop,
 
-          return Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.only(top: Sizes.p4),
-              child: DefaultTextFormField(
-                key: const ValueKey('search_products'),
-                maxLength: 40,
-                enabled: !widget.isLoading,
-                controller: widget.searchValueController,
-                focusNode: widget.focusNode,
-                validator: FormValidators.compose([
-                  if (widget.allowEmptySearchValue != true) NonEmptyValidator(),
-                  if (_searchPreference == SearchProductTypePreference.ean)
-                    NumberValidator(allowDecimal: false),
-                ]),
-                onFieldSubmitted: (_) => searchProducts(),
-                prefixIcon: width < 220
-                    ? null
-                    : _DefaultIcon(
-                        onPress: widget.isLoading ? null : onTapDeleteIcon,
-                        materialIcon: Icons.delete,
-                        cupertinoIcon: CupertinoIcons.delete,
-                        iconColor: widget.isLoading
-                            ? theme.disabledColor
-                            : Colors.red,
-                      ),
+        color: theme.scaffoldBackgroundColor,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
 
-                suffixIcon: FittedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (width >= 220)
-                        _DefaultIcon(
-                          onPress: widget.isLoading ? null : searchProducts,
-                          materialIcon: Icons.search,
-                          cupertinoIcon: CupertinoIcons.search,
-                          iconColor: widget.isLoading
-                              ? theme.disabledColor
-                              : null,
-                        ),
-                      if (theme.platform == TargetPlatform.iOS ||
-                          theme.platform == TargetPlatform.android)
-                        _DefaultIcon(
-                          onPress: widget.isLoading
-                              ? null
-                              : () => searchProducts(searchByCamera: true),
-                          materialIcon: Icons.camera_alt,
-                          cupertinoIcon: CupertinoIcons.camera_fill,
-                          iconColor: widget.isLoading
-                              ? theme.disabledColor
-                              : null,
-                        ),
-                      _DefaultIcon(
-                        onPress: widget.isLoading
-                            ? null
-                            : () {
-                                showModalPage(
-                                  SettingsPage(module: widget.module),
-                                  context,
-                                );
-                              },
-                        materialIcon: Icons.settings,
-                        cupertinoIcon: CupertinoIcons.settings,
-                        iconColor: widget.isLoading
-                            ? theme.disabledColor
-                            : null,
+            return Form(
+              key: formKey,
+              child: Padding(
+                padding: const EdgeInsets.only(top: Sizes.p4),
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final pref = ref.watch(
+                      appSettingsStateControllerProvider.select(
+                        (s) => s.value?.searchPreference,
                       ),
-                    ],
-                  ),
+                    );
+
+                    final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
+                    final hint = (pref == SearchProductTypePreference.dynamic)
+                        ? defaultHint
+                        : (pref?.name ?? defaultHint);
+
+                    return DefaultTextFormField(
+                      key: const ValueKey('search_input_field'),
+                      maxLength: 40,
+                      enabled: !widget.isLoading,
+                      controller: widget.searchValueController,
+                      focusNode: widget.focusNode,
+                      validator: FormValidators.compose([
+                        if (widget.allowEmptySearchValue != true)
+                          NonEmptyValidator(),
+                        if (pref == SearchProductTypePreference.ean)
+                          NumberValidator(allowDecimal: false),
+                      ]),
+                      onFieldSubmitted: (_) => _onSearch(),
+                      prefixIcon: width < 220
+                          ? null
+                          : _DefaultIcon(
+                              onPress: widget.isLoading
+                                  ? null
+                                  : _onTapDeleteIcon,
+                              materialIcon: Icons.delete,
+                              cupertinoIcon: CupertinoIcons.delete,
+                              iconColor: widget.isLoading
+                                  ? theme.disabledColor
+                                  : Colors.red,
+                            ),
+                      suffixIcon: _SuffixActions(
+                        width: width,
+                        isLoading: widget.isLoading,
+                        onSearch: () => _onSearch(),
+                        onCamera: () => _onSearch(searchByCamera: true),
+                        module: widget.module,
+                      ),
+                      labelText:
+                          'Consultar produtos (${pref?.name ?? 'Dinâmico'})'
+                              .hardcoded,
+                      hintText: hint,
+                    );
+                  },
                 ),
-                labelText:
-                    'Consultar produtos (${_searchPreference?.name ?? 'Dinâmico'})'
-                        .hardcoded,
-                hintText: hintText,
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
+    );
+  }
+}
+
+class _SuffixActions extends StatelessWidget {
+  final double width;
+  final bool isLoading;
+  final VoidCallback onSearch;
+  final VoidCallback onCamera;
+  final Modules? module;
+
+  const _SuffixActions({
+    required this.width,
+    required this.isLoading,
+    required this.onSearch,
+    required this.onCamera,
+    this.module,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isMobile =
+        theme.platform == TargetPlatform.iOS ||
+        theme.platform == TargetPlatform.android;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (width >= 220)
+          _DefaultIcon(
+            onPress: onSearch,
+            materialIcon: Icons.search,
+            cupertinoIcon: CupertinoIcons.search,
+            iconColor: null,
+          ),
+        if (isMobile)
+          _DefaultIcon(
+            onPress: isLoading ? null : onCamera,
+            materialIcon: Icons.camera_alt,
+            cupertinoIcon: CupertinoIcons.camera_fill,
+            iconColor: isLoading ? theme.disabledColor : null,
+          ),
+        _DefaultIcon(
+          onPress: isLoading
+              ? null
+              : () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  showModalPage(SettingsPage(module: module), context);
+                },
+          materialIcon: Icons.settings,
+          cupertinoIcon: CupertinoIcons.settings,
+          iconColor: isLoading ? theme.disabledColor : null,
+        ),
+      ],
     );
   }
 }
@@ -191,6 +216,7 @@ class _DefaultIcon extends StatelessWidget {
   final IconData materialIcon;
   final IconData cupertinoIcon;
   final Color? iconColor;
+
   const _DefaultIcon({
     required this.onPress,
     required this.materialIcon,
@@ -201,13 +227,13 @@ class _DefaultIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return IconButton(
-      visualDensity: VisualDensity.comfortable,
+      visualDensity: VisualDensity.compact,
       onPressed: onPress,
       icon: Icon(
         theme.platform == TargetPlatform.iOS ? cupertinoIcon : materialIcon,
         color: iconColor,
+        size: 20,
       ),
     );
   }
