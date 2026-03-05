@@ -170,131 +170,128 @@ class ProductItemWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        margin: const EdgeInsets.only(bottom: Sizes.p12),
-        child: Column(
-          children: [
-            InkWell(
-              onTap: onTap == null || isIOS
-                  ? null
-                  : () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      onTap!();
-                    },
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                Sizes.p8,
-                                Sizes.p8,
-                                Sizes.p8,
-                                bottomPadding,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ?itemBeforeProductName,
-                                  TitleAndSubTitle(
-                                    copyableTitle: true,
-                                    title: product.Name,
-                                    subTitle: product.PackingQuantity == null
-                                        ? null
-                                        : " (${product.PackingQuantity.toString().formattedPacking()})",
-                                    titleStyle: theme.textTheme.titleMedium,
-                                    subTitleStyle: theme.textTheme.titleMedium
-                                        ?.copyWith(
-                                          color: theme.colorScheme.secondary,
-                                        ),
-                                  ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          TitleAndSubTitle(
-                                            copyableSubtitle: true,
-                                            title: "PLU ",
-                                            subTitle: product.PLU,
-                                          ),
-                                          if (showPracticedPrices)
-                                            PracticedPriceProperty(this),
-                                          if (showWholePrices)
-                                            WholePriceAndMinQuantity(this),
-                                          if (showLiquidCosts)
-                                            LiquidCostProperty(this),
-                                          if (showCurrentAndSaleStocks)
-                                            CurrentAndSaleStocks(this),
-                                          if (showEans) EansProperty(this),
-                                          ?cartItemSummary,
-                                          ?clickableBottom,
-                                        ],
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.only(bottom: Sizes.p12),
+      child: Column(
+        children: [
+          InkWell(
+            onTap: onTap == null || isIOS
+                ? null
+                : () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    onTap!();
+                  },
+            child: Row(
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              Sizes.p8,
+                              Sizes.p8,
+                              Sizes.p8,
+                              bottomPadding,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ?itemBeforeProductName,
+                                TitleAndSubTitle(
+                                  copyableTitle: true,
+                                  title: product.Name,
+                                  subTitle: product.PackingQuantity == null
+                                      ? null
+                                      : " (${product.PackingQuantity.toString().formattedPacking()})",
+                                  titleStyle: theme.textTheme.titleMedium,
+                                  subTitleStyle: theme.textTheme.titleMedium
+                                      ?.copyWith(
+                                        color: theme.colorScheme.secondary,
                                       ),
-                                      if (!showingLittleInformations)
-                                        Positioned(
-                                          top: 0,
-                                          right: 0,
-                                          child: InfoButton(this),
+                                ),
+                                Stack(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        TitleAndSubTitle(
+                                          copyableSubtitle: true,
+                                          title: "PLU ",
+                                          subTitle: product.PLU,
                                         ),
-                                    ],
+                                        if (showPracticedPrices)
+                                          PracticedPriceProperty(this),
+                                        if (showWholePrices)
+                                          WholePriceAndMinQuantity(this),
+                                        if (showLiquidCosts)
+                                          LiquidCostProperty(this),
+                                        if (showCurrentAndSaleStocks)
+                                          CurrentAndSaleStocks(this),
+                                        if (showEans) EansProperty(this),
+                                        ?cartItemSummary,
+                                        ?clickableBottom,
+                                      ],
+                                    ),
+                                    if (!showingLittleInformations)
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: InfoButton(this),
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        right: isIOS ? Sizes.p4 : 0,
+                        bottom: isIOS
+                            ? routine == BsRoutine.buyQuotation
+                                  ? -Sizes.p4
+                                  : Sizes.p4
+                            : 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              children: [
+                                if (showingLittleInformations) InfoButton(this),
+                                if (onDelete != null)
+                                  DeleteItemButton(onDelete: onDelete),
+                                if (showDropIcon == true)
+                                  SelectedIconIndicator(
+                                    selected: isSelected ?? false,
+                                    onTap: onTap,
                                   ),
-                                ],
-                              ),
+                              ],
                             ),
                           ],
                         ),
-                        Positioned(
-                          right: isIOS ? Sizes.p4 : 0,
-                          bottom: isIOS
-                              ? routine == BsRoutine.buyQuotation
-                                    ? -Sizes.p4
-                                    : Sizes.p4
-                              : 0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Row(
-                                children: [
-                                  if (showingLittleInformations)
-                                    InfoButton(this),
-                                  if (onDelete != null)
-                                    DeleteItemButton(onDelete: onDelete),
-                                  if (showDropIcon == true)
-                                    SelectedIconIndicator(
-                                      selected: isSelected ?? false,
-                                      onTap: onTap,
-                                    ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  ?rightWidget,
-                ],
-              ),
-            ),
-            if (notClickableBottom != null)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  Sizes.p8,
-                  0,
-                  Sizes.p8,
-                  Sizes.p8,
                 ),
-                child: notClickableBottom,
+                ?rightWidget,
+              ],
+            ),
+          ),
+          if (notClickableBottom != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                0,
+                Sizes.p8,
+                Sizes.p8,
               ),
-          ],
-        ),
+              child: notClickableBottom,
+            ),
+        ],
       ),
     );
   }
