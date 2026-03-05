@@ -122,6 +122,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+    final isAndroid = theme.platform == TargetPlatform.android;
 
     return Scaffold(
       appBar: AppBar(
@@ -131,7 +132,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         ),
       ),
       floatingActionButton: AnimatedBuilder(
-        animation: quantityFocusNode,
+        animation: isAndroid || isIOS
+            ? quantityFocusNode
+            : Listenable.merge([]),
         builder: (_, _) {
           final padding = quantityFocusNode.hasFocus ? Sizes.p48 : 0.0;
           return Padding(
