@@ -4,15 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../enterprises/presentation/controllers/controllers.dart';
 
 class SearchProduct extends ConsumerStatefulWidget {
-  final SearchProductKey searchProductKey;
-  final int enterpriseCode;
-  const SearchProduct({
-    super.key,
-    required this.searchProductKey,
-    required this.enterpriseCode,
-  });
+  const SearchProduct({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SearchProductState();
@@ -28,12 +23,12 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
     searchValueController.dispose();
   }
 
-  Future<void> searchProducts() async {
+  Future<void> searchProducts(int enterpriseCode) async {
     await ref
         .read(
           searchProductsStateControllerProvider(
             SearchProductKey(
-              widget.enterpriseCode,
+              enterpriseCode,
               BsRoutine.adjustSalePrice,
               Modules.adjustPrice,
             ),
@@ -42,7 +37,7 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
         .loadProducts(
           GetProductsJsonParams(
             searchValue: searchValueController.text,
-            enterpriseCodes: [widget.enterpriseCode],
+            enterpriseCodes: [enterpriseCode],
             routine: BsRoutine.adjustSalePrice,
           ),
         );
@@ -50,15 +45,29 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
 
   @override
   Widget build(BuildContext context) {
+    final enterpriseCode = ref.watch(
+      selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
+    );
+
+    if (enterpriseCode == null) {
+      return const SizedBox.shrink();
+    }
+
+    final searchProductKey = SearchProductKey(
+      enterpriseCode,
+      BsRoutine.adjustSalePrice,
+      Modules.adjustPrice,
+    );
+
     return DefaultSearchProducts(
       searchValueController: searchValueController,
-      searchProductKey: widget.searchProductKey,
+      searchProductKey: searchProductKey,
       isLoading: ref.watch(
         searchProductsStateControllerProvider(
-          widget.searchProductKey,
+          searchProductKey,
         ).select((state) => state.isLoading),
       ),
-      searchProducts: searchProducts,
+      searchProducts: () => searchProducts(enterpriseCode),
     );
   }
 }

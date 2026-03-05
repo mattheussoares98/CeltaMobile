@@ -1,0 +1,127 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../routing/routes.dart';
+import '../../../../enterprises/presentation/controllers/controllers.dart';
+import '../../controllers/controllers.dart';
+
+class ProductsItems extends ConsumerWidget {
+  const ProductsItems({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enterpriseCode = ref.watch(
+      selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
+    );
+
+    if (enterpriseCode == null) {
+      return const SizedBox.shrink();
+    }
+
+    final searchProductKey = SearchProductKey(
+      enterpriseCode,
+      BsRoutine.adjustSalePrice,
+      Modules.adjustPrice,
+    );
+
+    return Consumer(
+      builder: (_, ref, _) {
+        return AsyncValueWidget(
+          value: ref.watch(
+            searchProductsStateControllerProvider(searchProductKey),
+          ),
+          tryAgain: null,
+          data: (products) {
+            return ResponsiveListFlow(
+              itemCount: products.length,
+              itemBuilder: (_, index) {
+                return _ProductItem(
+                  key: ValueKey('product_$index'),
+                  index: index,
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ProductItem extends ConsumerWidget {
+  final int index;
+  const _ProductItem({super.key, required this.index});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enterpriseCode = ref.watch(
+      selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
+    );
+
+    if (enterpriseCode == null) {
+      return const SizedBox.shrink();
+    }
+
+    final searchProductKey = SearchProductKey(
+      enterpriseCode,
+      BsRoutine.adjustSalePrice,
+      Modules.adjustPrice,
+    );
+
+    final product = ref.watch(
+      searchProductsStateControllerProvider(
+        searchProductKey,
+      ).select((s) => s.value![index]),
+    );
+
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    return ProductItemWidget(
+      product: product,
+      routine: BsRoutine.adjustSalePrice,
+      notClickableBottom: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if (isIOS) const Expanded(flex: 55, child: Text('')),
+          Flexible(
+            flex: 45,
+            child: PrimaryTextButton(
+              text: 'Alterar preços'.hardcoded,
+              icon: Icon(
+                theme.platform == TargetPlatform.iOS
+                    ? CupertinoIcons.pencil
+                    : Icons.edit,
+              ),
+              iconAlignment: IconAlignment.end,
+              onPressed: () {
+                ref
+                    .read(
+                      selectedProductStateControllerProvider(
+                        enterpriseCode,
+                        product.PLU!,
+                      ).notifier,
+                    )
+                    .updateSelectedProduct(product);
+                context.goNamed(
+                  Routes.adjustSalePrice.name,
+                  pathParameters: {
+                    'enterpriseCode': enterpriseCode.toString(),
+                    'plu': product.PLU!,
+                  },
+                  extra: product,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
