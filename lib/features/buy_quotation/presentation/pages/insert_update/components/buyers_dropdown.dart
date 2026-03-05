@@ -33,52 +33,50 @@ class BuyersDropdown extends ConsumerWidget {
       tryAgain: () => ref.invalidate(buyersStateControllerProvider),
       data: (buyers) {
         return SliverToBoxAdapter(
-          child: RepaintBoundary(
-            child: Stack(
-              children: [
-                if (selectedBuyer?.Name != null)
-                  Positioned(
-                    top: 3,
-                    left: 5,
-                    child: Text(
-                      'Comprador'.hardcoded,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontStyle: FontStyle.italic,
-                      ),
+          child: Stack(
+            children: [
+              if (selectedBuyer?.Name != null)
+                Positioned(
+                  top: 3,
+                  left: 5,
+                  child: Text(
+                    'Comprador'.hardcoded,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
-                DefaultDropDown<BuyerEntity?>(
-                  onChanged: (buyer) {
-                    ref
-                        .read(
-                          completeBuyQuotationsStateControllerProvider(
-                            enterpriseCode,
-                            code.toString(),
-                          ).notifier,
-                        )
-                        .updateValues(Buyer: buyer);
-                  },
-                  hint: Text(selectedBuyer?.Name ?? 'Comprador'.hardcoded),
-                  selectedItem: selectedBuyer,
-                  label: selectedBuyer?.Name ?? 'Comprador'.hardcoded,
-                  items: buyers
-                      .map(
-                        (e) => DropdownMenuItem(
-                          key: ValueKey('buyer_item_${e.Code}'),
-                          value: e,
-                          child: Center(child: Text(e.Name)),
-                        ),
-                      )
-                      .toList(),
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Selecione um comprador'.hardcoded;
-                    }
-                    return null;
-                  },
                 ),
-              ],
-            ),
+              DefaultDropDown<BuyerEntity?>(
+                onChanged: (buyer) {
+                  ref
+                      .read(
+                        completeBuyQuotationsStateControllerProvider(
+                          enterpriseCode,
+                          code.toString(),
+                        ).notifier,
+                      )
+                      .updateValues(Buyer: buyer);
+                },
+                hint: Text(selectedBuyer?.Name ?? 'Comprador'.hardcoded),
+                selectedItem: selectedBuyer,
+                label: selectedBuyer?.Name ?? 'Comprador'.hardcoded,
+                items: buyers
+                    .map(
+                      (e) => DropdownMenuItem(
+                        key: ValueKey('buyer_item_${e.Code}'),
+                        value: e,
+                        child: Center(child: Text(e.Name)),
+                      ),
+                    )
+                    .toList(),
+                validator: (value) {
+                  if (value == null) {
+                    return 'Selecione um comprador'.hardcoded;
+                  }
+                  return null;
+                },
+              ),
+            ],
           ),
         );
       },

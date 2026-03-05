@@ -94,34 +94,38 @@ class Enterprises extends ConsumerWidget {
                     ),
                   )
                   .toList();
-        return SliverList.builder(
-          itemCount: filteredEnterprises.length + 1,
-          itemBuilder: (_, index) {
-            if (index == 0) {
-              return Text(
-                'Empresas'.hardcoded,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontStyle: FontStyle.italic,
-                  color: theme.primaryColor,
-                ),
-              );
-            }
-            final enterprise = filteredEnterprises[index - 1];
+        return Consumer(
+          builder: (context, ref, child) {
+            return SliverList.builder(
+              itemCount: filteredEnterprises.length + 1,
+              itemBuilder: (_, index) {
+                if (index == 0) {
+                  return Text(
+                    'Empresas'.hardcoded,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: theme.primaryColor,
+                    ),
+                  );
+                }
+                final enterprise = filteredEnterprises[index - 1];
 
-            final isSelected =
-                buyQuotationEnterprises
-                    .firstWhereOrNull(
-                      (e) => e.enterprise.Code == enterprise.Code,
-                    )
-                    ?.isSelected ==
-                true;
+                final isSelected =
+                    buyQuotationEnterprises
+                        .firstWhereOrNull(
+                          (e) => e.enterprise.Code == enterprise.Code,
+                        )
+                        ?.isSelected ==
+                    true;
 
-            return _EnterpriseItem(
-              key: ValueKey(enterprise.Code),
-              updateSelectedEnterprise: () =>
-                  updateSelectedEnterprise(enterprise),
-              enterprise: enterprise,
-              isSelected: isSelected,
+                return _EnterpriseItem(
+                  key: ValueKey(enterprise.Code),
+                  updateSelectedEnterprise: () =>
+                      updateSelectedEnterprise(enterprise),
+                  enterprise: enterprise,
+                  isSelected: isSelected,
+                );
+              },
             );
           },
         );
@@ -144,45 +148,43 @@ class _EnterpriseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: updateSelectedEnterprise,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              Sizes.p8,
-              Sizes.p8,
-              0, //because of the CheckBox
-              Sizes.p8,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TitleAndSubTitle(
-                        title: 'Código'.hardcoded,
-                        subTitle: enterprise.PersonalizedCode.toString(),
-                      ),
-                      TitleAndSubTitle(
-                        title: 'Empresa'.hardcoded,
-                        subTitle: enterprise.name,
-                      ),
-                      TitleAndSubTitle(
-                        title: 'CNPJ'.hardcoded,
-                        subTitle: enterprise.CnpjNumber,
-                      ),
-                    ],
-                  ),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: updateSelectedEnterprise,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            Sizes.p8,
+            Sizes.p8,
+            0, //because of the CheckBox
+            Sizes.p8,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleAndSubTitle(
+                      title: 'Código'.hardcoded,
+                      subTitle: enterprise.PersonalizedCode.toString(),
+                    ),
+                    TitleAndSubTitle(
+                      title: 'Empresa'.hardcoded,
+                      subTitle: enterprise.name,
+                    ),
+                    TitleAndSubTitle(
+                      title: 'CNPJ'.hardcoded,
+                      subTitle: enterprise.CnpjNumber,
+                    ),
+                  ],
                 ),
-                Checkbox(
-                  value: isSelected,
-                  onChanged: (_) => updateSelectedEnterprise(),
-                ),
-              ],
-            ),
+              ),
+              Checkbox(
+                value: isSelected,
+                onChanged: (_) => updateSelectedEnterprise(),
+              ),
+            ],
           ),
         ),
       ),

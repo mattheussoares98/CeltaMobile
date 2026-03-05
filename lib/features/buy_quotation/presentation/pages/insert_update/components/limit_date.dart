@@ -29,51 +29,55 @@ class LimitDate extends ConsumerWidget {
     );
 
     return SliverToBoxAdapter(
-      child: Row(
-        children: [
-          Expanded(
-            child: TitleAndSubTitle(
-              title: 'Limite'.hardcoded,
-              subTitle: dateOfLimit == null
-                  ? null
-                  : DateFormat('dd/MM/yyyy HH:mm').format(dateOfLimit),
-              emptyMessage: 'Sem data de limite'.hardcoded,
-            ),
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: PrimaryTextButton(
-                text: dateOfLimit == null
-                    ? 'Inserir'.hardcoded
-                    : 'Alterar'.hardcoded,
-                icon: Icon(isIOS ? CupertinoIcons.calendar : Icons.date_range),
-                onPressed: () async {
-                  final now = DateTime.now();
-                  final newDate = await GetNewDate.get(
-                    minimumDate: now,
-                    maximumDate: now.add(const Duration(days: 365)),
-                    currentSelectedDate: dateOfLimit,
-                    insertHoursAndMinutes: true,
-                    context: context,
-                  );
-
-                  ref
-                      .read(
-                        completeBuyQuotationsStateControllerProvider(
-                          enterpriseCode,
-                          code.toString(),
-                        ).notifier,
-                      )
-                      .updateValues(
-                        DateOfLimit: newDate,
-                        annulDateOfLimit: newDate == null,
-                      );
-                },
+      child: RepaintBoundary(
+        child: Row(
+          children: [
+            Expanded(
+              child: TitleAndSubTitle(
+                title: 'Limite'.hardcoded,
+                subTitle: dateOfLimit == null
+                    ? null
+                    : DateFormat('dd/MM/yyyy HH:mm').format(dateOfLimit),
+                emptyMessage: 'Sem data de limite'.hardcoded,
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: PrimaryTextButton(
+                  text: dateOfLimit == null
+                      ? 'Inserir'.hardcoded
+                      : 'Alterar'.hardcoded,
+                  icon: Icon(
+                    isIOS ? CupertinoIcons.calendar : Icons.date_range,
+                  ),
+                  onPressed: () async {
+                    final now = DateTime.now();
+                    final newDate = await GetNewDate.get(
+                      minimumDate: now,
+                      maximumDate: now.add(const Duration(days: 365)),
+                      currentSelectedDate: dateOfLimit,
+                      insertHoursAndMinutes: true,
+                      context: context,
+                    );
+
+                    ref
+                        .read(
+                          completeBuyQuotationsStateControllerProvider(
+                            enterpriseCode,
+                            code.toString(),
+                          ).notifier,
+                        )
+                        .updateValues(
+                          DateOfLimit: newDate,
+                          annulDateOfLimit: newDate == null,
+                        );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

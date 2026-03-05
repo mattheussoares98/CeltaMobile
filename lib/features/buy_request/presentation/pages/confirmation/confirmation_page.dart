@@ -38,9 +38,11 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
     });
 
     return Scaffold(
-      floatingActionButton: FloatingSaveButton(
-        observationsController: observationsController,
-        enterpriseCode: widget.enterpriseCode,
+      floatingActionButton: RepaintBoundary(
+        child: FloatingSaveButton(
+          observationsController: observationsController,
+          enterpriseCode: widget.enterpriseCode,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),

@@ -32,40 +32,42 @@ class SaveIconButton extends ConsumerWidget {
         code.toString(),
       ).select((s) => s.value != null),
     );
-    return IconButton(
-      onPressed: loadedComplete
-          ? () async {
-              if (observationsFocusNode.hasFocus) {
-                observationsFocusNode.unfocus();
-              }
-              bool updated = false;
-              bool? pressedOk = await showAlertDialog(
-                context: context,
-                title: 'Salvar'.hardcoded,
-                content: 'Deseja salvar as alterações?'.hardcoded,
-                cancelActionText: 'Cancelar'.hardcoded,
-                defaultActionText: 'Salvar'.hardcoded,
-              );
+    return RepaintBoundary(
+      child: IconButton(
+        onPressed: loadedComplete
+            ? () async {
+                if (observationsFocusNode.hasFocus) {
+                  observationsFocusNode.unfocus();
+                }
+                bool updated = false;
+                bool? pressedOk = await showAlertDialog(
+                  context: context,
+                  title: 'Salvar'.hardcoded,
+                  content: 'Deseja salvar as alterações?'.hardcoded,
+                  cancelActionText: 'Cancelar'.hardcoded,
+                  defaultActionText: 'Salvar'.hardcoded,
+                );
 
-              if (pressedOk == true) {
-                FocusScope.of(context).unfocus();
-                updated = await ref
-                    .read(
-                      saveBuyQuotationControllerProvider(
-                        enterpriseCode,
-                        code.toString(),
-                      ).notifier,
-                    )
-                    .save(observationController.text);
-              }
+                if (pressedOk == true) {
+                  FocusScope.of(context).unfocus();
+                  updated = await ref
+                      .read(
+                        saveBuyQuotationControllerProvider(
+                          enterpriseCode,
+                          code.toString(),
+                        ).notifier,
+                      )
+                      .save(observationController.text);
+                }
 
-              await Future.delayed(Duration.zero);
-              if (updated) {
-                context.pop();
+                await Future.delayed(Duration.zero);
+                if (updated) {
+                  context.pop();
+                }
               }
-            }
-          : null,
-      icon: Icon(isIOS ? CupertinoIcons.check_mark : Icons.save),
+            : null,
+        icon: Icon(isIOS ? CupertinoIcons.check_mark : Icons.save),
+      ),
     );
   }
 }
