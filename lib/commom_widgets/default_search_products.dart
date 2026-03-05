@@ -187,6 +187,7 @@ class _SuffixActions extends StatelessWidget {
             materialIcon: Icons.search,
             cupertinoIcon: CupertinoIcons.search,
             iconColor: null,
+            isLoading: isLoading,
           ),
         if (isMobile)
           _DefaultIcon(
@@ -216,12 +217,14 @@ class _DefaultIcon extends StatelessWidget {
   final IconData materialIcon;
   final IconData cupertinoIcon;
   final Color? iconColor;
+  final bool isLoading;
 
   const _DefaultIcon({
     required this.onPress,
     required this.materialIcon,
     required this.cupertinoIcon,
     required this.iconColor,
+    this.isLoading = false,
   });
 
   @override
@@ -230,11 +233,15 @@ class _DefaultIcon extends StatelessWidget {
     return IconButton(
       visualDensity: VisualDensity.compact,
       onPressed: onPress,
-      icon: Icon(
-        theme.platform == TargetPlatform.iOS ? cupertinoIcon : materialIcon,
-        color: iconColor,
-        size: 20,
-      ),
+      icon: isLoading
+          ? const LoadingWidget(padding: 0, size: Sizes.p16)
+          : Icon(
+              theme.platform == TargetPlatform.iOS
+                  ? cupertinoIcon
+                  : materialIcon,
+              color: iconColor,
+              size: 20,
+            ),
     );
   }
 }
