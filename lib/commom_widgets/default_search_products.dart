@@ -134,7 +134,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (width >= 220 && !widget.isLoading)
+                      if (width >= 220)
                         _DefaultIcon(
                           onPress: widget.isLoading ? null : searchProducts,
                           materialIcon: Icons.search,
@@ -142,11 +142,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
                           iconColor: widget.isLoading
                               ? theme.disabledColor
                               : null,
-                        )
-                      else if (widget.isLoading) ...[
-                        const LoadingWidget(padding: 0, size: Sizes.p16),
-                        gapW12,
-                      ],
+                        ),
                       if (theme.platform == TargetPlatform.iOS ||
                           theme.platform == TargetPlatform.android)
                         _DefaultIcon(
