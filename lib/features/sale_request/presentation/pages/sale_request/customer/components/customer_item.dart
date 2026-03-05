@@ -25,30 +25,28 @@ class CustomerItem extends ConsumerWidget {
       ).select((s) => s.value?.customer),
     );
 
-    return RepaintBoundary(
-      child: Card(
-        margin: const EdgeInsets.only(bottom: Sizes.p8),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            CustomerInfoAndRadio(
-              customerItem: this,
-              enterpriseCode: enterpriseCode,
-              changeSelectedCustomer: () => ref
-                  .read(
-                    pendingSaleRequestStateControllerProvider(
-                      enterpriseCode,
-                    ).notifier,
-                  )
-                  .changeCustomer(customer),
-            ),
-            if (customer == selectedCustomer &&
-                customer.CustomerCovenants != null &&
-                customer.CustomerCovenants!.isNotEmpty) ...[
-              Covenants(customerItem: this, enterpriseCode: enterpriseCode),
-            ],
+    return Card(
+      margin: const EdgeInsets.only(bottom: Sizes.p8),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          CustomerInfoAndRadio(
+            customerItem: this,
+            enterpriseCode: enterpriseCode,
+            changeSelectedCustomer: () => ref
+                .read(
+                  pendingSaleRequestStateControllerProvider(
+                    enterpriseCode,
+                  ).notifier,
+                )
+                .changeCustomer(customer),
+          ),
+          if (customer == selectedCustomer &&
+              customer.CustomerCovenants != null &&
+              customer.CustomerCovenants!.isNotEmpty) ...[
+            Covenants(customerItem: this, enterpriseCode: enterpriseCode),
           ],
-        ),
+        ],
       ),
     );
   }

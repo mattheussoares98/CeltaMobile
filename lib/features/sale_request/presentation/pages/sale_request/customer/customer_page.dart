@@ -42,43 +42,54 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
             child: CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [
-                AsyncValueWidget(
-                  isSliver: true,
-                  value: ref.watch(
-                    consumerCustomerStasteControllerProvider(
-                      widget.enterpriseCode,
-                    ),
-                  ),
-                  tryAgain: () =>
-                      ref.invalidate(consumerCustomerStasteControllerProvider),
-                  data: (customer) {
-                    return SliverToBoxAdapter(
-                      child: CustomerItem(
-                        key: ValueKey(customer?.Code),
-                        customer: customer!,
-                        isConsumerCustomer: true,
-                        enterpriseCode: widget.enterpriseCode,
+                Consumer(
+                  builder: (context, ref, child) {
+                    //TODO create another file
+                    return AsyncValueWidget(
+                      isSliver: true,
+                      value: ref.watch(
+                        consumerCustomerStasteControllerProvider(
+                          widget.enterpriseCode,
+                        ),
                       ),
+                      tryAgain: () => ref.invalidate(
+                        consumerCustomerStasteControllerProvider,
+                      ),
+                      data: (customer) {
+                        return SliverToBoxAdapter(
+                          child: CustomerItem(
+                            key: ValueKey(customer?.Code),
+                            customer: customer!,
+                            isConsumerCustomer: true,
+                            enterpriseCode: widget.enterpriseCode,
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
                 gapSliverH8,
-                AsyncValueWidget(
-                  isSliver: true,
-                  value: ref.watch(
-                    customersStateControllerProvider(widget.enterpriseCode),
-                  ),
-                  tryAgain: null,
-                  data: (customers) {
-                    return ResponsiveListFlow(
+                Consumer(
+                  builder: (context, ref, child) {
+                    //TODO create another file
+                    return AsyncValueWidget(
                       isSliver: true,
-                      itemCount: customers.length,
-                      itemBuilder: (_, index) {
-                        final customer = customers[index];
-                        return CustomerItem(
-                          key: ValueKey(customer.Code),
-                          customer: customer,
-                          enterpriseCode: widget.enterpriseCode,
+                      value: ref.watch(
+                        customersStateControllerProvider(widget.enterpriseCode),
+                      ),
+                      tryAgain: null,
+                      data: (customers) {
+                        return ResponsiveListFlow(
+                          isSliver: true,
+                          itemCount: customers.length,
+                          itemBuilder: (_, index) {
+                            final customer = customers[index];
+                            return CustomerItem(
+                              key: ValueKey(customer.Code),
+                              customer: customer,
+                              enterpriseCode: widget.enterpriseCode,
+                            );
+                          },
                         );
                       },
                     );

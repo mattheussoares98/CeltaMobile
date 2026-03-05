@@ -46,68 +46,66 @@ class ProductItem extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    return RepaintBoundary(
-      child: Card(
-        margin: const EdgeInsets.only(bottom: Sizes.p4),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InkWell(
-              onTap: isIOS ? null : onTap,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  Sizes.p8,
-                  Sizes.p8,
-                  0,
-                  Sizes.p8,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    NamePluAndDeleteButton(
-                      cartProduct: cartProduct,
-                      enterpriseCode: enterpriseCode,
-                    ),
-                    gapH4,
-                    if (cartProduct.DiscountDescription != null)
-                      TitleAndSubTitle(
-                        title: null,
-                        subTitle:
-                            "${cartProduct.DiscountDescription} (${((cartProduct.DiscountValue ?? 0) / cartProduct.Quantity).toString().toBrazilianNumber().addBrazilianCoin()} por UN)",
-                        subTitleStyle: theme.textTheme.titleSmall?.copyWith(
-                          color: theme.colorScheme.secondary,
-                        ),
+    return Card(
+      margin: const EdgeInsets.only(bottom: Sizes.p4),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: isIOS ? null : onTap,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                Sizes.p8,
+                0,
+                Sizes.p8,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  NamePluAndDeleteButton(
+                    cartProduct: cartProduct,
+                    enterpriseCode: enterpriseCode,
+                  ),
+                  gapH4,
+                  if (cartProduct.DiscountDescription != null)
+                    TitleAndSubTitle(
+                      title: null,
+                      subTitle:
+                          "${cartProduct.DiscountDescription} (${((cartProduct.DiscountValue ?? 0) / cartProduct.Quantity).toString().toBrazilianNumber().addBrazilianCoin()} por UN)",
+                      subTitleStyle: theme.textTheme.titleSmall?.copyWith(
+                        color: theme.colorScheme.secondary,
                       ),
-                    Values(
-                      product: cartProduct,
-                      isSelected: isSelected,
-                      onTap: onTap,
                     ),
-                  ],
-                ),
+                  Values(
+                    product: cartProduct,
+                    isSelected: isSelected,
+                    onTap: onTap,
+                  ),
+                ],
               ),
             ),
-            if (isSelected) ...[
-              Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: QuantityPriceDiscountFieldsAndInsertButton(
-                  cartProduct: cartProduct,
-                  isCartPage: true,
-                  quantityController: quantityController,
-                  priceController: priceController,
-                  discountController: discountController,
-                  quantityFocusNode: quantityFocusNode,
-                  discountFocusNode: discountFocusNode,
-                  priceFocusNode: priceFocusNode,
-                  selectedRequest: selectedRequest,
-                  enterpriseCode: enterpriseCode,
-                  product: cartProduct.product!,
-                ),
+          ),
+          if (isSelected) ...[
+            Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: QuantityPriceDiscountFieldsAndInsertButton(
+                cartProduct: cartProduct,
+                isCartPage: true,
+                quantityController: quantityController,
+                priceController: priceController,
+                discountController: discountController,
+                quantityFocusNode: quantityFocusNode,
+                discountFocusNode: discountFocusNode,
+                priceFocusNode: priceFocusNode,
+                selectedRequest: selectedRequest,
+                enterpriseCode: enterpriseCode,
+                product: cartProduct.product!,
               ),
-            ],
+            ),
           ],
-        ),
+        ],
       ),
     );
   }
