@@ -47,27 +47,24 @@ class _EnterpriseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TitleAndSubTitle(
-                  title: null,
-                  subTitle:
-                      '${enterprise.PersonalizedCode} - ${enterprise.name}',
-                ),
-                TitleAndSubTitle(
-                  title: 'CNPJ'.hardcoded,
-                  subTitle: enterprise.CnpjNumber,
-                ),
-              ],
-            ),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleAndSubTitle(
+                title: null,
+                subTitle: '${enterprise.PersonalizedCode} - ${enterprise.name}',
+              ),
+              TitleAndSubTitle(
+                title: 'CNPJ'.hardcoded,
+                subTitle: enterprise.CnpjNumber,
+              ),
+            ],
           ),
         ),
       ),

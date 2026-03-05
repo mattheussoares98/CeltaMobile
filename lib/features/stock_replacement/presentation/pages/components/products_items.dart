@@ -142,50 +142,47 @@ class _ProductItem extends ConsumerWidget {
         .watch(confirmAdjustStockControllerProvider)
         .value;
 
-    return RepaintBoundary(
-      child: ProductItemWidget(
-        product: product,
-        routine: BsRoutine.adjustStock,
-        onTap: () async {
-          quantityController.clear();
-          ref
-              .read(selectedUIStateControllerProvider(enterpriseCode).notifier)
-              .updateValues(selectedIndex: index);
-          if (quantityFocusNode.hasFocus) {
-            quantityFocusNode.unfocus();
-          }
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            quantityFocusNode.requestFocus();
-          });
-        },
-        showDropIcon: true,
-        isSelected: isSelected,
-        clickableBottom:
-            lastConfirmedAdjust?.productPackingCode ==
-                product.ProductPackingCode
-            ? TitleAndSubTitle(
-                title: 'Última qtd ASSUMIDA'.hardcoded,
-                subTitle: lastConfirmedAdjust?.quantity
-                    .toString()
-                    .toBrazilianNumber(3, true),
-                titleStyle: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.secondary,
-                  fontStyle: FontStyle.italic,
-                ),
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.secondary,
-                  fontStyle: FontStyle.italic,
-                ),
-              )
-            : null,
-        notClickableBottom: isSelected
-            ? ConfirmAdjustStock(
-                onConfirm: confirmAdjust,
-                quantityController: quantityController,
-                quantityFocusNode: quantityFocusNode,
-              )
-            : null,
-      ),
+    return ProductItemWidget(
+      product: product,
+      routine: BsRoutine.adjustStock,
+      onTap: () async {
+        quantityController.clear();
+        ref
+            .read(selectedUIStateControllerProvider(enterpriseCode).notifier)
+            .updateValues(selectedIndex: index);
+        if (quantityFocusNode.hasFocus) {
+          quantityFocusNode.unfocus();
+        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          quantityFocusNode.requestFocus();
+        });
+      },
+      showDropIcon: true,
+      isSelected: isSelected,
+      clickableBottom:
+          lastConfirmedAdjust?.productPackingCode == product.ProductPackingCode
+          ? TitleAndSubTitle(
+              title: 'Última qtd ASSUMIDA'.hardcoded,
+              subTitle: lastConfirmedAdjust?.quantity
+                  .toString()
+                  .toBrazilianNumber(3, true),
+              titleStyle: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.secondary,
+                fontStyle: FontStyle.italic,
+              ),
+              subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.secondary,
+                fontStyle: FontStyle.italic,
+              ),
+            )
+          : null,
+      notClickableBottom: isSelected
+          ? ConfirmAdjustStock(
+              onConfirm: confirmAdjust,
+              quantityController: quantityController,
+              quantityFocusNode: quantityFocusNode,
+            )
+          : null,
     );
   }
 }

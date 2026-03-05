@@ -78,50 +78,45 @@ class _RequestTypeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.Name),
+              TitleAndSubTitle(
+                title: 'Cód personalizado'.hardcoded,
+                subTitle: request.PersonalizedCode,
+              ),
+              TitleAndSubTitle(
+                title: 'Tipo de operação'.hardcoded,
+                subTitle: request.OperationTypeString,
+              ),
+              if (request.UseWholePrice == 1)
                 TitleAndSubTitle(
-                  title: 'Nome'.hardcoded,
-                  subTitle: request.Name,
+                  title: 'Preço atacado'.hardcoded,
+                  subTitle: request.UseWholePriceString,
                 ),
-                TitleAndSubTitle(
-                  title: 'Cód personalizado'.hardcoded,
-                  subTitle: request.PersonalizedCode,
+              TitleAndSubTitle(
+                title: 'Preço praticado'.hardcoded,
+                subTitle: request.UnitValueTypeString,
+              ),
+              TitleAndSubTitle(
+                title: null,
+                subTitle: request.AllowAlterCostOrSalePrice == true
+                    ? "Pode alterar preço de custo ou venda"
+                    : "Não pode alterar preço de custo ou venda",
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: request.AllowAlterCostOrSalePrice == true
+                      ? Colors.green
+                      : Colors.red,
                 ),
-                TitleAndSubTitle(
-                  title: 'Tipo de operação'.hardcoded,
-                  subTitle: request.OperationTypeString,
-                ),
-                if (request.UseWholePrice == 1)
-                  TitleAndSubTitle(
-                    title: 'Preço atacado'.hardcoded,
-                    subTitle: request.UseWholePriceString,
-                  ),
-                TitleAndSubTitle(
-                  title: 'Preço praticado'.hardcoded,
-                  subTitle: request.UnitValueTypeString,
-                ),
-                TitleAndSubTitle(
-                  title: null,
-                  subTitle: request.AllowAlterCostOrSalePrice == true
-                      ? "Pode alterar preço de custo ou venda"
-                      : "Não pode alterar preço de custo ou venda",
-                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                    color: request.AllowAlterCostOrSalePrice == true
-                        ? Colors.green
-                        : Colors.red,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

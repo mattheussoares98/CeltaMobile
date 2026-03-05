@@ -53,45 +53,41 @@ class ProductItem extends ConsumerWidget {
       ),
     );
 
-    return RepaintBoundary(
-      child: ProductItemWidget(
-        product: product,
-        routine: BsRoutine.transferRequest,
-        isSelected: isSelected,
-        showDropIcon: true,
-        onTap: () => onTap(transferRequestProductItem),
-        onDelete: transferRequestProductItem != null
-            ? () {
-                ref
-                    .read(
-                      cartProductsStateControllerProvider(draftKey).notifier,
-                    )
-                    .removeItem(transferRequestProductItem);
-              }
-            : null,
-        cartItemSummary: transferRequestProductItem != null
-            ? CartItemSummary(
-                cartQuantity: transferRequestProductItem.quantity,
-                cartValue: transferRequestProductItem.value,
-                product: product,
-              )
-            : null,
-        notClickableBottom: isSelected
-            ? Form(
-                key: formKey,
-                child: UpdateItemWidget(
-                  isCartPage: false,
-                  update: () => update(transferRequestProductItem?.quantity),
-                  draftKey: draftKey,
-                  price: product.Value ?? 0,
-                  quantityController: quantityController,
-                  priceController: priceController,
-                  quantityFocusNode: quantityFocusNode,
-                  priceFocusNode: priceFocusNode,
-                ),
-              )
-            : null,
-      ),
+    return ProductItemWidget(
+      product: product,
+      routine: BsRoutine.transferRequest,
+      isSelected: isSelected,
+      showDropIcon: true,
+      onTap: () => onTap(transferRequestProductItem),
+      onDelete: transferRequestProductItem != null
+          ? () {
+              ref
+                  .read(cartProductsStateControllerProvider(draftKey).notifier)
+                  .removeItem(transferRequestProductItem);
+            }
+          : null,
+      cartItemSummary: transferRequestProductItem != null
+          ? CartItemSummary(
+              cartQuantity: transferRequestProductItem.quantity,
+              cartValue: transferRequestProductItem.value,
+              product: product,
+            )
+          : null,
+      notClickableBottom: isSelected
+          ? Form(
+              key: formKey,
+              child: UpdateItemWidget(
+                isCartPage: false,
+                update: () => update(transferRequestProductItem?.quantity),
+                draftKey: draftKey,
+                price: product.Value ?? 0,
+                quantityController: quantityController,
+                priceController: priceController,
+                quantityFocusNode: quantityFocusNode,
+                priceFocusNode: priceFocusNode,
+              ),
+            )
+          : null,
     );
   }
 }

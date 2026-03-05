@@ -129,50 +129,46 @@ class _ProductItem extends ConsumerWidget {
       ),
     );
 
-    return RepaintBoundary(
-      child: ProductItemWidget(
-        product: product,
-        routine: BsRoutine.adjustStock,
-        onDelete: quantityInLot == null
-            ? null
-            : () {
-                ref
-                    .read(lotStateControllerProvider(enterpriseCode).notifier)
-                    .removeItem(product.ProductPackingCode!);
-              },
-        onTap: () {
-          ref
-              .read(
-                selectedProductUIStateControllerProvider(
-                  enterpriseCode,
-                ).notifier,
-              )
-              .updateProductIndex(index);
+    return ProductItemWidget(
+      product: product,
+      routine: BsRoutine.adjustStock,
+      onDelete: quantityInLot == null
+          ? null
+          : () {
+              ref
+                  .read(lotStateControllerProvider(enterpriseCode).notifier)
+                  .removeItem(product.ProductPackingCode!);
+            },
+      onTap: () {
+        ref
+            .read(
+              selectedProductUIStateControllerProvider(enterpriseCode).notifier,
+            )
+            .updateProductIndex(index);
 
-          quantityController.clear();
-          quantityFocusNode.unfocus();
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            quantityFocusNode.requestFocus();
-          });
-        },
-        showDropIcon: true,
-        isSelected: isSelected,
-        clickableBottom: quantityInLot == null
-            ? null
-            : Text(
-                '${quantityInLot.toString().toBrazilianNumber()} qtds no lote',
-                textAlign: TextAlign.start,
-                style: theme.textTheme.titleSmall?.copyWith(color: Colors.blue),
-              ),
-        notClickableBottom: isSelected
-            ? AddInLot(
-                productIsAlreadyInLot: quantityInLot != null,
-                addInLot: () => addInLot(product),
-                quantityController: quantityController,
-                quantityFocusNode: quantityFocusNode,
-              )
-            : null,
-      ),
+        quantityController.clear();
+        quantityFocusNode.unfocus();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          quantityFocusNode.requestFocus();
+        });
+      },
+      showDropIcon: true,
+      isSelected: isSelected,
+      clickableBottom: quantityInLot == null
+          ? null
+          : Text(
+              '${quantityInLot.toString().toBrazilianNumber()} qtds no lote',
+              textAlign: TextAlign.start,
+              style: theme.textTheme.titleSmall?.copyWith(color: Colors.blue),
+            ),
+      notClickableBottom: isSelected
+          ? AddInLot(
+              productIsAlreadyInLot: quantityInLot != null,
+              addInLot: () => addInLot(product),
+              quantityController: quantityController,
+              quantityFocusNode: quantityFocusNode,
+            )
+          : null,
     );
   }
 }

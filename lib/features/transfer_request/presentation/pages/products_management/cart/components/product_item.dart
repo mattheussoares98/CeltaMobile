@@ -105,72 +105,70 @@ class _ProductItemState extends ConsumerState<ProductItem> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            InkWell(
-              onTap: isIOS ? null : changeSelectedIndex,
-              child: Padding(
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          InkWell(
+            onTap: isIOS ? null : changeSelectedIndex,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                Sizes.p8,
+                0,
+                Sizes.p8,
+              ),
+              child: Row(
+                children: [
+                  Expanded(child: ProductInformations(item: widget.item)),
+                  RemoveAndEditIcons(
+                    draftKey: widget.draftKey,
+                    item: widget.item,
+                    changeSelectedIndex: changeSelectedIndex,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Consumer(
+            builder: (_, ref, _) {
+              final bool isSelected =
+                  ref.watch(
+                    uiStateControllerProvider(
+                      widget.draftKey.requestTypeCode,
+                      widget.draftKey.enterpriseOrigin,
+                    ).select((s) => s.value?.selectedCartProductIndex),
+                  ) ==
+                  widget.index;
+
+              if (!isSelected) {
+                return const SizedBox.shrink();
+              }
+
+              return Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  Sizes.p8,
                   Sizes.p8,
                   0,
                   Sizes.p8,
+                  Sizes.p8,
                 ),
-                child: Row(
-                  children: [
-                    Expanded(child: ProductInformations(item: widget.item)),
-                    RemoveAndEditIcons(
-                      draftKey: widget.draftKey,
-                      item: widget.item,
-                      changeSelectedIndex: changeSelectedIndex,
-                    ),
-                  ],
+                child: Form(
+                  key: formKey,
+                  child: UpdateItemWidget(
+                    update: update,
+                    draftKey: widget.draftKey,
+                    price: widget.item.value,
+                    quantityController: quantityController,
+                    priceController: priceController,
+                    quantityFocusNode: quantityFocusNode,
+                    priceFocusNode: priceFocusNode,
+                    isCartPage: true,
+                  ),
                 ),
-              ),
-            ),
-            Consumer(
-              builder: (_, ref, _) {
-                final bool isSelected =
-                    ref.watch(
-                      uiStateControllerProvider(
-                        widget.draftKey.requestTypeCode,
-                        widget.draftKey.enterpriseOrigin,
-                      ).select((s) => s.value?.selectedCartProductIndex),
-                    ) ==
-                    widget.index;
-
-                if (!isSelected) {
-                  return const SizedBox.shrink();
-                }
-
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Sizes.p8,
-                    0,
-                    Sizes.p8,
-                    Sizes.p8,
-                  ),
-                  child: Form(
-                    key: formKey,
-                    child: UpdateItemWidget(
-                      update: update,
-                      draftKey: widget.draftKey,
-                      price: widget.item.value,
-                      quantityController: quantityController,
-                      priceController: priceController,
-                      quantityFocusNode: quantityFocusNode,
-                      priceFocusNode: priceFocusNode,
-                      isCartPage: true,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
