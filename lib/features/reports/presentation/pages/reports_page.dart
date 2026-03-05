@@ -46,20 +46,18 @@ class _ReportItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Informations(report: report),
-              gapH8,
-              ExecuteButton(report: report),
-              gapH8,
-              DownloadButtons(report: report),
-            ],
-          ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Informations(report: report),
+            gapH8,
+            ExecuteButton(report: report),
+            gapH8,
+            DownloadButtons(report: report),
+          ],
         ),
       ),
     );

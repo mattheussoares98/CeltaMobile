@@ -73,81 +73,76 @@ class _RequestTypeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () {
-            context.goNamed(
-              Routes.saleRequest.name,
-              pathParameters: {
-                'enterpriseCode': enterpriseCode.toString(),
-                'requestCode': request.Code.toString(),
-              },
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Consumer(
-                  builder: (_, ref, _) {
-                    final bool isDefaultRequestType = ref.watch(
-                      selectedEnterpriseStateControllerProvider.select(
-                        (s) => s?.SaleRequestTypeCode == request.Code,
-                      ),
-                    );
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          context.goNamed(
+            Routes.saleRequest.name,
+            pathParameters: {
+              'enterpriseCode': enterpriseCode.toString(),
+              'requestCode': request.Code.toString(),
+            },
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Consumer(
+                builder: (_, ref, _) {
+                  final bool isDefaultRequestType = ref.watch(
+                    selectedEnterpriseStateControllerProvider.select(
+                      (s) => s?.SaleRequestTypeCode == request.Code,
+                    ),
+                  );
 
-                    if (!isDefaultRequestType) {
-                      return const SizedBox.shrink();
-                    }
-                    return Text(
-                      'Modelo padrão'.hardcoded,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: theme.colorScheme.secondary,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    );
-                  },
-                ),
+                  if (!isDefaultRequestType) {
+                    return const SizedBox.shrink();
+                  }
+                  return Text(
+                    'Modelo padrão'.hardcoded,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: theme.colorScheme.secondary,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  );
+                },
+              ),
 
-                TitleAndSubTitle(
-                  title: 'Código'.hardcoded,
-                  subTitle: request.PersonalizedCode,
+              TitleAndSubTitle(
+                title: 'Código'.hardcoded,
+                subTitle: request.PersonalizedCode,
+              ),
+              TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.Name),
+              TitleAndSubTitle(
+                title: 'Tipo preço'.hardcoded,
+                subTitle: request.UnitValueTypeString,
+              ),
+              TitleAndSubTitle(
+                title: null,
+                subTitle: request.AllowAlterCostOrSalePrice == true
+                    ? 'Permite alterar o preço'.hardcoded
+                    : 'Não permite alterar o preço'.hardcoded,
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: request.AllowAlterCostOrSalePrice == true
+                      ? theme.primaryColor
+                      : theme.colorScheme.error,
                 ),
-                TitleAndSubTitle(
-                  title: 'Nome'.hardcoded,
-                  subTitle: request.Name,
+              ),
+              TitleAndSubTitle(
+                title: null,
+                subTitle: request.AllowDiscount == true
+                    ? 'Permite desconto manual'.hardcoded
+                    : 'Não permite desconto manual'.hardcoded,
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: request.AllowDiscount == true
+                      ? theme.primaryColor
+                      : theme.colorScheme.error,
                 ),
-                TitleAndSubTitle(
-                  title: 'Tipo preço'.hardcoded,
-                  subTitle: request.UnitValueTypeString,
-                ),
-                TitleAndSubTitle(
-                  title: null,
-                  subTitle: request.AllowAlterCostOrSalePrice == true
-                      ? 'Permite alterar o preço'.hardcoded
-                      : 'Não permite alterar o preço'.hardcoded,
-                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                    color: request.AllowAlterCostOrSalePrice == true
-                        ? theme.primaryColor
-                        : theme.colorScheme.error,
-                  ),
-                ),
-                TitleAndSubTitle(
-                  title: null,
-                  subTitle: request.AllowDiscount == true
-                      ? 'Permite desconto manual'.hardcoded
-                      : 'Não permite desconto manual'.hardcoded,
-                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                    color: request.AllowDiscount == true
-                        ? theme.primaryColor
-                        : theme.colorScheme.error,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

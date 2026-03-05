@@ -109,63 +109,61 @@ class _ProductItemState extends ConsumerState<ProductItem> {
       ),
     );
 
-    return RepaintBoundary(
-      child: ProductItemWidget(
-        product: widget.product,
-        routine: BsRoutine.saleRequest,
-        showDropIcon: true,
-        isSelected: isSelected,
-        onTap: () => onTapProduct(widget.product, cartProduct),
-        cartItemSummary: cartProduct == null
-            ? null
-            : CartItemSummary(
-                cartQuantity: cartProduct.Quantity,
-                cartValue: cartProduct.Value,
-                product: widget.product,
-                totalDiscount: cartProduct.DiscountValue,
-              ),
-        onDelete: cartProduct == null
-            ? null
-            : () {
-                ref
-                    .read(
-                      pendingSaleRequestStateControllerProvider(
-                        widget.enterpriseCode,
-                      ).notifier,
-                    )
-                    .removeProduct(cartProduct);
-              },
-        notClickableBottom: isSelected
-            ? Consumer(
-                builder: (_, ref, _) {
-                  final selectedRequest = ref.watch(
-                    requestTypeStateControllerProvider(
-                      Modules.saleRequest,
+    return ProductItemWidget(
+      product: widget.product,
+      routine: BsRoutine.saleRequest,
+      showDropIcon: true,
+      isSelected: isSelected,
+      onTap: () => onTapProduct(widget.product, cartProduct),
+      cartItemSummary: cartProduct == null
+          ? null
+          : CartItemSummary(
+              cartQuantity: cartProduct.Quantity,
+              cartValue: cartProduct.Value,
+              product: widget.product,
+              totalDiscount: cartProduct.DiscountValue,
+            ),
+      onDelete: cartProduct == null
+          ? null
+          : () {
+              ref
+                  .read(
+                    pendingSaleRequestStateControllerProvider(
                       widget.enterpriseCode,
-                    ).select(
-                      (s) => s.value!.firstWhere(
-                        (x) => x.Code == widget.requestCode,
-                      ),
+                    ).notifier,
+                  )
+                  .removeProduct(cartProduct);
+            },
+      notClickableBottom: isSelected
+          ? Consumer(
+              builder: (_, ref, _) {
+                final selectedRequest = ref.watch(
+                  requestTypeStateControllerProvider(
+                    Modules.saleRequest,
+                    widget.enterpriseCode,
+                  ).select(
+                    (s) => s.value!.firstWhere(
+                      (x) => x.Code == widget.requestCode,
                     ),
-                  );
+                  ),
+                );
 
-                  return QuantityPriceDiscountFieldsAndInsertButton(
-                    isCartPage: false,
-                    product: widget.product,
-                    cartProduct: cartProduct,
-                    quantityController: quantityController,
-                    priceController: priceController,
-                    discountController: discountController,
-                    quantityFocusNode: quantityFocusNode,
-                    discountFocusNode: discountFocusNode,
-                    priceFocusNode: priceFocusNode,
-                    selectedRequest: selectedRequest,
-                    enterpriseCode: widget.enterpriseCode,
-                  );
-                },
-              )
-            : null,
-      ),
+                return QuantityPriceDiscountFieldsAndInsertButton(
+                  isCartPage: false,
+                  product: widget.product,
+                  cartProduct: cartProduct,
+                  quantityController: quantityController,
+                  priceController: priceController,
+                  discountController: discountController,
+                  quantityFocusNode: quantityFocusNode,
+                  discountFocusNode: discountFocusNode,
+                  priceFocusNode: priceFocusNode,
+                  selectedRequest: selectedRequest,
+                  enterpriseCode: widget.enterpriseCode,
+                );
+              },
+            )
+          : null,
     );
   }
 }
