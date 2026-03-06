@@ -7,12 +7,10 @@ RouteBase adjustSalePriceProducts(List<RouteBase> routes) => GoRoute(
   path: ':enterpriseCode/adjust-sale-price-products',
   name: Routes.adjustSalePriceProducts.name,
   routes: routes,
-  pageBuilder: (context, state) {
-    return NoTransitionPage(
-      child: AdjustSalePriceProductsPage(
-        enterpriseCode: int.parse(
-          state.pathParameters['enterpriseCode'].toString(),
-        ),
+  builder: (context, state) {
+    return AdjustSalePriceProductsPage(
+      enterpriseCode: int.parse(
+        state.pathParameters['enterpriseCode'].toString(),
       ),
     );
   },
