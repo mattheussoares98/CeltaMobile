@@ -7,7 +7,8 @@ import '../../../../../../localization/string_hardcoded.dart';
 import 'components/components.dart';
 
 class ReportsPage extends ConsumerStatefulWidget {
-  const ReportsPage({super.key});
+  final ScrollController scrollController;
+  const ReportsPage({super.key, required this.scrollController});
 
   @override
   ConsumerState<ReportsPage> createState() => _ReportsPageState();
@@ -27,6 +28,7 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: CustomScrollView(
+        controller: widget.scrollController,
         slivers: [
           gapSliverH8,
           const StartAndEndDate(),

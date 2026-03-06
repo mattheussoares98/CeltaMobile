@@ -31,6 +31,8 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
   final urlFocusNode = FocusNode();
   final userNameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
+  late final ScrollController _reportsScrollController;
+  final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
 
   static final now = DateTime.now();
   static final start = DateTime(now.year, now.month, 1);
@@ -40,11 +42,25 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
   void initState() {
     super.initState();
 
+    _reportsScrollController = ScrollController();
+    _reportsScrollController.addListener(_scrollListener);
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         loadReports();
       }
     });
+  }
+
+  void _scrollListener() {
+    // PERFORMANCE: Only update the notifier when the threshold is crossed
+    // to minimize listener notifications.
+    if (_reportsScrollController.offset > 900 && !_showScrollToTop.value) {
+      _showScrollToTop.value = true;
+    } else if (_reportsScrollController.offset <= 900 &&
+        _showScrollToTop.value) {
+      _showScrollToTop.value = false;
+    }
   }
 
   void loadReports() {
@@ -68,6 +84,10 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
     urlFocusNode.dispose();
     userNameFocusNode.dispose();
     passwordFocusNode.dispose();
+
+    _reportsScrollController.removeListener(_scrollListener);
+    _reportsScrollController.dispose();
+    _showScrollToTop.dispose();
   }
 
   Future<void> onSubmit() async {
@@ -94,17 +114,41 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
         title: Text('Gerenciar módulos'.hardcoded),
         actions: const [LogoutButton()],
       ),
-      floatingActionButton: Consumer(
-        builder: (_, ref, _) {
-          final pageIndex = ref.watch(pageIndexStateControllerProvider);
-          if (pageIndex != 0) {
-            return const SizedBox.shrink();
-          }
-          return FloatingActionButton(
-            onPressed: () {
-              context.pushNamed(Routes.createEnterprise.name);
+      floatingActionButton: ValueListenableBuilder<bool>(
+        valueListenable: _showScrollToTop,
+        builder: (context, showUp, child) {
+          return Consumer(
+            builder: (_, ref, _) {
+              final pageIndex = ref.watch(pageIndexStateControllerProvider);
+
+              if (pageIndex == 0) {
+                return FloatingActionButton(
+                  key: const ValueKey('add_enterprise_fab'),
+                  onPressed: () =>
+                      context.pushNamed(Routes.createEnterprise.name),
+                  child: Icon(isIOS ? CupertinoIcons.add : Icons.add),
+                );
+              }
+
+              // Show 'Scroll to Top' button if threshold is met on Reports tab
+              if (pageIndex == 1 && showUp) {
+                return FloatingActionButton(
+                  key: const ValueKey('scroll_to_top_fab'),
+                  onPressed: () {
+                    _reportsScrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  child: Icon(
+                    isIOS ? CupertinoIcons.arrow_up : Icons.arrow_upward,
+                  ),
+                );
+              }
+
+              return const SizedBox.shrink();
             },
-            child: Icon(isIOS ? CupertinoIcons.add : Icons.add),
           );
         },
       ),
@@ -136,7 +180,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
               EnterprisesPage(
                 filterEnterpriseNameController: filterEnterpriseNameController,
               ),
-              const ReportsPage(),
+              ReportsPage(scrollController: _reportsScrollController),
             ],
           );
         },
