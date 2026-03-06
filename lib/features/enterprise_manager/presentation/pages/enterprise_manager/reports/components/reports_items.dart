@@ -48,7 +48,11 @@ class ReportsItems extends ConsumerWidget {
               );
 
               final groupEntries = usageByEnterprise.entries.toList()
-                ..sort((a, b) => a.key.compareTo(b.key));
+                ..sort(
+                  (a, b) => b.value
+                      .fold(0, (p, n) => p + n.requestCount)
+                      .compareTo(a.value.fold(0, (p, n) => p + n.requestCount)),
+                );
               final totalRequests = groupEntries.fold<int>(
                 0,
                 (sum, e) =>

@@ -10,6 +10,7 @@ class ResponsiveListFlow extends StatelessWidget {
   final double? maxItemWidth;
   final bool isSliver;
   final EdgeInsetsGeometry? padding;
+  final ScrollPhysics? physics;
   const ResponsiveListFlow({
     super.key,
     required this.itemCount,
@@ -17,6 +18,7 @@ class ResponsiveListFlow extends StatelessWidget {
     this.maxItemWidth = 380,
     this.isSliver = false,
     this.padding,
+    this.physics,
   });
 
   @override
@@ -29,6 +31,7 @@ class ResponsiveListFlow extends StatelessWidget {
       return isSliver
           ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
           : ListView.builder(
+              physics: const ClampingScrollPhysics(),
               padding: padding,
               itemBuilder: itemBuilder,
               itemCount: itemCount,

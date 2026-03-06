@@ -39,6 +39,7 @@ class ProductsItems extends ConsumerWidget {
           tryAgain: null,
           data: (products) {
             return ResponsiveListFlow(
+              physics: const ClampingScrollPhysics(),
               itemCount: products.length,
               itemBuilder: (_, index) {
                 return _ProductItem(
