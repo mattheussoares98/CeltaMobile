@@ -181,11 +181,16 @@ PODS:
   - GoogleUtilities/UserDefaults (8.1.0):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
+  - mobile_scanner (7.0.0):
+    - Flutter
+    - FlutterMacOS
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
+  - package_info_plus (0.4.5):
+    - Flutter
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
@@ -214,6 +219,8 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_barcode_scanner_plus (from `.symlinks/plugins/flutter_barcode_scanner_plus/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - mobile_scanner (from `.symlinks/plugins/mobile_scanner/darwin`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - syncfusion_flutter_pdfviewer (from `.symlinks/plugins/syncfusion_flutter_pdfviewer/ios`)
@@ -264,6 +271,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_barcode_scanner_plus/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  mobile_scanner:
+    :path: ".symlinks/plugins/mobile_scanner/darwin"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
@@ -274,16 +285,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  app_links: 585674be3c6661708e6cd794ab4f39fb9d8356f9
-  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
+  app_links: 3dbc685f76b1693c66a6d9dd1e9ab6f73d97dc0a
+  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
-  file_picker: b159e0c068aef54932bb15dc9fd1571818edaf49
+  file_picker: a0560bc09d61de87f12d246fc47d2119e6ef37be
   Firebase: 9a58fdbc9d8655ed7b79a19cf9690bb007d3d46d
-  firebase_analytics: a463fef86e489e34a1b58bced6a7f6bb26132498
-  firebase_core: 8d5e24676350f15dd111aa59a88a1ae26605f9ba
-  firebase_crashlytics: a14ae83fe2d4738b6b5a7bebdf9dad9ccc747e70
-  firebase_messaging: 834cfc0887393d3108cdb19da8e57655c54fd0e4
+  firebase_analytics: a3285a9ab410456957496cdb659f00c1cf19a95f
+  firebase_core: ee30637e6744af8e0c12a6a1e8a9718506ec2398
+  firebase_crashlytics: 28b8f39df8104131376393e6af658b8b77dd120f
+  firebase_messaging: 343de01a8d3e18b60df0c6d37f7174c44ae38e02
   FirebaseAnalytics: f20bbad8cb7f65d8a5eaefeb424ae8800a31bdfc
   FirebaseCore: 0dbad74bda10b8fb9ca34ad8f375fb9dd3ebef7c
   FirebaseCoreExtension: 6605938d51f765d8b18bfcafd2085276a252bee2
@@ -294,21 +305,23 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfigInterop: 869ddca16614f979e5c931ece11fbb0b8729ed41
   FirebaseSessions: d614ca154c63dbbc6c10d6c38259c2162c4e7c9b
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_barcode_scanner_plus: 5777819a85622aed4284fb14d1fa33b72a64003d
-  flutter_local_notifications: ff50f8405aaa0ccdc7dcfb9022ca192e8ad9688f
+  flutter_barcode_scanner_plus: e5ef7f41cdbf3086e1b9348dce986dde3aa08696
+  flutter_local_notifications: a5a732f069baa862e728d839dd2ebb904737effb
   GoogleAdsOnDeviceConversion: d68c69dd9581a0f5da02617b6f377e5be483970f
   GoogleAppMeasurement: 72c9a682fec6290327ea5e3c4b829b247fcb2c17
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
+  mobile_scanner: 9157936403f5a0644ca3779a38ff8404c5434a93
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   SDWebImage: 1bb6a1b84b6fe87b972a102bdc77dd589df33477
-  share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
-  shared_preferences_foundation: 5086985c1d43c5ba4d5e69a4e8083a389e2909e6
+  share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
+  shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
-  syncfusion_flutter_pdfviewer: cfcf23c03816192575902e615fa50adc9f95b724
-  url_launcher_ios: bb13df5870e8c4234ca12609d04010a21be43dfa
+  syncfusion_flutter_pdfviewer: 90dc48305d2e33d4aa20681d1e98ddeda891bc14
+  url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
 
 PODFILE CHECKSUM: 53a6aebc29ccee84c41f92f409fc20cd4ca011f1
 

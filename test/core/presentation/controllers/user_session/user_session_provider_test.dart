@@ -1,8 +1,14 @@
+import 'dart:async';
+
+import 'package:celta_inventario/core/data/datasource/notification/notification.dart'
+    show INotificationDatasource;
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/user_session/user_session.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_version/app_version.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/hive/hive.dart';
+import 'package:celta_inventario/core/providers/notification/notification.dart';
 import 'package:celta_inventario/core/providers/user_session/user_session.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,19 +34,38 @@ class UserSessionRepositorySpy extends Mock implements IUserSessionRepository {
   }
 }
 
+class NotificationDatasourceSpy extends Mock
+    implements INotificationDatasource {}
+
+class FakeAppVersion extends AppVersionStateController {
+  final String appVersion;
+
+  FakeAppVersion(this.appVersion);
+  @override
+  FutureOr<String> build() async {
+    return appVersion;
+  }
+}
+
 void main() {
   late UserSessionRepositorySpy userSessionRepository;
   late SupabaseUserSessionDatasourceSpy supabaseUserSessionDatasource;
+  late NotificationDatasourceSpy notificationDatasource;
+
   late UserSessionModel userSession;
   late List<MockBox> mockBoxesToClearOnLogout;
   late DeviceType deviceType;
+  late String appVersion;
 
   setUp(() {
     userSessionRepository = UserSessionRepositorySpy();
     supabaseUserSessionDatasource = SupabaseUserSessionDatasourceSpy();
+    notificationDatasource = NotificationDatasourceSpy();
+
     userSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    appVersion = faker.lorem.word();
 
     mockBoxesToClearOnLogout = [MockBox(), MockBox(), MockBox()];
 
@@ -49,6 +74,15 @@ void main() {
     userSessionRepository.mockGet(userSession);
     deviceType = DeviceType
         .values[faker.randomGenerator.integer(DeviceType.values.length)];
+    when(
+      () => supabaseUserSessionDatasource.handleUserSession(
+        userName: any(named: 'userName'),
+        deviceType: any(named: 'deviceType'),
+        firebaseEnterpriseId: any(named: 'firebaseEnterpriseId'),
+        fcmToken: any(named: 'fcmToken'),
+        appVersion: any(named: 'appVersion'),
+      ),
+    ).thenAnswer((_) async => {});
   });
 
   ProviderContainer makeProviderContainer() {
@@ -61,6 +95,12 @@ void main() {
         ),
         supabaseUserSessionDatasourceProvider.overrideWithValue(
           supabaseUserSessionDatasource,
+        ),
+        appVersionStateControllerProvider.overrideWith(
+          () => FakeAppVersion(appVersion),
+        ),
+        notificationDatasourceProvider.overrideWithValue(
+          notificationDatasource,
         ),
       ],
     );
@@ -103,6 +143,39 @@ void main() {
 
         // ASSERT
         expect(result, isNull);
+      });
+      test('should save session with correct parameters', () async {
+        final token = faker.guid.guid();
+        when(
+          () => notificationDatasource.getToken(),
+        ).thenAnswer((_) async => token);
+
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+
+        // ACT
+        await container.read(userSessionProvider.future);
+
+        //!in the controller is not waiting call this method. But here, needs to wait
+        await untilCalled(
+          () => supabaseUserSessionDatasource.handleUserSession(
+            userName: any(named: 'userName'),
+            deviceType: any(named: 'deviceType'),
+            firebaseEnterpriseId: any(named: 'firebaseEnterpriseId'),
+            fcmToken: any(named: 'fcmToken'),
+            appVersion: any(named: 'appVersion'),
+          ),
+        );
+        // ASSERT
+        verify(
+          () => supabaseUserSessionDatasource.handleUserSession(
+            firebaseEnterpriseId: userSession.enterprise!.id!,
+            userName: userSession.user.name!,
+            deviceType: any(named: 'deviceType'),
+            fcmToken: token,
+            appVersion: appVersion,
+          ),
+        ).called(1);
       });
     });
 

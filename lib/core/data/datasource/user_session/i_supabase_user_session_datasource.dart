@@ -6,6 +6,7 @@ abstract class ISupabaseUserSessionDatasource {
     required DeviceType deviceType,
     required int firebaseEnterpriseId,
     required String? fcmToken,
+    required String appVersion,
   });
 
   Future<void> removeUserSession({

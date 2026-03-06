@@ -15,6 +15,7 @@ void main() {
   late DeviceType deviceType;
   late int firebaseEnterpriseId;
   late String? fcmToken;
+  late String appVersion;
 
   void initEntities() {
     userName = faker.internet.userName();
@@ -22,6 +23,7 @@ void main() {
         .values[faker.randomGenerator.integer(DeviceType.values.length)];
     firebaseEnterpriseId = faker.randomGenerator.integer(100);
     fcmToken = faker.guid.guid();
+    appVersion = faker.lorem.word();
   }
 
   void initSut() {
@@ -54,6 +56,7 @@ void main() {
         deviceType: deviceType,
         firebaseEnterpriseId: firebaseEnterpriseId,
         fcmToken: fcmToken,
+        appVersion: appVersion,
       );
 
       expect(supabaseClient.lastRpcFunction, 'handle_user_session');
@@ -62,6 +65,7 @@ void main() {
         'p_device_type': deviceType.name.toLowerCase(),
         'p_enterprise_id': firebaseEnterpriseId,
         'p_fcm_token': fcmToken,
+        'p_app_version': appVersion,
       });
     });
     test('should rethrow the error', () async {
@@ -73,6 +77,7 @@ void main() {
         deviceType: deviceType,
         firebaseEnterpriseId: firebaseEnterpriseId,
         fcmToken: fcmToken,
+        appVersion: appVersion,
       );
 
       expect(result, throwsA(error));

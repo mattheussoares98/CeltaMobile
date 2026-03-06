@@ -406,6 +406,7 @@ class SupabaseUserSessionDatasourceSpy extends Mock
         deviceType: any(named: 'deviceType'),
         firebaseEnterpriseId: any(named: 'firebaseEnterpriseId'),
         fcmToken: any(named: 'fcmToken'),
+        appVersion: any(named: 'appVersion'),
       ),
     ).thenAnswer((_) async => {});
     when(

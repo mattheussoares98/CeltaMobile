@@ -13,6 +13,7 @@ class SupabaseUserSessionDatasource implements ISupabaseUserSessionDatasource {
     required DeviceType deviceType,
     required int firebaseEnterpriseId,
     required String? fcmToken,
+    required String appVersion,
   }) async {
     await _supabase.rpc(
       'handle_user_session',
@@ -21,6 +22,7 @@ class SupabaseUserSessionDatasource implements ISupabaseUserSessionDatasource {
         'p_device_type': deviceType.name.toLowerCase(),
         'p_enterprise_id': firebaseEnterpriseId,
         'p_fcm_token': fcmToken,
+        'p_app_version': appVersion,
       },
     );
   }

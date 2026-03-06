@@ -6,6 +6,7 @@ import '../../../domain/entities/entities.dart';
 import '../../../providers/hive/hive.dart';
 import '../../../providers/notification/notification.dart';
 import '../../../providers/user_session/user_session.dart';
+import '../app_version/app_version.dart';
 
 part 'user_session_provider.g.dart';
 
@@ -78,7 +79,9 @@ class UserSession extends _$UserSession {
           .read(notificationDatasourceProvider)
           .getToken();
 
-      // 2. Map current platform to the Enum expected by Postgres
+      final appVersion = await ref.read(
+        appVersionStateControllerProvider.future,
+      );
 
       // 3. Call the RPC to upsert the session record
       await ref
@@ -88,6 +91,7 @@ class UserSession extends _$UserSession {
             userName: session.user.name!,
             deviceType: deviceType,
             fcmToken: fcmToken,
+            appVersion: appVersion,
           );
 
       debugPrint('Sync: Remote session updated successfully');
