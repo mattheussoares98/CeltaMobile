@@ -47,3 +47,12 @@ IEcommerceGetShallowProductsDatasource ecommerceGetShallowProductsDatasource(
 ) {
   return EcommerceGetShallowProductsDatasource(ref.watch(httpClientProvider));
 }
+
+@riverpod
+IEcommerceGetShallowProductsRepository ecommerceGetShallowProductsRepository(
+  Ref ref,
+) {
+  return EcommerceGetShallowProductsRepositoryImpl(
+    ref.watch(ecommerceGetShallowProductsDatasourceProvider),
+  );
+}
