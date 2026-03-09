@@ -131,6 +131,7 @@ class EntityFactory {
     bool? alterationPriceForAllPackings,
     bool? markUpdateClassInAdjustSalePriceIndividual,
   }) => ProductEntity(
+    PackingAbbreviation: faker.lorem.word(),
     ConcurrentCode: faker.randomGenerator.integer(100),
     ResearchOfPriceCode: faker.randomGenerator.integer(100),
     EANs: [

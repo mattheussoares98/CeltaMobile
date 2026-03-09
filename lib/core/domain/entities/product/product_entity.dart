@@ -54,6 +54,7 @@ class ProductEntity extends Equatable {
   final String? ReferenciaXml_ProcRecebDocProEmb; //receipt
   final DateTime? DataValidade_ProcRecebDocProEmb; //receipt
   final double? Quantidade_ProcRecebDocProEmb; //receipt
+  final String? PackingAbbreviation; //ecommerce API shallow request
 
   const ProductEntity({
     required this.EnterpriseCode,
@@ -105,6 +106,7 @@ class ProductEntity extends Equatable {
     required this.Quantidade_ProcRecebDocProEmb,
     required this.ReferenciaXml_ProcRecebDocProEmb,
     required this.DataValidade_ProcRecebDocProEmb,
+    required this.PackingAbbreviation,
   });
 
   @override
@@ -154,6 +156,7 @@ class ProductEntity extends Equatable {
     codigoInternoProEmb,
     codigoProEmb,
     quantidadeInvContProEmb,
+    PackingAbbreviation,
   ];
 
   ProductEntity copyWith({
@@ -206,6 +209,7 @@ class ProductEntity extends Equatable {
     String? ReferenciaXml_ProcRecebDocProEmb,
     DateTime? DataValidade_ProcRecebDocProEmb,
     double? Quantidade_ProcRecebDocProEmb,
+    String? PackingAbbreviation,
   }) {
     return ProductEntity(
       EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
@@ -268,6 +272,7 @@ class ProductEntity extends Equatable {
       DataValidade_ProcRecebDocProEmb:
           DataValidade_ProcRecebDocProEmb ??
           this.DataValidade_ProcRecebDocProEmb,
+      PackingAbbreviation: PackingAbbreviation ?? this.PackingAbbreviation,
     );
   }
 
@@ -368,6 +373,7 @@ class ProductEntity extends Equatable {
     Quantidade_ProcRecebDocProEmb: null,
     ReferenciaXml_ProcRecebDocProEmb: null,
     DataValidade_ProcRecebDocProEmb: null,
+    PackingAbbreviation: null,
   );
 
   ProductEntity annuValues({
@@ -420,7 +426,11 @@ class ProductEntity extends Equatable {
     bool? annulQuantidade_ProcRecebDocProEmb,
     bool? annulReferenciaXml_ProcRecebDocProEmb,
     bool? annulDataValidade_ProcRecebDocProEmb,
+    bool? annulPackingAbbreviation,
   }) => ProductEntity(
+    PackingAbbreviation: annulPackingAbbreviation == true
+        ? null
+        : PackingAbbreviation,
     EnterpriseCode: annulEnterpriseCode == true ? null : EnterpriseCode,
     ProductCode: annulProductCode == true ? null : ProductCode,
     ProductPackingCode: annulProductPackingCode == true
