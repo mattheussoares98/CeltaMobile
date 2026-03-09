@@ -1,3 +1,5 @@
+export './ecommerce_get_shallow_products_datasource.dart';
+export './i_ecommerce_get_shallow_products_datasource.dart';
 export './i_soap_inventory_load_products_datasource.dart';
 export './i_soap_get_products_json_datasource.dart';
 export './i_soap_load_product_by_request_type_datasource.dart';

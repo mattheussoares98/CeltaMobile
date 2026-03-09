@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/datasource/products/products.dart';
 import '../../domain/repositories/products/products.dart';
+import '../http/http.dart';
 import '../soap/soap.dart';
 
 part 'products.g.dart';
@@ -38,4 +39,11 @@ ISoapLoadProductsRepository soapLoadProductsRepository(Ref ref) {
     ref.watch(soapLoadProductByRequestTypeDatasourceProvider),
     ref.watch(soapReceiptLoadProductsDatasourceProvider),
   );
+}
+
+@riverpod
+IEcommerceGetShallowProductsDatasource ecommerceGetShallowProductsDatasource(
+  Ref ref,
+) {
+  return EcommerceGetShallowProductsDatasource(ref.watch(httpClientProvider));
 }
