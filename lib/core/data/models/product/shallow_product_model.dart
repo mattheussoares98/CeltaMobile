@@ -26,18 +26,18 @@ class ShallowProductModel extends Equatable implements ProductModelType {
   ];
 
   factory ShallowProductModel.fromJson(Map json) => ShallowProductModel(
-    Name: json['Name'],
-    PriceLookupCode: json['PriceLookupCode'],
-    PackingAbbreviation: json['PackingAbbreviation'],
-    PackingQuantity: json['PackingQuantity'],
+    Name: json['name'],
+    PriceLookupCode: json['priceLookupCode'],
+    PackingAbbreviation: json['packingAbbreviation'],
+    PackingQuantity: json['packingQuantity'],
   );
 
   @override
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'Name': Name,
-    'PriceLookupCode': PriceLookupCode,
-    'PackingAbbreviation': PackingAbbreviation,
-    'PackingQuantity': PackingQuantity,
+    'name': Name,
+    'priceLookupCode': PriceLookupCode,
+    'packingAbbreviation': PackingAbbreviation,
+    'packingQuantity': PackingQuantity,
   };
 
   factory ShallowProductModel.fromEntity(ProductEntity entity) =>

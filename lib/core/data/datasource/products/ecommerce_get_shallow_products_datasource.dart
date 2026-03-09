@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../../../domain/contracts/contracts.dart';
 import '../../models/models.dart';
 import 'products.dart';
@@ -18,13 +16,13 @@ class EcommerceGetShallowProductsDatasource
     required String accessKey,
   }) async {
     final response = await httpClient.request(
-      url: '$workingUrl/api/shallow',
+      url: '$workingUrl/api/products/shallow',
       method: 'post',
       headers: {'user': user, 'accessKey': accessKey},
       body: {'name': name, 'enterpriseId': enterpriseId, 'recordsByPage': 10},
     );
 
-    return (json.decode(response) as List)
+    return (response as List)
         .map((e) => ShallowProductModel.fromJson(e))
         .toList();
   }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:celta_inventario/core/data/datasource/products/products.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -31,11 +29,9 @@ void main() {
 
   void mockSuccess() {
     httpClient.mockRequest(
-      json.encode(
-        productsEntities
-            .map((e) => ShallowProductModel.fromEntity(e).toJson())
-            .toList(),
-      ),
+      productsEntities
+          .map((e) => ShallowProductModel.fromEntity(e).toJson())
+          .toList(),
     );
   }
 
@@ -76,7 +72,7 @@ void main() {
 
     verify(
       () => httpClient.request(
-        url: '$workingUrl/api/shallow',
+        url: '$workingUrl/api/products/shallow',
         method: 'post',
         headers: {'user': user, 'accessKey': accessKey},
         body: {'name': name, 'enterpriseId': enterpriseId, 'recordsByPage': 10},

@@ -111,7 +111,7 @@ void main() {
         verify(
           () => mockRepository.get(
             workingUrl: fakeSession.enterprise!.workingUrl!,
-            user: fakeSession.user.CrossIdentity_Usuario!,
+            user: fakeSession.user.name!,
             accessKey: fakeSession.user.AccessKey!,
             name: searchTerm,
             enterpriseId: fakeEnterprise.Code!,
