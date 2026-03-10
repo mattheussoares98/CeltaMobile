@@ -45,11 +45,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
           Consumer(
             builder: (_, ref, _) {
               return DefaultSearchProducts(
-                isLoading: ref.watch(
-                  searchProductsStateControllerProvider(
-                    searchProductKey,
-                  ).select((value) => value.isLoading),
-                ),
                 searchProductKey: searchProductKey,
                 focusNode: searchValueFocusNode,
                 searchProducts: () {

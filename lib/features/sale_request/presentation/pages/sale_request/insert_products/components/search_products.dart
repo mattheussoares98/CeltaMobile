@@ -23,11 +23,6 @@ class SearchProducts extends ConsumerWidget {
     );
 
     return DefaultSearchProducts(
-      isLoading: ref.watch(
-        searchProductsStateControllerProvider(
-          searchProductKey,
-        ).select((state) => state.isLoading),
-      ),
       searchValueController: searchProductsController,
       searchProductKey: searchProductKey,
       searchProducts: () {

@@ -132,9 +132,6 @@ class SearchProductField extends ConsumerWidget {
 
     return SliverToBoxAdapter(
       child: DefaultSearchProducts(
-        isLoading: ref.watch(
-          searchProductProvider.select(((s) => s.isLoading)),
-        ),
         searchProducts: () {
           ref
               .read(searchProductProvider.notifier)

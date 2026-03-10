@@ -53,11 +53,6 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
 
     return DefaultSearchProducts(
       allowEmptySearchValue: true,
-      isLoading: ref.watch(
-        searchProductsStateControllerProvider(
-          searchProductKey,
-        ).select((s) => s.isLoading),
-      ),
       searchProductKey: searchProductKey,
       searchProducts: () {
         final searchType = ref.read(

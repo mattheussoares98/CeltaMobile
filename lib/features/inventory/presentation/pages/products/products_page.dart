@@ -181,11 +181,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   builder: (_, ref, _) {
                     return DefaultSearchProducts(
                       focusNode: searchProductsFocusNode,
-                      isLoading: ref.watch(
-                        searchProductsStateControllerProvider(
-                          searchProductKey,
-                        ).select((state) => state.isLoading),
-                      ),
                       searchProducts: () =>
                           _searchProducts(searchProductKey, false),
                       searchValueController: searchProductsController,

@@ -37,11 +37,6 @@ class SearchProducts extends ConsumerWidget {
     return DefaultSearchProducts(
       module: Modules.receipt,
       focusNode: searchProductFocusNode,
-      isLoading: ref.watch(
-        searchProductsStateControllerProvider(
-          searchProductKey,
-        ).select((s) => s.isLoading),
-      ),
       searchProducts: searchProduct,
       searchValueController: searchProductController,
       searchProductKey: searchProductKey,

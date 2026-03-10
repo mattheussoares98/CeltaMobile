@@ -58,11 +58,6 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
                 return DefaultSearchProducts(
                   searchValueController: searchValueController,
                   searchProductKey: searchProductKey,
-                  isLoading: ref.watch(
-                    searchProductsStateControllerProvider(
-                      searchProductKey,
-                    ).select((state) => state.isLoading),
-                  ),
                   searchProducts: () => searchProducts(searchProductKey),
                 );
               },

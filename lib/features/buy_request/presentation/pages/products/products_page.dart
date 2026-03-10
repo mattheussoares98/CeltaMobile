@@ -62,11 +62,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 return SliverToBoxAdapter(
                   child: DefaultSearchProducts(
                     searchProductKey: searchProductKey,
-                    isLoading: ref.watch(
-                      searchProductsStateControllerProvider(
-                        searchProductKey,
-                      ).select((state) => state.isLoading),
-                    ),
                     searchProducts: searchProducts,
                     searchValueController: searchProductController,
                   ),

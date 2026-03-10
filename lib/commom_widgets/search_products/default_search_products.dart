@@ -14,24 +14,23 @@ import '../commom_widgets.dart';
 import 'mixin/mixin.dart';
 
 class DefaultSearchProducts extends ConsumerStatefulWidget {
-  final bool
-  isLoading; //TODO remove this parameter and listen inside the widget
   final VoidCallback searchProducts;
   final TextEditingController searchValueController;
   final FocusNode? focusNode;
   final bool? allowEmptySearchValue;
+  final bool? isLoading;
   final SearchProductKey searchProductKey;
   final VoidCallback? doOnSearchSucceeds;
   final Modules? module;
 
   const DefaultSearchProducts({
     super.key,
-    required this.isLoading,
     required this.searchProducts,
     required this.searchValueController,
     required this.searchProductKey,
     this.focusNode,
     this.allowEmptySearchValue,
+    this.isLoading,
     this.doOnSearchSucceeds,
     this.module,
   });
@@ -88,6 +87,15 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                         ),
                       );
 
+                      final isLoading =
+                          (widget.isLoading ??
+                              ref.watch(
+                                searchProductsStateControllerProvider(
+                                  widget.searchProductKey,
+                                ).select((s) => s.isLoading),
+                              )) ==
+                          true;
+
                       final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
                       final hint = (pref == SearchProductTypePreference.dynamic)
                           ? defaultHint
@@ -98,7 +106,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                         maxLength: 40,
                         onChanged: (value) =>
                             onTextChanged(value, _layerLink, formKey),
-                        enabled: !widget.isLoading,
+                        enabled: isLoading == false,
                         controller: widget.searchValueController,
                         focusNode: widget.focusNode,
                         validator: FormValidators.compose([
@@ -111,18 +119,16 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                         prefixIcon: width < 220
                             ? null
                             : _DefaultIcon(
-                                onPress: widget.isLoading
-                                    ? null
-                                    : onTapDeleteIcon,
+                                onPress: isLoading ? null : onTapDeleteIcon,
                                 materialIcon: Icons.delete,
                                 cupertinoIcon: CupertinoIcons.delete,
-                                iconColor: widget.isLoading
+                                iconColor: isLoading
                                     ? theme.disabledColor
                                     : Colors.red,
                               ),
                         suffixIcon: _SuffixActions(
                           width: width,
-                          isLoading: widget.isLoading,
+                          isLoading: isLoading,
                           onSearch: () => onSearch(formKey: formKey),
                           onCamera: () =>
                               onSearch(searchByCamera: true, formKey: formKey),

@@ -35,11 +35,6 @@ class _SearchProductFieldState extends ConsumerState<SearchProductField> {
     return DefaultSearchProducts(
       searchValueController: searchValueController,
       searchProductKey: searchProductKey,
-      isLoading: ref.watch(
-        searchProductsStateControllerProvider(
-          searchProductKey,
-        ).select((state) => state.isLoading),
-      ),
       searchProducts: () {
         //remove the selected index when search the product
         ref
