@@ -48,7 +48,6 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
   @override
   void dispose() {
     disposeLogic();
-    formKey.currentState?.dispose();
     super.dispose();
   }
 
