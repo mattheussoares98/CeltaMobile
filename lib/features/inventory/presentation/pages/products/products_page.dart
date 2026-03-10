@@ -190,7 +190,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       ),
                       searchValueController: searchProductsController,
                       searchProductKey: searchProductKey,
-                      module: Modules.inventory,
                     );
                   },
                 ),

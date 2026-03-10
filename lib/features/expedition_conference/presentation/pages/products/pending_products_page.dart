@@ -102,7 +102,6 @@ class PendingProductsPage extends ConsumerWidget {
             builder: (_, ref, _) {
               return DefaultSearchProducts(
                 searchProductKey: searchProductKey,
-                module: Modules.expeditionConference,
                 isLoading:
                     ref.watch(
                       expeditionConferenceControllerProvider(

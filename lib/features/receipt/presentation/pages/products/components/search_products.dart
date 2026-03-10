@@ -36,7 +36,6 @@ class SearchProducts extends ConsumerWidget {
     }
 
     return DefaultSearchProducts(
-      module: Modules.receipt,
       focusNode: searchProductFocusNode,
       searchProducts: searchProduct,
       searchValueController: searchProductController,

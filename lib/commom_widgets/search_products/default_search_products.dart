@@ -21,7 +21,6 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
   final bool? isLoading;
   final SearchProductKey searchProductKey;
   final VoidCallback? doOnSearchSucceeds; //TODO delete this parameter
-  final Modules? module;
 
   const DefaultSearchProducts({
     super.key,
@@ -32,7 +31,6 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
     this.allowEmptySearchValue,
     this.isLoading,
     this.doOnSearchSucceeds,
-    this.module,
   });
 
   @override
@@ -131,7 +129,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                           onSearch: () => onSearch(formKey),
                           onCamera: () =>
                               onSearch(searchByCamera: true, formKey),
-                          module: widget.module,
+                          module: widget.searchProductKey.module,
                         ),
                         labelText:
                             'Consultar produtos (${pref?.name ?? 'Dinâmico'})'
