@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
 
 class SearchProducts extends ConsumerWidget {
@@ -35,38 +36,27 @@ class SearchProducts extends ConsumerWidget {
           );
     }
 
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
+      n.doOnSuccess(p, () {
+        if (n.value?.isEmpty ?? true) return;
+
+        final selectFirstItem = n.value?.length == 1;
+        ref
+            .read(
+              selectedProductIndeStateControllerProvider(receiptCode).notifier,
+            )
+            .updateIndex(
+              selectFirstItem ? 0 : null,
+              annulWhenIsSame: !selectFirstItem,
+            );
+      });
+    });
+
     return DefaultSearchProducts(
       focusNode: searchProductFocusNode,
       searchProducts: searchProduct,
       searchValueController: searchProductController,
       searchProductKey: searchProductKey,
-      doOnSearchSucceeds: () {
-        final products = ref.read(
-          searchProductsStateControllerProvider(
-            searchProductKey,
-          ).select((state) => state.value),
-        );
-
-        if (products?.isEmpty ?? true) return;
-
-        if (products?.length == 1) {
-          ref
-              .read(
-                selectedProductIndeStateControllerProvider(
-                  receiptCode,
-                ).notifier,
-              )
-              .updateIndex(0, annulWhenIsSame: false);
-        } else {
-          ref
-              .read(
-                selectedProductIndeStateControllerProvider(
-                  receiptCode,
-                ).notifier,
-              )
-              .updateIndex(null);
-        }
-      },
     );
   }
 }

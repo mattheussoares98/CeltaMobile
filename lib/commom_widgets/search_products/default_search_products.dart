@@ -20,7 +20,6 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
   final bool? allowEmptySearchValue;
   final bool? isLoading;
   final SearchProductKey searchProductKey;
-  final VoidCallback? doOnSearchSucceeds; //TODO delete this parameter
 
   const DefaultSearchProducts({
     super.key,
@@ -30,7 +29,6 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
     this.focusNode,
     this.allowEmptySearchValue,
     this.isLoading,
-    this.doOnSearchSucceeds,
   });
 
   @override
@@ -59,7 +57,6 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
     ) {
       n.doOnSuccess(p, () {
         widget.searchValueController.clear();
-        widget.doOnSearchSucceeds?.call();
       });
     });
 
