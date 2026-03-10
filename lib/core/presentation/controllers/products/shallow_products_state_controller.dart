@@ -38,7 +38,6 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   }
 
   Future<void> load(String name) async {
-    //TODO after implement this, add a delay here to simulate this async call and be sure that the previous call is cancelled
     //cancel the previous call
     _activeToken?.cancel();
 
