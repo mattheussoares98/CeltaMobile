@@ -20,6 +20,7 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
     String value,
     LayerLink layerLink,
     GlobalKey<FormState> formKey,
+    String groupId,
   ) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
@@ -32,15 +33,20 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
     _debounce = Timer(const Duration(milliseconds: 500), () {
       if (mounted) {
         ref.read(shallowProductsStateControllerProvider.notifier).load(value);
-        showOverlay(layerLink, formKey);
+        showOverlay(layerLink, formKey, groupId);
       }
     });
   }
 
-  void showOverlay(LayerLink layerLink, GlobalKey<FormState> formKey) {
+  void showOverlay(
+    LayerLink layerLink,
+    GlobalKey<FormState> formKey,
+    String groupId,
+  ) {
     _overlayManager.show(
       context: context,
       layerLink: layerLink,
+      groupId: groupId,
       onTapOutside: () => _overlayManager.hide(),
       onSelected: (product) {
         // Logic to update the main controller and trigger the heavy search

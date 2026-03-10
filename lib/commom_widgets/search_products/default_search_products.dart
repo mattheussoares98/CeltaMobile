@@ -40,6 +40,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
     with DefaultSearchProductsMixin {
   final formKey = GlobalKey<FormState>();
   final LayerLink _layerLink = LayerLink();
+  static const _searchRegionId = 'product_search_region';
 
   @override
   void dispose() {
@@ -73,67 +74,78 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                 key: formKey,
                 child: Padding(
                   padding: const EdgeInsets.only(top: Sizes.p4),
-                  child: Consumer(
-                    builder: (context, ref, _) {
-                      final pref = ref.watch(
-                        appSettingsStateControllerProvider.select(
-                          (s) => s.value?.searchPreference,
-                        ),
-                      );
+                  child: TapRegion(
+                    groupId: _searchRegionId,
+                    child: Consumer(
+                      builder: (context, ref, _) {
+                        final pref = ref.watch(
+                          appSettingsStateControllerProvider.select(
+                            (s) => s.value?.searchPreference,
+                          ),
+                        );
 
-                      final isLoading =
-                          (widget.isLoading ??
-                              ref.watch(
-                                searchProductsStateControllerProvider(
-                                  widget.searchProductKey,
-                                ).select((s) => s.isLoading),
-                              )) ==
-                          true;
+                        final isLoading =
+                            (widget.isLoading ??
+                                ref.watch(
+                                  searchProductsStateControllerProvider(
+                                    widget.searchProductKey,
+                                  ).select((s) => s.isLoading),
+                                )) ==
+                            true;
 
-                      final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
-                      final hint = (pref == SearchProductTypePreference.dynamic)
-                          ? defaultHint
-                          : (pref?.name ?? defaultHint);
+                        final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
+                        final hint =
+                            (pref == SearchProductTypePreference.dynamic)
+                            ? defaultHint
+                            : (pref?.name ?? defaultHint);
 
-                      return DefaultTextFormField(
-                        key: const ValueKey('search_input_field'),
-                        maxLength: 40,
-                        onChanged: (value) =>
-                            onTextChanged(value, _layerLink, formKey),
-                        enabled: isLoading == false,
-                        controller: widget.searchValueController,
-                        focusNode: widget.focusNode,
-                        validator: FormValidators.compose([
-                          if (widget.allowEmptySearchValue != true)
-                            NonEmptyValidator(),
-                          if (pref == SearchProductTypePreference.ean)
-                            NumberValidator(allowDecimal: false),
-                        ]),
-                        onFieldSubmitted: (_) => onSearch(formKey),
-                        prefixIcon: width < 220
-                            ? null
-                            : _DefaultIcon(
-                                onPress: isLoading ? null : onTapDeleteIcon,
-                                materialIcon: Icons.delete,
-                                cupertinoIcon: CupertinoIcons.delete,
-                                iconColor: isLoading
-                                    ? theme.disabledColor
-                                    : Colors.red,
-                              ),
-                        suffixIcon: _SuffixActions(
-                          width: width,
-                          isLoading: isLoading,
-                          onSearch: () => onSearch(formKey),
-                          onCamera: () =>
-                              onSearch(searchByCamera: true, formKey),
-                          module: widget.searchProductKey.module,
-                        ),
-                        labelText:
-                            'Consultar produtos (${pref?.name ?? 'Dinâmico'})'
-                                .hardcoded,
-                        hintText: hint,
-                      );
-                    },
+                        return DefaultTextFormField(
+                          key: const ValueKey('search_input_field'),
+                          onTap: () {
+                            showOverlay(_layerLink, formKey, _searchRegionId);
+                          },
+                          maxLength: 40,
+                          onChanged: (value) => onTextChanged(
+                            value,
+                            _layerLink,
+                            formKey,
+                            _searchRegionId,
+                          ),
+                          enabled: isLoading == false,
+                          controller: widget.searchValueController,
+                          focusNode: widget.focusNode,
+                          validator: FormValidators.compose([
+                            if (widget.allowEmptySearchValue != true)
+                              NonEmptyValidator(),
+                            if (pref == SearchProductTypePreference.ean)
+                              NumberValidator(allowDecimal: false),
+                          ]),
+                          onFieldSubmitted: (_) => onSearch(formKey),
+                          prefixIcon: width < 220
+                              ? null
+                              : _DefaultIcon(
+                                  onPress: isLoading ? null : onTapDeleteIcon,
+                                  materialIcon: Icons.delete,
+                                  cupertinoIcon: CupertinoIcons.delete,
+                                  iconColor: isLoading
+                                      ? theme.disabledColor
+                                      : Colors.red,
+                                ),
+                          suffixIcon: _SuffixActions(
+                            width: width,
+                            isLoading: isLoading,
+                            onSearch: () => onSearch(formKey),
+                            onCamera: () =>
+                                onSearch(searchByCamera: true, formKey),
+                            module: widget.searchProductKey.module,
+                          ),
+                          labelText:
+                              'Consultar produtos (${pref?.name ?? 'Dinâmico'})'
+                                  .hardcoded,
+                          hintText: hint,
+                        );
+                      },
+                    ),
                   ),
                 ),
               );

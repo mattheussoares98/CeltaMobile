@@ -21,18 +21,13 @@ class ShallowResultsItems extends ConsumerWidget {
       color: theme.disabledColor,
     );
 
-    final screenHeight = MediaQuery.sizeOf(context).height;
-    final keyboardSize = MediaQuery.viewInsetsOf(context).bottom;
-    const textFieldHeight = 55;
-    final listHeight = screenHeight - textFieldHeight - keyboardSize;
-
     return RepaintBoundary(
       child: Material(
         elevation: 8,
         borderRadius: BorderRadius.circular(Sizes.p8),
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
-          height: listHeight - Sizes.p120,
+          margin: const EdgeInsets.only(bottom: Sizes.p120),
           decoration: BoxDecoration(
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(Sizes.p8),

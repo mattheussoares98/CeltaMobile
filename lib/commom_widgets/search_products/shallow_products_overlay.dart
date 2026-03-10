@@ -21,6 +21,7 @@ class ShallowProductsOverlay {
     required LayerLink layerLink,
     required void Function(ProductEntity) onSelected,
     required VoidCallback onTapOutside,
+    required String groupId,
   }) {
     hide();
 
@@ -37,6 +38,7 @@ class ShallowProductsOverlay {
             57,
           ), // Standard height for our DefaultTextFormField
           child: TapRegion(
+            groupId: groupId,
             // TapRegion handles the "close on click outside" logic natively.
             onTapOutside: (_) => onTapOutside(),
             child: RepaintBoundary(
