@@ -16,6 +16,7 @@ enum UsageType {
   liberateReceiptDocument('Liberou recebimento'),
   searchProducts('Pesquisou produtos'),
   sendToPrint('Marcou p/ impressão'),
+  shallowSearchProduct('Consulta produtos (superficial)'),
   stockReplacement('Substituiu estoque'),
   transferBetweenStocks('Transferiu entre estoques');
 

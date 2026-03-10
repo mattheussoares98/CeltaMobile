@@ -7,6 +7,7 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/providers/products/products.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../domain/contracts/contracts.dart';
+import '../app_usage/app_usage.dart';
 import '../user_session/user_session.dart';
 
 part 'shallow_products_state_controller.g.dart';
@@ -19,7 +20,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   String? _lastEmptySearch;
 
   @override
-  Future<List<ProductEntity>> build() async {
+  FutureOr<List<ProductEntity>> build() {
     ref.onDispose(() => _activeToken?.cancel());
     Timer? timer;
     final link = ref.keepAlive();
@@ -60,6 +61,10 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.shallowSearchProduct);
+
       final userSession = await ref.watch(validatedUserSessionProvider.future);
       final workingUrl = userSession!.enterprise!.workingUrl!;
       final accessKey = userSession.user.AccessKey!;

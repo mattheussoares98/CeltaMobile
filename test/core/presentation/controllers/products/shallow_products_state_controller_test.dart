@@ -2,6 +2,7 @@ import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/products/products.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/products/products.dart';
@@ -22,6 +23,7 @@ void main() {
   late EnterpriseEntity fakeEnterprise;
   late List<ProductEntity> fakeProducts;
   final fakerInstance = Faker();
+  late FakeAppUsageStateController fakeAppUsage;
 
   setUpAll(() {
     registerFallbackValue(CancelToken());
@@ -43,6 +45,8 @@ void main() {
       fakerInstance.randomGenerator.integer(5, min: 1),
       (_) => EntityFactory.makeProductEntity(),
     );
+
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({
@@ -60,6 +64,7 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -76,57 +81,56 @@ void main() {
       expect(state, isEmpty);
     });
 
-    test(
-      'load should emit [loading, data] and call repository with correct params',
-      () async {
-        // ARRANGE
-        final String searchTerm = fakerInstance.food.restaurant();
+    test('Should behave correctly on success', () async {
+      // ARRANGE
+      final String searchTerm = fakerInstance.food.restaurant();
 
-        when(
-          () => mockRepository.get(
-            workingUrl: any(named: 'workingUrl'),
-            user: any(named: 'user'),
-            accessKey: any(named: 'accessKey'),
-            name: any(named: 'name'),
-            enterpriseId: any(named: 'enterpriseId'),
-            cancelToken: any(named: 'cancelToken'),
-          ),
-        ).thenAnswer((_) async => fakeProducts);
+      when(
+        () => mockRepository.get(
+          workingUrl: any(named: 'workingUrl'),
+          user: any(named: 'user'),
+          accessKey: any(named: 'accessKey'),
+          name: any(named: 'name'),
+          enterpriseId: any(named: 'enterpriseId'),
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      ).thenAnswer((_) async => fakeProducts);
 
-        final container = makeProviderContainer(
-          session: fakeSession,
-          enterprise: fakeEnterprise,
-        );
-        addTearDown(container.dispose);
+      final container = makeProviderContainer(
+        session: fakeSession,
+        enterprise: fakeEnterprise,
+      );
+      addTearDown(container.dispose);
 
-        await container.read(shallowProductsStateControllerProvider.future);
+      await container.read(shallowProductsStateControllerProvider.future);
 
-        final states = <AsyncValue<List<ProductEntity>>>[];
-        container.listen(
-          shallowProductsStateControllerProvider,
-          (_, next) => states.add(next),
-        );
+      final states = <AsyncValue<List<ProductEntity>>>[];
+      container.listen(
+        shallowProductsStateControllerProvider,
+        (_, next) => states.add(next),
+      );
 
-        // ACT
-        await container
-            .read(shallowProductsStateControllerProvider.notifier)
-            .load(searchTerm);
+      // ACT
+      await container
+          .read(shallowProductsStateControllerProvider.notifier)
+          .load(searchTerm);
 
-        // ASSERT
-        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+      // ASSERT
+      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
 
-        verify(
-          () => mockRepository.get(
-            workingUrl: fakeSession.enterprise!.workingUrl!,
-            user: fakeSession.user.name!,
-            accessKey: fakeSession.user.AccessKey!,
-            name: searchTerm,
-            enterpriseId: fakeEnterprise.Code!,
-            cancelToken: any(named: 'cancelToken'),
-          ),
-        ).called(1);
-      },
-    );
+      expect(fakeAppUsage.lastUsageType, UsageType.shallowSearchProduct);
+
+      verify(
+        () => mockRepository.get(
+          workingUrl: fakeSession.enterprise!.workingUrl!,
+          user: fakeSession.user.name!,
+          accessKey: fakeSession.user.AccessKey!,
+          name: searchTerm,
+          enterpriseId: fakeEnterprise.Code!,
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      ).called(1);
+    });
 
     test('load should emit [loading, error] when repository fails', () async {
       // ARRANGE
