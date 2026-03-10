@@ -16,6 +16,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   // PERFORMANCE: Storing the active token allows the next 'load' call
   // to kill the previous one before it wastes more CPU/Data.
   CancelToken? _activeToken;
+  String? _lastEmptySearch;
 
   @override
   Future<List<ProductEntity>> build() async {
@@ -38,6 +39,17 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   }
 
   Future<void> load(String name) async {
+    // PERFORMANCE: Short-circuit check. If 'name' starts with a previously
+    // recorded empty search string, we return immediately.
+    if (_lastEmptySearch != null && name.startsWith(_lastEmptySearch!)) {
+      return;
+    }
+
+    // Reset the negative cache if the user changes the search path
+    if (_lastEmptySearch != null && !name.startsWith(_lastEmptySearch!)) {
+      _lastEmptySearch = null;
+    }
+
     //cancel the previous call
     _activeToken?.cancel();
 
@@ -67,6 +79,14 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
             enterpriseId: enterpriseId,
             cancelToken: token,
           );
+
+      // PERFORMANCE: If the API returns nothing, we "lock" this name
+      // as the base for the negative cache.
+      if (products.isEmpty) {
+        _lastEmptySearch = name;
+      } else {
+        _lastEmptySearch = null;
+      }
 
       return List<ProductEntity>.from(products);
     });

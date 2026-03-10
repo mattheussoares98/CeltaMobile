@@ -175,4 +175,55 @@ void main() {
       );
     });
   });
+
+  group('Avoid short circuit', () {
+    test(
+      'Should not load again if only add more text in the last text searched that API returned empty list',
+      () async {
+        // ARRANGE
+        final String searchTerm = fakerInstance.food.restaurant();
+        when(
+          () => mockRepository.get(
+            workingUrl: any(named: 'workingUrl'),
+            user: any(named: 'user'),
+            accessKey: any(named: 'accessKey'),
+            name: any(named: 'name'),
+            enterpriseId: any(named: 'enterpriseId'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenAnswer((_) async => []);
+
+        final container = makeProviderContainer(
+          session: fakeSession,
+          enterprise: fakeEnterprise,
+        );
+        addTearDown(container.dispose);
+
+        await container.read(shallowProductsStateControllerProvider.future);
+
+        await container
+            .read(shallowProductsStateControllerProvider.notifier)
+            .load(searchTerm);
+        await container
+            .read(shallowProductsStateControllerProvider.notifier)
+            .load(searchTerm + faker.lorem.word());
+
+        expect(
+          container.read(shallowProductsStateControllerProvider).value,
+          [],
+        );
+
+        verify(
+          () => mockRepository.get(
+            workingUrl: fakeSession.enterprise!.workingUrl!,
+            user: fakeSession.user.name!,
+            accessKey: fakeSession.user.AccessKey!,
+            name: searchTerm,
+            enterpriseId: fakeEnterprise.Code!,
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).called(1);
+      },
+    );
+  });
 }
