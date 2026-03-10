@@ -24,6 +24,10 @@ class EcommerceGetShallowProductsDatasource
       cancelToken: cancelToken,
     );
 
+    if (response == null) {
+      return [];
+    }
+
     return (response as List)
         .map((e) => ShallowProductModel.fromJson(e))
         .toList();

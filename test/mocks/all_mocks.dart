@@ -859,6 +859,7 @@ class HttpClientSpy extends Mock implements HttpClient {
       body: any(named: 'body'),
       headers: any(named: 'headers'),
       decodeBody: any(named: 'decodeBody'),
+      cancelToken: any(named: 'cancelToken'),
     ),
   );
 }

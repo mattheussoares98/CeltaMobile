@@ -83,4 +83,28 @@ void main() {
       ),
     ).called(1);
   });
+  test('should return empty list when api return null', () async {
+    httpClient.mockRequest(null);
+
+    final products = await sut.get(
+      workingUrl: workingUrl,
+      name: name,
+      enterpriseId: enterpriseId,
+      accessKey: accessKey,
+      user: user,
+      cancelToken: cancelToken,
+    );
+
+    expect(products, isEmpty);
+
+    verify(
+      () => httpClient.request(
+        url: '$workingUrl/api/products/shallow',
+        method: 'post',
+        headers: {'user': user, 'accessKey': accessKey},
+        body: {'name': name, 'enterpriseId': enterpriseId, 'recordsByPage': 10},
+        cancelToken: cancelToken,
+      ),
+    ).called(1);
+  });
 }
