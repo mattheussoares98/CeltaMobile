@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/datasource/products/products.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/products/products.dart';
 import 'package:faker/faker.dart';
@@ -18,6 +19,7 @@ class EcommerceGetShallowProductsDatasourceSpy extends Mock
         enterpriseId: any(named: 'enterpriseId'),
         user: any(named: 'user'),
         accessKey: any(named: 'accessKey'),
+        cancelToken: any(named: 'cancelToken'),
       ),
     ).thenAnswer((_) async => response);
   }
@@ -34,6 +36,7 @@ void main() {
   late String accessKey;
   late String name;
   late int enterpriseId;
+  late CancelToken cancelToken;
 
   void initSut() {
     sut = EcommerceGetShallowProductsRepositoryImpl(datasource);
@@ -50,6 +53,7 @@ void main() {
   }
 
   void initEntities() {
+    cancelToken = CancelToken();
     products = [
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
@@ -76,6 +80,7 @@ void main() {
       accessKey: accessKey,
       name: name,
       enterpriseId: enterpriseId,
+      cancelToken: cancelToken,
     );
 
     expect(
@@ -92,6 +97,7 @@ void main() {
         enterpriseId: enterpriseId,
         user: user,
         accessKey: accessKey,
+        cancelToken: cancelToken,
       ),
     ).called(1);
   });

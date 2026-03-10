@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/datasource/products/products.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,6 +19,7 @@ void main() {
   late String accessKey;
   late String name;
   late int enterpriseId;
+  late CancelToken cancelToken;
 
   void initSut() {
     sut = EcommerceGetShallowProductsDatasource(httpClient);
@@ -45,7 +47,7 @@ void main() {
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
     ];
-
+    cancelToken = CancelToken();
     workingUrl = faker.internet.httpUrl();
   }
 
@@ -63,6 +65,7 @@ void main() {
       enterpriseId: enterpriseId,
       accessKey: accessKey,
       user: user,
+      cancelToken: cancelToken,
     );
 
     expect(
@@ -76,6 +79,7 @@ void main() {
         method: 'post',
         headers: {'user': user, 'accessKey': accessKey},
         body: {'name': name, 'enterpriseId': enterpriseId, 'recordsByPage': 10},
+        cancelToken: cancelToken,
       ),
     ).called(1);
   });

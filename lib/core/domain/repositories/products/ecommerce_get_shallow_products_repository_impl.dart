@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/domain/entities/product/product_entity.dart';
 
 import '../../../data/datasource/products/products.dart';
+import '../../contracts/contracts.dart';
 import 'products.dart';
 
 class EcommerceGetShallowProductsRepositoryImpl
@@ -16,6 +17,7 @@ class EcommerceGetShallowProductsRepositoryImpl
     required String accessKey,
     required String name,
     required int enterpriseId,
+    required CancelToken cancelToken,
   }) async {
     final products = await datasource.get(
       workingUrl: workingUrl,
@@ -23,6 +25,7 @@ class EcommerceGetShallowProductsRepositoryImpl
       enterpriseId: enterpriseId,
       user: user,
       accessKey: accessKey,
+      cancelToken: cancelToken,
     );
 
     return products.map((e) => e.toEntity()).toList();

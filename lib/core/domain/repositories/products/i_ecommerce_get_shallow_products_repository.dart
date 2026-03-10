@@ -1,3 +1,4 @@
+import '../../contracts/contracts.dart';
 import '../../entities/entities.dart';
 
 abstract class IEcommerceGetShallowProductsRepository {
@@ -7,5 +8,6 @@ abstract class IEcommerceGetShallowProductsRepository {
     required String accessKey,
     required String name,
     required int enterpriseId,
+    required CancelToken cancelToken,
   });
 }

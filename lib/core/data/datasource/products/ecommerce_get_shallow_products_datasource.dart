@@ -14,12 +14,14 @@ class EcommerceGetShallowProductsDatasource
     required int enterpriseId,
     required String user,
     required String accessKey,
+    required CancelToken? cancelToken,
   }) async {
     final response = await httpClient.request(
       url: '$workingUrl/api/products/shallow',
       method: 'post',
       headers: {'user': user, 'accessKey': accessKey},
       body: {'name': name, 'enterpriseId': enterpriseId, 'recordsByPage': 10},
+      cancelToken: cancelToken,
     );
 
     return (response as List)

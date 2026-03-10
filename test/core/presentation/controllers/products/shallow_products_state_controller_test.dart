@@ -1,4 +1,5 @@
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
@@ -21,6 +22,11 @@ void main() {
   late EnterpriseEntity fakeEnterprise;
   late List<ProductEntity> fakeProducts;
   final fakerInstance = Faker();
+
+  setUpAll(() {
+    registerFallbackValue(CancelToken());
+    registerFallbackValue(1);
+  });
 
   setUp(() {
     mockRepository = MockShallowProductsRepository();
@@ -83,6 +89,7 @@ void main() {
             accessKey: any(named: 'accessKey'),
             name: any(named: 'name'),
             enterpriseId: any(named: 'enterpriseId'),
+            cancelToken: any(named: 'cancelToken'),
           ),
         ).thenAnswer((_) async => fakeProducts);
 
@@ -115,6 +122,7 @@ void main() {
             accessKey: fakeSession.user.AccessKey!,
             name: searchTerm,
             enterpriseId: fakeEnterprise.Code!,
+            cancelToken: any(named: 'cancelToken'),
           ),
         ).called(1);
       },
@@ -130,6 +138,7 @@ void main() {
           accessKey: any(named: 'accessKey'),
           name: any(named: 'name'),
           enterpriseId: any(named: 'enterpriseId'),
+          cancelToken: any(named: 'cancelToken'),
         ),
       ).thenThrow(exception);
 

@@ -1,3 +1,4 @@
+import '../../../domain/contracts/contracts.dart';
 import '../../models/models.dart';
 
 abstract class IEcommerceGetShallowProductsDatasource {
@@ -7,5 +8,6 @@ abstract class IEcommerceGetShallowProductsDatasource {
     required int enterpriseId,
     required String user,
     required String accessKey,
+    required CancelToken? cancelToken,
   });
 }

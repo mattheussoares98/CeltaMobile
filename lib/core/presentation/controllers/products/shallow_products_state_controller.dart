@@ -3,17 +3,23 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/providers/products/products.dart';
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../core/providers/products/products.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
+import '../../../domain/contracts/contracts.dart';
 import '../user_session/user_session.dart';
 
 part 'shallow_products_state_controller.g.dart';
 
 @riverpod
 class ShallowProductsStateController extends _$ShallowProductsStateController {
+  // PERFORMANCE: Storing the active token allows the next 'load' call
+  // to kill the previous one before it wastes more CPU/Data.
+  CancelToken? _activeToken;
+
   @override
   Future<List<ProductEntity>> build() async {
+    ref.onDispose(() => _activeToken?.cancel());
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -32,6 +38,14 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   }
 
   Future<void> load(String name) async {
+    //TODO after implement this, add a delay here to simulate this async call and be sure that the previous call is cancelled
+    //cancel the previous call
+    _activeToken?.cancel();
+
+    //new token for this call
+    final token = CancelToken();
+    _activeToken = token;
+
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(validatedUserSessionProvider.future);
@@ -51,6 +65,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
             accessKey: accessKey,
             name: name,
             enterpriseId: enterpriseId,
+            cancelToken: token,
           );
 
       return List<ProductEntity>.from(products);
