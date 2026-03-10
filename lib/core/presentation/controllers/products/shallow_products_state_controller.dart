@@ -37,7 +37,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
       final userSession = await ref.watch(validatedUserSessionProvider.future);
       final workingUrl = userSession!.enterprise!.workingUrl!;
       final accessKey = userSession.user.AccessKey!;
-      final user = userSession.user.CrossIdentity_Usuario!;
+      final user = userSession.user.name!;
 
       final enterpriseId = ref.read(
         selectedEnterpriseStateControllerProvider.select((s) => s!.Code!),
