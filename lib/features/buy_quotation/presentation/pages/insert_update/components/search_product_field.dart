@@ -132,10 +132,11 @@ class SearchProductField extends ConsumerWidget {
 
     return SliverToBoxAdapter(
       child: DefaultSearchProducts(
-        searchProducts: () {
+        searchProducts: (exactProductCode) {
           ref
               .read(searchProductProvider.notifier)
               .loadProducts(
+                exactProductCode: exactProductCode,
                 GetProductsJsonParams(
                   searchValue: searchValueController.text,
                   enterpriseCodes: [enterpriseCode],

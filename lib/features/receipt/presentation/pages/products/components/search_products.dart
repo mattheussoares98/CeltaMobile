@@ -21,12 +21,13 @@ class SearchProducts extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void searchProduct() {
+    void searchProduct(int? exactProductCode) {
       ref
           .read(
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: exactProductCode,
             GetProductsReceiptParams(
               searchValue: searchProductController.text,
               grDocCode: receiptCode,

@@ -33,7 +33,7 @@ class PendingProductsPage extends ConsumerWidget {
       Modules.expeditionConference,
     );
 
-    void searchProducts(bool searchByCamera) async {
+    void searchProducts(bool searchByCamera, int? exactProductCode) async {
       focusNode.unfocus();
       await Future.delayed(const Duration(milliseconds: 100));
 
@@ -51,6 +51,7 @@ class PendingProductsPage extends ConsumerWidget {
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: exactProductCode,
             GetProductsJsonParams(
               searchValue: barcode ?? searchProductController.text,
               enterpriseCodes: [enterpriseCode],
@@ -87,7 +88,7 @@ class PendingProductsPage extends ConsumerWidget {
 
         if (isContinuousScan && n.value != null) {
           await Future.delayed(const Duration(milliseconds: 500), () {
-            searchProducts(true);
+            searchProducts(true, null);
           });
         }
       });
@@ -119,7 +120,8 @@ class PendingProductsPage extends ConsumerWidget {
                       ),
                     ),
                 focusNode: focusNode,
-                searchProducts: () => searchProducts(false),
+                searchProducts: (exactProductCode) =>
+                    searchProducts(false, exactProductCode),
                 searchValueController: searchProductController,
               );
             },

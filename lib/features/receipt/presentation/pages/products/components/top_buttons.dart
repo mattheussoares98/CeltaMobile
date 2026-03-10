@@ -41,6 +41,7 @@ class TopButtons extends ConsumerWidget {
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: null,
             GetProductsReceiptParams(searchValue: '%', grDocCode: receiptCode),
             specifiedSearchType: searchType,
           );

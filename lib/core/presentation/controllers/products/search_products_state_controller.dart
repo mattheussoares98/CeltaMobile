@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/providers/products/products.dart';
 import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../../features/settings/presentation/controllers/controllers.dart';
 import '../app_usage/app_usage.dart';
 import '../user_session/user_session.dart';
@@ -35,6 +35,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
   Future<void> loadProducts(
     GetProductsDefaultParams getProductsDefaultParams, {
     SearchType? specifiedSearchType,
+    required int? exactProductCode,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -49,8 +50,16 @@ class SearchProductsStateController extends _$SearchProductsStateController {
       final settings = await ref.read(
         appSettingsStateControllerProvider.future,
       );
-      final searchType =
-          settings?.searchPreference.searchType ?? SearchType.dynamic;
+
+      late SearchType searchType;
+      if (exactProductCode != null) {
+        searchType = SearchType.exactCode;
+      } else if (specifiedSearchType != null) {
+        searchType = specifiedSearchType;
+      } else {
+        searchType =
+            settings?.searchPreference.searchType ?? SearchType.dynamic;
+      }
 
       ref
           .read(appUsageStateControllerProvider.notifier)
@@ -62,9 +71,10 @@ class SearchProductsStateController extends _$SearchProductsStateController {
             workingUrl: workingUrl,
             crossIdentity: crossIdentity,
             enterpriseEntity: selectedEnterprise!,
-            searchType: specifiedSearchType ?? searchType,
+            searchType: searchType,
             getProductsDefaultParams: getProductsDefaultParams.copyWith(
               routine: searchProductKey.routine,
+              searchValue: exactProductCode?.toString(),
             ),
           );
 

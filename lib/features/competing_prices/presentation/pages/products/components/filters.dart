@@ -144,6 +144,7 @@ class Filters extends ConsumerWidget {
                           ).notifier,
                         )
                         .loadProducts(
+                          exactProductCode: null,
                           GetProductsJsonParams(
                             enterpriseCodes: [widget.enterpriseCode],
                             searchValue: '%',

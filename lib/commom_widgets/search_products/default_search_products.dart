@@ -14,13 +14,13 @@ import '../commom_widgets.dart';
 import 'mixin/mixin.dart';
 
 class DefaultSearchProducts extends ConsumerStatefulWidget {
-  final VoidCallback searchProducts;
+  final void Function(int? exactProductCode) searchProducts;
   final TextEditingController searchValueController;
   final FocusNode? focusNode;
   final bool? allowEmptySearchValue;
   final bool? isLoading;
   final SearchProductKey searchProductKey;
-  final VoidCallback? doOnSearchSucceeds;
+  final VoidCallback? doOnSearchSucceeds; //TODO delete this parameter
   final Modules? module;
 
   const DefaultSearchProducts({
@@ -115,7 +115,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                           if (pref == SearchProductTypePreference.ean)
                             NumberValidator(allowDecimal: false),
                         ]),
-                        onFieldSubmitted: (_) => onSearch(formKey: formKey),
+                        onFieldSubmitted: (_) => onSearch(formKey),
                         prefixIcon: width < 220
                             ? null
                             : _DefaultIcon(
@@ -129,9 +129,9 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                         suffixIcon: _SuffixActions(
                           width: width,
                           isLoading: isLoading,
-                          onSearch: () => onSearch(formKey: formKey),
+                          onSearch: () => onSearch(formKey),
                           onCamera: () =>
-                              onSearch(searchByCamera: true, formKey: formKey),
+                              onSearch(searchByCamera: true, formKey),
                           module: widget.module,
                         ),
                         labelText:

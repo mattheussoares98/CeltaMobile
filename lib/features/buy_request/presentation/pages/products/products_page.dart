@@ -30,7 +30,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     searchProductController.dispose();
   }
 
-  Future<void> searchProducts() async {
+  Future<void> searchProducts(int? exactProductCode) async {
     ref
         .read(uiStateControllerProvider(widget.enterpriseCode).notifier)
         .updateSelectedProductIndex(null);
@@ -42,6 +42,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
+          exactProductCode: exactProductCode,
           GetProductsJsonParams(
             enterpriseCodes:
                 selectedEnterprises?.map((e) => e.Code!).toList() ?? [],

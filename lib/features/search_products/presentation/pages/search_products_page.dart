@@ -26,10 +26,14 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
     super.dispose();
   }
 
-  Future<void> searchProducts(SearchProductKey searchProductKey) async {
+  Future<void> searchProducts(
+    SearchProductKey searchProductKey,
+    int? exactProductCode,
+  ) async {
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
+          exactProductCode: exactProductCode,
           GetProductsJsonParams(
             searchValue: searchValueController.text,
             enterpriseCodes: [widget.enterpriseCode],
@@ -58,7 +62,8 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
                 return DefaultSearchProducts(
                   searchValueController: searchValueController,
                   searchProductKey: searchProductKey,
-                  searchProducts: () => searchProducts(searchProductKey),
+                  searchProducts: (exactProductCode) =>
+                      searchProducts(searchProductKey, exactProductCode),
                 );
               },
             ),

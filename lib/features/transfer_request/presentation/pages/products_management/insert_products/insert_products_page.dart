@@ -47,7 +47,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
               return DefaultSearchProducts(
                 searchProductKey: searchProductKey,
                 focusNode: searchValueFocusNode,
-                searchProducts: () {
+                searchProducts: (exactProductCode) {
                   ref
                       .read(
                         searchProductsStateControllerProvider(
@@ -55,6 +55,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                         ).notifier,
                       )
                       .loadProducts(
+                        exactProductCode: exactProductCode,
                         GetProductsByRequestTypeParams(
                           searchValue: searchValueController.text,
                           enterpriseOriginCode:

@@ -73,6 +73,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
+              exactProductCode: null,
               GetProductsReceiptParams(
                 searchValue: searchProductController.text,
                 grDocCode: widget.receiptCode,

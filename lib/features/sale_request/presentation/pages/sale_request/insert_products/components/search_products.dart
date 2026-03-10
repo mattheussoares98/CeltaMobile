@@ -25,12 +25,13 @@ class SearchProducts extends ConsumerWidget {
     return DefaultSearchProducts(
       searchValueController: searchProductsController,
       searchProductKey: searchProductKey,
-      searchProducts: () {
+      searchProducts: (exactProductCode) {
         ref
             .read(
               searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
+              exactProductCode: exactProductCode,
               GetProductsJsonParams(
                 searchValue: searchProductsController.text,
                 enterpriseCodes: [enterpriseCode],

@@ -23,7 +23,7 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
     searchValueController.dispose();
   }
 
-  Future<void> searchProducts(int enterpriseCode) async {
+  Future<void> searchProducts(int enterpriseCode, int? exactProductCode) async {
     await ref
         .read(
           searchProductsStateControllerProvider(
@@ -35,6 +35,7 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
           ).notifier,
         )
         .loadProducts(
+          exactProductCode: exactProductCode,
           GetProductsJsonParams(
             searchValue: searchValueController.text,
             enterpriseCodes: [enterpriseCode],
@@ -62,7 +63,8 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
     return DefaultSearchProducts(
       searchValueController: searchValueController,
       searchProductKey: searchProductKey,
-      searchProducts: () => searchProducts(enterpriseCode),
+      searchProducts: (exactProductCode) =>
+          searchProducts(enterpriseCode, exactProductCode),
     );
   }
 }

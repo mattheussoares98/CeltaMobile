@@ -168,6 +168,7 @@ void main() {
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: null,
             GetProductsJsonParams(
               searchValue: searchValue,
               enterpriseCodes: [enterpriseEntity.Code!],
@@ -218,6 +219,7 @@ void main() {
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: null,
             GetProductsJsonParams(
               lastBuyEntranceQuantity: lastBuyEntranceQuantity,
               searchValue: searchValue,
@@ -256,6 +258,7 @@ void main() {
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: null,
             GetProductsJsonParams(
               lastBuyEntranceQuantity: lastBuyEntranceQuantity,
               searchValue: searchValue,
@@ -295,6 +298,7 @@ void main() {
               searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
+              exactProductCode: null,
               GetProductsJsonParams(
                 searchValue: searchValue,
                 enterpriseCodes: [enterpriseEntity.Code!],
@@ -319,6 +323,62 @@ void main() {
         ).called(1);
       },
     );
+
+    test(
+      'should call with correct values when pass exactProductCode',
+      () async {
+        final container = makeProviderContainer();
+        final exactProductCode = faker.randomGenerator.integer(100);
+
+        await container.read(
+          searchProductsStateControllerProvider(searchProductKey).future,
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          searchProductsStateControllerProvider(searchProductKey),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(
+              searchProductsStateControllerProvider(searchProductKey).notifier,
+            )
+            .loadProducts(
+              exactProductCode: exactProductCode,
+              GetProductsJsonParams(
+                searchValue: searchValue,
+                enterpriseCodes: [enterpriseEntity.Code!],
+                lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+                buyRequestParams: buyRequestParams,
+                competingPricesParams: competingPricesParams,
+              ),
+            );
+
+        expect(states, [
+          isA<AsyncLoading>(),
+          isA<AsyncData<List<ProductEntity>>>(),
+        ]);
+
+        verify(
+          () => sut.load(
+            workingUrl: userSessionEntity.supabaseEnterprise!.workingUrl!,
+            crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
+            enterpriseEntity: enterpriseEntity,
+            searchType: SearchType.exactCode,
+            getProductsDefaultParams: GetProductsJsonParams(
+              enterpriseCodes: [enterpriseEntity.Code!],
+              routine: searchProductKey.routine,
+              searchValue: exactProductCode.toString(),
+              lastBuyEntranceQuantity: lastBuyEntranceQuantity,
+              buyRequestParams: buyRequestParams,
+              competingPricesParams: competingPricesParams,
+            ),
+          ),
+        ).called(1);
+        expect(fakeAppUsage.lastUsageType, UsageType.searchProducts);
+      },
+    );
   });
 
   group('updateProduct', () {
@@ -340,6 +400,7 @@ void main() {
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: null,
             GetProductsJsonParams(
               lastBuyEntranceQuantity: lastBuyEntranceQuantity,
               searchValue: searchValue,
@@ -396,6 +457,7 @@ void main() {
               ).notifier,
             )
             .loadProducts(
+              exactProductCode: null,
               GetProductsJsonParams(
                 lastBuyEntranceQuantity: lastBuyEntranceQuantity,
                 searchValue: searchValue,
@@ -450,6 +512,7 @@ void main() {
               searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
+              exactProductCode: null,
               GetProductsJsonParams(
                 lastBuyEntranceQuantity: lastBuyEntranceQuantity,
                 searchValue: searchValue,
@@ -504,6 +567,7 @@ void main() {
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: null,
             GetProductsJsonParams(
               lastBuyEntranceQuantity: lastBuyEntranceQuantity,
               searchValue: searchValue,
@@ -532,6 +596,7 @@ void main() {
             searchProductsStateControllerProvider(searchProductKey).notifier,
           )
           .loadProducts(
+            exactProductCode: null,
             GetProductsJsonParams(
               lastBuyEntranceQuantity: lastBuyEntranceQuantity,
               searchValue: searchValue,

@@ -54,10 +54,10 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
     return DefaultSearchProducts(
       allowEmptySearchValue: true,
       searchProductKey: searchProductKey,
-      searchProducts: () {
+      searchProducts: (exactProductCode) {
         final searchType = ref.read(
           selectedItemUIControllerProvider.select((s) => s.searchType),
-        );
+        ); //TODO check if really need this
         final restrictProducts = ref.read(
           researchsStateControllerProvider(widget.widget.enterpriseCode).select(
             (s) =>
@@ -74,6 +74,7 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
               searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
+              exactProductCode: exactProductCode,
               GetProductsJsonParams(
                 enterpriseCodes: [widget.widget.enterpriseCode],
                 searchValue: searchValueController.text.isEmpty

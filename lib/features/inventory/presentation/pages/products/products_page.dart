@@ -57,6 +57,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   Future<void> _searchProducts(
     SearchProductKey searchProductKey,
     bool searchByCamera,
+    int? exactProductCode,
   ) async {
     changeSelectedIndex(null);
     if (searchByCamera) {
@@ -67,6 +68,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     await ref
         .read(searchProductsStateControllerProvider(searchProductKey).notifier)
         .loadProducts(
+          exactProductCode: exactProductCode,
           GetProductsInventoryParams(
             searchValue: searchProductsController.text,
             inventoryProcessCode: widget.codigoInternoInventario,
@@ -156,7 +158,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
           if (_isContinuousScan && n.value != null) {
             await Future.delayed(const Duration(seconds: 1), () {
-              _searchProducts(searchProductKey, true);
+              _searchProducts(searchProductKey, true, null);
             });
           }
         });
@@ -181,8 +183,11 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   builder: (_, ref, _) {
                     return DefaultSearchProducts(
                       focusNode: searchProductsFocusNode,
-                      searchProducts: () =>
-                          _searchProducts(searchProductKey, false),
+                      searchProducts: (exactProductCode) => _searchProducts(
+                        searchProductKey,
+                        false,
+                        exactProductCode,
+                      ),
                       searchValueController: searchProductsController,
                       searchProductKey: searchProductKey,
                       module: Modules.inventory,

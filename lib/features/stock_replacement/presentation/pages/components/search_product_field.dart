@@ -35,7 +35,7 @@ class _SearchProductFieldState extends ConsumerState<SearchProductField> {
     return DefaultSearchProducts(
       searchValueController: searchValueController,
       searchProductKey: searchProductKey,
-      searchProducts: () {
+      searchProducts: (exactProductCode) {
         //remove the selected index when search the product
         ref
             .read(
@@ -48,6 +48,7 @@ class _SearchProductFieldState extends ConsumerState<SearchProductField> {
               searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
+              exactProductCode: exactProductCode,
               GetProductsJsonParams(
                 searchValue: searchValueController.text,
                 enterpriseCodes: [widget.enterpriseCode],

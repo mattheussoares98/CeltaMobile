@@ -46,15 +46,12 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
         // Logic to update the main controller and trigger the heavy search
         widget.searchValueController.text = product.PLU ?? product.Name ?? '';
         _overlayManager.hide();
-        onSearch(formKey: formKey);
+        widget.searchProducts(product.codigoInternoProEmb);
       },
     );
   }
 
-  void onSearch({
-    bool? searchByCamera,
-    required GlobalKey<FormState> formKey,
-  }) async {
+  void onSearch(GlobalKey<FormState> formKey, {bool? searchByCamera}) async {
     if (searchByCamera == true) {
       final code = await BarcodeScannerService.scanBarcode(context);
       if (code == null) return;
@@ -62,7 +59,7 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
     }
 
     if (formKey.currentState?.validate() == true) {
-      widget.searchProducts();
+      widget.searchProducts(null);
     }
   }
 
