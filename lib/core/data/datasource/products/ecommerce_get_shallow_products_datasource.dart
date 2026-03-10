@@ -15,7 +15,6 @@ class EcommerceGetShallowProductsDatasource
     required String user,
     required String accessKey,
   }) async {
-    //TODO should be a https url. If is http, it will not work
     final response = await httpClient.request(
       url: '$workingUrl/api/products/shallow',
       method: 'post',
