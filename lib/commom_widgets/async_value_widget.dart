@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../constants/constants.dart';
-import '../localization/string_hardcoded.dart';
 import '../exceptions/exceptions.dart';
+import '../localization/string_hardcoded.dart';
 import 'commom_widgets.dart';
 
 class AsyncValueWidget<T> extends StatelessWidget {
@@ -17,22 +16,30 @@ class AsyncValueWidget<T> extends StatelessWidget {
     required this.data,
     this.isSliver,
     this.errorMaxLines,
+    this.useLinearProgressIndicator,
   });
   final AsyncValue<T> value;
   final Widget Function(T) data;
   final VoidCallback? tryAgain;
   final bool? isSliver;
+  final bool? useLinearProgressIndicator;
   final int? errorMaxLines;
 
   @override
   Widget build(BuildContext context) {
     if (value.isLoading) {
-      return _Loading(isSliver: isSliver);
+      return _Loading(
+        isSliver: isSliver,
+        useLinearProgressIndicator: useLinearProgressIndicator,
+      );
     }
 
     return value.when(
       data: data,
-      loading: () => _Loading(isSliver: isSliver),
+      loading: () => _Loading(
+        isSliver: isSliver,
+        useLinearProgressIndicator: useLinearProgressIndicator,
+      ),
       error: (e, st) => isSliver == true
           ? SliverToBoxAdapter(
               child: _Error(e: e, tryAgain: tryAgain, maxLines: errorMaxLines),
@@ -50,12 +57,14 @@ class OptimazedAsyncValueWidget<T> extends ConsumerWidget {
     required this.tryAgain,
     required this.child,
     this.isSliver,
+    this.useLinearProgressIndicator,
     this.errorMaxLines,
   });
   final ProviderListenable<AsyncValue<T>> provider;
   final Widget child;
   final VoidCallback? tryAgain;
   final bool? isSliver;
+  final bool? useLinearProgressIndicator;
   final int? errorMaxLines;
 
   @override
@@ -64,7 +73,10 @@ class OptimazedAsyncValueWidget<T> extends ConsumerWidget {
     final error = ref.watch(provider.select((s) => s.error));
 
     if (isLoading) {
-      return _Loading(isSliver: isSliver);
+      return _Loading(
+        isSliver: isSliver,
+        useLinearProgressIndicator: useLinearProgressIndicator,
+      );
     } else if (error != null) {
       return isSliver == true
           ? SliverToBoxAdapter(
@@ -83,10 +95,20 @@ class OptimazedAsyncValueWidget<T> extends ConsumerWidget {
 
 class _Loading extends StatelessWidget {
   final bool? isSliver;
-  const _Loading({required this.isSliver});
+  final bool? useLinearProgressIndicator;
+  const _Loading({
+    required this.isSliver,
+    required this.useLinearProgressIndicator,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (useLinearProgressIndicator == true) {
+      if (isSliver == true) {
+        return const SliverToBoxAdapter(child: LinearProgressIndicator());
+      }
+      return const LinearProgressIndicator();
+    }
     if (isSliver == true) {
       return const SliverToBoxAdapter(child: Center(child: LoadingWidget()));
     }

@@ -4,17 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../constants/constants.dart';
-import '../core/domain/entities/entities.dart';
-import '../core/infraestructure/infrastructure.dart';
-import '../core/presentation/controllers/products/products.dart';
-import '../core/validators/validators.dart';
-import '../features/settings/presentation/pages/pages.dart';
-import '../utils/utils.dart';
-import 'commom_widgets.dart';
+import '../../constants/constants.dart';
+import '../../core/domain/entities/entities.dart';
+import '../../core/presentation/controllers/products/products.dart';
+import '../../core/validators/validators.dart';
+import '../../features/settings/presentation/pages/pages.dart';
+import '../../utils/utils.dart';
+import '../commom_widgets.dart';
+import 'mixin/mixin.dart';
 
 class DefaultSearchProducts extends ConsumerStatefulWidget {
-  final bool isLoading;
+  final bool
+  isLoading; //TODO remove this parameter and listen inside the widget
   final VoidCallback searchProducts;
   final TextEditingController searchValueController;
   final FocusNode? focusNode;
@@ -40,32 +41,16 @@ class DefaultSearchProducts extends ConsumerStatefulWidget {
       _DefaultSearchProductsState();
 }
 
-class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
+class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
+    with DefaultSearchProductsMixin {
   final formKey = GlobalKey<FormState>();
+  final LayerLink _layerLink = LayerLink();
 
   @override
   void dispose() {
+    disposeLogic();
     formKey.currentState?.dispose();
     super.dispose();
-  }
-
-  void _onSearch({bool? searchByCamera}) async {
-    if (searchByCamera == true) {
-      final code = await BarcodeScannerService.scanBarcode(context);
-      if (code == null) return;
-      widget.searchValueController.text = code;
-    }
-
-    if (formKey.currentState?.validate() == true) {
-      widget.searchProducts();
-    }
-  }
-
-  void _onTapDeleteIcon() {
-    widget.searchValueController.clear();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      widget.focusNode?.requestFocus();
-    });
   }
 
   @override
@@ -83,73 +68,77 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
     });
 
     return RepaintBoundary(
-      child: Container(
-        width: Breakpoint.desktop,
+      child: CompositedTransformTarget(
+        link: _layerLink,
+        child: SizedBox(
+          width: Breakpoint.desktop,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
 
-        color: theme.scaffoldBackgroundColor,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
+              return Form(
+                key: formKey,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: Sizes.p4),
+                  child: Consumer(
+                    builder: (context, ref, _) {
+                      final pref = ref.watch(
+                        appSettingsStateControllerProvider.select(
+                          (s) => s.value?.searchPreference,
+                        ),
+                      );
 
-            return Form(
-              key: formKey,
-              child: Padding(
-                padding: const EdgeInsets.only(top: Sizes.p4),
-                child: Consumer(
-                  builder: (context, ref, _) {
-                    final pref = ref.watch(
-                      appSettingsStateControllerProvider.select(
-                        (s) => s.value?.searchPreference,
-                      ),
-                    );
+                      final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
+                      final hint = (pref == SearchProductTypePreference.dynamic)
+                          ? defaultHint
+                          : (pref?.name ?? defaultHint);
 
-                    final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
-                    final hint = (pref == SearchProductTypePreference.dynamic)
-                        ? defaultHint
-                        : (pref?.name ?? defaultHint);
-
-                    return DefaultTextFormField(
-                      key: const ValueKey('search_input_field'),
-                      maxLength: 40,
-                      enabled: !widget.isLoading,
-                      controller: widget.searchValueController,
-                      focusNode: widget.focusNode,
-                      validator: FormValidators.compose([
-                        if (widget.allowEmptySearchValue != true)
-                          NonEmptyValidator(),
-                        if (pref == SearchProductTypePreference.ean)
-                          NumberValidator(allowDecimal: false),
-                      ]),
-                      onFieldSubmitted: (_) => _onSearch(),
-                      prefixIcon: width < 220
-                          ? null
-                          : _DefaultIcon(
-                              onPress: widget.isLoading
-                                  ? null
-                                  : _onTapDeleteIcon,
-                              materialIcon: Icons.delete,
-                              cupertinoIcon: CupertinoIcons.delete,
-                              iconColor: widget.isLoading
-                                  ? theme.disabledColor
-                                  : Colors.red,
-                            ),
-                      suffixIcon: _SuffixActions(
-                        width: width,
-                        isLoading: widget.isLoading,
-                        onSearch: () => _onSearch(),
-                        onCamera: () => _onSearch(searchByCamera: true),
-                        module: widget.module,
-                      ),
-                      labelText:
-                          'Consultar produtos (${pref?.name ?? 'Dinâmico'})'
-                              .hardcoded,
-                      hintText: hint,
-                    );
-                  },
+                      return DefaultTextFormField(
+                        key: const ValueKey('search_input_field'),
+                        maxLength: 40,
+                        onChanged: (value) =>
+                            onTextChanged(value, _layerLink, formKey),
+                        enabled: !widget.isLoading,
+                        controller: widget.searchValueController,
+                        focusNode: widget.focusNode,
+                        validator: FormValidators.compose([
+                          if (widget.allowEmptySearchValue != true)
+                            NonEmptyValidator(),
+                          if (pref == SearchProductTypePreference.ean)
+                            NumberValidator(allowDecimal: false),
+                        ]),
+                        onFieldSubmitted: (_) => onSearch(formKey: formKey),
+                        prefixIcon: width < 220
+                            ? null
+                            : _DefaultIcon(
+                                onPress: widget.isLoading
+                                    ? null
+                                    : onTapDeleteIcon,
+                                materialIcon: Icons.delete,
+                                cupertinoIcon: CupertinoIcons.delete,
+                                iconColor: widget.isLoading
+                                    ? theme.disabledColor
+                                    : Colors.red,
+                              ),
+                        suffixIcon: _SuffixActions(
+                          width: width,
+                          isLoading: widget.isLoading,
+                          onSearch: () => onSearch(formKey: formKey),
+                          onCamera: () =>
+                              onSearch(searchByCamera: true, formKey: formKey),
+                          module: widget.module,
+                        ),
+                        labelText:
+                            'Consultar produtos (${pref?.name ?? 'Dinâmico'})'
+                                .hardcoded,
+                        hintText: hint,
+                      );
+                    },
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
