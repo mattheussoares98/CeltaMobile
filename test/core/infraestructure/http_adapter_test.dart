@@ -1,8 +1,9 @@
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:faker/faker.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../mocks/mocks.dart';
@@ -461,5 +462,74 @@ void main() {
 
       expect(future, throwsA(HttpError.serverError));
     });
+  });
+
+  group('CancelToken', () {
+    test(
+      'Should return null and NOT call network if token is already cancelled',
+      () async {
+        // ARRANGE
+        final token = CancelToken()..cancel();
+
+        // ACT
+        final response = await sut.request(
+          url: url,
+          method: 'get',
+          cancelToken: token,
+        );
+
+        // ASSERT
+        expect(response, isNull);
+        // PERFORMANCE: Verifying that the expensive network call was skipped
+        verifyNever(() => client.get(any(), headers: any(named: 'headers')));
+      },
+    );
+
+    test(
+      'Should return null if token is cancelled while waiting for network',
+      () async {
+        // ARRANGE
+        final token = CancelToken();
+        final String fakeData = '{"data":"${faker.lorem.word()}"}';
+
+        // We simulate a network call that cancels the token during execution
+        when(
+          () => client.get(any(), headers: any(named: 'headers')),
+        ).thenAnswer((_) async {
+          token.cancel();
+          return Response(fakeData, 200);
+        });
+
+        // ACT
+        final response = await sut.request(
+          url: url,
+          method: 'get',
+          cancelToken: token,
+        );
+
+        // ASSERT
+        expect(response, isNull);
+        // Note: verify(client.get) would be true here because the token was cancelled INSIDE the call
+      },
+    );
+
+    test(
+      'Should return null if token is cancelled during handleResponse phase',
+      () async {
+        // ARRANGE
+        final token = CancelToken();
+        client.mockGet(200, body: '{"key":"value"}');
+
+        // ACT
+        // We start the request and immediately cancel the token
+        final future = sut.request(url: url, method: 'get', cancelToken: token);
+        token.cancel();
+
+        final response = await future;
+
+        // ASSERT
+        expect(response, isNull);
+      },
+    );
   });
 }

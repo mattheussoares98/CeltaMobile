@@ -1,3 +1,5 @@
+import 'contracts.dart';
+
 abstract class HttpClient {
   Future<dynamic> request({
     required String url,
@@ -6,5 +8,6 @@ abstract class HttpClient {
     Map? headers,
     bool? addDefaultHeaders,
     bool? decodeBody,
+    CancelToken? cancelToken,
   });
 }

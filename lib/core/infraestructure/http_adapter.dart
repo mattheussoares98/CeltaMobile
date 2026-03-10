@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
 
 import '../domain/contracts/contracts.dart';
 import '../domain/errors/errors.dart';
@@ -18,6 +19,7 @@ class HttpAdapter implements HttpClient {
     Map? headers,
     bool? addDefaultHeaders = true,
     bool? decodeBody = true,
+    CancelToken? cancelToken,
   }) async {
     final defaultHeaders = headers?.cast<String, String>() ?? {};
     if (addDefaultHeaders == true) {
@@ -26,11 +28,14 @@ class HttpAdapter implements HttpClient {
         'accept': 'application/json',
       });
     }
+
     final jsonBody = body != null ? jsonEncode(body) : null;
     var response = Response('', 500);
     Future<Response>? futureResponse;
+
     try {
-      // throw Exception();
+      if (cancelToken?.isCancelled == true) return null;
+
       if (method == 'post') {
         futureResponse = client.post(
           Uri.parse(url),
@@ -48,28 +53,40 @@ class HttpAdapter implements HttpClient {
           body: jsonBody,
         );
       }
+
       if (futureResponse != null) {
         response = await futureResponse.timeout(const Duration(minutes: 5));
       }
+
+      if (cancelToken?.isCancelled == true) return null;
     } catch (error) {
+      if (cancelToken?.isCancelled == true) return null;
       debugPrint(error.toString());
       throw HttpError.serverError;
     }
-    return _handleResponse(response, decodeBody);
+
+    return _handleResponse(response, decodeBody, cancelToken);
   }
 
-  dynamic _handleResponse(Response response, bool? decodeBody) {
+  dynamic _handleResponse(
+    Response response,
+    bool? decodeBody,
+    CancelToken? token,
+  ) {
+    if (token?.isCancelled == true) return null;
+
     switch (response.statusCode) {
       case 200:
-        return decodeBody != true
-            ? response.body
-            : (response.body.isEmpty ? null : jsonDecode(response.body));
+        if (decodeBody != true) return response.body;
+        if (response.body.isEmpty) return null;
+
+        return jsonDecode(response.body);
       case 204:
         return null;
       case 400:
-        response.body.isNotEmpty
-            ? throw ApiError(response.body)
-            : throw HttpError.badRequest;
+        throw response.body.isNotEmpty
+            ? ApiError(response.body)
+            : HttpError.badRequest;
       case 401:
         throw HttpError.unauthorized;
       case 403:
