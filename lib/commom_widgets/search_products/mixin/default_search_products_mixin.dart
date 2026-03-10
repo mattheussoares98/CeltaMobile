@@ -52,6 +52,8 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
   }
 
   void onSearch(GlobalKey<FormState> formKey, {bool? searchByCamera}) async {
+    _overlayManager.hide();
+
     if (searchByCamera == true) {
       final code = await BarcodeScannerService.scanBarcode(context);
       if (code == null) return;
