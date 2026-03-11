@@ -53,7 +53,7 @@ class SearchProductsStateController extends _$SearchProductsStateController {
 
       late SearchType searchType;
       if (exactProductCode != null) {
-        searchType = SearchType.exactCode;
+        searchType = SearchType.exactProductPackingCode;
       } else if (specifiedSearchType != null) {
         searchType = specifiedSearchType;
       } else {

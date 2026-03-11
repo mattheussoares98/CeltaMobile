@@ -365,7 +365,7 @@ void main() {
             workingUrl: userSessionEntity.supabaseEnterprise!.workingUrl!,
             crossIdentity: userSessionEntity.user.CrossIdentity_Usuario!,
             enterpriseEntity: enterpriseEntity,
-            searchType: SearchType.exactCode,
+            searchType: SearchType.exactProductPackingCode,
             getProductsDefaultParams: GetProductsJsonParams(
               enterpriseCodes: [enterpriseEntity.Code!],
               routine: searchProductKey.routine,
