@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class CustomerPage extends ConsumerStatefulWidget {
@@ -42,59 +41,9 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
             child: CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [
-                Consumer(
-                  builder: (context, ref, child) {
-                    //TODO create another file
-                    return AsyncValueWidget(
-                      isSliver: true,
-                      value: ref.watch(
-                        consumerCustomerStasteControllerProvider(
-                          widget.enterpriseCode,
-                        ),
-                      ),
-                      tryAgain: () => ref.invalidate(
-                        consumerCustomerStasteControllerProvider,
-                      ),
-                      data: (customer) {
-                        return SliverToBoxAdapter(
-                          child: CustomerItem(
-                            key: ValueKey(customer?.Code),
-                            customer: customer!,
-                            isConsumerCustomer: true,
-                            enterpriseCode: widget.enterpriseCode,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                ConsumerCustomer(enterpriseCode: widget.enterpriseCode),
                 gapSliverH8,
-                Consumer(
-                  builder: (context, ref, child) {
-                    //TODO create another file
-                    return AsyncValueWidget(
-                      isSliver: true,
-                      value: ref.watch(
-                        customersStateControllerProvider(widget.enterpriseCode),
-                      ),
-                      tryAgain: null,
-                      data: (customers) {
-                        return ResponsiveListFlow(
-                          isSliver: true,
-                          itemCount: customers.length,
-                          itemBuilder: (_, index) {
-                            final customer = customers[index];
-                            return CustomerItem(
-                              key: ValueKey(customer.Code),
-                              customer: customer,
-                              enterpriseCode: widget.enterpriseCode,
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
-                ),
+                CustomersItems(enterpriseCode: widget.enterpriseCode),
                 gapSliverH80,
               ],
             ),
