@@ -57,7 +57,7 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
       searchProducts: (exactProductCode) {
         final searchType = ref.read(
           selectedItemUIControllerProvider.select((s) => s.searchType),
-        ); //TODO check if really need this
+        );
         final restrictProducts = ref.read(
           researchsStateControllerProvider(widget.widget.enterpriseCode).select(
             (s) =>
