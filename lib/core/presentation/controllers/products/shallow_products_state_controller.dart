@@ -40,6 +40,11 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   }
 
   Future<void> load(String name) async {
+    if (int.tryParse(name) != null) {
+      //should not search if is a number
+      return;
+    }
+
     // PERFORMANCE: Short-circuit check. If 'name' starts with a previously
     // recorded empty search string, we return immediately.
     if (_lastEmptySearch != null && name.startsWith(_lastEmptySearch!)) {
@@ -57,7 +62,6 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
     //new token for this call
     final token = CancelToken();
     _activeToken = token;
-    //TODO check if the current state is empty and added new strings in the name. If true, do nothing
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
