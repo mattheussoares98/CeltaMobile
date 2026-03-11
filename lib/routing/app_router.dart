@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../core/presentation/controllers/user_session/user_session.dart';
 import '../core/providers/services/services.dart';
@@ -120,8 +120,9 @@ GoRouter goRouter(Ref ref) {
         ]),
         reportsRoute(),
         saleRequestRequestsTypesRoute([saleRequestRoute()]),
-        stockReplacementRoute(),
         searchProductsRoute(),
+        shallowSearchProductsRoute(),
+        stockReplacementRoute(),
         transferBetweenStocksRoute(),
         pdfViewerRoute(),
       ]),

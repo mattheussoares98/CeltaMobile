@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../constants/constants.dart';
-import '../../core/domain/entities/entities.dart';
-import '../../core/presentation/controllers/products/products.dart';
-import '../../localization/string_hardcoded.dart';
-import '../../utils/utils.dart';
-import '../commom_widgets.dart';
+import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
+import '../../../../../core/presentation/controllers/products/products.dart';
+import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../utils/utils.dart';
+import '../../../../domain/entities/entities.dart';
 
 class ShallowResultsItems extends ConsumerWidget {
   final Function(ProductEntity) onSelected;
@@ -17,9 +17,10 @@ class ShallowResultsItems extends ConsumerWidget {
     final theme = Theme.of(context);
 
     final titleStyle = theme.textTheme.bodyMedium;
-    final subtitleStyle = theme.textTheme.titleSmall?.copyWith(
-      color: theme.disabledColor,
+    final packingStyle = theme.textTheme.titleSmall?.copyWith(
+      color: theme.colorScheme.secondary,
     );
+    final pluStyle = theme.textTheme.titleSmall?.copyWith();
 
     return RepaintBoundary(
       child: Material(
@@ -27,7 +28,7 @@ class ShallowResultsItems extends ConsumerWidget {
         borderRadius: BorderRadius.circular(Sizes.p8),
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
-          margin: const EdgeInsets.only(bottom: Sizes.p120),
+          width: double.infinity,
           decoration: BoxDecoration(
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(Sizes.p8),
@@ -64,13 +65,13 @@ class ShallowResultsItems extends ConsumerWidget {
                           title: product.Name,
                           subTitle: packing,
                           titleStyle: titleStyle,
-                          subTitleStyle: subtitleStyle,
+                          subTitleStyle: packingStyle,
                         ),
                         subtitle: TitleAndSubTitle(
                           title: null,
                           subTitle: product.PLU,
                           titleStyle: titleStyle,
-                          subTitleStyle: subtitleStyle,
+                          subTitleStyle: pluStyle,
                         ),
                         onTap: () => onSelected(product),
                       );
