@@ -13,6 +13,7 @@ import '../../core/validators/validators.dart';
 import '../../features/settings/presentation/pages/pages.dart';
 import '../../routing/routing.dart';
 import '../../utils/utils.dart';
+import '../core/presentation/controllers/bs_version/bs_version.dart';
 import '../core/presentation/pages/shallow_search_products/models/models.dart';
 import 'commom_widgets.dart';
 
@@ -43,6 +44,11 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
   final formKey = GlobalKey<FormState>();
 
   void onTextChanged(String value) async {
+    final bsVersion = await ref.read(bsVersionStateControllerProvider.future);
+    if (bsVersion?.isBefore(DateTime(2026, 03, 11)) ?? false) {
+      return;
+    }
+
     if (value.removeWhiteSpaces().length < 3 || int.tryParse(value) != null) {
       ref.invalidate(shallowProductsStateControllerProvider);
       return;
