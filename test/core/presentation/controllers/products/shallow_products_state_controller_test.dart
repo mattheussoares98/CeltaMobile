@@ -161,6 +161,35 @@ void main() {
         ),
       );
     });
+    test('Should not load when searchTerm is too short', () async {
+      // ARRANGE
+      final String searchTerm =
+          "${fakerInstance.randomGenerator.string(1)}   ${fakerInstance.randomGenerator.string(1)}";
+
+      final container = makeProviderContainer(
+        session: fakeSession,
+        enterprise: fakeEnterprise,
+      );
+      addTearDown(container.dispose);
+
+      await container.read(shallowProductsStateControllerProvider.future);
+
+      // ACT
+      await container
+          .read(shallowProductsStateControllerProvider.notifier)
+          .load(searchTerm);
+
+      verifyNever(
+        () => mockRepository.get(
+          workingUrl: any(named: 'workingUrl'),
+          user: any(named: 'user'),
+          accessKey: any(named: 'accessKey'),
+          name: any(named: 'name'),
+          enterpriseId: any(named: 'enterpriseId'),
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      );
+    });
 
     test('load should emit [loading, error] when repository fails', () async {
       // ARRANGE

@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/providers/products/products.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
+import '../../../../utils/utils.dart';
 import '../../../domain/contracts/contracts.dart';
 import '../app_usage/app_usage.dart';
 import '../user_session/user_session.dart';
@@ -40,7 +41,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   }
 
   Future<void> load(String name) async {
-    if (int.tryParse(name) != null) {
+    if (int.tryParse(name) != null || name.removeWhiteSpaces().length < 3) {
       //should not search if is a number
       return;
     }
@@ -49,10 +50,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
     // recorded empty search string, we return immediately.
     if (_lastEmptySearch != null && name.startsWith(_lastEmptySearch!)) {
       return;
-    }
-
-    // Reset the negative cache if the user changes the search path
-    if (_lastEmptySearch != null && !name.startsWith(_lastEmptySearch!)) {
+    } else {
       _lastEmptySearch = null;
     }
 
