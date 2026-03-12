@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,6 +25,7 @@ class ShallowResultsItems extends ConsumerWidget {
       color: theme.colorScheme.secondary,
     );
     final pluStyle = theme.textTheme.titleSmall?.copyWith();
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
       child: Material(
@@ -61,28 +63,42 @@ class ShallowResultsItems extends ConsumerWidget {
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     itemCount: products.length,
-                    separatorBuilder: (_, _) => const Divider(height: 1),
+                    separatorBuilder: (_, _) => const Divider(height: 0),
                     itemBuilder: (context, index) {
                       final product = products[index];
 
                       final packing =
                           '(${product.PackingAbbreviation} ${product.PackingQuantity.toString().toBrazilianNumber(3, true)})';
 
-                      return ListTile(
-                        dense: true,
-                        title: TitleAndSubTitle(
-                          title: product.Name,
-                          subTitle: packing,
-                          titleStyle: titleStyle,
-                          subTitleStyle: packingStyle,
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.p16,
                         ),
-                        subtitle: TitleAndSubTitle(
-                          title: null,
-                          subTitle: product.PLU,
-                          titleStyle: titleStyle,
-                          subTitleStyle: pluStyle,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.all(0),
+                                minTileHeight: Sizes.p24,
+                                dense: true,
+                                title: TitleAndSubTitle(
+                                  title: product.Name,
+                                  subTitle: packing,
+                                  titleStyle: titleStyle,
+                                  subTitleStyle: packingStyle,
+                                ),
+                                subtitle: TitleAndSubTitle(
+                                  title: null,
+                                  subTitle: product.PLU,
+                                  titleStyle: titleStyle,
+                                  subTitleStyle: pluStyle,
+                                ),
+                                onTap: () => onSelected(product),
+                              ),
+                            ),
+                            Icon(isIOS ? CupertinoIcons.search : Icons.search),
+                          ],
                         ),
-                        onTap: () => onSelected(product),
                       );
                     },
                   );
