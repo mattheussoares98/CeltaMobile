@@ -2,13 +2,15 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../domain/entities/entities.dart';
+import 'services.dart';
 
-class CrashlyticsService {
+class CrashlyticsService implements ICrashlyticsService {
   final FirebaseCrashlytics _crashlytics;
 
   CrashlyticsService(this._crashlytics);
 
   /// Sets custom keys for the current session
+  @override
   Future<void> setCustomKeys(
     List<CrashlyticsCustomKeyEntity> customKeys,
   ) async {

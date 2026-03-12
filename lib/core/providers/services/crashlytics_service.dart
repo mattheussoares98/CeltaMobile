@@ -6,6 +6,6 @@ import '../../infraestructure/services/services.dart';
 part 'crashlytics_service.g.dart';
 
 @riverpod
-CrashlyticsService crashlyticsService(Ref ref) {
+ICrashlyticsService crashlyticsService(Ref ref) {
   return CrashlyticsService(FirebaseCrashlytics.instance);
 }

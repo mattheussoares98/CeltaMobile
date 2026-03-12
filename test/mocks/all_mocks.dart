@@ -635,7 +635,7 @@ class FakeSelectedEnterpriseStateController
   }
 
   @override
-  void selectEnterprise(EnterpriseEntity enterprise) {
+  Future<void> selectEnterprise(EnterpriseEntity enterprise) async {
     state = enterprise;
   }
 }

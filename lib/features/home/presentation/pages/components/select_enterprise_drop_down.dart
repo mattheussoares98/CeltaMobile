@@ -1,12 +1,9 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../../core/providers/services/services.dart';
 import '../../../../enterprises/presentation/controllers/controllers.dart';
 
 class SelectEnterpriseDropDown extends ConsumerWidget {
@@ -56,33 +53,6 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
                   ref
                       .read(selectedEnterpriseStateControllerProvider.notifier)
                       .selectEnterprise(enterprise);
-
-                  final enterpriseName = ref.read(
-                    userSessionProvider.select(
-                      (s) => s.value?.enterprise?.name,
-                    ),
-                  );
-
-                  if (kIsWeb ||
-                      defaultTargetPlatform != TargetPlatform.iOS ||
-                      defaultTargetPlatform != TargetPlatform.android) {
-                    return;
-                  }
-
-                  ref.read(crashlyticsServiceProvider).setCustomKeys([
-                    const CrashlyticsCustomKeyEntity(
-                      key: 'DEBUG MODE',
-                      value: 'IS DEBUG MODE',
-                    ),
-                    CrashlyticsCustomKeyEntity(
-                      key: 'enterprise',
-                      value: '$enterpriseName',
-                    ),
-                    CrashlyticsCustomKeyEntity(
-                      key: 'selected_enterprise',
-                      value: enterprise.name,
-                    ),
-                  ]);
                 },
                 items: items,
               ),

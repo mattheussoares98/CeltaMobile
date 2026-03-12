@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../core/domain/entities/entities.dart';
 import '../core/infraestructure/infrastructure.dart';
 
 class CrashlyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
-  final CrashlyticsService _service;
+  final ICrashlyticsService _service;
 
   CrashlyticsRouteObserver(this._service);
 
