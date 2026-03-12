@@ -7,6 +7,7 @@ import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../localization/string_hardcoded.dart';
+import '../../../../utils/utils.dart';
 import 'components/components.dart';
 import 'models/models.dart';
 
@@ -49,7 +50,19 @@ class _ShallowSearchProductsPageState
   void _onChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-    if (value.trim().length < 3) {
+    if (value.removeWhiteSpaces().isEmpty) {
+      ref.invalidate(shallowProductsStateControllerProvider);
+      _handlePop(
+        TappedProductModel(
+          codigoInternoProEmb: null,
+          textField: value,
+          closedShallowPageType: ClosePageAction.cancel,
+        ),
+      );
+      return;
+    }
+
+    if (value.removeWhiteSpaces().length < 3) {
       ref.invalidate(shallowProductsStateControllerProvider);
       return;
     }
@@ -86,6 +99,8 @@ class _ShallowSearchProductsPageState
               type: MaterialType.transparency,
               child: DefaultTextFormField(
                 controller: _controller,
+                textInputAction: TextInputAction.search,
+                labelText: 'Nome'.hardcoded,
                 autofocus: true,
                 onChanged: _onChanged,
                 hintText: 'Pesquisar produtos...'.hardcoded,
