@@ -21,7 +21,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   String? _lastEmptySearch;
 
   @override
-  FutureOr<List<ProductEntity>> build() {
+  FutureOr<List<ProductEntity>?> build() async {
     ref.onDispose(() => _activeToken?.cancel());
     Timer? timer;
     final link = ref.keepAlive();
@@ -36,8 +36,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
     ref.onDispose(() {
       timer?.cancel();
     });
-
-    return [];
+    return null;
   }
 
   Future<void> load(String name) async {

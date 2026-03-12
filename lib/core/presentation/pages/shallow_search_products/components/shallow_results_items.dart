@@ -41,6 +41,9 @@ class ShallowResultsItems extends ConsumerWidget {
                 value: ref.watch(shallowProductsStateControllerProvider),
                 tryAgain: null,
                 data: (products) {
+                  if (products == null) {
+                    return const SizedBox.shrink();
+                  }
                   if (products.isEmpty) {
                     return Padding(
                       padding: const EdgeInsets.all(Sizes.p16),

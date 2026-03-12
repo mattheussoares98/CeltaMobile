@@ -104,7 +104,7 @@ void main() {
 
       await container.read(shallowProductsStateControllerProvider.future);
 
-      final states = <AsyncValue<List<ProductEntity>>>[];
+      final states = <AsyncValue<List<ProductEntity>?>>[];
       container.listen(
         shallowProductsStateControllerProvider,
         (_, next) => states.add(next),
