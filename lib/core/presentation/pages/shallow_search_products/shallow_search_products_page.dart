@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
@@ -60,44 +59,62 @@ class _ShallowSearchProductsPageState
     });
   }
 
+  void _handlePop(TappedProductModel result) {
+    Navigator.of(context).pop(result);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Hero(
-          tag: 'search_bar_hero',
-          child: Material(
-            type: MaterialType.transparency,
-            child: DefaultTextFormField(
-              controller: _controller,
-              autofocus: true,
-              onChanged: _onChanged,
-              hintText: 'Pesquisar produtos...'.hardcoded,
-              onFieldSubmitted: (value) => context.pop(
-                TappedProductModel(
-                  codigoInternoProEmb: null,
-                  textField: value,
-                  closedShallowPageType: ClosePageAction.submit,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+
+        _handlePop(
+          TappedProductModel(
+            codigoInternoProEmb: null,
+            textField: _controller.text,
+            closedShallowPageType: ClosePageAction.cancel,
+          ),
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Hero(
+            tag: 'search_bar_hero',
+            child: Material(
+              type: MaterialType.transparency,
+              child: DefaultTextFormField(
+                controller: _controller,
+                autofocus: true,
+                onChanged: _onChanged,
+                hintText: 'Pesquisar produtos...'.hardcoded,
+                onFieldSubmitted: (value) => _handlePop(
+                  TappedProductModel(
+                    codigoInternoProEmb: null,
+                    textField: value,
+                    closedShallowPageType: ClosePageAction.submit,
+                  ),
                 ),
               ),
             ),
           ),
+          actions: [CloseIcon(controller: _controller)],
         ),
-        actions: [CloseIcon(controller: _controller)],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-        child: RepaintBoundary(
-          child: ShallowResultsItems(
-            onSelected: (product) {
-              context.pop(
-                TappedProductModel(
-                  codigoInternoProEmb: product.codigoInternoProEmb,
-                  textField: product.PLU,
-                  closedShallowPageType: ClosePageAction.tapProduct,
-                ),
-              );
-            },
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+          child: RepaintBoundary(
+            child: ShallowResultsItems(
+              onSelected: (product) {
+                _handlePop(
+                  TappedProductModel(
+                    codigoInternoProEmb: product.codigoInternoProEmb,
+                    textField: product.PLU,
+                    closedShallowPageType: ClosePageAction.tapProduct,
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
