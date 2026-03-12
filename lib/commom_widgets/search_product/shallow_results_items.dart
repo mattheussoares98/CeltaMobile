@@ -6,7 +6,7 @@ import '../../../../../constants/constants.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../../../utils/utils.dart';
-import '../../../../domain/entities/entities.dart';
+import '../../core/domain/entities/entities.dart';
 
 class ShallowResultsItems extends ConsumerWidget {
   final Function(ProductEntity) onSelected;
@@ -15,6 +15,9 @@ class ShallowResultsItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final maxAllowedHeight = screenHeight - keyboardHeight - 200;
 
     final titleStyle = theme.textTheme.bodyMedium;
     final packingStyle = theme.textTheme.titleSmall?.copyWith(
@@ -29,6 +32,9 @@ class ShallowResultsItems extends ConsumerWidget {
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
           width: double.infinity,
+          constraints: BoxConstraints(
+            maxHeight: maxAllowedHeight > 100 ? maxAllowedHeight : 100,
+          ),
           decoration: BoxDecoration(
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(Sizes.p8),
