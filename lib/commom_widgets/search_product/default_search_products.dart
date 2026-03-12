@@ -123,6 +123,7 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                                       : Colors.red,
                                 ),
                           suffixIcon: _SuffixActions(
+                            hideOverlay: hideOverlay,
                             width: width,
                             isLoading: isLoading,
                             onSearch: () => onSearch(formKey),
@@ -154,12 +155,14 @@ class _SuffixActions extends StatelessWidget {
   final VoidCallback onSearch;
   final VoidCallback onCamera;
   final Modules? module;
+  final VoidCallback hideOverlay;
 
   const _SuffixActions({
     required this.width,
     required this.isLoading,
     required this.onSearch,
     required this.onCamera,
+    required this.hideOverlay,
     this.module,
   });
 
@@ -192,6 +195,7 @@ class _SuffixActions extends StatelessWidget {
           onPress: isLoading
               ? null
               : () {
+                  hideOverlay();
                   FocusManager.instance.primaryFocus?.unfocus();
                   showModalPage(SettingsPage(module: module), context);
                 },

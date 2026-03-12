@@ -13,6 +13,8 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
   final _overlayManager = ShallowProductsOverlay();
   Timer? _debounce;
 
+  void hideOverlay() => _overlayManager.hide();
+
   void disposeLogic() {
     _debounce?.cancel();
     _overlayManager.hide();
@@ -29,12 +31,11 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
       return;
     }
 
-    if (value.isEmpty ||
-        value.removeWhiteSpaces().length < 3 ||
-        int.tryParse(value) != null) {
+    if (value.isEmpty) {
       ref.invalidate(shallowProductsStateControllerProvider);
-      debugPrint('hide');
       _overlayManager.hide();
+    }
+    if (value.removeWhiteSpaces().length < 3 || int.tryParse(value) != null) {
       return;
     }
 
@@ -57,7 +58,7 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
       context: context,
       layerLink: layerLink,
       groupId: groupId,
-      onTapOutside: () => _overlayManager.hide(),
+      // onTapOutside: () => _overlayManager.hide(),
       onSelected: (product) {
         // Logic to update the main controller and trigger the heavy search
         widget.searchValueController.text = product.PLU ?? product.Name ?? '';
@@ -68,6 +69,7 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
   }
 
   void onSearch(GlobalKey<FormState> formKey, {bool? searchByCamera}) async {
+    _overlayManager.hide();
     if (searchByCamera == true) {
       final code = await BarcodeScannerService.scanBarcode(context);
       if (code == null) return;
@@ -80,6 +82,7 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
   }
 
   void onTapDeleteIcon() {
+    _overlayManager.hide();
     widget.searchValueController.clear();
     Future.delayed(const Duration(milliseconds: 100), () {
       widget.focusNode?.requestFocus();
