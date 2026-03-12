@@ -12,8 +12,8 @@ import 'components/components.dart';
 import 'models/models.dart';
 
 class ShallowSearchProductsPage extends ConsumerStatefulWidget {
-  final String? initialText;
-  const ShallowSearchProductsPage({super.key, required this.initialText});
+  final TextEditingController? controller;
+  const ShallowSearchProductsPage({super.key, required this.controller});
 
   @override
   ConsumerState<ShallowSearchProductsPage> createState() =>
@@ -22,20 +22,18 @@ class ShallowSearchProductsPage extends ConsumerStatefulWidget {
 
 class _ShallowSearchProductsPageState
     extends ConsumerState<ShallowSearchProductsPage> {
-  late final TextEditingController _controller;
   Timer? _debounce;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialText);
 
     // PERFORMANCE: If we arrived with text, trigger search immediately.
-    if (widget.initialText != null && widget.initialText!.isNotEmpty) {
+    if (widget.controller != null && widget.controller!.text.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
             .read(shallowProductsStateControllerProvider.notifier)
-            .load(widget.initialText!);
+            .load(widget.controller!.text);
       });
     }
   }
@@ -43,7 +41,6 @@ class _ShallowSearchProductsPageState
   @override
   void dispose() {
     _debounce?.cancel();
-    _controller.dispose();
     super.dispose();
   }
 
@@ -86,35 +83,32 @@ class _ShallowSearchProductsPageState
         _handlePop(
           TappedProductModel(
             codigoInternoProEmb: null,
-            textField: _controller.text,
+            textField: widget.controller?.text,
             closedShallowPageType: ClosePageAction.cancel,
           ),
         );
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Hero(
-            tag: 'search_bar_hero',
-            child: Material(
-              type: MaterialType.transparency,
-              child: DefaultTextFormField(
-                controller: _controller,
-                textInputAction: TextInputAction.search,
-                labelText: 'Nome'.hardcoded,
-                autofocus: true,
-                onChanged: _onChanged,
-                hintText: 'Pesquisar produtos...'.hardcoded,
-                onFieldSubmitted: (value) => _handlePop(
-                  TappedProductModel(
-                    codigoInternoProEmb: null,
-                    textField: value,
-                    closedShallowPageType: ClosePageAction.submit,
-                  ),
-                ),
+          title: DefaultTextFormField(
+            controller: widget.controller,
+            textInputAction: TextInputAction.search,
+            labelText: 'Nome'.hardcoded,
+            autofocus: true,
+            onChanged: _onChanged,
+            hintText: 'Pesquisar produtos...'.hardcoded,
+            onFieldSubmitted: (value) => _handlePop(
+              TappedProductModel(
+                codigoInternoProEmb: null,
+                textField: value,
+                closedShallowPageType: ClosePageAction.submit,
               ),
             ),
           ),
-          actions: [CloseIcon(controller: _controller)],
+          actions: [
+            if (widget.controller != null)
+              CloseIcon(controller: widget.controller!),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),

@@ -55,7 +55,10 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts> {
     }
 
     final product =
-        await context.pushNamed(Routes.shallowSearchProducts.name, extra: value)
+        await context.pushNamed(
+              Routes.shallowSearchProducts.name,
+              extra: widget.searchValueController,
+            )
             as TappedProductModel;
 
     if (product.textField != null) {
