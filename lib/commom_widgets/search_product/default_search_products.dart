@@ -40,7 +40,6 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
     with DefaultSearchProductsMixin {
   final formKey = GlobalKey<FormState>();
   final LayerLink _layerLink = LayerLink();
-  static const _searchRegionId = 'product_search_region';
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +90,6 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
                     onChanged: (_) => onTextChanged(
                       layerLink: _layerLink,
                       formKey: formKey,
-                      groupId: _searchRegionId,
                       controller: widget.searchValueController,
                       onProductSelected: widget.searchProducts,
                     ),

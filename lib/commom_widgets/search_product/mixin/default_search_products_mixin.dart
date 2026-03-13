@@ -24,7 +24,6 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
   void onTextChanged({
     required LayerLink layerLink,
     required GlobalKey<FormState> formKey,
-    required String groupId, //TODO check if this is needed
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) async {
@@ -67,7 +66,6 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
         _showOverlay(
           layerLink: layerLink,
           formKey: formKey,
-          groupId: groupId,
           controller: controller,
           onProductSelected: onProductSelected,
         );
@@ -80,14 +78,13 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
   void _showOverlay({
     required LayerLink layerLink,
     required GlobalKey<FormState> formKey,
-    required String groupId,
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) {
     _overlayManager.show(
       context: context,
       layerLink: layerLink,
-      groupId: groupId,
+      groupId: 'groupId',
       // onTapOutside: () => _overlayManager.hide(),
       onSelected: (product) {
         // Logic to update the main controller and trigger the heavy search
