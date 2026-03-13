@@ -89,6 +89,7 @@ class _Items extends ConsumerWidget {
             final product = products[index];
 
             return _ShallowItemTile(
+              key: ValueKey(product.ProductPackingCode),
               product: product,
               onTap: () => onSelected(product),
               packingStyle: packingStyle,
@@ -127,6 +128,7 @@ class _ShallowItemTile extends StatelessWidget {
     required this.titleStyle,
     required this.pluStyle,
     required this.product,
+    super.key,
   });
 
   @override
