@@ -79,20 +79,23 @@ class _Items extends ConsumerWidget {
           return const _EmptyResult();
         }
 
-        return SingleChildScrollView(
-          child: RepaintBoundary(
-            child: Column(
-              children: products.map((product) {
-                return _ShallowItemTile(
-                  product: product,
-                  onTap: (product) => onSelected(product),
-                  packingStyle: packingStyle,
-                  titleStyle: titleStyle,
-                  pluStyle: pluStyle,
-                );
-              }).toList(),
-            ),
-          ),
+        return ListView.separated(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: const ClampingScrollPhysics(),
+          itemCount: products.length,
+          separatorBuilder: (_, _) => const Divider(height: 0),
+          itemBuilder: (context, index) {
+            final product = products[index];
+
+            return _ShallowItemTile(
+              product: product,
+              onTap: () => onSelected(product),
+              packingStyle: packingStyle,
+              titleStyle: titleStyle,
+              pluStyle: pluStyle,
+            );
+          },
         );
       },
     );
@@ -112,7 +115,7 @@ class _EmptyResult extends StatelessWidget {
 }
 
 class _ShallowItemTile extends StatelessWidget {
-  final Function(ProductEntity) onTap;
+  final VoidCallback onTap;
   final ProductEntity product;
   final TextStyle? packingStyle;
   final TextStyle? titleStyle;
@@ -129,7 +132,7 @@ class _ShallowItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap(product),
+      onTap: onTap,
       child: Container(
         decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black12)),
