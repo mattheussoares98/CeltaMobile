@@ -11,11 +11,6 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     on ConsumerState<T> {
   Timer? _debounce;
 
-  void disposeLogic() {
-    _debounce?.cancel();
-    ShallowProductsOverlay.hide();
-  }
-
   void onTextChanged({
     required LayerLink layerLink,
     required GlobalKey<FormState> formKey,
@@ -97,16 +92,5 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     if (formKey.currentState?.validate() == true) {
       onProductSelected(null);
     }
-  }
-
-  void onTapDeleteIcon({
-    required TextEditingController controller,
-    required FocusNode? focusNode,
-  }) {
-    ShallowProductsOverlay.hide();
-    controller.clear();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      focusNode?.requestFocus();
-    });
   }
 }
