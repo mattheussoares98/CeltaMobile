@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/infraestructure/infrastructure.dart';
 import '../../../core/presentation/controllers/products/products.dart';
-import '../../../utils/utils.dart';
 import '../search_product.dart';
 
 mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
@@ -26,10 +25,6 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     if (controller.text.isEmpty) {
       ref.invalidate(shallowProductsStateControllerProvider);
       ShallowProductsOverlay.hide();
-      return;
-    }
-    if (controller.text.removeWhiteSpaces().length < 3 ||
-        int.tryParse(controller.text) != null) {
       return;
     }
 
