@@ -21,10 +21,7 @@ class ShallowProductsOverlay {
     required LayerLink layerLink,
     required void Function(ProductEntity) onSelected,
     // required VoidCallback onTapOutside,
-    required String groupId,
   }) {
-    hide();
-
     final overlay = Overlay.of(context);
     _currentEntry = OverlayEntry(
       builder: (context) {

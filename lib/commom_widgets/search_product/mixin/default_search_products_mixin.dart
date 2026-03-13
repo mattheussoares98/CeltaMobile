@@ -27,8 +27,8 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) async {
-    final bsVersion = ref.read(bsVersionStateControllerProvider);
-    if (bsVersion.value?.isBefore(DateTime(2026, 03, 11)) ?? false) {
+    final bsVersion = await ref.read(bsVersionStateControllerProvider.future);
+    if (bsVersion?.isBefore(DateTime(2026, 03, 11)) ?? false) {
       return;
     }
 
@@ -81,21 +81,15 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      _overlayManager.show(
-        context: context,
-        layerLink: layerLink,
-        groupId: 'groupId',
-        // onTapOutside: () => _overlayManager.hide(),
-        onSelected: (product) {
-          // Logic to update the main controller and trigger the heavy search
-          controller.text = product.PLU ?? product.Name ?? '';
-          _overlayManager.hide();
-          onProductSelected(product.codigoInternoProEmb);
-        },
-      );
-    });
+    _overlayManager.show(
+      context: context,
+      layerLink: layerLink,
+      onSelected: (product) {
+        controller.text = product.PLU ?? product.Name ?? '';
+        _overlayManager.hide();
+        onProductSelected(product.codigoInternoProEmb);
+      },
+    );
   }
 
   void onSearch(

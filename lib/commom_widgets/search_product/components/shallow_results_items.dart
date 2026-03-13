@@ -80,16 +80,18 @@ class _Items extends ConsumerWidget {
         }
 
         return SingleChildScrollView(
-          child: Column(
-            children: products.map((product) {
-              return _ShallowItemTile(
-                product: product,
-                onTap: (product) => onSelected(product),
-                packingStyle: packingStyle,
-                titleStyle: titleStyle,
-                pluStyle: pluStyle,
-              );
-            }).toList(),
+          child: RepaintBoundary(
+            child: Column(
+              children: products.map((product) {
+                return _ShallowItemTile(
+                  product: product,
+                  onTap: (product) => onSelected(product),
+                  packingStyle: packingStyle,
+                  titleStyle: titleStyle,
+                  pluStyle: pluStyle,
+                );
+              }).toList(),
+            ),
           ),
         );
       },
