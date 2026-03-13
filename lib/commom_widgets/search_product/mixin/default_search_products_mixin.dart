@@ -35,6 +35,7 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     if (controller.text.isEmpty) {
       ref.invalidate(shallowProductsStateControllerProvider);
       _overlayManager.hide();
+      return;
     }
     if (controller.text.removeWhiteSpaces().length < 3 ||
         int.tryParse(controller.text) != null) {
