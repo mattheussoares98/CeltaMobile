@@ -11,14 +11,11 @@ import '../search_product.dart';
 
 mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     on ConsumerState<T> {
-  final _overlayManager = ShallowProductsOverlay();
   Timer? _debounce;
-
-  void hideOverlay() => _overlayManager.hide();
 
   void disposeLogic() {
     _debounce?.cancel();
-    _overlayManager.hide();
+    ShallowProductsOverlay.hide();
   }
 
   void onTextChanged({
@@ -34,7 +31,7 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
 
     if (controller.text.isEmpty) {
       ref.invalidate(shallowProductsStateControllerProvider);
-      _overlayManager.hide();
+      ShallowProductsOverlay.hide();
       return;
     }
     if (controller.text.removeWhiteSpaces().length < 3 ||
@@ -52,7 +49,7 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
       // If the user erased the text while the timer was counting, we stop.
       final currentText = controller.text;
       if (currentText.length < 3) {
-        _overlayManager.hide();
+        ShallowProductsOverlay.hide();
         return;
       }
 
@@ -71,7 +68,7 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
           onProductSelected: onProductSelected,
         );
       } else {
-        _overlayManager.hide();
+        ShallowProductsOverlay.hide();
       }
     });
   }
@@ -82,12 +79,12 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) {
-    _overlayManager.show(
+    ShallowProductsOverlay.show(
       context: context,
       layerLink: layerLink,
       onSelected: (product) {
         controller.text = product.PLU ?? product.Name ?? '';
-        _overlayManager.hide();
+        ShallowProductsOverlay.hide();
         onProductSelected(product.codigoInternoProEmb);
       },
     );
@@ -99,9 +96,9 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) async {
-    _debounce?.cancel();
-    _overlayManager.hide();
     ref.invalidate(shallowProductsStateControllerProvider);
+    _debounce?.cancel();
+    ShallowProductsOverlay.hide();
     if (searchByCamera == true) {
       final code = await BarcodeScannerService.scanBarcode(context);
       if (code == null) return;
@@ -117,7 +114,7 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required FocusNode? focusNode,
   }) {
-    _overlayManager.hide();
+    ShallowProductsOverlay.hide();
     controller.clear();
     Future.delayed(const Duration(milliseconds: 100), () {
       focusNode?.requestFocus();

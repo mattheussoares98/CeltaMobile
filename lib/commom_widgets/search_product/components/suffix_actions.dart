@@ -73,7 +73,7 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
           onPress: widget.isLoading
               ? null
               : () {
-                  hideOverlay();
+                  ShallowProductsOverlay.hide();
                   FocusManager.instance.primaryFocus?.unfocus();
                   showModalPage(
                     SettingsPage(module: widget.searchProductKey.module),

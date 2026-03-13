@@ -5,6 +5,7 @@ import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
 import '../../core/presentation/controllers/products/products.dart';
 import '../../utils/utils.dart';
+import '../commom_widgets.dart';
 import 'components/components.dart';
 
 class DefaultSearchProducts extends ConsumerWidget {
@@ -29,6 +30,7 @@ class DefaultSearchProducts extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
       n.doOnSuccess(p, () {
+        ShallowProductsOverlay.hide();
         searchValueController.clear();
       });
     });

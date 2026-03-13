@@ -13,10 +13,10 @@ class ShallowProductsOverlay {
   factory ShallowProductsOverlay() => _instance;
   ShallowProductsOverlay._internal();
 
-  OverlayEntry? _currentEntry;
+  static OverlayEntry? _currentEntry;
 
   /// PERFORMANCE: Uses a LayerLink to pin the suggestions exactly below the input field.
-  void show({
+  static void show({
     required BuildContext context,
     required LayerLink layerLink,
     required void Function(ProductEntity) onSelected,
@@ -49,7 +49,7 @@ class ShallowProductsOverlay {
   }
 
   /// Removes the search suggestions from the screen.
-  void hide() {
+  static void hide() {
     if (_currentEntry != null) {
       _currentEntry?.remove();
       _currentEntry = null;
