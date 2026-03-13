@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/infraestructure/infrastructure.dart';
-import '../../../core/presentation/controllers/bs_version/bs_version.dart';
 import '../../../core/presentation/controllers/products/products.dart';
 import '../../../utils/utils.dart';
 import '../search_product.dart';
@@ -24,11 +23,6 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) async {
-    final bsVersion = await ref.read(bsVersionStateControllerProvider.future);
-    if (bsVersion?.isBefore(DateTime(2026, 03, 11)) ?? false) {
-      return;
-    }
-
     if (controller.text.isEmpty) {
       ref.invalidate(shallowProductsStateControllerProvider);
       ShallowProductsOverlay.hide();

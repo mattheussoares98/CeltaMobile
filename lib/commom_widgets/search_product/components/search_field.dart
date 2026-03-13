@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/domain/entities/entities.dart';
+import '../../../core/presentation/controllers/bs_version/bs_version.dart';
 import '../../../core/presentation/controllers/products/products.dart';
 import '../../../core/validators/validators.dart';
 import '../../../features/settings/presentation/controllers/controllers.dart';
@@ -39,6 +40,12 @@ class _SearchFieldState extends ConsumerState<SearchField>
 
   @override
   Widget build(BuildContext context) {
+    final hasShallowApiImplemented = ref.watch(
+      bsVersionStateControllerProvider.select(
+        (s) => s.value?.isAfter(DateTime(2026, 03, 11)) ?? false,
+      ),
+    );
+
     return CompositedTransformTarget(
       link: _layerLink,
       child: Form(
@@ -66,12 +73,14 @@ class _SearchFieldState extends ConsumerState<SearchField>
             return DefaultTextFormField(
               key: const ValueKey('search_input_field'),
               maxLength: 40,
-              onChanged: (_) => onTextChanged(
-                layerLink: _layerLink,
-                formKey: formKey,
-                controller: widget.searchValueController,
-                onProductSelected: widget.searchProducts,
-              ),
+              onChanged: hasShallowApiImplemented
+                  ? (_) => onTextChanged(
+                      layerLink: _layerLink,
+                      formKey: formKey,
+                      controller: widget.searchValueController,
+                      onProductSelected: widget.searchProducts,
+                    )
+                  : null,
               enabled: isLoading == false,
               controller: widget.searchValueController,
               focusNode: widget.focusNode,
