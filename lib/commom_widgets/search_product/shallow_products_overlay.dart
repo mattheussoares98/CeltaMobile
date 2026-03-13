@@ -28,9 +28,6 @@ class ShallowProductsOverlay {
     final overlay = Overlay.of(context);
     _currentEntry = OverlayEntry(
       builder: (context) {
-        final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
-        final screenHeight = MediaQuery.sizeOf(context).height;
-        final maxAllowedHeight = screenHeight - keyboardHeight - 220;
         return Positioned(
           width: MediaQuery.sizeOf(context).width - Sizes.p16,
           child: CompositedTransformFollower(
@@ -46,12 +43,7 @@ class ShallowProductsOverlay {
                 constraints: const BoxConstraints(
                   maxWidth: Breakpoint.desktop, // Or a fixed value like 500
                 ),
-                child: RepaintBoundary(
-                  child: ShallowResultsItems(
-                    onSelected: onSelected,
-                    maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
-                  ),
-                ),
+                child: ShallowResultsItems(onSelected: onSelected),
               ),
             ),
           ),

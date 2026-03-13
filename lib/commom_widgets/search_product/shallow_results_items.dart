@@ -11,25 +11,26 @@ import '../../core/domain/entities/entities.dart';
 
 class ShallowResultsItems extends ConsumerWidget {
   final Function(ProductEntity) onSelected;
-  final double maxHeight;
 
-  const ShallowResultsItems({
-    super.key,
-    required this.onSelected,
-    required this.maxHeight,
-  });
+  const ShallowResultsItems({super.key, required this.onSelected});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+
+    final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final maxAllowedHeight = screenHeight - keyboardHeight - 220;
+
     return RepaintBoundary(
       child: Material(
         elevation: 8,
         borderRadius: BorderRadius.circular(Sizes.p8),
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
-          width: double.infinity,
-          constraints: BoxConstraints(maxHeight: maxHeight),
+          constraints: BoxConstraints(
+            maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
+          ),
           decoration: BoxDecoration(
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(Sizes.p8),
@@ -52,8 +53,8 @@ class ShallowResultsItems extends ConsumerWidget {
                     );
                   }
                   return ListView.separated(
-                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
+                    padding: EdgeInsets.zero,
                     physics: const ClampingScrollPhysics(),
                     itemCount: products.length,
                     separatorBuilder: (_, _) => const Divider(height: 0),
