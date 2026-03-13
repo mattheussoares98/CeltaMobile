@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
-import 'search_product.dart';
+import 'components/components.dart';
 
 /// PERFORMANCE: Singleton manager to handle floating search results.
 /// It encapsulates the OverlayEntry lifecycle and uses TapRegion for

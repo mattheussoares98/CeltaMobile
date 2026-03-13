@@ -1,0 +1,90 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/domain/entities/entities.dart';
+import '../../../features/settings/presentation/pages/pages.dart';
+import '../../commom_widgets.dart';
+import '../mixin/mixin.dart';
+import 'components.dart';
+
+class SuffixActions extends ConsumerStatefulWidget {
+  final bool isLoading;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController searchValueController;
+  final void Function(int? exactProductCode) searchProducts;
+  final SearchProductKey searchProductKey;
+
+  const SuffixActions({
+    super.key,
+    required this.isLoading,
+    required this.formKey,
+    required this.searchValueController,
+    required this.searchProducts,
+    required this.searchProductKey,
+  });
+
+  @override
+  ConsumerState<SuffixActions> createState() => _SuffixActionsState();
+}
+
+class _SuffixActionsState extends ConsumerState<SuffixActions>
+    with DefaultSearchProductsMixin {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isMobile =
+        theme.platform == TargetPlatform.iOS ||
+        theme.platform == TargetPlatform.android;
+    final width = MediaQuery.sizeOf(context).width;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (width >= 220)
+          DefaultIcon(
+            onPress: () => onSearch(
+              widget.formKey,
+              controller: widget.searchValueController,
+              onProductSelected: widget.searchProducts,
+            ),
+            materialIcon: Icons.search,
+            cupertinoIcon: CupertinoIcons.search,
+            iconColor: null,
+            isLoading: widget.isLoading,
+          ),
+        if (isMobile)
+          DefaultIcon(
+            onPress: widget.isLoading
+                ? null
+                : () => onSearch(
+                    widget.formKey,
+                    searchByCamera: true,
+                    controller: widget.searchValueController,
+                    onProductSelected: widget.searchProducts,
+                  ),
+            materialIcon: Icons.camera_alt,
+            cupertinoIcon: CupertinoIcons.camera_fill,
+            iconColor: widget.isLoading ? theme.disabledColor : null,
+            showWhenIsSmallPage: true,
+          ),
+        DefaultIcon(
+          showWhenIsSmallPage: true,
+          onPress: widget.isLoading
+              ? null
+              : () {
+                  hideOverlay();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  showModalPage(
+                    SettingsPage(module: widget.searchProductKey.module),
+                    context,
+                  );
+                },
+          materialIcon: Icons.settings,
+          cupertinoIcon: CupertinoIcons.settings,
+          iconColor: widget.isLoading ? theme.disabledColor : null,
+        ),
+      ],
+    );
+  }
+}

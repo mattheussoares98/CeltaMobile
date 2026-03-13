@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
+import '../../../../commom_widgets/search_product/components/components.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../localization/string_hardcoded.dart';
