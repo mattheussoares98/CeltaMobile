@@ -40,10 +40,18 @@ class ShallowProductsOverlay {
               0,
               57,
             ), // Standard height for our DefaultTextFormField
-            child: RepaintBoundary(
-              child: ShallowResultsItems(
-                onSelected: onSelected,
-                maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: Breakpoint.desktop, // Or a fixed value like 500
+                ),
+                child: RepaintBoundary(
+                  child: ShallowResultsItems(
+                    onSelected: onSelected,
+                    maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
+                  ),
+                ),
               ),
             ),
           ),
