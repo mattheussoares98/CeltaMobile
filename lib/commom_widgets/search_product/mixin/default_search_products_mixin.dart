@@ -41,10 +41,29 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
 
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        ref.read(shallowProductsStateControllerProvider.notifier).load(value);
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      if (!mounted) return;
+
+      // The "Double-Check" Guard.
+      // We check the LATEST value of the controller before triggering the API.
+      // If the user erased the text while the timer was counting, we stop.
+      final currentText = widget.searchValueController.text;
+      if (currentText.length < 3) {
+        _overlayManager.hide();
+        return;
+      }
+
+      await ref
+          .read(shallowProductsStateControllerProvider.notifier)
+          .load(currentText);
+
+      // Second Guard.
+      // After the 'await load' (network call), the user might have erased
+      // the field. We only show the overlay if the field is still valid.
+      if (mounted && widget.searchValueController.text.length >= 3) {
         _showOverlay(layerLink, formKey, groupId);
+      } else {
+        _overlayManager.hide();
       }
     });
   }
