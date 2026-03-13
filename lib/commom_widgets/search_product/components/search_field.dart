@@ -35,6 +35,7 @@ class _SearchFieldState extends ConsumerState<SearchField>
     with DefaultSearchProductsMixin {
   final LayerLink _layerLink = LayerLink();
   final formKey = GlobalKey<FormState>();
+  final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,6 @@ class _SearchFieldState extends ConsumerState<SearchField>
               ),
             );
 
-            final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
             final hint = (pref == SearchProductTypePreference.dynamic)
                 ? defaultHint
                 : (pref?.name ?? defaultHint);
