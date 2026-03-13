@@ -63,6 +63,7 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) {
+    ShallowProductsOverlay.hide();
     ShallowProductsOverlay.show(
       context: context,
       layerLink: layerLink,
@@ -80,9 +81,6 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) async {
-    ref.invalidate(shallowProductsStateControllerProvider);
-    _debounce?.cancel();
-    ShallowProductsOverlay.hide();
     if (searchByCamera == true) {
       final code = await BarcodeScannerService.scanBarcode(context);
       if (code == null) return;
@@ -92,5 +90,9 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     if (formKey.currentState?.validate() == true) {
       onProductSelected(null);
     }
+
+    ref.invalidate(shallowProductsStateControllerProvider);
+    _debounce?.cancel();
+    ShallowProductsOverlay.hide();
   }
 }
