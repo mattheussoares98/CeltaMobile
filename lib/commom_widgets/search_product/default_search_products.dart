@@ -44,8 +44,6 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     ref.listen(searchProductsStateControllerProvider(widget.searchProductKey), (
       p,
       n,
@@ -60,88 +58,92 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
         link: _layerLink,
         child: SizedBox(
           width: Breakpoint.desktop,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
-
-              return Form(
-                key: formKey,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: Sizes.p4),
-                  child: TapRegion(
-                    groupId: _searchRegionId,
-                    child: Consumer(
-                      builder: (context, ref, _) {
-                        final pref = ref.watch(
-                          appSettingsStateControllerProvider.select(
-                            (s) => s.value?.searchPreference,
-                          ),
-                        );
-
-                        final isLoading =
-                            (widget.isLoading ??
-                                ref.watch(
-                                  searchProductsStateControllerProvider(
-                                    widget.searchProductKey,
-                                  ).select((s) => s.isLoading),
-                                )) ==
-                            true;
-
-                        final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
-                        final hint =
-                            (pref == SearchProductTypePreference.dynamic)
-                            ? defaultHint
-                            : (pref?.name ?? defaultHint);
-
-                        return DefaultTextFormField(
-                          key: const ValueKey('search_input_field'),
-                          maxLength: 40,
-                          onChanged: (value) => onTextChanged(
-                            value,
-                            _layerLink,
-                            formKey,
-                            _searchRegionId,
-                          ),
-                          enabled: isLoading == false,
-                          controller: widget.searchValueController,
-                          focusNode: widget.focusNode,
-                          validator: FormValidators.compose([
-                            if (widget.allowEmptySearchValue != true)
-                              NonEmptyValidator(),
-                            if (pref == SearchProductTypePreference.ean)
-                              NumberValidator(allowDecimal: false),
-                          ]),
-                          onFieldSubmitted: (_) => onSearch(formKey),
-                          prefixIcon: width < 220
-                              ? null
-                              : _DefaultIcon(
-                                  onPress: isLoading ? null : onTapDeleteIcon,
-                                  materialIcon: Icons.delete,
-                                  cupertinoIcon: CupertinoIcons.delete,
-                                  iconColor: isLoading
-                                      ? theme.disabledColor
-                                      : Colors.red,
-                                ),
-                          suffixIcon: _SuffixActions(
-                            hideOverlay: hideOverlay,
-                            width: width,
-                            isLoading: isLoading,
-                            onSearch: () => onSearch(formKey),
-                            onCamera: () =>
-                                onSearch(searchByCamera: true, formKey),
-                            module: widget.searchProductKey.module,
-                          ),
-                          labelText:
-                              'Consultar produtos (${pref?.name ?? 'Dinâmico'})'
-                                  .hardcoded,
-                          hintText: hint,
-                        );
-                      },
-                    ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: Sizes.p4),
+            child: Consumer(
+              builder: (context, ref, _) {
+                final pref = ref.watch(
+                  appSettingsStateControllerProvider.select(
+                    (s) => s.value?.searchPreference,
                   ),
-                ),
-              );
-            },
+                );
+
+                final isLoading =
+                    (widget.isLoading == true ||
+                    ref.watch(
+                      searchProductsStateControllerProvider(
+                        widget.searchProductKey,
+                      ).select((s) => s.isLoading),
+                    ));
+
+                final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
+                final hint = (pref == SearchProductTypePreference.dynamic)
+                    ? defaultHint
+                    : (pref?.name ?? defaultHint);
+
+                final theme = Theme.of(context);
+
+                return Form(
+                  key: formKey,
+                  child: DefaultTextFormField(
+                    key: const ValueKey('search_input_field'),
+                    maxLength: 40,
+                    onChanged: (_) => onTextChanged(
+                      layerLink: _layerLink,
+                      formKey: formKey,
+                      groupId: _searchRegionId,
+                      controller: widget.searchValueController,
+                      onProductSelected: widget.searchProducts,
+                    ),
+                    enabled: isLoading == false,
+                    controller: widget.searchValueController,
+                    focusNode: widget.focusNode,
+                    validator: FormValidators.compose([
+                      if (widget.allowEmptySearchValue != true)
+                        NonEmptyValidator(),
+                      if (pref == SearchProductTypePreference.ean)
+                        NumberValidator(allowDecimal: false),
+                    ]),
+                    onFieldSubmitted: (_) => onSearch(
+                      formKey,
+                      controller: widget.searchValueController,
+                      onProductSelected: widget.searchProducts,
+                    ),
+                    prefixIcon: _DefaultIcon(
+                      onPress: isLoading
+                          ? null
+                          : () => onTapDeleteIcon(
+                              controller: widget.searchValueController,
+                              focusNode: widget.focusNode,
+                            ),
+                      materialIcon: Icons.delete,
+                      cupertinoIcon: CupertinoIcons.delete,
+                      iconColor: isLoading ? theme.disabledColor : Colors.red,
+                    ),
+                    suffixIcon: _SuffixActions(
+                      hideOverlay: hideOverlay,
+                      isLoading: isLoading,
+                      onSearch: () => onSearch(
+                        formKey,
+                        controller: widget.searchValueController,
+                        onProductSelected: widget.searchProducts,
+                      ),
+                      onCamera: () => onSearch(
+                        formKey,
+                        searchByCamera: true,
+                        controller: widget.searchValueController,
+                        onProductSelected: widget.searchProducts,
+                      ),
+                      module: widget.searchProductKey.module,
+                    ),
+                    labelText:
+                        'Consultar produtos (${pref?.name ?? 'Dinâmico'})'
+                            .hardcoded,
+                    hintText: hint,
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -150,7 +152,6 @@ class _DefaultSearchProductsState extends ConsumerState<DefaultSearchProducts>
 }
 
 class _SuffixActions extends StatelessWidget {
-  final double width;
   final bool isLoading;
   final VoidCallback onSearch;
   final VoidCallback onCamera;
@@ -158,7 +159,6 @@ class _SuffixActions extends StatelessWidget {
   final VoidCallback hideOverlay;
 
   const _SuffixActions({
-    required this.width,
     required this.isLoading,
     required this.onSearch,
     required this.onCamera,
@@ -172,6 +172,7 @@ class _SuffixActions extends StatelessWidget {
     final isMobile =
         theme.platform == TargetPlatform.iOS ||
         theme.platform == TargetPlatform.android;
+    final width = MediaQuery.sizeOf(context).width;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -190,8 +191,10 @@ class _SuffixActions extends StatelessWidget {
             materialIcon: Icons.camera_alt,
             cupertinoIcon: CupertinoIcons.camera_fill,
             iconColor: isLoading ? theme.disabledColor : null,
+            showWhenIsSmallPage: true,
           ),
         _DefaultIcon(
+          showWhenIsSmallPage: true,
           onPress: isLoading
               ? null
               : () {
@@ -214,6 +217,7 @@ class _DefaultIcon extends StatelessWidget {
   final IconData cupertinoIcon;
   final Color? iconColor;
   final bool isLoading;
+  final bool showWhenIsSmallPage;
 
   const _DefaultIcon({
     required this.onPress,
@@ -221,11 +225,14 @@ class _DefaultIcon extends StatelessWidget {
     required this.cupertinoIcon,
     required this.iconColor,
     this.isLoading = false,
+    this.showWhenIsSmallPage = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final width = MediaQuery.sizeOf(context).width;
+    if (width < 220 && !showWhenIsSmallPage) return const SizedBox.shrink();
     return IconButton(
       visualDensity: VisualDensity.compact,
       onPressed: onPress,

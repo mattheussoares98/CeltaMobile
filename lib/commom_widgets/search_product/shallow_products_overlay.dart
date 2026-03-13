@@ -40,13 +40,10 @@ class ShallowProductsOverlay {
               0,
               57,
             ), // Standard height for our DefaultTextFormField
-            child: TapRegion(
-              groupId: groupId,
-              child: RepaintBoundary(
-                child: ShallowResultsItems(
-                  onSelected: onSelected,
-                  maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
-                ),
+            child: RepaintBoundary(
+              child: ShallowResultsItems(
+                onSelected: onSelected,
+                maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
               ),
             ),
           ),

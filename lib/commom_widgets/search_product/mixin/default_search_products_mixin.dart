@@ -9,7 +9,8 @@ import '../../../core/presentation/controllers/products/products.dart';
 import '../../../utils/utils.dart';
 import '../search_product.dart';
 
-mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
+mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
+    on ConsumerState<T> {
   final _overlayManager = ShallowProductsOverlay();
   Timer? _debounce;
 
@@ -20,22 +21,24 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
     _overlayManager.hide();
   }
 
-  void onTextChanged(
-    String value,
-    LayerLink layerLink,
-    GlobalKey<FormState> formKey,
-    String groupId,
-  ) async {
+  void onTextChanged({
+    required LayerLink layerLink,
+    required GlobalKey<FormState> formKey,
+    required String groupId, //TODO check if this is needed
+    required TextEditingController controller,
+    required void Function(int?) onProductSelected,
+  }) async {
     final bsVersion = await ref.read(bsVersionStateControllerProvider.future);
     if (bsVersion?.isBefore(DateTime(2026, 03, 11)) ?? false) {
       return;
     }
 
-    if (value.isEmpty) {
+    if (controller.text.isEmpty) {
       ref.invalidate(shallowProductsStateControllerProvider);
       _overlayManager.hide();
     }
-    if (value.removeWhiteSpaces().length < 3 || int.tryParse(value) != null) {
+    if (controller.text.removeWhiteSpaces().length < 3 ||
+        int.tryParse(controller.text) != null) {
       return;
     }
 
@@ -47,7 +50,7 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
       // The "Double-Check" Guard.
       // We check the LATEST value of the controller before triggering the API.
       // If the user erased the text while the timer was counting, we stop.
-      final currentText = widget.searchValueController.text;
+      final currentText = controller.text;
       if (currentText.length < 3) {
         _overlayManager.hide();
         return;
@@ -60,19 +63,27 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
       // Second Guard.
       // After the 'await load' (network call), the user might have erased
       // the field. We only show the overlay if the field is still valid.
-      if (mounted && widget.searchValueController.text.length >= 3) {
-        _showOverlay(layerLink, formKey, groupId);
+      if (mounted && controller.text.length >= 3) {
+        _showOverlay(
+          layerLink: layerLink,
+          formKey: formKey,
+          groupId: groupId,
+          controller: controller,
+          onProductSelected: onProductSelected,
+        );
       } else {
         _overlayManager.hide();
       }
     });
   }
 
-  void _showOverlay(
-    LayerLink layerLink,
-    GlobalKey<FormState> formKey,
-    String groupId,
-  ) {
+  void _showOverlay({
+    required LayerLink layerLink,
+    required GlobalKey<FormState> formKey,
+    required String groupId,
+    required TextEditingController controller,
+    required void Function(int?) onProductSelected,
+  }) {
     _overlayManager.show(
       context: context,
       layerLink: layerLink,
@@ -80,32 +91,40 @@ mixin DefaultSearchProductsMixin on ConsumerState<DefaultSearchProducts> {
       // onTapOutside: () => _overlayManager.hide(),
       onSelected: (product) {
         // Logic to update the main controller and trigger the heavy search
-        widget.searchValueController.text = product.PLU ?? product.Name ?? '';
+        controller.text = product.PLU ?? product.Name ?? '';
         _overlayManager.hide();
-        widget.searchProducts(product.codigoInternoProEmb);
+        onProductSelected(product.codigoInternoProEmb);
       },
     );
   }
 
-  void onSearch(GlobalKey<FormState> formKey, {bool? searchByCamera}) async {
+  void onSearch(
+    GlobalKey<FormState> formKey, {
+    bool? searchByCamera,
+    required TextEditingController controller,
+    required void Function(int?) onProductSelected,
+  }) async {
     _overlayManager.hide();
     ref.invalidate(shallowProductsStateControllerProvider);
     if (searchByCamera == true) {
       final code = await BarcodeScannerService.scanBarcode(context);
       if (code == null) return;
-      widget.searchValueController.text = code;
+      controller.text = code;
     }
 
     if (formKey.currentState?.validate() == true) {
-      widget.searchProducts(null);
+      onProductSelected(null);
     }
   }
 
-  void onTapDeleteIcon() {
+  void onTapDeleteIcon({
+    required TextEditingController controller,
+    required FocusNode? focusNode,
+  }) {
     _overlayManager.hide();
-    widget.searchValueController.clear();
+    controller.clear();
     Future.delayed(const Duration(milliseconds: 100), () {
-      widget.focusNode?.requestFocus();
+      focusNode?.requestFocus();
     });
   }
 }
