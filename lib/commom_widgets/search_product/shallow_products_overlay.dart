@@ -27,26 +27,31 @@ class ShallowProductsOverlay {
 
     final overlay = Overlay.of(context);
     _currentEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        // PERFORMANCE: Using sizeOf prevents rebuilds on unrelated MediaQuery changes.
-        width: MediaQuery.sizeOf(context).width - Sizes.p16,
-        child: CompositedTransformFollower(
-          link: layerLink,
-          showWhenUnlinked: false,
-          offset: const Offset(
-            0,
-            57,
-          ), // Standard height for our DefaultTextFormField
-          child: TapRegion(
-            groupId: groupId,
-            // TapRegion handles the "close on click outside" logic natively.
-            // onTapOutside: (_) => onTapOutside(),
-            child: RepaintBoundary(
-              child: ShallowResultsItems(onSelected: onSelected),
+      builder: (context) {
+        final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
+        final screenHeight = MediaQuery.sizeOf(context).height;
+        final maxAllowedHeight = screenHeight - keyboardHeight - 220;
+        return Positioned(
+          width: MediaQuery.sizeOf(context).width - Sizes.p16,
+          child: CompositedTransformFollower(
+            link: layerLink,
+            showWhenUnlinked: false,
+            offset: const Offset(
+              0,
+              57,
+            ), // Standard height for our DefaultTextFormField
+            child: TapRegion(
+              groupId: groupId,
+              child: RepaintBoundary(
+                child: ShallowResultsItems(
+                  onSelected: onSelected,
+                  maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
 
     overlay.insert(_currentEntry!);

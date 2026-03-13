@@ -11,22 +11,17 @@ import '../../core/domain/entities/entities.dart';
 
 class ShallowResultsItems extends ConsumerWidget {
   final Function(ProductEntity) onSelected;
-  const ShallowResultsItems({super.key, required this.onSelected});
+  final double maxHeight;
+
+  const ShallowResultsItems({
+    super.key,
+    required this.onSelected,
+    required this.maxHeight,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
-    final screenHeight = MediaQuery.sizeOf(context).height;
-    final maxAllowedHeight = screenHeight - keyboardHeight - 200;
-
-    final titleStyle = theme.textTheme.bodyMedium;
-    final packingStyle = theme.textTheme.titleSmall?.copyWith(
-      color: theme.colorScheme.secondary,
-    );
-    final pluStyle = theme.textTheme.titleSmall?.copyWith();
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return RepaintBoundary(
       child: Material(
         elevation: 8,
@@ -34,9 +29,7 @@ class ShallowResultsItems extends ConsumerWidget {
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
           width: double.infinity,
-          constraints: BoxConstraints(
-            maxHeight: maxAllowedHeight > 100 ? maxAllowedHeight : 100,
-          ),
+          constraints: BoxConstraints(maxHeight: maxHeight),
           decoration: BoxDecoration(
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(Sizes.p8),
@@ -65,40 +58,9 @@ class ShallowResultsItems extends ConsumerWidget {
                     itemCount: products.length,
                     separatorBuilder: (_, _) => const Divider(height: 0),
                     itemBuilder: (context, index) {
-                      final product = products[index];
-
-                      final packing =
-                          '(${product.PackingAbbreviation} ${product.PackingQuantity.toString().toBrazilianNumber(3, true)})';
-
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Sizes.p16,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ListTile(
-                                contentPadding: const EdgeInsets.all(0),
-                                minTileHeight: Sizes.p24,
-                                dense: true,
-                                title: TitleAndSubTitle(
-                                  title: product.Name,
-                                  subTitle: packing,
-                                  titleStyle: titleStyle,
-                                  subTitleStyle: packingStyle,
-                                ),
-                                subtitle: TitleAndSubTitle(
-                                  title: null,
-                                  subTitle: product.PLU,
-                                  titleStyle: titleStyle,
-                                  subTitleStyle: pluStyle,
-                                ),
-                                onTap: () => onSelected(product),
-                              ),
-                            ),
-                            Icon(isIOS ? CupertinoIcons.search : Icons.search),
-                          ],
-                        ),
+                      return _ShallowItemTile(
+                        product: products[index],
+                        onTap: () => onSelected(products[index]),
                       );
                     },
                   );
@@ -106,6 +68,61 @@ class ShallowResultsItems extends ConsumerWidget {
               );
             },
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShallowItemTile extends StatelessWidget {
+  final ProductEntity product;
+  final VoidCallback onTap;
+
+  const _ShallowItemTile({required this.product, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    final packing =
+        '(${product.PackingAbbreviation} ${product.PackingQuantity.toString().toBrazilianNumber(3, true)})';
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Sizes.p16,
+          vertical: Sizes.p4,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TitleAndSubTitle(
+                    title: product.Name,
+                    subTitle: packing,
+                    titleStyle: theme.textTheme.bodyMedium,
+                    subTitleStyle: theme.textTheme.titleSmall?.copyWith(
+                      color: theme.colorScheme.secondary,
+                    ),
+                  ),
+                  TitleAndSubTitle(
+                    title: null,
+                    subTitle: product.PLU,
+                    subTitleStyle: theme.textTheme.titleSmall,
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              isIOS ? CupertinoIcons.search : Icons.search,
+              size: 20,
+              color: theme.disabledColor,
+            ),
+          ],
         ),
       ),
     );
