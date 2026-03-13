@@ -115,7 +115,7 @@ class _ShallowSearchProductsPageState
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
           child: RepaintBoundary(
             child: ShallowResultsItems(
-              maxHeight: 300, //TODO delete this page
+              //TODO delete this page
               onSelected: (product) {
                 _handlePop(
                   TappedProductModel(

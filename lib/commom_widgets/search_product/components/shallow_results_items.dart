@@ -10,13 +10,8 @@ import '../../../core/domain/entities/entities.dart';
 
 class ShallowResultsItems extends ConsumerWidget {
   final Function(ProductEntity) onSelected;
-  final double maxHeight;
 
-  const ShallowResultsItems({
-    super.key,
-    required this.onSelected,
-    required this.maxHeight,
-  });
+  const ShallowResultsItems({super.key, required this.onSelected});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,13 +22,19 @@ class ShallowResultsItems extends ConsumerWidget {
     final titleStyle = theme.textTheme.bodyMedium;
     final pluStyle = theme.textTheme.titleSmall;
 
+    final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final maxAllowedHeight = screenHeight - keyboardHeight - 220;
+
     return RepaintBoundary(
       child: Material(
         elevation: 2,
         borderRadius: BorderRadius.circular(Sizes.p8),
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
-          constraints: BoxConstraints(maxHeight: maxHeight),
+          constraints: BoxConstraints(
+            maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
+          ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Sizes.p8),
             border: Border.all(color: theme.dividerColor.withAlpha(50)),
