@@ -26,24 +26,33 @@ class ShallowProductsOverlay {
     hide();
 
     final overlay = Overlay.of(context);
+    final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
+    final screenSize = MediaQuery.sizeOf(context);
+    final screenHeight = screenSize.height;
+    final maxAllowedHeight = screenHeight - keyboardHeight - 220;
+    final positionedWidth = screenSize.width - Sizes.p16;
+    final double finalMaxHeight = maxAllowedHeight > 120
+        ? maxAllowedHeight
+        : 120;
+
     _currentEntry = OverlayEntry(
       builder: (context) {
         return Positioned(
-          width: MediaQuery.sizeOf(context).width - Sizes.p16,
+          width: positionedWidth,
           child: CompositedTransformFollower(
             link: layerLink,
             showWhenUnlinked: false,
-            offset: const Offset(
-              0,
-              57,
-            ), // Standard height for our DefaultTextFormField
+            offset: const Offset(0, 57), // default DefaultTextFormField height
             child: Align(
               alignment: Alignment.topLeft,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
                   maxWidth: Breakpoint.desktop, // Or a fixed value like 500
                 ),
-                child: ShallowResultsItems(onSelected: onSelected),
+                child: ShallowResultsItems(
+                  onSelected: onSelected,
+                  maxHeight: finalMaxHeight,
+                ),
               ),
             ),
           ),

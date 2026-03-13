@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
+import '../../../../utils/utils.dart';
 import 'product.dart';
 
 class ProductEntity extends Equatable {
@@ -283,6 +284,9 @@ class ProductEntity extends Equatable {
 
     return RetailPracticedPrice ?? 0;
   }
+
+  String get formattedPacking =>
+      '($PackingAbbreviation ${PackingQuantity.toString().toBrazilianNumber(3, true)})';
 
   PracticedPriceType getPracticedPriceType({
     required double quantity,

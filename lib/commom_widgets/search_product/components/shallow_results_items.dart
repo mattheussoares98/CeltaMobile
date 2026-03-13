@@ -6,68 +6,43 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../utils/utils.dart';
 import '../../../core/domain/entities/entities.dart';
 
 class ShallowResultsItems extends ConsumerWidget {
   final Function(ProductEntity) onSelected;
+  final double maxHeight;
 
-  const ShallowResultsItems({super.key, required this.onSelected});
+  const ShallowResultsItems({
+    super.key,
+    required this.onSelected,
+    required this.maxHeight,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-
-    final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
-    final screenHeight = MediaQuery.sizeOf(context).height;
-    final maxAllowedHeight = screenHeight - keyboardHeight - 220;
+    final packingStyle = theme.textTheme.titleSmall?.copyWith(
+      color: theme.colorScheme.secondary,
+    );
+    final titleStyle = theme.textTheme.bodyMedium;
+    final pluStyle = theme.textTheme.titleSmall;
 
     return RepaintBoundary(
       child: Material(
-        elevation: 8,
+        elevation: 2,
         borderRadius: BorderRadius.circular(Sizes.p8),
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
-          constraints: BoxConstraints(
-            maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
-          ),
+          constraints: BoxConstraints(maxHeight: maxHeight),
           decoration: BoxDecoration(
-            color: theme.cardColor,
             borderRadius: BorderRadius.circular(Sizes.p8),
             border: Border.all(color: theme.dividerColor.withAlpha(50)),
           ),
-          child: Consumer(
-            builder: (context, ref, child) {
-              return AsyncValueWidget(
-                useLinearProgressIndicator: true,
-                value: ref.watch(shallowProductsStateControllerProvider),
-                tryAgain: null,
-                data: (products) {
-                  if (products == null) {
-                    return const SizedBox.shrink();
-                  }
-                  if (products.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.all(Sizes.p16),
-                      child: Text('Nenhum produto'.hardcoded),
-                    );
-                  }
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: products.length,
-                    separatorBuilder: (_, _) => const Divider(height: 0),
-                    itemBuilder: (context, index) {
-                      return _ShallowItemTile(
-                        product: products[index],
-                        onTap: () => onSelected(products[index]),
-                      );
-                    },
-                  );
-                },
-              );
-            },
+          child: _Items(
+            onSelected: onSelected,
+            packingStyle: packingStyle,
+            titleStyle: titleStyle,
+            pluStyle: pluStyle,
           ),
         ),
       ),
@@ -75,58 +50,132 @@ class ShallowResultsItems extends ConsumerWidget {
   }
 }
 
-class _ShallowItemTile extends StatelessWidget {
-  final ProductEntity product;
-  final VoidCallback onTap;
+class _Items extends ConsumerWidget {
+  final TextStyle? packingStyle;
+  final TextStyle? titleStyle;
+  final TextStyle? pluStyle;
 
-  const _ShallowItemTile({required this.product, required this.onTap});
+  const _Items({
+    required this.onSelected,
+    required this.packingStyle,
+    required this.titleStyle,
+    required this.pluStyle,
+  });
+
+  final Function(ProductEntity) onSelected;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AsyncValueWidget(
+      useLinearProgressIndicator: true,
+      value: ref.watch(shallowProductsStateControllerProvider),
+      tryAgain: null,
+      data: (products) {
+        if (products == null) {
+          return const SizedBox.shrink();
+        }
+        if (products.isEmpty) {
+          return const _EmptyResult();
+        }
+
+        return SingleChildScrollView(
+          child: Column(
+            children: products.map((product) {
+              return _ShallowItemTile(
+                product: product,
+                onTap: (product) => onSelected(product),
+                packingStyle: packingStyle,
+                titleStyle: titleStyle,
+                pluStyle: pluStyle,
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _EmptyResult extends StatelessWidget {
+  const _EmptyResult();
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    final packing =
-        '(${product.PackingAbbreviation} ${product.PackingQuantity.toString().toBrazilianNumber(3, true)})';
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p16),
+      child: Text('Nenhum produto'.hardcoded),
+    );
+  }
+}
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Sizes.p16,
-          vertical: Sizes.p4,
+class _ShallowItemTile extends StatelessWidget {
+  final Function(ProductEntity) onTap;
+  final ProductEntity product;
+  final TextStyle? packingStyle;
+  final TextStyle? titleStyle;
+  final TextStyle? pluStyle;
+
+  const _ShallowItemTile({
+    required this.onTap,
+    required this.packingStyle,
+    required this.titleStyle,
+    required this.pluStyle,
+    required this.product,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => onTap(product),
+      child: Container(
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black12)),
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TitleAndSubTitle(
-                    title: product.Name,
-                    subTitle: packing,
-                    titleStyle: theme.textTheme.bodyMedium,
-                    subTitleStyle: theme.textTheme.titleSmall?.copyWith(
-                      color: theme.colorScheme.secondary,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: Sizes.p4,
+            horizontal: Sizes.p16,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleAndSubTitle(
+                      title: product.Name,
+                      subTitle: product.formattedPacking,
+                      titleStyle: titleStyle,
+                      subTitleStyle: packingStyle,
                     ),
-                  ),
-                  TitleAndSubTitle(
-                    title: null,
-                    subTitle: product.PLU,
-                    subTitleStyle: theme.textTheme.titleSmall,
-                  ),
-                ],
+                    TitleAndSubTitle(
+                      title: null,
+                      subTitle: product.PLU,
+                      subTitleStyle: pluStyle,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Icon(
-              isIOS ? CupertinoIcons.search : Icons.search,
-              size: 20,
-              color: theme.disabledColor,
-            ),
-          ],
+              const _SearchIcon(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class _SearchIcon extends StatelessWidget {
+  const _SearchIcon();
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Icon(
+      theme.platform == TargetPlatform.iOS
+          ? CupertinoIcons.search
+          : Icons.search,
+      color: theme.disabledColor,
+      size: 20,
     );
   }
 }
