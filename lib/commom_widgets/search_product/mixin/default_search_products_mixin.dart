@@ -99,6 +99,7 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) async {
+    _debounce?.cancel();
     _overlayManager.hide();
     ref.invalidate(shallowProductsStateControllerProvider);
     if (searchByCamera == true) {
