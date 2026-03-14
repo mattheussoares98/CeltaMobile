@@ -45,7 +45,6 @@ class ShallowProductsOverlay {
       },
     );
 
-    debugPrint('show');
     overlay.insert(_currentEntry!);
   }
 
@@ -53,7 +52,6 @@ class ShallowProductsOverlay {
     if (_currentEntry != null) {
       _currentEntry?.remove();
       _currentEntry = null;
-      debugPrint('hide');
     }
   }
 

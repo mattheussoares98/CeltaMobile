@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -55,7 +54,6 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
       _lastEmptySearch = null;
     }
 
-    //cancel the previous call
     _activeToken?.cancel();
 
     //new token for this call
@@ -64,7 +62,6 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      debugPrint('loading');
       ref
           .read(appUsageStateControllerProvider.notifier)
           .addUsage(UsageType.shallowSearchProduct);

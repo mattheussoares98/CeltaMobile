@@ -40,7 +40,6 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
           .load(controller.text);
 
       if (controller.text.isEmpty) {
-        // ref.invalidate(shallowProductsStateControllerProvider);
         ShallowProductsOverlay.hide();
         return;
       }
