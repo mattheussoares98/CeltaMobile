@@ -92,9 +92,9 @@ Future<void> _initHive() async {
       path = appDocumentDir.path;
     }
     Hive.init(path);
-    for (var box in DatabaseConstants.values) {
-      await Hive.openBox(box.name);
-    }
+    await Future.wait(
+      DatabaseConstants.values.map((e) => Hive.openBox(e.name)),
+    );
   } catch (e) {
     debugPrint(e.toString());
   }
