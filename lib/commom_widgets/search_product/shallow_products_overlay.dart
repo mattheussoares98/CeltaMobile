@@ -18,6 +18,7 @@ class ShallowProductsOverlay {
     required LayerLink layerLink,
     required void Function(ProductEntity) onSelected,
   }) {
+    if (isShowing) return;
     final overlay = Overlay.of(context);
     _currentEntry = OverlayEntry(
       builder: (context) {
@@ -31,7 +32,12 @@ class ShallowProductsOverlay {
               alignment: Alignment.topLeft,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: Breakpoint.desktop),
-                child: ShallowResultsItems(onSelected: onSelected),
+                child: ShallowResultsItems(
+                  onSelected: (product) {
+                    onSelected(product);
+                    hide();
+                  },
+                ),
               ),
             ),
           ),
@@ -39,6 +45,7 @@ class ShallowProductsOverlay {
       },
     );
 
+    debugPrint('show');
     overlay.insert(_currentEntry!);
   }
 
@@ -46,8 +53,9 @@ class ShallowProductsOverlay {
     if (_currentEntry != null) {
       _currentEntry?.remove();
       _currentEntry = null;
+      debugPrint('hide');
     }
   }
 
-  bool get isShowing => _currentEntry != null;
+  static bool get isShowing => _currentEntry != null;
 }
