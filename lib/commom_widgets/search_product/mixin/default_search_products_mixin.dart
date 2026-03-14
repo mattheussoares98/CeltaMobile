@@ -21,6 +21,13 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
       ref.invalidate(shallowProductsStateControllerProvider);
       ShallowProductsOverlay.hide();
       return;
+    } else {
+      _showOverlay(
+        layerLink: layerLink,
+        formKey: formKey,
+        controller: controller,
+        onProductSelected: onProductSelected,
+      );
     }
 
     if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -28,31 +35,14 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     _debounce = Timer(const Duration(milliseconds: 500), () async {
       if (!mounted) return;
 
-      // The "Double-Check" Guard.
-      // We check the LATEST value of the controller before triggering the API.
-      // If the user erased the text while the timer was counting, we stop.
-      final currentText = controller.text;
-      if (currentText.length < 3) {
-        ShallowProductsOverlay.hide();
-        return;
-      }
-
       await ref
           .read(shallowProductsStateControllerProvider.notifier)
-          .load(currentText);
+          .load(controller.text);
 
-      // Second Guard.
-      // After the 'await load' (network call), the user might have erased
-      // the field. We only show the overlay if the field is still valid.
-      if (mounted && controller.text.length >= 3) {
-        _showOverlay(
-          layerLink: layerLink,
-          formKey: formKey,
-          controller: controller,
-          onProductSelected: onProductSelected,
-        );
-      } else {
+      if (controller.text.isEmpty) {
+        // ref.invalidate(shallowProductsStateControllerProvider);
         ShallowProductsOverlay.hide();
+        return;
       }
     });
   }
@@ -63,7 +53,6 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) {
-    ShallowProductsOverlay.hide();
     ShallowProductsOverlay.show(
       context: context,
       layerLink: layerLink,
@@ -81,6 +70,10 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     required TextEditingController controller,
     required void Function(int?) onProductSelected,
   }) async {
+    ref.invalidate(shallowProductsStateControllerProvider);
+    _debounce?.cancel();
+    ShallowProductsOverlay.hide();
+
     if (searchByCamera == true) {
       final code = await BarcodeScannerService.scanBarcode(context);
       if (code == null) return;
@@ -90,9 +83,5 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     if (formKey.currentState?.validate() == true) {
       onProductSelected(null);
     }
-
-    ref.invalidate(shallowProductsStateControllerProvider);
-    _debounce?.cancel();
-    ShallowProductsOverlay.hide();
   }
 }

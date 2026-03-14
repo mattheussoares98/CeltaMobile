@@ -4,9 +4,6 @@ import '../../constants/constants.dart';
 import '../../core/domain/entities/entities.dart';
 import 'components/components.dart';
 
-/// PERFORMANCE: Singleton manager to handle floating search results.
-/// It encapsulates the OverlayEntry lifecycle and uses TapRegion for
-/// efficient "outside tap" detection.
 class ShallowProductsOverlay {
   static final ShallowProductsOverlay _instance =
       ShallowProductsOverlay._internal();
@@ -15,12 +12,11 @@ class ShallowProductsOverlay {
 
   static OverlayEntry? _currentEntry;
 
-  /// PERFORMANCE: Uses a LayerLink to pin the suggestions exactly below the input field.
   static void show({
     required BuildContext context,
+    //! Uses a LayerLink to pin the suggestions exactly below the input field.
     required LayerLink layerLink,
     required void Function(ProductEntity) onSelected,
-    // required VoidCallback onTapOutside,
   }) {
     final overlay = Overlay.of(context);
     _currentEntry = OverlayEntry(
@@ -34,9 +30,7 @@ class ShallowProductsOverlay {
             child: Align(
               alignment: Alignment.topLeft,
               child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: Breakpoint.desktop, // Or a fixed value like 500
-                ),
+                constraints: const BoxConstraints(maxWidth: Breakpoint.desktop),
                 child: ShallowResultsItems(onSelected: onSelected),
               ),
             ),
@@ -48,7 +42,6 @@ class ShallowProductsOverlay {
     overlay.insert(_currentEntry!);
   }
 
-  /// Removes the search suggestions from the screen.
   static void hide() {
     if (_currentEntry != null) {
       _currentEntry?.remove();
