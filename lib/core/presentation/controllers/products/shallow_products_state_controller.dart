@@ -41,14 +41,15 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   }
 
   Future<void> load(String name) async {
-    if (int.tryParse(name) != null || name.removeWhiteSpaces().length < 3) {
+    if (_activeToken?.name.trim() == name.trim()) {
+      return;
+    } else if (int.tryParse(name) != null ||
+        name.removeWhiteSpaces().length < 3) {
       //should not search if is a number
       return;
-    }
-
-    // PERFORMANCE: Short-circuit check. If 'name' starts with a previously
-    // recorded empty search string, we return immediately.
-    if (_lastEmptySearch != null && name.startsWith(_lastEmptySearch!)) {
+    } else if (_lastEmptySearch != null && name.startsWith(_lastEmptySearch!)) {
+      // PERFORMANCE: Short-circuit check. If 'name' starts with a previously
+      // recorded empty search string, we return immediately.
       return;
     } else {
       _lastEmptySearch = null;
@@ -58,7 +59,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
     _activeToken?.cancel();
 
     //new token for this call
-    final token = CancelToken();
+    final token = CancelToken(name);
     _activeToken = token;
 
     state = const AsyncValue.loading();

@@ -26,7 +26,7 @@ void main() {
   late FakeAppUsageStateController fakeAppUsage;
 
   setUpAll(() {
-    registerFallbackValue(CancelToken());
+    registerFallbackValue(CancelToken('x'));
     registerFallbackValue(1);
   });
 
@@ -117,6 +117,50 @@ void main() {
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+      expect(fakeAppUsage.lastUsageType, UsageType.shallowSearchProduct);
+
+      verify(
+        () => mockRepository.get(
+          workingUrl: fakeSession.enterprise!.workingUrl!,
+          user: fakeSession.user.name!,
+          accessKey: fakeSession.user.AccessKey!,
+          name: searchTerm,
+          enterpriseId: fakeEnterprise.Code!,
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      ).called(1);
+    });
+    test('Should not load again if only add blank space', () async {
+      // ARRANGE
+      final String searchTerm = fakerInstance.food.restaurant();
+
+      when(
+        () => mockRepository.get(
+          workingUrl: any(named: 'workingUrl'),
+          user: any(named: 'user'),
+          accessKey: any(named: 'accessKey'),
+          name: any(named: 'name'),
+          enterpriseId: any(named: 'enterpriseId'),
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      ).thenAnswer((_) async => fakeProducts);
+
+      final container = makeProviderContainer(
+        session: fakeSession,
+        enterprise: fakeEnterprise,
+      );
+      addTearDown(container.dispose);
+
+      await container.read(shallowProductsStateControllerProvider.future);
+
+      // ACT
+      await container
+          .read(shallowProductsStateControllerProvider.notifier)
+          .load(searchTerm);
+      await container
+          .read(shallowProductsStateControllerProvider.notifier)
+          .load(searchTerm.padRight(3, ' '));
 
       expect(fakeAppUsage.lastUsageType, UsageType.shallowSearchProduct);
 

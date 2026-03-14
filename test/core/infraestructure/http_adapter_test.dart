@@ -469,7 +469,7 @@ void main() {
       'Should return null and NOT call network if token is already cancelled',
       () async {
         // ARRANGE
-        final token = CancelToken()..cancel();
+        final token = CancelToken(faker.randomGenerator.string(10))..cancel();
 
         // ACT
         final response = await sut.request(
@@ -489,7 +489,7 @@ void main() {
       'Should return null if token is cancelled while waiting for network',
       () async {
         // ARRANGE
-        final token = CancelToken();
+        final token = CancelToken(faker.randomGenerator.string(10));
         final String fakeData = '{"data":"${faker.lorem.word()}"}';
 
         // We simulate a network call that cancels the token during execution
@@ -517,7 +517,7 @@ void main() {
       'Should return null if token is cancelled during handleResponse phase',
       () async {
         // ARRANGE
-        final token = CancelToken();
+        final token = CancelToken(faker.randomGenerator.string(10));
         client.mockGet(200, body: '{"key":"value"}');
 
         // ACT

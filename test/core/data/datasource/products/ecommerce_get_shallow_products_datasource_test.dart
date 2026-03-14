@@ -47,7 +47,7 @@ void main() {
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
     ];
-    cancelToken = CancelToken();
+    cancelToken = CancelToken(faker.randomGenerator.string(10));
     workingUrl = faker.internet.httpUrl();
   }
 

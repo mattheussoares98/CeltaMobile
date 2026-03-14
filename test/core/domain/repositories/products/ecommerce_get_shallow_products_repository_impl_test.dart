@@ -53,7 +53,7 @@ void main() {
   }
 
   void initEntities() {
-    cancelToken = CancelToken();
+    cancelToken = CancelToken(faker.randomGenerator.string(10));
     products = [
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
