@@ -28,16 +28,13 @@ class ShallowResultsItems extends ConsumerWidget {
 
     return RepaintBoundary(
       child: Material(
-        elevation: 2,
+        elevation: 1,
+        shadowColor: theme.disabledColor.withAlpha(50),
         borderRadius: BorderRadius.circular(Sizes.p8),
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
           constraints: BoxConstraints(
             maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Sizes.p8),
-            border: Border.all(color: theme.dividerColor.withAlpha(50)),
           ),
           child: _Items(
             onSelected: onSelected,
@@ -135,38 +132,33 @@ class _ShallowItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Container(
-        decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black12)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: Sizes.p4,
+          horizontal: Sizes.p16,
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: Sizes.p4,
-            horizontal: Sizes.p16,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleAndSubTitle(
-                      title: product.Name,
-                      subTitle: product.formattedPacking,
-                      titleStyle: titleStyle,
-                      subTitleStyle: packingStyle,
-                    ),
-                    TitleAndSubTitle(
-                      title: null,
-                      subTitle: product.PLU,
-                      subTitleStyle: pluStyle,
-                    ),
-                  ],
-                ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TitleAndSubTitle(
+                    title: product.Name,
+                    subTitle: product.formattedPacking,
+                    titleStyle: titleStyle,
+                    subTitleStyle: packingStyle,
+                  ),
+                  TitleAndSubTitle(
+                    title: null,
+                    subTitle: product.PLU,
+                    subTitleStyle: pluStyle,
+                  ),
+                ],
               ),
-              const _SearchIcon(),
-            ],
-          ),
+            ),
+            const _SearchIcon(),
+          ],
         ),
       ),
     );
