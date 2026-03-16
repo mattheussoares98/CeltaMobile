@@ -37,7 +37,9 @@ class DestinyEnterprisesPage extends ConsumerWidget {
         },
         data: (enterprises) {
           return EnterpriseItems(
-            enterprises: enterprises,
+            enterprises: enterprises
+                .where((e) => e.Code != enterpriseOriginCode)
+                .toList(),
             onTap: (enterprise) async {
               bool moduleIsEnabled = await ref.read(
                 moduleIsEnabledControllerProvider(
