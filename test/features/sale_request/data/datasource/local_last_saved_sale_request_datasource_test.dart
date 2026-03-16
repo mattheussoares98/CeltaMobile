@@ -27,7 +27,7 @@ void main() {
   void mockSuccess() {
     hive.mockGet(
       '$keyPrefix$enterpriseCode',
-      LastSavedSaleRequestModel.fromEntity(entity).toJson(),
+      SoapLastSavedSaleRequestModel.fromEntity(entity).toJson(),
     );
   }
 
@@ -49,14 +49,14 @@ void main() {
   group('Save', () {
     test('Should behave correctly', () async {
       await sut.save(
-        value: LastSavedSaleRequestModel.fromEntity(entity),
+        value: SoapLastSavedSaleRequestModel.fromEntity(entity),
         enterpriseCode: enterpriseCode,
       );
 
       verify(
         () => hive.put(
           '$keyPrefix$enterpriseCode',
-          LastSavedSaleRequestModel.fromEntity(entity).toJson(),
+          SoapLastSavedSaleRequestModel.fromEntity(entity).toJson(),
         ),
       ).called(1);
     });
@@ -65,7 +65,7 @@ void main() {
     test('Should return correct value when is not null', () async {
       expect(
         await sut.load(enterpriseCode),
-        LastSavedSaleRequestModel.fromEntity(entity),
+        SoapLastSavedSaleRequestModel.fromEntity(entity),
       );
 
       verify(() => hive.get('$keyPrefix$enterpriseCode')).called(1);

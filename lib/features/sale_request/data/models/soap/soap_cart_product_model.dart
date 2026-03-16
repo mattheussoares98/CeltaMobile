@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/data/models/models.dart';
-import '../../domain/entities/entities.dart';
+import '../../../../../core/data/models/models.dart';
+import '../../../domain/entities/entities.dart';
 
-class CartProductModel extends Equatable {
+class SoapCartProductModel extends Equatable {
   final int ProductPackingCode;
   final double Quantity;
   final double Value;
@@ -19,7 +19,7 @@ class CartProductModel extends Equatable {
   final String? Observations;
   final ProductModel? product;
 
-  const CartProductModel({
+  const SoapCartProductModel({
     required this.ProductPackingCode,
     required this.Quantity,
     required this.Value,
@@ -54,7 +54,7 @@ class CartProductModel extends Equatable {
     product,
   ];
 
-  factory CartProductModel.fromJson(Map json) => CartProductModel(
+  factory SoapCartProductModel.fromJson(Map json) => SoapCartProductModel(
     ProductPackingCode: json["ProductPackingCode"],
     Quantity: json["Quantity"],
     Value: json["Value"],
@@ -107,8 +107,8 @@ class CartProductModel extends Equatable {
     'product': product?.toJson(),
   };
 
-  factory CartProductModel.fromEntity(CartProductEntity entity) =>
-      CartProductModel(
+  factory SoapCartProductModel.fromEntity(CartProductEntity entity) =>
+      SoapCartProductModel(
         ProductPackingCode: entity.ProductPackingCode,
         Quantity: entity.Quantity,
         Value: entity.Value,

@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:flutter/services.dart' show rootBundle;
 
 import '../../../../constants/constants.dart';
 import '../models/models.dart';
@@ -11,7 +11,7 @@ import 'datasource.dart';
 
 class GeneratePdfDatasource implements IGeneratePdfDatasource {
   @override
-  Future<Uint8List> generate(LastSavedSaleRequestModel saleRequest) async {
+  Future<Uint8List> generate(SoapLastSavedSaleRequestModel saleRequest) async {
     final pdf = pw.Document();
 
     final fontData = await rootBundle.load(
@@ -51,7 +51,7 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
   }
 
   /// Builds the header widget that is repeated on each page.
-  static pw.Widget _buildHeader(LastSavedSaleRequestModel saleRequest) {
+  static pw.Widget _buildHeader(SoapLastSavedSaleRequestModel saleRequest) {
     return pw.Container(
       alignment: pw.Alignment.centerRight,
       margin: const pw.EdgeInsets.only(bottom: 10.0),
@@ -91,7 +91,9 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
   }
 
   /// Builds the customer and order details section.
-  static pw.Widget _buildCustomerInfo(LastSavedSaleRequestModel saleRequest) {
+  static pw.Widget _buildCustomerInfo(
+    SoapLastSavedSaleRequestModel saleRequest,
+  ) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -136,7 +138,7 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
     );
   }
 
-  static pw.Widget _buildProductTable(List<CartProductModel> cartProducts) {
+  static pw.Widget _buildProductTable(List<SoapCartProductModel> cartProducts) {
     final atLeastOneHasDiscount = cartProducts.any(
       (p) => p.DiscountValue != null && p.DiscountValue! > 0,
     );

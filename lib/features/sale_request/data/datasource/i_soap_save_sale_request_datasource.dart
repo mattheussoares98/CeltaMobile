@@ -6,6 +6,6 @@ abstract class ISoapSaveSaleRequestDatasource {
     required String crossIdentity,
     required int enterpriseCode,
     required int requestTypeCode,
-    required PendingSaleRequestModel saleRequest,
+    required SoapPendingSaleRequestModel saleRequest,
   });
 }

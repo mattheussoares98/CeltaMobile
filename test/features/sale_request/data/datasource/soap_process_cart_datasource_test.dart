@@ -19,8 +19,8 @@ void main() {
   late int requestTypeCode;
   late int customerCode;
   late int? covenantCode;
-  late List<CartProductModel> products;
-  late ProcessedCartModel processedCart;
+  late List<SoapCartProductModel> products;
+  late SoapProcessedCartModel processedCart;
 
   void initSut() {
     sut = SoapProcessCartDatasource(soapRequest);
@@ -45,8 +45,8 @@ void main() {
       EntityFactory.makeCartProductEntity(),
       EntityFactory.makeCartProductEntity(),
       EntityFactory.makeCartProductEntity(),
-    ].map((e) => CartProductModel.fromEntity(e)).toList();
-    processedCart = ProcessedCartModel(
+    ].map((e) => SoapCartProductModel.fromEntity(e)).toList();
+    processedCart = SoapProcessedCartModel(
       crossId: crossId,
       EnterpriseCode: enterpriseCode,
       RequestTypeCode: requestTypeCode,
@@ -95,7 +95,7 @@ void main() {
             "CustomerCode": customerCode,
             "Products": products
                 .map(
-                  (e) => CartProductModel.fromEntity(
+                  (e) => SoapCartProductModel.fromEntity(
                     e.toEntity().copyWith(
                       DiscountValue: e.DiscountValue != null
                           ? e.DiscountValue! / e.Quantity
@@ -140,7 +140,7 @@ void main() {
               "CustomerCode": customerCode,
               "Products": products
                   .map(
-                    (e) => CartProductModel.fromEntity(
+                    (e) => SoapCartProductModel.fromEntity(
                       e.toEntity().copyWith(
                         DiscountValue: e.DiscountValue != null
                             ? e.DiscountValue! / e.Quantity

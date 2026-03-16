@@ -21,7 +21,7 @@ class LocalLastSavedSaleRequestRepositoryImpl
     required int enterpriseCode,
   }) async {
     await datasource.save(
-      value: LastSavedSaleRequestModel.fromEntity(value),
+      value: SoapLastSavedSaleRequestModel.fromEntity(value),
       enterpriseCode: enterpriseCode,
     );
   }

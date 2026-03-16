@@ -1,5 +1,4 @@
 import 'package:celta_inventario/features/sale_request/domain/entities/cart_product_entity.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/processed_cart_entity.dart';
 
 import '../../data/datasource/datasource.dart';
@@ -27,7 +26,9 @@ class SoapProcessCartRepositoryImpl implements ISoapProcessCartRepository {
       requestTypeCode: requestTypeCode,
       customerCode: customerCode,
       covenantCode: covenantCode,
-      products: products.map((e) => CartProductModel.fromEntity(e)).toList(),
+      products: products
+          .map((e) => SoapCartProductModel.fromEntity(e))
+          .toList(),
     );
 
     return response.toEntity();

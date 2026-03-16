@@ -10,7 +10,7 @@ import '../../../../mocks/mocks.dart';
 
 class SoapProcessCartDatasourceSpy extends Mock
     implements ISoapProcessCartDatasource {
-  void mockProcess(ProcessedCartModel response) => when(
+  void mockProcess(SoapProcessedCartModel response) => when(
     () => this.process(
       crossId: any(named: 'crossId'),
       workingUrl: any(named: 'workingUrl'),
@@ -64,7 +64,9 @@ void main() {
       Observations: faker.lorem.sentence(),
     );
 
-    mockDatasource.mockProcess(ProcessedCartModel.fromEntity(processedCart));
+    mockDatasource.mockProcess(
+      SoapProcessedCartModel.fromEntity(processedCart),
+    );
   });
 
   test('should behave correctly on save', () async {
@@ -88,7 +90,9 @@ void main() {
         requestTypeCode: requestTypeCode,
         customerCode: customerCode,
         covenantCode: covenantCode,
-        products: products.map((e) => CartProductModel.fromEntity(e)).toList(),
+        products: products
+            .map((e) => SoapCartProductModel.fromEntity(e))
+            .toList(),
       ),
     ).called(1);
   });

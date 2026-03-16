@@ -19,7 +19,7 @@ class LocalLastSavedSaleRequestDatasourceSpy extends Mock
     ).thenAnswer((_) async {});
   }
 
-  void mockLoad(LastSavedSaleRequestModel? response) =>
+  void mockLoad(SoapLastSavedSaleRequestModel? response) =>
       when(() => this.load(any())).thenAnswer((_) async => response);
 }
 
@@ -41,13 +41,13 @@ void main() {
     enterpriseCode = faker.randomGenerator.integer(100);
 
     mockDatasource.mockLoad(
-      LastSavedSaleRequestModel.fromEntity(lastSavedSaleRequestEntity),
+      SoapLastSavedSaleRequestModel.fromEntity(lastSavedSaleRequestEntity),
     );
   });
 
   setUpAll(() {
     registerFallbackValue(
-      LastSavedSaleRequestModel.fromEntity(
+      SoapLastSavedSaleRequestModel.fromEntity(
         LastSavedSaleRequestEntity(
           pendingSaleRequestEntity:
               EntityFactory.makePendingSaleRequestEntity(),
@@ -65,7 +65,9 @@ void main() {
 
     verify(
       () => mockDatasource.save(
-        value: LastSavedSaleRequestModel.fromEntity(lastSavedSaleRequestEntity),
+        value: SoapLastSavedSaleRequestModel.fromEntity(
+          lastSavedSaleRequestEntity,
+        ),
         enterpriseCode: enterpriseCode,
       ),
     ).called(1);

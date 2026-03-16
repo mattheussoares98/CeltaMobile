@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter_esc_pos_network/flutter_esc_pos_network.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
+import 'package:flutter_esc_pos_network/flutter_esc_pos_network.dart';
 import 'package:intl/intl.dart';
 
 import '../models/models.dart';
@@ -14,7 +14,7 @@ class PrintLastSavedSaleRequestDatasource
 
   @override
   Future<void> print({
-    required LastSavedSaleRequestModel saleRequest,
+    required SoapLastSavedSaleRequestModel saleRequest,
     required String ip,
     required String userName,
   }) async {
@@ -52,7 +52,7 @@ class PrintLastSavedSaleRequestDatasource
   }
 
   List<int> _generateTicket({
-    required LastSavedSaleRequestModel saleRequest,
+    required SoapLastSavedSaleRequestModel saleRequest,
     required String userName,
     required CapabilityProfile profile,
   }) {

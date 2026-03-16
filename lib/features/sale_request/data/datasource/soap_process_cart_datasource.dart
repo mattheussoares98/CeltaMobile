@@ -9,14 +9,14 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
   SoapProcessCartDatasource(this.soapRequest);
 
   @override
-  Future<ProcessedCartModel> process({
+  Future<SoapProcessedCartModel> process({
     required String crossId,
     required String workingUrl,
     required int enterpriseCode,
     required int requestTypeCode,
     required int customerCode,
     required int? covenantCode,
-    required List<CartProductModel> products,
+    required List<SoapCartProductModel> products,
   }) async {
     final parameters = {
       "crossIdentity": crossId,
@@ -27,7 +27,7 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
         "CustomerCode": customerCode,
         "Products": products
             .map(
-              (e) => CartProductModel.fromEntity(
+              (e) => SoapCartProductModel.fromEntity(
                 e.toEntity().copyWith(
                   DiscountValue: e.DiscountValue != null
                       ? e.DiscountValue! / e.Quantity
@@ -49,6 +49,6 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
     );
     //necessary open a ticket to fix this in backend
 
-    return ProcessedCartModel.fromJson(json.decode(response));
+    return SoapProcessedCartModel.fromJson(json.decode(response));
   }
 }

@@ -15,7 +15,7 @@ class LocalPendingSaleRequestDatasourceSpy extends Mock
     when(() => this.clear(any())).thenAnswer((_) async {});
   }
 
-  void mockLoad(PendingSaleRequestModel? response) =>
+  void mockLoad(SoapPendingSaleRequestModel? response) =>
       when(() => this.load(any())).thenAnswer((_) async => response);
 }
 
@@ -34,13 +34,13 @@ void main() {
     enterpriseCode = faker.randomGenerator.integer(100);
 
     mockDatasource.mockLoad(
-      PendingSaleRequestModel.fromEntity(pendingSaleRequestEntity),
+      SoapPendingSaleRequestModel.fromEntity(pendingSaleRequestEntity),
     );
   });
 
   setUpAll(() {
     registerFallbackValue(
-      PendingSaleRequestModel.fromEntity(
+      SoapPendingSaleRequestModel.fromEntity(
         EntityFactory.makePendingSaleRequestEntity(),
       ),
     );
@@ -51,7 +51,7 @@ void main() {
 
     verify(
       () => mockDatasource.save(
-        PendingSaleRequestModel.fromEntity(pendingSaleRequestEntity),
+        SoapPendingSaleRequestModel.fromEntity(pendingSaleRequestEntity),
         enterpriseCode,
       ),
     ).called(1);

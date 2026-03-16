@@ -32,7 +32,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(
-      LastSavedSaleRequestModel.fromEntity(
+      SoapLastSavedSaleRequestModel.fromEntity(
         EntityFactory.makeLastSavedSaleRequestEntity(),
       ),
     );
@@ -45,7 +45,7 @@ void main() {
 
     verify(
       () => mockDatasource.generate(
-        LastSavedSaleRequestModel.fromEntity(saleRequest),
+        SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
       ),
     ).called(1);
   });

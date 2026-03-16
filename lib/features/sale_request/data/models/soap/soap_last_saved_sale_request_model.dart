@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import '../../../domain/entities/entities.dart';
+import '../models.dart';
 
-class LastSavedSaleRequestModel extends Equatable {
-  final PendingSaleRequestModel pendingSaleRequestModel;
+class SoapLastSavedSaleRequestModel extends Equatable {
+  final SoapPendingSaleRequestModel pendingSaleRequestModel;
   final String saleRequestNumber;
 
-  const LastSavedSaleRequestModel({
+  const SoapLastSavedSaleRequestModel({
     required this.pendingSaleRequestModel,
     required this.saleRequestNumber,
   });
@@ -15,9 +15,9 @@ class LastSavedSaleRequestModel extends Equatable {
   @override
   List<Object?> get props => [pendingSaleRequestModel, saleRequestNumber];
 
-  factory LastSavedSaleRequestModel.fromJson(Map json) =>
-      LastSavedSaleRequestModel(
-        pendingSaleRequestModel: PendingSaleRequestModel.fromJson(
+  factory SoapLastSavedSaleRequestModel.fromJson(Map json) =>
+      SoapLastSavedSaleRequestModel(
+        pendingSaleRequestModel: SoapPendingSaleRequestModel.fromJson(
           json['pendingSaleRequestModel'],
         ),
         saleRequestNumber: json['saleRequestNumber'],
@@ -28,10 +28,10 @@ class LastSavedSaleRequestModel extends Equatable {
     'saleRequestNumber': saleRequestNumber,
   };
 
-  factory LastSavedSaleRequestModel.fromEntity(
+  factory SoapLastSavedSaleRequestModel.fromEntity(
     LastSavedSaleRequestEntity entity,
-  ) => LastSavedSaleRequestModel(
-    pendingSaleRequestModel: PendingSaleRequestModel.fromEntity(
+  ) => SoapLastSavedSaleRequestModel(
+    pendingSaleRequestModel: SoapPendingSaleRequestModel.fromEntity(
       entity.pendingSaleRequestEntity,
     ),
     saleRequestNumber: entity.saleRequestNumber,

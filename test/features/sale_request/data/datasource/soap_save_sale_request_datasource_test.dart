@@ -18,7 +18,7 @@ void main() {
   late String crossIdentity;
   late int enterpriseCode;
   late int requestTypeCode;
-  late PendingSaleRequestModel saleRequest;
+  late SoapPendingSaleRequestModel saleRequest;
   late String response;
 
   void initSut() {
@@ -38,7 +38,7 @@ void main() {
     enterpriseCode = faker.randomGenerator.integer(1000);
     requestTypeCode = faker.randomGenerator.integer(1000);
     crossIdentity = faker.guid.guid();
-    saleRequest = PendingSaleRequestModel.fromEntity(
+    saleRequest = SoapPendingSaleRequestModel.fromEntity(
       EntityFactory.makePendingSaleRequestEntity(),
     );
     response = faker.randomGenerator.integer(100).toString();
@@ -98,7 +98,7 @@ void main() {
         crossIdentity: crossIdentity,
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,
-        saleRequest: PendingSaleRequestModel.fromEntity(
+        saleRequest: SoapPendingSaleRequestModel.fromEntity(
           saleRequest.toEntity().copyWith(
             customer: CustomerEntity.empty(),
             covenant: CustomerCovenantEntity.empty(),

@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import '../../../domain/entities/entities.dart';
+import '../models.dart';
 
-class ProcessedCartModel extends Equatable {
+class SoapProcessedCartModel extends Equatable {
   final String? crossId;
   final int EnterpriseCode;
   final int RequestTypeCode;
@@ -12,9 +12,9 @@ class ProcessedCartModel extends Equatable {
   final int? CovenantCode;
   final String? Instructions;
   final String? Observations;
-  final List<CartProductModel>? Products;
+  final List<SoapCartProductModel>? Products;
 
-  const ProcessedCartModel({
+  const SoapProcessedCartModel({
     required this.crossId,
     required this.EnterpriseCode,
     required this.RequestTypeCode,
@@ -39,7 +39,7 @@ class ProcessedCartModel extends Equatable {
     Products,
   ];
 
-  factory ProcessedCartModel.fromJson(Map json) => ProcessedCartModel(
+  factory SoapProcessedCartModel.fromJson(Map json) => SoapProcessedCartModel(
     crossId: json["CrossId"],
     EnterpriseCode: json["EnterpriseCode"],
     RequestTypeCode: json["RequestTypeCode"],
@@ -50,8 +50,10 @@ class ProcessedCartModel extends Equatable {
     Observations: json["Observations"],
     Products: json["Products"] == null
         ? null
-        : List<CartProductModel>.from(
-            (json["Products"] as List).map((e) => CartProductModel.fromJson(e)),
+        : List<SoapCartProductModel>.from(
+            (json["Products"] as List).map(
+              (e) => SoapCartProductModel.fromJson(e),
+            ),
           ),
   );
   Map<String, dynamic> toJson() => {
@@ -66,8 +68,8 @@ class ProcessedCartModel extends Equatable {
     "Products": Products?.map((e) => e.toJson()).toList(),
   };
 
-  factory ProcessedCartModel.fromEntity(ProcessedCartEntity entity) =>
-      ProcessedCartModel(
+  factory SoapProcessedCartModel.fromEntity(ProcessedCartEntity entity) =>
+      SoapProcessedCartModel(
         crossId: entity.crossId,
         EnterpriseCode: entity.EnterpriseCode,
         RequestTypeCode: entity.RequestTypeCode,
@@ -75,7 +77,7 @@ class ProcessedCartModel extends Equatable {
         CovenantCode: entity.CovenantCode,
         CustomerCode: entity.CustomerCode,
         Products: entity.Products?.map(
-          (e) => CartProductModel.fromEntity(e),
+          (e) => SoapCartProductModel.fromEntity(e),
         ).toList(),
         Instructions: entity.Instructions,
         Observations: entity.Observations,

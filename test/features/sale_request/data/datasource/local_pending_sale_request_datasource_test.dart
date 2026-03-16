@@ -31,7 +31,7 @@ void main() {
   void mockSuccess() {
     hive.mockGet(
       databaseKey,
-      PendingSaleRequestModel.fromEntity(entity).toJson(),
+      SoapPendingSaleRequestModel.fromEntity(entity).toJson(),
     );
   }
 
@@ -65,14 +65,14 @@ void main() {
   group('Save', () {
     test('Should behave correctly', () async {
       await sut.save(
-        PendingSaleRequestModel.fromEntity(entity),
+        SoapPendingSaleRequestModel.fromEntity(entity),
         enterpriseCode,
       );
 
       verify(
         () => hive.put(
           databaseKey,
-          PendingSaleRequestModel.fromEntity(entity).toJson(),
+          SoapPendingSaleRequestModel.fromEntity(entity).toJson(),
         ),
       ).called(1);
     });
@@ -81,7 +81,7 @@ void main() {
     test('Should return correct value when is not null', () async {
       expect(
         await sut.load(enterpriseCode),
-        PendingSaleRequestModel.fromEntity(entity),
+        SoapPendingSaleRequestModel.fromEntity(entity),
       );
 
       verify(() => hive.get(databaseKey)).called(1);

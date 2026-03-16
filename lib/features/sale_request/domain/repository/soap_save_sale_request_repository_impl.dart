@@ -21,7 +21,7 @@ class SoapSaveSaleRequestRepositoryImpl
       crossIdentity: crossIdentity,
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,
-      saleRequest: PendingSaleRequestModel.fromEntity(
+      saleRequest: SoapPendingSaleRequestModel.fromEntity(
         saleRequest.copyWith(
           cart: saleRequest.cart.map(
             (key, value) => MapEntry(

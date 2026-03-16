@@ -18,7 +18,7 @@ class LocalPendingSaleRequestRepositoryImpl
   @override
   Future<void> save(PendingSaleRequestEntity value, int enterpriseCode) async {
     await datasource.save(
-      PendingSaleRequestModel.fromEntity(value),
+      SoapPendingSaleRequestModel.fromEntity(value),
       enterpriseCode,
     );
   }

@@ -15,7 +15,7 @@ class PrintLastSavedSaleRequestRepositoryImpl
     required String userName,
   }) async {
     await datasource.print(
-      saleRequest: LastSavedSaleRequestModel.fromEntity(saleRequest),
+      saleRequest: SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
       ip: ip,
       userName: userName,
     );

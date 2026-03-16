@@ -13,7 +13,7 @@ class GeneratePdfRepositoryImpl implements IGeneratePdfRepository {
   @override
   Future<Uint8List> generate(LastSavedSaleRequestEntity saleRequest) async {
     return await datasource.generate(
-      LastSavedSaleRequestModel.fromEntity(saleRequest),
+      SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
     );
   }
 }

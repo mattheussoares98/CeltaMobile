@@ -44,7 +44,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(
-      LastSavedSaleRequestModel.fromEntity(
+      SoapLastSavedSaleRequestModel.fromEntity(
         LastSavedSaleRequestEntity(
           pendingSaleRequestEntity:
               EntityFactory.makePendingSaleRequestEntity(),
@@ -59,7 +59,7 @@ void main() {
 
     verify(
       () => mockDatasource.print(
-        saleRequest: LastSavedSaleRequestModel.fromEntity(saleRequest),
+        saleRequest: SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
         ip: ip,
         userName: userName,
       ),
