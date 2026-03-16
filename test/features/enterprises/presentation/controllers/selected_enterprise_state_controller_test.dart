@@ -117,7 +117,7 @@ void main() {
               ).captured.first
               as List<CrashlyticsCustomKeyEntity>;
 
-      expect(captured.length, 2);
+      expect(captured.length, 3);
 
       final enterpriseKey = captured.firstWhere((e) => e.key == 'enterprise');
       final session = container.read(userSessionProvider).value;
@@ -127,6 +127,9 @@ void main() {
         (e) => e.key == 'selected_enterprise',
       );
       expect(selectedKey.value, enterpriseEntity.name);
+
+      final platformKey = captured.firstWhere((e) => e.key == 'platform');
+      expect(platformKey.value, isNotNull);
     },
   );
 }

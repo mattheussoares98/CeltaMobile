@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
@@ -31,6 +32,10 @@ class SelectedEnterpriseStateController
       CrashlyticsCustomKeyEntity(
         key: 'selected_enterprise',
         value: enterprise.name,
+      ),
+      CrashlyticsCustomKeyEntity(
+        key: 'platform',
+        value: defaultTargetPlatform.name,
       ),
     ]);
   }
