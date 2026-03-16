@@ -687,8 +687,49 @@ class EntityFactory {
     observations: faker.lorem.sentence(),
     instructions: faker.lorem.sentence(),
     needProcessCart: faker.randomGenerator.boolean(),
+    Address: makeAddressEntity(),
+    Customer: customer ?? makeCustomerEntity(),
+    DateHourOfCreation: faker.date.dateTime(),
+    Delivery: makeDeliveryEntity(),
+    DiscountValue: faker.randomGenerator.decimal(),
+    EnterpriseId: faker.randomGenerator.integer(100),
+    Id: faker.randomGenerator.integer(100),
+    Observations: faker.lorem.sentence(),
+    Payments: [
+      makeFinalizationEntity(),
+      makeFinalizationEntity(),
+      makeFinalizationEntity(),
+    ],
+    RequestType: makeSaleRequestRequestTypeEntity(),
+    SaleRequestNumber: faker.randomGenerator.numberOfLength(12),
+    Seller: makeSellerEntity(),
+    TotalLiquid: faker.randomGenerator.decimal() * 100,
   );
 
+  static SellerEntity makeSellerEntity() => SellerEntity(
+    Id: faker.randomGenerator.integer(10),
+    Name: faker.lorem.word(),
+  );
+
+  static DeliveryEntity makeDeliveryEntity() => DeliveryEntity(
+    Transporter: faker.company.name(),
+    TotalValue: faker.randomGenerator.decimal(),
+    DeliveryAddress: makeAddressEntity(),
+  );
+
+  static FinalizationEntity makeFinalizationEntity() => FinalizationEntity(
+    Id: faker.randomGenerator.integer(100).toString(),
+    Name: faker.lorem.word(),
+    TotalValue: faker.randomGenerator.decimal(),
+    PortionQuantity: faker.randomGenerator.integer(100),
+  );
+
+  static SaleRequestRequestTypeEntity makeSaleRequestRequestTypeEntity() =>
+      SaleRequestRequestTypeEntity(
+        Id: faker.randomGenerator.integer(100),
+        PersonalizedCode: faker.randomGenerator.numberOfLength(12),
+        Name: faker.lorem.word(),
+      );
   static SaleRequestCartProductEntity makeCartProductEntity({
     int? productPackingCode,
     PercentageOrValue? discountType,

@@ -1,5 +1,7 @@
+import '../models/models.dart';
+
 abstract class IEcGetSaleRequestsDatasource {
-  Future<void> get({
+  Future<List<EcSaleRequestModel>> get({
     required String workingUrl,
     required String name,
     required String user,

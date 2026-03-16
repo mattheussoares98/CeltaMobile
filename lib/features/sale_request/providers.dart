@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/hive/hive.dart';
+import '../../core/providers/http/http.dart';
 import '../../core/providers/soap/soap.dart';
 import 'data/datasource/datasource.dart';
 import 'domain/repository/repository.dart';
@@ -101,4 +102,9 @@ IGeneratePdfDatasource generatePdfDatasource(Ref ref) {
 @riverpod
 IGeneratePdfRepository GeneratePdfRepository(Ref ref) {
   return GeneratePdfRepositoryImpl(ref.watch(generatePdfDatasourceProvider));
+}
+
+@riverpod
+IEcGetSaleRequestsDatasource ecGetSaleRequestsDatasource(Ref ref) {
+  return EcGetSaleRequestsDatasource(ref.watch(httpClientProvider));
 }

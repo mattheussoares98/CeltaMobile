@@ -1,4 +1,5 @@
 import '../../../../core/domain/contracts/contracts.dart';
+import '../models/models.dart';
 import 'datasource.dart';
 
 class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
@@ -6,7 +7,7 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
   EcGetSaleRequestsDatasource(this.httpClient);
 
   @override
-  Future<void> get({
+  Future<List<EcSaleRequestModel>> get({
     required String workingUrl,
     required String name,
     required String user,
@@ -38,6 +39,10 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
         'mountProducts': ?mountProducts,
       },
     );
-    //TODO creating model to convert. Necessary create tests and provider
+
+    //TODO create default params and return for ec
+    return (response as List)
+        .map((e) => EcSaleRequestModel.fromJson(e))
+        .toList();
   }
 }

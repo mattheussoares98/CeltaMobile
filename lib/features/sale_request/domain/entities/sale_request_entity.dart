@@ -7,7 +7,7 @@ typedef ProductPackingCode = int;
 
 class SaleRequestEntity extends Equatable {
   final Map<ProductPackingCode, SaleRequestCartProductEntity> cart;
-  final CustomerEntity? customer;
+  final CustomerEntity? customer; //TODO delete, is duplicated
   final CustomerCovenantEntity? covenant;
   final String? observations;
   final String? instructions;
