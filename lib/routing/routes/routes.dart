@@ -7,7 +7,6 @@ export './home_route.dart';
 export './pdf_viewer_route.dart';
 export './reports_route.dart';
 export './search_products_route.dart';
-export './shallow_search_products_route.dart';
 export './splash_route.dart';
 export './stock_replacement_route.dart';
 export './transfer_between_stocks_route.dart';
