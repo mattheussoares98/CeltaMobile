@@ -78,7 +78,7 @@ void main() {
         shallowProductsStateControllerProvider.future,
       );
 
-      expect(state, isEmpty);
+      expect(state, isNull);
     });
 
     test('Should behave correctly on success', () async {
