@@ -30,7 +30,7 @@ void main() {
   late int enterpriseCode;
   late int requestTypeCode;
   late String saleRequestNumber;
-  late PendingSaleRequestEntity saleRequest;
+  late SaleRequestEntity saleRequest;
 
   setUp(() {
     mockDatasource = SoapSaveSaleRequestDatasourceSpy();

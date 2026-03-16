@@ -22,19 +22,18 @@ class FakeSelectedEnterprise extends SelectedEnterpriseStateController {
 
 class FakePendingSaleRequestStateController
     extends PendingSaleRequestStateController {
-  final PendingSaleRequestEntity pendingValue;
+  final SaleRequestEntity pendingValue;
   FakePendingSaleRequestStateController(this.pendingValue);
 
   @override
-  Future<PendingSaleRequestEntity> build(int enterpriseCode) async =>
-      pendingValue;
+  Future<SaleRequestEntity> build(int enterpriseCode) async => pendingValue;
 }
 
 class MockSoapCustomerRepository extends Mock
     implements ISoapCustomerRepository {}
 
 void main() {
-  late PendingSaleRequestEntity fakePendingSaleRequest;
+  late SaleRequestEntity fakePendingSaleRequest;
   late MockSoapCustomerRepository mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
@@ -58,7 +57,7 @@ void main() {
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
     EnterpriseEntity? enterprise,
-    PendingSaleRequestEntity? pendingSaleRequest,
+    SaleRequestEntity? pendingSaleRequest,
   }) {
     return ProviderContainer(
       retry: (retryCount, error) => null,

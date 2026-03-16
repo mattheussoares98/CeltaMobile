@@ -15,11 +15,11 @@ part 'pending_sale_request_state_controller.g.dart';
 class PendingSaleRequestStateController
     extends _$PendingSaleRequestStateController {
   @override
-  Future<PendingSaleRequestEntity> build(int enterpriseCode) async {
+  Future<SaleRequestEntity> build(int enterpriseCode) async {
     final repository = ref.watch(localPendingSaleRequestRepositoryProvider);
     final localData = await repository.load(enterpriseCode);
 
-    return (localData ?? PendingSaleRequestEntity.empty()).copyWith(
+    return (localData ?? SaleRequestEntity.empty()).copyWith(
       needProcessCart: true,
     );
   }
@@ -28,7 +28,7 @@ class PendingSaleRequestStateController
       ref.read(localPendingSaleRequestRepositoryProvider);
 
   Future<void> _updateAndSave(
-    PendingSaleRequestEntity newState, {
+    SaleRequestEntity newState, {
     bool? needProcessCart,
   }) async {
     state = const AsyncValue.loading();

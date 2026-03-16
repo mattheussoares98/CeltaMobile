@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'entities.dart';
 
 class LastSavedSaleRequestEntity extends Equatable {
-  final PendingSaleRequestEntity pendingSaleRequestEntity;
+  final SaleRequestEntity pendingSaleRequestEntity;
   final String saleRequestNumber;
 
   const LastSavedSaleRequestEntity({

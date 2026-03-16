@@ -6,6 +6,6 @@ abstract class ISoapSaveSaleRequestRepository {
     required String crossIdentity,
     required int enterpriseCode,
     required int requestTypeCode,
-    required PendingSaleRequestEntity saleRequest,
+    required SaleRequestEntity saleRequest,
   });
 }

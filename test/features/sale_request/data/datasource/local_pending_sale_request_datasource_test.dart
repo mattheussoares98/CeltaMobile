@@ -12,7 +12,7 @@ void main() {
 
   late MockBox hive;
 
-  late PendingSaleRequestEntity entity;
+  late SaleRequestEntity entity;
   late CartProductEntity firstProduct;
   late CartProductEntity secondProduct;
   late CartProductEntity thirdProduct;
@@ -40,7 +40,7 @@ void main() {
     secondProduct = EntityFactory.makeCartProductEntity();
     thirdProduct = EntityFactory.makeCartProductEntity();
     enterpriseCode = faker.randomGenerator.integer(300, min: 201);
-    entity = PendingSaleRequestEntity(
+    entity = SaleRequestEntity(
       cart: <ProductPackingCode, CartProductEntity>{
         firstProduct.ProductPackingCode: firstProduct,
         secondProduct.ProductPackingCode: secondProduct,

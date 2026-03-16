@@ -19,11 +19,11 @@ import '../../../../mocks/mocks.dart';
 
 // Your Spy for PendingSaleRequest is correct
 class SpyPendingSaleRequest extends PendingSaleRequestStateController {
-  final PendingSaleRequestEntity? requestToReturn;
+  final SaleRequestEntity? requestToReturn;
   SpyPendingSaleRequest(this.requestToReturn);
   @override
-  Future<PendingSaleRequestEntity> build(int enterpriseCode) async =>
-      requestToReturn ?? PendingSaleRequestEntity.empty();
+  Future<SaleRequestEntity> build(int enterpriseCode) async =>
+      requestToReturn ?? SaleRequestEntity.empty();
   // We don't need to override updateProductsFromProcessedCart for this controller
 }
 
@@ -51,8 +51,8 @@ void main() {
   late FakeAppUsageStateController fakeAppUsage;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
-  late PendingSaleRequestEntity fakePendingRequest;
-  late PendingSaleRequestEntity fakeRequestNoCustomer;
+  late SaleRequestEntity fakePendingRequest;
+  late SaleRequestEntity fakeRequestNoCustomer;
   late int fakeRequestTypeCode;
   late String instructions;
   late String observations;
@@ -78,7 +78,7 @@ void main() {
     fakePendingRequest = EntityFactory.makePendingSaleRequestEntity(
       customer: EntityFactory.makeCustomerEntity(), // Valid request
     );
-    fakeRequestNoCustomer = PendingSaleRequestEntity.empty(); // Invalid request
+    fakeRequestNoCustomer = SaleRequestEntity.empty(); // Invalid request
     fakeRequestTypeCode = faker.randomGenerator.integer(100);
     instructions = faker.lorem.sentence();
     observations = faker.lorem.sentence();

@@ -14,7 +14,7 @@ class SoapSaveSaleRequestRepositoryImpl
     required String crossIdentity,
     required int enterpriseCode,
     required int requestTypeCode,
-    required PendingSaleRequestEntity saleRequest,
+    required SaleRequestEntity saleRequest,
   }) async {
     return await datasource.save(
       workingUrl: workingUrl,

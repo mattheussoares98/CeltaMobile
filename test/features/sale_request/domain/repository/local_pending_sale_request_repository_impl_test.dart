@@ -23,7 +23,7 @@ void main() {
   late ILocalPendingSaleRequestRepository sut;
   late LocalPendingSaleRequestDatasourceSpy mockDatasource;
 
-  late PendingSaleRequestEntity pendingSaleRequestEntity;
+  late SaleRequestEntity pendingSaleRequestEntity;
   late int enterpriseCode;
 
   setUp(() {

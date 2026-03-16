@@ -20,7 +20,7 @@ class MockLocalPendingSaleRequestRepository extends Mock
 void main() {
   late MockLocalPendingSaleRequestRepository mockRepository;
   late UserSessionModel fakeSession;
-  late PendingSaleRequestEntity fakeDraft;
+  late SaleRequestEntity fakeDraft;
   late CartProductEntity fakeProduct;
   late CustomerEntity fakeCustomer;
   late EnterpriseEntity enterpriseEntity;
@@ -107,7 +107,7 @@ void main() {
           // ASSERT
           expect(
             result,
-            PendingSaleRequestEntity.empty().copyWith(needProcessCart: true),
+            SaleRequestEntity.empty().copyWith(needProcessCart: true),
           );
         },
       );
@@ -120,7 +120,7 @@ void main() {
           // ARRANGE
           when(
             () => mockRepository.load(any()),
-          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          ).thenAnswer((_) async => SaleRequestEntity.empty());
           when(
             () => mockRepository.save(any(), any()),
           ).thenAnswer((_) async {});
@@ -133,7 +133,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -165,7 +165,7 @@ void main() {
           final captured = verify(
             () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
           ).captured;
-          expect(captured.first, isA<PendingSaleRequestEntity>());
+          expect(captured.first, isA<SaleRequestEntity>());
           expect(
             captured.first.cart.containsKey(fakeProduct.ProductPackingCode),
             isTrue,
@@ -183,7 +183,7 @@ void main() {
           // ARRANGE
           when(
             () => mockRepository.load(any()),
-          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          ).thenAnswer((_) async => SaleRequestEntity.empty());
           when(
             () => mockRepository.save(any(), any()),
           ).thenAnswer((_) async {});
@@ -196,7 +196,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -230,7 +230,7 @@ void main() {
           // ARRANGE
           when(
             () => mockRepository.load(any()),
-          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          ).thenAnswer((_) async => SaleRequestEntity.empty());
           when(
             () => mockRepository.save(any(), any()),
           ).thenAnswer((_) async {});
@@ -243,7 +243,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -282,7 +282,7 @@ void main() {
         () async {
           // ARRANGE
           // Start with a list that contains the product
-          final initialDraft = PendingSaleRequestEntity.empty().copyWith(
+          final initialDraft = SaleRequestEntity.empty().copyWith(
             cart: {fakeProduct.ProductPackingCode: fakeProduct},
           );
           when(
@@ -300,7 +300,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -334,7 +334,7 @@ void main() {
           // ARRANGE
           when(
             () => mockRepository.load(any()),
-          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          ).thenAnswer((_) async => SaleRequestEntity.empty());
           when(
             () => mockRepository.save(any(), any()),
           ).thenAnswer((_) async {});
@@ -347,7 +347,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -378,7 +378,7 @@ void main() {
           // ARRANGE
           when(
             () => mockRepository.load(any()),
-          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          ).thenAnswer((_) async => SaleRequestEntity.empty());
           when(
             () => mockRepository.save(any(), any()),
           ).thenAnswer((_) async {});
@@ -391,7 +391,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -437,7 +437,7 @@ void main() {
           // ARRANGE
           when(
             () => mockRepository.load(any()),
-          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          ).thenAnswer((_) async => SaleRequestEntity.empty());
           when(
             () => mockRepository.save(any(), any()),
           ).thenAnswer((_) async {});
@@ -450,7 +450,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -497,7 +497,7 @@ void main() {
       test('should do nothing if customer is null', () async {
         // ARRANGE
         // 1. Initial state has no customer
-        final initialDraft = PendingSaleRequestEntity.empty();
+        final initialDraft = SaleRequestEntity.empty();
         when(
           () => mockRepository.load(any()),
         ).thenAnswer((_) async => initialDraft);
@@ -511,7 +511,7 @@ void main() {
           ).future,
         );
 
-        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        final states = <AsyncValue<SaleRequestEntity>>[];
         container.listen(
           pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
@@ -538,7 +538,7 @@ void main() {
         () async {
           // ARRANGE
           // 1. Initial state already has the covenant selected
-          final initialDraft = PendingSaleRequestEntity.empty().copyWith(
+          final initialDraft = SaleRequestEntity.empty().copyWith(
             customer: fakeCustomer,
             covenant: fakeCustomer.CustomerCovenants!.first,
           );
@@ -557,7 +557,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -590,7 +590,7 @@ void main() {
       test('should change the covenant if a new one is selected', () async {
         // ARRANGE
         // 1. Initial state has the first covenant
-        final initialDraft = PendingSaleRequestEntity.empty().copyWith(
+        final initialDraft = SaleRequestEntity.empty().copyWith(
           customer: fakeCustomer,
           covenant: fakeCustomer.CustomerCovenants!.first,
         );
@@ -609,7 +609,7 @@ void main() {
           ).future,
         );
 
-        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        final states = <AsyncValue<SaleRequestEntity>>[];
         container.listen(
           pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
@@ -643,7 +643,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(any()),
-        ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+        ).thenAnswer((_) async => SaleRequestEntity.empty());
         when(() => mockRepository.save(any(), any())).thenAnswer((_) async {});
 
         final container = makeProviderContainer();
@@ -654,7 +654,7 @@ void main() {
           ).future,
         );
 
-        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        final states = <AsyncValue<SaleRequestEntity>>[];
         container.listen(
           pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
@@ -684,7 +684,7 @@ void main() {
         // ARRANGE
         when(
           () => mockRepository.load(any()),
-        ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+        ).thenAnswer((_) async => SaleRequestEntity.empty());
         when(() => mockRepository.save(any(), any())).thenAnswer((_) async {});
 
         final container = makeProviderContainer();
@@ -695,7 +695,7 @@ void main() {
           ).future,
         );
 
-        final states = <AsyncValue<PendingSaleRequestEntity>>[];
+        final states = <AsyncValue<SaleRequestEntity>>[];
         container.listen(
           pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
@@ -728,7 +728,7 @@ void main() {
           // ARRANGE
           when(
             () => mockRepository.load(any()),
-          ).thenAnswer((_) async => PendingSaleRequestEntity.empty());
+          ).thenAnswer((_) async => SaleRequestEntity.empty());
           when(
             () => mockRepository.save(any(), any()),
           ).thenAnswer((_) async {});
@@ -741,7 +741,7 @@ void main() {
             ).future,
           );
 
-          final states = <AsyncValue<PendingSaleRequestEntity>>[];
+          final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
             pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
@@ -779,7 +779,7 @@ void main() {
           final captured = verify(
             () => mockRepository.save(captureAny(), enterpriseEntity.Code!),
           ).captured;
-          expect(captured.first, isA<PendingSaleRequestEntity>());
+          expect(captured.first, isA<SaleRequestEntity>());
           expect(captured.first.needProcessCart, isTrue);
         },
       );

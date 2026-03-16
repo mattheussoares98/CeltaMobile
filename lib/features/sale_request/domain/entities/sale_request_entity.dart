@@ -5,7 +5,7 @@ import 'entities.dart';
 
 typedef ProductPackingCode = int;
 
-class PendingSaleRequestEntity extends Equatable {
+class SaleRequestEntity extends Equatable {
   final Map<ProductPackingCode, CartProductEntity> cart;
   final CustomerEntity? customer;
   final CustomerCovenantEntity? covenant;
@@ -13,7 +13,7 @@ class PendingSaleRequestEntity extends Equatable {
   final String? instructions;
   final bool? needProcessCart;
 
-  const PendingSaleRequestEntity({
+  const SaleRequestEntity({
     required this.cart,
     required this.customer,
     required this.covenant,
@@ -31,7 +31,7 @@ class PendingSaleRequestEntity extends Equatable {
     needProcessCart,
   ];
 
-  factory PendingSaleRequestEntity.empty() => const PendingSaleRequestEntity(
+  factory SaleRequestEntity.empty() => const SaleRequestEntity(
     cart: {},
     customer: null,
     covenant: null,
@@ -40,14 +40,14 @@ class PendingSaleRequestEntity extends Equatable {
     needProcessCart: null,
   );
 
-  PendingSaleRequestEntity copyWith({
+  SaleRequestEntity copyWith({
     Map<ProductPackingCode, CartProductEntity>? cart,
     CustomerEntity? customer,
     CustomerCovenantEntity? covenant,
     String? observations,
     String? instructions,
     bool? needProcessCart,
-  }) => PendingSaleRequestEntity(
+  }) => SaleRequestEntity(
     cart: cart ?? this.cart,
     customer: customer ?? this.customer,
     covenant: covenant ?? this.covenant,
@@ -56,14 +56,14 @@ class PendingSaleRequestEntity extends Equatable {
     needProcessCart: needProcessCart ?? this.needProcessCart,
   );
 
-  PendingSaleRequestEntity annulValues({
+  SaleRequestEntity annulValues({
     bool? cart,
     bool? customer,
     bool? covenant,
     bool? observations,
     bool? instructions,
     bool? needProcessCart,
-  }) => PendingSaleRequestEntity(
+  }) => SaleRequestEntity(
     cart: cart == true ? {} : this.cart,
     customer: customer == true ? null : this.customer,
     covenant: covenant == true ? null : this.covenant,
