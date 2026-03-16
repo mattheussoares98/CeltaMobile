@@ -7,7 +7,7 @@ class ConcurrentModel extends Equatable {
   final int? ConcurrentCode;
   final String? Name;
   final String? Observation;
-  final AddressModel? Address;
+  final SoapAddressModel? Address;
 
   const ConcurrentModel({
     required this.ConcurrentCode,
@@ -24,7 +24,7 @@ class ConcurrentModel extends Equatable {
       ConcurrentCode: json["ConcurrentCode"],
       Name: json["Name"],
       Observation: json["Observation"],
-      Address: AddressModel.fromJson(json["Address"]),
+      Address: SoapAddressModel.fromJson(json["Address"]),
     );
   }
 
@@ -43,7 +43,7 @@ class ConcurrentModel extends Equatable {
       Name: entity.Name,
       Observation: entity.Observation,
       Address: entity.Address != null
-          ? AddressModel.fromEntity(entity.Address!)
+          ? SoapAddressModel.fromEntity(entity.Address!)
           : null,
     );
   }

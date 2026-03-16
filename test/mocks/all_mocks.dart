@@ -795,7 +795,7 @@ class SoapCustomerRepositorySpy extends Mock
 
 class LoadAddressByCepDatasourceSpy extends Mock
     implements ILoadAddressByCepDatasource {
-  void mockLoad(AddressModel? response) {
+  void mockLoad(SoapAddressModel? response) {
     _mockLoadCall().thenAnswer((_) async => response);
   }
 

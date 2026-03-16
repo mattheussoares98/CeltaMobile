@@ -24,7 +24,7 @@ void main() {
   }
 
   void mockSuccess() {
-    datasource.mockLoad(AddressModel.fromEntity(addressEntity));
+    datasource.mockLoad(SoapAddressModel.fromEntity(addressEntity));
   }
 
   void initEntities() {

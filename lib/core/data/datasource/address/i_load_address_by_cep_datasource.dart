@@ -1,5 +1,5 @@
 import '../../models/models.dart';
 
 abstract class ILoadAddressByCepDatasource {
-  Future<AddressModel?> get(String cep);
+  Future<SoapAddressModel?> get(String cep);
 }

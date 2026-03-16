@@ -52,7 +52,7 @@ void main() {
   test('should work corretly in success', () async {
     final result = await sut.get(cep);
 
-    expect(result, AddressModel.fromViaCep(address));
+    expect(result, SoapAddressModel.fromViaCep(address));
 
     verify(
       () => httpClient.request(

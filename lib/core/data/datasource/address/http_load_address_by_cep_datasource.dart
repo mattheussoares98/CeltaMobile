@@ -1,8 +1,8 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 
-import '../../models/address/address_model.dart';
-import '../../../domain/contracts/contracts.dart';
 import '../../../../exceptions/exceptions.dart';
+import '../../../domain/contracts/contracts.dart';
+import '../../models/address/soap_address_model.dart';
 import 'address.dart';
 
 class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
@@ -10,7 +10,7 @@ class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
   HttpLoadAddressByCepDatasource(this.httpClient);
 
   @override
-  Future<AddressModel?> get(String cep) async {
+  Future<SoapAddressModel?> get(String cep) async {
     final response = await httpClient.request(
       url: 'https://viacep.com.br/ws/$cep/json/',
       method: 'get',
@@ -20,6 +20,6 @@ class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
       throw AppException('Esse CEP não foi encontrado'.hardcoded);
     }
 
-    return AddressModel.fromViaCep(response);
+    return SoapAddressModel.fromViaCep(response);
   }
 }

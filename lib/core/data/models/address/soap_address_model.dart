@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
 
-class AddressModel extends Equatable {
+class SoapAddressModel extends Equatable {
   final String Zip;
   final String Address;
   final String? Number;
@@ -12,7 +12,7 @@ class AddressModel extends Equatable {
   final String? Complement;
   final String? Reference;
 
-  const AddressModel({
+  const SoapAddressModel({
     required this.Zip,
     required this.Address,
     required this.Number,
@@ -34,8 +34,8 @@ class AddressModel extends Equatable {
     Complement,
     Reference,
   ];
-  factory AddressModel.fromJson(Map json) {
-    return AddressModel(
+  factory SoapAddressModel.fromJson(Map json) {
+    return SoapAddressModel(
       Zip: json["Zip"],
       Address: json["Address"],
       Number: json["Number"],
@@ -59,8 +59,8 @@ class AddressModel extends Equatable {
     "Reference": Reference,
   };
 
-  factory AddressModel.fromEntity(AddressEntity entity) {
-    return AddressModel(
+  factory SoapAddressModel.fromEntity(AddressEntity entity) {
+    return SoapAddressModel(
       Zip: entity.Zip,
       Address: entity.Address,
       Number: entity.Number,
@@ -83,7 +83,7 @@ class AddressModel extends Equatable {
     Reference: Reference,
   );
 
-  factory AddressModel.fromViaCep(Map data) => AddressModel(
+  factory SoapAddressModel.fromViaCep(Map data) => SoapAddressModel(
     Zip: data["cep"],
     Address: data["logradouro"],
     Complement: data["complemento"],

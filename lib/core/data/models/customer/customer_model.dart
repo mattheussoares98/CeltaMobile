@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../models.dart';
 import '../../../domain/entities/entities.dart';
+import '../models.dart';
 import 'customer.dart';
 
 class CustomerModel extends Equatable {
@@ -19,7 +19,7 @@ class CustomerModel extends Equatable {
   final List<String>? Emails;
   final List<CustomerTelephoneModel>? Telephones;
   final List<CustomerCovenantModel>? CustomerCovenants;
-  final List<AddressModel>? Addresses;
+  final List<SoapAddressModel>? Addresses;
   final CustomerSaleBlockadeInstructionModel? saleBlockadeInstructionModel;
   final CustomerSaleBlockadeModel? saleBlockadeModel;
 
@@ -114,7 +114,7 @@ class CustomerModel extends Equatable {
         ?.map((e) => CustomerTelephoneModel.fromJson(e))
         .toList(),
     Addresses: (json['Addresses'] as List?)
-        ?.map((e) => AddressModel.fromJson(e))
+        ?.map((e) => SoapAddressModel.fromJson(e))
         .toList(),
     CustomerCovenants: (json['CustomerCovenants'] as List?)
         ?.map((e) => CustomerCovenantModel.fromJson(e))
@@ -146,7 +146,7 @@ class CustomerModel extends Equatable {
       (e) => CustomerTelephoneModel.fromEntity(e),
     ).toList(),
     Addresses: entity.Addresses?.map(
-      (e) => AddressModel.fromEntity(e),
+      (e) => SoapAddressModel.fromEntity(e),
     ).toList(),
     CustomerCovenants: entity.CustomerCovenants?.map(
       (e) => CustomerCovenantModel.fromEntity(e),
