@@ -65,16 +65,20 @@ class ProductsManagementPage extends ConsumerWidget {
               Row(
                 children: [
                   Text('De '.hardcoded, style: theme.textTheme.bodySmall),
-                  const Expanded(
-                    child: CorrespondentEnterpriseByEnterpriseCode(),
+                  Expanded(
+                    child: CorrespondentEnterpriseByEnterpriseCode(
+                      enterpriseCode: enterpriseOriginCode,
+                    ),
                   ),
                 ],
               ),
               Row(
                 children: [
                   Text('Para '.hardcoded, style: theme.textTheme.bodySmall),
-                  const Expanded(
-                    child: CorrespondentEnterpriseByEnterpriseCode(),
+                  Expanded(
+                    child: CorrespondentEnterpriseByEnterpriseCode(
+                      enterpriseCode: enterpriseDestinyCode,
+                    ),
                   ),
                 ],
               ),

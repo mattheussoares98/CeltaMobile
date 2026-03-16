@@ -26,13 +26,19 @@ class DefaultAppBarTitle extends StatelessWidget {
 }
 
 class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
-  const CorrespondentEnterpriseByEnterpriseCode({super.key});
+  final int? enterpriseCode;
+  const CorrespondentEnterpriseByEnterpriseCode({
+    super.key,
+    this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedEnterpriseCode = ref.watch(
-      selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
-    );
+    final selectedEnterpriseCode =
+        enterpriseCode ??
+        ref.watch(
+          selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
+        );
 
     final personalizedCode = ref.watch(
       enterprisesStateControllerProvider().select(
