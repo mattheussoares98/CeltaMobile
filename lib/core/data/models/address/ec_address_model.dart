@@ -32,4 +32,4 @@ class EcAddressModel extends Equatable {
     City,
     State,
   ];
-}//TODO check move to core path because is used in another modules
+}

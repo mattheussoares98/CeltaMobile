@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../../core/data/models/models.dart';
 import 'ec.dart';
 
 class EcSaleRequestModel extends Equatable {

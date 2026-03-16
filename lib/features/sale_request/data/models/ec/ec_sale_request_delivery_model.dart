@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'ec.dart';
+import '../../../../../core/data/models/models.dart';
 
 class EcSaleRequestDeliveryModel extends Equatable {
   final String Transporter;
