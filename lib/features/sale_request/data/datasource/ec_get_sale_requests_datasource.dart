@@ -9,7 +9,6 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
   @override
   Future<List<EcSaleRequestModel>> get({
     required String workingUrl,
-    required String name,
     required String user,
     required String accessKey,
     required List<int> enterpriseIds,
@@ -26,9 +25,6 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
       method: 'post',
       headers: {'user': user, 'accessKey': accessKey},
       body: {
-        'name': name,
-        'user': user,
-        'accessKey': accessKey,
         'enterpriseIds': enterpriseIds,
         'endDateHourOfCreation': endDateHourOfCreation,
         'startDateHourOfCreation': startDateHourOfCreation,

@@ -12,7 +12,6 @@ void main() {
   late HttpClientSpy httpClient;
 
   late String workingUrl;
-  late String name;
   late String user;
   late String accessKey;
   late List<int> enterpriseIds;
@@ -47,7 +46,6 @@ void main() {
 
     workingUrl = faker.internet.httpsUrl();
 
-    name = faker.randomGenerator.string(10);
     user = faker.person.name();
     accessKey = faker.randomGenerator.string(10);
     enterpriseIds = [1, 2, 3];
@@ -80,7 +78,6 @@ void main() {
   test('should call with correct params', () async {
     final response = await sut.get(
       workingUrl: workingUrl,
-      name: name,
       user: user,
       accessKey: accessKey,
       enterpriseIds: enterpriseIds,
@@ -101,9 +98,6 @@ void main() {
         method: 'post',
         headers: {'user': user, 'accessKey': accessKey},
         body: {
-          'name': name,
-          'user': user,
-          'accessKey': accessKey,
           'enterpriseIds': enterpriseIds,
           'endDateHourOfCreation': endDateHourOfCreation,
           'startDateHourOfCreation': startDateHourOfCreation,
