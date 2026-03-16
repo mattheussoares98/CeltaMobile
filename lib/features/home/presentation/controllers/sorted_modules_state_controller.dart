@@ -26,10 +26,18 @@ class SortedModulesStateController extends _$SortedModulesStateController {
     modules.sort((a, b) {
       final ia = favIndex[a];
       final ib = favIndex[b];
+
+      // 1. If both are favorites, maintain the favorite list order (usually LIFO)
       if (ia != null && ib != null) return ib.compareTo(ia);
+
+      // 2. Favorites always come before non-favorites
       if (ia != null) return -1;
       if (ib != null) return 1;
-      return a.index.compareTo(b.index);
+
+      // 3. PERFORMANCE: Alphabetical sorting for non-favorites.
+      // We use lowercase comparison to ensure the sort is lexicographically correct
+      // regardless of the enum casing.
+      return a.description.toLowerCase().compareTo(b.description.toLowerCase());
     });
 
     final indexMap = {for (int i = 0; i < modules.length; i++) modules[i]: i};
