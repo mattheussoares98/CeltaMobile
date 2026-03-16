@@ -39,7 +39,7 @@ class PendingSaleRequestStateController
     });
   }
 
-  Future<bool> addProduct(CartProductEntity item) async {
+  Future<bool> addProduct(SaleRequestCartProductEntity item) async {
     if (state.value == null) return false;
 
     bool updated = false;
@@ -69,7 +69,7 @@ class PendingSaleRequestStateController
     return updated;
   }
 
-  Future<void> removeProduct(CartProductEntity product) async {
+  Future<void> removeProduct(SaleRequestCartProductEntity product) async {
     if (state.value == null) return;
 
     final newCart = Map.of(state.value!.cart);
@@ -135,7 +135,8 @@ class PendingSaleRequestStateController
     await _updateAndSave(
       state.value!.copyWith(
         cart: {
-          for (final product in processedCart.Products ?? <CartProductEntity>[])
+          for (final product
+              in processedCart.Products ?? <SaleRequestCartProductEntity>[])
             product.ProductPackingCode: product.copyWith(
               product: state.value!.cart[product.ProductPackingCode]!.product,
             ),

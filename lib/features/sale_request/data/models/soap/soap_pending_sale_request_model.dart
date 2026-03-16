@@ -5,7 +5,7 @@ import '../../../domain/entities/entities.dart';
 import '../models.dart';
 
 class SoapPendingSaleRequestModel extends Equatable {
-  final Map<ProductPackingCode, SoapCartProductModel> cart;
+  final Map<ProductPackingCode, SoapSaleRequestProductModel> cart;
   final SoapCustomerModel? customer;
   final SoapCustomerCovenantModel? covenant;
   final String? observations;
@@ -49,7 +49,7 @@ class SoapPendingSaleRequestModel extends Equatable {
             : (json['cart'] as Map).map(
                 (key, value) => MapEntry(
                   int.parse(key.toString()),
-                  SoapCartProductModel.fromJson(value as Map),
+                  SoapSaleRequestProductModel.fromJson(value as Map),
                 ),
               ),
         customer: json['customer'] == null
@@ -80,7 +80,7 @@ class SoapPendingSaleRequestModel extends Equatable {
         cart: entity.cart.map(
           (packingCode, cartProductEntity) => MapEntry(
             packingCode,
-            SoapCartProductModel.fromEntity(cartProductEntity),
+            SoapSaleRequestProductModel.fromEntity(cartProductEntity),
           ),
         ),
         customer: entity.customer == null

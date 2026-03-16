@@ -8,6 +8,6 @@ abstract class ISoapProcessCartRepository {
     required int requestTypeCode,
     required int customerCode,
     required int? covenantCode,
-    required List<CartProductEntity> products,
+    required List<SaleRequestCartProductEntity> products,
   });
 }

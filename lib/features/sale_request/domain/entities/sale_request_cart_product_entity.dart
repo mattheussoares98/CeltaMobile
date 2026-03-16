@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/domain/entities/entities.dart';
 import 'entities.dart';
 
-class CartProductEntity extends Equatable {
+class SaleRequestCartProductEntity extends Equatable {
   final int ProductPackingCode;
   final double Quantity;
   final double Value;
@@ -19,7 +19,7 @@ class CartProductEntity extends Equatable {
   final String? Observations;
   final ProductEntity? product;
 
-  const CartProductEntity({
+  const SaleRequestCartProductEntity({
     required this.ProductPackingCode,
     required this.Quantity,
     required this.Value,
@@ -54,7 +54,7 @@ class CartProductEntity extends Equatable {
     product,
   ];
 
-  CartProductEntity copyWith({
+  SaleRequestCartProductEntity copyWith({
     int? ProductPackingCode,
     double? Quantity,
     double? Value,
@@ -70,7 +70,7 @@ class CartProductEntity extends Equatable {
     String? Observations,
     ProductEntity? product,
   }) {
-    return CartProductEntity(
+    return SaleRequestCartProductEntity(
       ProductPackingCode: ProductPackingCode ?? this.ProductPackingCode,
       Quantity: Quantity ?? this.Quantity,
       Value: Value ?? this.Value,
@@ -93,7 +93,7 @@ class CartProductEntity extends Equatable {
     );
   }
 
-  factory CartProductEntity.create({
+  factory SaleRequestCartProductEntity.create({
     required double quantity,
     required double price,
     required ProductEntity product,
@@ -111,7 +111,7 @@ class CartProductEntity extends Equatable {
       }
     }
 
-    return CartProductEntity(
+    return SaleRequestCartProductEntity(
       ProductPackingCode: product.ProductPackingCode!,
       product: product,
       Quantity: quantity,

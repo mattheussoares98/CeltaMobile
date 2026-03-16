@@ -18,7 +18,7 @@ class QuantityPriceDiscountFieldsAndInsertButton
   final FocusNode priceFocusNode;
   final RequestTypeEntity selectedRequest;
   final ProductEntity product;
-  final CartProductEntity? cartProduct;
+  final SaleRequestCartProductEntity? cartProduct;
   final bool isCartPage;
   final int enterpriseCode;
 
@@ -72,7 +72,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
           ).notifier,
         )
         .addProduct(
-          CartProductEntity.create(
+          SaleRequestCartProductEntity.create(
             quantity: quantity,
             price: price,
             discountByItem: discount,

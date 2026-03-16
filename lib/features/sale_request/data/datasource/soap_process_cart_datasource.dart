@@ -16,7 +16,7 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
     required int requestTypeCode,
     required int customerCode,
     required int? covenantCode,
-    required List<SoapCartProductModel> products,
+    required List<SoapSaleRequestProductModel> products,
   }) async {
     final parameters = {
       "crossIdentity": crossId,
@@ -27,7 +27,7 @@ class SoapProcessCartDatasource implements ISoapProcessCartDatasource {
         "CustomerCode": customerCode,
         "Products": products
             .map(
-              (e) => SoapCartProductModel.fromEntity(
+              (e) => SoapSaleRequestProductModel.fromEntity(
                 e.toEntity().copyWith(
                   DiscountValue: e.DiscountValue != null
                       ? e.DiscountValue! / e.Quantity

@@ -138,7 +138,9 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
     );
   }
 
-  static pw.Widget _buildProductTable(List<SoapCartProductModel> cartProducts) {
+  static pw.Widget _buildProductTable(
+    List<SoapSaleRequestProductModel> cartProducts,
+  ) {
     final atLeastOneHasDiscount = cartProducts.any(
       (p) => p.DiscountValue != null && p.DiscountValue! > 0,
     );

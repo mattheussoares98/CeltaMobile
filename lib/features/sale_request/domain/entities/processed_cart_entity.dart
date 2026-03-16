@@ -11,7 +11,7 @@ class ProcessedCartEntity extends Equatable {
   final int? CovenantCode;
   final String? Instructions;
   final String? Observations;
-  final List<CartProductEntity>? Products;
+  final List<SaleRequestCartProductEntity>? Products;
 
   const ProcessedCartEntity({
     required this.crossId,

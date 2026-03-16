@@ -88,7 +88,7 @@ class _CartPageState extends ConsumerState<CartPage>
     await notifier.changeInstructions(instructionsController.text);
   }
 
-  void changeSelectedIndex(CartProductEntity product) async {
+  void changeSelectedIndex(SaleRequestCartProductEntity product) async {
     ref
         .read(selectedItemUIControllerProvider(isCartPage: true).notifier)
         .selectProduct(product.ProductPackingCode, product);

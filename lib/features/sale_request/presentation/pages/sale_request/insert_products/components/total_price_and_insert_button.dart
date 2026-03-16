@@ -35,7 +35,7 @@ class TotalPriceAndInsertButton extends StatelessWidget {
         discountController,
       ]),
       builder: (_, _) {
-        final newItem = CartProductEntity.create(
+        final newItem = SaleRequestCartProductEntity.create(
           product: product,
           quantity: quantityController.text.toDouble() ?? 0,
           price: priceController.text.toDouble() ?? 0,

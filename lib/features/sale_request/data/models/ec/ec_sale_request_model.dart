@@ -16,7 +16,7 @@ class EcSaleRequestModel extends Equatable {
   final EcSellerModel Seller;
   final EcSaleRequestDeliveryModel Delivery;
   final List<EcSaleRequestFinalizationModel> Payments;
-  final List<EcSaleRequestProductModel> Products;
+  final List<EcSaleRequestCartProductModel> Products;
   final EcAddressModel Address;
 
   const EcSaleRequestModel({

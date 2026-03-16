@@ -33,7 +33,7 @@ void main() {
   late int requestTypeCode;
   late int customerCode;
   late int? covenantCode;
-  late List<CartProductEntity> products;
+  late List<SaleRequestCartProductEntity> products;
   late ProcessedCartEntity processedCart;
 
   setUp(() {
@@ -91,7 +91,7 @@ void main() {
         customerCode: customerCode,
         covenantCode: covenantCode,
         products: products
-            .map((e) => SoapCartProductModel.fromEntity(e))
+            .map((e) => SoapSaleRequestProductModel.fromEntity(e))
             .toList(),
       ),
     ).called(1);

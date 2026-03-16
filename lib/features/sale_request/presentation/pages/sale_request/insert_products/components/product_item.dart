@@ -44,7 +44,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
 
   void onTapProduct(
     ProductEntity product,
-    CartProductEntity? cartProduct,
+    SaleRequestCartProductEntity? cartProduct,
   ) async {
     final selectedRequest = await ref.read(
       requestTypeStateControllerProvider(

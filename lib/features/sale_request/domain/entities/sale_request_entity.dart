@@ -6,29 +6,70 @@ import 'entities.dart';
 typedef ProductPackingCode = int;
 
 class SaleRequestEntity extends Equatable {
-  final Map<ProductPackingCode, CartProductEntity> cart;
+  final Map<ProductPackingCode, SaleRequestCartProductEntity> cart;
   final CustomerEntity? customer;
   final CustomerCovenantEntity? covenant;
   final String? observations;
   final String? instructions;
   final bool? needProcessCart;
 
+  final int? Id; //come from ec API
+  final String? SaleRequestNumber; //come from ec API
+  final SaleRequestRequestTypeEntity? RequestType; //come from ec API
+  final int? EnterpriseId; //come from ec API
+  final DateTime? DateHourOfCreation; //come from ec API
+  final double? TotalLiquid; //come from ec API
+  final double? DiscountValue; //come from ec API
+  final String? Observations; //come from ec API
+  final CustomerEntity? Customer; //come from ec API
+  final SellerEntity? Seller; //come from ec API
+  final DeliveryEntity? Delivery; //come from ec API
+  final List<FinalizationEntity>? Payments; //come from ec API
+  final AddressEntity? Address; //come from ec API
+
   const SaleRequestEntity({
     required this.cart,
-    required this.customer,
-    required this.covenant,
-    required this.observations,
-    required this.instructions,
-    required this.needProcessCart,
+    this.customer,
+    this.covenant,
+    this.observations,
+    this.instructions,
+    this.needProcessCart,
+    this.Id,
+    this.SaleRequestNumber,
+    this.RequestType,
+    this.EnterpriseId,
+    this.DateHourOfCreation,
+    this.TotalLiquid,
+    this.DiscountValue,
+    this.Observations,
+    this.Customer,
+    this.Seller,
+    this.Delivery,
+    this.Payments,
+    this.Address,
   });
 
   @override
   List<Object?> get props => [
     cart,
     customer,
+    covenant,
     observations,
     instructions,
     needProcessCart,
+    Id,
+    SaleRequestNumber,
+    RequestType,
+    EnterpriseId,
+    DateHourOfCreation,
+    TotalLiquid,
+    DiscountValue,
+    Observations,
+    Customer,
+    Seller,
+    Delivery,
+    Payments,
+    Address,
   ];
 
   factory SaleRequestEntity.empty() => const SaleRequestEntity(
@@ -38,15 +79,41 @@ class SaleRequestEntity extends Equatable {
     observations: null,
     instructions: null,
     needProcessCart: null,
+    Id: null,
+    SaleRequestNumber: null,
+    RequestType: null,
+    EnterpriseId: null,
+    DateHourOfCreation: null,
+    TotalLiquid: null,
+    DiscountValue: null,
+    Observations: null,
+    Customer: null,
+    Seller: null,
+    Delivery: null,
+    Payments: null,
+    Address: null,
   );
 
   SaleRequestEntity copyWith({
-    Map<ProductPackingCode, CartProductEntity>? cart,
+    Map<ProductPackingCode, SaleRequestCartProductEntity>? cart,
     CustomerEntity? customer,
     CustomerCovenantEntity? covenant,
     String? observations,
     String? instructions,
     bool? needProcessCart,
+    int? Id,
+    String? SaleRequestNumber,
+    SaleRequestRequestTypeEntity? RequestType,
+    int? EnterpriseId,
+    DateTime? DateHourOfCreation,
+    double? TotalLiquid,
+    double? DiscountValue,
+    String? Observations,
+    CustomerEntity? Customer,
+    SellerEntity? Seller,
+    DeliveryEntity? Delivery,
+    List<FinalizationEntity>? Payments,
+    AddressEntity? Address,
   }) => SaleRequestEntity(
     cart: cart ?? this.cart,
     customer: customer ?? this.customer,
@@ -54,6 +121,19 @@ class SaleRequestEntity extends Equatable {
     observations: observations ?? this.observations,
     instructions: instructions ?? this.instructions,
     needProcessCart: needProcessCart ?? this.needProcessCart,
+    Id: Id ?? this.Id,
+    SaleRequestNumber: SaleRequestNumber ?? this.SaleRequestNumber,
+    RequestType: RequestType ?? this.RequestType,
+    EnterpriseId: EnterpriseId ?? this.EnterpriseId,
+    DateHourOfCreation: DateHourOfCreation ?? this.DateHourOfCreation,
+    TotalLiquid: TotalLiquid ?? this.TotalLiquid,
+    DiscountValue: DiscountValue ?? this.DiscountValue,
+    Observations: Observations ?? this.Observations,
+    Customer: Customer ?? this.Customer,
+    Seller: Seller ?? this.Seller,
+    Delivery: Delivery ?? this.Delivery,
+    Payments: Payments ?? this.Payments,
+    Address: Address ?? this.Address,
   );
 
   SaleRequestEntity annulValues({
@@ -63,6 +143,19 @@ class SaleRequestEntity extends Equatable {
     bool? observations,
     bool? instructions,
     bool? needProcessCart,
+    bool? Id,
+    bool? SaleRequestNumber,
+    bool? RequestType,
+    bool? EnterpriseId,
+    bool? DateHourOfCreation,
+    bool? TotalLiquid,
+    bool? DiscountValue,
+    bool? Observations,
+    bool? Customer,
+    bool? Seller,
+    bool? Delivery,
+    bool? Payments,
+    bool? Address,
   }) => SaleRequestEntity(
     cart: cart == true ? {} : this.cart,
     customer: customer == true ? null : this.customer,
@@ -70,5 +163,22 @@ class SaleRequestEntity extends Equatable {
     observations: observations == true ? null : this.observations,
     instructions: instructions == true ? null : this.instructions,
     needProcessCart: needProcessCart == true ? null : this.needProcessCart,
+    Id: Id == true ? null : this.Id,
+    SaleRequestNumber: SaleRequestNumber == true
+        ? null
+        : this.SaleRequestNumber,
+    RequestType: RequestType == true ? null : this.RequestType,
+    EnterpriseId: EnterpriseId == true ? null : this.EnterpriseId,
+    DateHourOfCreation: DateHourOfCreation == true
+        ? null
+        : this.DateHourOfCreation,
+    TotalLiquid: TotalLiquid == true ? null : this.TotalLiquid,
+    DiscountValue: DiscountValue == true ? null : this.DiscountValue,
+    Observations: Observations == true ? null : this.Observations,
+    Customer: Customer == true ? null : this.Customer,
+    Seller: Seller == true ? null : this.Seller,
+    Delivery: Delivery == true ? null : this.Delivery,
+    Payments: Payments == true ? null : this.Payments,
+    Address: Address == true ? null : this.Address,
   );
 }

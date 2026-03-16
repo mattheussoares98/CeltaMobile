@@ -11,7 +11,10 @@ class SelectedItemUIController extends _$SelectedItemUIController {
     return SelectedItemUIState.empty();
   }
 
-  void selectProduct(int? productPackingCode, CartProductEntity? cartProduct) {
+  void selectProduct(
+    int? productPackingCode,
+    SaleRequestCartProductEntity? cartProduct,
+  ) {
     if (state.productPackingCode == productPackingCode) {
       state = SelectedItemUIState.empty();
     } else {

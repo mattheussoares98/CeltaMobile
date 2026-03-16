@@ -11,7 +11,7 @@ import '../../components/components.dart';
 import 'components.dart';
 
 class ProductItem extends ConsumerWidget {
-  final CartProductEntity cartProduct;
+  final SaleRequestCartProductEntity cartProduct;
   final VoidCallback onTap;
   final TextEditingController quantityController;
   final TextEditingController priceController;

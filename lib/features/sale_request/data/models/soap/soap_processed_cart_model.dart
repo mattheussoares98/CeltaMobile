@@ -12,7 +12,7 @@ class SoapProcessedCartModel extends Equatable {
   final int? CovenantCode;
   final String? Instructions;
   final String? Observations;
-  final List<SoapCartProductModel>? Products;
+  final List<SoapSaleRequestProductModel>? Products;
 
   const SoapProcessedCartModel({
     required this.crossId,
@@ -50,9 +50,9 @@ class SoapProcessedCartModel extends Equatable {
     Observations: json["Observations"],
     Products: json["Products"] == null
         ? null
-        : List<SoapCartProductModel>.from(
+        : List<SoapSaleRequestProductModel>.from(
             (json["Products"] as List).map(
-              (e) => SoapCartProductModel.fromJson(e),
+              (e) => SoapSaleRequestProductModel.fromJson(e),
             ),
           ),
   );
@@ -77,7 +77,7 @@ class SoapProcessedCartModel extends Equatable {
         CovenantCode: entity.CovenantCode,
         CustomerCode: entity.CustomerCode,
         Products: entity.Products?.map(
-          (e) => SoapCartProductModel.fromEntity(e),
+          (e) => SoapSaleRequestProductModel.fromEntity(e),
         ).toList(),
         Instructions: entity.Instructions,
         Observations: entity.Observations,

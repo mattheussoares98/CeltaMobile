@@ -689,7 +689,7 @@ class EntityFactory {
     needProcessCart: faker.randomGenerator.boolean(),
   );
 
-  static CartProductEntity makeCartProductEntity({
+  static SaleRequestCartProductEntity makeCartProductEntity({
     int? productPackingCode,
     PercentageOrValue? discountType,
     double? MinimumWholeQuantity,
@@ -703,7 +703,7 @@ class EntityFactory {
         : PercentageOrValue.value;
     final defaultValue = faker.randomGenerator.decimal() * 100;
 
-    return CartProductEntity(
+    return SaleRequestCartProductEntity(
       ProductPackingCode:
           productPackingCode ?? faker.randomGenerator.integer(100),
       Quantity: Quantity ?? faker.randomGenerator.decimal(),
@@ -728,7 +728,7 @@ class EntityFactory {
   }
 
   static ProcessedCartEntity makeProcessedCartEntity({
-    List<CartProductEntity>? products,
+    List<SaleRequestCartProductEntity>? products,
   }) => ProcessedCartEntity(
     crossId: faker.guid.guid(),
     EnterpriseCode: faker.randomGenerator.integer(100),

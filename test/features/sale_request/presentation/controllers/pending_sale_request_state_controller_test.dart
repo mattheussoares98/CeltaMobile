@@ -21,7 +21,7 @@ void main() {
   late MockLocalPendingSaleRequestRepository mockRepository;
   late UserSessionModel fakeSession;
   late SaleRequestEntity fakeDraft;
-  late CartProductEntity fakeProduct;
+  late SaleRequestCartProductEntity fakeProduct;
   late CustomerEntity fakeCustomer;
   late EnterpriseEntity enterpriseEntity;
   late String fakeObservations;

@@ -9,7 +9,7 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class NamePluAndDeleteButton extends ConsumerWidget {
-  final CartProductEntity cartProduct;
+  final SaleRequestCartProductEntity cartProduct;
   final int enterpriseCode;
   const NamePluAndDeleteButton({
     super.key,

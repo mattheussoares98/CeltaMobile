@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../../../core/data/models/models.dart';
 import '../../../domain/entities/entities.dart';
 
-class SoapCartProductModel extends Equatable {
+class SoapSaleRequestProductModel extends Equatable {
   final int ProductPackingCode;
   final double Quantity;
   final double Value;
@@ -19,7 +19,7 @@ class SoapCartProductModel extends Equatable {
   final String? Observations;
   final ProductModel? product;
 
-  const SoapCartProductModel({
+  const SoapSaleRequestProductModel({
     required this.ProductPackingCode,
     required this.Quantity,
     required this.Value,
@@ -54,39 +54,40 @@ class SoapCartProductModel extends Equatable {
     product,
   ];
 
-  factory SoapCartProductModel.fromJson(Map json) => SoapCartProductModel(
-    ProductPackingCode: json["ProductPackingCode"],
-    Quantity: json["Quantity"],
-    Value: json["Value"],
-    TotalLiquid: json["TotalLiquid"],
-    IncrementPercentageOrValue: json["IncrementPercentageOrValue"] == null
-        ? null
-        : PercentageOrValue.values.firstWhere(
-            (e) => e.symbol == json["IncrementPercentageOrValue"],
-          ),
-    IncrementValue: json["IncrementValue"],
-    DiscountPercentageOrValue: json["DiscountPercentageOrValue"] == null
-        ? null
-        : PercentageOrValue.values.firstWhere(
-            (e) => e.symbol == json["DiscountPercentageOrValue"],
-          ),
-    DiscountValue: json["DiscountValue"],
-    DiscountDescription: json["DiscountDescription"],
-    AutomaticDiscountPercentageOrValue:
-        json["AutomaticDiscountPercentageOrValue"] == null
-        ? null
-        : PercentageOrValue.values.firstWhere(
-            (e) => e.symbol == json["AutomaticDiscountPercentageOrValue"],
-          ),
-    AutomaticDiscountValue: json["AutomaticDiscountValue"],
-    ExpectedDeliveryDate: json["ExpectedDeliveryDate"] == null
-        ? null
-        : DateTime.parse(json["ExpectedDeliveryDate"]),
-    Observations: json["Observations"],
-    product: json["product"] == null
-        ? null
-        : ProductModel.fromJson(json["product"]),
-  );
+  factory SoapSaleRequestProductModel.fromJson(Map json) =>
+      SoapSaleRequestProductModel(
+        ProductPackingCode: json["ProductPackingCode"],
+        Quantity: json["Quantity"],
+        Value: json["Value"],
+        TotalLiquid: json["TotalLiquid"],
+        IncrementPercentageOrValue: json["IncrementPercentageOrValue"] == null
+            ? null
+            : PercentageOrValue.values.firstWhere(
+                (e) => e.symbol == json["IncrementPercentageOrValue"],
+              ),
+        IncrementValue: json["IncrementValue"],
+        DiscountPercentageOrValue: json["DiscountPercentageOrValue"] == null
+            ? null
+            : PercentageOrValue.values.firstWhere(
+                (e) => e.symbol == json["DiscountPercentageOrValue"],
+              ),
+        DiscountValue: json["DiscountValue"],
+        DiscountDescription: json["DiscountDescription"],
+        AutomaticDiscountPercentageOrValue:
+            json["AutomaticDiscountPercentageOrValue"] == null
+            ? null
+            : PercentageOrValue.values.firstWhere(
+                (e) => e.symbol == json["AutomaticDiscountPercentageOrValue"],
+              ),
+        AutomaticDiscountValue: json["AutomaticDiscountValue"],
+        ExpectedDeliveryDate: json["ExpectedDeliveryDate"] == null
+            ? null
+            : DateTime.parse(json["ExpectedDeliveryDate"]),
+        Observations: json["Observations"],
+        product: json["product"] == null
+            ? null
+            : ProductModel.fromJson(json["product"]),
+      );
 
   Map<String, dynamic> toJson() => {
     'ProductPackingCode': ProductPackingCode,
@@ -107,28 +108,29 @@ class SoapCartProductModel extends Equatable {
     'product': product?.toJson(),
   };
 
-  factory SoapCartProductModel.fromEntity(CartProductEntity entity) =>
-      SoapCartProductModel(
-        ProductPackingCode: entity.ProductPackingCode,
-        Quantity: entity.Quantity,
-        Value: entity.Value,
-        TotalLiquid: entity.TotalLiquid,
-        IncrementPercentageOrValue: entity.IncrementPercentageOrValue,
-        IncrementValue: entity.IncrementValue,
-        DiscountPercentageOrValue: entity.DiscountPercentageOrValue,
-        DiscountValue: entity.DiscountValue,
-        DiscountDescription: entity.DiscountDescription,
-        AutomaticDiscountPercentageOrValue:
-            entity.AutomaticDiscountPercentageOrValue,
-        AutomaticDiscountValue: entity.AutomaticDiscountValue,
-        ExpectedDeliveryDate: entity.ExpectedDeliveryDate,
-        Observations: entity.Observations,
-        product: entity.product == null
-            ? null
-            : ProductModel.fromEntity(entity.product!),
-      );
+  factory SoapSaleRequestProductModel.fromEntity(
+    SaleRequestCartProductEntity entity,
+  ) => SoapSaleRequestProductModel(
+    ProductPackingCode: entity.ProductPackingCode,
+    Quantity: entity.Quantity,
+    Value: entity.Value,
+    TotalLiquid: entity.TotalLiquid,
+    IncrementPercentageOrValue: entity.IncrementPercentageOrValue,
+    IncrementValue: entity.IncrementValue,
+    DiscountPercentageOrValue: entity.DiscountPercentageOrValue,
+    DiscountValue: entity.DiscountValue,
+    DiscountDescription: entity.DiscountDescription,
+    AutomaticDiscountPercentageOrValue:
+        entity.AutomaticDiscountPercentageOrValue,
+    AutomaticDiscountValue: entity.AutomaticDiscountValue,
+    ExpectedDeliveryDate: entity.ExpectedDeliveryDate,
+    Observations: entity.Observations,
+    product: entity.product == null
+        ? null
+        : ProductModel.fromEntity(entity.product!),
+  );
 
-  CartProductEntity toEntity() => CartProductEntity(
+  SaleRequestCartProductEntity toEntity() => SaleRequestCartProductEntity(
     ProductPackingCode: ProductPackingCode,
     Quantity: Quantity,
     Value: Value,

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'ec_sale_request_product_product_model.dart';
 
-class EcSaleRequestProductModel extends Equatable {
+class EcSaleRequestCartProductModel extends Equatable {
   final int Id;
   final double Quantity;
   final double UnitValue;
@@ -11,7 +11,7 @@ class EcSaleRequestProductModel extends Equatable {
   final String Observations;
   final EcSaleRequestProductProductModel Product;
 
-  const EcSaleRequestProductModel({
+  const EcSaleRequestCartProductModel({
     required this.Id,
     required this.Quantity,
     required this.UnitValue,

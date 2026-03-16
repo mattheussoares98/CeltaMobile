@@ -8,6 +8,6 @@ abstract class ISoapProcessCartDatasource {
     required int requestTypeCode,
     required int customerCode,
     required int? covenantCode,
-    required List<SoapCartProductModel> products,
+    required List<SoapSaleRequestProductModel> products,
   });
 }

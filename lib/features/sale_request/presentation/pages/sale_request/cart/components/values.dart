@@ -6,7 +6,7 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../domain/entities/entities.dart';
 
 class Values extends StatelessWidget {
-  final CartProductEntity product;
+  final SaleRequestCartProductEntity product;
   final bool isSelected;
   final VoidCallback onTap;
   const Values({

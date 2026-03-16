@@ -35,7 +35,7 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
         widget.discountController,
       ]),
       builder: (_, _) {
-        final newItem = CartProductEntity.create(
+        final newItem = SaleRequestCartProductEntity.create(
           quantity: widget.quantityController.text.toDouble() ?? 0,
           price:
               widget.priceController.text.toDouble() ??
