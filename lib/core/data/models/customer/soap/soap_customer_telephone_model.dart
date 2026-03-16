@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../../../../domain/entities/entities.dart';
 
-class CustomerTelephoneModel extends Equatable {
+class SoapCustomerTelephoneModel extends Equatable {
   final String? AreaCode;
   final String? PhoneNumber;
 
-  const CustomerTelephoneModel({
+  const SoapCustomerTelephoneModel({
     required this.AreaCode,
     required this.PhoneNumber,
   });
@@ -14,8 +14,8 @@ class CustomerTelephoneModel extends Equatable {
   @override
   List<Object?> get props => [AreaCode, PhoneNumber];
 
-  factory CustomerTelephoneModel.fromJson(Map json) {
-    return CustomerTelephoneModel(
+  factory SoapCustomerTelephoneModel.fromJson(Map json) {
+    return SoapCustomerTelephoneModel(
       AreaCode: json['AreaCode'],
       PhoneNumber: json['PhoneNumber'],
     );
@@ -26,8 +26,10 @@ class CustomerTelephoneModel extends Equatable {
     'PhoneNumber': PhoneNumber,
   };
 
-  factory CustomerTelephoneModel.fromEntity(CustomerTelephoneEntity entity) {
-    return CustomerTelephoneModel(
+  factory SoapCustomerTelephoneModel.fromEntity(
+    CustomerTelephoneEntity entity,
+  ) {
+    return SoapCustomerTelephoneModel(
       AreaCode: entity.AreaCode,
       PhoneNumber: entity.PhoneNumber,
     );

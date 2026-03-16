@@ -13,7 +13,6 @@ import 'package:celta_inventario/core/data/datasource/stock/stock.dart';
 import 'package:celta_inventario/core/data/datasource/supplier/supplier.dart';
 import 'package:celta_inventario/core/data/datasource/transfer_justification/transfer_justification.dart';
 import 'package:celta_inventario/core/data/datasource/user_session/user_session.dart';
-import 'package:celta_inventario/core/data/models/customer/customer.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -769,7 +768,7 @@ class SoapCustomerDatasourceSpy extends Mock
     ),
   );
 
-  void mockLoad(List<CustomerModel> response) =>
+  void mockLoad(List<SoapCustomerModel> response) =>
       _mockLoadCall().thenAnswer((_) async => response);
 
   void mockLoadError() => _mockLoadCall().thenThrow(Exception());

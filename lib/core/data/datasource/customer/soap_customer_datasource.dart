@@ -11,7 +11,7 @@ class SoapCustomerDatasource implements ISoapCustomerDatasource {
   SoapCustomerDatasource(this.soapRequest);
 
   @override
-  Future<List<CustomerModel>> loadCustomer({
+  Future<List<SoapCustomerModel>> loadCustomer({
     required SearchCustomerType searchType,
     required String searchValue,
     required String crossIdentity,
@@ -35,7 +35,7 @@ class SoapCustomerDatasource implements ISoapCustomerDatasource {
     );
 
     return (json.decode(value) as List)
-        .map((e) => CustomerModel.fromJson(e))
+        .map((e) => SoapCustomerModel.fromJson(e))
         .toList();
   }
 }

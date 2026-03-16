@@ -43,7 +43,7 @@ void main() {
 
   test('should call with correct params', () async {
     await sut.insertOrUpdateCustomer(
-      customer: CustomerModel.fromEntity(customer),
+      customer: SoapCustomerModel.fromEntity(customer),
       workingUrl: workingUrl,
       crossIdentity: crossIdentity,
     );
@@ -57,7 +57,7 @@ void main() {
         typeOfResult: "InsertUpdateCustomerResult",
         parameters: {
           "crossIdentity": crossIdentity,
-          "json": json.encode(CustomerModel.fromEntity(customer).toJson()),
+          "json": json.encode(SoapCustomerModel.fromEntity(customer).toJson()),
         },
       ),
     ).called(1);

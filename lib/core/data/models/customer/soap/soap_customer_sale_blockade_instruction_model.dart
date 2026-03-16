@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../../../../domain/entities/entities.dart';
 
-class CustomerSaleBlockadeInstructionModel extends Equatable {
+class SoapCustomerSaleBlockadeInstructionModel extends Equatable {
   final int Code;
   final String PersonalizedCode;
   final String LegacyCode;
   final String Description;
-  const CustomerSaleBlockadeInstructionModel({
+  const SoapCustomerSaleBlockadeInstructionModel({
     required this.Code,
     required this.PersonalizedCode,
     required this.LegacyCode,
@@ -24,9 +24,9 @@ class CustomerSaleBlockadeInstructionModel extends Equatable {
     'Description': Description,
   };
 
-  factory CustomerSaleBlockadeInstructionModel.fromJson(
+  factory SoapCustomerSaleBlockadeInstructionModel.fromJson(
     Map<String, dynamic> json,
-  ) => CustomerSaleBlockadeInstructionModel(
+  ) => SoapCustomerSaleBlockadeInstructionModel(
     Code: json['Code'] as int,
     PersonalizedCode: json['PersonalizedCode'] as String,
     LegacyCode: json['LegacyCode'] as String,
@@ -41,9 +41,9 @@ class CustomerSaleBlockadeInstructionModel extends Equatable {
         Description: Description,
       );
 
-  factory CustomerSaleBlockadeInstructionModel.fromEntity(
+  factory SoapCustomerSaleBlockadeInstructionModel.fromEntity(
     CustomerSaleBlockadeInstructionEntity entity,
-  ) => CustomerSaleBlockadeInstructionModel(
+  ) => SoapCustomerSaleBlockadeInstructionModel(
     Code: entity.Code,
     PersonalizedCode: entity.PersonalizedCode,
     LegacyCode: entity.LegacyCode,

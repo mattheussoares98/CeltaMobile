@@ -6,8 +6,8 @@ import '../models.dart';
 
 class SoapPendingSaleRequestModel extends Equatable {
   final Map<ProductPackingCode, SoapCartProductModel> cart;
-  final CustomerModel? customer;
-  final CustomerCovenantModel? covenant;
+  final SoapCustomerModel? customer;
+  final SoapCustomerCovenantModel? covenant;
   final String? observations;
   final String? instructions;
   final bool? needProcessCart;
@@ -54,10 +54,10 @@ class SoapPendingSaleRequestModel extends Equatable {
               ),
         customer: json['customer'] == null
             ? null
-            : CustomerModel.fromJson(json['customer'] as Map),
+            : SoapCustomerModel.fromJson(json['customer'] as Map),
         covenant: json['covenant'] == null
             ? null
-            : CustomerCovenantModel.fromJson(json['covenant'] as Map),
+            : SoapCustomerCovenantModel.fromJson(json['covenant'] as Map),
         observations: json['observations'],
         instructions: json['instructions'],
         needProcessCart: json['needProcessCart'],
@@ -85,10 +85,10 @@ class SoapPendingSaleRequestModel extends Equatable {
         ),
         customer: entity.customer == null
             ? null
-            : CustomerModel.fromEntity(entity.customer!),
+            : SoapCustomerModel.fromEntity(entity.customer!),
         covenant: entity.covenant == null
             ? null
-            : CustomerCovenantModel.fromEntity(entity.covenant!),
+            : SoapCustomerCovenantModel.fromEntity(entity.covenant!),
         observations: entity.observations,
         instructions: entity.instructions,
         needProcessCart: entity.needProcessCart,

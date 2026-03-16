@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
-import 'customer.dart';
+import '../../../../domain/entities/entities.dart';
+import '../customer.dart';
 
-class CustomerCovenantModel extends Equatable {
-  final CovenantInfoModel? covenant;
+class SoapCustomerCovenantModel extends Equatable {
+  final SoapCovenantInfoModel? covenant;
   final String? Matriculate;
   final double? LimitOfPurchase;
 
-  const CustomerCovenantModel({
+  const SoapCustomerCovenantModel({
     required this.covenant,
     required this.Matriculate,
     required this.LimitOfPurchase,
@@ -17,13 +17,14 @@ class CustomerCovenantModel extends Equatable {
   @override
   List<Object?> get props => [covenant, Matriculate, LimitOfPurchase];
 
-  factory CustomerCovenantModel.fromJson(Map json) => CustomerCovenantModel(
-    covenant: json['Covenant'] != null
-        ? CovenantInfoModel.fromJson(json['Covenant'])
-        : null,
-    Matriculate: json['Matriculate'],
-    LimitOfPurchase: json['LimitOfPurchase'].toDouble(),
-  );
+  factory SoapCustomerCovenantModel.fromJson(Map json) =>
+      SoapCustomerCovenantModel(
+        covenant: json['Covenant'] != null
+            ? SoapCovenantInfoModel.fromJson(json['Covenant'])
+            : null,
+        Matriculate: json['Matriculate'],
+        LimitOfPurchase: json['LimitOfPurchase'].toDouble(),
+      );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'Covenant': covenant?.toJson(),
@@ -31,10 +32,10 @@ class CustomerCovenantModel extends Equatable {
     'LimitOfPurchase': LimitOfPurchase,
   };
 
-  factory CustomerCovenantModel.fromEntity(CustomerCovenantEntity entity) =>
-      CustomerCovenantModel(
+  factory SoapCustomerCovenantModel.fromEntity(CustomerCovenantEntity entity) =>
+      SoapCustomerCovenantModel(
         covenant: entity.covenant != null
-            ? CovenantInfoModel.fromEntity(entity.covenant!)
+            ? SoapCovenantInfoModel.fromEntity(entity.covenant!)
             : null,
         Matriculate: entity.Matriculate,
         LimitOfPurchase: entity.LimitOfPurchase,

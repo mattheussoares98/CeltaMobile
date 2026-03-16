@@ -16,7 +16,7 @@ class SoapInsertUpdateCustomerRepositoryImpl
     required String crossIdentity,
   }) async {
     await datasource.insertOrUpdateCustomer(
-      customer: CustomerModel.fromEntity(customer),
+      customer: SoapCustomerModel.fromEntity(customer),
       workingUrl: workingUrl,
       crossIdentity: crossIdentity,
     );

@@ -19,7 +19,7 @@ void main() {
   late String searchValue;
   late int enterpriseCode;
   late String workingUrl;
-  late List<CustomerModel> customersModels;
+  late List<SoapCustomerModel> customersModels;
 
   void initEntities() {
     searchType =
@@ -34,7 +34,7 @@ void main() {
       EntityFactory.makeCustomerEntity(),
       EntityFactory.makeCustomerEntity(),
       EntityFactory.makeCustomerEntity(),
-    ].map((e) => CustomerModel.fromEntity(e)).toList();
+    ].map((e) => SoapCustomerModel.fromEntity(e)).toList();
   }
 
   void initSut() {

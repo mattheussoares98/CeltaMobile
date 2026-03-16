@@ -29,7 +29,7 @@ void main() {
 
   void mockSuccess() {
     soapCustomerDatasource.mockLoad(
-      customersEntities.map((e) => CustomerModel.fromEntity(e)).toList(),
+      customersEntities.map((e) => SoapCustomerModel.fromEntity(e)).toList(),
     );
   }
 

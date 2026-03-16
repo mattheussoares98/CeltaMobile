@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../../../../domain/entities/entities.dart';
 
-class CustomerSaleBlockadeModel extends Equatable {
+class SoapCustomerSaleBlockadeModel extends Equatable {
   final int Code;
   final String PersonalizedCode;
   final String LegacyCode;
@@ -10,7 +10,7 @@ class CustomerSaleBlockadeModel extends Equatable {
   final bool AllowSaleRequest;
   final bool AllowSale;
   final bool AllowSaleWithPaymentFinalizationTypeCheckOrPortion;
-  const CustomerSaleBlockadeModel({
+  const SoapCustomerSaleBlockadeModel({
     required this.Code,
     required this.PersonalizedCode,
     required this.LegacyCode,
@@ -42,8 +42,8 @@ class CustomerSaleBlockadeModel extends Equatable {
         AllowSaleWithPaymentFinalizationTypeCheckOrPortion,
   };
 
-  factory CustomerSaleBlockadeModel.fromJson(Map json) =>
-      CustomerSaleBlockadeModel(
+  factory SoapCustomerSaleBlockadeModel.fromJson(Map json) =>
+      SoapCustomerSaleBlockadeModel(
         Code: json['Code'] as int,
         PersonalizedCode: json['PersonalizedCode'] as String,
         LegacyCode: json['LegacyCode'] as String,
@@ -54,9 +54,9 @@ class CustomerSaleBlockadeModel extends Equatable {
             json['AllowSaleWithPaymentFinalizationTypeCheckOrPortion'] as bool,
       );
 
-  factory CustomerSaleBlockadeModel.fromEntity(
+  factory SoapCustomerSaleBlockadeModel.fromEntity(
     CustomerSaleBlockadeEntity entity,
-  ) => CustomerSaleBlockadeModel(
+  ) => SoapCustomerSaleBlockadeModel(
     Code: entity.Code,
     PersonalizedCode: entity.PersonalizedCode,
     LegacyCode: entity.LegacyCode,

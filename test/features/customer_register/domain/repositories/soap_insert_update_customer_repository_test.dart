@@ -43,7 +43,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(
-      CustomerModel.fromEntity(EntityFactory.makeCustomerEntity()),
+      SoapCustomerModel.fromEntity(EntityFactory.makeCustomerEntity()),
     );
   });
   test('should behave correctly on success', () async {
@@ -55,7 +55,7 @@ void main() {
 
     verify(
       () => datasource.insertOrUpdateCustomer(
-        customer: CustomerModel.fromEntity(customer),
+        customer: SoapCustomerModel.fromEntity(customer),
         workingUrl: workingUrl,
         crossIdentity: crossIdentity,
       ),

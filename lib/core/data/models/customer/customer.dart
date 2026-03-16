@@ -1,7 +1,2 @@
-export './ec_customer_model.dart';
-export 'covenant_info_model.dart';
-export 'customer_covenant_model.dart';
-export 'customer_model.dart';
-export 'customer_sale_blockade_instruction_model.dart';
-export 'customer_sale_blockade_model.dart';
-export 'customer_telephone_model.dart';
+export 'ec/ec.dart';
+export 'soap/soap.dart';

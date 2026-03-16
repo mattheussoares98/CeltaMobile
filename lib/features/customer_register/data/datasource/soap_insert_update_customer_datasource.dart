@@ -11,7 +11,7 @@ class SoapInsertUpdateCustomerDatasource
 
   @override
   Future<void> insertOrUpdateCustomer({
-    required CustomerModel customer,
+    required SoapCustomerModel customer,
     required String workingUrl,
     required String crossIdentity,
   }) async {
