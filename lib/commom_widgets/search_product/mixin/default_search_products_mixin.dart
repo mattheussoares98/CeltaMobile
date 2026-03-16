@@ -21,6 +21,8 @@ mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
       ref.invalidate(shallowProductsStateControllerProvider);
       ShallowProductsOverlay.hide();
       return;
+    } else if (controller.text.length < 3) {
+      return;
     } else {
       _showOverlay(
         layerLink: layerLink,
