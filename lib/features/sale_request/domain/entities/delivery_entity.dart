@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../core/data/models/models.dart';
+import '../../../../core/domain/entities/entities.dart';
 
 class DeliveryEntity extends Equatable {
   final String Transporter;
   final double TotalValue;
-  final EcAddressModel DeliveryAddress;
+  final AddressEntity DeliveryAddress;
 
   const DeliveryEntity({
     required this.Transporter,
