@@ -28,8 +28,8 @@ class ShallowResultsItems extends ConsumerWidget {
 
     return RepaintBoundary(
       child: Material(
-        elevation: 1,
-        shadowColor: theme.disabledColor.withAlpha(50),
+        elevation: 5,
+        shadowColor: Colors.black,
         borderRadius: BorderRadius.circular(Sizes.p8),
         clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
@@ -99,9 +99,12 @@ class _EmptyResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(Sizes.p16),
-      child: Text('Nenhum produto'.hardcoded),
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p16),
+        child: Text('Nenhum produto'.hardcoded),
+      ),
     );
   }
 }
