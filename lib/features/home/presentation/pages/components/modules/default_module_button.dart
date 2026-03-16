@@ -95,7 +95,7 @@ class DefaultModuleButton extends ConsumerWidget {
                   else
                     ModuleIcon(icon: icon),
                   const SizedBox(height: Sizes.p12),
-                  ModuleName(route: route),
+                  ModuleName(module: module),
                 ],
               ),
             ),

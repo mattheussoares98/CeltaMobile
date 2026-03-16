@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../constants/constants.dart';
-import '../../../../../../routing/routing.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 
 class ModuleName extends StatelessWidget {
-  const ModuleName({super.key, required this.route});
+  const ModuleName({super.key, required this.module});
 
-  final Routes route;
+  final Modules module;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ModuleName extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Text(
-        route.module,
+        module.description,
         textAlign: TextAlign.center,
         style: theme.textTheme.titleSmall?.copyWith(
           fontWeight: FontWeight.w600,

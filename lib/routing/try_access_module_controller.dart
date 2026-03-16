@@ -1,18 +1,18 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../commom_widgets/commom_widgets.dart';
+import '../core/domain/entities/entities.dart';
 import '../core/presentation/controllers/bs_version/bs_version.dart';
 import '../core/presentation/controllers/enterprises/enterprises.dart';
+import '../core/presentation/controllers/resource/resource.dart';
+import '../core/presentation/controllers/user_session/user_session.dart';
 import '../core/presentation/helpers/helpers.dart';
 import '../features/enterprises/presentation/controllers/controllers.dart';
 import '../localization/string_hardcoded.dart';
-import '../core/domain/entities/entities.dart';
-import '../core/presentation/controllers/resource/resource.dart';
-import '../core/presentation/controllers/user_session/user_session.dart';
 import 'routing.dart';
 
 part 'try_access_module_controller.g.dart';
@@ -91,7 +91,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
               !enabledModulesBySelectedEnterprise.enabledModules.contains(
                 module,
               ))) {
-        _showDisabledModuleMessage(context, route);
+        _showDisabledModuleMessage(context, module);
         return;
       }
 
@@ -125,12 +125,12 @@ class TryAccessModuleController extends _$TryAccessModuleController {
   }
 }
 
-void _showDisabledModuleMessage(BuildContext context, Routes route) {
+void _showDisabledModuleMessage(BuildContext context, Modules module) {
   showAlertDialog(
     context: context,
     title: 'Módulo desabilitado'.hardcoded,
     content:
-        'O módulo ${route.module.toUpperCase()} está desabilitado para essa empresa...'
+        'O módulo ${module.description.toUpperCase()} está desabilitado para essa empresa...'
             .hardcoded,
   );
 }
