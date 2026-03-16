@@ -12,7 +12,7 @@ class EcSaleRequestModel extends Equatable {
   final double TotalLiquid;
   final double DiscountValue;
   final String Observations;
-  final EcSaleRequestCustomerModel Customer;
+  final EcCustomerModel Customer;
   final EcSellerModel Seller;
   final EcSaleRequestDeliveryModel Delivery;
   final List<EcSaleRequestFinalizationModel> Payments;

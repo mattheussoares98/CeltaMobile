@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class EcSaleRequestCustomerModel extends Equatable {
+class EcCustomerModel extends Equatable {
   final int Id;
   final String Name;
   final DateTime? DateOfBirth;
@@ -11,7 +11,7 @@ class EcSaleRequestCustomerModel extends Equatable {
   final String? PhoneArea;
   final String? PhoneNumber;
 
-  const EcSaleRequestCustomerModel({
+  const EcCustomerModel({
     required this.Id,
     required this.Name,
     required this.DateOfBirth,

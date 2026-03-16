@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../models.dart';
-import 'customer.dart';
 
 class CustomerModel extends Equatable {
   final int? Code;
