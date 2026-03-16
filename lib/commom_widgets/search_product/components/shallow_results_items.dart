@@ -64,36 +64,30 @@ class _Items extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AsyncValueWidget(
-      useLinearProgressIndicator: true,
-      value: ref.watch(shallowProductsStateControllerProvider),
-      tryAgain: null,
-      data: (products) {
-        if (products == null) {
-          return const SizedBox.shrink();
-        }
-        if (products.isEmpty) {
-          return const _EmptyResult();
-        }
+    final products = ref.watch(
+      shallowProductsStateControllerProvider.select((s) => s.value),
+    );
 
-        return ListView.separated(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const ClampingScrollPhysics(),
-          itemCount: products.length,
-          separatorBuilder: (_, _) => const Divider(height: 0),
-          itemBuilder: (context, index) {
-            final product = products[index];
+    if (products?.isEmpty == true) {
+      return const _EmptyResult();
+    }
 
-            return _ShallowItemTile(
-              key: ValueKey(product.ProductPackingCode),
-              product: product,
-              onTap: () => onSelected(product),
-              packingStyle: packingStyle,
-              titleStyle: titleStyle,
-              pluStyle: pluStyle,
-            );
-          },
+    return ListView.separated(
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      physics: const ClampingScrollPhysics(),
+      itemCount: products?.length ?? 0,
+      separatorBuilder: (_, _) => const Divider(height: 0),
+      itemBuilder: (context, index) {
+        final product = products![index];
+
+        return _ShallowItemTile(
+          key: ValueKey(product.codigoInternoProEmb),
+          product: product,
+          onTap: () => onSelected(product),
+          packingStyle: packingStyle,
+          titleStyle: titleStyle,
+          pluStyle: pluStyle,
         );
       },
     );
