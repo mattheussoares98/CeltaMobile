@@ -13,7 +13,7 @@ export 'app_usage/app_usage.dart';
 export 'bs_routine.dart';
 export 'buyer/buyer.dart';
 export 'customer/customer.dart';
-export 'ec_pagination_results.dart';
+export 'ec/ec.dart';
 export 'enterprise/enterprise.dart';
 export 'selectable_item.dart';
 export 'supplier/supplier.dart';
