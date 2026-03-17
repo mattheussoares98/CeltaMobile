@@ -126,4 +126,44 @@ void main() {
       ),
     ).called(1);
   });
+  test('should call with correct end date if pass null value', () async {
+    mockDatasource.mockGet(
+      saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)).toList(),
+    );
+
+    final response = await sut.get(
+      workingUrl: workingUrl,
+      user: user,
+      accessKey: accessKey,
+      enterpriseIds: enterpriseIds,
+      endDateHourOfCreation: null,
+      startDateHourOfCreation: startDateHourOfCreation,
+    );
+
+    expect(response, saleRequests);
+
+    final captured =
+        verify(
+              () => mockDatasource.get(
+                endDateHourOfCreation: captureAny(
+                  named: 'endDateHourOfCreation',
+                ),
+                workingUrl: any(named: 'workingUrl'),
+                user: any(named: 'user'),
+                accessKey: any(named: 'accessKey'),
+                enterpriseIds: any(named: 'enterpriseIds'),
+                startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
+                mountCustomer: any(named: 'mountCustomer'),
+                mountProducts: any(named: 'mountProducts'),
+                mountRequestType: any(named: 'mountRequestType'),
+                mountSeller: any(named: 'mountSeller'),
+                personalizedCodes: any(named: 'personalizedCodes'),
+              ),
+            ).captured.first
+            as DateTime?;
+
+    expect(captured?.year, DateTime.now().year);
+    expect(captured?.month, DateTime.now().month);
+    expect(captured?.day, DateTime.now().day);
+  });
 }

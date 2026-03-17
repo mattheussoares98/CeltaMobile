@@ -21,8 +21,8 @@ void main() {
   late MockEcGetSaleRequestsRepository mockRepository;
   late UserSessionModel fakeSession;
   late int enterpriseCode;
-  late DateTime endDateHourOfCreation;
   late DateTime startDateHourOfCreation;
+  late DateTime? endDateHourOfCreation;
   late List<String>? personalizedCodes;
   late bool? mountCustomer;
   late bool? mountSeller;
@@ -42,9 +42,9 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     startDateHourOfCreation = faker.date.dateTime();
-    endDateHourOfCreation = startDateHourOfCreation.add(
-      const Duration(days: 1),
-    );
+    endDateHourOfCreation = faker.randomGenerator.boolean() == true
+        ? startDateHourOfCreation.add(const Duration(days: 1))
+        : null;
     personalizedCodes = [faker.randomGenerator.string(10)];
     mountCustomer = faker.randomGenerator.boolean() == true
         ? faker.randomGenerator.boolean()

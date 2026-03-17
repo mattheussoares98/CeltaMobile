@@ -29,8 +29,8 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
   }
 
   Future<void> load({
-    required DateTime endDateHourOfCreation,
     required DateTime startDateHourOfCreation,
+    DateTime? endDateHourOfCreation,
     List<String>? personalizedCodes,
     bool? mountCustomer,
     bool? mountSeller,

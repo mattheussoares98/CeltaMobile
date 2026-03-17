@@ -6,7 +6,7 @@ abstract class IEcGetSaleRequestsRepository {
     required String user,
     required String accessKey,
     required List<int> enterpriseIds,
-    required DateTime endDateHourOfCreation,
+    required DateTime? endDateHourOfCreation,
     required DateTime startDateHourOfCreation,
     List<String>? personalizedCodes,
     bool? mountCustomer,
