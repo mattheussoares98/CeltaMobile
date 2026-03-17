@@ -7,7 +7,7 @@ typedef ProductPackingCode = int;
 
 class SaleRequestEntity extends Equatable {
   final Map<ProductPackingCode, SaleRequestCartProductEntity> cart;
-  final CustomerEntity? customer; //TODO delete, is duplicated
+  final CustomerEntity? customer;
   final CustomerCovenantEntity? covenant;
   final String? observations;
   final String? instructions;
@@ -20,8 +20,6 @@ class SaleRequestEntity extends Equatable {
   final DateTime? DateHourOfCreation; //come from ec API
   final double? TotalLiquid; //come from ec API
   final double? DiscountValue; //come from ec API
-  final String? Observations; //come from ec API
-  final CustomerEntity? Customer; //come from ec API
   final SellerEntity? Seller; //come from ec API
   final DeliveryEntity? Delivery; //come from ec API
   final List<FinalizationEntity>? Payments; //come from ec API
@@ -41,8 +39,6 @@ class SaleRequestEntity extends Equatable {
     this.DateHourOfCreation,
     this.TotalLiquid,
     this.DiscountValue,
-    this.Observations,
-    this.Customer,
     this.Seller,
     this.Delivery,
     this.Payments,
@@ -64,8 +60,6 @@ class SaleRequestEntity extends Equatable {
     DateHourOfCreation,
     TotalLiquid,
     DiscountValue,
-    Observations,
-    Customer,
     Seller,
     Delivery,
     Payments,
@@ -86,8 +80,6 @@ class SaleRequestEntity extends Equatable {
     DateHourOfCreation: null,
     TotalLiquid: null,
     DiscountValue: null,
-    Observations: null,
-    Customer: null,
     Seller: null,
     Delivery: null,
     Payments: null,
@@ -108,8 +100,6 @@ class SaleRequestEntity extends Equatable {
     DateTime? DateHourOfCreation,
     double? TotalLiquid,
     double? DiscountValue,
-    String? Observations,
-    CustomerEntity? Customer,
     SellerEntity? Seller,
     DeliveryEntity? Delivery,
     List<FinalizationEntity>? Payments,
@@ -128,8 +118,6 @@ class SaleRequestEntity extends Equatable {
     DateHourOfCreation: DateHourOfCreation ?? this.DateHourOfCreation,
     TotalLiquid: TotalLiquid ?? this.TotalLiquid,
     DiscountValue: DiscountValue ?? this.DiscountValue,
-    Observations: Observations ?? this.Observations,
-    Customer: Customer ?? this.Customer,
     Seller: Seller ?? this.Seller,
     Delivery: Delivery ?? this.Delivery,
     Payments: Payments ?? this.Payments,
@@ -174,8 +162,6 @@ class SaleRequestEntity extends Equatable {
         : this.DateHourOfCreation,
     TotalLiquid: TotalLiquid == true ? null : this.TotalLiquid,
     DiscountValue: DiscountValue == true ? null : this.DiscountValue,
-    Observations: Observations == true ? null : this.Observations,
-    Customer: Customer == true ? null : this.Customer,
     Seller: Seller == true ? null : this.Seller,
     Delivery: Delivery == true ? null : this.Delivery,
     Payments: Payments == true ? null : this.Payments,

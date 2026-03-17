@@ -688,13 +688,11 @@ class EntityFactory {
     instructions: faker.lorem.sentence(),
     needProcessCart: faker.randomGenerator.boolean(),
     Address: makeAddressEntity(),
-    Customer: customer ?? makeCustomerEntity(),
     DateHourOfCreation: faker.date.dateTime(),
     Delivery: makeDeliveryEntity(),
     DiscountValue: faker.randomGenerator.decimal(),
     EnterpriseId: faker.randomGenerator.integer(100),
     Id: faker.randomGenerator.integer(100),
-    Observations: faker.lorem.sentence(),
     Payments: [
       makeFinalizationEntity(),
       makeFinalizationEntity(),

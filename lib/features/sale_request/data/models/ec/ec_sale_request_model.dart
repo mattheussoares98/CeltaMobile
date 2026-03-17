@@ -117,10 +117,10 @@ class EcSaleRequestModel extends Equatable {
         DateHourOfCreation: entity.DateHourOfCreation,
         TotalLiquid: entity.TotalLiquid,
         DiscountValue: entity.DiscountValue,
-        Observations: entity.Observations,
-        Customer: entity.Customer == null
+        Observations: entity.observations,
+        Customer: entity.customer == null
             ? null
-            : EcCustomerModel.fromEntity(entity.Customer!),
+            : EcCustomerModel.fromEntity(entity.customer!),
         Seller: entity.Seller == null
             ? null
             : EcSellerModel.fromEntity(entity.Seller!),
@@ -146,8 +146,8 @@ class EcSaleRequestModel extends Equatable {
     DateHourOfCreation: DateHourOfCreation,
     TotalLiquid: TotalLiquid,
     DiscountValue: DiscountValue,
-    Observations: Observations,
-    Customer: Customer?.toEntity(),
+    observations: Observations,
+    customer: Customer?.toEntity(),
     Seller: Seller?.toEntity(),
     Delivery: Delivery?.toEntity(),
     Payments: Payments?.map((e) => e.toEntity()).toList(),
