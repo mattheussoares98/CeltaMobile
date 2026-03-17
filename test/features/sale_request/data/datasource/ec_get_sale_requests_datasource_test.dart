@@ -92,7 +92,7 @@ void main() {
 
     verify(
       () => httpClient.request(
-        url: '$workingUrl/api/GetSaleRequests',
+        url: '$workingUrl/api/SaleRequests/GetSaleRequests',
         method: 'post',
         headers: {'user': user, 'accessKey': accessKey},
         body: {

@@ -21,7 +21,7 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
     bool? mountProducts,
   }) async {
     final response = await httpClient.request(
-      url: '$workingUrl/api/GetSaleRequests',
+      url: '$workingUrl/api/SaleRequests/GetSaleRequests',
       method: 'post',
       headers: {'user': user, 'accessKey': accessKey},
       body: {
