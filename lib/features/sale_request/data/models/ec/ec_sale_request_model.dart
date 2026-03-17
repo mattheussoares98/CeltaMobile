@@ -139,11 +139,9 @@ class EcSaleRequestModel extends Equatable {
     Delivery: Delivery?.toEntity(),
     Payments: Payments?.map((e) => e.toEntity()).toList(),
     Address: Address?.toEntity(),
-    cart:
-        {
-              for (var product in Products ?? <EcSaleRequestCartProductModel>[])
-                MapEntry(product.Id, product.toEntity()),
-            }
-            as Map<ProductPackingCode, SaleRequestCartProductEntity>,
+    cart: {
+      for (var product in Products ?? <EcSaleRequestCartProductModel>[])
+        product.Id: product.toEntity(),
+    },
   );
 }

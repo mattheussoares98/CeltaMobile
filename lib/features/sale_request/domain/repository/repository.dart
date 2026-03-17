@@ -1,3 +1,5 @@
+export './ec_get_sale_requests_repository_impl.dart';
+export './i_ec_get_sale_requests_repository.dart';
 export './i_generate_pdf_repository.dart';
 export './i_local_ip_print_sale_request_repository.dart';
 export './i_local_last_saved_sale_request_repository.dart';

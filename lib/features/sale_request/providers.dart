@@ -106,3 +106,10 @@ IGeneratePdfRepository GeneratePdfRepository(Ref ref) {
 IEcGetSaleRequestsDatasource ecGetSaleRequestsDatasource(Ref ref) {
   return EcGetSaleRequestsDatasource(ref.watch(httpClientProvider));
 }
+
+@riverpod
+IEcGetSaleRequestsRepository ecGetSaleRequestsRepository(Ref ref) {
+  return EcGetSaleRequestsRepositoryImpl(
+    ref.watch(ecGetSaleRequestsDatasourceProvider),
+  );
+}
