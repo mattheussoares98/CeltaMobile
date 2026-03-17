@@ -120,4 +120,23 @@ extension StringModifier on String {
 
     return str;
   }
+
+  DateTime? toDateTime({bool includeTime = false}) {
+    try {
+      final List<String> sections = includeTime ? split(' ') : [this];
+      final List<String> dateParts = sections[0].split('/');
+
+      if (dateParts.length != 3) return null;
+
+      String isoString = '${dateParts[2]}-${dateParts[1]}-${dateParts[0]}';
+
+      if (includeTime && sections.length > 1) {
+        isoString += ' ${sections[1]}';
+      }
+
+      return DateTime.parse(isoString);
+    } catch (_) {
+      return null;
+    }
+  }
 }
