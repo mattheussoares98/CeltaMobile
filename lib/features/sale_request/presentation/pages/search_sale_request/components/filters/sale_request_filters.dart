@@ -1,6 +1,7 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
@@ -18,14 +19,16 @@ class SaleRequestFilters extends ConsumerStatefulWidget {
 }
 
 class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
-  final _startController = TextEditingController();
+  static final now = DateTime.now();
+  final _startController = TextEditingController(
+    text: DateFormat('dd/MM/yyyy').format(now),
+  );
   final _endController = TextEditingController();
   final _endFocusNode = FocusNode();
   final _codeController = TextEditingController();
   final _codFocusNode = FocusNode();
   final expansibleController = ExpansibleController();
   final formKey = GlobalKey<FormState>();
-  final now = DateTime.now();
 
   @override
   void dispose() {

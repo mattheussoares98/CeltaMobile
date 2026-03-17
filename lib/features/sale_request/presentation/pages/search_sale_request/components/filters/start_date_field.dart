@@ -23,6 +23,12 @@ class StartDateField extends StatelessWidget {
     return DefaultTextFormField(
       controller: controller,
       onFieldSubmitted: (_) => onSubmit.call(),
+      onTap: () {
+        controller.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: controller.text.length,
+        );
+      },
       labelText: 'Data início'.hardcoded,
       hintText: '00/00/0000'.hardcoded,
       keyboardType: TextInputType.datetime,

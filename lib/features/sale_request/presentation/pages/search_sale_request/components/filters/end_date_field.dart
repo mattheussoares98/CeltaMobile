@@ -29,6 +29,12 @@ class EndDateField extends StatelessWidget {
       onFieldSubmitted: (_) => onSubmit.call(),
       labelText: 'Data final'.hardcoded,
       hintText: '00/00/0000'.hardcoded,
+      onTap: () {
+        controller.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: controller.text.length,
+        );
+      },
       keyboardType: TextInputType.datetime,
       inputFormatters: [DateInputFormatter()],
       suffixIcon: SelectDateIconButton(
