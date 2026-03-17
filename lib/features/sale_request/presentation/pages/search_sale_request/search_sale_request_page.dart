@@ -67,7 +67,7 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
                 itemCount: saleRequests?.collection.length ?? 0,
                 itemBuilder: (context, index) {
                   final saleRequest = saleRequests!.collection[index];
-                  return Text(saleRequest.Id!.toString());
+                  return Text(saleRequest.SaleRequestNumber.toString());
                 },
               );
             },

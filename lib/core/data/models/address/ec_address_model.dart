@@ -37,25 +37,25 @@ class EcAddressModel extends Equatable {
   ];
 
   factory EcAddressModel.fromJson(Map json) => EcAddressModel(
-    ZipCode: json['ZipCode'],
-    StreetName: json['StreetName'],
-    Number: json['Number'],
-    Complement: json['Complement'],
-    Reference: json['Reference'],
-    District: json['District'],
-    City: json['City'],
-    State: json['State'],
+    ZipCode: json['zipCode'],
+    StreetName: json['streetName'],
+    Number: json['number'],
+    Complement: json['complement'],
+    Reference: json['reference'],
+    District: json['district'],
+    City: json['city'],
+    State: BrazilStates.values.firstWhereOrNull((e) => e.uf == json['state']),
   );
 
   Map<String, dynamic> toJson() => {
-    "ZipCode": ZipCode,
-    "StreetName": StreetName,
-    "Number": Number,
-    "Complement": Complement,
-    "Reference": Reference,
-    "District": District,
-    "City": City,
-    "State": State,
+    "zipCode": ZipCode,
+    "streetName": StreetName,
+    "number": Number,
+    "complement": Complement,
+    "reference": Reference,
+    "district": District,
+    "city": City,
+    "state": State?.uf,
   };
 
   factory EcAddressModel.fromEntity(AddressEntity entity) => EcAddressModel(

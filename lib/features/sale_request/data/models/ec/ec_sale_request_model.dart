@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../../core/data/models/models.dart';
+import '../../../../../utils/utils.dart';
 import '../../../domain/entities/entities.dart';
 import 'ec.dart';
 
@@ -56,41 +57,53 @@ class EcSaleRequestModel extends Equatable {
   ];
 
   factory EcSaleRequestModel.fromJson(Map json) => EcSaleRequestModel(
-    Id: json['Id'],
-    SaleRequestNumber: json['SaleRequestNumber'],
-    RequestType: EcSaleRequestRequestTypeModel.fromJson(json['RequestType']),
-    EnterpriseId: json['EnterpriseId'],
-    DateHourOfCreation: DateTime.parse(json['DateHourOfCreation']),
-    TotalLiquid: json['TotalLiquid'],
-    DiscountValue: json['DiscountValue'],
-    Observations: json['Observations'],
-    Customer: EcCustomerModel.fromJson(json['Customer']),
-    Seller: EcSellerModel.fromJson(json['Seller']),
-    Delivery: EcSaleRequestDeliveryModel.fromJson(json['Delivery']),
-    Payments: (json['Payments'] as List)
-        .map((e) => EcSaleRequestFinalizationModel.fromJson(e))
+    Id: json['id'],
+    SaleRequestNumber: json['saleRequestNumber'],
+    RequestType: json['sequestType'] == null
+        ? null
+        : EcSaleRequestRequestTypeModel.fromJson(json['eequestType']),
+    EnterpriseId: json['enterpriseId'],
+    DateHourOfCreation: json['dateHourOfCreation'] == null
+        ? null
+        : DateTime.parse(json['dateHourOfCreation']),
+    TotalLiquid: json['totalLiquid'],
+    DiscountValue: json['discountValue']?.toString().toDouble(),
+    Observations: json['observations'],
+    Customer: json['customer'] == null
+        ? null
+        : EcCustomerModel.fromJson(json['customer']),
+    Seller: json['seller'] == null
+        ? null
+        : EcSellerModel.fromJson(json['seller']),
+    Delivery: json['delivery'] == null
+        ? null
+        : EcSaleRequestDeliveryModel.fromJson(json['delivery']),
+    Payments: (json['payments'] as List?)
+        ?.map((e) => EcSaleRequestFinalizationModel.fromJson(e))
         .toList(),
-    Products: (json['Products'] as List)
-        .map((e) => EcSaleRequestCartProductModel.fromJson(e))
+    Products: (json['products'] as List?)
+        ?.map((e) => EcSaleRequestCartProductModel.fromJson(e))
         .toList(),
-    Address: EcAddressModel.fromJson(json['Address']),
+    Address: json['address'] == null
+        ? null
+        : EcAddressModel.fromJson(json['address']),
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'Id': Id,
-    'SaleRequestNumber': SaleRequestNumber,
-    'RequestType': RequestType?.toJson(),
-    'EnterpriseId': EnterpriseId,
-    'DateHourOfCreation': DateHourOfCreation?.toIso8601String(),
-    'TotalLiquid': TotalLiquid,
-    'DiscountValue': DiscountValue,
-    'Observations': Observations,
-    'Customer': Customer?.toJson(),
-    'Seller': Seller?.toJson(),
-    'Delivery': Delivery?.toJson(),
-    'Payments': Payments?.map((e) => e.toJson()).toList(),
-    'Products': Products?.map((e) => e.toJson()).toList(),
-    'Address': Address?.toJson(),
+    'id': Id,
+    'saleRequestNumber': SaleRequestNumber,
+    'requestType': RequestType?.toJson(),
+    'enterpriseId': EnterpriseId,
+    'dateHourOfCreation': DateHourOfCreation?.toIso8601String(),
+    'totalLiquid': TotalLiquid,
+    'discountValue': DiscountValue,
+    'observations': Observations,
+    'customer': Customer?.toJson(),
+    'seller': Seller?.toJson(),
+    'delivery': Delivery?.toJson(),
+    'payments': Payments?.map((e) => e.toJson()).toList(),
+    'products': Products?.map((e) => e.toJson()).toList(),
+    'address': Address?.toJson(),
   };
 
   factory EcSaleRequestModel.fromEntity(SaleRequestEntity entity) =>

@@ -39,18 +39,18 @@ class EcCustomerModel extends Equatable {
     PhoneNumber,
   ];
 
-  factory EcCustomerModel.fromJson(Map json) => EcCustomerModel(
-    Id: json['Id'],
-    Name: json['Name'],
-    DateOfBirth: json['DateOfBirth'],
+  factory EcCustomerModel.fromJson(Map? json) => EcCustomerModel(
+    Id: json?['Id'],
+    Name: json?['Name'],
+    DateOfBirth: json?['DateOfBirth'],
     PersonType: CustomerPersonType.values.firstWhereOrNull(
-      (e) => e.shortName == json['PersonType'],
+      (e) => e.shortName == json?['PersonType'],
     ),
-    CpfCnpjNumber: json['CpfCnpjNumber'],
-    ContactName: json['ContactName'],
-    Email: json['Email'],
-    PhoneArea: json['PhoneArea'],
-    PhoneNumber: json['PhoneNumber'],
+    CpfCnpjNumber: json?['CpfCnpjNumber'],
+    ContactName: json?['ContactName'],
+    Email: json?['Email'],
+    PhoneArea: json?['PhoneArea'],
+    PhoneNumber: json?['PhoneNumber'],
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{

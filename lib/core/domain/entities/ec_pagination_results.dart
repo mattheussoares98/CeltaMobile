@@ -26,10 +26,10 @@ class EcPaginationResults<T> extends Equatable {
     T Function(dynamic) fromJsonItem,
   ) {
     return EcPaginationResults<T>(
-      totalRecords: int.parse(json['TotalRecords'].toString()),
-      recordsByPage: int.parse(json['RecordsByPage'].toString()),
-      actualPage: int.parse(json['ActualPage'].toString()),
-      collection: (json['Collection'] as List)
+      totalRecords: json['totalRecords'],
+      recordsByPage: json['recordsByPage'],
+      actualPage: json['actualPage'],
+      collection: (json['collection'] as List)
           .map((e) => fromJsonItem(e))
           .toList(),
     );
