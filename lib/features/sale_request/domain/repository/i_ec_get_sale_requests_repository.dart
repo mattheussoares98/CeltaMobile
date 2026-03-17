@@ -1,7 +1,8 @@
+import '../../../../core/domain/entities/entities.dart';
 import '../entities/entities.dart';
 
 abstract class IEcGetSaleRequestsRepository {
-  Future<List<SaleRequestEntity>> get({
+  Future<EcPaginationResults<SaleRequestEntity>> get({
     required String workingUrl,
     required String user,
     required String accessKey,

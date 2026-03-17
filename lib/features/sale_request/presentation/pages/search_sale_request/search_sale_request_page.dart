@@ -56,7 +56,7 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
             ),
             tryAgain: null,
             data: (saleRequests) {
-              if (saleRequests?.isEmpty == true) {
+              if (saleRequests?.collection.isEmpty == true) {
                 return const SliverFillRemaining(
                   child: Center(child: Text('Nenhum pedido encontrado')),
                 );
@@ -64,9 +64,9 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
 
               return ResponsiveListFlow(
                 isSliver: true,
-                itemCount: saleRequests?.length ?? 0,
+                itemCount: saleRequests?.collection.length ?? 0,
                 itemBuilder: (context, index) {
-                  final saleRequest = saleRequests![index];
+                  final saleRequest = saleRequests!.collection[index];
                   return Text(saleRequest.Id!.toString());
                 },
               );

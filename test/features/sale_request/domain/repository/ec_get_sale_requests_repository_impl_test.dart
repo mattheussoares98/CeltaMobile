@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
@@ -10,7 +11,7 @@ import '../../../../mocks/mocks.dart';
 
 class EcGetSaleRequestsDatasourceSpy extends Mock
     implements IEcGetSaleRequestsDatasource {
-  void mockGet(List<EcSaleRequestModel> response) => when(
+  void mockGet(EcPaginationResults<EcSaleRequestModel> response) => when(
     () => this.get(
       workingUrl: any(named: 'workingUrl'),
       user: any(named: 'user'),
@@ -43,7 +44,7 @@ void main() {
   late bool? mountRequestType;
   late bool? mountProducts;
 
-  late List<SaleRequestEntity> saleRequests;
+  late EcPaginationResults<SaleRequestEntity> saleRequests;
 
   setUp(() {
     mockDatasource = EcGetSaleRequestsDatasourceSpy();
@@ -75,12 +76,17 @@ void main() {
         ? faker.randomGenerator.boolean()
         : null;
 
-    saleRequests = [
-      for (var x = 0; x < 3; x++)
-        EcSaleRequestModel.fromEntity(
-          EntityFactory.makeSaleRequestEntity(),
-        ).toEntity(),
-    ];
+    saleRequests = EcPaginationResults(
+      totalRecords: faker.randomGenerator.integer(1000),
+      recordsByPage: faker.randomGenerator.integer(100),
+      actualPage: faker.randomGenerator.integer(5),
+      collection: [
+        for (var x = 0; x < 3; x++)
+          EcSaleRequestModel.fromEntity(
+            EntityFactory.makeSaleRequestEntity(),
+          ).toEntity(),
+      ],
+    );
   });
 
   setUpAll(() {
@@ -91,7 +97,7 @@ void main() {
 
   test('should behave correctly on save', () async {
     mockDatasource.mockGet(
-      saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)).toList(),
+      saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
     );
 
     final response = await sut.get(
@@ -128,7 +134,7 @@ void main() {
   });
   test('should call with correct end date if pass null value', () async {
     mockDatasource.mockGet(
-      saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)).toList(),
+      saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
     );
 
     final response = await sut.get(

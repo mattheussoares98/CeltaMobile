@@ -1,4 +1,5 @@
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
@@ -28,6 +29,7 @@ void main() {
   late bool? mountSeller;
   late bool? mountRequestType;
   late bool? mountProducts;
+  late EcPaginationResults<SaleRequestEntity> fakeRequests;
 
   setUpAll(() {
     registerFallbackValue(DateTime.now());
@@ -58,6 +60,18 @@ void main() {
     mountProducts = faker.randomGenerator.boolean() == true
         ? faker.randomGenerator.boolean()
         : null;
+
+    fakeRequests = EcPaginationResults(
+      totalRecords: faker.randomGenerator.integer(1000),
+      recordsByPage: faker.randomGenerator.integer(100),
+      actualPage: faker.randomGenerator.integer(5),
+      collection: [
+        for (var x = 0; x < 3; x++)
+          EcSaleRequestModel.fromEntity(
+            EntityFactory.makeSaleRequestEntity(),
+          ).toEntity(),
+      ],
+    );
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -87,11 +101,6 @@ void main() {
       'load should update state to data and call repository with correct params',
       () async {
         // ARRANGE
-        final fakeRequests = [
-          EntityFactory.makeSaleRequestEntity(),
-          EntityFactory.makeSaleRequestEntity(),
-          EntityFactory.makeSaleRequestEntity(),
-        ].map((e) => EcSaleRequestModel.fromEntity(e).toEntity()).toList();
 
         when(
           () => mockRepository.get(
@@ -115,7 +124,7 @@ void main() {
           saleRequestsStateControllerProvider(enterpriseCode).future,
         );
 
-        final states = <AsyncValue<List<SaleRequestEntity>?>>[];
+        final states = <AsyncValue<EcPaginationResults<SaleRequestEntity>?>>[];
         container.listen(
           saleRequestsStateControllerProvider(enterpriseCode),
           (_, next) => states.add(next),
@@ -137,7 +146,7 @@ void main() {
         // ASSERT
         expect(states, [
           isA<AsyncLoading>(),
-          AsyncData<List<SaleRequestEntity>?>(fakeRequests),
+          AsyncData<EcPaginationResults<SaleRequestEntity>?>(fakeRequests),
         ]);
 
         verify(
