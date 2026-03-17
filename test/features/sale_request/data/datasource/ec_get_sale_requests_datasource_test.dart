@@ -12,9 +12,7 @@ void main() {
 
   late HttpClientSpy httpClient;
 
-  late String workingUrl;
-  late String user;
-  late String accessKey;
+  late EcRequestParams params;
   late List<int> enterpriseIds;
   late DateTime endDateHourOfCreation;
   late DateTime startDateHourOfCreation;
@@ -48,10 +46,7 @@ void main() {
       ],
     );
 
-    workingUrl = faker.internet.httpsUrl();
-
-    user = faker.person.name();
-    accessKey = faker.randomGenerator.string(10);
+    params = EntityFactory.makeEcRequestParams();
     enterpriseIds = [1, 2, 3];
     startDateHourOfCreation = faker.date.dateTime();
     endDateHourOfCreation = startDateHourOfCreation.add(
@@ -81,9 +76,7 @@ void main() {
 
   test('should call with correct params', () async {
     final response = await sut.get(
-      workingUrl: workingUrl,
-      user: user,
-      accessKey: accessKey,
+      params: params,
       enterpriseIds: enterpriseIds,
       endDateHourOfCreation: endDateHourOfCreation,
       startDateHourOfCreation: startDateHourOfCreation,
@@ -98,9 +91,9 @@ void main() {
 
     verify(
       () => httpClient.request(
-        url: '$workingUrl/api/SaleRequests/GetSaleRequests',
+        url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
         method: 'post',
-        headers: {'user': user, 'accessKey': accessKey},
+        headers: params.toHeaders(),
         body: {
           'enterpriseIds': enterpriseIds,
           'endDateHourOfCreation': endDateHourOfCreation.toIso8601String(),
@@ -110,6 +103,7 @@ void main() {
           'mountSeller': ?mountSeller,
           'mountRequestType': ?mountRequestType,
           'mountProducts': ?mountProducts,
+          ...params.toMap(),
         },
       ),
     ).called(1);

@@ -4,8 +4,8 @@ class EcRequestParams extends Equatable {
   final String workingUrl;
   final String user;
   final String accessKey;
-  final int actualPage;
-  final int recordsByPage;
+  final int? actualPage;
+  final int? recordsByPage;
 
   const EcRequestParams({
     required this.workingUrl,

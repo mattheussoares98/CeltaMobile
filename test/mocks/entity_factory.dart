@@ -1032,4 +1032,16 @@ class EntityFactory {
     requestCount: faker.randomGenerator.integer(100),
     enterpriseName: faker.company.name(),
   );
+
+  static EcRequestParams makeEcRequestParams({
+    String? workingUrl,
+    String? user,
+    String? accessKey,
+  }) => EcRequestParams(
+    workingUrl: workingUrl ?? faker.internet.httpsUrl(),
+    user: user ?? faker.internet.userName(),
+    accessKey: accessKey ?? faker.guid.guid(),
+    actualPage: faker.randomGenerator.integer(100),
+    recordsByPage: faker.randomGenerator.integer(100),
+  );
 }

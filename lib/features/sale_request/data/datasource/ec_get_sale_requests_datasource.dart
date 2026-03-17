@@ -9,9 +9,7 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
 
   @override
   Future<EcPaginationResults<EcSaleRequestModel>> get({
-    required String workingUrl,
-    required String user,
-    required String accessKey,
+    required EcRequestParams params,
     required List<int> enterpriseIds,
     required DateTime endDateHourOfCreation,
     required DateTime startDateHourOfCreation,
@@ -22,9 +20,9 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
     bool? mountProducts,
   }) async {
     final response = await httpClient.request(
-      url: '$workingUrl/api/SaleRequests/GetSaleRequests',
+      url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
       method: 'post',
-      headers: {'user': user, 'accessKey': accessKey},
+      headers: params.toHeaders(),
       body: {
         'enterpriseIds': enterpriseIds,
         'endDateHourOfCreation': endDateHourOfCreation.toIso8601String(),
@@ -34,6 +32,7 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
         'mountSeller': ?mountSeller,
         'mountRequestType': ?mountRequestType,
         'mountProducts': ?mountProducts,
+        ...params.toMap(),
       },
     );
 

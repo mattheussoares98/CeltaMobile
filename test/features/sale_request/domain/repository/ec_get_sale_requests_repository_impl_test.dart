@@ -13,9 +13,7 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
     implements IEcGetSaleRequestsDatasource {
   void mockGet(EcPaginationResults<EcSaleRequestModel> response) => when(
     () => this.get(
-      workingUrl: any(named: 'workingUrl'),
-      user: any(named: 'user'),
-      accessKey: any(named: 'accessKey'),
+      params: any(named: 'params'),
       enterpriseIds: any(named: 'enterpriseIds'),
       endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
       startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
@@ -32,9 +30,7 @@ void main() {
   late IEcGetSaleRequestsRepository sut;
   late EcGetSaleRequestsDatasourceSpy mockDatasource;
 
-  late String workingUrl;
-  late String user;
-  late String accessKey;
+  late EcRequestParams params;
   late List<int> enterpriseIds;
   late DateTime endDateHourOfCreation;
   late DateTime startDateHourOfCreation;
@@ -50,9 +46,7 @@ void main() {
     mockDatasource = EcGetSaleRequestsDatasourceSpy();
     sut = EcGetSaleRequestsRepositoryImpl(mockDatasource);
 
-    workingUrl = faker.internet.httpsUrl();
-    user = faker.internet.userName();
-    accessKey = faker.guid.guid();
+    params = EntityFactory.makeEcRequestParams();
     enterpriseIds = [1, 2, 3];
     startDateHourOfCreation = faker.date.dateTime();
     endDateHourOfCreation = startDateHourOfCreation.add(
@@ -93,6 +87,7 @@ void main() {
     registerFallbackValue(
       SoapSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
     );
+    registerFallbackValue(EntityFactory.makeEcRequestParams());
   });
 
   test('should behave correctly on save', () async {
@@ -101,9 +96,7 @@ void main() {
     );
 
     final response = await sut.get(
-      workingUrl: workingUrl,
-      user: user,
-      accessKey: accessKey,
+      params: params,
       enterpriseIds: enterpriseIds,
       endDateHourOfCreation: endDateHourOfCreation,
       startDateHourOfCreation: startDateHourOfCreation,
@@ -118,9 +111,7 @@ void main() {
 
     verify(
       () => mockDatasource.get(
-        workingUrl: workingUrl,
-        user: user,
-        accessKey: accessKey,
+        params: params,
         enterpriseIds: enterpriseIds,
         endDateHourOfCreation: endDateHourOfCreation,
         startDateHourOfCreation: startDateHourOfCreation,
@@ -138,9 +129,7 @@ void main() {
     );
 
     final response = await sut.get(
-      workingUrl: workingUrl,
-      user: user,
-      accessKey: accessKey,
+      params: params,
       enterpriseIds: enterpriseIds,
       endDateHourOfCreation: null,
       startDateHourOfCreation: startDateHourOfCreation,
@@ -154,9 +143,7 @@ void main() {
                 endDateHourOfCreation: captureAny(
                   named: 'endDateHourOfCreation',
                 ),
-                workingUrl: any(named: 'workingUrl'),
-                user: any(named: 'user'),
-                accessKey: any(named: 'accessKey'),
+                params: any(named: 'params'),
                 enterpriseIds: any(named: 'enterpriseIds'),
                 startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
                 mountCustomer: any(named: 'mountCustomer'),

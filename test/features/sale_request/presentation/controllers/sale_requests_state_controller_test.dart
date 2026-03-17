@@ -30,9 +30,11 @@ void main() {
   late bool? mountRequestType;
   late bool? mountProducts;
   late EcPaginationResults<SaleRequestEntity> fakeRequests;
+  late EcRequestParams params;
 
   setUpAll(() {
     registerFallbackValue(DateTime.now());
+    registerFallbackValue(EntityFactory.makeEcRequestParams());
   });
 
   setUp(() {
@@ -72,6 +74,18 @@ void main() {
           ).toEntity(),
       ],
     );
+
+    params = EcRequestParams(
+      workingUrl: fakeSession.enterprise!.workingUrl!,
+      user: fakeSession.user.name!,
+      accessKey: fakeSession.user.AccessKey!,
+      actualPage: faker.randomGenerator.boolean() == true
+          ? faker.randomGenerator.integer(100)
+          : null,
+      recordsByPage: faker.randomGenerator.boolean() == true
+          ? faker.randomGenerator.integer(100)
+          : null,
+    );
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -104,9 +118,7 @@ void main() {
 
         when(
           () => mockRepository.get(
-            workingUrl: any(named: 'workingUrl'),
-            user: any(named: 'user'),
-            accessKey: any(named: 'accessKey'),
+            params: any(named: 'params'),
             enterpriseIds: any(named: 'enterpriseIds'),
             endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
             startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
@@ -141,6 +153,8 @@ void main() {
               mountSeller: mountSeller,
               mountRequestType: mountRequestType,
               mountProducts: mountProducts,
+              actualPage: params.actualPage,
+              recordsByPage: params.recordsByPage,
             );
 
         // ASSERT
@@ -151,9 +165,7 @@ void main() {
 
         verify(
           () => mockRepository.get(
-            workingUrl: fakeSession.enterprise!.workingUrl!,
-            user: fakeSession.user.name!,
-            accessKey: fakeSession.user.AccessKey!,
+            params: params,
             enterpriseIds: [enterpriseCode],
             endDateHourOfCreation: endDateHourOfCreation,
             startDateHourOfCreation: startDateHourOfCreation,
@@ -173,9 +185,7 @@ void main() {
 
       when(
         () => mockRepository.get(
-          workingUrl: any(named: 'workingUrl'),
-          user: any(named: 'user'),
-          accessKey: any(named: 'accessKey'),
+          params: any(named: 'params'),
           enterpriseIds: any(named: 'enterpriseIds'),
           endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
           startDateHourOfCreation: any(named: 'startDateHourOfCreation'),

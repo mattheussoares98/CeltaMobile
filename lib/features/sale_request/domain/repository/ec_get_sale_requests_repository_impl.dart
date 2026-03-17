@@ -9,9 +9,7 @@ class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
 
   @override
   Future<EcPaginationResults<SaleRequestEntity>> get({
-    required String workingUrl,
-    required String user,
-    required String accessKey,
+    required EcRequestParams params,
     required List<int> enterpriseIds,
     required DateTime startDateHourOfCreation,
     required DateTime? endDateHourOfCreation,
@@ -22,9 +20,7 @@ class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
     bool? mountProducts,
   }) async {
     final response = await datasource.get(
-      workingUrl: workingUrl,
-      user: user,
-      accessKey: accessKey,
+      params: params,
       enterpriseIds: enterpriseIds,
       endDateHourOfCreation: endDateHourOfCreation ?? DateTime.now(),
       startDateHourOfCreation: startDateHourOfCreation,

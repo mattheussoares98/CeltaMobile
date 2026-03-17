@@ -39,6 +39,8 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
     bool? mountSeller,
     bool? mountRequestType,
     bool? mountProducts,
+    int? actualPage,
+    int? recordsByPage,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -49,9 +51,13 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
       return await ref
           .read(ecGetSaleRequestsRepositoryProvider)
           .get(
-            workingUrl: validatedUser!.enterprise!.workingUrl!,
-            user: validatedUser.user.name!,
-            accessKey: validatedUser.user.AccessKey!,
+            params: EcRequestParams(
+              workingUrl: validatedUser!.enterprise!.workingUrl!,
+              user: validatedUser.user.name!,
+              accessKey: validatedUser.user.AccessKey!,
+              actualPage: actualPage,
+              recordsByPage: recordsByPage,
+            ),
             enterpriseIds: [enterpriseCode],
             endDateHourOfCreation: endDateHourOfCreation,
             startDateHourOfCreation: startDateHourOfCreation,

@@ -3,9 +3,7 @@ import '../entities/entities.dart';
 
 abstract class IEcGetSaleRequestsRepository {
   Future<EcPaginationResults<SaleRequestEntity>> get({
-    required String workingUrl,
-    required String user,
-    required String accessKey,
+    required EcRequestParams params,
     required List<int> enterpriseIds,
     required DateTime? endDateHourOfCreation,
     required DateTime startDateHourOfCreation,
