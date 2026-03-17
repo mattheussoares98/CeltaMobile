@@ -41,16 +41,14 @@ void main() {
     enterpriseCode = faker.randomGenerator.integer(100);
     requestTypeCode = faker.randomGenerator.integer(100);
     saleRequestNumber = faker.randomGenerator.integer(100).toString();
-    saleRequest = EntityFactory.makePendingSaleRequestEntity();
+    saleRequest = EntityFactory.makeSaleRequestEntity();
 
     mockDatasource.mockSave(saleRequestNumber);
   });
 
   setUpAll(() {
     registerFallbackValue(
-      SoapPendingSaleRequestModel.fromEntity(
-        EntityFactory.makePendingSaleRequestEntity(),
-      ),
+      SoapSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
     );
   });
 
@@ -71,7 +69,7 @@ void main() {
         crossIdentity: crossId,
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,
-        saleRequest: SoapPendingSaleRequestModel.fromEntity(
+        saleRequest: SoapSaleRequestModel.fromEntity(
           saleRequest.copyWith(
             cart: saleRequest.cart.map(
               (key, value) => MapEntry(

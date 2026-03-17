@@ -8,50 +8,46 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class LocalPendingSaleRequestDatasourceSpy extends Mock
-    implements ILocalPendingSaleRequestDatasource {
-  LocalPendingSaleRequestDatasourceSpy() {
+class LocalSaleRequestDatasourceSpy extends Mock
+    implements ILocalSaleRequestDatasource {
+  LocalSaleRequestDatasourceSpy() {
     when(() => this.save(any(), any())).thenAnswer((_) async {});
     when(() => this.clear(any())).thenAnswer((_) async {});
   }
 
-  void mockLoad(SoapPendingSaleRequestModel? response) =>
+  void mockLoad(SoapSaleRequestModel? response) =>
       when(() => this.load(any())).thenAnswer((_) async => response);
 }
 
 void main() {
-  late ILocalPendingSaleRequestRepository sut;
-  late LocalPendingSaleRequestDatasourceSpy mockDatasource;
+  late ILocalSaleRequestRepository sut;
+  late LocalSaleRequestDatasourceSpy mockDatasource;
 
-  late SaleRequestEntity pendingSaleRequestEntity;
+  late SaleRequestEntity saleRequestEntity;
   late int enterpriseCode;
 
   setUp(() {
-    mockDatasource = LocalPendingSaleRequestDatasourceSpy();
-    sut = LocalPendingSaleRequestRepositoryImpl(mockDatasource);
+    mockDatasource = LocalSaleRequestDatasourceSpy();
+    sut = LocalSaleRequestRepositoryImpl(mockDatasource);
 
-    pendingSaleRequestEntity = EntityFactory.makePendingSaleRequestEntity();
+    saleRequestEntity = EntityFactory.makeSaleRequestEntity();
     enterpriseCode = faker.randomGenerator.integer(100);
 
-    mockDatasource.mockLoad(
-      SoapPendingSaleRequestModel.fromEntity(pendingSaleRequestEntity),
-    );
+    mockDatasource.mockLoad(SoapSaleRequestModel.fromEntity(saleRequestEntity));
   });
 
   setUpAll(() {
     registerFallbackValue(
-      SoapPendingSaleRequestModel.fromEntity(
-        EntityFactory.makePendingSaleRequestEntity(),
-      ),
+      SoapSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
     );
   });
 
   test('should behave correctly on save', () async {
-    await sut.save(pendingSaleRequestEntity, enterpriseCode);
+    await sut.save(saleRequestEntity, enterpriseCode);
 
     verify(
       () => mockDatasource.save(
-        SoapPendingSaleRequestModel.fromEntity(pendingSaleRequestEntity),
+        SoapSaleRequestModel.fromEntity(saleRequestEntity),
         enterpriseCode,
       ),
     ).called(1);
@@ -60,7 +56,7 @@ void main() {
   test('should behave correctly on load', () async {
     final response = await sut.load(enterpriseCode);
 
-    expect(response, pendingSaleRequestEntity);
+    expect(response, saleRequestEntity);
 
     verify(() => mockDatasource.load(enterpriseCode)).called(1);
   });

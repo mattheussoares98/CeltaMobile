@@ -4,7 +4,7 @@ import '../../../../../core/data/models/customer/customer.dart';
 import '../../../domain/entities/entities.dart';
 import '../models.dart';
 
-class SoapPendingSaleRequestModel extends Equatable {
+class SoapSaleRequestModel extends Equatable {
   final Map<ProductPackingCode, SoapSaleRequestProductModel> cart;
   final SoapCustomerModel? customer;
   final SoapCustomerCovenantModel? covenant;
@@ -12,7 +12,7 @@ class SoapPendingSaleRequestModel extends Equatable {
   final String? instructions;
   final bool? needProcessCart;
 
-  const SoapPendingSaleRequestModel({
+  const SoapSaleRequestModel({
     required this.cart,
     required this.customer,
     required this.covenant,
@@ -42,26 +42,25 @@ class SoapPendingSaleRequestModel extends Equatable {
     'needProcessCart': needProcessCart,
   };
 
-  factory SoapPendingSaleRequestModel.fromJson(Map json) =>
-      SoapPendingSaleRequestModel(
-        cart: json['cart'] == null
-            ? {}
-            : (json['cart'] as Map).map(
-                (key, value) => MapEntry(
-                  int.parse(key.toString()),
-                  SoapSaleRequestProductModel.fromJson(value as Map),
-                ),
-              ),
-        customer: json['customer'] == null
-            ? null
-            : SoapCustomerModel.fromJson(json['customer'] as Map),
-        covenant: json['covenant'] == null
-            ? null
-            : SoapCustomerCovenantModel.fromJson(json['covenant'] as Map),
-        observations: json['observations'],
-        instructions: json['instructions'],
-        needProcessCart: json['needProcessCart'],
-      );
+  factory SoapSaleRequestModel.fromJson(Map json) => SoapSaleRequestModel(
+    cart: json['cart'] == null
+        ? {}
+        : (json['cart'] as Map).map(
+            (key, value) => MapEntry(
+              int.parse(key.toString()),
+              SoapSaleRequestProductModel.fromJson(value as Map),
+            ),
+          ),
+    customer: json['customer'] == null
+        ? null
+        : SoapCustomerModel.fromJson(json['customer'] as Map),
+    covenant: json['covenant'] == null
+        ? null
+        : SoapCustomerCovenantModel.fromJson(json['covenant'] as Map),
+    observations: json['observations'],
+    instructions: json['instructions'],
+    needProcessCart: json['needProcessCart'],
+  );
 
   SaleRequestEntity toEntity() => SaleRequestEntity(
     cart: cart.map(
@@ -75,8 +74,8 @@ class SoapPendingSaleRequestModel extends Equatable {
     needProcessCart: needProcessCart,
   );
 
-  static SoapPendingSaleRequestModel fromEntity(SaleRequestEntity entity) =>
-      SoapPendingSaleRequestModel(
+  static SoapSaleRequestModel fromEntity(SaleRequestEntity entity) =>
+      SoapSaleRequestModel(
         cart: entity.cart.map(
           (packingCode, cartProductEntity) => MapEntry(
             packingCode,

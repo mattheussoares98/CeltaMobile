@@ -25,7 +25,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(
       LastSavedSaleRequestEntity(
-        pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
+        saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
         saleRequestNumber: faker.randomGenerator.integer(100).toString(),
       ),
     );
@@ -34,7 +34,7 @@ void main() {
     mockLocalLastSavedSaleRequestRepository =
         MockLocalLastSavedSaleRequestRepository();
     fakeRequest = LastSavedSaleRequestEntity(
-      pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
+      saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
       saleRequestNumber: faker.randomGenerator.integer(100).toString(),
     );
     fakeEnterpriseCode = faker.randomGenerator.integer(100);

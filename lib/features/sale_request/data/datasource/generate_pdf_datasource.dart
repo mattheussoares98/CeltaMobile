@@ -37,11 +37,11 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
         build: (context) => [
           _buildCustomerInfo(saleRequest),
           pw.SizedBox(height: 10),
-          if (saleRequest.pendingSaleRequestModel.cart.values.isNotEmpty)
+          if (saleRequest.saleRequestModel.cart.values.isNotEmpty)
             _buildProductTable(
-              saleRequest.pendingSaleRequestModel.cart.values.toList(),
+              saleRequest.saleRequestModel.cart.values.toList(),
             ),
-          if (saleRequest.pendingSaleRequestModel.cart.values.isEmpty)
+          if (saleRequest.saleRequestModel.cart.values.isEmpty)
             pw.Center(child: pw.Text('Nenhum produto no carrinho.')),
         ],
       ),
@@ -58,7 +58,7 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.end,
         children: [
-          if (saleRequest.pendingSaleRequestModel.needProcessCart == true) ...[
+          if (saleRequest.saleRequestModel.needProcessCart == true) ...[
             pw.Text(
               'Nesse pedido, não calculou os preços de acordo com as regras do BS',
               style: pw.TextStyle(
@@ -98,23 +98,21 @@ class GeneratePdfDatasource implements IGeneratePdfDatasource {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
-          'Cliente: ${saleRequest.pendingSaleRequestModel.customer?.Name ?? "Não informado"}',
+          'Cliente: ${saleRequest.saleRequestModel.customer?.Name ?? "Não informado"}',
           style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14),
         ),
         pw.SizedBox(height: 12),
-        if (saleRequest.pendingSaleRequestModel.instructions?.isNotEmpty ??
-            false) ...[
+        if (saleRequest.saleRequestModel.instructions?.isNotEmpty ?? false) ...[
           _buildInfoSection(
             'Instruções:',
-            saleRequest.pendingSaleRequestModel.instructions!,
+            saleRequest.saleRequestModel.instructions!,
           ),
           pw.SizedBox(height: 8),
         ],
-        if (saleRequest.pendingSaleRequestModel.observations?.isNotEmpty ??
-            false)
+        if (saleRequest.saleRequestModel.observations?.isNotEmpty ?? false)
           _buildInfoSection(
             'Observações:',
-            saleRequest.pendingSaleRequestModel.observations!,
+            saleRequest.saleRequestModel.observations!,
           ),
       ],
     );

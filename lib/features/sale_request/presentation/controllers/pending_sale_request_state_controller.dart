@@ -12,11 +12,10 @@ import '../../providers.dart';
 part 'pending_sale_request_state_controller.g.dart';
 
 @riverpod
-class PendingSaleRequestStateController
-    extends _$PendingSaleRequestStateController {
+class SaleRequestStateController extends _$SaleRequestStateController {
   @override
   Future<SaleRequestEntity> build(int enterpriseCode) async {
-    final repository = ref.watch(localPendingSaleRequestRepositoryProvider);
+    final repository = ref.watch(localSaleRequestRepositoryProvider);
     final localData = await repository.load(enterpriseCode);
 
     return (localData ?? SaleRequestEntity.empty()).copyWith(
@@ -24,8 +23,8 @@ class PendingSaleRequestStateController
     );
   }
 
-  ILocalPendingSaleRequestRepository get _repository =>
-      ref.read(localPendingSaleRequestRepositoryProvider);
+  ILocalSaleRequestRepository get _repository =>
+      ref.read(localSaleRequestRepositoryProvider);
 
   Future<void> _updateAndSave(
     SaleRequestEntity newState, {

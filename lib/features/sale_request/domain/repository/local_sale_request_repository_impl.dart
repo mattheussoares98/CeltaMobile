@@ -3,10 +3,9 @@ import '../../data/models/models.dart';
 import '../entities/entities.dart';
 import 'repository.dart';
 
-class LocalPendingSaleRequestRepositoryImpl
-    implements ILocalPendingSaleRequestRepository {
-  final ILocalPendingSaleRequestDatasource datasource;
-  LocalPendingSaleRequestRepositoryImpl(this.datasource);
+class LocalSaleRequestRepositoryImpl implements ILocalSaleRequestRepository {
+  final ILocalSaleRequestDatasource datasource;
+  LocalSaleRequestRepositoryImpl(this.datasource);
 
   @override
   Future<SaleRequestEntity?> load(int enterpriseCode) async {
@@ -18,7 +17,7 @@ class LocalPendingSaleRequestRepositoryImpl
   @override
   Future<void> save(SaleRequestEntity value, int enterpriseCode) async {
     await datasource.save(
-      SoapPendingSaleRequestModel.fromEntity(value),
+      SoapSaleRequestModel.fromEntity(value),
       enterpriseCode,
     );
   }

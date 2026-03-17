@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late ILocalPendingSaleRequestDatasource sut;
+  late ILocalSaleRequestDatasource sut;
 
   late MockBox hive;
 
@@ -21,7 +21,7 @@ void main() {
   late String databaseKey;
 
   void initSut() {
-    sut = LocalPendingSaleRequestDatasource(hive);
+    sut = LocalSaleRequestDatasource(hive);
   }
 
   void initInjections() {
@@ -29,10 +29,7 @@ void main() {
   }
 
   void mockSuccess() {
-    hive.mockGet(
-      databaseKey,
-      SoapPendingSaleRequestModel.fromEntity(entity).toJson(),
-    );
+    hive.mockGet(databaseKey, SoapSaleRequestModel.fromEntity(entity).toJson());
   }
 
   void initEntities() {
@@ -64,15 +61,12 @@ void main() {
 
   group('Save', () {
     test('Should behave correctly', () async {
-      await sut.save(
-        SoapPendingSaleRequestModel.fromEntity(entity),
-        enterpriseCode,
-      );
+      await sut.save(SoapSaleRequestModel.fromEntity(entity), enterpriseCode);
 
       verify(
         () => hive.put(
           databaseKey,
-          SoapPendingSaleRequestModel.fromEntity(entity).toJson(),
+          SoapSaleRequestModel.fromEntity(entity).toJson(),
         ),
       ).called(1);
     });
@@ -81,7 +75,7 @@ void main() {
     test('Should return correct value when is not null', () async {
       expect(
         await sut.load(enterpriseCode),
-        SoapPendingSaleRequestModel.fromEntity(entity),
+        SoapSaleRequestModel.fromEntity(entity),
       );
 
       verify(() => hive.get(databaseKey)).called(1);

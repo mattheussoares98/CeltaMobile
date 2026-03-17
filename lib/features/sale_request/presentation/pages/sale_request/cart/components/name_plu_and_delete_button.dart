@@ -56,7 +56,7 @@ class NamePluAndDeleteButton extends ConsumerWidget {
                   onOkPressed: () {
                     ref
                         .read(
-                          pendingSaleRequestStateControllerProvider(
+                          saleRequestStateControllerProvider(
                             enterpriseCode,
                           ).notifier,
                         )

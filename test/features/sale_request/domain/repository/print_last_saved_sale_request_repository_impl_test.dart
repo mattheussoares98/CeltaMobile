@@ -31,7 +31,7 @@ void main() {
   setUp(() {
     printed = true;
     saleRequest = LastSavedSaleRequestEntity(
-      pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
+      saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
       saleRequestNumber: faker.randomGenerator.integer(100).toString(),
     );
     ip = faker.internet.ipv4Address();
@@ -46,8 +46,7 @@ void main() {
     registerFallbackValue(
       SoapLastSavedSaleRequestModel.fromEntity(
         LastSavedSaleRequestEntity(
-          pendingSaleRequestEntity:
-              EntityFactory.makePendingSaleRequestEntity(),
+          saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
           saleRequestNumber: faker.randomGenerator.integer(100).toString(),
         ),
       ),

@@ -99,7 +99,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
   @override
   Widget build(BuildContext context) {
     final cartProduct = ref.watch(
-      pendingSaleRequestStateControllerProvider(
+      saleRequestStateControllerProvider(
         widget.enterpriseCode,
       ).select((state) => state.value?.cart[widget.product.ProductPackingCode]),
     );
@@ -128,7 +128,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
           : () {
               ref
                   .read(
-                    pendingSaleRequestStateControllerProvider(
+                    saleRequestStateControllerProvider(
                       widget.enterpriseCode,
                     ).notifier,
                   )

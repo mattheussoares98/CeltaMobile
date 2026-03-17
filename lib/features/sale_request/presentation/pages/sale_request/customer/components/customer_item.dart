@@ -20,7 +20,7 @@ class CustomerItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCustomer = ref.watch(
-      pendingSaleRequestStateControllerProvider(
+      saleRequestStateControllerProvider(
         enterpriseCode,
       ).select((s) => s.value?.customer),
     );
@@ -35,9 +35,7 @@ class CustomerItem extends ConsumerWidget {
             enterpriseCode: enterpriseCode,
             changeSelectedCustomer: () => ref
                 .read(
-                  pendingSaleRequestStateControllerProvider(
-                    enterpriseCode,
-                  ).notifier,
+                  saleRequestStateControllerProvider(enterpriseCode).notifier,
                 )
                 .changeCustomer(customer),
           ),

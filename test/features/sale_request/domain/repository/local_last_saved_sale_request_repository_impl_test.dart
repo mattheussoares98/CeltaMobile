@@ -35,7 +35,7 @@ void main() {
     sut = LocalLastSavedSaleRequestRepositoryImpl(mockDatasource);
 
     lastSavedSaleRequestEntity = LastSavedSaleRequestEntity(
-      pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
+      saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
       saleRequestNumber: faker.randomGenerator.integer(100).toString(),
     );
     enterpriseCode = faker.randomGenerator.integer(100);
@@ -49,8 +49,7 @@ void main() {
     registerFallbackValue(
       SoapLastSavedSaleRequestModel.fromEntity(
         LastSavedSaleRequestEntity(
-          pendingSaleRequestEntity:
-              EntityFactory.makePendingSaleRequestEntity(),
+          saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
           saleRequestNumber: faker.randomGenerator.integer(100).toString(),
         ),
       ),

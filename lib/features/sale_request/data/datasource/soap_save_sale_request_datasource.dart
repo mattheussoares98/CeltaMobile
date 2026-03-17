@@ -13,7 +13,7 @@ class SoapSaveSaleRequestDatasource implements ISoapSaveSaleRequestDatasource {
     required String crossIdentity,
     required int enterpriseCode,
     required int requestTypeCode,
-    required SoapPendingSaleRequestModel saleRequest,
+    required SoapSaleRequestModel saleRequest,
   }) async {
     final response = await soapRequest.post(
       url: workingUrl,

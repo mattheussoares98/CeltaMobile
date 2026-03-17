@@ -3,28 +3,24 @@ import 'package:hive/hive.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
-class LocalPendingSaleRequestDatasource
-    implements ILocalPendingSaleRequestDatasource {
+class LocalSaleRequestDatasource implements ILocalSaleRequestDatasource {
   final Box hiveBox;
-  LocalPendingSaleRequestDatasource(this.hiveBox);
+  LocalSaleRequestDatasource(this.hiveBox);
 
   static const String _keyPrefix = 'pending_sale_request_';
 
   @override
-  Future<SoapPendingSaleRequestModel?> load(int enterpriseCode) async {
+  Future<SoapSaleRequestModel?> load(int enterpriseCode) async {
     final value = await hiveBox.get('$_keyPrefix$enterpriseCode');
     if (value == null) {
       return null;
     }
 
-    return SoapPendingSaleRequestModel.fromJson(value);
+    return SoapSaleRequestModel.fromJson(value);
   }
 
   @override
-  Future<void> save(
-    SoapPendingSaleRequestModel value,
-    int enterpriseCode,
-  ) async {
+  Future<void> save(SoapSaleRequestModel value, int enterpriseCode) async {
     await hiveBox.put('$_keyPrefix$enterpriseCode', value.toJson());
   }
 

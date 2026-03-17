@@ -60,9 +60,7 @@ class _CartPageState extends ConsumerState<CartPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final value = await ref.read(
-          pendingSaleRequestStateControllerProvider(
-            widget.enterpriseCode,
-          ).future,
+          saleRequestStateControllerProvider(widget.enterpriseCode).future,
         );
         observationsController.text = value.observations ?? '';
         instructionsController.text = value.instructions ?? '';
@@ -82,7 +80,7 @@ class _CartPageState extends ConsumerState<CartPage>
 
   void saveInstructionsAndObservations() async {
     final notifier = ref.read(
-      pendingSaleRequestStateControllerProvider(widget.enterpriseCode).notifier,
+      saleRequestStateControllerProvider(widget.enterpriseCode).notifier,
     );
     await notifier.changeObservations(observationsController.text);
     await notifier.changeInstructions(instructionsController.text);
@@ -176,7 +174,7 @@ class _CartPageState extends ConsumerState<CartPage>
             Consumer(
               builder: (_, ref, _) {
                 final cartProducts = ref.watch(
-                  pendingSaleRequestStateControllerProvider(
+                  saleRequestStateControllerProvider(
                     widget.enterpriseCode,
                   ).select(
                     (state) => (state.value?.cart ?? const {}).values.toList(),

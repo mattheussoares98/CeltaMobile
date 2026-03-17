@@ -67,9 +67,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
 
     final updated = await ref
         .read(
-          pendingSaleRequestStateControllerProvider(
-            widget.enterpriseCode,
-          ).notifier,
+          saleRequestStateControllerProvider(widget.enterpriseCode).notifier,
         )
         .addProduct(
           SaleRequestCartProductEntity.create(

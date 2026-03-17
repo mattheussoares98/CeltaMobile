@@ -34,7 +34,7 @@ void main() {
   void initEntities() {
     enterpriseCode = faker.randomGenerator.integer(100);
     entity = LastSavedSaleRequestEntity(
-      pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
+      saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
       saleRequestNumber: faker.randomGenerator.integer(100).toString(),
     );
   }

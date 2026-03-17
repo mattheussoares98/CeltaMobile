@@ -3,14 +3,14 @@ import 'package:equatable/equatable.dart';
 import 'entities.dart';
 
 class LastSavedSaleRequestEntity extends Equatable {
-  final SaleRequestEntity pendingSaleRequestEntity;
+  final SaleRequestEntity saleRequestEntity;
   final String saleRequestNumber;
 
   const LastSavedSaleRequestEntity({
-    required this.pendingSaleRequestEntity,
+    required this.saleRequestEntity,
     required this.saleRequestNumber,
   });
 
   @override
-  List<Object?> get props => [pendingSaleRequestEntity, saleRequestNumber];
+  List<Object?> get props => [saleRequestEntity, saleRequestNumber];
 }

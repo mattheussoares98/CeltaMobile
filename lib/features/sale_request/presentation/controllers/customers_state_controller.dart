@@ -30,7 +30,7 @@ class CustomersStateController extends _$CustomersStateController {
     });
 
     final pendingSelectedCustomer = await ref.read(
-      pendingSaleRequestStateControllerProvider(
+      saleRequestStateControllerProvider(
         enterpriseCode,
       ).selectAsync((s) => s.customer),
     );
@@ -69,7 +69,7 @@ class CustomersStateController extends _$CustomersStateController {
           );
 
       final pendingSelectedCustomer = await ref.read(
-        pendingSaleRequestStateControllerProvider(
+        saleRequestStateControllerProvider(
           enterpriseCode,
         ).selectAsync((s) => s.customer),
       );

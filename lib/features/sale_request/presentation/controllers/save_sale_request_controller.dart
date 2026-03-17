@@ -30,7 +30,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         validatedUserSessionProvider.future,
       );
       final pending = await ref.read(
-        pendingSaleRequestStateControllerProvider(enterpriseCode).future,
+        saleRequestStateControllerProvider(enterpriseCode).future,
       );
 
       if (pending.customer == null) {
@@ -62,7 +62,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
           )
           .save(
             LastSavedSaleRequestEntity(
-              pendingSaleRequestEntity: pending.copyWith(
+              saleRequestEntity: pending.copyWith(
                 observations: observations,
                 instructions: instructions,
               ),
@@ -70,10 +70,8 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
             ),
           );
 
-      await ref
-          .read(localPendingSaleRequestRepositoryProvider)
-          .clear(enterpriseCode);
-      ref.invalidate(localPendingSaleRequestRepositoryProvider);
+      await ref.read(localSaleRequestRepositoryProvider).clear(enterpriseCode);
+      ref.invalidate(localSaleRequestRepositoryProvider);
     });
   }
 }

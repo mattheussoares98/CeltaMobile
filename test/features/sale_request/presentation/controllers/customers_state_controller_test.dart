@@ -20,10 +20,9 @@ class FakeSelectedEnterprise extends SelectedEnterpriseStateController {
   EnterpriseEntity? build() => enterpriseToReturn;
 }
 
-class FakePendingSaleRequestStateController
-    extends PendingSaleRequestStateController {
+class FakeSaleRequestStateController extends SaleRequestStateController {
   final SaleRequestEntity pendingValue;
-  FakePendingSaleRequestStateController(this.pendingValue);
+  FakeSaleRequestStateController(this.pendingValue);
 
   @override
   Future<SaleRequestEntity> build(int enterpriseCode) async => pendingValue;
@@ -33,7 +32,7 @@ class MockSoapCustomerRepository extends Mock
     implements ISoapCustomerRepository {}
 
 void main() {
-  late SaleRequestEntity fakePendingSaleRequest;
+  late SaleRequestEntity fakeSaleRequest;
   late MockSoapCustomerRepository mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
@@ -51,13 +50,13 @@ void main() {
     );
     fakeEnterprise = EntityFactory.makeEnterpriseEntity();
     fakeCustomers = [EntityFactory.makeCustomerEntity()];
-    fakePendingSaleRequest = EntityFactory.makePendingSaleRequestEntity();
+    fakeSaleRequest = EntityFactory.makeSaleRequestEntity();
   });
 
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
     EnterpriseEntity? enterprise,
-    SaleRequestEntity? pendingSaleRequest,
+    SaleRequestEntity? saleRequest,
   }) {
     return ProviderContainer(
       retry: (retryCount, error) => null,
@@ -69,12 +68,8 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterprise(enterprise),
         ),
-        pendingSaleRequestStateControllerProvider(
-          enterprise!.Code!,
-        ).overrideWith(
-          () => FakePendingSaleRequestStateController(
-            pendingSaleRequest ?? fakePendingSaleRequest,
-          ),
+        saleRequestStateControllerProvider(enterprise!.Code!).overrideWith(
+          () => FakeSaleRequestStateController(saleRequest ?? fakeSaleRequest),
         ),
       ],
     );
@@ -117,7 +112,7 @@ void main() {
       expect(states, [
         isA<AsyncData>(), //return the pending sale request customer selected
       ]);
-      expect(states.last.value, [fakePendingSaleRequest.customer]);
+      expect(states.last.value, [fakeSaleRequest.customer]);
     });
   });
 
@@ -298,7 +293,7 @@ void main() {
             .loadCustomer('Test', false);
 
         // ASSERT
-        expect(states.last.value?.first, fakePendingSaleRequest.customer);
+        expect(states.last.value?.first, fakeSaleRequest.customer);
       },
     );
     test(
@@ -307,8 +302,9 @@ void main() {
         // ARRANGE
         final container = makeProviderContainer(
           enterprise: fakeEnterprise,
-          pendingSaleRequest: EntityFactory.makePendingSaleRequestEntity()
-              .annulValues(customer: true),
+          saleRequest: EntityFactory.makeSaleRequestEntity().annulValues(
+            customer: true,
+          ),
         );
         addTearDown(container.dispose);
 

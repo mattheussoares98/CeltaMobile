@@ -17,10 +17,10 @@ import '../../../../mocks/mocks.dart';
 
 // --- Fakes, Mocks, and Spies ---
 
-// Your Spy for PendingSaleRequest is correct
-class SpyPendingSaleRequest extends PendingSaleRequestStateController {
+// Your Spy for SaleRequest is correct
+class SpySaleRequest extends SaleRequestStateController {
   final SaleRequestEntity? requestToReturn;
-  SpyPendingSaleRequest(this.requestToReturn);
+  SpySaleRequest(this.requestToReturn);
   @override
   Future<SaleRequestEntity> build(int enterpriseCode) async =>
       requestToReturn ?? SaleRequestEntity.empty();
@@ -42,12 +42,12 @@ class MockSoapSaveSaleRequestRepository extends Mock
     implements ISoapSaveSaleRequestRepository {}
 
 // New Mock for the local repository
-class MockLocalPendingSaleRequestRepository extends Mock
-    implements ILocalPendingSaleRequestRepository {}
+class MockLocalSaleRequestRepository extends Mock
+    implements ILocalSaleRequestRepository {}
 
 void main() {
   late MockSoapSaveSaleRequestRepository mockSoapSaveSaleRequestRepository;
-  late MockLocalPendingSaleRequestRepository mockLocalPendingRepo;
+  late MockLocalSaleRequestRepository mockLocalPendingRepo;
   late FakeAppUsageStateController fakeAppUsage;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
@@ -60,22 +60,22 @@ void main() {
   late ProviderContainer container;
 
   setUpAll(() {
-    registerFallbackValue(EntityFactory.makePendingSaleRequestEntity());
+    registerFallbackValue(EntityFactory.makeSaleRequestEntity());
     registerFallbackValue(
       LastSavedSaleRequestEntity(
-        pendingSaleRequestEntity: EntityFactory.makePendingSaleRequestEntity(),
+        saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
         saleRequestNumber: faker.randomGenerator.integer(100).toString(),
       ),
     );
 
     // --- Initialize Mocks and Data ONCE ---
     mockSoapSaveSaleRequestRepository = MockSoapSaveSaleRequestRepository();
-    mockLocalPendingRepo = MockLocalPendingSaleRequestRepository(); // New
+    mockLocalPendingRepo = MockLocalSaleRequestRepository(); // New
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
     fakeEnterprise = EntityFactory.makeEnterpriseEntity();
-    fakePendingRequest = EntityFactory.makePendingSaleRequestEntity(
+    fakePendingRequest = EntityFactory.makeSaleRequestEntity(
       customer: EntityFactory.makeCustomerEntity(), // Valid request
     );
     fakeRequestNoCustomer = SaleRequestEntity.empty(); // Invalid request
@@ -98,15 +98,15 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        pendingSaleRequestStateControllerProvider(
+        saleRequestStateControllerProvider(
           fakeEnterprise.Code!,
-        ).overrideWith(() => SpyPendingSaleRequest(fakePendingRequest)),
+        ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
 
         // New dependencies to override
         lastSavedSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => SpyLastSavedSaleRequest()),
-        localPendingSaleRequestRepositoryProvider.overrideWithValue(
+        localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
@@ -128,7 +128,7 @@ void main() {
     test('should call all repositories and notifiers on success', () async {
       // ARRANGE
       const fakeSaleRequestNumber = '12345';
-      final spyPending = SpyPendingSaleRequest(fakePendingRequest);
+      final spyPending = SpySaleRequest(fakePendingRequest);
       final spyLastSaved = SpyLastSavedSaleRequest();
 
       // Update ALL overrides, keeping the list length the same
@@ -142,13 +142,13 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        pendingSaleRequestStateControllerProvider(
+        saleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyPending),
         lastSavedSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyLastSaved),
-        localPendingSaleRequestRepositoryProvider.overrideWithValue(
+        localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
@@ -210,7 +210,7 @@ void main() {
         fakeSaleRequestNumber,
       );
       expect(
-        spyLastSaved.savedEntity?.pendingSaleRequestEntity,
+        spyLastSaved.savedEntity?.saleRequestEntity,
         fakePendingRequest.copyWith(
           observations: observations,
           instructions: instructions,
@@ -224,7 +224,7 @@ void main() {
 
     test('should emit [loading, error] if customer is null', () async {
       // ARRANGE
-      final spyNoCustomer = SpyPendingSaleRequest(fakeRequestNoCustomer);
+      final spyNoCustomer = SpySaleRequest(fakeRequestNoCustomer);
       final spyLastSaved = SpyLastSavedSaleRequest();
 
       // Update ALL overrides
@@ -238,13 +238,13 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        pendingSaleRequestStateControllerProvider(
+        saleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyNoCustomer),
         lastSavedSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyLastSaved),
-        localPendingSaleRequestRepositoryProvider.overrideWithValue(
+        localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
@@ -290,7 +290,7 @@ void main() {
 
     test('should emit [loading, error] if session is invalid', () async {
       // ARRANGE
-      final spy = SpyPendingSaleRequest(fakePendingRequest);
+      final spy = SpySaleRequest(fakePendingRequest);
       final spyLastSaved = SpyLastSavedSaleRequest();
 
       // Update ALL overrides
@@ -304,13 +304,13 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        pendingSaleRequestStateControllerProvider(
+        saleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spy),
         lastSavedSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyLastSaved),
-        localPendingSaleRequestRepositoryProvider.overrideWithValue(
+        localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),

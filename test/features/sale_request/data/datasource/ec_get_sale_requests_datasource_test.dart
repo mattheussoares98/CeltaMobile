@@ -39,9 +39,7 @@ void main() {
   void initEntities() {
     saleRequests = [
       for (var x = 0; x < 3; x++)
-        EcSaleRequestModel.fromEntity(
-          EntityFactory.makePendingSaleRequestEntity(), //TODO update this name
-        ),
+        EcSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
     ];
 
     workingUrl = faker.internet.httpsUrl();

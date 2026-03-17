@@ -674,7 +674,7 @@ class EntityFactory {
     cost: faker.randomGenerator.decimal(),
   );
 
-  static SaleRequestEntity makePendingSaleRequestEntity({
+  static SaleRequestEntity makeSaleRequestEntity({
     CustomerEntity? customer,
   }) => SaleRequestEntity(
     cart: {
@@ -791,7 +791,7 @@ class EntityFactory {
   static LastSavedSaleRequestEntity makeLastSavedSaleRequestEntity() =>
       LastSavedSaleRequestEntity(
         saleRequestNumber: faker.lorem.word(),
-        pendingSaleRequestEntity: makePendingSaleRequestEntity(),
+        saleRequestEntity: makeSaleRequestEntity(),
       );
 
   static ResearchEntity makeResearchEntity() => ResearchEntity(

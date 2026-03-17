@@ -9,16 +9,14 @@ import 'domain/repository/repository.dart';
 part 'providers.g.dart';
 
 @riverpod
-ILocalPendingSaleRequestDatasource localPendingSaleRequestDatasource(Ref ref) {
-  return LocalPendingSaleRequestDatasource(
-    ref.watch(hiveBoxSaleRequestProvider),
-  );
+ILocalSaleRequestDatasource localSaleRequestDatasource(Ref ref) {
+  return LocalSaleRequestDatasource(ref.watch(hiveBoxSaleRequestProvider));
 }
 
 @riverpod
-ILocalPendingSaleRequestRepository localPendingSaleRequestRepository(Ref ref) {
-  return LocalPendingSaleRequestRepositoryImpl(
-    ref.watch(localPendingSaleRequestDatasourceProvider),
+ILocalSaleRequestRepository localSaleRequestRepository(Ref ref) {
+  return LocalSaleRequestRepositoryImpl(
+    ref.watch(localSaleRequestDatasourceProvider),
   );
 }
 

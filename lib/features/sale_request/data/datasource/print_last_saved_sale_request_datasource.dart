@@ -82,7 +82,7 @@ class PrintLastSavedSaleRequestDatasource
       styles: const PosStyles(align: PosAlign.left),
     );
     bytes += generator.text(
-      'Cliente: ${saleRequest.pendingSaleRequestModel.customer?.Name ?? "N/A"}',
+      'Cliente: ${saleRequest.saleRequestModel.customer?.Name ?? "N/A"}',
       styles: const PosStyles(align: PosAlign.left),
     );
     bytes += generator.text(
@@ -95,9 +95,8 @@ class PrintLastSavedSaleRequestDatasource
     double totalLiquid = 0;
     double totalGross = 0;
 
-    if (saleRequest.pendingSaleRequestModel.cart.values.isNotEmpty) {
-      for (final cartProduct
-          in saleRequest.pendingSaleRequestModel.cart.values) {
+    if (saleRequest.saleRequestModel.cart.values.isNotEmpty) {
+      for (final cartProduct in saleRequest.saleRequestModel.cart.values) {
         final itemLiquidValue = cartProduct.toEntity().getTotalLiquid;
         final itemGrossValue = cartProduct.Value * cartProduct.Quantity;
         final eans = cartProduct.product?.EANs ?? [];
@@ -213,8 +212,8 @@ class PrintLastSavedSaleRequestDatasource
       ),
     ]);
 
-    final observations = saleRequest.pendingSaleRequestModel.observations ?? '';
-    final instructions = saleRequest.pendingSaleRequestModel.instructions ?? '';
+    final observations = saleRequest.saleRequestModel.observations ?? '';
+    final instructions = saleRequest.saleRequestModel.instructions ?? '';
 
     if (observations.isNotEmpty || instructions.isNotEmpty) {
       bytes += generator.hr();
