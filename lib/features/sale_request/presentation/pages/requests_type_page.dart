@@ -42,7 +42,7 @@ class RequestsTypePage extends ConsumerWidget {
                   key: ValueKey(request.Code),
                   request: request,
                   onTap: () => context.goNamed(
-                    Routes.saleRequest.name,
+                    Routes.createSaleRequest.name,
                     pathParameters: {
                       'enterpriseCode': enterpriseCode.toString(),
                       'requestCode': request.Code.toString(),
@@ -78,7 +78,7 @@ class _RequestTypeItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           context.goNamed(
-            Routes.saleRequest.name,
+            Routes.createSaleRequest.name,
             pathParameters: {
               'enterpriseCode': enterpriseCode.toString(),
               'requestCode': request.Code.toString(),

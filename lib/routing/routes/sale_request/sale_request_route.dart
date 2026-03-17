@@ -5,7 +5,7 @@ import '../../routing.dart';
 
 RouteBase saleRequestRoute() => GoRoute(
   path: ':requestCode/sale-request',
-  name: Routes.saleRequest.name,
+  name: Routes.createSaleRequest.name,
   builder: (context, state) {
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
     final requestCode = int.parse(state.pathParameters['requestCode']!);

@@ -53,22 +53,25 @@ class DefaultModuleButton extends ConsumerWidget {
       selectedEnterpriseStateControllerProvider.select((s) => s != null),
     );
 
-    void accessModule() {
+    void accessModule() async {
+      Routes? saleRequestNextRoute;
+      if (route == Routes.saleRequestActionSelector) {
+        saleRequestNextRoute = await SaleRequestActionSelector.show(context);
+      }
       final enterpriseCode = ref.read(
         selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
-      );
+      ); //TODO get the value on tryAccessModuleController
 
       ref
           .read(tryAccessModuleControllerProvider(module).notifier)
           .tryAccess(
             context: context,
-            route: route,
+            route: saleRequestNextRoute ?? route,
             enterpriseCode: enterpriseCode,
             replace: true,
-            pathParameters: {
-              if (passEnterpriseToNextRoute)
-                'enterpriseCode': enterpriseCode.toString(),
-            },
+            pathParameters: passEnterpriseToNextRoute
+                ? {'enterpriseCode': enterpriseCode.toString()}
+                : null,
           );
     }
 

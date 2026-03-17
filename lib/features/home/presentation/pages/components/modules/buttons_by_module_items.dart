@@ -71,7 +71,7 @@ class ButtonsByModuleItems {
       cupertinoIcon: CupertinoIcons.arrow_2_squarepath,
     ),
     Modules.saleRequest: const DefaultModuleButton(
-      route: Routes.saleRequestRequestsTypes,
+      route: Routes.saleRequestActionSelector,
       module: Modules.saleRequest,
       materialIcon: Icons.shopping_bag_outlined,
       cupertinoIcon: CupertinoIcons.bag,
