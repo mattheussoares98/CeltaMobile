@@ -75,7 +75,12 @@ void main() {
   test('should behave correctly on load', () async {
     final response = await sut.load(enterpriseCode);
 
-    expect(response, lastSavedSaleRequestEntity);
+    expect(
+      response,
+      SoapLastSavedSaleRequestModel.fromEntity(
+        lastSavedSaleRequestEntity,
+      ).toEntity(),
+    );
 
     verify(() => mockDatasource.load(enterpriseCode)).called(1);
   });

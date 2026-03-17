@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:faker/faker.dart';
@@ -22,7 +23,7 @@ void main() {
   late bool? mountSeller;
   late bool? mountRequestType;
   late bool? mountProducts;
-  late List<EcSaleRequestModel> saleRequests;
+  late EcPaginationResults<EcSaleRequestModel> saleRequests;
 
   void initSut() {
     sut = EcGetSaleRequestsDatasource(httpClient);
@@ -33,14 +34,19 @@ void main() {
   }
 
   void mockSuccess() {
-    httpClient.mockRequest(saleRequests.map((e) => e.toJson()).toList());
+    httpClient.mockRequest(saleRequests.toJson((e) => e.toJson()));
   }
 
   void initEntities() {
-    saleRequests = [
-      for (var x = 0; x < 3; x++)
-        EcSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
-    ];
+    saleRequests = EcPaginationResults(
+      totalRecords: faker.randomGenerator.integer(1000),
+      recordsByPage: faker.randomGenerator.integer(1000),
+      actualPage: faker.randomGenerator.integer(5),
+      collection: [
+        for (var x = 0; x < 3; x++)
+          EcSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
+      ],
+    );
 
     workingUrl = faker.internet.httpsUrl();
 

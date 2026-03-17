@@ -411,6 +411,9 @@ void main() {
       // Create the updated version of the first product
       final updatedProduct = EntityFactory.makeProductEntity().copyWith(
         ProductPackingCode: productsEntities.first.ProductPackingCode,
+        codigoInternoProEmb: productsEntities
+            .first
+            .codigoInternoProEmb, //*case is Inventory module
       );
       // ACT: Call the updateProduct method
       container

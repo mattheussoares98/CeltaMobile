@@ -35,6 +35,15 @@ class EcPaginationResults<T> extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson(Map<String, dynamic> Function(T) toJsonItem) {
+    return <String, dynamic>{
+      'totalRecords': totalRecords,
+      'recordsByPage': recordsByPage,
+      'actualPage': actualPage,
+      'collection': collection.map(toJsonItem).toList(),
+    };
+  }
+
   EcPaginationResults<R> map<R>(R Function(T item) mapper) {
     return EcPaginationResults<R>(
       totalRecords: totalRecords,

@@ -59,9 +59,9 @@ class EcSaleRequestModel extends Equatable {
   factory EcSaleRequestModel.fromJson(Map json) => EcSaleRequestModel(
     Id: json['id'],
     SaleRequestNumber: json['saleRequestNumber'],
-    RequestType: json['sequestType'] == null
+    RequestType: json['requestType'] == null
         ? null
-        : EcSaleRequestRequestTypeModel.fromJson(json['eequestType']),
+        : EcSaleRequestRequestTypeModel.fromJson(json['requestType']),
     EnterpriseId: json['enterpriseId'],
     DateHourOfCreation: json['dateHourOfCreation'] == null
         ? null
