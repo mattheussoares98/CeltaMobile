@@ -25,8 +25,10 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
       headers: params.toHeaders(),
       body: {
         'enterpriseIds': enterpriseIds,
-        'endDateHourOfCreation': endDateHourOfCreation.toIso8601String(),
-        'startDateHourOfCreation': startDateHourOfCreation.toIso8601String(),
+        'dateHourOfCreation': {
+          'EndDate': endDateHourOfCreation.toIso8601String(),
+          'StartDate': startDateHourOfCreation.toIso8601String(),
+        },
         'personalizedCodes': ?personalizedCodes,
         'mountCustomer': ?mountCustomer,
         'mountSeller': ?mountSeller,
