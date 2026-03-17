@@ -9,14 +9,9 @@ import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
 
 class SaleRequestFilters extends ConsumerStatefulWidget {
-  final ExpansibleController expansibleController;
   final int enterpriseCode;
 
-  const SaleRequestFilters({
-    super.key,
-    required this.expansibleController,
-    required this.enterpriseCode,
-  });
+  const SaleRequestFilters({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<SaleRequestFilters> createState() => _SaleRequestFiltersState();
@@ -26,6 +21,7 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
   final _startController = TextEditingController();
   final _endController = TextEditingController();
   final _codeController = TextEditingController();
+  final expansibleController = ExpansibleController();
   final formKey = GlobalKey<FormState>();
   final now = DateTime.now();
 
@@ -34,6 +30,7 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
     _startController.dispose();
     _endController.dispose();
     _codeController.dispose();
+    expansibleController.dispose();
     super.dispose();
   }
 
@@ -60,6 +57,17 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    ref.listen(saleRequestsStateControllerProvider(widget.enterpriseCode), (
+      p,
+      n,
+    ) {
+      n.doOnSuccess(p, () {
+        if (n.value != null) {
+          expansibleController.collapse();
+        }
+      });
+    });
+
     return RepaintBoundary(
       child: Card(
         margin: const EdgeInsets.all(Sizes.p8),
@@ -76,7 +84,7 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
           iconColor: theme.primaryColorDark,
           collapsedIconColor: theme.primaryColor,
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
-          controller: widget.expansibleController,
+          controller: expansibleController,
           initiallyExpanded: true,
           title: Text(
             'Filtros de busca'.hardcoded,
