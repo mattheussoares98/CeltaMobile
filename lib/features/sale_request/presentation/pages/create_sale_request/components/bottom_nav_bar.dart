@@ -34,7 +34,7 @@ class BottomNavBar extends ConsumerWidget {
                 isSelected: index == 1,
                 isValid:
                     ref.watch(
-                      saleRequestStateControllerProvider(
+                      pendingSaleRequestStateControllerProvider(
                         enterpriseCode,
                       ).select((state) => state.value?.customer),
                     ) !=
@@ -50,7 +50,7 @@ class BottomNavBar extends ConsumerWidget {
           icon: Consumer(
             builder: (_, ref, _) {
               final productsLength = ref.watch(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseCode,
                 ).select((s) => s.value?.cart.values.length ?? 0),
               );

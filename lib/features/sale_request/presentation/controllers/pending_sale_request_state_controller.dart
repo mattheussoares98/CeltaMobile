@@ -12,7 +12,8 @@ import '../../providers.dart';
 part 'pending_sale_request_state_controller.g.dart';
 
 @riverpod
-class SaleRequestStateController extends _$SaleRequestStateController {
+class PendingSaleRequestStateController
+    extends _$PendingSaleRequestStateController {
   @override
   Future<SaleRequestEntity> build(int enterpriseCode) async {
     final repository = ref.watch(localSaleRequestRepositoryProvider);

@@ -21,14 +21,16 @@ class Covenants extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final selectedCovenant = ref.watch(
-      saleRequestStateControllerProvider(
+      pendingSaleRequestStateControllerProvider(
         enterpriseCode,
       ).select((s) => s.value?.covenant),
     );
 
     void onTapCovenant(CustomerCovenantEntity covenant) {
       ref
-          .read(saleRequestStateControllerProvider(enterpriseCode).notifier)
+          .read(
+            pendingSaleRequestStateControllerProvider(enterpriseCode).notifier,
+          )
           .changeCovenant(covenant);
     }
 

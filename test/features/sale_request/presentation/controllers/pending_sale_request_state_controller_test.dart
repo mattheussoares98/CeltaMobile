@@ -76,7 +76,9 @@ void main() {
 
         // ACT
         final result = await container.read(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
         );
 
         // ASSERT
@@ -95,7 +97,9 @@ void main() {
 
           // ACT
           final result = await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           // ASSERT
@@ -122,19 +126,21 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           final updated = await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -183,19 +189,21 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           final updated = await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -228,19 +236,21 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           final updated = await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -283,19 +293,21 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -328,19 +340,21 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -370,33 +384,35 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
               .changeCustomer(fakeCustomer);
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
               .changeCovenant(fakeCustomer.CustomerCovenants!.first);
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -427,26 +443,28 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
               .changeCustomer(fakeCustomer);
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -455,7 +473,7 @@ void main() {
           final newCustomer = EntityFactory.makeCustomerEntity();
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -486,19 +504,21 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
         await container.read(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
         );
 
         final states = <AsyncValue<SaleRequestEntity>>[];
         container.listen(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!),
+          pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
             .read(
-              saleRequestStateControllerProvider(
+              pendingSaleRequestStateControllerProvider(
                 enterpriseEntity.Code!,
               ).notifier,
             )
@@ -530,19 +550,21 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
@@ -580,19 +602,21 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
         await container.read(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
         );
 
         final states = <AsyncValue<SaleRequestEntity>>[];
         container.listen(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!),
+          pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
             .read(
-              saleRequestStateControllerProvider(
+              pendingSaleRequestStateControllerProvider(
                 enterpriseEntity.Code!,
               ).notifier,
             )
@@ -623,19 +647,21 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
         await container.read(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
         );
 
         final states = <AsyncValue<SaleRequestEntity>>[];
         container.listen(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!),
+          pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
             .read(
-              saleRequestStateControllerProvider(
+              pendingSaleRequestStateControllerProvider(
                 enterpriseEntity.Code!,
               ).notifier,
             )
@@ -662,19 +688,21 @@ void main() {
         final container = makeProviderContainer();
         addTearDown(container.dispose);
         await container.read(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+          pendingSaleRequestStateControllerProvider(
+            enterpriseEntity.Code!,
+          ).future,
         );
 
         final states = <AsyncValue<SaleRequestEntity>>[];
         container.listen(
-          saleRequestStateControllerProvider(enterpriseEntity.Code!),
+          pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
           (_, next) => states.add(next),
         );
 
         // ACT
         await container
             .read(
-              saleRequestStateControllerProvider(
+              pendingSaleRequestStateControllerProvider(
                 enterpriseEntity.Code!,
               ).notifier,
             )
@@ -706,26 +734,28 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!).future,
+            pendingSaleRequestStateControllerProvider(
+              enterpriseEntity.Code!,
+            ).future,
           );
 
           final states = <AsyncValue<SaleRequestEntity>>[];
           container.listen(
-            saleRequestStateControllerProvider(enterpriseEntity.Code!),
+            pendingSaleRequestStateControllerProvider(enterpriseEntity.Code!),
             (_, next) => states.add(next),
           );
 
           // ACT
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )
               .addProduct(fakeProduct);
           await container
               .read(
-                saleRequestStateControllerProvider(
+                pendingSaleRequestStateControllerProvider(
                   enterpriseEntity.Code!,
                 ).notifier,
               )

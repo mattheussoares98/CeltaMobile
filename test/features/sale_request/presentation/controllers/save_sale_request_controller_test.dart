@@ -18,7 +18,7 @@ import '../../../../mocks/mocks.dart';
 // --- Fakes, Mocks, and Spies ---
 
 // Your Spy for SaleRequest is correct
-class SpySaleRequest extends SaleRequestStateController {
+class SpySaleRequest extends PendingSaleRequestStateController {
   final SaleRequestEntity? requestToReturn;
   SpySaleRequest(this.requestToReturn);
   @override
@@ -98,7 +98,7 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        saleRequestStateControllerProvider(
+        pendingSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
 
@@ -142,7 +142,7 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        saleRequestStateControllerProvider(
+        pendingSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyPending),
         lastSavedSaleRequestStateControllerProvider(
@@ -238,7 +238,7 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        saleRequestStateControllerProvider(
+        pendingSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spyNoCustomer),
         lastSavedSaleRequestStateControllerProvider(
@@ -304,7 +304,7 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
-        saleRequestStateControllerProvider(
+        pendingSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
         ).overrideWith(() => spy),
         lastSavedSaleRequestStateControllerProvider(

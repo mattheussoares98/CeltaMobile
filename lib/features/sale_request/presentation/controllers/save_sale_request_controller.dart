@@ -30,7 +30,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         validatedUserSessionProvider.future,
       );
       final pending = await ref.read(
-        saleRequestStateControllerProvider(enterpriseCode).future,
+        pendingSaleRequestStateControllerProvider(enterpriseCode).future,
       );
 
       if (pending.customer == null) {

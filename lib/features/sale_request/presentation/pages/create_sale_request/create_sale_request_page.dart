@@ -23,7 +23,10 @@ class CreateSaleRequestPage extends ConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(saleRequestStateControllerProvider(enterpriseCode), (p, n) {
+    ref.listen(pendingSaleRequestStateControllerProvider(enterpriseCode), (
+      p,
+      n,
+    ) {
       n.showAlertDialogOnError(context);
     });
     ref.listen(saveSaleRequestControllerProvider, (p, n) {

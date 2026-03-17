@@ -25,7 +25,7 @@ class ProcessCartController extends _$ProcessCartController {
         validatedUserSessionProvider.future,
       );
       final pending = await ref.read(
-        saleRequestStateControllerProvider(enterpriseCode).future,
+        pendingSaleRequestStateControllerProvider(enterpriseCode).future,
       );
       if (pending.customer == null) {
         throw AppException('Selecione o cliente!'.hardcoded);
@@ -46,7 +46,9 @@ class ProcessCartController extends _$ProcessCartController {
           );
 
       await ref
-          .read(saleRequestStateControllerProvider(enterpriseCode).notifier)
+          .read(
+            pendingSaleRequestStateControllerProvider(enterpriseCode).notifier,
+          )
           .updateProductsFromProcessedCart(processedCart);
     });
   }

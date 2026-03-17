@@ -20,7 +20,7 @@ class FakeSelectedEnterprise extends SelectedEnterpriseStateController {
   EnterpriseEntity? build() => enterpriseToReturn;
 }
 
-class FakeSaleRequestStateController extends SaleRequestStateController {
+class FakeSaleRequestStateController extends PendingSaleRequestStateController {
   final SaleRequestEntity pendingValue;
   FakeSaleRequestStateController(this.pendingValue);
 
@@ -68,7 +68,9 @@ void main() {
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterprise(enterprise),
         ),
-        saleRequestStateControllerProvider(enterprise!.Code!).overrideWith(
+        pendingSaleRequestStateControllerProvider(
+          enterprise!.Code!,
+        ).overrideWith(
           () => FakeSaleRequestStateController(saleRequest ?? fakeSaleRequest),
         ),
       ],

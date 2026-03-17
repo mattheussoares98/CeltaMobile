@@ -34,7 +34,9 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 Consumer(
                   builder: (_, ref, _) {
                     final totalLiquid = ref.watch(
-                      saleRequestStateControllerProvider(enterpriseCode).select(
+                      pendingSaleRequestStateControllerProvider(
+                        enterpriseCode,
+                      ).select(
                         (s) => s.value?.cart.values.fold<double>(
                           0.0,
                           (p, e) => p + e.TotalLiquid,
@@ -72,13 +74,13 @@ class TotalCalculateAndSave extends ConsumerWidget {
               data: (canChangePrice) {
                 //TODO test with a user that cant change price
                 final needProcessCart = ref.watch(
-                  saleRequestStateControllerProvider(
+                  pendingSaleRequestStateControllerProvider(
                     enterpriseCode,
                   ).select((s) => s.value?.needProcessCart == true),
                 );
 
                 final selectedCustomer = ref.watch(
-                  saleRequestStateControllerProvider(
+                  pendingSaleRequestStateControllerProvider(
                     enterpriseCode,
                   ).select((s) => s.value?.customer),
                 );
@@ -86,7 +88,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 return Consumer(
                   builder: (_, ref, _) {
                     final bool cartIsEmpty = ref.watch(
-                      saleRequestStateControllerProvider(
+                      pendingSaleRequestStateControllerProvider(
                         enterpriseCode,
                       ).select((s) => s.value?.cart.values.isEmpty ?? true),
                     );

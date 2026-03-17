@@ -57,7 +57,7 @@ class CustomerInfoAndRadio extends ConsumerWidget {
             Consumer(
               builder: (_, ref, _) {
                 final selectedCustomer = ref.watch(
-                  saleRequestStateControllerProvider(
+                  pendingSaleRequestStateControllerProvider(
                     enterpriseCode,
                   ).select((s) => s.value?.customer),
                 );

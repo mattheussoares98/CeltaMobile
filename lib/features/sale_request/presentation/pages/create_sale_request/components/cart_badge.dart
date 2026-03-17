@@ -12,12 +12,12 @@ class CartBadge extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsLength = ref.watch(
-      saleRequestStateControllerProvider(
+      pendingSaleRequestStateControllerProvider(
         enterpriseCode,
       ).select((s) => s.value?.cart.values.length ?? 0),
     );
     final totalPrice = ref.watch(
-      saleRequestStateControllerProvider(enterpriseCode).select(
+      pendingSaleRequestStateControllerProvider(enterpriseCode).select(
         (s) =>
             s.value?.cart.values.fold<double>(
               0.0,
