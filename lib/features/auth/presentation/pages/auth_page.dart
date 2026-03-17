@@ -104,7 +104,15 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     onSubmit: onSubmit,
                   ),
                   gapH32,
-                  PrimaryButton(text: 'Entrar'.hardcoded, onPressed: onSubmit),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      return PrimaryButton(
+                        text: 'Entrar'.hardcoded,
+                        onPressed: onSubmit,
+                        isLoading: ref.watch(loginControllerProvider).isLoading,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
