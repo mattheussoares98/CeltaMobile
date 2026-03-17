@@ -11,12 +11,12 @@ import '../../../../../core/presentation/controllers/request_type/request_type.d
 import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
-import 'sale_request.dart';
+import 'create_sale_request.dart';
 
-class SaleRequestPage extends ConsumerWidget {
+class CreateSaleRequestPage extends ConsumerWidget {
   final int enterpriseCode;
   final int requestCode;
-  const SaleRequestPage({
+  const CreateSaleRequestPage({
     super.key,
     required this.enterpriseCode,
     required this.requestCode,

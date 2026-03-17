@@ -10,7 +10,7 @@ RouteBase saleRequestRoute() => GoRoute(
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
     final requestCode = int.parse(state.pathParameters['requestCode']!);
 
-    return SaleRequestPage(
+    return CreateSaleRequestPage(
       enterpriseCode: enterpriseCode,
       requestCode: requestCode,
     );
