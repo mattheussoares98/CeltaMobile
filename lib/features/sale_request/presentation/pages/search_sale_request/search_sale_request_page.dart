@@ -12,12 +12,10 @@ class SearchSaleRequestPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: Text('Busca de pedidos'.hardcoded)),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: SaleRequestFilters(enterpriseCode: enterpriseCode),
-          ),
-          RequestsItems(enterpriseCode: enterpriseCode),
+      body: Column(
+        children: [
+          SaleRequestFilters(enterpriseCode: enterpriseCode),
+          Expanded(child: RequestsItems(enterpriseCode: enterpriseCode)),
         ],
       ),
     );
