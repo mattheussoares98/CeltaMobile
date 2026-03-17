@@ -1,7 +1,7 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../features/auth/presentation/controllers/controllers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '/constants/app_sizes.dart';
 import 'commom_widgets.dart';
 
@@ -25,10 +25,6 @@ class PrimaryButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
-
-    final isLoading = ref.watch(
-      loginControllerProvider.select((s) => s.isLoading),
-    );
 
     final textWidget = Text(
       text,
