@@ -67,6 +67,8 @@ void main() {
       totalRecords: faker.randomGenerator.integer(1000),
       recordsByPage: faker.randomGenerator.integer(100),
       actualPage: faker.randomGenerator.integer(5),
+      recordsOnThisPage: faker.randomGenerator.integer(5),
+      totalPages: faker.randomGenerator.integer(5),
       collection: [
         for (var x = 0; x < 3; x++)
           EcSaleRequestModel.fromEntity(
