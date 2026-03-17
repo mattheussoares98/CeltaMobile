@@ -4,6 +4,7 @@ export './async_value_widget.dart';
 export './default_check_box.dart';
 export './default_choice_chip.dart';
 export './default_drop_down.dart';
+export './default_pagination_buttons.dart';
 export './default_segmented_buttons.dart';
 export './default_simple_drop_down.dart';
 export './default_switch.dart';

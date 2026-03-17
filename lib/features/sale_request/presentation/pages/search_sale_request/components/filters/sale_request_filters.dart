@@ -1,7 +1,6 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
@@ -11,8 +10,15 @@ import 'filters.dart';
 
 class SaleRequestFilters extends ConsumerStatefulWidget {
   final int enterpriseCode;
+  final TextEditingController startController;
+  final GlobalKey<FormState> filtersFormKey;
 
-  const SaleRequestFilters({super.key, required this.enterpriseCode});
+  const SaleRequestFilters({
+    super.key,
+    required this.enterpriseCode,
+    required this.startController,
+    required this.filtersFormKey,
+  });
 
   @override
   ConsumerState<SaleRequestFilters> createState() => _SaleRequestFiltersState();
@@ -20,19 +26,14 @@ class SaleRequestFilters extends ConsumerStatefulWidget {
 
 class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
   static final now = DateTime.now();
-  final _startController = TextEditingController(
-    text: DateFormat('dd/MM/yyyy').format(now),
-  );
   final _endController = TextEditingController();
   final _endFocusNode = FocusNode();
   final _codeController = TextEditingController();
   final _codFocusNode = FocusNode();
   final expansibleController = ExpansibleController();
-  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _startController.dispose();
     _endController.dispose();
     _codeController.dispose();
     _endFocusNode.dispose();
@@ -43,7 +44,7 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
 
   void _onSearch() {
     // Logic to call your load method
-    if (formKey.currentState?.validate() != true) {
+    if (widget.filtersFormKey.currentState?.validate() != true) {
       return;
     }
 
@@ -52,7 +53,8 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
           saleRequestsStateControllerProvider(widget.enterpriseCode).notifier,
         )
         .load(
-          startDateHourOfCreation: _startController.text.toDateTime() ?? now,
+          startDateHourOfCreation:
+              widget.startController.text.toDateTime() ?? now,
           endDateHourOfCreation: _endController.text.toDateTime(),
           personalizedCodes: _codeController.text.isNotEmpty
               ? [_codeController.text]
@@ -108,20 +110,20 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
                   Sizes.p16,
                 ),
                 child: Form(
-                  key: formKey,
+                  key: widget.filtersFormKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       StartDateField(
-                        controller: _startController,
+                        controller: widget.startController,
                         onSubmit: _endFocusNode.requestFocus,
                       ),
                       gapH8,
                       AnimatedBuilder(
-                        animation: _startController,
+                        animation: widget.startController,
                         builder: (context, child) {
                           final minimumDate =
-                              _startController.text.toDateTime() ??
+                              widget.startController.text.toDateTime() ??
                               now.subtract(const Duration(days: 365 * 5));
 
                           return EndDateField(
