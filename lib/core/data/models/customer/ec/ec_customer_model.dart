@@ -39,30 +39,30 @@ class EcCustomerModel extends Equatable {
     PhoneNumber,
   ];
 
-  factory EcCustomerModel.fromJson(Map? json) => EcCustomerModel(
-    Id: json?['Id'],
-    Name: json?['Name'],
-    DateOfBirth: json?['DateOfBirth'],
+  factory EcCustomerModel.fromJson(Map json) => EcCustomerModel(
+    Id: json['id'],
+    Name: json['name'],
+    DateOfBirth: json['dateOfBirth'],
     PersonType: CustomerPersonType.values.firstWhereOrNull(
-      (e) => e.shortName == json?['PersonType'],
+      (e) => e.shortName == json['personType'],
     ),
-    CpfCnpjNumber: json?['CpfCnpjNumber'],
-    ContactName: json?['ContactName'],
-    Email: json?['Email'],
-    PhoneArea: json?['PhoneArea'],
-    PhoneNumber: json?['PhoneNumber'],
+    CpfCnpjNumber: json['cpfCnpjNumber'],
+    ContactName: json['contactName'],
+    Email: json['email'],
+    PhoneArea: json['phoneArea'],
+    PhoneNumber: json['phoneNumber'],
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'Id': Id,
-    'Name': Name,
-    'DateOfBirth': DateOfBirth,
-    'PersonType': PersonType?.shortName,
-    'CpfCnpjNumber': CpfCnpjNumber,
-    'ContactName': ContactName,
-    'Email': Email,
-    'PhoneArea': PhoneArea,
-    'PhoneNumber': PhoneNumber,
+    'id': Id,
+    'name': Name,
+    'dateOfBirth': DateOfBirth,
+    'personType': PersonType?.shortName,
+    'cpfCnpjNumber': CpfCnpjNumber,
+    'contactName': ContactName,
+    'email': Email,
+    'phoneArea': PhoneArea,
+    'phoneNumber': PhoneNumber,
   };
 
   factory EcCustomerModel.fromEntity(CustomerEntity entity) => EcCustomerModel(
