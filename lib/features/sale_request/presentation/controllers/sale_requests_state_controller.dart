@@ -62,6 +62,8 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
             startDateHourOfCreation: startDateHourOfCreation,
             personalizedCodes: personalizedCodes,
             mountCustomer: true,
+            mountSeller: true,
+            mountRequestType: true,
           );
     });
   }

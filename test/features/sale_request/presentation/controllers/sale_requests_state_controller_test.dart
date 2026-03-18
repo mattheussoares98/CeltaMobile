@@ -153,6 +153,8 @@ void main() {
             startDateHourOfCreation: startDateHourOfCreation,
             personalizedCodes: personalizedCodes,
             mountCustomer: true,
+            mountRequestType: true,
+            mountSeller: true,
           ),
         ).called(1);
       },
