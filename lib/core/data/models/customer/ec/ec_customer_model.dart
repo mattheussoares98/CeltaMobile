@@ -42,7 +42,9 @@ class EcCustomerModel extends Equatable {
   factory EcCustomerModel.fromJson(Map json) => EcCustomerModel(
     Id: json['id'],
     Name: json['name'],
-    DateOfBirth: json['dateOfBirth'],
+    DateOfBirth: json['dateOfBirth'] == null
+        ? null
+        : DateTime.tryParse(json['dateOfBirth']),
     PersonType: CustomerPersonType.values.firstWhereOrNull(
       (e) => e.shortName == json['personType'],
     ),
@@ -56,7 +58,7 @@ class EcCustomerModel extends Equatable {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id': Id,
     'name': Name,
-    'dateOfBirth': DateOfBirth,
+    'dateOfBirth': DateOfBirth?.toIso8601String(),
     'personType': PersonType?.shortName,
     'cpfCnpjNumber': CpfCnpjNumber,
     'contactName': ContactName,
