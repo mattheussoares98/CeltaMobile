@@ -39,6 +39,12 @@ class RequestSummary extends StatelessWidget {
                   title: 'Cliente'.hardcoded,
                   subTitle: saleRequest.customer!.Name,
                 ),
+              if ((saleRequest.DiscountValue ?? 0) > 0)
+                TitleAndSubTitle(
+                  title: 'Desconto'.hardcoded,
+                  subTitle: saleRequest.DiscountValue,
+                  subTitleIsPrice: true,
+                ),
               TitleAndSubTitle(
                 title: 'Total'.hardcoded,
                 subTitle: saleRequest.TotalLiquid,
