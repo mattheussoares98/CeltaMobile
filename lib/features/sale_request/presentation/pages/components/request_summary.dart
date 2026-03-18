@@ -34,6 +34,11 @@ class RequestSummary extends StatelessWidget {
                   title: 'Data'.hardcoded,
                   subTitle: dateFormat.format(saleRequest.DateHourOfCreation!),
                 ),
+              if (saleRequest.customer != null)
+                TitleAndSubTitle(
+                  title: 'Cliente'.hardcoded,
+                  subTitle: saleRequest.customer!.Name,
+                ),
               TitleAndSubTitle(
                 title: 'Total'.hardcoded,
                 subTitle: saleRequest.TotalLiquid,
