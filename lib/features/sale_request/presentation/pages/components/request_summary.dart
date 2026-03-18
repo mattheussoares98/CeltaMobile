@@ -31,70 +31,95 @@ class RequestSummary extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(Sizes.p8),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(isIOS ? CupertinoIcons.doc_text : Icons.receipt_long),
-                    gapW12,
-                    Text(
-                      'Resumo'.hardcoded,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w300,
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          isIOS ? CupertinoIcons.doc_text : Icons.receipt_long,
+                        ),
+                        gapW12,
+                        Text(
+                          'Resumo'.hardcoded,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
                     ),
+                    TitleAndSubTitle(
+                      title: 'Núm pedido'.hardcoded,
+                      copyableSubtitle: true,
+                      subTitle: saleRequest.SaleRequestNumber,
+                    ),
+                    if (saleRequest.RequestType != null)
+                      TitleAndSubTitle(
+                        title: 'Modelo de pedido'.hardcoded,
+                        copyableSubtitle: true,
+                        subTitle: saleRequest.RequestType?.Name,
+                      ),
+                    if (saleRequest.Seller != null)
+                      TitleAndSubTitle(
+                        title: 'Vendedor'.hardcoded,
+                        copyableSubtitle: true,
+                        subTitle: saleRequest.Seller?.Name,
+                      ),
+                    if (saleRequest.DateHourOfCreation != null)
+                      TitleAndSubTitle(
+                        title: 'Data'.hardcoded,
+                        subTitle: dateFormat.format(
+                          saleRequest.DateHourOfCreation!,
+                        ),
+                      ),
+                    if (showCustomer && saleRequest.customer != null)
+                      TitleAndSubTitle(
+                        title: 'Cliente'.hardcoded,
+                        subTitle: saleRequest.customer!.Name,
+                      ),
+                    if ((saleRequest.DiscountValue ?? 0) > 0)
+                      TitleAndSubTitle(
+                        title: 'Desconto'.hardcoded,
+                        subTitle: saleRequest.DiscountValue,
+                        subTitleIsPrice: true,
+                      ),
+                    TitleAndSubTitle(
+                      title: 'Total'.hardcoded,
+                      subTitle: saleRequest.TotalLiquid,
+                      subTitleIsPrice: true,
+                    ),
+                    if (saleRequest.observations != null)
+                      TitleAndSubTitle(
+                        title: 'Observações'.hardcoded,
+                        subTitle: saleRequest.observations,
+                      ),
                   ],
                 ),
-                TitleAndSubTitle(
-                  title: 'Núm pedido'.hardcoded,
-                  copyableSubtitle: true,
-                  subTitle: saleRequest.SaleRequestNumber,
-                ),
-                if (saleRequest.RequestType != null)
-                  TitleAndSubTitle(
-                    title: 'Modelo de pedido'.hardcoded,
-                    copyableSubtitle: true,
-                    subTitle: saleRequest.RequestType?.Name,
-                  ),
-                if (saleRequest.Seller != null)
-                  TitleAndSubTitle(
-                    title: 'Vendedor'.hardcoded,
-                    copyableSubtitle: true,
-                    subTitle: saleRequest.Seller?.Name,
-                  ),
-                if (saleRequest.DateHourOfCreation != null)
-                  TitleAndSubTitle(
-                    title: 'Data'.hardcoded,
-                    subTitle: dateFormat.format(
-                      saleRequest.DateHourOfCreation!,
-                    ),
-                  ),
-                if (showCustomer && saleRequest.customer != null)
-                  TitleAndSubTitle(
-                    title: 'Cliente'.hardcoded,
-                    subTitle: saleRequest.customer!.Name,
-                  ),
-                if ((saleRequest.DiscountValue ?? 0) > 0)
-                  TitleAndSubTitle(
-                    title: 'Desconto'.hardcoded,
-                    subTitle: saleRequest.DiscountValue,
-                    subTitleIsPrice: true,
-                  ),
-                TitleAndSubTitle(
-                  title: 'Total'.hardcoded,
-                  subTitle: saleRequest.TotalLiquid,
-                  subTitleIsPrice: true,
-                ),
-                if (saleRequest.observations != null)
-                  TitleAndSubTitle(
-                    title: 'Observações'.hardcoded,
-                    subTitle: saleRequest.observations,
-                  ),
+                if (onTap != null) const _CliclableIconIndicator(),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CliclableIconIndicator extends StatelessWidget {
+  const _CliclableIconIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
+
+    return Positioned(
+      right: 0,
+      bottom: 0,
+      child: Icon(
+        isIOS ? CupertinoIcons.arrow_up_right : Icons.arrow_outward_sharp,
       ),
     );
   }
