@@ -20,7 +20,7 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
     bool? mountProducts,
   }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
+      url: 'http://localhost:58915/SaleRequests/GetSaleRequests',
       method: 'post',
       headers: params.toHeaders(),
       body: {

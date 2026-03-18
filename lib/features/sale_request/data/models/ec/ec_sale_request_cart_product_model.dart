@@ -35,23 +35,23 @@ class EcSaleRequestCartProductModel extends Equatable {
 
   factory EcSaleRequestCartProductModel.fromJson(Map json) =>
       EcSaleRequestCartProductModel(
-        Id: json["Id"],
-        Quantity: json["Quantity"],
-        UnitValue: json["UnitValue"],
-        TotalLiquid: json["TotalLiquid"],
-        TotalDiscountValue: json["TotalDiscountValue"],
-        Observations: json["Observations"],
-        Product: EcSaleRequestProductProductModel.fromJson(json["Product"]),
+        Id: json['id'],
+        Quantity: json['quantity'],
+        UnitValue: (json['unitValue'] as num).toDouble(),
+        TotalLiquid: (json['totalLiquid'] as num).toDouble(),
+        TotalDiscountValue: (json['totalDiscountValue'] as num).toDouble(),
+        Observations: json['observations'],
+        Product: EcSaleRequestProductProductModel.fromJson(json['product']),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'Id': Id,
-    'Quantity': Quantity,
-    'UnitValue': UnitValue,
-    'TotalLiquid': TotalLiquid,
-    'TotalDiscountValue': TotalDiscountValue,
-    'Observations': Observations,
-    'Product': Product?.toJson(),
+    'id': Id,
+    'quantity': Quantity,
+    'unitValue': UnitValue,
+    'totalLiquid': TotalLiquid,
+    'totalDiscountValue': TotalDiscountValue,
+    'observations': Observations,
+    'product': Product?.toJson(),
   };
 
   factory EcSaleRequestCartProductModel.fromEntity(

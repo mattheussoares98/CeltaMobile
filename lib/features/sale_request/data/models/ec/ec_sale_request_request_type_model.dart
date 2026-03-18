@@ -18,16 +18,16 @@ class EcSaleRequestRequestTypeModel extends Equatable {
 
   factory EcSaleRequestRequestTypeModel.fromJson(Map json) {
     return EcSaleRequestRequestTypeModel(
-      Id: json['Id'],
-      PersonalizedCode: json['PersonalizedCode'],
-      Name: json['Name'],
+      Id: json['id'],
+      PersonalizedCode: json['personalizedCode'],
+      Name: json['name'],
     );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'Id': Id,
-    'PersonalizedCode': PersonalizedCode,
-    'Name': Name,
+    'id': Id,
+    'personalizedCode': PersonalizedCode,
+    'name': Name,
   };
 
   factory EcSaleRequestRequestTypeModel.fromEntity(

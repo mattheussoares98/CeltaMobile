@@ -19,18 +19,18 @@ class EcSaleRequestFinalizationModel extends Equatable {
   List<Object?> get props => [Id, Name, TotalValue, PortionQuantity];
 
   Map<String, dynamic> toJson() => {
-    'Id': Id,
-    'Name': Name,
-    'TotalValue': TotalValue,
-    'PortionQuantity': PortionQuantity,
+    'id': Id,
+    'name': Name,
+    'totalValue': TotalValue,
+    'portionQuantity': PortionQuantity,
   };
 
   factory EcSaleRequestFinalizationModel.fromJson(Map json) =>
       EcSaleRequestFinalizationModel(
-        Id: json['Id'],
-        Name: json['Name'],
-        TotalValue: json['TotalValue'],
-        PortionQuantity: json['PortionQuantity'],
+        Id: json['id'],
+        Name: json['name'],
+        TotalValue: json['totalValue'],
+        PortionQuantity: json['portionQuantity'],
       );
 
   factory EcSaleRequestFinalizationModel.fromEntity(

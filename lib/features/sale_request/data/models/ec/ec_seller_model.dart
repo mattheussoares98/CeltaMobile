@@ -12,9 +12,9 @@ class EcSellerModel extends Equatable {
   List<Object?> get props => [Id, Name];
 
   factory EcSellerModel.fromJson(Map json) =>
-      EcSellerModel(Id: json['Id'], Name: json['Name']);
+      EcSellerModel(Id: json['id'], Name: json['name']);
 
-  Map<String, dynamic> toJson() => {'Id': Id, 'Name': Name};
+  Map<String, dynamic> toJson() => {'id': Id, 'name': Name};
 
   factory EcSellerModel.fromEntity(SellerEntity entity) =>
       EcSellerModel(Id: entity.Id, Name: entity.Name);

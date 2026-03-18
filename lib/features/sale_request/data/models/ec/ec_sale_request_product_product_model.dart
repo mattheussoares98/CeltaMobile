@@ -29,19 +29,19 @@ class EcSaleRequestProductProductModel extends Equatable {
 
   factory EcSaleRequestProductProductModel.fromJson(Map json) =>
       EcSaleRequestProductProductModel(
-        Id: json['Id'],
-        Plu: json['Plu'],
-        Name: json['Name'],
-        PackingAbbreviation: json['PackingAbbreviation'],
-        PackingQuantity: json['PackingQuantity'],
+        Id: json['id'],
+        Plu: json['plu'],
+        Name: json['name'],
+        PackingAbbreviation: json['packingAbbreviation'],
+        PackingQuantity: json['packingQuantity'],
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'Id': Id,
-    'Plu': Plu,
-    'Name': Name,
-    'PackingAbbreviation': PackingAbbreviation,
-    'PackingQuantity': PackingQuantity,
+    'id': Id,
+    'plu': Plu,
+    'name': Name,
+    'packingAbbreviation': PackingAbbreviation,
+    'packingQuantity': PackingQuantity,
   };
 
   factory EcSaleRequestProductProductModel.fromEntity(ProductEntity entity) =>

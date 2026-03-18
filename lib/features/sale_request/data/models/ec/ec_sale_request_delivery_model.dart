@@ -19,16 +19,16 @@ class EcSaleRequestDeliveryModel extends Equatable {
 
   factory EcSaleRequestDeliveryModel.fromJson(Map json) {
     return EcSaleRequestDeliveryModel(
-      Transporter: json['Transporter'],
-      TotalValue: json['TotalValue'],
-      DeliveryAddress: EcAddressModel.fromJson(json['DeliveryAddress']),
+      Transporter: json['transporter'],
+      TotalValue: json['totalValue'],
+      DeliveryAddress: EcAddressModel.fromJson(json['deliveryAddress']),
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'Transporter': Transporter,
-    'TotalValue': TotalValue,
-    'DeliveryAddress': DeliveryAddress.toJson(),
+    'transporter': Transporter,
+    'totalValue': TotalValue,
+    'deliveryAddress': DeliveryAddress.toJson(),
   };
 
   factory EcSaleRequestDeliveryModel.fromEntity(DeliveryEntity entity) =>
