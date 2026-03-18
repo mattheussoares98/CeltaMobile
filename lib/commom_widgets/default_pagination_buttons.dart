@@ -31,92 +31,96 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final isLoading = ref.watch(provider.select((s) => s.isLoading));
-
     final int startItem = (results.actualPage - 1) * results.recordsByPage + 1;
     final int endItem = min(
       results.actualPage * results.recordsByPage,
       results.totalRecords,
     );
-    //TODO improve this widget performance
 
     return RepaintBoundary(
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Sizes.p8,
-            vertical: Sizes.p4,
-          ),
-          decoration: BoxDecoration(
-            color: theme.cardColor,
-            borderRadius: BorderRadius.circular(Sizes.p32),
-            border: Border.all(color: theme.dividerColor.withAlpha(40)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(10),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _PageActionIcon(
-                icon: isIOS ? CupertinoIcons.chevron_left : Icons.chevron_left,
-                onPressed: !isLoading && results.actualPage > 1
-                    ? () => onChangePage(results.actualPage - 1)
-                    : null,
-              ),
-
-              Container(
-                height: 20,
-                width: 1,
-                color: theme.dividerColor.withAlpha(30),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.p12),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '${results.actualPage} / ${results.totalPages}',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        height: 1.1,
-                        color: isLoading ? theme.disabledColor : null,
-                      ),
-                    ),
-                    Text(
-                      '$startItem-$endItem de ${results.totalRecords}'
-                          .hardcoded,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        fontSize: 9,
-                        height: 1.0,
-                        color: theme.hintColor,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+      child: FittedBox(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.p8,
+              vertical: Sizes.p4,
+            ),
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(Sizes.p32),
+              border: Border.all(color: theme.dividerColor.withAlpha(40)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(10),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
                 ),
-              ),
+              ],
+            ),
+            child: IntrinsicHeight(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _PageActionIcon(
+                    provider: provider,
+                    icon: isIOS
+                        ? CupertinoIcons.chevron_left
+                        : Icons.chevron_left,
+                    onPressed: results.actualPage > 1
+                        ? () => onChangePage(results.actualPage - 1)
+                        : null,
+                  ),
 
-              Container(
-                height: 20,
-                width: 1,
-                color: theme.dividerColor.withAlpha(30),
-              ),
+                  const _DefaultVerticalDivider(),
 
-              _PageActionIcon(
-                icon: isIOS
-                    ? CupertinoIcons.chevron_right
-                    : Icons.chevron_right,
-                onPressed: !isLoading && results.actualPage < results.totalPages
-                    ? () => onChangePage(results.actualPage + 1)
-                    : null,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Sizes.p12),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final isLoading = ref.watch(
+                              provider.select((s) => s.isLoading),
+                            );
+                            return Text(
+                              '${results.actualPage} / ${results.totalPages}',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                height: 1.1,
+                                color: isLoading ? theme.disabledColor : null,
+                              ),
+                            );
+                          },
+                        ),
+                        Text(
+                          '$startItem-$endItem de ${results.totalRecords}'
+                              .hardcoded,
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            fontSize: 9,
+                            height: 1.0,
+                            color: theme.hintColor,
+                            // fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const _DefaultVerticalDivider(),
+
+                  _PageActionIcon(
+                    provider: provider,
+                    icon: isIOS
+                        ? CupertinoIcons.chevron_right
+                        : Icons.chevron_right,
+                    onPressed: results.actualPage < results.totalPages
+                        ? () => onChangePage(results.actualPage + 1)
+                        : null,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -124,25 +128,42 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
   }
 }
 
-class _PageActionIcon extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback? onPressed;
-
-  const _PageActionIcon({required this.icon, this.onPressed});
+class _DefaultVerticalDivider extends StatelessWidget {
+  const _DefaultVerticalDivider();
 
   @override
   Widget build(BuildContext context) {
+    return VerticalDivider(
+      width: 1,
+      color: Theme.of(context).dividerColor.withAlpha(30),
+    );
+  }
+}
+
+class _PageActionIcon extends ConsumerWidget {
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final ProviderListenable<AsyncValue<dynamic>> provider;
+
+  const _PageActionIcon({
+    required this.icon,
+    required this.onPressed,
+    required this.provider,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final bool isDisabled = onPressed == null;
+    final isLoading = ref.watch(provider.select((s) => s.isLoading));
 
     return IconButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
 
       visualDensity: VisualDensity.compact,
       icon: Icon(
         icon,
         size: 18,
-        color: isDisabled ? theme.disabledColor : theme.primaryColor,
+        color: isLoading ? theme.disabledColor : theme.primaryColor,
       ),
     );
   }
