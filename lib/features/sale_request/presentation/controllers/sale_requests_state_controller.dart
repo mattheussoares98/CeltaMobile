@@ -35,10 +35,6 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
     required DateTime startDateHourOfCreation,
     DateTime? endDateHourOfCreation,
     List<String>? personalizedCodes,
-    bool? mountCustomer,
-    bool? mountSeller,
-    bool? mountRequestType,
-    bool? mountProducts,
     int? actualPage,
     int? recordsByPage,
   }) async {
@@ -62,10 +58,6 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
             endDateHourOfCreation: endDateHourOfCreation,
             startDateHourOfCreation: startDateHourOfCreation,
             personalizedCodes: personalizedCodes,
-            mountCustomer: mountCustomer,
-            mountSeller: mountSeller,
-            mountRequestType: mountRequestType,
-            mountProducts: mountProducts,
           );
     });
   }

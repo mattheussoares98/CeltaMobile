@@ -25,10 +25,6 @@ void main() {
   late DateTime startDateHourOfCreation;
   late DateTime? endDateHourOfCreation;
   late List<String>? personalizedCodes;
-  late bool? mountCustomer;
-  late bool? mountSeller;
-  late bool? mountRequestType;
-  late bool? mountProducts;
   late EcPaginationResults<SaleRequestEntity> fakeRequests;
   late EcRequestParams params;
 
@@ -50,18 +46,6 @@ void main() {
         ? startDateHourOfCreation.add(const Duration(days: 1))
         : null;
     personalizedCodes = [faker.randomGenerator.string(10)];
-    mountCustomer = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountSeller = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountRequestType = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountProducts = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
 
     fakeRequests = EcPaginationResults(
       totalRecords: faker.randomGenerator.integer(1000),
@@ -125,10 +109,6 @@ void main() {
             endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
             startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
             personalizedCodes: any(named: 'personalizedCodes'),
-            mountCustomer: any(named: 'mountCustomer'),
-            mountSeller: any(named: 'mountSeller'),
-            mountRequestType: any(named: 'mountRequestType'),
-            mountProducts: any(named: 'mountProducts'),
           ),
         ).thenAnswer((_) async => fakeRequests);
 
@@ -151,10 +131,6 @@ void main() {
               endDateHourOfCreation: endDateHourOfCreation,
               startDateHourOfCreation: startDateHourOfCreation,
               personalizedCodes: personalizedCodes,
-              mountCustomer: mountCustomer,
-              mountSeller: mountSeller,
-              mountRequestType: mountRequestType,
-              mountProducts: mountProducts,
               actualPage: params.actualPage,
               recordsByPage: params.recordsByPage,
             );
@@ -172,10 +148,6 @@ void main() {
             endDateHourOfCreation: endDateHourOfCreation,
             startDateHourOfCreation: startDateHourOfCreation,
             personalizedCodes: personalizedCodes,
-            mountCustomer: mountCustomer,
-            mountSeller: mountSeller,
-            mountRequestType: mountRequestType,
-            mountProducts: mountProducts,
           ),
         ).called(1);
       },
