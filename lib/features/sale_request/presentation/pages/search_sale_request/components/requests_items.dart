@@ -2,10 +2,12 @@ import 'package:celta_inventario/features/sale_request/domain/entities/sale_requ
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../routing/routing.dart';
 import '../../../controllers/controllers.dart';
 
 class RequestsItems extends ConsumerWidget {
@@ -32,6 +34,7 @@ class RequestsItems extends ConsumerWidget {
               key: ValueKey(saleRequest.Id),
               saleRequest: saleRequest,
               dateFormat: dateFormat,
+              enterpriseCode: enterpriseCode,
             );
           },
         );
@@ -45,10 +48,12 @@ class _SaleRequestItem extends StatelessWidget {
     super.key,
     required this.saleRequest,
     required this.dateFormat,
+    required this.enterpriseCode,
   });
 
   final SaleRequestEntity saleRequest;
   final DateFormat dateFormat;
+  final int enterpriseCode;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +61,13 @@ class _SaleRequestItem extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          //TODO navigate to sale request detail
+          context.pushNamed(
+            Routes.saleRequestDetails.name,
+            pathParameters: {
+              'saleRequestId': saleRequest.Id.toString(),
+              'enterpriseCode': enterpriseCode.toString(),
+            },
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(Sizes.p8),
