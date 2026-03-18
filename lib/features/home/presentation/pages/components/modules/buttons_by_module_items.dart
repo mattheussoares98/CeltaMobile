@@ -70,11 +70,12 @@ class ButtonsByModuleItems {
       materialIcon: Icons.sync_alt_outlined,
       cupertinoIcon: CupertinoIcons.arrow_2_squarepath,
     ),
-    Modules.saleRequest: const DefaultModuleButton(
+    Modules.saleRequest: DefaultModuleButton(
       route: Routes.saleRequestActionSelector,
       module: Modules.saleRequest,
       materialIcon: Icons.shopping_bag_outlined,
       cupertinoIcon: CupertinoIcons.bag,
+      minimumBsVersionDate: DateTime(2026, 03, 18), //TODO remove in the future
     ),
     Modules.competingPrices: const DefaultModuleButton(
       route: Routes.competingPricesResearchs,
@@ -95,12 +96,11 @@ class ButtonsByModuleItems {
       cupertinoIcon: CupertinoIcons.chart_bar_square,
       passEnterpriseToNextRoute: false,
     ),
-    Modules.stockReplacement: DefaultModuleButton(
+    Modules.stockReplacement: const DefaultModuleButton(
       route: Routes.stockReplacement,
       module: Modules.stockReplacement,
       materialIcon: Icons.published_with_changes_outlined,
       cupertinoIcon: CupertinoIcons.arrow_2_circlepath_circle,
-      minimumBsVersionDate: DateTime(2026, 2, 9),
     ),
   };
 }
