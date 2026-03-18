@@ -34,11 +34,11 @@ void main() {
   late List<int> enterpriseIds;
   late DateTime endDateHourOfCreation;
   late DateTime startDateHourOfCreation;
-  late List<String>? personalizedCodes;
-  late bool? mountCustomer;
-  late bool? mountSeller;
-  late bool? mountRequestType;
-  late bool? mountProducts;
+  late List<String> personalizedCodes;
+  late bool mountCustomer;
+  late bool mountSeller;
+  late bool mountRequestType;
+  late bool mountProducts;
 
   late EcPaginationResults<SaleRequestEntity> saleRequests;
 
@@ -57,18 +57,10 @@ void main() {
       faker.randomGenerator.integer(100).toString(),
       faker.randomGenerator.integer(100).toString(),
     ];
-    mountCustomer = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountSeller = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountRequestType = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountProducts = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
+    mountCustomer = faker.randomGenerator.boolean();
+    mountSeller = faker.randomGenerator.boolean();
+    mountRequestType = faker.randomGenerator.boolean();
+    mountProducts = faker.randomGenerator.boolean();
 
     saleRequests = EcPaginationResults(
       totalRecords: faker.randomGenerator.integer(1000),
@@ -92,7 +84,7 @@ void main() {
     registerFallbackValue(EntityFactory.makeEcRequestParams());
   });
 
-  test('should behave correctly on save', () async {
+  test('should behave correctly on load', () async {
     mockDatasource.mockGet(
       saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
     );
@@ -161,4 +153,34 @@ void main() {
     expect(captured?.month, DateTime.now().month);
     expect(captured?.day, DateTime.now().day);
   });
+
+  test(
+    'should call with correct values when doesnt pass the optional parameters',
+    () async {
+      mockDatasource.mockGet(
+        saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
+      );
+
+      final response = await sut.get(params: params);
+
+      expect(response, saleRequests);
+
+      verify(
+        () => mockDatasource.get(
+          params: params,
+          endDateHourOfCreation: any(
+            named: 'endDateHourOfCreation',
+          ), //DateTime.now(),
+          enterpriseIds: null,
+          startDateHourOfCreation: null,
+          mountCustomer: null,
+          mountProducts: null,
+          mountRequestType: null,
+          mountSeller: null,
+          personalizedCodes: null,
+          id: null,
+        ),
+      ).called(1);
+    },
+  );
 }

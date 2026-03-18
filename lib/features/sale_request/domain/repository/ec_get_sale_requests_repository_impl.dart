@@ -10,9 +10,10 @@ class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
   @override
   Future<EcPaginationResults<SaleRequestEntity>> get({
     required EcRequestParams params,
-    required List<int> enterpriseIds,
-    required DateTime startDateHourOfCreation,
-    required DateTime? endDateHourOfCreation,
+    DateTime? startDateHourOfCreation,
+    DateTime? endDateHourOfCreation,
+    List<int>? enterpriseIds,
+    int? id,
     List<String>? personalizedCodes,
     bool? mountCustomer,
     bool? mountSeller,
@@ -29,6 +30,7 @@ class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
       mountRequestType: mountRequestType,
       mountSeller: mountSeller,
       personalizedCodes: personalizedCodes,
+      id: id,
     );
 
     return response.map((e) => e.toEntity());

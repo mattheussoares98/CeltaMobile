@@ -4,9 +4,10 @@ import '../models/models.dart';
 abstract class IEcGetSaleRequestsDatasource {
   Future<EcPaginationResults<EcSaleRequestModel>> get({
     required EcRequestParams params,
-    required List<int> enterpriseIds,
-    required DateTime endDateHourOfCreation,
-    required DateTime startDateHourOfCreation,
+    DateTime? startDateHourOfCreation,
+    DateTime? endDateHourOfCreation,
+    List<int>? enterpriseIds,
+    int? id,
     List<String>? personalizedCodes,
     bool? mountCustomer,
     bool? mountSeller,

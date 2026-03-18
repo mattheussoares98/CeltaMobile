@@ -16,11 +16,12 @@ void main() {
   late List<int> enterpriseIds;
   late DateTime endDateHourOfCreation;
   late DateTime startDateHourOfCreation;
-  late List<String>? personalizedCodes;
-  late bool? mountCustomer;
-  late bool? mountSeller;
-  late bool? mountRequestType;
-  late bool? mountProducts;
+  late List<String> personalizedCodes;
+  late bool mountCustomer;
+  late bool mountSeller;
+  late bool mountRequestType;
+  late bool mountProducts;
+  late int id;
   late EcPaginationResults<EcSaleRequestModel> saleRequests;
 
   void initSut() {
@@ -55,18 +56,11 @@ void main() {
       const Duration(days: 1),
     );
     personalizedCodes = [faker.randomGenerator.string(10)];
-    mountCustomer = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountSeller = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountRequestType = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
-    mountProducts = faker.randomGenerator.boolean() == true
-        ? faker.randomGenerator.boolean()
-        : null;
+    mountCustomer = faker.randomGenerator.boolean();
+    mountSeller = faker.randomGenerator.boolean();
+    mountRequestType = faker.randomGenerator.boolean();
+    mountProducts = faker.randomGenerator.boolean();
+    id = faker.randomGenerator.integer(100);
   }
 
   setUp(() {
@@ -87,6 +81,7 @@ void main() {
       mountRequestType: mountRequestType,
       mountSeller: mountSeller,
       personalizedCodes: personalizedCodes,
+      id: id,
     );
 
     expect(response, saleRequests);
@@ -98,17 +93,32 @@ void main() {
         headers: params.toHeaders(),
         body: {
           'enterpriseIds': enterpriseIds,
+          'id': id,
           'dateHourOfCreation': {
             'EndDate': endDateHourOfCreation.toIso8601String(),
             'StartDate': startDateHourOfCreation.toIso8601String(),
           },
-          'personalizedCodes': ?personalizedCodes,
-          'mountCustomer': ?mountCustomer,
-          'mountSeller': ?mountSeller,
-          'mountRequestType': ?mountRequestType,
-          'mountProducts': ?mountProducts,
+          'personalizedCodes': personalizedCodes,
+          'mountCustomer': mountCustomer,
+          'mountSeller': mountSeller,
+          'mountRequestType': mountRequestType,
+          'mountProducts': mountProducts,
           ...params.toMap(),
         },
+      ),
+    ).called(1);
+  });
+  test('should behave correctly when receive null values', () async {
+    final response = await sut.get(params: params);
+
+    expect(response, saleRequests);
+
+    verify(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
+        method: 'post',
+        headers: params.toHeaders(),
+        body: {...params.toMap()},
       ),
     ).called(1);
   });

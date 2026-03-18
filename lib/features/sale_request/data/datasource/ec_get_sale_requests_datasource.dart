@@ -10,9 +10,10 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
   @override
   Future<EcPaginationResults<EcSaleRequestModel>> get({
     required EcRequestParams params,
-    required List<int> enterpriseIds,
-    required DateTime endDateHourOfCreation,
-    required DateTime startDateHourOfCreation,
+    DateTime? startDateHourOfCreation,
+    DateTime? endDateHourOfCreation,
+    List<int>? enterpriseIds,
+    int? id,
     List<String>? personalizedCodes,
     bool? mountCustomer,
     bool? mountSeller,
@@ -20,15 +21,17 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
     bool? mountProducts,
   }) async {
     final response = await httpClient.request(
-      url: 'http://localhost:58915/SaleRequests/GetSaleRequests',
+      url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
       method: 'post',
       headers: params.toHeaders(),
       body: {
-        'enterpriseIds': enterpriseIds,
-        'dateHourOfCreation': {
-          'EndDate': endDateHourOfCreation.toIso8601String(),
-          'StartDate': startDateHourOfCreation.toIso8601String(),
-        },
+        'enterpriseIds': ?enterpriseIds,
+        'id': ?id,
+        if (startDateHourOfCreation != null || endDateHourOfCreation != null)
+          'dateHourOfCreation': {
+            'EndDate': endDateHourOfCreation?.toIso8601String(),
+            'StartDate': startDateHourOfCreation?.toIso8601String(),
+          },
         'personalizedCodes': ?personalizedCodes,
         'mountCustomer': ?mountCustomer,
         'mountSeller': ?mountSeller,
