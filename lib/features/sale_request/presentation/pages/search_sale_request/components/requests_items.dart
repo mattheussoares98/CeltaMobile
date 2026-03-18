@@ -1,7 +1,11 @@
+import 'package:celta_inventario/features/sale_request/domain/entities/sale_request_entity.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
 import '../../../controllers/controllers.dart';
 
 class RequestsItems extends ConsumerWidget {
@@ -10,6 +14,8 @@ class RequestsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
+
     return AsyncValueWidget(
       value: ref.watch(saleRequestsStateControllerProvider(enterpriseCode)),
       tryAgain: null,
@@ -22,10 +28,65 @@ class RequestsItems extends ConsumerWidget {
           itemCount: saleRequests?.collection.length ?? 0,
           itemBuilder: (context, index) {
             final saleRequest = saleRequests!.collection[index];
-            return Text(saleRequest.SaleRequestNumber.toString());
+            return _SaleRequestItem(
+              key: ValueKey(saleRequest.Id),
+              saleRequest: saleRequest,
+              dateFormat: dateFormat,
+            );
           },
         );
       },
+    );
+  }
+}
+
+class _SaleRequestItem extends StatelessWidget {
+  const _SaleRequestItem({
+    super.key,
+    required this.saleRequest,
+    required this.dateFormat,
+  });
+
+  final SaleRequestEntity saleRequest;
+  final DateFormat dateFormat;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          //TODO navigate to sale request detail
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleAndSubTitle(
+                title: 'Núm pedido'.hardcoded,
+                copyableSubtitle: true,
+                subTitle: saleRequest.SaleRequestNumber,
+              ),
+              if (saleRequest.DateHourOfCreation != null)
+                TitleAndSubTitle(
+                  title: 'Data'.hardcoded,
+                  subTitle: dateFormat.format(saleRequest.DateHourOfCreation!),
+                ),
+              TitleAndSubTitle(
+                title: 'Total'.hardcoded,
+                subTitle: saleRequest.TotalLiquid,
+                subTitleIsPrice: true,
+              ),
+              if (saleRequest.observations != null)
+                TitleAndSubTitle(
+                  title: 'Observações'.hardcoded,
+                  subTitle: saleRequest.observations,
+                ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
