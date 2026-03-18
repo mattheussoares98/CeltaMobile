@@ -1,7 +1,8 @@
 enum CustomerPersonType {
-  fisica('F'),
-  juridica('J');
+  fisica('F', 'Pessoa física'),
+  juridica('J', 'Pessoa jurídica');
 
   final String shortName;
-  const CustomerPersonType(this.shortName);
+  final String completeName;
+  const CustomerPersonType(this.shortName, this.completeName);
 }
