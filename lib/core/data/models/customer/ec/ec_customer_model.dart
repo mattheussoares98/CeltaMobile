@@ -87,9 +87,14 @@ class EcCustomerModel extends Equatable {
     DateOfBirth: DateOfBirth,
     PersonType: PersonType,
     CpfCnpjNumber: CpfCnpjNumber,
-    Emails: [?Email],
-    Telephones: [
-      CustomerTelephoneEntity(AreaCode: PhoneArea, PhoneNumber: PhoneNumber),
-    ],
+    Emails: Email == null ? null : [?Email],
+    Telephones: PhoneArea == null || PhoneNumber == null
+        ? null
+        : [
+            CustomerTelephoneEntity(
+              AreaCode: PhoneArea,
+              PhoneNumber: PhoneNumber,
+            ),
+          ],
   );
 }
