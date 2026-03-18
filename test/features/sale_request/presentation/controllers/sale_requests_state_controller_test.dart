@@ -109,6 +109,10 @@ void main() {
             endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
             startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
             personalizedCodes: any(named: 'personalizedCodes'),
+            mountCustomer: any(named: 'mountCustomer'),
+            mountProducts: any(named: 'mountProducts'),
+            mountRequestType: any(named: 'mountRequestType'),
+            mountSeller: any(named: 'mountSeller'),
           ),
         ).thenAnswer((_) async => fakeRequests);
 
@@ -148,6 +152,7 @@ void main() {
             endDateHourOfCreation: endDateHourOfCreation,
             startDateHourOfCreation: startDateHourOfCreation,
             personalizedCodes: personalizedCodes,
+            mountCustomer: true,
           ),
         ).called(1);
       },
@@ -163,6 +168,11 @@ void main() {
           enterpriseIds: any(named: 'enterpriseIds'),
           endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
           startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
+          personalizedCodes: any(named: 'personalizedCodes'),
+          mountCustomer: any(named: 'mountCustomer'),
+          mountProducts: any(named: 'mountProducts'),
+          mountRequestType: any(named: 'mountRequestType'),
+          mountSeller: any(named: 'mountSeller'),
         ),
       ).thenThrow(exception);
 
