@@ -172,7 +172,9 @@ class ProductItemWidget extends ConsumerWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.only(bottom: Sizes.p12),
+      margin: theme.cardTheme.margin?.add(
+        const EdgeInsets.only(bottom: Sizes.p4),
+      ),
       child: Column(
         children: [
           InkWell(
