@@ -9,7 +9,9 @@ import '../../../controllers/controllers.dart';
 import 'components.dart';
 
 class QuantityPriceDiscountFieldsAndInsertButton
-    extends ConsumerStatefulWidget {
+        //TODO move to global components from sale request components
+        extends
+        ConsumerStatefulWidget {
   final TextEditingController quantityController;
   final TextEditingController priceController;
   final TextEditingController discountController;
