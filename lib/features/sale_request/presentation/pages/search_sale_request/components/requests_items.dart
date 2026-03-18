@@ -57,44 +57,49 @@ class _SaleRequestItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          context.pushNamed(
-            Routes.saleRequestDetails.name,
-            pathParameters: {
-              'saleRequestId': saleRequest.Id.toString(),
-              'enterpriseCode': enterpriseCode.toString(),
-            },
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TitleAndSubTitle(
-                title: 'Núm pedido'.hardcoded,
-                copyableSubtitle: true,
-                subTitle: saleRequest.SaleRequestNumber,
-              ),
-              if (saleRequest.DateHourOfCreation != null)
+    return Hero(
+      tag: 'sale_request_${saleRequest.Id}',
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () {
+            context.pushNamed(
+              Routes.saleRequestDetails.name,
+              pathParameters: {
+                'saleRequestId': saleRequest.Id.toString(),
+                'enterpriseCode': enterpriseCode.toString(),
+              },
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 TitleAndSubTitle(
-                  title: 'Data'.hardcoded,
-                  subTitle: dateFormat.format(saleRequest.DateHourOfCreation!),
+                  title: 'Núm pedido'.hardcoded,
+                  copyableSubtitle: true,
+                  subTitle: saleRequest.SaleRequestNumber,
                 ),
-              TitleAndSubTitle(
-                title: 'Total'.hardcoded,
-                subTitle: saleRequest.TotalLiquid,
-                subTitleIsPrice: true,
-              ),
-              if (saleRequest.observations != null)
+                if (saleRequest.DateHourOfCreation != null)
+                  TitleAndSubTitle(
+                    title: 'Data'.hardcoded,
+                    subTitle: dateFormat.format(
+                      saleRequest.DateHourOfCreation!,
+                    ),
+                  ),
                 TitleAndSubTitle(
-                  title: 'Observações'.hardcoded,
-                  subTitle: saleRequest.observations,
+                  title: 'Total'.hardcoded,
+                  subTitle: saleRequest.TotalLiquid,
+                  subTitleIsPrice: true,
                 ),
-            ],
+                if (saleRequest.observations != null)
+                  TitleAndSubTitle(
+                    title: 'Observações'.hardcoded,
+                    subTitle: saleRequest.observations,
+                  ),
+              ],
+            ),
           ),
         ),
       ),
