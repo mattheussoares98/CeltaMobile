@@ -29,9 +29,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
             enterpriseCode: enterpriseCode,
           ),
           ReloadButton(saleRequestId: saleRequestId),
-          SaleRequestType(saleRequestId: saleRequestId),
           Customer(saleRequestId: saleRequestId),
-          Seller(saleRequestId: saleRequestId),
           Consumer(
             builder: (context, ref, child) {
               final products = ref.watch(
@@ -95,7 +93,10 @@ class _HeroRequestSummary extends StatelessWidget {
                 return const SizedBox.shrink();
               }
 
-              return RequestSummary(saleRequest: saleRequest);
+              return RequestSummary(
+                saleRequest: saleRequest,
+                showCustomer: false,
+              );
             },
           ),
         ),

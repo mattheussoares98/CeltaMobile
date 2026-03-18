@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,44 +22,50 @@ class Customer extends ConsumerWidget {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
+    final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
     return SliverToBoxAdapter(
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleAndSubTitle(
-                title: 'Nome'.hardcoded,
-                subTitle: customer.Name ?? '',
+              Icon(isIOS ? CupertinoIcons.person : Icons.person),
+              gapW8,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TitleAndSubTitle(
+                      title: null,
+                      subTitle: '${customer.Name} (${customer.Code})',
+                    ),
+                    if (customer.PersonType != null)
+                      TitleAndSubTitle(
+                        title: 'Tipo'.hardcoded,
+                        subTitle: customer.PersonType?.completeName,
+                      ),
+                    if (customer.CpfCnpjNumber != null)
+                      TitleAndSubTitle(
+                        title: 'CPF/CNPJ'.hardcoded,
+                        subTitle: customer.CpfCnpjNumber,
+                      ),
+                    if (customer.Emails != null)
+                      TitleAndSubTitle(
+                        title: 'E-mails'.hardcoded,
+                        subTitle: customer.Emails?.join(', '),
+                      ),
+                    if (customer.Telephones != null)
+                      TitleAndSubTitle(
+                        title: 'Telefones'.hardcoded,
+                        subTitle: customer.Telephones?.map(
+                          (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
+                        ).join(', '),
+                      ),
+                  ],
+                ),
               ),
-              if (customer.Code != null)
-                TitleAndSubTitle(
-                  title: 'Código'.hardcoded,
-                  subTitle: customer.Code.toString(),
-                ),
-              if (customer.PersonType != null)
-                TitleAndSubTitle(
-                  title: 'Tipo'.hardcoded,
-                  subTitle: customer.PersonType?.completeName,
-                ),
-              if (customer.CpfCnpjNumber != null)
-                TitleAndSubTitle(
-                  title: 'CPF/CNPJ'.hardcoded,
-                  subTitle: customer.CpfCnpjNumber,
-                ),
-              if (customer.Emails != null)
-                TitleAndSubTitle(
-                  title: 'E-mails'.hardcoded,
-                  subTitle: customer.Emails?.join(', '),
-                ),
-              if (customer.Telephones != null)
-                TitleAndSubTitle(
-                  title: 'Telefones'.hardcoded,
-                  subTitle: customer.Telephones?.map(
-                    (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
-                  ).join(', '),
-                ),
             ],
           ),
         ),
