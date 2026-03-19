@@ -27,6 +27,7 @@ class NameAndPacking extends StatelessWidget {
     return TitleAndSubTitle(
       copyableTitle: true,
       title: product.Name,
+      removeColon: true,
       subTitle: subtitle,
       titleStyle: theme.textTheme.titleMedium,
       subTitleStyle: theme.textTheme.titleMedium?.copyWith(
