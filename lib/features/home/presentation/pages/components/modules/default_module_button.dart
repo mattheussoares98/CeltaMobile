@@ -60,7 +60,7 @@ class DefaultModuleButton extends ConsumerWidget {
       }
       final enterpriseCode = ref.read(
         selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
-      ); //TODO get the value on tryAccessModuleController
+      );
 
       ref
           .read(tryAccessModuleControllerProvider(module).notifier)
