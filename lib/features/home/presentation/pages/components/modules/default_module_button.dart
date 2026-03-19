@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../core/presentation/controllers/bs_version/bs_version.dart';
 import '../../../../../../core/presentation/controllers/resource/resource.dart';
 import '../../../../../../core/presentation/helpers/helpers.dart';
 import '../../../../../../routing/routing.dart';
@@ -36,13 +35,12 @@ class DefaultModuleButton extends ConsumerWidget {
 
     final isLoading =
         (module == Modules.adjustPrice &&
-            ref.watch(
-              canAccessResourceStateControllerProvider(
-                BsRoutine.adjustSalePrice,
-                BsResource.adjustSalePrice,
-              ).select((s) => s.isLoading),
-            )) ||
-        ref.watch(bsVersionStateControllerProvider.select((s) => s.isLoading));
+        ref.watch(
+          canAccessResourceStateControllerProvider(
+            BsRoutine.adjustSalePrice,
+            BsResource.adjustSalePrice,
+          ).select((s) => s.isLoading),
+        ));
 
     final hasSelectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider.select((s) => s != null),
