@@ -33,15 +33,6 @@ class DefaultModuleButton extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
     final icon = isIOS ? cupertinoIcon : materialIcon;
 
-    final isLoading =
-        (module == Modules.adjustPrice &&
-        ref.watch(
-          canAccessResourceStateControllerProvider(
-            BsRoutine.adjustSalePrice,
-            BsResource.adjustSalePrice,
-          ).select((s) => s.isLoading),
-        ));
-
     final hasSelectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider.select((s) => s != null),
     );
@@ -76,35 +67,48 @@ class DefaultModuleButton extends ConsumerWidget {
         side: BorderSide(color: theme.primaryColor, width: 0.4),
       ),
       clipBehavior: Clip.none,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(Sizes.p12),
-        onTap: !hasSelectedEnterprise || isLoading ? null : accessModule,
-        child: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Using a circular container with a subtle background instead of a full image card
-                  if (isLoading)
-                    const LoadingWidget()
-                  else
-                    ModuleIcon(icon: icon),
-                  const SizedBox(height: Sizes.p12),
-                  ModuleName(module: module),
-                ],
-              ),
+      child: Consumer(
+        builder: (context, ref, child) {
+          final isLoading =
+              (module == Modules.adjustPrice &&
+              ref.watch(
+                canAccessResourceStateControllerProvider(
+                  BsRoutine.adjustSalePrice,
+                  BsResource.adjustSalePrice,
+                ).select((s) => s.isLoading),
+              ));
+
+          return InkWell(
+            borderRadius: BorderRadius.circular(Sizes.p12),
+            onTap: !hasSelectedEnterprise || isLoading ? null : accessModule,
+            child: Stack(
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Using a circular container with a subtle background instead of a full image card
+                      if (isLoading)
+                        const LoadingWidget()
+                      else
+                        ModuleIcon(icon: icon),
+                      const SizedBox(height: Sizes.p12),
+                      ModuleName(module: module),
+                    ],
+                  ),
+                ),
+                if (module == Modules.stockReplacement &&
+                    ModuleIsFreeUntil.stockReplacementIsFree)
+                  const NewModuleBadge(),
+                FavoriteIconButton(
+                  module: module,
+                  key: ValueKey('favorite_$module'),
+                ),
+              ],
             ),
-            if (module == Modules.stockReplacement &&
-                ModuleIsFreeUntil.stockReplacementIsFree)
-              const NewModuleBadge(),
-            FavoriteIconButton(
-              module: module,
-              key: ValueKey('favorite_$module'),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
