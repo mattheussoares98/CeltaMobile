@@ -15,6 +15,9 @@ class NameAndPacking extends StatelessWidget {
     }
 
     if (product.PackingQuantity?.toDouble() != null) {
+      if (product.PackingAbbreviation == null) {
+        return " (${product.PackingQuantity?.toString().toBrazilianNumber(3, true)})";
+      }
       return "(${product.PackingAbbreviation} ${product.PackingQuantity?.toString().toBrazilianNumber(3, true)})";
     }
 
