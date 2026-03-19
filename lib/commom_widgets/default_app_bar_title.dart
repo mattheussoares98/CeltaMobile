@@ -66,10 +66,13 @@ class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: Text(
-            '$personalizedCode - $enterpriseName',
-            style: theme.textTheme.bodySmall,
-            textAlign: centerTitle ? TextAlign.center : null,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '$personalizedCode - $enterpriseName',
+              style: theme.textTheme.bodySmall,
+              textAlign: centerTitle ? TextAlign.center : null,
+            ),
           ),
         ),
       ],
