@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/enterprises/enterprises.dart';
-import '../../../../core/presentation/controllers/resource/resource.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/resource/resource.dart';
+import '../controllers/controllers.dart';
 import 'components/components.dart';
 
 class HomePage extends ConsumerWidget {
@@ -26,31 +24,9 @@ class HomePage extends ConsumerWidget {
       appBar: AppBar(leadingWidth: 40, title: const SelectEnterpriseDropDown()),
 
       body: OptimazedAsyncValueWidget(
-        provider: enterprisesStateControllerProvider(),
-        tryAgain: () => ref.invalidate(enterprisesStateControllerProvider()),
-        child: Consumer(
-          builder: (_, ref, _) {
-            final enterpriseName = ref.watch(
-              userSessionProvider.select((s) => s.value?.enterprise?.name),
-            );
-
-            if (enterpriseName == null) {
-              return const SizedBox.shrink();
-            }
-
-            return OptimazedAsyncValueWidget(
-              provider: enabledModulesByEnterpriseNameStateControllerProvider(
-                enterpriseName,
-              ),
-              tryAgain: () => ref.invalidate(
-                enabledModulesByEnterpriseNameStateControllerProvider(
-                  enterpriseName,
-                ),
-              ),
-              child: const ModulesWidget(),
-            );
-          },
-        ),
+        provider: homeInitializationControllerProvider,
+        tryAgain: () => ref.invalidate(homeInitializationControllerProvider),
+        child: const ModulesWidget(),
       ),
     );
   }
