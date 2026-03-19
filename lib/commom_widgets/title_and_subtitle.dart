@@ -16,6 +16,7 @@ class TitleAndSubTitle extends StatelessWidget {
   final TextAlign? textAlign;
   final bool copyableTitle;
   final bool copyableSubtitle;
+  final bool removeColon; //two points
   const TitleAndSubTitle({
     super.key,
     required this.title,
@@ -28,6 +29,7 @@ class TitleAndSubTitle extends StatelessWidget {
     this.textAlign,
     this.copyableTitle = false,
     this.copyableSubtitle = false,
+    this.removeColon = false,
   });
 
   void _copyToClipboard({
@@ -36,9 +38,6 @@ class TitleAndSubTitle extends StatelessWidget {
     required bool copyTitle,
     required bool copySubtitle,
   }) async {
-    // PERFORMANCE: Using HapticFeedback provides instant physical
-    // confirmation to the user on older devices.
-
     if (!copyTitle && !copySubtitle) return;
 
     await HapticFeedback.mediumImpact();
@@ -125,7 +124,7 @@ class TitleAndSubTitle extends StatelessWidget {
       children: [
         if (!showErrorMessage && title != null)
           TextSpan(
-            text: "${title!.trimRight()}: ",
+            text: title!.trimRight() + (removeColon ? ' ' : ': '),
             style: titleStyle ?? theme.textTheme.bodyMedium,
           ),
         if (subTitleIsPrice == true && !showErrorMessage)
