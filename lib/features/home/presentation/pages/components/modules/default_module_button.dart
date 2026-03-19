@@ -41,6 +41,7 @@ class DefaultModuleButton extends ConsumerWidget {
       Routes? saleRequestNextRoute;
       if (route == Routes.saleRequestActionSelector) {
         saleRequestNextRoute = await SaleRequestActionSelector.show(context);
+        if (saleRequestNextRoute == null) return;
       }
       final enterpriseCode = ref.read(
         selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
