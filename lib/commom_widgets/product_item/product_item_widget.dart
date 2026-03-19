@@ -202,18 +202,7 @@ class ProductItemWidget extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ?itemBeforeProductName,
-                                TitleAndSubTitle(
-                                  copyableTitle: true,
-                                  title: product.Name,
-                                  subTitle: product.PackingQuantity == null
-                                      ? null
-                                      : " (${product.PackingQuantity.toString().formattedPacking()})",
-                                  titleStyle: theme.textTheme.titleMedium,
-                                  subTitleStyle: theme.textTheme.titleMedium
-                                      ?.copyWith(
-                                        color: theme.colorScheme.secondary,
-                                      ),
-                                ),
+                                NameAndPacking(product: product),
                                 Stack(
                                   children: [
                                     Column(
