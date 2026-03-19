@@ -33,10 +33,6 @@ class DefaultModuleButton extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
     final icon = isIOS ? cupertinoIcon : materialIcon;
 
-    final hasSelectedEnterprise = ref.watch(
-      selectedEnterpriseStateControllerProvider.select((s) => s != null),
-    );
-
     void accessModule() async {
       Routes? saleRequestNextRoute;
       if (route == Routes.saleRequestActionSelector) {
@@ -78,6 +74,10 @@ class DefaultModuleButton extends ConsumerWidget {
                   BsResource.adjustSalePrice,
                 ).select((s) => s.isLoading),
               ));
+
+          final hasSelectedEnterprise = ref.watch(
+            selectedEnterpriseStateControllerProvider.select((s) => s != null),
+          );
 
           return InkWell(
             borderRadius: BorderRadius.circular(Sizes.p12),
