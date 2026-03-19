@@ -17,7 +17,6 @@ class DefaultModuleButton extends ConsumerWidget {
   final IconData cupertinoIcon;
   final IconData materialIcon;
   final bool passEnterpriseToNextRoute;
-  final DateTime? minimumBsVersionDate;
 
   const DefaultModuleButton({
     super.key,
@@ -26,7 +25,6 @@ class DefaultModuleButton extends ConsumerWidget {
     required this.cupertinoIcon,
     required this.materialIcon,
     this.passEnterpriseToNextRoute = true,
-    this.minimumBsVersionDate,
   });
 
   @override
@@ -44,10 +42,7 @@ class DefaultModuleButton extends ConsumerWidget {
                 BsResource.adjustSalePrice,
               ).select((s) => s.isLoading),
             )) ||
-        (minimumBsVersionDate != null &&
-            ref.watch(
-              bsVersionStateControllerProvider.select((s) => s.isLoading),
-            ));
+        ref.watch(bsVersionStateControllerProvider.select((s) => s.isLoading));
 
     final hasSelectedEnterprise = ref.watch(
       selectedEnterpriseStateControllerProvider.select((s) => s != null),
@@ -65,7 +60,6 @@ class DefaultModuleButton extends ConsumerWidget {
       ref
           .read(tryAccessModuleControllerProvider(module).notifier)
           .tryAccess(
-            minimumBsVersionDate: minimumBsVersionDate,
             context: context,
             route: saleRequestNextRoute ?? route,
             enterpriseCode: enterpriseCode,

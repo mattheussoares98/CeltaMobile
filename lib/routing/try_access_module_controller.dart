@@ -29,8 +29,12 @@ class TryAccessModuleController extends _$TryAccessModuleController {
     bool replace = false,
     Map<String, String>? pathParameters,
     Object? extra,
-    DateTime? minimumBsVersionDate,
   }) async {
+    final minimumBsVersionDate = switch (route) {
+      Routes.searchSaleRequests => DateTime(2026, 3, 18),
+      _ => null,
+    };
+
     if (minimumBsVersionDate != null) {
       final bsVersionDate = await ref.read(
         bsVersionStateControllerProvider.future,
