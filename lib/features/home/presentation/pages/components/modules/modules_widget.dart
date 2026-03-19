@@ -3,6 +3,9 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../../../routing/routing.dart';
+import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
 import '../components.dart';
 
@@ -43,6 +46,9 @@ class MyGridView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(sortedModulesStateControllerProvider);
+    ref.listen(tryAccessModuleControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
       slivers: [

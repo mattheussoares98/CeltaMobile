@@ -5,7 +5,7 @@ import '../user_session/user_session.dart';
 
 part 'bs_version_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class BsVersionStateController extends _$BsVersionStateController {
   @override
   FutureOr<DateTime?> build() async {

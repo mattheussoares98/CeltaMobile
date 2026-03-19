@@ -41,13 +41,10 @@ class Prices extends ConsumerWidget {
               IconButton(
                 onPressed: () {
                   ref
-                      .read(
-                        tryAccessModuleControllerProvider(
-                          Modules.adjustPrice,
-                        ).notifier,
-                      )
+                      .read(tryAccessModuleControllerProvider.notifier)
                       .tryAccess(
                         context: context,
+                        module: Modules.adjustPrice,
                         route: Routes.adjustSalePrice,
                         enterpriseCode: widget.product.EnterpriseCode,
                         replace: false,

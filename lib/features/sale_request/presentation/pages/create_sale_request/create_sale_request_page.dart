@@ -77,13 +77,10 @@ class CreateSaleRequestPage extends ConsumerWidget {
             ),
             onPressed: () {
               ref
-                  .read(
-                    tryAccessModuleControllerProvider(
-                      Modules.customerRegister,
-                    ).notifier,
-                  )
+                  .read(tryAccessModuleControllerProvider.notifier)
                   .tryAccess(
                     context: context,
+                    module: Modules.customerRegister,
                     route: Routes.customerRegister,
                     enterpriseCode: enterpriseCode,
                   );

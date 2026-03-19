@@ -20,12 +20,13 @@ part 'try_access_module_controller.g.dart';
 @riverpod
 class TryAccessModuleController extends _$TryAccessModuleController {
   @override
-  FutureOr<void> build(Modules module) {}
+  FutureOr<void> build() {}
 
   Future<void> tryAccess({
     required BuildContext context,
     required Routes route,
     required int? enterpriseCode,
+    required Modules module,
     bool replace = false,
     Map<String, String>? pathParameters,
     Object? extra,
@@ -35,34 +36,34 @@ class TryAccessModuleController extends _$TryAccessModuleController {
       _ => null,
     };
 
-    if (minimumBsVersionDate != null) {
-      final bsVersionDate = await ref.read(
-        bsVersionStateControllerProvider.future,
-      );
-
-      if (bsVersionDate?.isBefore(minimumBsVersionDate) ?? false) {
-        showAlertDialog(
-          context: context,
-          title: 'Atualize o BS'.hardcoded,
-          content:
-              'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
-                  .hardcoded,
-        );
-        return;
-      }
-    }
-
-    final router = GoRouter.of(context);
-    final String? currentRouteName =
-        router.routerDelegate.currentConfiguration.last.route.name;
-
-    if (currentRouteName == route.name) {
-      debugPrint('Navigation Cancelled: User already on ${route.name}');
-      return;
-    }
-
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
+      if (minimumBsVersionDate != null) {
+        final bsVersionDate = await ref.read(
+          bsVersionStateControllerProvider.future,
+        );
+
+        if (bsVersionDate?.isBefore(minimumBsVersionDate) ?? false) {
+          showAlertDialog(
+            context: context,
+            title: 'Atualize o BS'.hardcoded,
+            content:
+                'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
+                    .hardcoded,
+          );
+          return;
+        }
+      }
+
+      final router = GoRouter.of(context);
+      final String? currentRouteName =
+          router.routerDelegate.currentConfiguration.last.route.name;
+
+      if (currentRouteName == route.name) {
+        debugPrint('Navigation Cancelled: User already on ${route.name}');
+        return;
+      }
+
       final enterpriseName = ref.read(
         validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
       );

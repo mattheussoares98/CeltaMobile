@@ -56,9 +56,10 @@ class DefaultModuleButton extends ConsumerWidget {
       );
 
       ref
-          .read(tryAccessModuleControllerProvider(module).notifier)
+          .read(tryAccessModuleControllerProvider.notifier)
           .tryAccess(
             context: context,
+            module: module,
             route: saleRequestNextRoute ?? route,
             enterpriseCode: enterpriseCode,
             replace: true,

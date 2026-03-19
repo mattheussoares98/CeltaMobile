@@ -1,7 +1,7 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
@@ -68,12 +68,9 @@ class Stocks extends ConsumerWidget {
                     IconButton(
                       onPressed: () {
                         ref
-                            .read(
-                              tryAccessModuleControllerProvider(
-                                Modules.adjustStock,
-                              ).notifier,
-                            )
+                            .read(tryAccessModuleControllerProvider.notifier)
                             .tryAccess(
+                              module: Modules.adjustStock,
                               context: context,
                               route: Routes.adjustStocks,
                               enterpriseCode:
