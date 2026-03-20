@@ -52,6 +52,20 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                     hideCurrentAndSaleStocks: true,
                     hideWholeInformations: true,
                     routine: BsRoutine.saleRequest,
+                    clickableBottom: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TitleAndSubTitle(
+                          title: 'Quantidade',
+                          subTitle: cartProduct.Quantity,
+                        ),
+                        TitleAndSubTitle(
+                          title: 'Total',
+                          subTitle: cartProduct.getTotalLiquid,
+                          subTitleIsPrice: true,
+                        ),
+                      ],
+                    ),
                   );
                 },
               );
