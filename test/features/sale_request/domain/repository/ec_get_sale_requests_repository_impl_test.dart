@@ -84,27 +84,13 @@ void main() {
     registerFallbackValue(EntityFactory.makeEcRequestParams());
   });
 
-  test('should behave correctly on load', () async {
-    mockDatasource.mockGet(
-      saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
-    );
+  group('Get', () {
+    test('should behave correctly on load', () async {
+      mockDatasource.mockGet(
+        saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
+      );
 
-    final response = await sut.get(
-      params: params,
-      enterpriseIds: enterpriseIds,
-      endDateHourOfCreation: endDateHourOfCreation,
-      startDateHourOfCreation: startDateHourOfCreation,
-      personalizedCodes: personalizedCodes,
-      mountCustomer: mountCustomer,
-      mountSeller: mountSeller,
-      mountRequestType: mountRequestType,
-      mountProducts: mountProducts,
-    );
-
-    expect(response, saleRequests);
-
-    verify(
-      () => mockDatasource.get(
+      final response = await sut.get(
         params: params,
         enterpriseIds: enterpriseIds,
         endDateHourOfCreation: endDateHourOfCreation,
@@ -114,73 +100,94 @@ void main() {
         mountSeller: mountSeller,
         mountRequestType: mountRequestType,
         mountProducts: mountProducts,
-      ),
-    ).called(1);
-  });
-  test('should call with correct end date if pass null value', () async {
-    mockDatasource.mockGet(
-      saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
-    );
-
-    final response = await sut.get(
-      params: params,
-      enterpriseIds: enterpriseIds,
-      endDateHourOfCreation: null,
-      startDateHourOfCreation: startDateHourOfCreation,
-    );
-
-    expect(response, saleRequests);
-
-    final captured =
-        verify(
-              () => mockDatasource.get(
-                endDateHourOfCreation: captureAny(
-                  named: 'endDateHourOfCreation',
-                ),
-                params: any(named: 'params'),
-                enterpriseIds: any(named: 'enterpriseIds'),
-                startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
-                mountCustomer: any(named: 'mountCustomer'),
-                mountProducts: any(named: 'mountProducts'),
-                mountRequestType: any(named: 'mountRequestType'),
-                mountSeller: any(named: 'mountSeller'),
-                personalizedCodes: any(named: 'personalizedCodes'),
-              ),
-            ).captured.first
-            as DateTime?;
-
-    expect(captured?.year, DateTime.now().year);
-    expect(captured?.month, DateTime.now().month);
-    expect(captured?.day, DateTime.now().day);
-  });
-
-  test(
-    'should call with correct values when doesnt pass the optional parameters',
-    () async {
-      mockDatasource.mockGet(
-        saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
       );
-
-      final response = await sut.get(params: params);
 
       expect(response, saleRequests);
 
       verify(
         () => mockDatasource.get(
           params: params,
-          endDateHourOfCreation: any(
-            named: 'endDateHourOfCreation',
-          ), //DateTime.now(),
-          enterpriseIds: null,
-          startDateHourOfCreation: null,
-          mountCustomer: null,
-          mountProducts: null,
-          mountRequestType: null,
-          mountSeller: null,
-          personalizedCodes: null,
-          id: null,
+          enterpriseIds: enterpriseIds,
+          endDateHourOfCreation: endDateHourOfCreation,
+          startDateHourOfCreation: startDateHourOfCreation,
+          personalizedCodes: personalizedCodes,
+          mountCustomer: mountCustomer,
+          mountSeller: mountSeller,
+          mountRequestType: mountRequestType,
+          mountProducts: mountProducts,
         ),
       ).called(1);
-    },
-  );
+    });
+    test('should call with correct end date if pass null value', () async {
+      mockDatasource.mockGet(
+        saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
+      );
+
+      final response = await sut.get(
+        params: params,
+        enterpriseIds: enterpriseIds,
+        endDateHourOfCreation: null,
+        startDateHourOfCreation: startDateHourOfCreation,
+      );
+
+      expect(response, saleRequests);
+
+      final captured =
+          verify(
+                () => mockDatasource.get(
+                  endDateHourOfCreation: captureAny(
+                    named: 'endDateHourOfCreation',
+                  ),
+                  params: any(named: 'params'),
+                  enterpriseIds: any(named: 'enterpriseIds'),
+                  startDateHourOfCreation: any(
+                    named: 'startDateHourOfCreation',
+                  ),
+                  mountCustomer: any(named: 'mountCustomer'),
+                  mountProducts: any(named: 'mountProducts'),
+                  mountRequestType: any(named: 'mountRequestType'),
+                  mountSeller: any(named: 'mountSeller'),
+                  personalizedCodes: any(named: 'personalizedCodes'),
+                ),
+              ).captured.first
+              as DateTime?;
+
+      expect(captured?.year, DateTime.now().year);
+      expect(captured?.month, DateTime.now().month);
+      expect(captured?.day, DateTime.now().day);
+    });
+
+    test(
+      'should call with correct values when doesnt pass the optional parameters',
+      () async {
+        mockDatasource.mockGet(
+          saleRequests.map((e) => EcSaleRequestModel.fromEntity(e)),
+        );
+
+        final response = await sut.get(params: params);
+
+        expect(response, saleRequests);
+
+        verify(
+          () => mockDatasource.get(
+            params: params,
+            endDateHourOfCreation: any(
+              named: 'endDateHourOfCreation',
+            ), //DateTime.now(),
+            enterpriseIds: null,
+            startDateHourOfCreation: null,
+            mountCustomer: null,
+            mountProducts: null,
+            mountRequestType: null,
+            mountSeller: null,
+            personalizedCodes: null,
+            id: null,
+          ),
+        ).called(1);
+      },
+    );
+  });
+  group('Get complete', () {
+    //TODO create tests
+  });
 }

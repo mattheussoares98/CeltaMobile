@@ -35,4 +35,21 @@ class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
 
     return response.map((e) => e.toEntity());
   }
+
+  @override
+  Future<Map<String, dynamic>> getComplete({
+    required int saleRequestCode,
+    required int enterpriseCode,
+    required int customerCode,
+    required EcRequestParams params,
+  }) async {
+    final response = await datasource.getComplete(
+      saleRequestCode: saleRequestCode,
+      enterpriseCode: enterpriseCode,
+      customerCode: customerCode,
+      params: params,
+    );
+
+    return response;
+  }
 }
