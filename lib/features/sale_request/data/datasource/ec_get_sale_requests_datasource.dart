@@ -46,4 +46,26 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
       (e) => EcSaleRequestModel.fromJson(e),
     );
   }
+
+  @override
+  Future<Map<String, dynamic>> getComplete({
+    required int saleRequestCode,
+    required int enterpriseCode,
+    required int customerCode,
+    required EcRequestParams params,
+  }) async {
+    final response = await httpClient.request(
+      url: '${params.workingUrl}/api/Test/GetCompleteSaleRequest',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {
+        ...params.toMap(),
+        'saleRequestCode': saleRequestCode,
+        'enterpriseCode': enterpriseCode,
+        'customerCode': customerCode,
+      },
+    );
+
+    return response;
+  }
 }

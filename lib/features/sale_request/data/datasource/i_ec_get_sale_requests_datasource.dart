@@ -14,4 +14,11 @@ abstract class IEcGetSaleRequestsDatasource {
     bool? mountRequestType,
     bool? mountProducts,
   });
+
+  Future<Map<String, dynamic>> getComplete({
+    required int saleRequestCode,
+    required int enterpriseCode,
+    required int customerCode,
+    required EcRequestParams params,
+  });
 }

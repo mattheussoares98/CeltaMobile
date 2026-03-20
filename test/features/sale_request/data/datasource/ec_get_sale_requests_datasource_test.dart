@@ -70,56 +70,62 @@ void main() {
     mockSuccess();
   });
 
-  test('should call with correct params', () async {
-    final response = await sut.get(
-      params: params,
-      enterpriseIds: enterpriseIds,
-      endDateHourOfCreation: endDateHourOfCreation,
-      startDateHourOfCreation: startDateHourOfCreation,
-      mountCustomer: mountCustomer,
-      mountProducts: mountProducts,
-      mountRequestType: mountRequestType,
-      mountSeller: mountSeller,
-      personalizedCodes: personalizedCodes,
-      id: id,
-    );
+  group('Get', () {
+    test('should call with correct params', () async {
+      final response = await sut.get(
+        params: params,
+        enterpriseIds: enterpriseIds,
+        endDateHourOfCreation: endDateHourOfCreation,
+        startDateHourOfCreation: startDateHourOfCreation,
+        mountCustomer: mountCustomer,
+        mountProducts: mountProducts,
+        mountRequestType: mountRequestType,
+        mountSeller: mountSeller,
+        personalizedCodes: personalizedCodes,
+        id: id,
+      );
 
-    expect(response, saleRequests);
+      expect(response, saleRequests);
 
-    verify(
-      () => httpClient.request(
-        url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
-        method: 'post',
-        headers: params.toHeaders(),
-        body: {
-          'enterpriseIds': enterpriseIds,
-          'id': id,
-          'dateHourOfCreation': {
-            'EndDate': endDateHourOfCreation.toIso8601String(),
-            'StartDate': startDateHourOfCreation.toIso8601String(),
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            'enterpriseIds': enterpriseIds,
+            'id': id,
+            'dateHourOfCreation': {
+              'EndDate': endDateHourOfCreation.toIso8601String(),
+              'StartDate': startDateHourOfCreation.toIso8601String(),
+            },
+            'personalizedCodes': personalizedCodes,
+            'mountCustomer': mountCustomer,
+            'mountSeller': mountSeller,
+            'mountRequestType': mountRequestType,
+            'mountProducts': mountProducts,
+            ...params.toMap(),
           },
-          'personalizedCodes': personalizedCodes,
-          'mountCustomer': mountCustomer,
-          'mountSeller': mountSeller,
-          'mountRequestType': mountRequestType,
-          'mountProducts': mountProducts,
-          ...params.toMap(),
-        },
-      ),
-    ).called(1);
+        ),
+      ).called(1);
+    });
+    test('should behave correctly when receive null values', () async {
+      final response = await sut.get(params: params);
+
+      expect(response, saleRequests);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {...params.toMap()},
+        ),
+      ).called(1);
+    });
   });
-  test('should behave correctly when receive null values', () async {
-    final response = await sut.get(params: params);
 
-    expect(response, saleRequests);
-
-    verify(
-      () => httpClient.request(
-        url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
-        method: 'post',
-        headers: params.toHeaders(),
-        body: {...params.toMap()},
-      ),
-    ).called(1);
+  group('Get complete', () {
+    //TODO create tests
   });
 }
