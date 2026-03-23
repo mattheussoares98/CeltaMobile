@@ -24,6 +24,8 @@ class Customer extends ConsumerWidget {
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    bool isInternalCustomer = customer.Name?.toLowerCase() == 'consumidor';
     return SliverToBoxAdapter(
       child: Card(
         child: Padding(
@@ -39,14 +41,16 @@ class Customer extends ConsumerWidget {
                   children: [
                     TitleAndSubTitle(
                       title: null,
-                      subTitle: '${customer.Name} (${customer.Code})',
+                      subTitle:
+                          '${customer.Name} '
+                          '${isInternalCustomer ? '' : {customer.Code}}',
                     ),
-                    if (customer.PersonType != null)
+                    if (customer.PersonType != null && !isInternalCustomer)
                       TitleAndSubTitle(
                         title: 'Tipo'.hardcoded,
                         subTitle: customer.PersonType?.completeName,
                       ),
-                    if (customer.CpfCnpjNumber != null)
+                    if (customer.CpfCnpjNumber != null && !isInternalCustomer)
                       TitleAndSubTitle(
                         title: 'CPF/CNPJ'.hardcoded,
                         subTitle: customer.CpfCnpjNumber,

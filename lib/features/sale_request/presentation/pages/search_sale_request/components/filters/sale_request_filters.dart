@@ -48,6 +48,8 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
       return;
     }
 
+    expansibleController.collapse();
+
     ref
         .read(
           saleRequestsStateControllerProvider(widget.enterpriseCode).notifier,
