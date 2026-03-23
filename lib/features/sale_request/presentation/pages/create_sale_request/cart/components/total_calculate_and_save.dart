@@ -72,7 +72,6 @@ class TotalCalculateAndSave extends ConsumerWidget {
                 );
               },
               data: (canChangePrice) {
-                //TODO test with a user that cant change price
                 final needProcessCart = ref.watch(
                   pendingSaleRequestStateControllerProvider(
                     enterpriseCode,
@@ -113,32 +112,33 @@ class TotalCalculateAndSave extends ConsumerWidget {
                             },
                           ),
                         gapH4,
-                        PrimaryButton(
-                          text: cartIsEmpty
-                              ? 'Adicione produtos'.hardcoded
-                              : selectedCustomer == null
-                              ? 'Selecione o cliente'.hardcoded
-                              : 'Salvar pedido'.hardcoded,
-                          onPressed: selectedCustomer == null || cartIsEmpty
-                              ? null
-                              : () async {
-                                  showAlertDialog(
-                                    context: context,
-                                    title: needProcessCart
-                                        ? 'Atenção!'.hardcoded
-                                        : 'Salvar pedido?'.hardcoded,
-                                    content: needProcessCart
-                                        ? 'Pode ser que o pedido seja salvo no BS com um preço diferente!\n\n'
-                                                  .toUpperCase() +
-                                              'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc! Dependendo das regras do BS, o pedido pode ser salvo com preços diferentes do que estão no aplicativo\n\n Deseja salvar mesmo assim?'
-                                                  .hardcoded
-                                        : null,
-                                    defaultActionText: 'Salvar'.hardcoded,
-                                    cancelActionText: 'Cancelar'.hardcoded,
-                                    onOkPressed: saveSaleRequest,
-                                  );
-                                },
-                        ),
+                        if (canChangePrice)
+                          PrimaryButton(
+                            text: cartIsEmpty
+                                ? 'Adicione produtos'.hardcoded
+                                : selectedCustomer == null
+                                ? 'Selecione o cliente'.hardcoded
+                                : 'Salvar pedido'.hardcoded,
+                            onPressed: selectedCustomer == null || cartIsEmpty
+                                ? null
+                                : () async {
+                                    showAlertDialog(
+                                      context: context,
+                                      title: needProcessCart
+                                          ? 'Atenção!'.hardcoded
+                                          : 'Salvar pedido?'.hardcoded,
+                                      content: needProcessCart
+                                          ? 'Pode ser que o pedido seja salvo no BS com um preço diferente!\n\n'
+                                                    .toUpperCase() +
+                                                'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc! Dependendo das regras do BS, o pedido pode ser salvo com preços diferentes do que estão no aplicativo\n\n Deseja salvar mesmo assim?'
+                                                    .hardcoded
+                                          : null,
+                                      defaultActionText: 'Salvar'.hardcoded,
+                                      cancelActionText: 'Cancelar'.hardcoded,
+                                      onOkPressed: saveSaleRequest,
+                                    );
+                                  },
+                          ),
                       ],
                     );
                   },
