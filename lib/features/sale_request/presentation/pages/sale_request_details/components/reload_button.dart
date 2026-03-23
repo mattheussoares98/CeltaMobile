@@ -16,11 +16,11 @@ class ReloadButton extends ConsumerWidget {
         saleRequestId,
       ).select((s) => s.hasError),
     );
-    //TODO throw an error to test
     if (hasError) {
       return SliverToBoxAdapter(
         child: PrimaryTextButton(
-          text: 'Não foi possível carregar o pedido'.hardcoded,
+          text:
+              'Não foi possível carregar o pedido. Tentar novamente'.hardcoded,
           onPressed: () => ref.invalidate(
             saleRequestDetailsStateControllerProvider(saleRequestId),
           ),
