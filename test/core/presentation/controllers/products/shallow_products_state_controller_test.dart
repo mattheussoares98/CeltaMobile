@@ -15,7 +15,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class MockShallowProductsRepository extends Mock
-    implements IEcommerceGetShallowProductsRepository {}
+    implements IEcGetShallowProductsRepository {}
 
 void main() {
   late MockShallowProductsRepository mockRepository;
@@ -55,7 +55,7 @@ void main() {
   }) {
     return ProviderContainer(
       overrides: [
-        ecommerceGetShallowProductsRepositoryProvider.overrideWithValue(
+        ecGetShallowProductsRepositoryProvider.overrideWithValue(
           mockRepository,
         ),
         validatedUserSessionProvider.overrideWith(

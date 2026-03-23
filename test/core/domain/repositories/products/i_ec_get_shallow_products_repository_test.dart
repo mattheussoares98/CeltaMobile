@@ -9,8 +9,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class EcommerceGetShallowProductsDatasourceSpy extends Mock
-    implements IEcommerceGetShallowProductsDatasource {
+class EcGetShallowProductsDatasourceSpy extends Mock
+    implements IEcGetShallowProductsDatasource {
   void mockGet(List<ShallowProductModel> response) {
     when(
       () => this.get(
@@ -26,9 +26,9 @@ class EcommerceGetShallowProductsDatasourceSpy extends Mock
 }
 
 void main() {
-  late IEcommerceGetShallowProductsRepository sut;
+  late IEcGetShallowProductsRepository sut;
 
-  late EcommerceGetShallowProductsDatasourceSpy datasource;
+  late EcGetShallowProductsDatasourceSpy datasource;
 
   late List<ProductEntity> products;
   late String workingUrl;
@@ -39,11 +39,11 @@ void main() {
   late CancelToken cancelToken;
 
   void initSut() {
-    sut = EcommerceGetShallowProductsRepositoryImpl(datasource);
+    sut = EcGetShallowProductsRepositoryImpl(datasource);
   }
 
   void initInjections() {
-    datasource = EcommerceGetShallowProductsDatasourceSpy();
+    datasource = EcGetShallowProductsDatasourceSpy();
   }
 
   void mockSuccess() {

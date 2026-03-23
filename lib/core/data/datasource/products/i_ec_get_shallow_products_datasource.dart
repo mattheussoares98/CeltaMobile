@@ -1,7 +1,7 @@
 import '../../../domain/contracts/contracts.dart';
 import '../../models/models.dart';
 
-abstract class IEcommerceGetShallowProductsDatasource {
+abstract class IEcGetShallowProductsDatasource {
   Future<List<ShallowProductModel>> get({
     required String workingUrl,
     required String name,

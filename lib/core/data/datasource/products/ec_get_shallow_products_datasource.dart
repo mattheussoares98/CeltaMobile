@@ -2,10 +2,10 @@ import '../../../domain/contracts/contracts.dart';
 import '../../models/models.dart';
 import 'products.dart';
 
-class EcommerceGetShallowProductsDatasource
-    implements IEcommerceGetShallowProductsDatasource {
+class EcGetShallowProductsDatasource
+    implements IEcGetShallowProductsDatasource {
   final HttpClient httpClient;
-  EcommerceGetShallowProductsDatasource(this.httpClient);
+  EcGetShallowProductsDatasource(this.httpClient);
 
   @override
   Future<List<ShallowProductModel>> get({

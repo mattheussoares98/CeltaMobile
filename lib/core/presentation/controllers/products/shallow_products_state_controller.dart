@@ -76,7 +76,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
       );
 
       final products = await ref
-          .read(ecommerceGetShallowProductsRepositoryProvider)
+          .read(ecGetShallowProductsRepositoryProvider)
           .get(
             workingUrl: workingUrl,
             user: user,

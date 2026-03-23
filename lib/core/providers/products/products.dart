@@ -42,17 +42,13 @@ ISoapLoadProductsRepository soapLoadProductsRepository(Ref ref) {
 }
 
 @riverpod
-IEcommerceGetShallowProductsDatasource ecommerceGetShallowProductsDatasource(
-  Ref ref,
-) {
-  return EcommerceGetShallowProductsDatasource(ref.watch(httpClientProvider));
+IEcGetShallowProductsDatasource ecGetShallowProductsDatasource(Ref ref) {
+  return EcGetShallowProductsDatasource(ref.watch(httpClientProvider));
 }
 
 @riverpod
-IEcommerceGetShallowProductsRepository ecommerceGetShallowProductsRepository(
-  Ref ref,
-) {
-  return EcommerceGetShallowProductsRepositoryImpl(
-    ref.watch(ecommerceGetShallowProductsDatasourceProvider),
+IEcGetShallowProductsRepository ecGetShallowProductsRepository(Ref ref) {
+  return EcGetShallowProductsRepositoryImpl(
+    ref.watch(ecGetShallowProductsDatasourceProvider),
   );
 }

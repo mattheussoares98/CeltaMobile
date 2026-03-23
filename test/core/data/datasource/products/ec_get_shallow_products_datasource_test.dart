@@ -9,7 +9,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late IEcommerceGetShallowProductsDatasource sut;
+  late IEcGetShallowProductsDatasource sut;
 
   late HttpClientSpy httpClient;
 
@@ -22,7 +22,7 @@ void main() {
   late CancelToken cancelToken;
 
   void initSut() {
-    sut = EcommerceGetShallowProductsDatasource(httpClient);
+    sut = EcGetShallowProductsDatasource(httpClient);
   }
 
   void initInjections() {

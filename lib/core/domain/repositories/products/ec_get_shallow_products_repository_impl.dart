@@ -4,11 +4,11 @@ import '../../../data/datasource/products/products.dart';
 import '../../contracts/contracts.dart';
 import 'products.dart';
 
-class EcommerceGetShallowProductsRepositoryImpl
-    implements IEcommerceGetShallowProductsRepository {
-  final IEcommerceGetShallowProductsDatasource datasource;
+class EcGetShallowProductsRepositoryImpl
+    implements IEcGetShallowProductsRepository {
+  final IEcGetShallowProductsDatasource datasource;
 
-  EcommerceGetShallowProductsRepositoryImpl(this.datasource);
+  EcGetShallowProductsRepositoryImpl(this.datasource);
 
   @override
   Future<List<ProductEntity>> get({
