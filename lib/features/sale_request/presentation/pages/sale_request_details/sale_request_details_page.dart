@@ -30,6 +30,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
           ),
           ReloadButton(saleRequestId: saleRequestId),
           Customer(saleRequestId: saleRequestId),
+          const SliverToBoxAdapter(child: Divider()),
           Consumer(
             builder: (context, ref, child) {
               final products = ref.watch(
