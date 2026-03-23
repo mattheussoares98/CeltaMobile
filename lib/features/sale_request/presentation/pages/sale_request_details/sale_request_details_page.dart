@@ -96,13 +96,19 @@ class _HeroRequestSummary extends StatelessWidget {
           type: MaterialType.transparency,
           child: Consumer(
             builder: (context, ref, child) {
-              final saleRequest = ref.watch(
-                saleRequestsStateControllerProvider(enterpriseCode).select(
-                  (s) => s.value?.collection.firstWhereOrNull(
-                    (sr) => sr.Id == saleRequestId,
-                  ),
-                ),
-              );
+              final saleRequest =
+                  ref.watch(
+                    saleRequestsStateControllerProvider(enterpriseCode).select(
+                      (s) => s.value?.collection.firstWhereOrNull(
+                        (sr) => sr.Id == saleRequestId,
+                      ),
+                    ),
+                  ) ??
+                  ref.watch(
+                    saleRequestDetailsStateControllerProvider(
+                      saleRequestId,
+                    ).select((s) => s.value?.collection.first),
+                  );
 
               if (saleRequest == null) {
                 return const SizedBox.shrink();
