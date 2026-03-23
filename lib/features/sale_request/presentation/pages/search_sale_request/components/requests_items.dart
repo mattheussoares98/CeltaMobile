@@ -61,7 +61,7 @@ class _SaleRequestItem extends StatelessWidget {
       child: RequestSummary(
         saleRequest: saleRequest,
         onTap: () {
-          context.pushNamed(
+          context.goNamed(
             Routes.saleRequestDetails.name,
             pathParameters: {
               'saleRequestId': saleRequest.Id.toString(),
