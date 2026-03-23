@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../controllers/controllers.dart';
@@ -24,13 +25,25 @@ class SaleRequestDetailsPage extends ConsumerWidget {
       appBar: AppBar(title: Text('Detalhes do pedido'.hardcoded)),
       body: CustomScrollView(
         slivers: [
-          _HeroRequestSummary(
-            saleRequestId: saleRequestId,
-            enterpriseCode: enterpriseCode,
+          SliverToBoxAdapter(
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: Breakpoint.desktop,
+                child: Column(
+                  children: [
+                    _HeroRequestSummary(
+                      saleRequestId: saleRequestId,
+                      enterpriseCode: enterpriseCode,
+                    ),
+                    ReloadButton(saleRequestId: saleRequestId),
+                    Customer(saleRequestId: saleRequestId),
+                    const Divider(),
+                  ],
+                ),
+              ),
+            ),
           ),
-          ReloadButton(saleRequestId: saleRequestId),
-          Customer(saleRequestId: saleRequestId),
-          const SliverToBoxAdapter(child: Divider()),
           Consumer(
             builder: (context, ref, child) {
               final products = ref.watch(
@@ -89,37 +102,35 @@ class _HeroRequestSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Hero(
-        tag: 'sale_request_$saleRequestId',
-        child: Material(
-          type: MaterialType.transparency,
-          child: Consumer(
-            builder: (context, ref, child) {
-              final saleRequest =
-                  ref.watch(
-                    saleRequestsStateControllerProvider(enterpriseCode).select(
-                      (s) => s.value?.collection.firstWhereOrNull(
-                        (sr) => sr.Id == saleRequestId,
-                      ),
+    return Hero(
+      tag: 'sale_request_$saleRequestId',
+      child: Material(
+        type: MaterialType.transparency,
+        child: Consumer(
+          builder: (context, ref, child) {
+            final saleRequest =
+                ref.watch(
+                  saleRequestsStateControllerProvider(enterpriseCode).select(
+                    (s) => s.value?.collection.firstWhereOrNull(
+                      (sr) => sr.Id == saleRequestId,
                     ),
-                  ) ??
-                  ref.watch(
-                    saleRequestDetailsStateControllerProvider(
-                      saleRequestId,
-                    ).select((s) => s.value?.collection.first),
-                  );
+                  ),
+                ) ??
+                ref.watch(
+                  saleRequestDetailsStateControllerProvider(
+                    saleRequestId,
+                  ).select((s) => s.value?.collection.first),
+                );
 
-              if (saleRequest == null) {
-                return const SizedBox.shrink();
-              }
+            if (saleRequest == null) {
+              return const SizedBox.shrink();
+            }
 
-              return RequestSummary(
-                saleRequest: saleRequest,
-                showCustomer: false,
-              );
-            },
-          ),
+            return RequestSummary(
+              saleRequest: saleRequest,
+              showCustomer: false,
+            );
+          },
         ),
       ),
     );

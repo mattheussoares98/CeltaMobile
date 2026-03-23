@@ -19,59 +19,57 @@ class Customer extends ConsumerWidget {
       ).select((s) => s.value?.collection.first.customer),
     );
     if (customer == null) {
-      return const SliverToBoxAdapter(child: SizedBox.shrink());
+      return const SizedBox.shrink();
     }
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     bool isInternalCustomer = customer.Name?.toLowerCase() == 'consumidor';
-    return SliverToBoxAdapter(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(isIOS ? CupertinoIcons.person : Icons.person),
-              gapW8,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(isIOS ? CupertinoIcons.person : Icons.person),
+            gapW8,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TitleAndSubTitle(
+                    title: null,
+                    subTitle:
+                        '${customer.Name} '
+                        '${isInternalCustomer ? '' : {customer.Code}}',
+                  ),
+                  if (customer.PersonType != null && !isInternalCustomer)
                     TitleAndSubTitle(
-                      title: null,
-                      subTitle:
-                          '${customer.Name} '
-                          '${isInternalCustomer ? '' : {customer.Code}}',
+                      title: 'Tipo'.hardcoded,
+                      subTitle: customer.PersonType?.completeName,
                     ),
-                    if (customer.PersonType != null && !isInternalCustomer)
-                      TitleAndSubTitle(
-                        title: 'Tipo'.hardcoded,
-                        subTitle: customer.PersonType?.completeName,
-                      ),
-                    if (customer.CpfCnpjNumber != null && !isInternalCustomer)
-                      TitleAndSubTitle(
-                        title: 'CPF/CNPJ'.hardcoded,
-                        subTitle: customer.CpfCnpjNumber,
-                      ),
-                    if (customer.Emails != null)
-                      TitleAndSubTitle(
-                        title: 'E-mails'.hardcoded,
-                        subTitle: customer.Emails?.join(', '),
-                      ),
-                    if (customer.Telephones != null)
-                      TitleAndSubTitle(
-                        title: 'Telefones'.hardcoded,
-                        subTitle: customer.Telephones?.map(
-                          (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
-                        ).join(', '),
-                      ),
-                  ],
-                ),
+                  if (customer.CpfCnpjNumber != null && !isInternalCustomer)
+                    TitleAndSubTitle(
+                      title: 'CPF/CNPJ'.hardcoded,
+                      subTitle: customer.CpfCnpjNumber,
+                    ),
+                  if (customer.Emails != null)
+                    TitleAndSubTitle(
+                      title: 'E-mails'.hardcoded,
+                      subTitle: customer.Emails?.join(', '),
+                    ),
+                  if (customer.Telephones != null)
+                    TitleAndSubTitle(
+                      title: 'Telefones'.hardcoded,
+                      subTitle: customer.Telephones?.map(
+                        (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
+                      ).join(', '),
+                    ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -17,16 +17,13 @@ class ReloadButton extends ConsumerWidget {
       ).select((s) => s.hasError),
     );
     if (hasError) {
-      return SliverToBoxAdapter(
-        child: PrimaryTextButton(
-          text:
-              'Não foi possível carregar o pedido. Tentar novamente'.hardcoded,
-          onPressed: () => ref.invalidate(
-            saleRequestDetailsStateControllerProvider(saleRequestId),
-          ),
+      return PrimaryTextButton(
+        text: 'Não foi possível carregar o pedido. Tentar novamente'.hardcoded,
+        onPressed: () => ref.invalidate(
+          saleRequestDetailsStateControllerProvider(saleRequestId),
         ),
       );
     }
-    return const SliverToBoxAdapter(child: SizedBox.shrink());
+    return const SizedBox.shrink();
   }
 }
