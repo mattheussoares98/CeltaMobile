@@ -7,7 +7,7 @@ import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
-import '../../components/components.dart';
+import '../../../components/components.dart';
 import 'components.dart';
 
 class ProductItem extends ConsumerWidget {

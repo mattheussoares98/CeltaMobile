@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
-import 'components.dart';
+import 'quantity_price_discount.dart';
 
 class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
   final QuantityPriceDiscountFieldsAndInsertButton widget;

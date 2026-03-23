@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
-import 'components.dart';
+import 'quantity_price_discount.dart';
 
 class QuantityField extends StatelessWidget {
   final VoidCallback insertProduct;

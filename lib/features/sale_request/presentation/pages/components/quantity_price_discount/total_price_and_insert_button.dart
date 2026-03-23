@@ -7,7 +7,7 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
-import 'components.dart';
+import 'quantity_price_discount.dart';
 
 class TotalPriceAndInsertButton extends ConsumerWidget {
   final VoidCallback insertProduct;

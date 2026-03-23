@@ -7,7 +7,7 @@ import '../../../../../../../core/presentation/controllers/request_type/request_
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
-import '../../components/components.dart';
+import '../../../components/components.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
   final ProductEntity product;

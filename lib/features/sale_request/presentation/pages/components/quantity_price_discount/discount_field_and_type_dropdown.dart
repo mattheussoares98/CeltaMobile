@@ -8,7 +8,7 @@ import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
-import 'components.dart';
+import 'quantity_price_discount.dart';
 
 class DiscountFieldAndTypeDropdown extends ConsumerWidget {
   final VoidCallback insertProduct;

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
-import 'components.dart';
+import 'quantity_price_discount.dart';
 
 class PriceField extends StatelessWidget {
   final VoidCallback insertProduct;
