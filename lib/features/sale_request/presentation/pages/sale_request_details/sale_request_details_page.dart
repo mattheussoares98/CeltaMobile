@@ -48,7 +48,9 @@ class SaleRequestDetailsPage extends ConsumerWidget {
             builder: (context, ref, child) {
               final products = ref.watch(
                 saleRequestDetailsStateControllerProvider(saleRequestId).select(
-                  (s) => s.value?.collection.first.cart.values.toList() ?? [],
+                  (s) =>
+                      s.value?.collection.firstOrNull?.cart.values.toList() ??
+                      [],
                 ),
               );
 
