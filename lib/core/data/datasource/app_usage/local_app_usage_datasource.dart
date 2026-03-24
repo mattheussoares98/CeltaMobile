@@ -8,14 +8,11 @@ class LocalAppUsageDatasource implements ILocalAppUsageDatasource {
   LocalAppUsageDatasource(this.hiveBox);
 
   static const _dataKey = 'app_usage';
-  static const _counterKey = 'usage_counter';
+  static const _lastUpdatedDateKey = 'last_updated_date';
 
   @override
-  Future<void> insert(List<AppUsageModel> data, int counter) async {
-    await Future.wait([
-      hiveBox.put(_dataKey, data.map((e) => e.toJson()).toList()),
-      hiveBox.put(_counterKey, counter),
-    ]);
+  Future<void> insert(List<AppUsageModel> data) async {
+    return hiveBox.put(_dataKey, data.map((e) => e.toJson()).toList());
   }
 
   @override
@@ -26,10 +23,18 @@ class LocalAppUsageDatasource implements ILocalAppUsageDatasource {
   }
 
   @override
-  Future<void> clear() async {
-    await hiveBox.clear();
+  Future<void> clearData() async {
+    await hiveBox.delete(_dataKey);
   }
 
   @override
-  Future<int> getCounter() async => await hiveBox.get(_counterKey) as int? ?? 0;
+  Future<DateTime?> getLastUpdatedDate() async {
+    final value = await hiveBox.get(_lastUpdatedDateKey);
+    return DateTime.tryParse(value as String? ?? '');
+  }
+
+  @override
+  Future<void> updateLastUploadDate() async {
+    hiveBox.put(_lastUpdatedDateKey, DateTime.now().toIso8601String());
+  }
 }

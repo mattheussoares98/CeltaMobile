@@ -29,14 +29,11 @@ class AppUsageRepositoryImpl implements IAppUsageRepository {
   @override
   Future<void> addUsage(AppUsageEntity entity) async {
     final localData = await localDs.load();
-    final counter = await localDs.getCounter();
-
-    final newCounter = counter + 1;
 
     final equalRequest = localData.firstWhereOrNull(
       (e) =>
           e.userName == entity.userName &&
-          e.usageType.name == entity.usageType.name &&
+          e.usageType?.name == entity.usageType?.name &&
           e.enterpriseId == entity.enterpriseId,
     );
 
@@ -45,7 +42,7 @@ class AppUsageRepositoryImpl implements IAppUsageRepository {
     if (equalRequest == null) {
       newData = [...localData, AppUsageModel.fromEntity(entity)];
 
-      await localDs.insert(newData, newCounter);
+      await localDs.insert(newData);
     } else {
       final updatedRequest = entity.copyWith(
         requestCount: equalRequest.requestCount + 1,
@@ -54,12 +51,19 @@ class AppUsageRepositoryImpl implements IAppUsageRepository {
       newData = localData.where((e) => e != equalRequest).toList()
         ..add(AppUsageModel.fromEntity(updatedRequest));
 
-      await localDs.insert(newData, newCounter);
+      await localDs.insert(newData);
     }
 
-    if (newCounter >= 10) {
-      await remoteDs.insert(newData);
-      await localDs.clear();
+    final lastUpdatedDate = await localDs.getLastUpdatedDate();
+    final now = DateTime.now();
+    if (lastUpdatedDate?.year != now.year ||
+        lastUpdatedDate?.month != now.month ||
+        lastUpdatedDate?.day != now.day) {
+      await Future.wait([
+        remoteDs.insert(newData),
+        localDs.clearData(),
+        localDs.updateLastUploadDate(),
+      ]);
     }
   }
 }

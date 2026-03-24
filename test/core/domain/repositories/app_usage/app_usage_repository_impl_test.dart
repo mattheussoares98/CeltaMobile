@@ -42,9 +42,11 @@ void main() {
         endDate: any(named: 'endDate'),
       ),
     ).thenAnswer((_) async => usageModels);
-    when(() => localDs.getCounter()).thenAnswer((_) async => 0);
-    when(() => localDs.clear()).thenAnswer((_) async => 0);
-    when(() => localDs.insert(any(), any())).thenAnswer((_) async {});
+    when(
+      () => localDs.getLastUpdatedDate(),
+    ).thenAnswer((_) async => DateTime.now());
+    when(() => localDs.clearData()).thenAnswer((_) async => 0);
+    when(() => localDs.insert(any())).thenAnswer((_) async {});
   }
 
   void initEntities() {
@@ -100,12 +102,12 @@ void main() {
         await sut.addUsage(newEntity);
 
         verify(() => localDs.load()).called(1);
-        verify(() => localDs.getCounter()).called(1);
+        verify(() => localDs.getLastUpdatedDate()).called(1);
         verify(
           () => localDs.insert([
             ...usageModels,
             AppUsageModel.fromEntity(newEntity),
-          ], 1),
+          ]),
         ).called(1);
       },
     );
@@ -113,7 +115,7 @@ void main() {
       await sut.addUsage(usageModels.first.toEntity());
 
       verify(() => localDs.load()).called(1);
-      verify(() => localDs.getCounter()).called(1);
+      verify(() => localDs.getLastUpdatedDate()).called(1);
       verify(
         () => localDs.insert([
           ...usageModels.where((e) => e != usageModels.first),
@@ -122,15 +124,16 @@ void main() {
               requestCount: usageModels.first.requestCount + 1,
             ),
           ),
-        ], 1),
+        ]),
       ).called(1);
     });
 
-    test('Should behave correctly when counter is >= 10', () async {
-      when(
-        () => localDs.getCounter(),
-      ).thenAnswer((_) async => faker.randomGenerator.integer(100, min: 10));
+    test('Should behave correctly has not sent to remote today', () async {
+      when(() => localDs.getLastUpdatedDate()).thenAnswer(
+        (_) async => DateTime.now().subtract(const Duration(days: 1)),
+      ); //always save with current date
       when(() => remoteDs.insert(any())).thenAnswer((_) async {});
+      when(() => localDs.updateLastUploadDate()).thenAnswer((_) async {});
 
       await sut.addUsage(usageModels.first.toEntity());
 
@@ -144,18 +147,20 @@ void main() {
           ),
         ]),
       ).called(1);
-      verify(() => localDs.clear()).called(1);
+      verify(() => localDs.clearData()).called(1);
+      verify(() => localDs.updateLastUploadDate()).called(1);
     });
-    test('Should behave correctly when counter is < 10', () async {
+    test('Should behave correctly when sent remotely today', () async {
       when(
-        () => localDs.getCounter(),
-      ).thenAnswer((_) async => faker.randomGenerator.integer(9));
+        () => localDs.getLastUpdatedDate(),
+      ).thenAnswer((_) async => DateTime.now());
       when(() => remoteDs.insert(any())).thenAnswer((_) async {});
 
       await sut.addUsage(usageModels.first.toEntity());
 
       verifyNever(() => remoteDs.insert(any()));
-      verifyNever(() => localDs.clear());
+      verifyNever(() => localDs.clearData());
+      verifyNever(() => localDs.updateLastUploadDate());
     });
   });
 }

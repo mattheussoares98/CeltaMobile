@@ -13,7 +13,7 @@ void main() {
 
   late List<AppUsageModel> appUsageModels;
   const dataKey = 'app_usage';
-  const counterKey = 'usage_counter';
+  const lastUpdatedDateKey = 'last_updated_date';
 
   void initEntities() {
     appUsageModels = [
@@ -54,42 +54,53 @@ void main() {
 
   group('insert', () {
     test('should behave correctly on success', () async {
-      final counter = faker.randomGenerator.integer(100);
-
-      await sut.insert(appUsageModels, counter);
+      await sut.insert(appUsageModels);
 
       verify(
         () => box.put(dataKey, appUsageModels.map((e) => e.toJson()).toList()),
       ).called(1);
-      verify(() => box.put(counterKey, counter)).called(1);
+
+      verifyNever(() => box.put(lastUpdatedDateKey, any()));
+    });
+  });
+
+  group('Update last uploaded date', () {
+    test('should behave correctly on success', () async {
+      await sut.updateLastUploadDate();
+
+      final captured =
+          verify(() => box.put(lastUpdatedDateKey, captureAny())).captured.first
+              as String;
+      expect(captured, isNotNull);
+      expect(DateTime.tryParse(captured), isNotNull);
     });
   });
 
   group('clear', () {
     test('should behave correctly on success', () async {
-      await sut.clear();
+      await sut.clearData();
 
-      verify(() => box.clear()).called(1);
+      verify(() => box.delete(dataKey)).called(1);
     });
   });
 
-  group('getCounter', () {
+  group('get last updated date', () {
     test('should behave correctly when has local data', () async {
-      final counter = faker.randomGenerator.integer(100);
-      box.mockGet(counterKey, counter);
+      final date = faker.date.dateTime().toIso8601String();
+      box.mockGet(lastUpdatedDateKey, date);
 
-      final result = await sut.getCounter();
+      final result = await sut.getLastUpdatedDate();
 
-      expect(result, counter);
+      expect(result, DateTime.parse(date));
 
-      verify(() => box.get(counterKey)).called(1);
+      verify(() => box.get(lastUpdatedDateKey)).called(1);
     });
     test('should behave correctly when doesn\'t have local data', () async {
-      box.mockGet(counterKey, null);
+      box.mockGet(lastUpdatedDateKey, null);
 
-      expect(await sut.getCounter(), 0);
+      expect(await sut.getLastUpdatedDate(), null);
 
-      verify(() => box.get(counterKey)).called(1);
+      verify(() => box.get(lastUpdatedDateKey)).called(1);
     });
   });
 }
