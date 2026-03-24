@@ -45,6 +45,8 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
         validatedUserSessionProvider.future,
       );
 
+      //TODO add appUsage
+
       ref.invalidate(saleRequestDetailsStateControllerProvider);
 
       return await ref

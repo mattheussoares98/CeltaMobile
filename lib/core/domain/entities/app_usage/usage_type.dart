@@ -1,6 +1,7 @@
 enum UsageType {
   adjustSalePrice('Ajustou preço'),
   adjustStock('Ajustou estoque'),
+  completeSearchSaleRequest('Consulta COMPLETA de pedido de vendas'),
   countInventoryProduct('Contou produto (inventário)'),
   countReceiptProduct('Contou produto (recebimento)'),
   downloadReport('Baixou relatório'),
@@ -17,6 +18,7 @@ enum UsageType {
   searchProducts('Pesquisou produtos'),
   sendToPrint('Marcou p/ impressão'),
   shallowSearchProduct('Consulta produtos (superficial)'),
+  shallowSearchSaleRequest('Consulta SIMPLES de pedido de vendas'),
   stockReplacement('Substituiu estoque'),
   transferBetweenStocks('Transferiu entre estoques');
 
