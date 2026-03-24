@@ -7,21 +7,28 @@ import '../../../controllers/controllers.dart';
 
 class ReloadButton extends ConsumerWidget {
   final int saleRequestId;
-  const ReloadButton({super.key, required this.saleRequestId});
+  final int customerCode;
+  final int enterpriseCode;
+  const ReloadButton({
+    super.key,
+    required this.saleRequestId,
+    required this.customerCode,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hasError = ref.watch(
-      saleRequestDetailsStateControllerProvider(
-        saleRequestId,
-      ).select((s) => s.hasError),
+    final provider = saleRequestDetailsStateControllerProvider(
+      saleRequestCode: saleRequestId,
+      enterpriseCode: enterpriseCode,
+      customerCode: customerCode,
     );
+
+    final hasError = ref.watch(provider.select((s) => s.hasError));
     if (hasError) {
       return PrimaryTextButton(
         text: 'Não foi possível carregar o pedido. Tentar novamente'.hardcoded,
-        onPressed: () => ref.invalidate(
-          saleRequestDetailsStateControllerProvider(saleRequestId),
-        ),
+        onPressed: () => ref.invalidate(provider),
       );
     }
     return const SizedBox.shrink();

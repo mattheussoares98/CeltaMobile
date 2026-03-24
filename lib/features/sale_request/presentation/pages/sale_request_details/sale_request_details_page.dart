@@ -13,10 +13,12 @@ import 'components/components.dart';
 class SaleRequestDetailsPage extends ConsumerWidget {
   final int saleRequestId;
   final int enterpriseCode;
+  final int customerCode;
   const SaleRequestDetailsPage({
     super.key,
     required this.saleRequestId,
     required this.enterpriseCode,
+    required this.customerCode,
   });
 
   @override
@@ -36,8 +38,12 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                       saleRequestId: saleRequestId,
                       enterpriseCode: enterpriseCode,
                     ),
-                    ReloadButton(saleRequestId: saleRequestId),
-                    Customer(saleRequestId: saleRequestId),
+                    ReloadButton(
+                      saleRequestId: saleRequestId,
+                      customerCode: customerCode,
+                      enterpriseCode: enterpriseCode,
+                    ),
+                    // Customer(saleRequestId: saleRequestId),
                     const Divider(),
                   ],
                 ),
@@ -47,7 +53,11 @@ class SaleRequestDetailsPage extends ConsumerWidget {
           Consumer(
             builder: (context, ref, child) {
               final products = ref.watch(
-                saleRequestDetailsStateControllerProvider(saleRequestId).select(
+                saleRequestDetailsStateControllerProvider(
+                  saleRequestCode: saleRequestId,
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                ).select(
                   (s) =>
                       s.value?.collection.firstOrNull?.cart.values.toList() ??
                       [],
@@ -110,19 +120,19 @@ class _HeroRequestSummary extends StatelessWidget {
         type: MaterialType.transparency,
         child: Consumer(
           builder: (context, ref, child) {
-            final saleRequest =
-                ref.watch(
+            final saleRequest = ref
+                .watch(
                   saleRequestsStateControllerProvider(enterpriseCode).select(
                     (s) => s.value?.collection.firstWhereOrNull(
                       (sr) => sr.Id == saleRequestId,
                     ),
                   ),
-                ) ??
+                ) /* ??
                 ref.watch(
                   saleRequestDetailsStateControllerProvider(
                     saleRequestId,
                   ).select((s) => s.value?.collection.first),
-                );
+                ) */;
 
             if (saleRequest == null) {
               return const SizedBox.shrink();

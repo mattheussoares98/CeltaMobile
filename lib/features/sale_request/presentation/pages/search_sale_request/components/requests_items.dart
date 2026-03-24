@@ -66,6 +66,7 @@ class _SaleRequestItem extends StatelessWidget {
             pathParameters: {
               'saleRequestId': saleRequest.Id.toString(),
               'enterpriseCode': enterpriseCode.toString(),
+              'customerCode': saleRequest.customer?.Code?.toString() ?? '',
             },
           );
         },

@@ -9,13 +9,22 @@ import '../../../controllers/controllers.dart';
 
 class Customer extends ConsumerWidget {
   final int saleRequestId;
-  const Customer({super.key, required this.saleRequestId});
+  final int customerCode;
+  final int enterpriseCode;
+  const Customer({
+    super.key,
+    required this.saleRequestId,
+    required this.customerCode,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final customer = ref.watch(
       saleRequestDetailsStateControllerProvider(
-        saleRequestId,
+        customerCode: customerCode,
+        enterpriseCode: enterpriseCode,
+        saleRequestCode: saleRequestId,
       ).select((s) => s.value?.collection.first.customer),
     );
     if (customer == null) {

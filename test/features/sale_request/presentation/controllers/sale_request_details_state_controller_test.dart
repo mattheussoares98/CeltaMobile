@@ -18,11 +18,13 @@ class MockEcGetSaleRequestsRepository extends Mock
     implements IEcGetSaleRequestsRepository {}
 
 void main() {
+  //TODO fix tests
   late MockEcGetSaleRequestsRepository mockRepository;
   late UserSessionModel fakeSession;
   late EcPaginationResults<SaleRequestEntity> fakeRequests;
   late EcRequestParams params;
-  late int id;
+  late int saleRequestId;
+  late int customerCode;
   late FakeAppUsageStateController fakeAppUsage;
 
   setUpAll(() {
@@ -32,7 +34,8 @@ void main() {
 
   setUp(() {
     mockRepository = MockEcGetSaleRequestsRepository();
-    id = faker.randomGenerator.integer(9999);
+    saleRequestId = faker.randomGenerator.integer(9999);
+    customerCode = faker.randomGenerator.integer(9999);
 
     // Generating a dynamic session via factory
     fakeSession = UserSessionModel.fromEntity(
@@ -96,19 +99,31 @@ void main() {
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
 
-      final states = <AsyncValue<EcPaginationResults<SaleRequestEntity>?>>[];
+      final states = <AsyncValue<dynamic>>[];
       container.listen(
-        saleRequestDetailsStateControllerProvider(id),
+        saleRequestDetailsStateControllerProvider(
+          customerCode: customerCode,
+          saleRequestCode: saleRequestId,
+          enterpriseCode: fakeSession.enterprise!.id!,
+        ),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container.read(
-        saleRequestDetailsStateControllerProvider(id).future,
+        saleRequestDetailsStateControllerProvider(
+          customerCode: customerCode,
+          saleRequestCode: saleRequestId,
+          enterpriseCode: fakeSession.enterprise!.id!,
+        ).future,
       );
 
       final state = container.read(
-        saleRequestDetailsStateControllerProvider(id),
+        saleRequestDetailsStateControllerProvider(
+          customerCode: customerCode,
+          saleRequestCode: saleRequestId,
+          enterpriseCode: fakeSession.enterprise!.id!,
+        ),
       );
       expect(
         state,
@@ -118,7 +133,7 @@ void main() {
       verify(
         () => mockRepository.get(
           params: params,
-          id: id,
+          id: saleRequestId,
           mountCustomer: true,
           mountProducts: true,
           mountRequestType: true,
@@ -148,7 +163,13 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(saleRequestDetailsStateControllerProvider(id).future),
+        container.read(
+          saleRequestDetailsStateControllerProvider(
+            customerCode: customerCode,
+            saleRequestCode: saleRequestId,
+            enterpriseCode: fakeSession.enterprise!.id!,
+          ).future,
+        ),
         throwsA(equals(exception)),
       );
     });
