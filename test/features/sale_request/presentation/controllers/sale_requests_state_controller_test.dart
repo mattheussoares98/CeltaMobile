@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
@@ -27,6 +28,7 @@ void main() {
   late List<String>? personalizedCodes;
   late EcPaginationResults<SaleRequestEntity> fakeRequests;
   late EcRequestParams params;
+  late FakeAppUsageStateController fakeAppUsage;
 
   setUpAll(() {
     registerFallbackValue(DateTime.now());
@@ -72,6 +74,7 @@ void main() {
           ? faker.randomGenerator.integer(100)
           : null,
     );
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -81,6 +84,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -97,68 +101,66 @@ void main() {
       expect(state, isNull);
     });
 
-    test(
-      'load should update state to data and call repository with correct params',
-      () async {
-        // ARRANGE
+    test('load should behave correctly on success', () async {
+      // ARRANGE
 
-        when(
-          () => mockRepository.get(
-            params: any(named: 'params'),
-            enterpriseIds: any(named: 'enterpriseIds'),
-            endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
-            startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
-            personalizedCodes: any(named: 'personalizedCodes'),
-            mountCustomer: any(named: 'mountCustomer'),
-            mountProducts: any(named: 'mountProducts'),
-            mountRequestType: any(named: 'mountRequestType'),
-            mountSeller: any(named: 'mountSeller'),
-          ),
-        ).thenAnswer((_) async => fakeRequests);
+      when(
+        () => mockRepository.get(
+          params: any(named: 'params'),
+          enterpriseIds: any(named: 'enterpriseIds'),
+          endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
+          startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
+          personalizedCodes: any(named: 'personalizedCodes'),
+          mountCustomer: any(named: 'mountCustomer'),
+          mountProducts: any(named: 'mountProducts'),
+          mountRequestType: any(named: 'mountRequestType'),
+          mountSeller: any(named: 'mountSeller'),
+        ),
+      ).thenAnswer((_) async => fakeRequests);
 
-        final container = makeProviderContainer(session: fakeSession);
-        addTearDown(container.dispose);
-        await container.read(
-          saleRequestsStateControllerProvider(enterpriseCode).future,
-        );
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+      await container.read(
+        saleRequestsStateControllerProvider(enterpriseCode).future,
+      );
 
-        final states = <AsyncValue<EcPaginationResults<SaleRequestEntity>?>>[];
-        container.listen(
-          saleRequestsStateControllerProvider(enterpriseCode),
-          (_, next) => states.add(next),
-        );
+      final states = <AsyncValue<EcPaginationResults<SaleRequestEntity>?>>[];
+      container.listen(
+        saleRequestsStateControllerProvider(enterpriseCode),
+        (_, next) => states.add(next),
+      );
 
-        // ACT
-        await container
-            .read(saleRequestsStateControllerProvider(enterpriseCode).notifier)
-            .load(
-              endDateHourOfCreation: endDateHourOfCreation,
-              startDateHourOfCreation: startDateHourOfCreation,
-              personalizedCodes: personalizedCodes,
-              actualPage: params.actualPage,
-              recordsByPage: params.recordsByPage,
-            );
-
-        // ASSERT
-        expect(states, [
-          isA<AsyncLoading>(),
-          AsyncData<EcPaginationResults<SaleRequestEntity>?>(fakeRequests),
-        ]);
-
-        verify(
-          () => mockRepository.get(
-            params: params,
-            enterpriseIds: [enterpriseCode],
+      // ACT
+      await container
+          .read(saleRequestsStateControllerProvider(enterpriseCode).notifier)
+          .load(
             endDateHourOfCreation: endDateHourOfCreation,
             startDateHourOfCreation: startDateHourOfCreation,
             personalizedCodes: personalizedCodes,
-            mountCustomer: true,
-            mountRequestType: true,
-            mountSeller: true,
-          ),
-        ).called(1);
-      },
-    );
+            actualPage: params.actualPage,
+            recordsByPage: params.recordsByPage,
+          );
+
+      // ASSERT
+      expect(states, [
+        isA<AsyncLoading>(),
+        AsyncData<EcPaginationResults<SaleRequestEntity>?>(fakeRequests),
+      ]);
+
+      verify(
+        () => mockRepository.get(
+          params: params,
+          enterpriseIds: [enterpriseCode],
+          endDateHourOfCreation: endDateHourOfCreation,
+          startDateHourOfCreation: startDateHourOfCreation,
+          personalizedCodes: personalizedCodes,
+          mountCustomer: true,
+          mountRequestType: true,
+          mountSeller: true,
+        ),
+      ).called(1);
+      expect(fakeAppUsage.lastUsageType, UsageType.shallowSearchSaleRequest);
+    });
 
     test('load should emit [loading, error] if repository fails', () async {
       // ARRANGE

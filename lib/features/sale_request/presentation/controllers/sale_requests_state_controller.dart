@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
@@ -45,7 +46,9 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
         validatedUserSessionProvider.future,
       );
 
-      //TODO add appUsage
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.shallowSearchSaleRequest);
 
       ref.invalidate(saleRequestDetailsStateControllerProvider);
 

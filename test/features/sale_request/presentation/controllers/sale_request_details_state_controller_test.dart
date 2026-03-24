@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
@@ -22,6 +23,7 @@ void main() {
   late EcPaginationResults<SaleRequestEntity> fakeRequests;
   late EcRequestParams params;
   late int id;
+  late FakeAppUsageStateController fakeAppUsage;
 
   setUpAll(() {
     registerFallbackValue(DateTime.now());
@@ -56,6 +58,7 @@ void main() {
       user: fakeSession.user.name!,
       accessKey: fakeSession.user.AccessKey!,
     );
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -66,6 +69,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -121,6 +125,8 @@ void main() {
           mountSeller: true,
         ),
       ).called(1);
+
+      expect(fakeAppUsage.lastUsageType, UsageType.completeSearchSaleRequest);
     });
 
     test('should throw through .future when repository fails', () async {
