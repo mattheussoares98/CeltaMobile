@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../../core/domain/contracts/contracts.dart';
 import '../../../../core/domain/entities/entities.dart';
 import '../models/models.dart';
@@ -48,14 +50,14 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
   }
 
   @override
-  Future<Map<String, dynamic>> getComplete({
+  Future<dynamic> getComplete({
     required int saleRequestCode,
     required int enterpriseCode,
     required int customerCode,
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/Test/GetCompleteSaleRequest',
+      url: '${params.workingUrl}/api/SaleRequests/GetCompleteForMobileApp',
       method: 'post',
       headers: params.toHeaders(),
       body: {
@@ -66,6 +68,6 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
       },
     );
 
-    return response;
+    return json.decode(response);
   }
 }

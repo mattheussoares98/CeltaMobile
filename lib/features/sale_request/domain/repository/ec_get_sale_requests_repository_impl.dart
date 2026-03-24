@@ -37,7 +37,7 @@ class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> getComplete({
+  Future<dynamic> getComplete({
     required int saleRequestCode,
     required int enterpriseCode,
     required int customerCode,

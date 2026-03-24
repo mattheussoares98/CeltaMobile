@@ -15,7 +15,7 @@ abstract class IEcGetSaleRequestsRepository {
     bool? mountProducts,
   });
 
-  Future<Map<String, dynamic>> getComplete({
+  Future<dynamic> getComplete({
     required int saleRequestCode,
     required int enterpriseCode,
     required int customerCode,
