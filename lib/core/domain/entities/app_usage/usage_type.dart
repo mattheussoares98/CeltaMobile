@@ -15,6 +15,7 @@ enum UsageType {
   insertUpdateCustomer('Inseriu/atualizou cliente'),
   insertUpdateCompetingPrices('Atualizou preços concorrentes'),
   liberateReceiptDocument('Liberou recebimento'),
+  notDefined('Não definido'),
   searchProducts('Pesquisou produtos'),
   sendToPrint('Marcou p/ impressão'),
   shallowSearchProduct('Consulta produtos (superficial)'),

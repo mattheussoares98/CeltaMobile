@@ -6,7 +6,7 @@ import 'app_usage.dart';
 class AppUsageEntity extends Equatable {
   final String userName;
   final int? enterpriseId; //when load the usage dont receive this parameter
-  final UsageType usageType;
+  final UsageType? usageType;
   final int requestCount;
   final String? enterpriseName; //receive when load the reports
 

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
@@ -5,7 +6,7 @@ import '../../../domain/entities/entities.dart';
 class AppUsageModel extends Equatable {
   final String userName;
   final int? enterpriseId;
-  final UsageType usageType;
+  final UsageType? usageType;
   final int requestCount;
   final String? enterpriseName;
 
@@ -29,7 +30,7 @@ class AppUsageModel extends Equatable {
   Map<String, dynamic> toJson() => {
     'user_name': userName,
     'enterprise_id': enterpriseId,
-    'usage_type': usageType.name,
+    'usage_type': usageType?.name,
     'request_count': requestCount,
     'enterprise_name': enterpriseName,
   };
@@ -38,10 +39,13 @@ class AppUsageModel extends Equatable {
     return AppUsageModel(
       userName: map['user_name'],
       enterpriseId: map['enterprise_id'],
-      usageType: UsageType.values.firstWhere(
-        (e) =>
-            e.name.toLowerCase() == map['usage_type'].toString().toLowerCase(),
-      ),
+      usageType:
+          UsageType.values.firstWhereOrNull(
+            (e) =>
+                e.name.toLowerCase() ==
+                map['usage_type'].toString().toLowerCase(),
+          ) ??
+          UsageType.notDefined,
       requestCount: map['request_count'],
       enterpriseName: map['enterprise_name'],
     );

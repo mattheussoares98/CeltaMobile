@@ -89,7 +89,7 @@ class ReportsItems extends ConsumerWidget {
                             0,
                             (sum, r) => sum + r.requestCount,
                           );
-                          return (name: type.description, total: total);
+                          return (name: type?.description, total: total);
                         }).toList()..sort((a, b) => b.total.compareTo(a.total));
 
                     return Card(
@@ -150,7 +150,7 @@ class _RequestsByTypeOrUser extends StatelessWidget {
     final groupedValues =
         groupBy(
             reports,
-            (e) => groupingByType ? e.usageType.description : e.userName,
+            (e) => groupingByType ? e.usageType?.description : e.userName,
           ).entries.map((entry) {
             final name = entry.key;
             final total = entry.value.fold(0, (sum, r) => sum + r.requestCount);
