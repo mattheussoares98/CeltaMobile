@@ -11,6 +11,17 @@ class ConsumerCustomer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bool internalCostumerDoesntExist = ref.watch(
+      consumerCustomerStasteControllerProvider(enterpriseCode).select(
+        (s) => s.error.toString().toLowerCase().contains(
+          'o número de documento informado não foi encontrado',
+        ),
+      ),
+    );
+
+    if (internalCostumerDoesntExist) {
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
+    }
     return AsyncValueWidget(
       isSliver: true,
       value: ref.watch(
