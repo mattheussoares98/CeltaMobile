@@ -112,7 +112,7 @@ class TotalCalculateAndSave extends ConsumerWidget {
                             },
                           ),
                         gapH4,
-                        if (canChangePrice)
+                        if (canChangePrice || !needProcessCart)
                           PrimaryButton(
                             text: cartIsEmpty
                                 ? 'Adicione produtos'.hardcoded
