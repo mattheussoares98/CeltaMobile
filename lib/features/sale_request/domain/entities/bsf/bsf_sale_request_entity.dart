@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'bsf.dart';
 
-class BSFSalesRequestEntity extends Equatable {
+class BSFSaleRequestEntity extends Equatable {
   final DateTime? dateOfEmission;
   final DateTime? dateOfDelivery;
   final DateTime? dateOfExpiration;
@@ -26,7 +26,7 @@ class BSFSalesRequestEntity extends Equatable {
   final List<BSFProductItemEntity>? products;
   final List<dynamic>? discounts;
 
-  const BSFSalesRequestEntity({
+  const BSFSaleRequestEntity({
     required this.dateOfEmission,
     required this.dateOfDelivery,
     required this.dateOfExpiration,
