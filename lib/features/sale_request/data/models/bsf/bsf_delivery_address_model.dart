@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import 'ec_complete.dart';
+import 'bsf.dart';
 
-class EcCompleteDeliveryAddressModel extends Equatable {
+class BSFDeliveryAddressModel extends Equatable {
   final int? code;
   final String? zip;
   final String? sash;
@@ -17,11 +17,11 @@ class EcCompleteDeliveryAddressModel extends Equatable {
   final bool? addressContainsNumber;
   final bool? addressIsInAreaOfDeliveryRestriction;
   final String? inscriptionNumber;
-  final EcCompleteCountryModel? country;
-  final EcCompleteStateModel? state;
+  final BSFCountryModel? country;
+  final BSFStateModel? state;
   final int? addressType;
 
-  const EcCompleteDeliveryAddressModel({
+  const BSFDeliveryAddressModel({
     required this.code,
     required this.zip,
     required this.sash,
@@ -41,8 +41,8 @@ class EcCompleteDeliveryAddressModel extends Equatable {
     required this.addressType,
   });
 
-  factory EcCompleteDeliveryAddressModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteDeliveryAddressModel(
+  factory BSFDeliveryAddressModel.fromJson(Map<String, dynamic> json) =>
+      BSFDeliveryAddressModel(
         code: json['Code'],
         zip: json['Zip'],
         sash: json['Sash'],
@@ -59,10 +59,10 @@ class EcCompleteDeliveryAddressModel extends Equatable {
             json['AddressIsInAreaOfDeliveryRestriction'],
         inscriptionNumber: json['InscriptionNumber'],
         country: json['Country'] != null
-            ? EcCompleteCountryModel.fromJson(json['Country'])
+            ? BSFCountryModel.fromJson(json['Country'])
             : null,
         state: json['State'] != null
-            ? EcCompleteStateModel.fromJson(json['State'])
+            ? BSFStateModel.fromJson(json['State'])
             : null,
         addressType: json['AddressType'],
       );

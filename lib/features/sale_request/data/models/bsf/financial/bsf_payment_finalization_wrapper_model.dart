@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../ec_complete.dart';
+import '../bsf.dart';
 
-class EcCompletePaymentFinalizationWrapperModel extends Equatable {
-  final EcCompletePaymentFinalizationModel? paymentFinalization;
+class BSFPaymentFinalizationWrapperModel extends Equatable {
+  final BSFPaymentFinalizationModel? paymentFinalization;
   final double? value;
   final double? financialIncrement;
   final double? financialDiscount;
@@ -16,9 +16,9 @@ class EcCompletePaymentFinalizationWrapperModel extends Equatable {
   final String? creditCardNumber;
   final DateTime? creditCardValidate;
   final List<dynamic>? portions;
-  final EcCompleteUserAuthorizationModel? userAuthorization;
+  final BSFUserAuthorizationModel? userAuthorization;
 
-  const EcCompletePaymentFinalizationWrapperModel({
+  const BSFPaymentFinalizationWrapperModel({
     required this.paymentFinalization,
     required this.value,
     required this.financialIncrement,
@@ -35,13 +35,11 @@ class EcCompletePaymentFinalizationWrapperModel extends Equatable {
     required this.userAuthorization,
   });
 
-  factory EcCompletePaymentFinalizationWrapperModel.fromJson(
+  factory BSFPaymentFinalizationWrapperModel.fromJson(
     Map<String, dynamic> json,
-  ) => EcCompletePaymentFinalizationWrapperModel(
+  ) => BSFPaymentFinalizationWrapperModel(
     paymentFinalization: json['PaymentFinalization'] != null
-        ? EcCompletePaymentFinalizationModel.fromJson(
-            json['PaymentFinalization'],
-          )
+        ? BSFPaymentFinalizationModel.fromJson(json['PaymentFinalization'])
         : null,
     value: (json['Value'] as num?)?.toDouble(),
     financialIncrement: (json['FinancialIncrement'] as num?)?.toDouble(),
@@ -58,7 +56,7 @@ class EcCompletePaymentFinalizationWrapperModel extends Equatable {
         : null,
     portions: json['Portions'],
     userAuthorization: json['UserAuthorization'] != null
-        ? EcCompleteUserAuthorizationModel.fromJson(json['UserAuthorization'])
+        ? BSFUserAuthorizationModel.fromJson(json['UserAuthorization'])
         : null,
   );
 

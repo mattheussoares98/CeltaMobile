@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class EcCompleteCustomerModel extends Equatable {
+class BSFCustomerModel extends Equatable {
   final String? personalizedCode;
   final String? name;
   final String? nameReduced;
@@ -9,7 +9,7 @@ class EcCompleteCustomerModel extends Equatable {
   final double? limitOfPurchase;
   final String? inscriptionRgNumber;
 
-  const EcCompleteCustomerModel({
+  const BSFCustomerModel({
     required this.personalizedCode,
     required this.name,
     required this.nameReduced,
@@ -19,8 +19,8 @@ class EcCompleteCustomerModel extends Equatable {
     required this.inscriptionRgNumber,
   });
 
-  factory EcCompleteCustomerModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteCustomerModel(
+  factory BSFCustomerModel.fromJson(Map<String, dynamic> json) =>
+      BSFCustomerModel(
         personalizedCode: json['PersonalizedCode'],
         name: json['Name'],
         nameReduced: json['NameReduced'],

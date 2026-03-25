@@ -2,23 +2,20 @@ import 'package:equatable/equatable.dart';
 
 import 'financial.dart';
 
-class EcCompleteFinancialModel extends Equatable {
-  final List<EcCompletePaymentFinalizationWrapperModel>? paymentFinalizations;
+class BSFFinancialModel extends Equatable {
+  final List<BSFPaymentFinalizationWrapperModel>? paymentFinalizations;
   final double? paybackValue;
 
-  const EcCompleteFinancialModel({
+  const BSFFinancialModel({
     required this.paymentFinalizations,
     required this.paybackValue,
   });
 
-  factory EcCompleteFinancialModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteFinancialModel(
+  factory BSFFinancialModel.fromJson(Map<String, dynamic> json) =>
+      BSFFinancialModel(
         paymentFinalizations: json['PaymentFinalizations'] != null
             ? (json['PaymentFinalizations'] as List)
-                  .map(
-                    (i) =>
-                        EcCompletePaymentFinalizationWrapperModel.fromJson(i),
-                  )
+                  .map((i) => BSFPaymentFinalizationWrapperModel.fromJson(i))
                   .toList()
             : null,
         paybackValue: (json['PaybackValue'] as num?)?.toDouble(),

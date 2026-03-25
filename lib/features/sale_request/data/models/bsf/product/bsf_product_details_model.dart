@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class EcCompleteProductDetailsModel extends Equatable {
+class BSFProductDetailsModel extends Equatable {
   final String? name;
   final bool? isAlcoholicProduct;
   final bool? isFatherOfGrate;
@@ -11,7 +11,7 @@ class EcCompleteProductDetailsModel extends Equatable {
   final double? productPackingQuantity;
   final String? productPackingPriceLookUpString;
 
-  const EcCompleteProductDetailsModel({
+  const BSFProductDetailsModel({
     required this.name,
     required this.isAlcoholicProduct,
     required this.isFatherOfGrate,
@@ -23,8 +23,8 @@ class EcCompleteProductDetailsModel extends Equatable {
     required this.productPackingPriceLookUpString,
   });
 
-  factory EcCompleteProductDetailsModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteProductDetailsModel(
+  factory BSFProductDetailsModel.fromJson(Map<String, dynamic> json) =>
+      BSFProductDetailsModel(
         name: json['Name'],
         isAlcoholicProduct: json['IsAlcoholicProduct'],
         isFatherOfGrate: json['IsFatherOfGrate'],

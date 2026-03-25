@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-import 'ec_complete.dart';
+import 'bsf.dart';
 
-class EcCompleteFreightModel extends Equatable {
+class BSFFreightModel extends Equatable {
   final double? value;
   final double? freightValueProrated;
   final double? security;
-  final EcCompleteValueTypeModel? discount;
-  final EcCompleteValueTypeModel? increment;
+  final BSFValueTypeModel? discount;
+  final BSFValueTypeModel? increment;
   final int? type;
   final double? icmsAliquot;
   final double? irrf;
@@ -20,7 +20,7 @@ class EcCompleteFreightModel extends Equatable {
   final DateTime? dateOfEmission;
   final DateTime? dateOfEntrance;
 
-  const EcCompleteFreightModel({
+  const BSFFreightModel({
     required this.value,
     required this.freightValueProrated,
     required this.security,
@@ -39,17 +39,17 @@ class EcCompleteFreightModel extends Equatable {
     required this.dateOfEntrance,
   });
 
-  factory EcCompleteFreightModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteFreightModel(
+  factory BSFFreightModel.fromJson(Map<String, dynamic> json) =>
+      BSFFreightModel(
         value: (json['Value'] as num?)?.toDouble(),
         freightValueProrated: (json['FreightValueProrated'] as num?)
             ?.toDouble(),
         security: (json['Security'] as num?)?.toDouble(),
         discount: json['Discount'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['Discount'])
+            ? BSFValueTypeModel.fromJson(json['Discount'])
             : null,
         increment: json['Increment'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['Increment'])
+            ? BSFValueTypeModel.fromJson(json['Increment'])
             : null,
         type: json['Type'],
         icmsAliquot: (json['IcmsAliquot'] as num?)?.toDouble(),

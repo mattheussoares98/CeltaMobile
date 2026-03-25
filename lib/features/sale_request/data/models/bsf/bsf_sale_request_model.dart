@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import 'ec_complete.dart';
+import 'bsf.dart';
 
-class EcCompleteSalesRequestModel extends Equatable {
+class BSFSalesRequestModel extends Equatable {
   final DateTime? dateOfEmission;
   final DateTime? dateOfDelivery;
   final DateTime? dateOfExpiration;
@@ -10,23 +10,23 @@ class EcCompleteSalesRequestModel extends Equatable {
   final String? personalizedCode;
   final String? instructions;
   final String? observations;
-  final List<EcCompleteFinancialModel>? financials;
-  final EcCompleteRequestTypeModel? requestType;
-  final EcCompleteEnterpriseModel? enterprise;
-  final EcCompleteCustomerModel? customer;
-  final EcCompleteDeliveryAddressModel? deliveryAddress;
-  final EcCompleteDeliveryTaxWrapperModel? deliveryTax;
-  final EcCompleteValueTypeModel? increment;
-  final EcCompleteValueTypeModel? financialIncrement;
-  final EcCompleteValueTypeModel? financialDiscount;
+  final List<BSFFinancialModel>? financials;
+  final BSFRequestTypeModel? requestType;
+  final BSFEnterpriseModel? enterprise;
+  final BSFCustomerModel? customer;
+  final BSFDeliveryAddressModel? deliveryAddress;
+  final BSFDeliveryTaxWrapperModel? deliveryTax;
+  final BSFValueTypeModel? increment;
+  final BSFValueTypeModel? financialIncrement;
+  final BSFValueTypeModel? financialDiscount;
   final double? totalLiquid;
   final int? expeditionControlCode;
   final bool? isOnExpedition;
-  final EcCompleteFreightModel? freight;
-  final List<EcCompleteProductItemModel>? products;
+  final BSFFreightModel? freight;
+  final List<BSFProductItemModel>? products;
   final List<dynamic>? discounts;
 
-  const EcCompleteSalesRequestModel({
+  const BSFSalesRequestModel({
     required this.dateOfEmission,
     required this.dateOfDelivery,
     required this.dateOfExpiration,
@@ -51,8 +51,8 @@ class EcCompleteSalesRequestModel extends Equatable {
     required this.discounts,
   });
 
-  factory EcCompleteSalesRequestModel.fromJson(Map<String, dynamic> json) {
-    return EcCompleteSalesRequestModel(
+  factory BSFSalesRequestModel.fromJson(Map<String, dynamic> json) {
+    return BSFSalesRequestModel(
       dateOfEmission: json['DateOfEmission'] != null
           ? DateTime.parse(json['DateOfEmission'])
           : null,
@@ -70,42 +70,42 @@ class EcCompleteSalesRequestModel extends Equatable {
       observations: json['Observations'],
       financials: json['Financials'] != null
           ? (json['Financials'] as List)
-                .map((i) => EcCompleteFinancialModel.fromJson(i))
+                .map((i) => BSFFinancialModel.fromJson(i))
                 .toList()
           : null,
       requestType: json['RequestType'] != null
-          ? EcCompleteRequestTypeModel.fromJson(json['RequestType'])
+          ? BSFRequestTypeModel.fromJson(json['RequestType'])
           : null,
       enterprise: json['Enterprise'] != null
-          ? EcCompleteEnterpriseModel.fromJson(json['Enterprise'])
+          ? BSFEnterpriseModel.fromJson(json['Enterprise'])
           : null,
       customer: json['Customer'] != null
-          ? EcCompleteCustomerModel.fromJson(json['Customer'])
+          ? BSFCustomerModel.fromJson(json['Customer'])
           : null,
       deliveryAddress: json['DeliveryAddress'] != null
-          ? EcCompleteDeliveryAddressModel.fromJson(json['DeliveryAddress'])
+          ? BSFDeliveryAddressModel.fromJson(json['DeliveryAddress'])
           : null,
       deliveryTax: json['DeliveryTax'] != null
-          ? EcCompleteDeliveryTaxWrapperModel.fromJson(json['DeliveryTax'])
+          ? BSFDeliveryTaxWrapperModel.fromJson(json['DeliveryTax'])
           : null,
       increment: json['Increment'] != null
-          ? EcCompleteValueTypeModel.fromJson(json['Increment'])
+          ? BSFValueTypeModel.fromJson(json['Increment'])
           : null,
       financialIncrement: json['FinancialIncrement'] != null
-          ? EcCompleteValueTypeModel.fromJson(json['FinancialIncrement'])
+          ? BSFValueTypeModel.fromJson(json['FinancialIncrement'])
           : null,
       financialDiscount: json['FinancialDiscount'] != null
-          ? EcCompleteValueTypeModel.fromJson(json['FinancialDiscount'])
+          ? BSFValueTypeModel.fromJson(json['FinancialDiscount'])
           : null,
       totalLiquid: (json['TotalLiquid'] as num?)?.toDouble(),
       expeditionControlCode: json['ExpeditionControlCode'],
       isOnExpedition: json['IsOnExpedition'],
       freight: json['Freight'] != null
-          ? EcCompleteFreightModel.fromJson(json['Freight'])
+          ? BSFFreightModel.fromJson(json['Freight'])
           : null,
       products: json['Products'] != null
           ? (json['Products'] as List)
-                .map((i) => EcCompleteProductItemModel.fromJson(i))
+                .map((i) => BSFProductItemModel.fromJson(i))
                 .toList()
           : null,
       discounts: json['Discounts'],

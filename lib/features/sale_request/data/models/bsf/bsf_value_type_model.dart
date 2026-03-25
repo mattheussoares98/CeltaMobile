@@ -3,14 +3,14 @@ import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
 
-class EcCompleteValueTypeModel extends Equatable {
+class BSFValueTypeModel extends Equatable {
   final PercentageOrValue? type;
   final double? value;
 
-  const EcCompleteValueTypeModel({required this.type, required this.value});
+  const BSFValueTypeModel({required this.type, required this.value});
 
-  factory EcCompleteValueTypeModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteValueTypeModel(
+  factory BSFValueTypeModel.fromJson(Map<String, dynamic> json) =>
+      BSFValueTypeModel(
         type: PercentageOrValue.values.firstWhereOrNull(
           (e) => e.code == json['Type'],
         ),

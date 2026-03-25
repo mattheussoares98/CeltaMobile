@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class EcCompleteRequestTypeModel extends Equatable {
+class BSFRequestTypeModel extends Equatable {
   final String? name;
   final String? personalizedCode;
   final bool? allowAlterCostOrSalePrice;
@@ -20,7 +20,7 @@ class EcCompleteRequestTypeModel extends Equatable {
   final int? useWholePrice;
   final bool? useECommercePrice;
 
-  const EcCompleteRequestTypeModel({
+  const BSFRequestTypeModel({
     required this.name,
     required this.personalizedCode,
     required this.allowAlterCostOrSalePrice,
@@ -41,8 +41,8 @@ class EcCompleteRequestTypeModel extends Equatable {
     required this.useECommercePrice,
   });
 
-  factory EcCompleteRequestTypeModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteRequestTypeModel(
+  factory BSFRequestTypeModel.fromJson(Map<String, dynamic> json) =>
+      BSFRequestTypeModel(
         name: json['Name'],
         personalizedCode: json['PersonalizedCode'],
         allowAlterCostOrSalePrice: json['AllowAlterCostOrSalePrice'],

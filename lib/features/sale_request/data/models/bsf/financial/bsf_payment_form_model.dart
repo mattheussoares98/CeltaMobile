@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 
-class EcCompletePaymentFormModel extends Equatable {
+class BSFPaymentFormModel extends Equatable {
   final int? type;
   final String? reducedName;
   final String? name;
 
-  const EcCompletePaymentFormModel({
+  const BSFPaymentFormModel({
     required this.type,
     required this.reducedName,
     required this.name,
   });
 
-  factory EcCompletePaymentFormModel.fromJson(Map<String, dynamic> json) =>
-      EcCompletePaymentFormModel(
+  factory BSFPaymentFormModel.fromJson(Map<String, dynamic> json) =>
+      BSFPaymentFormModel(
         type: json['Type'],
         reducedName: json['ReducedName'],
         name: json['Name'],

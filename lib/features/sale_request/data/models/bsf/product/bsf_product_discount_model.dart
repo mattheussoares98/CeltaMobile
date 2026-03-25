@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 
-import '../ec_complete.dart';
+import '../bsf.dart';
 
-class EcCompleteProductDiscountModel extends Equatable {
+class BSFProductDiscountModel extends Equatable {
   final int? order;
   final int? discountOrigin;
   final String? user;
   final String? justification;
-  final EcCompleteValueTypeModel? discount;
+  final BSFValueTypeModel? discount;
 
-  const EcCompleteProductDiscountModel({
+  const BSFProductDiscountModel({
     required this.order,
     required this.discountOrigin,
     required this.user,
@@ -17,14 +17,14 @@ class EcCompleteProductDiscountModel extends Equatable {
     required this.discount,
   });
 
-  factory EcCompleteProductDiscountModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteProductDiscountModel(
+  factory BSFProductDiscountModel.fromJson(Map<String, dynamic> json) =>
+      BSFProductDiscountModel(
         order: json['Order'],
         discountOrigin: json['DiscountOrigin'],
         user: json['User'],
         justification: json['Justification'],
         discount: json['Discount'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['Discount'])
+            ? BSFValueTypeModel.fromJson(json['Discount'])
             : null,
       );
 

@@ -1,25 +1,25 @@
 import 'package:equatable/equatable.dart';
 
-import '../ec_complete.dart';
+import '../bsf.dart';
 
-class EcCompleteProductFreightModel extends Equatable {
-  final EcCompleteValueTypeModel? discount;
-  final EcCompleteValueTypeModel? increment;
+class BSFProductFreightModel extends Equatable {
+  final BSFValueTypeModel? discount;
+  final BSFValueTypeModel? increment;
   final double? value;
 
-  const EcCompleteProductFreightModel({
+  const BSFProductFreightModel({
     required this.discount,
     required this.increment,
     required this.value,
   });
 
-  factory EcCompleteProductFreightModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteProductFreightModel(
+  factory BSFProductFreightModel.fromJson(Map<String, dynamic> json) =>
+      BSFProductFreightModel(
         discount: json['Discount'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['Discount'])
+            ? BSFValueTypeModel.fromJson(json['Discount'])
             : null,
         increment: json['Increment'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['Increment'])
+            ? BSFValueTypeModel.fromJson(json['Increment'])
             : null,
         value: (json['Value'] as num?)?.toDouble(),
       );

@@ -1,22 +1,22 @@
 import 'package:equatable/equatable.dart';
 
-import '../ec_complete.dart';
+import '../bsf.dart';
 
-class EcCompleteProductItemModel extends Equatable {
-  final EcCompleteProductDetailsModel? product;
+class BSFProductItemModel extends Equatable {
+  final BSFProductDetailsModel? product;
   final dynamic compositionChilds;
   final String? eanCode;
-  final EcCompleteProductFreightModel? freight;
-  final List<EcCompleteProductDiscountModel>? discounts;
+  final BSFProductFreightModel? freight;
+  final List<BSFProductDiscountModel>? discounts;
   final DateTime? expectedDeliveryDate;
-  final EcCompleteValueTypeModel? deliveryTax;
-  final EcCompleteValueTypeModel? increment;
-  final EcCompleteValueTypeModel? creditOnOrigin;
-  final EcCompleteValueTypeModel? compensation;
+  final BSFValueTypeModel? deliveryTax;
+  final BSFValueTypeModel? increment;
+  final BSFValueTypeModel? creditOnOrigin;
+  final BSFValueTypeModel? compensation;
   final double? quantity;
   final double? value;
 
-  const EcCompleteProductItemModel({
+  const BSFProductItemModel({
     required this.product,
     required this.compositionChilds,
     required this.eanCode,
@@ -31,35 +31,35 @@ class EcCompleteProductItemModel extends Equatable {
     required this.value,
   });
 
-  factory EcCompleteProductItemModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteProductItemModel(
+  factory BSFProductItemModel.fromJson(Map<String, dynamic> json) =>
+      BSFProductItemModel(
         product: json['Product'] != null
-            ? EcCompleteProductDetailsModel.fromJson(json['Product'])
+            ? BSFProductDetailsModel.fromJson(json['Product'])
             : null,
         compositionChilds: json['CompositionChilds'],
         eanCode: json['EanCode'],
         freight: json['Freight'] != null
-            ? EcCompleteProductFreightModel.fromJson(json['Freight'])
+            ? BSFProductFreightModel.fromJson(json['Freight'])
             : null,
         discounts: json['Discounts'] != null
             ? (json['Discounts'] as List)
-                  .map((i) => EcCompleteProductDiscountModel.fromJson(i))
+                  .map((i) => BSFProductDiscountModel.fromJson(i))
                   .toList()
             : null,
         expectedDeliveryDate: json['ExpectedDeliveryDate'] != null
             ? DateTime.parse(json['ExpectedDeliveryDate'])
             : null,
         deliveryTax: json['DeliveryTax'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['DeliveryTax'])
+            ? BSFValueTypeModel.fromJson(json['DeliveryTax'])
             : null,
         increment: json['Increment'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['Increment'])
+            ? BSFValueTypeModel.fromJson(json['Increment'])
             : null,
         creditOnOrigin: json['CreditOnOrigin'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['CreditOnOrigin'])
+            ? BSFValueTypeModel.fromJson(json['CreditOnOrigin'])
             : null,
         compensation: json['Compensation'] != null
-            ? EcCompleteValueTypeModel.fromJson(json['Compensation'])
+            ? BSFValueTypeModel.fromJson(json['Compensation'])
             : null,
         quantity: (json['Quantity'] as num?)?.toDouble(),
         value: (json['Value'] as num?)?.toDouble(),

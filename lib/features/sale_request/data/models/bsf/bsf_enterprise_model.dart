@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class EcCompleteEnterpriseModel extends Equatable {
+class BSFEnterpriseModel extends Equatable {
   final int? code;
   final int? fiscalType;
   final int? federalSimpleType;
@@ -13,7 +13,7 @@ class EcCompleteEnterpriseModel extends Equatable {
   final String? fantasizesName;
   final String? contactName;
 
-  const EcCompleteEnterpriseModel({
+  const BSFEnterpriseModel({
     required this.code,
     required this.fiscalType,
     required this.federalSimpleType,
@@ -27,8 +27,8 @@ class EcCompleteEnterpriseModel extends Equatable {
     required this.contactName,
   });
 
-  factory EcCompleteEnterpriseModel.fromJson(Map<String, dynamic> json) =>
-      EcCompleteEnterpriseModel(
+  factory BSFEnterpriseModel.fromJson(Map<String, dynamic> json) =>
+      BSFEnterpriseModel(
         code: json['Code'],
         fiscalType: json['FiscalType'],
         federalSimpleType: json['FederalSimpleType'],
