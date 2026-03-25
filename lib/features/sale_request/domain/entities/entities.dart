@@ -1,3 +1,4 @@
+export './bsf/bsf.dart';
 export './finalization_entity.dart';
 export './last_saved_sale_request_entity.dart';
 export './percentage_or_value.dart';
