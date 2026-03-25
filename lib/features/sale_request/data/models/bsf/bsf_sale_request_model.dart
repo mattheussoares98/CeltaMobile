@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
 import 'bsf.dart';
 
 class BSFSalesRequestModel extends Equatable {
@@ -50,6 +51,32 @@ class BSFSalesRequestModel extends Equatable {
     required this.products,
     required this.discounts,
   });
+
+  @override
+  List<Object?> get props => [
+    dateOfEmission,
+    dateOfDelivery,
+    dateOfExpiration,
+    dateOfExclusion,
+    personalizedCode,
+    instructions,
+    observations,
+    financials,
+    requestType,
+    enterprise,
+    customer,
+    deliveryAddress,
+    deliveryTax,
+    increment,
+    financialIncrement,
+    financialDiscount,
+    totalLiquid,
+    expeditionControlCode,
+    isOnExpedition,
+    freight,
+    products,
+    discounts,
+  ];
 
   factory BSFSalesRequestModel.fromJson(Map<String, dynamic> json) {
     return BSFSalesRequestModel(
@@ -137,11 +164,52 @@ class BSFSalesRequestModel extends Equatable {
     'Discounts': discounts,
   };
 
-  @override
-  List<Object?> get props => [
-    personalizedCode,
-    totalLiquid,
-    products,
-    financials,
-  ];
+  factory BSFSalesRequestModel.fromEntity(BSFSalesRequestEntity entity) {
+    return BSFSalesRequestModel(
+      dateOfEmission: entity.dateOfEmission,
+      dateOfDelivery: entity.dateOfDelivery,
+      dateOfExpiration: entity.dateOfExpiration,
+      dateOfExclusion: entity.dateOfExclusion,
+      personalizedCode: entity.personalizedCode,
+      instructions: entity.instructions,
+      observations: entity.observations,
+      financials: entity.financials
+          ?.map((e) => BSFFinancialModel.fromEntity(e))
+          .toList(),
+      requestType: entity.requestType == null
+          ? null
+          : BSFRequestTypeModel.fromEntity(entity.requestType!),
+      enterprise: entity.enterprise == null
+          ? null
+          : BSFEnterpriseModel.fromEntity(entity.enterprise!),
+      customer: entity.customer == null
+          ? null
+          : BSFCustomerModel.fromEntity(entity.customer!),
+      deliveryAddress: entity.deliveryAddress == null
+          ? null
+          : BSFDeliveryAddressModel.fromEntity(entity.deliveryAddress!),
+      deliveryTax: entity.deliveryTax == null
+          ? null
+          : BSFDeliveryTaxWrapperModel.fromEntity(entity.deliveryTax!),
+      increment: entity.increment == null
+          ? null
+          : BSFValueTypeModel.fromEntity(entity.increment!),
+      financialIncrement: entity.financialIncrement == null
+          ? null
+          : BSFValueTypeModel.fromEntity(entity.financialIncrement!),
+      financialDiscount: entity.financialDiscount == null
+          ? null
+          : BSFValueTypeModel.fromEntity(entity.financialDiscount!),
+      totalLiquid: entity.totalLiquid,
+      expeditionControlCode: entity.expeditionControlCode,
+      isOnExpedition: entity.isOnExpedition,
+      freight: entity.freight == null
+          ? null
+          : BSFFreightModel.fromEntity(entity.freight!),
+      products: entity.products
+          ?.map((e) => BSFProductItemModel.fromEntity(e))
+          .toList(),
+      discounts: entity.discounts,
+    );
+  }
 }

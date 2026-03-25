@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
+
 class BSFEnterpriseModel extends Equatable {
   final int? code;
   final int? fiscalType;
@@ -26,6 +28,21 @@ class BSFEnterpriseModel extends Equatable {
     required this.fantasizesName,
     required this.contactName,
   });
+
+  @override
+  List<Object?> get props => [
+    code,
+    fiscalType,
+    federalSimpleType,
+    personalizedCode,
+    nationalSimple,
+    accountTreasury,
+    cnpjNumber,
+    suframaCode,
+    name,
+    fantasizesName,
+    contactName,
+  ];
 
   factory BSFEnterpriseModel.fromJson(Map<String, dynamic> json) =>
       BSFEnterpriseModel(
@@ -56,6 +73,32 @@ class BSFEnterpriseModel extends Equatable {
     'ContactName': contactName,
   };
 
-  @override
-  List<Object?> get props => [code, cnpjNumber, name];
+  factory BSFEnterpriseModel.fromEntity(BSFEnterpriseEntity entity) =>
+      BSFEnterpriseModel(
+        code: entity.code,
+        fiscalType: entity.fiscalType,
+        federalSimpleType: entity.federalSimpleType,
+        personalizedCode: entity.personalizedCode,
+        nationalSimple: entity.nationalSimple,
+        accountTreasury: entity.accountTreasury,
+        cnpjNumber: entity.cnpjNumber,
+        suframaCode: entity.suframaCode,
+        name: entity.name,
+        fantasizesName: entity.fantasizesName,
+        contactName: entity.contactName,
+      );
+
+  BSFEnterpriseEntity toEntity() => BSFEnterpriseEntity(
+    code: code,
+    fiscalType: fiscalType,
+    federalSimpleType: federalSimpleType,
+    personalizedCode: personalizedCode,
+    nationalSimple: nationalSimple,
+    accountTreasury: accountTreasury,
+    cnpjNumber: cnpjNumber,
+    suframaCode: suframaCode,
+    name: name,
+    fantasizesName: fantasizesName,
+    contactName: contactName,
+  );
 }

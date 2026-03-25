@@ -9,6 +9,9 @@ class BSFValueTypeModel extends Equatable {
 
   const BSFValueTypeModel({required this.type, required this.value});
 
+  @override
+  List<Object?> get props => [type, value];
+
   factory BSFValueTypeModel.fromJson(Map<String, dynamic> json) =>
       BSFValueTypeModel(
         type: PercentageOrValue.values.firstWhereOrNull(
@@ -19,6 +22,8 @@ class BSFValueTypeModel extends Equatable {
 
   Map<String, dynamic> toJson() => {'Type': type?.code, 'Value': value};
 
-  @override
-  List<Object?> get props => [type, value];
+  factory BSFValueTypeModel.fromEntity(BSFValueTypeEntity entity) =>
+      BSFValueTypeModel(type: entity.type, value: entity.value);
+
+  BSFValueTypeEntity toEntity() => BSFValueTypeEntity(type: type, value: value);
 }

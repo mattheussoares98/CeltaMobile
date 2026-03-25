@@ -4,7 +4,7 @@ class BSFRequestTypeEntity extends Equatable {
   final String? name;
   final String? personalizedCode;
   final bool? allowAlterCostOrSalePrice;
-  final bool? utilizeSaleLikePdvEntity;
+  final bool? utilizeSaleLikePdvModel;
   final bool? allowUseDeliveryTax;
   final bool? allowUseIncrement;
   final bool? allowUseDiscount;
@@ -24,7 +24,7 @@ class BSFRequestTypeEntity extends Equatable {
     required this.name,
     required this.personalizedCode,
     required this.allowAlterCostOrSalePrice,
-    required this.utilizeSaleLikePdvEntity,
+    required this.utilizeSaleLikePdvModel,
     required this.allowUseDeliveryTax,
     required this.allowUseIncrement,
     required this.allowUseDiscount,

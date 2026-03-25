@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
+
 class BSFRequestTypeModel extends Equatable {
   final String? name;
   final String? personalizedCode;
@@ -40,6 +42,28 @@ class BSFRequestTypeModel extends Equatable {
     required this.useWholePrice,
     required this.useECommercePrice,
   });
+
+  @override
+  List<Object?> get props => [
+    name,
+    personalizedCode,
+    allowAlterCostOrSalePrice,
+    utilizeSaleLikePdvModel,
+    allowUseDeliveryTax,
+    allowUseIncrement,
+    allowUseDiscount,
+    allowDistribution,
+    allowSaleOffer,
+    considerAsStockPendency,
+    showStockByClass,
+    showStockByExtensibleGroup,
+    daysOfValidity,
+    userGroups,
+    paymentFinalizations,
+    requestPrintEditionHeaderImage,
+    useWholePrice,
+    useECommercePrice,
+  ];
 
   factory BSFRequestTypeModel.fromJson(Map<String, dynamic> json) =>
       BSFRequestTypeModel(
@@ -84,6 +108,46 @@ class BSFRequestTypeModel extends Equatable {
     'UseECommercePrice': useECommercePrice,
   };
 
-  @override
-  List<Object?> get props => [personalizedCode, name];
+  factory BSFRequestTypeModel.fromEntity(BSFRequestTypeEntity entity) =>
+      BSFRequestTypeModel(
+        name: entity.name,
+        personalizedCode: entity.personalizedCode,
+        allowAlterCostOrSalePrice: entity.allowAlterCostOrSalePrice,
+        utilizeSaleLikePdvModel: entity.utilizeSaleLikePdvModel,
+        allowUseDeliveryTax: entity.allowUseDeliveryTax,
+        allowUseIncrement: entity.allowUseIncrement,
+        allowUseDiscount: entity.allowUseDiscount,
+        allowDistribution: entity.allowDistribution,
+        allowSaleOffer: entity.allowSaleOffer,
+        considerAsStockPendency: entity.considerAsStockPendency,
+        showStockByClass: entity.showStockByClass,
+        showStockByExtensibleGroup: entity.showStockByExtensibleGroup,
+        daysOfValidity: entity.daysOfValidity,
+        userGroups: entity.userGroups,
+        paymentFinalizations: entity.paymentFinalizations,
+        requestPrintEditionHeaderImage: entity.requestPrintEditionHeaderImage,
+        useWholePrice: entity.useWholePrice,
+        useECommercePrice: entity.useECommercePrice,
+      );
+
+  BSFRequestTypeEntity toEntity() => BSFRequestTypeEntity(
+    name: name,
+    personalizedCode: personalizedCode,
+    allowAlterCostOrSalePrice: allowAlterCostOrSalePrice,
+    utilizeSaleLikePdvModel: utilizeSaleLikePdvModel,
+    allowUseDeliveryTax: allowUseDeliveryTax,
+    allowUseIncrement: allowUseIncrement,
+    allowUseDiscount: allowUseDiscount,
+    allowDistribution: allowDistribution,
+    allowSaleOffer: allowSaleOffer,
+    considerAsStockPendency: considerAsStockPendency,
+    showStockByClass: showStockByClass,
+    showStockByExtensibleGroup: showStockByExtensibleGroup,
+    daysOfValidity: daysOfValidity,
+    userGroups: userGroups,
+    paymentFinalizations: paymentFinalizations,
+    requestPrintEditionHeaderImage: requestPrintEditionHeaderImage,
+    useWholePrice: useWholePrice,
+    useECommercePrice: useECommercePrice,
+  );
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
 import 'bsf.dart';
 
 class BSFDeliveryTaxWrapperModel extends Equatable {
@@ -14,6 +15,14 @@ class BSFDeliveryTaxWrapperModel extends Equatable {
     required this.isFob,
     required this.isDiscounted,
   });
+
+  @override
+  List<Object?> get props => [
+    deliveryTax,
+    mailFreightType,
+    isFob,
+    isDiscounted,
+  ];
 
   factory BSFDeliveryTaxWrapperModel.fromJson(Map<String, dynamic> json) =>
       BSFDeliveryTaxWrapperModel(
@@ -32,6 +41,21 @@ class BSFDeliveryTaxWrapperModel extends Equatable {
     'IsDiscounted': isDiscounted,
   };
 
-  @override
-  List<Object?> get props => [deliveryTax, isFob];
+  factory BSFDeliveryTaxWrapperModel.fromEntity(
+    BSFDeliveryTaxWrapperEntity entity,
+  ) => BSFDeliveryTaxWrapperModel(
+    deliveryTax: entity.deliveryTax == null
+        ? null
+        : BSFValueTypeModel.fromEntity(entity.deliveryTax!),
+    mailFreightType: entity.mailFreightType,
+    isFob: entity.isFob,
+    isDiscounted: entity.isDiscounted,
+  );
+
+  BSFDeliveryTaxWrapperEntity toEntity() => BSFDeliveryTaxWrapperEntity(
+    deliveryTax: deliveryTax?.toEntity(),
+    mailFreightType: mailFreightType,
+    isFob: isFob,
+    isDiscounted: isDiscounted,
+  );
 }

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
+
 class BSFCountryModel extends Equatable {
   final String? name;
   final bool? isExteriorCountry;
@@ -10,6 +12,9 @@ class BSFCountryModel extends Equatable {
     required this.isExteriorCountry,
     required this.spedCode,
   });
+
+  @override
+  List<Object?> get props => [name, isExteriorCountry, spedCode];
 
   factory BSFCountryModel.fromJson(Map<String, dynamic> json) =>
       BSFCountryModel(
@@ -24,6 +29,16 @@ class BSFCountryModel extends Equatable {
     'SpedCode': spedCode,
   };
 
-  @override
-  List<Object?> get props => [name, spedCode];
+  factory BSFCountryModel.fromEntity(BSFCountryEntity entity) =>
+      BSFCountryModel(
+        name: entity.name,
+        isExteriorCountry: entity.isExteriorCountry,
+        spedCode: entity.spedCode,
+      );
+
+  BSFCountryEntity toEntity() => BSFCountryEntity(
+    name: name,
+    isExteriorCountry: isExteriorCountry,
+    spedCode: spedCode,
+  );
 }

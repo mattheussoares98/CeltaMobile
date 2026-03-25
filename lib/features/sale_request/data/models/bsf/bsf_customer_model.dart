@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
+
 class BSFCustomerModel extends Equatable {
   final String? personalizedCode;
   final String? name;
@@ -18,6 +20,17 @@ class BSFCustomerModel extends Equatable {
     required this.limitOfPurchase,
     required this.inscriptionRgNumber,
   });
+
+  @override
+  List<Object?> get props => [
+    personalizedCode,
+    name,
+    nameReduced,
+    cnpjCpfNumber,
+    suframaCode,
+    limitOfPurchase,
+    inscriptionRgNumber,
+  ];
 
   factory BSFCustomerModel.fromJson(Map<String, dynamic> json) =>
       BSFCustomerModel(
@@ -40,6 +53,24 @@ class BSFCustomerModel extends Equatable {
     'InscriptionRgNumber': inscriptionRgNumber,
   };
 
-  @override
-  List<Object?> get props => [cnpjCpfNumber, name];
+  factory BSFCustomerModel.fromEntity(BSFCustomerEntity entity) =>
+      BSFCustomerModel(
+        personalizedCode: entity.personalizedCode,
+        name: entity.name,
+        nameReduced: entity.nameReduced,
+        cnpjCpfNumber: entity.cnpjCpfNumber,
+        suframaCode: entity.suframaCode,
+        limitOfPurchase: entity.limitOfPurchase,
+        inscriptionRgNumber: entity.inscriptionRgNumber,
+      );
+
+  BSFCustomerEntity toEntity() => BSFCustomerEntity(
+    personalizedCode: personalizedCode,
+    name: name,
+    nameReduced: nameReduced,
+    cnpjCpfNumber: cnpjCpfNumber,
+    suframaCode: suframaCode,
+    limitOfPurchase: limitOfPurchase,
+    inscriptionRgNumber: inscriptionRgNumber,
+  );
 }

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../domain/entities/entities.dart';
+
 class BSFProductDetailsModel extends Equatable {
   final String? name;
   final bool? isAlcoholicProduct;
@@ -22,6 +24,19 @@ class BSFProductDetailsModel extends Equatable {
     required this.productPackingQuantity,
     required this.productPackingPriceLookUpString,
   });
+
+  @override
+  List<Object?> get props => [
+    name,
+    isAlcoholicProduct,
+    isFatherOfGrate,
+    fatherGrateCode,
+    images,
+    personalizedCode,
+    productPackingTypeString,
+    productPackingQuantity,
+    productPackingPriceLookUpString,
+  ];
 
   factory BSFProductDetailsModel.fromJson(Map<String, dynamic> json) =>
       BSFProductDetailsModel(
@@ -50,6 +65,28 @@ class BSFProductDetailsModel extends Equatable {
     'ProductPackingPriceLookUpString': productPackingPriceLookUpString,
   };
 
-  @override
-  List<Object?> get props => [name, personalizedCode];
+  factory BSFProductDetailsModel.fromEntity(BSFProductDetailsEntity entity) =>
+      BSFProductDetailsModel(
+        name: entity.name,
+        isAlcoholicProduct: entity.isAlcoholicProduct,
+        isFatherOfGrate: entity.isFatherOfGrate,
+        fatherGrateCode: entity.fatherGrateCode,
+        images: entity.images,
+        personalizedCode: entity.personalizedCode,
+        productPackingTypeString: entity.productPackingTypeString,
+        productPackingQuantity: entity.productPackingQuantity,
+        productPackingPriceLookUpString: entity.productPackingPriceLookUpString,
+      );
+
+  BSFProductDetailsEntity toEntity() => BSFProductDetailsEntity(
+    name: name,
+    isAlcoholicProduct: isAlcoholicProduct,
+    isFatherOfGrate: isFatherOfGrate,
+    fatherGrateCode: fatherGrateCode,
+    images: images,
+    personalizedCode: personalizedCode,
+    productPackingTypeString: productPackingTypeString,
+    productPackingQuantity: productPackingQuantity,
+    productPackingPriceLookUpString: productPackingPriceLookUpString,
+  );
 }

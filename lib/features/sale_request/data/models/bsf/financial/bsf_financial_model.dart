@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../domain/entities/entities.dart';
 import 'financial.dart';
 
 class BSFFinancialModel extends Equatable {
@@ -10,6 +11,9 @@ class BSFFinancialModel extends Equatable {
     required this.paymentFinalizations,
     required this.paybackValue,
   });
+
+  @override
+  List<Object?> get props => [paymentFinalizations, paybackValue];
 
   factory BSFFinancialModel.fromJson(Map<String, dynamic> json) =>
       BSFFinancialModel(
@@ -28,6 +32,18 @@ class BSFFinancialModel extends Equatable {
     'PaybackValue': paybackValue,
   };
 
-  @override
-  List<Object?> get props => [paymentFinalizations, paybackValue];
+  factory BSFFinancialModel.fromEntity(BSFFinancialEntity entity) =>
+      BSFFinancialModel(
+        paymentFinalizations: entity.paymentFinalizations
+            ?.map((e) => BSFPaymentFinalizationWrapperModel.fromEntity(e))
+            .toList(),
+        paybackValue: entity.paybackValue,
+      );
+
+  BSFFinancialEntity toEntity() => BSFFinancialEntity(
+    paymentFinalizations: paymentFinalizations
+        ?.map((e) => e.toEntity())
+        .toList(),
+    paybackValue: paybackValue,
+  );
 }

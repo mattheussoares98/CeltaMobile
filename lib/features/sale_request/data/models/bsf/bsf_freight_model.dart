@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
 import 'bsf.dart';
 
 class BSFFreightModel extends Equatable {
@@ -38,6 +39,26 @@ class BSFFreightModel extends Equatable {
     required this.dateOfEmission,
     required this.dateOfEntrance,
   });
+
+  @override
+  List<Object?> get props => [
+    value,
+    freightValueProrated,
+    security,
+    discount,
+    increment,
+    type,
+    icmsAliquot,
+    irrf,
+    inss,
+    icmsRetainByDestiny,
+    code,
+    documentNumber,
+    documentNumberComplement,
+    eletronicAccessKey,
+    dateOfEmission,
+    dateOfEntrance,
+  ];
 
   factory BSFFreightModel.fromJson(Map<String, dynamic> json) =>
       BSFFreightModel(
@@ -87,6 +108,46 @@ class BSFFreightModel extends Equatable {
     'DateOfEntrance': dateOfEntrance?.toIso8601String(),
   };
 
-  @override
-  List<Object?> get props => [value, type, code];
+  factory BSFFreightModel.fromEntity(BSFFreightEntity entity) =>
+      BSFFreightModel(
+        value: entity.value,
+        freightValueProrated: entity.freightValueProrated,
+        security: entity.security,
+        discount: entity.discount == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.discount!),
+        increment: entity.increment == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.increment!),
+        type: entity.type,
+        icmsAliquot: entity.icmsAliquot,
+        irrf: entity.irrf,
+        inss: entity.inss,
+        icmsRetainByDestiny: entity.icmsRetainByDestiny,
+        code: entity.code,
+        documentNumber: entity.documentNumber,
+        documentNumberComplement: entity.documentNumberComplement,
+        eletronicAccessKey: entity.eletronicAccessKey,
+        dateOfEmission: entity.dateOfEmission,
+        dateOfEntrance: entity.dateOfEntrance,
+      );
+
+  BSFFreightEntity toEntity() => BSFFreightEntity(
+    value: value,
+    freightValueProrated: freightValueProrated,
+    security: security,
+    discount: discount?.toEntity(),
+    increment: increment?.toEntity(),
+    type: type,
+    icmsAliquot: icmsAliquot,
+    irrf: irrf,
+    inss: inss,
+    icmsRetainByDestiny: icmsRetainByDestiny,
+    code: code,
+    documentNumber: documentNumber,
+    documentNumberComplement: documentNumberComplement,
+    eletronicAccessKey: eletronicAccessKey,
+    dateOfEmission: dateOfEmission,
+    dateOfEntrance: dateOfEntrance,
+  );
 }

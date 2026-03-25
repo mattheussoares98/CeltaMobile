@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../domain/entities/entities.dart';
 import '../bsf.dart';
 
 class BSFProductItemModel extends Equatable {
@@ -30,6 +31,22 @@ class BSFProductItemModel extends Equatable {
     required this.quantity,
     required this.value,
   });
+
+  @override
+  List<Object?> get props => [
+    product,
+    compositionChilds,
+    eanCode,
+    freight,
+    discounts,
+    expectedDeliveryDate,
+    deliveryTax,
+    increment,
+    creditOnOrigin,
+    compensation,
+    quantity,
+    value,
+  ];
 
   factory BSFProductItemModel.fromJson(Map<String, dynamic> json) =>
       BSFProductItemModel(
@@ -80,6 +97,50 @@ class BSFProductItemModel extends Equatable {
     'Value': value,
   };
 
-  @override
-  List<Object?> get props => [product, quantity, value];
+  factory BSFProductItemModel.fromEntity(BSFProductItemEntity entity) =>
+      BSFProductItemModel(
+        product: entity.product == null
+            ? null
+            : BSFProductDetailsModel.fromEntity(entity.product!),
+        compositionChilds: entity.compositionChilds,
+        eanCode: entity.eanCode,
+        freight: entity.freight == null
+            ? null
+            : BSFProductFreightModel.fromEntity(entity.freight!),
+        discounts: entity.discounts == null
+            ? null
+            : (entity.discounts!)
+                  .map((e) => BSFProductDiscountModel.fromEntity(e))
+                  .toList(),
+        expectedDeliveryDate: entity.expectedDeliveryDate,
+        deliveryTax: entity.deliveryTax == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.deliveryTax!),
+        increment: entity.increment == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.increment!),
+        creditOnOrigin: entity.creditOnOrigin == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.creditOnOrigin!),
+        compensation: entity.compensation == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.compensation!),
+        quantity: entity.quantity,
+        value: entity.value,
+      );
+
+  BSFProductItemEntity toEntity() => BSFProductItemEntity(
+    product: product?.toEntity(),
+    compositionChilds: compositionChilds,
+    eanCode: eanCode,
+    freight: freight?.toEntity(),
+    discounts: discounts?.map((e) => e.toEntity()).toList(),
+    expectedDeliveryDate: expectedDeliveryDate,
+    deliveryTax: deliveryTax?.toEntity(),
+    increment: increment?.toEntity(),
+    creditOnOrigin: creditOnOrigin?.toEntity(),
+    compensation: compensation?.toEntity(),
+    quantity: quantity,
+    value: value,
+  );
 }

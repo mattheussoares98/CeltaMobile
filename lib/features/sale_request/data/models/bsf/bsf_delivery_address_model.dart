@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
 import 'bsf.dart';
 
 class BSFDeliveryAddressModel extends Equatable {
@@ -40,6 +41,27 @@ class BSFDeliveryAddressModel extends Equatable {
     required this.state,
     required this.addressType,
   });
+
+  @override
+  List<Object?> get props => [
+    code,
+    zip,
+    sash,
+    address,
+    number,
+    complement,
+    district,
+    reference,
+    mainAddress,
+    defaultDeliveryAddress,
+    defaultCollectAddress,
+    addressContainsNumber,
+    addressIsInAreaOfDeliveryRestriction,
+    inscriptionNumber,
+    country,
+    state,
+    addressType,
+  ];
 
   factory BSFDeliveryAddressModel.fromJson(Map<String, dynamic> json) =>
       BSFDeliveryAddressModel(
@@ -88,6 +110,29 @@ class BSFDeliveryAddressModel extends Equatable {
     'AddressType': addressType,
   };
 
-  @override
-  List<Object?> get props => [zip, address, number];
+  factory BSFDeliveryAddressModel.fromEntity(BSFDeliveryAddressEntity entity) =>
+      BSFDeliveryAddressModel(
+        code: entity.code,
+        zip: entity.zip,
+        sash: entity.sash,
+        address: entity.address,
+        number: entity.number,
+        complement: entity.complement,
+        district: entity.district,
+        reference: entity.reference,
+        mainAddress: entity.mainAddress,
+        defaultDeliveryAddress: entity.defaultDeliveryAddress,
+        defaultCollectAddress: entity.defaultCollectAddress,
+        addressContainsNumber: entity.addressContainsNumber,
+        addressIsInAreaOfDeliveryRestriction:
+            entity.addressIsInAreaOfDeliveryRestriction,
+        inscriptionNumber: entity.inscriptionNumber,
+        country: entity.country == null
+            ? null
+            : BSFCountryModel.fromEntity(entity.country!),
+        state: entity.state == null
+            ? null
+            : BSFStateModel.fromEntity(entity.state!),
+        addressType: entity.addressType,
+      );
 }

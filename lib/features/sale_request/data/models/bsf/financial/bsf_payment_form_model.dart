@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../domain/entities/entities.dart';
+
 class BSFPaymentFormModel extends Equatable {
   final int? type;
   final String? reducedName;
@@ -10,6 +12,9 @@ class BSFPaymentFormModel extends Equatable {
     required this.reducedName,
     required this.name,
   });
+
+  @override
+  List<Object?> get props => [type, reducedName, name];
 
   factory BSFPaymentFormModel.fromJson(Map<String, dynamic> json) =>
       BSFPaymentFormModel(
@@ -23,7 +28,13 @@ class BSFPaymentFormModel extends Equatable {
     'ReducedName': reducedName,
     'Name': name,
   };
+  factory BSFPaymentFormModel.fromEntity(BSFPaymentFormEntity entity) =>
+      BSFPaymentFormModel(
+        type: entity.type,
+        reducedName: entity.reducedName,
+        name: entity.name,
+      );
 
-  @override
-  List<Object?> get props => [type, name];
+  BSFPaymentFormEntity toEntity() =>
+      BSFPaymentFormEntity(type: type, reducedName: reducedName, name: name);
 }
