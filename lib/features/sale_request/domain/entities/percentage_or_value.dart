@@ -1,7 +1,8 @@
 enum PercentageOrValue {
-  percentage('%'),
-  value('R\$');
+  percentage('%', 1),
+  value('R\$', 2);
 
   final String symbol;
-  const PercentageOrValue(this.symbol);
+  final int code;
+  const PercentageOrValue(this.symbol, this.code);
 }
