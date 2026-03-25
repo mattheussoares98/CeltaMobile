@@ -15,7 +15,7 @@ abstract class IEcGetSaleRequestsRepository {
     bool? mountProducts,
   });
 
-  Future<dynamic> getComplete({
+  Future<BSFSaleRequestEntity> getComplete({
     required int saleRequestCode,
     required int enterpriseCode,
     required int customerCode,

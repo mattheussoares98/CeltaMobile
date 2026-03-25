@@ -50,7 +50,7 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
   }
 
   @override
-  Future<dynamic> getComplete({
+  Future<BSFSaleRequestModel> getComplete({
     required int saleRequestCode,
     required int enterpriseCode,
     required int customerCode,
@@ -68,6 +68,6 @@ class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
       },
     );
 
-    return json.decode(response);
+    return BSFSaleRequestModel.fromJson((json.decode(response) as List).first);
   }
 }

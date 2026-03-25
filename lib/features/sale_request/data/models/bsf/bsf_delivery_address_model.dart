@@ -135,4 +135,24 @@ class BSFDeliveryAddressModel extends Equatable {
             : BSFStateModel.fromEntity(entity.state!),
         addressType: entity.addressType,
       );
+
+  BSFDeliveryAddressEntity toEntity() => BSFDeliveryAddressEntity(
+    code: code,
+    zip: zip,
+    sash: sash,
+    address: address,
+    number: number,
+    complement: complement,
+    district: district,
+    reference: reference,
+    mainAddress: mainAddress,
+    defaultDeliveryAddress: defaultDeliveryAddress,
+    defaultCollectAddress: defaultCollectAddress,
+    addressContainsNumber: addressContainsNumber,
+    addressIsInAreaOfDeliveryRestriction: addressIsInAreaOfDeliveryRestriction,
+    inscriptionNumber: inscriptionNumber,
+    country: country?.toEntity(),
+    state: state?.toEntity(),
+    addressType: addressType,
+  );
 }

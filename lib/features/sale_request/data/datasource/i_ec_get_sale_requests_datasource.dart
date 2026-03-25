@@ -15,7 +15,7 @@ abstract class IEcGetSaleRequestsDatasource {
     bool? mountProducts,
   });
 
-  Future<dynamic> getComplete({
+  Future<BSFSaleRequestModel> getComplete({
     required int saleRequestCode,
     required int enterpriseCode,
     required int customerCode,

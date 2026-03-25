@@ -37,7 +37,7 @@ class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
   }
 
   @override
-  Future<dynamic> getComplete({
+  Future<BSFSaleRequestEntity> getComplete({
     required int saleRequestCode,
     required int enterpriseCode,
     required int customerCode,
@@ -50,6 +50,6 @@ class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
       params: params,
     );
 
-    return response;
+    return response.toEntity();
   }
 }

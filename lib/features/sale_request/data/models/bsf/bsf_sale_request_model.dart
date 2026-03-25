@@ -212,4 +212,29 @@ class BSFSaleRequestModel extends Equatable {
       discounts: entity.discounts,
     );
   }
+
+  BSFSaleRequestEntity toEntity() => BSFSaleRequestEntity(
+    dateOfEmission: dateOfEmission,
+    dateOfDelivery: dateOfDelivery,
+    dateOfExpiration: dateOfExpiration,
+    dateOfExclusion: dateOfExclusion,
+    personalizedCode: personalizedCode,
+    instructions: instructions,
+    observations: observations,
+    financials: financials?.map((e) => e.toEntity()).toList(),
+    requestType: requestType?.toEntity(),
+    enterprise: enterprise?.toEntity(),
+    customer: customer?.toEntity(),
+    deliveryAddress: deliveryAddress?.toEntity(),
+    deliveryTax: deliveryTax?.toEntity(),
+    increment: increment?.toEntity(),
+    financialIncrement: financialIncrement?.toEntity(),
+    financialDiscount: financialDiscount?.toEntity(),
+    totalLiquid: totalLiquid,
+    expeditionControlCode: expeditionControlCode,
+    isOnExpedition: isOnExpedition,
+    freight: freight?.toEntity(),
+    products: products?.map((e) => e.toEntity()).toList(),
+    discounts: discounts,
+  );
 }
