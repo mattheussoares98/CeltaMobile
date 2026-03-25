@@ -11,3 +11,14 @@ class BSFValueTypeEntity extends Equatable {
   @override
   List<Object?> get props => [type, value];
 }
+
+extension BSFValueTypeEntityExtension on BSFValueTypeEntity {
+  double calculateTotalValue(double? quantity, double? price) {
+    if (quantity == null || quantity == 0) return 0;
+    if (value == null || value == 0) return 0;
+    if (price == null || price == 0) return 0;
+    if (type == null) return 0;
+
+    return price * (type == PercentageOrValue.value ? 1 : value!) / quantity;
+  }
+}
