@@ -25,7 +25,7 @@ class Customer extends ConsumerWidget {
         customerCode: customerCode,
         enterpriseCode: enterpriseCode,
         saleRequestCode: saleRequestId,
-      ).select((s) => s.value?.collection.first.customer),
+      ).select((s) => s.value?.customer),
     );
     if (customer == null) {
       return const SizedBox.shrink();
@@ -34,7 +34,7 @@ class Customer extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    bool isInternalCustomer = customer.Name?.toLowerCase() == 'consumidor';
+    bool isInternalCustomer = customer.name?.toLowerCase() == 'consumidor';
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -50,31 +50,31 @@ class Customer extends ConsumerWidget {
                   TitleAndSubTitle(
                     title: null,
                     subTitle:
-                        '${customer.Name} '
-                        '${isInternalCustomer ? '' : {customer.Code}}',
+                        '${customer.name} '
+                        '${isInternalCustomer ? '' : {customer.personalizedCode}}',
                   ),
-                  if (customer.PersonType != null && !isInternalCustomer)
-                    TitleAndSubTitle(
-                      title: 'Tipo'.hardcoded,
-                      subTitle: customer.PersonType?.completeName,
-                    ),
-                  if (customer.CpfCnpjNumber != null && !isInternalCustomer)
+                  // if (customer.PersonType != null && !isInternalCustomer)
+                  //   TitleAndSubTitle(
+                  //     title: 'Tipo'.hardcoded,
+                  //     subTitle: customer.PersonType?.completeName,
+                  //   ),
+                  if (customer.cnpjCpfNumber != null && !isInternalCustomer)
                     TitleAndSubTitle(
                       title: 'CPF/CNPJ'.hardcoded,
-                      subTitle: customer.CpfCnpjNumber,
+                      subTitle: customer.cnpjCpfNumber,
                     ),
-                  if (customer.Emails != null)
-                    TitleAndSubTitle(
-                      title: 'E-mails'.hardcoded,
-                      subTitle: customer.Emails?.join(', '),
-                    ),
-                  if (customer.Telephones != null)
-                    TitleAndSubTitle(
-                      title: 'Telefones'.hardcoded,
-                      subTitle: customer.Telephones?.map(
-                        (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
-                      ).join(', '),
-                    ),
+                  // if (customer.Emails != null)
+                  //   TitleAndSubTitle(
+                  //     title: 'E-mails'.hardcoded,
+                  //     subTitle: customer.Emails?.join(', '),
+                  //   ),
+                  // if (customer.Telephones != null)
+                  //   TitleAndSubTitle(
+                  //     title: 'Telefones'.hardcoded,
+                  //     subTitle: customer.Telephones?.map(
+                  //       (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
+                  //     ).join(', '),
+                  //   ),
                 ],
               ),
             ),

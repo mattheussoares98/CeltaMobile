@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../controllers/controllers.dart';
 import '../components/components.dart';
@@ -57,42 +56,16 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                   saleRequestCode: saleRequestId,
                   enterpriseCode: enterpriseCode,
                   customerCode: customerCode,
-                ).select(
-                  (s) =>
-                      s.value?.collection.firstOrNull?.cart.values.toList() ??
-                      [],
-                ),
+                ).select((s) => s.value?.products),
               );
 
               return ResponsiveListFlow(
                 isSliver: true,
-                itemCount: products.length,
+                itemCount: products?.length ?? 0,
                 itemBuilder: (context, index) {
-                  final cartProduct = products[index];
+                  final cartProduct = products![index];
 
-                  return ProductItemWidget(
-                    product: cartProduct.product!.copyWith(
-                      Value: cartProduct.Value,
-                    ),
-                    hideCost: true,
-                    hideCurrentAndSaleStocks: true,
-                    hideWholeInformations: true,
-                    routine: BsRoutine.saleRequest,
-                    clickableBottom: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleAndSubTitle(
-                          title: 'Quantidade',
-                          subTitle: cartProduct.Quantity,
-                        ),
-                        TitleAndSubTitle(
-                          title: 'Total',
-                          subTitle: cartProduct.getTotalLiquid,
-                          subTitleIsPrice: true,
-                        ),
-                      ],
-                    ),
-                  );
+                  return Text(cartProduct.product!.name!);
                 },
               );
             },

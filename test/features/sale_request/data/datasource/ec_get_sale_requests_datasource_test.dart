@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
@@ -23,6 +25,10 @@ void main() {
   late bool mountProducts;
   late int id;
   late EcPaginationResults<EcSaleRequestModel> saleRequests;
+  late BSFSaleRequestModel bSFSaleRequestModel;
+  late int saleRequestCode;
+  late int enterpriseCode;
+  late int customerCode;
 
   void initSut() {
     sut = EcGetSaleRequestsDatasource(httpClient);
@@ -48,6 +54,9 @@ void main() {
           EcSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
       ],
     );
+    bSFSaleRequestModel = BSFSaleRequestModel.fromEntity(
+      EntityFactory.makeBSFSaleRequestEntity(),
+    );
 
     params = EntityFactory.makeEcRequestParams();
     enterpriseIds = [1, 2, 3];
@@ -61,6 +70,10 @@ void main() {
     mountRequestType = faker.randomGenerator.boolean();
     mountProducts = faker.randomGenerator.boolean();
     id = faker.randomGenerator.integer(100);
+
+    saleRequestCode = faker.randomGenerator.integer(100);
+    enterpriseCode = faker.randomGenerator.integer(100);
+    customerCode = faker.randomGenerator.integer(100);
   }
 
   setUp(() {
@@ -125,7 +138,32 @@ void main() {
     });
   });
 
-  group('Get complete', () {
-    //TODO create tests
+  group('GetCompleteForMobileApp', () {
+    test('should behave correctly on success', () async {
+      httpClient.mockRequest(json.encode([bSFSaleRequestModel.toJson()]));
+
+      final response = await sut.getComplete(
+        saleRequestCode: saleRequestCode,
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        params: params,
+      );
+
+      expect(response, bSFSaleRequestModel);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/SaleRequests/GetCompleteForMobileApp',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            ...params.toMap(),
+            'saleRequestCode': saleRequestCode,
+            'enterpriseCode': enterpriseCode,
+            'customerCode': customerCode,
+          },
+        ),
+      ).called(1);
+    });
   });
 }

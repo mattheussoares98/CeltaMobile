@@ -1044,4 +1044,221 @@ class EntityFactory {
     actualPage: faker.randomGenerator.integer(100),
     recordsByPage: faker.randomGenerator.integer(100),
   );
+
+  static BSFSaleRequestEntity makeBSFSaleRequestEntity() =>
+      BSFSaleRequestEntity(
+        dateOfEmission: faker.date.dateTime(),
+        dateOfDelivery: faker.date.dateTime(),
+        dateOfExpiration: faker.date.dateTime(),
+        dateOfExclusion: faker.date.dateTime(),
+        personalizedCode: faker.randomGenerator.numberOfLength(12),
+        instructions: faker.lorem.sentence(),
+        observations: faker.lorem.sentence(),
+        financials: [
+          _makeBSFFinancialEntity(),
+          _makeBSFFinancialEntity(),
+          _makeBSFFinancialEntity(),
+        ],
+        requestType: BSFRequestTypeEntity(
+          name: faker.lorem.word(),
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+          allowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
+          utilizeSaleLikePdvModel: faker.randomGenerator.boolean(),
+          allowUseDeliveryTax: faker.randomGenerator.boolean(),
+          allowUseIncrement: faker.randomGenerator.boolean(),
+          allowUseDiscount: faker.randomGenerator.boolean(),
+          allowDistribution: faker.randomGenerator.boolean(),
+          allowSaleOffer: faker.randomGenerator.boolean(),
+          considerAsStockPendency: faker.randomGenerator.boolean(),
+          showStockByClass: faker.randomGenerator.boolean(),
+          showStockByExtensibleGroup: faker.randomGenerator.boolean(),
+          daysOfValidity: faker.randomGenerator.integer(100),
+          userGroups: const {}, //TODO test
+          paymentFinalizations: const [], //TODO test
+          requestPrintEditionHeaderImage: const {}, //TODO test
+          useWholePrice: faker.randomGenerator.integer(
+            100,
+          ), //TODO convert to boolean
+          useECommercePrice: faker.randomGenerator.boolean(),
+        ),
+        enterprise: BSFEnterpriseEntity(
+          code: faker.randomGenerator.integer(100),
+          fiscalType: faker.randomGenerator.integer(100),
+          federalSimpleType: faker.randomGenerator.integer(100),
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+          nationalSimple: const {},
+          accountTreasury: const {},
+          cnpjNumber: faker.randomGenerator.numberOfLength(14),
+          suframaCode: faker.guid.guid(),
+          name: faker.company.name(),
+          fantasizesName: faker.company.name(),
+          contactName: faker.person.name(),
+        ),
+        customer: BSFCustomerEntity(
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+          name: faker.person.name(),
+          nameReduced: faker.person.name(),
+          cnpjCpfNumber: faker.randomGenerator.numberOfLength(14),
+          suframaCode: faker.guid.guid(),
+          limitOfPurchase: faker.randomGenerator.decimal(),
+          inscriptionRgNumber: faker.guid.guid(),
+        ),
+        deliveryAddress: BSFDeliveryAddressEntity(
+          code: faker.randomGenerator.integer(100),
+          zip: faker.randomGenerator.numberOfLength(8),
+          sash: faker.lorem.word(),
+          address: faker.lorem.sentence(),
+          number: faker.randomGenerator.integer(100).toString(),
+          complement: faker.lorem.sentence(),
+          district: faker.address.city(),
+          reference: faker.address.neighborhood(),
+          mainAddress: faker.randomGenerator.boolean(),
+          defaultDeliveryAddress: faker.randomGenerator.boolean(),
+          defaultCollectAddress: faker.randomGenerator.boolean(),
+          addressContainsNumber: faker.randomGenerator.boolean(),
+          addressIsInAreaOfDeliveryRestriction: faker.randomGenerator.boolean(),
+          inscriptionNumber: faker.randomGenerator.numberOfLength(14),
+          country: BSFCountryEntity(
+            name: faker.lorem.word(),
+            isExteriorCountry: faker.randomGenerator.boolean(),
+            spedCode: faker.randomGenerator.integer(100).toString(),
+          ),
+          state: BSFStateEntity(
+            acronym: faker.lorem.word(),
+            description: faker.lorem.word(),
+          ),
+          addressType: faker.randomGenerator.integer(100),
+        ),
+        deliveryTax: BSFDeliveryTaxWrapperEntity(
+          deliveryTax: _makeBSFValueTypeEntity(),
+          mailFreightType: const {},
+          isFob: faker.randomGenerator.boolean(),
+          isDiscounted: faker.randomGenerator.boolean(),
+        ),
+        increment: _makeBSFValueTypeEntity(),
+        financialIncrement: _makeBSFValueTypeEntity(),
+        financialDiscount: _makeBSFValueTypeEntity(),
+        totalLiquid: faker.randomGenerator.decimal(),
+        expeditionControlCode: faker.randomGenerator.integer(100),
+        isOnExpedition: faker.randomGenerator.boolean(),
+        freight: BSFFreightEntity(
+          value: faker.randomGenerator.decimal(),
+          freightValueProrated: faker.randomGenerator.decimal(),
+          security: faker.randomGenerator.decimal(),
+          discount: _makeBSFValueTypeEntity(),
+          increment: _makeBSFValueTypeEntity(),
+          type: faker.randomGenerator.integer(100),
+          icmsAliquot: faker.randomGenerator.decimal(),
+          irrf: faker.randomGenerator.decimal(),
+          inss: faker.randomGenerator.decimal(),
+          icmsRetainByDestiny: faker.randomGenerator.boolean(),
+          code: faker.randomGenerator.integer(100),
+          documentNumber: faker.randomGenerator.integer(100),
+          documentNumberComplement: faker.lorem.word(),
+          eletronicAccessKey: const {},
+          dateOfEmission: faker.date.dateTime(),
+          dateOfEntrance: faker.date.dateTime(),
+        ),
+        products: [
+          _makeBSFProductItemEntity(),
+          _makeBSFProductItemEntity(),
+          _makeBSFProductItemEntity(),
+        ],
+        discounts: const [],
+      );
+
+  static BSFFinancialEntity _makeBSFFinancialEntity() => BSFFinancialEntity(
+    paymentFinalizations: [
+      _makeBSFPaymentFinalizationWrapperEntity(),
+      _makeBSFPaymentFinalizationWrapperEntity(),
+      _makeBSFPaymentFinalizationWrapperEntity(),
+    ],
+    paybackValue: faker.randomGenerator.decimal(),
+  );
+
+  static BSFPaymentFinalizationWrapperEntity
+  _makeBSFPaymentFinalizationWrapperEntity() =>
+      BSFPaymentFinalizationWrapperEntity(
+        paymentFinalization: _makeBSFPaymentFinalizationEntity(),
+        value: faker.randomGenerator.decimal(),
+        financialIncrement: faker.randomGenerator.decimal(),
+        financialDiscount: faker.randomGenerator.decimal(),
+        quantityOfPortions: faker.randomGenerator.integer(100),
+        tefSequencialUniqueNumber: faker.guid.guid(),
+        tefAutorizationCreditCode: faker.guid.guid(),
+        devolutionCreditCode: faker.randomGenerator.numberOfLength(4),
+        identificationCode: faker.randomGenerator.numberOfLength(4),
+        paymentCondition: const {},
+        creditCardNumber: faker.randomGenerator.numberOfLength(16),
+        creditCardValidate: faker.date.dateTime(),
+        portions: const [],
+        userAuthorization: _makeBSFUserAuthorizationEntity(),
+      );
+
+  static BSFPaymentFinalizationEntity _makeBSFPaymentFinalizationEntity() =>
+      BSFPaymentFinalizationEntity(paymentForm: _makeBSFPaymentFormEntity());
+
+  static BSFPaymentFormEntity _makeBSFPaymentFormEntity() =>
+      BSFPaymentFormEntity(
+        type: faker.randomGenerator.integer(100),
+        reducedName: faker.lorem.word(),
+        name: faker.lorem.word(),
+      );
+
+  static BSFUserAuthorizationEntity _makeBSFUserAuthorizationEntity() =>
+      BSFUserAuthorizationEntity(identification: faker.lorem.word());
+
+  static BSFValueTypeEntity _makeBSFValueTypeEntity() => BSFValueTypeEntity(
+    type: PercentageOrValue.values.elementAt(
+      faker.randomGenerator.integer(PercentageOrValue.values.length),
+    ),
+    value: faker.randomGenerator.decimal(),
+  );
+
+  static BSFProductItemEntity _makeBSFProductItemEntity() =>
+      BSFProductItemEntity(
+        product: BSFProductDetailsEntity(
+          name: faker.food.dish(),
+          isAlcoholicProduct: faker.randomGenerator.boolean(),
+          isFatherOfGrate: faker.randomGenerator.boolean(),
+          fatherGrateCode: faker.randomGenerator.integer(100),
+          images: [
+            faker.internet.httpUrl(),
+            faker.internet.httpsUrl(),
+            faker.internet.httpUrl(),
+          ],
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+          productPackingTypeString: faker.lorem.word(),
+          productPackingQuantity: faker.randomGenerator.decimal(),
+          productPackingPriceLookUpString: faker.lorem.word(),
+        ),
+        compositionChilds: const [],
+        eanCode: faker.randomGenerator.numberOfLength(13),
+        freight: BSFProductFreightEntity(
+          discount: _makeBSFValueTypeEntity(),
+          increment: _makeBSFValueTypeEntity(),
+          value: faker.randomGenerator.decimal(),
+        ),
+        discounts: [
+          _makeBSFProductDiscountEntity(),
+          _makeBSFProductDiscountEntity(),
+          _makeBSFProductDiscountEntity(),
+        ],
+        expectedDeliveryDate: faker.date.dateTime(),
+        deliveryTax: _makeBSFValueTypeEntity(),
+        increment: _makeBSFValueTypeEntity(),
+        creditOnOrigin: _makeBSFValueTypeEntity(),
+        compensation: _makeBSFValueTypeEntity(),
+        quantity: faker.randomGenerator.decimal(),
+        value: faker.randomGenerator.decimal(),
+      );
+
+  static BSFProductDiscountEntity _makeBSFProductDiscountEntity() =>
+      BSFProductDiscountEntity(
+        order: faker.randomGenerator.integer(100),
+        discountOrigin: faker.randomGenerator.integer(100),
+        user: faker.lorem.word(),
+        justification: faker.lorem.word(),
+        discount: _makeBSFValueTypeEntity(),
+      );
 }

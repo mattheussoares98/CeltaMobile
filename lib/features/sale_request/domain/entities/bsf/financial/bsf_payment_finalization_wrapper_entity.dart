@@ -12,10 +12,10 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
   final String? tefAutorizationCreditCode;
   final String? devolutionCreditCode;
   final String? identificationCode;
-  final Map<String, dynamic>? paymentCondition;
+  final Map<String, dynamic>? paymentCondition; //TODO test
   final String? creditCardNumber;
   final DateTime? creditCardValidate;
-  final List<dynamic>? portions;
+  final List<dynamic>? portions; //TODO test
   final BSFUserAuthorizationEntity? userAuthorization;
 
   const BSFPaymentFinalizationWrapperEntity({
@@ -36,5 +36,20 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [value, paymentFinalization];
+  List<Object?> get props => [
+    paymentFinalization,
+    value,
+    financialIncrement,
+    financialDiscount,
+    quantityOfPortions,
+    tefSequencialUniqueNumber,
+    tefAutorizationCreditCode,
+    devolutionCreditCode,
+    identificationCode,
+    paymentCondition,
+    creditCardNumber,
+    creditCardValidate,
+    portions,
+    userAuthorization,
+  ];
 }

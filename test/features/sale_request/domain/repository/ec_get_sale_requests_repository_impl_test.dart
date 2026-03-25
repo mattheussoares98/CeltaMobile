@@ -24,6 +24,15 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
       mountProducts: any(named: 'mountProducts'),
     ),
   ).thenAnswer((_) async => response);
+
+  void mockGetComplete(BSFSaleRequestModel response) => when(
+    () => this.getComplete(
+      saleRequestCode: any(named: 'saleRequestCode'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+      customerCode: any(named: 'customerCode'),
+      params: any(named: 'params'),
+    ),
+  ).thenAnswer((_) async => response);
 }
 
 void main() {
@@ -39,6 +48,10 @@ void main() {
   late bool mountSeller;
   late bool mountRequestType;
   late bool mountProducts;
+  late int saleRequestCode;
+  late int enterpriseCode;
+  late int customerCode;
+  late BSFSaleRequestModel bSFSaleRequestModel;
 
   late EcPaginationResults<SaleRequestEntity> saleRequests;
 
@@ -74,6 +87,13 @@ void main() {
             EntityFactory.makeSaleRequestEntity(),
           ).toEntity(),
       ],
+    );
+
+    saleRequestCode = faker.randomGenerator.integer(100);
+    enterpriseCode = faker.randomGenerator.integer(100);
+    customerCode = faker.randomGenerator.integer(100);
+    bSFSaleRequestModel = BSFSaleRequestModel.fromEntity(
+      EntityFactory.makeBSFSaleRequestEntity(),
     );
   });
 
@@ -188,6 +208,26 @@ void main() {
     );
   });
   group('Get complete', () {
-    //TODO create tests
+    test('should behave correctly on success', () async {
+      mockDatasource.mockGetComplete(bSFSaleRequestModel);
+
+      final response = await sut.getComplete(
+        saleRequestCode: saleRequestCode,
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        params: params,
+      );
+
+      expect(response, bSFSaleRequestModel.toEntity());
+
+      verify(
+        () => mockDatasource.getComplete(
+          saleRequestCode: saleRequestCode,
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          params: params,
+        ),
+      ).called(1);
+    });
   });
 }

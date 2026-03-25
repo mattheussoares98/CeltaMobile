@@ -18,14 +18,13 @@ class MockEcGetSaleRequestsRepository extends Mock
     implements IEcGetSaleRequestsRepository {}
 
 void main() {
-  //TODO fix tests
   late MockEcGetSaleRequestsRepository mockRepository;
   late UserSessionModel fakeSession;
-  late EcPaginationResults<SaleRequestEntity> fakeRequests;
   late EcRequestParams params;
-  late int saleRequestId;
+  late int saleRequestCode;
   late int customerCode;
   late FakeAppUsageStateController fakeAppUsage;
+  late BSFSaleRequestModel fakeBSFSaleRequestModel;
 
   setUpAll(() {
     registerFallbackValue(DateTime.now());
@@ -34,7 +33,7 @@ void main() {
 
   setUp(() {
     mockRepository = MockEcGetSaleRequestsRepository();
-    saleRequestId = faker.randomGenerator.integer(9999);
+    saleRequestCode = faker.randomGenerator.integer(9999);
     customerCode = faker.randomGenerator.integer(9999);
 
     // Generating a dynamic session via factory
@@ -42,18 +41,8 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
 
-    fakeRequests = EcPaginationResults(
-      totalRecords: faker.randomGenerator.integer(1000),
-      recordsByPage: faker.randomGenerator.integer(100),
-      actualPage: faker.randomGenerator.integer(5),
-      recordsOnThisPage: faker.randomGenerator.integer(5),
-      totalPages: faker.randomGenerator.integer(5),
-      collection: [
-        for (var x = 0; x < 3; x++)
-          EcSaleRequestModel.fromEntity(
-            EntityFactory.makeSaleRequestEntity(),
-          ).toEntity(),
-      ],
+    fakeBSFSaleRequestModel = BSFSaleRequestModel.fromEntity(
+      EntityFactory.makeBSFSaleRequestEntity(),
     );
 
     params = EcRequestParams(
@@ -82,28 +71,22 @@ void main() {
       // ARRANGE
 
       when(
-        () => mockRepository.get(
+        () => mockRepository.getComplete(
+          saleRequestCode: any(named: 'saleRequestCode'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          customerCode: any(named: 'customerCode'),
           params: any(named: 'params'),
-          enterpriseIds: any(named: 'enterpriseIds'),
-          endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
-          startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
-          personalizedCodes: any(named: 'personalizedCodes'),
-          mountCustomer: any(named: 'mountCustomer'),
-          mountProducts: any(named: 'mountProducts'),
-          mountRequestType: any(named: 'mountRequestType'),
-          mountSeller: any(named: 'mountSeller'),
-          id: any(named: 'id'),
         ),
-      ).thenAnswer((_) async => fakeRequests);
+      ).thenAnswer((_) async => fakeBSFSaleRequestModel.toEntity());
 
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
 
-      final states = <AsyncValue<dynamic>>[];
+      final states = <AsyncValue<BSFSaleRequestEntity>>[];
       container.listen(
         saleRequestDetailsStateControllerProvider(
           customerCode: customerCode,
-          saleRequestCode: saleRequestId,
+          saleRequestCode: saleRequestCode,
           enterpriseCode: fakeSession.enterprise!.id!,
         ),
         (_, next) => states.add(next),
@@ -113,7 +96,7 @@ void main() {
       await container.read(
         saleRequestDetailsStateControllerProvider(
           customerCode: customerCode,
-          saleRequestCode: saleRequestId,
+          saleRequestCode: saleRequestCode,
           enterpriseCode: fakeSession.enterprise!.id!,
         ).future,
       );
@@ -121,23 +104,21 @@ void main() {
       final state = container.read(
         saleRequestDetailsStateControllerProvider(
           customerCode: customerCode,
-          saleRequestCode: saleRequestId,
+          saleRequestCode: saleRequestCode,
           enterpriseCode: fakeSession.enterprise!.id!,
         ),
       );
       expect(
         state,
-        AsyncData<EcPaginationResults<SaleRequestEntity>?>(fakeRequests),
+        AsyncData<BSFSaleRequestEntity>(fakeBSFSaleRequestModel.toEntity()),
       );
 
       verify(
-        () => mockRepository.get(
+        () => mockRepository.getComplete(
+          saleRequestCode: saleRequestCode,
+          enterpriseCode: fakeSession.enterprise!.id!,
+          customerCode: customerCode,
           params: params,
-          id: saleRequestId,
-          mountCustomer: true,
-          mountProducts: true,
-          mountRequestType: true,
-          mountSeller: true,
         ),
       ).called(1);
 
@@ -148,13 +129,11 @@ void main() {
       // ARRANGE
       final exception = Exception('Direct throw test');
       when(
-        () => mockRepository.get(
+        () => mockRepository.getComplete(
+          saleRequestCode: any(named: 'saleRequestCode'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          customerCode: any(named: 'customerCode'),
           params: any(named: 'params'),
-          id: any(named: 'id'),
-          mountCustomer: any(named: 'mountCustomer'),
-          mountProducts: any(named: 'mountProducts'),
-          mountRequestType: any(named: 'mountRequestType'),
-          mountSeller: any(named: 'mountSeller'),
         ),
       ).thenThrow(exception);
 
@@ -166,7 +145,7 @@ void main() {
         container.read(
           saleRequestDetailsStateControllerProvider(
             customerCode: customerCode,
-            saleRequestCode: saleRequestId,
+            saleRequestCode: saleRequestCode,
             enterpriseCode: fakeSession.enterprise!.id!,
           ).future,
         ),
