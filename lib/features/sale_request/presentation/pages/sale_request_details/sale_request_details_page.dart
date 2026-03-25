@@ -71,7 +71,12 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(Sizes.p8),
+                          padding: const EdgeInsets.fromLTRB(
+                            Sizes.p8,
+                            Sizes.p8,
+                            Sizes.p8,
+                            0,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
