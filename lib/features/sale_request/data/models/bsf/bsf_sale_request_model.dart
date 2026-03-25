@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../domain/entities/entities.dart';
 import 'bsf.dart';
 
-class BSFSalesRequestModel extends Equatable {
+class BSFSaleRequestModel extends Equatable {
   final DateTime? dateOfEmission;
   final DateTime? dateOfDelivery;
   final DateTime? dateOfExpiration;
@@ -27,7 +27,7 @@ class BSFSalesRequestModel extends Equatable {
   final List<BSFProductItemModel>? products;
   final List<dynamic>? discounts;
 
-  const BSFSalesRequestModel({
+  const BSFSaleRequestModel({
     required this.dateOfEmission,
     required this.dateOfDelivery,
     required this.dateOfExpiration,
@@ -78,8 +78,8 @@ class BSFSalesRequestModel extends Equatable {
     discounts,
   ];
 
-  factory BSFSalesRequestModel.fromJson(Map<String, dynamic> json) {
-    return BSFSalesRequestModel(
+  factory BSFSaleRequestModel.fromJson(Map<String, dynamic> json) {
+    return BSFSaleRequestModel(
       dateOfEmission: json['DateOfEmission'] != null
           ? DateTime.parse(json['DateOfEmission'])
           : null,
@@ -164,8 +164,8 @@ class BSFSalesRequestModel extends Equatable {
     'Discounts': discounts,
   };
 
-  factory BSFSalesRequestModel.fromEntity(BSFSalesRequestEntity entity) {
-    return BSFSalesRequestModel(
+  factory BSFSaleRequestModel.fromEntity(BSFSaleRequestEntity entity) {
+    return BSFSaleRequestModel(
       dateOfEmission: entity.dateOfEmission,
       dateOfDelivery: entity.dateOfDelivery,
       dateOfExpiration: entity.dateOfExpiration,
