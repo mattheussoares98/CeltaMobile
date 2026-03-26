@@ -57,6 +57,7 @@ class _SaleRequestItem extends StatelessWidget {
       child: RequestSummary(
         saleRequestId: saleRequestId,
         enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
         onTap: () {
           context.goNamed(
             Routes.saleRequestDetails.name,

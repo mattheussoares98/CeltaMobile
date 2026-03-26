@@ -7,11 +7,14 @@ import 'package:intl/intl.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../utils/utils.dart';
+import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
 class RequestSummary extends ConsumerWidget {
   final int saleRequestId;
   final int enterpriseCode;
+  final int customerCode;
   final VoidCallback? onTap;
   final bool showCustomer;
   const RequestSummary({
@@ -19,6 +22,7 @@ class RequestSummary extends ConsumerWidget {
     this.onTap,
     required this.saleRequestId,
     required this.enterpriseCode,
+    required this.customerCode,
     this.showCustomer = true,
   });
 
@@ -95,12 +99,57 @@ class RequestSummary extends ConsumerWidget {
                         title: 'Cliente'.hardcoded,
                         subTitle: saleRequest.customer!.Name,
                       ),
-                    if ((saleRequest.DiscountValue ?? 0) > 0)
-                      TitleAndSubTitle(
-                        title: 'Desconto'.hardcoded,
-                        subTitle: saleRequest.DiscountValue,
-                        subTitleIsPrice: true,
-                      ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final requestDetails = ref.watch(
+                          saleRequestDetailsStateControllerProvider(
+                            customerCode: customerCode,
+                            enterpriseCode: enterpriseCode,
+                            saleRequestCode: saleRequest.Id!,
+                          ).select((s) => s.value),
+                        );
+
+                        final deliveryTax =
+                            requestDetails?.deliveryTax?.deliveryTax;
+                        final deliveryTaxIsPercentage =
+                            deliveryTax?.type == PercentageOrValue.percentage;
+                        final increment = requestDetails?.increment;
+                        final incrementIsPercentage =
+                            increment?.type == PercentageOrValue.percentage;
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if ((deliveryTax?.value ?? 0) > 0)
+                              TitleAndSubTitle(
+                                title: 'Delivery'.hardcoded,
+                                subTitle: deliveryTax!.value,
+                                subTitleIsPercentage: deliveryTaxIsPercentage,
+                                subTitleIsPrice: !deliveryTaxIsPercentage,
+                              ),
+                            if ((increment?.value ?? 0) > 0)
+                              TitleAndSubTitle(
+                                title: 'Acréscimo'.hardcoded,
+                                subTitle: increment!.value
+                                    .toString()
+                                    .toBrazilianNumber(2, true),
+                                subTitleStyle: theme.textTheme.titleMedium
+                                    ?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                    ),
+                                subTitleIsPercentage: incrementIsPercentage,
+                                subTitleIsPrice: !incrementIsPercentage,
+                              ),
+                            TitleAndSubTitle(
+                              title: 'Desconto'.hardcoded,
+                              subTitle: requestDetails?.discounts.toString(),
+                              subTitleIsPrice: true,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+
                     TitleAndSubTitle(
                       title: 'Total'.hardcoded,
                       subTitle: saleRequest.TotalLiquid,

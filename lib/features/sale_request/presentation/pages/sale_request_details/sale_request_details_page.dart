@@ -36,6 +36,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                     _HeroRequestSummary(
                       saleRequestId: saleRequestId,
                       enterpriseCode: enterpriseCode,
+                      customerCode: customerCode,
                     ),
                     ReloadButton(
                       saleRequestId: saleRequestId,
@@ -107,10 +108,12 @@ class _HeroRequestSummary extends StatelessWidget {
   const _HeroRequestSummary({
     required this.saleRequestId,
     required this.enterpriseCode,
+    required this.customerCode,
   });
 
   final int saleRequestId;
   final int enterpriseCode;
+  final int customerCode;
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +125,7 @@ class _HeroRequestSummary extends StatelessWidget {
           saleRequestId: saleRequestId,
           enterpriseCode: enterpriseCode,
           showCustomer: false,
+          customerCode: customerCode,
         ),
       ),
     );
