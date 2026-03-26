@@ -24,7 +24,7 @@ class ProductPriceDescription extends StatelessWidget {
         _ColumnItem(
           titleStyle: titleStyle,
           title: 'Preço'.hardcoded,
-          value: cartProduct.value.toString(),
+          value: cartProduct.value.toString().toBrazilianNumber(2),
         ),
         if (cartProduct.totalDiscountValue > 0)
           _ColumnItem(
