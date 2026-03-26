@@ -85,6 +85,14 @@ class BSFSaleRequestEntity extends Equatable {
     });
   }
 
+  double get totalProductsBrut {
+    if (products == null) return 0;
+
+    return products!.fold(0.0, (p, n) {
+      return p + ((n.quantity ?? 0) * (n.value ?? 0));
+    });
+  }
+
   double get totalFreight {
     //! total products (liquid) freight + sale request freight
     final totalProductsDeliveryTax = products!.fold(0.0, (p, n) {
@@ -110,5 +118,23 @@ class BSFSaleRequestEntity extends Equatable {
     );
 
     return totalBrutIncrement + (totalLiquidIncrement ?? 0.0);
+  }
+
+  double get totalDiscount {
+    //! total products liquid (apply the sale request discount) + total products discount
+    final totalProductsDiscount = products!.fold(0.0, (p, n) {
+      return p + n.totalDiscountValue;
+    });
+
+    double totalSaleRequestDiscount = 0;
+    double baseValue = _totalProductsLiquid;
+    for (var discount in discounts ?? <BSFDiscountEntity>[]) {
+      final itemDiscount =
+          (discount.discount?.calculateItemValue(baseValue) ?? 0);
+      baseValue -= itemDiscount;
+      totalSaleRequestDiscount += itemDiscount;
+    }
+
+    return totalProductsDiscount + totalSaleRequestDiscount;
   }
 }

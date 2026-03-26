@@ -26,13 +26,11 @@ class ProductPriceDescription extends StatelessWidget {
           title: 'Preço'.hardcoded,
           value: cartProduct.value.toString().toBrazilianNumber(2),
         ),
-        if (cartProduct.totalDiscountValue > 0)
+        if (cartProduct.unitDiscountValue > 0)
           _ColumnItem(
             titleStyle: titleStyle,
             title: 'Desc'.hardcoded,
-            value: cartProduct.totalDiscountValue
-                .toString()
-                .toBrazilianNumber(),
+            value: cartProduct.unitDiscountValue.toString().toBrazilianNumber(),
           ),
         if (cartProduct.unitIncrement > 0)
           _ColumnItem(

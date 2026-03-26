@@ -100,6 +100,11 @@ class RequestSummary extends ConsumerWidget {
                         subTitle: saleRequest.customer!.Name,
                       ),
 
+                    if (saleRequest.observations != null)
+                      TitleAndSubTitle(
+                        title: 'Observações'.hardcoded,
+                        subTitle: saleRequest.observations,
+                      ),
                     if (showDetails)
                       Consumer(
                         builder: (context, ref, child) {
@@ -114,6 +119,21 @@ class RequestSummary extends ConsumerWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              if (requestDetails?.instructions?.isNotEmpty ??
+                                  false)
+                                TitleAndSubTitle(
+                                  title: 'Instruções'.hardcoded,
+                                  subTitle: requestDetails?.instructions,
+                                ),
+                              if ((requestDetails?.totalProductsBrut ?? 0) >
+                                      0 &&
+                                  requestDetails?.totalProductsBrut !=
+                                      requestDetails?.totalLiquid)
+                                TitleAndSubTitle(
+                                  title: 'Total bruto'.hardcoded,
+                                  subTitle: requestDetails?.totalProductsBrut,
+                                  subTitleIsPrice: true,
+                                ),
                               if ((requestDetails?.totalFreight ?? 0) > 0)
                                 TitleAndSubTitle(
                                   title: 'Total delivery'.hardcoded,
@@ -122,34 +142,25 @@ class RequestSummary extends ConsumerWidget {
                                 ),
                               if ((requestDetails?.totalIncrement ?? 0) > 0)
                                 TitleAndSubTitle(
-                                  title: 'Total acréscimo'.hardcoded,
+                                  title: 'Total acréscimos'.hardcoded,
                                   subTitle: requestDetails?.totalIncrement,
-                                  subTitleStyle: theme.textTheme.titleMedium
-                                      ?.copyWith(
-                                        color: theme.colorScheme.primary,
-                                      ),
                                   subTitleIsPrice: true,
                                 ),
-                              TitleAndSubTitle(
-                                title: 'Desconto'.hardcoded,
-                                subTitle: requestDetails?.discounts.toString(),
-                                subTitleIsPrice: true,
-                              ),
+                              if ((requestDetails?.totalDiscount ?? 0) > 0)
+                                TitleAndSubTitle(
+                                  title: 'Total descontos'.hardcoded,
+                                  subTitle: requestDetails?.totalDiscount,
+                                  subTitleIsPrice: true,
+                                ),
                             ],
                           );
                         },
                       ),
-
                     TitleAndSubTitle(
-                      title: 'Total'.hardcoded,
+                      title: 'Total líquido'.hardcoded,
                       subTitle: saleRequest.TotalLiquid,
                       subTitleIsPrice: true,
                     ),
-                    if (saleRequest.observations != null)
-                      TitleAndSubTitle(
-                        title: 'Observações'.hardcoded,
-                        subTitle: saleRequest.observations,
-                      ),
                   ],
                 ),
                 if (onTap != null) const _CliclableIconIndicator(),

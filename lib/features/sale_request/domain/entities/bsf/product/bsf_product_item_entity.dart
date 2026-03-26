@@ -47,7 +47,7 @@ class BSFProductItemEntity extends Equatable {
     value,
   ];
 
-  double get totalDiscountValue {
+  double get unitDiscountValue {
     final allDiscountsAreZero =
         discounts?.every((e) => (e.discount?.value ?? 0) == 0) ?? true;
 
@@ -64,6 +64,10 @@ class BSFProductItemEntity extends Equatable {
         return p + value! * (e.discount!.value! / 100);
       }
     });
+  }
+
+  double get totalDiscountValue {
+    return unitDiscountValue * (quantity ?? 0);
   }
 
   double get unitIncrement {
@@ -84,5 +88,5 @@ class BSFProductItemEntity extends Equatable {
 
   double get totalLiquid =>
       (quantity ?? 0) *
-      ((value ?? 0) - totalDiscountValue + unitDeliveryTax + unitIncrement);
+      ((value ?? 0) - unitDiscountValue + unitDeliveryTax + unitIncrement);
 }
