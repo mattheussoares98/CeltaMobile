@@ -124,6 +124,7 @@ class _HeroRequestSummary extends StatelessWidget {
         child: RequestSummary(
           saleRequestId: saleRequestId,
           enterpriseCode: enterpriseCode,
+          showDetails: true,
           showCustomer: false,
           customerCode: customerCode,
         ),

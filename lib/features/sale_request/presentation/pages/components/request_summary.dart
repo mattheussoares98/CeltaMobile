@@ -17,6 +17,7 @@ class RequestSummary extends ConsumerWidget {
   final int customerCode;
   final VoidCallback? onTap;
   final bool showCustomer;
+  final bool showDetails;
   const RequestSummary({
     super.key,
     this.onTap,
@@ -24,6 +25,7 @@ class RequestSummary extends ConsumerWidget {
     required this.enterpriseCode,
     required this.customerCode,
     this.showCustomer = true,
+    this.showDetails = false,
   });
 
   @override
@@ -99,56 +101,58 @@ class RequestSummary extends ConsumerWidget {
                         title: 'Cliente'.hardcoded,
                         subTitle: saleRequest.customer!.Name,
                       ),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        final requestDetails = ref.watch(
-                          saleRequestDetailsStateControllerProvider(
-                            customerCode: customerCode,
-                            enterpriseCode: enterpriseCode,
-                            saleRequestCode: saleRequest.Id!,
-                          ).select((s) => s.value),
-                        );
 
-                        final deliveryTax =
-                            requestDetails?.deliveryTax?.deliveryTax;
-                        final deliveryTaxIsPercentage =
-                            deliveryTax?.type == PercentageOrValue.percentage;
-                        final increment = requestDetails?.increment;
-                        final incrementIsPercentage =
-                            increment?.type == PercentageOrValue.percentage;
+                    if (showDetails)
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final requestDetails = ref.watch(
+                            saleRequestDetailsStateControllerProvider(
+                              customerCode: customerCode,
+                              enterpriseCode: enterpriseCode,
+                              saleRequestCode: saleRequest.Id!,
+                            ).select((s) => s.value),
+                          );
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if ((deliveryTax?.value ?? 0) > 0)
+                          final deliveryTax =
+                              requestDetails?.deliveryTax?.deliveryTax;
+                          final deliveryTaxIsPercentage =
+                              deliveryTax?.type == PercentageOrValue.percentage;
+                          final increment = requestDetails?.increment;
+                          final incrementIsPercentage =
+                              increment?.type == PercentageOrValue.percentage;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if ((deliveryTax?.value ?? 0) > 0)
+                                TitleAndSubTitle(
+                                  title: 'Delivery'.hardcoded,
+                                  subTitle: deliveryTax!.value,
+                                  subTitleIsPercentage: deliveryTaxIsPercentage,
+                                  subTitleIsPrice: !deliveryTaxIsPercentage,
+                                ),
+                              if ((increment?.value ?? 0) > 0)
+                                TitleAndSubTitle(
+                                  title: 'Acréscimo'.hardcoded,
+                                  subTitle: increment!.value
+                                      .toString()
+                                      .toBrazilianNumber(2, true),
+                                  subTitleStyle: theme.textTheme.titleMedium
+                                      ?.copyWith(
+                                        color: theme.colorScheme.primary,
+                                      ),
+                                  subTitleIsPercentage: incrementIsPercentage,
+                                  subTitleIsPrice: !incrementIsPercentage,
+                                ),
                               TitleAndSubTitle(
-                                title: 'Delivery'.hardcoded,
-                                subTitle: deliveryTax!.value,
-                                subTitleIsPercentage: deliveryTaxIsPercentage,
-                                subTitleIsPrice: !deliveryTaxIsPercentage,
+                                title: 'Desconto'.hardcoded,
+                                subTitle: requestDetails?.discounts.toString(),
+                                subTitleIsPrice: true,
                               ),
-                            if ((increment?.value ?? 0) > 0)
-                              TitleAndSubTitle(
-                                title: 'Acréscimo'.hardcoded,
-                                subTitle: increment!.value
-                                    .toString()
-                                    .toBrazilianNumber(2, true),
-                                subTitleStyle: theme.textTheme.titleMedium
-                                    ?.copyWith(
-                                      color: theme.colorScheme.primary,
-                                    ),
-                                subTitleIsPercentage: incrementIsPercentage,
-                                subTitleIsPrice: !incrementIsPercentage,
-                              ),
-                            TitleAndSubTitle(
-                              title: 'Desconto'.hardcoded,
-                              subTitle: requestDetails?.discounts.toString(),
-                              subTitleIsPrice: true,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                            ],
+                          );
+                        },
+                      ),
 
                     TitleAndSubTitle(
                       title: 'Total'.hardcoded,
