@@ -13,12 +13,14 @@ class BSFValueTypeEntity extends Equatable {
 }
 
 extension BSFValueTypeEntityExtension on BSFValueTypeEntity {
-  double calculateTotalValue(double? quantity, double? price) {
-    if (quantity == null || quantity == 0) return 0;
+  double calculateItemValue(double? price) {
     if (value == null || value == 0) return 0;
     if (price == null || price == 0) return 0;
     if (type == null) return 0;
 
-    return price * (type == PercentageOrValue.value ? 1 : value!) / quantity;
+    return price -
+        (type == PercentageOrValue.value
+            ? value!
+            : price * (1 - (value! / 100)));
   }
 }

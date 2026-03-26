@@ -56,28 +56,25 @@ class BSFProductItemEntity extends Equatable {
     }
 
     return discounts!.fold(0.0, (p, e) {
-          if ((e.discount?.value ?? 0) == 0) return p;
+      if ((e.discount?.value ?? 0) == 0) return p;
 
-          if (e.discount?.type == PercentageOrValue.value) {
-            return p + e.discount!.value!;
-          } else {
-            return p + e.discount!.value! * value!;
-          }
-        }) /
-        (quantity ?? 0);
+      if (e.discount?.type == PercentageOrValue.value) {
+        return p + e.discount!.value!;
+      } else {
+        return p + value! * (e.discount!.value! / 100);
+      }
+    });
   }
 
   double get unitIncrement {
-    return increment?.calculateTotalValue(quantity, value) ?? 0;
+    return increment?.calculateItemValue(value) ?? 0;
   }
 
   double get unitDeliveryTax {
-    return deliveryTax?.calculateTotalValue(quantity, value) ?? 0;
+    return deliveryTax?.calculateItemValue(value) ?? 0;
   }
 
   double get totalLiquid =>
-      (quantity ?? 0) * (value ?? 0) -
-      totalDiscountValue +
-      unitDeliveryTax +
-      unitIncrement;
+      (quantity ?? 0) *
+      ((value ?? 0) - totalDiscountValue + unitDeliveryTax + unitIncrement);
 }
