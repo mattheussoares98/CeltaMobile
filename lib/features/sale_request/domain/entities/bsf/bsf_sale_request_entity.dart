@@ -86,8 +86,7 @@ class BSFSaleRequestEntity extends Equatable {
   }
 
   double get totalFreight {
-    //!How BS calculate...
-    //! total products freight + sale request freight (on total products LIQUID value)
+    //! total products (liquid) freight + sale request freight
     final totalProductsDeliveryTax = products!.fold(0.0, (p, n) {
       return p + n.totalDeliveryTax;
     });
@@ -98,5 +97,18 @@ class BSFSaleRequestEntity extends Equatable {
     );
 
     return totalProductsDeliveryTax + (totalSaleRequest ?? 0.0);
+  }
+
+  double get totalIncrement {
+    //! total products (brut) increment + total products (liquid) increment
+    final totalBrutIncrement = products!.fold(0.0, (p, n) {
+      return p + n.totalIncrement;
+    });
+
+    final totalLiquidIncrement = increment?.calculateItemValue(
+      _totalProductsLiquid,
+    );
+
+    return totalBrutIncrement + (totalLiquidIncrement ?? 0.0);
   }
 }

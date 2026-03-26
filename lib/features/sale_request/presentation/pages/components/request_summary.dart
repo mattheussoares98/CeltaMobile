@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
-import '../../../../../utils/utils.dart';
-import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
 class RequestSummary extends ConsumerWidget {
@@ -113,36 +111,24 @@ class RequestSummary extends ConsumerWidget {
                             ).select((s) => s.value),
                           );
 
-                          final deliveryTax =
-                              requestDetails?.deliveryTax?.deliveryTax;
-                          final deliveryTaxIsPercentage =
-                              deliveryTax?.type == PercentageOrValue.percentage;
-                          final increment = requestDetails?.increment;
-                          final incrementIsPercentage =
-                              increment?.type == PercentageOrValue.percentage;
-
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              if ((deliveryTax?.value ?? 0) > 0)
+                              if ((requestDetails?.totalFreight ?? 0) > 0)
                                 TitleAndSubTitle(
                                   title: 'Total delivery'.hardcoded,
                                   subTitle: requestDetails?.totalFreight,
-                                  subTitleIsPercentage: deliveryTaxIsPercentage,
-                                  subTitleIsPrice: !deliveryTaxIsPercentage,
+                                  subTitleIsPrice: true,
                                 ),
-                              if ((increment?.value ?? 0) > 0)
+                              if ((requestDetails?.totalIncrement ?? 0) > 0)
                                 TitleAndSubTitle(
-                                  title: 'Acréscimo'.hardcoded,
-                                  subTitle: increment!.value
-                                      .toString()
-                                      .toBrazilianNumber(2, true),
+                                  title: 'Total acréscimo'.hardcoded,
+                                  subTitle: requestDetails?.totalIncrement,
                                   subTitleStyle: theme.textTheme.titleMedium
                                       ?.copyWith(
                                         color: theme.colorScheme.primary,
                                       ),
-                                  subTitleIsPercentage: incrementIsPercentage,
-                                  subTitleIsPrice: !incrementIsPercentage,
+                                  subTitleIsPrice: true,
                                 ),
                               TitleAndSubTitle(
                                 title: 'Desconto'.hardcoded,
