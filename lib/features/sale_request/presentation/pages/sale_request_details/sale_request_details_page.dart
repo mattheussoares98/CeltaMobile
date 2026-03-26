@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -119,31 +118,10 @@ class _HeroRequestSummary extends StatelessWidget {
       tag: 'sale_request_$saleRequestId',
       child: Material(
         type: MaterialType.transparency,
-        child: Consumer(
-          builder: (context, ref, child) {
-            final saleRequest = ref
-                .watch(
-                  saleRequestsStateControllerProvider(enterpriseCode).select(
-                    (s) => s.value?.collection.firstWhereOrNull(
-                      (sr) => sr.Id == saleRequestId,
-                    ),
-                  ),
-                ) /* ??
-                ref.watch(
-                  saleRequestDetailsStateControllerProvider(
-                    saleRequestId,
-                  ).select((s) => s.value?.collection.first),
-                ) */;
-
-            if (saleRequest == null) {
-              return const SizedBox.shrink();
-            }
-
-            return RequestSummary(
-              saleRequest: saleRequest,
-              showCustomer: false,
-            );
-          },
+        child: RequestSummary(
+          saleRequestId: saleRequestId,
+          enterpriseCode: enterpriseCode,
+          showCustomer: false,
         ),
       ),
     );

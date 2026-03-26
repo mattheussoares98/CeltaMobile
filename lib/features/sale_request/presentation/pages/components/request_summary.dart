@@ -1,28 +1,44 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
-import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 
-class RequestSummary extends StatelessWidget {
-  final SaleRequestEntity saleRequest;
+class RequestSummary extends ConsumerWidget {
+  final int saleRequestId;
+  final int enterpriseCode;
   final VoidCallback? onTap;
   final bool showCustomer;
   const RequestSummary({
     super.key,
     this.onTap,
-    required this.saleRequest,
+    required this.saleRequestId,
+    required this.enterpriseCode,
     this.showCustomer = true,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    final saleRequest = ref.watch(
+      saleRequestsStateControllerProvider(enterpriseCode).select(
+        (s) => s.value?.collection.firstWhereOrNull(
+          (sr) => sr.Id == saleRequestId,
+        ),
+      ),
+    );
+
+    if (saleRequest == null) {
+      return const SizedBox.shrink();
+    }
 
     return Card(
       clipBehavior: onTap == null ? null : Clip.antiAlias,

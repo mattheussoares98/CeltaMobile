@@ -1,8 +1,6 @@
-import 'package:celta_inventario/features/sale_request/domain/entities/sale_request_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../routing/routing.dart';
@@ -15,8 +13,6 @@ class RequestsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
-
     return AsyncValueWidget(
       value: ref.watch(saleRequestsStateControllerProvider(enterpriseCode)),
       tryAgain: null,
@@ -31,9 +27,9 @@ class RequestsItems extends ConsumerWidget {
             final saleRequest = saleRequests!.collection[index];
             return _SaleRequestItem(
               key: ValueKey(saleRequest.Id),
-              saleRequest: saleRequest,
-              dateFormat: dateFormat,
+              saleRequestId: saleRequest.Id!,
               enterpriseCode: enterpriseCode,
+              customerCode: saleRequest.customer?.Code ?? 0,
             );
           },
         );
@@ -45,28 +41,29 @@ class RequestsItems extends ConsumerWidget {
 class _SaleRequestItem extends StatelessWidget {
   const _SaleRequestItem({
     super.key,
-    required this.saleRequest,
-    required this.dateFormat,
+    required this.saleRequestId,
+    required this.customerCode,
     required this.enterpriseCode,
   });
 
-  final SaleRequestEntity saleRequest;
-  final DateFormat dateFormat;
+  final int saleRequestId;
+  final int customerCode;
   final int enterpriseCode;
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: 'sale_request_${saleRequest.Id}',
+      tag: 'sale_request_$saleRequestId',
       child: RequestSummary(
-        saleRequest: saleRequest,
+        saleRequestId: saleRequestId,
+        enterpriseCode: enterpriseCode,
         onTap: () {
           context.goNamed(
             Routes.saleRequestDetails.name,
             pathParameters: {
-              'saleRequestId': saleRequest.Id.toString(),
+              'saleRequestId': saleRequestId.toString(),
               'enterpriseCode': enterpriseCode.toString(),
-              'customerCode': saleRequest.customer?.Code?.toString() ?? '',
+              'customerCode': customerCode.toString(),
             },
           );
         },
