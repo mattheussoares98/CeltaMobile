@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../domain/entities/entities.dart';
-import '../bsf.dart';
+import '../../../domain/entities/entities.dart';
+import 'bsf.dart';
 
-class BSFProductDiscountModel extends Equatable {
+class BSFDiscountModel extends Equatable {
   final int? order;
   final int? discountOrigin;
   final String? user;
   final String? justification;
   final BSFValueTypeModel? discount;
 
-  const BSFProductDiscountModel({
+  const BSFDiscountModel({
     required this.order,
     required this.discountOrigin,
     required this.user,
@@ -27,8 +27,8 @@ class BSFProductDiscountModel extends Equatable {
     discount,
   ];
 
-  factory BSFProductDiscountModel.fromJson(Map<String, dynamic> json) =>
-      BSFProductDiscountModel(
+  factory BSFDiscountModel.fromJson(Map<String, dynamic> json) =>
+      BSFDiscountModel(
         order: json['Order'],
         discountOrigin: json['DiscountOrigin'],
         user: json['User'],
@@ -46,8 +46,8 @@ class BSFProductDiscountModel extends Equatable {
     'Discount': discount?.toJson(),
   };
 
-  factory BSFProductDiscountModel.fromEntity(BSFProductDiscountEntity entity) =>
-      BSFProductDiscountModel(
+  factory BSFDiscountModel.fromEntity(BSFDiscountEntity entity) =>
+      BSFDiscountModel(
         order: entity.order,
         discountOrigin: entity.discountOrigin,
         user: entity.user,
@@ -57,7 +57,7 @@ class BSFProductDiscountModel extends Equatable {
             : BSFValueTypeModel.fromEntity(entity.discount!),
       );
 
-  BSFProductDiscountEntity toEntity() => BSFProductDiscountEntity(
+  BSFDiscountEntity toEntity() => BSFDiscountEntity(
     order: order,
     discountOrigin: discountOrigin,
     user: user,

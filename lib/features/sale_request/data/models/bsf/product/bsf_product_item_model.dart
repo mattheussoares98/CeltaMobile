@@ -8,7 +8,7 @@ class BSFProductItemModel extends Equatable {
   final dynamic compositionChilds;
   final String? eanCode;
   final BSFProductFreightModel? freight;
-  final List<BSFProductDiscountModel>? discounts;
+  final List<BSFDiscountModel>? discounts;
   final DateTime? expectedDeliveryDate;
   final BSFValueTypeModel? deliveryTax;
   final BSFValueTypeModel? increment;
@@ -60,7 +60,7 @@ class BSFProductItemModel extends Equatable {
             : null,
         discounts: json['Discounts'] != null
             ? (json['Discounts'] as List)
-                  .map((i) => BSFProductDiscountModel.fromJson(i))
+                  .map((i) => BSFDiscountModel.fromJson(i))
                   .toList()
             : null,
         expectedDeliveryDate: json['ExpectedDeliveryDate'] != null
@@ -110,7 +110,7 @@ class BSFProductItemModel extends Equatable {
         discounts: entity.discounts == null
             ? null
             : (entity.discounts!)
-                  .map((e) => BSFProductDiscountModel.fromEntity(e))
+                  .map((e) => BSFDiscountModel.fromEntity(e))
                   .toList(),
         expectedDeliveryDate: entity.expectedDeliveryDate,
         deliveryTax: entity.deliveryTax == null

@@ -25,7 +25,7 @@ class BSFSaleRequestModel extends Equatable {
   final bool? isOnExpedition;
   final BSFFreightModel? freight;
   final List<BSFProductItemModel>? products;
-  final List<dynamic>? discounts;
+  final List<BSFDiscountModel>? discounts;
 
   const BSFSaleRequestModel({
     required this.dateOfEmission,
@@ -135,7 +135,11 @@ class BSFSaleRequestModel extends Equatable {
                 .map((i) => BSFProductItemModel.fromJson(i))
                 .toList()
           : null,
-      discounts: json['Discounts'],
+      discounts: json['Discounts'] == null
+          ? null
+          : (json['Discounts'] as List)
+                .map((e) => BSFDiscountModel.fromJson(e))
+                .toList(),
     );
   }
 
@@ -161,7 +165,7 @@ class BSFSaleRequestModel extends Equatable {
     'IsOnExpedition': isOnExpedition,
     'Freight': freight?.toJson(),
     'Products': products?.map((e) => e.toJson()).toList(),
-    'Discounts': discounts,
+    'Discounts': discounts?.map((e) => e.toJson()).toList(),
   };
 
   factory BSFSaleRequestModel.fromEntity(BSFSaleRequestEntity entity) {
@@ -209,7 +213,9 @@ class BSFSaleRequestModel extends Equatable {
       products: entity.products
           ?.map((e) => BSFProductItemModel.fromEntity(e))
           .toList(),
-      discounts: entity.discounts,
+      discounts: entity.discounts
+          ?.map((e) => BSFDiscountModel.fromEntity(e))
+          .toList(),
     );
   }
 
@@ -235,6 +241,6 @@ class BSFSaleRequestModel extends Equatable {
     isOnExpedition: isOnExpedition,
     freight: freight?.toEntity(),
     products: products?.map((e) => e.toEntity()).toList(),
-    discounts: discounts,
+    discounts: discounts?.map((e) => e.toEntity()).toList(),
   );
 }

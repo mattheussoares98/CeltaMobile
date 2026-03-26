@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 
-import '../bsf.dart';
+import 'bsf.dart';
 
-class BSFProductDiscountEntity extends Equatable {
+class BSFDiscountEntity extends Equatable {
   final int? order;
   final int? discountOrigin;
   final String? user;
   final String? justification;
   final BSFValueTypeEntity? discount;
 
-  const BSFProductDiscountEntity({
+  const BSFDiscountEntity({
     required this.order,
     required this.discountOrigin,
     required this.user,

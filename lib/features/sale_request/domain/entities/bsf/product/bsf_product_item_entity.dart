@@ -7,7 +7,7 @@ class BSFProductItemEntity extends Equatable {
   final dynamic compositionChilds;
   final String? eanCode;
   final BSFProductFreightEntity? freight;
-  final List<BSFProductDiscountEntity>? discounts;
+  final List<BSFDiscountEntity>? discounts;
   final DateTime? expectedDeliveryDate;
   final BSFValueTypeEntity? deliveryTax;
   final BSFValueTypeEntity? increment;

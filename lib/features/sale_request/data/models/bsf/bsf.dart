@@ -1,3 +1,4 @@
+export './bsf_discount_model.dart';
 export 'bsf_country_model.dart';
 export 'bsf_customer_model.dart';
 export 'bsf_delivery_address_model.dart';

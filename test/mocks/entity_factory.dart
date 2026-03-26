@@ -1253,12 +1253,11 @@ class EntityFactory {
         value: faker.randomGenerator.decimal(),
       );
 
-  static BSFProductDiscountEntity _makeBSFProductDiscountEntity() =>
-      BSFProductDiscountEntity(
-        order: faker.randomGenerator.integer(100),
-        discountOrigin: faker.randomGenerator.integer(100),
-        user: faker.lorem.word(),
-        justification: faker.lorem.word(),
-        discount: _makeBSFValueTypeEntity(),
-      );
+  static BSFDiscountEntity _makeBSFProductDiscountEntity() => BSFDiscountEntity(
+    order: faker.randomGenerator.integer(100),
+    discountOrigin: faker.randomGenerator.integer(100),
+    user: faker.lorem.word(),
+    justification: faker.lorem.word(),
+    discount: _makeBSFValueTypeEntity(),
+  );
 }

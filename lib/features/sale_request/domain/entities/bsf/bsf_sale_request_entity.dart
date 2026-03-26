@@ -24,7 +24,7 @@ class BSFSaleRequestEntity extends Equatable {
   final bool? isOnExpedition;
   final BSFFreightEntity? freight;
   final List<BSFProductItemEntity>? products;
-  final List<dynamic>? discounts;
+  final List<BSFDiscountEntity>? discounts;
 
   const BSFSaleRequestEntity({
     required this.dateOfEmission,
