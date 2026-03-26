@@ -126,8 +126,8 @@ class RequestSummary extends ConsumerWidget {
                             children: [
                               if ((deliveryTax?.value ?? 0) > 0)
                                 TitleAndSubTitle(
-                                  title: 'Delivery'.hardcoded,
-                                  subTitle: deliveryTax!.value,
+                                  title: 'Total delivery'.hardcoded,
+                                  subTitle: requestDetails?.totalFreight,
                                   subTitleIsPercentage: deliveryTaxIsPercentage,
                                   subTitleIsPrice: !deliveryTaxIsPercentage,
                                 ),

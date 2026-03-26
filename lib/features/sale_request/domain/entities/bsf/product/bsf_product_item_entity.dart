@@ -70,8 +70,16 @@ class BSFProductItemEntity extends Equatable {
     return increment?.calculateItemValue(value) ?? 0;
   }
 
+  double get totalIncrement {
+    return unitIncrement * (quantity ?? 0);
+  }
+
   double get unitDeliveryTax {
     return deliveryTax?.calculateItemValue(value) ?? 0;
+  }
+
+  double get totalDeliveryTax {
+    return unitDeliveryTax * (quantity ?? 0);
   }
 
   double get totalLiquid =>

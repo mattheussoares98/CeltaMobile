@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'bsf.dart';
+import '../entities.dart';
 
 class BSFSaleRequestEntity extends Equatable {
   final DateTime? dateOfEmission;
@@ -53,9 +53,50 @@ class BSFSaleRequestEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+    dateOfEmission,
+    dateOfDelivery,
+    dateOfExpiration,
+    dateOfExclusion,
     personalizedCode,
-    totalLiquid,
-    products,
+    instructions,
+    observations,
     financials,
+    requestType,
+    enterprise,
+    customer,
+    deliveryAddress,
+    deliveryTax,
+    increment,
+    financialIncrement,
+    financialDiscount,
+    totalLiquid,
+    expeditionControlCode,
+    isOnExpedition,
+    freight,
+    products,
+    discounts,
   ];
+
+  double get _totalProductsLiquid {
+    if (products == null) return 0;
+
+    return products!.fold(0.0, (p, n) {
+      return p + n.totalLiquid;
+    });
+  }
+
+  double get totalFreight {
+    //!How BS calculate...
+    //! total products freight + sale request freight (on total products LIQUID value)
+    final totalProductsDeliveryTax = products!.fold(0.0, (p, n) {
+      return p + n.totalDeliveryTax;
+    });
+
+    final totalSaleRequest = deliveryTax?.deliveryTax?.calculateItemValue(
+      _totalProductsLiquid,
+      isSum: true,
+    );
+
+    return totalProductsDeliveryTax + (totalSaleRequest ?? 0.0);
+  }
 }
