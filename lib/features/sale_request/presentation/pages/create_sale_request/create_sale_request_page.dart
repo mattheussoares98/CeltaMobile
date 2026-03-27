@@ -10,6 +10,7 @@ import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/request_type/request_type.dart';
 import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
+import '../components/components.dart';
 import 'components/components.dart';
 import 'create_sale_request.dart';
 
