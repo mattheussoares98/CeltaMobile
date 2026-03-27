@@ -55,13 +55,20 @@ class BSFProductItemEntity extends Equatable {
       return 0;
     }
 
+    var baseValue = value!;
+
     return discounts!.fold(0.0, (p, e) {
       if ((e.discount?.value ?? 0) == 0) return p;
 
       if (e.discount?.type == PercentageOrValue.value) {
-        return p + e.discount!.value!;
+        final discount = e.discount!.value!;
+        baseValue -= discount;
+
+        return p + discount;
       } else {
-        return p + value! * (e.discount!.value! / 100);
+        final discount = baseValue * (e.discount!.value! / 100);
+        baseValue -= discount;
+        return p + discount;
       }
     });
   }
@@ -71,7 +78,7 @@ class BSFProductItemEntity extends Equatable {
   }
 
   double get unitIncrement {
-    return increment?.calculateItemValue(value) ?? 0;
+    return increment?.calculateItemValue(value, isSum: true) ?? 0;
   }
 
   double get totalIncrement {
@@ -79,7 +86,7 @@ class BSFProductItemEntity extends Equatable {
   }
 
   double get unitDeliveryTax {
-    return deliveryTax?.calculateItemValue(value) ?? 0;
+    return deliveryTax?.calculateItemValue(value, isSum: true) ?? 0;
   }
 
   double get totalDeliveryTax {
