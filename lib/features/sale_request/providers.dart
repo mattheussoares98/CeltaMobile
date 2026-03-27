@@ -72,6 +72,7 @@ printSoapLastSavedSaleRequestDatasource(Ref ref) {
 IPrintSaleRequestRepository printSaleRequestRepository(Ref ref) {
   return PrintSaleRequestRepositoryImpl(
     ref.watch(printSoapLastSavedSaleRequestDatasourceProvider),
+    ref.watch(printBsfSaleRequestDatasourceProvider),
   );
 }
 
@@ -117,4 +118,9 @@ IEcGetSaleRequestsRepository ecGetSaleRequestsRepository(Ref ref) {
 @riverpod
 IBSFGeneratePdfDatasource bSFGeneratePdfDatasource(Ref ref) {
   return BSFGeneratePdfDatasource();
+}
+
+@riverpod
+IPrintBSFSaleRequestDatasource printBsfSaleRequestDatasource(Ref ref) {
+  return PrintBSFSaleRequestDatasource();
 }

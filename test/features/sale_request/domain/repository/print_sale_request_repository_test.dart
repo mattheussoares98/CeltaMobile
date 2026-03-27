@@ -19,27 +19,43 @@ class PrintSoapLastSavedSaleRequestDatasourceSpy extends Mock
   ).thenAnswer((_) async => printed);
 }
 
+class PrintBSFSaleRequestDatasourceSpy extends Mock
+    implements IPrintBSFSaleRequestDatasource {
+  void mockPrint(bool printed) => when(
+    () => this.print(
+      saleRequest: any(named: 'saleRequest'),
+      ip: any(named: 'ip'),
+      userName: any(named: 'userName'),
+    ),
+  ).thenAnswer((_) async => printed);
+}
+
 void main() {
   late IPrintSaleRequestRepository sut;
-  late PrintSoapLastSavedSaleRequestDatasourceSpy mockDatasource;
+  late PrintSoapLastSavedSaleRequestDatasourceSpy mockSoapDatasource;
+  late PrintBSFSaleRequestDatasourceSpy mockBsfDatasource;
 
-  late LastSavedSaleRequestEntity saleRequest;
+  late LastSavedSaleRequestEntity soapSaleRequest;
+  late BSFSaleRequestEntity bsfSaleRequest;
   late String ip;
   late String userName;
   late bool printed;
 
   setUp(() {
     printed = true;
-    saleRequest = LastSavedSaleRequestEntity(
+    soapSaleRequest = LastSavedSaleRequestEntity(
       saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
       saleRequestNumber: faker.randomGenerator.integer(100).toString(),
     );
+    bsfSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
     ip = faker.internet.ipv4Address();
     userName = faker.person.name();
 
-    mockDatasource = PrintSoapLastSavedSaleRequestDatasourceSpy();
-    sut = PrintSaleRequestRepositoryImpl(mockDatasource);
-    mockDatasource.mockPrint(printed);
+    mockSoapDatasource = PrintSoapLastSavedSaleRequestDatasourceSpy();
+    mockBsfDatasource = PrintBSFSaleRequestDatasourceSpy();
+    sut = PrintSaleRequestRepositoryImpl(mockSoapDatasource, mockBsfDatasource);
+    mockSoapDatasource.mockPrint(printed);
+    mockBsfDatasource.mockPrint(printed);
   });
 
   setUpAll(() {
@@ -51,14 +67,32 @@ void main() {
         ),
       ),
     );
+    registerFallbackValue(
+      BSFSaleRequestModel.fromEntity(EntityFactory.makeBSFSaleRequestEntity()),
+    );
   });
 
-  test('should behave correctly on print', () async {
-    await sut.soapPrint(saleRequest: saleRequest, ip: ip, userName: userName);
+  test('should behave correctly on soap print', () async {
+    await sut.soapPrint(
+      saleRequest: soapSaleRequest,
+      ip: ip,
+      userName: userName,
+    );
 
     verify(
-      () => mockDatasource.print(
-        saleRequest: SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
+      () => mockSoapDatasource.print(
+        saleRequest: SoapLastSavedSaleRequestModel.fromEntity(soapSaleRequest),
+        ip: ip,
+        userName: userName,
+      ),
+    ).called(1);
+  });
+  test('should behave correctly on bsf print', () async {
+    await sut.bsfPrint(saleRequest: bsfSaleRequest, ip: ip, userName: userName);
+
+    verify(
+      () => mockBsfDatasource.print(
+        saleRequest: BSFSaleRequestModel.fromEntity(bsfSaleRequest),
         ip: ip,
         userName: userName,
       ),

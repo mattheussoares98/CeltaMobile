@@ -6,4 +6,10 @@ abstract class IPrintSaleRequestRepository {
     required String ip,
     required String userName,
   });
+
+  Future<void> bsfPrint({
+    required BSFSaleRequestEntity saleRequest,
+    required String ip,
+    required String userName,
+  });
 }
