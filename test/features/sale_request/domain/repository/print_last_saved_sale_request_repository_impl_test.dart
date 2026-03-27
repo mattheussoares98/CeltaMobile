@@ -8,8 +8,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class PrintLastSavedSaleRequestDatasourceSpy extends Mock
-    implements IPrintLastSavedSaleRequestDatasource {
+class PrintSoapLastSavedSaleRequestDatasourceSpy extends Mock
+    implements IPrintSoapLastSavedSaleRequestDatasource {
   void mockPrint(bool printed) => when(
     () => this.print(
       saleRequest: any(named: 'saleRequest'),
@@ -21,7 +21,7 @@ class PrintLastSavedSaleRequestDatasourceSpy extends Mock
 
 void main() {
   late IPrintLastSavedSaleRequestRepository sut;
-  late PrintLastSavedSaleRequestDatasourceSpy mockDatasource;
+  late PrintSoapLastSavedSaleRequestDatasourceSpy mockDatasource;
 
   late LastSavedSaleRequestEntity saleRequest;
   late String ip;
@@ -37,7 +37,7 @@ void main() {
     ip = faker.internet.ipv4Address();
     userName = faker.person.name();
 
-    mockDatasource = PrintLastSavedSaleRequestDatasourceSpy();
+    mockDatasource = PrintSoapLastSavedSaleRequestDatasourceSpy();
     sut = PrintLastSavedSaleRequestRepositoryImpl(mockDatasource);
     mockDatasource.mockPrint(printed);
   });

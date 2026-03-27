@@ -5,7 +5,7 @@ import 'repository.dart';
 
 class PrintLastSavedSaleRequestRepositoryImpl
     implements IPrintLastSavedSaleRequestRepository {
-  final IPrintLastSavedSaleRequestDatasource datasource;
+  final IPrintSoapLastSavedSaleRequestDatasource datasource;
   PrintLastSavedSaleRequestRepositoryImpl(this.datasource);
 
   @override

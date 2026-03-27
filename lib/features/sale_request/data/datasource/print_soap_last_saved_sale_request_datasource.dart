@@ -8,8 +8,8 @@ import 'package:intl/intl.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
-class PrintLastSavedSaleRequestDatasource
-    implements IPrintLastSavedSaleRequestDatasource {
+class PrintSoapLastSavedSaleRequestDatasource
+    implements IPrintSoapLastSavedSaleRequestDatasource {
   CapabilityProfile? _cachedProfile;
 
   @override

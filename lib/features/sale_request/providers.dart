@@ -63,10 +63,9 @@ ILocalLastSavedSaleRequestRepository localLastSavedSaleRequestRepository(
 }
 
 @riverpod
-IPrintLastSavedSaleRequestDatasource printLastSavedSaleRequestDatasource(
-  Ref ref,
-) {
-  return PrintLastSavedSaleRequestDatasource();
+IPrintSoapLastSavedSaleRequestDatasource
+printSoapLastSavedSaleRequestDatasource(Ref ref) {
+  return PrintSoapLastSavedSaleRequestDatasource();
 }
 
 @riverpod
@@ -74,7 +73,7 @@ IPrintLastSavedSaleRequestRepository printLastSavedSaleRequestRepository(
   Ref ref,
 ) {
   return PrintLastSavedSaleRequestRepositoryImpl(
-    ref.watch(printLastSavedSaleRequestDatasourceProvider),
+    ref.watch(printSoapLastSavedSaleRequestDatasourceProvider),
   );
 }
 
