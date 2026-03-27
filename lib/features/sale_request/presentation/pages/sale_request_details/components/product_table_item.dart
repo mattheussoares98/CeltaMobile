@@ -43,28 +43,28 @@ class ProductTableItem extends StatelessWidget {
                 labelStyle: labelStyle,
                 subtitleStyle: valueStyle,
               ),
-              if (cartProduct.unitDiscountValue > 0)
+              if (cartProduct.totalDiscountValue > 0)
                 _Cell(
                   label: 'Desc'.hardcoded,
-                  value: cartProduct.unitDiscountValue
+                  value: cartProduct.totalDiscountValue
                       .toString()
                       .toBrazilianNumber(2),
                   labelStyle: labelStyle,
                   subtitleStyle: valueStyle?.copyWith(color: Colors.red),
                 ),
-              if (cartProduct.unitIncrement > 0)
+              if (cartProduct.totalIncrement > 0)
                 _Cell(
                   label: 'Acrésc'.hardcoded,
-                  value: cartProduct.unitIncrement.toString().toBrazilianNumber(
-                    2,
-                  ),
+                  value: cartProduct.totalIncrement
+                      .toString()
+                      .toBrazilianNumber(2),
                   labelStyle: labelStyle,
                   subtitleStyle: valueStyle?.copyWith(color: Colors.orange),
                 ),
-              if (cartProduct.unitDeliveryTax > 0)
+              if (cartProduct.totalDeliveryTax > 0)
                 _Cell(
                   label: 'Delivery'.hardcoded,
-                  value: cartProduct.unitDeliveryTax
+                  value: cartProduct.totalDeliveryTax
                       .toString()
                       .toBrazilianNumber(2),
                   labelStyle: labelStyle,
