@@ -20,7 +20,16 @@ class SaleRequestDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text('Detalhes do pedido'.hardcoded)),
+      appBar: AppBar(
+        title: Text('Detalhes do pedido'.hardcoded),
+        actions: [
+          ShowPdfButton(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestCode: saleRequestId,
+          ),
+        ],
+      ),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
