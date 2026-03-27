@@ -42,47 +42,32 @@ class ProductsItems extends ConsumerWidget {
             final product = cartProduct.product;
 
             return RepaintBoundary(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor.withAlpha(30),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          product?.name ?? '',
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          'PLU: ${product?.productPackingPriceLookUpString} | (${product?.productPackingTypeString} ${product?.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(color: Theme.of(context).hintColor),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        Sizes.p12,
-                        Sizes.p8,
-                        Sizes.p12,
-                        Sizes.p4,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            product?.name ?? '',
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            'PLU: ${product?.productPackingPriceLookUpString} | (${product?.productPackingTypeString} ${product?.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(color: Theme.of(context).hintColor),
-                          ),
-                        ],
-                      ),
-                    ),
 
-                    ProductTableItem(cartProduct: cartProduct),
-                    gapH8,
-                  ],
-                ),
+                  ProductTableItem(cartProduct: cartProduct),
+                  const Divider(height: Sizes.p8),
+                ],
               ),
             );
           },
