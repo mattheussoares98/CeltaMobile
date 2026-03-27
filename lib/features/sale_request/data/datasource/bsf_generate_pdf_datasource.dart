@@ -123,6 +123,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
 
     // Dynamic column configuration list
     final List<pw.TableColumnWidth> activeWidths = [
+      const pw.FlexColumnWidth(6), // Name
       const pw.FlexColumnWidth(2), // Qty
       const pw.FlexColumnWidth(3), // Price
       if (hasDiscount) const pw.FlexColumnWidth(2),
@@ -143,12 +144,16 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
         pw.TableRow(
           decoration: const pw.BoxDecoration(color: PdfColors.grey200),
           children: [
-            _tableHeaderCell('Qtd'),
-            _tableHeaderCell('Preço Unit'),
-            if (hasDiscount) _tableHeaderCell('Desc (-)'),
-            if (hasIncrement) _tableHeaderCell('Acrés (+)'),
-            if (hasFreight) _tableHeaderCell('Frete'),
-            _tableHeaderCell('Total Liq', align: pw.Alignment.centerRight),
+            _tableHeaderCell('Produto'),
+            _tableHeaderCell('Qtd', align: pw.Alignment.center),
+            _tableHeaderCell('Preço', align: pw.Alignment.center),
+            if (hasDiscount)
+              _tableHeaderCell('Desc', align: pw.Alignment.center),
+            if (hasIncrement)
+              _tableHeaderCell('Acrés', align: pw.Alignment.center),
+            if (hasFreight)
+              _tableHeaderCell('Frete', align: pw.Alignment.center),
+            _tableHeaderCell('Total', align: pw.Alignment.centerRight),
           ],
         ),
 
@@ -162,48 +167,43 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                   horizontal: 4,
                   vertical: 2,
                 ),
-                child: pw.RichText(
-                  text: pw.TextSpan(
-                    children: [
-                      pw.TextSpan(
-                        text: '${item.product?.name ?? "N/A"} ',
-                        style: pw.TextStyle(
-                          fontWeight: pw.FontWeight.bold,
-                          fontSize: 9,
-                        ),
+                child: pw.Column(
+                  children: [
+                    pw.Text(
+                      '${item.product?.name ?? "N/A"} ',
+                      style: pw.TextStyle(
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 9,
                       ),
-                      pw.TextSpan(
-                        text:
-                            '| PLU: ${item.product?.productPackingPriceLookUpString} ',
-                        style: const pw.TextStyle(
-                          fontSize: 8,
-                          color: PdfColors.grey700,
-                        ),
+                    ),
+                    pw.RichText(
+                      textAlign: pw.TextAlign.center,
+                      text: pw.TextSpan(
+                        children: [
+                          pw.TextSpan(
+                            text:
+                                'PLU: ${item.product?.productPackingPriceLookUpString} ',
+                            style: const pw.TextStyle(
+                              fontSize: 8,
+                              color: PdfColors.grey700,
+                            ),
+                          ),
+                          pw.TextSpan(
+                            text:
+                                '| (${item.product?.productPackingTypeString} ${item.product?.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
+                            style: const pw.TextStyle(
+                              fontSize: 8,
+                              color: PdfColors.grey700,
+                            ),
+                          ),
+                        ],
                       ),
-                      pw.TextSpan(
-                        text:
-                            '| (${item.product?.productPackingTypeString} ${item.product?.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
-                        style: const pw.TextStyle(
-                          fontSize: 8,
-                          color: PdfColors.grey700,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               // Empty cells for the rest of the row.
               // We fill exactly (N - 1) cells where N is the total active columns.
-              for (int i = 0; i < dynamicColumnsCount - 1; i++)
-                pw.SizedBox.shrink(),
-            ],
-            repeat: false,
-            verticalAlignment: pw.TableCellVerticalAlignment.middle,
-          ),
-
-          // Row 2: Price Details
-          pw.TableRow(
-            children: [
               _tableDataCell(
                 item.quantity.toString().toBrazilianNumber(3, true),
               ),
@@ -233,6 +233,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                     2,
                   ),
                   isPrice: true,
+                  color: PdfColors.blue,
                 ),
               _tableDataCell(
                 item.toEntity().totalLiquid.toString().toBrazilianNumber(2),
@@ -241,6 +242,8 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                 bold: true,
               ),
             ],
+            repeat: false,
+            verticalAlignment: pw.TableCellVerticalAlignment.middle,
           ),
         ],
       ],
@@ -264,7 +267,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
   static pw.Widget _tableDataCell(
     String text, {
     bool isPrice = false,
-    pw.Alignment align = pw.Alignment.centerLeft,
+    pw.Alignment align = pw.Alignment.center,
     PdfColor color = PdfColors.black,
     bool bold = false,
   }) {
