@@ -53,4 +53,41 @@ class PrintSaleRequestController extends _$PrintSaleRequestController {
 
     return printed;
   }
+
+  Future<bool> bsfPrint({
+    required int saleRequestCode,
+    required int customerCode,
+    required int enterpriseCode,
+    required String ip,
+  }) async {
+    bool printed = false;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final validateduser = await ref.read(validatedUserSessionProvider.future);
+
+      final saleRequest = await ref.read(
+        saleRequestDetailsStateControllerProvider(
+          customerCode: customerCode,
+          saleRequestCode: saleRequestCode,
+          enterpriseCode: enterpriseCode,
+        ).future,
+      );
+
+      await ref
+          .read(ipPrintSaleRequestControllerProvider.notifier)
+          .updateIp(ip);
+
+      await ref
+          .read(printSaleRequestRepositoryProvider)
+          .bsfPrint(
+            saleRequest: saleRequest,
+            ip: ip,
+            userName: validateduser!.user.name!,
+          );
+
+      printed = true;
+    });
+
+    return printed;
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
@@ -25,6 +27,17 @@ class FakeLastSavedSaleRequest extends LastSavedSaleRequestStateController {
   }
 }
 
+class FakeSaleRequestDetails extends SaleRequestDetailsStateController {
+  final BSFSaleRequestEntity requestToReturn;
+  FakeSaleRequestDetails(this.requestToReturn);
+  @override
+  FutureOr<BSFSaleRequestEntity> build({
+    required int customerCode,
+    required int enterpriseCode,
+    required int saleRequestCode,
+  }) => requestToReturn;
+}
+
 // "Spy" for the IP controller
 class SpyIpPrintSaleRequest extends IpPrintSaleRequestController {
   String? updatedIp;
@@ -37,59 +50,77 @@ class SpyIpPrintSaleRequest extends IpPrintSaleRequestController {
   }
 }
 
-class MockPrintLastSavedSaleRequestRepository extends Mock
+class MockPrintSaleRequest extends Mock
     implements IPrintSaleRequestRepository {}
 
 void main() {
-  late MockPrintLastSavedSaleRequestRepository mockRepository;
+  late MockPrintSaleRequest mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
-  late LastSavedSaleRequestEntity fakeLastSavedRequest;
-  late String fakeIp;
-
-  late ProviderContainer container;
+  late LastSavedSaleRequestEntity fakeSoapSaleRequest;
+  late BSFSaleRequestEntity fakeBSFSaleRequest;
+  late String ip;
+  late int saleRequestCode;
+  late int customerCode;
+  late int enterpriseCode;
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeLastSavedSaleRequestEntity());
+    registerFallbackValue(EntityFactory.makeBSFSaleRequestEntity());
 
-    mockRepository = MockPrintLastSavedSaleRequestRepository();
+    mockRepository = MockPrintSaleRequest();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
     fakeEnterprise = EntityFactory.makeEnterpriseEntity();
-    fakeLastSavedRequest = EntityFactory.makeLastSavedSaleRequestEntity();
-    fakeIp = faker.internet.ipv4Address();
+    fakeSoapSaleRequest = EntityFactory.makeLastSavedSaleRequestEntity();
+    ip = faker.internet.ipv4Address();
+    saleRequestCode = faker.randomGenerator.integer(100);
+    customerCode = faker.randomGenerator.integer(100);
+    enterpriseCode = faker.randomGenerator.integer(100);
 
-    // Create the single container ONCE with all providers
-    container = ProviderContainer(
-      retry: (retryCount, error) => null,
-      overrides: [
-        printSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(fakeSession),
-        ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => FakeLastSavedSaleRequest(fakeLastSavedRequest)),
-        ipPrintSaleRequestControllerProvider.overrideWith(
-          () => SpyIpPrintSaleRequest(),
-        ),
-      ],
-    );
-  });
-
-  tearDownAll(() {
-    container.dispose();
+    fakeBSFSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
   });
 
   tearDown(() {
     reset(mockRepository);
   });
 
-  group('PrintLastSavedSaleRequestController', () {
+  ProviderContainer makeProviderContainer({
+    required UserSessionModel? session,
+    SpyIpPrintSaleRequest? spyIpPrint,
+    bool? returnNullLastSavedSaleRequest,
+  }) {
+    return ProviderContainer(
+      retry: (retryCount, error) => null,
+      overrides: [
+        printSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(session),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
+        ),
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(
+          () => FakeLastSavedSaleRequest(
+            returnNullLastSavedSaleRequest == true ? null : fakeSoapSaleRequest,
+          ),
+        ),
+        ipPrintSaleRequestControllerProvider.overrideWith(
+          () => spyIpPrint ?? SpyIpPrintSaleRequest(),
+        ),
+        saleRequestDetailsStateControllerProvider(
+          customerCode: customerCode,
+          enterpriseCode: enterpriseCode,
+          saleRequestCode: saleRequestCode,
+        ).overrideWith(() => FakeSaleRequestDetails(fakeBSFSaleRequest)),
+      ],
+    );
+  }
+
+  group('Soap print sale request', () {
     test(
       'should call repository, return true and update IP controller on success',
       () async {
@@ -97,19 +128,10 @@ void main() {
         final spyIpPrint = SpyIpPrintSaleRequest();
 
         // Update overrides for this specific test
-        container.updateOverrides([
-          printSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
-          validatedUserSessionProvider.overrideWith(
-            () => FakeValidatedUserSession(fakeSession),
-          ),
-          selectedEnterpriseStateControllerProvider.overrideWith(
-            () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-          ),
-          lastSavedSaleRequestStateControllerProvider(
-            fakeEnterprise.Code!,
-          ).overrideWith(() => FakeLastSavedSaleRequest(fakeLastSavedRequest)),
-          ipPrintSaleRequestControllerProvider.overrideWith(() => spyIpPrint),
-        ]);
+        final container = makeProviderContainer(
+          session: fakeSession,
+          spyIpPrint: spyIpPrint,
+        );
 
         when(
           () => mockRepository.soapPrint(
@@ -130,7 +152,7 @@ void main() {
         // ACT
         final printed = await container
             .read(printSaleRequestControllerProvider.notifier)
-            .soapPrint(fakeIp);
+            .soapPrint(ip);
 
         // ASSERT
         expect(printed, isTrue);
@@ -139,14 +161,14 @@ void main() {
         // 1. Verify repository was called
         verify(
           () => mockRepository.soapPrint(
-            saleRequest: fakeLastSavedRequest,
-            ip: fakeIp,
+            saleRequest: fakeSoapSaleRequest,
+            ip: ip,
             userName: fakeSession.user.name!,
           ),
         ).called(1);
 
         // 2. Verify IP controller was updated
-        expect(spyIpPrint.updatedIp, fakeIp);
+        expect(spyIpPrint.updatedIp, ip);
       },
     );
 
@@ -156,19 +178,11 @@ void main() {
         // ARRANGE
         final spyIpPrint = SpyIpPrintSaleRequest();
 
-        container.updateOverrides([
-          printSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
-          validatedUserSessionProvider.overrideWith(
-            () => FakeValidatedUserSession(fakeSession),
-          ),
-          selectedEnterpriseStateControllerProvider.overrideWith(
-            () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-          ),
-          lastSavedSaleRequestStateControllerProvider(
-            fakeEnterprise.Code!,
-          ).overrideWith(() => FakeLastSavedSaleRequest(null)), // No request
-          ipPrintSaleRequestControllerProvider.overrideWith(() => spyIpPrint),
-        ]);
+        final container = makeProviderContainer(
+          session: fakeSession,
+          returnNullLastSavedSaleRequest: true,
+          spyIpPrint: spyIpPrint,
+        );
 
         final states = <AsyncValue<void>>[];
         container.listen(
@@ -179,7 +193,7 @@ void main() {
         // ACT
         final printed = await container
             .read(printSaleRequestControllerProvider.notifier)
-            .soapPrint(fakeIp);
+            .soapPrint(ip);
 
         // ASSERT
         expect(printed, isFalse);
@@ -203,22 +217,7 @@ void main() {
     );
 
     test('should emit [loading, error] if session is invalid', () async {
-      // ARRANGE
-      container.updateOverrides([
-        printSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(null),
-        ), // Invalid session
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => FakeLastSavedSaleRequest(fakeLastSavedRequest)),
-        ipPrintSaleRequestControllerProvider.overrideWith(
-          () => SpyIpPrintSaleRequest(),
-        ),
-      ]);
+      final container = makeProviderContainer(session: null);
 
       final states = <AsyncValue<void>>[];
       container.listen(
@@ -229,7 +228,112 @@ void main() {
       // ACT
       final printed = await container
           .read(printSaleRequestControllerProvider.notifier)
-          .soapPrint(fakeIp);
+          .soapPrint(ip);
+
+      // ASSERT
+      expect(printed, isFalse);
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+    });
+    test('should emit [loading, error] if print fails', () async {
+      when(
+        () => mockRepository.soapPrint(
+          saleRequest: any(named: 'saleRequest'),
+          ip: any(named: 'ip'),
+          userName: any(named: 'userName'),
+        ),
+      ).thenThrow(Exception());
+
+      final container = makeProviderContainer(session: fakeSession);
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        printSaleRequestControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      final printed = await container
+          .read(printSaleRequestControllerProvider.notifier)
+          .soapPrint(ip);
+
+      // ASSERT
+      expect(printed, isFalse);
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+    });
+  });
+  group('BSF print sale request', () {
+    test('should behave correctly on success', () async {
+      // ARRANGE
+      final spyIpPrint = SpyIpPrintSaleRequest();
+
+      final container = makeProviderContainer(
+        spyIpPrint: spyIpPrint,
+        session: fakeSession,
+      );
+
+      when(
+        () => mockRepository.bsfPrint(
+          saleRequest: any(named: 'saleRequest'),
+          ip: any(named: 'ip'),
+          userName: any(named: 'userName'),
+        ),
+      ).thenAnswer((_) async {
+        await Future.delayed(Duration.zero);
+      });
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        printSaleRequestControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      final printed = await container
+          .read(printSaleRequestControllerProvider.notifier)
+          .bsfPrint(
+            saleRequestCode: saleRequestCode,
+            customerCode: customerCode,
+            enterpriseCode: enterpriseCode,
+            ip: ip,
+          );
+
+      // ASSERT
+      expect(printed, isTrue);
+      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+      // 1. Verify repository was called
+      verify(
+        () => mockRepository.bsfPrint(
+          saleRequest: fakeBSFSaleRequest,
+          ip: ip,
+          userName: fakeSession.user.name!,
+        ),
+      ).called(1);
+
+      // 2. Verify IP controller was updated
+      expect(spyIpPrint.updatedIp, ip);
+    });
+
+    test('should emit [loading, error] if session is invalid', () async {
+      // ARRANGE
+
+      final container = makeProviderContainer(session: fakeSession);
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        printSaleRequestControllerProvider,
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      final printed = await container
+          .read(printSaleRequestControllerProvider.notifier)
+          .bsfPrint(
+            saleRequestCode: saleRequestCode,
+            customerCode: customerCode,
+            enterpriseCode: enterpriseCode,
+            ip: ip,
+          );
 
       // ASSERT
       expect(printed, isFalse);
@@ -245,21 +349,7 @@ void main() {
       ).thenThrow(Exception());
 
       // ARRANGE
-      container.updateOverrides([
-        printSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(fakeSession),
-        ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => FakeLastSavedSaleRequest(fakeLastSavedRequest)),
-        ipPrintSaleRequestControllerProvider.overrideWith(
-          () => SpyIpPrintSaleRequest(),
-        ),
-      ]);
+      final container = makeProviderContainer(session: fakeSession);
 
       final states = <AsyncValue<void>>[];
       container.listen(
@@ -270,7 +360,12 @@ void main() {
       // ACT
       final printed = await container
           .read(printSaleRequestControllerProvider.notifier)
-          .soapPrint(fakeIp);
+          .bsfPrint(
+            saleRequestCode: saleRequestCode,
+            customerCode: customerCode,
+            enterpriseCode: enterpriseCode,
+            ip: ip,
+          );
 
       // ASSERT
       expect(printed, isFalse);
