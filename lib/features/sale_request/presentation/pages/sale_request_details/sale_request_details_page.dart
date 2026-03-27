@@ -71,6 +71,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
           ),
+          gapSliverH48,
         ],
       ),
     );
