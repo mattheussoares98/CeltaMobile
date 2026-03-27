@@ -104,22 +104,26 @@ class _Cell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: Column(
-        children: [
-          Text(label, style: labelStyle),
-          RichText(
-            text: TextSpan(
-              children: [
-                if (isPrice)
-                  TextSpan(
-                    text: 'R\$ '.hardcoded,
-                    style: subtitleStyle?.copyWith(fontSize: 9),
-                  ),
-                TextSpan(text: value, style: subtitleStyle),
-              ],
-            ),
-          ),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              Text(label, style: labelStyle),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    if (isPrice && constraints.maxWidth > 50)
+                      TextSpan(
+                        text: 'R\$ '.hardcoded,
+                        style: subtitleStyle?.copyWith(fontSize: 9),
+                      ),
+                    TextSpan(text: value, style: subtitleStyle),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
