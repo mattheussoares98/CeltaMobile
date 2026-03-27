@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
@@ -12,7 +13,14 @@ import '../../controllers/controllers.dart';
 
 class PrintButton extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  const PrintButton({super.key, required this.enterpriseCode});
+  final int? saleRequestId;
+  final int? customerCode;
+  const PrintButton({
+    super.key,
+    required this.enterpriseCode,
+    this.saleRequestId,
+    this.customerCode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -47,9 +55,22 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
       return;
     }
 
-    final printed = await ref
-        .read(printSaleRequestControllerProvider.notifier)
-        .soapPrint(ipController.text);
+    late bool printed;
+
+    if (widget.customerCode != null && widget.saleRequestId != null) {
+      printed = await ref
+          .read(printSaleRequestControllerProvider.notifier)
+          .bsfPrint(
+            saleRequestCode: widget.saleRequestId!,
+            customerCode: widget.customerCode!,
+            enterpriseCode: widget.enterpriseCode,
+            ip: ipController.text,
+          );
+    } else {
+      printed = await ref
+          .read(printSaleRequestControllerProvider.notifier)
+          .soapPrint(ipController.text);
+    }
 
     if (printed) {
       context.pop();
@@ -62,32 +83,26 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
+    final ProviderBase<AsyncValue<dynamic>> provider =
+        widget.customerCode != null && widget.saleRequestId != null
+        ? saleRequestDetailsStateControllerProvider(
+            enterpriseCode: widget.enterpriseCode,
+            customerCode: widget.customerCode!,
+            saleRequestCode: widget.saleRequestId!,
+          )
+        : lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode);
+
     return AsyncValueWidget(
-      value: ref.watch(
-        lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode),
-      ),
-      tryAgain: () {
-        ref.invalidate(
-          lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode),
-        );
-      },
-      data: (lastSavedSaleRequest) {
+      value: ref.watch(provider),
+      tryAgain: () => ref.invalidate(provider),
+      data: (saleRequest) {
         return IconButton(
           icon: Icon(
             isIOS ? CupertinoIcons.printer : Icons.print,
-            color: lastSavedSaleRequest == null ? theme.disabledColor : null,
+            color: saleRequest == null ? theme.disabledColor : null,
           ),
-          onPressed: lastSavedSaleRequest == null
-              ? () {
-                  showAlertDialog(
-                    context: context,
-                    title: 'Nenhum pedido salvo encontrado'.hardcoded,
-                    content:
-                        'Só é possível imprimir o último pedido salvo, mas não foram encontrados pedidos salvos para esta empresa'
-                            .hardcoded,
-                    defaultActionText: 'Ok'.hardcoded,
-                  );
-                }
+          onPressed: saleRequest == null
+              ? null
               : () {
                   showModalPage(
                     Consumer(

@@ -9,7 +9,7 @@ part 'last_saved_sale_request_state_controller.g.dart';
 class LastSavedSaleRequestStateController
     extends _$LastSavedSaleRequestStateController {
   @override
-  Future<LastSavedSaleRequestEntity?> build(int enterpriseCode) async {
+  FutureOr<LastSavedSaleRequestEntity?> build(int enterpriseCode) async {
     return await ref
         .read(localLastSavedSaleRequestRepositoryProvider)
         .load(enterpriseCode);

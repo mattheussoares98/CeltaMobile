@@ -28,6 +28,12 @@ class SaleRequestDetailsPage extends ConsumerWidget {
             customerCode: customerCode,
             saleRequestCode: saleRequestId,
           ),
+          PrintButton(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+            //TODO test this print
+          ),
         ],
       ),
       body: CustomScrollView(
