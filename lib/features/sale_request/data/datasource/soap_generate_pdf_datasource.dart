@@ -9,7 +9,7 @@ import '../../../../constants/constants.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
-class GeneratePdfDatasource implements IGeneratePdfDatasource {
+class SoapGeneratePdfDatasource implements ISoapGeneratePdfDatasource {
   @override
   Future<Uint8List> generate(SoapLastSavedSaleRequestModel saleRequest) async {
     final pdf = pw.Document();

@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class GeneratePdfDatasourceSpy extends Mock implements IGeneratePdfDatasource {
+class GeneratePdfDatasourceSpy extends Mock implements ISoapGeneratePdfDatasource {
   void mockGenerate(Uint8List response) {
     when(() => this.generate(any())).thenAnswer((_) async => response);
   }

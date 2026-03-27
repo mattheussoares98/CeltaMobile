@@ -93,13 +93,15 @@ ILocalIpPrintSaleRequestRepository localIpPrintSaleRequestRepository(Ref ref) {
 }
 
 @riverpod
-IGeneratePdfDatasource generatePdfDatasource(Ref ref) {
-  return GeneratePdfDatasource();
+ISoapGeneratePdfDatasource soapGeneratePdfDatasource(Ref ref) {
+  return SoapGeneratePdfDatasource();
 }
 
 @riverpod
-IGeneratePdfRepository GeneratePdfRepository(Ref ref) {
-  return GeneratePdfRepositoryImpl(ref.watch(generatePdfDatasourceProvider));
+IGeneratePdfRepository generatePdfRepository(Ref ref) {
+  return GeneratePdfRepositoryImpl(
+    ref.watch(soapGeneratePdfDatasourceProvider),
+  );
 }
 
 @riverpod

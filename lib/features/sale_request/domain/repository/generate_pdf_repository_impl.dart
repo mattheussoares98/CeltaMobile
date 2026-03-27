@@ -6,7 +6,7 @@ import '../entities/entities.dart';
 import 'repository.dart';
 
 class GeneratePdfRepositoryImpl implements IGeneratePdfRepository {
-  final IGeneratePdfDatasource datasource;
+  final ISoapGeneratePdfDatasource datasource;
 
   GeneratePdfRepositoryImpl(this.datasource);
 
