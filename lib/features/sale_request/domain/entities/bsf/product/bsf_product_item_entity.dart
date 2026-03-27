@@ -78,7 +78,7 @@ class BSFProductItemEntity extends Equatable {
   }
 
   double get unitIncrement {
-    return increment?.calculateItemValue(value, isSum: true) ?? 0;
+    return increment?.calculateItemValue(value) ?? 0;
   }
 
   double get totalIncrement {
@@ -86,7 +86,7 @@ class BSFProductItemEntity extends Equatable {
   }
 
   double get unitDeliveryTax {
-    return deliveryTax?.calculateItemValue(value, isSum: true) ?? 0;
+    return deliveryTax?.calculateItemValue(value) ?? 0;
   }
 
   double get totalDeliveryTax {
