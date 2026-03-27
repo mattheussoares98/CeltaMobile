@@ -2,6 +2,7 @@ export './customers_state_controller.dart';
 export './ip_print_sale_request_controller.dart';
 export './last_saved_sale_request_state_controller.dart';
 export './page_index_state_controller.dart';
+export './pdf_from_sale_request_details_state_controller.dart';
 export './pending_sale_request_state_controller.dart';
 export './print_last_saved_sale_request_controller.dart';
 export './process_cart_controller.dart';
