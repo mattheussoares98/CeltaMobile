@@ -48,7 +48,9 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Busca de pedidos'.hardcoded)),
+      appBar: AppBar(
+        title: DefaultAppBarTitle(title: 'Busca de pedidos'.hardcoded),
+      ),
       body: Column(
         children: [
           SaleRequestFilters(
