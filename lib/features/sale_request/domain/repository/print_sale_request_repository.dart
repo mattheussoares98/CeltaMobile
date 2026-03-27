@@ -3,13 +3,12 @@ import '../../data/models/models.dart';
 import '../entities/entities.dart';
 import 'repository.dart';
 
-class PrintLastSavedSaleRequestRepositoryImpl
-    implements IPrintLastSavedSaleRequestRepository {
+class PrintSaleRequestRepositoryImpl implements IPrintSaleRequestRepository {
   final IPrintSoapLastSavedSaleRequestDatasource datasource;
-  PrintLastSavedSaleRequestRepositoryImpl(this.datasource);
+  PrintSaleRequestRepositoryImpl(this.datasource);
 
   @override
-  Future<void> print({
+  Future<void> soapPrint({
     required LastSavedSaleRequestEntity saleRequest,
     required String ip,
     required String userName,

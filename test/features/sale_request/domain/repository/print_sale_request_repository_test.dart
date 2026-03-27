@@ -20,7 +20,7 @@ class PrintSoapLastSavedSaleRequestDatasourceSpy extends Mock
 }
 
 void main() {
-  late IPrintLastSavedSaleRequestRepository sut;
+  late IPrintSaleRequestRepository sut;
   late PrintSoapLastSavedSaleRequestDatasourceSpy mockDatasource;
 
   late LastSavedSaleRequestEntity saleRequest;
@@ -38,7 +38,7 @@ void main() {
     userName = faker.person.name();
 
     mockDatasource = PrintSoapLastSavedSaleRequestDatasourceSpy();
-    sut = PrintLastSavedSaleRequestRepositoryImpl(mockDatasource);
+    sut = PrintSaleRequestRepositoryImpl(mockDatasource);
     mockDatasource.mockPrint(printed);
   });
 
@@ -54,7 +54,7 @@ void main() {
   });
 
   test('should behave correctly on print', () async {
-    await sut.print(saleRequest: saleRequest, ip: ip, userName: userName);
+    await sut.soapPrint(saleRequest: saleRequest, ip: ip, userName: userName);
 
     verify(
       () => mockDatasource.print(
