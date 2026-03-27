@@ -8,6 +8,8 @@ export './local_ip_print_sale_request_datasource.dart';
 export './local_last_saved_sale_request_datasource.dart';
 export './soap_process_cart_datasource.dart';
 export './soap_save_sale_request_datasource.dart';
+export 'bsf_generate_pdf_datasource.dart';
+export 'i_bsf_generate_pdf_datasource.dart';
 export 'i_local_sale_request_datasource.dart';
 export 'i_print_last_saved_sale_request_datasource.dart';
 export 'i_soap_generate_pdf_datasource.dart';

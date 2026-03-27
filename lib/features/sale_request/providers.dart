@@ -115,3 +115,8 @@ IEcGetSaleRequestsRepository ecGetSaleRequestsRepository(Ref ref) {
     ref.watch(ecGetSaleRequestsDatasourceProvider),
   );
 }
+
+@riverpod
+IBSFGeneratePdfDatasource bSFGeneratePdfDatasource(Ref ref) {
+  return BSFGeneratePdfDatasource();
+}
