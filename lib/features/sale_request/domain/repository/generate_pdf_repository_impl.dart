@@ -6,14 +6,24 @@ import '../entities/entities.dart';
 import 'repository.dart';
 
 class GeneratePdfRepositoryImpl implements IGeneratePdfRepository {
-  final ISoapGeneratePdfDatasource datasource;
+  final ISoapGeneratePdfDatasource soapDatasource;
+  final IBSFGeneratePdfDatasource bsfDatasource;
 
-  GeneratePdfRepositoryImpl(this.datasource);
+  GeneratePdfRepositoryImpl(this.soapDatasource, this.bsfDatasource);
 
   @override
-  Future<Uint8List> generate(LastSavedSaleRequestEntity saleRequest) async {
-    return await datasource.generate(
+  Future<Uint8List> soapGeneration(
+    LastSavedSaleRequestEntity saleRequest,
+  ) async {
+    return await soapDatasource.generate(
       SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
+    );
+  }
+
+  @override
+  Future<Uint8List> bsfGeneration(BSFSaleRequestEntity saleRequest) async {
+    return await bsfDatasource.generate(
+      BSFSaleRequestModel.fromEntity(saleRequest),
     );
   }
 }

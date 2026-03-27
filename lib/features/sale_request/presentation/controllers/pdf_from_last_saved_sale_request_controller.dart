@@ -31,6 +31,8 @@ class PdfFromLastSavedSaleRequestController
       );
     }
 
-    return await ref.read(generatePdfRepositoryProvider).generate(lastSaved);
+    return await ref
+        .read(generatePdfRepositoryProvider)
+        .soapGeneration(lastSaved);
   }
 }

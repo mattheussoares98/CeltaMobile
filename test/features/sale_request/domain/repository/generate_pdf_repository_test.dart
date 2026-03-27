@@ -8,7 +8,15 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class GeneratePdfDatasourceSpy extends Mock implements ISoapGeneratePdfDatasource {
+class SoapGeneratePdfDatasourceSpy extends Mock
+    implements ISoapGeneratePdfDatasource {
+  void mockGenerate(Uint8List response) {
+    when(() => this.generate(any())).thenAnswer((_) async => response);
+  }
+}
+
+class BSFGeneratePdfDatasourceSpy extends Mock
+    implements IBSFGeneratePdfDatasource {
   void mockGenerate(Uint8List response) {
     when(() => this.generate(any())).thenAnswer((_) async => response);
   }
@@ -16,18 +24,23 @@ class GeneratePdfDatasourceSpy extends Mock implements ISoapGeneratePdfDatasourc
 
 void main() {
   late IGeneratePdfRepository sut;
-  late GeneratePdfDatasourceSpy mockDatasource;
+  late SoapGeneratePdfDatasourceSpy mockSoapDatasource;
+  late BSFGeneratePdfDatasourceSpy mockBSFDatasource;
 
-  late LastSavedSaleRequestEntity saleRequest;
+  late LastSavedSaleRequestEntity soapSaleRequest;
+  late BSFSaleRequestEntity bsfSaleRequest;
   late Uint8List generatedPdf;
 
   setUp(() {
-    mockDatasource = GeneratePdfDatasourceSpy();
-    sut = GeneratePdfRepositoryImpl(mockDatasource);
+    mockSoapDatasource = SoapGeneratePdfDatasourceSpy();
+    mockBSFDatasource = BSFGeneratePdfDatasourceSpy();
+    sut = GeneratePdfRepositoryImpl(mockSoapDatasource, mockBSFDatasource);
 
     generatedPdf = Uint8List.fromList([1, 2, 3, 4, 5]);
-    saleRequest = EntityFactory.makeLastSavedSaleRequestEntity();
-    mockDatasource.mockGenerate(generatedPdf);
+    soapSaleRequest = EntityFactory.makeLastSavedSaleRequestEntity();
+    bsfSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
+    mockSoapDatasource.mockGenerate(generatedPdf);
+    mockBSFDatasource.mockGenerate(generatedPdf);
   });
 
   setUpAll(() {
@@ -36,16 +49,31 @@ void main() {
         EntityFactory.makeLastSavedSaleRequestEntity(),
       ),
     );
+    registerFallbackValue(
+      BSFSaleRequestModel.fromEntity(EntityFactory.makeBSFSaleRequestEntity()),
+    );
   });
 
-  test('should behave correctly on save', () async {
-    final response = await sut.generate(saleRequest);
+  test('should behave correctly on soap generation', () async {
+    final response = await sut.soapGeneration(soapSaleRequest);
 
     expect(response, generatedPdf);
 
     verify(
-      () => mockDatasource.generate(
-        SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
+      () => mockSoapDatasource.generate(
+        SoapLastSavedSaleRequestModel.fromEntity(soapSaleRequest),
+      ),
+    ).called(1);
+  });
+
+  test('should behave correctly on bsf generation', () async {
+    final response = await sut.bsfGeneration(bsfSaleRequest);
+
+    expect(response, generatedPdf);
+
+    verify(
+      () => mockBSFDatasource.generate(
+        BSFSaleRequestModel.fromEntity(bsfSaleRequest),
       ),
     ).called(1);
   });

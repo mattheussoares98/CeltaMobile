@@ -101,6 +101,7 @@ ISoapGeneratePdfDatasource soapGeneratePdfDatasource(Ref ref) {
 IGeneratePdfRepository generatePdfRepository(Ref ref) {
   return GeneratePdfRepositoryImpl(
     ref.watch(soapGeneratePdfDatasourceProvider),
+    ref.watch(bSFGeneratePdfDatasourceProvider),
   );
 }
 

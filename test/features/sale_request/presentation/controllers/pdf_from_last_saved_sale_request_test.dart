@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
@@ -70,7 +71,7 @@ void main() {
     test('should return Uint8List and call repository on success', () async {
       // ARRANGE
       when(
-        () => mockRepository.generate(any()),
+        () => mockRepository.soapGeneration(any()),
       ).thenAnswer((_) async => fakePdfBytes);
 
       final container = makeProviderContainer(
@@ -86,13 +87,15 @@ void main() {
       // ASSERT
       expect(result, fakePdfBytes);
       // Verify the repository was called with the correct data
-      verify(() => mockRepository.generate(fakeLastSavedRequest)).called(1);
+      verify(
+        () => mockRepository.soapGeneration(fakeLastSavedRequest),
+      ).called(1);
     });
 
     test('should throw AppException if last saved request is null', () async {
       // ARRANGE
       when(
-        () => mockRepository.generate(any()),
+        () => mockRepository.soapGeneration(any()),
       ).thenAnswer((_) async => fakePdfBytes);
 
       final container = makeProviderContainer(
@@ -107,7 +110,7 @@ void main() {
       );
 
       // Verify the PDF repository was never called
-      verifyNever(() => mockRepository.generate(any()));
+      verifyNever(() => mockRepository.soapGeneration(any()));
     });
 
     test('should throw Error if selected enterprise is null', () async {
@@ -128,7 +131,7 @@ void main() {
     test('should throw error if repository.generate fails', () async {
       // ARRANGE
       final exception = Exception();
-      when(() => mockRepository.generate(any())).thenThrow(exception);
+      when(() => mockRepository.soapGeneration(any())).thenThrow(exception);
 
       final container = makeProviderContainer(
         enterprise: fakeEnterprise,
