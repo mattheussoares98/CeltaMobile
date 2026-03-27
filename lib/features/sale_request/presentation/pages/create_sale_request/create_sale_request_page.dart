@@ -37,7 +37,7 @@ class CreateSaleRequestPage extends ConsumerWidget {
       );
     });
 
-    ref.listen(printLastSavedSaleRequestControllerProvider, (p, n) {
+    ref.listen(printSaleRequestControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
 

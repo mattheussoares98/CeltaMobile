@@ -48,8 +48,8 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
     }
 
     final printed = await ref
-        .read(printLastSavedSaleRequestControllerProvider.notifier)
-        .print(ipController.text);
+        .read(printSaleRequestControllerProvider.notifier)
+        .soapPrint(ipController.text);
 
     if (printed) {
       context.pop();
@@ -93,7 +93,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
                     Consumer(
                       builder: (_, ref, _) {
                         final isLoading = ref.watch(
-                          printLastSavedSaleRequestControllerProvider.select(
+                          printSaleRequestControllerProvider.select(
                             (s) => s.isLoading,
                           ),
                         );
