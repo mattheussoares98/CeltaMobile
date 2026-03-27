@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,7 +17,21 @@ class PdfFromSaleRequestDetailsStateController
     required int enterpriseCode,
     required int saleRequestCode,
   }) async {
-    final saleRequest = await ref.read(
+    Timer? timer;
+    final link = ref.keepAlive();
+    ref.onCancel(() {
+      timer = Timer(const Duration(seconds: 20), () {
+        link.close();
+      });
+    });
+    ref.onResume(() {
+      timer?.cancel();
+    });
+    ref.onDispose(() {
+      timer?.cancel();
+    });
+
+    final saleRequest = await ref.watch(
       saleRequestDetailsStateControllerProvider(
         customerCode: customerCode,
         enterpriseCode: enterpriseCode,

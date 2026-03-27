@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,11 +16,25 @@ class PdfFromLastSavedSaleRequestController
     extends _$PdfFromLastSavedSaleRequestController {
   @override
   FutureOr<Uint8List?> build() async {
+    Timer? timer;
+    final link = ref.keepAlive();
+    ref.onCancel(() {
+      timer = Timer(const Duration(seconds: 20), () {
+        link.close();
+      });
+    });
+    ref.onResume(() {
+      timer?.cancel();
+    });
+    ref.onDispose(() {
+      timer?.cancel();
+    });
+
     final selectedEnterprise = ref.read(
       selectedEnterpriseStateControllerProvider,
     );
 
-    final lastSaved = await ref.read(
+    final lastSaved = await ref.watch(
       lastSavedSaleRequestStateControllerProvider(
         selectedEnterprise!.Code!,
       ).future,
