@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
@@ -12,6 +11,7 @@ class ProductsItems extends ConsumerWidget {
   final int saleRequestId;
   final int enterpriseCode;
   final int customerCode;
+
   const ProductsItems({
     super.key,
     required this.saleRequestId,
@@ -33,6 +33,7 @@ class ProductsItems extends ConsumerWidget {
       tryAgain: () => ref.invalidate(provider),
       data: (requestDetails) {
         final products = requestDetails.products;
+
         return ResponsiveListFlow(
           isSliver: true,
           itemCount: products?.length ?? 0,
@@ -40,30 +41,48 @@ class ProductsItems extends ConsumerWidget {
             final cartProduct = products![index];
             final product = cartProduct.product;
 
-            return Card(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TitleAndSubTitle(
-                          title: product!.name!,
-                          subTitle:
-                              '(${product.productPackingTypeString} ${product.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
-                          removeColon: true,
-                        ),
-                        TitleAndSubTitle(
-                          title: 'PLU'.hardcoded,
-                          subTitle: product.productPackingPriceLookUpString,
-                        ),
-                      ],
+            return RepaintBoundary(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor.withAlpha(30),
                     ),
                   ),
-                  ProductPriceDescription(cartProduct: cartProduct),
-                  gapH8,
-                ],
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        Sizes.p12,
+                        Sizes.p8,
+                        Sizes.p12,
+                        Sizes.p4,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            product?.name ?? '',
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            'PLU: ${product?.productPackingPriceLookUpString} | (${product?.productPackingTypeString} ${product?.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(color: Theme.of(context).hintColor),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ProductTableItem(cartProduct: cartProduct),
+                    gapH8,
+                  ],
+                ),
               ),
             );
           },
