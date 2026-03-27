@@ -101,7 +101,6 @@ class BSFSaleRequestEntity extends Equatable {
 
     final totalSaleRequest = deliveryTax?.deliveryTax?.calculateItemValue(
       _totalProductsLiquid,
-      isSum: true,
     );
 
     return totalProductsDeliveryTax + (totalSaleRequest ?? 0.0);
