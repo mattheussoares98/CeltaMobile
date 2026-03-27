@@ -21,17 +21,19 @@ class RequestsItems extends ConsumerWidget {
           return const Center(child: Text('Nenhum pedido encontrado'));
         }
 
-        return ResponsiveListFlow(
-          itemCount: saleRequests?.collection.length ?? 0,
-          itemBuilder: (context, index) {
-            final saleRequest = saleRequests!.collection[index];
-            return _SaleRequestItem(
-              key: ValueKey(saleRequest.Id),
-              saleRequestId: saleRequest.Id!,
-              enterpriseCode: enterpriseCode,
-              customerCode: saleRequest.customer?.Code ?? 0,
-            );
-          },
+        return Expanded(
+          child: ResponsiveListFlow(
+            itemCount: saleRequests?.collection.length ?? 0,
+            itemBuilder: (context, index) {
+              final saleRequest = saleRequests!.collection[index];
+              return _SaleRequestItem(
+                key: ValueKey(saleRequest.Id),
+                saleRequestId: saleRequest.Id!,
+                enterpriseCode: enterpriseCode,
+                customerCode: saleRequest.customer?.Code ?? 0,
+              );
+            },
+          ),
         );
       },
     );

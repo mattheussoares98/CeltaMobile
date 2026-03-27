@@ -40,7 +40,11 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                       customerCode: customerCode,
                       enterpriseCode: enterpriseCode,
                     ),
-                    // Customer(saleRequestId: saleRequestId),
+                    Customer(
+                      saleRequestId: saleRequestId,
+                      customerCode: customerCode,
+                      enterpriseCode: enterpriseCode,
+                    ),
                     const Divider(),
                   ],
                 ),

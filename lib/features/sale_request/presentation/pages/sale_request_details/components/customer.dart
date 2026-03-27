@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,21 +21,33 @@ class Customer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final customer = ref.watch(
+    final requestCustomer = ref.watch(
+      saleRequestsStateControllerProvider(enterpriseCode).select(
+        (s) => s.value?.collection
+            .firstWhereOrNull((e) => e.Id == saleRequestId)
+            ?.customer,
+      ),
+    );
+    final detailsCustomer = ref.watch(
       saleRequestDetailsStateControllerProvider(
         customerCode: customerCode,
         enterpriseCode: enterpriseCode,
         saleRequestCode: saleRequestId,
       ).select((s) => s.value?.customer),
     );
-    if (customer == null) {
+    if (requestCustomer == null || detailsCustomer == null) {
       return const SizedBox.shrink();
     }
 
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    bool isInternalCustomer = customer.name?.toLowerCase() == 'consumidor';
+    final customerName = requestCustomer.Name ?? detailsCustomer.name;
+    bool isInternalCustomer = customerName?.toLowerCase() == 'consumidor';
+    final personalizedCode =
+        requestCustomer.PersonalizedCode ?? detailsCustomer.personalizedCode;
+    final cpfCnpj = requestCustomer.CpfCnpjNumber;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -50,31 +63,31 @@ class Customer extends ConsumerWidget {
                   TitleAndSubTitle(
                     title: null,
                     subTitle:
-                        '${customer.name} '
-                        '${isInternalCustomer ? '' : {customer.personalizedCode}}',
+                        '$customerName '
+                        '${(isInternalCustomer || (personalizedCode?.isEmpty ?? true)) ? '' : "($personalizedCode)"}',
                   ),
-                  // if (customer.PersonType != null && !isInternalCustomer)
-                  //   TitleAndSubTitle(
-                  //     title: 'Tipo'.hardcoded,
-                  //     subTitle: customer.PersonType?.completeName,
-                  //   ),
-                  if (customer.cnpjCpfNumber != null && !isInternalCustomer)
+                  if (requestCustomer.PersonType != null && !isInternalCustomer)
+                    TitleAndSubTitle(
+                      title: 'Tipo'.hardcoded,
+                      subTitle: requestCustomer.PersonType?.completeName,
+                    ),
+                  if (cpfCnpj != null && !isInternalCustomer)
                     TitleAndSubTitle(
                       title: 'CPF/CNPJ'.hardcoded,
-                      subTitle: customer.cnpjCpfNumber,
+                      subTitle: cpfCnpj,
                     ),
-                  // if (customer.Emails != null)
-                  //   TitleAndSubTitle(
-                  //     title: 'E-mails'.hardcoded,
-                  //     subTitle: customer.Emails?.join(', '),
-                  //   ),
-                  // if (customer.Telephones != null)
-                  //   TitleAndSubTitle(
-                  //     title: 'Telefones'.hardcoded,
-                  //     subTitle: customer.Telephones?.map(
-                  //       (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
-                  //     ).join(', '),
-                  //   ),
+                  if (requestCustomer.Emails != null)
+                    TitleAndSubTitle(
+                      title: 'E-mails'.hardcoded,
+                      subTitle: requestCustomer.Emails?.join(', '),
+                    ),
+                  if (requestCustomer.Telephones != null)
+                    TitleAndSubTitle(
+                      title: 'Telefones'.hardcoded,
+                      subTitle: requestCustomer.Telephones?.map(
+                        (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
+                      ).join(', '),
+                    ),
                 ],
               ),
             ),

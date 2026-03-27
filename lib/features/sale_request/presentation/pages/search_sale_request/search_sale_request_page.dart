@@ -56,22 +56,18 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
             filtersFormKey: filtersFormKey,
             startController: _startController,
           ),
-          Consumer(
-            builder: (context, ref, child) {
-              return DefaultPaginationButtons(
-                paginationResults: ref.watch(
-                  saleRequestsStateControllerProvider(
-                    widget.enterpriseCode,
-                  ).select((s) => s.value),
-                ),
-                onChangePage: onChangePage,
-                provider: saleRequestsStateControllerProvider(
-                  widget.enterpriseCode,
-                ),
-              );
-            },
+          DefaultPaginationButtons(
+            paginationResults: ref.watch(
+              saleRequestsStateControllerProvider(
+                widget.enterpriseCode,
+              ).select((s) => s.value),
+            ),
+            onChangePage: onChangePage,
+            provider: saleRequestsStateControllerProvider(
+              widget.enterpriseCode,
+            ),
           ),
-          Expanded(child: RequestsItems(enterpriseCode: widget.enterpriseCode)),
+          RequestsItems(enterpriseCode: widget.enterpriseCode),
         ],
       ),
     );

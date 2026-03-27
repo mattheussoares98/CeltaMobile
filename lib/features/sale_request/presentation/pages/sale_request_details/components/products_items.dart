@@ -28,6 +28,7 @@ class ProductsItems extends ConsumerWidget {
     );
 
     return AsyncValueWidget(
+      isSliver: true,
       value: ref.watch(provider),
       tryAgain: () => ref.invalidate(provider),
       data: (requestDetails) {
