@@ -1073,12 +1073,10 @@ class EntityFactory {
           showStockByClass: faker.randomGenerator.boolean(),
           showStockByExtensibleGroup: faker.randomGenerator.boolean(),
           daysOfValidity: faker.randomGenerator.integer(100),
-          userGroups: const {}, //TODO test
-          paymentFinalizations: const [], //TODO test
-          requestPrintEditionHeaderImage: const {}, //TODO test
-          useWholePrice: faker.randomGenerator.integer(
-            100,
-          ), //TODO convert to boolean
+          userGroups: const {},
+          paymentFinalizations: const [],
+          requestPrintEditionHeaderImage: const {},
+          useWholePrice: faker.randomGenerator.integer(100),
           useECommercePrice: faker.randomGenerator.boolean(),
         ),
         enterprise: BSFEnterpriseEntity(

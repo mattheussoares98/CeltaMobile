@@ -12,10 +12,10 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
   final String? tefAutorizationCreditCode;
   final String? devolutionCreditCode;
   final String? identificationCode;
-  final Map<String, dynamic>? paymentCondition; //TODO test
+  final Map<String, dynamic>? paymentCondition;
   final String? creditCardNumber;
   final DateTime? creditCardValidate;
-  final List<dynamic>? portions; //TODO test
+  final List<dynamic>? portions;
   final BSFUserAuthorizationEntity? userAuthorization;
 
   const BSFPaymentFinalizationWrapperEntity({

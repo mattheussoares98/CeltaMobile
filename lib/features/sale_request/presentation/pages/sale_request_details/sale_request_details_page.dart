@@ -32,7 +32,6 @@ class SaleRequestDetailsPage extends ConsumerWidget {
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestId: saleRequestId,
-            //TODO test this print
           ),
         ],
       ),
