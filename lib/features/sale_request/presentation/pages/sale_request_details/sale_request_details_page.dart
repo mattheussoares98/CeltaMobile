@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../components/components.dart';
@@ -21,7 +22,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalhes do pedido'.hardcoded),
+        title: DefaultAppBarTitle(title: 'Detalhes do pedido'.hardcoded),
         actions: [
           ShowPdfButton(
             enterpriseCode: enterpriseCode,
