@@ -213,25 +213,37 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
               ),
               if (hasDiscount)
                 _tableDataCell(
-                  item
-                      .toEntity()
-                      .unitDiscountValue
-                      .toString()
-                      .toBrazilianNumber(2),
+                  item.toEntity().totalDiscountValue == 0
+                      ? ''
+                      : item
+                            .toEntity()
+                            .totalDiscountValue
+                            .toString()
+                            .toBrazilianNumber(2),
                   isPrice: true,
                   color: PdfColors.red,
                 ),
               if (hasIncrement)
                 _tableDataCell(
-                  item.toEntity().unitIncrement.toString().toBrazilianNumber(2),
+                  item.toEntity().totalIncrement == 0
+                      ? ''
+                      : item
+                            .toEntity()
+                            .totalIncrement
+                            .toString()
+                            .toBrazilianNumber(2),
                   isPrice: true,
                   color: PdfColors.orange,
                 ),
               if (hasFreight)
                 _tableDataCell(
-                  item.toEntity().unitDeliveryTax.toString().toBrazilianNumber(
-                    2,
-                  ),
+                  item.toEntity().totalDeliveryTax == 0
+                      ? ''
+                      : item
+                            .toEntity()
+                            .totalDeliveryTax
+                            .toString()
+                            .toBrazilianNumber(2),
                   isPrice: true,
                   color: PdfColors.blue,
                 ),
@@ -271,6 +283,13 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     PdfColor color = PdfColors.black,
     bool bold = false,
   }) {
+    if (text.isEmpty) {
+      return pw.Container(
+        alignment: align,
+        padding: const pw.EdgeInsets.all(4),
+        child: pw.Text(''),
+      );
+    }
     return pw.Container(
       alignment: align,
       padding: const pw.EdgeInsets.all(4),
