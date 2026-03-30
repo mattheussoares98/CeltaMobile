@@ -41,6 +41,7 @@ class Financial extends ConsumerWidget {
         padding: const EdgeInsets.all(Sizes.p8),
         child: ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: financials!.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
@@ -61,6 +62,7 @@ class Financial extends ConsumerWidget {
 
             return ListView.builder(
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: payments!.length,
               itemBuilder: (context, index) {
                 final payment = payments[index];
