@@ -45,11 +45,18 @@ class Financial extends ConsumerWidget {
           itemCount: financials!.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return Align(
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  isIOS ? CupertinoIcons.creditcard : Icons.credit_card,
-                ),
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
+                  gapW8,
+                  Text(
+                    'Financeiro'.hardcoded,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ],
               );
             }
 
@@ -86,7 +93,7 @@ class Financial extends ConsumerWidget {
                       RichText(
                         text: TextSpan(
                           text: name,
-                          style: theme.textTheme.titleMedium,
+                          style: theme.textTheme.titleSmall,
                           children: [
                             if (payment.value != null) ...[
                               TextSpan(
@@ -100,8 +107,7 @@ class Financial extends ConsumerWidget {
                               TextSpan(
                                 text:
                                     ' ${payment.value.toString().toBrazilianNumber()})',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                style: theme.textTheme.titleSmall?.copyWith(
                                   color: theme.primaryColor,
                                 ),
                               ),
@@ -109,9 +115,7 @@ class Financial extends ConsumerWidget {
                             if (portions > 1)
                               TextSpan(
                                 text: ' em ${portions}x',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: theme.textTheme.titleSmall,
                               ),
                           ],
                         ),
