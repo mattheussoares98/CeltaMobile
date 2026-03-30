@@ -84,7 +84,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    ref.listen(ipPrintSaleRequestControllerProvider, (p, n) {
+    ref.listen(printSaleRequestControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
 
