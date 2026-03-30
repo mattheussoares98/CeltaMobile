@@ -63,7 +63,7 @@ class ProductTableItem extends StatelessWidget {
                 ),
               if (cartProduct.totalDeliveryTax > 0)
                 _Cell(
-                  label: 'Delivery'.hardcoded,
+                  label: 'Frete'.hardcoded,
                   value: cartProduct.totalDeliveryTax
                       .toString()
                       .toBrazilianNumber(2),
