@@ -1196,7 +1196,10 @@ class EntityFactory {
       );
 
   static BSFPaymentFinalizationEntity _makeBSFPaymentFinalizationEntity() =>
-      BSFPaymentFinalizationEntity(paymentForm: _makeBSFPaymentFormEntity());
+      BSFPaymentFinalizationEntity(
+        paymentForm: _makeBSFPaymentFormEntity(),
+        Description: faker.lorem.word(),
+      );
 
   static BSFPaymentFormEntity _makeBSFPaymentFormEntity() =>
       BSFPaymentFormEntity(

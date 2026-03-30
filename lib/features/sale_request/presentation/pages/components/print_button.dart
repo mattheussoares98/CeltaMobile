@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/validators/validators.dart';
+import '../../../../../utils/utils.dart';
 import '../../controllers/controllers.dart';
 
 class PrintButton extends ConsumerStatefulWidget {
@@ -82,6 +83,10 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
+
+    ref.listen(ipPrintSaleRequestControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
 
     final ProviderBase<AsyncValue<dynamic>> provider =
         widget.customerCode != null && widget.saleRequestId != null

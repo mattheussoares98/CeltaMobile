@@ -62,13 +62,10 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     final lastFourNumbers = saleRequestNumber?.substring(8);
 
     bytes += generator.text(
-      'PEDIDO DE VENDA $lastFourNumbers',
-      styles: const PosStyles(
-        align: PosAlign.center,
-        bold: true,
-        height: PosTextSize.size2,
-      ),
+      "PEDIDO DE VENDA $lastFourNumbers",
+      styles: const PosStyles(align: PosAlign.center),
     );
+
     bytes += generator.text(
       "Impresso em ${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())}",
       styles: const PosStyles(align: PosAlign.center),
@@ -87,24 +84,24 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     );
     bytes += generator.hr();
 
-    double totalDiscount = 0;
-    double totalLiquid = 0;
-    double totalGross = 0;
+    // double totalDiscount = 0;
+    // double totalLiquid = 0;
+    // double totalGross = 0;
 
     if (saleRequest.products?.isNotEmpty ?? false) {
       for (final cartProduct
           in saleRequest.products ?? <BSFProductItemModel>[]) {
-        final itemLiquidValue = cartProduct.toEntity().totalLiquid;
+        // final itemLiquidValue = cartProduct.toEntity().totalLiquid;
         final itemGrossValue =
             (cartProduct.value ?? 0) * (cartProduct.quantity ?? 0);
         final ean = cartProduct.eanCode;
         final eanOrPlu = ean?.isNotEmpty == true
             ? ean
             : cartProduct.product?.productPackingPriceLookUpString;
-
-        totalDiscount += cartProduct.toEntity().totalDiscountValue;
-        totalLiquid += itemLiquidValue;
-        totalGross += itemGrossValue;
+        final productDiscount = cartProduct.toEntity().totalDiscountValue;
+        final productIncrement = cartProduct.toEntity().totalIncrement;
+        final productFreight = cartProduct.toEntity().totalDeliveryTax;
+        final productTotalLiquid = cartProduct.toEntity().totalLiquid;
 
         bytes += generator.row([
           PosColumn(
@@ -149,11 +146,28 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
           ),
         ]);
 
-        if (totalDiscount > 0) {
+        if (productDiscount > 0) {
+          bytes += generator.text(
+            "Desconto -${productDiscount.toString().toBrazilianNumber()}",
+            styles: const PosStyles(align: PosAlign.right),
+          );
+        }
+        if (productIncrement > 0) {
+          bytes += generator.text(
+            "Acrescimo +${productIncrement.toString().toBrazilianNumber()}",
+            styles: const PosStyles(align: PosAlign.right),
+          );
+        }
+        if (productFreight > 0) {
+          bytes += generator.text(
+            "Frete +${productFreight.toString().toBrazilianNumber()}",
+            styles: const PosStyles(align: PosAlign.right),
+          );
+        }
+        if (productIncrement > 0 || productDiscount > 0 || productFreight > 0) {
           bytes += generator.row([
             PosColumn(
-              text:
-                  "- ${cartProduct.toEntity().totalDiscountValue.toString().toBrazilianNumber()} de desconto",
+              textEncoded: latin1.encode('Total do item'),
               width: 8,
               styles: const PosStyles(align: PosAlign.right),
             ),
@@ -163,11 +177,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
               styles: const PosStyles(align: PosAlign.center),
             ),
             PosColumn(
-              text: cartProduct
-                  .toEntity()
-                  .totalLiquid
-                  .toString()
-                  .toBrazilianNumber(),
+              text: productTotalLiquid.toString().toBrazilianNumber(),
               width: 3,
               styles: const PosStyles(align: PosAlign.right),
             ),
@@ -178,11 +188,15 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
     bytes += generator.hr();
 
-    if (totalDiscount > 0) {
+    final totalDiscount = saleRequest.toEntity().totalDiscount;
+    final totalIncrement = saleRequest.toEntity().totalIncrement;
+    final totalFreight = saleRequest.toEntity().totalFreight;
+
+    if (totalDiscount > 0 || totalIncrement > 0 || totalFreight > 0) {
       bytes += generator.row([
         PosColumn(textEncoded: latin1.encode('Subtotal R\$'), width: 6),
         PosColumn(
-          text: totalGross.toStringAsFixed(2).toBrazilianNumber(),
+          text: totalDiscount.toString().toBrazilianNumber(2),
           width: 6,
           styles: const PosStyles(align: PosAlign.right),
         ),
@@ -191,6 +205,22 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
         PosColumn(textEncoded: latin1.encode('Total descontos R\$'), width: 6),
         PosColumn(
           text: totalDiscount.toStringAsFixed(2).toBrazilianNumber(),
+          width: 6,
+          styles: const PosStyles(align: PosAlign.right),
+        ),
+      ]);
+      bytes += generator.row([
+        PosColumn(textEncoded: latin1.encode('Total acrescimos R\$'), width: 6),
+        PosColumn(
+          text: totalIncrement.toStringAsFixed(2).toBrazilianNumber(),
+          width: 6,
+          styles: const PosStyles(align: PosAlign.right),
+        ),
+      ]);
+      bytes += generator.row([
+        PosColumn(textEncoded: latin1.encode('Total frete R\$'), width: 6),
+        PosColumn(
+          text: totalFreight.toStringAsFixed(2).toBrazilianNumber(),
           width: 6,
           styles: const PosStyles(align: PosAlign.right),
         ),
@@ -204,7 +234,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
         styles: const PosStyles(bold: true, height: PosTextSize.size2),
       ),
       PosColumn(
-        text: totalLiquid.toStringAsFixed(2).toBrazilianNumber(),
+        text: saleRequest.totalLiquid!.toStringAsFixed(2).toBrazilianNumber(),
         width: 6,
         styles: const PosStyles(
           align: PosAlign.right,
@@ -213,6 +243,58 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
         ),
       ),
     ]);
+
+    if (saleRequest.financials?.isNotEmpty ?? false) {
+      bytes += generator.hr();
+      bytes += generator.text(
+        'FORMA DE PAGAMENTO',
+        styles: const PosStyles(bold: true, align: PosAlign.center),
+      );
+
+      for (final financial in saleRequest.financials!) {
+        final payments = financial.paymentFinalizations;
+        if (payments == null) continue;
+
+        for (final payment in payments) {
+          final name = payment.paymentFinalization?.Description ?? 'N/A';
+          final value = payment.value?.toString().toBrazilianNumber() ?? '0,00';
+          final portions = payment.quantityOfPortions ?? 1;
+          final disc = payment.financialDiscount ?? 0;
+          final inc = payment.financialIncrement ?? 0;
+
+          // Formatting string: "Payment Name (R$ Value) [portions]"
+          final StringBuffer buffer = StringBuffer();
+          buffer.write(name);
+          buffer.write(' (R\$ $value)');
+          if (portions > 1) buffer.write(' em ${portions}x');
+
+          bytes += generator.text(
+            buffer.toString().removeAccents(),
+            styles: const PosStyles(align: PosAlign.left),
+          );
+
+          // Detailed discounts/increments for the payment method
+          if (disc > 0) {
+            bytes += generator.text(
+              "  (-) Desconto: R\$ ${disc.toString().toBrazilianNumber()}",
+              styles: const PosStyles(
+                align: PosAlign.left,
+                height: PosTextSize.size1,
+              ),
+            );
+          }
+          if (inc > 0) {
+            bytes += generator.text(
+              "  (+) Acrescimo: R\$ ${inc.toString().toBrazilianNumber()}",
+              styles: const PosStyles(
+                align: PosAlign.left,
+                height: PosTextSize.size1,
+              ),
+            );
+          }
+        }
+      }
+    }
 
     final observations = saleRequest.observations ?? '';
     final instructions = saleRequest.instructions ?? '';
