@@ -67,7 +67,7 @@ class AdjustCostParametersModel extends AdjustCostParametersEntity {
       'LiquidCostReal': LiquidCostReal,
       'ReplacementCostFiscal': ReplacementCostFiscal,
       'LiquidCostFiscal': LiquidCostFiscal,
-      'ActualizationType': ActualizationType.name,
+      'ActualizationType': ActualizationType?.name,
       'ActualizeDataAfterUpdate': ActualizeDataAfterUpdate,
       'UpdateEnterpriseGroup': UpdateEnterpriseGroup,
     };

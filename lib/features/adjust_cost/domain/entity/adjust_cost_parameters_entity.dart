@@ -6,8 +6,6 @@ class AdjustCostParametersEntity extends Equatable {
   final int ProductCode;
   final int EnterpriseCode;
   final int PackingCode;
-  final bool UpdateCostClass;
-  final bool UpdateChildCost;
   final double ReplacementCost;
   final double LiquidCost;
   final double LastUnitValue;
@@ -19,16 +17,21 @@ class AdjustCostParametersEntity extends Equatable {
   final double LiquidCostReal;
   final double ReplacementCostFiscal;
   final double LiquidCostFiscal;
-  final AdjustCostActualizationType ActualizationType;
-  final bool ActualizeDataAfterUpdate;
-  final bool UpdateEnterpriseGroup;
+  final AdjustCostActualizationType? ActualizationType;
+  final bool? ActualizeDataAfterUpdate;
+  final bool? UpdateEnterpriseGroup;
+  final bool? UpdateCostClass;
+  final bool? UpdateChildCost;
 
   const AdjustCostParametersEntity({
+    this.ActualizeDataAfterUpdate,
+    this.UpdateChildCost,
+    this.UpdateCostClass,
+    this.UpdateEnterpriseGroup,
+    this.ActualizationType,
     required this.ProductCode,
     required this.EnterpriseCode,
     required this.PackingCode,
-    required this.UpdateCostClass,
-    required this.UpdateChildCost,
     required this.ReplacementCost,
     required this.LiquidCost,
     required this.LastUnitValue,
@@ -40,9 +43,6 @@ class AdjustCostParametersEntity extends Equatable {
     required this.LiquidCostReal,
     required this.ReplacementCostFiscal,
     required this.LiquidCostFiscal,
-    required this.ActualizationType,
-    required this.ActualizeDataAfterUpdate,
-    required this.UpdateEnterpriseGroup,
   });
 
   @override
