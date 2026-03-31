@@ -67,4 +67,53 @@ class AdjustCostParametersEntity extends Equatable {
     ActualizeDataAfterUpdate,
     UpdateEnterpriseGroup,
   ];
+
+  AdjustCostParametersEntity copyWith({
+    int? ProductCode,
+    int? EnterpriseCode,
+    int? PackingCode,
+    bool? UpdateCostClass,
+    bool? UpdateChildCost,
+    double? ReplacementCost,
+    double? LiquidCost,
+    double? LastUnitValue,
+    double? BaseCalcIcmsSubstUnit,
+    double? ValueOfIcmsSubstUnit,
+    double? ValueOfIcmsOwnerUnit,
+    double? FiscalBaseCalcSubstitute,
+    double? ReplacementCostReal,
+    double? LiquidCostReal,
+    double? ReplacementCostFiscal,
+    double? LiquidCostFiscal,
+    AdjustCostActualizationType? ActualizationType,
+    bool? ActualizeDataAfterUpdate,
+    bool? UpdateEnterpriseGroup,
+  }) {
+    return AdjustCostParametersEntity(
+      ProductCode: ProductCode ?? this.ProductCode,
+      EnterpriseCode: EnterpriseCode ?? this.EnterpriseCode,
+      PackingCode: PackingCode ?? this.PackingCode,
+      UpdateCostClass: UpdateCostClass ?? this.UpdateCostClass,
+      UpdateChildCost: UpdateChildCost ?? this.UpdateChildCost,
+      ReplacementCost: ReplacementCost ?? this.ReplacementCost,
+      LiquidCost: LiquidCost ?? this.LiquidCost,
+      LastUnitValue: LastUnitValue ?? this.LastUnitValue,
+      BaseCalcIcmsSubstUnit:
+          BaseCalcIcmsSubstUnit ?? this.BaseCalcIcmsSubstUnit,
+      ValueOfIcmsSubstUnit: ValueOfIcmsSubstUnit ?? this.ValueOfIcmsSubstUnit,
+      ValueOfIcmsOwnerUnit: ValueOfIcmsOwnerUnit ?? this.ValueOfIcmsOwnerUnit,
+      FiscalBaseCalcSubstitute:
+          FiscalBaseCalcSubstitute ?? this.FiscalBaseCalcSubstitute,
+      ReplacementCostReal: ReplacementCostReal ?? this.ReplacementCostReal,
+      LiquidCostReal: LiquidCostReal ?? this.LiquidCostReal,
+      ReplacementCostFiscal:
+          ReplacementCostFiscal ?? this.ReplacementCostFiscal,
+      LiquidCostFiscal: LiquidCostFiscal ?? this.LiquidCostFiscal,
+      ActualizationType: ActualizationType ?? this.ActualizationType,
+      ActualizeDataAfterUpdate:
+          ActualizeDataAfterUpdate ?? this.ActualizeDataAfterUpdate,
+      UpdateEnterpriseGroup:
+          UpdateEnterpriseGroup ?? this.UpdateEnterpriseGroup,
+    );
+  }
 }
