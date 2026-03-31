@@ -89,8 +89,9 @@ class TryAccessModuleController extends _$TryAccessModuleController {
           });
 
       final moduleIsFree =
-          module == Modules.stockReplacement &&
-          ModuleIsFreeUntil.stockReplacementIsFree;
+          (module == Modules.stockReplacement &&
+              ModuleIsFreeUntil.stockReplacementIsFree) ||
+          (module == Modules.adjustCost && ModuleIsFreeUntil.adjustCostIsFree);
 
       if (!moduleIsFree &&
           (enabledModulesBySelectedEnterprise == null ||
