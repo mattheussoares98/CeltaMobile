@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entity/entity.dart';
 import '../../providers.dart';
@@ -43,6 +45,9 @@ class ConfirmAdjustCostController extends _$ConfirmAdjustCostController {
             parameters: parameters,
           );
 
+      final productIndex = ref.read(
+        selectedProductIndexStateControllerProvider(enterpriseCode),
+      );
       ref
           .read(
             selectedProductIndexStateControllerProvider(
@@ -50,6 +55,29 @@ class ConfirmAdjustCostController extends _$ConfirmAdjustCostController {
             ).notifier,
           )
           .updateIndex(null);
+
+      if (productIndex == null) return;
+
+      final searchProductKey = SearchProductKey(
+        enterpriseCode,
+        BsRoutine.generic,
+        Modules.adjustCost,
+      );
+
+      final oldProduct = await ref.read(
+        searchProductsStateControllerProvider(
+          searchProductKey,
+        ).selectAsync((s) => s.elementAtOrNull(productIndex)),
+      );
+      if (oldProduct == null) return;
+
+      ref
+          .read(
+            searchProductsStateControllerProvider(searchProductKey).notifier,
+          )
+          .updateProduct(
+            oldProduct.copyWith(ReplacementCost: parameters.ReplacementCost),
+          );
     });
   }
 }
