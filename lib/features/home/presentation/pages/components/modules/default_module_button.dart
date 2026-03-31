@@ -99,8 +99,10 @@ class DefaultModuleButton extends ConsumerWidget {
                     ],
                   ),
                 ),
-                if (module == Modules.stockReplacement &&
-                    ModuleIsFreeUntil.stockReplacementIsFree)
+                if ((module == Modules.stockReplacement &&
+                        ModuleIsFreeUntil.stockReplacementIsFree) ||
+                    (module == Modules.adjustCost &&
+                        ModuleIsFreeUntil.adjustCostIsFree))
                   const NewModuleBadge(),
                 FavoriteIconButton(
                   module: module,
