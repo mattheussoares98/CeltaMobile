@@ -14,11 +14,11 @@ class AdjustCostPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(confirmAdjustCostControllerProvider, (p, n) {
+    ref.listen(confirmAdjustCostControllerProvider(enterpriseCode), (p, n) {
       n.showAlertDialogOnError(context);
     });
 
-    ref.observeLoading([confirmAdjustCostControllerProvider]);
+    ref.observeLoading([confirmAdjustCostControllerProvider(enterpriseCode)]);
 
     return Scaffold(
       appBar: AppBar(

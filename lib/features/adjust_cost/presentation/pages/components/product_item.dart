@@ -41,7 +41,9 @@ class _ProductItemState extends ConsumerState<ProductItem> {
     }
 
     ref
-        .read(confirmAdjustCostControllerProvider.notifier)
+        .read(
+          confirmAdjustCostControllerProvider(widget.enterpriseCode).notifier,
+        )
         .confirm(
           AdjustCostParametersEntity(
             ReplacementCost: costController.text.toDouble()!,

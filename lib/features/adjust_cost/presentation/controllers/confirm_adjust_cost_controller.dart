@@ -5,13 +5,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entity/entity.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'confirm_adjust_cost_controller.g.dart';
 
 @riverpod
 class ConfirmAdjustCostController extends _$ConfirmAdjustCostController {
   @override
-  FutureOr<void> build() {
+  FutureOr<void> build(int enterpriseCode) {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -41,6 +42,14 @@ class ConfirmAdjustCostController extends _$ConfirmAdjustCostController {
             accessKey: validatedUser.user.AccessKey!,
             parameters: parameters,
           );
+
+      ref
+          .read(
+            selectedProductIndexStateControllerProvider(
+              enterpriseCode,
+            ).notifier,
+          )
+          .updateIndex(null);
     });
   }
 }
