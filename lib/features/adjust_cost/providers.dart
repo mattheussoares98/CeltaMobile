@@ -7,11 +7,11 @@ import 'domain/repository/repository.dart';
 part 'providers.g.dart';
 
 @riverpod
-IEcAdjustCostDatasource adjustCostDatasource(Ref ref) {
+IEcAdjustCostDatasource ecAdjustCostDatasource(Ref ref) {
   return EcAdjustCostDatasource(ref.watch(httpClientProvider));
 }
 
 @riverpod
-IEcAdjustCostRepository adjustCostRepository(Ref ref) {
-  return EcAdjustCostRepositoryImpl(ref.watch(adjustCostDatasourceProvider));
+IEcAdjustCostRepository ecAdjustCostRepository(Ref ref) {
+  return EcAdjustCostRepositoryImpl(ref.watch(ecAdjustCostDatasourceProvider));
 }
