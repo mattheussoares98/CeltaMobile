@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/models/models.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
@@ -1261,4 +1262,30 @@ class EntityFactory {
     justification: faker.lorem.word(),
     discount: _makeBSFValueTypeEntity(),
   );
+
+  static AdjustCostParametersEntity makeAdjustCostParametersEntity() =>
+      AdjustCostParametersEntity(
+        ProductCode: faker.randomGenerator.integer(100),
+        EnterpriseCode: faker.randomGenerator.integer(100),
+        PackingCode: faker.randomGenerator.integer(100),
+        UpdateCostClass: faker.randomGenerator.boolean(),
+        UpdateChildCost: faker.randomGenerator.boolean(),
+        ReplacementCost: faker.randomGenerator.decimal(),
+        LiquidCost: faker.randomGenerator.decimal(),
+        LastUnitValue: faker.randomGenerator.decimal(),
+        BaseCalcIcmsSubstUnit: faker.randomGenerator.decimal(),
+        ValueOfIcmsSubstUnit: faker.randomGenerator.decimal(),
+        ValueOfIcmsOwnerUnit: faker.randomGenerator.decimal(),
+        FiscalBaseCalcSubstitute: faker.randomGenerator.decimal(),
+        ReplacementCostReal: faker.randomGenerator.decimal(),
+        LiquidCostReal: faker.randomGenerator.decimal(),
+        ReplacementCostFiscal: faker.randomGenerator.decimal(),
+        LiquidCostFiscal: faker.randomGenerator.decimal(),
+        ActualizationType:
+            AdjustCostActualizationType.values[faker.randomGenerator.integer(
+              AdjustCostActualizationType.values.length,
+            )],
+        ActualizeDataAfterUpdate: faker.randomGenerator.boolean(),
+        UpdateEnterpriseGroup: faker.randomGenerator.boolean(),
+      );
 }
