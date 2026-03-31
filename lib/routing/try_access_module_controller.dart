@@ -11,6 +11,7 @@ import '../core/presentation/controllers/enterprises/enterprises.dart';
 import '../core/presentation/controllers/resource/resource.dart';
 import '../core/presentation/controllers/user_session/user_session.dart';
 import '../core/presentation/helpers/helpers.dart';
+import '../exceptions/exceptions.dart';
 import '../features/enterprises/presentation/controllers/controllers.dart';
 import '../localization/string_hardcoded.dart';
 import 'routing.dart';
@@ -61,8 +62,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
           router.routerDelegate.currentConfiguration.last.route.name;
 
       if (currentRouteName == route.name) {
-        debugPrint('Navigation Cancelled: User already on ${route.name}');
-        return;
+        throw AppException('Você já está no módulo desejado'); //TODO test
       }
 
       final enterpriseName = ref.read(
