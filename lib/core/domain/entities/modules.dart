@@ -1,4 +1,5 @@
 enum Modules {
+  adjustCost('Ajuste de custos'),
   adjustPrice('Alterar preços'),
   adjustStock('Ajustar estoque'),
   buyQuotation('Cotação de compras'),

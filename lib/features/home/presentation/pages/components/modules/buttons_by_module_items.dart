@@ -9,6 +9,12 @@ class ButtonsByModuleItems {
   ButtonsByModuleItems._();
 
   static const Map<Modules, DefaultModuleButton> buttonByModule = {
+    Modules.adjustCost: DefaultModuleButton(
+      route: Routes.adjustCost,
+      module: Modules.adjustCost,
+      materialIcon: Icons.price_change_outlined,
+      cupertinoIcon: CupertinoIcons.money_dollar,
+    ),
     Modules.adjustPrice: DefaultModuleButton(
       route: Routes.adjustSalePriceProducts,
       module: Modules.adjustPrice,
