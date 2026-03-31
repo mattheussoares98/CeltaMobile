@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
+import '../../../../utils/utils.dart';
+import '../controllers/controllers.dart';
 import 'components/components.dart';
 
 class AdjustCostPage extends ConsumerWidget {
@@ -12,6 +14,12 @@ class AdjustCostPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(confirmAdjustCostControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
+
+    ref.observeLoading([confirmAdjustCostControllerProvider]);
+
     return Scaffold(
       appBar: AppBar(
         title: DefaultAppBarTitle(
