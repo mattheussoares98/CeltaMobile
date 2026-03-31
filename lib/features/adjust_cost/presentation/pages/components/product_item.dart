@@ -93,6 +93,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
       hideCost: true,
       isSelected: isSelected,
       onTap: () {
+        costController.clear();
         ref
             .read(
               selectedProductIndexStateControllerProvider(
