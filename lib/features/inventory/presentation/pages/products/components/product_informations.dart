@@ -77,7 +77,7 @@ class ProductInformations extends ConsumerWidget {
                   child: TitleAndSubTitle(
                     title: product.quantidadeInvContProEmb == null
                         ? null
-                        : 'Qtd contata'.hardcoded,
+                        : 'Qtd contada'.hardcoded,
                     subTitleStyle: product.quantidadeInvContProEmb == null
                         ? const TextStyle(color: Colors.red)
                         : null,
