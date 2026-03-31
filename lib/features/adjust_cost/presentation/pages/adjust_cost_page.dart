@@ -29,7 +29,7 @@ class AdjustCostPage extends ConsumerWidget {
           children: [
             Flexible(
               child: DefaultAppBarTitle(
-                title: 'Substituição de estoque'.hardcoded,
+                title: 'Alterar custo de reposisção'.hardcoded,
               ),
             ),
             if (ModuleIsFreeUntil.adjustCostIsFree)
