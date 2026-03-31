@@ -1,6 +1,5 @@
 import 'package:celta_inventario/features/adjust_cost/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/adjust_cost/data/model/model.dart';
-import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -58,15 +57,7 @@ void main() {
         url: '$workingUrl/Products/AdjustCostsIndividual',
         method: 'post',
         headers: {'user': user, 'accessKey': accessKey},
-        body: AdjustCostParametersModel.fromEntity(
-          parameters.toEntity().copyWith(
-            ActualizeDataAfterUpdate: true,
-            UpdateChildCost: false,
-            UpdateCostClass: false,
-            UpdateEnterpriseGroup: true,
-            ActualizationType: AdjustCostActualizationType.onlyOperationalCosts,
-          ),
-        ).toJson(),
+        body: parameters.toJson(),
       ),
     ).called(1);
   });

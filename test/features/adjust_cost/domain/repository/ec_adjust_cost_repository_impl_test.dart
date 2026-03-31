@@ -62,7 +62,7 @@ void main() {
       ),
     );
   });
-  test('should behave correctly on success', () async {
+  test('should call datasource with correct parameters', () async {
     await sut.adjust(
       workingUrl: workingUrl,
       user: user,
@@ -75,7 +75,15 @@ void main() {
         workingUrl: workingUrl,
         user: user,
         accessKey: accessKey,
-        parameters: AdjustCostParametersModel.fromEntity(parameters),
+        parameters: AdjustCostParametersModel.fromEntity(
+          parameters.copyWith(
+            ActualizeDataAfterUpdate: true,
+            UpdateChildCost: false,
+            UpdateCostClass: false,
+            UpdateEnterpriseGroup: true,
+            ActualizationType: AdjustCostActualizationType.onlyOperationalCosts,
+          ),
+        ),
       ),
     ).called(1);
 

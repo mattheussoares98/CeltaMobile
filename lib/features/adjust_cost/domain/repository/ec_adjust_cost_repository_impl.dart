@@ -18,7 +18,15 @@ class EcAdjustCostRepositoryImpl implements IEcAdjustCostRepository {
       workingUrl: workingUrl,
       user: user,
       accessKey: accessKey,
-      parameters: AdjustCostParametersModel.fromEntity(parameters),
+      parameters: AdjustCostParametersModel.fromEntity(
+        parameters.copyWith(
+          ActualizeDataAfterUpdate: true,
+          UpdateChildCost: false,
+          UpdateCostClass: false,
+          UpdateEnterpriseGroup: true,
+          ActualizationType: AdjustCostActualizationType.onlyOperationalCosts,
+        ),
+      ),
     );
   }
 }
