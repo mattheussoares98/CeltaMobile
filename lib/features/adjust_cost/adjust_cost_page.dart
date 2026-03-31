@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import '../../commom_widgets/commom_widgets.dart';
 
 class AdjustCostPage extends StatelessWidget {
-  const AdjustCostPage({super.key});
+  final int enterpriseCode;
+  const AdjustCostPage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context) {

@@ -95,6 +95,7 @@ GoRouter goRouter(Ref ref) {
       downloadAppRoute(),
       enterpriseManagerRoute(enterpriseManagerBridge),
       homeRoute([
+        adjustCostRoute(),
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
         buyQuotationsRoute([buyQuotationInsertUpdateRoute()]),

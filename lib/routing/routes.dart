@@ -1,5 +1,6 @@
 enum Routes {
   auth,
+  adjustCost,
   adjustSalePrice,
   adjustSalePriceProducts,
   adjustStocks,
