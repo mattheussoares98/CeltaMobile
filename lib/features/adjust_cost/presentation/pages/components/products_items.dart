@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../localization/string_hardcoded.dart';
@@ -86,6 +87,13 @@ class _ProductItem extends ConsumerWidget {
         subTitle: product.ReplacementCost,
         subTitleIsPrice: true,
         emptyMessage: 'Sem custo de reposição'.hardcoded,
+      ),
+      notClickableBottom: Row(
+        children: [
+          const Expanded(child: DefaultTextFormField()),
+          gapW16,
+          PrimaryButton(text: 'Confirmar'.hardcoded, onPressed: () {}),
+        ],
       ),
     );
   }
