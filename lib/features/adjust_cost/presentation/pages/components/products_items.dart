@@ -19,9 +19,7 @@ class ProductsItems extends ConsumerWidget {
     );
     return AsyncValueWidget(
       value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
-      tryAgain: () => ref.invalidate(
-        searchProductsStateControllerProvider(searchProductKey),
-      ),
+      tryAgain: null,
       data: (products) {
         return Expanded(
           child: ResponsiveListFlow(
