@@ -112,6 +112,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
           ? Row(
               children: [
                 Expanded(
+                  flex: 3,
                   child: Form(
                     key: formKey,
                     child: UpdateCostField(
@@ -121,9 +122,11 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                   ),
                 ),
                 gapW16,
-                PrimaryButton(
-                  text: 'Confirmar'.hardcoded,
-                  onPressed: () => confirmAdjust(product),
+                Expanded(
+                  child: PrimaryButton(
+                    text: 'Confirmar'.hardcoded,
+                    onPressed: () => confirmAdjust(product),
+                  ),
                 ),
               ],
             )

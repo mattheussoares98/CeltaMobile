@@ -24,7 +24,7 @@ class ProductsItems extends ConsumerWidget {
       ),
       data: (products) {
         return Expanded(
-          child: ListView.builder(
+          child: ResponsiveListFlow(
             itemCount: products.length,
             itemBuilder: (context, index) {
               return ProductItem(
