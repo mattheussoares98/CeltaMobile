@@ -62,7 +62,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
           router.routerDelegate.currentConfiguration.last.route.name;
 
       if (currentRouteName == route.name) {
-        throw AppException('Você já está no módulo desejado'); //TODO test
+        throw AppException('Você já está no módulo desejado');
       }
 
       final enterpriseName = ref.read(
