@@ -54,7 +54,7 @@ void main() {
 
     verify(
       () => httpClient.request(
-        url: '$workingUrl/Products/AdjustCostsIndividual',
+        url: '$workingUrl/Api/Products/AdjustCostsIndividual',
         method: 'post',
         headers: {'user': user, 'accessKey': accessKey},
         body: parameters.toJson(),

@@ -14,7 +14,7 @@ class EcAdjustCostDatasource implements IEcAdjustCostDatasource {
     required AdjustCostParametersModel parameters,
   }) async {
     await httpClient.request(
-      url: '$workingUrl/Products/AdjustCostsIndividual',
+      url: '$workingUrl/Api/Products/AdjustCostsIndividual',
       method: 'post',
       headers: {'user': user, 'accessKey': accessKey},
       body: parameters.toJson(),
