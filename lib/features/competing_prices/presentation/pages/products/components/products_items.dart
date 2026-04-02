@@ -60,37 +60,37 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
         ref.invalidate(searchProductsStateControllerProvider(searchProductKey));
       },
       child: AsyncValueWidget(
+        isSliver: true,
         value: ref.watch(
           searchProductsStateControllerProvider(searchProductKey),
         ),
         tryAgain: null,
         data: (products) {
-          return Expanded(
-            child: ResponsiveListFlow(
-              itemCount: products.length,
-              itemBuilder: (_, index) {
-                final product = products[index];
+          return ResponsiveListFlow(
+            isSliver: true,
+            itemCount: products.length,
+            itemBuilder: (_, index) {
+              final product = products[index];
 
-                return ProductItem(
-                  key: ValueKey(product.ProductPackingCode),
-                  product: product,
-                  retailController: retailController,
-                  retailOfferController: retailOfferController,
-                  wholeController: wholeController,
-                  wholeOfferController: wholeOfferController,
-                  ecommerceController: ecommerceController,
-                  ecommerceOfferController: ecommerceOfferController,
-                  retailFocusNode: retailFocusNode,
-                  retailOfferFocusNode: retailOfferFocusNode,
-                  wholeFocusNode: wholeFocusNode,
-                  wholeOfferFocusNode: wholeOfferFocusNode,
-                  ecommerceFocusNode: ecommerceFocusNode,
-                  ecommerceOfferFocusNode: ecommerceOfferFocusNode,
-                  index: index,
-                  widget: widget,
-                );
-              },
-            ),
+              return ProductItem(
+                key: ValueKey(product.ProductPackingCode),
+                product: product,
+                retailController: retailController,
+                retailOfferController: retailOfferController,
+                wholeController: wholeController,
+                wholeOfferController: wholeOfferController,
+                ecommerceController: ecommerceController,
+                ecommerceOfferController: ecommerceOfferController,
+                retailFocusNode: retailFocusNode,
+                retailOfferFocusNode: retailOfferFocusNode,
+                wholeFocusNode: wholeFocusNode,
+                wholeOfferFocusNode: wholeOfferFocusNode,
+                ecommerceFocusNode: ecommerceFocusNode,
+                ecommerceOfferFocusNode: ecommerceOfferFocusNode,
+                index: index,
+                widget: widget,
+              );
+            },
           );
         },
       ),

@@ -51,22 +51,15 @@ class ProductsPage extends ConsumerWidget {
             ? 66
             : null,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: Column(
-          children: [
-            ResponsiveScrollableWidget(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Filters(widget: this),
-                  SearchProductsField(widget: this),
-                  gapH8,
-                ],
-              ),
-            ),
+      body: ResponsiveScrollableWidget(
+        isSliverPage: true,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(child: Filters(widget: this)),
+            SliverToBoxAdapter(child: SearchProductsField(widget: this)),
+            gapSliverH8,
             ProductsItems(widget: this),
-            gapH48,
+            gapSliverH48,
           ],
         ),
       ),
