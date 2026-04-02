@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/constants.dart';
+import '../../core/domain/entities/entities.dart';
 import '../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
+import '../../core/providers/services/services.dart';
 import 'form_field.dart';
 
 class CupertinoFormField extends ConsumerStatefulWidget {
@@ -99,9 +101,13 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
         (dtf.keyboardType == TextInputType.number ||
             dtf.keyboardType ==
                 const TextInputType.numberWithOptions(decimal: true))) {
-      throw Exception(
-        'For numeric fields, should add focus node to manage done button overlay',
-      );
+      ref.read(crashlyticsServiceProvider).setCustomKeys([
+        const CrashlyticsCustomKeyEntity(
+          key: 'iOS numeric keyboard without focus node',
+          value:
+              'iOS device with numeric keyboard and no focus node. This is a problem to manage the overlay with the done button. Please, add a focus node to this text field.',
+        ),
+      ]);
     }
 
     return FormField<String>(
