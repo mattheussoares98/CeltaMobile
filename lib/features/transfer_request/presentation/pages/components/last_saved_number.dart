@@ -22,6 +22,7 @@ class LastSavedNumber extends ConsumerWidget {
 
         return FittedBox(
           child: TitleAndSubTitle(
+            copyableSubtitle: true,
             title: 'Últ ped salvo'.hardcoded,
             subTitle: RegExp(r'\((.*?)\)').firstMatch(number)?.group(1),
             subTitleStyle: theme.textTheme.titleMedium?.copyWith(
