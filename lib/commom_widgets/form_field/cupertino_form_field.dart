@@ -95,6 +95,15 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
     final dtf = widget.defaultTextFormField;
     final isEnabled = dtf.enabled ?? true;
 
+    if (dtf.focusNode == null &&
+        (dtf.keyboardType == TextInputType.number ||
+            dtf.keyboardType ==
+                const TextInputType.numberWithOptions(decimal: true))) {
+      throw Exception(
+        'For numeric fields, should add focus node to manage done button overlay',
+      );
+    }
+
     return FormField<String>(
       key: dtf.key,
       validator: dtf.validator,
