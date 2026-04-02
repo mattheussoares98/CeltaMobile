@@ -29,7 +29,7 @@ class _SearchProductFieldState extends ConsumerState<SearchProductField> {
     final searchProductKey = SearchProductKey(
       widget.enterpriseCode,
       BsRoutine.adjustStock,
-      Modules.adjustStock,
+      Modules.stockReplacement,
     );
 
     return DefaultSearchProducts(
