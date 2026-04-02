@@ -27,11 +27,13 @@ class ProductItem extends ConsumerStatefulWidget {
 
 class _ProductItemState extends ConsumerState<ProductItem> {
   final costController = TextEditingController();
+  final costFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     costController.dispose();
+    costFocusNode.dispose();
     super.dispose();
   }
 
@@ -117,6 +119,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                     key: formKey,
                     child: UpdateCostField(
                       controller: costController,
+                      focusNode: costFocusNode,
                       onSubmit: () => confirmAdjust(product),
                     ),
                   ),

@@ -7,17 +7,20 @@ import '../../../../../localization/string_hardcoded.dart';
 
 class UpdateCostField extends ConsumerWidget {
   final TextEditingController controller;
+  final FocusNode focusNode;
   final VoidCallback onSubmit;
   const UpdateCostField({
     super.key,
     required this.controller,
     required this.onSubmit,
+    required this.focusNode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTextFormField(
       controller: controller,
+      focusNode: focusNode,
       hintText: 'Custo de reposição'.hardcoded,
       labelText: 'Custo de reposição'.hardcoded,
       autofocus: true,
