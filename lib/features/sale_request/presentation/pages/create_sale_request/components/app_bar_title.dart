@@ -36,10 +36,16 @@ class AppBarTitle extends ConsumerWidget {
               return const SizedBox.shrink();
             }
 
+            final theme = Theme.of(context);
+
             return FittedBox(
               child: TitleAndSubTitle(
+                copyableSubtitle: true,
                 title: 'Últ ped'.hardcoded,
-                subTitle: onlyNumber?.toInt(),
+                subTitle: onlyNumber,
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.primaryColor,
+                ),
               ),
             );
           },
