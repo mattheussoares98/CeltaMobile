@@ -130,6 +130,12 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
                     color: Colors.red,
                   ),
                 ),
+                enabled: !ref.watch(
+                  supplierStateControllerProvider(
+                    SearchSupplierType.buyRequest,
+                    widget.enterpriseCode,
+                  ).select((s) => s.isLoading),
+                ),
                 suffixIcon: IconButton(
                   onPressed: loadSuppliers,
                   icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
