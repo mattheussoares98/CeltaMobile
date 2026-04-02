@@ -1,4 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:celta_inventario/features/adjust_cost/domain/repository/repository.dart';
@@ -32,6 +34,7 @@ void main() {
   late UserSessionModel fakeSession;
   late AdjustCostParametersEntity fakeParams;
   late int enterpriseCode;
+  late FakeAppUsageStateController appUsage;
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeAdjustCostParametersEntity());
@@ -46,6 +49,7 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    appUsage = FakeAppUsageStateController();
 
     fakeParams = EntityFactory.makeAdjustCostParametersEntity();
   });
@@ -61,6 +65,7 @@ void main() {
         selectedProductIndexStateControllerProvider.overrideWith2(
           (enterpriseCode) => FakeSelectedProductIndexStateController(),
         ),
+        appUsageStateControllerProvider.overrideWith(() => appUsage),
       ],
     );
   }
@@ -141,6 +146,7 @@ void main() {
         ),
         null,
       );
+      expect(appUsage.lastUsageType, UsageType.adjustCost);
     });
 
     test('confirm should emit [loading, error] if repository fails', () async {

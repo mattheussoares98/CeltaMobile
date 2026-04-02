@@ -1,4 +1,5 @@
 enum UsageType {
+  adjustCost('Ajustou custo'),
   adjustSalePrice('Ajustou preço'),
   adjustStock('Ajustou estoque'),
   completeSearchSaleRequest('Consulta COMPLETA de pedido de vendas'),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/products/products.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entity/entity.dart';
@@ -44,6 +45,10 @@ class ConfirmAdjustCostController extends _$ConfirmAdjustCostController {
             accessKey: validatedUser.user.AccessKey!,
             parameters: parameters,
           );
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.adjustCost);
 
       final productIndex = ref.read(
         selectedProductIndexStateControllerProvider(enterpriseCode),
