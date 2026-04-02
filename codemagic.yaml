@@ -21,7 +21,7 @@ workflows:
         provisioning_profiles:
           - Celta mobile AppStore
         certificates:
-          - CeltaMobile publish
+          - Celta mobile distribution profile
         distribution_type: app_store
       android_signing:
         - celtaMobile
