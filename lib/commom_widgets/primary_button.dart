@@ -55,7 +55,10 @@ class PrimaryButton extends ConsumerWidget {
                     onPressed?.call();
                   },
             sizeStyle: CupertinoButtonSize.medium,
-            padding: const EdgeInsets.all(0),
+            padding: const EdgeInsets.symmetric(
+              vertical: Sizes.p4,
+              horizontal: Sizes.p8,
+            ),
             color: buttonColor,
             child: Stack(
               children: [
