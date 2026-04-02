@@ -104,11 +104,18 @@ class _ProductItemState extends ConsumerState<ProductItem> {
             )
             .updateIndex(widget.index, annulWhenIsSame: true);
       },
-      clickableBottom: TitleAndSubTitle(
-        title: 'Custo de reposição'.hardcoded,
-        subTitle: product.ReplacementCost,
-        subTitleIsPrice: true,
-        emptyMessage: 'Sem custo de reposição'.hardcoded,
+      clickableBottom: Padding(
+        padding: EdgeInsets.only(
+          bottom: (product.EANs?.every((x) => x.isEmpty) ?? true)
+              ? Sizes.p20
+              : 0,
+        ),
+        child: TitleAndSubTitle(
+          title: 'Custo de reposição'.hardcoded,
+          subTitle: product.ReplacementCost,
+          subTitleIsPrice: true,
+          emptyMessage: 'Sem custo de reposição'.hardcoded,
+        ),
       ),
       notClickableBottom: isSelected
           ? Row(

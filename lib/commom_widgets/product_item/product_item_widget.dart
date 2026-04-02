@@ -125,6 +125,9 @@ class ProductItemWidget extends ConsumerWidget {
       //show 2 informations
       value++;
     }
+    if (clickableBottom != null) {
+      value++;
+    }
 
     return value <= 1;
   }
