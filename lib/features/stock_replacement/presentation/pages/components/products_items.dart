@@ -79,7 +79,7 @@ class ProductsItems extends ConsumerWidget {
           SearchProductKey(
             enterpriseCode,
             BsRoutine.adjustStock,
-            Modules.adjustStock,
+            Modules.stockReplacement,
           ),
         ),
       ),
