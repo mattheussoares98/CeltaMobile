@@ -1,4 +1,5 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/domain/entities/entities.dart';
@@ -75,12 +76,14 @@ class InfoButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
+    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return PrimaryTextButton(
       text: 'Info'.hardcoded,
       icon: Icon(
-        theme.platform == TargetPlatform.iOS ? Icons.info : Icons.info,
+        isIOS ? CupertinoIcons.info_circle_fill : Icons.info,
         color: theme.primaryColor,
+        size: 18,
       ),
       onPressed: () {
         FocusManager.instance.primaryFocus?.unfocus();
