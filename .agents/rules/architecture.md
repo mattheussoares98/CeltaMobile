@@ -16,6 +16,7 @@ Domain path
 - Every repository implementation should have Impl in the end of the name, 
 without I in the start of the name, and should add the abstract datasource in the constructor
 - Example of abstract and implementation repository name "ILocalLoadProductsRepository" and "LocalLoadProductsRepositoryImpl"
+- Entity should always extends Equatable and implement all properties inside the props
 
 Every folder should have a .dart file with the same name, exporting all files and folder from the same path. 
 
