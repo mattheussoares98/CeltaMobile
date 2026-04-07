@@ -34,7 +34,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Card(
-      clipBehavior: Clip.antiAlias,
+      clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
