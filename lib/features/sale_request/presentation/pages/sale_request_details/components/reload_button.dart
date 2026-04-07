@@ -24,11 +24,14 @@ class ReloadButton extends ConsumerWidget {
       customerCode: customerCode,
     );
 
-    final hasError = ref.watch(provider.select((s) => s.hasError));
+    final (hasError, isLoading) = ref.watch(
+      provider.select((s) => (s.hasError, s.isLoading)),
+    );
     if (hasError) {
       return PrimaryTextButton(
         text: 'Não foi possível carregar o pedido. Tentar novamente'.hardcoded,
         onPressed: () => ref.invalidate(provider),
+        isLoading: isLoading,
       );
     }
     return const SizedBox.shrink();
