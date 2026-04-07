@@ -40,20 +40,19 @@ class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
           selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
         );
 
-    final personalizedCode = ref.watch(
-      enterprisesStateControllerProvider().select(
-        (s) => s.value
-            ?.firstWhereOrNull((x) => x.Code == selectedEnterpriseCode)
-            ?.PersonalizedCode,
-      ),
+    final enterpriseData = ref.watch(
+      enterprisesStateControllerProvider().select((s) {
+        final enterprise = s.value?.firstWhereOrNull(
+          (x) => x.Code == selectedEnterpriseCode,
+        );
+        return (
+          personalizedCode: enterprise?.PersonalizedCode,
+          enterpriseName: enterprise?.name,
+        );
+      }),
     );
-    final enterpriseName = ref.watch(
-      enterprisesStateControllerProvider().select(
-        (s) => s.value
-            ?.firstWhereOrNull((x) => x.Code == selectedEnterpriseCode)
-            ?.name,
-      ),
-    );
+    final personalizedCode = enterpriseData.personalizedCode;
+    final enterpriseName = enterpriseData.enterpriseName;
 
     if (enterpriseName == null || personalizedCode == null) {
       return const SizedBox.shrink();
