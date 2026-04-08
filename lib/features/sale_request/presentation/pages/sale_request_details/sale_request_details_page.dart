@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,11 +25,12 @@ class SaleRequestDetailsPage extends ConsumerWidget {
       appBar: AppBar(
         title: DefaultAppBarTitle(title: 'Detalhes do pedido'.hardcoded),
         actions: [
-          EditButton(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ),
+          if (kDebugMode)
+            EditButton(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: saleRequestId,
+            ),
           ShowPdfButton(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
