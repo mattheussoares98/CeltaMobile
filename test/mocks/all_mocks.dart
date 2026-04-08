@@ -850,6 +850,8 @@ class HttpClientSpy extends Mock implements HttpClient {
     _mockRequestCall().thenAnswer((_) async => response);
   }
 
+  void mockRequestError() => _mockRequestCall().thenThrow(Exception());
+
   When _mockRequestCall() => when(
     () => this.request(
       url: any(named: 'url'),

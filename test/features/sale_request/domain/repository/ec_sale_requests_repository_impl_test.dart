@@ -33,6 +33,14 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
       params: any(named: 'params'),
     ),
   ).thenAnswer((_) async => response);
+
+  void mockUpdate(bool response) => when(
+    () => this.update(
+      saleRequest: any(named: 'saleRequest'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+      params: any(named: 'params'),
+    ),
+  ).thenAnswer((_) async => response);
 }
 
 void main() {
@@ -102,6 +110,9 @@ void main() {
       SoapSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
     );
     registerFallbackValue(EntityFactory.makeEcRequestParams());
+    registerFallbackValue(
+      BSFSaleRequestModel.fromEntity(EntityFactory.makeBSFSaleRequestEntity()),
+    );
   });
 
   group('Get', () {
@@ -225,6 +236,47 @@ void main() {
           saleRequestCode: saleRequestCode,
           enterpriseCode: enterpriseCode,
           customerCode: customerCode,
+          params: params,
+        ),
+      ).called(1);
+    });
+  });
+  group('Update', () {
+    test('should behave correctly on success', () async {
+      mockDatasource.mockUpdate(true);
+
+      final updated = await sut.update(
+        saleRequest: bSFSaleRequestModel.toEntity(),
+        enterpriseCode: enterpriseCode,
+        params: params,
+      );
+
+      expect(updated, isTrue);
+
+      verify(
+        () => mockDatasource.update(
+          saleRequest: bSFSaleRequestModel,
+          enterpriseCode: enterpriseCode,
+          params: params,
+        ),
+      ).called(1);
+    });
+
+    test('should behave correctly on error', () async {
+      mockDatasource.mockUpdate(false);
+
+      final updated = await sut.update(
+        saleRequest: bSFSaleRequestModel.toEntity(),
+        enterpriseCode: enterpriseCode,
+        params: params,
+      );
+
+      expect(updated, isFalse);
+
+      verify(
+        () => mockDatasource.update(
+          saleRequest: bSFSaleRequestModel,
+          enterpriseCode: enterpriseCode,
           params: params,
         ),
       ).called(1);
