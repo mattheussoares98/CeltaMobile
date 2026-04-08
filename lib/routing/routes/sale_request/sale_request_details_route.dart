@@ -3,9 +3,10 @@ import 'package:go_router/go_router.dart';
 import '../../../features/sale_request/presentation/pages/pages.dart';
 import '../../routing.dart';
 
-RouteBase saleRequestDetailsRoute() => GoRoute(
+RouteBase saleRequestDetailsRoute(List<RouteBase> routes) => GoRoute(
   path: ':saleRequestId/:customerCode/sale-request-details',
   name: Routes.saleRequestDetails.name,
+  routes: routes,
   builder: (context, state) {
     final saleRequestId = int.parse(state.pathParameters['saleRequestId']!);
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);

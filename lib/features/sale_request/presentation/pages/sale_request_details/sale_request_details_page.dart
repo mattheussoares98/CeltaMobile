@@ -24,6 +24,11 @@ class SaleRequestDetailsPage extends ConsumerWidget {
       appBar: AppBar(
         title: DefaultAppBarTitle(title: 'Detalhes do pedido'.hardcoded),
         actions: [
+          EditButton(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+          ),
           ShowPdfButton(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,

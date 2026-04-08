@@ -21,6 +21,7 @@ enum Routes {
   enterprises,
   expeditionConferenceDocuments,
   expeditionConferenceProducts,
+  insertUpdateSaleRequest,
   inventoryCountings,
   inventoryFrozenProcesses,
   inventoryProducts,
