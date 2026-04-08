@@ -3,9 +3,9 @@ import '../../data/datasource/datasource.dart';
 import '../entities/entities.dart';
 import 'repository.dart';
 
-class EcGetSaleRequestsRepositoryImpl implements IEcGetSaleRequestsRepository {
-  final IEcGetSaleRequestsDatasource datasource;
-  EcGetSaleRequestsRepositoryImpl(this.datasource);
+class EcSaleRequestsRepositoryImpl implements IEcSaleRequestsRepository {
+  final IEcSaleRequestsDatasource datasource;
+  EcSaleRequestsRepositoryImpl(this.datasource);
 
   @override
   Future<EcPaginationResults<SaleRequestEntity>> get({

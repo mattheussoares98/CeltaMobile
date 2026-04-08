@@ -16,11 +16,11 @@ import '../../../../mocks/mocks.dart';
 
 // --- Mocks ---
 
-class MockEcGetSaleRequestsRepository extends Mock
-    implements IEcGetSaleRequestsRepository {}
+class MockecSaleRequestsRepository extends Mock
+    implements IEcSaleRequestsRepository {}
 
 void main() {
-  late MockEcGetSaleRequestsRepository mockRepository;
+  late MockecSaleRequestsRepository mockRepository;
   late UserSessionModel fakeSession;
   late int enterpriseCode;
   late DateTime startDateHourOfCreation;
@@ -36,7 +36,7 @@ void main() {
   });
 
   setUp(() {
-    mockRepository = MockEcGetSaleRequestsRepository();
+    mockRepository = MockecSaleRequestsRepository();
     enterpriseCode = faker.randomGenerator.integer(9999);
 
     // Generating a dynamic session via factory
@@ -80,7 +80,7 @@ void main() {
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
       overrides: [
-        ecGetSaleRequestsRepositoryProvider.overrideWithValue(mockRepository),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),

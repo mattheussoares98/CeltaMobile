@@ -10,7 +10,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late IEcGetSaleRequestsDatasource sut;
+  late IEcSaleRequestsDatasource sut;
 
   late HttpClientSpy httpClient;
 
@@ -31,7 +31,7 @@ void main() {
   late int customerCode;
 
   void initSut() {
-    sut = EcGetSaleRequestsDatasource(httpClient);
+    sut = EcSaleRequestsDatasource(httpClient);
   }
 
   void initInjections() {

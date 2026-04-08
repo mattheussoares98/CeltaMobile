@@ -53,7 +53,7 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
       ref.invalidate(saleRequestDetailsStateControllerProvider);
 
       return await ref
-          .read(ecGetSaleRequestsRepositoryProvider)
+          .read(ecSaleRequestsRepositoryProvider)
           .get(
             params: EcRequestParams(
               workingUrl: validatedUser!.enterprise!.workingUrl!,

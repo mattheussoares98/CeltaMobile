@@ -5,9 +5,9 @@ import '../../../../core/domain/entities/entities.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
-class EcGetSaleRequestsDatasource implements IEcGetSaleRequestsDatasource {
+class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   final HttpClient httpClient;
-  EcGetSaleRequestsDatasource(this.httpClient);
+  EcSaleRequestsDatasource(this.httpClient);
 
   @override
   Future<EcPaginationResults<EcSaleRequestModel>> get({

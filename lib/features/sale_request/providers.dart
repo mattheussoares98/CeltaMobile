@@ -104,14 +104,14 @@ IGeneratePdfRepository generatePdfRepository(Ref ref) {
 }
 
 @riverpod
-IEcGetSaleRequestsDatasource ecGetSaleRequestsDatasource(Ref ref) {
-  return EcGetSaleRequestsDatasource(ref.watch(httpClientProvider));
+IEcSaleRequestsDatasource ecSaleRequestsDatasource(Ref ref) {
+  return EcSaleRequestsDatasource(ref.watch(httpClientProvider));
 }
 
 @riverpod
-IEcGetSaleRequestsRepository ecGetSaleRequestsRepository(Ref ref) {
-  return EcGetSaleRequestsRepositoryImpl(
-    ref.watch(ecGetSaleRequestsDatasourceProvider),
+IEcSaleRequestsRepository ecSaleRequestsRepository(Ref ref) {
+  return EcSaleRequestsRepositoryImpl(
+    ref.watch(ecSaleRequestsDatasourceProvider),
   );
 }
 

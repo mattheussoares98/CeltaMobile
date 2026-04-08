@@ -10,7 +10,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class EcGetSaleRequestsDatasourceSpy extends Mock
-    implements IEcGetSaleRequestsDatasource {
+    implements IEcSaleRequestsDatasource {
   void mockGet(EcPaginationResults<EcSaleRequestModel> response) => when(
     () => this.get(
       params: any(named: 'params'),
@@ -36,7 +36,7 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
 }
 
 void main() {
-  late IEcGetSaleRequestsRepository sut;
+  late IEcSaleRequestsRepository sut;
   late EcGetSaleRequestsDatasourceSpy mockDatasource;
 
   late EcRequestParams params;
@@ -57,7 +57,7 @@ void main() {
 
   setUp(() {
     mockDatasource = EcGetSaleRequestsDatasourceSpy();
-    sut = EcGetSaleRequestsRepositoryImpl(mockDatasource);
+    sut = EcSaleRequestsRepositoryImpl(mockDatasource);
 
     params = EntityFactory.makeEcRequestParams();
     enterpriseIds = [1, 2, 3];

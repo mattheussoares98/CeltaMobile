@@ -1,5 +1,5 @@
-export './ec_get_sale_requests_datasource.dart';
-export './i_ec_get_sale_requests_datasource.dart';
+export 'ec_sale_requests_datasource.dart';
+export 'i_ec_sale_requests_datasource.dart';
 export './i_local_ip_print_sale_request_datasource.dart';
 export './i_local_last_saved_sale_request_datasource.dart';
 export './i_print_bsf_sale_request_datasource.dart';

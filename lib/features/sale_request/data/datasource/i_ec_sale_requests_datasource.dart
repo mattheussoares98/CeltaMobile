@@ -1,8 +1,8 @@
 import '../../../../core/domain/entities/entities.dart';
-import '../entities/entities.dart';
+import '../models/models.dart';
 
-abstract class IEcGetSaleRequestsRepository {
-  Future<EcPaginationResults<SaleRequestEntity>> get({
+abstract class IEcSaleRequestsDatasource {
+  Future<EcPaginationResults<EcSaleRequestModel>> get({
     required EcRequestParams params,
     DateTime? startDateHourOfCreation,
     DateTime? endDateHourOfCreation,
@@ -15,7 +15,7 @@ abstract class IEcGetSaleRequestsRepository {
     bool? mountProducts,
   });
 
-  Future<BSFSaleRequestEntity> getComplete({
+  Future<BSFSaleRequestModel> getComplete({
     required int saleRequestCode,
     required int enterpriseCode,
     required int customerCode,

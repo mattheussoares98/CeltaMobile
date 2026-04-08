@@ -39,7 +39,7 @@ class SaleRequestDetailsStateController
         .addUsage(UsageType.completeSearchSaleRequest);
 
     return await ref
-        .read(ecGetSaleRequestsRepositoryProvider)
+        .read(ecSaleRequestsRepositoryProvider)
         .getComplete(
           params: EcRequestParams(
             workingUrl: validatedUser!.enterprise!.workingUrl!,

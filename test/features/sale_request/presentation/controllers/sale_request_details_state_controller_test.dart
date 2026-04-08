@@ -14,11 +14,11 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class MockEcGetSaleRequestsRepository extends Mock
-    implements IEcGetSaleRequestsRepository {}
+class MockecSaleRequestsRepository extends Mock
+    implements IEcSaleRequestsRepository {}
 
 void main() {
-  late MockEcGetSaleRequestsRepository mockRepository;
+  late MockecSaleRequestsRepository mockRepository;
   late UserSessionModel fakeSession;
   late EcRequestParams params;
   late int saleRequestCode;
@@ -32,7 +32,7 @@ void main() {
   });
 
   setUp(() {
-    mockRepository = MockEcGetSaleRequestsRepository();
+    mockRepository = MockecSaleRequestsRepository();
     saleRequestCode = faker.randomGenerator.integer(9999);
     customerCode = faker.randomGenerator.integer(9999);
 
@@ -57,7 +57,7 @@ void main() {
     return ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        ecGetSaleRequestsRepositoryProvider.overrideWithValue(mockRepository),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
