@@ -50,11 +50,6 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                       enterpriseCode: enterpriseCode,
                       customerCode: customerCode,
                     ),
-                    ReloadButton(
-                      saleRequestId: saleRequestId,
-                      customerCode: customerCode,
-                      enterpriseCode: enterpriseCode,
-                    ),
                     Customer(
                       saleRequestId: saleRequestId,
                       customerCode: customerCode,

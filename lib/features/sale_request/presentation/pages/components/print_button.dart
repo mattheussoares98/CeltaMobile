@@ -97,6 +97,10 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
           )
         : lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode);
 
+    if (ref.watch(provider.select((s) => s.hasError))) {
+      return const SizedBox.shrink();
+    }
+
     return AsyncValueWidget(
       value: ref.watch(provider),
       tryAgain: () => ref.invalidate(provider),
