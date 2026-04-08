@@ -28,4 +28,6 @@ When creating a new feature, should add the route too, following others routes p
 
 If are not sure about how create a file, look at sale_request feature and compare to build similarly
 
-In the presentation widgets, all texts should contains .hardcoded at the end
+UI
+- All widgets texts should contains .hardcoded at the end
+- You should create performatic widgets, adding const as maximum as possible
