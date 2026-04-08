@@ -4,6 +4,7 @@ import '../../../domain/entities/entities.dart';
 import 'bsf.dart';
 
 class BSFSaleRequestModel extends Equatable {
+  final int? code;
   final DateTime? dateOfEmission;
   final DateTime? dateOfDelivery;
   final DateTime? dateOfExpiration;
@@ -28,6 +29,7 @@ class BSFSaleRequestModel extends Equatable {
   final List<BSFDiscountModel>? discounts;
 
   const BSFSaleRequestModel({
+    required this.code,
     required this.dateOfEmission,
     required this.dateOfDelivery,
     required this.dateOfExpiration,
@@ -54,6 +56,7 @@ class BSFSaleRequestModel extends Equatable {
 
   @override
   List<Object?> get props => [
+    code,
     dateOfEmission,
     dateOfDelivery,
     dateOfExpiration,
@@ -80,6 +83,7 @@ class BSFSaleRequestModel extends Equatable {
 
   factory BSFSaleRequestModel.fromJson(Map<String, dynamic> json) {
     return BSFSaleRequestModel(
+      code: json['Code'],
       dateOfEmission: json['DateOfEmission'] != null
           ? DateTime.parse(json['DateOfEmission'])
           : null,
@@ -144,6 +148,7 @@ class BSFSaleRequestModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
+    'Code': code,
     'DateOfEmission': dateOfEmission?.toIso8601String(),
     'DateOfDelivery': dateOfDelivery?.toIso8601String(),
     'DateOfExpiration': dateOfExpiration?.toIso8601String(),
@@ -170,6 +175,7 @@ class BSFSaleRequestModel extends Equatable {
 
   factory BSFSaleRequestModel.fromEntity(BSFSaleRequestEntity entity) {
     return BSFSaleRequestModel(
+      code: entity.code,
       dateOfEmission: entity.dateOfEmission,
       dateOfDelivery: entity.dateOfDelivery,
       dateOfExpiration: entity.dateOfExpiration,
@@ -220,6 +226,7 @@ class BSFSaleRequestModel extends Equatable {
   }
 
   BSFSaleRequestEntity toEntity() => BSFSaleRequestEntity(
+    code: code,
     dateOfEmission: dateOfEmission,
     dateOfDelivery: dateOfDelivery,
     dateOfExpiration: dateOfExpiration,

@@ -1048,6 +1048,7 @@ class EntityFactory {
 
   static BSFSaleRequestEntity makeBSFSaleRequestEntity() =>
       BSFSaleRequestEntity(
+        code: faker.randomGenerator.integer(100),
         dateOfEmission: faker.date.dateTime(),
         dateOfDelivery: faker.date.dateTime(),
         dateOfExpiration: faker.date.dateTime(),

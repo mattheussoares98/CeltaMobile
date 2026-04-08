@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../entities.dart';
 
 class BSFSaleRequestEntity extends Equatable {
+  final int? code;
   final DateTime? dateOfEmission;
   final DateTime? dateOfDelivery;
   final DateTime? dateOfExpiration;
@@ -27,6 +28,7 @@ class BSFSaleRequestEntity extends Equatable {
   final List<BSFDiscountEntity>? discounts;
 
   const BSFSaleRequestEntity({
+    required this.code,
     required this.dateOfEmission,
     required this.dateOfDelivery,
     required this.dateOfExpiration,
@@ -53,6 +55,7 @@ class BSFSaleRequestEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+    code,
     dateOfEmission,
     dateOfDelivery,
     dateOfExpiration,
