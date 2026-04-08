@@ -21,4 +21,10 @@ abstract class IEcSaleRequestsDatasource {
     required int customerCode,
     required EcRequestParams params,
   });
+
+  Future<bool> update({
+    required BSFSaleRequestModel saleRequest,
+    required int enterpriseCode,
+    required EcRequestParams params,
+  });
 }

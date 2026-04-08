@@ -166,4 +166,53 @@ void main() {
       ).called(1);
     });
   });
+
+  group('Update', () {
+    test('should behave correctly on success', () async {
+      final updated = await sut.update(
+        saleRequest: bSFSaleRequestModel,
+        enterpriseCode: enterpriseCode,
+        params: params,
+      );
+
+      expect(updated, isTrue);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/SaleRequests/Update',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            'saleRequest': bSFSaleRequestModel.toJson(),
+            'enterpriseCode': enterpriseCode,
+          },
+        ),
+      ).called(1);
+    });
+
+    test("should return false on error", () async {
+      httpClient.mockRequestError();
+
+      expectLater(
+        sut.update(
+          saleRequest: bSFSaleRequestModel,
+          enterpriseCode: enterpriseCode,
+          params: params,
+        ),
+        throwsA(isA<Exception>()),
+      );
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/SaleRequests/Update',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            'saleRequest': bSFSaleRequestModel.toJson(),
+            'enterpriseCode': enterpriseCode,
+          },
+        ),
+      ).called(1);
+    });
+  });
 }

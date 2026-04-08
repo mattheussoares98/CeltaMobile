@@ -70,4 +70,23 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
 
     return BSFSaleRequestModel.fromJson((json.decode(response) as List).first);
   }
+
+  @override
+  Future<bool> update({
+    required BSFSaleRequestModel saleRequest,
+    required int enterpriseCode,
+    required EcRequestParams params,
+  }) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/SaleRequests/Update',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {
+        'saleRequest': saleRequest.toJson(),
+        'enterpriseCode': enterpriseCode,
+      },
+    );
+
+    return true;
+  }
 }
