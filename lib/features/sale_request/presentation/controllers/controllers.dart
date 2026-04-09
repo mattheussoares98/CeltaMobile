@@ -10,6 +10,7 @@ export './sale_requests_state_controller.dart';
 export './save_sale_request_controller.dart';
 export './selected_item_ui_controller.dart';
 export 'consumer_customer_state_controller.dart';
+export 'insert_update_controller.dart';
 export 'pdf_from_last_saved_sale_request_controller.dart';
 export 'print_sale_request_controller.dart';
 export 'update_sale_request_controller.dart';

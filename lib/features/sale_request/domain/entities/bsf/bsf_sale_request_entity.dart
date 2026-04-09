@@ -80,6 +80,32 @@ class BSFSaleRequestEntity extends Equatable {
     discounts,
   ];
 
+  factory BSFSaleRequestEntity.empty() => const BSFSaleRequestEntity(
+    code: null,
+    dateOfEmission: null,
+    dateOfDelivery: null,
+    dateOfExpiration: null,
+    dateOfExclusion: null,
+    personalizedCode: null,
+    instructions: null,
+    observations: null,
+    financials: null,
+    requestType: null,
+    enterprise: null,
+    customer: null,
+    deliveryAddress: null,
+    deliveryTax: null,
+    increment: null,
+    financialIncrement: null,
+    financialDiscount: null,
+    totalLiquid: null,
+    expeditionControlCode: null,
+    isOnExpedition: null,
+    freight: null,
+    products: null,
+    discounts: null,
+  );
+
   double get _totalProductsLiquid {
     if (products == null) return 0;
 
