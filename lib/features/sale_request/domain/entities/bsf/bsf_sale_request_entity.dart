@@ -106,6 +106,59 @@ class BSFSaleRequestEntity extends Equatable {
     discounts: null,
   );
 
+  BSFSaleRequestEntity copyWith({
+    int? code,
+    DateTime? dateOfEmission,
+    DateTime? dateOfDelivery,
+    DateTime? dateOfExpiration,
+    DateTime? dateOfExclusion,
+    String? personalizedCode,
+    String? instructions,
+    String? observations,
+    List<BSFFinancialEntity>? financials,
+    BSFRequestTypeEntity? requestType,
+    BSFEnterpriseEntity? enterprise,
+    BSFCustomerEntity? customer,
+    BSFDeliveryAddressEntity? deliveryAddress,
+    BSFDeliveryTaxWrapperEntity? deliveryTax,
+    BSFValueTypeEntity? increment,
+    BSFValueTypeEntity? financialIncrement,
+    BSFValueTypeEntity? financialDiscount,
+    double? totalLiquid,
+    int? expeditionControlCode,
+    bool? isOnExpedition,
+    BSFFreightEntity? freight,
+    List<BSFProductItemEntity>? products,
+    List<BSFDiscountEntity>? discounts,
+  }) {
+    return BSFSaleRequestEntity(
+      code: code ?? this.code,
+      dateOfEmission: dateOfEmission ?? this.dateOfEmission,
+      dateOfDelivery: dateOfDelivery ?? this.dateOfDelivery,
+      dateOfExpiration: dateOfExpiration ?? this.dateOfExpiration,
+      dateOfExclusion: dateOfExclusion ?? this.dateOfExclusion,
+      personalizedCode: personalizedCode ?? this.personalizedCode,
+      instructions: instructions ?? this.instructions,
+      observations: observations ?? this.observations,
+      financials: financials ?? this.financials,
+      requestType: requestType ?? this.requestType,
+      enterprise: enterprise ?? this.enterprise,
+      customer: customer ?? this.customer,
+      deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+      deliveryTax: deliveryTax ?? this.deliveryTax,
+      increment: increment ?? this.increment,
+      financialIncrement: financialIncrement ?? this.financialIncrement,
+      financialDiscount: financialDiscount ?? this.financialDiscount,
+      totalLiquid: totalLiquid ?? this.totalLiquid,
+      expeditionControlCode:
+          expeditionControlCode ?? this.expeditionControlCode,
+      isOnExpedition: isOnExpedition ?? this.isOnExpedition,
+      freight: freight ?? this.freight,
+      products: products ?? this.products,
+      discounts: discounts ?? this.discounts,
+    );
+  }
+
   double get _totalProductsLiquid {
     if (products == null) return 0;
 
