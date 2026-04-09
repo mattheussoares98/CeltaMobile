@@ -2,7 +2,13 @@ import 'package:equatable/equatable.dart';
 
 import '../entities.dart';
 
-enum BSFSearchRequestType { approximateName }
+enum BSFSearchRequestType {
+  exactCode,
+  approximateName,
+  approximatePersonalizedCode,
+  approximateNameOrPersonalizedCode,
+  approximateDescription,
+}
 
 class BSFSearchRequestTypeParametersEntity extends Equatable {
   final BSFSearchRequestType searchType;

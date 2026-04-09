@@ -44,7 +44,7 @@ class RequestTypeDropdown extends ConsumerWidget {
 }
 
 class _RequestDropdown extends ConsumerWidget {
-  final List<RequestTypeEntity>? requests;
+  final List<BSFRequestTypeEntity>? requests;
   final bool enabled;
   final int enterpriseCode;
   const _RequestDropdown({
@@ -73,7 +73,7 @@ class _RequestDropdown extends ConsumerWidget {
               ),
             );
 
-            void update(RequestTypeEntity? request) {
+            void update(BSFRequestTypeEntity? request) {
               ref
                   .read(
                     pendingBuyRequestStateControllerProvider(
@@ -87,7 +87,7 @@ class _RequestDropdown extends ConsumerWidget {
                   );
             }
 
-            return DefaultSimpleDropDown<RequestTypeEntity?>(
+            return DefaultSimpleDropDown<BSFRequestTypeEntity?>(
               onTap: (request) {
                 if (hasSelectedEnterprises) {
                   showAlertDialog(
@@ -105,7 +105,7 @@ class _RequestDropdown extends ConsumerWidget {
                     (e) => DropdownMenuItem(
                       key: ValueKey(e),
                       value: e,
-                      child: Center(child: Text(e.Name)),
+                      child: Center(child: Text(e.name ?? '')),
                     ),
                   )
                   .toList(),

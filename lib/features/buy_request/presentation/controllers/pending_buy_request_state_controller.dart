@@ -42,7 +42,7 @@ class PendingBuyRequestStateController
 
   Future<void> updatePending({
     BuyerEntity? selectedBuyer,
-    RequestTypeEntity? selectedRequestType,
+    BSFRequestTypeEntity? selectedRequestType,
     SupplierEntity? selectedSupplier,
     List<EnterpriseEntity>? selectedEnterprises,
     Map<ProductKey, BuyRequestProductItemEntity>? products,

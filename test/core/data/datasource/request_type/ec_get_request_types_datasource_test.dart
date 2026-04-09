@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_inventario/core/data/datasource/request_type/request_type.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -42,9 +44,11 @@ void main() {
 
   group('search', () {
     test('should call httpClient with correct params', () async {
-      final mockResponse = requestTypes
-          .map((e) => BSFRequestTypeModel.fromEntity(e).toJson())
-          .toList();
+      final mockResponse = json.encode(
+        requestTypes
+            .map((e) => BSFRequestTypeModel.fromEntity(e).toJson())
+            .toList(),
+      );
       httpClient.mockRequest(mockResponse);
 
       final result = await sut.search(
@@ -57,7 +61,7 @@ void main() {
       expect(result.length, requestTypes.length);
       verify(
         () => httpClient.request(
-          url: '${params.workingUrl}/api/RequestTypes/GetRequestTypes',
+          url: '${params.workingUrl}/api/RequestTypes',
           method: 'post',
           headers: params.toHeaders(),
           body: {

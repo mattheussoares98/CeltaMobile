@@ -7,7 +7,7 @@ import 'models.dart';
 class PendingBuyRequestModel extends Equatable {
   final BuyerModel? selectedBuyer;
   final SupplierModel? selectedSupplier;
-  final RequestTypeModel? selectedRequestType;
+  final BSFRequestTypeModel? selectedRequestType;
   final List<SoapEnterpriseByFiltersModel>? selectedEnterprises;
   final Map<ProductKey, BuyRequestProductItemModel>? products;
   final String? lastSavedRequestNumber;
@@ -40,7 +40,7 @@ class PendingBuyRequestModel extends Equatable {
           ? SupplierModel.fromJson(json['selectedSupplier'])
           : null,
       selectedRequestType: json['selectedRequestType'] != null
-          ? RequestTypeModel.fromJson(json['selectedRequestType'])
+          ? BSFRequestTypeModel.fromJson(json['selectedRequestType'])
           : null,
       selectedEnterprises: json['selectedEnterprises'] != null
           ? List<SoapEnterpriseByFiltersModel>.from(
@@ -92,7 +92,7 @@ class PendingBuyRequestModel extends Equatable {
       lastSavedRequestNumber: entity.lastSavedRequestNumber,
       selectedRequestType: entity.selectedRequestType == null
           ? null
-          : RequestTypeModel.fromEntity(entity.selectedRequestType!),
+          : BSFRequestTypeModel.fromEntity(entity.selectedRequestType!),
       products: entity.products == null
           ? null
           : Map.fromEntries(

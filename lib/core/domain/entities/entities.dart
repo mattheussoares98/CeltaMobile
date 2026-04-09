@@ -15,6 +15,7 @@ export 'buyer/buyer.dart';
 export 'customer/customer.dart';
 export 'ec/ec.dart';
 export 'enterprise/enterprise.dart';
+export 'operation_type.dart';
 export 'selectable_item.dart';
 export 'supplier/supplier.dart';
 export 'transfer_justification/transfer_justification.dart';

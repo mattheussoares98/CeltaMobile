@@ -20,8 +20,8 @@ class UiStateController extends _$UiStateController {
 
     final allowChangePrice =
         requests
-            ?.firstWhereOrNull((e) => e.Code == requestTypeCode)
-            ?.AllowAlterCostOrSalePrice ==
+            ?.firstWhereOrNull((e) => e.code == requestTypeCode)
+            ?.allowAlterCostOrSalePrice ==
         true;
 
     return UiModel(

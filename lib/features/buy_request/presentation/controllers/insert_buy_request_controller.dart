@@ -32,7 +32,7 @@ class InsertBuyRequestController extends _$InsertBuyRequestController {
             workingUrl: userSession!.enterprise!.workingUrl!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
             buyerCode: pending.selectedBuyer!.Code,
-            requestTypeCode: pending.selectedRequestType!.Code,
+            requestTypeCode: pending.selectedRequestType!.code!,
             supplierCode: pending.selectedSupplier!.Code,
             enterpriseCodes: pending.selectedEnterprises!
                 .map((e) => e.Code!)

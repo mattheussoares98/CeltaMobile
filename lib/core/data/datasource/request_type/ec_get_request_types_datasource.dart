@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../domain/contracts/contracts.dart';
 import '../../../domain/entities/entities.dart';
 import '../../models/models.dart';
@@ -15,21 +17,18 @@ class EcGetRequestTypesDatasource implements IEcGetRequestTypesDatasource {
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/RequestTypes/GetRequestTypes',
+      url: '${params.workingUrl}/api/RequestTypes',
       method: 'post',
       headers: params.toHeaders(),
       body: {
-        'parameters':
-            BSFSearchRequestTypeParametersModel.fromEntity(parameters).toJson(),
+        'parameters': BSFSearchRequestTypeParametersModel.fromEntity(
+          parameters,
+        ).toJson(),
         'enterpriseCode': enterpriseCode,
       },
     );
 
-    if (response == null) {
-      return [];
-    }
-
-    return (response as List)
+    return (json.decode(response) as List)
         .map((e) => BSFRequestTypeModel.fromJson(e))
         .toList();
   }

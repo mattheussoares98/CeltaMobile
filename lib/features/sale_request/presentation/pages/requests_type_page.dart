@@ -39,13 +39,13 @@ class RequestsTypePage extends ConsumerWidget {
                 final request = requests![index];
 
                 return _RequestTypeItem(
-                  key: ValueKey(request.Code),
+                  key: ValueKey(request.code),
                   request: request,
                   onTap: () => context.goNamed(
                     Routes.createSaleRequest.name,
                     pathParameters: {
                       'enterpriseCode': enterpriseCode.toString(),
-                      'requestCode': request.Code.toString(),
+                      'requestCode': request.code.toString(),
                     },
                   ),
                   enterpriseCode: enterpriseCode,
@@ -60,7 +60,7 @@ class RequestsTypePage extends ConsumerWidget {
 }
 
 class _RequestTypeItem extends StatelessWidget {
-  final RequestTypeEntity request;
+  final BSFRequestTypeEntity request;
   final VoidCallback onTap;
   final int enterpriseCode;
   const _RequestTypeItem({
@@ -81,7 +81,7 @@ class _RequestTypeItem extends StatelessWidget {
             Routes.createSaleRequest.name,
             pathParameters: {
               'enterpriseCode': enterpriseCode.toString(),
-              'requestCode': request.Code.toString(),
+              'requestCode': request.code.toString(),
             },
           );
         },
@@ -94,7 +94,7 @@ class _RequestTypeItem extends StatelessWidget {
                 builder: (_, ref, _) {
                   final bool isDefaultRequestType = ref.watch(
                     selectedEnterpriseStateControllerProvider.select(
-                      (s) => s?.SaleRequestTypeCode == request.Code,
+                      (s) => s?.SaleRequestTypeCode == request.code,
                     ),
                   );
 
@@ -113,31 +113,31 @@ class _RequestTypeItem extends StatelessWidget {
 
               TitleAndSubTitle(
                 title: 'Código'.hardcoded,
-                subTitle: request.PersonalizedCode,
+                subTitle: request.personalizedCode,
               ),
-              TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.Name),
-              TitleAndSubTitle(
-                title: 'Tipo preço'.hardcoded,
-                subTitle: request.UnitValueTypeString,
-              ),
+              TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.name),
+              // TitleAndSubTitle(
+              //   title: 'Tipo preço'.hardcoded,
+              //   subTitle: request.,//TODO check if this property is returned
+              // ),
               TitleAndSubTitle(
                 title: null,
-                subTitle: request.AllowAlterCostOrSalePrice == true
+                subTitle: request.allowAlterCostOrSalePrice == true
                     ? 'Permite alterar o preço'.hardcoded
                     : 'Não permite alterar o preço'.hardcoded,
                 subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                  color: request.AllowAlterCostOrSalePrice == true
+                  color: request.allowAlterCostOrSalePrice == true
                       ? theme.primaryColor
                       : theme.colorScheme.error,
                 ),
               ),
               TitleAndSubTitle(
                 title: null,
-                subTitle: request.AllowDiscount == true
+                subTitle: request.allowUseDiscount == true
                     ? 'Permite desconto manual'.hardcoded
                     : 'Não permite desconto manual'.hardcoded,
                 subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                  color: request.AllowDiscount == true
+                  color: request.allowUseDiscount == true
                       ? theme.primaryColor
                       : theme.colorScheme.error,
                 ),

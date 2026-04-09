@@ -21,7 +21,7 @@ class EnterprisesStateController extends _$EnterprisesStateController {
       workingUrl: userSession!.enterprise!.workingUrl!,
       crossIdentity: userSession.user.CrossIdentity_Usuario!,
       supplierCode: pending.selectedSupplier!.Code,
-      requestTypeCode: pending.selectedRequestType!.Code,
+      requestTypeCode: pending.selectedRequestType!.code!,
     );
 
     return enterprises;

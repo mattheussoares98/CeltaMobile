@@ -16,7 +16,7 @@ class QuantityPriceDiscountFieldsAndInsertButton
   final FocusNode quantityFocusNode;
   final FocusNode discountFocusNode;
   final FocusNode priceFocusNode;
-  final RequestTypeEntity selectedRequest;
+  final BSFRequestTypeEntity selectedRequest;
   final ProductEntity product;
   final SaleRequestCartProductEntity? cartProduct;
   final bool isCartPage;
@@ -120,7 +120,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
                           widget: widget,
                         ),
                       ),
-                      if (widget.selectedRequest.AllowAlterCostOrSalePrice ==
+                      if (widget.selectedRequest.allowAlterCostOrSalePrice ==
                           true) ...[
                         gapH4,
                         FocusTraversalOrder(
@@ -151,7 +151,7 @@ class _QuantityPriceDiscountFieldsAndInsertButtonState
                 ),
               ],
             ),
-            if (widget.selectedRequest.AllowDiscount == true) ...[
+            if (widget.selectedRequest.allowUseDiscount == true) ...[
               gapH4,
               FocusTraversalOrder(
                 order: const NumericFocusOrder(3),

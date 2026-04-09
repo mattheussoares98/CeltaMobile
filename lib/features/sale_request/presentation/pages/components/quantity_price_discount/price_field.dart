@@ -40,7 +40,7 @@ class PriceField extends StatelessWidget {
                 ),
                 enabled: enabled,
                 onFieldSubmitted: (_) {
-                  if (widget.selectedRequest.AllowDiscount == true &&
+                  if (widget.selectedRequest.allowUseDiscount == true &&
                       widget.priceController.text.isEmpty) {
                     widget.discountFocusNode.requestFocus();
                   } else {

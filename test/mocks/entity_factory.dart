@@ -638,7 +638,7 @@ class EntityFactory {
     final productPackingCode = faker.randomGenerator.integer(100);
 
     return PendingBuyRequestEntity(
-      selectedRequestType: makeRequestTypeEntity(),
+      selectedRequestType: makeBSFRequestTypeEntity(),
       selectedBuyer: makeBuyerEntity(),
       selectedSupplier: selectedSupplier ?? makeSupplierEntity(),
       lastSavedRequestNumber: faker.lorem.word(),
@@ -1071,7 +1071,10 @@ class EntityFactory {
           allowFinancialIncrement: faker.randomGenerator.boolean(),
           observationsOnPrint: faker.lorem.sentence(),
           type: faker.randomGenerator.integer(100),
-          operationType: faker.randomGenerator.integer(100),
+          operationType:
+              OperationType.values[faker.randomGenerator.integer(
+                OperationType.values.length,
+              )],
           generatePendencyFinancialTitle: faker.randomGenerator.boolean(),
           allowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
           utilizeSaleLikePdvModel: faker.randomGenerator.boolean(),
@@ -1312,7 +1315,8 @@ class EntityFactory {
         observationsOnPrint: faker.lorem.sentence(),
         personalizedCode: faker.randomGenerator.string(10),
         type: faker.randomGenerator.integer(5),
-        operationType: faker.randomGenerator.integer(5),
+        operationType: OperationType
+            .values[faker.randomGenerator.integer(OperationType.values.length)],
         generatePendencyFinancialTitle: faker.randomGenerator.boolean(),
         allowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
         utilizeSaleLikePdvModel: faker.randomGenerator.boolean(),

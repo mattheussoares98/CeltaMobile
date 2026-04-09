@@ -18,11 +18,11 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void onTap(RequestTypeEntity request) {
+    void onTap(BSFRequestTypeEntity request) {
       context.goNamed(
         Routes.transferRequestOriginEnterprises.name,
         pathParameters: {
-          'requestTypeCode': request.Code.toString(),
+          'requestTypeCode': request.code.toString(),
           'enterpriseCode': enterpriseCode.toString(),
         },
       );
@@ -53,7 +53,7 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
               itemBuilder: (_, index) {
                 final request = requests![index];
                 return _RequestTypeItem(
-                  key: ValueKey(request.Code),
+                  key: ValueKey(request.code),
                   request: request,
                   onTap: () => onTap(request),
                 );
@@ -67,7 +67,7 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
 }
 
 class _RequestTypeItem extends StatelessWidget {
-  final RequestTypeEntity request;
+  final BSFRequestTypeEntity request;
   final VoidCallback onTap;
   const _RequestTypeItem({
     super.key,
@@ -87,31 +87,31 @@ class _RequestTypeItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.Name),
+              TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.name),
               TitleAndSubTitle(
                 title: 'Cód personalizado'.hardcoded,
-                subTitle: request.PersonalizedCode,
+                subTitle: request.personalizedCode,
               ),
               TitleAndSubTitle(
                 title: 'Tipo de operação'.hardcoded,
-                subTitle: request.OperationTypeString,
+                subTitle: request.operationType?.name,
               ),
-              if (request.UseWholePrice == 1)
+              if (request.useWholePrice == 1)
                 TitleAndSubTitle(
                   title: 'Preço atacado'.hardcoded,
-                  subTitle: request.UseWholePriceString,
+                  subTitle: request.useWholePrice.toString(),
                 ),
-              TitleAndSubTitle(
-                title: 'Preço praticado'.hardcoded,
-                subTitle: request.UnitValueTypeString,
-              ),
+              // TitleAndSubTitle(
+              //   title: 'Preço praticado'.hardcoded,
+              //   subTitle: request.unitValueTypeString,//TODO check the model TODO
+              // ),
               TitleAndSubTitle(
                 title: null,
-                subTitle: request.AllowAlterCostOrSalePrice == true
+                subTitle: request.allowAlterCostOrSalePrice == true
                     ? "Pode alterar preço de custo ou venda"
                     : "Não pode alterar preço de custo ou venda",
                 subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                  color: request.AllowAlterCostOrSalePrice == true
+                  color: request.allowAlterCostOrSalePrice == true
                       ? Colors.green
                       : Colors.red,
                 ),

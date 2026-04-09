@@ -50,11 +50,11 @@ class _ProductItemState extends ConsumerState<ProductItem> {
       requestTypeStateControllerProvider(
         Modules.saleRequest,
         widget.enterpriseCode,
-      ).selectAsync((s) => s!.firstWhere((x) => x.Code == widget.requestCode)),
+      ).selectAsync((s) => s!.firstWhere((x) => x.code == widget.requestCode)),
     );
 
     if (product.getPrice == 0 &&
-        selectedRequest.AllowAlterCostOrSalePrice != true) {
+        selectedRequest.allowAlterCostOrSalePrice != true) {
       showSnackBarMessage(
         context,
         'Esse produto está com o preço zerado e o modelo não permite alterar o preço'
@@ -143,7 +143,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                     widget.enterpriseCode,
                   ).select(
                     (s) => s.value!.firstWhere(
-                      (x) => x.Code == widget.requestCode,
+                      (x) => x.code == widget.requestCode,
                     ),
                   ),
                 );

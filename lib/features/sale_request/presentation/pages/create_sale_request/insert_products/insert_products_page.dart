@@ -7,7 +7,7 @@ import 'components/components.dart';
 
 class InsertProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final RequestTypeEntity selectedRequest;
+  final BSFRequestTypeEntity selectedRequest;
   const InsertProductsPage({
     super.key,
     required this.enterpriseCode,
@@ -44,7 +44,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
               slivers: [
                 ProductsItems(
                   enterpriseCode: widget.enterpriseCode,
-                  requestCode: widget.selectedRequest.Code,
+                  requestCode: widget.selectedRequest.code!,
                 ),
                 gapSliverH48,
               ],

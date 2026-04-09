@@ -12,11 +12,11 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class SpyRequestTypeStateController extends RequestTypeStateController {
-  final List<RequestTypeEntity>? requestsToReturn;
+  final List<BSFRequestTypeEntity>? requestsToReturn;
   SpyRequestTypeStateController(this.requestsToReturn);
 
   @override
-  FutureOr<List<RequestTypeEntity>?> build(
+  FutureOr<List<BSFRequestTypeEntity>?> build(
     Modules module,
     int enterpriseCode,
   ) async {
@@ -26,7 +26,7 @@ class SpyRequestTypeStateController extends RequestTypeStateController {
 
 void main() {
   late int requestTypeCode;
-  late List<RequestTypeEntity> fakeRequests;
+  late List<BSFRequestTypeEntity> fakeRequests;
   late int enterpriseCode;
 
   setUpAll(() {
@@ -39,18 +39,18 @@ void main() {
 
     // Generating a list of fake request types
     fakeRequests = List.generate(3, (index) {
-      return EntityFactory.makeRequestTypeEntity(
-        Code: index == 0
+      return EntityFactory.makeBSFRequestTypeEntity().copyWith(
+        code: index == 0
             ? requestTypeCode
             : faker.randomGenerator.integer(1000, min: 100),
-        AllowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
+        allowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
       );
     });
     enterpriseCode = faker.randomGenerator.integer(100);
   });
 
   ProviderContainer makeProviderContainer({
-    List<RequestTypeEntity>? requestTypes,
+    List<BSFRequestTypeEntity>? requestTypes,
   }) {
     return ProviderContainer(
       retry: (retryCount, error) => null,
@@ -68,9 +68,9 @@ void main() {
       'should initialize with allowChangePrice true when request code matches and allows it',
       () async {
         // ARRANGE
-        final targetRequest = EntityFactory.makeRequestTypeEntity(
-          Code: requestTypeCode,
-          AllowAlterCostOrSalePrice: true,
+        final targetRequest = EntityFactory.makeBSFRequestTypeEntity().copyWith(
+          code: requestTypeCode,
+          allowAlterCostOrSalePrice: true,
         );
         final container = makeProviderContainer(requestTypes: [targetRequest]);
         addTearDown(container.dispose);

@@ -171,7 +171,7 @@ void main() {
             workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             buyerCode: fakePendingRequest.selectedBuyer!.Code,
-            requestTypeCode: fakePendingRequest.selectedRequestType!.Code,
+            requestTypeCode: fakePendingRequest.selectedRequestType!.code!,
             supplierCode: fakePendingRequest.selectedSupplier!.Code,
             observations: fakeObservations,
             enterpriseCodes: fakePendingRequest.selectedEnterprises!

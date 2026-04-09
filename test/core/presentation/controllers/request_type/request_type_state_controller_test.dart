@@ -12,25 +12,25 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class MockSoapLoadRequestTypeRepository extends Mock
-    implements ISoapLoadRequestTypeRepository {}
+class MockEcGetRequestTypesRepository extends Mock
+    implements IEcGetRequestTypesRepository {}
 
 void main() {
-  late MockSoapLoadRequestTypeRepository mockRepository;
+  late MockEcGetRequestTypesRepository mockRepository;
   late UserSessionModel fakeSession;
-  late List<RequestTypeEntity> requestTypeEntities;
+  late List<BSFRequestTypeEntity> requestTypeEntities;
   late Modules module;
   late int enterpriseCode;
 
   setUp(() {
-    mockRepository = MockSoapLoadRequestTypeRepository();
+    mockRepository = MockEcGetRequestTypesRepository();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
     requestTypeEntities = [
-      EntityFactory.makeRequestTypeEntity(),
-      EntityFactory.makeRequestTypeEntity(),
-      EntityFactory.makeRequestTypeEntity(),
+      EntityFactory.makeBSFRequestTypeEntity(),
+      EntityFactory.makeBSFRequestTypeEntity(),
+      EntityFactory.makeBSFRequestTypeEntity(),
     ];
     module = [
       Modules.buyRequest,
@@ -44,13 +44,17 @@ void main() {
     for (var value in Modules.values) {
       registerFallbackValue(value);
     }
+    registerFallbackValue(
+      EntityFactory.makeBSFSearchRequestTypeParametersEntity(),
+    );
+    registerFallbackValue(EntityFactory.makeEcRequestParams());
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        soapLoadRequestTypeRepositoryProvider.overrideWithValue(mockRepository),
+        ecGetRequestTypesRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
@@ -64,13 +68,10 @@ void main() {
       () async {
         // ARRANGE
         when(
-          () => mockRepository.load(
-            workingUrl: any(named: 'workingUrl'),
-            crossIdentity: any(named: 'crossIdentity'),
-            inclusiveBuy: any(named: 'inclusiveBuy'),
-            inclusiveTransfer: any(named: 'inclusiveTransfer'),
-            inclusiveSale: any(named: 'inclusiveSale'),
+          () => mockRepository.search(
+            parameters: any(named: 'parameters'),
             enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
           ),
         ).thenAnswer((_) async => requestTypeEntities);
 
@@ -85,13 +86,23 @@ void main() {
         // ASSERT
         expect(result, requestTypeEntities);
         verify(
-          () => mockRepository.load(
-            workingUrl: fakeSession.enterprise!.workingUrl!,
-            crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
-            inclusiveBuy: module == Modules.buyRequest,
-            inclusiveTransfer: module == Modules.transferRequest,
-            inclusiveSale: module == Modules.saleRequest,
+          () => mockRepository.search(
+            parameters: BSFSearchRequestTypeParametersEntity(
+              makeRequestTypeForTransfer: module == Modules.transferRequest,
+              makePaymentFinalizations: module == Modules.saleRequest,
+              behaviorBasicFilters:
+                  BSFSearchRequestTypeBehaviorBasicFiltersEntity(
+                    inclusiveBuy: module == Modules.buyRequest,
+                    inclusiveTransfer: module == Modules.transferRequest,
+                    inclusiveSale: module == Modules.saleRequest,
+                  ),
+            ),
             enterpriseCode: enterpriseCode,
+            params: EcRequestParams(
+              workingUrl: fakeSession.enterprise!.workingUrl!,
+              user: fakeSession.user.name!,
+              accessKey: fakeSession.user.AccessKey!,
+            ),
           ),
         ).called(1);
       },
@@ -112,13 +123,10 @@ void main() {
 
       // Verify the repository was never called.
       verifyNever(
-        () => mockRepository.load(
-          workingUrl: any(named: 'workingUrl'),
-          crossIdentity: any(named: 'crossIdentity'),
-          inclusiveBuy: any(named: 'inclusiveBuy'),
-          inclusiveTransfer: any(named: 'inclusiveTransfer'),
-          inclusiveSale: any(named: 'inclusiveSale'),
+        () => mockRepository.search(
+          parameters: any(named: 'parameters'),
           enterpriseCode: any(named: 'enterpriseCode'),
+          params: any(named: 'params'),
         ),
       );
     });

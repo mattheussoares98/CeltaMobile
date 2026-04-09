@@ -96,7 +96,7 @@ void main() {
             workingUrl: fakeSession.enterprise!.workingUrl!,
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             supplierCode: fakePendingRequest.selectedSupplier!.Code,
-            requestTypeCode: fakePendingRequest.selectedRequestType!.Code,
+            requestTypeCode: fakePendingRequest.selectedRequestType!.code!,
           ),
         ).called(1);
       },

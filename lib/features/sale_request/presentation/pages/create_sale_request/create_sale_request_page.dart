@@ -108,7 +108,7 @@ class CreateSaleRequestPage extends ConsumerWidget {
             },
             data: (requests) {
               final selectedRequest = requests!.firstWhere(
-                (e) => e.Code == requestCode,
+                (e) => e.code == requestCode,
               );
 
               return IndexedStack(

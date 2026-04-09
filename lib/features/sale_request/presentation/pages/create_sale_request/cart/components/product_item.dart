@@ -19,7 +19,7 @@ class ProductItem extends ConsumerWidget {
   final FocusNode quantityFocusNode;
   final FocusNode discountFocusNode;
   final FocusNode priceFocusNode;
-  final RequestTypeEntity selectedRequest;
+  final BSFRequestTypeEntity selectedRequest;
   final int enterpriseCode;
   const ProductItem({
     super.key,

@@ -9,7 +9,7 @@ class BSFRequestTypeEntity extends Equatable {
   final String? observationsOnPrint;
   final String? personalizedCode;
   final int? type;
-  final int? operationType;
+  final OperationType? operationType;
   final bool? generatePendencyFinancialTitle;
   final bool? allowAlterCostOrSalePrice;
   final bool? utilizeSaleLikePdvModel;
@@ -111,7 +111,7 @@ class BSFRequestTypeEntity extends Equatable {
     String? observationsOnPrint,
     String? personalizedCode,
     int? type,
-    int? operationType,
+    OperationType? operationType,
     bool? generatePendencyFinancialTitle,
     bool? allowAlterCostOrSalePrice,
     bool? utilizeSaleLikePdvModel,

@@ -1,12 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum OperationType {
-  exit(2),
-  entrance(1);
-
-  final int value;
-  const OperationType(this.value);
-}
+import '../entities.dart';
 
 class TransferJustificationEntity extends Equatable {
   final int CodigoInterno_JustMov; /*  37, */

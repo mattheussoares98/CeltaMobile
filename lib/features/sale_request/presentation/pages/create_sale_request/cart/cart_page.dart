@@ -11,7 +11,7 @@ import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class CartPage extends ConsumerStatefulWidget {
-  final RequestTypeEntity selectedRequest;
+  final BSFRequestTypeEntity selectedRequest;
   final int enterpriseCode;
   const CartPage({
     super.key,
@@ -135,7 +135,7 @@ class _CartPageState extends ConsumerState<CartPage>
         .read(processCartControllerProvider.notifier)
         .process(
           enterpriseCode: widget.enterpriseCode,
-          requestTypeCode: widget.selectedRequest.Code,
+          requestTypeCode: widget.selectedRequest.code!,
         );
   }
 
@@ -144,7 +144,7 @@ class _CartPageState extends ConsumerState<CartPage>
         .read(saveSaleRequestControllerProvider.notifier)
         .save(
           enterpriseCode: widget.enterpriseCode,
-          requestTypeCode: widget.selectedRequest.Code,
+          requestTypeCode: widget.selectedRequest.code!,
           instructions: instructionsController.text,
           observations: observationsController.text,
         );

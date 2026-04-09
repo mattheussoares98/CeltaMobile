@@ -54,7 +54,7 @@ class BSFSearchRequestTypeParametersModel
   }
 
   Map<String, dynamic> toJson() => {
-    'SearchType': searchType.index,
+    'SearchType': searchType.name,
     'SimpleSearchValue': simpleSearchValue,
     'MakeEnterprises': makeEnterprises,
     'MakeFiscalNoteTypes': makeFiscalNoteTypes,

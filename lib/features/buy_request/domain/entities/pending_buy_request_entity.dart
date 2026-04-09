@@ -5,7 +5,7 @@ import 'entities.dart';
 
 class PendingBuyRequestEntity extends Equatable {
   final BuyerEntity? selectedBuyer;
-  final RequestTypeEntity? selectedRequestType;
+  final BSFRequestTypeEntity? selectedRequestType;
   final SupplierEntity? selectedSupplier;
   final List<EnterpriseEntity>? selectedEnterprises;
   final Map<ProductKey, BuyRequestProductItemEntity>? products;
@@ -42,7 +42,7 @@ class PendingBuyRequestEntity extends Equatable {
     BuyerEntity? selectedBuyer,
     SupplierEntity? selectedSupplier,
     List<EnterpriseEntity>? selectedEnterprises,
-    RequestTypeEntity? selectedRequestType,
+    BSFRequestTypeEntity? selectedRequestType,
     Map<ProductKey, BuyRequestProductItemEntity>? products,
     String? lastSavedRequestNumber,
   }) {
