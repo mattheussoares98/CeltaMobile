@@ -30,6 +30,7 @@ class EditButton extends ConsumerWidget {
               route: Routes.insertUpdateSaleRequest,
               enterpriseCode: enterpriseCode,
               module: Modules.saleRequest,
+              replace: true,
               pathParameters: {
                 'enterpriseCode': enterpriseCode.toString(),
                 'customerCode': customerCode.toString(),
