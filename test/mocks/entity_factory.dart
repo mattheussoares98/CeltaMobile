@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:celta_inventario/core/data/models/models.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart' hide BSFPaymentFinalizationEntity;
+import 'package:celta_inventario/core/domain/entities/entities.dart'
+    hide BSFPaymentFinalizationEntity;
 import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/models/models.dart';
@@ -1301,5 +1302,55 @@ class EntityFactory {
             )],
         ActualizeDataAfterUpdate: faker.randomGenerator.boolean(),
         UpdateEnterpriseGroup: faker.randomGenerator.boolean(),
+      );
+
+  static BSFRequestTypeEntity makeBSFRequestTypeEntity() =>
+      BSFRequestTypeEntity(
+        code: faker.randomGenerator.integer(1000),
+        name: faker.person.name(),
+        description: faker.lorem.sentence(),
+        observationsOnPrint: faker.lorem.sentence(),
+        personalizedCode: faker.randomGenerator.string(10),
+        type: faker.randomGenerator.integer(5),
+        operationType: faker.randomGenerator.integer(5),
+        generatePendencyFinancialTitle: faker.randomGenerator.boolean(),
+        allowAlterCostOrSalePrice: faker.randomGenerator.boolean(),
+        utilizeSaleLikePdvModel: faker.randomGenerator.boolean(),
+        insertProductAutomatically: faker.randomGenerator.boolean(),
+        allowsQuantityLikeProduct: faker.randomGenerator.boolean(),
+        groupProductsInSaleRequest: faker.randomGenerator.boolean(),
+        decimalPlacesForUnitValue: faker.randomGenerator.integer(2),
+        decimalPlacesForProductQuantity: faker.randomGenerator.integer(2),
+        allowUseDeliveryTax: faker.randomGenerator.boolean(),
+        allowUseIncrement: faker.randomGenerator.boolean(),
+        allowUseDiscount: faker.randomGenerator.boolean(),
+        allowDistribution: faker.randomGenerator.boolean(),
+        allowSaleOffer: faker.randomGenerator.boolean(),
+        considerAsStockPendency: faker.randomGenerator.boolean(),
+        showStockByClass: faker.randomGenerator.boolean(),
+        showStockByExtensibleGroup: faker.randomGenerator.boolean(),
+        daysOfValidity: faker.randomGenerator.integer(30),
+        allowFinancialIncrement: faker.randomGenerator.boolean(),
+        allowFinancialDiscount: faker.randomGenerator.boolean(),
+        userGroups: null,
+        paymentFinalizations: const [],
+        requestPrintEditionHeaderImage: null,
+        useWholePrice: faker.randomGenerator.integer(2),
+        useECommercePrice: faker.randomGenerator.boolean(),
+      );
+
+  static BSFSearchRequestTypeParametersEntity
+  makeBSFSearchRequestTypeParametersEntity() =>
+      BSFSearchRequestTypeParametersEntity(
+        simpleSearchValue: 'Test',
+        searchType: BSFSearchRequestType.approximateName,
+        makeEnterprises: faker.randomGenerator.boolean(),
+        makeFiscalNoteTypes: faker.randomGenerator.boolean(),
+        makeRequestTypeForTransfer: faker.randomGenerator.boolean(),
+        makeFiscalCodes: faker.randomGenerator.boolean(),
+        makeUserGroups: faker.randomGenerator.boolean(),
+        makeUsers: faker.randomGenerator.boolean(),
+        makePaymentFinalizations: faker.randomGenerator.boolean(),
+        makeSendEmailParameters: faker.randomGenerator.boolean(),
       );
 }
