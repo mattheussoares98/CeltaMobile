@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../../core/data/models/models.dart';
 import '../../../domain/entities/entities.dart';
 import 'bsf.dart';
 

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../../core/domain/entities/entities.dart';
 import '../entities.dart';
 
 class BSFSaleRequestEntity extends Equatable {

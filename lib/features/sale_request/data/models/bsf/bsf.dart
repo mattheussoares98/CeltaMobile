@@ -5,7 +5,6 @@ export 'bsf_delivery_address_model.dart';
 export 'bsf_delivery_tax_wrapper_model.dart';
 export 'bsf_enterprise_model.dart';
 export 'bsf_freight_model.dart';
-export 'bsf_request_type_model.dart';
 export 'bsf_sale_request_model.dart';
 export 'bsf_state_model.dart';
 export 'bsf_value_type_model.dart';
