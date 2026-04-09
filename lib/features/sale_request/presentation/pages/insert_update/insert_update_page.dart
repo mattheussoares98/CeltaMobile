@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class InsertUpdatePage extends ConsumerWidget {
   final int enterpriseCode;
   final int customerCode;
-  final int? saleRequestId;
+  final int saleRequestId;
   const InsertUpdatePage({
     super.key,
     required this.enterpriseCode,

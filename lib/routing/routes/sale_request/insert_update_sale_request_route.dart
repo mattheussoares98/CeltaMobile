@@ -16,7 +16,7 @@ RouteBase insertUpdateSaleRequestRoute() => GoRoute(
     return InsertUpdatePage(
       enterpriseCode: enterpriseCode,
       customerCode: customerCode,
-      saleRequestId: saleRequestId,
+      saleRequestId: saleRequestId ?? 0, //!0 is inserting
     );
   },
 );
