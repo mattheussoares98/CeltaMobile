@@ -42,5 +42,94 @@ class BSFRequestTypeEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [personalizedCode, name];
+  List<Object?> get props => [
+    personalizedCode,
+    name,
+    allowAlterCostOrSalePrice,
+    utilizeSaleLikePdvModel,
+    allowUseDeliveryTax,
+    allowUseIncrement,
+    allowUseDiscount,
+    allowDistribution,
+    allowSaleOffer,
+    considerAsStockPendency,
+    showStockByClass,
+    showStockByExtensibleGroup,
+    daysOfValidity,
+    userGroups,
+    paymentFinalizations,
+    requestPrintEditionHeaderImage,
+    useWholePrice,
+    useECommercePrice,
+  ];
+
+  BSFRequestTypeEntity copyWith({
+    String? name,
+    String? personalizedCode,
+    bool? allowAlterCostOrSalePrice,
+    bool? utilizeSaleLikePdvModel,
+    bool? allowUseDeliveryTax,
+    bool? allowUseIncrement,
+    bool? allowUseDiscount,
+    bool? allowDistribution,
+    bool? allowSaleOffer,
+    bool? considerAsStockPendency,
+    bool? showStockByClass,
+    bool? showStockByExtensibleGroup,
+    int? daysOfValidity,
+    dynamic userGroups,
+    List<dynamic>? paymentFinalizations,
+    dynamic requestPrintEditionHeaderImage,
+    int? useWholePrice,
+    bool? useECommercePrice,
+  }) {
+    return BSFRequestTypeEntity(
+      name: name ?? this.name,
+      personalizedCode: personalizedCode ?? this.personalizedCode,
+      allowAlterCostOrSalePrice:
+          allowAlterCostOrSalePrice ?? this.allowAlterCostOrSalePrice,
+      utilizeSaleLikePdvModel:
+          utilizeSaleLikePdvModel ?? this.utilizeSaleLikePdvModel,
+      allowUseDeliveryTax: allowUseDeliveryTax ?? this.allowUseDeliveryTax,
+      allowUseIncrement: allowUseIncrement ?? this.allowUseIncrement,
+      allowUseDiscount: allowUseDiscount ?? this.allowUseDiscount,
+      allowDistribution: allowDistribution ?? this.allowDistribution,
+      allowSaleOffer: allowSaleOffer ?? this.allowSaleOffer,
+      considerAsStockPendency:
+          considerAsStockPendency ?? this.considerAsStockPendency,
+      showStockByClass: showStockByClass ?? this.showStockByClass,
+      showStockByExtensibleGroup:
+          showStockByExtensibleGroup ?? this.showStockByExtensibleGroup,
+      daysOfValidity: daysOfValidity ?? this.daysOfValidity,
+      userGroups: userGroups ?? this.userGroups,
+      paymentFinalizations: paymentFinalizations ?? this.paymentFinalizations,
+      requestPrintEditionHeaderImage:
+          requestPrintEditionHeaderImage ?? this.requestPrintEditionHeaderImage,
+      useWholePrice: useWholePrice ?? this.useWholePrice,
+      useECommercePrice: useECommercePrice ?? this.useECommercePrice,
+    );
+  }
+
+  factory BSFRequestTypeEntity.empty() {
+    return const BSFRequestTypeEntity(
+      name: null,
+      personalizedCode: null,
+      allowAlterCostOrSalePrice: null,
+      utilizeSaleLikePdvModel: null,
+      allowUseDeliveryTax: null,
+      allowUseIncrement: null,
+      allowUseDiscount: null,
+      allowDistribution: null,
+      allowSaleOffer: null,
+      considerAsStockPendency: null,
+      showStockByClass: null,
+      showStockByExtensibleGroup: null,
+      daysOfValidity: null,
+      userGroups: null,
+      paymentFinalizations: null,
+      requestPrintEditionHeaderImage: null,
+      useWholePrice: null,
+      useECommercePrice: null,
+    );
+  }
 }
