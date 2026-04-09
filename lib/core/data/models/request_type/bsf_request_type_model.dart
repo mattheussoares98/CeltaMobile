@@ -1,4 +1,5 @@
 import '../../../domain/entities/entities.dart';
+import '../models.dart';
 
 class BSFRequestTypeModel extends BSFRequestTypeEntity {
   const BSFRequestTypeModel({
@@ -70,40 +71,46 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     useECommercePrice,
   ];
 
-  factory BSFRequestTypeModel.fromJson(Map<String, dynamic> json) =>
-      BSFRequestTypeModel(
-        code: json['Code'],
-        name: json['Name'],
-        description: json['Description'],
-        observationsOnPrint: json['ObservationsOnPrint'],
-        personalizedCode: json['PersonalizedCode'],
-        type: json['Type'],
-        operationType: json['OperationType'],
-        generatePendencyFinancialTitle: json['GeneratePendencyFinancialTitle'],
-        allowAlterCostOrSalePrice: json['AllowAlterCostOrSalePrice'],
-        utilizeSaleLikePdvModel: json['UtilizeSaleLikePdvModel'],
-        insertProductAutomatically: json['InsertProductAutomatically'],
-        allowsQuantityLikeProduct: json['AllowsQuantityLikeProduct'],
-        groupProductsInSaleRequest: json['GroupProductsInSaleRequest'],
-        decimalPlacesForUnitValue: json['DecimalPlacesForUnitValue'],
-        decimalPlacesForProductQuantity: json['DecimalPlacesForProductQuantity'],
-        allowUseDeliveryTax: json['AllowUseDeliveryTax'],
-        allowUseIncrement: json['AllowUseIncrement'],
-        allowUseDiscount: json['AllowUseDiscount'],
-        allowDistribution: json['AllowDistribution'],
-        allowSaleOffer: json['AllowSaleOffer'],
-        considerAsStockPendency: json['ConsiderAsStockPendency'],
-        showStockByClass: json['ShowStockByClass'],
-        showStockByExtensibleGroup: json['ShowStockByExtensibleGroup'],
-        daysOfValidity: json['DaysOfValidity'],
-        allowFinancialIncrement: json['AllowFinancialIncrement'],
-        allowFinancialDiscount: json['AllowFinancialDiscount'],
-        userGroups: json['UserGroups'],
-        paymentFinalizations: json['PaymentFinalizations'],
-        requestPrintEditionHeaderImage: json['RequestPrintEditionHeaderImage'],
-        useWholePrice: json['UseWholePrice'],
-        useECommercePrice: json['UseECommercePrice'],
-      );
+  factory BSFRequestTypeModel.fromJson(
+    Map<String, dynamic> json,
+  ) => BSFRequestTypeModel(
+    code: json['Code'],
+    name: json['Name'],
+    description: json['Description'],
+    observationsOnPrint: json['ObservationsOnPrint'],
+    personalizedCode: json['PersonalizedCode'],
+    type: json['Type'],
+    operationType: json['OperationType'],
+    generatePendencyFinancialTitle: json['GeneratePendencyFinancialTitle'],
+    allowAlterCostOrSalePrice: json['AllowAlterCostOrSalePrice'],
+    utilizeSaleLikePdvModel: json['UtilizeSaleLikePdvModel'],
+    insertProductAutomatically: json['InsertProductAutomatically'],
+    allowsQuantityLikeProduct: json['AllowsQuantityLikeProduct'],
+    groupProductsInSaleRequest: json['GroupProductsInSaleRequest'],
+    decimalPlacesForUnitValue: json['DecimalPlacesForUnitValue'],
+    decimalPlacesForProductQuantity: json['DecimalPlacesForProductQuantity'],
+    allowUseDeliveryTax: json['AllowUseDeliveryTax'],
+    allowUseIncrement: json['AllowUseIncrement'],
+    allowUseDiscount: json['AllowUseDiscount'],
+    allowDistribution: json['AllowDistribution'],
+    allowSaleOffer: json['AllowSaleOffer'],
+    considerAsStockPendency: json['ConsiderAsStockPendency'],
+    showStockByClass: json['ShowStockByClass'],
+    showStockByExtensibleGroup: json['ShowStockByExtensibleGroup'],
+    daysOfValidity: json['DaysOfValidity'],
+    allowFinancialIncrement: json['AllowFinancialIncrement'],
+    allowFinancialDiscount: json['AllowFinancialDiscount'],
+    userGroups: json['UserGroups'],
+    paymentFinalizations: (json['PaymentFinalizations'] as List?)
+        ?.map(
+          (e) =>
+              BSFPaymentFinalizationModel.fromJson(e) as BSFPaymentFinalizationEntity,
+        )
+        .toList(),
+    requestPrintEditionHeaderImage: json['RequestPrintEditionHeaderImage'],
+    useWholePrice: json['UseWholePrice'],
+    useECommercePrice: json['UseECommercePrice'],
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': code,
@@ -133,7 +140,9 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     'AllowFinancialIncrement': allowFinancialIncrement,
     'AllowFinancialDiscount': allowFinancialDiscount,
     'UserGroups': userGroups,
-    'PaymentFinalizations': paymentFinalizations,
+    'PaymentFinalizations': paymentFinalizations
+        ?.map((e) => BSFPaymentFinalizationModel.fromEntity(e).toJson())
+        .toList(),
     'RequestPrintEditionHeaderImage': requestPrintEditionHeaderImage,
     'UseWholePrice': useWholePrice,
     'UseECommercePrice': useECommercePrice,

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../entities.dart';
+
 class BSFRequestTypeEntity extends Equatable {
   final int? code;
   final String? name;
@@ -28,7 +30,7 @@ class BSFRequestTypeEntity extends Equatable {
   final bool? allowFinancialIncrement;
   final bool? allowFinancialDiscount;
   final dynamic userGroups;
-  final List<dynamic>? paymentFinalizations;
+  final List<BSFPaymentFinalizationEntity>? paymentFinalizations;
   final dynamic requestPrintEditionHeaderImage;
   final int? useWholePrice;
   final bool? useECommercePrice;
@@ -130,7 +132,7 @@ class BSFRequestTypeEntity extends Equatable {
     bool? allowFinancialIncrement,
     bool? allowFinancialDiscount,
     dynamic userGroups,
-    List<dynamic>? paymentFinalizations,
+    List<BSFPaymentFinalizationEntity>? paymentFinalizations,
     dynamic requestPrintEditionHeaderImage,
     int? useWholePrice,
     bool? useECommercePrice,
@@ -158,7 +160,8 @@ class BSFRequestTypeEntity extends Equatable {
       decimalPlacesForUnitValue:
           decimalPlacesForUnitValue ?? this.decimalPlacesForUnitValue,
       decimalPlacesForProductQuantity:
-          decimalPlacesForProductQuantity ?? this.decimalPlacesForProductQuantity,
+          decimalPlacesForProductQuantity ??
+          this.decimalPlacesForProductQuantity,
       allowUseDeliveryTax: allowUseDeliveryTax ?? this.allowUseDeliveryTax,
       allowUseIncrement: allowUseIncrement ?? this.allowUseIncrement,
       allowUseDiscount: allowUseDiscount ?? this.allowUseDiscount,

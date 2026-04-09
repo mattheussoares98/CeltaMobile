@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:celta_inventario/core/data/models/models.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart' hide BSFPaymentFinalizationEntity;
 import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/models/models.dart';
