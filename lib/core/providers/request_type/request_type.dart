@@ -23,3 +23,10 @@ ISoapLoadRequestTypeRepository soapLoadRequestTypeRepository(Ref ref) {
 IEcGetRequestTypesDatasource ecGetRequestTypesDatasource(Ref ref) {
   return EcGetRequestTypesDatasource(ref.watch(httpClientProvider));
 }
+
+@riverpod
+IEcGetRequestTypesRepository ecGetRequestTypesRepository(Ref ref) {
+  return EcGetRequestTypesRepositoryImpl(
+    ref.watch(ecGetRequestTypesDatasourceProvider),
+  );
+}
