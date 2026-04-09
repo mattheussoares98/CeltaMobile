@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-enum BSFSearchRequestType {
-  approximateName,
-}
+import '../entities.dart';
+
+enum BSFSearchRequestType { approximateName }
 
 class BSFSearchRequestTypeParametersEntity extends Equatable {
   final BSFSearchRequestType searchType;
@@ -15,6 +15,7 @@ class BSFSearchRequestTypeParametersEntity extends Equatable {
   final bool makeUsers;
   final bool makePaymentFinalizations;
   final bool makeSendEmailParameters;
+  final BSFSearchRequestTypeBehaviorBasicFiltersEntity? behaviorBasicFilters;
 
   const BSFSearchRequestTypeParametersEntity({
     this.searchType = BSFSearchRequestType.approximateName,
@@ -27,19 +28,21 @@ class BSFSearchRequestTypeParametersEntity extends Equatable {
     this.makeUsers = false,
     this.makePaymentFinalizations = false,
     this.makeSendEmailParameters = false,
+    this.behaviorBasicFilters,
   });
 
   @override
   List<Object?> get props => [
-        searchType,
-        simpleSearchValue,
-        makeEnterprises,
-        makeFiscalNoteTypes,
-        makeRequestTypeForTransfer,
-        makeFiscalCodes,
-        makeUserGroups,
-        makeUsers,
-        makePaymentFinalizations,
-        makeSendEmailParameters,
-      ];
+    searchType,
+    simpleSearchValue,
+    makeEnterprises,
+    makeFiscalNoteTypes,
+    makeRequestTypeForTransfer,
+    makeFiscalCodes,
+    makeUserGroups,
+    makeUsers,
+    makePaymentFinalizations,
+    makeSendEmailParameters,
+    behaviorBasicFilters,
+  ];
 }
