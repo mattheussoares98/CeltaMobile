@@ -1,4 +1,5 @@
-import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/domain/entities/entities.dart'
+    hide BSFPaymentFinalizationEntity;
 import '../entities/entities.dart';
 
 abstract class IEcSaleRequestsRepository {
@@ -24,6 +25,10 @@ abstract class IEcSaleRequestsRepository {
 
   Future<bool> update({
     required BSFSaleRequestEntity saleRequest,
+    required int enterpriseCode,
+    required EcRequestParams params,
+  });
+  Future<List<BSFPaymentFinalizationEntity>> getPaymentOptions({
     required int enterpriseCode,
     required EcRequestParams params,
   });

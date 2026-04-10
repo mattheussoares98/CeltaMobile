@@ -1,4 +1,5 @@
-import '../../../../core/domain/entities/entities.dart';
+import '../../../../core/domain/entities/entities.dart'
+    hide BSFPaymentFinalizationEntity;
 import '../../data/datasource/datasource.dart';
 import '../../data/models/models.dart';
 import '../entities/entities.dart';
@@ -65,5 +66,18 @@ class EcSaleRequestsRepositoryImpl implements IEcSaleRequestsRepository {
       enterpriseCode: enterpriseCode,
       params: params,
     );
+  }
+
+  @override
+  Future<List<BSFPaymentFinalizationEntity>> getPaymentOptions({
+    required int enterpriseCode,
+    required EcRequestParams params,
+  }) async {
+    final response = await datasource.getPaymentOptions(
+      enterpriseCode: enterpriseCode,
+      params: params,
+    );
+
+    return response.map((e) => e.toEntity()).toList();
   }
 }
