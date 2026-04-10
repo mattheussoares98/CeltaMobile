@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class BSFPaymentFinalizationEntity extends Equatable {
-  //TODO change this name
+class BSFRequestTypePaymentFinalizationEntity extends Equatable {
   final int? code;
   final String? description;
   final String? planCode;
@@ -12,7 +11,7 @@ class BSFPaymentFinalizationEntity extends Equatable {
   final int? cardTerminalType;
   final double? financialTax;
 
-  const BSFPaymentFinalizationEntity({
+  const BSFRequestTypePaymentFinalizationEntity({
     required this.code,
     required this.description,
     required this.planCode,
@@ -37,7 +36,7 @@ class BSFPaymentFinalizationEntity extends Equatable {
     financialTax,
   ];
 
-  BSFPaymentFinalizationEntity copyWith({
+  BSFRequestTypePaymentFinalizationEntity copyWith({
     int? code,
     String? description,
     String? planCode,
@@ -48,7 +47,7 @@ class BSFPaymentFinalizationEntity extends Equatable {
     int? cardTerminalType,
     double? financialTax,
   }) {
-    return BSFPaymentFinalizationEntity(
+    return BSFRequestTypePaymentFinalizationEntity(
       code: code ?? this.code,
       description: description ?? this.description,
       planCode: planCode ?? this.planCode,
@@ -62,8 +61,8 @@ class BSFPaymentFinalizationEntity extends Equatable {
     );
   }
 
-  factory BSFPaymentFinalizationEntity.empty() {
-    return const BSFPaymentFinalizationEntity(
+  factory BSFRequestTypePaymentFinalizationEntity.empty() {
+    return const BSFRequestTypePaymentFinalizationEntity(
       code: null,
       description: null,
       planCode: null,

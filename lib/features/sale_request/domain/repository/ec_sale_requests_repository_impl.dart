@@ -1,5 +1,4 @@
-import '../../../../core/domain/entities/entities.dart'
-    hide BSFPaymentFinalizationEntity;
+import '../../../../core/domain/entities/entities.dart';
 import '../../data/datasource/datasource.dart';
 import '../../data/models/models.dart';
 import '../entities/entities.dart';

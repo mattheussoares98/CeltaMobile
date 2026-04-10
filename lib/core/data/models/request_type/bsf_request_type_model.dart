@@ -112,7 +112,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
             ?.map(
               (e) =>
                   BSFPaymentFinalizationModel.fromJson(e)
-                      as BSFPaymentFinalizationEntity,
+                      as BSFRequestTypePaymentFinalizationEntity,
             )
             .toList(),
         requestPrintEditionHeaderImage: json['RequestPrintEditionHeaderImage'],

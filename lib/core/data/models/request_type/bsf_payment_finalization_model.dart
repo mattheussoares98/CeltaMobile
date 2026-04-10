@@ -1,6 +1,7 @@
 import '../../../domain/entities/entities.dart';
 
-class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
+class BSFPaymentFinalizationModel
+    extends BSFRequestTypePaymentFinalizationEntity {
   const BSFPaymentFinalizationModel({
     super.code,
     super.description,
@@ -42,7 +43,7 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
   }
 
   factory BSFPaymentFinalizationModel.fromEntity(
-    BSFPaymentFinalizationEntity entity,
+    BSFRequestTypePaymentFinalizationEntity entity,
   ) {
     return BSFPaymentFinalizationModel(
       code: entity.code,
@@ -57,8 +58,8 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
     );
   }
 
-  BSFPaymentFinalizationEntity toEntity() {
-    return BSFPaymentFinalizationEntity(
+  BSFRequestTypePaymentFinalizationEntity toEntity() {
+    return BSFRequestTypePaymentFinalizationEntity(
       code: code,
       description: description,
       planCode: planCode,

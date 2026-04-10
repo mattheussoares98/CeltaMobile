@@ -30,7 +30,7 @@ class BSFRequestTypeEntity extends Equatable {
   final bool? allowFinancialIncrement;
   final bool? allowFinancialDiscount;
   final dynamic userGroups;
-  final List<BSFPaymentFinalizationEntity>? paymentFinalizations;
+  final List<BSFRequestTypePaymentFinalizationEntity>? paymentFinalizations;
   final dynamic requestPrintEditionHeaderImage;
   final int? useWholePrice;
   final bool? useECommercePrice;
@@ -135,7 +135,7 @@ class BSFRequestTypeEntity extends Equatable {
     bool? allowFinancialIncrement,
     bool? allowFinancialDiscount,
     dynamic userGroups,
-    List<BSFPaymentFinalizationEntity>? paymentFinalizations,
+    List<BSFRequestTypePaymentFinalizationEntity>? paymentFinalizations,
     dynamic requestPrintEditionHeaderImage,
     int? useWholePrice,
     bool? useECommercePrice,
