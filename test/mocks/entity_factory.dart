@@ -1097,6 +1097,10 @@ class EntityFactory {
           requestPrintEditionHeaderImage: const {},
           useWholePrice: faker.randomGenerator.integer(100),
           useECommercePrice: faker.randomGenerator.boolean(),
+          unitValueType: RequestUnitValueType
+              .values[faker.randomGenerator.integer(
+                RequestUnitValueType.values.length,
+              )],
         ),
         enterprise: BSFEnterpriseEntity(
           code: faker.randomGenerator.integer(100),
@@ -1341,6 +1345,10 @@ class EntityFactory {
         requestPrintEditionHeaderImage: null,
         useWholePrice: faker.randomGenerator.integer(2),
         useECommercePrice: faker.randomGenerator.boolean(),
+        unitValueType: RequestUnitValueType
+            .values[faker.randomGenerator.integer(
+              RequestUnitValueType.values.length,
+            )],
       );
 
   static BSFSearchRequestTypeParametersEntity

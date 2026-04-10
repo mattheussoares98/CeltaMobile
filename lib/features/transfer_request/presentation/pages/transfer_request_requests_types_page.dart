@@ -88,23 +88,19 @@ class _RequestTypeItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.name),
-              TitleAndSubTitle(
-                title: 'Cód personalizado'.hardcoded,
-                subTitle: request.personalizedCode,
-              ),
+              if (request.personalizedCode?.isNotEmpty ?? false)
+                TitleAndSubTitle(
+                  title: 'Cód personalizado'.hardcoded,
+                  subTitle: request.personalizedCode,
+                ),
               TitleAndSubTitle(
                 title: 'Tipo de operação'.hardcoded,
                 subTitle: request.operationType?.name,
               ),
-              if (request.useWholePrice == 1)
-                TitleAndSubTitle(
-                  title: 'Preço atacado'.hardcoded,
-                  subTitle: request.useWholePrice.toString(),
-                ),
-              // TitleAndSubTitle(
-              //   title: 'Preço praticado'.hardcoded,
-              //   subTitle: request.unitValueTypeString,//TODO check the model TODO
-              // ),
+              TitleAndSubTitle(
+                title: 'Preço praticado'.hardcoded,
+                subTitle: request.unitValueType?.description,
+              ),
               TitleAndSubTitle(
                 title: null,
                 subTitle: request.allowAlterCostOrSalePrice == true

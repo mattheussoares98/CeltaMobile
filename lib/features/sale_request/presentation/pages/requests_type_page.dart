@@ -116,10 +116,10 @@ class _RequestTypeItem extends StatelessWidget {
                 subTitle: request.personalizedCode,
               ),
               TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.name),
-              // TitleAndSubTitle(
-              //   title: 'Tipo preço'.hardcoded,
-              //   subTitle: request.,//TODO check if this property is returned
-              // ),
+              TitleAndSubTitle(
+                title: 'Tipo preço'.hardcoded,
+                subTitle: request.unitValueType?.description,
+              ),
               TitleAndSubTitle(
                 title: null,
                 subTitle: request.allowAlterCostOrSalePrice == true

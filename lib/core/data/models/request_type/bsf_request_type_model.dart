@@ -36,6 +36,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     super.requestPrintEditionHeaderImage,
     super.useWholePrice,
     super.useECommercePrice,
+    super.unitValueType,
   });
 
   @override
@@ -71,27 +72,12 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     requestPrintEditionHeaderImage,
     useWholePrice,
     useECommercePrice,
+    unitValueType,
   ];
 
   factory BSFRequestTypeModel.fromJson(Map<String, dynamic> json) =>
       BSFRequestTypeModel(
-        //TODO check if return UnitValueType
-        //public enum RequestUnitValueType
-        // {
-        //     SalePracticedRetail = 1,
-        //     SalePracticedWholeSale,
-        //     OperationalCost,
-        //     ReplacementCost,
-        //     ReplacementCostMidle,
-        //     LiquidCost,
-        //     LiquidCostMidle,
-        //     DefinedBySystem,
-        //     RealCost,
-        //     RealLiquidCost,
-        //     FiscalCost,
-        //     FiscalLiquidCost,
-        //     SalePracticedECommerce
-        // }
+        unitValueType: RequestUnitValueType.fromValue(json['UnitValueType']),
         code: json['Code'],
         name: json['Name'],
         description: json['Description'],
@@ -168,6 +154,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     'RequestPrintEditionHeaderImage': requestPrintEditionHeaderImage,
     'UseWholePrice': useWholePrice,
     'UseECommercePrice': useECommercePrice,
+    'UnitValueType': unitValueType?.value,
   };
 
   factory BSFRequestTypeModel.fromEntity(BSFRequestTypeEntity entity) =>
@@ -203,6 +190,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
         requestPrintEditionHeaderImage: entity.requestPrintEditionHeaderImage,
         useWholePrice: entity.useWholePrice,
         useECommercePrice: entity.useECommercePrice,
+        unitValueType: entity.unitValueType,
       );
 
   BSFRequestTypeEntity toEntity() => BSFRequestTypeEntity(
@@ -237,5 +225,6 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     requestPrintEditionHeaderImage: requestPrintEditionHeaderImage,
     useWholePrice: useWholePrice,
     useECommercePrice: useECommercePrice,
+    unitValueType: unitValueType,
   );
 }

@@ -34,6 +34,7 @@ class BSFRequestTypeEntity extends Equatable {
   final dynamic requestPrintEditionHeaderImage;
   final int? useWholePrice;
   final bool? useECommercePrice;
+  final RequestUnitValueType? unitValueType;
 
   const BSFRequestTypeEntity({
     required this.code,
@@ -67,6 +68,7 @@ class BSFRequestTypeEntity extends Equatable {
     required this.requestPrintEditionHeaderImage,
     required this.useWholePrice,
     required this.useECommercePrice,
+    required this.unitValueType,
   });
 
   @override
@@ -102,6 +104,7 @@ class BSFRequestTypeEntity extends Equatable {
     requestPrintEditionHeaderImage,
     useWholePrice,
     useECommercePrice,
+    unitValueType,
   ];
 
   BSFRequestTypeEntity copyWith({
@@ -136,6 +139,7 @@ class BSFRequestTypeEntity extends Equatable {
     dynamic requestPrintEditionHeaderImage,
     int? useWholePrice,
     bool? useECommercePrice,
+    RequestUnitValueType? unitValueType,
   }) {
     return BSFRequestTypeEntity(
       code: code ?? this.code,
@@ -183,6 +187,7 @@ class BSFRequestTypeEntity extends Equatable {
           requestPrintEditionHeaderImage ?? this.requestPrintEditionHeaderImage,
       useWholePrice: useWholePrice ?? this.useWholePrice,
       useECommercePrice: useECommercePrice ?? this.useECommercePrice,
+      unitValueType: unitValueType ?? this.unitValueType,
     );
   }
 
@@ -219,6 +224,7 @@ class BSFRequestTypeEntity extends Equatable {
       requestPrintEditionHeaderImage: null,
       useWholePrice: null,
       useECommercePrice: null,
+      unitValueType: null,
     );
   }
 }
