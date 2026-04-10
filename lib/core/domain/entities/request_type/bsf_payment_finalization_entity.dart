@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class BSFPaymentFinalizationEntity extends Equatable {
+  //TODO change this name
   final int? code;
   final String? description;
   final String? planCode;
