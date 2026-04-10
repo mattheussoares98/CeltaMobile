@@ -14,7 +14,6 @@ class RequestTypeStateController extends _$RequestTypeStateController {
     int enterpriseCode,
   ) async {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
-    //TODO check the commit after the hash 1658ad5d5c622b208b355930b06f9fb0f83c984f because has a lot of changes. Should test all changes to be sure that won't case a problem
     return await ref
         .read(ecGetRequestTypesRepositoryProvider)
         .search(
