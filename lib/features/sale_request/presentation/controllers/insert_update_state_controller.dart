@@ -8,7 +8,7 @@ import 'controllers.dart';
 part 'insert_update_controller.g.dart';
 
 @riverpod
-class InsertUpdateController extends _$InsertUpdateController {
+class InsertUpdateStateController extends _$InsertUpdateController {
   @override
   FutureOr<BSFSaleRequestEntity> build({
     required int enterpriseCode,
