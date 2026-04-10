@@ -5,10 +5,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/entities.dart';
 import 'controllers.dart';
 
-part 'insert_update_controller.g.dart';
+part 'insert_update_state_controller.g.dart';
 
 @riverpod
-class InsertUpdateStateController extends _$InsertUpdateController {
+class InsertUpdateStateController extends _$InsertUpdateStateController {
   @override
   FutureOr<BSFSaleRequestEntity> build({
     required int enterpriseCode,
@@ -29,17 +29,29 @@ class InsertUpdateStateController extends _$InsertUpdateController {
       timer?.cancel();
     });
 
+    final paymentOptionsFuture = ref.read(
+      paymentOptionsStateControllerProvider(enterpriseCode).future,
+    );
+
     if (saleRequestId == 0) {
       //!inserting
+      await paymentOptionsFuture;
       return BSFSaleRequestEntity.empty();
     }
 
-    return await ref.read(
+    final saleRequestDetailsFuture = ref.read(
       saleRequestDetailsStateControllerProvider(
         customerCode: customerCode,
         enterpriseCode: enterpriseCode,
         saleRequestCode: saleRequestId,
       ).future,
     );
+
+    final results = await Future.wait([
+      paymentOptionsFuture,
+      saleRequestDetailsFuture,
+    ]);
+
+    return results[1] as BSFSaleRequestEntity;
   }
 }

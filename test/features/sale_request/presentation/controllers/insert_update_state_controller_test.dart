@@ -22,15 +22,36 @@ class FakeSaleRequestDetailsController
   }
 }
 
+class FakePaymentOptionsController extends PaymentOptionsStateController {
+  final List<BSFPaymentFinalizationEntity> entities;
+  bool wasCalled = false;
+  FakePaymentOptionsController(this.entities);
+
+  @override
+  FutureOr<List<BSFPaymentFinalizationEntity>> build(int enterpriseCode) {
+    wasCalled = true;
+    return entities;
+  }
+}
+
 void main() {
-  group('InsertUpdateController', () {
-    test('should return empty entity when saleRequestId is 0', () async {
-      final container = ProviderContainer();
+  group('InsertUpdateStateController', () {
+    test('should return empty entity when saleRequestId is 0 and load payment options',
+        () async {
+      final fakePayments = FakePaymentOptionsController([]);
+      const enterpriseCode = 1;
+
+      final container = ProviderContainer(
+        overrides: [
+          paymentOptionsStateControllerProvider(enterpriseCode)
+              .overrideWith(() => fakePayments),
+        ],
+      );
       addTearDown(container.dispose);
 
       final result = await container.read(
-        insertUpdateControllerProvider(
-          enterpriseCode: 1,
+        insertUpdateStateControllerProvider(
+          enterpriseCode: enterpriseCode,
           customerCode: 1,
           saleRequestId: 0,
         ).future,
@@ -38,19 +59,22 @@ void main() {
 
       expect(result, isA<BSFSaleRequestEntity>());
       expect(result, BSFSaleRequestEntity.empty());
-      expect(result.code, isNull);
+      expect(fakePayments.wasCalled, isTrue);
     });
 
     test(
-      'should return data from saleRequestDetailsStateControllerProvider when saleRequestId is not 0',
+      'should return data from saleRequestDetailsStateControllerProvider when saleRequestId is not 0 and load payment options',
       () async {
         final fakeEntity = EntityFactory.makeBSFSaleRequestEntity();
+        final fakePayments = FakePaymentOptionsController([]);
         const enterpriseCode = 1;
         const customerCode = 2;
         const saleRequestId = 123;
 
         final container = ProviderContainer(
           overrides: [
+            paymentOptionsStateControllerProvider(enterpriseCode)
+                .overrideWith(() => fakePayments),
             saleRequestDetailsStateControllerProvider(
               customerCode: customerCode,
               enterpriseCode: enterpriseCode,
@@ -61,7 +85,7 @@ void main() {
         addTearDown(container.dispose);
 
         final result = await container.read(
-          insertUpdateControllerProvider(
+          insertUpdateStateControllerProvider(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestId: saleRequestId,
@@ -69,6 +93,7 @@ void main() {
         );
 
         expect(result, fakeEntity);
+        expect(fakePayments.wasCalled, isTrue);
       },
     );
   });
