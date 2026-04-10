@@ -1,19 +1,20 @@
-import 'package:equatable/equatable.dart';
-
 import '../../../../domain/entities/entities.dart';
 import 'financial.dart';
 
-class BSFPaymentFinalizationModel extends Equatable {
-  final BSFPaymentFormModel? paymentForm;
-  final String Description;
-
+class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
   const BSFPaymentFinalizationModel({
-    required this.paymentForm,
-    required this.Description,
+    required super.paymentForm,
+    required super.Description,
+    required super.code,
+    required super.isDeactivate,
+    required super.isDeactivateString,
+    required super.actionCheckType,
+    required super.cardTerminalType,
+    required super.planCode,
+    required super.financialTax,
+    required super.identificationCode,
+    required super.identificationTefFlagCode,
   });
-
-  @override
-  List<Object?> get props => [paymentForm, Description];
 
   factory BSFPaymentFinalizationModel.fromJson(Map<String, dynamic> json) =>
       BSFPaymentFinalizationModel(
@@ -21,9 +22,32 @@ class BSFPaymentFinalizationModel extends Equatable {
             ? BSFPaymentFormModel.fromJson(json['PaymentForm'])
             : null,
         Description: json['Description'],
+        code: json['Code'],
+        isDeactivate: json['IsDeactivate'],
+        isDeactivateString: json['IsDeactivateString'],
+        actionCheckType: json['ActionCheckType'],
+        cardTerminalType: json['CardTerminalType'],
+        planCode: json['PlanCode'],
+        financialTax: (json['FinancialTax'] as num?)?.toDouble(),
+        identificationCode: json['IdentificationCode'],
+        identificationTefFlagCode: json['IdentificationTefFlagCode'],
       );
 
-  Map<String, dynamic> toJson() => {'PaymentForm': paymentForm?.toJson()};
+  Map<String, dynamic> toJson() => {
+    'PaymentForm': paymentForm == null
+        ? null
+        : BSFPaymentFormModel.fromEntity(paymentForm!),
+    'Description': Description,
+    'Code': code,
+    'IsDeactivate': isDeactivate,
+    'IsDeactivateString': isDeactivateString,
+    'ActionCheckType': actionCheckType,
+    'CardTerminalType': cardTerminalType,
+    'PlanCode': planCode,
+    'FinancialTax': financialTax,
+    'IdentificationCode': identificationCode,
+    'IdentificationTefFlagCode': identificationTefFlagCode,
+  };
 
   factory BSFPaymentFinalizationModel.fromEntity(
     BSFPaymentFinalizationEntity entity,
@@ -32,10 +56,30 @@ class BSFPaymentFinalizationModel extends Equatable {
         ? null
         : BSFPaymentFormModel.fromEntity(entity.paymentForm!),
     Description: entity.Description,
+    code: entity.code,
+    isDeactivate: entity.isDeactivate,
+    isDeactivateString: entity.isDeactivateString,
+    actionCheckType: entity.actionCheckType,
+    cardTerminalType: entity.cardTerminalType,
+    planCode: entity.planCode,
+    financialTax: entity.financialTax,
+    identificationCode: entity.identificationCode,
+    identificationTefFlagCode: entity.identificationTefFlagCode,
   );
 
   BSFPaymentFinalizationEntity toEntity() => BSFPaymentFinalizationEntity(
-    paymentForm: paymentForm?.toEntity(),
+    paymentForm: paymentForm == null
+        ? null
+        : BSFPaymentFormModel.fromEntity(paymentForm!),
     Description: Description,
+    code: code,
+    isDeactivate: isDeactivate,
+    isDeactivateString: isDeactivateString,
+    actionCheckType: actionCheckType,
+    cardTerminalType: cardTerminalType,
+    planCode: planCode,
+    financialTax: financialTax,
+    identificationCode: identificationCode,
+    identificationTefFlagCode: identificationTefFlagCode,
   );
 }

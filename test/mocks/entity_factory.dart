@@ -1097,8 +1097,8 @@ class EntityFactory {
           requestPrintEditionHeaderImage: const {},
           useWholePrice: faker.randomGenerator.integer(100),
           useECommercePrice: faker.randomGenerator.boolean(),
-          unitValueType: RequestUnitValueType
-              .values[faker.randomGenerator.integer(
+          unitValueType:
+              RequestUnitValueType.values[faker.randomGenerator.integer(
                 RequestUnitValueType.values.length,
               )],
         ),
@@ -1220,6 +1220,15 @@ class EntityFactory {
       BSFPaymentFinalizationEntity(
         paymentForm: _makeBSFPaymentFormEntity(),
         Description: faker.lorem.word(),
+        code: faker.randomGenerator.integer(100),
+        isDeactivate: faker.randomGenerator.boolean(),
+        isDeactivateString: faker.lorem.word(),
+        actionCheckType: faker.randomGenerator.integer(10),
+        cardTerminalType: faker.randomGenerator.integer(10),
+        planCode: faker.lorem.word(),
+        financialTax: faker.randomGenerator.decimal(),
+        identificationCode: faker.lorem.word(),
+        identificationTefFlagCode: faker.lorem.word(),
       );
 
   static BSFPaymentFormEntity _makeBSFPaymentFormEntity() =>
@@ -1310,6 +1319,20 @@ class EntityFactory {
         ActualizeDataAfterUpdate: faker.randomGenerator.boolean(),
         UpdateEnterpriseGroup: faker.randomGenerator.boolean(),
       );
+  static BSFPaymentFinalizationEntity makeBSFPaymentFinalizationEntity() =>
+      BSFPaymentFinalizationEntity(
+        paymentForm: _makeBSFPaymentFormEntity(),
+        Description: faker.lorem.word(),
+        code: faker.randomGenerator.integer(100),
+        isDeactivate: faker.randomGenerator.boolean(),
+        isDeactivateString: faker.lorem.word(),
+        actionCheckType: faker.randomGenerator.integer(10),
+        cardTerminalType: faker.randomGenerator.integer(10),
+        planCode: faker.lorem.word(),
+        financialTax: faker.randomGenerator.decimal(),
+        identificationCode: faker.lorem.word(),
+        identificationTefFlagCode: faker.lorem.word(),
+      );
 
   static BSFRequestTypeEntity makeBSFRequestTypeEntity() =>
       BSFRequestTypeEntity(
@@ -1345,8 +1368,8 @@ class EntityFactory {
         requestPrintEditionHeaderImage: null,
         useWholePrice: faker.randomGenerator.integer(2),
         useECommercePrice: faker.randomGenerator.boolean(),
-        unitValueType: RequestUnitValueType
-            .values[faker.randomGenerator.integer(
+        unitValueType:
+            RequestUnitValueType.values[faker.randomGenerator.integer(
               RequestUnitValueType.values.length,
             )],
       );

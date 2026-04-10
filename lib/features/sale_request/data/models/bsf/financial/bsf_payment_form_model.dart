@@ -1,17 +1,7 @@
-import 'package:equatable/equatable.dart';
-
 import '../../../../domain/entities/entities.dart';
 
-class BSFPaymentFormModel extends Equatable {
-  final int? type;
-  final String? reducedName;
-  final String? name;
-
-  const BSFPaymentFormModel({
-    required this.type,
-    required this.reducedName,
-    required this.name,
-  });
+class BSFPaymentFormModel extends BSFPaymentFormEntity {
+  const BSFPaymentFormModel({super.type, super.reducedName, super.name});
 
   @override
   List<Object?> get props => [type, reducedName, name];

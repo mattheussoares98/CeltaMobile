@@ -27,4 +27,8 @@ abstract class IEcSaleRequestsDatasource {
     required int enterpriseCode,
     required EcRequestParams params,
   });
+  Future<List<BSFPaymentFinalizationModel>> getPaymentOptions({
+    required int enterpriseCode,
+    required EcRequestParams params,
+  });
 }

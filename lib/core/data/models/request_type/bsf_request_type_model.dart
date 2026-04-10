@@ -127,7 +127,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     'ObservationsOnPrint': observationsOnPrint,
     'PersonalizedCode': personalizedCode,
     'Type': type,
-    'OperationType': operationType?.name,
+    'OperationType': operationType?.value,
     'GeneratePendencyFinancialTitle': generatePendencyFinancialTitle,
     'AllowAlterCostOrSalePrice': allowAlterCostOrSalePrice,
     'UtilizeSaleLikePdvModel': utilizeSaleLikePdvModel,
