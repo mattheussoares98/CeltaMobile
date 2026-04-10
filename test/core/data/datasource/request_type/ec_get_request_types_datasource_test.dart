@@ -61,15 +61,13 @@ void main() {
       expect(result.length, requestTypes.length);
       verify(
         () => httpClient.request(
-          url: '${params.workingUrl}/api/RequestTypes',
+          url:
+              '${params.workingUrl}/api/RequestTypes?enterpriseCode=$enterpriseCode',
           method: 'post',
           headers: params.toHeaders(),
-          body: {
-            'parameters': BSFSearchRequestTypeParametersModel.fromEntity(
-              parameters,
-            ).toJson(),
-            'enterpriseCode': enterpriseCode,
-          },
+          body: BSFSearchRequestTypeParametersModel.fromEntity(
+            parameters,
+          ).toJson(),
         ),
       ).called(1);
     });

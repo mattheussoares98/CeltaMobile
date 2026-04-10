@@ -17,15 +17,11 @@ class EcGetRequestTypesDatasource implements IEcGetRequestTypesDatasource {
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/RequestTypes',
+      url:
+          '${params.workingUrl}/api/RequestTypes?enterpriseCode=$enterpriseCode',
       method: 'post',
       headers: params.toHeaders(),
-      body: {
-        'parameters': BSFSearchRequestTypeParametersModel.fromEntity(
-          parameters,
-        ).toJson(),
-        'enterpriseCode': enterpriseCode,
-      },
+      body: BSFSearchRequestTypeParametersModel.fromEntity(parameters).toJson(),
     );
 
     return (json.decode(response) as List)
