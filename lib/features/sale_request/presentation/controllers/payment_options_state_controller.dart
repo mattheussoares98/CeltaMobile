@@ -7,7 +7,7 @@ import '../../providers.dart';
 
 part 'payment_options_state_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class PaymentOptionsStateController extends _$PaymentOptionsStateController {
   @override
   FutureOr<List<BSFPaymentFinalizationEntity>> build(int enterpriseCode) async {
