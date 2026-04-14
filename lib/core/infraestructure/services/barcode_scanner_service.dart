@@ -38,6 +38,7 @@ class _BarcodeScannerWidgetState extends State<_BarcodeScannerWidget> {
   // PERFORMANCE: Managing the controller locally ensures memory
   // is released immediately when the widget is disposed.
   late final MobileScannerController _controller;
+  bool _isScanned = false;
 
   @override
   void initState() {
@@ -67,8 +68,11 @@ class _BarcodeScannerWidgetState extends State<_BarcodeScannerWidget> {
             child: MobileScanner(
               controller: _controller,
               onDetect: (capture) {
+                if (_isScanned) return;
+                
                 final List<Barcode> barcodes = capture.barcodes;
                 if (barcodes.isNotEmpty) {
+                  _isScanned = true;
                   final code = barcodes.first.rawValue;
                   debugPrint('Scanner: Success [$code]');
 
