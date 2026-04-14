@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class BSFCustomerEntity extends Equatable {
   final String? personalizedCode;
+  final int? code;
   final String? name;
   final String? nameReduced;
   final String? cnpjCpfNumber;
@@ -11,6 +12,7 @@ class BSFCustomerEntity extends Equatable {
 
   const BSFCustomerEntity({
     required this.personalizedCode,
+    required this.code,
     required this.name,
     required this.nameReduced,
     required this.cnpjCpfNumber,
@@ -20,5 +22,14 @@ class BSFCustomerEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [cnpjCpfNumber, name];
+  List<Object?> get props => [
+    cnpjCpfNumber,
+    name,
+    code,
+    personalizedCode,
+    nameReduced,
+    suframaCode,
+    limitOfPurchase,
+    inscriptionRgNumber,
+  ];
 }

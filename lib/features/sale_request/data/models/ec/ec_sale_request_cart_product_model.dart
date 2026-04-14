@@ -36,12 +36,14 @@ class EcSaleRequestCartProductModel extends Equatable {
   factory EcSaleRequestCartProductModel.fromJson(Map json) =>
       EcSaleRequestCartProductModel(
         Id: json['id'],
-        Quantity: json['quantity'],
+        Quantity: (json['quantity'] as num).toDouble(),
         UnitValue: (json['unitValue'] as num).toDouble(),
         TotalLiquid: (json['totalLiquid'] as num).toDouble(),
-        TotalDiscountValue: (json['totalDiscountValue'] as num).toDouble(),
+        TotalDiscountValue: (json['totalDiscountValue'] as num?)?.toDouble(),
         Observations: json['observations'],
-        Product: EcSaleRequestProductProductModel.fromJson(json['product']),
+        Product: json['product'] == null
+            ? null
+            : EcSaleRequestProductProductModel.fromJson(json['product']),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -66,6 +68,22 @@ class EcSaleRequestCartProductModel extends Equatable {
     Product: entity.product == null
         ? null
         : EcSaleRequestProductProductModel.fromEntity(entity.product!),
+  );
+
+  factory EcSaleRequestCartProductModel.fromBSFProductItemEntity(
+    BSFProductItemEntity entity,
+  ) => EcSaleRequestCartProductModel(
+    Id: entity.product?.code ?? 0,
+    Quantity: entity.quantity ?? 0.0,
+    UnitValue: entity.value ?? 0.0,
+    TotalLiquid: entity.totalLiquid,
+    TotalDiscountValue: entity.totalDiscountValue,
+    Observations: null,
+    Product: entity.product == null
+        ? null
+        : EcSaleRequestProductProductModel.fromBSFProductDetailsEntity(
+            entity.product!,
+          ),
   );
 
   SaleRequestCartProductEntity toEntity() => SaleRequestCartProductEntity(

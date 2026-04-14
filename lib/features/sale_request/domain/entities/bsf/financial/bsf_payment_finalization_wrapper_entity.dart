@@ -52,4 +52,40 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
     portions,
     userAuthorization,
   ];
+
+  BSFPaymentFinalizationWrapperEntity copyWith({
+    BSFPaymentFinalizationEntity? paymentFinalization,
+    double? value,
+    double? financialIncrement,
+    double? financialDiscount,
+    int? quantityOfPortions,
+    String? tefSequencialUniqueNumber,
+    String? tefAutorizationCreditCode,
+    String? devolutionCreditCode,
+    String? identificationCode,
+    Map<String, dynamic>? paymentCondition,
+    String? creditCardNumber,
+    DateTime? creditCardValidate,
+    List<dynamic>? portions,
+    BSFUserAuthorizationEntity? userAuthorization,
+  }) {
+    return BSFPaymentFinalizationWrapperEntity(
+      paymentFinalization: paymentFinalization ?? this.paymentFinalization,
+      value: value ?? this.value,
+      financialIncrement: financialIncrement ?? this.financialIncrement,
+      financialDiscount: financialDiscount ?? this.financialDiscount,
+      quantityOfPortions: quantityOfPortions ?? this.quantityOfPortions,
+      tefSequencialUniqueNumber:
+          tefSequencialUniqueNumber ?? this.tefSequencialUniqueNumber,
+      tefAutorizationCreditCode:
+          tefAutorizationCreditCode ?? this.tefAutorizationCreditCode,
+      devolutionCreditCode: devolutionCreditCode ?? this.devolutionCreditCode,
+      identificationCode: identificationCode ?? this.identificationCode,
+      paymentCondition: paymentCondition ?? this.paymentCondition,
+      creditCardNumber: creditCardNumber ?? this.creditCardNumber,
+      creditCardValidate: creditCardValidate ?? this.creditCardValidate,
+      portions: portions ?? this.portions,
+      userAuthorization: userAuthorization ?? this.userAuthorization,
+    );
+  }
 }

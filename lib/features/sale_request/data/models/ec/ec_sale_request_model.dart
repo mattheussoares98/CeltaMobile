@@ -66,7 +66,7 @@ class EcSaleRequestModel extends Equatable {
     DateHourOfCreation: json['dateHourOfCreation'] == null
         ? null
         : DateTime.parse(json['dateHourOfCreation']),
-    TotalLiquid: json['totalLiquid'],
+    TotalLiquid: (json['totalLiquid'] as num?)?.toDouble(),
     DiscountValue: json['discountValue']?.toString().toDouble(),
     Observations: json['observations'],
     Customer: json['customer'] == null
@@ -100,7 +100,9 @@ class EcSaleRequestModel extends Equatable {
     'observations': Observations,
     'customer': Customer?.toJson(),
     'seller': Seller?.toJson(),
-    'delivery': Delivery?.toJson(),
+    'delivery': Delivery == null
+        ? EcSaleRequestDeliveryModel.fromEntity(DeliveryEntity.empty()).toJson()
+        : Delivery?.toJson(),
     'payments': Payments?.map((e) => e.toJson()).toList(),
     'products': Products?.map((e) => e.toJson()).toList(),
     'address': Address?.toJson(),
@@ -137,6 +139,8 @@ class EcSaleRequestModel extends Equatable {
             ? null
             : EcAddressModel.fromEntity(entity.Address!),
       );
+
+
 
   SaleRequestEntity toEntity() => SaleRequestEntity(
     Id: Id,

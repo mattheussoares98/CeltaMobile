@@ -1,92 +1,207 @@
-import 'package:equatable/equatable.dart';
-
 import '../../../../domain/entities/entities.dart';
 
-class BSFProductDetailsModel extends Equatable {
-  final String? name;
-  final bool? isAlcoholicProduct;
-  final bool? isFatherOfGrate;
-  final int? fatherGrateCode;
-  final dynamic images;
-  final String? personalizedCode;
-  final String? productPackingTypeString;
-  final double? productPackingQuantity;
-  final String? productPackingPriceLookUpString;
-
+class BSFProductDetailsModel extends BSFProductDetailsEntity {
   const BSFProductDetailsModel({
-    required this.name,
-    required this.isAlcoholicProduct,
-    required this.isFatherOfGrate,
-    required this.fatherGrateCode,
-    required this.images,
-    required this.personalizedCode,
-    required this.productPackingTypeString,
-    required this.productPackingQuantity,
-    required this.productPackingPriceLookUpString,
+    required super.isScheduledToUnify,
+    required super.code,
+    required super.name,
+    required super.isDesativate,
+    required super.isOutOfLine,
+    required super.practicePriceRoundRules,
+    required super.isPriceControlled,
+    required super.isReturnablePacking,
+    required super.isAlcoholicProduct,
+    required super.isFloatingProduct,
+    required super.isFatherOfGrate,
+    required super.fatherGrateCode,
+    required super.isBasicBasketItem,
+    required super.consolidateGrateChildsInFiscalNote,
+    required super.fatherOfGrateIsLiberatedSale,
+    required super.images,
+    required super.complement,
+    required super.personalizedCode,
+    required super.isProductForComplementFiscalNote,
+    required super.legacyCode,
+    required super.productPackingString,
+    required super.productPackingTypeString,
+    required super.productPackingQuantity,
+    required super.productPackingQuantityString,
+    required super.productPackingPersonalizedCodeString,
+    required super.productPackingSpecificationString,
+    required super.productPackingPriceLookUpString,
+    required super.productPackingEanString,
+    required super.manufacturerString,
   });
 
   @override
   List<Object?> get props => [
     name,
+    isScheduledToUnify,
+    code,
+    isDesativate,
+    isOutOfLine,
+    practicePriceRoundRules,
+    isPriceControlled,
+    isReturnablePacking,
     isAlcoholicProduct,
+    isFloatingProduct,
     isFatherOfGrate,
     fatherGrateCode,
+    isBasicBasketItem,
+    consolidateGrateChildsInFiscalNote,
+    fatherOfGrateIsLiberatedSale,
     images,
+    complement,
     personalizedCode,
+    isProductForComplementFiscalNote,
+    legacyCode,
+    productPackingString,
     productPackingTypeString,
     productPackingQuantity,
+    productPackingQuantityString,
+    productPackingPersonalizedCodeString,
+    productPackingSpecificationString,
     productPackingPriceLookUpString,
+    productPackingEanString,
+    manufacturerString,
   ];
 
-  factory BSFProductDetailsModel.fromJson(Map<String, dynamic> json) =>
-      BSFProductDetailsModel(
-        name: json['Name'],
-        isAlcoholicProduct: json['IsAlcoholicProduct'],
-        isFatherOfGrate: json['IsFatherOfGrate'],
-        fatherGrateCode: json['FatherGrateCode'],
-        images: json['Images'],
-        personalizedCode: json['PersonalizedCode'],
-        productPackingTypeString: json['ProductPackingTypeString'],
-        productPackingQuantity: (json['ProductPackingQuantity'] as num?)
-            ?.toDouble(),
-        productPackingPriceLookUpString:
-            json['ProductPackingPriceLookUpString'],
-      );
+  factory BSFProductDetailsModel.fromJson(
+    Map<String, dynamic> json,
+  ) => BSFProductDetailsModel(
+    name: json['Name'],
+    isScheduledToUnify: json['IsScheduledToUnify'],
+    code: json['Code'],
+    isDesativate: json['IsDesativate'],
+    isOutOfLine: json['IsOutOfLine'],
+    practicePriceRoundRules: json['PracticePriceRoundRules'],
+    isPriceControlled: json['IsPriceControlled'],
+    isReturnablePacking: json['IsReturnablePacking'],
+    isAlcoholicProduct: json['IsAlcoholicProduct'],
+    isFloatingProduct: json['IsFloatingProduct'],
+    isFatherOfGrate: json['IsFatherOfGrate'],
+    fatherGrateCode: json['FatherGrateCode'],
+    isBasicBasketItem: json['IsBasicBasketItem'],
+    consolidateGrateChildsInFiscalNote:
+        json['ConsolidateGrateChildsInFiscalNote'],
+    fatherOfGrateIsLiberatedSale: json['FatherOfGrateIsLiberatedSale'],
+    images: json['Images'],
+    complement: json['Complement'],
+    personalizedCode: json['PersonalizedCode'],
+    isProductForComplementFiscalNote: json['IsProductForComplementFiscalNote'],
+    legacyCode: json['LegacyCode'],
+    productPackingString: json['ProductPackingString'],
+    productPackingTypeString: json['ProductPackingTypeString'],
+    productPackingQuantity: (json['ProductPackingQuantity'] as num?)
+        ?.toDouble(),
+    productPackingQuantityString: json['ProductPackingQuantityString'],
+    productPackingPersonalizedCodeString:
+        json['ProductPackingPersonalizedCodeString'],
+    productPackingSpecificationString:
+        json['ProductPackingSpecificationString'],
+    productPackingPriceLookUpString: json['ProductPackingPriceLookUpString'],
+    productPackingEanString: json['ProductPackingEanString'],
+    manufacturerString: json['ManufacturerString'],
+  );
 
   Map<String, dynamic> toJson() => {
+    'IsScheduledToUnify': isScheduledToUnify,
+    'Code': code,
     'Name': name,
+    'IsDesativate': isDesativate,
+    'IsOutOfLine': isOutOfLine,
+    'PracticePriceRoundRules': practicePriceRoundRules,
+    'IsPriceControlled': isPriceControlled,
+    'IsReturnablePacking': isReturnablePacking,
     'IsAlcoholicProduct': isAlcoholicProduct,
+    'IsFloatingProduct': isFloatingProduct,
     'IsFatherOfGrate': isFatherOfGrate,
     'FatherGrateCode': fatherGrateCode,
+    'IsBasicBasketItem': isBasicBasketItem,
+    'ConsolidateGrateChildsInFiscalNote': consolidateGrateChildsInFiscalNote,
+    'FatherOfGrateIsLiberatedSale': fatherOfGrateIsLiberatedSale,
     'Images': images,
+    'Complement': complement,
     'PersonalizedCode': personalizedCode,
+    'IsProductForComplementFiscalNote': isProductForComplementFiscalNote,
+    'LegacyCode': legacyCode,
+    'ProductPackingString': productPackingString,
     'ProductPackingTypeString': productPackingTypeString,
     'ProductPackingQuantity': productPackingQuantity,
+    'ProductPackingQuantityString': productPackingQuantityString,
+    'ProductPackingPersonalizedCodeString':
+        productPackingPersonalizedCodeString,
+    'ProductPackingSpecificationString': productPackingSpecificationString,
     'ProductPackingPriceLookUpString': productPackingPriceLookUpString,
+    'ProductPackingEanString': productPackingEanString,
+    'ManufacturerString': manufacturerString,
   };
 
-  factory BSFProductDetailsModel.fromEntity(BSFProductDetailsEntity entity) =>
-      BSFProductDetailsModel(
-        name: entity.name,
-        isAlcoholicProduct: entity.isAlcoholicProduct,
-        isFatherOfGrate: entity.isFatherOfGrate,
-        fatherGrateCode: entity.fatherGrateCode,
-        images: entity.images,
-        personalizedCode: entity.personalizedCode,
-        productPackingTypeString: entity.productPackingTypeString,
-        productPackingQuantity: entity.productPackingQuantity,
-        productPackingPriceLookUpString: entity.productPackingPriceLookUpString,
-      );
+  factory BSFProductDetailsModel.fromEntity(
+    BSFProductDetailsEntity entity,
+  ) => BSFProductDetailsModel(
+    name: entity.name,
+    isScheduledToUnify: entity.isScheduledToUnify,
+    code: entity.code,
+    isDesativate: entity.isDesativate,
+    isOutOfLine: entity.isOutOfLine,
+    practicePriceRoundRules: entity.practicePriceRoundRules,
+    isPriceControlled: entity.isPriceControlled,
+    isReturnablePacking: entity.isReturnablePacking,
+    isAlcoholicProduct: entity.isAlcoholicProduct,
+    isFloatingProduct: entity.isFloatingProduct,
+    isFatherOfGrate: entity.isFatherOfGrate,
+    fatherGrateCode: entity.fatherGrateCode,
+    isBasicBasketItem: entity.isBasicBasketItem,
+    consolidateGrateChildsInFiscalNote:
+        entity.consolidateGrateChildsInFiscalNote,
+    fatherOfGrateIsLiberatedSale: entity.fatherOfGrateIsLiberatedSale,
+    images: entity.images,
+    complement: entity.complement,
+    personalizedCode: entity.personalizedCode,
+    isProductForComplementFiscalNote: entity.isProductForComplementFiscalNote,
+    legacyCode: entity.legacyCode,
+    productPackingString: entity.productPackingString,
+    productPackingTypeString: entity.productPackingTypeString,
+    productPackingQuantity: entity.productPackingQuantity,
+    productPackingQuantityString: entity.productPackingQuantityString,
+    productPackingPersonalizedCodeString:
+        entity.productPackingPersonalizedCodeString,
+    productPackingSpecificationString: entity.productPackingSpecificationString,
+    productPackingPriceLookUpString: entity.productPackingPriceLookUpString,
+    productPackingEanString: entity.productPackingEanString,
+    manufacturerString: entity.manufacturerString,
+  );
 
   BSFProductDetailsEntity toEntity() => BSFProductDetailsEntity(
+    isScheduledToUnify: isScheduledToUnify,
+    code: code,
     name: name,
+    isDesativate: isDesativate,
+    isOutOfLine: isOutOfLine,
+    practicePriceRoundRules: practicePriceRoundRules,
+    isPriceControlled: isPriceControlled,
+    isReturnablePacking: isReturnablePacking,
     isAlcoholicProduct: isAlcoholicProduct,
+    isFloatingProduct: isFloatingProduct,
     isFatherOfGrate: isFatherOfGrate,
     fatherGrateCode: fatherGrateCode,
+    isBasicBasketItem: isBasicBasketItem,
+    consolidateGrateChildsInFiscalNote: consolidateGrateChildsInFiscalNote,
+    fatherOfGrateIsLiberatedSale: fatherOfGrateIsLiberatedSale,
     images: images,
+    complement: complement,
     personalizedCode: personalizedCode,
+    isProductForComplementFiscalNote: isProductForComplementFiscalNote,
+    legacyCode: legacyCode,
+    productPackingString: productPackingString,
     productPackingTypeString: productPackingTypeString,
     productPackingQuantity: productPackingQuantity,
+    productPackingQuantityString: productPackingQuantityString,
+    productPackingPersonalizedCodeString: productPackingPersonalizedCodeString,
+    productPackingSpecificationString: productPackingSpecificationString,
     productPackingPriceLookUpString: productPackingPriceLookUpString,
+    productPackingEanString: productPackingEanString,
+    manufacturerString: manufacturerString,
   );
 }

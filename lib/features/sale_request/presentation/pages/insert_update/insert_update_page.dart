@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class InsertUpdatePage extends ConsumerWidget {
+import '../../../../../localization/string_hardcoded.dart';
+import 'components/components.dart';
+
+class InsertUpdatePage extends StatelessWidget {
   final int enterpriseCode;
   final int customerCode;
   final int saleRequestId;
@@ -13,10 +15,21 @@ class InsertUpdatePage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Inserir/Atualizar')),
-      body: const Center(child: Text('Inserir/Atualizar')),
+      appBar: AppBar(
+        title: Text(
+          saleRequestId == 0
+              ? 'Inserir Pedido'.hardcoded
+              : 'Atualizar Pedido'.hardcoded,
+        ),
+      ),
+      body: InsertUpdateBody(
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        saleRequestId: saleRequestId,
+      ),
+      bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
     );
   }
 }

@@ -1,0 +1,338 @@
+import '../../../../domain/entities/entities.dart';
+import 'product.dart';
+
+class BSFFiscalCodeModel extends BSFFiscalCodeEntity {
+  const BSFFiscalCodeModel({
+    required super.code,
+    required super.codeCompensation,
+    required super.description,
+    required super.fiscalObservation,
+    required super.codeString,
+    required super.codeCompensationString,
+    required super.isBonus,
+    required super.isSampleFree,
+    required super.isRemittanceOfDeliveryFuture,
+    required super.isDeliveryFuture,
+    required super.isFuel,
+    required super.isConsignment,
+    required super.isEntranceOfConsignment,
+    required super.isSimbolicDevolutionOfConsignment,
+    required super.isDevolutionOfConsignment,
+    required super.isReceiveOfDeliveryFuture,
+    required super.isIndustrialization,
+    required super.isNoteByCoupon,
+    required super.isTransfer,
+    required super.isDevolution,
+    required super.isSubstitution,
+    required super.isValidFiscalCodeForSubstituteOrNotSubstitute,
+    required super.isConsumptionOrIngredient,
+    required super.isOtherNotSpecified,
+    required super.isEntrance,
+    required super.isExit,
+    required super.isSaleWithSubstituton,
+    required super.isTransferWithSubstituton,
+    required super.isSaleDevolutionWithSubstituton,
+    required super.isBuyDevolutionWithSubstituton,
+    required super.allowCreditForPisCofins,
+    required super.isConsumerSale,
+    required super.isAquisitionForSaleWithPisCofinsCredtRight,
+    required super.isAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight,
+    required super.isAquisitionForServiceAsInsummeWithPisCofinsCredtRight,
+    required super.isSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight,
+    required super.isOtherOperationsWithPisCofinsCredtRight,
+    required super.isFiscalCodeNotTributedForPisCofins,
+    required super.isElectricEnergyAquisition,
+    required super.isImobilizeAtive,
+    required super.isRemittanceThirdpartForAccountOrder,
+    required super.isRemittanceToDeposit,
+    required super.isRemittanceToExport,
+    required super.isComunicationServiceAquisition,
+    required super.isService,
+    required super.isImportation,
+    required super.isExportation,
+    required super.isFreightService,
+    required super.withoutCreditForICMS,
+    required super.isSaleMovementsDailyGobal,
+    required super.groupFiscalCodeType,
+    required super.isAllowCreditOrDebitForIPI,
+    required super.isInterstateSaleForConsumption,
+    required super.isInterstateSaleSubstitutionForConsumption,
+  });
+
+  factory BSFFiscalCodeModel.fromJson(
+    Map<String, dynamic> json,
+  ) => BSFFiscalCodeModel(
+    code: json['Code'] != null
+        ? BSFFiscalCodeValueModel.fromJson(json['Code'])
+        : null,
+    codeCompensation: json['CodeCompensation'] != null
+        ? BSFFiscalCodeValueModel.fromJson(json['CodeCompensation'])
+        : null,
+    description: json['Description'],
+    fiscalObservation: json['FiscalObservation'],
+    codeString: json['CodeString']?.toString(),
+    codeCompensationString: json['CodeCompensationString']?.toString(),
+    isBonus: json['IsBonus'],
+    isSampleFree: json['IsSampleFree'],
+    isRemittanceOfDeliveryFuture: json['IsRemittanceOfDeliveryFuture'],
+    isDeliveryFuture: json['IsDeliveryFuture'],
+    isFuel: json['IsFuel'],
+    isConsignment: json['IsConsignment'],
+    isEntranceOfConsignment: json['IsEntranceOfConsignment'],
+    isSimbolicDevolutionOfConsignment:
+        json['IsSimbolicDevolutionOfConsignment'],
+    isDevolutionOfConsignment: json['IsDevolutionOfConsignment'],
+    isReceiveOfDeliveryFuture: json['IsReceiveOfDeliveryFuture'],
+    isIndustrialization: json['IsIndustrialization'],
+    isNoteByCoupon: json['IsNoteByCoupon'],
+    isTransfer: json['IsTransfer'],
+    isDevolution: json['IsDevolution'],
+    isSubstitution: json['IsSubstitution'],
+    isValidFiscalCodeForSubstituteOrNotSubstitute:
+        json['IsValidFiscalCodeForSubstituteOrNotSubstitute'],
+    isConsumptionOrIngredient: json['IsConsumptionORIngredient'],
+    isOtherNotSpecified: json['IsOtherNotSpecified'],
+    isEntrance: json['IsEntrance'],
+    isExit: json['IsExit'],
+    isSaleWithSubstituton: json['IsSaleWithSubstituton'],
+    isTransferWithSubstituton: json['IsTransferWithSubstituton'],
+    isSaleDevolutionWithSubstituton: json['IsSaleDevolutionWithSubstituton'],
+    isBuyDevolutionWithSubstituton: json['IsBuyDevolutionWithSubstituton'],
+    allowCreditForPisCofins: json['AllowCreditForPisCofins'],
+    isConsumerSale: json['IsConsumerSale'],
+    isAquisitionForSaleWithPisCofinsCredtRight:
+        json['IsAquisitionForSaleWithPisCofinsCredtRight'],
+    isAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight:
+        json['IsAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight'],
+    isAquisitionForServiceAsInsummeWithPisCofinsCredtRight:
+        json['IsAquisitionForServiceAsInsummeWithPisCofinsCredtRight'],
+    isSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight:
+        json['IsSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight'],
+    isOtherOperationsWithPisCofinsCredtRight:
+        json['IsOtherOperationsWithPisCofinsCredtRight'],
+    isFiscalCodeNotTributedForPisCofins:
+        json['IsFiscalCodeNotTributedForPisCofins'],
+    isElectricEnergyAquisition: json['IsElectricEnergyAquisition'],
+    isImobilizeAtive: json['IsImobilizeAtive'],
+    isRemittanceThirdpartForAccountOrder:
+        json['IsRemittanceThirdpartForAccountOrder'],
+    isRemittanceToDeposit: json['IsRemittanceToDeposit'],
+    isRemittanceToExport: json['IsRemittanceToExport'],
+    isComunicationServiceAquisition: json['IsComunicationServiceAquisition'],
+    isService: json['IsService'],
+    isImportation: json['IsImportation'],
+    isExportation: json['IsExportation'],
+    isFreightService: json['IsFreightService'],
+    withoutCreditForICMS: json['WithoutCreditForICMS'],
+    isSaleMovementsDailyGobal: json['IsSaleMovementsDailyGobal'],
+    groupFiscalCodeType: json['GroupFiscalCodeType'],
+    isAllowCreditOrDebitForIPI: json['IsAllowCreditOrDebitForIPI'],
+    isInterstateSaleForConsumption: json['IsInterstateSaleForConsumption'],
+    isInterstateSaleSubstitutionForConsumption:
+        json['IsInterstateSaleSubstitutionForConsumption'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    'Code': (code as BSFFiscalCodeValueModel?)?.toJson(),
+    'CodeCompensation': (codeCompensation as BSFFiscalCodeValueModel?)
+        ?.toJson(),
+    'Description': description,
+    'FiscalObservation': fiscalObservation,
+    'CodeString': codeString,
+    'CodeCompensationString': codeCompensationString,
+    'IsBonus': isBonus,
+    'IsSampleFree': isSampleFree,
+    'IsRemittanceOfDeliveryFuture': isRemittanceOfDeliveryFuture,
+    'IsDeliveryFuture': isDeliveryFuture,
+    'IsFuel': isFuel,
+    'IsConsignment': isConsignment,
+    'IsEntranceOfConsignment': isEntranceOfConsignment,
+    'IsSimbolicDevolutionOfConsignment': isSimbolicDevolutionOfConsignment,
+    'IsDevolutionOfConsignment': isDevolutionOfConsignment,
+    'IsReceiveOfDeliveryFuture': isReceiveOfDeliveryFuture,
+    'IsIndustrialization': isIndustrialization,
+    'IsNoteByCoupon': isNoteByCoupon,
+    'IsTransfer': isTransfer,
+    'IsDevolution': isDevolution,
+    'IsSubstitution': isSubstitution,
+    'IsValidFiscalCodeForSubstituteOrNotSubstitute':
+        isValidFiscalCodeForSubstituteOrNotSubstitute,
+    'IsConsumptionORIngredient': isConsumptionOrIngredient,
+    'IsOtherNotSpecified': isOtherNotSpecified,
+    'IsEntrance': isEntrance,
+    'IsExit': isExit,
+    'IsSaleWithSubstituton': isSaleWithSubstituton,
+    'IsTransferWithSubstituton': isTransferWithSubstituton,
+    'IsSaleDevolutionWithSubstituton': isSaleDevolutionWithSubstituton,
+    'IsBuyDevolutionWithSubstituton': isBuyDevolutionWithSubstituton,
+    'AllowCreditForPisCofins': allowCreditForPisCofins,
+    'IsConsumerSale': isConsumerSale,
+    'IsAquisitionForSaleWithPisCofinsCredtRight':
+        isAquisitionForSaleWithPisCofinsCredtRight,
+    'IsAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight':
+        isAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight,
+    'IsAquisitionForServiceAsInsummeWithPisCofinsCredtRight':
+        isAquisitionForServiceAsInsummeWithPisCofinsCredtRight,
+    'IsSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight':
+        isSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight,
+    'IsOtherOperationsWithPisCofinsCredtRight':
+        isOtherOperationsWithPisCofinsCredtRight,
+    'IsFiscalCodeNotTributedForPisCofins': isFiscalCodeNotTributedForPisCofins,
+    'IsElectricEnergyAquisition': isElectricEnergyAquisition,
+    'IsImobilizeAtive': isImobilizeAtive,
+    'IsRemittanceThirdpartForAccountOrder':
+        isRemittanceThirdpartForAccountOrder,
+    'IsRemittanceToDeposit': isRemittanceToDeposit,
+    'IsRemittanceToExport': isRemittanceToExport,
+    'IsComunicationServiceAquisition': isComunicationServiceAquisition,
+    'IsService': isService,
+    'IsImportation': isImportation,
+    'IsExportation': isExportation,
+    'IsFreightService': isFreightService,
+    'WithoutCreditForICMS': withoutCreditForICMS,
+    'IsSaleMovementsDailyGobal': isSaleMovementsDailyGobal,
+    'GroupFiscalCodeType': groupFiscalCodeType,
+    'IsAllowCreditOrDebitForIPI': isAllowCreditOrDebitForIPI,
+    'IsInterstateSaleForConsumption': isInterstateSaleForConsumption,
+    'IsInterstateSaleSubstitutionForConsumption':
+        isInterstateSaleSubstitutionForConsumption,
+  };
+
+  factory BSFFiscalCodeModel.fromEntity(BSFFiscalCodeEntity entity) =>
+      BSFFiscalCodeModel(
+        code: entity.code == null
+            ? null
+            : BSFFiscalCodeValueModel.fromEntity(entity.code!),
+        codeCompensation: entity.codeCompensation == null
+            ? null
+            : BSFFiscalCodeValueModel.fromEntity(entity.codeCompensation!),
+        description: entity.description,
+        fiscalObservation: entity.fiscalObservation,
+        codeString: entity.codeString,
+        codeCompensationString: entity.codeCompensationString,
+        isBonus: entity.isBonus,
+        isSampleFree: entity.isSampleFree,
+        isRemittanceOfDeliveryFuture: entity.isRemittanceOfDeliveryFuture,
+        isDeliveryFuture: entity.isDeliveryFuture,
+        isFuel: entity.isFuel,
+        isConsignment: entity.isConsignment,
+        isEntranceOfConsignment: entity.isEntranceOfConsignment,
+        isSimbolicDevolutionOfConsignment:
+            entity.isSimbolicDevolutionOfConsignment,
+        isDevolutionOfConsignment: entity.isDevolutionOfConsignment,
+        isReceiveOfDeliveryFuture: entity.isReceiveOfDeliveryFuture,
+        isIndustrialization: entity.isIndustrialization,
+        isNoteByCoupon: entity.isNoteByCoupon,
+        isTransfer: entity.isTransfer,
+        isDevolution: entity.isDevolution,
+        isSubstitution: entity.isSubstitution,
+        isValidFiscalCodeForSubstituteOrNotSubstitute:
+            entity.isValidFiscalCodeForSubstituteOrNotSubstitute,
+        isConsumptionOrIngredient: entity.isConsumptionOrIngredient,
+        isOtherNotSpecified: entity.isOtherNotSpecified,
+        isEntrance: entity.isEntrance,
+        isExit: entity.isExit,
+        isSaleWithSubstituton: entity.isSaleWithSubstituton,
+        isTransferWithSubstituton: entity.isTransferWithSubstituton,
+        isSaleDevolutionWithSubstituton: entity.isSaleDevolutionWithSubstituton,
+        isBuyDevolutionWithSubstituton: entity.isBuyDevolutionWithSubstituton,
+        allowCreditForPisCofins: entity.allowCreditForPisCofins,
+        isConsumerSale: entity.isConsumerSale,
+        isAquisitionForSaleWithPisCofinsCredtRight:
+            entity.isAquisitionForSaleWithPisCofinsCredtRight,
+        isAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight:
+            entity.isAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight,
+        isAquisitionForServiceAsInsummeWithPisCofinsCredtRight:
+            entity.isAquisitionForServiceAsInsummeWithPisCofinsCredtRight,
+        isSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight:
+            entity.isSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight,
+        isOtherOperationsWithPisCofinsCredtRight:
+            entity.isOtherOperationsWithPisCofinsCredtRight,
+        isFiscalCodeNotTributedForPisCofins:
+            entity.isFiscalCodeNotTributedForPisCofins,
+        isElectricEnergyAquisition: entity.isElectricEnergyAquisition,
+        isImobilizeAtive: entity.isImobilizeAtive,
+        isRemittanceThirdpartForAccountOrder:
+            entity.isRemittanceThirdpartForAccountOrder,
+        isRemittanceToDeposit: entity.isRemittanceToDeposit,
+        isRemittanceToExport: entity.isRemittanceToExport,
+        isComunicationServiceAquisition: entity.isComunicationServiceAquisition,
+        isService: entity.isService,
+        isImportation: entity.isImportation,
+        isExportation: entity.isExportation,
+        isFreightService: entity.isFreightService,
+        withoutCreditForICMS: entity.withoutCreditForICMS,
+        isSaleMovementsDailyGobal: entity.isSaleMovementsDailyGobal,
+        groupFiscalCodeType: entity.groupFiscalCodeType,
+        isAllowCreditOrDebitForIPI: entity.isAllowCreditOrDebitForIPI,
+        isInterstateSaleForConsumption: entity.isInterstateSaleForConsumption,
+        isInterstateSaleSubstitutionForConsumption:
+            entity.isInterstateSaleSubstitutionForConsumption,
+      );
+
+  BSFFiscalCodeEntity toEntity() => BSFFiscalCodeEntity(
+    code: (code as BSFFiscalCodeValueModel?)?.toEntity() ?? code,
+    codeCompensation:
+        (codeCompensation as BSFFiscalCodeValueModel?)?.toEntity() ??
+        codeCompensation,
+    description: description,
+    fiscalObservation: fiscalObservation,
+    codeString: codeString,
+    codeCompensationString: codeCompensationString,
+    isBonus: isBonus,
+    isSampleFree: isSampleFree,
+    isRemittanceOfDeliveryFuture: isRemittanceOfDeliveryFuture,
+    isDeliveryFuture: isDeliveryFuture,
+    isFuel: isFuel,
+    isConsignment: isConsignment,
+    isEntranceOfConsignment: isEntranceOfConsignment,
+    isSimbolicDevolutionOfConsignment: isSimbolicDevolutionOfConsignment,
+    isDevolutionOfConsignment: isDevolutionOfConsignment,
+    isReceiveOfDeliveryFuture: isReceiveOfDeliveryFuture,
+    isIndustrialization: isIndustrialization,
+    isNoteByCoupon: isNoteByCoupon,
+    isTransfer: isTransfer,
+    isDevolution: isDevolution,
+    isSubstitution: isSubstitution,
+    isValidFiscalCodeForSubstituteOrNotSubstitute:
+        isValidFiscalCodeForSubstituteOrNotSubstitute,
+    isConsumptionOrIngredient: isConsumptionOrIngredient,
+    isOtherNotSpecified: isOtherNotSpecified,
+    isEntrance: isEntrance,
+    isExit: isExit,
+    isSaleWithSubstituton: isSaleWithSubstituton,
+    isTransferWithSubstituton: isTransferWithSubstituton,
+    isSaleDevolutionWithSubstituton: isSaleDevolutionWithSubstituton,
+    isBuyDevolutionWithSubstituton: isBuyDevolutionWithSubstituton,
+    allowCreditForPisCofins: allowCreditForPisCofins,
+    isConsumerSale: isConsumerSale,
+    isAquisitionForSaleWithPisCofinsCredtRight:
+        isAquisitionForSaleWithPisCofinsCredtRight,
+    isAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight:
+        isAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight,
+    isAquisitionForServiceAsInsummeWithPisCofinsCredtRight:
+        isAquisitionForServiceAsInsummeWithPisCofinsCredtRight,
+    isSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight:
+        isSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight,
+    isOtherOperationsWithPisCofinsCredtRight:
+        isOtherOperationsWithPisCofinsCredtRight,
+    isFiscalCodeNotTributedForPisCofins: isFiscalCodeNotTributedForPisCofins,
+    isElectricEnergyAquisition: isElectricEnergyAquisition,
+    isImobilizeAtive: isImobilizeAtive,
+    isRemittanceThirdpartForAccountOrder: isRemittanceThirdpartForAccountOrder,
+    isRemittanceToDeposit: isRemittanceToDeposit,
+    isRemittanceToExport: isRemittanceToExport,
+    isComunicationServiceAquisition: isComunicationServiceAquisition,
+    isService: isService,
+    isImportation: isImportation,
+    isExportation: isExportation,
+    isFreightService: isFreightService,
+    withoutCreditForICMS: withoutCreditForICMS,
+    isSaleMovementsDailyGobal: isSaleMovementsDailyGobal,
+    groupFiscalCodeType: groupFiscalCodeType,
+    isAllowCreditOrDebitForIPI: isAllowCreditOrDebitForIPI,
+    isInterstateSaleForConsumption: isInterstateSaleForConsumption,
+    isInterstateSaleSubstitutionForConsumption:
+        isInterstateSaleSubstitutionForConsumption,
+  );
+}

@@ -1,17 +1,11 @@
-import 'package:equatable/equatable.dart';
-
 import '../../../../domain/entities/entities.dart';
 import '../bsf.dart';
 
-class BSFProductFreightModel extends Equatable {
-  final BSFValueTypeModel? discount;
-  final BSFValueTypeModel? increment;
-  final double? value;
-
+class BSFProductFreightModel extends BSFProductFreightEntity {
   const BSFProductFreightModel({
-    required this.discount,
-    required this.increment,
-    required this.value,
+    required super.discount,
+    required super.increment,
+    required super.value,
   });
 
   @override
@@ -29,8 +23,8 @@ class BSFProductFreightModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-    'Discount': discount?.toJson(),
-    'Increment': increment?.toJson(),
+    'Discount': (discount as BSFValueTypeModel?)?.toJson(),
+    'Increment': (increment as BSFValueTypeModel?)?.toJson(),
     'Value': value,
   };
 
@@ -46,8 +40,8 @@ class BSFProductFreightModel extends Equatable {
       );
 
   BSFProductFreightEntity toEntity() => BSFProductFreightEntity(
-    discount: discount?.toEntity(),
-    increment: increment?.toEntity(),
+    discount: discount,
+    increment: increment,
     value: value,
   );
 }

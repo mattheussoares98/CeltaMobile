@@ -29,7 +29,7 @@ class EcSaleRequestFinalizationModel extends Equatable {
       EcSaleRequestFinalizationModel(
         Id: json['id'],
         Name: json['name'],
-        TotalValue: json['totalValue'],
+        TotalValue: (json['totalValue'] as num).toDouble(),
         PortionQuantity: json['portionQuantity'],
       );
 
@@ -40,6 +40,15 @@ class EcSaleRequestFinalizationModel extends Equatable {
     Name: entity.Name,
     TotalValue: entity.TotalValue,
     PortionQuantity: entity.PortionQuantity,
+  );
+
+  factory EcSaleRequestFinalizationModel.fromBSFPaymentFinalizationWrapperEntity(
+    BSFPaymentFinalizationWrapperEntity entity,
+  ) => EcSaleRequestFinalizationModel(
+    Id: entity.paymentFinalization?.code?.toString() ?? '',
+    Name: entity.paymentFinalization?.paymentForm?.name ?? '',
+    TotalValue: entity.value ?? 0.0,
+    PortionQuantity: entity.quantityOfPortions ?? 1,
   );
 
   FinalizationEntity toEntity() => FinalizationEntity(

@@ -1,62 +1,40 @@
-import 'package:equatable/equatable.dart';
-
 import '../../../../domain/entities/entities.dart';
 import '../bsf.dart';
 
-class BSFProductItemModel extends Equatable {
-  final BSFProductDetailsModel? product;
-  final dynamic compositionChilds;
-  final String? eanCode;
-  final BSFProductFreightModel? freight;
-  final List<BSFDiscountModel>? discounts;
-  final DateTime? expectedDeliveryDate;
-  final BSFValueTypeModel? deliveryTax;
-  final BSFValueTypeModel? increment;
-  final BSFValueTypeModel? creditOnOrigin;
-  final BSFValueTypeModel? compensation;
-  final double? quantity;
-  final double? value;
-
+class BSFProductItemModel extends BSFProductItemEntity {
   const BSFProductItemModel({
-    required this.product,
-    required this.compositionChilds,
-    required this.eanCode,
-    required this.freight,
-    required this.discounts,
-    required this.expectedDeliveryDate,
-    required this.deliveryTax,
-    required this.increment,
-    required this.creditOnOrigin,
-    required this.compensation,
-    required this.quantity,
-    required this.value,
+    required super.product,
+    required super.fiscalCode,
+    required super.compositionChilds,
+    required super.eanCode,
+    required super.freight,
+    required super.discounts,
+    required super.expectedDeliveryDate,
+    required super.deliveryTax,
+    required super.increment,
+    required super.creditOnOrigin,
+    required super.compensation,
+    required super.quantity,
+    required super.value,
+    required super.code,
+    required super.icms,
   });
-
-  @override
-  List<Object?> get props => [
-    product,
-    compositionChilds,
-    eanCode,
-    freight,
-    discounts,
-    expectedDeliveryDate,
-    deliveryTax,
-    increment,
-    creditOnOrigin,
-    compensation,
-    quantity,
-    value,
-  ];
 
   factory BSFProductItemModel.fromJson(Map<String, dynamic> json) =>
       BSFProductItemModel(
+        code: json['Code'],
+        icms: json['Icms'] != null ? BSFIcmsModel.fromJson(json['Icms']) : null,
         product: json['Product'] != null
             ? BSFProductDetailsModel.fromJson(json['Product'])
+            : null,
+        fiscalCode: json['FiscalCode'] != null
+            ? BSFFiscalCodeModel.fromJson(json['FiscalCode'])
             : null,
         compositionChilds: json['CompositionChilds'],
         eanCode: json['EanCode'],
         freight: json['Freight'] != null
-            ? BSFProductFreightModel.fromJson(json['Freight'])
+            ? (BSFProductFreightModel.fromJson(json['Freight'])
+                  as BSFProductFreightEntity)
             : null,
         discounts: json['Discounts'] != null
             ? (json['Discounts'] as List)
@@ -83,63 +61,72 @@ class BSFProductItemModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-    'Product': product?.toJson(),
+    'Product': product != null
+        ? BSFProductDetailsModel.fromEntity(product!).toJson()
+        : null,
+    'FiscalCode': fiscalCode != null
+        ? BSFFiscalCodeModel.fromEntity(fiscalCode!).toJson()
+        : null,
     'CompositionChilds': compositionChilds,
     'EanCode': eanCode,
-    'Freight': freight?.toJson(),
-    'Discounts': discounts?.map((e) => e.toJson()).toList(),
+    'Freight': freight != null
+        ? BSFProductFreightModel.fromEntity(freight!).toJson()
+        : null,
+    'Discounts': discounts
+        ?.map((e) => BSFDiscountModel.fromEntity(e).toJson())
+        .toList(),
     'ExpectedDeliveryDate': expectedDeliveryDate?.toIso8601String(),
-    'DeliveryTax': deliveryTax?.toJson(),
-    'Increment': increment?.toJson(),
-    'CreditOnOrigin': creditOnOrigin?.toJson(),
-    'Compensation': compensation?.toJson(),
+    'DeliveryTax': deliveryTax != null
+        ? BSFValueTypeModel.fromEntity(deliveryTax!).toJson()
+        : null,
+    'Increment': increment != null
+        ? BSFValueTypeModel.fromEntity(increment!).toJson()
+        : null,
+    'CreditOnOrigin': creditOnOrigin != null
+        ? BSFValueTypeModel.fromEntity(creditOnOrigin!).toJson()
+        : null,
+    'Compensation': compensation != null
+        ? BSFValueTypeModel.fromEntity(compensation!).toJson()
+        : null,
     'Quantity': quantity,
     'Value': value,
+    'Code': code,
+    'Icms': icms != null ? BSFIcmsModel.fromEntity(icms!).toJson() : null,
   };
 
   factory BSFProductItemModel.fromEntity(BSFProductItemEntity entity) =>
       BSFProductItemModel(
-        product: entity.product == null
-            ? null
-            : BSFProductDetailsModel.fromEntity(entity.product!),
+        icms: entity.icms,
+        code: entity.code,
+        product: entity.product,
+        fiscalCode: entity.fiscalCode,
         compositionChilds: entity.compositionChilds,
         eanCode: entity.eanCode,
-        freight: entity.freight == null
-            ? null
-            : BSFProductFreightModel.fromEntity(entity.freight!),
-        discounts: entity.discounts == null
-            ? null
-            : (entity.discounts!)
-                  .map((e) => BSFDiscountModel.fromEntity(e))
-                  .toList(),
+        freight: entity.freight,
+        discounts: entity.discounts,
         expectedDeliveryDate: entity.expectedDeliveryDate,
-        deliveryTax: entity.deliveryTax == null
-            ? null
-            : BSFValueTypeModel.fromEntity(entity.deliveryTax!),
-        increment: entity.increment == null
-            ? null
-            : BSFValueTypeModel.fromEntity(entity.increment!),
-        creditOnOrigin: entity.creditOnOrigin == null
-            ? null
-            : BSFValueTypeModel.fromEntity(entity.creditOnOrigin!),
-        compensation: entity.compensation == null
-            ? null
-            : BSFValueTypeModel.fromEntity(entity.compensation!),
+        deliveryTax: entity.deliveryTax,
+        increment: entity.increment,
+        creditOnOrigin: entity.creditOnOrigin,
+        compensation: entity.compensation,
         quantity: entity.quantity,
         value: entity.value,
       );
 
   BSFProductItemEntity toEntity() => BSFProductItemEntity(
-    product: product?.toEntity(),
+    code: code,
+    icms: icms,
+    product: product,
+    fiscalCode: fiscalCode,
     compositionChilds: compositionChilds,
     eanCode: eanCode,
-    freight: freight?.toEntity(),
-    discounts: discounts?.map((e) => e.toEntity()).toList(),
+    freight: freight,
+    discounts: discounts,
     expectedDeliveryDate: expectedDeliveryDate,
-    deliveryTax: deliveryTax?.toEntity(),
-    increment: increment?.toEntity(),
-    creditOnOrigin: creditOnOrigin?.toEntity(),
-    compensation: compensation?.toEntity(),
+    deliveryTax: deliveryTax,
+    increment: increment,
+    creditOnOrigin: creditOnOrigin,
+    compensation: compensation,
     quantity: quantity,
     value: value,
   );

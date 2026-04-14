@@ -263,7 +263,9 @@ void main() {
 
       verify(
         () => mockDatasource.update(
-          saleRequest: bSFSaleRequestModel,
+          saleRequest: BSFSaleRequestModel.fromEntity(
+            bSFSaleRequestModel.toEntity(),
+          ),
           enterpriseCode: enterpriseCode,
           params: params,
         ),
@@ -283,7 +285,9 @@ void main() {
 
       verify(
         () => mockDatasource.update(
-          saleRequest: bSFSaleRequestModel,
+          saleRequest: BSFSaleRequestModel.fromEntity(
+            bSFSaleRequestModel.toEntity(),
+          ),
           enterpriseCode: enterpriseCode,
           params: params,
         ),

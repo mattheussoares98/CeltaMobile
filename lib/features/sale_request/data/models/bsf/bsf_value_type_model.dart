@@ -1,16 +1,9 @@
 import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
 
-class BSFValueTypeModel extends Equatable {
-  final PercentageOrValue? type;
-  final double? value;
-
-  const BSFValueTypeModel({required this.type, required this.value});
-
-  @override
-  List<Object?> get props => [type, value];
+class BSFValueTypeModel extends BSFValueTypeEntity {
+  const BSFValueTypeModel({required super.type, required super.value});
 
   factory BSFValueTypeModel.fromJson(Map<String, dynamic> json) =>
       BSFValueTypeModel(

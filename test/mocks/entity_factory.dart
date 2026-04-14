@@ -1115,6 +1115,7 @@ class EntityFactory {
           contactName: faker.person.name(),
         ),
         customer: BSFCustomerEntity(
+          code: faker.randomGenerator.integer(100),
           personalizedCode: faker.randomGenerator.integer(100).toString(),
           name: faker.person.name(),
           nameReduced: faker.person.name(),
@@ -1247,10 +1248,94 @@ class EntityFactory {
     value: faker.randomGenerator.decimal(),
   );
 
+  static BSFIcmsEntity _makeBSFIcmsEntity() => BSFIcmsEntity(
+    taxOnState: faker.randomGenerator.decimal(),
+    haveCovenantBetweenStates: faker.randomGenerator.boolean(),
+    utilizeIVASTAdjusted: faker.randomGenerator.boolean(),
+    simplifiedEstimationScheme: faker.randomGenerator.boolean(),
+    reductionMargin: faker.randomGenerator.decimal(),
+    iVAMargin: faker.randomGenerator.decimal(),
+    reductionIVAMarginForFederalSimple: faker.randomGenerator.decimal(),
+    aliquot: faker.randomGenerator.decimal(),
+    aditionalIcmsAliquotFEM: faker.randomGenerator.decimal(),
+    stave: faker.randomGenerator.decimal(),
+    taxeAliquotNational: faker.randomGenerator.decimal(),
+    taxeAliquotImport: faker.randomGenerator.decimal(),
+    taxeAliquotState: faker.randomGenerator.decimal(),
+    taxeAliquotMunicipal: faker.randomGenerator.decimal(),
+    taxeAliquotFederal: faker.randomGenerator.decimal(),
+    reductionType: faker.randomGenerator.integer(100),
+    allowReductionMargin: faker.randomGenerator.boolean(),
+    allowIVAMargin: faker.randomGenerator.boolean(),
+    allowIcmsAliquot: faker.randomGenerator.boolean(),
+    reductionMarginIsRequired: faker.randomGenerator.boolean(),
+    icmsAliquotIsRequired: faker.randomGenerator.boolean(),
+    isValidReductionMargin: faker.randomGenerator.boolean(),
+    isValidIVAMargin: faker.randomGenerator.boolean(),
+    isValidIcmsAliquot: faker.randomGenerator.boolean(),
+    isValidAditionalIcmsAliquotFEM: faker.randomGenerator.boolean(),
+    isValidReductionType: faker.randomGenerator.boolean(),
+    containsFiscalAdjuste: faker.randomGenerator.boolean(),
+    isValidFiscalAdjuste: faker.randomGenerator.boolean(),
+    isImporter: faker.randomGenerator.boolean(),
+    isImporterAcquiredDomestic: faker.randomGenerator.boolean(),
+    originalAliquot: faker.randomGenerator.decimal(),
+    fiscalAdjustCode: faker.randomGenerator.integer(100).toString(),
+    fiscalBenefitCode: faker.randomGenerator.integer(100).toString(),
+    tributarySituation: _makeBSFTributarySituationEntity(),
+    fiscalObservation: faker.lorem.word(),
+    fiscalAdjustObservation: faker.lorem.word(),
+    stateInternalIcms: faker.randomGenerator.decimal(),
+  );
+
+  static BSFTributarySituationEntity _makeBSFTributarySituationEntity() =>
+      BSFTributarySituationEntity(
+        code: faker.randomGenerator.integer(100).toString(),
+        description: faker.lorem.word(),
+        codeCSOSN: faker.randomGenerator.integer(100).toString(),
+        fiscalBenefitCodeStatesRequired: faker.randomGenerator
+            .boolean()
+            .toString(),
+        isImported: faker.randomGenerator.boolean(),
+        isSubstitution: faker.randomGenerator.boolean(),
+        originType: faker.randomGenerator.integer(100),
+        tributation: faker.randomGenerator.integer(100),
+      );
+
   static BSFProductItemEntity _makeBSFProductItemEntity() =>
       BSFProductItemEntity(
+        code: faker.randomGenerator.integer(100),
+        icms: _makeBSFIcmsEntity(),
         product: BSFProductDetailsEntity(
           name: faker.food.dish(),
+          code: faker.randomGenerator.integer(100),
+          complement: faker.lorem.word(),
+          consolidateGrateChildsInFiscalNote: faker.randomGenerator.boolean(),
+          fatherOfGrateIsLiberatedSale: faker.randomGenerator.boolean(),
+          isBasicBasketItem: faker.randomGenerator.boolean(),
+          isDesativate: faker.randomGenerator.boolean(),
+          isFloatingProduct: faker.randomGenerator.boolean(),
+          isOutOfLine: faker.randomGenerator.boolean(),
+          isPriceControlled: faker.randomGenerator.boolean(),
+          isProductForComplementFiscalNote: faker.randomGenerator.boolean(),
+          isReturnablePacking: faker.randomGenerator.boolean(),
+          isScheduledToUnify: faker.randomGenerator.boolean(),
+          practicePriceRoundRules: faker.randomGenerator.boolean(),
+          legacyCode: faker.guid.guid(),
+          manufacturerString: faker.guid.guid(),
+          productPackingEanString: faker.randomGenerator
+              .integer(100)
+              .toString(),
+          productPackingPersonalizedCodeString: faker.randomGenerator
+              .integer(100)
+              .toString(),
+          productPackingQuantityString: faker.randomGenerator
+              .integer(100)
+              .toString(),
+          productPackingSpecificationString: faker.randomGenerator
+              .integer(100)
+              .toString(),
+          productPackingString: faker.randomGenerator.integer(100).toString(),
           isAlcoholicProduct: faker.randomGenerator.boolean(),
           isFatherOfGrate: faker.randomGenerator.boolean(),
           fatherGrateCode: faker.randomGenerator.integer(100),
@@ -1264,6 +1349,7 @@ class EntityFactory {
           productPackingQuantity: faker.randomGenerator.decimal(),
           productPackingPriceLookUpString: faker.lorem.word(),
         ),
+        fiscalCode: _makeBSFFiscalCodeEntity(),
         compositionChilds: const [],
         eanCode: faker.randomGenerator.numberOfLength(13),
         freight: BSFProductFreightEntity(
@@ -1284,6 +1370,81 @@ class EntityFactory {
         quantity: faker.randomGenerator.decimal(),
         value: faker.randomGenerator.decimal(),
       );
+
+  static BSFFiscalCodeEntity _makeBSFFiscalCodeEntity() => BSFFiscalCodeEntity(
+    code: _makeBSFFiscalCodeValueEntity(code: '5405', isValid: true),
+    codeCompensation: _makeBSFFiscalCodeValueEntity(code: '', isValid: false),
+    description: faker.lorem.sentence(),
+    fiscalObservation: faker.randomGenerator.boolean()
+        ? faker.lorem.sentence()
+        : null,
+    codeString: '5405',
+    codeCompensationString: '',
+    isBonus: faker.randomGenerator.boolean(),
+    isSampleFree: faker.randomGenerator.boolean(),
+    isRemittanceOfDeliveryFuture: faker.randomGenerator.boolean(),
+    isDeliveryFuture: faker.randomGenerator.boolean(),
+    isFuel: faker.randomGenerator.boolean(),
+    isConsignment: faker.randomGenerator.boolean(),
+    isEntranceOfConsignment: faker.randomGenerator.boolean(),
+    isSimbolicDevolutionOfConsignment: faker.randomGenerator.boolean(),
+    isDevolutionOfConsignment: faker.randomGenerator.boolean(),
+    isReceiveOfDeliveryFuture: faker.randomGenerator.boolean(),
+    isIndustrialization: faker.randomGenerator.boolean(),
+    isNoteByCoupon: faker.randomGenerator.boolean(),
+    isTransfer: faker.randomGenerator.boolean(),
+    isDevolution: faker.randomGenerator.boolean(),
+    isSubstitution: faker.randomGenerator.boolean(),
+    isValidFiscalCodeForSubstituteOrNotSubstitute: faker.randomGenerator
+        .boolean(),
+    isConsumptionOrIngredient: faker.randomGenerator.boolean(),
+    isOtherNotSpecified: faker.randomGenerator.boolean(),
+    isEntrance: faker.randomGenerator.boolean(),
+    isExit: faker.randomGenerator.boolean(),
+    isSaleWithSubstituton: faker.randomGenerator.boolean(),
+    isTransferWithSubstituton: faker.randomGenerator.boolean(),
+    isSaleDevolutionWithSubstituton: faker.randomGenerator.boolean(),
+    isBuyDevolutionWithSubstituton: faker.randomGenerator.boolean(),
+    allowCreditForPisCofins: faker.randomGenerator.boolean(),
+    isConsumerSale: faker.randomGenerator.boolean(),
+    isAquisitionForSaleWithPisCofinsCredtRight: faker.randomGenerator.boolean(),
+    isAquisitionForUtilizationAsInsummeWithPisCofinsCredtRight: faker
+        .randomGenerator
+        .boolean(),
+    isAquisitionForServiceAsInsummeWithPisCofinsCredtRight: faker
+        .randomGenerator
+        .boolean(),
+    isSaleDevolutionsIncidNotCumulativeWithPisCofinsCredtRight: faker
+        .randomGenerator
+        .boolean(),
+    isOtherOperationsWithPisCofinsCredtRight: faker.randomGenerator.boolean(),
+    isFiscalCodeNotTributedForPisCofins: faker.randomGenerator.boolean(),
+    isElectricEnergyAquisition: faker.randomGenerator.boolean(),
+    isImobilizeAtive: faker.randomGenerator.boolean(),
+    isRemittanceThirdpartForAccountOrder: faker.randomGenerator.boolean(),
+    isRemittanceToDeposit: faker.randomGenerator.boolean(),
+    isRemittanceToExport: faker.randomGenerator.boolean(),
+    isComunicationServiceAquisition: faker.randomGenerator.boolean(),
+    isService: faker.randomGenerator.boolean(),
+    isImportation: faker.randomGenerator.boolean(),
+    isExportation: faker.randomGenerator.boolean(),
+    isFreightService: faker.randomGenerator.boolean(),
+    withoutCreditForICMS: faker.randomGenerator.boolean(),
+    isSaleMovementsDailyGobal: faker.randomGenerator.boolean(),
+    groupFiscalCodeType: faker.randomGenerator.integer(10),
+    isAllowCreditOrDebitForIPI: faker.randomGenerator.boolean(),
+    isInterstateSaleForConsumption: faker.randomGenerator.boolean(),
+    isInterstateSaleSubstitutionForConsumption: faker.randomGenerator.boolean(),
+  );
+
+  static BSFFiscalCodeValueEntity _makeBSFFiscalCodeValueEntity({
+    required String code,
+    required bool isValid,
+  }) => BSFFiscalCodeValueEntity(
+    code: code,
+    isOldFormat: faker.randomGenerator.boolean(),
+    isValid: isValid,
+  );
 
   static BSFDiscountEntity _makeBSFProductDiscountEntity() => BSFDiscountEntity(
     order: faker.randomGenerator.integer(100),

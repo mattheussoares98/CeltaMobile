@@ -13,4 +13,14 @@ class BSFFinancialEntity extends Equatable {
 
   @override
   List<Object?> get props => [paymentFinalizations, paybackValue];
+
+  BSFFinancialEntity copyWith({
+    List<BSFPaymentFinalizationWrapperEntity>? paymentFinalizations,
+    double? paybackValue,
+  }) {
+    return BSFFinancialEntity(
+      paymentFinalizations: paymentFinalizations ?? this.paymentFinalizations,
+      paybackValue: paybackValue ?? this.paybackValue,
+    );
+  }
 }

@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/domain/entities/entities.dart';
 
 class DeliveryEntity extends Equatable {
-  final String Transporter;
+  final String? Transporter;
   final double TotalValue;
-  final AddressEntity DeliveryAddress;
+  final AddressEntity? DeliveryAddress;
 
   const DeliveryEntity({
     required this.Transporter,
@@ -15,4 +15,10 @@ class DeliveryEntity extends Equatable {
 
   @override
   List<Object?> get props => [Transporter, TotalValue, DeliveryAddress];
+
+  factory DeliveryEntity.empty() => const DeliveryEntity(
+    Transporter: null,
+    TotalValue: 0,
+    DeliveryAddress: null,
+  );
 }

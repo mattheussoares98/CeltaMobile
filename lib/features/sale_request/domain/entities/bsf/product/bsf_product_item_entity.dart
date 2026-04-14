@@ -4,6 +4,7 @@ import '../../entities.dart';
 
 class BSFProductItemEntity extends Equatable {
   final BSFProductDetailsEntity? product;
+  final BSFFiscalCodeEntity? fiscalCode;
   final dynamic compositionChilds;
   final String? eanCode;
   final BSFProductFreightEntity? freight;
@@ -15,9 +16,12 @@ class BSFProductItemEntity extends Equatable {
   final BSFValueTypeEntity? compensation;
   final double? quantity;
   final double? value;
+  final int code;
+  final BSFIcmsEntity? icms;
 
   const BSFProductItemEntity({
     required this.product,
+    required this.fiscalCode,
     required this.compositionChilds,
     required this.eanCode,
     required this.freight,
@@ -29,11 +33,14 @@ class BSFProductItemEntity extends Equatable {
     required this.compensation,
     required this.quantity,
     required this.value,
+    required this.code,
+    required this.icms,
   });
 
   @override
   List<Object?> get props => [
     product,
+    fiscalCode,
     compositionChilds,
     eanCode,
     freight,
@@ -45,7 +52,45 @@ class BSFProductItemEntity extends Equatable {
     compensation,
     quantity,
     value,
+    code,
+    icms,
   ];
+
+  BSFProductItemEntity copyWith({
+    BSFProductDetailsEntity? product,
+    BSFFiscalCodeEntity? fiscalCode,
+    dynamic compositionChilds,
+    String? eanCode,
+    BSFProductFreightEntity? freight,
+    List<BSFDiscountEntity>? discounts,
+    DateTime? expectedDeliveryDate,
+    BSFValueTypeEntity? deliveryTax,
+    BSFValueTypeEntity? increment,
+    BSFValueTypeEntity? creditOnOrigin,
+    BSFValueTypeEntity? compensation,
+    double? quantity,
+    double? value,
+    int? code,
+    BSFIcmsEntity? icms,
+  }) {
+    return BSFProductItemEntity(
+      product: product ?? this.product,
+      fiscalCode: fiscalCode ?? this.fiscalCode,
+      compositionChilds: compositionChilds ?? this.compositionChilds,
+      eanCode: eanCode ?? this.eanCode,
+      freight: freight ?? this.freight,
+      discounts: discounts ?? this.discounts,
+      expectedDeliveryDate: expectedDeliveryDate ?? this.expectedDeliveryDate,
+      deliveryTax: deliveryTax ?? this.deliveryTax,
+      increment: increment ?? this.increment,
+      creditOnOrigin: creditOnOrigin ?? this.creditOnOrigin,
+      compensation: compensation ?? this.compensation,
+      quantity: quantity ?? this.quantity,
+      value: value ?? this.value,
+      code: code ?? this.code,
+      icms: icms ?? this.icms,
+    );
+  }
 
   double get unitDiscountValue {
     final allDiscountsAreZero =

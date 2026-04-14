@@ -1,24 +1,15 @@
-import 'package:equatable/equatable.dart';
-
 import '../../../domain/entities/entities.dart';
 
-class BSFCustomerModel extends Equatable {
-  final String? personalizedCode;
-  final String? name;
-  final String? nameReduced;
-  final String? cnpjCpfNumber;
-  final String? suframaCode;
-  final double? limitOfPurchase;
-  final String? inscriptionRgNumber;
-
+class BSFCustomerModel extends BSFCustomerEntity {
   const BSFCustomerModel({
-    required this.personalizedCode,
-    required this.name,
-    required this.nameReduced,
-    required this.cnpjCpfNumber,
-    required this.suframaCode,
-    required this.limitOfPurchase,
-    required this.inscriptionRgNumber,
+    required super.code,
+    required super.personalizedCode,
+    required super.name,
+    required super.nameReduced,
+    required super.cnpjCpfNumber,
+    required super.suframaCode,
+    required super.limitOfPurchase,
+    required super.inscriptionRgNumber,
   });
 
   @override
@@ -34,6 +25,7 @@ class BSFCustomerModel extends Equatable {
 
   factory BSFCustomerModel.fromJson(Map<String, dynamic> json) =>
       BSFCustomerModel(
+        code: json['Code'],
         personalizedCode: json['PersonalizedCode'],
         name: json['Name'],
         nameReduced: json['NameReduced'],
@@ -44,6 +36,7 @@ class BSFCustomerModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
+    'Code': code,
     'PersonalizedCode': personalizedCode,
     'Name': name,
     'NameReduced': nameReduced,
@@ -55,6 +48,7 @@ class BSFCustomerModel extends Equatable {
 
   factory BSFCustomerModel.fromEntity(BSFCustomerEntity entity) =>
       BSFCustomerModel(
+        code: entity.code,
         personalizedCode: entity.personalizedCode,
         name: entity.name,
         nameReduced: entity.nameReduced,
@@ -65,6 +59,7 @@ class BSFCustomerModel extends Equatable {
       );
 
   BSFCustomerEntity toEntity() => BSFCustomerEntity(
+    code: code,
     personalizedCode: personalizedCode,
     name: name,
     nameReduced: nameReduced,

@@ -11,3 +11,4 @@ export 'bsf_value_type_entity.dart';
 export 'financial/bsf_user_authorization_entity.dart';
 export 'financial/financial.dart';
 export 'product/product.dart';
+export 'bsf_mappers.dart';

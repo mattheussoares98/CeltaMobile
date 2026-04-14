@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../utils/utils.dart';
+import '../../../domain/entities/entities.dart';
 
 class EcSaleRequestProductProductModel extends Equatable {
   final int? Id;
@@ -33,7 +34,7 @@ class EcSaleRequestProductProductModel extends Equatable {
         Plu: json['plu'],
         Name: json['name'],
         PackingAbbreviation: json['packingAbbreviation'],
-        PackingQuantity: json['packingQuantity'],
+        PackingQuantity: json['packingQuantity']?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -52,6 +53,16 @@ class EcSaleRequestProductProductModel extends Equatable {
         PackingAbbreviation: entity.PackingAbbreviation,
         PackingQuantity: entity.PackingQuantity?.toDouble(),
       );
+
+  factory EcSaleRequestProductProductModel.fromBSFProductDetailsEntity(
+    BSFProductDetailsEntity entity,
+  ) => EcSaleRequestProductProductModel(
+    Id: entity.code,
+    Plu: entity.productPackingPriceLookUpString,
+    Name: entity.name,
+    PackingAbbreviation: entity.productPackingTypeString,
+    PackingQuantity: entity.productPackingQuantity,
+  );
 
   ProductEntity toEntity() => ProductEntity.empty().copyWith(
     ProductPackingCode: Id,
