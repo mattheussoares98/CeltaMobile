@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../../features/sale_request/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
 
 class EcCustomerModel extends Equatable {
@@ -62,7 +63,7 @@ class EcCustomerModel extends Equatable {
     'personType': PersonType?.shortName,
     'cpfCnpjNumber': CpfCnpjNumber,
     'contactName': ContactName,
-    'email': Email,
+    'email': Email ?? '',
     'phoneArea': PhoneArea,
     'phoneNumber': PhoneNumber,
   };
@@ -80,6 +81,19 @@ class EcCustomerModel extends Equatable {
     PhoneArea: entity.Telephones?.firstOrNull?.AreaCode,
     PhoneNumber: entity.Telephones?.firstOrNull?.PhoneNumber,
   );
+
+  factory EcCustomerModel.fromBSFEntity(BSFCustomerEntity entity) =>
+      EcCustomerModel(
+        Id: entity.code,
+        Name: entity.name,
+        DateOfBirth: null,
+        PersonType: null,
+        CpfCnpjNumber: entity.cnpjCpfNumber,
+        ContactName: entity.name,
+        Email: null,
+        PhoneArea: null,
+        PhoneNumber: null,
+      );
 
   CustomerEntity toEntity() => CustomerEntity.empty().copyWith(
     Code: Id,
