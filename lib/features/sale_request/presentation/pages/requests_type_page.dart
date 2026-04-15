@@ -111,10 +111,11 @@ class _RequestTypeItem extends StatelessWidget {
                 },
               ),
 
-              TitleAndSubTitle(
-                title: 'Código'.hardcoded,
-                subTitle: request.personalizedCode,
-              ),
+              if (request.personalizedCode?.isNotEmpty == true)
+                TitleAndSubTitle(
+                  title: 'Código'.hardcoded,
+                  subTitle: request.personalizedCode,
+                ),
               TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.name),
               TitleAndSubTitle(
                 title: 'Tipo preço'.hardcoded,
