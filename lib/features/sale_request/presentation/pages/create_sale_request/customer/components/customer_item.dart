@@ -1,6 +1,8 @@
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
@@ -33,13 +35,26 @@ class CustomerItem extends ConsumerWidget {
           CustomerInfoAndRadio(
             customerItem: this,
             enterpriseCode: enterpriseCode,
-            changeSelectedCustomer: () => ref
-                .read(
-                  pendingSaleRequestStateControllerProvider(
-                    enterpriseCode,
-                  ).notifier,
-                )
-                .changeCustomer(customer),
+            changeSelectedCustomer: () {
+              if (customer.saleBlockade?.AllowSaleRequest == false) {
+                showAlertDialog(
+                  context: context,
+                  title: 'Cliente bloqueado'.hardcoded,
+                  content:
+                      customer.saleBlockadeInstruction?.Description ??
+                      'Este cliente está bloqueado!'.hardcoded,
+                );
+                return;
+              }
+
+              ref
+                  .read(
+                    pendingSaleRequestStateControllerProvider(
+                      enterpriseCode,
+                    ).notifier,
+                  )
+                  .changeCustomer(customer);
+            },
           ),
           if (customer == selectedCustomer &&
               customer.CustomerCovenants != null &&
