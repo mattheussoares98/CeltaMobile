@@ -1288,6 +1288,14 @@ class EntityFactory {
     stateInternalIcms: faker.randomGenerator.decimal(),
   );
 
+  static BSFIpiEntity _makeBSFIpiEntity() => BSFIpiEntity(
+    aliquot: faker.randomGenerator.decimal(),
+    type: faker.randomGenerator.integer(100),
+    tributarySituation: faker.lorem.word(),
+    fiscalObservation: faker.lorem.word(),
+    isValid: faker.randomGenerator.boolean(),
+  );
+
   static BSFTributarySituationEntity _makeBSFTributarySituationEntity() =>
       BSFTributarySituationEntity(
         code: faker.randomGenerator.integer(100).toString(),
@@ -1306,6 +1314,7 @@ class EntityFactory {
       BSFProductItemEntity(
         code: faker.randomGenerator.integer(100),
         icms: _makeBSFIcmsEntity(),
+        ipi: _makeBSFIpiEntity(),
         product: BSFProductDetailsEntity(
           name: faker.food.dish(),
           code: faker.randomGenerator.integer(100),

@@ -36,6 +36,7 @@ extension ProductEntityToBSFProductItemEntity on ProductEntity {
         practicePriceRoundRules: null,
         productPackingEanString: null,
       ),
+      ipi: null,
       icms: null,
       code: 0,
       fiscalCode: null,

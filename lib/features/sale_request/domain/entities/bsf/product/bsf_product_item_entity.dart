@@ -18,6 +18,7 @@ class BSFProductItemEntity extends Equatable {
   final double? value;
   final int code;
   final BSFIcmsEntity? icms;
+  final BSFIpiEntity? ipi;
 
   const BSFProductItemEntity({
     required this.product,
@@ -35,6 +36,7 @@ class BSFProductItemEntity extends Equatable {
     required this.value,
     required this.code,
     required this.icms,
+    required this.ipi,
   });
 
   @override
@@ -54,6 +56,7 @@ class BSFProductItemEntity extends Equatable {
     value,
     code,
     icms,
+    ipi,
   ];
 
   BSFProductItemEntity copyWith({
@@ -72,6 +75,7 @@ class BSFProductItemEntity extends Equatable {
     double? value,
     int? code,
     BSFIcmsEntity? icms,
+    BSFIpiEntity? ipi,
   }) {
     return BSFProductItemEntity(
       product: product ?? this.product,
@@ -89,6 +93,7 @@ class BSFProductItemEntity extends Equatable {
       value: value ?? this.value,
       code: code ?? this.code,
       icms: icms ?? this.icms,
+      ipi: ipi ?? this.ipi,
     );
   }
 

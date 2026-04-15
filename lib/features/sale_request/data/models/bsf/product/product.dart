@@ -5,3 +5,4 @@ export 'bsf_product_freight_model.dart';
 export 'bsf_product_item_model.dart';
 export 'bsf_icms_model.dart';
 export 'bsf_tributary_situation_model.dart';
+export 'bsf_ipi_model.dart';
