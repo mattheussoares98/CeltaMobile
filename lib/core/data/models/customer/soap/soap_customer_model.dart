@@ -19,8 +19,8 @@ class SoapCustomerModel extends Equatable {
   final List<SoapCustomerTelephoneModel>? Telephones;
   final List<SoapCustomerCovenantModel>? CustomerCovenants;
   final List<SoapAddressModel>? Addresses;
-  final SoapCustomerSaleBlockadeInstructionModel? saleBlockadeInstructionModel;
-  final SoapCustomerSaleBlockadeModel? saleBlockadeModel;
+  final SoapCustomerSaleBlockadeInstructionModel? saleBlockadeInstruction;
+  final SoapCustomerSaleBlockadeModel? saleBlockade;
 
   const SoapCustomerModel({
     required this.Name,
@@ -38,8 +38,8 @@ class SoapCustomerModel extends Equatable {
     required this.Telephones,
     required this.Addresses,
     required this.CustomerCovenants,
-    required this.saleBlockadeInstructionModel,
-    required this.saleBlockadeModel,
+    required this.saleBlockadeInstruction,
+    required this.saleBlockade,
   });
 
   @override
@@ -59,8 +59,8 @@ class SoapCustomerModel extends Equatable {
     Telephones,
     Addresses,
     CustomerCovenants,
-    saleBlockadeInstructionModel,
-    saleBlockadeModel,
+    saleBlockadeInstruction,
+    saleBlockade,
   ];
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -80,10 +80,9 @@ class SoapCustomerModel extends Equatable {
     if (Code != null) 'Code': Code,
     if (PersonalizedCode != null) 'PersonalizedCode': PersonalizedCode,
     if (HasPassword != null) 'HasPassword': HasPassword,
-    if (saleBlockadeInstructionModel != null)
-      'SaleBlockadeInstructionModel': saleBlockadeInstructionModel?.toJson(),
-    if (saleBlockadeModel != null)
-      'SaleBlockadeModel': saleBlockadeModel?.toJson(),
+    if (saleBlockadeInstruction != null)
+      'SaleBlockadeInstruction': saleBlockadeInstruction?.toJson(),
+    if (saleBlockade != null) 'SaleBlockade': saleBlockade?.toJson(),
   };
 
   factory SoapCustomerModel.fromJson(Map json) => SoapCustomerModel(
@@ -118,14 +117,14 @@ class SoapCustomerModel extends Equatable {
     CustomerCovenants: (json['CustomerCovenants'] as List?)
         ?.map((e) => SoapCustomerCovenantModel.fromJson(e))
         .toList(),
-    saleBlockadeInstructionModel: json['SaleBlockadeInstructionModel'] == null
+    saleBlockadeInstruction: json['SaleBlockadeInstruction'] == null
         ? null
         : SoapCustomerSaleBlockadeInstructionModel.fromJson(
-            json['SaleBlockadeInstructionModel'],
+            json['SaleBlockadeInstruction'],
           ),
-    saleBlockadeModel: json['SaleBlockadeModel'] == null
+    saleBlockade: json['SaleBlockade'] == null
         ? null
-        : SoapCustomerSaleBlockadeModel.fromJson(json['SaleBlockadeModel']),
+        : SoapCustomerSaleBlockadeModel.fromJson(json['SaleBlockade']),
   );
 
   factory SoapCustomerModel.fromEntity(CustomerEntity entity) =>
@@ -151,12 +150,12 @@ class SoapCustomerModel extends Equatable {
         CustomerCovenants: entity.CustomerCovenants?.map(
           (e) => SoapCustomerCovenantModel.fromEntity(e),
         ).toList(),
-        saleBlockadeInstructionModel: entity.saleBlockadeInstruction == null
+        saleBlockadeInstruction: entity.saleBlockadeInstruction == null
             ? null
             : SoapCustomerSaleBlockadeInstructionModel.fromEntity(
                 entity.saleBlockadeInstruction!,
               ),
-        saleBlockadeModel: entity.saleBlockade == null
+        saleBlockade: entity.saleBlockade == null
             ? null
             : SoapCustomerSaleBlockadeModel.fromEntity(entity.saleBlockade!),
       );
@@ -177,7 +176,7 @@ class SoapCustomerModel extends Equatable {
     Telephones: Telephones?.map((e) => e.toEntity()).toList(),
     Addresses: Addresses?.map((e) => e.toEntity()).toList(),
     CustomerCovenants: CustomerCovenants?.map((e) => e.toEntity()).toList(),
-    saleBlockadeInstruction: saleBlockadeInstructionModel?.toEntity(),
-    saleBlockade: saleBlockadeModel?.toEntity(),
+    saleBlockadeInstruction: saleBlockadeInstruction?.toEntity(),
+    saleBlockade: saleBlockade?.toEntity(),
   );
 }
