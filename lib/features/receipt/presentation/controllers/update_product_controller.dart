@@ -19,7 +19,7 @@ class UpdateProductController extends _$UpdateProductController {
 
   Future<void> updateValues({
     required int grDocCode,
-    required int productPackingCode,
+    required int productIndex,
     required bool isSubtract,
     required double quantity,
     required DateTime? newValidityDate,
@@ -30,7 +30,11 @@ class UpdateProductController extends _$UpdateProductController {
         validatedUserSessionProvider.future,
       );
 
-      final product = await _getCorrespondentProduct(productPackingCode);
+      final product = await ref.read(
+        searchProductsStateControllerProvider(
+          searchProductKey,
+        ).selectAsync((s) => s.elementAt(productIndex)),
+      );
 
       final quantityToSendInRequest = isSubtract == true
           ? 0 - quantity
@@ -55,7 +59,7 @@ class UpdateProductController extends _$UpdateProductController {
             crossIdentity: validatedUser.user.CrossIdentity_Usuario!,
             grDocCode: grDocCode,
             productCode: product.ProductCode!,
-            productPackingCode: productPackingCode,
+            productPackingCode: product.ProductPackingCode!,
             newQuantity: quantityToSendInRequest,
             newValidityDate: newValidityDate,
           );
@@ -75,14 +79,5 @@ class UpdateProductController extends _$UpdateProductController {
                 ),
           );
     });
-  }
-
-  Future<ProductEntity> _getCorrespondentProduct(int productPackingCode) async {
-    final products = await ref.read(
-      searchProductsStateControllerProvider(searchProductKey).future,
-    );
-    return products.firstWhere(
-      (e) => e.ProductPackingCode == productPackingCode,
-    );
   }
 }

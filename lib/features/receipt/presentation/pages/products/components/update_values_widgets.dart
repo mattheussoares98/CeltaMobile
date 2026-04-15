@@ -15,6 +15,7 @@ class UpdateValuesWidgets extends ConsumerStatefulWidget {
   final TextEditingController quantityController;
   final SearchProductKey searchProductKey;
   final int receiptCode;
+  final int productIndex;
   final FocusNode quantityFocusNode;
   const UpdateValuesWidgets({
     super.key,
@@ -22,6 +23,7 @@ class UpdateValuesWidgets extends ConsumerStatefulWidget {
     required this.quantityController,
     required this.searchProductKey,
     required this.receiptCode,
+    required this.productIndex,
     required this.quantityFocusNode,
   });
 
@@ -57,7 +59,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
         .read(updateProductControllerProvider(widget.searchProductKey).notifier)
         .updateValues(
           grDocCode: widget.receiptCode,
-          productPackingCode: widget.product.ProductPackingCode!,
+          productIndex: widget.productIndex,
           isSubtract: isSubtract == true || isAnnul == true,
           quantity: isAnnul == true
               ? widget.product.Quantidade_ProcRecebDocProEmb ?? 0

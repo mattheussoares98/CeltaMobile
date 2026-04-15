@@ -107,6 +107,7 @@ class _ProductItem extends ConsumerWidget {
                 quantityController: quantityController,
                 receiptCode: receiptCode,
                 searchProductKey: searchProductKey,
+                productIndex: index,
               )
             : null,
         clickableBottom: Column(

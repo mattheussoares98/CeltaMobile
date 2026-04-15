@@ -38,7 +38,6 @@ void main() {
   // Test data variables
   late int fakeGrDocCode;
   late int fakeProductCode;
-  late int fakeProductPackingCode;
   late ProductEntity fakeProduct;
   late SearchProductKey fakeSearchKey;
   late DateTime? newValidityDate;
@@ -59,7 +58,6 @@ void main() {
     // Initialize required data
     fakeGrDocCode = faker.randomGenerator.integer(100);
     fakeProductCode = 50;
-    fakeProductPackingCode = 100;
     newValidityDate = faker.randomGenerator.boolean()
         ? faker.date.dateTime()
         : null;
@@ -67,7 +65,6 @@ void main() {
     // Create the product that will be in the cart
     fakeProduct = EntityFactory.makeProductEntity(
       productCode: fakeProductCode,
-      productPackingCode: fakeProductPackingCode,
       Quantidade_ProcRecebDocProEmb: 50.0,
       DataValidade_ProcRecebDocProEmb: DateTime(2026, 1, 1),
     );
@@ -140,7 +137,7 @@ void main() {
           .read(updateProductControllerProvider(fakeSearchKey).notifier)
           .updateValues(
             grDocCode: fakeGrDocCode,
-            productPackingCode: fakeProductPackingCode,
+            productIndex: 0,
             isSubtract: isSubtract,
             newValidityDate: newValidityDate,
             quantity: 10,
@@ -151,7 +148,7 @@ void main() {
       verify(
         () => mockDatasource.update(
           productCode: fakeProductCode,
-          productPackingCode: fakeProductPackingCode,
+          productPackingCode: fakeProduct.ProductPackingCode!,
           newQuantity: isSubtract
               ? -10
               : 10, // Critical check. 20 - 10 = 10 || 20 + 10 = 30
@@ -194,7 +191,7 @@ void main() {
             newValidityDate: DateTime.now(),
             isSubtract: false,
             quantity: 1,
-            productPackingCode: fakeProductPackingCode,
+            productIndex: 0,
           );
 
       // Verify no update product side effect occurred
@@ -221,7 +218,7 @@ void main() {
               newValidityDate: DateTime.now(),
               isSubtract: true,
               quantity: 11,
-              productPackingCode: fakeProductPackingCode,
+              productIndex: 0,
             );
 
         expect(
@@ -249,7 +246,7 @@ void main() {
           .read(updateProductControllerProvider(fakeSearchKey).notifier)
           .updateValues(
             grDocCode: fakeGrDocCode,
-            productPackingCode: fakeProductPackingCode,
+            productIndex: 0,
             isSubtract: isSubtract,
             newValidityDate: null,
             quantity: faker.randomGenerator.decimal(),
