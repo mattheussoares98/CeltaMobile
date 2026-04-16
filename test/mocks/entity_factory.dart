@@ -1312,6 +1312,7 @@ class EntityFactory {
 
   static BSFProductItemEntity _makeBSFProductItemEntity() =>
       BSFProductItemEntity(
+        productPackingCode: faker.randomGenerator.integer(100),
         code: faker.randomGenerator.integer(100),
         icms: _makeBSFIcmsEntity(),
         ipi: _makeBSFIpiEntity(),

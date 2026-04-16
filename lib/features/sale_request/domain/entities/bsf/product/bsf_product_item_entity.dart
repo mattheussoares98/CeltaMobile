@@ -14,6 +14,7 @@ class BSFProductItemEntity extends Equatable {
   final BSFValueTypeEntity? increment;
   final BSFValueTypeEntity? creditOnOrigin;
   final BSFValueTypeEntity? compensation;
+  final int? productPackingCode;
   final double? quantity;
   final double? value;
   final int code;
@@ -32,6 +33,7 @@ class BSFProductItemEntity extends Equatable {
     required this.increment,
     required this.creditOnOrigin,
     required this.compensation,
+    required this.productPackingCode,
     required this.quantity,
     required this.value,
     required this.code,
@@ -52,6 +54,7 @@ class BSFProductItemEntity extends Equatable {
     increment,
     creditOnOrigin,
     compensation,
+    productPackingCode,
     quantity,
     value,
     code,
@@ -71,6 +74,7 @@ class BSFProductItemEntity extends Equatable {
     BSFValueTypeEntity? increment,
     BSFValueTypeEntity? creditOnOrigin,
     BSFValueTypeEntity? compensation,
+    int? productPackingCode,
     double? quantity,
     double? value,
     int? code,
@@ -89,6 +93,7 @@ class BSFProductItemEntity extends Equatable {
       increment: increment ?? this.increment,
       creditOnOrigin: creditOnOrigin ?? this.creditOnOrigin,
       compensation: compensation ?? this.compensation,
+      productPackingCode: productPackingCode ?? this.productPackingCode,
       quantity: quantity ?? this.quantity,
       value: value ?? this.value,
       code: code ?? this.code,

@@ -19,11 +19,13 @@ class BSFProductItemModel extends BSFProductItemEntity {
     required super.code,
     required super.icms,
     required super.ipi,
+    required super.productPackingCode,
   });
 
   factory BSFProductItemModel.fromJson(Map<String, dynamic> json) =>
       BSFProductItemModel(
         code: json['Code'],
+        productPackingCode: json['ProductPackingCode'],
         icms: json['Icms'] != null ? BSFIcmsModel.fromJson(json['Icms']) : null,
         ipi: json['Ipi'] != null ? BSFIpiModel.fromJson(json['Ipi']) : null,
         product: json['Product'] != null
@@ -63,6 +65,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
       );
 
   Map<String, dynamic> toJson() => {
+    'ProductPackingCode': productPackingCode,
     'Product': product != null
         ? BSFProductDetailsModel.fromEntity(product!).toJson()
         : null,
@@ -99,6 +102,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
 
   factory BSFProductItemModel.fromEntity(BSFProductItemEntity entity) =>
       BSFProductItemModel(
+        productPackingCode: entity.productPackingCode,
         icms: entity.icms,
         ipi: entity.ipi,
         code: entity.code,
@@ -118,6 +122,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
       );
 
   BSFProductItemEntity toEntity() => BSFProductItemEntity(
+    productPackingCode: productPackingCode,
     code: code,
     icms: icms,
     ipi: ipi,
