@@ -56,6 +56,7 @@ void main() {
               enterpriseName: userSessionEntity.user.enterpriseName,
               AccessKey: null,
               CrossIdentity_Usuario: null,
+              CodigoInterno_Usuario: null,
             ),
             enterprise: null,
             selectedEnterprise: null,

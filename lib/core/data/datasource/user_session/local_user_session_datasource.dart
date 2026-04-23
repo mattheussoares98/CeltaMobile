@@ -26,6 +26,7 @@ class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
             enterpriseName: userSession.user.enterpriseName,
             AccessKey: null,
             CrossIdentity_Usuario: null,
+            CodigoInterno_Usuario: null,
           ),
           enterprise: null,
           selectedEnterprise: null,

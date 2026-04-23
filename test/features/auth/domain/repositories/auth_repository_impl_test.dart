@@ -119,6 +119,8 @@ void main() {
               AccessKey: userSessionEntity.user.AccessKey,
               CrossIdentity_Usuario:
                   userSessionEntity.user.CrossIdentity_Usuario,
+              CodigoInterno_Usuario:
+                  userSessionEntity.user.CodigoInterno_Usuario,
             ),
             enterprise: SupabaseEnterpriseModel.fromEntity(
               userSessionEntity.supabaseEnterprise!,

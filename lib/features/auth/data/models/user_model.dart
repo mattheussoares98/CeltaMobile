@@ -7,12 +7,14 @@ class UserModel extends Equatable {
   final String? enterpriseName;
   final String? AccessKey;
   final String? CrossIdentity_Usuario;
+  final int? CodigoInterno_Usuario;
 
   const UserModel({
     required this.name,
     required this.enterpriseName,
     required this.AccessKey,
     required this.CrossIdentity_Usuario,
+    required this.CodigoInterno_Usuario,
   });
 
   @override
@@ -21,6 +23,7 @@ class UserModel extends Equatable {
     enterpriseName,
     AccessKey,
     CrossIdentity_Usuario,
+    CodigoInterno_Usuario,
   ];
 
   factory UserModel.fromJson(Map json) {
@@ -29,6 +32,7 @@ class UserModel extends Equatable {
       enterpriseName: json['enterpriseName'],
       AccessKey: json['AccessKey'],
       CrossIdentity_Usuario: json['CrossIdentity_Usuario'],
+      CodigoInterno_Usuario: json['CodigoInterno_Usuario'],
     );
   }
 
@@ -37,6 +41,7 @@ class UserModel extends Equatable {
     'enterpriseName': enterpriseName,
     'AccessKey': AccessKey,
     'CrossIdentity_Usuario': CrossIdentity_Usuario,
+    'CodigoInterno_Usuario': CodigoInterno_Usuario,
   };
 
   UserEntity toEntity() {
@@ -45,6 +50,7 @@ class UserModel extends Equatable {
       enterpriseName: enterpriseName,
       AccessKey: AccessKey,
       CrossIdentity_Usuario: CrossIdentity_Usuario,
+      CodigoInterno_Usuario: CodigoInterno_Usuario,
     );
   }
 
@@ -54,6 +60,7 @@ class UserModel extends Equatable {
       enterpriseName: entity.enterpriseName,
       AccessKey: entity.AccessKey,
       CrossIdentity_Usuario: entity.CrossIdentity_Usuario,
+      CodigoInterno_Usuario: entity.CodigoInterno_Usuario,
     );
   }
 }

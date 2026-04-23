@@ -128,6 +128,7 @@ void main() {
               enterpriseName: faker.company.name(),
               AccessKey: faker.guid.guid(),
               CrossIdentity_Usuario: null,
+              CodigoInterno_Usuario: faker.randomGenerator.integer(100),
             ),
             enterprise: SupabaseEnterpriseModel(
               id: faker.randomGenerator.integer(100),
@@ -161,6 +162,7 @@ void main() {
                 enterpriseName: faker.company.name(),
                 AccessKey: null,
                 CrossIdentity_Usuario: faker.guid.guid(),
+                CodigoInterno_Usuario: faker.randomGenerator.integer(100),
               ),
               enterprise: SupabaseEnterpriseModel(
                 id: faker.randomGenerator.integer(100),

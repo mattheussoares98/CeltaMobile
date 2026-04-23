@@ -142,6 +142,7 @@ void main() {
         enterpriseName: enterpriseName,
         AccessKey: faker.guid.guid(),
         CrossIdentity_Usuario: faker.guid.guid(),
+        CodigoInterno_Usuario: faker.randomGenerator.integer(100),
       );
       soapLoginDatasource.mockLogin(user);
 

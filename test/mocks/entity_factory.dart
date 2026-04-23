@@ -73,6 +73,7 @@ class EntityFactory {
     enterpriseName: faker.company.name(),
     AccessKey: faker.guid.guid(),
     CrossIdentity_Usuario: faker.guid.guid(),
+    CodigoInterno_Usuario: faker.randomGenerator.integer(100),
   );
 
   static EnterprisePermissionEntity makeEnterprisePermissionEntity() =>
