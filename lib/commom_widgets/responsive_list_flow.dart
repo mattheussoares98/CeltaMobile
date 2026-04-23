@@ -31,7 +31,7 @@ class ResponsiveListFlow extends StatelessWidget {
       return isSliver
           ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
           : ListView.builder(
-              physics: const ClampingScrollPhysics(),
+              physics: physics,
               padding: padding,
               itemBuilder: itemBuilder,
               itemCount: itemCount,
@@ -59,7 +59,7 @@ class ResponsiveListFlow extends StatelessWidget {
     }
 
     return ListView.builder(
-      physics: const ClampingScrollPhysics(),
+      physics: physics,
       itemCount: itemCount,
       itemBuilder: (context, rowIndex) {
         return _RowsItems(
