@@ -34,7 +34,11 @@ class TryAccessModuleController extends _$TryAccessModuleController {
   }) async {
     final minimumBsVersionDate = switch (route) {
       Routes.searchSaleRequests => DateTime(2026, 3, 26),
-      //Routes.insertUpdateSaleRequest => DateTime(2026, 4, 8),//TODO uncomment
+      Routes.insertUpdateSaleRequest => DateTime(
+        2026,
+        4,
+        9,
+      ), //TODO update the date
       Routes.adjustCost => DateTime(2026, 3, 31),
       _ => null,
     };
