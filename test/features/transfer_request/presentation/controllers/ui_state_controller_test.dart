@@ -12,14 +12,14 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class SpyRequestTypeStateController extends RequestTypeStateController {
-  final List<BSFRequestTypeEntity>? requestsToReturn;
+  final FutureOr<List<BSFRequestTypeEntity>?> requestsToReturn;
   SpyRequestTypeStateController(this.requestsToReturn);
 
   @override
   FutureOr<List<BSFRequestTypeEntity>?> build(
     Modules module,
     int enterpriseCode,
-  ) async {
+  ) {
     return requestsToReturn;
   }
 }
@@ -133,6 +133,58 @@ void main() {
           .value;
       expect(state?.pageIndex, newPageIndex);
     });
+
+    test(
+      'updatePageIndex should NOT update the state when it is loading',
+      () async {
+        // ARRANGE
+        final completer = Completer<List<BSFRequestTypeEntity>?>();
+        final container = ProviderContainer(
+          overrides: [
+            requestTypeStateControllerProvider(
+              Modules.transferRequest,
+              enterpriseCode,
+            ).overrideWith(() => SpyRequestTypeStateController(completer.future)),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final notifier = container.read(
+          uiStateControllerProvider(requestTypeCode, enterpriseCode).notifier,
+        );
+
+        // Verify it is loading
+        expect(
+          container.read(
+            uiStateControllerProvider(requestTypeCode, enterpriseCode),
+          ),
+          isA<AsyncLoading>(),
+        );
+
+        // ACT
+        notifier.updatePageIndex(2);
+
+        // ASSERT: State should still be loading and value should be null
+        final state = container.read(
+          uiStateControllerProvider(requestTypeCode, enterpriseCode),
+        );
+        expect(state, isA<AsyncLoading>());
+        expect(state.value, isNull);
+
+        // Complete the build
+        completer.complete([]);
+        await container.read(
+          uiStateControllerProvider(requestTypeCode, enterpriseCode).future,
+        );
+
+        // The pageIndex should be the default (0) and not the one passed during loading
+        final finalState =
+            container
+                .read(uiStateControllerProvider(requestTypeCode, enterpriseCode))
+                .value;
+        expect(finalState?.pageIndex, 0);
+      },
+    );
 
     test(
       'updateSelectedInsertProductIndex should set index and handle annulment',

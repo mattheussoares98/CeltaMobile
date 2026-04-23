@@ -32,6 +32,9 @@ class UiStateController extends _$UiStateController {
   }
 
   void updatePageIndex(int pageIndex) {
+    if (state is AsyncLoading) {
+      return;
+    }
     state = AsyncValue.data(state.value!.copyWith(pageIndex: pageIndex));
   }
 
