@@ -55,6 +55,7 @@ class AuthRepositoryImpl implements IAuthRepository {
           enterpriseName: enterpriseName,
           AccessKey: remoteUser.AccessKey,
           CrossIdentity_Usuario: remoteUser.CrossIdentity_Usuario,
+          CodigoInterno_Usuario: remoteUser.CodigoInterno_Usuario,
         ),
       ),
     );
