@@ -119,7 +119,6 @@ class ProductItemWidget extends ConsumerWidget {
       showWholePrices,
       showLiquidCosts,
       showCurrentAndSaleStocks,
-      showEans,
     ].fold(0, (p, e) => e ? ++p : p);
     if (showCurrentAndSaleStocks) {
       //show 2 informations
