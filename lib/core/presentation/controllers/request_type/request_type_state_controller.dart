@@ -27,11 +27,12 @@ class RequestTypeStateController extends _$RequestTypeStateController {
                   inclusiveTransfer: module == Modules.transferRequest,
                   inclusiveSale: module == Modules.saleRequest,
                   enterpriseCode: enterpriseCode,
+                  userCode: userSession!.user.CodigoInterno_Usuario ?? 0,
                 ),
           ),
           enterpriseCode: enterpriseCode,
           params: EcRequestParams(
-            workingUrl: userSession!.enterprise!.workingUrl!,
+            workingUrl: userSession.enterprise!.workingUrl!,
             user: userSession.user.name!,
             accessKey: userSession.user.AccessKey!,
           ),

@@ -95,6 +95,8 @@ void main() {
                     inclusiveBuy: module == Modules.buyRequest,
                     inclusiveTransfer: module == Modules.transferRequest,
                     inclusiveSale: module == Modules.saleRequest,
+                    enterpriseCode: enterpriseCode,
+                    userCode: fakeSession.user.CodigoInterno_Usuario ?? 0,
                   ),
             ),
             enterpriseCode: enterpriseCode,
