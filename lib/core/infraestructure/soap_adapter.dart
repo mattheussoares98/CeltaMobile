@@ -1,13 +1,14 @@
 import 'dart:convert';
+
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:xml2json/xml2json.dart';
 
-import '../domain/contracts/contracts.dart' as contracts;
+import '../domain/contracts/contracts.dart';
 import '../domain/errors/errors.dart';
 
-class SoapAdapter implements contracts.SoapRequest {
+class SoapAdapter implements SoapRequest {
   final Client client;
 
   SoapAdapter(this.client);
