@@ -14,7 +14,7 @@ class SelectedItemUIState extends Equatable {
   });
 
   @override
-  List<Object?> get props => [selectedIndex, searchType];
+  List<Object?> get props => [selectedIndex, searchType, onlyAssociateds];
 
   factory SelectedItemUIState.empty() {
     return const SelectedItemUIState(
@@ -28,9 +28,12 @@ class SelectedItemUIState extends Equatable {
     int? selectedIndex,
     SearchProductCompetingPriceType? searchType,
     bool? onlyAssociateds,
+    bool resetSelectedIndex = false,
   }) {
     return SelectedItemUIState(
-      selectedIndex: selectedIndex ?? this.selectedIndex,
+      selectedIndex: resetSelectedIndex
+          ? null
+          : (selectedIndex ?? this.selectedIndex),
       searchType: searchType ?? this.searchType,
       onlyAssociateds: onlyAssociateds ?? this.onlyAssociateds,
     );
