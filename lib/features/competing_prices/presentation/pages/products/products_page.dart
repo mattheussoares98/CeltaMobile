@@ -27,12 +27,9 @@ class ProductsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(updatePricesControllerProvider, (p, n) {
       n.doOnSuccess(p, () {
-        final currentValue = ref.read(selectedItemUIControllerProvider);
         ref
             .read(selectedItemUIControllerProvider.notifier)
-            .updateSelectedIndex(
-              currentValue.selectedIndex,
-            ); //remove the selected index when is equal the previous
+            .updateSelectedIndex(null);
       });
       n.showAlertDialogOnError(context);
       n.showSnackbarOnSuccess(
@@ -55,10 +52,26 @@ class ProductsPage extends ConsumerWidget {
         isSliverPage: true,
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: Filters(widget: this)),
-            SliverToBoxAdapter(child: SearchProductsField(widget: this)),
+            SliverToBoxAdapter(
+              child: Filters(
+                enterpriseCode: enterpriseCode,
+                researchCode: researchCode,
+                concurrentCode: concurrentCode,
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: SearchProductsField(
+                enterpriseCode: enterpriseCode,
+                researchCode: researchCode,
+                concurrentCode: concurrentCode,
+              ),
+            ),
             gapSliverH8,
-            ProductsItems(widget: this),
+            ProductsItems(
+              enterpriseCode: enterpriseCode,
+              researchCode: researchCode,
+              concurrentCode: concurrentCode,
+            ),
             gapSliverH48,
           ],
         ),

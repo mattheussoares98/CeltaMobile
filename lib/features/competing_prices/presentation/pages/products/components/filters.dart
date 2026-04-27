@@ -9,11 +9,17 @@ import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
-import '../products.dart';
 
 class Filters extends ConsumerWidget {
-  final ProductsPage widget;
-  const Filters({super.key, required this.widget});
+  final int enterpriseCode;
+  final int researchCode;
+  final int concurrentCode;
+  const Filters({
+    super.key,
+    required this.enterpriseCode,
+    required this.researchCode,
+    required this.concurrentCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,10 +29,10 @@ class Filters extends ConsumerWidget {
     final isIOS = theme.platform == TargetPlatform.iOS;
 
     final restrictProducts = ref.watch(
-      researchsStateControllerProvider(widget.enterpriseCode).select(
+      researchsStateControllerProvider(enterpriseCode).select(
         (s) =>
             s.value
-                ?.firstWhereOrNull((e) => e.Code == widget.researchCode)
+                ?.firstWhereOrNull((e) => e.Code == researchCode)
                 ?.RestrictProducts ??
             false,
       ),
@@ -119,7 +125,7 @@ class Filters extends ConsumerWidget {
                   isLoading: ref.watch(
                     searchProductsStateControllerProvider(
                       SearchProductKey(
-                        widget.enterpriseCode,
+                        enterpriseCode,
                         BsRoutine.researchOfPrice,
                         Modules.competingPrices,
                       ),
@@ -135,7 +141,7 @@ class Filters extends ConsumerWidget {
                         .read(
                           searchProductsStateControllerProvider(
                             SearchProductKey(
-                              widget.enterpriseCode,
+                              enterpriseCode,
                               BsRoutine.researchOfPrice,
                               Modules.competingPrices,
                             ),
@@ -144,11 +150,11 @@ class Filters extends ConsumerWidget {
                         .loadProducts(
                           exactProductCode: null,
                           GetProductsJsonParams(
-                            enterpriseCodes: [widget.enterpriseCode],
+                            enterpriseCodes: [enterpriseCode],
                             searchValue: '%',
                             competingPricesParams: CompetingPricesParams(
-                              ResearchOfPriceCode: widget.researchCode,
-                              ConcurrentCode: widget.concurrentCode,
+                              ResearchOfPriceCode: researchCode,
+                              ConcurrentCode: concurrentCode,
                               OnlyAssociated: restrictProducts,
                               searchType: selectedItem.searchType,
                             ),

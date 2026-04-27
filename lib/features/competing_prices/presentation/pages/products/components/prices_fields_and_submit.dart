@@ -24,7 +24,9 @@ class PricesFieldsAndSubmit extends ConsumerStatefulWidget {
   final FocusNode wholeOfferFocusNode;
   final FocusNode ecommerceFocusNode;
   final FocusNode ecommerceOfferFocusNode;
-  final ProductsItems widget;
+  final int enterpriseCode;
+  final int researchCode;
+  final int concurrentCode;
   const PricesFieldsAndSubmit({
     super.key,
     required this.product,
@@ -40,7 +42,9 @@ class PricesFieldsAndSubmit extends ConsumerStatefulWidget {
     required this.wholeOfferFocusNode,
     required this.ecommerceFocusNode,
     required this.ecommerceOfferFocusNode,
-    required this.widget,
+    required this.enterpriseCode,
+    required this.researchCode,
+    required this.concurrentCode,
   });
 
   @override
@@ -68,9 +72,9 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
         ref
             .read(updatePricesControllerProvider.notifier)
             .insertUpdate(
-              enterpriseCode: widget.widget.widget.enterpriseCode,
-              researchCode: widget.widget.widget.researchCode,
-              concurrentCode: widget.widget.widget.concurrentCode,
+              enterpriseCode: widget.enterpriseCode,
+              researchCode: widget.researchCode,
+              concurrentCode: widget.concurrentCode,
               priceRetail: widget.retailController.text.toDouble() ?? 0,
               offerRetail: widget.retailOfferController.text.toDouble() ?? 0,
               priceWhole: widget.wholeController.text.toDouble() ?? 0,

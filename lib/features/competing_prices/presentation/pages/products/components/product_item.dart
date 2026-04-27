@@ -21,7 +21,9 @@ class ProductItem extends ConsumerWidget {
   final FocusNode ecommerceFocusNode;
   final FocusNode ecommerceOfferFocusNode;
   final int index;
-  final ProductsItems widget;
+  final int enterpriseCode;
+  final int researchCode;
+  final int concurrentCode;
   const ProductItem({
     super.key,
     required this.product,
@@ -38,7 +40,9 @@ class ProductItem extends ConsumerWidget {
     required this.ecommerceFocusNode,
     required this.ecommerceOfferFocusNode,
     required this.index,
-    required this.widget,
+    required this.enterpriseCode,
+    required this.researchCode,
+    required this.concurrentCode,
   });
 
   @override
@@ -66,7 +70,9 @@ class ProductItem extends ConsumerWidget {
                 wholeOfferFocusNode: wholeOfferFocusNode,
                 ecommerceFocusNode: ecommerceFocusNode,
                 ecommerceOfferFocusNode: ecommerceOfferFocusNode,
-                widget: widget,
+                enterpriseCode: enterpriseCode,
+                researchCode: researchCode,
+                concurrentCode: concurrentCode,
               )
             : null,
         onTap: () {

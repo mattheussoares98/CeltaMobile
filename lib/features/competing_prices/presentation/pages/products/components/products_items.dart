@@ -5,12 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
-import '../products.dart';
 import 'components.dart';
 
 class ProductsItems extends ConsumerStatefulWidget {
-  final ProductsPage widget;
-  const ProductsItems({super.key, required this.widget});
+  final int enterpriseCode;
+  final int researchCode;
+  final int concurrentCode;
+  const ProductsItems({
+    super.key,
+    required this.enterpriseCode,
+    required this.researchCode,
+    required this.concurrentCode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
@@ -50,7 +56,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
   @override
   Widget build(BuildContext context) {
     final searchProductKey = SearchProductKey(
-      widget.widget.enterpriseCode,
+      widget.enterpriseCode,
       BsRoutine.researchOfPrice,
       Modules.competingPrices,
     );
@@ -88,7 +94,9 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                 ecommerceFocusNode: ecommerceFocusNode,
                 ecommerceOfferFocusNode: ecommerceOfferFocusNode,
                 index: index,
-                widget: widget,
+                enterpriseCode: widget.enterpriseCode,
+                researchCode: widget.researchCode,
+                concurrentCode: widget.concurrentCode,
               );
             },
           );

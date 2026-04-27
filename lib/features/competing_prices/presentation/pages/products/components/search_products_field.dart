@@ -7,11 +7,17 @@ import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
-import '../products.dart';
 
 class SearchProductsField extends ConsumerStatefulWidget {
-  final ProductsPage widget;
-  const SearchProductsField({super.key, required this.widget});
+  final int enterpriseCode;
+  final int researchCode;
+  final int concurrentCode;
+  const SearchProductsField({
+    super.key,
+    required this.enterpriseCode,
+    required this.researchCode,
+    required this.concurrentCode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -33,7 +39,7 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
     ref.listen(
       searchProductsStateControllerProvider(
         SearchProductKey(
-          widget.widget.enterpriseCode,
+          widget.enterpriseCode,
           BsRoutine.researchOfPrice,
           Modules.competingPrices,
         ),
@@ -49,7 +55,7 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
     );
 
     final searchProductKey = SearchProductKey(
-      widget.widget.enterpriseCode,
+      widget.enterpriseCode,
       BsRoutine.researchOfPrice,
       Modules.competingPrices,
     );
@@ -62,12 +68,10 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
           selectedItemUIControllerProvider.select((s) => s.searchType),
         );
         final restrictProducts = ref.read(
-          researchsStateControllerProvider(widget.widget.enterpriseCode).select(
+          researchsStateControllerProvider(widget.enterpriseCode).select(
             (s) =>
                 s.value
-                    ?.firstWhereOrNull(
-                      (e) => e.Code == widget.widget.researchCode,
-                    )
+                    ?.firstWhereOrNull((e) => e.Code == widget.researchCode)
                     ?.RestrictProducts ??
                 false,
           ),
@@ -79,13 +83,13 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
             .loadProducts(
               exactProductCode: exactProductCode,
               GetProductsJsonParams(
-                enterpriseCodes: [widget.widget.enterpriseCode],
+                enterpriseCodes: [widget.enterpriseCode],
                 searchValue: searchValueController.text.isEmpty
                     ? '%'
                     : searchValueController.text,
                 competingPricesParams: CompetingPricesParams(
-                  ResearchOfPriceCode: widget.widget.researchCode,
-                  ConcurrentCode: widget.widget.concurrentCode,
+                  ResearchOfPriceCode: widget.researchCode,
+                  ConcurrentCode: widget.concurrentCode,
                   OnlyAssociated: restrictProducts,
                   searchType: searchType,
                 ),
