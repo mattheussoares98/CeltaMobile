@@ -25,6 +25,7 @@ class LocalHttpsUrl extends StatelessWidget {
       controller: urlController,
       focusNode: urlFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      maxLength: 100,
       onFieldSubmitted: (_) {
         userNameFocusNode.requestFocus();
       },

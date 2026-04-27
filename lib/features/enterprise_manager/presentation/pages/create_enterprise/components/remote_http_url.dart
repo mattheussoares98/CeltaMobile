@@ -24,6 +24,7 @@ class RemoteHttpUrl extends StatelessWidget {
       enabled: !isLoading,
       controller: urlController,
       focusNode: urlFocusNode,
+      maxLength: 100,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
         remoteHttpsFocusNode.requestFocus();
