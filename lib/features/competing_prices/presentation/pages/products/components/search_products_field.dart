@@ -41,6 +41,9 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
       (p, n) {
         n.doOnSuccess(p, () {
           searchValueController.clear();
+          ref
+              .read(selectedItemUIControllerProvider.notifier)
+              .updateSelectedIndex(null);
         });
       },
     );

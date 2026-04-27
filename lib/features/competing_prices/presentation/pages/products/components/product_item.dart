@@ -70,11 +70,9 @@ class ProductItem extends ConsumerWidget {
               )
             : null,
         onTap: () {
-          final selectedItemAsync = ref.read(selectedItemUIControllerProvider);
-
           ref
               .read(selectedItemUIControllerProvider.notifier)
-              .update(selectedItemAsync.copyWith(selectedIndex: index));
+              .updateSelectedIndex(index);
           String getNewValue(double? price) {
             return price == null || price == 0
                 ? ''

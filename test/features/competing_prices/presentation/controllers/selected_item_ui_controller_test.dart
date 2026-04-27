@@ -21,117 +21,126 @@ void main() {
   });
 
   group('SelectedItemUIController', () {
-    test('build start the state with correct initial state', () {
-      // ARRANGE / ACT: Read the initial state. Since build is synchronous,
-      // we read the provider directly, not the future.
-      final state = container.read(selectedItemUIControllerProvider);
+    group('build', () {
+      test('build start the state with correct initial state', () {
+        // ARRANGE / ACT: Read the initial state. Since build is synchronous,
+        // we read the provider directly, not the future.
+        final state = container.read(selectedItemUIControllerProvider);
 
-      // ASSERT
-      expect(state, const SelectedItemUIState());
+        // ASSERT
+        expect(state, const SelectedItemUIState());
+      });
     });
 
-    test('update should replace the state with the new provided value', () {
-      // ARRANGE
-      final notifier = container.read(
-        selectedItemUIControllerProvider.notifier,
-      );
+    group('updateSelectedIndex', () {
+      test('should update selectedIndex when is different from previous', () {
+        // ARRANGE
+        final notifier = container.read(
+          selectedItemUIControllerProvider.notifier,
+        );
+        const newIndex = 1;
 
-      final updatedState = SelectedItemUIState(
-        selectedIndex: faker.randomGenerator.integer(100),
-        searchType:
-            SearchProductCompetingPriceType.values[faker.randomGenerator
-                .integer(SearchProductCompetingPriceType.values.length)],
-      );
+        // ACT
+        notifier.updateSelectedIndex(newIndex);
 
-      final states = <SelectedItemUIState>[];
-      // Listen to capture the state change
-      container.listen(
-        selectedItemUIControllerProvider,
-        (_, next) => states.add(next),
-      );
+        // ASSERT
+        expect(
+          container.read(selectedItemUIControllerProvider).selectedIndex,
+          newIndex,
+        );
+      });
 
-      // ACT
-      notifier.update(updatedState);
+      test('clean the selected index when select the same', () {
+        // ARRANGE
+        final notifier = container.read(
+          selectedItemUIControllerProvider.notifier,
+        );
 
-      // ASSERT
-      // 1. Verify the state transition list
-      expect(states, [updatedState]);
+        final index = faker.randomGenerator.integer(100);
 
-      // 2. Verify the final state value
-      expect(container.read(selectedItemUIControllerProvider), updatedState);
+        // ACT
+        notifier.updateSelectedIndex(index);
+        expect(
+          container.read(selectedItemUIControllerProvider).selectedIndex,
+          index,
+        );
+
+        //change again
+        notifier.updateSelectedIndex(index);
+
+        expect(
+          container.read(selectedItemUIControllerProvider).selectedIndex,
+          isNull,
+        );
+      });
+
+      test('should update to null when pass null value', () {
+        // ARRANGE
+        final notifier = container.read(
+          selectedItemUIControllerProvider.notifier,
+        );
+
+        // ACT
+        notifier.updateSelectedIndex(faker.randomGenerator.integer(100));
+        expect(
+          container.read(selectedItemUIControllerProvider).selectedIndex,
+          isNotNull,
+        );
+
+        notifier.updateSelectedIndex(null);
+        expect(
+          container.read(selectedItemUIControllerProvider).selectedIndex,
+          isNull,
+        );
+      });
     });
-    test('clean the selected index when select the same', () {
-      // ARRANGE
-      final notifier = container.read(
-        selectedItemUIControllerProvider.notifier,
-      );
 
-      final updatedState = SelectedItemUIState(
-        selectedIndex: faker.randomGenerator.integer(100),
-        searchType:
+    group('updateSearchType', () {
+      test('should update searchType correctly', () {
+        // ARRANGE
+        final notifier = container.read(
+          selectedItemUIControllerProvider.notifier,
+        );
+        final searchType =
             SearchProductCompetingPriceType.values[faker.randomGenerator
-                .integer(SearchProductCompetingPriceType.values.length)],
-      );
+                .integer(SearchProductCompetingPriceType.values.length)];
 
-      final states = <SelectedItemUIState>[];
-      // Listen to capture the state change
-      container.listen(
-        selectedItemUIControllerProvider,
-        (_, next) => states.add(next),
-      );
+        // ACT
+        notifier.updateSearchType(searchType);
 
-      // ACT
-      notifier.update(updatedState);
-      //change again
-      notifier.update(updatedState);
-
-      // ASSERT
-      // 1. Verify the state transition list
-      expect(states, [
-        updatedState,
-        SelectedItemUIState(searchType: updatedState.searchType),
-      ]);
-
-      // 2. Verify the final state value
-      expect(
-        container.read(selectedItemUIControllerProvider),
-        SelectedItemUIState(searchType: updatedState.searchType),
-      );
+        // ASSERT
+        expect(
+          container.read(selectedItemUIControllerProvider).searchType,
+          searchType,
+        );
+      });
     });
-    test('Should update correctly when both indexes are null', () {
-      // ARRANGE
-      final notifier = container.read(
-        selectedItemUIControllerProvider.notifier,
-      );
 
-      final updatedState = SelectedItemUIState(
-        selectedIndex: null,
-        searchType:
-            SearchProductCompetingPriceType.values[faker.randomGenerator
-                .integer(SearchProductCompetingPriceType.values.length)],
-        onlyAssociateds: false,
-      );
+    group('updateOnlyAssociateds', () {
+      test('should update onlyAssociateds correctly', () {
+        // ARRANGE
+        final notifier = container.read(
+          selectedItemUIControllerProvider.notifier,
+        );
 
-      final states = <SelectedItemUIState>[];
-      // Listen to capture the state change
-      container.listen(
-        selectedItemUIControllerProvider,
-        (_, next) => states.add(next),
-        fireImmediately: true,
-      );
+        // ACT
+        notifier.updateOnlyAssociateds(false);
 
-      // ACT
-      notifier.update(updatedState);
+        // ASSERT
+        expect(
+          container.read(selectedItemUIControllerProvider).onlyAssociateds,
+          isFalse,
+        );
 
-      // ASSERT
-      // 1. Verify the state transition list
-      expect(states.last, updatedState);
+        // ACT
+        notifier.updateOnlyAssociateds(true);
 
-      // 2. Verify the final state value
-      expect(
-        container.read(selectedItemUIControllerProvider).onlyAssociateds,
-        isFalse,
-      );
+        // ASSERT
+        expect(
+          container.read(selectedItemUIControllerProvider).onlyAssociateds,
+          isTrue,
+        );
+      });
     });
   });
 }

@@ -30,8 +30,8 @@ class ProductsPage extends ConsumerWidget {
         final currentValue = ref.read(selectedItemUIControllerProvider);
         ref
             .read(selectedItemUIControllerProvider.notifier)
-            .update(
-              currentValue,
+            .updateSelectedIndex(
+              currentValue.selectedIndex,
             ); //remove the selected index when is equal the previous
       });
       n.showAlertDialogOnError(context);

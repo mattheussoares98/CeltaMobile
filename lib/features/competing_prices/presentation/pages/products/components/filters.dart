@@ -90,9 +90,7 @@ class Filters extends ConsumerWidget {
                     onChanged: (value) {
                       ref
                           .read(selectedItemUIControllerProvider.notifier)
-                          .update(
-                            selectedItem.copyWith(onlyAssociateds: value),
-                          );
+                          .updateOnlyAssociateds(value);
                     },
                   );
                 },
@@ -108,7 +106,7 @@ class Filters extends ConsumerWidget {
                     onChanged: (value) {
                       ref
                           .read(selectedItemUIControllerProvider.notifier)
-                          .update(selectedItem.copyWith(searchType: value));
+                          .updateSearchType(value);
                     },
                     items: SearchProductCompetingPriceType.values,
                   );
