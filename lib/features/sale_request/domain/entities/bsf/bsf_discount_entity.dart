@@ -18,5 +18,5 @@ class BSFDiscountEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [order, user, discount];
+  List<Object?> get props => [order, discountOrigin, user, justification, discount];
 }

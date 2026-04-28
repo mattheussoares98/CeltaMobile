@@ -28,5 +28,17 @@ class BSFEnterpriseEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [code, cnpjNumber, name];
+  List<Object?> get props => [
+    code,
+    fiscalType,
+    federalSimpleType,
+    personalizedCode,
+    nationalSimple,
+    accountTreasury,
+    cnpjNumber,
+    suframaCode,
+    name,
+    fantasizesName,
+    contactName,
+  ];
 }

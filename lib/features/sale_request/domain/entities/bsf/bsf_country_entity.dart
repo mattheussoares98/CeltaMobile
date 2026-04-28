@@ -12,5 +12,5 @@ class BSFCountryEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [name, spedCode];
+  List<Object?> get props => [name, isExteriorCountry, spedCode];
 }

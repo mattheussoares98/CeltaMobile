@@ -37,5 +37,8 @@ class SupplierEntity extends Equatable {
     SupplierType,
     SupplierRegimeType,
     Date,
+    Emails,
+    Telephones,
+    Addresses,
   ];
 }

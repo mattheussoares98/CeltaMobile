@@ -157,6 +157,10 @@ class ProductEntity extends Equatable {
     codigoInternoProEmb,
     codigoProEmb,
     quantidadeInvContProEmb,
+    FormatedProduct,
+    ReferenciaXml_ProcRecebDocProEmb,
+    DataValidade_ProcRecebDocProEmb,
+    Quantidade_ProcRecebDocProEmb,
     PackingAbbreviation,
   ];
 

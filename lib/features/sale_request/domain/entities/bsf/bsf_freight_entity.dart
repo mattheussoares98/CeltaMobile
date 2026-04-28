@@ -40,5 +40,22 @@ class BSFFreightEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [value, type, code];
+  List<Object?> get props => [
+    value,
+    freightValueProrated,
+    security,
+    discount,
+    increment,
+    type,
+    icmsAliquot,
+    irrf,
+    inss,
+    icmsRetainByDestiny,
+    code,
+    documentNumber,
+    documentNumberComplement,
+    eletronicAccessKey,
+    dateOfEmission,
+    dateOfEntrance,
+  ];
 }

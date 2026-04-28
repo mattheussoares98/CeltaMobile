@@ -42,5 +42,23 @@ class BSFDeliveryAddressEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [zip, address, number];
+  List<Object?> get props => [
+    code,
+    zip,
+    sash,
+    address,
+    number,
+    complement,
+    district,
+    reference,
+    mainAddress,
+    defaultDeliveryAddress,
+    defaultCollectAddress,
+    addressContainsNumber,
+    addressIsInAreaOfDeliveryRestriction,
+    inscriptionNumber,
+    country,
+    state,
+    addressType,
+  ];
 }

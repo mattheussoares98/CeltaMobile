@@ -12,5 +12,5 @@ class BSFPaymentFormEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [type, name];
+  List<Object?> get props => [type, reducedName, name];
 }

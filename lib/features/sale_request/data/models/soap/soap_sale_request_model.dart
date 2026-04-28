@@ -25,6 +25,7 @@ class SoapSaleRequestModel extends Equatable {
   List<Object?> get props => [
     cart,
     customer,
+    covenant,
     observations,
     instructions,
     needProcessCart,

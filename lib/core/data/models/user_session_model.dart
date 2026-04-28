@@ -15,7 +15,7 @@ class UserSessionModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [user, enterprise];
+  List<Object?> get props => [user, enterprise, selectedEnterprise];
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'user': user.toJson(),
