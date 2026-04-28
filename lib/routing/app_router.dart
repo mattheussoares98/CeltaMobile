@@ -122,7 +122,9 @@ GoRouter goRouter(Ref ref) {
         reportsRoute(),
         saleRequestRequestsTypesRoute([createSaleRequestRoute()]),
         searchSaleRequestsRoute([
-          saleRequestDetailsRoute([insertUpdateSaleRequestRoute()]),
+          saleRequestDetailsRoute([
+            insertUpdateSaleRequestRoute([insertProductRoute()]),
+          ]),
         ]),
         searchProductsRoute(),
         stockReplacementRoute(),

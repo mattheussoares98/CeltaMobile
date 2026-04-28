@@ -33,6 +33,7 @@ enum Routes {
   receiptProductsNotFound,
   saleRequestActionSelector,
   saleRequestDetails,
+  saleRequestInsertProduct,
   saleRequestRequestsTypes,
   searchProducts,
   searchSaleRequests,

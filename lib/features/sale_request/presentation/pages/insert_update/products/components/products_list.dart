@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/products/products.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../../routing/routing.dart';
+import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class ProductsList extends ConsumerWidget {
@@ -50,28 +53,51 @@ class ProductsList extends ConsumerWidget {
               product: product,
               routine: BsRoutine.saleRequest,
               onTap: () {
-                ref
-                    .read(
-                      insertUpdateStateControllerProvider(
-                        enterpriseCode: enterpriseCode,
-                        customerCode: customerCode,
-                        saleRequestId: saleRequestId,
-                      ).notifier,
-                    )
-                    .addItem(product);
-
-                showSnackBarMessage(
-                  context,
-                  '${product.Name} adicionado'.hardcoded,
-                );
+                _navigateToProductDetail(context, ref, product);
               },
             );
           },
         );
       },
-      tryAgain:
-          () =>
-              ref.invalidate(searchProductsStateControllerProvider(searchProductKey)),
+      tryAgain: () => ref.invalidate(
+        searchProductsStateControllerProvider(searchProductKey),
+      ),
+    );
+  }
+
+  void _navigateToProductDetail(
+    BuildContext context,
+    WidgetRef ref,
+    ProductEntity product,
+  ) {
+    final provider = insertUpdateStateControllerProvider(
+      enterpriseCode: enterpriseCode,
+      customerCode: customerCode,
+      saleRequestId: saleRequestId,
+    );
+
+    final saleRequest = ref.read(provider).value;
+    final existingItems = saleRequest?.products ?? [];
+
+    final productCode =
+        product.ProductPackingCode?.toString() ??
+        product.ProductCode?.toString();
+
+    final existingItem = existingItems.cast<BSFProductItemEntity?>().firstWhere(
+      (e) => e?.product?.personalizedCode == productCode,
+      orElse: () => null,
+    );
+
+    final itemToEdit = existingItem ?? product.toBSFProductItemEntity();
+
+    context.pushNamed(
+      Routes.saleRequestInsertProduct.name,
+      extra: itemToEdit,
+      pathParameters: {
+        'saleRequestId': saleRequestId.toString(),
+        'enterpriseCode': enterpriseCode.toString(),
+        'customerCode': customerCode.toString(),
+      },
     );
   }
 }

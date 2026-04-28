@@ -100,6 +100,19 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
   }
 
+  void updateItem(BSFProductItemEntity oldItem, BSFProductItemEntity newItem) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    final current = state.value!;
+    final items = List<BSFProductItemEntity>.from(current.products ?? []);
+    final index = items.indexOf(oldItem);
+    if (index != -1) {
+      items[index] = newItem;
+    } else {
+      items.add(newItem);
+    }
+    state = AsyncData(current.copyWith(products: items));
+  }
+
   void updateCustomer(CustomerEntity customer) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     final current = state.value!;
