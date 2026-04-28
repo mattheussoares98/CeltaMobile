@@ -5,24 +5,35 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../../core/presentation/controllers/products/products.dart';
 
-class SearchProducts extends ConsumerWidget {
+class SearchProducts extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  final TextEditingController searchProductsController;
   final int saleRequestId;
   const SearchProducts({
     super.key,
     required this.enterpriseCode,
-    required this.searchProductsController,
     required this.saleRequestId,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _SearchProductsState();
+}
+
+class _SearchProductsState extends ConsumerState<SearchProducts> {
+  final searchProductsController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchProductsController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final searchProductKey = SearchProductKey(
-      enterpriseCode,
+      widget.enterpriseCode,
       BsRoutine.saleRequest,
       Modules.saleRequest,
-      anotherKey: saleRequestId.toString(),
+      anotherKey: widget.saleRequestId.toString(),
     );
 
     return DefaultSearchProducts(
@@ -37,7 +48,7 @@ class SearchProducts extends ConsumerWidget {
               exactProductCode: exactProductCode,
               GetProductsJsonParams(
                 searchValue: searchProductsController.text,
-                enterpriseCodes: [enterpriseCode],
+                enterpriseCodes: [widget.enterpriseCode],
               ),
             );
       },

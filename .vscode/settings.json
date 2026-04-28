@@ -8,4 +8,9 @@
   "editor.formatOnSave": true,
   "dart.previewFlutterUiGuides": true,
   "editor.stickyScroll.enabled": true,
+  "flutterTools.displayGetxContextMenu": false,
+  "flutterTools.displayMobxContextMenu": false,
+  "flutterTools.displayRiverpodContextMenu": true,
+  "flutterTools.displayModularContextMenu": false,
+  "flutterTools.displaySignalsContextMenu": false,
 }
