@@ -183,9 +183,8 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(current.copyWith(financials: financials));
   }
 
-  Future<bool> save() async {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return false;
-
+  Future<void> save() async {
+    //TODO create another controller only to call the save method
     final saleRequest = state.value!;
     final userSession = await ref.read(validatedUserSessionProvider.future);
 
@@ -195,14 +194,12 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       accessKey: userSession.user.AccessKey!,
     );
 
-    final result = await ref
+    await ref
         .read(ecSaleRequestsRepositoryProvider)
         .update(
           saleRequest: saleRequest,
           enterpriseCode: enterpriseCode,
           params: params,
         );
-
-    return result;
   }
 }

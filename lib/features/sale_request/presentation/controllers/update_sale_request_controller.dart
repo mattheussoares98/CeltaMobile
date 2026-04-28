@@ -14,15 +14,14 @@ class UpdateSaleRequestController extends _$UpdateSaleRequestController {
   @override
   FutureOr<void> build(int saleRequestCode, int enterpriseCode) {}
 
-  Future<bool> updateSaleRequest(BSFSaleRequestEntity saleRequest) async {
+  Future<void> updateSaleRequest(BSFSaleRequestEntity saleRequest) async {
     state = const AsyncValue.loading();
-    bool updated = false;
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.watch(
         validatedUserSessionProvider.future,
       );
 
-      updated = await ref
+      await ref
           .read(ecSaleRequestsRepositoryProvider)
           .update(
             saleRequest: saleRequest,
@@ -34,7 +33,5 @@ class UpdateSaleRequestController extends _$UpdateSaleRequestController {
             ),
           );
     });
-
-    return updated;
   }
 }

@@ -55,12 +55,12 @@ class EcSaleRequestsRepositoryImpl implements IEcSaleRequestsRepository {
   }
 
   @override
-  Future<bool> update({
+  Future<void> update({
     required BSFSaleRequestEntity saleRequest,
     required int enterpriseCode,
     required EcRequestParams params,
   }) async {
-    return await datasource.update(
+    await datasource.update(
       saleRequest: BSFSaleRequestModel.fromEntity(saleRequest),
       enterpriseCode: enterpriseCode,
       params: params,

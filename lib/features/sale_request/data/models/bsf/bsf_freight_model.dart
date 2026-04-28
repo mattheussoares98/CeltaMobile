@@ -54,8 +54,8 @@ class BSFFreightModel extends BSFFreightEntity {
     'Value': value,
     'FreightValueProrated': freightValueProrated,
     'Security': security,
-    'Discount': discount,
-    'Increment': increment,
+    'Discount': (discount as BSFValueTypeModel?)?.toJson(),
+    'Increment': (increment as BSFValueTypeModel?)?.toJson(),
     'Type': type,
     'IcmsAliquot': icmsAliquot,
     'Irrf': irrf,
@@ -74,8 +74,12 @@ class BSFFreightModel extends BSFFreightEntity {
         value: entity.value,
         freightValueProrated: entity.freightValueProrated,
         security: entity.security,
-        discount: entity.discount as BSFValueTypeModel?,
-        increment: entity.increment as BSFValueTypeModel?,
+        discount: entity.discount != null
+            ? BSFValueTypeModel.fromEntity(entity.discount!)
+            : null,
+        increment: entity.increment != null
+            ? BSFValueTypeModel.fromEntity(entity.increment!)
+            : null,
         type: entity.type,
         icmsAliquot: entity.icmsAliquot,
         irrf: entity.irrf,

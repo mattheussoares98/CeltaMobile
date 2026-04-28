@@ -169,23 +169,19 @@ void main() {
 
   group('Update', () {
     test('should behave correctly on success', () async {
-      final updated = await sut.update(
+      await sut.update(
         saleRequest: bSFSaleRequestModel,
         enterpriseCode: enterpriseCode,
         params: params,
       );
 
-      expect(updated, isTrue);
-
       verify(
         () => httpClient.request(
-          url: '${params.workingUrl}/api/SaleRequests/Update',
+          url:
+              '${params.workingUrl}/api/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${bSFSaleRequestModel.customer?.code}&saleRequestCode=${bSFSaleRequestModel.code}',
           method: 'post',
           headers: params.toHeaders(),
-          body: {
-            'saleRequest': bSFSaleRequestModel.toJson(),
-            'enterpriseCode': enterpriseCode,
-          },
+          body: bSFSaleRequestModel.toJson(),
         ),
       ).called(1);
     });
@@ -204,13 +200,11 @@ void main() {
 
       verify(
         () => httpClient.request(
-          url: '${params.workingUrl}/api/SaleRequests/Update',
+          url:
+              '${params.workingUrl}/api/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${bSFSaleRequestModel.customer?.code}&saleRequestCode=${bSFSaleRequestModel.code}',
           method: 'post',
           headers: params.toHeaders(),
-          body: {
-            'saleRequest': bSFSaleRequestModel.toJson(),
-            'enterpriseCode': enterpriseCode,
-          },
+          body: bSFSaleRequestModel.toJson(),
         ),
       ).called(1);
     });

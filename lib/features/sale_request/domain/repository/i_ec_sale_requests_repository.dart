@@ -22,7 +22,7 @@ abstract class IEcSaleRequestsRepository {
     required EcRequestParams params,
   });
 
-  Future<bool> update({
+  Future<void> update({
     required BSFSaleRequestEntity saleRequest,
     required int enterpriseCode,
     required EcRequestParams params,

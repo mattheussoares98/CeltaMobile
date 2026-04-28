@@ -80,10 +80,9 @@ void main() {
         );
 
         // ACT
-        final result = await controller.updateSaleRequest(saleRequest);
+        await controller.updateSaleRequest(saleRequest);
 
         // ASSERT
-        expect(result, true);
         expect(states, [
           const AsyncData<void>(null),
           isA<AsyncLoading>(),
@@ -133,10 +132,9 @@ void main() {
       );
 
       // ACT
-      final result = await controller.updateSaleRequest(saleRequest);
+      await controller.updateSaleRequest(saleRequest);
 
       // ASSERT
-      expect(result, false);
       expect(states, [
         const AsyncData<void>(null),
         isA<AsyncLoading>(),

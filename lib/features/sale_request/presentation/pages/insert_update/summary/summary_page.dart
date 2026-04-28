@@ -26,9 +26,6 @@ class SummaryPage extends ConsumerWidget {
       saleRequestId: saleRequestId,
     );
 
-    // Using .select to only rebuild if customer or totalLiquid changes
-    // Since we need both, we return them in a record or just watch the object if they are key properties
-    // For now, selecting the specific data we need for the UI
     final summaryDataAsync = ref.watch(
       provider.select(
         (v) => v.whenData(
@@ -36,6 +33,15 @@ class SummaryPage extends ConsumerWidget {
         ),
       ),
     );
+
+    ref.listen(provider, (p, n) {
+      n.showAlertDialogOnError(context);
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'Pedido salvo com sucesso!'.hardcoded,
+      );
+    });
 
     return AsyncValueWidget(
       value: summaryDataAsync,
@@ -57,22 +63,7 @@ class SummaryPage extends ConsumerWidget {
               ),
               const Spacer(),
               PrimaryButton(
-                onPressed: () async {
-                  final success = await ref.read(provider.notifier).save();
-                  if (success) {
-                    showSnackBarMessage(
-                      context,
-                      'Pedido salvo com sucesso!'.hardcoded,
-                    );
-                    Navigator.of(context).pop();
-                  } else {
-                    showSnackBarMessage(
-                      context,
-                      'Erro ao salvar pedido'.hardcoded,
-                      backgroundColor: Colors.red,
-                    );
-                  }
-                },
+                onPressed: ref.read(provider.notifier).save,
                 text: 'SALVAR'.hardcoded,
               ),
             ],

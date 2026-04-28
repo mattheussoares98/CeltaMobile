@@ -22,7 +22,7 @@ abstract class IEcSaleRequestsDatasource {
     required EcRequestParams params,
   });
 
-  Future<bool> update({
+  Future<void> update({
     required BSFSaleRequestModel saleRequest,
     required int enterpriseCode,
     required EcRequestParams params,

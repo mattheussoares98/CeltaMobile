@@ -253,13 +253,11 @@ void main() {
     test('should behave correctly on success', () async {
       mockDatasource.mockUpdate(true);
 
-      final updated = await sut.update(
+      await sut.update(
         saleRequest: bSFSaleRequestModel.toEntity(),
         enterpriseCode: enterpriseCode,
         params: params,
       );
-
-      expect(updated, isTrue);
 
       verify(
         () => mockDatasource.update(
@@ -275,13 +273,11 @@ void main() {
     test('should behave correctly on error', () async {
       mockDatasource.mockUpdate(false);
 
-      final updated = await sut.update(
+      await sut.update(
         saleRequest: bSFSaleRequestModel.toEntity(),
         enterpriseCode: enterpriseCode,
         params: params,
       );
-
-      expect(updated, isFalse);
 
       verify(
         () => mockDatasource.update(

@@ -72,22 +72,18 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   }
 
   @override
-  Future<bool> update({
+  Future<void> update({
     required BSFSaleRequestModel saleRequest,
     required int enterpriseCode,
     required EcRequestParams params,
   }) async {
     await httpClient.request(
-      url: '${params.workingUrl}/api/SaleRequests/Update',
+      url:
+          '${params.workingUrl}/api/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}&saleRequestCode=${saleRequest.code}',
       method: 'post',
       headers: params.toHeaders(),
-      body: {
-        'saleRequest': saleRequest.toJson(),
-        'enterpriseCode': enterpriseCode,
-      },
+      body: saleRequest.toJson(),
     );
-
-    return true;
   }
 
   @override
