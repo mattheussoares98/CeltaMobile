@@ -36,6 +36,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
         children: [
           SearchProducts(
             enterpriseCode: widget.enterpriseCode,
+            saleRequestId: widget.selectedRequest.code!,
             searchProductsController: searchProductsController,
           ),
           gapH8,

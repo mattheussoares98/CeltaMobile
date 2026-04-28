@@ -8,10 +8,12 @@ import '../../../../../../../core/presentation/controllers/products/products.dar
 class SearchProducts extends ConsumerWidget {
   final int enterpriseCode;
   final TextEditingController searchProductsController;
+  final int saleRequestId;
   const SearchProducts({
     super.key,
     required this.enterpriseCode,
     required this.searchProductsController,
+    required this.saleRequestId,
   });
 
   @override
@@ -20,6 +22,7 @@ class SearchProducts extends ConsumerWidget {
       enterpriseCode,
       BsRoutine.saleRequest,
       Modules.saleRequest,
+      anotherKey: saleRequestId.toString(),
     );
 
     return DefaultSearchProducts(

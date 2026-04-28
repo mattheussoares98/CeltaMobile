@@ -39,6 +39,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           child: common.SearchProducts(
             enterpriseCode: widget.enterpriseCode,
             searchProductsController: searchController,
+            saleRequestId: widget.saleRequestId,
           ),
         ),
         Expanded(

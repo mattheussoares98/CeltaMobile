@@ -29,6 +29,7 @@ class ProductsList extends ConsumerWidget {
       enterpriseCode,
       BsRoutine.saleRequest,
       Modules.saleRequest,
+      anotherKey: saleRequestId.toString(),
     );
 
     final productsAsync = ref.watch(
