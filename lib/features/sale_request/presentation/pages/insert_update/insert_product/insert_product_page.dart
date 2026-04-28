@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
@@ -11,6 +12,7 @@ import 'components/components.dart';
 
 class InsertProductPage extends ConsumerStatefulWidget {
   final BSFProductItemEntity product;
+  final ProductEntity originalProduct;
   final int enterpriseCode;
   final int customerCode;
   final int saleRequestId;
@@ -18,6 +20,7 @@ class InsertProductPage extends ConsumerStatefulWidget {
   const InsertProductPage({
     super.key,
     required this.product,
+    required this.originalProduct,
     required this.enterpriseCode,
     required this.customerCode,
     required this.saleRequestId,
@@ -136,12 +139,21 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(Sizes.p16),
+      body: ResponsiveScrollableWidget(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ProductInfoHeader(product: _editedItem),
+            Hero(
+              tag:
+                  'sale_request_product_${widget.originalProduct.ProductPackingCode}',
+              child: Material(
+                type: MaterialType.transparency,
+                child: ProductItemWidget(
+                  product: widget.originalProduct,
+                  routine: BsRoutine.saleRequest,
+                ),
+              ),
+            ),
             gapH16,
             QuantityField(controller: _quantityController),
             gapH16,

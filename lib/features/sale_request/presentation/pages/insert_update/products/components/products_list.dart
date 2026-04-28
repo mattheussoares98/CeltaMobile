@@ -46,7 +46,7 @@ class ProductsList extends ConsumerWidget {
 
       context.pushNamed(
         Routes.saleRequestInsertProduct.name,
-        extra: itemToEdit,
+        extra: {'product': itemToEdit, 'originalProduct': product},
         pathParameters: {
           'saleRequestId': saleRequestId.toString(),
           'enterpriseCode': enterpriseCode.toString(),
@@ -99,10 +99,16 @@ class _ProductItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ProductItemWidget(
-      product: product,
-      routine: BsRoutine.saleRequest,
-      onTap: onTap,
+    return Hero(
+      tag: 'sale_request_product_${product.ProductPackingCode}',
+      child: Material(
+        type: MaterialType.transparency,
+        child: ProductItemWidget(
+          product: product,
+          routine: BsRoutine.saleRequest,
+          onTap: onTap,
+        ),
+      ),
     );
   }
 }
