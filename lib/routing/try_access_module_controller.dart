@@ -37,7 +37,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
       Routes.insertUpdateSaleRequest => DateTime(
         2026,
         4,
-        9,
+        28,
       ), //TODO update the date
       Routes.adjustCost => DateTime(2026, 3, 31),
       _ => null,
