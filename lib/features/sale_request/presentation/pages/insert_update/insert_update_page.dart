@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../../../utils/utils.dart';
@@ -19,19 +20,16 @@ class InsertUpdatePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = insertUpdateStateControllerProvider(
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-      saleRequestId: saleRequestId,
-    );
-
-    ref.listen(provider, (p, n) {
+    ref.listen(saveSaleRequestControllerProvider(enterpriseCode), (p, n) {
       n.showAlertDialogOnError(context);
       n.showSnackbarOnSuccess(
         context,
         previous: p,
         message: 'Pedido salvo com sucesso!'.hardcoded,
       );
+      n.doOnSuccess(p, () {
+        context.pop();
+      });
     });
 
     return Scaffold(
