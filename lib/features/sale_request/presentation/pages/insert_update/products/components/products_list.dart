@@ -26,6 +26,35 @@ class ProductsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void onTap(ProductEntity product) {
+      final provider = insertUpdateStateControllerProvider(
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        saleRequestId: saleRequestId,
+      );
+
+      final saleRequest = ref.read(provider).value;
+      final existingItems = saleRequest?.products ?? [];
+
+      final existingItem = existingItems
+          .cast<BSFProductItemEntity?>()
+          .firstWhereOrNull(
+            (e) => e?.product?.productPackingPriceLookUpString == product.PLU,
+          );
+
+      final itemToEdit = existingItem ?? product.toBSFProductItemEntity();
+
+      context.pushNamed(
+        Routes.saleRequestInsertProduct.name,
+        extra: itemToEdit,
+        pathParameters: {
+          'saleRequestId': saleRequestId.toString(),
+          'enterpriseCode': enterpriseCode.toString(),
+          'customerCode': customerCode.toString(),
+        },
+      );
+    }
+
     final searchProductKey = SearchProductKey(
       enterpriseCode,
       BsRoutine.saleRequest,
@@ -47,10 +76,10 @@ class ProductsList extends ConsumerWidget {
           itemCount: products.length,
           itemBuilder: (context, index) {
             final product = products[index];
-            return ProductItemWidget(
+            return _ProductItem(
+              key: ValueKey(product.ProductPackingCode),
               product: product,
-              routine: BsRoutine.saleRequest,
-              onTap: () => _navigateToProductDetail(context, ref, product),
+              onTap: () => onTap(product),
             );
           },
         );
@@ -60,37 +89,20 @@ class ProductsList extends ConsumerWidget {
       ),
     );
   }
+}
 
-  void _navigateToProductDetail(
-    BuildContext context,
-    WidgetRef ref,
-    ProductEntity product,
-  ) {
-    final provider = insertUpdateStateControllerProvider(
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-      saleRequestId: saleRequestId,
-    );
+class _ProductItem extends ConsumerWidget {
+  const _ProductItem({required this.product, required this.onTap, super.key});
 
-    final saleRequest = ref.read(provider).value;
-    final existingItems = saleRequest?.products ?? [];
+  final ProductEntity product;
+  final VoidCallback onTap;
 
-    final existingItem = existingItems
-        .cast<BSFProductItemEntity?>()
-        .firstWhereOrNull(
-          (e) => e?.product?.productPackingPriceLookUpString == product.PLU,
-        );
-
-    final itemToEdit = existingItem ?? product.toBSFProductItemEntity();
-
-    context.pushNamed(
-      Routes.saleRequestInsertProduct.name,
-      extra: itemToEdit,
-      pathParameters: {
-        'saleRequestId': saleRequestId.toString(),
-        'enterpriseCode': enterpriseCode.toString(),
-        'customerCode': customerCode.toString(),
-      },
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ProductItemWidget(
+      product: product,
+      routine: BsRoutine.saleRequest,
+      onTap: onTap,
     );
   }
 }
