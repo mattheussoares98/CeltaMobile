@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -49,9 +50,7 @@ class ProductsList extends ConsumerWidget {
             return ProductItemWidget(
               product: product,
               routine: BsRoutine.saleRequest,
-              onTap: () {
-                _navigateToProductDetail(context, ref, product);
-              },
+              onTap: () => _navigateToProductDetail(context, ref, product),
             );
           },
         );
@@ -76,14 +75,11 @@ class ProductsList extends ConsumerWidget {
     final saleRequest = ref.read(provider).value;
     final existingItems = saleRequest?.products ?? [];
 
-    final productCode =
-        product.ProductPackingCode?.toString() ??
-        product.ProductCode?.toString();
-
-    final existingItem = existingItems.cast<BSFProductItemEntity?>().firstWhere(
-      (e) => e?.product?.personalizedCode == productCode,
-      orElse: () => null,
-    );
+    final existingItem = existingItems
+        .cast<BSFProductItemEntity?>()
+        .firstWhereOrNull(
+          (e) => e?.product?.productPackingPriceLookUpString == product.PLU,
+        );
 
     final itemToEdit = existingItem ?? product.toBSFProductItemEntity();
 
