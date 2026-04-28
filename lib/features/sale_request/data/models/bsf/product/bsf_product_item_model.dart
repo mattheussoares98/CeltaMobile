@@ -103,20 +103,36 @@ class BSFProductItemModel extends BSFProductItemEntity {
   factory BSFProductItemModel.fromEntity(BSFProductItemEntity entity) =>
       BSFProductItemModel(
         productPackingCode: entity.productPackingCode,
-        icms: entity.icms,
-        ipi: entity.ipi,
+        icms: entity.icms == null ? null : BSFIcmsModel.fromEntity(entity.icms!),
+        ipi: entity.ipi == null ? null : BSFIpiModel.fromEntity(entity.ipi!),
         code: entity.code,
-        product: entity.product,
-        fiscalCode: entity.fiscalCode,
+        product: entity.product == null
+            ? null
+            : BSFProductDetailsModel.fromEntity(entity.product!),
+        fiscalCode: entity.fiscalCode == null
+            ? null
+            : BSFFiscalCodeModel.fromEntity(entity.fiscalCode!),
         compositionChilds: entity.compositionChilds,
         eanCode: entity.eanCode,
-        freight: entity.freight,
-        discounts: entity.discounts,
+        freight: entity.freight == null
+            ? null
+            : BSFProductFreightModel.fromEntity(entity.freight!),
+        discounts: entity.discounts
+            ?.map((e) => BSFDiscountModel.fromEntity(e))
+            .toList(),
         expectedDeliveryDate: entity.expectedDeliveryDate,
-        deliveryTax: entity.deliveryTax,
-        increment: entity.increment,
-        creditOnOrigin: entity.creditOnOrigin,
-        compensation: entity.compensation,
+        deliveryTax: entity.deliveryTax == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.deliveryTax!),
+        increment: entity.increment == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.increment!),
+        creditOnOrigin: entity.creditOnOrigin == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.creditOnOrigin!),
+        compensation: entity.compensation == null
+            ? null
+            : BSFValueTypeModel.fromEntity(entity.compensation!),
         quantity: entity.quantity,
         value: entity.value,
       );
