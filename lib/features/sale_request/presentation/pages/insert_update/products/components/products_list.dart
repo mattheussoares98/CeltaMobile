@@ -32,12 +32,8 @@ class ProductsList extends ConsumerWidget {
       anotherKey: saleRequestId.toString(),
     );
 
-    final productsAsync = ref.watch(
-      searchProductsStateControllerProvider(searchProductKey),
-    );
-
     return AsyncValueWidget(
-      value: productsAsync,
+      value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
       data: (products) {
         if (products.isEmpty) {
           return Center(
