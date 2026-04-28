@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../../../utils/utils.dart';
 import '../../controllers/controllers.dart';
@@ -31,6 +32,7 @@ class InsertUpdatePage extends ConsumerWidget {
         context.pop();
       });
     });
+    ref.observeLoading([saveSaleRequestControllerProvider(enterpriseCode)]);
 
     return Scaffold(
       appBar: AppBar(
