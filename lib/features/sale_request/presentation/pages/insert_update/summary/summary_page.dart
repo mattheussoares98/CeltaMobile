@@ -34,15 +34,6 @@ class SummaryPage extends ConsumerWidget {
       ),
     );
 
-    ref.listen(provider, (p, n) {
-      n.showAlertDialogOnError(context);
-      n.showSnackbarOnSuccess(
-        context,
-        previous: p,
-        message: 'Pedido salvo com sucesso!'.hardcoded,
-      );
-    });
-
     return AsyncValueWidget(
       value: summaryDataAsync,
       data: (summaryData) {
@@ -63,7 +54,18 @@ class SummaryPage extends ConsumerWidget {
               ),
               const Spacer(),
               PrimaryButton(
-                onPressed: ref.read(provider.notifier).save,
+                onPressed: () async {
+                  await ref
+                      .read(
+                        saveSaleRequestControllerProvider(
+                          enterpriseCode,
+                        ).notifier,
+                      )
+                      .saveBsfSaleRequest(
+                        customerCode: customerCode,
+                        saleRequestId: saleRequestId,
+                      );
+                },
                 text: 'SALVAR'.hardcoded,
               ),
             ],

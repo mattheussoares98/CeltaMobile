@@ -30,7 +30,7 @@ class CreateSaleRequestPage extends ConsumerWidget {
     ) {
       n.showAlertDialogOnError(context);
     });
-    ref.listen(saveSaleRequestControllerProvider, (p, n) {
+    ref.listen(saveSaleRequestControllerProvider(enterpriseCode), (p, n) {
       n.showSnackbarOnSuccess(
         context,
         previous: p,
@@ -44,7 +44,7 @@ class CreateSaleRequestPage extends ConsumerWidget {
 
     ref.observeLoading([
       processCartControllerProvider,
-      saveSaleRequestControllerProvider,
+      saveSaleRequestControllerProvider(enterpriseCode),
     ]);
 
     final screenWidth = MediaQuery.sizeOf(context).width;

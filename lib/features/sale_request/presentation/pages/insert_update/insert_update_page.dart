@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../utils/utils.dart';
+import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class InsertUpdatePage extends StatelessWidget {
+class InsertUpdatePage extends ConsumerWidget {
   final int enterpriseCode;
   final int customerCode;
   final int saleRequestId;
@@ -15,7 +18,22 @@ class InsertUpdatePage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = insertUpdateStateControllerProvider(
+      enterpriseCode: enterpriseCode,
+      customerCode: customerCode,
+      saleRequestId: saleRequestId,
+    );
+
+    ref.listen(provider, (p, n) {
+      n.showAlertDialogOnError(context);
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'Pedido salvo com sucesso!'.hardcoded,
+      );
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

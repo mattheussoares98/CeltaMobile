@@ -16,7 +16,7 @@ part 'save_sale_request_controller.g.dart';
 @riverpod
 class SaveSaleRequestController extends _$SaveSaleRequestController {
   @override
-  FutureOr<void> build() {}
+  FutureOr<void> build(int enterpriseCode) {}
 
   Future<void> save({
     required int requestTypeCode,
@@ -72,6 +72,37 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
 
       await ref.read(localSaleRequestRepositoryProvider).clear(enterpriseCode);
       ref.invalidate(localSaleRequestRepositoryProvider);
+    });
+  }
+
+  Future<void> saveBsfSaleRequest({
+    required int customerCode,
+    required int saleRequestId, //0 == insert
+  }) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final userSession = await ref.read(validatedUserSessionProvider.future);
+      final saleRequest = await ref.read(
+        insertUpdateStateControllerProvider(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
+        ).future,
+      );
+
+      final params = EcRequestParams(
+        workingUrl: userSession!.enterprise!.workingUrl!,
+        user: userSession.user.name!,
+        accessKey: userSession.user.AccessKey!,
+      );
+
+      await ref
+          .read(ecSaleRequestsRepositoryProvider)
+          .update(
+            saleRequest: saleRequest,
+            enterpriseCode: enterpriseCode,
+            params: params,
+          );
     });
   }
 }

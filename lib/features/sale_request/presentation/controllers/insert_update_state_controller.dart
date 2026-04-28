@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/bsf/bsf.dart';
 import '../../domain/entities/entities.dart';
-import '../../providers.dart';
 import 'controllers.dart';
 
 part 'insert_update_state_controller.g.dart';
@@ -181,25 +179,5 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
 
     state = AsyncData(current.copyWith(financials: financials));
-  }
-
-  Future<void> save() async {
-    //TODO create another controller only to call the save method
-    final saleRequest = state.value!;
-    final userSession = await ref.read(validatedUserSessionProvider.future);
-
-    final params = EcRequestParams(
-      workingUrl: userSession!.enterprise!.workingUrl!,
-      user: userSession.user.name!,
-      accessKey: userSession.user.AccessKey!,
-    );
-
-    await ref
-        .read(ecSaleRequestsRepositoryProvider)
-        .update(
-          saleRequest: saleRequest,
-          enterpriseCode: enterpriseCode,
-          params: params,
-        );
   }
 }

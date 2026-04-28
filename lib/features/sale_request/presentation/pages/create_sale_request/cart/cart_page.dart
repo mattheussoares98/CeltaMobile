@@ -141,7 +141,7 @@ class _CartPageState extends ConsumerState<CartPage>
 
   void saveSaleRequest() {
     ref
-        .read(saveSaleRequestControllerProvider.notifier)
+        .read(saveSaleRequestControllerProvider(widget.enterpriseCode).notifier)
         .save(
           enterpriseCode: widget.enterpriseCode,
           requestTypeCode: widget.selectedRequest.code!,
@@ -156,7 +156,10 @@ class _CartPageState extends ConsumerState<CartPage>
       n.showAlertDialogOnError(context);
     });
 
-    ref.listen(saveSaleRequestControllerProvider, (p, n) {
+    ref.listen(saveSaleRequestControllerProvider(widget.enterpriseCode), (
+      p,
+      n,
+    ) {
       n.showAlertDialogOnError(context);
       n.doOnSuccess(p, () {
         instructionsController.clear();

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
@@ -8,6 +10,7 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -38,6 +41,20 @@ class SpyLastSavedSaleRequest extends LastSavedSaleRequestStateController {
   }
 }
 
+class FakeInsertUpdateStateController extends InsertUpdateStateController {
+  final BSFSaleRequestEntity saleRequestEntity;
+  FakeInsertUpdateStateController({required this.saleRequestEntity});
+
+  @override
+  FutureOr<BSFSaleRequestEntity> build({
+    required int enterpriseCode,
+    required int customerCode,
+    required int saleRequestId,
+  }) async {
+    return saleRequestEntity;
+  }
+}
+
 class MockSoapSaveSaleRequestRepository extends Mock
     implements ISoapSaveSaleRequestRepository {}
 
@@ -45,9 +62,13 @@ class MockSoapSaveSaleRequestRepository extends Mock
 class MockLocalSaleRequestRepository extends Mock
     implements ILocalSaleRequestRepository {}
 
+class MockEcSaleRequestsRepository extends Mock
+    implements IEcSaleRequestsRepository {}
+
 void main() {
   late MockSoapSaveSaleRequestRepository mockSoapSaveSaleRequestRepository;
   late MockLocalSaleRequestRepository mockLocalPendingRepo;
+  late MockEcSaleRequestsRepository mockEcSaleRequestsRepository;
   late FakeAppUsageStateController fakeAppUsage;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
@@ -56,6 +77,8 @@ void main() {
   late int fakeRequestTypeCode;
   late String instructions;
   late String observations;
+  late int saleRequestId;
+  late BSFSaleRequestEntity fakeBSFSaleRequestEntity;
 
   late ProviderContainer container;
 
@@ -67,10 +90,13 @@ void main() {
         saleRequestNumber: faker.randomGenerator.integer(100).toString(),
       ),
     );
+    registerFallbackValue(EntityFactory.makeBSFSaleRequestEntity());
+    registerFallbackValue(EntityFactory.makeEcRequestParams());
 
     // --- Initialize Mocks and Data ONCE ---
     mockSoapSaveSaleRequestRepository = MockSoapSaveSaleRequestRepository();
     mockLocalPendingRepo = MockLocalSaleRequestRepository(); // New
+    mockEcSaleRequestsRepository = MockEcSaleRequestsRepository();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -83,6 +109,8 @@ void main() {
     instructions = faker.lorem.sentence();
     observations = faker.lorem.sentence();
     fakeAppUsage = FakeAppUsageStateController();
+    saleRequestId = faker.randomGenerator.integer(100);
+    fakeBSFSaleRequestEntity = EntityFactory.makeBSFSaleRequestEntity();
 
     // --- Create the single container ONCE with ALL providers ---
     container = ProviderContainer(
@@ -109,6 +137,18 @@ void main() {
         localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(
+          mockEcSaleRequestsRepository,
+        ),
+        insertUpdateStateControllerProvider(
+          enterpriseCode: fakeEnterprise.Code!,
+          customerCode: fakePendingRequest.customer!.Code!,
+          saleRequestId: saleRequestId,
+        ).overrideWith(
+          () => FakeInsertUpdateStateController(
+            saleRequestEntity: fakeBSFSaleRequestEntity,
+          ),
+        ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
@@ -122,6 +162,7 @@ void main() {
     // Reset mocks after each test
     reset(mockSoapSaveSaleRequestRepository);
     reset(mockLocalPendingRepo);
+    reset(mockEcSaleRequestsRepository);
   });
 
   group('SaveSaleRequestController', () {
@@ -151,6 +192,18 @@ void main() {
         localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(
+          mockEcSaleRequestsRepository,
+        ),
+        insertUpdateStateControllerProvider(
+          enterpriseCode: fakeEnterprise.Code!,
+          customerCode: fakePendingRequest.customer!.Code!,
+          saleRequestId: saleRequestId,
+        ).overrideWith(
+          () => FakeInsertUpdateStateController(
+            saleRequestEntity: fakeBSFSaleRequestEntity,
+          ),
+        ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ]);
 
@@ -171,13 +224,15 @@ void main() {
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        saveSaleRequestControllerProvider,
+        saveSaleRequestControllerProvider(fakeEnterprise.Code!),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(saveSaleRequestControllerProvider.notifier)
+          .read(
+            saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+          )
           .save(
             requestTypeCode: fakeRequestTypeCode,
             observations: observations,
@@ -247,18 +302,32 @@ void main() {
         localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(
+          mockEcSaleRequestsRepository,
+        ),
+        insertUpdateStateControllerProvider(
+          enterpriseCode: fakeEnterprise.Code!,
+          customerCode: fakePendingRequest.customer!.Code!,
+          saleRequestId: saleRequestId,
+        ).overrideWith(
+          () => FakeInsertUpdateStateController(
+            saleRequestEntity: fakeBSFSaleRequestEntity,
+          ),
+        ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ]);
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        saveSaleRequestControllerProvider,
+        saveSaleRequestControllerProvider(fakeEnterprise.Code!),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(saveSaleRequestControllerProvider.notifier)
+          .read(
+            saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+          )
           .save(
             requestTypeCode: fakeRequestTypeCode,
             observations: observations,
@@ -313,18 +382,32 @@ void main() {
         localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(
+          mockEcSaleRequestsRepository,
+        ),
+        insertUpdateStateControllerProvider(
+          enterpriseCode: fakeEnterprise.Code!,
+          customerCode: fakePendingRequest.customer!.Code!,
+          saleRequestId: saleRequestId,
+        ).overrideWith(
+          () => FakeInsertUpdateStateController(
+            saleRequestEntity: fakeBSFSaleRequestEntity,
+          ),
+        ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ]);
 
       final states = <AsyncValue<void>>[];
       container.listen(
-        saveSaleRequestControllerProvider,
+        saveSaleRequestControllerProvider(fakeEnterprise.Code!),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(saveSaleRequestControllerProvider.notifier)
+          .read(
+            saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+          )
           .save(
             requestTypeCode: fakeRequestTypeCode,
             observations: observations,
@@ -334,6 +417,156 @@ void main() {
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+    });
+  });
+
+  group('saveBsfSaleRequest', () {
+    test('should call ecSaleRequestsRepository.update on success', () async {
+      // ARRANGE
+
+      // Update ALL overrides
+      container.updateOverrides([
+        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
+          mockSoapSaveSaleRequestRepository,
+        ),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(fakeSession),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
+        ),
+        pendingSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpyLastSavedSaleRequest()),
+        localSaleRequestRepositoryProvider.overrideWithValue(
+          mockLocalPendingRepo,
+        ),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(
+          mockEcSaleRequestsRepository,
+        ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+
+        insertUpdateStateControllerProvider(
+          enterpriseCode: fakeEnterprise.Code!,
+          customerCode: fakePendingRequest.customer!.Code!,
+          saleRequestId: saleRequestId,
+        ).overrideWith(
+          () => FakeInsertUpdateStateController(
+            saleRequestEntity: fakeBSFSaleRequestEntity,
+          ),
+        ),
+      ]);
+
+      when(
+        () => mockEcSaleRequestsRepository.update(
+          saleRequest: any(named: 'saleRequest'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          params: any(named: 'params'),
+        ),
+      ).thenAnswer((_) async {});
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      await container
+          .read(
+            saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+          )
+          .saveBsfSaleRequest(
+            customerCode: fakePendingRequest.customer!.Code!,
+            saleRequestId: saleRequestId,
+          );
+
+      // ASSERT
+      expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+      final capturedParams =
+          verify(
+                () => mockEcSaleRequestsRepository.update(
+                  saleRequest: fakeBSFSaleRequestEntity,
+                  enterpriseCode: fakeEnterprise.Code!,
+                  params: captureAny(named: 'params'),
+                ),
+              ).captured.single
+              as EcRequestParams;
+
+      expect(capturedParams.workingUrl, fakeSession.enterprise!.workingUrl);
+      expect(capturedParams.user, fakeSession.user.name);
+      expect(capturedParams.accessKey, fakeSession.user.AccessKey);
+    });
+
+    test('should emit [loading, error] if update fails', () async {
+      // ARRANGE
+
+      // Update ALL overrides
+      container.updateOverrides([
+        insertUpdateStateControllerProvider(
+          enterpriseCode: fakeEnterprise.Code!,
+          customerCode: fakePendingRequest.customer!.Code!,
+          saleRequestId: saleRequestId,
+        ).overrideWith(
+          () => FakeInsertUpdateStateController(
+            saleRequestEntity: fakeBSFSaleRequestEntity,
+          ),
+        ),
+        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
+          mockSoapSaveSaleRequestRepository,
+        ),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(fakeSession),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
+        ),
+        pendingSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpyLastSavedSaleRequest()),
+        localSaleRequestRepositoryProvider.overrideWithValue(
+          mockLocalPendingRepo,
+        ),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(
+          mockEcSaleRequestsRepository,
+        ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+      ]);
+
+      when(
+        () => mockEcSaleRequestsRepository.update(
+          saleRequest: any(named: 'saleRequest'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          params: any(named: 'params'),
+        ),
+      ).thenThrow(AppException('Error updating'.hardcoded));
+
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      await container
+          .read(
+            saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+          )
+          .saveBsfSaleRequest(
+            customerCode: fakePendingRequest.customer!.Code!,
+            saleRequestId: saleRequestId,
+          );
+
+      // ASSERT
+      expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+      expect(states.last.error, isA<AppException>());
+      expect((states.last.error as AppException).message, 'Error updating');
     });
   });
 }
