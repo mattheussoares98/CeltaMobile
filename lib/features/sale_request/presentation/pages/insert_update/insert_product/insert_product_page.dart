@@ -38,14 +38,21 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   late final TextEditingController _deliveryTaxValueController;
   late final TextEditingController _incrementValueController;
 
-  PercentageOrValue _deliveryTaxType = PercentageOrValue.value;
-  PercentageOrValue _incrementType = PercentageOrValue.value;
+  final _deliveryTaxType = ValueNotifier<PercentageOrValue>(
+    PercentageOrValue.value,
+  );
+  final _incrementType = ValueNotifier<PercentageOrValue>(
+    PercentageOrValue.value,
+  );
+  final _discounts = ValueNotifier<List<BSFDiscountEntity>>([]);
+  //TODO create a new controller to manage this page UI state
 
   @override
   void initState() {
     super.initState();
     _editedItem = widget.product;
 
+    _discounts.value = _editedItem.discounts ?? [];
     _quantityController = TextEditingController(
       text: (_editedItem.quantity ?? 1).toString(),
     );
@@ -58,12 +65,14 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
     _deliveryTaxValueController = TextEditingController(
       text: (_editedItem.deliveryTax?.value ?? 0).toString(),
     );
-    _deliveryTaxType = _editedItem.deliveryTax?.type ?? PercentageOrValue.value;
+    _deliveryTaxType.value =
+        _editedItem.deliveryTax?.type ?? PercentageOrValue.value;
 
     _incrementValueController = TextEditingController(
       text: (_editedItem.increment?.value ?? 0).toString(),
     );
-    _incrementType = _editedItem.increment?.type ?? PercentageOrValue.value;
+    _incrementType.value =
+        _editedItem.increment?.type ?? PercentageOrValue.value;
   }
 
   @override
@@ -88,10 +97,16 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
       quantity: quantity,
       value: price,
       deliveryTax: deliveryTaxValue > 0
-          ? BSFValueTypeEntity(type: _deliveryTaxType, value: deliveryTaxValue)
+          ? BSFValueTypeEntity(
+              type: _deliveryTaxType.value,
+              value: deliveryTaxValue,
+            )
           : null,
       increment: incrementValue > 0
-          ? BSFValueTypeEntity(type: _incrementType, value: incrementValue)
+          ? BSFValueTypeEntity(
+              type: _incrementType.value,
+              value: incrementValue,
+            )
           : null,
     );
 
@@ -140,66 +155,83 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
         ),
       ),
       body: ResponsiveScrollableWidget(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Hero(
-              tag:
-                  'sale_request_product_${widget.originalProduct.ProductPackingCode}',
-              child: Material(
-                type: MaterialType.transparency,
-                child: ProductItemWidget(
-                  product: widget.originalProduct,
-                  routine: BsRoutine.saleRequest,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Hero(
+                tag:
+                    'sale_request_product_${widget.originalProduct.ProductPackingCode}',
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: ProductItemWidget(
+                    product: widget.originalProduct,
+                    routine: BsRoutine.saleRequest,
+                  ),
                 ),
               ),
-            ),
-            gapH16,
-            QuantityField(controller: _quantityController),
-            gapH16,
-            PriceField(controller: _priceController, enabled: allowPriceChange),
-            if (allowDiscount) ...[
-              gapH16,
-              DiscountsSection(
-                discounts: _editedItem.discounts ?? [],
-                discountType: _getDiscountType(),
-                onDiscountsChanged: (discounts) {
-                  setState(() {
-                    _editedItem = _editedItem.copyWith(discounts: discounts);
-                  });
-                },
+              if (allowDeliveryTax) ...[
+                ValueListenableBuilder(
+                  valueListenable: _deliveryTaxType,
+                  builder: (context, value, _) {
+                    return DeliveryTaxField(
+                      controller: _deliveryTaxValueController,
+                      type: value,
+                      onTypeChanged: (type) => _deliveryTaxType.value = type,
+                    );
+                  },
+                ),
+              ],
+              gapH8,
+              Row(
+                children: [
+                  Expanded(
+                    child: QuantityField(controller: _quantityController),
+                  ),
+                  gapW8,
+                  Expanded(
+                    child: PriceField(
+                      controller: _priceController,
+                      enabled: allowPriceChange,
+                    ),
+                  ),
+                ],
               ),
+              if (allowDiscount) ...[
+                gapH8,
+                ValueListenableBuilder(
+                  valueListenable: _discounts,
+                  builder: (context, discounts, _) {
+                    return DiscountsSection(
+                      discounts: discounts,
+                      discountType: _getDiscountType(),
+                      onDiscountsChanged: (discounts) =>
+                          _discounts.value = discounts,
+                    );
+                  },
+                ),
+              ],
+              if (allowIncrement) ...[
+                gapH8,
+                ValueListenableBuilder(
+                  valueListenable: _incrementType,
+                  builder: (context, value, _) {
+                    return IncrementField(
+                      controller: _incrementValueController,
+                      type: value,
+                      onTypeChanged: (type) => _incrementType.value = type,
+                    );
+                  },
+                ),
+              ],
+              gapH8,
+              ObservationsField(controller: _observationsController),
+              gapH32,
+              PrimaryButton(text: 'CONFIRMAR'.hardcoded, onPressed: _saveItem),
+              gapH8,
             ],
-            if (allowDeliveryTax) ...[
-              gapH16,
-              DeliveryTaxField(
-                controller: _deliveryTaxValueController,
-                type: _deliveryTaxType,
-                onTypeChanged: (type) {
-                  setState(() {
-                    _deliveryTaxType = type;
-                  });
-                },
-              ),
-            ],
-            if (allowIncrement) ...[
-              gapH16,
-              IncrementField(
-                controller: _incrementValueController,
-                type: _incrementType,
-                onTypeChanged: (type) {
-                  setState(() {
-                    _incrementType = type;
-                  });
-                },
-              ),
-            ],
-            gapH16,
-            ObservationsField(controller: _observationsController),
-            gapH32,
-            PrimaryButton(text: 'CONFIRMAR'.hardcoded, onPressed: _saveItem),
-            gapH16,
-          ],
+          ),
         ),
       ),
     );
