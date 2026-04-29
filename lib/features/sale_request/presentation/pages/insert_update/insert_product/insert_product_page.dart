@@ -32,18 +32,12 @@ class InsertProductPage extends ConsumerStatefulWidget {
 
 class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   late final TextEditingController _observationsController;
-  late final TextEditingController _incrementValueController;
 
   @override
   void initState() {
     super.initState();
 
-    final product = widget.product;
     _observationsController = TextEditingController();
-
-    _incrementValueController = TextEditingController(
-      text: (product.increment?.value ?? 0).toString(),
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
@@ -55,7 +49,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   @override
   void dispose() {
     _observationsController.dispose();
-    _incrementValueController.dispose();
     super.dispose();
   }
 
@@ -102,8 +95,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
       ),
     );
 
-    final uiProvider = insertProductUIControllerProvider;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -149,22 +140,7 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             ],
             if (allowIncrement) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
-              Consumer(
-                builder: (context, ref, _) {
-                  final incrementType = ref.watch(
-                    uiProvider.select((s) => s.incrementType),
-                  );
-                  return SliverToBoxAdapter(
-                    child: IncrementField(
-                      controller: _incrementValueController,
-                      type: incrementType,
-                      onTypeChanged: (type) => ref
-                          .read(uiProvider.notifier)
-                          .updateIncrementType(type),
-                    ),
-                  );
-                },
-              ),
+              const SliverToBoxAdapter(child: IncrementField()),
             ],
             const SliverToBoxAdapter(child: DefaultDivider()),
             SliverToBoxAdapter(

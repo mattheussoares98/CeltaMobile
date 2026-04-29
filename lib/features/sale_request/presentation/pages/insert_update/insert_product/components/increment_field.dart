@@ -1,25 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
+import '../../../../controllers/controllers.dart';
 
-class IncrementField extends StatelessWidget {
-  final TextEditingController controller;
-  final PercentageOrValue type;
-  final ValueChanged<PercentageOrValue> onTypeChanged;
+class IncrementField extends ConsumerStatefulWidget {
+  const IncrementField({super.key});
 
-  const IncrementField({
-    super.key,
-    required this.controller,
-    required this.type,
-    required this.onTypeChanged,
-  });
+  @override
+  ConsumerState<IncrementField> createState() => _IncrementFieldState();
+}
+
+class _IncrementFieldState extends ConsumerState<IncrementField> {
+  final _incrementValueController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      _incrementValueController.text =
+          ref
+              .read(selectedProductStateControllerProvider)
+              ?.increment
+              ?.value
+              ?.toString() ??
+          '';
+
+      ref
+          .read(insertProductUIControllerProvider.notifier)
+          .updateIncrementValue(_incrementValueController.text.toDouble() ?? 0);
+    });
+  }
+
+  @override
+  void dispose() {
+    _incrementValueController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final uiProvider = insertProductUIControllerProvider;
+
+    final incrementType = ref.watch(uiProvider.select((s) => s.incrementType));
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,37 +58,37 @@ class IncrementField extends StatelessWidget {
           'Acréscimo'.hardcoded,
           style: Theme.of(context).textTheme.titleSmall,
         ),
-        gapH8,
+        gapH4,
         Row(
           children: [
             Expanded(
+              flex: 4,
               child: DefaultTextFormField(
-                controller: controller,
-                labelText: 'Valor'.hardcoded,
+                controller: _incrementValueController,
+                labelText: 'Valor ${incrementType.symbol}'.hardcoded,
+                hintText: incrementType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
-                ],
+                onChanged: (value) {
+                  ref
+                      .read(uiProvider.notifier)
+                      .updateIncrementValue(double.tryParse(value) ?? 0);
+                },
+                validator: FormValidators.compose([
+                  NumberValidator(allowDecimal: true, allowEmptyValue: true),
+                ]),
               ),
             ),
             gapW8,
-            SegmentedButton<PercentageOrValue>(
-              segments: [
-                ButtonSegment(
-                  value: PercentageOrValue.reais,
-                  label: Text('R\$'.hardcoded),
-                ),
-                ButtonSegment(
-                  value: PercentageOrValue.percentage,
-                  label: Text('%'.hardcoded),
-                ),
-              ],
-              selected: {type},
-              onSelectionChanged: (selected) {
-                onTypeChanged(selected.first);
-              },
+            Expanded(
+              flex: 6,
+              child: DefaultSegmentedButtons(
+                items: PercentageOrValue.values,
+                selectedValue: incrementType,
+                onChanged: (value) =>
+                    ref.read(uiProvider.notifier).updateIncrementType(value),
+              ),
             ),
           ],
         ),
