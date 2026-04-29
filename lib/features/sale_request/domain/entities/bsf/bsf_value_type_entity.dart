@@ -10,6 +10,13 @@ class BSFValueTypeEntity extends Equatable {
 
   @override
   List<Object?> get props => [type, value];
+
+  BSFValueTypeEntity copyWith({PercentageOrValue? type, double? value}) {
+    return BSFValueTypeEntity(
+      type: type ?? this.type,
+      value: value ?? this.value,
+    );
+  }
 }
 
 extension BSFValueTypeEntityExtension on BSFValueTypeEntity {
@@ -18,8 +25,9 @@ extension BSFValueTypeEntityExtension on BSFValueTypeEntity {
     if (price == null || price == 0) return 0;
     if (type == null) return 0;
 
-    final calculation =
-        type == PercentageOrValue.value ? value! : price * (value! / 100);
+    final calculation = type == PercentageOrValue.reais
+        ? value!
+        : price * (value! / 100);
 
     return calculation;
   }

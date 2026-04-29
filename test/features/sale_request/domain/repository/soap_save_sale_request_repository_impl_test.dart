@@ -78,7 +78,7 @@ void main() {
                   DiscountValue: value.DiscountValue == null
                       ? null
                       : (value.DiscountValue ?? 0) / value.Quantity,
-                  DiscountPercentageOrValue: PercentageOrValue.value,
+                  DiscountPercentageOrValue: PercentageOrValue.reais,
                 ),
               ),
             ),

@@ -18,5 +18,27 @@ class BSFDiscountEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [order, discountOrigin, user, justification, discount];
+  List<Object?> get props => [
+    order,
+    discountOrigin,
+    user,
+    justification,
+    discount,
+  ];
+
+  BSFDiscountEntity copyWith({
+    int? order,
+    int? discountOrigin,
+    String? user,
+    String? justification,
+    BSFValueTypeEntity? discount,
+  }) {
+    return BSFDiscountEntity(
+      order: order ?? this.order,
+      discountOrigin: discountOrigin ?? this.discountOrigin,
+      user: user ?? this.user,
+      justification: justification ?? this.justification,
+      discount: discount ?? this.discount,
+    );
+  }
 }

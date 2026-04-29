@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,91 +30,45 @@ class InsertProductPage extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
-  late BSFProductItemEntity _editedItem;
-  late final TextEditingController _quantityController;
-  late final TextEditingController _priceController;
   late final TextEditingController _observationsController;
-  late final TextEditingController _deliveryTaxValueController;
   late final TextEditingController _incrementValueController;
-
-  final _deliveryTaxType = ValueNotifier<PercentageOrValue>(
-    PercentageOrValue.value,
-  );
-  final _incrementType = ValueNotifier<PercentageOrValue>(
-    PercentageOrValue.value,
-  );
-  final _discounts = ValueNotifier<List<BSFDiscountEntity>>([]);
-  //TODO create a new controller to manage this page UI state
 
   @override
   void initState() {
     super.initState();
-    _editedItem = widget.product;
 
-    _discounts.value = _editedItem.discounts ?? [];
-    _quantityController = TextEditingController(
-      text: (_editedItem.quantity ?? 1).toString(),
-    );
-    _priceController = TextEditingController(
-      text: (_editedItem.value ?? 0).toString(),
-    );
-
+    final product = widget.product;
     _observationsController = TextEditingController();
 
-    _deliveryTaxValueController = TextEditingController(
-      text: (_editedItem.deliveryTax?.value ?? 0).toString(),
-    );
-    _deliveryTaxType.value =
-        _editedItem.deliveryTax?.type ?? PercentageOrValue.value;
-
     _incrementValueController = TextEditingController(
-      text: (_editedItem.increment?.value ?? 0).toString(),
+      text: (product.increment?.value ?? 0).toString(),
     );
-    _incrementType.value =
-        _editedItem.increment?.type ?? PercentageOrValue.value;
   }
 
   @override
   void dispose() {
-    _quantityController.dispose();
-    _priceController.dispose();
     _observationsController.dispose();
-    _deliveryTaxValueController.dispose();
     _incrementValueController.dispose();
     super.dispose();
   }
 
   void _saveItem() {
-    final quantity = double.tryParse(_quantityController.text) ?? 1;
-    final price =
-        double.tryParse(_priceController.text) ?? _editedItem.value ?? 0;
-    final deliveryTaxValue =
-        double.tryParse(_deliveryTaxValueController.text) ?? 0;
-    final incrementValue = double.tryParse(_incrementValueController.text) ?? 0;
-
-    final updatedItem = _editedItem.copyWith(
-      quantity: quantity,
-      value: price,
-      deliveryTax: deliveryTaxValue > 0
-          ? BSFValueTypeEntity(
-              type: _deliveryTaxType.value,
-              value: deliveryTaxValue,
-            )
-          : null,
-      increment: incrementValue > 0
-          ? BSFValueTypeEntity(
-              type: _incrementType.value,
-              value: incrementValue,
-            )
-          : null,
+    final uiController = ref.read(
+      insertProductUIControllerProvider(product: widget.product).notifier,
     );
+
+    uiController.updateObservations(_observationsController.text);
+    uiController.updateIncrementValue(
+      double.tryParse(_incrementValueController.text) ?? 0,
+    );
+
+    final updatedItem = uiController.getUpdatedProduct();
 
     ref
         .read(
           insertUpdateStateControllerProvider(
             enterpriseCode: widget.enterpriseCode,
-            customerCode: widget
-                .customerCode, //TODO dont make sense this here. Should remove
+            customerCode: widget.customerCode,
             saleRequestId: widget.saleRequestId,
           ).notifier,
         )
@@ -126,8 +79,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
-
     final provider = insertUpdateStateControllerProvider(
       enterpriseCode: widget.enterpriseCode,
       customerCode: widget.customerCode,
@@ -144,23 +95,22 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
     final allowDeliveryTax = requestType.value?.allowUseDeliveryTax == true;
     final allowIncrement = requestType.value?.allowUseIncrement == true;
 
+    final uiProvider = insertProductUIControllerProvider(
+      product: widget.product,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _editedItem.product?.name ?? 'Detalhe do Produto'.hardcoded,
-        ),
-        leading: IconButton(
-          icon: Icon(isIOS ? CupertinoIcons.back : Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+          widget.product.product?.name ?? 'Detalhe do Produto'.hardcoded,
         ),
       ),
-      body: ResponsiveScrollableWidget(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Hero(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Hero(
                 tag:
                     'sale_request_product_${widget.originalProduct.ProductPackingCode}',
                 child: Material(
@@ -171,77 +121,65 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
                   ),
                 ),
               ),
-              if (allowDeliveryTax) ...[
-                ValueListenableBuilder(
-                  valueListenable: _deliveryTaxType,
-                  builder: (context, value, _) {
-                    return DeliveryTaxField(
-                      controller: _deliveryTaxValueController,
-                      type: value,
-                      onTypeChanged: (type) => _deliveryTaxType.value = type,
-                    );
-                  },
-                ),
-              ],
-              gapH8,
-              Row(
+            ),
+            SliverToBoxAdapter(
+              child: Row(
                 children: [
-                  Expanded(
-                    child: QuantityField(controller: _quantityController),
-                  ),
+                  Expanded(child: QuantityField(product: widget.product)),
                   gapW8,
                   Expanded(
                     child: PriceField(
-                      controller: _priceController,
-                      enabled: allowPriceChange,
+                      product: widget.product,
+                      allowPriceChange: allowPriceChange,
                     ),
                   ),
                 ],
               ),
-              if (allowDiscount) ...[
-                gapH8,
-                ValueListenableBuilder(
-                  valueListenable: _discounts,
-                  builder: (context, discounts, _) {
-                    return DiscountsSection(
-                      discounts: discounts,
-                      discountType: _getDiscountType(),
-                      onDiscountsChanged: (discounts) =>
-                          _discounts.value = discounts,
-                    );
-                  },
-                ),
-              ],
-              if (allowIncrement) ...[
-                gapH8,
-                ValueListenableBuilder(
-                  valueListenable: _incrementType,
-                  builder: (context, value, _) {
-                    return IncrementField(
-                      controller: _incrementValueController,
-                      type: value,
-                      onTypeChanged: (type) => _incrementType.value = type,
-                    );
-                  },
-                ),
-              ],
-              gapH8,
-              ObservationsField(controller: _observationsController),
-              gapH32,
-              PrimaryButton(text: 'CONFIRMAR'.hardcoded, onPressed: _saveItem),
-              gapH8,
+            ),
+            if (allowDeliveryTax)
+              SliverToBoxAdapter(
+                child: DeliveryTaxField(product: widget.product),
+              ),
+            if (allowDiscount) ...[
+              gapSliverH8,
+              SliverToBoxAdapter(child: AddDiscount(product: widget.product)),
+              gapSliverH8,
+              Discounts(product: widget.product),
             ],
-          ),
+            if (allowIncrement) ...[
+              gapSliverH8,
+              Consumer(
+                builder: (context, ref, _) {
+                  final incrementType = ref.watch(
+                    uiProvider.select((s) => s.incrementType),
+                  );
+                  return SliverToBoxAdapter(
+                    child: IncrementField(
+                      controller: _incrementValueController,
+                      type: incrementType,
+                      onTypeChanged: (type) => ref
+                          .read(uiProvider.notifier)
+                          .updateIncrementType(type),
+                    ),
+                  );
+                },
+              ),
+            ],
+            gapSliverH8,
+            SliverToBoxAdapter(
+              child: ObservationsField(controller: _observationsController),
+            ),
+            gapSliverH32,
+            SliverToBoxAdapter(
+              child: PrimaryButton(
+                text: 'CONFIRMAR'.hardcoded,
+                onPressed: _saveItem,
+              ),
+            ),
+            gapSliverH8,
+          ],
         ),
       ),
     );
-  }
-
-  PercentageOrValue _getDiscountType() {
-    final discounts = _editedItem.discounts ?? [];
-    if (discounts.isEmpty) return PercentageOrValue.value;
-
-    final firstDiscount = discounts.first.discount;
-    return firstDiscount?.type ?? PercentageOrValue.value;
   }
 }

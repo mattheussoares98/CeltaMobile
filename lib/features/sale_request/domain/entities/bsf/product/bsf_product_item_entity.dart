@@ -115,7 +115,7 @@ class BSFProductItemEntity extends Equatable {
     return discounts!.fold(0.0, (p, e) {
       if ((e.discount?.value ?? 0) == 0) return p;
 
-      if (e.discount?.type == PercentageOrValue.value) {
+      if (e.discount?.type == PercentageOrValue.reais) {
         final discount = e.discount!.value!;
         baseValue -= discount;
 

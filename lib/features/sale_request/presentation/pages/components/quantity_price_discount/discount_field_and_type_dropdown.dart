@@ -127,8 +127,8 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                           child: Text(PercentageOrValue.percentage.symbol),
                         ),
                         DropdownMenuItem(
-                          value: PercentageOrValue.value,
-                          child: Text(PercentageOrValue.value.symbol),
+                          value: PercentageOrValue.reais,
+                          child: Text(PercentageOrValue.reais.symbol),
                         ),
                       ],
                     );

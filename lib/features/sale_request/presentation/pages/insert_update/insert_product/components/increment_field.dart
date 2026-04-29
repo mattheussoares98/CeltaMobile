@@ -46,7 +46,7 @@ class IncrementField extends StatelessWidget {
             SegmentedButton<PercentageOrValue>(
               segments: [
                 ButtonSegment(
-                  value: PercentageOrValue.value,
+                  value: PercentageOrValue.reais,
                   label: Text('R\$'.hardcoded),
                 ),
                 ButtonSegment(

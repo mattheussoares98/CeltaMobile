@@ -1,63 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../domain/entities/entities.dart';
+import '../../../../controllers/controllers.dart';
 
-class DeliveryTaxField extends StatelessWidget {
-  final TextEditingController controller;
-  final PercentageOrValue type;
-  final ValueChanged<PercentageOrValue> onTypeChanged;
+class DeliveryTaxField extends ConsumerStatefulWidget {
+  final BSFProductItemEntity product;
 
-  const DeliveryTaxField({
-    super.key,
-    required this.controller,
-    required this.type,
-    required this.onTypeChanged,
-  });
+  const DeliveryTaxField({super.key, required this.product});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DeliveryTaxFieldState();
+}
+
+class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
+  final _deliveryTaxValueController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      _deliveryTaxValueController.text =
+          widget.product.deliveryTax?.value?.toString() ?? '';
+
+      ref
+          .read(
+            insertProductUIControllerProvider(product: widget.product).notifier,
+          )
+          .updateDeliveryTaxValue(
+            double.tryParse(_deliveryTaxValueController.text) ?? 0,
+          );
+    });
+  }
+
+  @override
+  void dispose() {
+    _deliveryTaxValueController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final uiProvider = insertProductUIControllerProvider(
+      product: widget.product,
+    );
+
+    final deliveryTaxType = ref.watch(
+      uiProvider.select((s) => s.deliveryTaxType),
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        gapH8,
         Text(
           'Taxa de entrega'.hardcoded,
           style: Theme.of(context).textTheme.titleSmall,
         ),
-        gapH8,
+        gapH4,
         Row(
           children: [
             Expanded(
+              flex: 4,
               child: DefaultTextFormField(
-                controller: controller,
-                labelText: 'Valor'.hardcoded,
+                controller: _deliveryTaxValueController,
+                labelText: 'Valor ${deliveryTaxType.symbol}'.hardcoded,
+                hintText: deliveryTaxType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
-                ],
+                validator: FormValidators.compose([
+                  NumberValidator(allowDecimal: true, allowEmptyValue: true),
+                ]),
               ),
             ),
             gapW8,
-            SegmentedButton<PercentageOrValue>(
-              segments: [
-                ButtonSegment(
-                  value: PercentageOrValue.value,
-                  label: Text('R\$'.hardcoded),
-                ),
-                ButtonSegment(
-                  value: PercentageOrValue.percentage,
-                  label: Text('%'.hardcoded),
-                ),
-              ],
-              selected: {type},
-              onSelectionChanged: (selected) {
-                onTypeChanged(selected.first);
-              },
+            Expanded(
+              flex: 6,
+              child: DefaultSegmentedButtons(
+                items: PercentageOrValue.values,
+                selectedValue: deliveryTaxType,
+                onChanged: (value) =>
+                    ref.read(uiProvider.notifier).updateDeliveryTaxType(value),
+              ),
             ),
           ],
         ),

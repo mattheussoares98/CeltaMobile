@@ -741,7 +741,7 @@ class EntityFactory {
     final bool isPercentage = faker.randomGenerator.boolean();
     final percentageOrValue = isPercentage
         ? PercentageOrValue.percentage
-        : PercentageOrValue.value;
+        : PercentageOrValue.reais;
     final defaultValue = faker.randomGenerator.decimal() * 100;
 
     return SaleRequestCartProductEntity(
@@ -1558,5 +1558,14 @@ class EntityFactory {
         makeUsers: faker.randomGenerator.boolean(),
         makePaymentFinalizations: faker.randomGenerator.boolean(),
         makeSendEmailParameters: faker.randomGenerator.boolean(),
+      );
+
+  static BSFDiscountEntity makeBSFDiscountEntity({BSFValueTypeEntity? discount}) =>
+      BSFDiscountEntity(
+        order: faker.randomGenerator.integer(100),
+        discountOrigin: faker.randomGenerator.integer(100),
+        user: faker.lorem.word(),
+        justification: faker.lorem.word(),
+        discount: discount ?? _makeBSFValueTypeEntity(),
       );
 }
