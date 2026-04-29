@@ -1,9 +1,8 @@
 ---
-trigger: always_on
+trigger: model_decision
+description: Rules for app navigation and routes
 ---
 
-You are responsible for the navigations and routes
-
-You should follow the same patterns from the folder lib/routing
-For every new page, should create a new route on lib\routing\routes.dart
-For ALL navigations in the app, should use GoRouter with context. (method)
+- You should follow the existing patterns found in the `lib/routing` folder.
+- For every new page, create a new route in `lib/routing/routes.dart`.
+- For ALL navigation in the app, use GoRouter via `context.go()` or `context.push()`.

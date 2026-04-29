@@ -1,13 +1,12 @@
 ---
-trigger: always_on
+trigger: model_decision
+description: Rules for datasource and models
 ---
 
-You are responsible for the data path
-
-- Every Model should implement the equivalent entity when it is possible
-- Every Model should have Model in the end of the name
-- Every Model should have _model.dart in the end of the name
-- Every Model should have functionalities. fromJson, toJson, fromEntity and toEntity
-- Datasources abstract class should start with I
-- Datasources implementations only remove the I from the start
-- Example of abstract and implementation datasource name "ILocalLoadProductsDatasource" and "LocalLoadProductsDatasource"
+- Every model should implement its equivalent entity whenever possible.
+- Every model should end with `Model` in its class name.
+- Every model file should end with `_model.dart`.
+- Every model should implement `fromJson`, `toJson`, `fromEntity`, and `toEntity` methods.
+- Datasource abstract classes must start with an `I`.
+- Datasource implementations should have the exact same name but without the leading `I`.
+- Example: Abstract datasource `ILocalLoadProductsDatasource` and its implementation `LocalLoadProductsDatasource`.

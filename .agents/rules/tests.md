@@ -1,11 +1,10 @@
 ---
-trigger: always_on
+trigger: model_decision
+description: Rules for writing unit and widget tests
 ---
 
-You are responsible for the tests
-
-- When need return an entity, or a json that should be converter, maintain the pattern from the EntityFactory and create a new make (newEntity) when it is necessary. Then, you use this entity in the test. If need to return a model or json, you can convert using the model.
-- The preference is using mocktail to use different values
-- Every datasource, repository and controller should have a test file
-- Every different function on datasource, repository or controller should have a test
-- Every time that use expect from mocktail, should validate all values that is calling. You can't use any() or any(named:"")
+- When returning an entity or a JSON object that needs conversion, follow the pattern from `EntityFactory` and create a new `make` method (e.g., `newEntity`) if necessary. Use this entity in your tests. If you need to return a model or JSON, you can convert it using the model.
+- Prefer using `mocktail` for mocking values.
+- Every datasource, repository, and controller must have a corresponding test file.
+- Every public function in a datasource, repository, or controller must have a test.
+- Every time you use `verify` or `expect` from `mocktail`, you must validate all arguments being passed. You cannot use `any()` or `any(named: "")`.
