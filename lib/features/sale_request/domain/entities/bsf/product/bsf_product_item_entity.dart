@@ -102,6 +102,28 @@ class BSFProductItemEntity extends Equatable {
     );
   }
 
+  factory BSFProductItemEntity.empty() {
+    return const BSFProductItemEntity(
+      product: null,
+      fiscalCode: null,
+      compositionChilds: null,
+      eanCode: null,
+      freight: null,
+      discounts: [],
+      expectedDeliveryDate: null,
+      deliveryTax: null,
+      increment: null,
+      creditOnOrigin: null,
+      compensation: null,
+      productPackingCode: null,
+      quantity: 1.0,
+      value: 0.0,
+      code: 0,
+      icms: null,
+      ipi: null,
+    );
+  }
+
   double get unitDiscountValue {
     final allDiscountsAreZero =
         discounts?.every((e) => (e.discount?.value ?? 0) == 0) ?? true;
