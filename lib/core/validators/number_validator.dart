@@ -72,7 +72,7 @@ class NumberValidator implements StringValidator {
       // Get the part of the string after the decimal point
       final decimalPart = normalizedValue.split('.').last;
       if (decimalPart.length > maxDecimalHouses!) {
-        _errorMessage = 'Máximo de $maxDecimalHouses casas decimais'.hardcoded;
+        _errorMessage = 'Máx $maxDecimalHouses casas decimais'.hardcoded;
         return false;
       }
     }
