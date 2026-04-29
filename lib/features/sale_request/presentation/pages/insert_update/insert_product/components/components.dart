@@ -1,3 +1,4 @@
+export './default_divider.dart';
 export './discounts.dart';
 export 'add_discount.dart';
 export 'delivery_tax_field.dart';

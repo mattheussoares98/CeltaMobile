@@ -138,16 +138,17 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
                 ],
               ),
             ),
-            if (allowDeliveryTax)
+            if (allowDeliveryTax) ...[
+              const SliverToBoxAdapter(child: DefaultDivider()),
               const SliverToBoxAdapter(child: DeliveryTaxField()),
+            ],
             if (allowDiscount) ...[
-              gapSliverH8,
+              const SliverToBoxAdapter(child: DefaultDivider()),
               const SliverToBoxAdapter(child: AddDiscount()),
-              gapSliverH8,
               const Discounts(),
             ],
             if (allowIncrement) ...[
-              gapSliverH8,
+              const SliverToBoxAdapter(child: DefaultDivider()),
               Consumer(
                 builder: (context, ref, _) {
                   final incrementType = ref.watch(
@@ -165,7 +166,7 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
                 },
               ),
             ],
-            gapSliverH8,
+            const SliverToBoxAdapter(child: DefaultDivider()),
             SliverToBoxAdapter(
               child: ObservationsField(controller: _observationsController),
             ),
@@ -176,7 +177,7 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
                 onPressed: _saveItem,
               ),
             ),
-            gapSliverH8,
+            const SliverToBoxAdapter(child: DefaultDivider()),
           ],
         ),
       ),

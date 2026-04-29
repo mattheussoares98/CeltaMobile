@@ -58,7 +58,6 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        gapH8,
         Text(
           'Taxa de entrega'.hardcoded,
           style: Theme.of(context).textTheme.titleSmall,
