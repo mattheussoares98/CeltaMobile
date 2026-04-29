@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
@@ -43,6 +44,12 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
     _incrementValueController = TextEditingController(
       text: (product.increment?.value ?? 0).toString(),
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(selectedProductStateControllerProvider.notifier)
+          .setProduct(widget.product);
+    });
   }
 
   @override
@@ -53,16 +60,10 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   }
 
   void _saveItem() {
-    final uiController = ref.read(
-      insertProductUIControllerProvider(product: widget.product).notifier,
+    final uiState = ref.read(insertProductUIControllerProvider);
+    final updatedItem = uiState.applyTo(
+      ref.read(selectedProductStateControllerProvider)!,
     );
-
-    uiController.updateObservations(_observationsController.text);
-    uiController.updateIncrementValue(
-      double.tryParse(_incrementValueController.text) ?? 0,
-    );
-
-    final updatedItem = uiController.getUpdatedProduct();
 
     ref
         .read(
@@ -74,7 +75,7 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
         )
         .updateItem(widget.product, updatedItem);
 
-    Navigator.of(context).pop();
+    context.pop();
   }
 
   @override
@@ -85,19 +86,23 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
       saleRequestId: widget.saleRequestId,
     );
 
-    final requestType = ref.watch(
-      provider.select((v) => v.whenData((data) => data.requestType)),
+    final (
+      allowPriceChange,
+      allowDiscount,
+      allowDeliveryTax,
+      allowIncrement,
+    ) = ref.watch(
+      provider.select(
+        (s) => (
+          s.value?.requestType?.allowAlterCostOrSalePrice == true,
+          s.value?.requestType?.allowUseDiscount == true,
+          s.value?.requestType?.allowUseDeliveryTax == true,
+          s.value?.requestType?.allowUseIncrement == true,
+        ),
+      ),
     );
 
-    final allowPriceChange =
-        requestType.value?.allowAlterCostOrSalePrice == true;
-    final allowDiscount = requestType.value?.allowUseDiscount == true;
-    final allowDeliveryTax = requestType.value?.allowUseDeliveryTax == true;
-    final allowIncrement = requestType.value?.allowUseIncrement == true;
-
-    final uiProvider = insertProductUIControllerProvider(
-      product: widget.product,
-    );
+    final uiProvider = insertProductUIControllerProvider;
 
     return Scaffold(
       appBar: AppBar(
@@ -125,26 +130,21 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             SliverToBoxAdapter(
               child: Row(
                 children: [
-                  Expanded(child: QuantityField(product: widget.product)),
+                  const Expanded(child: QuantityField()),
                   gapW8,
                   Expanded(
-                    child: PriceField(
-                      product: widget.product,
-                      allowPriceChange: allowPriceChange,
-                    ),
+                    child: PriceField(allowPriceChange: allowPriceChange),
                   ),
                 ],
               ),
             ),
             if (allowDeliveryTax)
-              SliverToBoxAdapter(
-                child: DeliveryTaxField(product: widget.product),
-              ),
+              const SliverToBoxAdapter(child: DeliveryTaxField()),
             if (allowDiscount) ...[
               gapSliverH8,
-              SliverToBoxAdapter(child: AddDiscount(product: widget.product)),
+              const SliverToBoxAdapter(child: AddDiscount()),
               gapSliverH8,
-              Discounts(product: widget.product),
+              const Discounts(),
             ],
             if (allowIncrement) ...[
               gapSliverH8,

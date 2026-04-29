@@ -9,9 +9,7 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class DeliveryTaxField extends ConsumerStatefulWidget {
-  final BSFProductItemEntity product;
-
-  const DeliveryTaxField({super.key, required this.product});
+  const DeliveryTaxField({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -28,12 +26,15 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       _deliveryTaxValueController.text =
-          widget.product.deliveryTax?.value?.toString() ?? '';
+          ref
+              .read(selectedProductStateControllerProvider)
+              ?.deliveryTax
+              ?.value
+              ?.toString() ??
+          '';
 
       ref
-          .read(
-            insertProductUIControllerProvider(product: widget.product).notifier,
-          )
+          .read(insertProductUIControllerProvider.notifier)
           .updateDeliveryTaxValue(
             double.tryParse(_deliveryTaxValueController.text) ?? 0,
           );
@@ -48,9 +49,7 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
 
   @override
   Widget build(BuildContext context) {
-    final uiProvider = insertProductUIControllerProvider(
-      product: widget.product,
-    );
+    final uiProvider = insertProductUIControllerProvider;
 
     final deliveryTaxType = ref.watch(
       uiProvider.select((s) => s.deliveryTaxType),

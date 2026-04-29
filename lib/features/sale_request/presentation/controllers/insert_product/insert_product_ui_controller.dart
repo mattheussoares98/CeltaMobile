@@ -1,14 +1,19 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../domain/entities/entities.dart';
-import '../models/models.dart';
+import '../../../domain/entities/entities.dart';
+import '../../models/models.dart';
+import '../controllers.dart';
 
 part 'insert_product_ui_controller.g.dart';
 
 @riverpod
 class InsertProductUIController extends _$InsertProductUIController {
   @override
-  InsertProductUIState build({required BSFProductItemEntity product}) {
+  InsertProductUIState build() {
+    final product = ref.watch(selectedProductStateControllerProvider);
+    if (product == null) {
+      return InsertProductUIState.fromProduct(BSFProductItemEntity.empty());
+    }
     return InsertProductUIState.fromProduct(product);
   }
 
@@ -67,9 +72,5 @@ class InsertProductUIController extends _$InsertProductUIController {
           ),
       ],
     );
-  }
-
-  BSFProductItemEntity getUpdatedProduct() {
-    return state.applyTo(product);
   }
 }

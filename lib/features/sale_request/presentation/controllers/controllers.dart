@@ -1,5 +1,5 @@
 export './customers_state_controller.dart';
-export './insert_product_ui_controller.dart';
+export './insert_product/insert_product.dart';
 export './ip_print_sale_request_controller.dart';
 export './last_saved_sale_request_state_controller.dart';
 export './page_index_state_controller.dart';
@@ -12,7 +12,7 @@ export './save_sale_request_controller.dart';
 export './selected_item_ui_controller.dart';
 export 'consumer_customer_state_controller.dart';
 export 'insert_update_state_controller.dart';
-export 'pdf_from_last_saved_sale_request_controller.dart';
 export 'payment_options_state_controller.dart';
+export 'pdf_from_last_saved_sale_request_controller.dart';
 export 'print_sale_request_controller.dart';
 export 'update_sale_request_controller.dart';
