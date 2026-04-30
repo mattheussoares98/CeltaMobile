@@ -24,11 +24,6 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
   final _valueController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _valueController.dispose();
     super.dispose();

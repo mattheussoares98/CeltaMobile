@@ -11,10 +11,7 @@ import '../../../../controllers/controllers.dart';
 class DeliveryTaxField extends ConsumerStatefulWidget {
   final BSFProductItemEntity product;
 
-  const DeliveryTaxField({
-    super.key,
-    required this.product,
-  });
+  const DeliveryTaxField({super.key, required this.product});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -29,15 +26,10 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!mounted) return;
-      _deliveryTaxValueController.text =
-          widget.product.deliveryTax?.value?.toString() ?? '';
-
-      ref
-          .read(insertProductUIControllerProvider(widget.product).notifier)
-          .updateDeliveryTaxValue(
-            double.tryParse(_deliveryTaxValueController.text) ?? 0,
-          );
+      if (mounted) {
+        _deliveryTaxValueController.text =
+            widget.product.deliveryTax?.value?.toString() ?? '';
+      }
     });
   }
 
@@ -87,8 +79,9 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
                 child: DefaultSegmentedButtons(
                   items: PercentageOrValue.values,
                   selectedValue: deliveryTaxType,
-                  onChanged: (value) =>
-                      ref.read(uiProvider.notifier).updateDeliveryTaxType(value),
+                  onChanged: (value) => ref
+                      .read(uiProvider.notifier)
+                      .updateDeliveryTaxType(value),
                 ),
               ),
             ),

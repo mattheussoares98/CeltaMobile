@@ -5,17 +5,13 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class IncrementField extends ConsumerStatefulWidget {
   final BSFProductItemEntity product;
 
-  const IncrementField({
-    super.key,
-    required this.product,
-  });
+  const IncrementField({super.key, required this.product});
 
   @override
   ConsumerState<IncrementField> createState() => _IncrementFieldState();
@@ -32,10 +28,6 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
       if (!mounted) return;
       _incrementValueController.text =
           widget.product.increment?.value?.toString() ?? '';
-
-      ref
-          .read(insertProductUIControllerProvider(widget.product).notifier)
-          .updateIncrementValue(_incrementValueController.text.toDouble() ?? 0);
     });
   }
 

@@ -11,10 +11,7 @@ import '../../../../controllers/controllers.dart';
 class QuantityField extends ConsumerStatefulWidget {
   final BSFProductItemEntity product;
 
-  const QuantityField({
-    super.key,
-    required this.product,
-  });
+  const QuantityField({super.key, required this.product});
 
   @override
   ConsumerState<QuantityField> createState() => _QuantityFieldState();
@@ -33,10 +30,6 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
             .toString()
             .toBrazilianNumber(3, true);
       }
-
-      ref
-          .read(insertProductUIControllerProvider(widget.product).notifier)
-          .updateQuantity(_quantityController.text.toDouble() ?? 1);
     });
   }
 

@@ -6,7 +6,6 @@ import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
-import '../../../../controllers/controllers.dart';
 
 class PriceField extends ConsumerStatefulWidget {
   final bool allowPriceChange;
@@ -31,9 +30,6 @@ class _PriceFieldState extends ConsumerState<PriceField> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        ref
-            .read(insertProductUIControllerProvider(widget.product).notifier)
-            .updatePrice(_valueController.text.toDouble() ?? 0);
         _valueController.text = (widget.product.value ?? 0)
             .toString()
             .toBrazilianNumber(2);
