@@ -11,7 +11,7 @@ extension ProductEntityToBSFProductItemEntity on ProductEntity {
         isFatherOfGrate: IsFatherOfGrate,
         fatherGrateCode: null,
         images: null,
-        personalizedCode: null,
+        personalizedCode: ProductPackingCode?.toString() ?? ProductCode?.toString(),
         productPackingTypeString: PackingAbbreviation,
         productPackingQuantity: PackingQuantity?.toDouble(),
         productPackingPriceLookUpString: PLU,
