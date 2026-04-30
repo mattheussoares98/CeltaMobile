@@ -107,7 +107,15 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final items = List<BSFProductItemEntity>.from(current.products ?? []);
     final index = items.indexOf(item);
     if (index != -1) {
-      items[index] = items[index].copyWith(quantity: quantity);
+      double? price = items[index].value;
+      if (quantity >= (product.MinimumWholeQuantity ?? 0) &&
+          (product.WholePracticedPrice ?? 0) > 0) {
+        price = product.WholePracticedPrice;
+      } else {
+        price = product.getPrice;
+      }
+
+      items[index] = items[index].copyWith(quantity: quantity, value: price);
       state = AsyncData(current.copyWith(products: items));
     }
   }
