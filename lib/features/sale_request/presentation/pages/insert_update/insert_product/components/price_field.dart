@@ -10,13 +10,11 @@ import '../../../../controllers/controllers.dart';
 
 class PriceField extends ConsumerStatefulWidget {
   final bool allowPriceChange;
-  final FocusNode focusNode;
   final BSFProductItemEntity product;
 
   const PriceField({
     super.key,
     required this.allowPriceChange,
-    required this.focusNode,
     required this.product,
   });
 
@@ -53,7 +51,6 @@ class _PriceFieldState extends ConsumerState<PriceField> {
   Widget build(BuildContext context) {
     return DefaultTextFormField(
       controller: _valueController,
-      focusNode: widget.focusNode,
       labelText: 'Preço R\$'.hardcoded,
       //TODO show if is sale retail, whole or manual price
       enabled: widget.allowPriceChange,

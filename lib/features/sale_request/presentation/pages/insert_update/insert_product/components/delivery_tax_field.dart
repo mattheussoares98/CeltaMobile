@@ -9,12 +9,10 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class DeliveryTaxField extends ConsumerStatefulWidget {
-  final FocusNode focusNode;
   final BSFProductItemEntity product;
 
   const DeliveryTaxField({
     super.key,
-    required this.focusNode,
     required this.product,
   });
 
@@ -71,7 +69,6 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
               flex: 4,
               child: DefaultTextFormField(
                 controller: _deliveryTaxValueController,
-                focusNode: widget.focusNode,
                 labelText: 'Valor ${deliveryTaxType.symbol}'.hardcoded,
                 hintText: deliveryTaxType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(

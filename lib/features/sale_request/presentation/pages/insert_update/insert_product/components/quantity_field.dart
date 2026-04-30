@@ -9,12 +9,10 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class QuantityField extends ConsumerStatefulWidget {
-  final FocusNode focusNode;
   final BSFProductItemEntity product;
 
   const QuantityField({
     super.key,
-    required this.focusNode,
     required this.product,
   });
 
@@ -52,7 +50,6 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
   Widget build(BuildContext context) {
     return DefaultTextFormField(
       controller: _quantityController,
-      focusNode: widget.focusNode,
       labelText: 'Quantidade'.hardcoded,
       onChanged: (value) {
         ref

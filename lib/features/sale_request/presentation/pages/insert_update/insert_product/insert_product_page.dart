@@ -32,12 +32,6 @@ class InsertProductPage extends ConsumerStatefulWidget {
 
 class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   final _observationsController = TextEditingController();
-  final _quantityFocusNode = FocusNode();
-  final _priceFocusNode = FocusNode();
-  final _deliveryFocusNode = FocusNode();
-  final _discountFocusNode = FocusNode();
-  final _incrementFocusNode = FocusNode();
-  final _observationsFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -47,12 +41,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   @override
   void dispose() {
     _observationsController.dispose();
-    _quantityFocusNode.dispose();
-    _priceFocusNode.dispose();
-    _deliveryFocusNode.dispose();
-    _discountFocusNode.dispose();
-    _incrementFocusNode.dispose();
-    _observationsFocusNode.dispose();
     super.dispose();
   }
 
@@ -125,7 +113,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
                 children: [
                   Expanded(
                     child: QuantityField(
-                      focusNode: _quantityFocusNode,
                       product: widget.product,
                     ),
                   ),
@@ -133,7 +120,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
                   Expanded(
                     child: PriceField(
                       allowPriceChange: allowPriceChange,
-                      focusNode: _priceFocusNode,
                       product: widget.product,
                     ),
                   ),
@@ -144,7 +130,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
                 child: DeliveryTaxField(
-                  focusNode: _deliveryFocusNode,
                   product: widget.product,
                 ),
               ),
@@ -153,7 +138,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
                 child: AddDiscount(
-                  focusNode: _discountFocusNode,
                   product: widget.product,
                 ),
               ),
@@ -163,7 +147,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
                 child: IncrementField(
-                  focusNode: _incrementFocusNode,
                   product: widget.product,
                 ),
               ),
@@ -172,7 +155,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             SliverToBoxAdapter(
               child: ObservationsField(
                 controller: _observationsController,
-                focusNode: _observationsFocusNode,
               ),
             ),
             gapSliverH32,

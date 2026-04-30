@@ -11,12 +11,10 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class AddDiscount extends ConsumerStatefulWidget {
-  final FocusNode focusNode;
   final BSFProductItemEntity product;
 
   const AddDiscount({
     super.key,
-    required this.focusNode,
     required this.product,
   });
 
@@ -100,7 +98,6 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
 
                     return DefaultTextFormField(
                       labelText: 'Desconto ${discountType.symbol}'.hardcoded,
-                      focusNode: widget.focusNode,
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),

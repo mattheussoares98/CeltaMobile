@@ -10,12 +10,10 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class IncrementField extends ConsumerStatefulWidget {
-  final FocusNode focusNode;
   final BSFProductItemEntity product;
 
   const IncrementField({
     super.key,
-    required this.focusNode,
     required this.product,
   });
 
@@ -67,7 +65,6 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
               flex: 4,
               child: DefaultTextFormField(
                 controller: _incrementValueController,
-                focusNode: widget.focusNode,
                 labelText: 'Valor ${incrementType.symbol}'.hardcoded,
                 hintText: incrementType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(
