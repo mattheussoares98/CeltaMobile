@@ -60,6 +60,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
   void addItem(ProductEntity product) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    if (product.getPrice <= 0) return;
 
     final current = state.value!;
     final items = List<BSFProductItemEntity>.from(current.products ?? []);

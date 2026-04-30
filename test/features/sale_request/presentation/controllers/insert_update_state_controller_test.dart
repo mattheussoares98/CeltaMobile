@@ -292,5 +292,50 @@ void main() {
 
       expect(state.value!.products!.first.quantity, 10.0);
     });
+
+    test('addItem should not add product if price is 0 or less', () async {
+      final container = ProviderContainer(
+        overrides: [
+          paymentOptionsStateControllerProvider(1).overrideWith(
+            () => FakePaymentOptionsController([]),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final controller = container.read(
+        insertUpdateStateControllerProvider(
+          enterpriseCode: 1,
+          customerCode: 1,
+          saleRequestId: 0,
+        ).notifier,
+      );
+
+      await container.read(
+        insertUpdateStateControllerProvider(
+          enterpriseCode: 1,
+          customerCode: 1,
+          saleRequestId: 0,
+        ).future,
+      );
+
+      final productWithZeroPrice = EntityFactory.makeProductEntity(
+        productPackingCode: 123,
+        enterpriseCode: 1,
+        RetailPracticedPrice: 0,
+      ).copyWith(Value: 0);
+
+      controller.addItem(productWithZeroPrice);
+
+      final state = container.read(
+        insertUpdateStateControllerProvider(
+          enterpriseCode: 1,
+          customerCode: 1,
+          saleRequestId: 0,
+        ),
+      );
+
+      expect(state.value!.products ?? [], isEmpty);
+    });
   });
 }
