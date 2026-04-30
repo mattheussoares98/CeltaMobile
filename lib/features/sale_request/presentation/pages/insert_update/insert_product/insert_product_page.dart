@@ -31,13 +31,17 @@ class InsertProductPage extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
-  late final TextEditingController _observationsController;
+  final _observationsController = TextEditingController();
+  final _quantityFocusNode = FocusNode();
+  final _priceFocusNode = FocusNode();
+  final _deliveryFocusNode = FocusNode();
+  final _discountFocusNode = FocusNode();
+  final _incrementFocusNode = FocusNode();
+  final _observationsFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-
-    _observationsController = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
@@ -49,6 +53,12 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   @override
   void dispose() {
     _observationsController.dispose();
+    _quantityFocusNode.dispose();
+    _priceFocusNode.dispose();
+    _deliveryFocusNode.dispose();
+    _discountFocusNode.dispose();
+    _incrementFocusNode.dispose();
+    _observationsFocusNode.dispose();
     super.dispose();
   }
 
@@ -121,30 +131,83 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             SliverToBoxAdapter(
               child: Row(
                 children: [
-                  const Expanded(child: QuantityField()),
+                  Expanded(
+                    child: QuantityField(
+                      focusNode: _quantityFocusNode,
+                      onFieldSubmitted: (_) => _priceFocusNode.requestFocus(),
+                    ),
+                  ),
                   gapW8,
                   Expanded(
-                    child: PriceField(allowPriceChange: allowPriceChange),
+                    child: PriceField(
+                      allowPriceChange: allowPriceChange,
+                      focusNode: _priceFocusNode,
+                      onFieldSubmitted: (_) {
+                        if (allowDeliveryTax) {
+                          _deliveryFocusNode.requestFocus();
+                        } else if (allowDiscount) {
+                          _discountFocusNode.requestFocus();
+                        } else if (allowIncrement) {
+                          _incrementFocusNode.requestFocus();
+                        } else {
+                          _observationsFocusNode.requestFocus();
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
             if (allowDeliveryTax) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
-              const SliverToBoxAdapter(child: DeliveryTaxField()),
+              SliverToBoxAdapter(
+                child: DeliveryTaxField(
+                  focusNode: _deliveryFocusNode,
+                  onFieldSubmitted: (_) {
+                    if (allowDiscount) {
+                      _discountFocusNode.requestFocus();
+                    } else if (allowIncrement) {
+                      _incrementFocusNode.requestFocus();
+                    } else {
+                      _observationsFocusNode.requestFocus();
+                    }
+                  },
+                ),
+              ),
             ],
             if (allowDiscount) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
-              const SliverToBoxAdapter(child: AddDiscount()),
+              SliverToBoxAdapter(
+                child: AddDiscount(
+                  focusNode: _discountFocusNode,
+                  onFieldSubmitted: (_) {
+                    if (allowIncrement) {
+                      _incrementFocusNode.requestFocus();
+                    } else {
+                      _observationsFocusNode.requestFocus();
+                    }
+                  },
+                ),
+              ),
               const Discounts(),
             ],
             if (allowIncrement) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
-              const SliverToBoxAdapter(child: IncrementField()),
+              SliverToBoxAdapter(
+                child: IncrementField(
+                  focusNode: _incrementFocusNode,
+                  onFieldSubmitted: (_) =>
+                      _observationsFocusNode.requestFocus(),
+                ),
+              ),
             ],
             const SliverToBoxAdapter(child: DefaultDivider()),
             SliverToBoxAdapter(
-              child: ObservationsField(controller: _observationsController),
+              child: ObservationsField(
+                controller: _observationsController,
+                focusNode: _observationsFocusNode,
+                onFieldSubmitted: (_) => _saveItem(),
+              ),
             ),
             gapSliverH32,
             SliverToBoxAdapter(

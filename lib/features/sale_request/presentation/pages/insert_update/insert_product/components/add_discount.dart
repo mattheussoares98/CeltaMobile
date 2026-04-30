@@ -11,7 +11,14 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class AddDiscount extends ConsumerStatefulWidget {
-  const AddDiscount({super.key});
+  final FocusNode focusNode;
+  final void Function(String) onFieldSubmitted;
+
+  const AddDiscount({
+    super.key,
+    required this.focusNode,
+    required this.onFieldSubmitted,
+  });
 
   @override
   ConsumerState<AddDiscount> createState() => _DiscountsSectionState();
@@ -93,16 +100,23 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
 
                     return DefaultTextFormField(
                       labelText: 'Desconto ${discountType.symbol}'.hardcoded,
+                      focusNode: widget.focusNode,
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
+                      textInputAction: TextInputAction.next,
                       controller: _valueController,
-                      onFieldSubmitted: (_) => _addDiscount(),
-                      suffixIcon: IconButton(
-                        onPressed: _addDiscount,
-                        icon: const PlatformIcon(
-                          materialIcon: Icons.add,
-                          cupertinoIcon: CupertinoIcons.add,
+                      onFieldSubmitted: (value) {
+                        _addDiscount();
+                        widget.onFieldSubmitted(value);
+                      },
+                      suffixIcon: ExcludeFocus(
+                        child: IconButton(
+                          onPressed: _addDiscount,
+                          icon: const PlatformIcon(
+                            materialIcon: Icons.add,
+                            cupertinoIcon: CupertinoIcons.add,
+                          ),
                         ),
                       ),
                       validator: FormValidators.compose([
@@ -128,10 +142,12 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                     ),
                   );
 
-                  return DefaultSegmentedButtons<PercentageOrValue>(
-                    items: PercentageOrValue.values,
-                    selectedValue: discountType,
-                    onChanged: _onTypeChanged,
+                  return ExcludeFocus(
+                    child: DefaultSegmentedButtons<PercentageOrValue>(
+                      items: PercentageOrValue.values,
+                      selectedValue: discountType,
+                      onChanged: _onTypeChanged,
+                    ),
                   );
                 },
               ),

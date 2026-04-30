@@ -10,7 +10,14 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class IncrementField extends ConsumerStatefulWidget {
-  const IncrementField({super.key});
+  final FocusNode focusNode;
+  final void Function(String) onFieldSubmitted;
+
+  const IncrementField({
+    super.key,
+    required this.focusNode,
+    required this.onFieldSubmitted,
+  });
 
   @override
   ConsumerState<IncrementField> createState() => _IncrementFieldState();
@@ -65,11 +72,14 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
               flex: 4,
               child: DefaultTextFormField(
                 controller: _incrementValueController,
+                focusNode: widget.focusNode,
                 labelText: 'Valor ${incrementType.symbol}'.hardcoded,
                 hintText: incrementType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: widget.onFieldSubmitted,
                 onChanged: (value) {
                   ref
                       .read(uiProvider.notifier)
@@ -83,11 +93,13 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
             gapW8,
             Expanded(
               flex: 6,
-              child: DefaultSegmentedButtons(
-                items: PercentageOrValue.values,
-                selectedValue: incrementType,
-                onChanged: (value) =>
-                    ref.read(uiProvider.notifier).updateIncrementType(value),
+              child: ExcludeFocus(
+                child: DefaultSegmentedButtons(
+                  items: PercentageOrValue.values,
+                  selectedValue: incrementType,
+                  onChanged: (value) =>
+                      ref.read(uiProvider.notifier).updateIncrementType(value),
+                ),
               ),
             ),
           ],

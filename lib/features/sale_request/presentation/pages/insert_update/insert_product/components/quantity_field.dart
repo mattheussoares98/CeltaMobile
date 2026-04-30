@@ -8,7 +8,14 @@ import '../../../../../../../utils/utils.dart';
 import '../../../../controllers/controllers.dart';
 
 class QuantityField extends ConsumerStatefulWidget {
-  const QuantityField({super.key});
+  final FocusNode focusNode;
+  final void Function(String) onFieldSubmitted;
+
+  const QuantityField({
+    super.key,
+    required this.focusNode,
+    required this.onFieldSubmitted,
+  });
 
   @override
   ConsumerState<QuantityField> createState() => _QuantityFieldState();
@@ -45,6 +52,7 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
   Widget build(BuildContext context) {
     return DefaultTextFormField(
       controller: _quantityController,
+      focusNode: widget.focusNode,
       labelText: 'Quantidade'.hardcoded,
       onChanged: (value) {
         ref
@@ -52,6 +60,8 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
             .updateQuantity(value.toDouble() ?? 1);
       },
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      textInputAction: TextInputAction.next,
+      onFieldSubmitted: widget.onFieldSubmitted,
       validator: FormValidators.compose([
         NonEmptyValidator(),
         NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
