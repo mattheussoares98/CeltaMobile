@@ -1,5 +1,5 @@
 ---
-trigger: model_decision
+trigger: manual
 description: Rules for Flutter UI, widgets, and styling
 ---
 

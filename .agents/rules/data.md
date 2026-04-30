@@ -1,5 +1,5 @@
 ---
-trigger: model_decision
+trigger: manual
 description: Rules for datasource and models
 ---
 
