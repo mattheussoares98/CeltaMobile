@@ -142,11 +142,13 @@ class _ProductItem extends ConsumerWidget {
       tag: 'sale_request_product_${product.ProductPackingCode}',
       child: Material(
         type: MaterialType.transparency,
-        child: ProductItemWidget(
-          product: product,
-          routine: BsRoutine.saleRequest,
-          onTap: onTap,
-          cartItemSummary: cartItemSummary,
+        child: SingleChildScrollView(
+          child: ProductItemWidget(
+            product: product,
+            routine: BsRoutine.saleRequest,
+            onTap: onTap,
+            cartItemSummary: cartItemSummary,
+          ),
         ),
       ),
     );
