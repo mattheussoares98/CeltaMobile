@@ -10,10 +10,7 @@ import '../../../../controllers/controllers.dart';
 class Discounts extends ConsumerWidget {
   final BSFProductItemEntity product;
 
-  const Discounts({
-    super.key,
-    required this.product,
-  });
+  const Discounts({super.key, required this.product});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,11 +46,13 @@ class Discounts extends ConsumerWidget {
             Expanded(
               child: Text('$discountValue ${discount?.type?.symbol ?? ""} '),
             ),
-            IconButton(
-              onPressed: () => removeDiscount(index),
-              icon: Icon(
-                isIOS ? CupertinoIcons.delete : Icons.delete,
-                color: Colors.red,
+            ExcludeFocus(
+              child: IconButton(
+                onPressed: () => removeDiscount(index),
+                icon: Icon(
+                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                  color: Colors.red,
+                ),
               ),
             ),
           ],
