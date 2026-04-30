@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 
 class QuantityControlButton extends ConsumerWidget {
-  final BSFProductItemEntity item;
+  final BSFProductItemEntity? item;
+  final ProductEntity product;
   final int enterpriseCode;
   final int customerCode;
   final int saleRequestId;
@@ -17,6 +19,7 @@ class QuantityControlButton extends ConsumerWidget {
   const QuantityControlButton({
     super.key,
     required this.item,
+    required this.product,
     required this.enterpriseCode,
     required this.customerCode,
     required this.saleRequestId,
@@ -26,7 +29,7 @@ class QuantityControlButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final currentQuantity = item.quantity ?? 0;
+    final currentQuantity = item?.quantity ?? 0;
 
     return IconButton(
       onPressed: () {
@@ -46,7 +49,7 @@ class QuantityControlButton extends ConsumerWidget {
                 saleRequestId: saleRequestId,
               ).notifier,
             )
-            .updateItemQuantity(item, newQuantity);
+            .updateItemQuantity(item, newQuantity, product);
       },
       icon: PlatformIcon(
         cupertinoIcon: isAdding

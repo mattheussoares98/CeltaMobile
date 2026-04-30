@@ -89,10 +89,21 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(current.copyWith(products: items));
   }
 
-  void updateItemQuantity(BSFProductItemEntity item, double quantity) {
+  void updateItemQuantity(
+    BSFProductItemEntity? item,
+    double quantity,
+    ProductEntity product,
+  ) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     final current = state.value!;
     final items = List<BSFProductItemEntity>.from(current.products ?? []);
+
+    if (item == null) {
+      addItem(product);
+      return;
+      //TODO add test
+    }
+
     final index = items.indexOf(item);
     if (index != -1) {
       items[index] = items[index].copyWith(quantity: quantity);

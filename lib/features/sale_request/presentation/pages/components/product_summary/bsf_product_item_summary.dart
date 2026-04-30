@@ -10,7 +10,7 @@ import '../../../../domain/entities/entities.dart';
 import '../components.dart';
 
 class BSFProductItemSummary extends ConsumerWidget {
-  final BSFProductItemEntity item;
+  final BSFProductItemEntity? item;
   final ProductEntity product;
   final int enterpriseCode;
   final int customerCode;
@@ -69,6 +69,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                     Flexible(
                       child: QuantityControlButton(
                         item: item,
+                        product: product,
                         enterpriseCode: enterpriseCode,
                         customerCode: customerCode,
                         saleRequestId: saleRequestId,
@@ -78,7 +79,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                     gapW4,
                     FittedBox(
                       child: Text(
-                        (item.quantity ?? 0).toString().toBrazilianNumber(
+                        (item?.quantity ?? 0).toString().toBrazilianNumber(
                           3,
                           true,
                         ),
@@ -91,6 +92,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                     Flexible(
                       child: QuantityControlButton(
                         item: item,
+                        product: product,
                         enterpriseCode: enterpriseCode,
                         customerCode: customerCode,
                         saleRequestId: saleRequestId,
@@ -100,51 +102,53 @@ class BSFProductItemSummary extends ConsumerWidget {
                   ],
                 ),
               ),
-              DeleteSummaryButton(
-                item: item,
-                enterpriseCode: enterpriseCode,
-                customerCode: customerCode,
-                saleRequestId: saleRequestId,
-              ),
+              if (item != null)
+                DeleteSummaryButton(
+                  item: item!,
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: saleRequestId,
+                ),
             ],
           ),
-          SummaryTable(
-            items: [
-              SummaryTableItem(
-                title: 'Preço'.hardcoded,
-                value: item.value,
-                decimalHouses: 2,
-                isPrice: true,
-              ),
-              if (item.totalDeliveryTax > 0)
+          if (item != null)
+            SummaryTable(
+              items: [
                 SummaryTableItem(
-                  title: 'Frete'.hardcoded,
-                  value: item.totalDeliveryTax,
+                  title: 'Preço'.hardcoded,
+                  value: item!.value,
+                  decimalHouses: 2,
                   isPrice: true,
-                  color: theme.colorScheme.secondary,
                 ),
-              if (item.totalDiscountValue > 0)
+                if (item!.totalDeliveryTax > 0)
+                  SummaryTableItem(
+                    title: 'Frete'.hardcoded,
+                    value: item!.totalDeliveryTax,
+                    isPrice: true,
+                    color: theme.colorScheme.secondary,
+                  ),
+                if (item!.totalDiscountValue > 0)
+                  SummaryTableItem(
+                    title: 'Desconto'.hardcoded,
+                    value: item!.totalDiscountValue,
+                    isPrice: true,
+                    color: Colors.red,
+                  ),
+                if (item!.totalIncrement > 0)
+                  SummaryTableItem(
+                    title: 'Acréscimo'.hardcoded,
+                    value: item!.totalIncrement,
+                    isPrice: true,
+                    color: Colors.orange,
+                  ),
                 SummaryTableItem(
-                  title: 'Desconto'.hardcoded,
-                  value: item.totalDiscountValue,
+                  title: 'Total'.hardcoded,
+                  value: item!.totalLiquid,
                   isPrice: true,
-                  color: Colors.red,
+                  color: theme.primaryColor,
                 ),
-              if (item.totalIncrement > 0)
-                SummaryTableItem(
-                  title: 'Acréscimo'.hardcoded,
-                  value: item.totalIncrement,
-                  isPrice: true,
-                  color: Colors.orange,
-                ),
-              SummaryTableItem(
-                title: 'Total'.hardcoded,
-                value: item.totalLiquid,
-                isPrice: true,
-                color: theme.primaryColor,
-              ),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );

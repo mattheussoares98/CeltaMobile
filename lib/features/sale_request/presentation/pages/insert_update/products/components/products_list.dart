@@ -127,17 +127,6 @@ class _ProductItem extends ConsumerWidget {
       }),
     );
 
-    Widget? cartItemSummary;
-    if (existingItem != null) {
-      cartItemSummary = BSFProductItemSummary(
-        item: existingItem,
-        product: product,
-        enterpriseCode: enterpriseCode,
-        customerCode: customerCode,
-        saleRequestId: saleRequestId,
-      );
-    }
-
     return Hero(
       tag: 'sale_request_product_${product.ProductPackingCode}',
       child: Material(
@@ -147,7 +136,13 @@ class _ProductItem extends ConsumerWidget {
             product: product,
             routine: BsRoutine.saleRequest,
             onTap: onTap,
-            cartItemSummary: cartItemSummary,
+            cartItemSummary: BSFProductItemSummary(
+              item: existingItem,
+              product: product,
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: saleRequestId,
+            ),
           ),
         ),
       ),
