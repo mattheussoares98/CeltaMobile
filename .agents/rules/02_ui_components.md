@@ -97,3 +97,4 @@ Text(
 - Extracted components should read providers directly (e.g., via `ref.watch` or `ref.read`) instead of receiving values through constructor parameters to avoid prop drilling.
 - Follow the exact folder and file organization pattern used in `BuyRequestPage`.
 - **Controller & Focus Node Initialization:** Never use the `late` keyword for `TextEditingController`, `FocusNode`, or similar UI controllers unless the initial value explicitly depends on a `widget.` property. Always initialize them directly inline (e.g., `final _controller = TextEditingController();`). Ensure they are still properly disposed of in the `dispose()` method.
+- **Overflow Prevention (CRITICAL):** When placing `Text` or dynamic content inside a `Row`, you MUST ALWAYS wrap the content in an `Expanded` or `Flexible` widget to prevent RenderFlex overflow errors. Never assume text will fit perfectly on small screens.
