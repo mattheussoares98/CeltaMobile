@@ -68,67 +68,67 @@ class InsertProductPage extends ConsumerWidget {
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(product.product?.name ?? 'Detalhe do Produto'.hardcoded),
-      ),
-      body: ResponsiveCenter(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Hero(
-                tag:
-                    'sale_request_product_${originalProduct.ProductPackingCode}',
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: ProductItemWidget(
-                    product: originalProduct,
-                    routine: BsRoutine.saleRequest,
-                  ),
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Row(
-                children: [
-                  Expanded(child: QuantityField(product: product)),
-                  gapW8,
-                  Expanded(
-                    child: PriceField(
-                      allowPriceChange: allowPriceChange,
-                      product: product,
+    return ProviderScope(
+      overrides: [currentProductItemProvider.overrideWithValue(product)],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(product.product?.name ?? 'Detalhe do Produto'.hardcoded),
+        ),
+        body: ResponsiveCenter(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Hero(
+                  tag:
+                      'sale_request_product_${originalProduct.ProductPackingCode}',
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: ProductItemWidget(
+                      product: originalProduct,
+                      routine: BsRoutine.saleRequest,
                     ),
                   ),
-                ],
-              ),
-            ),
-            if (allowDeliveryTax) ...[
-              const SliverToBoxAdapter(child: DefaultDivider()),
-              SliverToBoxAdapter(child: DeliveryTaxField(product: product)),
-            ],
-            if (allowDiscount) ...[
-              const SliverToBoxAdapter(child: DefaultDivider()),
-              SliverToBoxAdapter(child: AddDiscount(product: product)),
-              Discounts(product: product),
-            ],
-            if (allowIncrement) ...[
-              const SliverToBoxAdapter(child: DefaultDivider()),
-              SliverToBoxAdapter(child: IncrementField(product: product)),
-            ],
-            const SliverToBoxAdapter(child: DefaultDivider()),
-            SliverToBoxAdapter(child: ProductSummary(product: product)),
-            gapSliverH16,
-            SliverToBoxAdapter(
-              child: ExcludeFocus(
-                child: PrimaryButton(
-                  text: 'CONFIRMAR'.hardcoded,
-                  onPressed: saveItem,
                 ),
               ),
-            ),
-            gapSliverH16,
-          ],
+              SliverToBoxAdapter(
+                child: Row(
+                  children: [
+                    const Expanded(child: QuantityField()),
+                    gapW8,
+                    Expanded(
+                      child: PriceField(allowPriceChange: allowPriceChange),
+                    ),
+                  ],
+                ),
+              ),
+              if (allowDeliveryTax) ...[
+                const SliverToBoxAdapter(child: DefaultDivider()),
+                const SliverToBoxAdapter(child: DeliveryTaxField()),
+              ],
+              if (allowDiscount) ...[
+                const SliverToBoxAdapter(child: DefaultDivider()),
+                const SliverToBoxAdapter(child: AddDiscount()),
+                const Discounts(),
+              ],
+              if (allowIncrement) ...[
+                const SliverToBoxAdapter(child: DefaultDivider()),
+                const SliverToBoxAdapter(child: IncrementField()),
+              ],
+              const SliverToBoxAdapter(child: DefaultDivider()),
+              const SliverToBoxAdapter(child: ProductSummary()),
+              gapSliverH16,
+              SliverToBoxAdapter(
+                child: ExcludeFocus(
+                  child: PrimaryButton(
+                    text: 'CONFIRMAR'.hardcoded,
+                    onPressed: saveItem,
+                  ),
+                ),
+              ),
+              gapSliverH16,
+            ],
+          ),
         ),
       ),
     );

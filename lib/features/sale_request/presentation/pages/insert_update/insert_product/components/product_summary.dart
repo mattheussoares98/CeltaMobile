@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../../utils/utils.dart';
-import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
-import './summary_row.dart';
 
 class ProductSummary extends ConsumerWidget {
-  final BSFProductItemEntity product;
-  const ProductSummary({super.key, required this.product});
+  const ProductSummary({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final product = ref.watch(currentProductItemProvider);
     final uiState = ref.watch(insertProductUIControllerProvider(product));
     final item = uiState.applyTo(product);
     final theme = Theme.of(context);
@@ -33,67 +31,67 @@ class ProductSummary extends ConsumerWidget {
         border: Border.all(color: theme.dividerColor.withAlpha(25)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SummaryRow(
-            label: 'Quantidade:'.hardcoded,
-            value: item.quantity.toString().toBrazilianNumber(3, true),
-            labelStyle: labelStyle,
-            valueStyle: valueStyle,
+          TitleAndSubTitle(
+            title: 'Quantidade'.hardcoded,
+            subTitle: item.quantity,
+            titleStyle: labelStyle,
+            subTitleStyle: valueStyle,
           ),
           gapH8,
-          SummaryRow(
-            label: 'Preço Bruto:'.hardcoded,
-            value: ((item.quantity ?? 0) * (item.value ?? 0))
-                .toString()
-                .toBrazilianNumber(2),
-            labelStyle: labelStyle,
-            valueStyle: valueStyle,
-            isPrice: true,
+          TitleAndSubTitle(
+            title: 'Preço Bruto'.hardcoded,
+            subTitle: (item.quantity ?? 0) * (item.value ?? 0),
+            subTitleIsPrice: true,
+            titleStyle: labelStyle,
+            subTitleStyle: valueStyle,
           ),
           if (item.totalDeliveryTax > 0) ...[
             gapH8,
-            SummaryRow(
-              label: 'Frete:'.hardcoded,
-              value: item.totalDeliveryTax.toString().toBrazilianNumber(2),
-              labelStyle: labelStyle,
-              valueStyle: valueStyle?.copyWith(
+            TitleAndSubTitle(
+              title: 'Frete'.hardcoded,
+              subTitle: item.totalDeliveryTax,
+              subTitleIsPrice: true,
+              titleStyle: labelStyle,
+              subTitleStyle: valueStyle?.copyWith(
                 color: theme.colorScheme.secondary,
               ),
-              isPrice: true,
             ),
           ],
           if (item.totalDiscountValue > 0) ...[
             gapH8,
-            SummaryRow(
-              label: 'Total Descontos:'.hardcoded,
-              value: item.totalDiscountValue.toString().toBrazilianNumber(2),
-              labelStyle: labelStyle,
-              valueStyle: valueStyle?.copyWith(color: theme.colorScheme.error),
-              isPrice: true,
+            TitleAndSubTitle(
+              title: 'Total Descontos'.hardcoded,
+              subTitle: item.totalDiscountValue,
+              subTitleIsPrice: true,
+              titleStyle: labelStyle,
+              subTitleStyle: valueStyle?.copyWith(color: theme.colorScheme.error),
             ),
           ],
           if (item.totalIncrement > 0) ...[
             gapH8,
-            SummaryRow(
-              label: 'Acréscimo:'.hardcoded,
-              value: item.totalIncrement.toString().toBrazilianNumber(2),
-              labelStyle: labelStyle,
-              valueStyle: valueStyle?.copyWith(color: theme.colorScheme.primary),
-              isPrice: true,
+            TitleAndSubTitle(
+              title: 'Acréscimo'.hardcoded,
+              subTitle: item.totalIncrement,
+              subTitleIsPrice: true,
+              titleStyle: labelStyle,
+              subTitleStyle:
+                  valueStyle?.copyWith(color: theme.colorScheme.primary),
             ),
           ],
           const Divider(height: Sizes.p24),
-          SummaryRow(
-            label: 'Total Líquido:'.hardcoded,
-            value: item.totalLiquid.toString().toBrazilianNumber(2),
-            labelStyle: theme.textTheme.titleMedium?.copyWith(
+          TitleAndSubTitle(
+            title: 'Total Líquido'.hardcoded,
+            subTitle: item.totalLiquid,
+            subTitleIsPrice: true,
+            titleStyle: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
-            valueStyle: theme.textTheme.titleLarge?.copyWith(
+            subTitleStyle: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
-              color: theme.primaryColor,
+              color: theme.colorScheme.primary,
             ),
-            isPrice: true,
           ),
         ],
       ),

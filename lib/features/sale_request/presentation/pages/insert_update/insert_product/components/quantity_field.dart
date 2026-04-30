@@ -5,13 +5,10 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
-import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class QuantityField extends ConsumerStatefulWidget {
-  final BSFProductItemEntity product;
-
-  const QuantityField({super.key, required this.product});
+  const QuantityField({super.key});
 
   @override
   ConsumerState<QuantityField> createState() => _QuantityFieldState();
@@ -26,7 +23,8 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        _quantityController.text = (widget.product.quantity ?? 1)
+        final product = ref.read(currentProductItemProvider);
+        _quantityController.text = (product.quantity ?? 1)
             .toString()
             .toBrazilianNumber(3, true);
       }
@@ -41,12 +39,13 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
 
   @override
   Widget build(BuildContext context) {
+    final product = ref.watch(currentProductItemProvider);
     return DefaultTextFormField(
       controller: _quantityController,
       labelText: 'Quantidade'.hardcoded,
       onChanged: (value) {
         ref
-            .read(insertProductUIControllerProvider(widget.product).notifier)
+            .read(insertProductUIControllerProvider(product).notifier)
             .updateQuantity(value.toDouble() ?? 1);
       },
       keyboardType: const TextInputType.numberWithOptions(decimal: true),

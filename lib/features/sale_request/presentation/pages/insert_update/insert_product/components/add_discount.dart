@@ -11,9 +11,7 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class AddDiscount extends ConsumerStatefulWidget {
-  final BSFProductItemEntity product;
-
-  const AddDiscount({super.key, required this.product});
+  const AddDiscount({super.key});
 
   @override
   ConsumerState<AddDiscount> createState() => _DiscountsSectionState();
@@ -32,19 +30,15 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
   void _addDiscount() {
     if (formKey.currentState!.validate() != true) return;
 
+    final product = ref.read(currentProductItemProvider);
+    final uiProvider = insertProductUIControllerProvider(product);
+
     final type = ref.read(
-      insertProductUIControllerProvider(
-        widget.product,
-      ).select((s) => s.discountType),
+      uiProvider.select((s) => s.discountType),
     );
 
     final newDiscount = BSFDiscountEntity(
-      order:
-          (ref
-              .read(insertProductUIControllerProvider(widget.product))
-              .discounts
-              .length) +
-          1,
+      order: (ref.read(uiProvider).discounts.length) + 1,
       discountOrigin: null,
       user: null,
       justification: null,
@@ -53,20 +47,22 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
         value: _valueController.text.toDouble() ?? 0,
       ),
     );
-    ref
-        .read(insertProductUIControllerProvider(widget.product).notifier)
-        .addDiscount(newDiscount);
+    ref.read(uiProvider.notifier).addDiscount(newDiscount);
     _valueController.clear();
   }
 
   void _onTypeChanged(PercentageOrValue type) {
+    final product = ref.read(currentProductItemProvider);
     ref
-        .read(insertProductUIControllerProvider(widget.product).notifier)
+        .read(insertProductUIControllerProvider(product).notifier)
         .updateDiscountType(type);
   }
 
   @override
   Widget build(BuildContext context) {
+    final product = ref.watch(currentProductItemProvider);
+    final uiProvider = insertProductUIControllerProvider(product);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -84,9 +80,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                 child: Consumer(
                   builder: (_, ref, _) {
                     final discountType = ref.watch(
-                      insertProductUIControllerProvider(
-                        widget.product,
-                      ).select((s) => s.discountType),
+                      uiProvider.select((s) => s.discountType),
                     );
 
                     return DefaultTextFormField(
@@ -96,8 +90,8 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                       ),
                       textInputAction:
                           discountType == PercentageOrValue.percentage
-                          ? TextInputAction.continueAction
-                          : TextInputAction.next,
+                              ? TextInputAction.continueAction
+                              : TextInputAction.next,
                       controller: _valueController,
                       onFieldSubmitted: (_) => _addDiscount(),
                       suffixIcon: ExcludeFocus(
@@ -127,9 +121,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
               child: Consumer(
                 builder: (_, ref, _) {
                   final discountType = ref.watch(
-                    insertProductUIControllerProvider(
-                      widget.product,
-                    ).select((s) => s.discountType),
+                    uiProvider.select((s) => s.discountType),
                   );
 
                   return ExcludeFocus(

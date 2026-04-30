@@ -6,6 +6,11 @@ import '../models/models.dart';
 part 'insert_product_ui_controller.g.dart';
 
 @riverpod
+BSFProductItemEntity currentProductItem(Ref ref) => throw UnimplementedError(
+  'You should override this provider passing the current product',
+);
+
+@riverpod
 class InsertProductUIController extends _$InsertProductUIController {
   @override
   InsertProductUIState build(BSFProductItemEntity product) {

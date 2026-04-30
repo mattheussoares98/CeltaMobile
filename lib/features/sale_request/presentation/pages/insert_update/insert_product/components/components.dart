@@ -6,4 +6,3 @@ export 'increment_field.dart';
 export 'price_field.dart';
 export 'product_summary.dart';
 export 'quantity_field.dart';
-export 'summary_row.dart';

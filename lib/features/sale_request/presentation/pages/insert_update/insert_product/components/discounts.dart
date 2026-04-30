@@ -8,25 +8,23 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class Discounts extends ConsumerWidget {
-  final BSFProductItemEntity product;
-
-  const Discounts({super.key, required this.product});
+  const Discounts({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final product = ref.watch(currentProductItemProvider);
+    final uiProvider = insertProductUIControllerProvider(product);
+
     final discounts = ref.watch(
-      insertProductUIControllerProvider(product).select((s) => s.discounts),
+      uiProvider.select((s) => s.discounts),
     );
 
     if (discounts.isEmpty) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
     void removeDiscount(int index) {
-      ref
-          .read(insertProductUIControllerProvider(product).notifier)
-          .removeDiscount(index);
+      ref.read(uiProvider.notifier).removeDiscount(index);
     }
-
 
     return ResponsiveListFlow(
       isSliver: true,
@@ -35,9 +33,9 @@ class Discounts extends ConsumerWidget {
         final discount = discounts[index].discount;
 
         final discountValue = discount?.value?.toString().toBrazilianNumber(
-          2,
-          discount.type == PercentageOrValue.percentage,
-        );
+              2,
+              discount.type == PercentageOrValue.percentage,
+            );
 
         return Row(
           children: [
