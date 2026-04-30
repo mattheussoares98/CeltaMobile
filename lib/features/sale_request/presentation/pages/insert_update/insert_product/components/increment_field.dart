@@ -5,6 +5,7 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
@@ -25,8 +26,12 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       final product = ref.read(currentProductItemProvider);
-      _incrementValueController.text =
-          product.increment?.value?.toString() ?? '';
+      final incrementValue = product.increment?.value ?? 0;
+
+      if (incrementValue <= 0) return;
+      _incrementValueController.text = incrementValue
+          .toString()
+          .toBrazilianNumber();
     });
   }
 

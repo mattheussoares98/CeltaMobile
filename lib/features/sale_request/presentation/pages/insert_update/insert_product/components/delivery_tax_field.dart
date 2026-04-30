@@ -5,6 +5,7 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../../../utils/utils.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
@@ -26,8 +27,13 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final product = ref.read(currentProductItemProvider);
-        _deliveryTaxValueController.text =
-            product.deliveryTax?.value?.toString() ?? '';
+        final deliveryTax = product.deliveryTax?.value ?? 0;
+
+        if (deliveryTax <= 0) return;
+
+        _deliveryTaxValueController.text = deliveryTax
+            .toString()
+            .toBrazilianNumber();
       }
     });
   }
