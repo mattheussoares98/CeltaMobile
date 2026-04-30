@@ -34,20 +34,62 @@ class InsertUpdatePage extends ConsumerWidget {
     });
     ref.observeLoading([saveSaleRequestControllerProvider(enterpriseCode)]);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          saleRequestId == 0
-              ? 'Inserir Pedido'.hardcoded
-              : 'Atualizar Pedido'.hardcoded,
+    return Consumer(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            saleRequestId == 0
+                ? 'Inserir pedido'.hardcoded
+                : 'Atualizar pedido'.hardcoded,
+          ),
         ),
+        body: InsertUpdateBody(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
+        ),
+        bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
       ),
-      body: InsertUpdateBody(
-        enterpriseCode: enterpriseCode,
-        customerCode: customerCode,
-        saleRequestId: saleRequestId,
-      ),
-      bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
+      builder: (context, ref, child) {
+        final hasChanges =
+            saleRequestId != 0 &&
+            ref.watch(
+                  saleRequestDetailsStateControllerProvider(
+                    enterpriseCode: enterpriseCode,
+                    customerCode: customerCode,
+                    saleRequestCode: saleRequestId,
+                  ).select((s) => s.value),
+                ) !=
+                ref.watch(
+                  insertUpdateStateControllerProvider(
+                    enterpriseCode: enterpriseCode,
+                    customerCode: customerCode,
+                    saleRequestId: saleRequestId,
+                  ).select((s) => s.value),
+                );
+
+        return PopScope(
+          canPop: !hasChanges,
+          child: child!,
+          onPopInvokedWithResult: (didPop, _) async {
+            if (didPop) return;
+
+            final shouldPop = await showAlertDialog(
+              context: context,
+              title: 'Alterações não salvas'.hardcoded,
+              content:
+                  'Existem alterações que não foram salvas. Deseja realmente sair?'
+                      .hardcoded,
+              cancelActionText: 'Não'.hardcoded,
+              defaultActionText: 'Sim'.hardcoded,
+            );
+
+            if (shouldPop == true && context.mounted) {
+              context.pop();
+            }
+          },
+        );
+      },
     );
   }
 }
