@@ -1,3 +1,4 @@
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class SummaryTableItem {
   final bool isPercentage;
   final int decimalHouses;
   final Color? color;
+  final Widget? trailing;
 
   SummaryTableItem({
     required this.title,
@@ -16,6 +18,7 @@ class SummaryTableItem {
     this.isPercentage = false,
     this.decimalHouses = 2,
     this.color,
+    this.trailing,
   });
 }
 
@@ -69,11 +72,18 @@ class SummaryTable extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                item.title,
-                style: labelStyle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      item.title,
+                      style: labelStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (item.trailing != null) ...[gapW4, item.trailing!],
+                ],
               ),
               if (priceText != null)
                 RichText(
