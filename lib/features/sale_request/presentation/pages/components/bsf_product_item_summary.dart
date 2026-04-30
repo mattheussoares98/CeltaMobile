@@ -1,9 +1,10 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
-import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
 
 class BSFProductItemSummary extends StatelessWidget {
@@ -29,52 +30,79 @@ class BSFProductItemSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SummaryTable(
-          items: [
-            SummaryTableItem(
-              title: 'Qtd'.hardcoded,
-              value: item.quantity ?? 0,
-              decimalHouses: 3,
-            ),
-            SummaryTableItem(
-              title: 'Preço'.hardcoded,
-              value: item.value,
-              decimalHouses: 2,
-              isPrice: true,
-            ),
-            if (item.totalDeliveryTax > 0)
-              SummaryTableItem(
-                title: 'Frete'.hardcoded,
-                value: item.totalDeliveryTax,
-                isPrice: true,
-                color: theme.colorScheme.secondary,
+    return Container(
+      padding: const EdgeInsets.all(Sizes.p4),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary.withAlpha(12),
+        borderRadius: BorderRadius.circular(Sizes.p8),
+        border: Border.all(color: theme.colorScheme.primary.withAlpha(12)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              PlatformIcon(
+                cupertinoIcon: CupertinoIcons.cart,
+                materialIcon: Icons.shopping_cart_outlined,
+                size: 14,
+                color: theme.primaryColor,
               ),
-            if (item.totalDiscountValue > 0)
-              SummaryTableItem(
-                title: 'Desconto'.hardcoded,
-                value: item.totalDiscountValue,
-                isPrice: true,
-                color: Colors.red,
+              gapW4,
+              Text(
+                'No carrinho'.hardcoded,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            if (item.totalIncrement > 0)
+            ],
+          ),
+          gapH8,
+          SummaryTable(
+            items: [
               SummaryTableItem(
-                title: 'Acréscimo'.hardcoded,
-                value: item.totalIncrement,
-                isPrice: true,
-                color: Colors.orange,
+                title: 'Qtd'.hardcoded,
+                value: item.quantity ?? 0,
+                decimalHouses: 3,
               ),
-          ],
-        ),
-        gapH8,
-        TitleAndSubTitle(
-          title: 'Total'.hardcoded,
-          subTitle: item.totalLiquid,
-          subTitleIsPrice: true,
-        ),
-      ],
+              SummaryTableItem(
+                title: 'Preço'.hardcoded,
+                value: item.value,
+                decimalHouses: 2,
+                isPrice: true,
+              ),
+              if (item.totalDeliveryTax > 0)
+                SummaryTableItem(
+                  title: 'Frete'.hardcoded,
+                  value: item.totalDeliveryTax,
+                  isPrice: true,
+                  color: theme.colorScheme.secondary,
+                ),
+              if (item.totalDiscountValue > 0)
+                SummaryTableItem(
+                  title: 'Desconto'.hardcoded,
+                  value: item.totalDiscountValue,
+                  isPrice: true,
+                  color: Colors.red,
+                ),
+              if (item.totalIncrement > 0)
+                SummaryTableItem(
+                  title: 'Acréscimo'.hardcoded,
+                  value: item.totalIncrement,
+                  isPrice: true,
+                  color: Colors.orange,
+                ),
+              SummaryTableItem(
+                title: 'Total'.hardcoded,
+                value: item.totalLiquid,
+                isPrice: true,
+                color: theme.primaryColor,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
