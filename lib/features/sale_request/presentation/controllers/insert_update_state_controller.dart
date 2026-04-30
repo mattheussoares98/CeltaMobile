@@ -108,7 +108,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final index = items.indexOf(item);
     if (index != -1) {
       double? price = items[index].value;
-      if (quantity >= (product.MinimumWholeQuantity ?? 0) &&
+      final minimumWhole = product.MinimumWholeQuantity ?? 0;
+      if (minimumWhole > 0 &&
+          quantity >= minimumWhole &&
           (product.WholePracticedPrice ?? 0) > 0) {
         price = product.WholePracticedPrice;
       } else {
