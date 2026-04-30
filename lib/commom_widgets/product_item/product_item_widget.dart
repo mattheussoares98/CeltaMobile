@@ -19,7 +19,7 @@ class ProductItemWidget extends ConsumerWidget {
   final bool? showDropIcon;
   final bool? isSelected;
   final bool? showInfoButton;
-  final CartItemSummary? cartItemSummary;
+  final Widget? cartItemSummary;
   final Widget? itemBeforeProductName;
   final Widget? rightWidget;
   final bool? hideWholeInformations;

@@ -11,6 +11,7 @@ import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../routing/routing.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
+import '../../../components/components.dart';
 
 class ProductsList extends ConsumerWidget {
   final int enterpriseCode;
@@ -80,6 +81,9 @@ class ProductsList extends ConsumerWidget {
               key: ValueKey(product.ProductPackingCode),
               product: product,
               onTap: () => onTap(product),
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: saleRequestId,
             );
           },
         );
@@ -92,13 +96,45 @@ class ProductsList extends ConsumerWidget {
 }
 
 class _ProductItem extends ConsumerWidget {
-  const _ProductItem({required this.product, required this.onTap, super.key});
+  const _ProductItem({
+    required this.product,
+    required this.onTap,
+    required this.enterpriseCode,
+    required this.customerCode,
+    required this.saleRequestId,
+    super.key,
+  });
 
   final ProductEntity product;
   final VoidCallback onTap;
+  final int enterpriseCode;
+  final int customerCode;
+  final int saleRequestId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final existingItem = ref.watch(
+      insertUpdateStateControllerProvider(
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        saleRequestId: saleRequestId,
+      ).select((state) {
+        return state.value?.products
+            ?.cast<BSFProductItemEntity?>()
+            .firstWhereOrNull(
+              (e) => e?.product?.productPackingPriceLookUpString == product.PLU,
+            );
+      }),
+    );
+
+    Widget? cartItemSummary;
+    if (existingItem != null) {
+      cartItemSummary = BSFProductItemSummary(
+        item: existingItem,
+        product: product,
+      );
+    }
+
     return Hero(
       tag: 'sale_request_product_${product.ProductPackingCode}',
       child: Material(
@@ -107,6 +143,7 @@ class _ProductItem extends ConsumerWidget {
           product: product,
           routine: BsRoutine.saleRequest,
           onTap: onTap,
+          cartItemSummary: cartItemSummary,
         ),
       ),
     );
