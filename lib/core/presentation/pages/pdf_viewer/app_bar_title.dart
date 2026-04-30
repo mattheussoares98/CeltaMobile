@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../commom_widgets/commom_widgets.dart';
 
 import '../../../../utils/utils.dart';
 import '../../../data/datasource/share_download/share_download.dart';
@@ -25,7 +26,6 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final isWindows = theme.platform == TargetPlatform.windows;
 
     ref.listen(shareDownloadControllerProvider, (p, n) {
@@ -34,10 +34,9 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
 
     return AppBar(
       leading: IconButton(
-        icon: Icon(
-          theme.platform == TargetPlatform.iOS
-              ? Icons.arrow_back_ios
-              : Icons.arrow_back,
+        icon: const PlatformIcon(
+          cupertinoIcon: Icons.arrow_back_ios,
+          materialIcon: Icons.arrow_back,
         ),
         onPressed: context.pop,
       ),
@@ -57,11 +56,17 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
                     theme.platform,
                   );
             },
-            icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
+            icon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.cloud_download,
+              materialIcon: Icons.download,
+            ),
           )
         else
           IconButton(
-            icon: Icon(isIOS ? CupertinoIcons.share : Icons.share),
+            icon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.share,
+              materialIcon: Icons.share,
+            ),
             onPressed: () async {
               await ref
                   .read(shareDownloadControllerProvider.notifier)
@@ -76,7 +81,10 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
             tooltip: 'Compartilhar',
           ),
         IconButton(
-          icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.search,
+            materialIcon: Icons.search,
+          ),
           onPressed: toggleSearchUI,
           tooltip: 'Pesquisar',
         ),

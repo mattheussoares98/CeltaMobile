@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../localization/string_hardcoded.dart';
 
 class SearchTextAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -27,11 +28,12 @@ class SearchTextAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _SearchTextAppBarState extends State<SearchTextAppBar> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return AppBar(
       leading: IconButton(
-        icon: Icon(isIOS ? CupertinoIcons.xmark : Icons.close),
+        icon: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.xmark,
+          materialIcon: Icons.close,
+        ),
         onPressed: widget.toggleSearchUI,
       ),
       title: TextField(
@@ -45,12 +47,18 @@ class _SearchTextAppBarState extends State<SearchTextAppBar> {
       ),
       actions: [
         IconButton(
-          icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.search,
+            materialIcon: Icons.search,
+          ),
           onPressed: widget.performSearch,
           tooltip: 'Pesquisar'.hardcoded,
         ),
         IconButton(
-          icon: Icon(isIOS ? CupertinoIcons.arrow_up : Icons.keyboard_arrow_up),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.arrow_up,
+            materialIcon: Icons.keyboard_arrow_up,
+          ),
           onPressed: () {
             if (widget.searchResult.totalInstanceCount > 0) {
               widget.searchResult.previousInstance();
@@ -59,8 +67,9 @@ class _SearchTextAppBarState extends State<SearchTextAppBar> {
           tooltip: 'Anterior'.hardcoded,
         ),
         IconButton(
-          icon: Icon(
-            isIOS ? CupertinoIcons.arrow_down : Icons.keyboard_arrow_down,
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.arrow_down,
+            materialIcon: Icons.keyboard_arrow_down,
           ),
           onPressed: () {
             if (widget.searchResult.totalInstanceCount > 0) {
