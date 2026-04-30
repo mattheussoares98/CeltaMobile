@@ -1,19 +1,28 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
+import '../../../../../localization/string_hardcoded.dart';
 import '../../../domain/entities/entities.dart';
+import '../../controllers/controllers.dart';
 
-class BSFProductItemSummary extends StatelessWidget {
+class BSFProductItemSummary extends ConsumerWidget {
   final BSFProductItemEntity item;
   final ProductEntity product;
+  final int enterpriseCode;
+  final int customerCode;
+  final int saleRequestId;
+
   const BSFProductItemSummary({
     super.key,
     required this.item,
     required this.product,
+    required this.enterpriseCode,
+    required this.customerCode,
+    required this.saleRequestId,
   });
 
   bool get changedPrice {
@@ -27,7 +36,7 @@ class BSFProductItemSummary extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return Container(
@@ -41,24 +50,51 @@ class BSFProductItemSummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              PlatformIcon(
-                cupertinoIcon: CupertinoIcons.cart,
-                materialIcon: Icons.shopping_cart_outlined,
-                size: 14,
-                color: theme.primaryColor,
-              ),
-              gapW4,
-              Text(
-                'No carrinho'.hardcoded,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.primaryColor,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Row(
+                  children: [
+                    PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.cart,
+                      materialIcon: Icons.shopping_cart_outlined,
+                      size: 14,
+                      color: theme.primaryColor,
+                    ),
+                    gapW4,
+                    Flexible(
+                      child: Text(
+                        'No carrinho'.hardcoded,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+              ),
+              IconButton(
+                onPressed: () => ref
+                    .read(
+                      insertUpdateStateControllerProvider(
+                        enterpriseCode: enterpriseCode,
+                        customerCode: customerCode,
+                        saleRequestId: saleRequestId,
+                      ).notifier,
+                    )
+                    .removeItem(item),
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.delete,
+                  materialIcon: Icons.delete_outline,
+                  size: 24,
+                  color: Colors.red,
+                ),
+                padding: const EdgeInsets.all(Sizes.p4),
+                constraints: const BoxConstraints(),
               ),
             ],
           ),
-          gapH8,
           SummaryTable(
             items: [
               SummaryTableItem(

@@ -132,6 +132,9 @@ class _ProductItem extends ConsumerWidget {
       cartItemSummary = BSFProductItemSummary(
         item: existingItem,
         product: product,
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        saleRequestId: saleRequestId,
       );
     }
 
