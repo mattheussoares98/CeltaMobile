@@ -41,69 +41,67 @@ class SummaryTable extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: mainAxisAlignment,
-      children:
-          items.map((item) {
-            String formattedValue = item.value.toString();
-            String? priceText;
+      children: items.map((item) {
+        String formattedValue = item.value.toString();
+        String? priceText;
 
-            if (item.value is num) {
-              if (item.isPrice) {
-                priceText = item.value.toString().toBrazilianNumber(
-                  item.decimalHouses,
-                );
-              } else if (item.isPercentage) {
-                formattedValue =
-                    '${item.value.toString().toBrazilianNumber(item.decimalHouses)} %';
-              } else {
-                formattedValue = item.value.toString().toBrazilianNumber(
-                  item.decimalHouses,
-                  true,
-                );
-              }
-            }
-
-            final effectiveValueStyle =
-                item.color != null
-                    ? valueStyle?.copyWith(color: item.color)
-                    : valueStyle;
-
-            return Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: labelStyle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (priceText != null)
-                    RichText(
-                      text: TextSpan(
-                        style: effectiveValueStyle,
-                        children: [
-                          TextSpan(
-                            text: 'R\$ ',
-                            style: effectiveValueStyle?.copyWith(
-                              fontSize: 11,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          TextSpan(text: priceText),
-                        ],
-                      ),
-                    )
-                  else
-                    Text(
-                      formattedValue,
-                      style: effectiveValueStyle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                ],
-              ),
+        if (item.value is num) {
+          if (item.isPrice) {
+            priceText = item.value.toString().toBrazilianNumber(
+              item.decimalHouses,
             );
-          }).toList(),
+          } else if (item.isPercentage) {
+            formattedValue =
+                '${item.value.toString().toBrazilianNumber(item.decimalHouses)} %';
+          } else {
+            formattedValue = item.value.toString().toBrazilianNumber(
+              item.decimalHouses,
+              true,
+            );
+          }
+        }
+
+        final effectiveValueStyle = item.color != null
+            ? valueStyle?.copyWith(color: item.color)
+            : valueStyle;
+
+        return Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                item.title,
+                style: labelStyle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              if (priceText != null)
+                RichText(
+                  text: TextSpan(
+                    style: effectiveValueStyle,
+                    children: [
+                      TextSpan(
+                        text: 'R\$ ',
+                        style: effectiveValueStyle?.copyWith(
+                          fontSize: 11,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      TextSpan(text: priceText),
+                    ],
+                  ),
+                )
+              else
+                Text(
+                  formattedValue,
+                  style: effectiveValueStyle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }
