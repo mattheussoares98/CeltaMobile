@@ -92,3 +92,4 @@ Text(
 - When a file exceeds 100 lines, extract parts of the UI into separate component files inside the `components` folder.
 - Extracted components should read providers directly (e.g., via `ref.watch` or `ref.read`) instead of receiving values through constructor parameters to avoid prop drilling.
 - Follow the exact folder and file organization pattern used in `BuyRequestPage`.
+- **Controller & Focus Node Initialization:** Never use the `late` keyword for `TextEditingController`, `FocusNode`, or similar UI controllers unless the initial value explicitly depends on a `widget.` property. Always initialize them directly inline (e.g., `final _controller = TextEditingController();`). Ensure they are still properly disposed of in the `dispose()` method.

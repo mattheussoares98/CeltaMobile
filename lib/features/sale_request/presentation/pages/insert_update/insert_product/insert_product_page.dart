@@ -101,7 +101,7 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
           widget.product.product?.name ?? 'Detalhe do Produto'.hardcoded,
         ),
       ),
-      body: Padding(
+      body: ResponsiveCenter(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
         child: CustomScrollView(
           slivers: [
