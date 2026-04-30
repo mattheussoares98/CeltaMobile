@@ -20,9 +20,10 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
+      timer = Timer(
+        Duration(seconds: saleRequestId == 0 ? 9999 : 0),
+        () => link.close(),
+      );
     });
     ref.onResume(() {
       timer?.cancel();
