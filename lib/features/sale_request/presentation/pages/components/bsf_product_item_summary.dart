@@ -1,9 +1,9 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
+import '../../../../../constants/constants.dart';
 import '../../../domain/entities/entities.dart';
 
 class BSFProductItemSummary extends StatelessWidget {
@@ -29,60 +29,50 @@ class BSFProductItemSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    TextStyle? titleStyle = theme.textTheme.bodyMedium?.copyWith(
-      color: theme.colorScheme.secondary,
-    );
-    TextStyle? subtitleStyle = theme.textTheme.titleMedium?.copyWith(
-      color: theme.colorScheme.secondary,
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleAndSubTitle(
-          title: 'Qtd no carrinho'.hardcoded,
-          subTitle: (item.quantity ?? 0).toString().toBrazilianNumber(3, true),
-          titleStyle: titleStyle,
-          subTitleStyle: subtitleStyle,
+        SummaryTable(
+          items: [
+            SummaryTableItem(
+              title: 'Qtd'.hardcoded,
+              value: item.quantity ?? 0,
+              decimalHouses: 3,
+            ),
+            SummaryTableItem(
+              title: 'Preço'.hardcoded,
+              value: item.value,
+              decimalHouses: 2,
+              isPrice: true,
+            ),
+            if (item.totalDeliveryTax > 0)
+              SummaryTableItem(
+                title: 'Frete'.hardcoded,
+                value: item.totalDeliveryTax,
+                isPrice: true,
+                color: theme.colorScheme.secondary,
+              ),
+            if (item.totalDiscountValue > 0)
+              SummaryTableItem(
+                title: 'Desconto'.hardcoded,
+                value: item.totalDiscountValue,
+                isPrice: true,
+                color: Colors.red,
+              ),
+            if (item.totalIncrement > 0)
+              SummaryTableItem(
+                title: 'Acréscimo'.hardcoded,
+                value: item.totalIncrement,
+                isPrice: true,
+                color: Colors.orange,
+              ),
+          ],
         ),
-        if (changedPrice)
-          TitleAndSubTitle(
-            title: 'Preço digitado'.hardcoded,
-            subTitle: (item.value ?? 0).toString().toBrazilianNumber(),
-            subTitleIsPrice: true,
-            titleStyle: titleStyle,
-            subTitleStyle: subtitleStyle,
-          ),
-        if (item.totalDeliveryTax > 0)
-          TitleAndSubTitle(
-            title: 'Frete'.hardcoded,
-            subTitle: item.totalDeliveryTax.toString().toBrazilianNumber(),
-            subTitleIsPrice: true,
-            titleStyle: titleStyle,
-            subTitleStyle: subtitleStyle,
-          ),
-        if (item.totalDiscountValue > 0)
-          TitleAndSubTitle(
-            title: 'Desconto'.hardcoded,
-            subTitle: item.totalDiscountValue.toString().toBrazilianNumber(),
-            subTitleIsPrice: true,
-            titleStyle: titleStyle,
-            subTitleStyle: subtitleStyle,
-          ),
-        if (item.totalIncrement > 0)
-          TitleAndSubTitle(
-            title: 'Acréscimo'.hardcoded,
-            subTitle: item.totalIncrement.toString().toBrazilianNumber(),
-            subTitleIsPrice: true,
-            titleStyle: titleStyle,
-            subTitleStyle: subtitleStyle,
-          ),
+        gapH8,
         TitleAndSubTitle(
           title: 'Total'.hardcoded,
-          subTitle: item.totalLiquid.toString().toBrazilianNumber(),
+          subTitle: item.totalLiquid,
           subTitleIsPrice: true,
-          titleStyle: titleStyle,
-          subTitleStyle: subtitleStyle,
         ),
       ],
     );
