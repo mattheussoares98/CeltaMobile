@@ -5,7 +5,6 @@ import '../../domain/entities/entities.dart';
 class InsertProductUIState extends Equatable {
   final double quantity;
   final double price;
-  final String observations;
   final double deliveryTaxValue;
   final PercentageOrValue deliveryTaxType;
   final double incrementValue;
@@ -16,7 +15,6 @@ class InsertProductUIState extends Equatable {
   const InsertProductUIState({
     required this.quantity,
     required this.price,
-    required this.observations,
     required this.deliveryTaxValue,
     required this.deliveryTaxType,
     required this.incrementValue,
@@ -29,7 +27,6 @@ class InsertProductUIState extends Equatable {
     return InsertProductUIState(
       quantity: product.quantity ?? 1,
       price: product.value ?? 0,
-      observations: '',
       deliveryTaxValue: product.deliveryTax?.value ?? 0,
       deliveryTaxType: product.deliveryTax?.type ?? PercentageOrValue.reais,
       incrementValue: product.increment?.value ?? 0,
@@ -45,7 +42,6 @@ class InsertProductUIState extends Equatable {
   List<Object?> get props => [
     quantity,
     price,
-    observations,
     deliveryTaxValue,
     deliveryTaxType,
     incrementValue,
@@ -58,7 +54,6 @@ class InsertProductUIState extends Equatable {
   InsertProductUIState copyWith({
     double? quantity,
     double? price,
-    String? observations,
     double? deliveryTaxValue,
     PercentageOrValue? deliveryTaxType,
     double? incrementValue,
@@ -69,7 +64,6 @@ class InsertProductUIState extends Equatable {
     return InsertProductUIState(
       quantity: quantity ?? this.quantity,
       price: price ?? this.price,
-      observations: observations ?? this.observations,
       deliveryTaxValue: deliveryTaxValue ?? this.deliveryTaxValue,
       deliveryTaxType: deliveryTaxType ?? this.deliveryTaxType,
       incrementValue: incrementValue ?? this.incrementValue,

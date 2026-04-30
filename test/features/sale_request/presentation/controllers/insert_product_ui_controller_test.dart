@@ -32,7 +32,6 @@ void main() {
       // ASSERT
       expect(result.quantity, testProduct.quantity ?? 1);
       expect(result.price, testProduct.value ?? 0);
-      expect(result.observations, '');
       expect(result.deliveryTaxValue, testProduct.deliveryTax?.value ?? 0);
       expect(
         result.deliveryTaxType,
@@ -94,34 +93,6 @@ void main() {
         expect(states.first.price, newPrice);
         expect(states.first.quantity, testProduct.quantity ?? 1);
       });
-    });
-
-    group('updateObservations', () {
-      test(
-        'should update only the observations preserving other values',
-        () async {
-          // ARRANGE
-          final container = makeProviderContainer();
-          container.read(insertProductUIControllerProvider(testProduct));
-
-          final states = <InsertProductUIState>[];
-          container.listen(
-            insertProductUIControllerProvider(testProduct),
-            (_, next) => states.add(next),
-          );
-
-          // ACT
-          final newObservations = faker.lorem.sentence();
-          container
-              .read(insertProductUIControllerProvider(testProduct).notifier)
-              .updateObservations(newObservations);
-
-          // ASSERT
-          expect(states.length, 1);
-          expect(states.first.observations, newObservations);
-          expect(states.first.quantity, testProduct.quantity ?? 1);
-        },
-      );
     });
 
     group('updateDeliveryTaxValue', () {

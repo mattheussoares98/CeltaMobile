@@ -20,10 +20,6 @@ class InsertProductUIController extends _$InsertProductUIController {
     state = state.copyWith(price: price);
   }
 
-  void updateObservations(String observations) {
-    state = state.copyWith(observations: observations);
-  }
-
   void updateDeliveryTaxValue(double value) {
     state = state.copyWith(deliveryTaxValue: value);
   }

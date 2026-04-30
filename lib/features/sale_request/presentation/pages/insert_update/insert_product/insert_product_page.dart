@@ -10,7 +10,7 @@ import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class InsertProductPage extends ConsumerStatefulWidget {
+class InsertProductPage extends ConsumerWidget {
   final BSFProductItemEntity product;
   final ProductEntity originalProduct;
   final int enterpriseCode;
@@ -27,46 +27,28 @@ class InsertProductPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<InsertProductPage> createState() => _ProductDetailPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    void saveItem() {
+      final uiState = ref.read(insertProductUIControllerProvider(product));
+      final updatedItem = uiState.applyTo(product);
 
-class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
-  final _observationsController = TextEditingController();
+      ref
+          .read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: saleRequestId,
+            ).notifier,
+          )
+          .updateItem(product, updatedItem);
 
-  @override
-  void initState() {
-    super.initState();
-  }
+      context.pop();
+    }
 
-  @override
-  void dispose() {
-    _observationsController.dispose();
-    super.dispose();
-  }
-
-  void _saveItem() {
-    final uiState = ref.read(insertProductUIControllerProvider(widget.product));
-    final updatedItem = uiState.applyTo(widget.product);
-
-    ref
-        .read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: widget.enterpriseCode,
-            customerCode: widget.customerCode,
-            saleRequestId: widget.saleRequestId,
-          ).notifier,
-        )
-        .updateItem(widget.product, updatedItem);
-
-    context.pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final provider = insertUpdateStateControllerProvider(
-      enterpriseCode: widget.enterpriseCode,
-      customerCode: widget.customerCode,
-      saleRequestId: widget.saleRequestId,
+      enterpriseCode: enterpriseCode,
+      customerCode: customerCode,
+      saleRequestId: saleRequestId,
     );
 
     final (
@@ -87,9 +69,7 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.product.product?.name ?? 'Detalhe do Produto'.hardcoded,
-        ),
+        title: Text(product.product?.name ?? 'Detalhe do Produto'.hardcoded),
       ),
       body: ResponsiveCenter(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
@@ -98,11 +78,11 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             SliverToBoxAdapter(
               child: Hero(
                 tag:
-                    'sale_request_product_${widget.originalProduct.ProductPackingCode}',
+                    'sale_request_product_${originalProduct.ProductPackingCode}',
                 child: Material(
                   type: MaterialType.transparency,
                   child: ProductItemWidget(
-                    product: widget.originalProduct,
+                    product: originalProduct,
                     routine: BsRoutine.saleRequest,
                   ),
                 ),
@@ -111,16 +91,12 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             SliverToBoxAdapter(
               child: Row(
                 children: [
-                  Expanded(
-                    child: QuantityField(
-                      product: widget.product,
-                    ),
-                  ),
+                  Expanded(child: QuantityField(product: product)),
                   gapW8,
                   Expanded(
                     child: PriceField(
                       allowPriceChange: allowPriceChange,
-                      product: widget.product,
+                      product: product,
                     ),
                   ),
                 ],
@@ -128,45 +104,27 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             ),
             if (allowDeliveryTax) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
-              SliverToBoxAdapter(
-                child: DeliveryTaxField(
-                  product: widget.product,
-                ),
-              ),
+              SliverToBoxAdapter(child: DeliveryTaxField(product: product)),
             ],
             if (allowDiscount) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
-              SliverToBoxAdapter(
-                child: AddDiscount(
-                  product: widget.product,
-                ),
-              ),
-              Discounts(product: widget.product),
+              SliverToBoxAdapter(child: AddDiscount(product: product)),
+              Discounts(product: product),
             ],
             if (allowIncrement) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
-              SliverToBoxAdapter(
-                child: IncrementField(
-                  product: widget.product,
-                ),
-              ),
+              SliverToBoxAdapter(child: IncrementField(product: product)),
             ],
             const SliverToBoxAdapter(child: DefaultDivider()),
-            SliverToBoxAdapter(
-              child: ObservationsField(
-                controller: _observationsController,
-              ),
-            ),
             gapSliverH32,
             SliverToBoxAdapter(
               child: ExcludeFocus(
                 child: PrimaryButton(
                   text: 'CONFIRMAR'.hardcoded,
-                  onPressed: _saveItem,
+                  onPressed: saveItem,
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: DefaultDivider()),
           ],
         ),
       ),
