@@ -95,15 +95,15 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text('Produtos não encontrados'.hardcoded)),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(isIOS ? CupertinoIcons.add : Icons.add),
+        child: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.add,
+          materialIcon: Icons.add,
+        ),
         onPressed: () => openInsertUpdateProductPage(null),
       ),
       body: AsyncValueWidget(
@@ -156,9 +156,6 @@ class _ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return RepaintBoundary(
       child: Padding(
         padding: EdgeInsets.only(
@@ -195,10 +192,13 @@ class _ProductItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   top: Sizes.p8,
                   right: Sizes.p8,
-                  child: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                  child: PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.pencil,
+                    materialIcon: Icons.edit,
+                  ),
                 ),
               ],
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../routing/routing.dart';
 import '../../../../../domain/entities/entities.dart';
 
@@ -11,8 +12,6 @@ class EditEnterpriseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return IconButton(
       onPressed: () {
         context.pushNamed(
@@ -23,10 +22,9 @@ class EditEnterpriseButton extends StatelessWidget {
           },
         );
       },
-      icon: Icon(
-        theme.platform == TargetPlatform.iOS
-            ? CupertinoIcons.pencil
-            : Icons.edit,
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.pencil,
+        materialIcon: Icons.edit,
       ),
     );
   }

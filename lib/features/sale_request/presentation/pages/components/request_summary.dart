@@ -30,7 +30,6 @@ class RequestSummary extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final saleRequest = ref.watch(
       saleRequestsStateControllerProvider(enterpriseCode).select(
@@ -58,8 +57,9 @@ class RequestSummary extends ConsumerWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(
-                          isIOS ? CupertinoIcons.doc_text : Icons.receipt_long,
+                        const PlatformIcon(
+                          cupertinoIcon: CupertinoIcons.doc_text,
+                          materialIcon: Icons.receipt_long,
                         ),
                         gapW12,
                         Text(
@@ -178,14 +178,12 @@ class _CliclableIconIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
-    return Positioned(
+    return const Positioned(
       right: 0,
       bottom: 0,
-      child: Icon(
-        isIOS ? CupertinoIcons.arrow_up_right : Icons.arrow_outward_sharp,
+      child: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.arrow_up_right,
+        materialIcon: Icons.arrow_outward_sharp,
       ),
     );
   }

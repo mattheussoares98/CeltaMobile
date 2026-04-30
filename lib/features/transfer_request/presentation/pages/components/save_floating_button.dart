@@ -16,7 +16,6 @@ class SaveFloatingButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final cartIsEmpty = ref.watch(
       cartProductsStateControllerProvider(
@@ -51,8 +50,9 @@ class SaveFloatingButton extends ConsumerWidget {
                       .insert,
                 );
               },
-        child: Icon(
-          isIOS ? CupertinoIcons.check_mark : Icons.save_rounded,
+        child: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.check_mark,
+          materialIcon: Icons.save_rounded,
           color: Colors.white,
         ),
       ),

@@ -15,8 +15,6 @@ class QuotationsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return Scaffold(
       appBar: AppBar(
         title: DefaultAppBarTitle(title: 'Cotações'.hardcoded),
@@ -28,7 +26,10 @@ class QuotationsPage extends ConsumerWidget {
       ),
       body: QuotationsItems(enterpriseCode: enterpriseCode),
       floatingActionButton: FloatingActionButton(
-        child: Icon(isIOS ? CupertinoIcons.add : Icons.add),
+        child: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.add,
+          materialIcon: Icons.add,
+        ),
         onPressed: () {
           context.goNamed(
             Routes.buyQuotationInsertUpdate.name,

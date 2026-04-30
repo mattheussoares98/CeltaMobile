@@ -22,8 +22,6 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final selected =
         ref.watch(selectedLotIndexStateControllerProvider) == index;
@@ -44,8 +42,9 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
               },
             );
           },
-          icon: Icon(
-            isIOS ? CupertinoIcons.delete : Icons.delete,
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.delete,
+            materialIcon: Icons.delete,
             color: Colors.red,
           ),
         ),

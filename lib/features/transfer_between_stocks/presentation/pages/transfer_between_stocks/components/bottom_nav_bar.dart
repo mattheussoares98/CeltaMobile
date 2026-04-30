@@ -18,8 +18,6 @@ class BottomNavBar extends ConsumerWidget {
       ).select((s) => s.pageIndex),
     );
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return BottomNavigationBar(
       currentIndex: selectedPageIndex,
@@ -32,7 +30,10 @@ class BottomNavBar extends ConsumerWidget {
       },
       items: [
         BottomNavigationBarItem(
-          icon: Icon(isIOS ? CupertinoIcons.list_bullet : Icons.list),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.list_bullet,
+            materialIcon: Icons.list,
+          ),
           label: 'Produtos'.hardcoded,
         ),
         BottomNavigationBarItem(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../../routing/routing.dart';
 import '../../controllers/controllers.dart';
@@ -106,9 +107,6 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Gerenciar módulos'.hardcoded),
@@ -126,7 +124,10 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
                   key: const ValueKey('add_enterprise_fab'),
                   onPressed: () =>
                       context.pushNamed(Routes.createEnterprise.name),
-                  child: Icon(isIOS ? CupertinoIcons.add : Icons.add),
+                  child: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.add,
+                    materialIcon: Icons.add,
+                  ),
                 );
               }
 
@@ -141,8 +142,9 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
                       curve: Curves.easeInOut,
                     );
                   },
-                  child: Icon(
-                    isIOS ? CupertinoIcons.arrow_up : Icons.arrow_upward,
+                  child: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.arrow_up,
+                    materialIcon: Icons.arrow_upward,
                   ),
                 );
               }
@@ -162,11 +164,17 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
             items: [
               BottomNavigationBarItem(
                 label: 'Empresas'.hardcoded,
-                icon: Icon(isIOS ? CupertinoIcons.list_bullet : Icons.list),
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.list_bullet,
+                  materialIcon: Icons.list,
+                ),
               ),
               BottomNavigationBarItem(
                 label: 'Uso'.hardcoded,
-                icon: Icon(isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart),
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.chart_bar,
+                  materialIcon: Icons.bar_chart,
+                ),
               ),
             ],
           );

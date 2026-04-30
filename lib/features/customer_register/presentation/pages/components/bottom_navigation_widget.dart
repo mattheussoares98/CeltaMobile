@@ -14,9 +14,8 @@ class BottomNavigationWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final customer = ref.watch(customerStateControllerProvider).value;
     final selectedIndex = ref.watch(pageIndexStateControllerProvider);
-
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+
     return BottomNavigationBar(
       unselectedFontSize: 11,
       selectedFontSize: 11,
@@ -25,8 +24,9 @@ class BottomNavigationWidget extends ConsumerWidget {
       items: [
         BottomNavigationBarItem(
           label: 'Dados'.hardcoded,
-          icon: Icon(
-            isIOS ? CupertinoIcons.person : Icons.person,
+          icon: PlatformIcon(
+            cupertinoIcon: CupertinoIcons.person,
+            materialIcon: Icons.person,
             color: selectedIndex == 0 ? theme.primaryColor : null,
           ),
         ),
@@ -73,8 +73,9 @@ class BottomNavigationWidget extends ConsumerWidget {
         ),
         BottomNavigationBarItem(
           label: 'Salvar'.hardcoded,
-          icon: Icon(
-            isIOS ? CupertinoIcons.check_mark : Icons.save,
+          icon: PlatformIcon(
+            cupertinoIcon: CupertinoIcons.check_mark,
+            materialIcon: Icons.save,
             color: selectedIndex == 5 ? theme.primaryColor : null,
           ),
         ),

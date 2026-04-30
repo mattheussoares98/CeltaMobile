@@ -11,8 +11,6 @@ class SaveButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return IconButton(
       onPressed: () async {
@@ -28,7 +26,10 @@ class SaveButton extends ConsumerWidget {
           defaultActionText: 'Salvar'.hardcoded,
         );
       },
-      icon: Icon(isIOS ? CupertinoIcons.checkmark : Icons.save),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.checkmark,
+        materialIcon: Icons.save,
+      ),
     );
   }
 }

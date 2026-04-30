@@ -13,13 +13,14 @@ class VisualizeFilePathButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return PrimaryTextButton(
       isSmall: true,
       text: 'Visualizar caminho'.hardcoded,
-      icon: Icon(isIOS ? CupertinoIcons.eye : Icons.remove_red_eye),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.eye,
+        materialIcon: Icons.remove_red_eye,
+      ),
       onPressed: () {
         showAlertDialog(
           context: context,

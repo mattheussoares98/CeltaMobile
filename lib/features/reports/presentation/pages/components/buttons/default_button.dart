@@ -19,7 +19,6 @@ class DefaultButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final isXlsx = downloadType == DownloadType.xlsx;
     final requestFolderToDownload =
         (theme.platform == TargetPlatform.windows ||
@@ -120,7 +119,10 @@ class DefaultButton extends ConsumerWidget {
                       ? 'Baixar planilha'.hardcoded
                       : 'Baixar PDF'.hardcoded),
             isLoading: isLoading,
-            icon: Icon(isIOS ? CupertinoIcons.cloud_download : Icons.download),
+            icon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.cloud_download,
+              materialIcon: Icons.download,
+            ),
             onPressed: hasAttachment ? null : onTap,
           ),
         ),

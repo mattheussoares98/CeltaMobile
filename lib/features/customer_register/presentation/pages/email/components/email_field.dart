@@ -54,8 +54,6 @@ class _EmailFieldState extends ConsumerState<EmailField> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Column(
       children: [
@@ -71,8 +69,9 @@ class _EmailFieldState extends ConsumerState<EmailField> {
             onFieldSubmitted: (_) => insertEmail(),
             suffixIcon: IconButton(
               onPressed: emailController.clear,
-              icon: Icon(
-                isIOS ? CupertinoIcons.delete : Icons.delete,
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.delete,
+                materialIcon: Icons.delete,
                 color: Colors.red,
               ),
             ),

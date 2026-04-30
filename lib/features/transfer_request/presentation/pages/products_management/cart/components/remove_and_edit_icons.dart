@@ -40,15 +40,19 @@ class RemoveAndEditIcons extends ConsumerWidget {
               },
             );
           },
-          icon: Icon(
-            isIOS ? CupertinoIcons.delete : Icons.delete,
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.delete,
+            materialIcon: Icons.delete,
             color: Colors.red,
           ),
         ),
         PrimaryTextButton(
           text: isIOS ? 'Editar'.hardcoded : '',
           onPressed: changeSelectedIndex,
-          icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.pencil,
+            materialIcon: Icons.edit,
+          ),
         ),
       ],
     );

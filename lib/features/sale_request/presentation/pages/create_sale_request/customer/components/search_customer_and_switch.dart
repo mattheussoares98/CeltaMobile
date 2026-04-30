@@ -45,8 +45,6 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     ref.listen(customersStateControllerProvider(widget.enterpriseCode), (p, n) {
       n.doOnSuccess(p, () {
@@ -69,14 +67,18 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
             onFieldSubmitted: (_) => searchCustomer(),
             prefixIcon: IconButton(
               onPressed: widget.searchController.clear,
-              icon: Icon(
-                isIOS ? CupertinoIcons.delete : Icons.delete,
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.delete,
+                materialIcon: Icons.delete,
                 color: Colors.red,
               ),
             ),
             suffixIcon: IconButton(
               onPressed: searchCustomer,
-              icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.search,
+                materialIcon: Icons.search,
+              ),
             ),
           ),
         ),

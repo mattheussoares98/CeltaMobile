@@ -27,8 +27,6 @@ class Discounts extends ConsumerWidget {
           .removeDiscount(index);
     }
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return ResponsiveListFlow(
       isSliver: true,
@@ -49,8 +47,9 @@ class Discounts extends ConsumerWidget {
             ExcludeFocus(
               child: IconButton(
                 onPressed: () => removeDiscount(index),
-                icon: Icon(
-                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.delete,
+                  materialIcon: Icons.delete,
                   color: Colors.red,
                 ),
               ),

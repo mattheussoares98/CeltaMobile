@@ -17,8 +17,6 @@ class PriceField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final widthScreen = MediaQuery.sizeOf(context).width;
 
     return AnimatedBuilder(
@@ -65,7 +63,10 @@ class PriceField extends StatelessWidget {
                               .hardcoded,
                     );
                   },
-                  icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+                  icon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.info,
+                    materialIcon: Icons.info,
+                  ),
                 ),
               ),
           ],

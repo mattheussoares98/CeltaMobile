@@ -31,8 +31,6 @@ class PriceField extends ConsumerWidget {
         enterpriseCode,
       ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
     );
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return Stack(
       children: [
         DefaultTextFormField(
@@ -74,7 +72,10 @@ class PriceField extends ConsumerWidget {
               message:
                   'O modelo de pedido selecionado não permite alterar o preço'
                       .hardcoded,
-              child: Icon(isIOS ? CupertinoIcons.info_circle : Icons.info),
+              child: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.info_circle,
+                materialIcon: Icons.info,
+              ),
             ),
           ),
       ],

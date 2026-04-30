@@ -81,8 +81,6 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     ref.listen(printSaleRequestControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
@@ -102,7 +100,10 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
     );
 
     return IconButton(
-      icon: Icon(isIOS ? CupertinoIcons.printer : Icons.print, color: null),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.printer,
+        materialIcon: Icons.print,
+      ),
       onPressed: canPrint
           ? () {
               showModalPage(

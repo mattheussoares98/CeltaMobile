@@ -26,7 +26,6 @@ class Filters extends ConsumerWidget {
     final selectedItem = ref.watch(selectedItemUIControllerProvider);
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final restrictProducts = ref.watch(
       researchsStateControllerProvider(enterpriseCode).select(
@@ -135,7 +134,10 @@ class Filters extends ConsumerWidget {
                       ? 'Consultar${selectedItem.searchType == SearchProductCompetingPriceType.all ? '' : ' todos'.hardcoded} ${selectedItem.searchType.name.toLowerCase()}'
                             .hardcoded
                       : 'Consultar todos não associados'.hardcoded,
-                  icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+                  icon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.search,
+                    materialIcon: Icons.search,
+                  ),
                   onPressed: () {
                     ref
                         .read(

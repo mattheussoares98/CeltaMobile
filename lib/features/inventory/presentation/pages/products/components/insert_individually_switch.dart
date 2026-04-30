@@ -16,8 +16,6 @@ class InsertIndividuallySwitch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final widthScreen = MediaQuery.sizeOf(context).width;
     return SizedBox(
       width: Breakpoint.desktop,
@@ -32,9 +30,12 @@ class InsertIndividuallySwitch extends ConsumerWidget {
                 message:
                     'Quando essa opção está ativa, ao encontrar um único produto na busca, será somado automaticamente 1 quantidade'
                         .hardcoded,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: Sizes.p4),
-                  child: Icon(isIOS ? CupertinoIcons.info : Icons.info_outline),
+                child: const Padding(
+                  padding: EdgeInsets.only(right: Sizes.p4),
+                  child: PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.info,
+                    materialIcon: Icons.info_outline,
+                  ),
                 ),
               ),
             Flexible(

@@ -116,7 +116,6 @@ class ConcurrentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final mediaSize = MediaQuery.sizeOf(context);
 
     return RepaintBoundary(
@@ -175,7 +174,10 @@ class ConcurrentItem extends StatelessWidget {
               },
               icon: mediaSize.width < 300
                   ? null
-                  : Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                  : const PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.pencil,
+                      materialIcon: Icons.edit,
+                    ),
             ),
           ),
         ],

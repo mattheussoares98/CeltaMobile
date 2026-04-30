@@ -122,8 +122,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     const horizontalPadding = EdgeInsets.symmetric(horizontal: Sizes.p4);
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    final isAndroid = theme.platform == TargetPlatform.android;
 
     return Scaffold(
       appBar: AppBar(
@@ -133,7 +131,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         ),
       ),
       floatingActionButton: AnimatedBuilder(
-        animation: isAndroid || isIOS
+        animation: theme.platform == TargetPlatform.android ||
+                theme.platform == TargetPlatform.iOS
             ? quantityFocusNode
             : Listenable.merge([]),
         builder: (_, _) {
@@ -150,7 +149,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   },
                 );
               },
-              child: Icon(!isIOS ? CupertinoIcons.add : Icons.add),
+              child: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.add,
+                materialIcon: Icons.add,
+              ),
             ),
           );
         },

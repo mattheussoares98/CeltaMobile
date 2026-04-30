@@ -80,8 +80,6 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
       },
     );
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,8 +123,9 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
                   onPressed: () {
                     supplierController.clear();
                   },
-                  icon: Icon(
-                    isIOS ? CupertinoIcons.delete : Icons.delete,
+                  icon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.delete,
+                    materialIcon: Icons.delete,
                     color: Colors.red,
                   ),
                 ),
@@ -138,7 +137,10 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
                 ),
                 suffixIcon: IconButton(
                   onPressed: loadSuppliers,
-                  icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+                  icon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.search,
+                    materialIcon: Icons.search,
+                  ),
                 ),
               ),
             );

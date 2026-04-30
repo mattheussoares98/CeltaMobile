@@ -113,13 +113,14 @@ class _DefaultSearchProduct extends ConsumerWidget {
       ).select((s) => s.isLoading),
     );
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return PrimaryTextButton(
       text: title,
       isSmall: true,
-      icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.search,
+        materialIcon: Icons.search,
+      ),
       iconAlignment: IconAlignment.start,
       onPressed: isLoading ? null : () => searchProduct(searchType),
     );

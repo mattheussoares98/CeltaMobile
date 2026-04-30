@@ -18,8 +18,6 @@ class LimitDate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final dateOfLimit = ref.watch(
       completeBuyQuotationsStateControllerProvider(
@@ -48,8 +46,9 @@ class LimitDate extends ConsumerWidget {
                   text: dateOfLimit == null
                       ? 'Inserir'.hardcoded
                       : 'Alterar'.hardcoded,
-                  icon: Icon(
-                    isIOS ? CupertinoIcons.calendar : Icons.date_range,
+                  icon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.calendar,
+                    materialIcon: Icons.date_range,
                   ),
                   onPressed: () async {
                     final now = DateTime.now();

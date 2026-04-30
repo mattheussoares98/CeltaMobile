@@ -5,7 +5,7 @@ import '../../../../../../constants/constants.dart';
 class ActionCard extends StatelessWidget {
   final String title;
   final String subtitle;
-  final IconData icon;
+  final Widget icon;
   final Color color;
   final VoidCallback onTap;
 
@@ -43,7 +43,7 @@ class ActionCard extends StatelessWidget {
                     color: color.withAlpha(20),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, color: color, size: 28),
+                  child: icon,
                 ),
                 gapW16,
               ],

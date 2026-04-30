@@ -25,7 +25,6 @@ class FloatingSaveButton extends ConsumerWidget {
       ).select((s) => s.value?.products?.isEmpty ?? true),
     );
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return Padding(
       padding: EdgeInsets.only(
         bottom: ref.watch(keyboardVisibilityStateControllerProvider)
@@ -64,7 +63,10 @@ class FloatingSaveButton extends ConsumerWidget {
         backgroundColor: cartIsEmpty
             ? Colors.grey
             : theme.primaryColor.withAlpha(200),
-        child: Icon(isIOS ? CupertinoIcons.checkmark : Icons.save),
+        child: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.checkmark,
+          materialIcon: Icons.save,
+        ),
       ),
     );
   }

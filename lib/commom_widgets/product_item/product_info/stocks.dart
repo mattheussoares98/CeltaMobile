@@ -21,7 +21,6 @@ class Stocks extends ConsumerWidget {
       (stock) => (stock).Enterprise,
     );
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final enterpriseNames = groupedStocks.keys.toList();
 
@@ -85,7 +84,10 @@ class Stocks extends ConsumerWidget {
                               },
                             );
                       },
-                      icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                      icon: const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.pencil,
+                        materialIcon: Icons.edit,
+                      ),
                     ),
                   ],
                 ),

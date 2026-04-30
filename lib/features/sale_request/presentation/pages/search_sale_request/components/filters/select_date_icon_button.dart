@@ -29,18 +29,11 @@ class SelectDateIconButton extends StatelessWidget {
           controller.text = DateFormat('dd/MM/yyyy').format(date);
         }
       },
-      icon: const _CalendarIcon(),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.calendar,
+        materialIcon: Icons.date_range,
+      ),
     );
   }
 }
 
-class _CalendarIcon extends StatelessWidget {
-  const _CalendarIcon();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    return Icon(isIOS ? CupertinoIcons.calendar : Icons.date_range);
-  }
-}

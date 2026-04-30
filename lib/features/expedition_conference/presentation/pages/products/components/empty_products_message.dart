@@ -12,8 +12,6 @@ class EmptyProductsMessage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
@@ -27,7 +25,10 @@ class EmptyProductsMessage extends ConsumerWidget {
           ),
           PrimaryTextButton(
             text: 'Pesquisar novamente'.hardcoded,
-            icon: Icon(isIOS ? CupertinoIcons.refresh : Icons.refresh_rounded),
+            icon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.refresh,
+              materialIcon: Icons.refresh_rounded,
+            ),
             onPressed: onRefreshEmptyProducts,
           ),
         ],

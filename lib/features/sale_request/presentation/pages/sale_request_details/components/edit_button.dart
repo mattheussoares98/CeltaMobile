@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../routing/routing.dart';
 import '../../../controllers/controllers.dart';
@@ -19,9 +20,6 @@ class EditButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     final saleRequestLoadedCorrectly = ref.watch(
       saleRequestDetailsStateControllerProvider(
         customerCode: customerCode,
@@ -49,7 +47,10 @@ class EditButton extends ConsumerWidget {
                   );
             }
           : null,
-      icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.pencil,
+        materialIcon: Icons.edit,
+      ),
     );
   }
 }

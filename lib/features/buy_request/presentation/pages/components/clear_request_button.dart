@@ -23,7 +23,6 @@ class ClearRequestButton extends ConsumerWidget {
     );
     final pendingValue = pendingAsync.value;
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     bool hasSelectedValues =
@@ -57,8 +56,9 @@ class ClearRequestButton extends ConsumerWidget {
                 );
               }
             : null,
-        icon: Icon(
-          isIOS ? CupertinoIcons.delete : Icons.delete,
+        icon: PlatformIcon(
+          cupertinoIcon: CupertinoIcons.delete,
+          materialIcon: Icons.delete,
           color: hasSelectedValues ? Colors.red : theme.disabledColor,
         ),
         color: hasSelectedValues ? Colors.red : theme.disabledColor,

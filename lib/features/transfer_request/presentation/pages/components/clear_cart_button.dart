@@ -15,7 +15,6 @@ class ClearCartButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final cartIsEmpty = ref.watch(
       cartProductsStateControllerProvider(
         draftKey,
@@ -25,8 +24,9 @@ class ClearCartButton extends ConsumerWidget {
 
     return PrimaryTextButton(
       text: isDesktop ? 'Limpar carrinho'.hardcoded : '',
-      icon: Icon(
-        isIOS ? CupertinoIcons.delete : Icons.delete,
+      icon: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.delete,
+        materialIcon: Icons.delete,
         color: cartIsEmpty ? theme.disabledColor : Colors.red,
       ),
       color: Colors.red,

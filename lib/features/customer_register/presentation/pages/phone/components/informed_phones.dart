@@ -57,8 +57,6 @@ class _TelephoneItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
       child: Card(
@@ -79,8 +77,9 @@ class _TelephoneItem extends StatelessWidget {
                     onOkPressed: removeTelephone,
                   );
                 },
-                icon: Icon(
-                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.delete,
+                  materialIcon: Icons.delete,
                   color: Colors.red,
                 ),
               ),

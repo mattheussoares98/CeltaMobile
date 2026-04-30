@@ -83,9 +83,9 @@ class _IconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    return Icon(
-      isIOS ? CupertinoIcons.chevron_down : Icons.arrow_drop_down,
+    return PlatformIcon(
+      cupertinoIcon: CupertinoIcons.chevron_down,
+      materialIcon: Icons.arrow_drop_down,
       size: theme.platform == TargetPlatform.iOS ? Sizes.p12 : null,
     );
   }

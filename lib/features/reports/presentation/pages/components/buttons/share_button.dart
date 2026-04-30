@@ -16,8 +16,6 @@ class ShareButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return PrimaryTextButton(
       text: 'Compartilhar'.hardcoded,
@@ -33,7 +31,10 @@ class ShareButton extends ConsumerWidget {
               ),
             );
       },
-      icon: Icon(isIOS ? CupertinoIcons.share : Icons.share),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.share,
+        materialIcon: Icons.share,
+      ),
     );
   }
 }

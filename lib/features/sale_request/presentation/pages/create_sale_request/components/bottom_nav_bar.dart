@@ -12,8 +12,6 @@ class BottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final index = ref.watch(pageIndexStateControllerProvider);
     return BottomNavigationBar(
@@ -22,8 +20,9 @@ class BottomNavBar extends ConsumerWidget {
       items: [
         BottomNavigationBarItem(
           label: 'Inserir produtos'.hardcoded,
-          icon: Icon(
-            isIOS ? CupertinoIcons.cart_fill : Icons.add_shopping_cart,
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.cart_fill,
+            materialIcon: Icons.add_shopping_cart,
           ),
         ),
         BottomNavigationBarItem(

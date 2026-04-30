@@ -39,8 +39,6 @@ class Customer extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final customerName = requestCustomer.Name ?? detailsCustomer.name;
     bool isInternalCustomer = customerName?.toLowerCase() == 'consumidor';
@@ -54,7 +52,10 @@ class Customer extends ConsumerWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(isIOS ? CupertinoIcons.person : Icons.person),
+            const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.person,
+              materialIcon: Icons.person,
+            ),
             gapW8,
             Expanded(
               child: Column(

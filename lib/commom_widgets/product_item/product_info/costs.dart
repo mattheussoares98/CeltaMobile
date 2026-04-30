@@ -15,8 +15,6 @@ class Costs extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return ResponsiveScrollableWidget(
       child: Column(
@@ -42,7 +40,10 @@ class Costs extends ConsumerWidget {
                         },
                       );
                 },
-                icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.pencil,
+                  materialIcon: Icons.edit,
+                ),
               ),
             ],
           ),

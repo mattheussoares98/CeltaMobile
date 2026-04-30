@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/utils.dart';
+import '../commom_widgets.dart';
 
 class QuantityBadge extends StatelessWidget {
   final int? quantity;
@@ -20,7 +21,6 @@ class QuantityBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     bool isSmall = (quantity?.toString() ?? '0').length <= 1;
     return Badge(
@@ -41,8 +41,9 @@ class QuantityBadge extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Icon(
-            isIOS ? cupertinoIcon : materialIcon,
+          PlatformIcon(
+            cupertinoIcon: cupertinoIcon,
+            materialIcon: materialIcon,
             color: isSelected ? theme.primaryColor : theme.disabledColor,
           ),
           if (totalPrice != null)

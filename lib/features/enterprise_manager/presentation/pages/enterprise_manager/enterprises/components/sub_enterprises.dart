@@ -103,10 +103,9 @@ class SubEnterprises extends ConsumerWidget {
                     ),
                     IconButton(
                       onPressed: () => onTap(subEnterprise),
-                      icon: Icon(
-                        theme.platform == TargetPlatform.iOS
-                            ? CupertinoIcons.pencil
-                            : Icons.edit,
+                      icon: PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.pencil,
+                        materialIcon: Icons.edit,
                         color: theme.primaryColorDark,
                       ),
                     ),

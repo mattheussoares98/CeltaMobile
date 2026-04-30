@@ -20,7 +20,6 @@ class NamePluAndDeleteButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -64,8 +63,9 @@ class NamePluAndDeleteButton extends ConsumerWidget {
                   },
                 );
               },
-              icon: Icon(
-                isIOS ? CupertinoIcons.delete : Icons.delete,
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.delete,
+                materialIcon: Icons.delete,
                 color: Colors.red,
               ),
             ),

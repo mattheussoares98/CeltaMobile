@@ -26,9 +26,6 @@ class Prices extends ConsumerWidget {
     final wholeMinimum = cost?.WholeMinimumPrice ?? 0;
     final ecommerceMinimum = cost?.ECommerceMinimumPrice ?? 0;
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return ResponsiveScrollableWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,7 +53,10 @@ class Prices extends ConsumerWidget {
                         },
                       );
                 },
-                icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.pencil,
+                  materialIcon: Icons.edit,
+                ),
               ),
             ],
           ),

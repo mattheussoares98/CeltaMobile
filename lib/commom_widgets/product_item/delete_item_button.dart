@@ -10,8 +10,6 @@ class DeleteItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return IconButton(
       onPressed: onDelete == null
           ? null
@@ -25,8 +23,9 @@ class DeleteItemButton extends StatelessWidget {
                 defaultActionText: 'Remover'.hardcoded,
               );
             },
-      icon: Icon(
-        isIOS ? CupertinoIcons.delete : Icons.delete,
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.delete,
+        materialIcon: Icons.delete,
         color: Colors.red,
       ),
     );

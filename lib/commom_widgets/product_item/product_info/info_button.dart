@@ -76,12 +76,12 @@ class InfoButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return PrimaryTextButton(
       text: 'Info'.hardcoded,
-      icon: Icon(
-        isIOS ? CupertinoIcons.info_circle_fill : Icons.info,
+      icon: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.info_circle_fill,
+        materialIcon: Icons.info,
         color: theme.primaryColor,
         size: 18,
       ),

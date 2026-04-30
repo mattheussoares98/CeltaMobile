@@ -34,7 +34,6 @@ class Financial extends ConsumerWidget {
     }
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Card(
       child: Padding(
@@ -48,7 +47,10 @@ class Financial extends ConsumerWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
+                  const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.creditcard,
+                    materialIcon: Icons.credit_card,
+                  ),
                   gapW8,
                   Text(
                     'Financeiro'.hardcoded,

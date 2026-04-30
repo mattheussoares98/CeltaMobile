@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../../../commom_widgets/commom_widgets.dart';
 
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
@@ -11,7 +12,6 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageIndex = ref.watch(pageIndexStateControllerProvider);
-    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     return BottomNavigationBar(
       currentIndex: pageIndex,
@@ -21,19 +21,31 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
           .updateIndex(index),
       items: [
         BottomNavigationBarItem(
-          icon: Icon(isIOS ? CupertinoIcons.search : Icons.search),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.search,
+            materialIcon: Icons.search,
+          ),
           label: 'Produtos'.hardcoded,
         ),
         BottomNavigationBarItem(
-          icon: Icon(isIOS ? CupertinoIcons.list_bullet : Icons.list),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.list_bullet,
+            materialIcon: Icons.list,
+          ),
           label: 'Itens'.hardcoded,
         ),
         BottomNavigationBarItem(
-          icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.payment),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.creditcard,
+            materialIcon: Icons.payment,
+          ),
           label: 'Pagamento'.hardcoded,
         ),
         BottomNavigationBarItem(
-          icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.info,
+            materialIcon: Icons.info,
+          ),
           label: 'Resumo'.hardcoded,
         ),
       ],

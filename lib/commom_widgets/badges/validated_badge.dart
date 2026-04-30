@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../commom_widgets.dart';
+
 class ValidatedBadge extends StatelessWidget {
   final bool isValid;
   final IconData materialIcon;
@@ -17,20 +19,21 @@ class ValidatedBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Badge(
       offset: const Offset(8, -6),
       backgroundColor: Colors.transparent,
-      label: Icon(
-        isValid
-            ? (isIOS ? CupertinoIcons.checkmark : Icons.check)
-            : (isIOS ? CupertinoIcons.clear : Icons.close),
+      label: PlatformIcon(
+        cupertinoIcon: isValid
+            ? CupertinoIcons.checkmark
+            : CupertinoIcons.clear,
+        materialIcon: isValid ? Icons.check : Icons.close,
         color: isValid ? Colors.green : Colors.red,
         size: 17,
       ),
-      child: Icon(
-        isIOS ? cupertinoIcon : materialIcon,
+      child: PlatformIcon(
+        cupertinoIcon: cupertinoIcon,
+        materialIcon: materialIcon,
         color: isSelected ? theme.primaryColor : theme.disabledColor,
       ),
     );

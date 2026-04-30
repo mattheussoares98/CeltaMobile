@@ -24,7 +24,6 @@ class ResearchItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaSize = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
       child: Stack(
@@ -94,7 +93,10 @@ class ResearchItem extends ConsumerWidget {
                 );
               },
               icon: mediaSize.width > 300
-                  ? Icon(isIOS ? CupertinoIcons.pencil : Icons.edit_outlined)
+                  ? const PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.pencil,
+                      materialIcon: Icons.edit_outlined,
+                    )
                   : null,
             ),
           ),

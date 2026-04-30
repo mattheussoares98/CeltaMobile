@@ -22,8 +22,6 @@ class ToggleUpdateObservationButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final observations =
         receipt.Observacoes_ProcRecebDoc ?? receipt.DefaultObservations;
@@ -52,7 +50,10 @@ class ToggleUpdateObservationButton extends ConsumerWidget {
                 .replaceAll(RegExp(r'\\n'), '\n')
                 .replaceAll(RegExp(r'\\'), '');
       },
-      icon: Icon(isIOS ? CupertinoIcons.pencil : Icons.edit),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.pencil,
+        materialIcon: Icons.edit,
+      ),
     );
   }
 }

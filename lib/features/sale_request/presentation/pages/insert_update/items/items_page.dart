@@ -30,7 +30,6 @@ class ItemsPage extends ConsumerWidget {
       provider.select((v) => v.whenData((data) => data.products)),
     );
 
-    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     return AsyncValueWidget(
       value: productsAsync,
@@ -49,8 +48,9 @@ class ItemsPage extends ConsumerWidget {
               title: Text(item.product?.name ?? ''),
               subtitle: Text('Qtd: ${item.quantity}'.hardcoded),
               trailing: IconButton(
-                icon: Icon(
-                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.delete,
+                  materialIcon: Icons.delete,
                   color: Colors.red,
                 ),
                 onPressed: () {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
 import '../../../core/domain/entities/entities.dart';
-import 'product_info.dart';
+import '../../commom_widgets.dart';
 
 class ProductInfoModal extends StatefulWidget {
   final ProductEntity product;
@@ -52,8 +52,6 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
       if (widget.showMargins) Margins(widget: widget),
     ];
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -83,41 +81,49 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
         items: [
           if (widget.showPrices)
             BottomNavigationBarItem(
-              icon: Icon(
-                isIOS ? CupertinoIcons.money_dollar : Icons.attach_money,
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.money_dollar,
+                materialIcon: Icons.attach_money,
               ),
               label: 'Preços'.hardcoded,
             ),
           if (widget.showStocks)
             BottomNavigationBarItem(
-              icon: Icon(
-                isIOS ? CupertinoIcons.archivebox : Icons.inventory_2_outlined,
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.archivebox,
+                materialIcon: Icons.inventory_2_outlined,
               ),
               label: 'Estoques'.hardcoded,
             ),
           if (widget.showAddresses)
             BottomNavigationBarItem(
-              icon: Icon(isIOS ? CupertinoIcons.location : Icons.location_pin),
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.location,
+                materialIcon: Icons.location_pin,
+              ),
               label: 'Endereços'.hardcoded,
             ),
           if (widget.showShoppings)
             BottomNavigationBarItem(
-              icon: Icon(
-                isIOS
-                    ? CupertinoIcons.shopping_cart
-                    : Icons.shopping_cart_outlined,
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.shopping_cart,
+                materialIcon: Icons.shopping_cart_outlined,
               ),
               label: 'Compras'.hardcoded,
             ),
           if (widget.showCosts)
             BottomNavigationBarItem(
-              icon: Icon(isIOS ? CupertinoIcons.creditcard : Icons.credit_card),
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.creditcard,
+                materialIcon: Icons.credit_card,
+              ),
               label: 'Custos'.hardcoded,
             ),
           if (widget.showMargins)
             BottomNavigationBarItem(
-              icon: Icon(
-                isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart_rounded,
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.chart_bar,
+                materialIcon: Icons.bar_chart_rounded,
               ),
               label: 'Margens'.hardcoded,
             ),

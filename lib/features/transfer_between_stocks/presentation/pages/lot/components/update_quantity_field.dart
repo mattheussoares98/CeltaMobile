@@ -28,8 +28,6 @@ class UpdateQuantityField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final selectedIndex = ref.watch(selectedLotIndexStateControllerProvider);
 
@@ -80,8 +78,9 @@ class UpdateQuantityField extends ConsumerWidget {
                         child: PrimaryButton(
                           text: 'Alterar'.hardcoded,
                           onPressed: onSubmit,
-                          icon: Icon(
-                            isIOS ? CupertinoIcons.check_mark : Icons.save,
+                          icon: const PlatformIcon(
+                            cupertinoIcon: CupertinoIcons.check_mark,
+                            materialIcon: Icons.save,
                           ),
                           iconAlignment: IconAlignment.end,
                         ),

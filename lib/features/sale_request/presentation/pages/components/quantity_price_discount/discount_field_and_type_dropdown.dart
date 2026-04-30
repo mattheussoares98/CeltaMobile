@@ -20,8 +20,6 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final widthScreen = MediaQuery.sizeOf(context).width;
 
     return Row(
@@ -76,7 +74,10 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                                 .hardcoded,
                       );
                     },
-                    icon: Icon(isIOS ? CupertinoIcons.info : Icons.info),
+                    icon: const PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.info,
+                      materialIcon: Icons.info,
+                    ),
                   ),
                 ),
             ],

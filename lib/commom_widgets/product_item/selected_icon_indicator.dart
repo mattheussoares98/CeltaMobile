@@ -18,19 +18,21 @@ class SelectedIconIndicator extends StatelessWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final notSelectedIcon = Icon(
-      isIOS ? CupertinoIcons.arrow_down : Icons.arrow_drop_down,
+    final notSelectedIcon = PlatformIcon(
+      cupertinoIcon: CupertinoIcons.arrow_down,
+      materialIcon: Icons.arrow_drop_down,
       color: theme.colorScheme.primary,
     );
 
-    final selectedIcon = Icon(
-      isIOS ? CupertinoIcons.arrow_up : Icons.arrow_drop_up,
+    final selectedIcon = PlatformIcon(
+      cupertinoIcon: CupertinoIcons.arrow_up,
+      materialIcon: Icons.arrow_drop_up,
       color: theme.colorScheme.primary,
     );
 
     if (isIOS) {
       return PrimaryTextButton(
-        text: isIOS ? 'Editar'.hardcoded : '',
+        text: 'Editar'.hardcoded,
         icon: selected ? selectedIcon : notSelectedIcon,
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();

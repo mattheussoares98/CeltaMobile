@@ -23,8 +23,6 @@ class SaveIconButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final loadedComplete = ref.watch(
       completeBuyQuotationsStateControllerProvider(
@@ -66,7 +64,10 @@ class SaveIconButton extends ConsumerWidget {
                 }
               }
             : null,
-        icon: Icon(isIOS ? CupertinoIcons.check_mark : Icons.save),
+        icon: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.check_mark,
+          materialIcon: Icons.save,
+        ),
       ),
     );
   }

@@ -32,7 +32,6 @@ class PaymentsList extends ConsumerWidget {
       provider.select((v) => v.whenData((data) => data.financials)),
     );
 
-    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     return AsyncValueWidget(
       value: financialsAsync,
@@ -66,8 +65,9 @@ class PaymentsList extends ConsumerWidget {
                     '',
               ),
               trailing: IconButton(
-                icon: Icon(
-                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.delete,
+                  materialIcon: Icons.delete,
                   color: Colors.red,
                 ),
                 onPressed: () {

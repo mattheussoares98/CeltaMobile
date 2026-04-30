@@ -29,7 +29,6 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final totalProductsLength = ref.watch(
       completeBuyQuotationsStateControllerProvider(
         widget.enterpriseCode,
@@ -103,8 +102,9 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
               labelText: 'Filtrar produtos'.hardcoded,
               suffixIcon: IconButton(
                 onPressed: widget.filterProductsController.clear,
-                icon: Icon(
-                  isIOS ? CupertinoIcons.delete : Icons.delete,
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.delete,
+                  materialIcon: Icons.delete,
                   color: Colors.red,
                 ),
               ),

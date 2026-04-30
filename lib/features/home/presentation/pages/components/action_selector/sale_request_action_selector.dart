@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../routing/routing.dart';
@@ -80,12 +81,16 @@ class _SearchSaleRequestAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return ActionCard(
       title: 'Pesquisar pedidos'.hardcoded,
       subtitle: 'Pesquisar pedidos já criados'.hardcoded,
-      icon: isIOS ? CupertinoIcons.search : Icons.search,
+      icon: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.search,
+        materialIcon: Icons.search,
+        color: theme.colorScheme.secondary,
+        size: 28,
+      ),
       color: theme.colorScheme.secondary,
       onTap: () => Navigator.pop(context, Routes.searchSaleRequests),
     );
@@ -98,12 +103,16 @@ class _CreateSaleRequestAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return ActionCard(
       title: 'Criar pedido'.hardcoded,
       subtitle: 'Criar um novo pedido de vendas'.hardcoded,
-      icon: isIOS ? CupertinoIcons.add_circled : Icons.add_circle_outline,
+      icon: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.add_circled,
+        materialIcon: Icons.add_circle_outline,
+        color: theme.primaryColor,
+        size: 28,
+      ),
       color: theme.primaryColor,
       onTap: () => Navigator.pop(context, Routes.saleRequestRequestsTypes),
     );

@@ -20,8 +20,6 @@ class VisualizePdfButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return PrimaryTextButton(
       text: 'Visualizar'.hardcoded,
@@ -32,7 +30,10 @@ class VisualizePdfButton extends ConsumerWidget {
           extra: <String, dynamic>{'bytes': bytes, 'fileName': modelName},
         );
       },
-      icon: Icon(isIOS ? CupertinoIcons.eye : Icons.remove_red_eye),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.eye,
+        materialIcon: Icons.remove_red_eye,
+      ),
     );
   }
 }

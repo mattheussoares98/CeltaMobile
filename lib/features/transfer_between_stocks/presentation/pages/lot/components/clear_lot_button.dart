@@ -14,7 +14,6 @@ class ClearLotButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     final hasProductsInCart = ref.watch(
@@ -26,8 +25,9 @@ class ClearLotButton extends ConsumerWidget {
     return PrimaryTextButton(
       text: isDesktop ? 'Limpar lote'.hardcoded : '',
       color: Colors.red,
-      icon: Icon(
-        isIOS ? CupertinoIcons.delete : Icons.delete,
+      icon: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.delete,
+        materialIcon: Icons.delete,
         color: hasProductsInCart ? Colors.red : theme.disabledColor,
       ),
       onPressed: hasProductsInCart

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
@@ -11,9 +12,6 @@ class BottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return BottomNavigationBar(
       currentIndex: ref.watch(pageIndexStateControllerProvider),
       onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
@@ -35,8 +33,9 @@ class BottomNavBar extends ConsumerWidget {
               },
             ),
             offset: const Offset(8, -6),
-            child: Icon(
-              isIOS ? CupertinoIcons.exclamationmark_triangle : Icons.error,
+            child: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.exclamationmark_triangle,
+              materialIcon: Icons.error,
             ),
           ),
         ),
@@ -57,8 +56,9 @@ class BottomNavBar extends ConsumerWidget {
               },
             ),
             offset: const Offset(8, -6),
-            child: Icon(
-              isIOS ? CupertinoIcons.checkmark_seal : Icons.verified_rounded,
+            child: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.checkmark_seal,
+              materialIcon: Icons.verified_rounded,
             ),
           ),
         ),

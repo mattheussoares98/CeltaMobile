@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
+
 class DefaultDeleteIcon extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
@@ -8,8 +10,6 @@ class DefaultDeleteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return IconButton(
       focusNode: FocusNode(skipTraversal: true),
       onPressed: () {
@@ -18,8 +18,9 @@ class DefaultDeleteIcon extends StatelessWidget {
           focusNode.requestFocus();
         }
       },
-      icon: Icon(
-        isIOS ? CupertinoIcons.delete : Icons.delete,
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.delete,
+        materialIcon: Icons.delete,
         color: Colors.red,
       ),
     );

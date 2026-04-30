@@ -43,7 +43,6 @@ class _ValidityState extends State<Validity> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     return RepaintBoundary(
       child: Row(
@@ -54,8 +53,9 @@ class _ValidityState extends State<Validity> {
               alignment: Alignment.centerLeft,
               child: PrimaryTextButton(
                 text: 'Nova validade'.hardcoded,
-                icon: Icon(
-                  isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.calendar,
+                  materialIcon: Icons.calendar_month,
                 ),
                 onPressed: () async {
                   newValidity = await GetNewDate.get(

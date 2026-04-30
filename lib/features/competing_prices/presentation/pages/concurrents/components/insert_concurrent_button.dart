@@ -9,8 +9,6 @@ class InsertConcurrentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return IconButton(
       onPressed: () {
         showModalPage(
@@ -18,7 +16,10 @@ class InsertConcurrentButton extends StatelessWidget {
           context,
         );
       },
-      icon: Icon(isIOS ? CupertinoIcons.add : Icons.add),
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.add,
+        materialIcon: Icons.add,
+      ),
     );
   }
 }
