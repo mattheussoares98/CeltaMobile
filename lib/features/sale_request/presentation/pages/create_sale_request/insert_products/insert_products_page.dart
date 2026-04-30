@@ -16,22 +16,23 @@ class InsertProductsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searchProductKey = SearchProductKey(
+      enterpriseCode,
+      BsRoutine.saleRequest,
+      Modules.saleRequest,
+      anotherKey: selectedRequest.code.toString(),
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Column(
         children: [
-          SearchProducts(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: selectedRequest.code!,
-          ),
+          SearchProducts(searchProductKey: searchProductKey),
           gapH8,
           Expanded(
             child: CustomScrollView(
               slivers: [
-                ProductsItems(
-                  enterpriseCode: enterpriseCode,
-                  requestCode: selectedRequest.code!,
-                ),
+                ProductsItems(searchProductKey: searchProductKey),
                 gapSliverH48,
               ],
             ),

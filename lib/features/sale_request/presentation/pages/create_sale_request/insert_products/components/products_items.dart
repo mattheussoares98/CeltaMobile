@@ -7,27 +7,14 @@ import '../../../../../../../core/presentation/controllers/products/products.dar
 import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
-  final int enterpriseCode;
-  final int requestCode;
-  const ProductsItems({
-    super.key,
-    required this.enterpriseCode,
-    required this.requestCode,
-  });
+  final SearchProductKey searchProductKey;
+  const ProductsItems({super.key, required this.searchProductKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(
-        searchProductsStateControllerProvider(
-          SearchProductKey(
-            enterpriseCode,
-            BsRoutine.saleRequest,
-            Modules.saleRequest,
-          ),
-        ),
-      ),
+      value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
       tryAgain: null,
       data: (products) {
         return ResponsiveListFlow(
@@ -41,8 +28,8 @@ class ProductsItems extends ConsumerWidget {
                 '${product.ProductPackingCode}${product.EnterpriseCode}',
               ),
               product: product,
-              requestCode: requestCode,
-              enterpriseCode: enterpriseCode,
+              requestCode: int.parse(searchProductKey.anotherKey!),
+              enterpriseCode: searchProductKey.enterpriseCode,
             );
           },
         );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../constants/constants.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 import '../../create_sale_request/insert_products/components/search_products.dart';
 import 'components/components.dart';
 
@@ -18,20 +19,23 @@ class ProductsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searchProductKey = SearchProductKey(
+      enterpriseCode,
+      BsRoutine.saleRequest,
+      Modules.saleRequest,
+      anotherKey: saleRequestId.toString(),
+    );
+
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-          child: SearchProducts(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-          ),
+          child: SearchProducts(searchProductKey: searchProductKey),
         ),
         Expanded(
           child: ProductsList(
-            enterpriseCode: enterpriseCode,
+            searchProductKey: searchProductKey,
             customerCode: customerCode,
-            saleRequestId: saleRequestId,
           ),
         ),
       ],

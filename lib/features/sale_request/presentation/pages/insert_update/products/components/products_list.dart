@@ -14,24 +14,22 @@ import '../../../../controllers/controllers.dart';
 import '../../../components/components.dart';
 
 class ProductsList extends ConsumerWidget {
-  final int enterpriseCode;
+  final SearchProductKey searchProductKey;
   final int customerCode;
-  final int saleRequestId;
 
   const ProductsList({
     super.key,
-    required this.enterpriseCode,
+    required this.searchProductKey,
     required this.customerCode,
-    required this.saleRequestId,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onTap(ProductEntity product) {
       final provider = insertUpdateStateControllerProvider(
-        enterpriseCode: enterpriseCode,
+        enterpriseCode: searchProductKey.enterpriseCode,
         customerCode: customerCode,
-        saleRequestId: saleRequestId,
+        saleRequestId: int.parse(searchProductKey.anotherKey!),
       );
 
       final saleRequest = ref.read(provider).value;
@@ -49,19 +47,12 @@ class ProductsList extends ConsumerWidget {
         Routes.saleRequestInsertProduct.name,
         extra: {'product': itemToEdit, 'originalProduct': product},
         pathParameters: {
-          'saleRequestId': saleRequestId.toString(),
-          'enterpriseCode': enterpriseCode.toString(),
+          'saleRequestId': searchProductKey.anotherKey!,
+          'enterpriseCode': searchProductKey.enterpriseCode.toString(),
           'customerCode': customerCode.toString(),
         },
       );
     }
-
-    final searchProductKey = SearchProductKey(
-      enterpriseCode,
-      BsRoutine.saleRequest,
-      Modules.saleRequest,
-      anotherKey: saleRequestId.toString(),
-    );
 
     return AsyncValueWidget(
       value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
@@ -81,9 +72,9 @@ class ProductsList extends ConsumerWidget {
               key: ValueKey(product.ProductPackingCode),
               product: product,
               onTap: () => onTap(product),
-              enterpriseCode: enterpriseCode,
+              enterpriseCode: searchProductKey.enterpriseCode,
               customerCode: customerCode,
-              saleRequestId: saleRequestId,
+              saleRequestId: int.parse(searchProductKey.anotherKey!),
             );
           },
         );
