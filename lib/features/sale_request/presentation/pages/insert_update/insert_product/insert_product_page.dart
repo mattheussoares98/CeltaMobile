@@ -42,12 +42,6 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(selectedProductStateControllerProvider.notifier)
-          .setProduct(widget.product);
-    });
   }
 
   @override
@@ -63,10 +57,8 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
   }
 
   void _saveItem() {
-    final uiState = ref.read(insertProductUIControllerProvider);
-    final updatedItem = uiState.applyTo(
-      ref.read(selectedProductStateControllerProvider)!,
-    );
+    final uiState = ref.read(insertProductUIControllerProvider(widget.product));
+    final updatedItem = uiState.applyTo(widget.product);
 
     ref
         .read(
@@ -132,13 +124,17 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: QuantityField(focusNode: _quantityFocusNode),
+                    child: QuantityField(
+                      focusNode: _quantityFocusNode,
+                      product: widget.product,
+                    ),
                   ),
                   gapW8,
                   Expanded(
                     child: PriceField(
                       allowPriceChange: allowPriceChange,
                       focusNode: _priceFocusNode,
+                      product: widget.product,
                     ),
                   ),
                 ],
@@ -147,20 +143,29 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             if (allowDeliveryTax) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
-                child: DeliveryTaxField(focusNode: _deliveryFocusNode),
+                child: DeliveryTaxField(
+                  focusNode: _deliveryFocusNode,
+                  product: widget.product,
+                ),
               ),
             ],
             if (allowDiscount) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
-                child: AddDiscount(focusNode: _discountFocusNode),
+                child: AddDiscount(
+                  focusNode: _discountFocusNode,
+                  product: widget.product,
+                ),
               ),
-              const Discounts(),
+              Discounts(product: widget.product),
             ],
             if (allowIncrement) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
-                child: IncrementField(focusNode: _incrementFocusNode),
+                child: IncrementField(
+                  focusNode: _incrementFocusNode,
+                  product: widget.product,
+                ),
               ),
             ],
             const SliverToBoxAdapter(child: DefaultDivider()),

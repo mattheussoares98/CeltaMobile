@@ -1,5 +1,5 @@
 export './customers_state_controller.dart';
-export './insert_product/insert_product.dart';
+export './insert_product_ui_controller.dart';
 export './ip_print_sale_request_controller.dart';
 export './last_saved_sale_request_state_controller.dart';
 export './page_index_state_controller.dart';

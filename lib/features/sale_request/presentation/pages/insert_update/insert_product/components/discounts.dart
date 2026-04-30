@@ -8,12 +8,17 @@ import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class Discounts extends ConsumerWidget {
-  const Discounts({super.key});
+  final BSFProductItemEntity product;
+
+  const Discounts({
+    super.key,
+    required this.product,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final discounts = ref.watch(
-      insertProductUIControllerProvider.select((s) => s.discounts),
+      insertProductUIControllerProvider(product).select((s) => s.discounts),
     );
 
     if (discounts.isEmpty) {
@@ -21,7 +26,7 @@ class Discounts extends ConsumerWidget {
     }
     void removeDiscount(int index) {
       ref
-          .read(insertProductUIControllerProvider.notifier)
+          .read(insertProductUIControllerProvider(product).notifier)
           .removeDiscount(index);
     }
 

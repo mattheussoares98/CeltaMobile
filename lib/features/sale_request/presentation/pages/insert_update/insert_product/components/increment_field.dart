@@ -11,10 +11,12 @@ import '../../../../controllers/controllers.dart';
 
 class IncrementField extends ConsumerStatefulWidget {
   final FocusNode focusNode;
+  final BSFProductItemEntity product;
 
   const IncrementField({
     super.key,
     required this.focusNode,
+    required this.product,
   });
 
   @override
@@ -31,15 +33,10 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       _incrementValueController.text =
-          ref
-              .read(selectedProductStateControllerProvider)
-              ?.increment
-              ?.value
-              ?.toString() ??
-          '';
+          widget.product.increment?.value?.toString() ?? '';
 
       ref
-          .read(insertProductUIControllerProvider.notifier)
+          .read(insertProductUIControllerProvider(widget.product).notifier)
           .updateIncrementValue(_incrementValueController.text.toDouble() ?? 0);
     });
   }
@@ -52,7 +49,7 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
 
   @override
   Widget build(BuildContext context) {
-    final uiProvider = insertProductUIControllerProvider;
+    final uiProvider = insertProductUIControllerProvider(widget.product);
 
     final incrementType = ref.watch(uiProvider.select((s) => s.incrementType));
 

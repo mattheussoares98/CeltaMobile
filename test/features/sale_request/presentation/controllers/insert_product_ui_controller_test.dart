@@ -5,7 +5,7 @@ import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../../mocks/mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   final testProduct = EntityFactory.makeBSFSaleRequestEntity().products!.first;
@@ -13,9 +13,7 @@ void main() {
   ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
-      overrides: [
-        selectedProductStateControllerProvider.overrideWithValue(testProduct),
-      ],
+      overrides: [],
     );
     addTearDown(container.dispose);
     return container;
@@ -27,7 +25,9 @@ void main() {
       final container = makeProviderContainer();
 
       // ACT
-      final result = container.read(insertProductUIControllerProvider);
+      final result = container.read(
+        insertProductUIControllerProvider(testProduct),
+      );
 
       // ASSERT
       expect(result.quantity, testProduct.quantity ?? 1);
@@ -50,18 +50,18 @@ void main() {
       test('should update only the quantity preserving other values', () async {
         // ARRANGE
         final container = makeProviderContainer();
-        container.read(insertProductUIControllerProvider);
+        container.read(insertProductUIControllerProvider(testProduct));
 
         final states = <InsertProductUIState>[];
         container.listen(
-          insertProductUIControllerProvider,
+          insertProductUIControllerProvider(testProduct),
           (_, next) => states.add(next),
         );
 
         // ACT
         final newQuantity = faker.randomGenerator.decimal();
         container
-            .read(insertProductUIControllerProvider.notifier)
+            .read(insertProductUIControllerProvider(testProduct).notifier)
             .updateQuantity(newQuantity);
 
         // ASSERT
@@ -75,18 +75,18 @@ void main() {
       test('should update only the price preserving other values', () async {
         // ARRANGE
         final container = makeProviderContainer();
-        container.read(insertProductUIControllerProvider);
+        container.read(insertProductUIControllerProvider(testProduct));
 
         final states = <InsertProductUIState>[];
         container.listen(
-          insertProductUIControllerProvider,
+          insertProductUIControllerProvider(testProduct),
           (_, next) => states.add(next),
         );
 
         // ACT
         final newPrice = faker.randomGenerator.decimal();
         container
-            .read(insertProductUIControllerProvider.notifier)
+            .read(insertProductUIControllerProvider(testProduct).notifier)
             .updatePrice(newPrice);
 
         // ASSERT
@@ -102,18 +102,18 @@ void main() {
         () async {
           // ARRANGE
           final container = makeProviderContainer();
-          container.read(insertProductUIControllerProvider);
+          container.read(insertProductUIControllerProvider(testProduct));
 
           final states = <InsertProductUIState>[];
           container.listen(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
             (_, next) => states.add(next),
           );
 
           // ACT
           final newObservations = faker.lorem.sentence();
           container
-              .read(insertProductUIControllerProvider.notifier)
+              .read(insertProductUIControllerProvider(testProduct).notifier)
               .updateObservations(newObservations);
 
           // ASSERT
@@ -130,18 +130,18 @@ void main() {
         () async {
           // ARRANGE
           final container = makeProviderContainer();
-          container.read(insertProductUIControllerProvider);
+          container.read(insertProductUIControllerProvider(testProduct));
 
           final states = <InsertProductUIState>[];
           container.listen(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
             (_, next) => states.add(next),
           );
 
           // ACT
           final newValue = faker.randomGenerator.decimal();
           container
-              .read(insertProductUIControllerProvider.notifier)
+              .read(insertProductUIControllerProvider(testProduct).notifier)
               .updateDeliveryTaxValue(newValue);
 
           // ASSERT
@@ -159,12 +159,12 @@ void main() {
           // ARRANGE
           final container = makeProviderContainer();
           final initialState = container.read(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
           );
 
           final states = <InsertProductUIState>[];
           container.listen(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
             (_, next) => states.add(next),
           );
 
@@ -174,7 +174,7 @@ void main() {
               ? PercentageOrValue.reais
               : PercentageOrValue.percentage;
           container
-              .read(insertProductUIControllerProvider.notifier)
+              .read(insertProductUIControllerProvider(testProduct).notifier)
               .updateDeliveryTaxType(newType);
 
           // ASSERT
@@ -191,18 +191,18 @@ void main() {
         () async {
           // ARRANGE
           final container = makeProviderContainer();
-          container.read(insertProductUIControllerProvider);
+          container.read(insertProductUIControllerProvider(testProduct));
 
           final states = <InsertProductUIState>[];
           container.listen(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
             (_, next) => states.add(next),
           );
 
           // ACT
           final newValue = faker.randomGenerator.decimal();
           container
-              .read(insertProductUIControllerProvider.notifier)
+              .read(insertProductUIControllerProvider(testProduct).notifier)
               .updateIncrementValue(newValue);
 
           // ASSERT
@@ -220,12 +220,12 @@ void main() {
           // ARRANGE
           final container = makeProviderContainer();
           final initialState = container.read(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
           );
 
           final states = <InsertProductUIState>[];
           container.listen(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
             (_, next) => states.add(next),
           );
 
@@ -235,7 +235,7 @@ void main() {
               ? PercentageOrValue.reais
               : PercentageOrValue.percentage;
           container
-              .read(insertProductUIControllerProvider.notifier)
+              .read(insertProductUIControllerProvider(testProduct).notifier)
               .updateIncrementType(newType);
 
           // ASSERT
@@ -252,11 +252,11 @@ void main() {
         () async {
           // ARRANGE
           final container = makeProviderContainer();
-          container.read(insertProductUIControllerProvider);
+          container.read(insertProductUIControllerProvider(testProduct));
 
           final states = <InsertProductUIState>[];
           container.listen(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
             (_, next) => states.add(next),
           );
 
@@ -275,10 +275,10 @@ void main() {
 
           // ACT
           container
-              .read(insertProductUIControllerProvider.notifier)
+              .read(insertProductUIControllerProvider(testProduct).notifier)
               .addDiscount(firstDiscount);
           container
-              .read(insertProductUIControllerProvider.notifier)
+              .read(insertProductUIControllerProvider(testProduct).notifier)
               .addDiscount(secondDiscount);
 
           // ASSERT
@@ -291,11 +291,11 @@ void main() {
       test('should replace all discounts when type is reais', () async {
         // ARRANGE
         final container = makeProviderContainer();
-        container.read(insertProductUIControllerProvider);
+        container.read(insertProductUIControllerProvider(testProduct));
 
         final states = <InsertProductUIState>[];
         container.listen(
-          insertProductUIControllerProvider,
+          insertProductUIControllerProvider(testProduct),
           (_, next) => states.add(next),
         );
 
@@ -308,7 +308,7 @@ void main() {
 
         // ACT
         container
-            .read(insertProductUIControllerProvider.notifier)
+            .read(insertProductUIControllerProvider(testProduct).notifier)
             .addDiscount(newDiscount);
 
         // ASSERT
@@ -322,17 +322,17 @@ void main() {
       test('should remove a discount from the list at given index', () async {
         // ARRANGE
         final container = makeProviderContainer();
-        container.read(insertProductUIControllerProvider);
+        container.read(insertProductUIControllerProvider(testProduct));
 
         final states = <InsertProductUIState>[];
         container.listen(
-          insertProductUIControllerProvider,
+          insertProductUIControllerProvider(testProduct),
           (_, next) => states.add(next),
         );
 
         // ACT
         container
-            .read(insertProductUIControllerProvider.notifier)
+            .read(insertProductUIControllerProvider(testProduct).notifier)
             .removeDiscount(0);
 
         // ASSERT
@@ -350,11 +350,11 @@ void main() {
         () async {
           // ARRANGE
           final container = makeProviderContainer();
-          container.read(insertProductUIControllerProvider);
+          container.read(insertProductUIControllerProvider(testProduct));
 
           final states = <InsertProductUIState>[];
           container.listen(
-            insertProductUIControllerProvider,
+            insertProductUIControllerProvider(testProduct),
             (_, next) => states.add(next),
           );
 
@@ -362,7 +362,7 @@ void main() {
 
           // ACT
           container
-              .read(insertProductUIControllerProvider.notifier)
+              .read(insertProductUIControllerProvider(testProduct).notifier)
               .updateDiscountType(newType);
 
           // ASSERT

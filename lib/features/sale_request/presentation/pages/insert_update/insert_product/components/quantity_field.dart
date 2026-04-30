@@ -5,14 +5,17 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class QuantityField extends ConsumerStatefulWidget {
   final FocusNode focusNode;
+  final BSFProductItemEntity product;
 
   const QuantityField({
     super.key,
     required this.focusNode,
+    required this.product,
   });
 
   @override
@@ -28,14 +31,13 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        _quantityController.text =
-            (ref.read(selectedProductStateControllerProvider)?.quantity ?? 1)
-                .toString()
-                .toBrazilianNumber(3, true);
+        _quantityController.text = (widget.product.quantity ?? 1)
+            .toString()
+            .toBrazilianNumber(3, true);
       }
 
       ref
-          .read(insertProductUIControllerProvider.notifier)
+          .read(insertProductUIControllerProvider(widget.product).notifier)
           .updateQuantity(_quantityController.text.toDouble() ?? 1);
     });
   }
@@ -54,7 +56,7 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
       labelText: 'Quantidade'.hardcoded,
       onChanged: (value) {
         ref
-            .read(insertProductUIControllerProvider.notifier)
+            .read(insertProductUIControllerProvider(widget.product).notifier)
             .updateQuantity(value.toDouble() ?? 1);
       },
       keyboardType: const TextInputType.numberWithOptions(decimal: true),

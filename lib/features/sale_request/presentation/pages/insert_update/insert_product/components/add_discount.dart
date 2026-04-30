@@ -12,10 +12,12 @@ import '../../../../controllers/controllers.dart';
 
 class AddDiscount extends ConsumerStatefulWidget {
   final FocusNode focusNode;
+  final BSFProductItemEntity product;
 
   const AddDiscount({
     super.key,
     required this.focusNode,
+    required this.product,
   });
 
   @override
@@ -41,16 +43,16 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     if (formKey.currentState!.validate() != true) return;
 
     final type = ref.read(
-      insertProductUIControllerProvider.select((s) => s.discountType),
+      insertProductUIControllerProvider(widget.product)
+          .select((s) => s.discountType),
     );
 
     final newDiscount = BSFDiscountEntity(
       order:
           (ref
-                  .read(selectedProductStateControllerProvider)
-                  ?.discounts
-                  ?.length ??
-              0) +
+                      .read(insertProductUIControllerProvider(widget.product))
+                      .discounts
+                      .length) +
           1,
       discountOrigin: null,
       user: null,
@@ -61,14 +63,14 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
       ),
     );
     ref
-        .read(insertProductUIControllerProvider.notifier)
+        .read(insertProductUIControllerProvider(widget.product).notifier)
         .addDiscount(newDiscount);
     _valueController.clear();
   }
 
   void _onTypeChanged(PercentageOrValue type) {
     ref
-        .read(insertProductUIControllerProvider.notifier)
+        .read(insertProductUIControllerProvider(widget.product).notifier)
         .updateDiscountType(type);
   }
 
@@ -91,7 +93,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                 child: Consumer(
                   builder: (_, ref, _) {
                     final discountType = ref.watch(
-                      insertProductUIControllerProvider.select(
+                      insertProductUIControllerProvider(widget.product).select(
                         (s) => s.discountType,
                       ),
                     );
@@ -135,7 +137,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
               child: Consumer(
                 builder: (_, ref, _) {
                   final discountType = ref.watch(
-                    insertProductUIControllerProvider.select(
+                    insertProductUIControllerProvider(widget.product).select(
                       (s) => s.discountType,
                     ),
                   );
