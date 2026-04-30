@@ -115,44 +115,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                 ),
             ],
           ),
-          if (item != null)
-            SummaryTable(
-              items: [
-                SummaryTableItem(
-                  title: 'Preço'.hardcoded,
-                  value: item!.value,
-                  decimalHouses: 2,
-                  isPrice: true,
-                ),
-                if (item!.totalDeliveryTax > 0)
-                  SummaryTableItem(
-                    title: 'Frete'.hardcoded,
-                    value: item!.totalDeliveryTax,
-                    isPrice: true,
-                    color: theme.colorScheme.secondary,
-                  ),
-                if (item!.totalDiscountValue > 0)
-                  SummaryTableItem(
-                    title: 'Desconto'.hardcoded,
-                    value: item!.totalDiscountValue,
-                    isPrice: true,
-                    color: Colors.red,
-                  ),
-                if (item!.totalIncrement > 0)
-                  SummaryTableItem(
-                    title: 'Acréscimo'.hardcoded,
-                    value: item!.totalIncrement,
-                    isPrice: true,
-                    color: Colors.orange,
-                  ),
-                SummaryTableItem(
-                  title: 'Total'.hardcoded,
-                  value: item!.totalLiquid,
-                  isPrice: true,
-                  color: theme.primaryColor,
-                ),
-              ],
-            ),
+          if (item != null) CartSummaryTable(item: item!, product: product),
         ],
       ),
     );
