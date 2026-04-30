@@ -12,12 +12,10 @@ import '../../../../controllers/controllers.dart';
 
 class AddDiscount extends ConsumerStatefulWidget {
   final FocusNode focusNode;
-  final void Function(String) onFieldSubmitted;
 
   const AddDiscount({
     super.key,
     required this.focusNode,
-    required this.onFieldSubmitted,
   });
 
   @override
@@ -108,7 +106,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                       controller: _valueController,
                       onFieldSubmitted: (value) {
                         _addDiscount();
-                        widget.onFieldSubmitted(value);
+                        FocusScope.of(context).nextFocus();
                       },
                       suffixIcon: ExcludeFocus(
                         child: IconButton(

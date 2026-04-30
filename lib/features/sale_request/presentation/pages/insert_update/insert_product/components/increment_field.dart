@@ -11,12 +11,10 @@ import '../../../../controllers/controllers.dart';
 
 class IncrementField extends ConsumerStatefulWidget {
   final FocusNode focusNode;
-  final void Function(String) onFieldSubmitted;
 
   const IncrementField({
     super.key,
     required this.focusNode,
-    required this.onFieldSubmitted,
   });
 
   @override
@@ -79,7 +77,6 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
                   decimal: true,
                 ),
                 textInputAction: TextInputAction.next,
-                onFieldSubmitted: widget.onFieldSubmitted,
                 onChanged: (value) {
                   ref
                       .read(uiProvider.notifier)

@@ -9,12 +9,10 @@ import '../../../../controllers/controllers.dart';
 
 class QuantityField extends ConsumerStatefulWidget {
   final FocusNode focusNode;
-  final void Function(String) onFieldSubmitted;
 
   const QuantityField({
     super.key,
     required this.focusNode,
-    required this.onFieldSubmitted,
   });
 
   @override
@@ -61,7 +59,6 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
       },
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textInputAction: TextInputAction.next,
-      onFieldSubmitted: widget.onFieldSubmitted,
       validator: FormValidators.compose([
         NonEmptyValidator(),
         NumberValidator(allowDecimal: true, maxDecimalHouses: 3),

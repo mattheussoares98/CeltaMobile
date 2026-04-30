@@ -10,13 +10,11 @@ import '../../../../controllers/controllers.dart';
 class PriceField extends ConsumerStatefulWidget {
   final bool allowPriceChange;
   final FocusNode focusNode;
-  final void Function(String) onFieldSubmitted;
 
   const PriceField({
     super.key,
     required this.allowPriceChange,
     required this.focusNode,
-    required this.onFieldSubmitted,
   });
 
   @override
@@ -58,7 +56,6 @@ class _PriceFieldState extends ConsumerState<PriceField> {
       enabled: widget.allowPriceChange,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textInputAction: TextInputAction.next,
-      onFieldSubmitted: widget.onFieldSubmitted,
       validator: FormValidators.compose([
         NonEmptyValidator(),
         NumberValidator(allowDecimal: true, maxDecimalHouses: 3),

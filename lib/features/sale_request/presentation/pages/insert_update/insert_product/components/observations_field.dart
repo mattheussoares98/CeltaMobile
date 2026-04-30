@@ -6,13 +6,11 @@ import '../../../../../../../localization/string_hardcoded.dart';
 class ObservationsField extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
-  final void Function(String) onFieldSubmitted;
 
   const ObservationsField({
     super.key,
     required this.controller,
     required this.focusNode,
-    required this.onFieldSubmitted,
   });
 
   @override
@@ -24,7 +22,6 @@ class ObservationsField extends StatelessWidget {
       maxLines: 3,
       maxLength: 200,
       textInputAction: TextInputAction.done,
-      onFieldSubmitted: onFieldSubmitted,
     );
   }
 }

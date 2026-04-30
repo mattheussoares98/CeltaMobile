@@ -132,27 +132,13 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: QuantityField(
-                      focusNode: _quantityFocusNode,
-                      onFieldSubmitted: (_) => _priceFocusNode.requestFocus(),
-                    ),
+                    child: QuantityField(focusNode: _quantityFocusNode),
                   ),
                   gapW8,
                   Expanded(
                     child: PriceField(
                       allowPriceChange: allowPriceChange,
                       focusNode: _priceFocusNode,
-                      onFieldSubmitted: (_) {
-                        if (allowDeliveryTax) {
-                          _deliveryFocusNode.requestFocus();
-                        } else if (allowDiscount) {
-                          _discountFocusNode.requestFocus();
-                        } else if (allowIncrement) {
-                          _incrementFocusNode.requestFocus();
-                        } else {
-                          _observationsFocusNode.requestFocus();
-                        }
-                      },
                     ),
                   ),
                 ],
@@ -161,44 +147,20 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
             if (allowDeliveryTax) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
-                child: DeliveryTaxField(
-                  focusNode: _deliveryFocusNode,
-                  onFieldSubmitted: (_) {
-                    if (allowDiscount) {
-                      _discountFocusNode.requestFocus();
-                    } else if (allowIncrement) {
-                      _incrementFocusNode.requestFocus();
-                    } else {
-                      _observationsFocusNode.requestFocus();
-                    }
-                  },
-                ),
+                child: DeliveryTaxField(focusNode: _deliveryFocusNode),
               ),
             ],
             if (allowDiscount) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
-                child: AddDiscount(
-                  focusNode: _discountFocusNode,
-                  onFieldSubmitted: (_) {
-                    if (allowIncrement) {
-                      _incrementFocusNode.requestFocus();
-                    } else {
-                      _observationsFocusNode.requestFocus();
-                    }
-                  },
-                ),
+                child: AddDiscount(focusNode: _discountFocusNode),
               ),
               const Discounts(),
             ],
             if (allowIncrement) ...[
               const SliverToBoxAdapter(child: DefaultDivider()),
               SliverToBoxAdapter(
-                child: IncrementField(
-                  focusNode: _incrementFocusNode,
-                  onFieldSubmitted: (_) =>
-                      _observationsFocusNode.requestFocus(),
-                ),
+                child: IncrementField(focusNode: _incrementFocusNode),
               ),
             ],
             const SliverToBoxAdapter(child: DefaultDivider()),
@@ -206,14 +168,15 @@ class _ProductDetailPageState extends ConsumerState<InsertProductPage> {
               child: ObservationsField(
                 controller: _observationsController,
                 focusNode: _observationsFocusNode,
-                onFieldSubmitted: (_) => _saveItem(),
               ),
             ),
             gapSliverH32,
             SliverToBoxAdapter(
-              child: PrimaryButton(
-                text: 'CONFIRMAR'.hardcoded,
-                onPressed: _saveItem,
+              child: ExcludeFocus(
+                child: PrimaryButton(
+                  text: 'CONFIRMAR'.hardcoded,
+                  onPressed: _saveItem,
+                ),
               ),
             ),
             const SliverToBoxAdapter(child: DefaultDivider()),

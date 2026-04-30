@@ -10,12 +10,10 @@ import '../../../../controllers/controllers.dart';
 
 class DeliveryTaxField extends ConsumerStatefulWidget {
   final FocusNode focusNode;
-  final void Function(String) onFieldSubmitted;
 
   const DeliveryTaxField({
     super.key,
     required this.focusNode,
-    required this.onFieldSubmitted,
   });
 
   @override
@@ -83,7 +81,6 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
                   decimal: true,
                 ),
                 textInputAction: TextInputAction.next,
-                onFieldSubmitted: widget.onFieldSubmitted,
                 validator: FormValidators.compose([
                   NumberValidator(allowDecimal: true, allowEmptyValue: true),
                 ]),
