@@ -6,6 +6,7 @@ import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../utils/utils.dart';
 import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
@@ -38,6 +39,7 @@ class BSFProductItemSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final currentQuantity = item.quantity ?? 0;
 
     return Container(
       padding: const EdgeInsets.all(Sizes.p4),
@@ -50,30 +52,74 @@ class BSFProductItemSummary extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    PlatformIcon(
-                      cupertinoIcon: CupertinoIcons.cart,
-                      materialIcon: Icons.shopping_cart_outlined,
-                      size: 14,
-                      color: theme.primaryColor,
-                    ),
-                    gapW4,
-                    Flexible(
-                      child: Text(
-                        'No carrinho'.hardcoded,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
+              PlatformIcon(
+                cupertinoIcon: CupertinoIcons.cart,
+                materialIcon: Icons.shopping_cart_outlined,
+                size: 14,
+                color: theme.primaryColor,
+              ),
+              gapW4,
+              Text(
+                'Qtd'.hardcoded,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.primaryColor,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              gapW4,
+              IconButton(
+                onPressed: () {
+                  if (currentQuantity <= 1) {
+                    return;
+                  }
+
+                  ref
+                      .read(
+                        insertUpdateStateControllerProvider(
+                          enterpriseCode: enterpriseCode,
+                          customerCode: customerCode,
+                          saleRequestId: saleRequestId,
+                        ).notifier,
+                      )
+                      .updateItemQuantity(item, (item.quantity ?? 0) - 1);
+                },
+                icon: PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.minus_circle,
+                  materialIcon: Icons.remove_circle_outline,
+                  size: 20,
+                  color: (item.quantity ?? 0) > 1 ? null : theme.hintColor,
+                ),
+                padding: const EdgeInsets.all(Sizes.p4),
+                constraints: const BoxConstraints(),
+              ),
+              gapW8,
+              Text(
+                (item.quantity ?? 0).toString().toBrazilianNumber(3, true),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              gapW8,
+              IconButton(
+                onPressed: () => ref
+                    .read(
+                      insertUpdateStateControllerProvider(
+                        enterpriseCode: enterpriseCode,
+                        customerCode: customerCode,
+                        saleRequestId: saleRequestId,
+                      ).notifier,
+                    )
+                    .updateItemQuantity(item, (item.quantity ?? 0) + 1),
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.plus_circle,
+                  materialIcon: Icons.add_circle_outline,
+                  size: 20,
+                ),
+                padding: const EdgeInsets.all(Sizes.p4),
+                constraints: const BoxConstraints(),
+              ),
+              const Spacer(),
               IconButton(
                 onPressed: () => ref
                     .read(
@@ -97,11 +143,6 @@ class BSFProductItemSummary extends ConsumerWidget {
           ),
           SummaryTable(
             items: [
-              SummaryTableItem(
-                title: 'Qtd'.hardcoded,
-                value: item.quantity ?? 0,
-                decimalHouses: 3,
-              ),
               SummaryTableItem(
                 title: 'Preço'.hardcoded,
                 value: item.value,
