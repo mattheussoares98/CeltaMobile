@@ -8,7 +8,8 @@ UI Components Rulebook
 This document defines the strict rules for creating, modifying, and styling Flutter UI components within the CeltaMobile application.
 
 ## 1. File Path Header and Imports (Barrel Files)
-Do not use the exact widget file path at the top of the file. Instead, write the path of the nearest barrel file (e.g., `components.dart`) that exports the widget. Similarly, when importing widgets from a folder, always prefer to import its barrel file to gain access to all related widgets simultaneously.
+- **No Commented File Paths:** NEVER include commented file paths (e.g., `// lib/features/...`) at the top of generated code blocks. Output the raw Dart code directly without any file path headers.
+Similarly, when importing widgets from a folder, always prefer to import its barrel file to gain access to all related widgets simultaneously.
 ```dart
 // lib/features/sale_request/presentation/pages/components/components.dart
 import 'package:flutter/material.dart';
@@ -70,6 +71,8 @@ Column(
 ## 5. Typography and Theme
 
 - **Localization:** All widget texts should end with `.hardcoded`.
+
+- **Color Opacity (CRITICAL):** The `.withOpacity()` method is deprecated and strictly forbidden. You MUST NEVER use `.withOpacity()`. Instead, always use `.withAlpha()`. Remember that `withAlpha` takes an integer from 0 to 255 (e.g., for 50% opacity, use `Colors.black.withAlpha(127)` instead of `Colors.black.withOpacity(0.5)`).
 
 The application theme is defined in `lib/core/presentation/theme/app_theme.dart`.
 

@@ -108,3 +108,8 @@ class MyFeatureStateController extends _$MyFeatureStateController {
 - **Components:** Sub-widgets and complex UI parts specific to a page should be extracted into a `components/` sub-folder within the respective page's directory to keep the main page file clean.
 - Controllers should manage the business logic and state for these components, minimizing `StatefulWidget` usage where Riverpod controllers can cleanly handle the state.
 - Always use `const` constructors for widgets whenever possible to optimize the Flutter build tree and avoid unnecessary rebuilds.
+
+## 6. Import Path Rules
+- **Strict Relative Imports (Depth Calculation):** AI models struggle with relative import depth. You MUST explicitly map out the folder depth before writing `../`. Count one `../` for EVERY directory level you need to escape to reach the target. 
+- **Layer Crossing Example:** If you are inside `presentation/pages/insert_update/insert_product/components/` and need to reach the `domain` or `presentation/controllers` layer, you are 5 levels deep. You MUST use `../../../../../domain/entities/entities.dart` or `../../../../controllers/controllers.dart`. Do not guess; count the levels.
+- **Barrel File Priority:** Always import the nearest barrel file (`.dart` file with the same name as the folder) instead of targeting deep internal files directly.
