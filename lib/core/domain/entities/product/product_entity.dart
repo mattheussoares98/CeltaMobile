@@ -2,7 +2,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../utils/utils.dart';
-import 'product.dart';
+import '../entities.dart';
 
 class ProductEntity extends Equatable {
   final int? EnterpriseCode;
@@ -532,14 +532,4 @@ class ProductEntity extends Equatable {
         ? null
         : DataValidade_ProcRecebDocProEmb,
   );
-}
-
-enum PracticedPriceType {
-  manual('Manual'),
-  notDefined('Não definido'),
-  retail('Varejo'),
-  whole('Atacado');
-
-  final String name;
-  const PracticedPriceType(this.name);
 }

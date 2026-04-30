@@ -2,6 +2,7 @@ export './bs_resource.dart';
 export './crashlytics_custom_key_entity.dart';
 export './device_type.dart';
 export './modules.dart';
+export './practiced_price.dart';
 export './product/product.dart';
 export './request_type/request_type.dart';
 export './settings/settings.dart';
