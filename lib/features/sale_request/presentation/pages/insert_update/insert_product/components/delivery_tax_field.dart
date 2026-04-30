@@ -66,6 +66,11 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
+                onChanged: (value) {
+                  ref
+                      .read(uiProvider.notifier)
+                      .updateDeliveryTaxValue(double.tryParse(value) ?? 0);
+                },
                 textInputAction: TextInputAction.next,
                 validator: FormValidators.compose([
                   NumberValidator(allowDecimal: true, allowEmptyValue: true),
