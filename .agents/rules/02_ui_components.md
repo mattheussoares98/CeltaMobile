@@ -22,7 +22,8 @@ import 'package:flutter/material.dart';
 Key reusable widgets include:
 - **Buttons**: `PrimaryButton`, `PrimaryTextButton`, `ActionTextButton`, `DefaultPaginationButtons`
 - **Inputs & Controls**: `DefaultDropDown`, `DefaultSimpleDropDown`, `DefaultCheckBox`, `DefaultSwitch`, `DefaultChoiceChip`, `DefaultSegmentedButtons`
-- **Layout & Structure**: `ResponsiveCenter`, `ResponsiveListFlow`, `ResponsiveScrollableWidget`, `TitleAndSubtitle`
+- **Layout & Structure**: `ResponsiveCenter`, `ResponsiveListFlow`, `ResponsiveScrollableWidget`, `TitleAndSubtitle`. 
+  - **CRITICAL REQUIREMENT:** You MUST ALWAYS use `TitleAndSubtitle` whenever you need to display a row or column containing a label/title and a value/subtitle (e.g., summary rows, key-value pairs, or detail rows). NEVER create custom widgets like `SummaryRow` or `KeyValueRow` for this purpose.
 - **Feedback & States**: `LoadingWidget` (and `LoadingExtension`), `EmptyPlaceholderWidget`, `AsyncValueWidget`
 - **Dialogs & Overlays**: `AlertDialogs`, `ShowSnackBarMessage`, `ShowModalPage`
 - **Icons**: `PlatformIcon`
