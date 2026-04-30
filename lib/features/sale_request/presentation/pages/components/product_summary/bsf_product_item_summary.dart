@@ -29,6 +29,10 @@ class BSFProductItemSummary extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
+    if (product.getPrice <= 0) {
+      return const SizedBox.shrink();
+    }
+
     return Container(
       padding: const EdgeInsets.all(Sizes.p4),
       decoration: BoxDecoration(
