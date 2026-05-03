@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/datasource/buyer/buyer.dart';
 import '../../domain/repositories/buyer/buyer.dart';
+import '../../data/repositories/buyer/buyer.dart';
 import '../soap/soap.dart';
 
 part 'buyer.g.dart';

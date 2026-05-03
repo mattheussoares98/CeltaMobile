@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/datasource/address/address.dart';
 import '../../domain/repositories/address/address.dart';
+import '../../data/repositories/address/address.dart';
 import '../http/http.dart';
 
 part 'address.g.dart';

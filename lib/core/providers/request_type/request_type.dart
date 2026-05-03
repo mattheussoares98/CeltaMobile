@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/datasource/request_type/request_type.dart';
 import '../../domain/repositories/request_type/request_type.dart';
+import '../../data/repositories/request_type/request_type.dart';
 import '../http/http.dart';
 import '../soap/soap.dart';
 

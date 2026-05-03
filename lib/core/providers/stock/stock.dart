@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/datasource/stock/stock.dart';
 import '../../domain/repositories/stock/stock.dart';
+import '../../data/repositories/stock/stock.dart';
 import '../soap/soap.dart';
 
 part 'stock.g.dart';

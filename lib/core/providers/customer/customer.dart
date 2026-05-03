@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/datasource/customer/customer.dart';
 import '../../domain/repositories/customer/customer.dart';
+import '../../data/repositories/customer/customer.dart';
 import '../soap/soap.dart';
 
 part 'customer.g.dart';
