@@ -29,20 +29,24 @@ class DocumentsPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(
-          expeditionDocumentsStateControllerProvider(enterpriseCode),
-        ),
-        tryAgain: onRefresh,
-        data: (documents) {
-          if (documents == null || documents.isEmpty) {
-            return EmptyDocumentsMessage(onRefresh: onRefresh);
-          }
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(
+              expeditionDocumentsStateControllerProvider(enterpriseCode),
+            ),
+            tryAgain: onRefresh,
+            data: (documents) {
+              if (documents == null || documents.isEmpty) {
+                return EmptyDocumentsMessage(onRefresh: onRefresh);
+              }
 
-          return DocumentsItems(
-            documents: documents,
-            onRefresh: onRefresh,
-            enterpriseCode: enterpriseCode,
+              return DocumentsItems(
+                documents: documents,
+                onRefresh: onRefresh,
+                enterpriseCode: enterpriseCode,
+              );
+            },
           );
         },
       ),

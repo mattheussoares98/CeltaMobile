@@ -38,27 +38,31 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
         title: DefaultAppBarTitle(title: 'Modelos de pedido'.hardcoded),
         actions: [ReloadIconButton(provider: provider)],
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(provider),
-        tryAgain: () {
-          ref.invalidate(provider);
-        },
-        data: (requests) {
-          return RefreshIndicator(
-            onRefresh: () async {
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(provider),
+            tryAgain: () {
               ref.invalidate(provider);
             },
-            child: ResponsiveListFlow(
-              itemCount: requests?.length ?? 0,
-              itemBuilder: (_, index) {
-                final request = requests![index];
-                return _RequestTypeItem(
-                  key: ValueKey(request.code),
-                  request: request,
-                  onTap: () => onTap(request),
-                );
-              },
-            ),
+            data: (requests) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(provider);
+                },
+                child: ResponsiveListFlow(
+                  itemCount: requests?.length ?? 0,
+                  itemBuilder: (_, index) {
+                    final request = requests![index];
+                    return _RequestTypeItem(
+                      key: ValueKey(request.code),
+                      request: request,
+                      onTap: () => onTap(request),
+                    );
+                  },
+                ),
+              );
+            },
           );
         },
       ),

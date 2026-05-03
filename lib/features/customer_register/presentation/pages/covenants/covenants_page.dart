@@ -90,35 +90,39 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Convênios'.hardcoded)),
-      body: AsyncValueWidget(
-        value: covenantsAsync,
-        tryAgain: () => ref.invalidate(covenantsStateControllerProvider),
-        data: (covenants) {
-          return Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-              child: ResponsiveScrollableWidget(
-                isSliverPage: true,
-                child: CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  slivers: [
-                    NotBindedCovenants(
-                      covenants: covenants,
-                      changeSelectedIndex: changeSelectedIndex,
-                      selectedIndex: selectedIndex,
-                      bindCovenant: bindCovenant,
-                      limitController: limitController,
-                      limitFocusNode: limitFocusNode,
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: covenantsAsync,
+            tryAgain: () => ref.invalidate(covenantsStateControllerProvider),
+            data: (covenants) {
+              return Form(
+                key: formKey,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+                  child: ResponsiveScrollableWidget(
+                    isSliverPage: true,
+                    child: CustomScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      slivers: [
+                        NotBindedCovenants(
+                          covenants: covenants,
+                          changeSelectedIndex: changeSelectedIndex,
+                          selectedIndex: selectedIndex,
+                          bindCovenant: bindCovenant,
+                          limitController: limitController,
+                          limitFocusNode: limitFocusNode,
+                        ),
+                        if (customerCovenants != null &&
+                            customerCovenants.isNotEmpty) ...[
+                          const BindedCovenants(),
+                        ],
+                      ],
                     ),
-                    if (customerCovenants != null &&
-                        customerCovenants.isNotEmpty) ...[
-                      const BindedCovenants(),
-                    ],
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),

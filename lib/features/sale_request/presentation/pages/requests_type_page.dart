@@ -25,32 +25,36 @@ class RequestsTypePage extends ConsumerWidget {
         title: DefaultAppBarTitle(title: 'Modelos de pedido'.hardcoded),
         actions: [ReloadIconButton(provider: provider)],
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(provider),
-        tryAgain: () => ref.invalidate(provider),
-        data: (requests) {
-          //TODO check why is not working on iOS device
-          return RefreshIndicator(
-            onRefresh: () async => ref.invalidate(provider),
-            child: ResponsiveListFlow(
-              itemCount: requests?.length ?? 0,
-              itemBuilder: (_, index) {
-                final request = requests![index];
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(provider),
+            tryAgain: () => ref.invalidate(provider),
+            data: (requests) {
+              //TODO check why is not working on iOS device
+              return RefreshIndicator(
+                onRefresh: () async => ref.invalidate(provider),
+                child: ResponsiveListFlow(
+                  itemCount: requests?.length ?? 0,
+                  itemBuilder: (_, index) {
+                    final request = requests![index];
 
-                return _RequestTypeItem(
-                  key: ValueKey(request.code),
-                  request: request,
-                  onTap: () => context.goNamed(
-                    Routes.createSaleRequest.name,
-                    pathParameters: {
-                      'enterpriseCode': enterpriseCode.toString(),
-                      'requestCode': request.code.toString(),
-                    },
-                  ),
-                  enterpriseCode: enterpriseCode,
-                );
-              },
-            ),
+                    return _RequestTypeItem(
+                      key: ValueKey(request.code),
+                      request: request,
+                      onTap: () => context.goNamed(
+                        Routes.createSaleRequest.name,
+                        pathParameters: {
+                          'enterpriseCode': enterpriseCode.toString(),
+                          'requestCode': request.code.toString(),
+                        },
+                      ),
+                      enterpriseCode: enterpriseCode,
+                    );
+                  },
+                ),
+              );
+            },
           );
         },
       ),

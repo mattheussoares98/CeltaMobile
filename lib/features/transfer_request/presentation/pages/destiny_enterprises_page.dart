@@ -30,47 +30,51 @@ class DestinyEnterprisesPage extends ConsumerWidget {
         title: Text('Empresa de destino'.hardcoded),
         actions: [ReloadIconButton(provider: provider)],
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(provider),
-        tryAgain: () {
-          ref.invalidate(provider);
-        },
-        data: (enterprises) {
-          return EnterpriseItems(
-            enterprises: enterprises
-                .where((e) => e.Code != enterpriseOriginCode)
-                .toList(),
-            onTap: (enterprise) async {
-              bool moduleIsEnabled = await ref.read(
-                moduleIsEnabledControllerProvider(
-                  Modules.transferRequest,
-                  enterprise.CnpjNumber!,
-                ).future,
-              );
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(provider),
+            tryAgain: () {
+              ref.invalidate(provider);
+            },
+            data: (enterprises) {
+              return EnterpriseItems(
+                enterprises: enterprises
+                    .where((e) => e.Code != enterpriseOriginCode)
+                    .toList(),
+                onTap: (enterprise) async {
+                  bool moduleIsEnabled = await ref.read(
+                    moduleIsEnabledControllerProvider(
+                      Modules.transferRequest,
+                      enterprise.CnpjNumber!,
+                    ).future,
+                  );
 
-              if (!moduleIsEnabled) {
-                showAlertDialog(
-                  context: context,
-                  title: 'Módulo desabilitado'.hardcoded,
-                  content:
-                      'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo'
-                          .hardcoded,
-                );
-                return;
-              }
+                  if (!moduleIsEnabled) {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Módulo desabilitado'.hardcoded,
+                      content:
+                          'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo'
+                              .hardcoded,
+                    );
+                    return;
+                  }
 
-              context.goNamed(
-                Routes.transferRequestProductsManagement.name,
-                pathParameters: {
-                  'requestTypeCode': requestTypeCode.toString(),
-                  'enterpriseOriginCode': enterpriseOriginCode.toString(),
-                  'enterpriseDestinyCode': enterprise.Code.toString(),
-                  'enterpriseCode': enterpriseOriginCode.toString(),
+                  context.goNamed(
+                    Routes.transferRequestProductsManagement.name,
+                    pathParameters: {
+                      'requestTypeCode': requestTypeCode.toString(),
+                      'enterpriseOriginCode': enterpriseOriginCode.toString(),
+                      'enterpriseDestinyCode': enterprise.Code.toString(),
+                      'enterpriseCode': enterpriseOriginCode.toString(),
+                    },
+                  );
+                },
+                onRefresh: () {
+                  ref.invalidate(provider);
                 },
               );
-            },
-            onRefresh: () {
-              ref.invalidate(provider);
             },
           );
         },

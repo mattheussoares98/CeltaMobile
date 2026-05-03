@@ -38,17 +38,21 @@ class ConcurrentsPage extends ConsumerWidget {
           const InsertConcurrentButton(),
         ],
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(researchsStateControllerProvider(enterpriseCode)),
-        tryAgain: () => ref.invalidate(researchsStateControllerProvider),
-        data: (researchs) {
-          final selectedResearch = researchs.firstWhere(
-            (research) => research.Code == researchCode,
-          );
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(researchsStateControllerProvider(enterpriseCode)),
+            tryAgain: () => ref.invalidate(researchsStateControllerProvider),
+            data: (researchs) {
+              final selectedResearch = researchs.firstWhere(
+                (research) => research.Code == researchCode,
+              );
 
-          return ConcurrentsItems(
-            selectedResearch: selectedResearch,
-            enterpriseCode: enterpriseCode,
+              return ConcurrentsItems(
+                selectedResearch: selectedResearch,
+                enterpriseCode: enterpriseCode,
+              );
+            },
           );
         },
       ),

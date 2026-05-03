@@ -136,58 +136,62 @@ class _ChangeModulesPermissionPageState
             ),
         ],
       ),
-      body: AsyncValueWidget(
-        tryAgain: () => ref.invalidate(enterprisePermissionsProvider),
-        value: enterpriseAsync,
-        data: (enterprise) {
-          if (enterprise == null) {
-            return Center(child: Text('Empresa não encontrada.'.hardcoded));
-          }
-          final modulesToDisplay = _getModulesForScope(enterprise);
-          final scopeName = getEnterpriseName(
-            isGlobalChange,
-            enterprise,
-          ).toUpperCase();
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            tryAgain: () => ref.invalidate(enterprisePermissionsProvider),
+            value: enterpriseAsync,
+            data: (enterprise) {
+              if (enterprise == null) {
+                return Center(child: Text('Empresa não encontrada.'.hardcoded));
+              }
+              final modulesToDisplay = _getModulesForScope(enterprise);
+              final scopeName = getEnterpriseName(
+                isGlobalChange,
+                enterprise,
+              ).toUpperCase();
 
-          return CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: Text(
-                  scopeName,
-                  style: theme.textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              gapSliverH16,
-              if (isGlobalChange) ...[
-                SliverToBoxAdapter(
-                  child: Form(
-                    key: formKey,
-                    child: UrlsFields(
-                      remoteHttpUrlController: remoteHttpUrlController,
-                      remoteHttpsUrlController: remoteHttpsUrlController,
-                      localHttpUrlController: localHttpUrlController,
-                      localHttpsUrlController: localHttpsUrlController,
+              return CustomScrollView(
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Text(
+                      scopeName,
+                      style: theme.textTheme.titleMedium,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-                EditEnterpriseSwitch(
-                  onChange: (moduleId, newValue) {
-                    setState(() => _permissionChanges[moduleId] = newValue);
-                  },
-                  modulesToDisplay: modulesToDisplay,
-                  permissionChanges: _permissionChanges,
-                ),
-              ] else
-                EditSubEnterprisesSegmentedButttons(
-                  onChange: (moduleId, newValue) {
-                    setState(() => _permissionChanges[moduleId] = newValue);
-                  },
-                  modulesToDisplay: modulesToDisplay,
-                  permissionChanges: _permissionChanges,
-                ),
-            ],
+                  gapSliverH16,
+                  if (isGlobalChange) ...[
+                    SliverToBoxAdapter(
+                      child: Form(
+                        key: formKey,
+                        child: UrlsFields(
+                          remoteHttpUrlController: remoteHttpUrlController,
+                          remoteHttpsUrlController: remoteHttpsUrlController,
+                          localHttpUrlController: localHttpUrlController,
+                          localHttpsUrlController: localHttpsUrlController,
+                        ),
+                      ),
+                    ),
+                    EditEnterpriseSwitch(
+                      onChange: (moduleId, newValue) {
+                        setState(() => _permissionChanges[moduleId] = newValue);
+                      },
+                      modulesToDisplay: modulesToDisplay,
+                      permissionChanges: _permissionChanges,
+                    ),
+                  ] else
+                    EditSubEnterprisesSegmentedButttons(
+                      onChange: (moduleId, newValue) {
+                        setState(() => _permissionChanges[moduleId] = newValue);
+                      },
+                      modulesToDisplay: modulesToDisplay,
+                      permissionChanges: _permissionChanges,
+                    ),
+                ],
+              );
+            },
           );
         },
       ),

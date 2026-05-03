@@ -18,21 +18,28 @@ class ReportsPage extends ConsumerWidget {
         title: Text('Relatórios'.hardcoded),
         actions: [ReloadIconButton(provider: reportsStateControllerProvider)],
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(reportsStateControllerProvider),
-        tryAgain: () => ref.invalidate(reportsStateControllerProvider),
-        data: (reports) {
-          return RefreshIndicator(
-            onRefresh: () async =>
-                ref.invalidate(reportsStateControllerProvider),
-            child: ResponsiveListFlow(
-              itemCount: reports.length,
-              itemBuilder: (_, index) {
-                final report = reports[index];
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(reportsStateControllerProvider),
+            tryAgain: () => ref.invalidate(reportsStateControllerProvider),
+            data: (reports) {
+              return RefreshIndicator(
+                onRefresh: () async =>
+                    ref.invalidate(reportsStateControllerProvider),
+                child: ResponsiveListFlow(
+                  itemCount: reports.length,
+                  itemBuilder: (_, index) {
+                    final report = reports[index];
 
-                return _ReportItem(key: ValueKey(report.Code), report: report);
-              },
-            ),
+                    return _ReportItem(
+                      key: ValueKey(report.Code),
+                      report: report,
+                    );
+                  },
+                ),
+              );
+            },
           );
         },
       ),

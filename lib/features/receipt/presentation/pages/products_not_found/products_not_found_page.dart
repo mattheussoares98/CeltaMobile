@@ -106,36 +106,40 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
         ),
         onPressed: () => openInsertUpdateProductPage(null),
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(
-          productsNotFoundStateControllerProvider(widget.receiptCode),
-        ),
-        tryAgain: () => ref.invalidate(
-          productsNotFoundStateControllerProvider(widget.receiptCode),
-        ),
-        data: (products) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              ref.invalidate(
-                productsNotFoundStateControllerProvider(widget.receiptCode),
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(
+              productsNotFoundStateControllerProvider(widget.receiptCode),
+            ),
+            tryAgain: () => ref.invalidate(
+              productsNotFoundStateControllerProvider(widget.receiptCode),
+            ),
+            data: (products) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(
+                    productsNotFoundStateControllerProvider(widget.receiptCode),
+                  );
+                },
+                child: ResponsiveListFlow(
+                  itemCount: products.length,
+                  itemBuilder: (_, index) {
+                    final product = products[index];
+
+                    return _ProductItem(
+                      key: ValueKey(product.ean),
+                      product: product,
+                      openInsertUpdateProductPage: () =>
+                          openInsertUpdateProductPage(product),
+                      bottomPadding: (products.length == index + 1)
+                          ? Sizes.p64
+                          : 0, //avoid overlay the floating button,
+                    );
+                  },
+                ),
               );
             },
-            child: ResponsiveListFlow(
-              itemCount: products.length,
-              itemBuilder: (_, index) {
-                final product = products[index];
-
-                return _ProductItem(
-                  key: ValueKey(product.ean),
-                  product: product,
-                  openInsertUpdateProductPage: () =>
-                      openInsertUpdateProductPage(product),
-                  bottomPadding: (products.length == index + 1)
-                      ? Sizes.p64
-                      : 0, //avoid overlay the floating button,
-                );
-              },
-            ),
           );
         },
       ),

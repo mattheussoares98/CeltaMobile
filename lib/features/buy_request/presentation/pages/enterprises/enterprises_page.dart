@@ -90,21 +90,29 @@ class EnterprisesPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      body: AsyncValueWidget(
-        value: ref.watch(enterprisesStateControllerProvider(enterpriseCode)),
-        tryAgain: () {
-          ref.invalidate(enterprisesStateControllerProvider(enterpriseCode));
-        },
-        data: (enterprises) {
-          return ResponsiveListFlow(
-            itemCount: enterprises.length,
-            itemBuilder: (_, index) {
-              final enterprise = enterprises[index];
-              return EnterpriseItem(
-                key: ValueKey(enterprise.Code),
-                enterprise: enterprise,
-                enterpriseCode: enterpriseCode,
-                onTap: () => changeSelectedEnterprise(enterprise),
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(
+              enterprisesStateControllerProvider(enterpriseCode),
+            ),
+            tryAgain: () {
+              ref.invalidate(
+                enterprisesStateControllerProvider(enterpriseCode),
+              );
+            },
+            data: (enterprises) {
+              return ResponsiveListFlow(
+                itemCount: enterprises.length,
+                itemBuilder: (_, index) {
+                  final enterprise = enterprises[index];
+                  return EnterpriseItem(
+                    key: ValueKey(enterprise.Code),
+                    enterprise: enterprise,
+                    enterpriseCode: enterpriseCode,
+                    onTap: () => changeSelectedEnterprise(enterprise),
+                  );
+                },
               );
             },
           );

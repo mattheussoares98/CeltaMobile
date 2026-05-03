@@ -41,72 +41,77 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
           ),
         ],
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(
-          receiptsStateControllerProvider(widget.enterpriseCode),
-        ),
-        tryAgain: () => ref.invalidate(
-          receiptsStateControllerProvider(widget.enterpriseCode),
-        ),
-        data: (receipts) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              ref.invalidate(
-                receiptsStateControllerProvider(widget.enterpriseCode),
-              );
-            },
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(Sizes.p4),
-                  child: DefaultTextFormField(
-                    controller: filterReceiptController,
-                    hintText: 'Número|Emitente|Status|Observação'.hardcoded,
-                    labelText: 'Filtrar'.hardcoded,
-                  ),
-                ),
-                Expanded(
-                  child: AnimatedBuilder(
-                    animation: filterReceiptController,
-                    builder: (_, _) {
-                      final lowerCaseController = filterReceiptController.text
-                          .toLowerCase();
-                      final filteredReceipts = receipts
-                          .where(
-                            (e) =>
-                                e.Numero_ProcRecebDoc.toString().contains(
-                                  lowerCaseController,
-                                ) ||
-                                e.status.description.toLowerCase().contains(
-                                  lowerCaseController,
-                                ) ||
-                                e.Observacoes_ProcRecebDoc.toString()
-                                    .toLowerCase()
-                                    .contains(lowerCaseController) ||
-                                e.EmitterName.toString().toLowerCase().contains(
-                                  lowerCaseController,
-                                ),
-                          )
-                          .toList();
-                      return ResponsiveListFlow(
-                        itemCount: filteredReceipts.length,
-                        itemBuilder: (_, index) {
-                          final receipt = filteredReceipts[index];
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(
+              receiptsStateControllerProvider(widget.enterpriseCode),
+            ),
+            tryAgain: () => ref.invalidate(
+              receiptsStateControllerProvider(widget.enterpriseCode),
+            ),
+            data: (receipts) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(
+                    receiptsStateControllerProvider(widget.enterpriseCode),
+                  );
+                },
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(Sizes.p4),
+                      child: DefaultTextFormField(
+                        controller: filterReceiptController,
+                        hintText: 'Número|Emitente|Status|Observação'.hardcoded,
+                        labelText: 'Filtrar'.hardcoded,
+                      ),
+                    ),
+                    Expanded(
+                      child: AnimatedBuilder(
+                        animation: filterReceiptController,
+                        builder: (_, _) {
+                          final lowerCaseController = filterReceiptController
+                              .text
+                              .toLowerCase();
+                          final filteredReceipts = receipts
+                              .where(
+                                (e) =>
+                                    e.Numero_ProcRecebDoc.toString().contains(
+                                      lowerCaseController,
+                                    ) ||
+                                    e.status.description.toLowerCase().contains(
+                                      lowerCaseController,
+                                    ) ||
+                                    e.Observacoes_ProcRecebDoc.toString()
+                                        .toLowerCase()
+                                        .contains(lowerCaseController) ||
+                                    e.EmitterName.toString()
+                                        .toLowerCase()
+                                        .contains(lowerCaseController),
+                              )
+                              .toList();
+                          return ResponsiveListFlow(
+                            itemCount: filteredReceipts.length,
+                            itemBuilder: (_, index) {
+                              final receipt = filteredReceipts[index];
 
-                          return ReceiptItem(
-                            key: ValueKey(receipt.Numero_ProcRecebDoc),
-                            receipt: receipt,
-                            index: index,
-                            enterpriseCode: widget.enterpriseCode,
-                            observationsController: observationsController,
+                              return ReceiptItem(
+                                key: ValueKey(receipt.Numero_ProcRecebDoc),
+                                receipt: receipt,
+                                index: index,
+                                enterpriseCode: widget.enterpriseCode,
+                                observationsController: observationsController,
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         },
       ),

@@ -24,27 +24,31 @@ class ResearchsPage extends ConsumerWidget {
           InsertResearchButton(enterpriseCode: enterpriseCode),
         ],
       ),
-      body: AsyncValueWidget(
-        tryAgain: () => ref.invalidate(researchsStateControllerProvider),
-        value: ref.watch(provider),
-        data: (researchs) {
-          researchs.sort((a, b) => a.Code.compareTo(b.Code));
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            tryAgain: () => ref.invalidate(researchsStateControllerProvider),
+            value: ref.watch(provider),
+            data: (researchs) {
+              researchs.sort((a, b) => a.Code.compareTo(b.Code));
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              ref.invalidate(provider);
+              return RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(provider);
+                },
+                child: ResponsiveListFlow(
+                  itemCount: researchs.length,
+                  itemBuilder: (context, index) {
+                    final research = researchs[index];
+                    return ResearchItem(
+                      key: ValueKey(research.Code),
+                      research: research,
+                      enterpriseCode: enterpriseCode,
+                    );
+                  },
+                ),
+              );
             },
-            child: ResponsiveListFlow(
-              itemCount: researchs.length,
-              itemBuilder: (context, index) {
-                final research = researchs[index];
-                return ResearchItem(
-                  key: ValueKey(research.Code),
-                  research: research,
-                  enterpriseCode: enterpriseCode,
-                );
-              },
-            ),
           );
         },
       ),

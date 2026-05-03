@@ -21,29 +21,35 @@ class FrozenProcessesPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(inventoryStateControllerProvider(enterpriseCode)),
-        tryAgain: () {
-          ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
-        },
-        data: (inventories) {
-          return RefreshIndicator(
-            onRefresh: () async {
+      body: Consumer(
+        builder: (context, ref, child) {
+          return AsyncValueWidget(
+            value: ref.watch(inventoryStateControllerProvider(enterpriseCode)),
+            tryAgain: () {
               ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
             },
-            child: ResponsiveListFlow(
-              itemCount: inventories?.frozenProcesses.length ?? 0,
-              itemBuilder: (_, index) {
-                final frozenProcess = inventories!.frozenProcesses[index];
+            data: (inventories) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(
+                    inventoryStateControllerProvider(enterpriseCode),
+                  );
+                },
+                child: ResponsiveListFlow(
+                  itemCount: inventories?.frozenProcesses.length ?? 0,
+                  itemBuilder: (_, index) {
+                    final frozenProcess = inventories!.frozenProcesses[index];
 
-                return FrozenItem(
-                  key: ValueKey(frozenProcess.CodigoInternoInventario),
-                  frozenProcess: frozenProcess,
-                  inventories: inventories,
-                  enterpriseCode: enterpriseCode,
-                );
-              },
-            ),
+                    return FrozenItem(
+                      key: ValueKey(frozenProcess.CodigoInternoInventario),
+                      frozenProcess: frozenProcess,
+                      inventories: inventories,
+                      enterpriseCode: enterpriseCode,
+                    );
+                  },
+                ),
+              );
+            },
           );
         },
       ),
