@@ -1,7 +1,7 @@
-import '../../data/datasource/datasource.dart';
-import '../../data/model/model.dart';
-import '../entity/entity.dart';
-import 'repository.dart';
+import '../datasource/datasource.dart';
+import '../model/model.dart';
+import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
+import 'package:celta_inventario/features/adjust_cost/domain/repository/repository.dart';
 
 class EcAdjustCostRepositoryImpl implements IEcAdjustCostRepository {
   final IEcAdjustCostDatasource datasource;
