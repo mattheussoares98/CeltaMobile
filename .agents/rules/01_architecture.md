@@ -109,7 +109,9 @@ class MyFeatureStateController extends _$MyFeatureStateController {
 - Controllers should manage the business logic and state for these components, minimizing `StatefulWidget` usage where Riverpod controllers can cleanly handle the state.
 - Always use `const` constructors for widgets whenever possible to optimize the Flutter build tree and avoid unnecessary rebuilds.
 
-## 6. Import Path Rules
-- **Strict Relative Imports (Depth Calculation):** AI models struggle with relative import depth. You MUST explicitly map out the folder depth before writing `../`. Count one `../` for EVERY directory level you need to escape to reach the target. 
-- **Layer Crossing Example:** If you are inside `presentation/pages/insert_update/insert_product/components/` and need to reach the `domain` or `presentation/controllers` layer, you are 5 levels deep. You MUST use `../../../../../domain/entities/entities.dart` or `../../../../controllers/controllers.dart`. Do not guess; count the levels.
-- **Barrel File Priority:** Always import the nearest barrel file (`.dart` file with the same name as the folder) instead of targeting deep internal files directly.
+- **Absolute Package Imports:** Do not use relative imports (e.g., `../..`). Always use absolute paths starting with `package:celta_mobile/` (or your actual package name). This ensures consistency and prevents depth calculation errors.
+- **Barrel File Pattern:** Every major folder (e.g., `entities/`, `controllers/`, `models/`) must contain a "barrel file" with the exact same name as the folder (e.g., `entities.dart`). This file must `export` all relevant files within that directory.
+- **Import Strategy:** When importing, you must target the barrel file rather than individual files.
+    - **Correct:** `import 'package:celta_mobile/features/auth/domain/entities/entities.dart';`
+    - **Incorrect:** `import 'package:celta_mobile/features/auth/domain/entities/user_entity.dart';`
+- **File Paths:** When providing code, always specify the full project path at the top of the file to maintain structural clarity.
