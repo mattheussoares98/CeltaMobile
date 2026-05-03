@@ -127,7 +127,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
                                 'Imprimir último pedido salvo na empresa'
                                     .hardcoded,
                               ),
-                              const SizedBox(height: Sizes.p16),
+                              gapH16,
                               DefaultTextFormField(
                                 labelText: 'IP da impressora'.hardcoded,
                                 hintText: '192.168.0.1',
@@ -149,7 +149,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
                                 ]),
                                 keyboardType: TextInputType.datetime,
                               ),
-                              const SizedBox(height: Sizes.p32),
+                              gapH32,
                               PrimaryButton(
                                 text: 'Imprimir'.hardcoded,
                                 isLoading: isLoading,
