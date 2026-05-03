@@ -6,6 +6,7 @@ import '../auth/providers.dart';
 import 'data/datasource/datasource.dart';
 import 'domain/entities/entities.dart';
 import 'domain/repositories/repositories.dart';
+import 'data/repositories/repositories.dart';
 
 part 'providers.g.dart';
 

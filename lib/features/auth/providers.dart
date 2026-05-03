@@ -5,6 +5,7 @@ import '../../core/providers/enterprise/enterprise.dart';
 import '../../core/providers/soap/soap.dart';
 import '../../core/providers/user_session/user_session.dart';
 import 'domain/repositories/repositories.dart';
+import 'data/repositories/repositories.dart';
 
 part 'providers.g.dart';
 

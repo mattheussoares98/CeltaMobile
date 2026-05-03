@@ -1,0 +1,27 @@
+import 'package:celta_inventario/core/domain/entities/enterprise/enterprise_entity.dart';
+
+import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/buy_request/domain/repository/repository.dart';
+
+class SoapLoadEnterpriseByFiltersRepositoryImpl
+    implements ISoapLoadEnterpriseByFiltersRepository {
+  final ISoapLoadEnterpriseByFiltersDatasource datasource;
+  SoapLoadEnterpriseByFiltersRepositoryImpl(this.datasource);
+
+  @override
+  Future<List<EnterpriseEntity>> load({
+    required String workingUrl,
+    required String crossIdentity,
+    required int supplierCode,
+    required int requestTypeCode,
+  }) async {
+    final response = await datasource.load(
+      workingUrl: workingUrl,
+      crossIdentity: crossIdentity,
+      supplierCode: supplierCode,
+      requestTypeCode: requestTypeCode,
+    );
+
+    return response.map((e) => e.toEntity()).toList();
+  }
+}
