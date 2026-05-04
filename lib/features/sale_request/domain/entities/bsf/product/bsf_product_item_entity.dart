@@ -187,13 +187,15 @@ class BSFProductItemEntity extends Equatable {
     }
 
     final pc = priceCost!;
-    final retailPrice = pc.salePracticedInSaleRetail ?? 0;
+    final retailPrice =
+        pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
 
     if (value == retailPrice) {
       return PracticedPriceType.retail;
     }
 
-    final wholePrice = pc.salePracticedInWholeSale ?? 0;
+    final wholePrice =
+        pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
 
     if (value == wholePrice && wholePrice > 0) {
       return PracticedPriceType.whole;
