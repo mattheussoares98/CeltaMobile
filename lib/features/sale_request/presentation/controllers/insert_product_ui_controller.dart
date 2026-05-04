@@ -18,7 +18,22 @@ class InsertProductUIController extends _$InsertProductUIController {
   }
 
   void updateQuantity(double quantity) {
-    state = state.copyWith(quantity: quantity);
+    final pc = product.priceCost;
+    double newPrice = state.price;
+
+    if (pc != null) {
+      final minWhole = pc.mininumQuantityForWholeSale ?? 0;
+      final wholePrice = pc.salePracticedInWholeSale ?? 0;
+      final retailPrice = pc.salePracticedInSaleRetail ?? 0;
+
+      if (minWhole > 0 && quantity >= minWhole && wholePrice > 0) {
+        newPrice = wholePrice;
+      } else if (retailPrice > 0) {
+        newPrice = retailPrice;
+      }
+    }
+
+    state = state.copyWith(quantity: quantity, price: newPrice);
   }
 
   void updatePrice(double price) {

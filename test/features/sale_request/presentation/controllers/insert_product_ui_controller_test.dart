@@ -46,28 +46,104 @@ void main() {
     });
 
     group('updateQuantity', () {
-      test('should update only the quantity preserving other values', () async {
+      const retailPrice = 10.0;
+      const wholePrice = 8.0;
+      const minWhole = 5.0;
+
+      final productWithWholesale = testProduct.copyWith(
+        value: retailPrice,
+        quantity: 1,
+        priceCost: testProduct.priceCost?.copyWith(
+          salePracticedInSaleRetail: retailPrice,
+          salePracticedInWholeSale: wholePrice,
+          mininumQuantityForWholeSale: minWhole,
+        ),
+      );
+
+      test(
+        'should update quantity and keep retail price when below threshold',
+        () async {
+          // ARRANGE
+          final container = makeProviderContainer();
+          container.read(
+            insertProductUIControllerProvider(productWithWholesale),
+          );
+
+          final states = <InsertProductUIState>[];
+          container.listen(
+            insertProductUIControllerProvider(productWithWholesale),
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          const newQuantity = 4.0; // below 5.0
+          container
+              .read(
+                insertProductUIControllerProvider(
+                  productWithWholesale,
+                ).notifier,
+              )
+              .updateQuantity(newQuantity);
+
+          // ASSERT
+          expect(states.length, 1);
+          expect(states.first.quantity, newQuantity);
+          expect(states.first.price, retailPrice);
+        },
+      );
+
+      test('should apply wholesale price when quantity >= threshold', () async {
         // ARRANGE
         final container = makeProviderContainer();
-        container.read(insertProductUIControllerProvider(testProduct));
+        container.read(insertProductUIControllerProvider(productWithWholesale));
 
         final states = <InsertProductUIState>[];
         container.listen(
-          insertProductUIControllerProvider(testProduct),
+          insertProductUIControllerProvider(productWithWholesale),
           (_, next) => states.add(next),
         );
 
         // ACT
-        final newQuantity = faker.randomGenerator.decimal();
+        const newQuantity = 5.0; // matches threshold
         container
-            .read(insertProductUIControllerProvider(testProduct).notifier)
+            .read(
+              insertProductUIControllerProvider(productWithWholesale).notifier,
+            )
             .updateQuantity(newQuantity);
 
         // ASSERT
         expect(states.length, 1);
         expect(states.first.quantity, newQuantity);
-        expect(states.first.price, testProduct.value ?? 0);
+        expect(states.first.price, wholePrice);
       });
+
+      test(
+        'should revert to retail price when quantity falls below threshold',
+        () async {
+          // ARRANGE
+          final container = makeProviderContainer();
+          final notifier = container.read(
+            insertProductUIControllerProvider(productWithWholesale).notifier,
+          );
+
+          // Start at wholesale
+          notifier.updateQuantity(10.0);
+
+          final states = <InsertProductUIState>[];
+          container.listen(
+            insertProductUIControllerProvider(productWithWholesale),
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          const newQuantity = 2.0; // below 5.0
+          notifier.updateQuantity(newQuantity);
+
+          // ASSERT
+          expect(states.first.price, retailPrice);
+          expect(states.first.quantity, newQuantity);
+        },
+      );
     });
 
     group('updatePrice', () {
