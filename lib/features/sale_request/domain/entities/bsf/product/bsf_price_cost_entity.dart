@@ -159,6 +159,139 @@ class BSFPriceCostEntity extends Equatable {
         salePracticedInWholeSale,
         isOfferInECommerce,
         salePriceTypePracticedInECommerce,
-        salePracticedInECommerce,
       ];
+
+  BSFPriceCostEntity copyWith({
+    double? saleRetailPricePractice,
+    double? lastSaleRetailPrice,
+    double? wholeSalePricePractice,
+    double? lastWholeSalePrice,
+    double? eCommercePricePractice,
+    double? lastECommercePrice,
+    double? saleRetailOfferPractice,
+    double? lastSaleRetailOffer,
+    double? wholeSaleOfferPractice,
+    double? lastWholeSaleOffer,
+    double? eCommerceOfferPractice,
+    double? lastECommerceOffer,
+    double? replacementCost,
+    double? lastReplacementCost,
+    double? mediumReplacementCost,
+    double? subsidizedReplacementCost,
+    double? activeSubsidizedReplacementCost,
+    double? liquidCost,
+    double? lastLiquidCost,
+    double? lastUnitValue,
+    double? baseCalcIcmsSubstUnit,
+    double? valueOfIcmsSubstUnit,
+    double? valueOfIcmsOwnerUnit,
+    double? mininumQuantityForWholeSale,
+    double? mediumLiquidCost,
+    double? subsidizedLiquidCost,
+    double? activeSubsidizedLiquidCost,
+    double? fiscalBaseCalcSubstitute,
+    double? fiscalBaseCalcSubstitutePrevious,
+    double? replacementCostReal,
+    double? lastReplacementCostReal,
+    double? liquidCostReal,
+    double? lastLiquidCostReal,
+    double? replacementCostFiscal,
+    double? lastReplacementCostFiscal,
+    double? liquidCostFiscal,
+    double? lastLiquidCostFiscal,
+    double? operationCost,
+    double? bonusSubsidyValue,
+    double? bonusSubsidyActiveValue,
+    double? bonusSubsidyUnitaryValue,
+    double? bonusSubsidyActiveUnitaryValue,
+    bool? isOfferInRetail,
+    int? salePracticedTypeInSaleRetail,
+    double? salePracticedInSaleRetail,
+    bool? isOfferInWhole,
+    int? salePracticedTypeInWholeSale,
+    double? salePracticedInWholeSale,
+    bool? isOfferInECommerce,
+    int? salePriceTypePracticedInECommerce,
+    double? salePracticedInECommerce,
+  }) {
+    return BSFPriceCostEntity(
+      saleRetailPricePractice:
+          saleRetailPricePractice ?? this.saleRetailPricePractice,
+      lastSaleRetailPrice: lastSaleRetailPrice ?? this.lastSaleRetailPrice,
+      wholeSalePricePractice:
+          wholeSalePricePractice ?? this.wholeSalePricePractice,
+      lastWholeSalePrice: lastWholeSalePrice ?? this.lastWholeSalePrice,
+      eCommercePricePractice:
+          eCommercePricePractice ?? this.eCommercePricePractice,
+      lastECommercePrice: lastECommercePrice ?? this.lastECommercePrice,
+      saleRetailOfferPractice:
+          saleRetailOfferPractice ?? this.saleRetailOfferPractice,
+      lastSaleRetailOffer: lastSaleRetailOffer ?? this.lastSaleRetailOffer,
+      wholeSaleOfferPractice:
+          wholeSaleOfferPractice ?? this.wholeSaleOfferPractice,
+      lastWholeSaleOffer: lastWholeSaleOffer ?? this.lastWholeSaleOffer,
+      eCommerceOfferPractice:
+          eCommerceOfferPractice ?? this.eCommerceOfferPractice,
+      lastECommerceOffer: lastECommerceOffer ?? this.lastECommerceOffer,
+      replacementCost: replacementCost ?? this.replacementCost,
+      lastReplacementCost: lastReplacementCost ?? this.lastReplacementCost,
+      mediumReplacementCost:
+          mediumReplacementCost ?? this.mediumReplacementCost,
+      subsidizedReplacementCost:
+          subsidizedReplacementCost ?? this.subsidizedReplacementCost,
+      activeSubsidizedReplacementCost: activeSubsidizedReplacementCost ??
+          this.activeSubsidizedReplacementCost,
+      liquidCost: liquidCost ?? this.liquidCost,
+      lastLiquidCost: lastLiquidCost ?? this.lastLiquidCost,
+      lastUnitValue: lastUnitValue ?? this.lastUnitValue,
+      baseCalcIcmsSubstUnit:
+          baseCalcIcmsSubstUnit ?? this.baseCalcIcmsSubstUnit,
+      valueOfIcmsSubstUnit: valueOfIcmsSubstUnit ?? this.valueOfIcmsSubstUnit,
+      valueOfIcmsOwnerUnit: valueOfIcmsOwnerUnit ?? this.valueOfIcmsOwnerUnit,
+      mininumQuantityForWholeSale:
+          mininumQuantityForWholeSale ?? this.mininumQuantityForWholeSale,
+      mediumLiquidCost: mediumLiquidCost ?? this.mediumLiquidCost,
+      subsidizedLiquidCost: subsidizedLiquidCost ?? this.subsidizedLiquidCost,
+      activeSubsidizedLiquidCost:
+          activeSubsidizedLiquidCost ?? this.activeSubsidizedLiquidCost,
+      fiscalBaseCalcSubstitute:
+          fiscalBaseCalcSubstitute ?? this.fiscalBaseCalcSubstitute,
+      fiscalBaseCalcSubstitutePrevious: fiscalBaseCalcSubstitutePrevious ??
+          this.fiscalBaseCalcSubstitutePrevious,
+      replacementCostReal: replacementCostReal ?? this.replacementCostReal,
+      lastReplacementCostReal:
+          lastReplacementCostReal ?? this.lastReplacementCostReal,
+      liquidCostReal: liquidCostReal ?? this.liquidCostReal,
+      lastLiquidCostReal: lastLiquidCostReal ?? this.lastLiquidCostReal,
+      replacementCostFiscal:
+          replacementCostFiscal ?? this.replacementCostFiscal,
+      lastReplacementCostFiscal:
+          lastReplacementCostFiscal ?? this.lastReplacementCostFiscal,
+      liquidCostFiscal: liquidCostFiscal ?? this.liquidCostFiscal,
+      lastLiquidCostFiscal: lastLiquidCostFiscal ?? this.lastLiquidCostFiscal,
+      operationCost: operationCost ?? this.operationCost,
+      bonusSubsidyValue: bonusSubsidyValue ?? this.bonusSubsidyValue,
+      bonusSubsidyActiveValue:
+          bonusSubsidyActiveValue ?? this.bonusSubsidyActiveValue,
+      bonusSubsidyUnitaryValue:
+          bonusSubsidyUnitaryValue ?? this.bonusSubsidyUnitaryValue,
+      bonusSubsidyActiveUnitaryValue: bonusSubsidyActiveUnitaryValue ??
+          this.bonusSubsidyActiveUnitaryValue,
+      isOfferInRetail: isOfferInRetail ?? this.isOfferInRetail,
+      salePracticedTypeInSaleRetail:
+          salePracticedTypeInSaleRetail ?? this.salePracticedTypeInSaleRetail,
+      salePracticedInSaleRetail:
+          salePracticedInSaleRetail ?? this.salePracticedInSaleRetail,
+      isOfferInWhole: isOfferInWhole ?? this.isOfferInWhole,
+      salePracticedTypeInWholeSale:
+          salePracticedTypeInWholeSale ?? this.salePracticedTypeInWholeSale,
+      salePracticedInWholeSale:
+          salePracticedInWholeSale ?? this.salePracticedInWholeSale,
+      isOfferInECommerce: isOfferInECommerce ?? this.isOfferInECommerce,
+      salePriceTypePracticedInECommerce: salePriceTypePracticedInECommerce ??
+          this.salePriceTypePracticedInECommerce,
+      salePracticedInECommerce:
+          salePracticedInECommerce ?? this.salePracticedInECommerce,
+    );
+  }
 }
