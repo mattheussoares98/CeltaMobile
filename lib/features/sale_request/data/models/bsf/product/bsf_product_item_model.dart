@@ -19,6 +19,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
     required super.code,
     required super.icms,
     required super.ipi,
+    required super.priceCost,
     required super.productPackingCode,
   });
 
@@ -28,6 +29,13 @@ class BSFProductItemModel extends BSFProductItemEntity {
         productPackingCode: json['ProductPackingCode'],
         icms: json['Icms'] != null ? BSFIcmsModel.fromJson(json['Icms']) : null,
         ipi: json['Ipi'] != null ? BSFIpiModel.fromJson(json['Ipi']) : null,
+        priceCost:
+            json['ProductEnterprisePacking']?['Extensions']?['PriceCost'] !=
+                null
+            ? BSFPriceCostModel.fromJson(
+                json['ProductEnterprisePacking']['Extensions']['PriceCost'],
+              )
+            : null,
         product: json['Product'] != null
             ? BSFProductDetailsModel.fromJson(json['Product'])
             : null,
@@ -98,13 +106,25 @@ class BSFProductItemModel extends BSFProductItemEntity {
     'Code': code,
     'Icms': icms != null ? BSFIcmsModel.fromEntity(icms!).toJson() : null,
     'Ipi': ipi != null ? BSFIpiModel.fromEntity(ipi!).toJson() : null,
+    'ProductEnterprisePacking': priceCost != null
+        ? {
+            'Extensions': {
+              'PriceCost': BSFPriceCostModel.fromEntity(priceCost!).toJson(),
+            },
+          }
+        : null,
   };
 
   factory BSFProductItemModel.fromEntity(BSFProductItemEntity entity) =>
       BSFProductItemModel(
         productPackingCode: entity.productPackingCode,
-        icms: entity.icms == null ? null : BSFIcmsModel.fromEntity(entity.icms!),
+        icms: entity.icms == null
+            ? null
+            : BSFIcmsModel.fromEntity(entity.icms!),
         ipi: entity.ipi == null ? null : BSFIpiModel.fromEntity(entity.ipi!),
+        priceCost: entity.priceCost == null
+            ? null
+            : BSFPriceCostModel.fromEntity(entity.priceCost!),
         code: entity.code,
         product: entity.product == null
             ? null
@@ -142,6 +162,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
     code: code,
     icms: icms,
     ipi: ipi,
+    priceCost: priceCost,
     product: product,
     fiscalCode: fiscalCode,
     compositionChilds: compositionChilds,

@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../entities.dart';
@@ -20,6 +21,7 @@ class BSFProductItemEntity extends Equatable {
   final int code;
   final BSFIcmsEntity? icms;
   final BSFIpiEntity? ipi;
+  final BSFPriceCostEntity? priceCost;
 
   const BSFProductItemEntity({
     required this.product,
@@ -39,6 +41,7 @@ class BSFProductItemEntity extends Equatable {
     required this.code,
     required this.icms,
     required this.ipi,
+    required this.priceCost,
   });
 
   @override
@@ -60,6 +63,7 @@ class BSFProductItemEntity extends Equatable {
     code,
     icms,
     ipi,
+    priceCost,
   ];
 
   BSFProductItemEntity copyWith({
@@ -80,6 +84,7 @@ class BSFProductItemEntity extends Equatable {
     int? code,
     BSFIcmsEntity? icms,
     BSFIpiEntity? ipi,
+    BSFPriceCostEntity? priceCost,
   }) {
     return BSFProductItemEntity(
       product: product ?? this.product,
@@ -99,6 +104,7 @@ class BSFProductItemEntity extends Equatable {
       code: code ?? this.code,
       icms: icms ?? this.icms,
       ipi: ipi ?? this.ipi,
+      priceCost: priceCost ?? this.priceCost,
     );
   }
 
@@ -121,6 +127,7 @@ class BSFProductItemEntity extends Equatable {
       code: 0,
       icms: null,
       ipi: null,
+      priceCost: null,
     );
   }
 
@@ -173,4 +180,21 @@ class BSFProductItemEntity extends Equatable {
   double get totalLiquid =>
       (quantity ?? 0) *
       ((value ?? 0) - unitDiscountValue + unitDeliveryTax + unitIncrement);
+
+  PracticedPriceType get practicedPriceType {
+    if (value == null || priceCost == null) {
+      return PracticedPriceType.notDefined;
+    }
+
+    if (value == priceCost!.saleRetailPricePractice) {
+      return PracticedPriceType.retail;
+    }
+
+    if (value == priceCost!.wholeSalePricePractice &&
+        (priceCost!.wholeSalePricePractice ?? 0) > 0) {
+      return PracticedPriceType.whole;
+    }
+
+    return PracticedPriceType.manual;
+  }
 }

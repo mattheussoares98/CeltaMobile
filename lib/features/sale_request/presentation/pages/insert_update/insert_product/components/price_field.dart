@@ -48,8 +48,7 @@ class _PriceFieldState extends ConsumerState<PriceField> {
 
     return DefaultTextFormField(
       controller: _valueController,
-      labelText: 'Preço R\$'.hardcoded,
-      //TODO show if is sale retail, whole or manual price
+      labelText: 'Preço R\$ (${product.practicedPriceType.name})'.hardcoded,
       enabled: widget.allowPriceChange,
       onChanged: (value) {
         ref

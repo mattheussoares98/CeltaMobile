@@ -1380,6 +1380,61 @@ class EntityFactory {
         compensation: _makeBSFValueTypeEntity(),
         quantity: faker.randomGenerator.decimal(),
         value: faker.randomGenerator.decimal(),
+        priceCost: _makeBSFPriceCostEntity(),
+      );
+
+  static BSFPriceCostEntity _makeBSFPriceCostEntity() => BSFPriceCostEntity(
+        saleRetailPricePractice: faker.randomGenerator.decimal(),
+        lastSaleRetailPrice: faker.randomGenerator.decimal(),
+        wholeSalePricePractice: faker.randomGenerator.decimal(),
+        lastWholeSalePrice: faker.randomGenerator.decimal(),
+        eCommercePricePractice: faker.randomGenerator.decimal(),
+        lastECommercePrice: faker.randomGenerator.decimal(),
+        saleRetailOfferPractice: faker.randomGenerator.decimal(),
+        lastSaleRetailOffer: faker.randomGenerator.decimal(),
+        wholeSaleOfferPractice: faker.randomGenerator.decimal(),
+        lastWholeSaleOffer: faker.randomGenerator.decimal(),
+        eCommerceOfferPractice: faker.randomGenerator.decimal(),
+        lastECommerceOffer: faker.randomGenerator.decimal(),
+        replacementCost: faker.randomGenerator.decimal(),
+        lastReplacementCost: faker.randomGenerator.decimal(),
+        mediumReplacementCost: faker.randomGenerator.decimal(),
+        subsidizedReplacementCost: faker.randomGenerator.decimal(),
+        activeSubsidizedReplacementCost: faker.randomGenerator.decimal(),
+        liquidCost: faker.randomGenerator.decimal(),
+        lastLiquidCost: faker.randomGenerator.decimal(),
+        lastUnitValue: faker.randomGenerator.decimal(),
+        baseCalcIcmsSubstUnit: faker.randomGenerator.decimal(),
+        valueOfIcmsSubstUnit: faker.randomGenerator.decimal(),
+        valueOfIcmsOwnerUnit: faker.randomGenerator.decimal(),
+        mininumQuantityForWholeSale: faker.randomGenerator.decimal(),
+        mediumLiquidCost: faker.randomGenerator.decimal(),
+        subsidizedLiquidCost: faker.randomGenerator.decimal(),
+        activeSubsidizedLiquidCost: faker.randomGenerator.decimal(),
+        fiscalBaseCalcSubstitute: faker.randomGenerator.decimal(),
+        fiscalBaseCalcSubstitutePrevious: faker.randomGenerator.decimal(),
+        replacementCostReal: faker.randomGenerator.decimal(),
+        lastReplacementCostReal: faker.randomGenerator.decimal(),
+        liquidCostReal: faker.randomGenerator.decimal(),
+        lastLiquidCostReal: faker.randomGenerator.decimal(),
+        replacementCostFiscal: faker.randomGenerator.decimal(),
+        lastReplacementCostFiscal: faker.randomGenerator.decimal(),
+        liquidCostFiscal: faker.randomGenerator.decimal(),
+        lastLiquidCostFiscal: faker.randomGenerator.decimal(),
+        operationCost: faker.randomGenerator.decimal(),
+        bonusSubsidyValue: faker.randomGenerator.decimal(),
+        bonusSubsidyActiveValue: faker.randomGenerator.decimal(),
+        bonusSubsidyUnitaryValue: faker.randomGenerator.decimal(),
+        bonusSubsidyActiveUnitaryValue: faker.randomGenerator.decimal(),
+        isOfferInRetail: faker.randomGenerator.boolean(),
+        salePracticedTypeInSaleRetail: faker.randomGenerator.integer(5),
+        salePracticedInSaleRetail: faker.randomGenerator.decimal(),
+        isOfferInWhole: faker.randomGenerator.boolean(),
+        salePracticedTypeInWholeSale: faker.randomGenerator.integer(5),
+        salePracticedInWholeSale: faker.randomGenerator.decimal(),
+        isOfferInECommerce: faker.randomGenerator.boolean(),
+        salePriceTypePracticedInECommerce: faker.randomGenerator.integer(5),
+        salePracticedInECommerce: faker.randomGenerator.decimal(),
       );
 
   static BSFFiscalCodeEntity _makeBSFFiscalCodeEntity() => BSFFiscalCodeEntity(
@@ -1560,12 +1615,13 @@ class EntityFactory {
         makeSendEmailParameters: faker.randomGenerator.boolean(),
       );
 
-  static BSFDiscountEntity makeBSFDiscountEntity({BSFValueTypeEntity? discount}) =>
-      BSFDiscountEntity(
-        order: faker.randomGenerator.integer(100),
-        discountOrigin: faker.randomGenerator.integer(100),
-        user: faker.lorem.word(),
-        justification: faker.lorem.word(),
-        discount: discount ?? _makeBSFValueTypeEntity(),
-      );
+  static BSFDiscountEntity makeBSFDiscountEntity({
+    BSFValueTypeEntity? discount,
+  }) => BSFDiscountEntity(
+    order: faker.randomGenerator.integer(100),
+    discountOrigin: faker.randomGenerator.integer(100),
+    user: faker.lorem.word(),
+    justification: faker.lorem.word(),
+    discount: discount ?? _makeBSFValueTypeEntity(),
+  );
 }

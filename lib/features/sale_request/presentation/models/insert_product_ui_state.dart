@@ -96,6 +96,7 @@ class InsertProductUIState extends Equatable {
       code: product.code,
       icms: product.icms,
       ipi: product.ipi,
+      priceCost: product.priceCost,
     );
   }
 }
