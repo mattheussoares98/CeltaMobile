@@ -63,7 +63,7 @@ class ProductsList extends ConsumerWidget {
           );
         }
 
-        return ListView.builder(
+        return ResponsiveListFlow(
           padding: const EdgeInsets.all(Sizes.p4),
           itemCount: products.length,
           itemBuilder: (context, index) {
