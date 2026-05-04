@@ -213,6 +213,8 @@ class BSFPriceCostEntity extends Equatable {
     bool? isOfferInECommerce,
     int? salePriceTypePracticedInECommerce,
     double? salePracticedInECommerce,
+    bool anullSalePracticedInSaleRetail = false,
+    bool anullSalePracticedInWholeSale = false,
   }) {
     return BSFPriceCostEntity(
       saleRetailPricePractice:
@@ -280,13 +282,15 @@ class BSFPriceCostEntity extends Equatable {
       isOfferInRetail: isOfferInRetail ?? this.isOfferInRetail,
       salePracticedTypeInSaleRetail:
           salePracticedTypeInSaleRetail ?? this.salePracticedTypeInSaleRetail,
-      salePracticedInSaleRetail:
-          salePracticedInSaleRetail ?? this.salePracticedInSaleRetail,
+      salePracticedInSaleRetail: anullSalePracticedInSaleRetail
+          ? null
+          : (salePracticedInSaleRetail ?? this.salePracticedInSaleRetail),
       isOfferInWhole: isOfferInWhole ?? this.isOfferInWhole,
       salePracticedTypeInWholeSale:
           salePracticedTypeInWholeSale ?? this.salePracticedTypeInWholeSale,
-      salePracticedInWholeSale:
-          salePracticedInWholeSale ?? this.salePracticedInWholeSale,
+      salePracticedInWholeSale: anullSalePracticedInWholeSale
+          ? null
+          : (salePracticedInWholeSale ?? this.salePracticedInWholeSale),
       isOfferInECommerce: isOfferInECommerce ?? this.isOfferInECommerce,
       salePriceTypePracticedInECommerce: salePriceTypePracticedInECommerce ??
           this.salePriceTypePracticedInECommerce,

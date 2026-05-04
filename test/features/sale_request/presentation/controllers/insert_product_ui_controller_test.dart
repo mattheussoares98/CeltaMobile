@@ -144,6 +144,84 @@ void main() {
           expect(states.first.quantity, newQuantity);
         },
       );
+
+      test(
+        'should apply wholeSalePricePractice if salePracticedInWholeSale is null',
+        () async {
+          // ARRANGE
+          final productWithPracticeWholesale = testProduct.copyWith(
+            quantity: 1,
+            priceCost: testProduct.priceCost?.copyWith(
+              salePracticedInSaleRetail: retailPrice,
+              anullSalePracticedInWholeSale: true,
+              wholeSalePricePractice: wholePrice,
+              mininumQuantityForWholeSale: minWhole,
+            ),
+          );
+          final container = makeProviderContainer();
+          container.read(
+            insertProductUIControllerProvider(productWithPracticeWholesale),
+          );
+
+          final states = <InsertProductUIState>[];
+          container.listen(
+            insertProductUIControllerProvider(productWithPracticeWholesale),
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          const newQuantity = 5.0; // matches threshold
+          container
+              .read(
+                insertProductUIControllerProvider(
+                  productWithPracticeWholesale,
+                ).notifier,
+              )
+              .updateQuantity(newQuantity);
+
+          // ASSERT
+          expect(states.first.price, wholePrice);
+        },
+      );
+
+      test(
+        'should apply saleRetailPricePractice if salePracticedInSaleRetail is null',
+        () async {
+          // ARRANGE
+          final productWithPracticeRetail = testProduct.copyWith(
+            quantity: 1,
+            priceCost: testProduct.priceCost?.copyWith(
+              anullSalePracticedInSaleRetail: true,
+              saleRetailPricePractice: retailPrice,
+              salePracticedInWholeSale: wholePrice,
+              mininumQuantityForWholeSale: minWhole,
+            ),
+          );
+          final container = makeProviderContainer();
+          container.read(
+            insertProductUIControllerProvider(productWithPracticeRetail),
+          );
+
+          final states = <InsertProductUIState>[];
+          container.listen(
+            insertProductUIControllerProvider(productWithPracticeRetail),
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          const newQuantity = 1.0; // below threshold
+          container
+              .read(
+                insertProductUIControllerProvider(
+                  productWithPracticeRetail,
+                ).notifier,
+              )
+              .updateQuantity(newQuantity);
+
+          // ASSERT
+          expect(states.first.price, retailPrice);
+        },
+      );
     });
 
     group('updatePrice', () {
