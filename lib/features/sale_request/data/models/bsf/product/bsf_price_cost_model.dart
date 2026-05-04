@@ -55,60 +55,92 @@ class BSFPriceCostModel extends BSFPriceCostEntity {
     required super.salePracticedInECommerce,
   });
 
-  factory BSFPriceCostModel.fromJson(Map<String, dynamic> json) =>
+  factory BSFPriceCostModel.fromJson(
+    Map<String, dynamic> json, {
+    double? mininumQuantityForWholeSale,
+  }) =>
       BSFPriceCostModel(
-        saleRetailPricePractice: (json['SaleRetailPricePractice'] as num?)?.toDouble(),
+        saleRetailPricePractice:
+            (json['SaleRetailPricePractice'] as num?)?.toDouble(),
         lastSaleRetailPrice: (json['LastSaleRetailPrice'] as num?)?.toDouble(),
-        wholeSalePricePractice: (json['WholeSalePricePractice'] as num?)?.toDouble(),
+        wholeSalePricePractice:
+            (json['WholeSalePricePractice'] as num?)?.toDouble(),
         lastWholeSalePrice: (json['LastWholeSalePrice'] as num?)?.toDouble(),
-        eCommercePricePractice: (json['ECommercePricePractice'] as num?)?.toDouble(),
+        eCommercePricePractice:
+            (json['ECommercePricePractice'] as num?)?.toDouble(),
         lastECommercePrice: (json['LastECommercePrice'] as num?)?.toDouble(),
-        saleRetailOfferPractice: (json['SaleRetailOfferPractice'] as num?)?.toDouble(),
+        saleRetailOfferPractice:
+            (json['SaleRetailOfferPractice'] as num?)?.toDouble(),
         lastSaleRetailOffer: (json['LastSaleRetailOffer'] as num?)?.toDouble(),
-        wholeSaleOfferPractice: (json['WholeSaleOfferPractice'] as num?)?.toDouble(),
+        wholeSaleOfferPractice:
+            (json['WholeSaleOfferPractice'] as num?)?.toDouble(),
         lastWholeSaleOffer: (json['LastWholeSaleOffer'] as num?)?.toDouble(),
-        eCommerceOfferPractice: (json['ECommerceOfferPractice'] as num?)?.toDouble(),
+        eCommerceOfferPractice:
+            (json['ECommerceOfferPractice'] as num?)?.toDouble(),
         lastECommerceOffer: (json['LastECommerceOffer'] as num?)?.toDouble(),
         replacementCost: (json['ReplacementCost'] as num?)?.toDouble(),
         lastReplacementCost: (json['LastReplacementCost'] as num?)?.toDouble(),
-        mediumReplacementCost: (json['MediumReplacementCost'] as num?)?.toDouble(),
-        subsidizedReplacementCost: (json['SubsidizedReplacementCost'] as num?)?.toDouble(),
-        activeSubsidizedReplacementCost: (json['ActiveSubsidizedReplacementCost'] as num?)?.toDouble(),
+        mediumReplacementCost:
+            (json['MediumReplacementCost'] as num?)?.toDouble(),
+        subsidizedReplacementCost:
+            (json['SubsidizedReplacementCost'] as num?)?.toDouble(),
+        activeSubsidizedReplacementCost:
+            (json['ActiveSubsidizedReplacementCost'] as num?)?.toDouble(),
         liquidCost: (json['LiquidCost'] as num?)?.toDouble(),
         lastLiquidCost: (json['LastLiquidCost'] as num?)?.toDouble(),
         lastUnitValue: (json['LastUnitValue'] as num?)?.toDouble(),
-        baseCalcIcmsSubstUnit: (json['BaseCalcIcmsSubstUnit'] as num?)?.toDouble(),
-        valueOfIcmsSubstUnit: (json['ValueOfIcmsSubstUnit'] as num?)?.toDouble(),
-        valueOfIcmsOwnerUnit: (json['ValueOfIcmsOwnerUnit'] as num?)?.toDouble(),
-        mininumQuantityForWholeSale: (json['MininumQuantityForWholeSale'] as num?)?.toDouble(),
+        baseCalcIcmsSubstUnit:
+            (json['BaseCalcIcmsSubstUnit'] as num?)?.toDouble(),
+        valueOfIcmsSubstUnit:
+            (json['ValueOfIcmsSubstUnit'] as num?)?.toDouble(),
+        valueOfIcmsOwnerUnit:
+            (json['ValueOfIcmsOwnerUnit'] as num?)?.toDouble(),
+        mininumQuantityForWholeSale: mininumQuantityForWholeSale ??
+            (json['MininumQuantityForWholeSale'] as num?)?.toDouble(),
         mediumLiquidCost: (json['MediumLiquidCost'] as num?)?.toDouble(),
-        subsidizedLiquidCost: (json['SubsidizedLiquidCost'] as num?)?.toDouble(),
-        activeSubsidizedLiquidCost: (json['ActiveSubsidizedLiquidCost'] as num?)?.toDouble(),
-        fiscalBaseCalcSubstitute: (json['FiscalBaseCalcSubstitute'] as num?)?.toDouble(),
-        fiscalBaseCalcSubstitutePrevious: (json['FiscalBaseCalcSubstitutePrevious'] as num?)?.toDouble(),
+        subsidizedLiquidCost:
+            (json['SubsidizedLiquidCost'] as num?)?.toDouble(),
+        activeSubsidizedLiquidCost:
+            (json['ActiveSubsidizedLiquidCost'] as num?)?.toDouble(),
+        fiscalBaseCalcSubstitute:
+            (json['FiscalBaseCalcSubstitute'] as num?)?.toDouble(),
+        fiscalBaseCalcSubstitutePrevious:
+            (json['FiscalBaseCalcSubstitutePrevious'] as num?)?.toDouble(),
         replacementCostReal: (json['ReplacementCostReal'] as num?)?.toDouble(),
-        lastReplacementCostReal: (json['LastReplacementCostReal'] as num?)?.toDouble(),
+        lastReplacementCostReal:
+            (json['LastReplacementCostReal'] as num?)?.toDouble(),
         liquidCostReal: (json['LiquidCostReal'] as num?)?.toDouble(),
         lastLiquidCostReal: (json['LastLiquidCostReal'] as num?)?.toDouble(),
-        replacementCostFiscal: (json['ReplacementCostFiscal'] as num?)?.toDouble(),
-        lastReplacementCostFiscal: (json['LastReplacementCostFiscal'] as num?)?.toDouble(),
+        replacementCostFiscal:
+            (json['ReplacementCostFiscal'] as num?)?.toDouble(),
+        lastReplacementCostFiscal:
+            (json['LastReplacementCostFiscal'] as num?)?.toDouble(),
         liquidCostFiscal: (json['LiquidCostFiscal'] as num?)?.toDouble(),
-        lastLiquidCostFiscal: (json['LastLiquidCostFiscal'] as num?)?.toDouble(),
+        lastLiquidCostFiscal:
+            (json['LastLiquidCostFiscal'] as num?)?.toDouble(),
         operationCost: (json['OperationCost'] as num?)?.toDouble(),
         bonusSubsidyValue: (json['BonusSubsidyValue'] as num?)?.toDouble(),
-        bonusSubsidyActiveValue: (json['BonusSubsidyActiveValue'] as num?)?.toDouble(),
-        bonusSubsidyUnitaryValue: (json['BonusSubsidyUnitaryValue'] as num?)?.toDouble(),
-        bonusSubsidyActiveUnitaryValue: (json['BonusSubsidyActiveUnitaryValue'] as num?)?.toDouble(),
+        bonusSubsidyActiveValue:
+            (json['BonusSubsidyActiveValue'] as num?)?.toDouble(),
+        bonusSubsidyUnitaryValue:
+            (json['BonusSubsidyUnitaryValue'] as num?)?.toDouble(),
+        bonusSubsidyActiveUnitaryValue:
+            (json['BonusSubsidyActiveUnitaryValue'] as num?)?.toDouble(),
         isOfferInRetail: json['IsOfferInRetail'],
         salePracticedTypeInSaleRetail: json['SalePracticedTypeInSaleRetail'],
-        salePracticedInSaleRetail: (json['SalePracticedInSaleRetail'] as num?)?.toDouble(),
+        salePracticedInSaleRetail:
+            (json['SalePracticedInSaleRetail'] as num?)?.toDouble(),
         isOfferInWhole: json['IsOfferInWhole'],
         salePracticedTypeInWholeSale: json['SalePracticedTypeInWholeSale'],
-        salePracticedInWholeSale: (json['SalePracticedInWholeSale'] as num?)?.toDouble(),
+        salePracticedInWholeSale:
+            (json['SalePracticedInWholeSale'] as num?)?.toDouble(),
         isOfferInECommerce: json['IsOfferInECommerce'],
-        salePriceTypePracticedInECommerce: json['SalePriceTypePracticedInECommerce'],
-        salePracticedInECommerce: (json['SalePracticedInECommerce'] as num?)?.toDouble(),
+        salePriceTypePracticedInECommerce:
+            json['SalePriceTypePracticedInECommerce'],
+        salePracticedInECommerce:
+            (json['SalePracticedInECommerce'] as num?)?.toDouble(),
       );
+
 
   Map<String, dynamic> toJson() => {
         'SaleRetailPricePractice': saleRetailPricePractice,

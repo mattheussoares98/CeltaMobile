@@ -23,54 +23,58 @@ class BSFProductItemModel extends BSFProductItemEntity {
     required super.productPackingCode,
   });
 
-  factory BSFProductItemModel.fromJson(Map<String, dynamic> json) =>
-      BSFProductItemModel(
-        code: json['Code'],
-        productPackingCode: json['ProductPackingCode'],
-        icms: json['Icms'] != null ? BSFIcmsModel.fromJson(json['Icms']) : null,
-        ipi: json['Ipi'] != null ? BSFIpiModel.fromJson(json['Ipi']) : null,
-        priceCost:
-            json['ProductEnterprisePacking']?['Extensions']?['PriceCost'] !=
-                null
-            ? BSFPriceCostModel.fromJson(
-                json['ProductEnterprisePacking']['Extensions']['PriceCost'],
-              )
-            : null,
-        product: json['Product'] != null
-            ? BSFProductDetailsModel.fromJson(json['Product'])
-            : null,
-        fiscalCode: json['FiscalCode'] != null
-            ? BSFFiscalCodeModel.fromJson(json['FiscalCode'])
-            : null,
-        compositionChilds: json['CompositionChilds'],
-        eanCode: json['EanCode'],
-        freight: json['Freight'] != null
-            ? (BSFProductFreightModel.fromJson(json['Freight'])
-                  as BSFProductFreightEntity)
-            : null,
-        discounts: json['Discounts'] != null
-            ? (json['Discounts'] as List)
-                  .map((i) => BSFDiscountModel.fromJson(i))
-                  .toList()
-            : null,
-        expectedDeliveryDate: json['ExpectedDeliveryDate'] != null
-            ? DateTime.parse(json['ExpectedDeliveryDate'])
-            : null,
-        deliveryTax: json['DeliveryTax'] != null
-            ? BSFValueTypeModel.fromJson(json['DeliveryTax'])
-            : null,
-        increment: json['Increment'] != null
-            ? BSFValueTypeModel.fromJson(json['Increment'])
-            : null,
-        creditOnOrigin: json['CreditOnOrigin'] != null
-            ? BSFValueTypeModel.fromJson(json['CreditOnOrigin'])
-            : null,
-        compensation: json['Compensation'] != null
-            ? BSFValueTypeModel.fromJson(json['Compensation'])
-            : null,
-        quantity: (json['Quantity'] as num?)?.toDouble(),
-        value: (json['Value'] as num?)?.toDouble(),
-      );
+  factory BSFProductItemModel.fromJson(
+    Map<String, dynamic> json,
+  ) => BSFProductItemModel(
+    code: json['Code'],
+    productPackingCode: json['ProductPackingCode'],
+    icms: json['Icms'] != null ? BSFIcmsModel.fromJson(json['Icms']) : null,
+    ipi: json['Ipi'] != null ? BSFIpiModel.fromJson(json['Ipi']) : null,
+    priceCost:
+        json['ProductEnterprisePacking']?['Extensions']?['PriceCost'] != null
+        ? BSFPriceCostModel.fromJson(
+            json['ProductEnterprisePacking']['Extensions']['PriceCost'],
+            mininumQuantityForWholeSale:
+                (json['ProductEnterprisePacking']?['MininumQuantityForWholeSale']
+                        as num?)
+                    ?.toDouble(),
+          )
+        : null,
+    product: json['Product'] != null
+        ? BSFProductDetailsModel.fromJson(json['Product'])
+        : null,
+    fiscalCode: json['FiscalCode'] != null
+        ? BSFFiscalCodeModel.fromJson(json['FiscalCode'])
+        : null,
+    compositionChilds: json['CompositionChilds'],
+    eanCode: json['EanCode'],
+    freight: json['Freight'] != null
+        ? (BSFProductFreightModel.fromJson(json['Freight'])
+              as BSFProductFreightEntity)
+        : null,
+    discounts: json['Discounts'] != null
+        ? (json['Discounts'] as List)
+              .map((i) => BSFDiscountModel.fromJson(i))
+              .toList()
+        : null,
+    expectedDeliveryDate: json['ExpectedDeliveryDate'] != null
+        ? DateTime.parse(json['ExpectedDeliveryDate'])
+        : null,
+    deliveryTax: json['DeliveryTax'] != null
+        ? BSFValueTypeModel.fromJson(json['DeliveryTax'])
+        : null,
+    increment: json['Increment'] != null
+        ? BSFValueTypeModel.fromJson(json['Increment'])
+        : null,
+    creditOnOrigin: json['CreditOnOrigin'] != null
+        ? BSFValueTypeModel.fromJson(json['CreditOnOrigin'])
+        : null,
+    compensation: json['Compensation'] != null
+        ? BSFValueTypeModel.fromJson(json['Compensation'])
+        : null,
+    quantity: (json['Quantity'] as num?)?.toDouble(),
+    value: (json['Value'] as num?)?.toDouble(),
+  );
 
   Map<String, dynamic> toJson() => {
     'ProductPackingCode': productPackingCode,
@@ -111,6 +115,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
             'Extensions': {
               'PriceCost': BSFPriceCostModel.fromEntity(priceCost!).toJson(),
             },
+            'MinimumWholeQuantity': priceCost!.mininumQuantityForWholeSale,
           }
         : null,
   };
