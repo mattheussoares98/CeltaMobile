@@ -2,6 +2,8 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
+import 'animations/animations.dart';
+
 class SummaryTableItem {
   final String title;
   final dynamic value;
@@ -51,16 +53,16 @@ class SummaryTable extends StatelessWidget {
         if (item.value is num) {
           if (item.isPrice) {
             priceText = item.value.toString().toBrazilianNumber(
-              item.decimalHouses,
-            );
+                  item.decimalHouses,
+                );
           } else if (item.isPercentage) {
             formattedValue =
                 '${item.value.toString().toBrazilianNumber(item.decimalHouses)} %';
           } else {
             formattedValue = item.value.toString().toBrazilianNumber(
-              item.decimalHouses,
-              true,
-            );
+                  item.decimalHouses,
+                  true,
+                );
           }
         }
 
@@ -86,20 +88,10 @@ class SummaryTable extends StatelessWidget {
                 ],
               ),
               if (priceText != null)
-                RichText(
-                  text: TextSpan(
-                    style: effectiveValueStyle,
-                    children: [
-                      TextSpan(
-                        text: 'R\$ ',
-                        style: effectiveValueStyle?.copyWith(
-                          fontSize: 11,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      TextSpan(text: priceText),
-                    ],
-                  ),
+                AnimatedPriceValue(
+                  value: item.value as num,
+                  style: effectiveValueStyle,
+                  priceText: priceText,
                 )
               else
                 Text(
