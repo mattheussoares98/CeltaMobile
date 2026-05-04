@@ -27,4 +27,5 @@ export 'loading_extension/loading_extension.dart';
 export 'product_item/product_item.dart';
 export 'responsive_scrollable_widget.dart';
 export 'show_snack_bar_message.dart';
+export 'animations/animations.dart';
 export 'summary_table.dart';
