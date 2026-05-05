@@ -32,4 +32,11 @@ class HomeInitializationController extends _$HomeInitializationController {
       ),
     ]);
   }
+
+  void refresh() {
+    ref.invalidate(enterprisesStateControllerProvider);
+    ref.invalidate(bsVersionStateControllerProvider);
+    ref.invalidate(enabledModulesByEnterpriseNameStateControllerProvider);
+    ref.invalidateSelf();
+  }
 }

@@ -25,7 +25,8 @@ class HomePage extends ConsumerWidget {
 
       body: OptimazedAsyncValueWidget(
         provider: homeInitializationControllerProvider,
-        tryAgain: () => ref.invalidate(homeInitializationControllerProvider),
+        tryAgain: () =>
+            ref.read(homeInitializationControllerProvider.notifier).refresh(),
         child: const ModulesWidget(),
       ),
     );
