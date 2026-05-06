@@ -64,7 +64,7 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
                 text:
                     ' (${item.totalIncrement.toString().toBrazilianNumber().addBrazilianCoin()})',
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.primary,
+                  color: Colors.orange,
                   fontWeight: FontWeight.bold,
                 ),
               ),
