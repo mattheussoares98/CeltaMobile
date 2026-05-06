@@ -44,8 +44,6 @@ class ProductsManagementPage extends ConsumerWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-
-
     ref.observeLoading([insertTransferRequestControllerProvider(draftKey)]);
 
     final screenWidth = MediaQuery.sizeOf(context).width;
@@ -155,8 +153,10 @@ class ProductsManagementPage extends ConsumerWidget {
                     );
                     return QuantityBadge(
                       quantity: productsLength,
-                      materialIcon: Icons.shopping_cart,
-                      cupertinoIcon: CupertinoIcons.shopping_cart,
+                      platformIcon: const PlatformIcon(
+                        materialIcon: Icons.shopping_cart,
+                        cupertinoIcon: CupertinoIcons.shopping_cart,
+                      ),
                       isSelected: pageIndex == 1,
                     );
                   },

@@ -48,8 +48,10 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
 
               return QuantityBadge(
                 quantity: quantity,
-                materialIcon: Icons.shopping_cart,
-                cupertinoIcon: CupertinoIcons.cart,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.shopping_cart,
+                  cupertinoIcon: CupertinoIcons.cart,
+                ),
                 isSelected: pageIndex == 1,
               );
             },

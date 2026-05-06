@@ -29,8 +29,10 @@ class CartBadge extends ConsumerWidget {
 
     return QuantityBadge(
       quantity: productsLength,
-      materialIcon: Icons.shopping_cart,
-      cupertinoIcon: CupertinoIcons.shopping_cart,
+      platformIcon: const PlatformIcon(
+        materialIcon: Icons.shopping_cart,
+        cupertinoIcon: CupertinoIcons.shopping_cart,
+      ),
       isSelected: false,
       totalPrice: totalPrice,
     );

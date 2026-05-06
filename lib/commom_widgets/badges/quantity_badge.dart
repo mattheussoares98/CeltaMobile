@@ -5,15 +5,13 @@ import '../commom_widgets.dart';
 
 class QuantityBadge extends StatelessWidget {
   final int? quantity;
-  final IconData materialIcon;
-  final IconData cupertinoIcon;
+  final PlatformIcon platformIcon;
   final bool isSelected;
   final double? totalPrice;
   const QuantityBadge({
     super.key,
     required this.quantity,
-    required this.materialIcon,
-    required this.cupertinoIcon,
+    required this.platformIcon,
     required this.isSelected,
     this.totalPrice,
   });
@@ -42,8 +40,8 @@ class QuantityBadge extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           PlatformIcon(
-            cupertinoIcon: cupertinoIcon,
-            materialIcon: materialIcon,
+            cupertinoIcon: platformIcon.cupertinoIcon,
+            materialIcon: platformIcon.materialIcon,
             color: isSelected ? theme.primaryColor : theme.disabledColor,
           ),
           if (totalPrice != null)

@@ -21,8 +21,10 @@ class CartPriceIcon extends ConsumerWidget {
             enterpriseCode,
           ).select((s) => s.value?.products?.length ?? 0),
         ),
-        materialIcon: Icons.shopping_cart,
-        cupertinoIcon: CupertinoIcons.shopping_cart,
+        platformIcon: const PlatformIcon(
+          materialIcon: Icons.shopping_cart,
+          cupertinoIcon: CupertinoIcons.shopping_cart,
+        ),
         isSelected: false,
         totalPrice: ref.watch(
           pendingBuyRequestStateControllerProvider(enterpriseCode).select(

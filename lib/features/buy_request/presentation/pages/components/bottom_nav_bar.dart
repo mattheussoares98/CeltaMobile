@@ -102,8 +102,10 @@ class BottomNavBar extends ConsumerWidget {
                     enterpriseCode,
                   ).select((s) => s.value?.selectedEnterprises?.length),
                 ),
-                materialIcon: Icons.business,
-                cupertinoIcon: CupertinoIcons.building_2_fill,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.business,
+                  cupertinoIcon: CupertinoIcons.building_2_fill,
+                ),
                 isSelected: currentIndex == 1,
               );
             },
@@ -119,8 +121,10 @@ class BottomNavBar extends ConsumerWidget {
                     enterpriseCode,
                   ).select((s) => s.value?.products?.length),
                 ),
-                materialIcon: Icons.shopping_cart,
-                cupertinoIcon: CupertinoIcons.shopping_cart,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.shopping_cart,
+                  cupertinoIcon: CupertinoIcons.shopping_cart,
+                ),
                 isSelected: currentIndex == 2,
               );
             },

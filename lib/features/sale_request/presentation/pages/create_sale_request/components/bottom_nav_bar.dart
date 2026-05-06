@@ -12,7 +12,6 @@ class BottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final index = ref.watch(pageIndexStateControllerProvider);
     return BottomNavigationBar(
       onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
@@ -55,8 +54,10 @@ class BottomNavBar extends ConsumerWidget {
               );
               return QuantityBadge(
                 quantity: productsLength,
-                materialIcon: Icons.shopping_cart,
-                cupertinoIcon: CupertinoIcons.shopping_cart,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.shopping_cart,
+                  cupertinoIcon: CupertinoIcons.shopping_cart,
+                ),
                 isSelected: index == 2,
               );
             },

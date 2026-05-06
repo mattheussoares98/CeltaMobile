@@ -41,8 +41,10 @@ class CartQuantityPriceBadge extends ConsumerWidget {
       },
       child: QuantityBadge(
         quantity: productsQuantity,
-        materialIcon: Icons.shopping_cart,
-        cupertinoIcon: CupertinoIcons.shopping_cart,
+        platformIcon: const PlatformIcon(
+          materialIcon: Icons.shopping_cart,
+          cupertinoIcon: CupertinoIcons.shopping_cart,
+        ),
         isSelected: false,
         totalPrice: totalPrice,
       ),

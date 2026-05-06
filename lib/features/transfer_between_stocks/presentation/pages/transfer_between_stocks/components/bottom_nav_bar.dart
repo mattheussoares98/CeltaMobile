@@ -18,7 +18,6 @@ class BottomNavBar extends ConsumerWidget {
       ).select((s) => s.pageIndex),
     );
 
-
     return BottomNavigationBar(
       currentIndex: selectedPageIndex,
       onTap: (index) {
@@ -50,8 +49,10 @@ class BottomNavBar extends ConsumerWidget {
 
               return QuantityBadge(
                 quantity: quantityLength,
-                materialIcon: Icons.shopping_cart,
-                cupertinoIcon: CupertinoIcons.shopping_cart,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.shopping_cart,
+                  cupertinoIcon: CupertinoIcons.shopping_cart,
+                ),
                 isSelected: selectedPageIndex == 1,
               );
             },
