@@ -8,13 +8,13 @@ class BSFPaymentFormModel extends BSFPaymentFormEntity {
 
   factory BSFPaymentFormModel.fromJson(Map<String, dynamic> json) =>
       BSFPaymentFormModel(
-        type: json['Type'],
+        type: PaymentFormType.fromValue(json['Type']),
         reducedName: json['ReducedName'],
         name: json['Name'],
       );
 
   Map<String, dynamic> toJson() => {
-    'Type': type,
+    'Type': type?.value,
     'ReducedName': reducedName,
     'Name': name,
   };
