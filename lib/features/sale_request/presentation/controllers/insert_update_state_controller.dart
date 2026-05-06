@@ -98,15 +98,17 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   ) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
 
-    if (quantity < 0) return;
-
-    if (item == null) {
-      addItem(product);
+    if (quantity <= 0) {
+      if (item != null) {
+        removeItem(item);
+      }
       return;
     }
 
-    if (quantity == 0) {
-      removeItem(item);
+    if (item == null) {
+      if (quantity > 0) {
+        addItem(product);
+      }
       return;
     }
 

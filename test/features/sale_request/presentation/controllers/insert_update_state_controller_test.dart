@@ -783,5 +783,54 @@ void main() {
         expect(state.value!.products ?? [], isEmpty);
       },
     );
+
+    test(
+      'updateItemQuantity should do nothing when item is null and quantity is 0',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            paymentOptionsStateControllerProvider(
+              1,
+            ).overrideWith(() => FakePaymentOptionsController([])),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ).notifier,
+        );
+
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ).future,
+        );
+
+        final product = EntityFactory.makeProductEntity(
+          productPackingCode: 123,
+          enterpriseCode: 1,
+        );
+
+        // ACT: Call with null item and 0 quantity
+        controller.updateItemQuantity(null, 0.0, product);
+
+        final state = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ),
+        );
+
+        // ASSERT: Cart should still be empty
+        expect(state.value!.products ?? [], isEmpty);
+      },
+    );
   });
 }
