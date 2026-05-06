@@ -48,7 +48,11 @@ class InsertUpdatePage extends ConsumerWidget {
           customerCode: customerCode,
           saleRequestId: saleRequestId,
         ),
-        bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
+        bottomNavigationBar: InsertUpdateBottomNavigationBar(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
+        ),
       ),
       builder: (context, ref, child) {
         final hasChanges =

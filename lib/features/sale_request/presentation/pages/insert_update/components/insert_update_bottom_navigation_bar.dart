@@ -1,13 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../../../commom_widgets/commom_widgets.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
 
 class InsertUpdateBottomNavigationBar extends ConsumerWidget {
-  const InsertUpdateBottomNavigationBar({super.key});
+  final int enterpriseCode;
+  final int customerCode;
+  final int saleRequestId;
+  const InsertUpdateBottomNavigationBar({
+    super.key,
+    required this.enterpriseCode,
+    required this.customerCode,
+    required this.saleRequestId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,9 +36,23 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
           label: 'Produtos'.hardcoded,
         ),
         BottomNavigationBarItem(
-          icon: const PlatformIcon(
-            cupertinoIcon: CupertinoIcons.list_bullet,
-            materialIcon: Icons.list,
+          icon: Consumer(
+            builder: (context, ref, child) {
+              final quantity = ref.watch(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: saleRequestId,
+                ).select((s) => s.value?.products?.length ?? 0),
+              );
+
+              return QuantityBadge(
+                quantity: quantity,
+                materialIcon: Icons.shopping_cart,
+                cupertinoIcon: CupertinoIcons.cart,
+                isSelected: pageIndex == 1,
+              );
+            },
           ),
           label: 'Itens'.hardcoded,
         ),
