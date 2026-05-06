@@ -83,7 +83,8 @@ class InsertProductPage extends ConsumerWidget {
               SliverToBoxAdapter(
                 child: Hero(
                   tag:
-                      heroTag ?? 'sale_request_product_${originalProduct.ProductPackingCode}',
+                      heroTag ??
+                      'product-${originalProduct.ProductPackingCode}',
                   child: Material(
                     type: MaterialType.transparency,
                     child: ProductItemWidget(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,166 +36,170 @@ class FakePaymentOptionsController extends PaymentOptionsStateController {
 }
 
 void main() {
+  late int enterpriseCode;
+  late int customerCode;
+  late int saleRequestId;
+  late FakePaymentOptionsController fakePaymentsController;
+  late List<BSFPaymentFinalizationEntity> fakePayments;
+  late BSFSaleRequestEntity fakeSaleRequest;
+
+  ProviderContainer makeProviderContainer() {
+    final container = ProviderContainer(
+      retry: (retryCount, error) => null,
+      overrides: [
+        paymentOptionsStateControllerProvider(
+          enterpriseCode,
+        ).overrideWith(() => fakePaymentsController),
+        saleRequestDetailsStateControllerProvider(
+          customerCode: customerCode,
+          enterpriseCode: enterpriseCode,
+          saleRequestCode: saleRequestId,
+        ).overrideWith(() => FakeSaleRequestDetailsController(fakeSaleRequest)),
+      ],
+    );
+    addTearDown(container.dispose);
+    return container;
+  }
+
+  setUp(() {
+    enterpriseCode = faker.randomGenerator.integer(100);
+    customerCode = faker.randomGenerator.integer(100);
+    saleRequestId = faker.randomGenerator.integer(100);
+    fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
+    fakePayments = [
+      EntityFactory.makeBSFPaymentFinalizationEntity(),
+      EntityFactory.makeBSFPaymentFinalizationEntity(),
+      EntityFactory.makeBSFPaymentFinalizationEntity(),
+    ];
+
+    fakePaymentsController = FakePaymentOptionsController(fakePayments);
+  });
+
   group('InsertUpdateStateController', () {
-    test(
-      'should return empty entity when saleRequestId is 0 and load payment options',
-      () async {
-        final fakePayments = FakePaymentOptionsController([]);
-        const enterpriseCode = 1;
+    group('build', () {
+      test(
+        'should return empty entity when saleRequestId is 0 and load payment options',
+        () async {
+          final container = makeProviderContainer();
 
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              enterpriseCode,
-            ).overrideWith(() => fakePayments),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final result = await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        expect(result, isA<BSFSaleRequestEntity>());
-        expect(result, BSFSaleRequestEntity.empty());
-        expect(fakePayments.wasCalled, isTrue);
-      },
-    );
-
-    test(
-      'should return data from saleRequestDetailsStateControllerProvider when saleRequestId is not 0 and load payment options',
-      () async {
-        final fakeEntity = EntityFactory.makeBSFSaleRequestEntity();
-        final fakePayments = FakePaymentOptionsController([]);
-        const enterpriseCode = 1;
-        const customerCode = 2;
-        const saleRequestId = 123;
-
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              enterpriseCode,
-            ).overrideWith(() => fakePayments),
-            saleRequestDetailsStateControllerProvider(
-              customerCode: customerCode,
+          final result = await container.read(
+            insertUpdateStateControllerProvider(
               enterpriseCode: enterpriseCode,
-              saleRequestCode: saleRequestId,
-            ).overrideWith(() => FakeSaleRequestDetailsController(fakeEntity)),
-          ],
-        );
-        addTearDown(container.dispose);
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
 
-        final result = await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ).future,
-        );
-
-        expect(result, fakeEntity);
-        expect(fakePayments.wasCalled, isTrue);
-      },
-    );
-
-    test('addItem should add a new product to the cart', () async {
-      final container = ProviderContainer(
-        overrides: [
-          paymentOptionsStateControllerProvider(
-            1,
-          ).overrideWith(() => FakePaymentOptionsController([])),
-        ],
-      );
-      addTearDown(container.dispose);
-
-      final controller = container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ).notifier,
+          expect(result, BSFSaleRequestEntity.empty());
+          expect(fakePaymentsController.wasCalled, isTrue);
+        },
       );
 
-      await container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ).future,
+      test(
+        'should return data from saleRequestDetailsStateControllerProvider when saleRequestId is not 0 and load payment options',
+        () async {
+          final container = makeProviderContainer();
+          addTearDown(container.dispose);
+
+          final result = await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: saleRequestId,
+            ).future,
+          );
+
+          expect(result, fakeSaleRequest);
+          expect(fakePaymentsController.wasCalled, isTrue);
+        },
       );
-
-      final product = EntityFactory.makeProductEntity(
-        productPackingCode: 123,
-        enterpriseCode: 1,
-      );
-
-      controller.addItem(product);
-
-      final state = container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ),
-      );
-
-      expect(state.value!.products!.length, 1);
-      expect(state.value!.products!.first.productPackingCode, 123);
-      expect(state.value!.products!.first.quantity, 1);
     });
 
-    test(
-      'addItem should increment quantity if product is already in cart',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
+    group('Add Item', () {
+      test('addItem should add a new product to the cart', () async {
+        final container = makeProviderContainer();
 
         final controller = container.read(
           insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
             saleRequestId: 0,
           ).notifier,
         );
 
         await container.read(
           insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
             saleRequestId: 0,
           ).future,
         );
 
         final product = EntityFactory.makeProductEntity(
-          productPackingCode: 123,
-          enterpriseCode: 1,
+          productPackingCode: faker.randomGenerator.integer(100),
+          enterpriseCode: enterpriseCode,
         );
 
-        controller.addItem(product);
         controller.addItem(product);
 
         final state = container.read(
           insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
             saleRequestId: 0,
           ),
         );
 
         expect(state.value!.products!.length, 1);
-        expect(state.value!.products!.first.quantity, 2);
-      },
-    );
+        expect(
+          state.value!.products!.first.productPackingCode,
+          product.ProductPackingCode,
+        );
+        expect(state.value!.products!.first.quantity, 1);
+      });
+
+      test(
+        'addItem should increment quantity if product is already in cart',
+        () async {
+          final container = makeProviderContainer();
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final product = EntityFactory.makeProductEntity(
+            plu: faker.guid.guid(),
+            enterpriseCode: enterpriseCode,
+          );
+
+          controller.addItem(product);
+          controller.addItem(product);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          expect(state.value!.products!.length, 1);
+          expect(state.value!.products!.first.quantity, 2);
+        },
+      );
+    });
 
     test(
       'updateItemQuantity should update quantity when item is in cart',

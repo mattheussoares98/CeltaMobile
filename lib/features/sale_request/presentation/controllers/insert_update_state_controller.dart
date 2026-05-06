@@ -58,43 +58,44 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     return results[1] as BSFSaleRequestEntity;
   }
 
+  (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {
+    final current = state.value!;
+    final items = List<BSFProductItemEntity>.from(current.products ?? []);
+
+    final index = items.indexWhere(
+      (e) => e.product?.productPackingPriceLookUpString == plu,
+    );
+
+    return (items, index);
+  }
+
   void addItem(ProductEntity product) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     if (product.getPrice <= 0) return;
 
-    final current = state.value!;
-    final items = List<BSFProductItemEntity>.from(current.products ?? []);
-
-    final productCode =
-        product.ProductPackingCode?.toString() ??
-        product.ProductCode?.toString();
-    final index = items.indexWhere(
-      (e) => e.product?.personalizedCode == productCode,
-    );
+    final (items, index) = _getItemsAndIndexByPlu(product.PLU);
 
     if (index != -1) {
       items[index] = items[index].copyWith(
         quantity: (items[index].quantity ?? 0) + 1,
       );
     } else {
-      items.add(product.toBSFProductItemEntity());
+      items.add(product.toBSFProductItemEntity().copyWith(quantity: 1));
     }
 
-    state = AsyncData(current.copyWith(products: items));
+    state = AsyncData(state.value!.copyWith(products: items));
   }
 
   void removeItem(BSFProductItemEntity item) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
-    final current = state.value!;
-    final items = List<BSFProductItemEntity>.from(current.products ?? []);
 
-    final index = items.indexWhere(
-      (e) => e.productPackingCode == item.productPackingCode,
+    final (items, index) = _getItemsAndIndexByPlu(
+      item.product?.productPackingPriceLookUpString,
     );
 
     if (index != -1) {
       items.removeAt(index);
-      state = AsyncData(current.copyWith(products: items));
+      state = AsyncData(state.value!.copyWith(products: items));
     }
   }
 
@@ -106,12 +107,14 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       return;
     }
 
-    final current = state.value!;
-    final items = List<BSFProductItemEntity>.from(current.products ?? []);
-    final index = items.indexWhere(
-      (e) => e.productPackingCode == item.productPackingCode,
+    final (items, index) = _getItemsAndIndexByPlu(
+      item.product?.productPackingPriceLookUpString,
     );
-    if (index != -1) {
+
+    if (index == -1) {
+      addItem(item.toProductEntity(enterpriseCode));
+      return;
+    } else {
       final pc = items[index].priceCost;
       double price = items[index].value ?? 0;
 
@@ -130,37 +133,34 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       }
 
       items[index] = items[index].copyWith(quantity: quantity, value: price);
-      state = AsyncData(current.copyWith(products: items));
+      state = AsyncData(state.value!.copyWith(products: items));
     }
   }
 
   void updateItem(BSFProductItemEntity oldItem, BSFProductItemEntity newItem) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
-    final current = state.value!;
-    final items = List<BSFProductItemEntity>.from(current.products ?? []);
-    final index = items.indexWhere(
-      (e) => e.productPackingCode == oldItem.productPackingCode,
+    final (items, index) = _getItemsAndIndexByPlu(
+      oldItem.product?.productPackingPriceLookUpString,
     );
+
     if (index != -1) {
       items[index] = newItem;
     } else {
       items.add(newItem);
     }
-    state = AsyncData(current.copyWith(products: items));
+    state = AsyncData(state.value!.copyWith(products: items));
   }
 
   void updateCustomer(CustomerEntity customer) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
-    final current = state.value!;
     state = AsyncData(
-      current.copyWith(customer: customer.toBSFCustomerEntity()),
+      state.value!.copyWith(customer: customer.toBSFCustomerEntity()),
     );
   }
 
   void updateRequestType(BSFRequestTypeEntity requestType) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
-    final current = state.value!;
-    state = AsyncData(current.copyWith(requestType: requestType));
+    state = AsyncData(state.value!.copyWith(requestType: requestType));
   }
 
   void addPayment(BSFPaymentFinalizationEntity payment, double value) {

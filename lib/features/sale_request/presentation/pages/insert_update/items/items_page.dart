@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
-import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
+import '../../components/components.dart';
 
 class ItemsPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -30,7 +31,6 @@ class ItemsPage extends ConsumerWidget {
       provider.select((v) => v.whenData((data) => data.products)),
     );
 
-
     return AsyncValueWidget(
       value: productsAsync,
       data: (products) {
@@ -38,25 +38,19 @@ class ItemsPage extends ConsumerWidget {
         if (items.isEmpty) {
           return Center(child: Text('Nenhum item adicionado'.hardcoded));
         }
-        return ListView.separated(
+        return ResponsiveListFlow(
           padding: const EdgeInsets.all(Sizes.p8),
           itemCount: items.length,
-          separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (context, index) {
             final item = items[index];
-            return ListTile(
-              title: Text(item.product?.name ?? ''),
-              subtitle: Text('Qtd: ${item.quantity}'.hardcoded),
-              trailing: IconButton(
-                icon: const PlatformIcon(
-                  cupertinoIcon: CupertinoIcons.delete,
-                  materialIcon: Icons.delete,
-                  color: Colors.red,
-                ),
-                onPressed: () {
-                  ref.read(provider.notifier).removeItem(item);
-                },
-              ),
+            return BSFProductItemSummary(
+              key: ValueKey(item.productPackingCode ?? item.code),
+              product: item.toProductEntity(enterpriseCode),
+              item: item,
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: saleRequestId,
+              heroPrefix: 'items',
             );
           },
         );

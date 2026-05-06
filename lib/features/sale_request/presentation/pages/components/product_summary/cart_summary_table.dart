@@ -2,26 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../domain/entities/entities.dart';
 
 class CartSummaryTable extends StatelessWidget {
   final BSFProductItemEntity item;
-  final ProductEntity product;
-  const CartSummaryTable({
-    super.key,
-    required this.item,
-    required this.product,
-  });
+  const CartSummaryTable({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final practicedPrice = product.getPracticedPriceType(
-      quantity: item.quantity ?? 0,
-      manualPrice: item.value,
-    );
+    final practicedPrice = item.practicedPriceType;
     final size = MediaQuery.sizeOf(context);
 
     return SummaryTable(
