@@ -58,13 +58,17 @@ class InsertProductUIController extends _$InsertProductUIController {
     state = state.copyWith(incrementType: type);
   }
 
-  void addDiscount(BSFDiscountEntity discount) {
+  bool addDiscount(BSFDiscountEntity discount) {
     if (discount.discount?.type == PercentageOrValue.reais) {
       state = state.copyWith(discounts: [discount]);
+      return true;
     } else {
+      if (state.discounts.length >= 10) return false;
+
       final discounts = state.discounts.toList();
       discounts.add(discount);
       state = state.copyWith(discounts: discounts);
+      return true;
     }
   }
 

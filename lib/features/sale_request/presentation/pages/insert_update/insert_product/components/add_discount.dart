@@ -45,7 +45,17 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
         value: _valueController.text.toDouble() ?? 0,
       ),
     );
-    ref.read(uiProvider.notifier).addDiscount(newDiscount);
+    final success = ref.read(uiProvider.notifier).addDiscount(newDiscount);
+
+    if (!success) {
+      if (!mounted) return;
+      showSnackBarMessage(
+        context,
+        'Limite de 10 descontos atingido'.hardcoded,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
     _valueController.clear();
   }
 

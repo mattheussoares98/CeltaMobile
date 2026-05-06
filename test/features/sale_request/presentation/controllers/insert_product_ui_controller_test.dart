@@ -441,6 +441,45 @@ void main() {
         expect(states.first.discounts, [newDiscount]);
         expect(states.first.discounts.length, 1);
       });
+
+      test('should return false and not add more than 10 discounts', () async {
+        // ARRANGE
+        final productWithoutDiscounts = testProduct.copyWith(discounts: []);
+        final container = makeProviderContainer();
+        final notifier = container.read(
+          insertProductUIControllerProvider(productWithoutDiscounts).notifier,
+        );
+
+        // ACT - Add 10 discounts
+        for (var i = 0; i < 10; i++) {
+          final success = notifier.addDiscount(
+            EntityFactory.makeBSFDiscountEntity(
+              discount: const BSFValueTypeEntity(
+                type: PercentageOrValue.percentage,
+                value: 1,
+              ),
+            ),
+          );
+          expect(success, isTrue);
+        }
+
+        // Try to add the 11th
+        final result = notifier.addDiscount(
+          EntityFactory.makeBSFDiscountEntity(
+            discount: const BSFValueTypeEntity(
+              type: PercentageOrValue.percentage,
+              value: 1,
+            ),
+          ),
+        );
+
+        // ASSERT
+        expect(result, isFalse);
+        final state = container.read(
+          insertProductUIControllerProvider(productWithoutDiscounts),
+        );
+        expect(state.discounts.length, 10);
+      });
     });
 
     group('removeDiscount', () {
