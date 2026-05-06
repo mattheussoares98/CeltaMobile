@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/bs_version/bs_version.dart';
 import '../../../../core/presentation/controllers/enterprises/enterprises.dart';
+import '../../../../core/presentation/controllers/resource/resource.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
 
@@ -34,9 +35,11 @@ class HomeInitializationController extends _$HomeInitializationController {
   }
 
   void refresh() {
+    ref.invalidate(validatedUserSessionProvider);
     ref.invalidate(enterprisesStateControllerProvider);
     ref.invalidate(bsVersionStateControllerProvider);
     ref.invalidate(enabledModulesByEnterpriseNameStateControllerProvider);
+    ref.invalidate(canAccessResourceStateControllerProvider);
     ref.invalidateSelf();
   }
 }
