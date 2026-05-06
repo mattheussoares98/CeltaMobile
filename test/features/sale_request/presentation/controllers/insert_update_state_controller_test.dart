@@ -199,741 +199,567 @@ void main() {
           expect(state.value!.products!.first.quantity, 2);
         },
       );
+
+      test('addItem should not add product if price is 0 or less', () async {
+        final container = makeProviderContainer();
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ).notifier,
+        );
+
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ).future,
+        );
+
+        final productWithZeroPrice = EntityFactory.makeProductEntity(
+          plu: faker.guid.guid().toString(),
+          enterpriseCode: enterpriseCode,
+          RetailPracticedPrice: 0,
+        ).copyWith(Value: 0);
+
+        controller.addItem(productWithZeroPrice);
+
+        final state = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ),
+        );
+
+        expect(state.value!.products ?? [], isEmpty);
+      });
     });
 
-    test(
-      'updateItemQuantity should update quantity when item is in cart',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product = EntityFactory.makeProductEntity(
-          productPackingCode: 123,
-          enterpriseCode: 1,
-        );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        controller.updateItemQuantity(item, 5.0);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        expect(state.value!.products!.length, 1);
-        expect(state.value!.products!.first.quantity, 5.0);
-      },
-    );
-
-    test(
-      'updateItemQuantity should update quantity when item is not null',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product = EntityFactory.makeProductEntity(
-          productPackingCode: 123,
-          enterpriseCode: 1,
-        );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        controller.updateItemQuantity(item, 10.0);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        expect(state.value!.products!.first.quantity, 10.0);
-      },
-    );
-
-    test('addItem should not add product if price is 0 or less', () async {
-      final container = ProviderContainer(
-        overrides: [
-          paymentOptionsStateControllerProvider(
-            1,
-          ).overrideWith(() => FakePaymentOptionsController([])),
-        ],
-      );
-      addTearDown(container.dispose);
-
-      final controller = container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ).notifier,
-      );
-
-      await container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ).future,
-      );
-
-      final productWithZeroPrice = EntityFactory.makeProductEntity(
-        productPackingCode: 123,
-        enterpriseCode: 1,
-        RetailPracticedPrice: 0,
-      ).copyWith(Value: 0);
-
-      controller.addItem(productWithZeroPrice);
-
-      final state = container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ),
-      );
-
-      expect(state.value!.products ?? [], isEmpty);
-    });
-
-    test(
-      'updateItemQuantity should use WholePracticedPrice when quantity >= MinimumWholeQuantity',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product =
-            EntityFactory.makeProductEntity(
-              productPackingCode: 123,
-              enterpriseCode: 1,
-            ).copyWith(
-              RetailPracticedPrice: 10.0,
-              WholePracticedPrice: 8.0,
-              MinimumWholeQuantity: 5.0,
-              Value: 0,
-              PriceCost: EntityFactory.makePriceCost().copyWith(
-                RetailPracticedPrice: 10.0,
-                WholePracticedPrice: 8.0,
-                MinimumWholeQuantity: 5.0,
-              ),
-            );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        controller.updateItemQuantity(item, 5.0);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        expect(state.value!.products!.first.quantity, 5.0);
-        expect(state.value!.products!.first.value, 8.0);
-      },
-    );
-
-    test(
-      'updateItemQuantity should use getPrice (retail) when quantity < MinimumWholeQuantity',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product =
-            EntityFactory.makeProductEntity(
-              productPackingCode: 123,
-              enterpriseCode: 1,
-            ).copyWith(
-              RetailPracticedPrice: 10.0,
-              WholePracticedPrice: 8.0,
-              MinimumWholeQuantity: 5.0,
-              Value: 0,
-              PriceCost: EntityFactory.makePriceCost().copyWith(
-                RetailPracticedPrice: 10.0,
-                WholePracticedPrice: 8.0,
-                MinimumWholeQuantity: 5.0,
-              ),
-            );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        controller.updateItemQuantity(item, 3.0);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        expect(state.value!.products!.first.quantity, 3.0);
-        expect(state.value!.products!.first.value, 10.0);
-      },
-    );
-
-    test(
-      'updateItemQuantity should use getPrice (retail) when WholePracticedPrice is 0',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product =
-            EntityFactory.makeProductEntity(
-              productPackingCode: 123,
-              enterpriseCode: 1,
-            ).copyWith(
-              RetailPracticedPrice: 10.0,
-              WholePracticedPrice: 0.0,
-              MinimumWholeQuantity: 5.0,
-              Value: 0,
-              PriceCost: EntityFactory.makePriceCost().copyWith(
-                RetailPracticedPrice: 10.0,
-                WholePracticedPrice: 0.0,
-                MinimumWholeQuantity: 5.0,
-              ),
-            );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        controller.updateItemQuantity(item, 10.0);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        expect(state.value!.products!.first.quantity, 10.0);
-        expect(state.value!.products!.first.value, 10.0);
-      },
-    );
-
-    test(
-      'updateItemQuantity should use getPrice (retail) when MinimumWholeQuantity is 0',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product =
-            EntityFactory.makeProductEntity(
-              productPackingCode: 123,
-              enterpriseCode: 1,
-            ).copyWith(
-              RetailPracticedPrice: 10.0,
-              WholePracticedPrice: 8.0,
-              MinimumWholeQuantity: 0.0,
-              Value: 0,
-              PriceCost: EntityFactory.makePriceCost().copyWith(
-                RetailPracticedPrice: 10.0,
-                WholePracticedPrice: 8.0,
-                MinimumWholeQuantity: 0.0,
-              ),
-            );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        controller.updateItemQuantity(item, 10.0);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        expect(state.value!.products!.first.quantity, 10.0);
-        expect(state.value!.products!.first.value, 10.0);
-      },
-    );
-
-    test(
-      'updateItemQuantity should update quantity when item is not null and quantity is between 0 and 1',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product = EntityFactory.makeProductEntity(
-          productPackingCode: 123,
-          enterpriseCode: 1,
-        );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        // ACT: Update to 0.5
-        controller.updateItemQuantity(item, 0.5);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        expect(state.value!.products!.first.quantity, 0.5);
-      },
-    );
-
-    test(
-      'updateItemQuantity should remove item when quantity is 0 or less',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product = EntityFactory.makeProductEntity(
-          productPackingCode: 123,
-          enterpriseCode: 1,
-        );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        controller.updateItemQuantity(item, 0);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        expect(state.value!.products, isEmpty);
-      },
-    );
-    test(
-      'updateItemQuantity should remove item when quantity is negative',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product = EntityFactory.makeProductEntity(
-          productPackingCode: 123,
-          enterpriseCode: 1,
-        );
-
-        controller.addItem(product);
-        final item = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        controller.updateItemQuantity(item, -1.0);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-
-        // ASSERT: Cart should be empty (item was removed)
-        expect(state.value!.products, isEmpty);
-      },
-    );
-
-    test('updateItemQuantity should remove item when quantity is 0', () async {
-      final container = ProviderContainer(
-        overrides: [
-          paymentOptionsStateControllerProvider(
-            1,
-          ).overrideWith(() => FakePaymentOptionsController([])),
-        ],
-      );
-      addTearDown(container.dispose);
-
-      final controller = container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ).notifier,
-      );
-
-      await container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ).future,
-      );
-
-      final product = EntityFactory.makeProductEntity(
-        productPackingCode: 123,
-        enterpriseCode: 1,
-      );
-
-      controller.addItem(product);
-      final item = container
-          .read(
+    group("Update quantity", () {
+      test(
+        'updateItemQuantity should update quantity when item is in cart',
+        () async {
+          final container = makeProviderContainer();
+
+          final controller = container.read(
             insertUpdateStateControllerProvider(
-              enterpriseCode: 1,
-              customerCode: 1,
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final product = EntityFactory.makeProductEntity(
+            plu: faker.guid.guid().toString(),
+            enterpriseCode: enterpriseCode,
+          );
+
+          controller.addItem(product);
+          final item = container
+              .read(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: 0,
+                ),
+              )
+              .value!
+              .products!
+              .first;
+
+          final newQuantity = faker.randomGenerator.decimal();
+          controller.updateItemQuantity(item, newQuantity);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
               saleRequestId: 0,
             ),
-          )
-          .value!
-          .products!
-          .first;
+          );
 
-      controller.updateItemQuantity(item, 0.0);
+          expect(state.value!.products!.length, 1);
+          expect(state.value!.products!.first.quantity, newQuantity);
+        },
+      );
+      test(
+        'updateItemQuantity should update quantity when item is not null',
+        () async {
+          final container = makeProviderContainer();
 
-      final state = container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 1,
-          saleRequestId: 0,
-        ),
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final product = EntityFactory.makeProductEntity(
+            plu: faker.guid.guid().toString(),
+            enterpriseCode: enterpriseCode,
+          );
+
+          controller.addItem(product);
+          final item = container
+              .read(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: 0,
+                ),
+              )
+              .value!
+              .products!
+              .first;
+
+          final newQuantity = faker.randomGenerator.decimal();
+          controller.updateItemQuantity(item, newQuantity);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          expect(state.value!.products!.first.quantity, newQuantity);
+        },
       );
 
-      // ASSERT: Cart should be empty (item was removed)
-      expect(state.value!.products, isEmpty);
+      test(
+        'updateItemQuantity should use WholePracticedPrice when quantity >= MinimumWholeQuantity',
+        () async {
+          final container = makeProviderContainer();
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final retailPrice = faker.randomGenerator.decimal();
+          final wholePrice = faker.randomGenerator.decimal();
+          final minimumWholeQuantity = faker.randomGenerator.decimal();
+
+          final product =
+              EntityFactory.makeProductEntity(
+                plu: faker.guid.guid().toString(),
+                enterpriseCode: enterpriseCode,
+              ).copyWith(
+                RetailPracticedPrice: retailPrice,
+                WholePracticedPrice: wholePrice,
+                MinimumWholeQuantity: minimumWholeQuantity,
+                Value: 0,
+                PriceCost: EntityFactory.makePriceCost().copyWith(
+                  RetailPracticedPrice: retailPrice,
+                  WholePracticedPrice: wholePrice,
+                  MinimumWholeQuantity: minimumWholeQuantity,
+                ),
+              );
+
+          controller.addItem(product);
+          final item = container
+              .read(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: 0,
+                ),
+              )
+              .value!
+              .products!
+              .first;
+
+          controller.updateItemQuantity(item, minimumWholeQuantity);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          expect(state.value!.products!.first.quantity, minimumWholeQuantity);
+          expect(state.value!.products!.first.value, wholePrice);
+        },
+      );
+
+      test(
+        'updateItemQuantity should use getPrice (retail) when quantity < MinimumWholeQuantity',
+        () async {
+          final container = makeProviderContainer();
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final retailPrice = faker.randomGenerator.integer(100).toDouble();
+          final wholePrice = faker.randomGenerator.integer(100).toDouble();
+          final minimumWholeQuantity = faker.randomGenerator
+              .integer(100)
+              .toDouble();
+
+          final product =
+              EntityFactory.makeProductEntity(
+                plu: faker.guid.guid().toString(),
+                enterpriseCode: enterpriseCode,
+              ).copyWith(
+                RetailPracticedPrice: retailPrice,
+                WholePracticedPrice: wholePrice,
+                MinimumWholeQuantity: minimumWholeQuantity,
+                Value: 0,
+                PriceCost: EntityFactory.makePriceCost().copyWith(
+                  RetailPracticedPrice: retailPrice,
+                  WholePracticedPrice: wholePrice,
+                  MinimumWholeQuantity: minimumWholeQuantity,
+                ),
+              );
+
+          controller.addItem(product);
+          final item = container
+              .read(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: 0,
+                ),
+              )
+              .value!
+              .products!
+              .first;
+
+          final newQuantity = minimumWholeQuantity - 0.001;
+          controller.updateItemQuantity(item, newQuantity);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          expect(state.value!.products!.first.quantity, newQuantity);
+          expect(state.value!.products!.first.value, retailPrice);
+        },
+      );
+
+      test(
+        'updateItemQuantity should use getPrice (retail) when WholePracticedPrice is 0',
+        () async {
+          final container = makeProviderContainer();
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final retailPrice = faker.randomGenerator.integer(100).toDouble();
+          final minimumWholeQuantity = faker.randomGenerator
+              .integer(100)
+              .toDouble();
+
+          final product =
+              EntityFactory.makeProductEntity(
+                plu: faker.guid.guid().toString(),
+                enterpriseCode: enterpriseCode,
+              ).copyWith(
+                RetailPracticedPrice: retailPrice,
+                WholePracticedPrice: 0.0,
+                MinimumWholeQuantity: minimumWholeQuantity,
+                Value: 0,
+                PriceCost: EntityFactory.makePriceCost().copyWith(
+                  RetailPracticedPrice: retailPrice,
+                  WholePracticedPrice: 0.0,
+                  MinimumWholeQuantity: minimumWholeQuantity,
+                ),
+              );
+
+          controller.addItem(product);
+          final item = container
+              .read(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: 0,
+                ),
+              )
+              .value!
+              .products!
+              .first;
+
+          final newQuantity = faker.randomGenerator.integer(100).toDouble();
+          controller.updateItemQuantity(item, newQuantity);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          expect(state.value!.products!.first.quantity, newQuantity);
+          expect(state.value!.products!.first.value, retailPrice);
+        },
+      );
+
+      test(
+        'updateItemQuantity should remove item when quantity is 0 or less',
+        () async {
+          final container = makeProviderContainer();
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final product = EntityFactory.makeProductEntity(
+            plu: faker.guid.guid().toString(),
+            enterpriseCode: enterpriseCode,
+          );
+
+          controller.addItem(product);
+          final item = container
+              .read(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: 0,
+                ),
+              )
+              .value!
+              .products!
+              .first;
+
+          controller.updateItemQuantity(item, 0);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          expect(state.value!.products, isEmpty);
+        },
+      );
+
+      test(
+        'updateItemQuantity should remove item when quantity is equal or less than zero',
+        () async {
+          final container = makeProviderContainer();
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final product = EntityFactory.makeProductEntity(
+            plu: faker.guid.guid().toString(),
+            enterpriseCode: enterpriseCode,
+          );
+
+          controller.addItem(product);
+          final item = container
+              .read(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: 0,
+                ),
+              )
+              .value!
+              .products!
+              .first;
+
+          final newQuantity = faker.randomGenerator.boolean()
+              ? 0.0
+              : (0 - faker.randomGenerator.decimal());
+          controller.updateItemQuantity(item, newQuantity);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          // ASSERT: Cart should be empty (item was removed)
+          expect(state.value!.products, isEmpty);
+        },
+      );
     });
 
-    test(
-      'removeItem should remove item from cart by matching productPackingCode',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
+    group("Remove item", () {
+      test(
+        'removeItem should remove item from cart by matching productPackingCode',
+        () async {
+          final container = makeProviderContainer();
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final product = EntityFactory.makeProductEntity(
+            plu: faker.guid.guid().toString(),
+            enterpriseCode: enterpriseCode,
+          );
+          controller.addItem(product);
+
+          // Get the added item
+          final addedItem = container
+              .read(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: 0,
+                ),
+              )
+              .value!
+              .products!
+              .first;
+
+          // Create a "different" instance with same productPackingCode
+          final sameItemDifferentInstance = addedItem.copyWith(quantity: 99);
+
+          controller.removeItem(sameItemDifferentInstance);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+          expect(state.value!.products, isEmpty);
+        },
+      );
+    });
+
+    group("Update item", () {
+      test('updateItem should replace item in cart by matching PLU', () async {
+        final container = makeProviderContainer();
 
         final controller = container.read(
           insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
             saleRequestId: 0,
           ).notifier,
         );
 
         await container.read(
           insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
             saleRequestId: 0,
           ).future,
         );
 
         final product = EntityFactory.makeProductEntity(
-          productPackingCode: 123,
-          enterpriseCode: 1,
+          plu: faker.guid.guid().toString(),
+          enterpriseCode: enterpriseCode,
         );
         controller.addItem(product);
 
-        // Get the added item
         final addedItem = container
             .read(
               insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
+                enterpriseCode: enterpriseCode,
+                customerCode: customerCode,
                 saleRequestId: 0,
               ),
             )
@@ -941,81 +767,20 @@ void main() {
             .products!
             .first;
 
-        // Create a "different" instance with same productPackingCode
-        final sameItemDifferentInstance = addedItem.copyWith(quantity: 99);
-
-        controller.removeItem(sameItemDifferentInstance);
-
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ),
-        );
-        expect(state.value!.products, isEmpty);
-      },
-    );
-
-    test(
-      'updateItem should replace item in cart by matching productPackingCode',
-      () async {
-        final container = ProviderContainer(
-          overrides: [
-            paymentOptionsStateControllerProvider(
-              1,
-            ).overrideWith(() => FakePaymentOptionsController([])),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).notifier,
-        );
-
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
-            saleRequestId: 0,
-          ).future,
-        );
-
-        final product = EntityFactory.makeProductEntity(
-          productPackingCode: 123,
-          enterpriseCode: 1,
-        );
-        controller.addItem(product);
-
-        final addedItem = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: 1,
-                customerCode: 1,
-                saleRequestId: 0,
-              ),
-            )
-            .value!
-            .products!
-            .first;
-
-        final updatedItem = addedItem.copyWith(quantity: 10);
+        final newQuantity = faker.randomGenerator.decimal();
+        final updatedItem = addedItem.copyWith(quantity: newQuantity);
 
         controller.updateItem(addedItem, updatedItem);
 
         final state = container.read(
           insertUpdateStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 1,
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
             saleRequestId: 0,
           ),
         );
-        expect(state.value!.products!.first.quantity, 10);
-      },
-    );
+        expect(state.value!.products!.first.quantity, newQuantity);
+      });
+    });
   });
 }
