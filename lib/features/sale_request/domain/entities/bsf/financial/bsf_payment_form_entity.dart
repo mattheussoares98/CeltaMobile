@@ -1,14 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'financial.dart';
 
 class BSFPaymentFormEntity extends Equatable {
-  final int? type;
+  final PaymentFormType? type;
   final String? reducedName;
   final String? name;
 
   const BSFPaymentFormEntity({
-    required this.type,
-    required this.reducedName,
-    required this.name,
+    this.type,
+    this.reducedName,
+    this.name,
   });
 
   @override
