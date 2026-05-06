@@ -115,6 +115,104 @@ extension PriceCostEntityToBSFPriceCostEntity on PriceCostEntity {
   }
 }
 
+extension BSFProductItemEntityToProductEntity on BSFProductItemEntity {
+  ProductEntity toProductEntity(int? enterpriseCode) {
+    return ProductEntity(
+      EnterpriseCode: enterpriseCode,
+      ProductCode: product?.code,
+      ProductPackingCode: productPackingCode,
+      PLU: product?.productPackingPriceLookUpString,
+      Name: product?.name,
+      PackingQuantity: product?.productPackingQuantity?.toString(),
+      PackingAbbreviation: product?.productPackingTypeString,
+      Value: value,
+      RetailPracticedPrice: priceCost?.saleRetailPricePractice,
+      RetailSalePrice: priceCost?.saleRetailPricePractice,
+      RetailOfferPrice: priceCost?.saleRetailOfferPractice,
+      WholePracticedPrice: priceCost?.wholeSalePricePractice,
+      WholeSalePrice: priceCost?.wholeSalePricePractice,
+      WholeOfferPrice: priceCost?.wholeSaleOfferPractice,
+      MinimumWholeQuantity: priceCost?.mininumQuantityForWholeSale,
+      OperationalCost: priceCost?.operationCost,
+      ReplacementCost: priceCost?.replacementCost,
+      ReplacementCostMidle: priceCost?.mediumReplacementCost,
+      LiquidCost: priceCost?.liquidCost,
+      LiquidCostMidle: priceCost?.mediumLiquidCost,
+      RealCost: priceCost?.replacementCostReal,
+      RealLiquidCost: priceCost?.liquidCostReal,
+      FiscalCost: priceCost?.replacementCostFiscal,
+      FiscalLiquidCost: priceCost?.liquidCostFiscal,
+      PriceCost: priceCost?.toPriceCostEntity(),
+      BalanceLabelType: null,
+      StorageAreaAddress: null,
+      BalanceLabelQuantity: null,
+      ECommercePracticedPrice: priceCost?.eCommercePricePractice,
+      ECommerceSalePrice: priceCost?.eCommercePricePractice,
+      ECommerceOfferPrice: priceCost?.eCommerceOfferPractice,
+      PendantPrintLabel: null,
+      AlterationPriceForAllPackings: null,
+      IsFatherOfGrate: product?.isFatherOfGrate,
+      IsChildOfGrate: null,
+      InClass: null,
+      MarkUpdateClassInAdjustSalePriceIndividual: null,
+      StockByEnterpriseAssociateds: null,
+      Stocks: null,
+      LastBuyEntrances: null,
+      EANs: eanCode != null ? [eanCode!] : null,
+      ResearchOfPriceCode: null,
+      ConcurrentCode: null,
+      codigoInternoProEmb: null,
+      codigoProEmb: null,
+      quantidadeInvContProEmb: null,
+      FormatedProduct: null,
+      Quantidade_ProcRecebDocProEmb: null,
+      ReferenciaXml_ProcRecebDocProEmb: null,
+      DataValidade_ProcRecebDocProEmb: null,
+    );
+  }
+}
+
+extension BSFPriceCostEntityToPriceCostEntity on BSFPriceCostEntity {
+  PriceCostEntity toPriceCostEntity() {
+    return PriceCostEntity(
+      RetailPracticedPrice: saleRetailPricePractice,
+      RetailSalePrice: saleRetailPricePractice,
+      RetailOfferPrice: saleRetailOfferPractice,
+      RetailSuggestionPrice: null,
+      RetailMinimumPrice: null,
+      WholePracticedPrice: wholeSalePricePractice,
+      WholeSalePrice: wholeSalePricePractice,
+      WholeOfferPrice: wholeSaleOfferPractice,
+      WholeSuggestionPrice: null,
+      WholeMinimumPrice: null,
+      ECommercePracticedPrice: eCommercePricePractice,
+      ECommerceSalePrice: eCommercePricePractice,
+      ECommerceOfferPrice: eCommerceOfferPractice,
+      ECommerceSuggestionPrice: null,
+      ECommerceMinimumPrice: null,
+      MinimumWholeQuantity: mininumQuantityForWholeSale,
+      OperationalCost: operationCost,
+      ReplacementCost: replacementCost,
+      ReplacementCostMidle: mediumReplacementCost,
+      LiquidCost: liquidCost,
+      LiquidCostMidle: mediumLiquidCost,
+      RealCost: replacementCostReal,
+      RealLiquidCost: liquidCostReal,
+      FiscalCost: replacementCostFiscal,
+      FiscalLiquidCost: liquidCostFiscal,
+      RetailMargin: null,
+      RetailOfferMargin: null,
+      RetailMinimumMargin: null,
+      WholeMargin: null,
+      WholeOfferMargin: null,
+      WholeMinimumMargin: null,
+      ECommerceMargin: null,
+      ECommerceOfferMargin: null,
+      ECommerceMinimumMargin: null,
+    );
+  }
+}
+
 extension CustomerEntityToBSFCustomerEntity on CustomerEntity {
   BSFCustomerEntity toBSFCustomerEntity() {
     return BSFCustomerEntity(
