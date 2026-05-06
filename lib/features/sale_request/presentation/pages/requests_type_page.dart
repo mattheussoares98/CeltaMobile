@@ -31,7 +31,6 @@ class RequestsTypePage extends ConsumerWidget {
             value: ref.watch(provider),
             tryAgain: () => ref.invalidate(provider),
             data: (requests) {
-              //TODO check why is not working on iOS device
               return RefreshIndicator(
                 onRefresh: () async => ref.invalidate(provider),
                 child: ResponsiveListFlow(
