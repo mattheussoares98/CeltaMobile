@@ -87,43 +87,46 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     final current = state.value!;
     final items = List<BSFProductItemEntity>.from(current.products ?? []);
-    items.remove(item);
-    state = AsyncData(current.copyWith(products: items));
+
+    final index = items.indexWhere(
+      (e) => e.productPackingCode == item.productPackingCode,
+    );
+
+    if (index != -1) {
+      items.removeAt(index);
+      state = AsyncData(current.copyWith(products: items));
+    }
   }
 
-  void updateItemQuantity(
-    BSFProductItemEntity? item,
-    double quantity,
-    ProductEntity product,
-  ) {
+  void updateItemQuantity(BSFProductItemEntity item, double quantity) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
 
     if (quantity <= 0) {
-      if (item != null) {
-        removeItem(item);
-      }
-      return;
-    }
-
-    if (item == null) {
-      if (quantity > 0) {
-        addItem(product);
-      }
+      removeItem(item);
       return;
     }
 
     final current = state.value!;
     final items = List<BSFProductItemEntity>.from(current.products ?? []);
-    final index = items.indexOf(item);
+    final index = items.indexWhere(
+      (e) => e.productPackingCode == item.productPackingCode,
+    );
     if (index != -1) {
-      double? price = items[index].value;
-      final minimumWhole = product.MinimumWholeQuantity ?? 0;
-      if (minimumWhole > 0 &&
-          quantity >= minimumWhole &&
-          (product.WholePracticedPrice ?? 0) > 0) {
-        price = product.WholePracticedPrice;
-      } else {
-        price = product.getPrice;
+      final pc = items[index].priceCost;
+      double price = items[index].value ?? 0;
+
+      if (pc != null) {
+        final minWhole = pc.mininumQuantityForWholeSale ?? 0;
+        final wholePrice =
+            pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
+        final retailPrice =
+            pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
+
+        if (minWhole > 0 && quantity >= minWhole && wholePrice > 0) {
+          price = wholePrice;
+        } else if (retailPrice > 0) {
+          price = retailPrice;
+        }
       }
 
       items[index] = items[index].copyWith(quantity: quantity, value: price);
@@ -135,7 +138,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     final current = state.value!;
     final items = List<BSFProductItemEntity>.from(current.products ?? []);
-    final index = items.indexOf(oldItem);
+    final index = items.indexWhere(
+      (e) => e.productPackingCode == oldItem.productPackingCode,
+    );
     if (index != -1) {
       items[index] = newItem;
     } else {
