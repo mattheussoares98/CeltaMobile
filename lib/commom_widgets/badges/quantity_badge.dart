@@ -27,7 +27,6 @@ class _QuantityBadgeState extends State<QuantityBadge>
   late Animation<double> _quantityRollingAnimation;
 
   late AnimationController _priceController;
-  late Animation<double> _priceScaleAnimation;
   late Animation<double> _priceRollingAnimation;
 
   @override
@@ -52,16 +51,8 @@ class _QuantityBadgeState extends State<QuantityBadge>
 
     _priceController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 400),
     );
-
-    _priceScaleAnimation =
-        TweenSequence<double>([
-          TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.2), weight: 50),
-          TweenSequenceItem(tween: Tween(begin: 1.2, end: 1.0), weight: 50),
-        ]).animate(
-          CurvedAnimation(parent: _priceController, curve: Curves.easeInOut),
-        );
 
     _priceRollingAnimation = AlwaysStoppedAnimation(widget.totalPrice ?? 0.0);
   }
@@ -147,31 +138,28 @@ class _QuantityBadgeState extends State<QuantityBadge>
                   : theme.disabledColor,
             ),
             if (widget.totalPrice != null)
-              ScaleTransition(
-                scale: _priceScaleAnimation,
-                child: AnimatedBuilder(
-                  animation: _priceRollingAnimation,
-                  builder: (context, child) {
-                    return RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'R\$ ',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontSize: 9,
-                            ),
+              AnimatedBuilder(
+                animation: _priceRollingAnimation,
+                builder: (context, child) {
+                  return RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'R\$ ',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 9,
                           ),
-                          TextSpan(
-                            text: _priceRollingAnimation.value
-                                .toString()
-                                .toBrazilianNumber(),
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        ),
+                        TextSpan(
+                          text: _priceRollingAnimation.value
+                              .toString()
+                              .toBrazilianNumber(),
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
           ],
         ),
