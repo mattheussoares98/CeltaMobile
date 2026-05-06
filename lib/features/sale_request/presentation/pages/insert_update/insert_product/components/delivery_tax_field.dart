@@ -49,16 +49,30 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
     final product = ref.watch(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
 
-    final deliveryTaxType = ref.watch(
-      uiProvider.select((s) => s.deliveryTaxType),
-    );
+    final uiState = ref.watch(uiProvider);
+    final item = uiState.applyTo(product);
+    final theme = Theme.of(context);
+
+    final deliveryTaxType = uiState.deliveryTaxType;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Taxa de entrega'.hardcoded,
-          style: Theme.of(context).textTheme.titleSmall,
+        RichText(
+          text: TextSpan(
+            style: theme.textTheme.titleSmall,
+            children: [
+              TextSpan(text: 'Taxa de entrega'.hardcoded),
+              TextSpan(
+                text:
+                    ' (${item.totalDeliveryTax.toString().toBrazilianNumber().addBrazilianCoin()})',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.secondary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
         gapH4,
         Row(

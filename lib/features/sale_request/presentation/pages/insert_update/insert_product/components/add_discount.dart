@@ -33,9 +33,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     final product = ref.read(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
 
-    final type = ref.read(
-      uiProvider.select((s) => s.discountType),
-    );
+    final type = ref.read(uiProvider.select((s) => s.discountType));
 
     final newDiscount = BSFDiscountEntity(
       order: (ref.read(uiProvider).discounts.length) + 1,
@@ -62,13 +60,28 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
   Widget build(BuildContext context) {
     final product = ref.watch(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
+    final uiState = ref.watch(uiProvider);
+    final item = uiState.applyTo(product);
+    final theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Descontos'.hardcoded,
-          style: Theme.of(context).textTheme.titleSmall,
+        RichText(
+          text: TextSpan(
+            style: theme.textTheme.titleSmall,
+            children: [
+              TextSpan(text: 'Descontos'.hardcoded),
+              TextSpan(
+                text:
+                    ' (${item.totalDiscountValue.toString().toBrazilianNumber().addBrazilianCoin()})',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.error,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,8 +103,8 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                       ),
                       textInputAction:
                           discountType == PercentageOrValue.percentage
-                              ? TextInputAction.continueAction
-                              : TextInputAction.next,
+                          ? TextInputAction.continueAction
+                          : TextInputAction.next,
                       controller: _valueController,
                       onFieldSubmitted: (_) => _addDiscount(),
                       suffixIcon: ExcludeFocus(

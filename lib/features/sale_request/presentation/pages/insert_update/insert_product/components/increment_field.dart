@@ -46,14 +46,30 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
     final product = ref.watch(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
 
-    final incrementType = ref.watch(uiProvider.select((s) => s.incrementType));
+    final uiState = ref.watch(uiProvider);
+    final item = uiState.applyTo(product);
+    final theme = Theme.of(context);
+
+    final incrementType = uiState.incrementType;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Acréscimo'.hardcoded,
-          style: Theme.of(context).textTheme.titleSmall,
+        RichText(
+          text: TextSpan(
+            style: theme.textTheme.titleSmall,
+            children: [
+              TextSpan(text: 'Acréscimo'.hardcoded),
+              TextSpan(
+                text:
+                    ' (${item.totalIncrement.toString().toBrazilianNumber().addBrazilianCoin()})',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
         gapH4,
         Row(
