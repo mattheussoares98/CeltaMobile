@@ -160,7 +160,7 @@ class BSFSaleRequestEntity extends Equatable {
     );
   }
 
-  double get _totalProductsLiquid {
+  double get totalProductsLiquid {
     if (products == null) return 0;
 
     return products!.fold(0.0, (p, n) {
@@ -183,7 +183,7 @@ class BSFSaleRequestEntity extends Equatable {
     });
 
     final totalSaleRequest = deliveryTax?.deliveryTax?.calculateItemValue(
-      _totalProductsLiquid,
+      totalProductsLiquid,
     );
 
     return totalProductsDeliveryTax + (totalSaleRequest ?? 0.0);
@@ -196,7 +196,7 @@ class BSFSaleRequestEntity extends Equatable {
     });
 
     final totalLiquidIncrement = increment?.calculateItemValue(
-      _totalProductsLiquid,
+      totalProductsLiquid,
     );
 
     return totalBrutIncrement + (totalLiquidIncrement ?? 0.0);
@@ -209,7 +209,7 @@ class BSFSaleRequestEntity extends Equatable {
     });
 
     double totalSaleRequestDiscount = 0;
-    double baseValue = _totalProductsLiquid;
+    double baseValue = totalProductsLiquid;
     for (var discount in discounts ?? <BSFDiscountEntity>[]) {
       final itemDiscount =
           (discount.discount?.calculateItemValue(baseValue) ?? 0);

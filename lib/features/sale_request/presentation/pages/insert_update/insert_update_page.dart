@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../../../utils/utils.dart';
 import '../../controllers/controllers.dart';
@@ -37,11 +39,39 @@ class InsertUpdatePage extends ConsumerWidget {
     return Consumer(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            saleRequestId == 0
+          title: DefaultAppBarTitle(
+            title: saleRequestId == 0
                 ? 'Inserir pedido'.hardcoded
                 : 'Atualizar pedido'.hardcoded,
           ),
+          actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
+          actions: [
+            Consumer(
+              builder: (_, ref, _) {
+                return QuantityBadge(
+                  quantity: ref.watch(
+                    insertUpdateStateControllerProvider(
+                      enterpriseCode: enterpriseCode,
+                      customerCode: customerCode,
+                      saleRequestId: saleRequestId,
+                    ).select((s) => s.value?.products?.length),
+                  ),
+                  totalPrice: ref.watch(
+                    insertUpdateStateControllerProvider(
+                      enterpriseCode: enterpriseCode,
+                      customerCode: customerCode,
+                      saleRequestId: saleRequestId,
+                    ).select((s) => s.value?.totalProductsLiquid),
+                  ),
+                  platformIcon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.cart,
+                    materialIcon: Icons.shopping_cart,
+                  ),
+                  isSelected: false,
+                );
+              },
+            ),
+          ],
         ),
         body: InsertUpdateBody(
           enterpriseCode: enterpriseCode,
