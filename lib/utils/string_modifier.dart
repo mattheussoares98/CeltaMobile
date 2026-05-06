@@ -8,26 +8,15 @@ extension StringModifier on String {
       return this;
     }
 
-    if (showDecimalUntilLastNumber) {
-      if (value % 1 == 0) {
-        return value.toInt().toString().replaceAllMapped(
-          RegExp(r'\B(?=(\d{3})+(?!\d))'),
-          (match) => '.',
-        );
-      }
+    String formatted = value.toStringAsFixed(decimalHouses);
 
-      List<String> parts = value.toString().split('.');
-
-      parts[0] = parts[0].replaceAllMapped(
-        RegExp(r'\B(?=(\d{3})+(?!\d))'),
-        (match) => '.',
-      );
-
-      return parts.join(',');
+    if (showDecimalUntilLastNumber && formatted.contains('.')) {
+      formatted = formatted
+          .replaceAll(RegExp(r'0+$'), '')
+          .replaceAll(RegExp(r'\.$'), '');
     }
 
-    String formatted = value.toStringAsFixed(decimalHouses);
-    List<String> parts = formatted.split('.');
+    final parts = formatted.split('.');
     parts[0] = parts[0].replaceAllMapped(
       RegExp(r'\B(?=(\d{3})+(?!\d))'),
       (match) => '.',
