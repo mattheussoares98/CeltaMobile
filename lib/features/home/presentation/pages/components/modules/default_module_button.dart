@@ -5,7 +5,6 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/resource/resource.dart';
-import '../../../../../../core/presentation/helpers/helpers.dart';
 import '../../../../../../routing/routing.dart';
 import '../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../components.dart';
@@ -99,11 +98,9 @@ class DefaultModuleButton extends ConsumerWidget {
                     ],
                   ),
                 ),
-                if ((module == Modules.stockReplacement &&
-                        ModuleIsFreeUntil.stockReplacementIsFree) ||
-                    (module == Modules.adjustCost &&
-                        ModuleIsFreeUntil.adjustCostIsFree))
-                  const NewModuleBadge(),
+                // if ((module == Modules.adjustCost &&
+                //     ModuleIsFreeUntil.adjustCostIsFree))
+                //   const NewModuleBadge(),
                 FavoriteIconButton(
                   module: module,
                   key: ValueKey('favorite_$module'),

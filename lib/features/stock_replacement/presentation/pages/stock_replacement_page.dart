@@ -2,12 +2,10 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/presentation/controllers/stock/stock.dart';
-import '../../../../core/presentation/helpers/helpers.dart';
 import '../controllers/controllers.dart';
 import 'components/components.dart';
 
@@ -74,21 +72,6 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
                 title: 'Substituição de estoque'.hardcoded,
               ),
             ),
-            if (ModuleIsFreeUntil.stockReplacementIsFree)
-              Column(
-                children: [
-                  Text(
-                    'Grátis até'.hardcoded,
-                    style: const TextStyle(fontSize: 11, color: Colors.green),
-                  ),
-                  Text(
-                    DateFormat(
-                      'dd/MM',
-                    ).format(ModuleIsFreeUntil.stockReplacementDate),
-                    style: const TextStyle(fontSize: 11, color: Colors.green),
-                  ),
-                ],
-              ),
           ],
         ),
       ),

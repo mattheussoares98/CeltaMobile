@@ -10,7 +10,6 @@ import '../core/presentation/controllers/bs_version/bs_version.dart';
 import '../core/presentation/controllers/enterprises/enterprises.dart';
 import '../core/presentation/controllers/resource/resource.dart';
 import '../core/presentation/controllers/user_session/user_session.dart';
-import '../core/presentation/helpers/helpers.dart';
 import '../exceptions/exceptions.dart';
 import '../features/enterprises/presentation/controllers/controllers.dart';
 import '../localization/string_hardcoded.dart';
@@ -93,16 +92,10 @@ class TryAccessModuleController extends _$TryAccessModuleController {
             return e.idFromErp == enterpriseCode;
           });
 
-      final moduleIsFree =
-          (module == Modules.stockReplacement &&
-              ModuleIsFreeUntil.stockReplacementIsFree) ||
-          (module == Modules.adjustCost && ModuleIsFreeUntil.adjustCostIsFree);
-
-      if (!moduleIsFree &&
-          (enabledModulesBySelectedEnterprise == null ||
-              !enabledModulesBySelectedEnterprise.enabledModules.contains(
-                module,
-              ))) {
+      if ((enabledModulesBySelectedEnterprise == null ||
+          !enabledModulesBySelectedEnterprise.enabledModules.contains(
+            module,
+          ))) {
         _showDisabledModuleMessage(context, module);
         return;
       }
