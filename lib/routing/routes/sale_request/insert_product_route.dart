@@ -22,6 +22,7 @@ RouteBase insertProductRoute() => GoRoute(
       enterpriseCode: enterpriseCode,
       customerCode: customerCode,
       saleRequestId: saleRequestId,
+      heroTag: extraMap['heroTag'] as String?,
     );
   },
 );

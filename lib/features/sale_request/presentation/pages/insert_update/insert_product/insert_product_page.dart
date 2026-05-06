@@ -12,6 +12,7 @@ import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class InsertProductPage extends ConsumerWidget {
+  final String? heroTag;
   final BSFProductItemEntity product;
   final ProductEntity originalProduct;
   final int enterpriseCode;
@@ -25,6 +26,7 @@ class InsertProductPage extends ConsumerWidget {
     required this.enterpriseCode,
     required this.customerCode,
     required this.saleRequestId,
+    this.heroTag,
   });
 
   @override
@@ -81,7 +83,7 @@ class InsertProductPage extends ConsumerWidget {
               SliverToBoxAdapter(
                 child: Hero(
                   tag:
-                      'sale_request_product_${originalProduct.ProductPackingCode}',
+                      heroTag ?? 'sale_request_product_${originalProduct.ProductPackingCode}',
                   child: Material(
                     type: MaterialType.transparency,
                     child: ProductItemWidget(
