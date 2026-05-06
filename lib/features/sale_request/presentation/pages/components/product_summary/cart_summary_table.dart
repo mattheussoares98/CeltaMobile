@@ -22,6 +22,7 @@ class CartSummaryTable extends StatelessWidget {
       quantity: item.quantity ?? 0,
       manualPrice: item.value,
     );
+    final size = MediaQuery.sizeOf(context);
 
     return SummaryTable(
       items: [
@@ -30,25 +31,28 @@ class CartSummaryTable extends StatelessWidget {
           value: item.value,
           decimalHouses: 2,
           isPrice: true,
-          trailing: Tooltip(
-            message: 'Preço ${practicedPrice.name.toLowerCase()}'.hardcoded,
-            triggerMode: TooltipTriggerMode.tap,
-            child: Container(
-              padding: const EdgeInsets.all(Sizes.p4),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withAlpha(30),
-                borderRadius: BorderRadius.circular(Sizes.p4),
-              ),
-              child: Text(
-                practicedPrice.name.substring(0, 1),
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.primaryColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 10,
+          trailing: size.width <= 200
+              ? null
+              : Tooltip(
+                  message:
+                      'Preço ${practicedPrice.name.toLowerCase()}'.hardcoded,
+                  triggerMode: TooltipTriggerMode.tap,
+                  child: Container(
+                    padding: const EdgeInsets.all(Sizes.p4),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withAlpha(30),
+                      borderRadius: BorderRadius.circular(Sizes.p4),
+                    ),
+                    child: Text(
+                      practicedPrice.name.substring(0, 1),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         ),
         if (item.totalDeliveryTax > 0)
           SummaryTableItem(

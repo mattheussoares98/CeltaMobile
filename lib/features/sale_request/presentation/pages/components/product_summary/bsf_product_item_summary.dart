@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../localization/string_hardcoded.dart';
@@ -28,6 +27,7 @@ class BSFProductItemSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final size = MediaQuery.sizeOf(context);
 
     if (product.getPrice <= 0) {
       return const SizedBox.shrink();
@@ -43,78 +43,66 @@ class BSFProductItemSummary extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              if (MediaQuery.sizeOf(context).width > 200)
-                Row(
-                  children: [
-                    PlatformIcon(
-                      cupertinoIcon: Icons.shopping_cart_outlined,
-                      materialIcon: Icons.shopping_cart_outlined,
-                      size: 14,
-                      color: theme.primaryColor,
-                    ),
-                    gapW4,
-                    FittedBox(
-                      child: Text(
-                        'Qtd'.hardcoded,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              gapW4,
-              Flexible(
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: QuantityControlButton(
+          if (size.width > 200)
+            Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      QuantityControlButton(
                         item: item,
                         product: product,
                         enterpriseCode: enterpriseCode,
                         customerCode: customerCode,
                         saleRequestId: saleRequestId,
                         isAdding: false,
+                        size: 32,
                       ),
-                    ),
-                    gapW4,
-                    FittedBox(
-                      child: Text(
-                        (item?.quantity ?? 0).toString().toBrazilianNumber(
-                          3,
-                          true,
-                        ),
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      gapW12,
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            (item?.quantity ?? 0).toString().toBrazilianNumber(
+                              3,
+                              true,
+                            ),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Qtd'.hardcoded,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    gapW4,
-                    Flexible(
-                      child: QuantityControlButton(
+                      gapW12,
+                      QuantityControlButton(
                         item: item,
                         product: product,
                         enterpriseCode: enterpriseCode,
                         customerCode: customerCode,
                         saleRequestId: saleRequestId,
                         isAdding: true,
+                        size: 32,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              if (item != null)
-                DeleteSummaryButton(
-                  item: item!,
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
-                ),
-            ],
-          ),
+                if (item != null)
+                  DeleteSummaryButton(
+                    item: item!,
+                    enterpriseCode: enterpriseCode,
+                    customerCode: customerCode,
+                    saleRequestId: saleRequestId,
+                  ),
+              ],
+            ),
           if (item != null) CartSummaryTable(item: item!, product: product),
         ],
       ),

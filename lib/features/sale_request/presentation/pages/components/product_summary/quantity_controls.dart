@@ -15,6 +15,7 @@ class QuantityControlButton extends ConsumerWidget {
   final int customerCode;
   final int saleRequestId;
   final bool isAdding;
+  final double size;
 
   const QuantityControlButton({
     super.key,
@@ -24,6 +25,7 @@ class QuantityControlButton extends ConsumerWidget {
     required this.customerCode,
     required this.saleRequestId,
     required this.isAdding,
+    this.size = 28,
   });
 
   @override
@@ -37,9 +39,7 @@ class QuantityControlButton extends ConsumerWidget {
           return;
         }
 
-        final newQuantity = isAdding
-            ? currentQuantity + 1
-            : currentQuantity - 1;
+        final newQuantity = isAdding ? currentQuantity + 1 : currentQuantity - 1;
 
         ref
             .read(
@@ -52,13 +52,11 @@ class QuantityControlButton extends ConsumerWidget {
             .updateItemQuantity(item, newQuantity, product);
       },
       icon: PlatformIcon(
-        cupertinoIcon: isAdding
-            ? CupertinoIcons.plus_circle
-            : CupertinoIcons.minus_circle,
-        materialIcon: isAdding
-            ? Icons.add_circle_outline
-            : Icons.remove_circle_outline,
-        size: 20,
+        cupertinoIcon:
+            isAdding ? CupertinoIcons.plus_circle : CupertinoIcons.minus_circle,
+        materialIcon:
+            isAdding ? Icons.add_circle_outline : Icons.remove_circle_outline,
+        size: size,
         color: (!isAdding && currentQuantity <= 1) ? theme.hintColor : null,
       ),
       padding: const EdgeInsets.all(Sizes.p4),
