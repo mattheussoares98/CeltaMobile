@@ -613,5 +613,175 @@ void main() {
         expect(state.value!.products!.first.value, 10.0);
       },
     );
+
+    test(
+      'updateItemQuantity should update quantity when item is not null and quantity is between 0 and 1',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            paymentOptionsStateControllerProvider(
+              1,
+            ).overrideWith(() => FakePaymentOptionsController([])),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ).notifier,
+        );
+
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ).future,
+        );
+
+        final product = EntityFactory.makeProductEntity(
+          productPackingCode: 123,
+          enterpriseCode: 1,
+        );
+
+        controller.addItem(product);
+        final item = container
+            .read(
+              insertUpdateStateControllerProvider(
+                enterpriseCode: 1,
+                customerCode: 1,
+                saleRequestId: 0,
+              ),
+            )
+            .value!
+            .products!
+            .first;
+
+        // ACT: Update to 0.5
+        controller.updateItemQuantity(item, 0.5, product);
+
+        final state = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ),
+        );
+
+        expect(state.value!.products!.first.quantity, 0.5);
+      },
+    );
+
+    test(
+      'updateItemQuantity should remove item when quantity is 0 or less',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            paymentOptionsStateControllerProvider(
+              1,
+            ).overrideWith(() => FakePaymentOptionsController([])),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ).notifier,
+        );
+
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ).future,
+        );
+
+        final product = EntityFactory.makeProductEntity(
+          productPackingCode: 123,
+          enterpriseCode: 1,
+        );
+
+        controller.addItem(product);
+        final item = container
+            .read(
+              insertUpdateStateControllerProvider(
+                enterpriseCode: 1,
+                customerCode: 1,
+                saleRequestId: 0,
+              ),
+            )
+            .value!
+            .products!
+            .first;
+
+        controller.updateItemQuantity(item, 0, product);
+
+        final state = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ),
+        );
+
+        expect(state.value!.products, isEmpty);
+      },
+    );
+
+    test(
+      'updateItemQuantity should do nothing when item is null and quantity is less than 0',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            paymentOptionsStateControllerProvider(
+              1,
+            ).overrideWith(() => FakePaymentOptionsController([])),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ).notifier,
+        );
+
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ).future,
+        );
+
+        final product = EntityFactory.makeProductEntity(
+          productPackingCode: 123,
+          enterpriseCode: 1,
+        );
+
+        // ACT: Call with null item and negative quantity
+        controller.updateItemQuantity(null, -1.0, product);
+
+        final state = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: 1,
+            customerCode: 1,
+            saleRequestId: 0,
+          ),
+        );
+
+        // ASSERT: Cart should still be empty
+        expect(state.value!.products ?? [], isEmpty);
+      },
+    );
   });
 }

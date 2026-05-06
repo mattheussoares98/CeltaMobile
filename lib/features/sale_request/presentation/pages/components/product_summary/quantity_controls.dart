@@ -32,14 +32,13 @@ class QuantityControlButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final currentQuantity = item?.quantity ?? 0;
+    final isRemoving = !isAdding && currentQuantity <= 1;
 
     return IconButton(
       onPressed: () {
-        if (!isAdding && currentQuantity <= 1) {
-          return;
-        }
-
-        final newQuantity = isAdding ? currentQuantity + 1 : currentQuantity - 1;
+        final newQuantity = isAdding
+            ? currentQuantity + 1
+            : currentQuantity - 1;
 
         ref
             .read(
@@ -52,12 +51,20 @@ class QuantityControlButton extends ConsumerWidget {
             .updateItemQuantity(item, newQuantity, product);
       },
       icon: PlatformIcon(
-        cupertinoIcon:
-            isAdding ? CupertinoIcons.plus_circle : CupertinoIcons.minus_circle,
-        materialIcon:
-            isAdding ? Icons.add_circle_outline : Icons.remove_circle_outline,
+        cupertinoIcon: isAdding
+            ? CupertinoIcons.plus_circle
+            : isRemoving
+            ? CupertinoIcons.trash
+            : CupertinoIcons.minus_circle,
+        materialIcon: isAdding
+            ? Icons.add_circle_outline
+            : isRemoving
+            ? Icons.delete_outline
+            : Icons.remove_circle_outline,
         size: size,
-        color: (!isAdding && currentQuantity <= 1) ? theme.hintColor : null,
+        color: isRemoving
+            ? (currentQuantity == 0 ? Colors.grey : theme.colorScheme.error)
+            : null,
       ),
       padding: const EdgeInsets.all(Sizes.p4),
       constraints: const BoxConstraints(),
