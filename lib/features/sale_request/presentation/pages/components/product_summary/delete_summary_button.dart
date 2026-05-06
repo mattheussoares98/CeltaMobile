@@ -36,11 +36,10 @@ class DeleteSummaryButton extends ConsumerWidget {
       icon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,
         materialIcon: Icons.delete_outline,
-        size: 24,
+        size: 32,
         color: Colors.red,
       ),
       padding: const EdgeInsets.all(Sizes.p4),
-      constraints: const BoxConstraints(),
     );
   }
 }
