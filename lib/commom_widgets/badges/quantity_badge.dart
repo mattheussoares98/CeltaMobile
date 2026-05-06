@@ -21,34 +21,83 @@ class QuantityBadge extends StatefulWidget {
 }
 
 class _QuantityBadgeState extends State<QuantityBadge>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
+    with TickerProviderStateMixin {
+  late AnimationController _quantityController;
+  late Animation<double> _quantityScaleAnimation;
+  late Animation<double> _quantityRollingAnimation;
+
+  late AnimationController _priceController;
+  late Animation<double> _priceScaleAnimation;
+  late Animation<double> _priceRollingAnimation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _quantityController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 400),
     );
-    _scaleAnimation = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 50),
-      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 50),
-    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    _quantityScaleAnimation =
+        TweenSequence<double>([
+          TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 50),
+          TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 50),
+        ]).animate(
+          CurvedAnimation(parent: _quantityController, curve: Curves.easeInOut),
+        );
+
+    _quantityRollingAnimation = AlwaysStoppedAnimation(
+      (widget.quantity ?? 0).toDouble(),
+    );
+
+    _priceController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    _priceScaleAnimation =
+        TweenSequence<double>([
+          TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.2), weight: 50),
+          TweenSequenceItem(tween: Tween(begin: 1.2, end: 1.0), weight: 50),
+        ]).animate(
+          CurvedAnimation(parent: _priceController, curve: Curves.easeInOut),
+        );
+
+    _priceRollingAnimation = AlwaysStoppedAnimation(widget.totalPrice ?? 0.0);
   }
 
   @override
   void didUpdateWidget(covariant QuantityBadge oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     if (oldWidget.quantity != widget.quantity) {
-      _controller.forward(from: 0.0);
+      _quantityRollingAnimation =
+          Tween<double>(
+            begin: (oldWidget.quantity ?? 0).toDouble(),
+            end: (widget.quantity ?? 0).toDouble(),
+          ).animate(
+            CurvedAnimation(parent: _quantityController, curve: Curves.easeOut),
+          );
+      _quantityController.forward(from: 0.0);
+    }
+
+    if (oldWidget.totalPrice != widget.totalPrice &&
+        widget.totalPrice != null) {
+      _priceRollingAnimation =
+          Tween<double>(
+            begin: oldWidget.totalPrice ?? 0.0,
+            end: widget.totalPrice ?? 0.0,
+          ).animate(
+            CurvedAnimation(parent: _priceController, curve: Curves.easeOut),
+          );
+      _priceController.forward(from: 0.0);
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _quantityController.dispose();
+    _priceController.dispose();
     super.dispose();
   }
 
@@ -57,14 +106,15 @@ class _QuantityBadgeState extends State<QuantityBadge>
     final theme = Theme.of(context);
 
     bool isSmall = (widget.quantity?.toString() ?? '0').length <= 1;
+
+    //! if it is on AppBar actions, should put this padding below
+    //*actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
     return RepaintBoundary(
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: Badge(
-          //! if it is on AppBar actions, show put this padding below
-          //*actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
-          backgroundColor: Colors.transparent,
-          label: CircleAvatar(
+      child: Badge(
+        backgroundColor: Colors.transparent,
+        label: ScaleTransition(
+          scale: _quantityScaleAnimation,
+          child: CircleAvatar(
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
             radius: isSmall ? 8 : 10,
@@ -72,39 +122,58 @@ class _QuantityBadgeState extends State<QuantityBadge>
               padding: EdgeInsets.all(isSmall ? 1 : 2),
               child: Center(
                 child: FittedBox(
-                  child: Text(widget.quantity?.toString() ?? '0'),
+                  child: AnimatedBuilder(
+                    animation: _quantityRollingAnimation,
+                    builder: (context, child) {
+                      return Text(
+                        _quantityRollingAnimation.value.round().toString(),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              PlatformIcon(
-                cupertinoIcon: widget.platformIcon.cupertinoIcon,
-                materialIcon: widget.platformIcon.materialIcon,
-                color: widget.isSelected
-                    ? theme.primaryColor
-                    : theme.disabledColor,
-              ),
-              if (widget.totalPrice != null)
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'R\$ ',
-                        style: theme.textTheme.bodySmall?.copyWith(fontSize: 9),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            PlatformIcon(
+              cupertinoIcon: widget.platformIcon.cupertinoIcon,
+              materialIcon: widget.platformIcon.materialIcon,
+              color: widget.isSelected
+                  ? theme.primaryColor
+                  : theme.disabledColor,
+            ),
+            if (widget.totalPrice != null)
+              ScaleTransition(
+                scale: _priceScaleAnimation,
+                child: AnimatedBuilder(
+                  animation: _priceRollingAnimation,
+                  builder: (context, child) {
+                    return RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'R\$ ',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontSize: 9,
+                            ),
+                          ),
+                          TextSpan(
+                            text: _priceRollingAnimation.value
+                                .toString()
+                                .toBrazilianNumber(),
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ],
                       ),
-                      TextSpan(
-                        text: widget.totalPrice.toString().toBrazilianNumber(),
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
