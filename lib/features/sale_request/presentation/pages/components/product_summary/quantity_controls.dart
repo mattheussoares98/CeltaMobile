@@ -33,8 +33,6 @@ class QuantityControlButton extends ConsumerWidget {
 
     return IconButton(
       onPressed: () {
-        final newQuantity = isAdding ? currentQuantity + 1 : currentQuantity - 1;
-
         ref
             .read(
               insertUpdateStateControllerProvider(
@@ -43,7 +41,7 @@ class QuantityControlButton extends ConsumerWidget {
                 saleRequestId: saleRequestId,
               ).notifier,
             )
-            .updateItemQuantity(item, newQuantity);
+            .increaseOrDecreaseUnit(item, isAdding);
       },
       icon: PlatformIcon(
         cupertinoIcon: isAdding

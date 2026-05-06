@@ -99,10 +99,14 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
   }
 
-  void updateItemQuantity(BSFProductItemEntity item, double quantity) {
+  void increaseOrDecreaseUnit(BSFProductItemEntity item, bool isAdding) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
 
-    if (quantity <= 0) {
+    final newQuantity = isAdding
+        ? (item.quantity ?? 0) + 1
+        : (item.quantity ?? 0) - 1;
+
+    if (newQuantity <= 0) {
       removeItem(item);
       return;
     }
@@ -115,8 +119,8 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       addItem(item.toProductEntity(enterpriseCode));
       return;
     } else {
-      final pc = items[index].priceCost;
-      double price = items[index].value ?? 0;
+      final pc = item.priceCost;
+      double price = item.value ?? 0;
 
       if (pc != null) {
         final minWhole = pc.mininumQuantityForWholeSale ?? 0;
@@ -125,14 +129,14 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         final retailPrice =
             pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
 
-        if (minWhole > 0 && quantity >= minWhole && wholePrice > 0) {
+        if (minWhole > 0 && newQuantity >= minWhole && wholePrice > 0) {
           price = wholePrice;
         } else if (retailPrice > 0) {
           price = retailPrice;
         }
       }
 
-      items[index] = items[index].copyWith(quantity: quantity, value: price);
+      items[index] = items[index].copyWith(quantity: newQuantity, value: price);
       state = AsyncData(state.value!.copyWith(products: items));
     }
   }
