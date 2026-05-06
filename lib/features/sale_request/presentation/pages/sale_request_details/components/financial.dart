@@ -52,10 +52,12 @@ class Financial extends ConsumerWidget {
                     materialIcon: Icons.credit_card,
                   ),
                   gapW8,
-                  Text(
-                    'Financeiro'.hardcoded,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w300,
+                  Flexible(
+                    child: Text(
+                      'Financeiro'.hardcoded,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                   ),
                 ],
