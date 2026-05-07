@@ -1224,8 +1224,12 @@ class EntityFactory {
         code: faker.randomGenerator.integer(100),
         isDeactivate: faker.randomGenerator.boolean(),
         isDeactivateString: faker.lorem.word(),
-        actionCheckType: faker.randomGenerator.integer(10),
-        cardTerminalType: faker.randomGenerator.integer(10),
+        actionCheckType: ActionCheckType.values.elementAt(
+          faker.randomGenerator.integer(ActionCheckType.values.length),
+        ),
+        cardTerminalType: CardTerminalType.values.elementAt(
+          faker.randomGenerator.integer(CardTerminalType.values.length),
+        ),
         planCode: faker.lorem.word(),
         financialTax: faker.randomGenerator.decimal(),
         identificationCode: faker.lorem.word(),
@@ -1554,8 +1558,12 @@ class EntityFactory {
         code: faker.randomGenerator.integer(100),
         isDeactivate: faker.randomGenerator.boolean(),
         isDeactivateString: faker.lorem.word(),
-        actionCheckType: faker.randomGenerator.integer(10),
-        cardTerminalType: faker.randomGenerator.integer(10),
+        actionCheckType: ActionCheckType.values.elementAt(
+          faker.randomGenerator.integer(ActionCheckType.values.length),
+        ),
+        cardTerminalType: CardTerminalType.values.elementAt(
+          faker.randomGenerator.integer(CardTerminalType.values.length),
+        ),
         planCode: faker.lorem.word(),
         financialTax: faker.randomGenerator.decimal(),
         identificationCode: faker.lorem.word(),
