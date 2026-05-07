@@ -33,7 +33,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     });
 
     final paymentOptionsFuture = ref.read(
-      paymentOptionsStateControllerProvider(enterpriseCode).future,
+      paymentOptionsStateControllerProvider(
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        saleRequestCode: saleRequestId,
+      ).future,
     );
 
     if (saleRequestId == 0) {

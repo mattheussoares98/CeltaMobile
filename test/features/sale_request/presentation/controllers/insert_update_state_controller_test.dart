@@ -7,21 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../mocks/mocks.dart';
-
-class FakeSaleRequestDetailsController
-    extends SaleRequestDetailsStateController {
-  final BSFSaleRequestEntity entity;
-  FakeSaleRequestDetailsController(this.entity);
-
-  @override
-  FutureOr<BSFSaleRequestEntity> build({
-    required int customerCode,
-    required int enterpriseCode,
-    required int saleRequestCode,
-  }) {
-    return entity;
-  }
-}
+import 'fakers.dart';
 
 class FakePaymentOptionsController extends PaymentOptionsStateController {
   final List<BSFPaymentFinalizationEntity> entities;
@@ -29,7 +15,11 @@ class FakePaymentOptionsController extends PaymentOptionsStateController {
   FakePaymentOptionsController(this.entities);
 
   @override
-  FutureOr<List<BSFPaymentFinalizationEntity>> build(int enterpriseCode) {
+  FutureOr<List<BSFPaymentFinalizationEntity>> build({
+    required int customerCode,
+    required int enterpriseCode,
+    required int saleRequestCode,
+  }) {
     wasCalled = true;
     return entities;
   }
@@ -38,17 +28,18 @@ class FakePaymentOptionsController extends PaymentOptionsStateController {
 void main() {
   late int enterpriseCode;
   late int customerCode;
-  late int saleRequestId;
   late FakePaymentOptionsController fakePaymentsController;
   late List<BSFPaymentFinalizationEntity> fakePayments;
   late BSFSaleRequestEntity fakeSaleRequest;
 
-  ProviderContainer makeProviderContainer() {
+  ProviderContainer makeProviderContainer({required int saleRequestId}) {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
         paymentOptionsStateControllerProvider(
-          enterpriseCode,
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestCode: saleRequestId,
         ).overrideWith(() => fakePaymentsController),
         saleRequestDetailsStateControllerProvider(
           customerCode: customerCode,
@@ -64,7 +55,6 @@ void main() {
   setUp(() {
     enterpriseCode = faker.randomGenerator.integer(100);
     customerCode = faker.randomGenerator.integer(100);
-    saleRequestId = faker.randomGenerator.integer(100);
     fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
     fakePayments = [
       EntityFactory.makeBSFPaymentFinalizationEntity(),
@@ -80,7 +70,7 @@ void main() {
       test(
         'should return empty entity when saleRequestId is 0 and load payment options',
         () async {
-          final container = makeProviderContainer();
+          final container = makeProviderContainer(saleRequestId: 0);
 
           final result = await container.read(
             insertUpdateStateControllerProvider(
@@ -98,14 +88,13 @@ void main() {
       test(
         'should return data from saleRequestDetailsStateControllerProvider when saleRequestId is not 0 and load payment options',
         () async {
-          final container = makeProviderContainer();
-          addTearDown(container.dispose);
+          final container = makeProviderContainer(saleRequestId: 1);
 
           final result = await container.read(
             insertUpdateStateControllerProvider(
               enterpriseCode: enterpriseCode,
               customerCode: customerCode,
-              saleRequestId: saleRequestId,
+              saleRequestId: 1,
             ).future,
           );
 
@@ -117,7 +106,7 @@ void main() {
 
     group('Add Item', () {
       test('addItem should add a new product to the cart', () async {
-        final container = makeProviderContainer();
+        final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
           insertUpdateStateControllerProvider(
@@ -161,7 +150,7 @@ void main() {
       test(
         'addItem should increment quantity if product is already in cart',
         () async {
-          final container = makeProviderContainer();
+          final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
             insertUpdateStateControllerProvider(
@@ -201,7 +190,7 @@ void main() {
       );
 
       test('addItem should not add product if price is 0 or less', () async {
-        final container = makeProviderContainer();
+        final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
           insertUpdateStateControllerProvider(
@@ -250,7 +239,7 @@ void main() {
         ),
       );
       test('increaseOrDecreaseUnit should behave correctly', () async {
-        final container = makeProviderContainer();
+        final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
           insertUpdateStateControllerProvider(
@@ -297,7 +286,7 @@ void main() {
       test(
         'increaseOrDecreaseUnit use the correct price when there is minimum whole quantity and whole price',
         () async {
-          final container = makeProviderContainer();
+          final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
             insertUpdateStateControllerProvider(
@@ -361,7 +350,7 @@ void main() {
       test(
         'Should use retail price when has minimum whole quantity but whole price is zero',
         () async {
-          final container = makeProviderContainer();
+          final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
             insertUpdateStateControllerProvider(
@@ -423,7 +412,7 @@ void main() {
       test(
         "Should use retail price when doesn't has minimum whole quantity and has whole price",
         () async {
-          final container = makeProviderContainer();
+          final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
             insertUpdateStateControllerProvider(
@@ -489,7 +478,7 @@ void main() {
       test(
         'removeItem should remove item from cart by matching productPackingCode',
         () async {
-          final container = makeProviderContainer();
+          final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
             insertUpdateStateControllerProvider(
@@ -545,7 +534,7 @@ void main() {
 
     group("Update item", () {
       test('updateItem should replace item in cart by matching PLU', () async {
-        final container = makeProviderContainer();
+        final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
           insertUpdateStateControllerProvider(
