@@ -14,7 +14,7 @@ void main() {
   });
 
   group('DateValidator', () {
-    group('Valid Dates', () {
+    group('Valid Dates including day', () {
       test('should return true for a date within the allowed period', () {
         expect(sut.isValid('15/01/2025'), true);
       });
@@ -35,6 +35,63 @@ void main() {
         );
 
         expect(allowEmptyDate.isValid(''), true);
+      });
+    });
+
+    group('Valid Dates without day (MM/YYYY)', () {
+      late DateValidator monthOnlySut;
+      final rangeStart = DateTime(2025, 5, 15); // Mid-month start
+      final rangeEnd = DateTime(2026, 12, 1);
+
+      setUp(() {
+        monthOnlySut = DateValidator(
+          minimumDate: rangeStart,
+          maximumDate: rangeEnd,
+          includeDay: false,
+        );
+      });
+
+      test('should return true for a month within the allowed period', () {
+        expect(monthOnlySut.isValid('06/2025'), true);
+      });
+
+      test(
+          'should return true for the START month even if today is after the start day',
+          () {
+        // Even if range starts May 15, 05/2025 is valid because we normalize to the 1st
+        expect(monthOnlySut.isValid('05/2025'), true);
+      });
+
+      test('should return true for the END month', () {
+        expect(monthOnlySut.isValid('12/2026'), true);
+      });
+    });
+
+    group('Invalid Dates without day (MM/YYYY)', () {
+      late DateValidator monthOnlySut;
+      final rangeStart = DateTime(2025, 5, 1);
+      final rangeEnd = DateTime(2026, 12, 31);
+
+      setUp(() {
+        monthOnlySut = DateValidator(
+          minimumDate: rangeStart,
+          maximumDate: rangeEnd,
+          includeDay: false,
+        );
+      });
+
+      test('should return false for a month BEFORE the range', () {
+        expect(monthOnlySut.isValid('04/2025'), false);
+      });
+
+      test('should return false for a month AFTER the range', () {
+        expect(monthOnlySut.isValid('01/2027'), false);
+      });
+
+      test('should return false for invalid format when includeDay is false',
+          () {
+        // Should not accept DD/MM/YYYY when includeDay is false
+        expect(monthOnlySut.isValid('15/05/2025'), false);
       });
     });
 

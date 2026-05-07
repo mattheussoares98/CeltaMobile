@@ -7,22 +7,22 @@ class DateValidator implements StringValidator {
   final DateTime minimumDate;
   final DateTime maximumDate;
   final bool? allowEmptyDate;
+  final bool includeDay;
 
   DateValidator({
     required this.minimumDate,
     required this.maximumDate,
     this.allowEmptyDate,
+    this.includeDay = true,
   });
+
   @override
   String get errorMessage => _errorMessage.hardcoded;
   String _errorMessage = '';
 
-  // A list of all the date formats we want to accept
-  final List<DateFormat> _acceptedFormats = [
-    DateFormat('dd/MM/yyyy'), // Brazilian format
-    // DateFormat('MM/dd/yyyy'), // American format
-    // DateFormat('yyyy-MM-dd'), // ISO format
-  ];
+  List<DateFormat> get _acceptedFormats => [
+        if (includeDay) DateFormat('dd/MM/yyyy') else DateFormat('MM/yyyy'),
+      ];
 
   @override
   bool isValid(String? value) {
@@ -34,43 +34,52 @@ class DateValidator implements StringValidator {
 
     DateTime? parsedDate;
 
-    // Loop through each of our accepted formats
     for (final format in _acceptedFormats) {
       try {
-        // The 'true' parameter enables UTC parsing for consistency.
-        // .parseStrict() will throw an error if the format doesn't match exactly.
         parsedDate = format.parseStrict(value, true);
-        // If we get here, parsing was successful, so the date is valid.
         break;
       } catch (e) {
-        // If parsing fails, just ignore the error and try the next format.
         continue;
       }
     }
+
     if (parsedDate == null) {
       _errorMessage = 'Data inválida'.hardcoded;
       return false;
     }
 
-    final normalizedParsedDate = DateTime(
-      parsedDate.year,
-      parsedDate.month,
-      parsedDate.day,
-    );
-    final normalizedStartDate = DateTime(
-      minimumDate.year,
-      minimumDate.month,
-      minimumDate.day,
-    );
-    final normalizedEndDate = DateTime(
-      maximumDate.year,
-      maximumDate.month,
-      maximumDate.day,
-    );
+    // Normalization logic
+    DateTime normalizedParsedDate;
+    DateTime normalizedStartDate;
+    DateTime normalizedEndDate;
+
+    if (includeDay) {
+      normalizedParsedDate = DateTime(
+        parsedDate.year,
+        parsedDate.month,
+        parsedDate.day,
+      );
+      normalizedStartDate = DateTime(
+        minimumDate.year,
+        minimumDate.month,
+        minimumDate.day,
+      );
+      normalizedEndDate = DateTime(
+        maximumDate.year,
+        maximumDate.month,
+        maximumDate.day,
+      );
+    } else {
+      // For MM/YYYY, we only care about Year and Month.
+      // To allow the current month to be valid, we compare based on the 1st day of the month.
+      normalizedParsedDate = DateTime(parsedDate.year, parsedDate.month, 1);
+      normalizedStartDate = DateTime(minimumDate.year, minimumDate.month, 1);
+      normalizedEndDate = DateTime(maximumDate.year, maximumDate.month, 1);
+    }
 
     if (normalizedParsedDate.isBefore(normalizedStartDate) ||
         normalizedParsedDate.isAfter(normalizedEndDate)) {
-      final formatter = DateFormat('dd/MM/yyyy');
+      final formatter = DateFormat(includeDay ? 'dd/MM/yyyy' : 'MM/yyyy');
       _errorMessage =
           'Período inválido. ${formatter.format(minimumDate)} ~ ${formatter.format(maximumDate)}'
               .hardcoded;
