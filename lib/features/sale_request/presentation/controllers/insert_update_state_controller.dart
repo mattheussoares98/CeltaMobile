@@ -171,7 +171,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(state.value!.copyWith(requestType: requestType));
   }
 
-  void addPayment(BSFPaymentFinalizationEntity payment, double value) {
+  void addPayment({
+    required BSFPaymentFinalizationEntity payment,
+    required double value,
+    CreditCardPropertiesEntity? creditCardProperties,
+  }) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
 
     final current = state.value!;
@@ -192,16 +196,16 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       BSFPaymentFinalizationWrapperEntity(
         paymentFinalization: payment,
         value: value,
+        quantityOfPortions: creditCardProperties?.quantityOfPortions,
+        creditCardNumber: creditCardProperties?.creditCardNumber,
+        creditCardValidate: creditCardProperties?.creditCardValidate,
         financialIncrement: 0,
         financialDiscount: 0,
-        quantityOfPortions: 1,
         tefSequencialUniqueNumber: null,
         tefAutorizationCreditCode: null,
         devolutionCreditCode: null,
         identificationCode: null,
         paymentCondition: null,
-        creditCardNumber: null,
-        creditCardValidate: null,
         portions: null,
         userAuthorization: null,
       ),

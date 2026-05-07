@@ -585,5 +585,111 @@ void main() {
         expect(state.value!.products!.first.quantity, newQuantity);
       });
     });
+    group('Add Payment', () {
+      test(
+        'addPayment should add a new payment without credit card properties',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final payment = fakePayments.first;
+          final value = faker.randomGenerator.decimal() * 100;
+
+          controller.addPayment(payment: payment, value: value);
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          expect(state.value!.financials!.length, 1);
+          expect(state.value!.financials!.first.paymentFinalizations!.length, 1);
+          final addedPayment =
+              state.value!.financials!.first.paymentFinalizations!.first;
+          expect(addedPayment.paymentFinalization, payment);
+          expect(addedPayment.value, value);
+          expect(addedPayment.creditCardNumber, isNull);
+          expect(addedPayment.creditCardValidate, isNull);
+        },
+      );
+
+      test(
+        'addPayment should add a new payment with credit card properties',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          final payment = fakePayments.first;
+          final value = faker.randomGenerator.decimal() * 100;
+          final creditCardProperties = CreditCardPropertiesEntity(
+            creditCardNumber: faker.randomGenerator.numberOfLength(16),
+            creditCardValidate: faker.date.dateTime(),
+            quantityOfPortions: faker.randomGenerator.integer(12, min: 1),
+          );
+
+          controller.addPayment(
+            payment: payment,
+            value: value,
+            creditCardProperties: creditCardProperties,
+          );
+
+          final state = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ),
+          );
+
+          final addedPayment =
+              state.value!.financials!.first.paymentFinalizations!.first;
+          expect(
+            addedPayment.creditCardNumber,
+            creditCardProperties.creditCardNumber,
+          );
+          expect(
+            addedPayment.creditCardValidate,
+            creditCardProperties.creditCardValidate,
+          );
+          expect(
+            addedPayment.quantityOfPortions,
+            creditCardProperties.quantityOfPortions,
+          );
+        },
+      );
+    });
   });
 }

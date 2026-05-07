@@ -106,7 +106,7 @@ class _PaymentsFormState extends ConsumerState<PaymentsForm> {
                       saleRequestId: widget.saleRequestId,
                     ).notifier,
                   )
-                  .addPayment(selectedPayment!, value);
+                  .addPayment(payment: selectedPayment!, value: value);
               valueController.clear();
             }
           },
