@@ -43,4 +43,33 @@ class BSFPaymentFinalizationEntity extends Equatable {
     identificationCode,
     identificationTefFlagCode,
   ];
+
+  BSFPaymentFinalizationEntity copyWith({
+    BSFPaymentFormEntity? paymentForm,
+    String? Description,
+    int? code,
+    bool? isDeactivate,
+    String? isDeactivateString,
+    int? actionCheckType,
+    int? cardTerminalType,
+    String? planCode,
+    double? financialTax,
+    String? identificationCode,
+    String? identificationTefFlagCode,
+  }) {
+    return BSFPaymentFinalizationEntity(
+      paymentForm: paymentForm ?? this.paymentForm,
+      Description: Description ?? this.Description,
+      code: code ?? this.code,
+      isDeactivate: isDeactivate ?? this.isDeactivate,
+      isDeactivateString: isDeactivateString ?? this.isDeactivateString,
+      actionCheckType: actionCheckType ?? this.actionCheckType,
+      cardTerminalType: cardTerminalType ?? this.cardTerminalType,
+      planCode: planCode ?? this.planCode,
+      financialTax: financialTax ?? this.financialTax,
+      identificationCode: identificationCode ?? this.identificationCode,
+      identificationTefFlagCode:
+          identificationTefFlagCode ?? this.identificationTefFlagCode,
+    );
+  }
 }
