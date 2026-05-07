@@ -621,7 +621,10 @@ void main() {
           );
 
           expect(state.value!.financials!.length, 1);
-          expect(state.value!.financials!.first.paymentFinalizations!.length, 1);
+          expect(
+            state.value!.financials!.first.paymentFinalizations!.length,
+            1,
+          );
           final addedPayment =
               state.value!.financials!.first.paymentFinalizations!.first;
           expect(addedPayment.paymentFinalization, payment);
@@ -690,6 +693,67 @@ void main() {
           );
         },
       );
+    });
+
+    group('Remove Payment', () {
+      test('removePayment should remove a payment', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ).notifier,
+        );
+
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ).future,
+        );
+
+        final value = faker.randomGenerator.decimal() * 100;
+
+        controller.addPayment(payment: fakePayments[0], value: value);
+        controller.addPayment(payment: fakePayments[1], value: value);
+
+        final state = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ),
+        );
+
+        expect(state.value!.financials!.first.paymentFinalizations!.length, 2);
+
+        controller.removePayment(1);
+
+        final state2 = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ),
+        );
+
+        expect(state2.value!.financials!.first.paymentFinalizations!.length, 1);
+
+        controller.removePayment(0);
+
+        final state3 = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ),
+        );
+
+        expect(state3.value!.financials!.first.paymentFinalizations, isEmpty);
+      });
     });
   });
 }

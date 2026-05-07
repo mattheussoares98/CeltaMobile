@@ -76,9 +76,8 @@ class PaymentsList extends ConsumerWidget {
                   materialIcon: Icons.delete,
                   color: Colors.red,
                 ),
-                onPressed: () {
-                  ref.read(provider.notifier).removePayment(payment);
-                },
+                onPressed: () =>
+                    ref.read(provider.notifier).removePayment(index),
               ),
             );
           },
