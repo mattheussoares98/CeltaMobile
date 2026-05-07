@@ -14,22 +14,17 @@ class RequestTypeStateController extends _$RequestTypeStateController {
     int enterpriseCode,
   ) async {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
+
     return await ref
         .read(ecGetRequestTypesRepositoryProvider)
         .search(
-          parameters: BSFSearchRequestTypeParametersEntity(
-            makeRequestTypeForTransfer: module == Modules.transferRequest,
-            makePaymentFinalizations: module == Modules.saleRequest,
-            searchType: BSFSearchRequestType.approximateName,
-            behaviorBasicFilters:
-                BSFSearchRequestTypeBehaviorBasicFiltersEntity(
-                  inclusiveBuy: module == Modules.buyRequest,
-                  inclusiveTransfer: module == Modules.transferRequest,
-                  inclusiveSale: module == Modules.saleRequest,
-                  enterpriseCode: enterpriseCode,
-                  userCode: userSession!.user.CodigoInterno_Usuario ?? 0,
-                ),
+          parameters: EcRequestTypeParametersEntity(
+            userCode: userSession!.user.CodigoInterno_Usuario ?? 0,
+            inclusiveSale: module == Modules.saleRequest,
+            inclusiveBuy: module == Modules.buyRequest,
+            inclusiveTransfer: module == Modules.transferRequest,
           ),
+
           enterpriseCode: enterpriseCode,
           params: EcRequestParams(
             workingUrl: userSession.enterprise!.workingUrl!,

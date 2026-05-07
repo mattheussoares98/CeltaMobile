@@ -3,7 +3,7 @@ import '../../models/models.dart';
 
 abstract class IEcGetRequestTypesDatasource {
   Future<List<BSFRequestTypeModel>> search({
-    required BSFSearchRequestTypeParametersEntity parameters,
+    required EcRequestTypeParametersEntity parameters,
     required int enterpriseCode,
     required EcRequestParams params,
   });

@@ -1602,19 +1602,12 @@ class EntityFactory {
             )],
       );
 
-  static BSFSearchRequestTypeParametersEntity
-  makeBSFSearchRequestTypeParametersEntity() =>
-      BSFSearchRequestTypeParametersEntity(
-        simpleSearchValue: 'Test',
-        searchType: BSFSearchRequestType.approximateName,
-        makeEnterprises: faker.randomGenerator.boolean(),
-        makeFiscalNoteTypes: faker.randomGenerator.boolean(),
-        makeRequestTypeForTransfer: faker.randomGenerator.boolean(),
-        makeFiscalCodes: faker.randomGenerator.boolean(),
-        makeUserGroups: faker.randomGenerator.boolean(),
-        makeUsers: faker.randomGenerator.boolean(),
-        makePaymentFinalizations: faker.randomGenerator.boolean(),
-        makeSendEmailParameters: faker.randomGenerator.boolean(),
+  static EcRequestTypeParametersEntity makeEcRequestTypeParametersEntity() =>
+      EcRequestTypeParametersEntity(
+        userCode: faker.randomGenerator.integer(100),
+        inclusiveSale: faker.randomGenerator.boolean(),
+        inclusiveBuy: faker.randomGenerator.boolean(),
+        inclusiveTransfer: faker.randomGenerator.boolean(),
       );
 
   static BSFDiscountEntity makeBSFDiscountEntity({

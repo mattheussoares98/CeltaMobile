@@ -1,8 +1,8 @@
 import 'package:celta_inventario/core/data/datasource/request_type/request_type.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/data/repositories/request_type/request_type.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/request_type/request_type.dart';
-import 'package:celta_inventario/core/data/repositories/request_type/request_type.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -27,7 +27,7 @@ void main() {
   late EcGetRequestTypesDatasourceSpy datasource;
 
   late int enterpriseCode;
-  late BSFSearchRequestTypeParametersEntity parameters;
+  late EcRequestTypeParametersEntity parameters;
   late EcRequestParams params;
 
   void initSut() {
@@ -40,14 +40,12 @@ void main() {
 
   void initEntities() {
     enterpriseCode = faker.randomGenerator.integer(100);
-    parameters = EntityFactory.makeBSFSearchRequestTypeParametersEntity();
+    parameters = EntityFactory.makeEcRequestTypeParametersEntity();
     params = EntityFactory.makeEcRequestParams();
   }
 
   setUpAll(() {
-    registerFallbackValue(
-      EntityFactory.makeBSFSearchRequestTypeParametersEntity(),
-    );
+    registerFallbackValue(EntityFactory.makeEcRequestTypeParametersEntity());
     registerFallbackValue(EntityFactory.makeEcRequestParams());
   });
 

@@ -14,7 +14,7 @@ void main() {
   late HttpClientSpy httpClient;
 
   late int enterpriseCode;
-  late BSFSearchRequestTypeParametersEntity parameters;
+  late EcRequestTypeParametersEntity parameters;
   late EcRequestParams params;
   late List<BSFRequestTypeEntity> requestTypes;
 
@@ -28,7 +28,7 @@ void main() {
 
   void initEntities() {
     enterpriseCode = faker.randomGenerator.integer(100);
-    parameters = EntityFactory.makeBSFSearchRequestTypeParametersEntity();
+    parameters = EntityFactory.makeEcRequestTypeParametersEntity();
     params = EntityFactory.makeEcRequestParams();
     requestTypes = [
       EntityFactory.makeBSFRequestTypeEntity(),
@@ -65,9 +65,7 @@ void main() {
               '${params.workingUrl}/api/RequestTypes?enterpriseCode=$enterpriseCode',
           method: 'post',
           headers: params.toHeaders(),
-          body: BSFSearchRequestTypeParametersModel.fromEntity(
-            parameters,
-          ).toJson(),
+          body: EcRequestTypeParametersModel.fromEntity(parameters).toJson(),
         ),
       ).called(1);
     });

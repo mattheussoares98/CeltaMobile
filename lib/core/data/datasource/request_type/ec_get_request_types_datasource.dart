@@ -12,7 +12,7 @@ class EcGetRequestTypesDatasource implements IEcGetRequestTypesDatasource {
 
   @override
   Future<List<BSFRequestTypeModel>> search({
-    required BSFSearchRequestTypeParametersEntity parameters,
+    required EcRequestTypeParametersEntity parameters,
     required int enterpriseCode,
     required EcRequestParams params,
   }) async {
@@ -21,7 +21,7 @@ class EcGetRequestTypesDatasource implements IEcGetRequestTypesDatasource {
           '${params.workingUrl}/api/RequestTypes?enterpriseCode=$enterpriseCode',
       method: 'post',
       headers: params.toHeaders(),
-      body: BSFSearchRequestTypeParametersModel.fromEntity(parameters).toJson(),
+      body: EcRequestTypeParametersModel.fromEntity(parameters).toJson(),
     );
 
     return (json.decode(response) as List)

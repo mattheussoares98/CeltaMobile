@@ -44,9 +44,7 @@ void main() {
     for (var value in Modules.values) {
       registerFallbackValue(value);
     }
-    registerFallbackValue(
-      EntityFactory.makeBSFSearchRequestTypeParametersEntity(),
-    );
+    registerFallbackValue(EntityFactory.makeEcRequestTypeParametersEntity());
     registerFallbackValue(EntityFactory.makeEcRequestParams());
   });
 
@@ -87,17 +85,11 @@ void main() {
         expect(result, requestTypeEntities);
         verify(
           () => mockRepository.search(
-            parameters: BSFSearchRequestTypeParametersEntity(
-              makeRequestTypeForTransfer: module == Modules.transferRequest,
-              makePaymentFinalizations: module == Modules.saleRequest,
-              behaviorBasicFilters:
-                  BSFSearchRequestTypeBehaviorBasicFiltersEntity(
-                    inclusiveBuy: module == Modules.buyRequest,
-                    inclusiveTransfer: module == Modules.transferRequest,
-                    inclusiveSale: module == Modules.saleRequest,
-                    enterpriseCode: enterpriseCode,
-                    userCode: fakeSession.user.CodigoInterno_Usuario ?? 0,
-                  ),
+            parameters: EcRequestTypeParametersEntity(
+              userCode: fakeSession.user.CodigoInterno_Usuario ?? 0,
+              inclusiveSale: module == Modules.saleRequest,
+              inclusiveBuy: module == Modules.buyRequest,
+              inclusiveTransfer: module == Modules.transferRequest,
             ),
             enterpriseCode: enterpriseCode,
             params: EcRequestParams(
