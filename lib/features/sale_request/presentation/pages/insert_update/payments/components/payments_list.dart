@@ -56,7 +56,13 @@ class PaymentsList extends ConsumerWidget {
           itemBuilder: (context, index) {
             final payment = payments[index];
             return ListTile(
-              title: Text(payment.paymentFinalization?.Description ?? ''),
+              title: TitleAndSubTitle(
+                title: payment.paymentFinalization?.Description ?? '',
+                subTitle: (payment.quantityOfPortions ?? 0) > 1
+                    ? "(${payment.quantityOfPortions ?? ''}x)"
+                    : "",
+                removeColon: true,
+              ),
               subtitle: Text(
                 payment.value
                         ?.toString()
