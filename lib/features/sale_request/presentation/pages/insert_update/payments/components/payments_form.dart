@@ -47,6 +47,9 @@ class _PaymentsFormState extends ConsumerState<PaymentsForm> {
               label: 'Forma de Pagamento'.hardcoded,
               hint: Text('Selecionar'.hardcoded),
               items: options
+                  .where(
+                    (x) => x.isDeactivate == false || x.isDeactivate == null,
+                  )
                   .map(
                     (e) => DropdownMenuItem(
                       value: e,
