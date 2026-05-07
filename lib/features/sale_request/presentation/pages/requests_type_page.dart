@@ -32,6 +32,25 @@ class RequestsTypePage extends ConsumerWidget {
             value: ref.watch(provider),
             tryAgain: () => ref.invalidate(provider),
             data: (requests) {
+              if (requests?.isEmpty ?? true) {
+                return Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text('Nenhum modelo de pedido foi encontrado'),
+                        gapH16,
+                        PrimaryButton(
+                          text: 'Carregar novamente'.hardcoded,
+                          onPressed: () => ref.invalidate(provider),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
               return RefreshIndicator(
                 onRefresh: () async => ref.invalidate(provider),
                 child: ResponsiveListFlow(
