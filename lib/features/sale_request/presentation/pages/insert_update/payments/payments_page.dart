@@ -28,8 +28,9 @@ class PaymentsPage extends StatelessWidget {
               saleRequestCode: saleRequestId,
             ),
           ),
+          gapSliverH8,
           SliverToBoxAdapter(
-            child: PaymentsForm(
+            child: ValueFieldAndConfirmButton(
               enterpriseCode: enterpriseCode,
               customerCode: customerCode,
               saleRequestId: saleRequestId,
