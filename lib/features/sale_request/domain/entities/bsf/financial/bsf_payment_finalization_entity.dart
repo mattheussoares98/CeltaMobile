@@ -8,8 +8,8 @@ class BSFPaymentFinalizationEntity extends Equatable {
   final int? code;
   final bool? isDeactivate;
   final String? isDeactivateString;
-  final int? actionCheckType;
-  final int? cardTerminalType;
+  final ActionCheckType? actionCheckType;
+  final CardTerminalType? cardTerminalType;
   final String? planCode;
   final double? financialTax;
   final String? identificationCode;
@@ -50,8 +50,8 @@ class BSFPaymentFinalizationEntity extends Equatable {
     int? code,
     bool? isDeactivate,
     String? isDeactivateString,
-    int? actionCheckType,
-    int? cardTerminalType,
+    ActionCheckType? actionCheckType,
+    CardTerminalType? cardTerminalType,
     String? planCode,
     double? financialTax,
     String? identificationCode,
