@@ -16,6 +16,7 @@ class RequestsTypePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //TODO move this page to core path
     final provider = requestTypeStateControllerProvider(
       Modules.saleRequest,
       enterpriseCode,
