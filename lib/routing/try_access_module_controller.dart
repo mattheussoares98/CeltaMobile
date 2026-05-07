@@ -31,13 +31,15 @@ class TryAccessModuleController extends _$TryAccessModuleController {
     Map<String, String>? pathParameters,
     Object? extra,
   }) async {
+    //TODO centralize all navigations here
+    final minimumDateLoadRequestType = DateTime(2026, 5, 7);
     final minimumBsVersionDate = switch (route) {
       Routes.searchSaleRequests => DateTime(2026, 3, 26),
-      Routes.insertUpdateSaleRequest => DateTime(
-        2026,
-        5,
-        4,
-      ), //TODO update the date
+      Routes.createSaleRequest => minimumDateLoadRequestType,
+      Routes.saleRequestRequestsTypes => minimumDateLoadRequestType,
+      Routes.transferRequestRequestsTypes => minimumDateLoadRequestType,
+      Routes.insertUpdateSaleRequest =>
+        minimumDateLoadRequestType, //TODO update the date
       Routes.adjustCost => DateTime(2026, 3, 31),
       _ => null,
     };
