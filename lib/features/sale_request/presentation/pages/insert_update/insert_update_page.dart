@@ -36,6 +36,7 @@ class InsertUpdatePage extends ConsumerWidget {
     });
     ref.observeLoading([saveSaleRequestControllerProvider(enterpriseCode)]);
 
+    //TODO only show the page if the requestdetails is already loaded
     return Consumer(
       child: Scaffold(
         appBar: AppBar(
