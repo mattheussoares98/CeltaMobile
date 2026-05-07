@@ -13,12 +13,10 @@ class EcGetRequestTypesDatasource implements IEcGetRequestTypesDatasource {
   @override
   Future<List<BSFRequestTypeModel>> search({
     required EcRequestTypeParametersEntity parameters,
-    required int enterpriseCode,
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
-      url:
-          '${params.workingUrl}/api/RequestTypes?enterpriseCode=$enterpriseCode',
+      url: '${params.workingUrl}/api/RequestTypes/v2',
       method: 'post',
       headers: params.toHeaders(),
       body: EcRequestTypeParametersModel.fromEntity(parameters).toJson(),

@@ -1604,7 +1604,7 @@ class EntityFactory {
 
   static EcRequestTypeParametersEntity makeEcRequestTypeParametersEntity() =>
       EcRequestTypeParametersEntity(
-        userCode: faker.randomGenerator.integer(100),
+        enterpriseCode: faker.randomGenerator.integer(100),
         inclusiveSale: faker.randomGenerator.boolean(),
         inclusiveBuy: faker.randomGenerator.boolean(),
         inclusiveTransfer: faker.randomGenerator.boolean(),

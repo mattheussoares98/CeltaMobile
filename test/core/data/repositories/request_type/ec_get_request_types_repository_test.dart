@@ -3,7 +3,6 @@ import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/data/repositories/request_type/request_type.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/request_type/request_type.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -15,7 +14,6 @@ class EcGetRequestTypesDatasourceSpy extends Mock
     when(
       () => this.search(
         parameters: any(named: 'parameters'),
-        enterpriseCode: any(named: 'enterpriseCode'),
         params: any(named: 'params'),
       ),
     ).thenAnswer((_) async => response);
@@ -26,7 +24,6 @@ void main() {
   late IEcGetRequestTypesRepository sut;
   late EcGetRequestTypesDatasourceSpy datasource;
 
-  late int enterpriseCode;
   late EcRequestTypeParametersEntity parameters;
   late EcRequestParams params;
 
@@ -39,7 +36,6 @@ void main() {
   }
 
   void initEntities() {
-    enterpriseCode = faker.randomGenerator.integer(100);
     parameters = EntityFactory.makeEcRequestTypeParametersEntity();
     params = EntityFactory.makeEcRequestParams();
   }
@@ -62,19 +58,11 @@ void main() {
       ];
       datasource.mockSearch(mockModels);
 
-      final result = await sut.search(
-        parameters: parameters,
-        enterpriseCode: enterpriseCode,
-        params: params,
-      );
+      final result = await sut.search(parameters: parameters, params: params);
 
       expect(result, mockModels.map((e) => e.toEntity()).toList());
       verify(
-        () => datasource.search(
-          parameters: parameters,
-          enterpriseCode: enterpriseCode,
-          params: params,
-        ),
+        () => datasource.search(parameters: parameters, params: params),
       ).called(1);
     });
   });

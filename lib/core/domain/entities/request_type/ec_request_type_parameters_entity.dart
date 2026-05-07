@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
 class EcRequestTypeParametersEntity extends Equatable {
-  final int userCode;
+  final int enterpriseCode;
   final bool inclusiveSale;
   final bool inclusiveBuy;
   final bool inclusiveTransfer;
 
   const EcRequestTypeParametersEntity({
-    required this.userCode,
+    required this.enterpriseCode,
     required this.inclusiveSale,
     required this.inclusiveBuy,
     required this.inclusiveTransfer,
@@ -15,7 +15,7 @@ class EcRequestTypeParametersEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-    userCode,
+    enterpriseCode,
     inclusiveSale,
     inclusiveBuy,
     inclusiveTransfer,

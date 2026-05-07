@@ -11,12 +11,10 @@ class EcGetRequestTypesRepositoryImpl implements IEcGetRequestTypesRepository {
   @override
   Future<List<BSFRequestTypeEntity>> search({
     required EcRequestTypeParametersEntity parameters,
-    required int enterpriseCode,
     required EcRequestParams params,
   }) async {
     final result = await datasource.search(
       parameters: parameters,
-      enterpriseCode: enterpriseCode,
       params: params,
     );
     return result.map((e) => e.toEntity()).toList();

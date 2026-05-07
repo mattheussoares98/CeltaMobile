@@ -5,11 +5,13 @@ import 'package:celta_inventario/core/presentation/controllers/request_type/requ
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/request_type/request_type.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../../features/sale_request/presentation/controllers/customers_state_controller_test.dart';
 import '../../../../mocks/mocks.dart';
 
 class MockEcGetRequestTypesRepository extends Mock
@@ -20,7 +22,7 @@ void main() {
   late UserSessionModel fakeSession;
   late List<BSFRequestTypeEntity> requestTypeEntities;
   late Modules module;
-  late int enterpriseCode;
+  late EnterpriseEntity selectedEnterprise;
 
   setUp(() {
     mockRepository = MockEcGetRequestTypesRepository();
@@ -37,7 +39,7 @@ void main() {
       Modules.transferRequest,
       Modules.saleRequest,
     ][faker.randomGenerator.integer(3)];
-    enterpriseCode = faker.randomGenerator.integer(100);
+    selectedEnterprise = EntityFactory.makeEnterpriseEntity();
   });
 
   setUpAll(() {
@@ -56,6 +58,9 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterprise(selectedEnterprise),
+        ),
       ],
     );
   }
@@ -68,7 +73,6 @@ void main() {
         when(
           () => mockRepository.search(
             parameters: any(named: 'parameters'),
-            enterpriseCode: any(named: 'enterpriseCode'),
             params: any(named: 'params'),
           ),
         ).thenAnswer((_) async => requestTypeEntities);
@@ -78,7 +82,10 @@ void main() {
 
         // ACT: Reading the future triggers the build and waits for completion.
         final result = await container.read(
-          requestTypeStateControllerProvider(module, enterpriseCode).future,
+          requestTypeStateControllerProvider(
+            module,
+            selectedEnterprise.Code!,
+          ).future,
         );
 
         // ASSERT
@@ -86,12 +93,11 @@ void main() {
         verify(
           () => mockRepository.search(
             parameters: EcRequestTypeParametersEntity(
-              userCode: fakeSession.user.CodigoInterno_Usuario ?? 0,
+              enterpriseCode: selectedEnterprise.Code!,
               inclusiveSale: module == Modules.saleRequest,
               inclusiveBuy: module == Modules.buyRequest,
               inclusiveTransfer: module == Modules.transferRequest,
             ),
-            enterpriseCode: enterpriseCode,
             params: EcRequestParams(
               workingUrl: fakeSession.enterprise!.workingUrl!,
               user: fakeSession.user.name!,
@@ -110,7 +116,10 @@ void main() {
       // ACT & ASSERT: Expect the future to throw an AppException.
       await expectLater(
         container.read(
-          requestTypeStateControllerProvider(module, enterpriseCode).future,
+          requestTypeStateControllerProvider(
+            module,
+            selectedEnterprise.Code!,
+          ).future,
         ),
         throwsA(isA<AppException>()),
       );
@@ -119,7 +128,6 @@ void main() {
       verifyNever(
         () => mockRepository.search(
           parameters: any(named: 'parameters'),
-          enterpriseCode: any(named: 'enterpriseCode'),
           params: any(named: 'params'),
         ),
       );
