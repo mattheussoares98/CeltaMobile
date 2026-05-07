@@ -32,9 +32,9 @@ class PaymentsList extends ConsumerWidget {
       provider.select((v) => v.whenData((data) => data.financials)),
     );
 
-
     return AsyncValueWidget(
       value: financialsAsync,
+      isSliver: true,
       data: (financials) {
         final payments =
             financials
@@ -50,7 +50,7 @@ class PaymentsList extends ConsumerWidget {
           return Center(child: Text('Nenhum pagamento adicionado'.hardcoded));
         }
 
-        return ListView.separated(
+        return SliverList.separated(
           itemCount: payments.length,
           separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (context, index) {

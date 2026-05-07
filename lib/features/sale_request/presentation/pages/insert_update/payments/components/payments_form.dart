@@ -35,58 +35,8 @@ class _PaymentsFormState extends ConsumerState<PaymentsForm> {
 
   @override
   Widget build(BuildContext context) {
-    final paymentProvider = paymentOptionsStateControllerProvider(
-      enterpriseCode: widget.enterpriseCode,
-      customerCode: widget.customerCode,
-      saleRequestCode: widget.saleRequestId,
-    );
     return Column(
       children: [
-        AsyncValueWidget(
-          value: ref.watch(paymentProvider),
-          data: (paymentOptions) {
-            if (paymentOptions.isEmpty) {
-              return Column(
-                children: [
-                  Text(
-                    'Nenhuma forma de pagamento está disponível para este pedido.'
-                        .hardcoded,
-                  ),
-                  gapH16,
-                  PrimaryButton(
-                    onPressed: () => ref.invalidate(paymentProvider),
-                    text: 'Carregar novamente'.hardcoded,
-                  ),
-                ],
-              );
-            }
-
-            return DefaultDropDown<BSFPaymentFinalizationEntity>(
-              selectedItem: selectedPayment,
-              label: 'Forma de Pagamento'.hardcoded,
-              hint: Text('Selecionar'.hardcoded),
-              items: paymentOptions
-                  .map(
-                    (e) => DropdownMenuItem(
-                      value: e,
-                      child: RichText(
-                        text: TextSpan(
-                          style: const TextStyle(color: Colors.black),
-                          text: e.Description,
-                          children: [
-                            if (e.paymentForm?.name != null)
-                              TextSpan(text: ' - ${e.paymentForm!.name}'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (val) => setState(() => selectedPayment = val),
-            );
-          },
-          tryAgain: () => ref.invalidate(paymentProvider),
-        ),
         gapH16,
         DefaultTextFormField(
           controller: valueController,
