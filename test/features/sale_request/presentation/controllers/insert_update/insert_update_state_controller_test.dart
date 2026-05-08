@@ -6,13 +6,14 @@ import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../mocks/mocks.dart';
-import 'fakers.dart';
+import '../../../../../mocks/mocks.dart';
+import '../fakers.dart';
 
-class FakePaymentOptionsController extends PaymentOptionsStateController {
+class FakePaymentFinalizationsController
+    extends PaymentFinalizationsStateController {
   final List<BSFPaymentFinalizationEntity> entities;
   bool wasCalled = false;
-  FakePaymentOptionsController(this.entities);
+  FakePaymentFinalizationsController(this.entities);
 
   @override
   FutureOr<List<BSFPaymentFinalizationEntity>> build({
@@ -28,7 +29,7 @@ class FakePaymentOptionsController extends PaymentOptionsStateController {
 void main() {
   late int enterpriseCode;
   late int customerCode;
-  late FakePaymentOptionsController fakePaymentsController;
+  late FakePaymentFinalizationsController fakePaymentsController;
   late List<BSFPaymentFinalizationEntity> fakePayments;
   late BSFSaleRequestEntity fakeSaleRequest;
 
@@ -36,7 +37,7 @@ void main() {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        paymentOptionsStateControllerProvider(
+        paymentFinalizationsStateControllerProvider(
           enterpriseCode: enterpriseCode,
           customerCode: customerCode,
           saleRequestCode: saleRequestId,
@@ -62,7 +63,7 @@ void main() {
       EntityFactory.makeBSFPaymentFinalizationEntity(),
     ];
 
-    fakePaymentsController = FakePaymentOptionsController(fakePayments);
+    fakePaymentsController = FakePaymentFinalizationsController(fakePayments);
   });
 
   group('InsertUpdateStateController', () {

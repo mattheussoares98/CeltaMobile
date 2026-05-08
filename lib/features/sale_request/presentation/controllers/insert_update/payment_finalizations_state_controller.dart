@@ -6,10 +6,11 @@ import '../../../domain/entities/entities.dart';
 import '../../../providers.dart';
 import 'insert_update.dart';
 
-part 'payment_options_state_controller.g.dart';
+part 'payment_finalizations_state_controller.g.dart';
 
 @Riverpod(keepAlive: true)
-class PaymentOptionsStateController extends _$PaymentOptionsStateController {
+class PaymentFinalizationsStateController
+    extends _$PaymentFinalizationsStateController {
   @override
   FutureOr<List<BSFPaymentFinalizationEntity>> build({
     required int enterpriseCode,
@@ -26,9 +27,9 @@ class PaymentOptionsStateController extends _$PaymentOptionsStateController {
       ).selectAsync((data) => data.requestType),
     );
 
-    final paymentOptions = await ref
+    final paymentFinalizations = await ref
         .read(ecPaymentFinalizationRepositoryProvider)
-        .getPaymentOptions(
+        .getPaymentFinalizations(
           enterpriseCode: enterpriseCode,
           params: EcRequestParams(
             workingUrl: validatedUser!.enterprise!.workingUrl!,
@@ -41,7 +42,7 @@ class PaymentOptionsStateController extends _$PaymentOptionsStateController {
         ?.map((x) => x.code)
         .toList();
 
-    final activatedPayments = paymentOptions
+    final activatedPayments = paymentFinalizations
         .where((e) => e.isDeactivate != true)
         .toList();
 

@@ -36,7 +36,7 @@ void main() {
     initSut();
   });
 
-  group('GetPaymentOptions', () {
+  group('GetPaymentFinalizations', () {
     test('should behave correctly on success', () async {
       final paymentOptions = [
         BSFPaymentFinalizationModel.fromEntity(
@@ -50,7 +50,7 @@ void main() {
         json.encode(paymentOptions.map((e) => e.toJson()).toList()),
       );
 
-      final response = await sut.getPaymentOptions(
+      final response = await sut.getPaymentFinalizations(
         enterpriseCode: enterpriseCode,
         params: params,
       );
@@ -60,7 +60,7 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/PaymentFinalization/GetPaymentOptions?enterpriseCode=$enterpriseCode',
+              '${params.workingUrl}/api/PaymentFinalization/GetPaymentFinalizations?enterpriseCode=$enterpriseCode',
           method: 'post',
           headers: params.toHeaders(),
           body: params.toMap(),
@@ -99,4 +99,3 @@ void main() {
     });
   });
 }
-

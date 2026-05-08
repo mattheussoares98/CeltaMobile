@@ -5,18 +5,19 @@ import '../../../../core/domain/entities/entities.dart';
 import '../models/models.dart';
 import 'datasource.dart';
 
-class EcPaymentFinalizationDatasource implements IEcPaymentFinalizationDatasource {
+class EcPaymentFinalizationDatasource
+    implements IEcPaymentFinalizationDatasource {
   final HttpClient httpClient;
   EcPaymentFinalizationDatasource(this.httpClient);
 
   @override
-  Future<List<BSFPaymentFinalizationModel>> getPaymentOptions({
+  Future<List<BSFPaymentFinalizationModel>> getPaymentFinalizations({
     required int enterpriseCode,
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
       url:
-          '${params.workingUrl}/api/PaymentFinalization/GetPaymentOptions?enterpriseCode=$enterpriseCode',
+          '${params.workingUrl}/api/PaymentFinalization/GetPaymentFinalizations?enterpriseCode=$enterpriseCode',
       method: 'post',
       headers: params.toHeaders(),
       body: params.toMap(),
@@ -29,6 +30,7 @@ class EcPaymentFinalizationDatasource implements IEcPaymentFinalizationDatasourc
         )
         .toList();
   }
+
   @override
   Future<List<BSFPaymentConditionModel>> getPaymentConditions({
     required EcRequestParams params,

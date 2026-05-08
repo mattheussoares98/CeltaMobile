@@ -10,8 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks/mocks.dart';
-import 'fakers.dart';
+import '../../../../../mocks/mocks.dart';
+import '../fakers.dart';
 
 class MockIEcPaymentFinalizationDatasource extends Mock
     implements IEcPaymentFinalizationRepository {}
@@ -77,7 +77,7 @@ void main() {
 
         // ARRANGE
         when(
-          () => mockRepository.getPaymentOptions(
+          () => mockRepository.getPaymentFinalizations(
             enterpriseCode: any(named: 'enterpriseCode'),
             params: any(named: 'params'),
           ),
@@ -122,7 +122,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          paymentOptionsStateControllerProvider(
+          paymentFinalizationsStateControllerProvider(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestCode: saleRequestId,
@@ -132,7 +132,7 @@ void main() {
         // ASSERT
         expect(result, [enabled1, enabled2]);
         verify(
-          () => mockRepository.getPaymentOptions(
+          () => mockRepository.getPaymentFinalizations(
             enterpriseCode: enterpriseCode,
             params: EcRequestParams(
               workingUrl: fakeSession.enterprise!.workingUrl!,

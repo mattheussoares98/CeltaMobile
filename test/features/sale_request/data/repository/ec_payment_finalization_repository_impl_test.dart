@@ -13,7 +13,7 @@ class EcPaymentFinalizationDatasourceSpy extends Mock
     implements IEcPaymentFinalizationDatasource {
   void mockGetPaymentOptions(List<BSFPaymentFinalizationModel> response) =>
       when(
-        () => getPaymentOptions(
+        () => getPaymentFinalizations(
           enterpriseCode: any(named: 'enterpriseCode'),
           params: any(named: 'params'),
         ),
@@ -21,12 +21,9 @@ class EcPaymentFinalizationDatasourceSpy extends Mock
 
   void mockGetPaymentConditions(List<BSFPaymentConditionModel> response) =>
       when(
-        () => getPaymentConditions(
-          params: any(named: 'params'),
-        ),
+        () => getPaymentConditions(params: any(named: 'params')),
       ).thenAnswer((_) async => response);
 }
-
 
 void main() {
   late IEcPaymentFinalizationRepository sut;
@@ -59,7 +56,7 @@ void main() {
       ];
       mockDatasource.mockGetPaymentOptions(paymentOptions);
 
-      final response = await sut.getPaymentOptions(
+      final response = await sut.getPaymentFinalizations(
         enterpriseCode: enterpriseCode,
         params: params,
       );
@@ -67,7 +64,7 @@ void main() {
       expect(response, paymentOptions.map((e) => e.toEntity()).toList());
 
       verify(
-        () => mockDatasource.getPaymentOptions(
+        () => mockDatasource.getPaymentFinalizations(
           enterpriseCode: enterpriseCode,
           params: params,
         ),
@@ -97,4 +94,3 @@ void main() {
     });
   });
 }
-

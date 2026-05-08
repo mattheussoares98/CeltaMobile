@@ -49,7 +49,7 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
           // SliverToBoxAdapter(
           //   child: PrimaryButton(
           //     onPressed: () => ref.invalidate(
-          //       paymentOptionsStateControllerProvider(
+          //       paymentFinalizationsStateControllerProvider(
           //         enterpriseCode: widget.enterpriseCode,
           //         customerCode: widget.customerCode,
           //         saleRequestCode: widget.saleRequestId,

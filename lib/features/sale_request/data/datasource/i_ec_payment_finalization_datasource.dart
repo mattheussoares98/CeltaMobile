@@ -2,7 +2,7 @@ import '../../../../core/domain/entities/entities.dart';
 import '../models/models.dart';
 
 abstract class IEcPaymentFinalizationDatasource {
-  Future<List<BSFPaymentFinalizationModel>> getPaymentOptions({
+  Future<List<BSFPaymentFinalizationModel>> getPaymentFinalizations({
     required int enterpriseCode,
     required EcRequestParams params,
   });
@@ -11,4 +11,3 @@ abstract class IEcPaymentFinalizationDatasource {
     required EcRequestParams params,
   });
 }
-

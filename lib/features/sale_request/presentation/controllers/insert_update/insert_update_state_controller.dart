@@ -32,8 +32,8 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       timer?.cancel();
     });
 
-    final paymentOptionsFuture = ref.read(
-      paymentOptionsStateControllerProvider(
+    final paymentFinalizationsFuture = ref.read(
+      paymentFinalizationsStateControllerProvider(
         enterpriseCode: enterpriseCode,
         customerCode: customerCode,
         saleRequestCode: saleRequestId,
@@ -42,7 +42,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     if (saleRequestId == 0) {
       //!inserting
-      await paymentOptionsFuture;
+      await paymentFinalizationsFuture;
       return BSFSaleRequestEntity.empty();
     }
 
@@ -55,7 +55,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     final results = await Future.wait([
-      paymentOptionsFuture,
+      paymentFinalizationsFuture,
       saleRequestDetailsFuture,
     ]);
 

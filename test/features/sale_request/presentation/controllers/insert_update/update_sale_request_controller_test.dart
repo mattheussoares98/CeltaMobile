@@ -9,8 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks/all_mocks.dart';
-import '../../../../mocks/entity_factory.dart';
+import '../../../../../mocks/all_mocks.dart';
+import '../../../../../mocks/entity_factory.dart';
 
 class MockEcSaleRequestsRepository extends Mock
     implements IEcSaleRequestsRepository {}

@@ -3,16 +3,17 @@ import '../../domain/entities/entities.dart';
 import '../../domain/repository/repository.dart';
 import '../datasource/datasource.dart';
 
-class EcPaymentFinalizationRepositoryImpl implements IEcPaymentFinalizationRepository {
+class EcPaymentFinalizationRepositoryImpl
+    implements IEcPaymentFinalizationRepository {
   final IEcPaymentFinalizationDatasource datasource;
   EcPaymentFinalizationRepositoryImpl(this.datasource);
 
   @override
-  Future<List<BSFPaymentFinalizationEntity>> getPaymentOptions({
+  Future<List<BSFPaymentFinalizationEntity>> getPaymentFinalizations({
     required int enterpriseCode,
     required EcRequestParams params,
   }) async {
-    final response = await datasource.getPaymentOptions(
+    final response = await datasource.getPaymentFinalizations(
       enterpriseCode: enterpriseCode,
       params: params,
     );
@@ -29,4 +30,3 @@ class EcPaymentFinalizationRepositoryImpl implements IEcPaymentFinalizationRepos
     return response.map((e) => e.toEntity()).toList();
   }
 }
-

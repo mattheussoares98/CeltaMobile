@@ -20,7 +20,7 @@ class PaymentMethodDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final paymentProvider = paymentOptionsStateControllerProvider(
+    final paymentProvider = paymentFinalizationsStateControllerProvider(
       enterpriseCode: enterpriseCode,
       customerCode: customerCode,
       saleRequestCode: saleRequestCode,
@@ -29,8 +29,8 @@ class PaymentMethodDropdown extends ConsumerWidget {
     return AsyncValueWidget(
       value: ref.watch(paymentProvider),
       tryAgain: () => ref.invalidate(paymentProvider),
-      data: (paymentOptions) {
-        if (paymentOptions.isEmpty) {
+      data: (paymentFinalizations) {
+        if (paymentFinalizations.isEmpty) {
           return Column(
             children: [
               Text(
@@ -56,7 +56,7 @@ class PaymentMethodDropdown extends ConsumerWidget {
               selectedItem: selectedPayment,
               label: 'Forma de Pagamento'.hardcoded,
               hint: Text('Selecionar'.hardcoded),
-              items: paymentOptions
+              items: paymentFinalizations
                   .map(
                     (e) => DropdownMenuItem(
                       value: e,
