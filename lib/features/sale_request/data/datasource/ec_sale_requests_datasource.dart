@@ -93,7 +93,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   }) async {
     final response = await httpClient.request(
       url:
-          '${params.workingUrl}/api/SaleRequests/GetPaymentOptions?enterpriseCode=$enterpriseCode',
+          '${params.workingUrl}/api/PaymentFinalization/GetPaymentOptions?enterpriseCode=$enterpriseCode',
       method: 'post',
       headers: params.toHeaders(),
       body: params.toMap(),
