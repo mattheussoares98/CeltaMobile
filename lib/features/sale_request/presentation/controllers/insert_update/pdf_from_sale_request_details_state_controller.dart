@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../providers.dart';
-import 'controllers.dart';
+import '../../../providers.dart';
+import 'insert_update.dart';
 
 part 'pdf_from_sale_request_details_state_controller.g.dart';
 

@@ -2,7 +2,7 @@ import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/ec/ec.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/update_sale_request_controller.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/update_sale_request_controller.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
