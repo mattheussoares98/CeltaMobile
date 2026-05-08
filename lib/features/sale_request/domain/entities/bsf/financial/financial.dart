@@ -7,5 +7,6 @@ export 'bsf_payment_form_entity.dart';
 export 'bsf_user_authorization_entity.dart';
 export 'card_terminal_type.dart';
 export 'credit_card_properties_entity.dart';
-export 'payment_form_type.dart';
+export 'payment_condition/payment_condition.dart';
 export 'payment_finalization_action_type.dart';
+export 'payment_form_type.dart';
