@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
-import '../../../../domain/entities/entities.dart';
-import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class PaymentsPage extends ConsumerStatefulWidget {
@@ -49,30 +47,13 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
             ),
           ),
           gapSliverH8,
-          Consumer(
-            builder: (context, ref, child) {
-              final selectedCreditCardType = ref.watch(
-                selectedPaymentTypeStateControllerProvider(
-                  widget.saleRequestId,
-                ).select(
-                  (s) =>
-                      s?.action?.type ==
-                      PaymentFinalizationActionType.creditCard,
-                ),
-              );
-
-              if (selectedCreditCardType) {
-                return SliverToBoxAdapter(
-                  child: CreditCardFields(
-                    creditCardController: creditCardController,
-                    portionsController: portionsController,
-                    validityController: validityController,
-                  ),
-                );
-              }
-
-              return const SliverToBoxAdapter(child: SizedBox.shrink());
-            },
+          SliverToBoxAdapter(
+            child: CreditCardFields(
+              creditCardController: creditCardController,
+              portionsController: portionsController,
+              validityController: validityController,
+              saleRequestId: widget.saleRequestId,
+            ),
           ),
           SliverToBoxAdapter(
             child: ValueFieldAndConfirmButton(

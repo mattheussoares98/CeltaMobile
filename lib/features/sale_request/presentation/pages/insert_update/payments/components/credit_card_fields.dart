@@ -5,23 +5,36 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../domain/entities/entities.dart';
+import '../../../../controllers/controllers.dart';
 
 class CreditCardFields extends ConsumerWidget {
   final TextEditingController creditCardController;
   final TextEditingController portionsController;
   final TextEditingController validityController;
+  final int saleRequestId;
 
   const CreditCardFields({
     super.key,
     required this.creditCardController,
     required this.portionsController,
     required this.validityController,
+    required this.saleRequestId,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final now = DateTime.now();
+    final selectedCreditCardType = ref.watch(
+      selectedPaymentTypeStateControllerProvider(saleRequestId).select(
+        (s) => s?.action?.type == PaymentFinalizationActionType.creditCard,
+      ),
+    );
 
+    if (!selectedCreditCardType) {
+      return const SizedBox.shrink();
+    }
+
+    final now = DateTime.now();
     return Column(
       children: [
         DefaultTextFormField(
