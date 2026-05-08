@@ -67,6 +67,7 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
               saleRequestId: widget.saleRequestId,
             ),
           ),
+          BilletFields(saleRequestId: widget.saleRequestId),
           SliverToBoxAdapter(
             child: ValueFieldAndConfirmButton(
               enterpriseCode: widget.enterpriseCode,
