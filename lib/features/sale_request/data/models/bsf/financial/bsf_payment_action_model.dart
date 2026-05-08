@@ -31,17 +31,17 @@ class BSFPaymentActionModel extends BSFPaymentActionEntity {
       );
 
   Map<String, dynamic> toJson() => {
-        'Code': code,
-        'AllowsCheck': allowsCheck,
-        'AllowsAdministrator': allowsAdministrator,
-        'AllowsCardTerminalType': allowsCardTerminalType,
-        'Name': name,
-        'Description': description,
-        'Type': type?.value,
-        'AllowsSaleWithEntrance': allowsSaleWithEntrance,
-        'AllowsPaymentConditions': allowsPaymentConditions,
-        'AllowsEletronicCheckPredated': allowsEletronicCheckPredated,
-      };
+    'Code': code,
+    'AllowsCheck': allowsCheck,
+    'AllowsAdministrator': allowsAdministrator,
+    'AllowsCardTerminalType': allowsCardTerminalType,
+    'Name': name,
+    'Description': description,
+    'Type': type?.value,
+    'AllowsSaleWithEntrance': allowsSaleWithEntrance,
+    'AllowsPaymentConditions': allowsPaymentConditions,
+    'AllowsEletronicCheckPredated': allowsEletronicCheckPredated,
+  };
 
   factory BSFPaymentActionModel.fromEntity(BSFPaymentActionEntity entity) =>
       BSFPaymentActionModel(
@@ -57,17 +57,16 @@ class BSFPaymentActionModel extends BSFPaymentActionEntity {
         allowsEletronicCheckPredated: entity.allowsEletronicCheckPredated,
       );
 
-  @override
   BSFPaymentActionEntity toEntity() => BSFPaymentActionEntity(
-        code: code,
-        allowsCheck: allowsCheck,
-        allowsAdministrator: allowsAdministrator,
-        allowsCardTerminalType: allowsCardTerminalType,
-        name: name,
-        description: description,
-        type: type,
-        allowsSaleWithEntrance: allowsSaleWithEntrance,
-        allowsPaymentConditions: allowsPaymentConditions,
-        allowsEletronicCheckPredated: allowsEletronicCheckPredated,
-      );
+    code: code,
+    allowsCheck: allowsCheck,
+    allowsAdministrator: allowsAdministrator,
+    allowsCardTerminalType: allowsCardTerminalType,
+    name: name,
+    description: description,
+    type: type,
+    allowsSaleWithEntrance: allowsSaleWithEntrance,
+    allowsPaymentConditions: allowsPaymentConditions,
+    allowsEletronicCheckPredated: allowsEletronicCheckPredated,
+  );
 }
