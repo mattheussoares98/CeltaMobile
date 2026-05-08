@@ -1,0 +1,112 @@
+import '../../../../../domain/entities/entities.dart';
+import 'payment_condition.dart';
+
+class BSFPaymentConditionModel extends BSFPaymentConditionEntity {
+  const BSFPaymentConditionModel({
+    required super.isShielded,
+    required super.code,
+    required super.personalizedCode,
+    required super.isFixed,
+    required super.fillType,
+    required super.useType,
+    required super.maximumNumberPortions,
+    required super.minimumValueInPortions,
+    required super.intervalMinimumBetweenPortions,
+    required super.intervalMaximumBetweenPortions,
+    required super.internalPaymentCondition,
+    required super.minimumPercentageOfFirstPortion,
+    required super.description,
+    required super.condition,
+    required super.utilizeParameters,
+  });
+
+  factory BSFPaymentConditionModel.fromJson(
+    Map<String, dynamic> json,
+  ) => BSFPaymentConditionModel(
+    isShielded: json['IsShielded'] ?? false,
+    code: json['Code'] ?? 0,
+    personalizedCode: json['PersonalizedCode'] ?? '',
+    isFixed: json['IsFixed'] ?? false,
+    fillType: PaymentConditionFillType.fromValue(json['FillType']),
+    useType: PaymentConditionUseType.fromValue(json['UseType']),
+    maximumNumberPortions: json['MaximumNumberPortions'] ?? 0,
+    minimumValueInPortions:
+        (json['MinimumValueInPortions'] as num?)?.toDouble() ?? 0.0,
+    intervalMinimumBetweenPortions: json['IntervalMinimumBetweenPortions'] ?? 0,
+    intervalMaximumBetweenPortions: json['IntervalMaximumBetweenPortions'] ?? 0,
+    internalPaymentCondition: json['InternalPaymentCondition'] ?? false,
+    minimumPercentageOfFirstPortion:
+        (json['MinimumPercentageOfFirstPortion'] as num?)?.toDouble() ?? 0.0,
+    description: json['Description'] ?? '',
+    condition: json['Condition'] != null
+        ? PaymentConditionModel.fromJson(json['Condition'])
+        : null,
+    utilizeParameters: UtilizationParametersModel.fromJson(
+      json['UtilizeParameters'] ?? {},
+    ),
+  );
+
+  Map<String, dynamic> toJson() => {
+    'IsShielded': isShielded,
+    'Code': code,
+    'PersonalizedCode': personalizedCode,
+    'IsFixed': isFixed,
+    'FillType': fillType.value,
+    'UseType': useType.value,
+    'MaximumNumberPortions': maximumNumberPortions,
+    'MinimumValueInPortions': minimumValueInPortions,
+    'IntervalMinimumBetweenPortions': intervalMinimumBetweenPortions,
+    'IntervalMaximumBetweenPortions': intervalMaximumBetweenPortions,
+    'InternalPaymentCondition': internalPaymentCondition,
+    'MinimumPercentageOfFirstPortion': minimumPercentageOfFirstPortion,
+    'Description': description,
+    'Condition': condition == null
+        ? null
+        : PaymentConditionModel.fromEntity(condition!).toJson(),
+    'UtilizeParameters': UtilizationParametersModel.fromEntity(
+      utilizeParameters,
+    ).toJson(),
+  };
+
+  factory BSFPaymentConditionModel.fromEntity(
+    BSFPaymentConditionEntity entity,
+  ) => BSFPaymentConditionModel(
+    isShielded: entity.isShielded,
+    code: entity.code,
+    personalizedCode: entity.personalizedCode,
+    isFixed: entity.isFixed,
+    fillType: entity.fillType,
+    useType: entity.useType,
+    maximumNumberPortions: entity.maximumNumberPortions,
+    minimumValueInPortions: entity.minimumValueInPortions,
+    intervalMinimumBetweenPortions: entity.intervalMinimumBetweenPortions,
+    intervalMaximumBetweenPortions: entity.intervalMaximumBetweenPortions,
+    internalPaymentCondition: entity.internalPaymentCondition,
+    minimumPercentageOfFirstPortion: entity.minimumPercentageOfFirstPortion,
+    description: entity.description,
+    condition: entity.condition == null
+        ? null
+        : PaymentConditionModel.fromEntity(entity.condition!),
+    utilizeParameters: UtilizationParametersModel.fromEntity(
+      entity.utilizeParameters,
+    ),
+  );
+
+  BSFPaymentConditionEntity toEntity() => BSFPaymentConditionEntity(
+    isShielded: isShielded,
+    code: code,
+    personalizedCode: personalizedCode,
+    isFixed: isFixed,
+    fillType: fillType,
+    useType: useType,
+    maximumNumberPortions: maximumNumberPortions,
+    minimumValueInPortions: minimumValueInPortions,
+    intervalMinimumBetweenPortions: intervalMinimumBetweenPortions,
+    intervalMaximumBetweenPortions: intervalMaximumBetweenPortions,
+    internalPaymentCondition: internalPaymentCondition,
+    minimumPercentageOfFirstPortion: minimumPercentageOfFirstPortion,
+    description: description,
+    condition: condition,
+    utilizeParameters: utilizeParameters,
+  );
+}
