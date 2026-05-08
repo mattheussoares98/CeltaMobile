@@ -1,6 +1,6 @@
-// lib/features/sale_request/domain/entities/bsf/financial/bsf_payment_action_entity.dart
-
 import 'package:equatable/equatable.dart';
+
+import 'financial.dart';
 
 class BSFPaymentActionEntity extends Equatable {
   final int? code;
@@ -9,7 +9,7 @@ class BSFPaymentActionEntity extends Equatable {
   final bool? allowsCardTerminalType;
   final String? name;
   final String? description;
-  final int? type;
+  final PaymentFinalizationActionType? type;
   final bool? allowsSaleWithEntrance;
   final bool? allowsPaymentConditions;
   final bool? allowsEletronicCheckPredated;
@@ -29,17 +29,17 @@ class BSFPaymentActionEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        code,
-        allowsCheck,
-        allowsAdministrator,
-        allowsCardTerminalType,
-        name,
-        description,
-        type,
-        allowsSaleWithEntrance,
-        allowsPaymentConditions,
-        allowsEletronicCheckPredated,
-      ];
+    code,
+    allowsCheck,
+    allowsAdministrator,
+    allowsCardTerminalType,
+    name,
+    description,
+    type,
+    allowsSaleWithEntrance,
+    allowsPaymentConditions,
+    allowsEletronicCheckPredated,
+  ];
 
   BSFPaymentActionEntity copyWith({
     int? code,
@@ -48,7 +48,7 @@ class BSFPaymentActionEntity extends Equatable {
     bool? allowsCardTerminalType,
     String? name,
     String? description,
-    int? type,
+    PaymentFinalizationActionType? type,
     bool? allowsSaleWithEntrance,
     bool? allowsPaymentConditions,
     bool? allowsEletronicCheckPredated,

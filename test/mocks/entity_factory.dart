@@ -1245,7 +1245,8 @@ class EntityFactory {
         allowsCardTerminalType: faker.randomGenerator.boolean(),
         name: faker.lorem.word(),
         description: faker.lorem.word(),
-        type: faker.randomGenerator.integer(100),
+        type: PaymentFinalizationActionType.values[faker.randomGenerator
+            .integer(PaymentFinalizationActionType.values.length)],
         allowsSaleWithEntrance: faker.randomGenerator.boolean(),
         allowsPaymentConditions: faker.randomGenerator.boolean(),
         allowsEletronicCheckPredated: faker.randomGenerator.boolean(),

@@ -24,7 +24,7 @@ class BSFPaymentActionModel extends BSFPaymentActionEntity {
         allowsCardTerminalType: json['AllowsCardTerminalType'],
         name: json['Name'],
         description: json['Description'],
-        type: json['Type'],
+        type: PaymentFinalizationActionType.fromValue(json['Type']),
         allowsSaleWithEntrance: json['AllowsSaleWithEntrance'],
         allowsPaymentConditions: json['AllowsPaymentConditions'],
         allowsEletronicCheckPredated: json['AllowsEletronicCheckPredated'],
@@ -37,7 +37,7 @@ class BSFPaymentActionModel extends BSFPaymentActionEntity {
         'AllowsCardTerminalType': allowsCardTerminalType,
         'Name': name,
         'Description': description,
-        'Type': type,
+        'Type': type?.value,
         'AllowsSaleWithEntrance': allowsSaleWithEntrance,
         'AllowsPaymentConditions': allowsPaymentConditions,
         'AllowsEletronicCheckPredated': allowsEletronicCheckPredated,
@@ -57,6 +57,7 @@ class BSFPaymentActionModel extends BSFPaymentActionEntity {
         allowsEletronicCheckPredated: entity.allowsEletronicCheckPredated,
       );
 
+  @override
   BSFPaymentActionEntity toEntity() => BSFPaymentActionEntity(
         code: code,
         allowsCheck: allowsCheck,
