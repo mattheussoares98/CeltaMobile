@@ -60,7 +60,7 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/PaymentFinalization/GetPaymentFinalizations?enterpriseCode=$enterpriseCode',
+              '${params.workingUrl}/api/PaymentFinalization/GetPaymentFinalization?enterpriseCode=$enterpriseCode',
           method: 'post',
           headers: params.toHeaders(),
           body: params.toMap(),
@@ -90,7 +90,7 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/PaymentFinalization/SearchPaymentConditions',
+              '${params.workingUrl}/api/PaymentFinalization/GetPaymentConditions',
           method: 'post',
           headers: params.toHeaders(),
           body: params.toMap(),
