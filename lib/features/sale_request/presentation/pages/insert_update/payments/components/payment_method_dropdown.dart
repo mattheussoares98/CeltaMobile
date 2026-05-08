@@ -32,6 +32,7 @@ class PaymentMethodDropdown extends ConsumerWidget {
       data: (paymentFinalizations) {
         if (paymentFinalizations.isEmpty) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 'Nenhuma forma de pagamento está disponível para este pedido.'
@@ -60,14 +61,16 @@ class PaymentMethodDropdown extends ConsumerWidget {
                   .map(
                     (e) => DropdownMenuItem(
                       value: e,
-                      child: RichText(
-                        text: TextSpan(
-                          style: const TextStyle(color: Colors.black),
-                          text: e.Description,
-                          children: [
-                            if (e.paymentForm?.name != null)
-                              TextSpan(text: ' - ${e.paymentForm!.name}'),
-                          ],
+                      child: Center(
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(color: Colors.black),
+                            text: e.Description,
+                            children: [
+                              if (e.paymentForm?.name != null)
+                                TextSpan(text: ' - ${e.paymentForm!.name}'),
+                            ],
+                          ),
                         ),
                       ),
                     ),

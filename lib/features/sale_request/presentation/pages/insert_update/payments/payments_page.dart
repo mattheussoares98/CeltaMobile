@@ -55,19 +55,25 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
           //         saleRequestCode: widget.saleRequestId,
           //       ),
           //     ),
-          //     text: 'Recarregar',
+          //     text: 'Recarregar formas de pagamento',
           //   ),
           // ),
           gapSliverH8,
-          SliverToBoxAdapter(
-            child: CreditCardFields(
-              creditCardController: creditCardController,
-              portionsController: portionsController,
-              validityController: validityController,
-              saleRequestId: widget.saleRequestId,
-            ),
+          CreditCardFields(
+            creditCardController: creditCardController,
+            portionsController: portionsController,
+            validityController: validityController,
+            saleRequestId: widget.saleRequestId,
           ),
-          BilletFields(saleRequestId: widget.saleRequestId),
+          PaymentConditionDropdown(saleRequestId: widget.saleRequestId),
+
+          // SliverToBoxAdapter(
+          //   child: PrimaryButton(
+          //     onPressed: () =>
+          //         ref.invalidate(paymentConditionsStateControllerProvider),
+          //     text: 'Recarregar condições de pagamento',
+          //   ),
+          // ),
           SliverToBoxAdapter(
             child: ValueFieldAndConfirmButton(
               enterpriseCode: widget.enterpriseCode,

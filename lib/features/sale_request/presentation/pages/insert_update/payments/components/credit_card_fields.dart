@@ -31,45 +31,50 @@ class CreditCardFields extends ConsumerWidget {
     );
 
     if (!selectedCreditCardType) {
-      return const SizedBox.shrink();
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
     final now = DateTime.now();
-    return Column(
-      children: [
-        DefaultTextFormField(
-          controller: creditCardController,
-          labelText: 'Número do cartão'.hardcoded,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(16),
-            CreditCardNumberInputFormatter(),
-          ],
-        ),
-        DefaultTextFormField(
-          controller: portionsController,
-          labelText: 'Parcelas'.hardcoded,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: FormValidators.compose([
-            NonEmptyValidator(),
-            NumberValidator(allowDecimal: false),
-          ]),
-        ),
-        DefaultTextFormField(
-          controller: validityController,
-          labelText: 'Validade'.hardcoded,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          inputFormatters: [DateInputFormatter(includeDay: false)],
-          validator: FormValidators.compose([
-            DateValidator(
-              minimumDate: now,
-              maximumDate: now.add(const Duration(days: 365 * 10)),
-              includeDay: false,
-            ),
-          ]),
-        ),
-      ],
+    final children = [
+      DefaultTextFormField(
+        controller: creditCardController,
+        labelText: 'Número do cartão'.hardcoded,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(16),
+          CreditCardNumberInputFormatter(),
+        ],
+      ),
+      DefaultTextFormField(
+        controller: portionsController,
+        labelText: 'Qtd parcelas'.hardcoded,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: FormValidators.compose([
+          NonEmptyValidator(),
+          NumberValidator(allowDecimal: false),
+        ]),
+      ),
+      DefaultTextFormField(
+        controller: validityController,
+        labelText: 'Validade'.hardcoded,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        inputFormatters: [DateInputFormatter(includeDay: false)],
+        validator: FormValidators.compose([
+          DateValidator(
+            minimumDate: now,
+            maximumDate: now.add(const Duration(days: 365 * 10)),
+            includeDay: false,
+          ),
+        ]),
+      ),
+    ];
+    return ResponsiveListFlow(
+      itemCount: children.length,
+      isSliver: true,
+      itemBuilder: (context, index) {
+        return children[index];
+      },
     );
   }
 }
