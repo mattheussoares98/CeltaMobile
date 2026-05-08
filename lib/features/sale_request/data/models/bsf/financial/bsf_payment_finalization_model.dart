@@ -40,7 +40,7 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
   Map<String, dynamic> toJson() => {
     'PaymentForm': paymentForm == null
         ? null
-        : BSFPaymentFormModel.fromEntity(paymentForm!),
+        : BSFPaymentFormModel.fromEntity(paymentForm!).toJson(),
     'Description': Description,
     'Code': code,
     'IsDeactivate': isDeactivate,
@@ -51,7 +51,9 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
     'FinancialTax': financialTax,
     'IdentificationCode': identificationCode,
     'IdentificationTefFlagCode': identificationTefFlagCode,
-    'Action': action == null ? null : BSFPaymentActionModel.fromEntity(action!),
+    'Action': action == null
+        ? null
+        : BSFPaymentActionModel.fromEntity(action!).toJson(),
   };
 
   factory BSFPaymentFinalizationModel.fromEntity(
