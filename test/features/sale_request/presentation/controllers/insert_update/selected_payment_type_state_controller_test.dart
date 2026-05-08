@@ -46,43 +46,33 @@ void main() {
     });
 
     test(
-      'should maintain independent states for different saleRequestCodes',
+      'should invalidate selectedPaymentConditionStateControllerProvider when select is called',
       () {
         final container = ProviderContainer();
         addTearDown(container.dispose);
 
-        final saleRequestCode1 = faker.randomGenerator.integer(1000);
-        final saleRequestCode2 = saleRequestCode1 + 1;
-
-        final payment1 = EntityFactory.makeBSFPaymentFinalizationEntity();
-        final payment2 = EntityFactory.makeBSFPaymentFinalizationEntity();
-
+        final condition = EntityFactory.makeBSFPaymentConditionEntity();
         container
-            .read(
-              selectedPaymentTypeStateControllerProvider(
-                saleRequestCode1,
-              ).notifier,
-            )
-            .select(payment1);
-        container
-            .read(
-              selectedPaymentTypeStateControllerProvider(
-                saleRequestCode2,
-              ).notifier,
-            )
-            .select(payment2);
+            .read(selectedPaymentConditionStateControllerProvider.notifier)
+            .select(condition);
 
         expect(
-          container.read(
-            selectedPaymentTypeStateControllerProvider(saleRequestCode1),
-          ),
-          payment1,
+          container.read(selectedPaymentConditionStateControllerProvider),
+          condition,
         );
+
+        final payment = EntityFactory.makeBSFPaymentFinalizationEntity();
+        container
+            .read(
+              selectedPaymentTypeStateControllerProvider(
+                saleRequestCode,
+              ).notifier,
+            )
+            .select(payment);
+
         expect(
-          container.read(
-            selectedPaymentTypeStateControllerProvider(saleRequestCode2),
-          ),
-          payment2,
+          container.read(selectedPaymentConditionStateControllerProvider),
+          isNull,
         );
       },
     );
