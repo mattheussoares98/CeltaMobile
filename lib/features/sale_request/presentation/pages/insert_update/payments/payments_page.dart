@@ -51,14 +51,17 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
           gapSliverH8,
           Consumer(
             builder: (context, ref, child) {
-              final selectedPaymentType = ref.watch(
+              final selectedCreditCardType = ref.watch(
                 selectedPaymentTypeStateControllerProvider(
                   widget.saleRequestId,
+                ).select(
+                  (s) =>
+                      s?.action?.type ==
+                      PaymentFinalizationActionType.creditCard,
                 ),
               );
 
-              if (selectedPaymentType?.paymentForm?.type ==
-                  PaymentFormType.creditCard) {
+              if (selectedCreditCardType) {
                 return SliverToBoxAdapter(
                   child: CreditCardFields(
                     creditCardController: creditCardController,
