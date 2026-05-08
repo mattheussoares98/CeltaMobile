@@ -32,34 +32,18 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       timer?.cancel();
     });
 
-    final paymentFinalizationsFuture = ref.read(
-      paymentFinalizationsStateControllerProvider(
-        enterpriseCode: enterpriseCode,
-        customerCode: customerCode,
-        saleRequestCode: saleRequestId,
-      ).future,
-    );
-
     if (saleRequestId == 0) {
       //!inserting
-      await paymentFinalizationsFuture;
       return BSFSaleRequestEntity.empty();
     }
 
-    final saleRequestDetailsFuture = ref.read(
+    return await ref.read(
       saleRequestDetailsStateControllerProvider(
         customerCode: customerCode,
         enterpriseCode: enterpriseCode,
         saleRequestCode: saleRequestId,
       ).future,
     );
-
-    final results = await Future.wait([
-      paymentFinalizationsFuture,
-      saleRequestDetailsFuture,
-    ]);
-
-    return results[1] as BSFSaleRequestEntity;
   }
 
   (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {

@@ -82,7 +82,7 @@ void main() {
           );
 
           expect(result, BSFSaleRequestEntity.empty());
-          expect(fakePaymentsController.wasCalled, isTrue);
+          expect(fakePaymentsController.wasCalled, isFalse);
         },
       );
 
@@ -100,7 +100,7 @@ void main() {
           );
 
           expect(result, fakeSaleRequest);
-          expect(fakePaymentsController.wasCalled, isTrue);
+          expect(fakePaymentsController.wasCalled, isFalse);
         },
       );
     });
