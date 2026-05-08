@@ -18,7 +18,15 @@ class EcPaymentFinalizationDatasourceSpy extends Mock
           params: any(named: 'params'),
         ),
       ).thenAnswer((_) async => response);
+
+  void mockGetPaymentConditions(List<BSFPaymentConditionModel> response) =>
+      when(
+        () => getPaymentConditions(
+          params: any(named: 'params'),
+        ),
+      ).thenAnswer((_) async => response);
 }
+
 
 void main() {
   late IEcPaymentFinalizationRepository sut;
@@ -66,4 +74,27 @@ void main() {
       ).called(1);
     });
   });
+
+  group('GetPaymentConditions', () {
+    test('should behave correctly on success', () async {
+      final paymentConditions = [
+        BSFPaymentConditionModel.fromEntity(
+          EntityFactory.makeBSFPaymentConditionEntity(),
+        ),
+        BSFPaymentConditionModel.fromEntity(
+          EntityFactory.makeBSFPaymentConditionEntity(),
+        ),
+      ];
+      mockDatasource.mockGetPaymentConditions(paymentConditions);
+
+      final response = await sut.getPaymentConditions(params: params);
+
+      expect(response, paymentConditions.map((e) => e.toEntity()).toList());
+
+      verify(
+        () => mockDatasource.getPaymentConditions(params: params),
+      ).called(1);
+    });
+  });
 }
+

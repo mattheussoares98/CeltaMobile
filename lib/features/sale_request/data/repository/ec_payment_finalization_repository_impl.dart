@@ -19,4 +19,14 @@ class EcPaymentFinalizationRepositoryImpl implements IEcPaymentFinalizationRepos
 
     return response.map((e) => e.toEntity()).toList();
   }
+
+  @override
+  Future<List<BSFPaymentConditionEntity>> getPaymentConditions({
+    required EcRequestParams params,
+  }) async {
+    final response = await datasource.getPaymentConditions(params: params);
+
+    return response.map((e) => e.toEntity()).toList();
+  }
 }
+
