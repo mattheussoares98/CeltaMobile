@@ -46,6 +46,18 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
               saleRequestCode: widget.saleRequestId,
             ),
           ),
+          // SliverToBoxAdapter(
+          //   child: PrimaryButton(
+          //     onPressed: () => ref.invalidate(
+          //       paymentOptionsStateControllerProvider(
+          //         enterpriseCode: widget.enterpriseCode,
+          //         customerCode: widget.customerCode,
+          //         saleRequestCode: widget.saleRequestId,
+          //       ),
+          //     ),
+          //     text: 'Recarregar',
+          //   ),
+          // ),
           gapSliverH8,
           SliverToBoxAdapter(
             child: CreditCardFields(
