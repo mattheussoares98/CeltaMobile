@@ -126,14 +126,25 @@ extension BSFProductItemEntityToProductEntity on BSFProductItemEntity {
       Name: product?.name,
       PackingQuantity: product?.productPackingQuantity?.toString(),
       PackingAbbreviation: product?.productPackingTypeString,
-      Value: value,
-      RetailPracticedPrice: priceCost?.saleRetailPricePractice,
+      Value:
+          priceCost?.saleRetailOfferPractice ??
+          priceCost?.saleRetailPricePractice,
+      RetailPracticedPrice:
+          priceCost?.saleRetailOfferPractice ??
+          priceCost?.saleRetailPricePractice,
       RetailSalePrice: priceCost?.saleRetailPricePractice,
       RetailOfferPrice: priceCost?.saleRetailOfferPractice,
-      WholePracticedPrice: priceCost?.wholeSalePricePractice,
+      WholePracticedPrice:
+          priceCost?.wholeSaleOfferPractice ??
+          priceCost?.wholeSalePricePractice,
       WholeSalePrice: priceCost?.wholeSalePricePractice,
       WholeOfferPrice: priceCost?.wholeSaleOfferPractice,
       MinimumWholeQuantity: priceCost?.mininumQuantityForWholeSale,
+      ECommercePracticedPrice:
+          priceCost?.eCommerceOfferPractice ??
+          priceCost?.eCommercePricePractice,
+      ECommerceSalePrice: priceCost?.eCommercePricePractice,
+      ECommerceOfferPrice: priceCost?.eCommerceOfferPractice,
       OperationalCost: priceCost?.operationCost,
       ReplacementCost: priceCost?.replacementCost,
       ReplacementCostMidle: priceCost?.mediumReplacementCost,
@@ -147,9 +158,6 @@ extension BSFProductItemEntityToProductEntity on BSFProductItemEntity {
       BalanceLabelType: null,
       StorageAreaAddress: null,
       BalanceLabelQuantity: null,
-      ECommercePracticedPrice: priceCost?.eCommercePricePractice,
-      ECommerceSalePrice: priceCost?.eCommercePricePractice,
-      ECommerceOfferPrice: priceCost?.eCommerceOfferPractice,
       PendantPrintLabel: null,
       AlterationPriceForAllPackings: null,
       IsFatherOfGrate: product?.isFatherOfGrate,
