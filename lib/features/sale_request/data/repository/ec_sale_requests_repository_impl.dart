@@ -66,17 +66,4 @@ class EcSaleRequestsRepositoryImpl implements IEcSaleRequestsRepository {
       params: params,
     );
   }
-
-  @override
-  Future<List<BSFPaymentFinalizationEntity>> getPaymentOptions({
-    required int enterpriseCode,
-    required EcRequestParams params,
-  }) async {
-    final response = await datasource.getPaymentOptions(
-      enterpriseCode: enterpriseCode,
-      params: params,
-    );
-
-    return response.map((e) => e.toEntity()).toList();
-  }
 }

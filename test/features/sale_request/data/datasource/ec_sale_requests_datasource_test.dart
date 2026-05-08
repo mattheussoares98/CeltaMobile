@@ -209,36 +209,4 @@ void main() {
       ).called(1);
     });
   });
-  group('GetPaymentOptions', () {
-    test('should behave correctly on success', () async {
-      final paymentOptions = [
-        BSFPaymentFinalizationModel.fromEntity(
-          EntityFactory.makeBSFPaymentFinalizationEntity(),
-        ),
-        BSFPaymentFinalizationModel.fromEntity(
-          EntityFactory.makeBSFPaymentFinalizationEntity(),
-        ),
-      ];
-      httpClient.mockRequest(
-        json.encode(paymentOptions.map((e) => e.toJson()).toList()),
-      );
-
-      final response = await sut.getPaymentOptions(
-        enterpriseCode: enterpriseCode,
-        params: params,
-      );
-
-      expect(response, paymentOptions);
-
-      verify(
-        () => httpClient.request(
-          url:
-              '${params.workingUrl}/api/PaymentFinalization/GetPaymentOptions?enterpriseCode=$enterpriseCode',
-          method: 'post',
-          headers: params.toHeaders(),
-          body: params.toMap(),
-        ),
-      ).called(1);
-    });
-  });
 }

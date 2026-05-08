@@ -1,5 +1,3 @@
-export 'ec_sale_requests_datasource.dart';
-export 'i_ec_sale_requests_datasource.dart';
 export './i_local_ip_print_sale_request_datasource.dart';
 export './i_local_last_saved_sale_request_datasource.dart';
 export './i_print_bsf_sale_request_datasource.dart';
@@ -11,7 +9,11 @@ export './print_bsf_sale_request_datasource.dart';
 export './soap_process_cart_datasource.dart';
 export './soap_save_sale_request_datasource.dart';
 export 'bsf_generate_pdf_datasource.dart';
+export 'ec_payment_finalization_datasource.dart';
+export 'ec_sale_requests_datasource.dart';
 export 'i_bsf_generate_pdf_datasource.dart';
+export 'i_ec_payment_finalization_datasource.dart';
+export 'i_ec_sale_requests_datasource.dart';
 export 'i_local_sale_request_datasource.dart';
 export 'i_print_soap_last_saved_sale_request_datasource.dart';
 export 'i_soap_generate_pdf_datasource.dart';

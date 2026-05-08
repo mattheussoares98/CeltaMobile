@@ -85,25 +85,4 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
       body: saleRequest.toJson(),
     );
   }
-
-  @override
-  Future<List<BSFPaymentFinalizationModel>> getPaymentOptions({
-    required int enterpriseCode,
-    required EcRequestParams params,
-  }) async {
-    final response = await httpClient.request(
-      url:
-          '${params.workingUrl}/api/PaymentFinalization/GetPaymentOptions?enterpriseCode=$enterpriseCode',
-      method: 'post',
-      headers: params.toHeaders(),
-      body: params.toMap(),
-    );
-
-    return (json.decode(response) as List)
-        .map(
-          (e) =>
-              BSFPaymentFinalizationModel.fromJson(e as Map<String, dynamic>),
-        )
-        .toList();
-  }
 }

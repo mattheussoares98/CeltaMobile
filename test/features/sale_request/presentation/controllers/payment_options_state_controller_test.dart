@@ -13,11 +13,11 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 import 'fakers.dart';
 
-class MockEcSaleRequestsRepository extends Mock
-    implements IEcSaleRequestsRepository {}
+class MockIEcPaymentFinalizationDatasource extends Mock
+    implements IEcPaymentFinalizationRepository {}
 
 void main() {
-  late MockEcSaleRequestsRepository mockRepository;
+  late MockIEcPaymentFinalizationDatasource mockRepository;
   late UserSessionModel fakeSession;
   late int enterpriseCode;
   late int customerCode;
@@ -33,7 +33,7 @@ void main() {
     enterpriseCode = faker.randomGenerator.integer(100);
     customerCode = faker.randomGenerator.integer(100);
     saleRequestId = faker.randomGenerator.integer(100);
-    mockRepository = MockEcSaleRequestsRepository();
+    mockRepository = MockIEcPaymentFinalizationDatasource();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -45,7 +45,6 @@ void main() {
   }) {
     return ProviderContainer(
       overrides: [
-        ecSaleRequestsRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
@@ -55,6 +54,9 @@ void main() {
           saleRequestCode: saleRequestId,
         ).overrideWith(
           () => FakeSaleRequestDetailsController(saleRequestEntity),
+        ),
+        ecPaymentFinalizationRepositoryProvider.overrideWith(
+          (_) => mockRepository,
         ),
       ],
     );

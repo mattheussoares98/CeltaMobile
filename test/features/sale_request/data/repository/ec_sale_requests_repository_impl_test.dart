@@ -43,13 +43,6 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
     ),
   ).thenAnswer((_) async => response);
 
-  void mockGetPaymentOptions(List<BSFPaymentFinalizationModel> response) =>
-      when(
-        () => getPaymentOptions(
-          enterpriseCode: any(named: 'enterpriseCode'),
-          params: any(named: 'params'),
-        ),
-      ).thenAnswer((_) async => response);
 }
 
 void main() {
@@ -292,31 +285,4 @@ void main() {
     });
   });
 
-  group('GetPaymentOptions', () {
-    test('should behave correctly on success', () async {
-      final paymentOptions = [
-        BSFPaymentFinalizationModel.fromEntity(
-          EntityFactory.makeBSFPaymentFinalizationEntity(),
-        ),
-        BSFPaymentFinalizationModel.fromEntity(
-          EntityFactory.makeBSFPaymentFinalizationEntity(),
-        ),
-      ];
-      mockDatasource.mockGetPaymentOptions(paymentOptions);
-
-      final response = await sut.getPaymentOptions(
-        enterpriseCode: enterpriseCode,
-        params: params,
-      );
-
-      expect(response, paymentOptions.map((e) => e.toEntity()).toList());
-
-      verify(
-        () => mockDatasource.getPaymentOptions(
-          enterpriseCode: enterpriseCode,
-          params: params,
-        ),
-      ).called(1);
-    });
-  });
 }

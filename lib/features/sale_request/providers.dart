@@ -125,3 +125,15 @@ IBSFGeneratePdfDatasource bSFGeneratePdfDatasource(Ref ref) {
 IPrintBSFSaleRequestDatasource printBsfSaleRequestDatasource(Ref ref) {
   return PrintBSFSaleRequestDatasource();
 }
+
+@riverpod
+IEcPaymentFinalizationDatasource ecPaymentFinalizationDatasource(Ref ref) {
+  return EcPaymentFinalizationDatasource(ref.watch(httpClientProvider));
+}
+
+@riverpod
+IEcPaymentFinalizationRepository ecPaymentFinalizationRepository(Ref ref) {
+  return EcPaymentFinalizationRepositoryImpl(
+    ref.watch(ecPaymentFinalizationDatasourceProvider),
+  );
+}

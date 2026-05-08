@@ -27,7 +27,7 @@ class PaymentOptionsStateController extends _$PaymentOptionsStateController {
     );
 
     final paymentOptions = await ref
-        .read(ecSaleRequestsRepositoryProvider)
+        .read(ecPaymentFinalizationRepositoryProvider)
         .getPaymentOptions(
           enterpriseCode: enterpriseCode,
           params: EcRequestParams(
