@@ -14,6 +14,7 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
     required super.financialTax,
     required super.identificationCode,
     required super.identificationTefFlagCode,
+    required super.action,
   });
 
   factory BSFPaymentFinalizationModel.fromJson(Map<String, dynamic> json) =>
@@ -31,6 +32,9 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
         financialTax: (json['FinancialTax'] as num?)?.toDouble(),
         identificationCode: json['IdentificationCode'],
         identificationTefFlagCode: json['IdentificationTefFlagCode'],
+        action: json['Action'] != null
+            ? BSFPaymentActionModel.fromJson(json['Action'])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,6 +51,7 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
     'FinancialTax': financialTax,
     'IdentificationCode': identificationCode,
     'IdentificationTefFlagCode': identificationTefFlagCode,
+    'Action': action == null ? null : BSFPaymentActionModel.fromEntity(action!),
   };
 
   factory BSFPaymentFinalizationModel.fromEntity(
@@ -65,6 +70,9 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
     financialTax: entity.financialTax,
     identificationCode: entity.identificationCode,
     identificationTefFlagCode: entity.identificationTefFlagCode,
+    action: entity.action == null
+        ? null
+        : BSFPaymentActionModel.fromEntity(entity.action!),
   );
 
   BSFPaymentFinalizationEntity toEntity() => BSFPaymentFinalizationEntity(
@@ -81,5 +89,6 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
     financialTax: financialTax,
     identificationCode: identificationCode,
     identificationTefFlagCode: identificationTefFlagCode,
+    action: action == null ? null : BSFPaymentActionModel.fromEntity(action!),
   );
 }

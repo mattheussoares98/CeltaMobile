@@ -1234,6 +1234,21 @@ class EntityFactory {
         financialTax: faker.randomGenerator.decimal(),
         identificationCode: faker.lorem.word(),
         identificationTefFlagCode: faker.lorem.word(),
+        action: makeBSFPaymentActionEntity(),
+      );
+
+  static BSFPaymentActionEntity makeBSFPaymentActionEntity() =>
+      BSFPaymentActionEntity(
+        code: faker.randomGenerator.integer(100),
+        allowsCheck: faker.randomGenerator.boolean(),
+        allowsAdministrator: faker.randomGenerator.boolean(),
+        allowsCardTerminalType: faker.randomGenerator.boolean(),
+        name: faker.lorem.word(),
+        description: faker.lorem.word(),
+        type: faker.randomGenerator.integer(100),
+        allowsSaleWithEntrance: faker.randomGenerator.boolean(),
+        allowsPaymentConditions: faker.randomGenerator.boolean(),
+        allowsEletronicCheckPredated: faker.randomGenerator.boolean(),
       );
 
   static BSFPaymentFormEntity _makeBSFPaymentFormEntity() =>
@@ -1568,6 +1583,7 @@ class EntityFactory {
         financialTax: faker.randomGenerator.decimal(),
         identificationCode: faker.lorem.word(),
         identificationTefFlagCode: faker.lorem.word(),
+        action: makeBSFPaymentActionEntity(),
       );
 
   static BSFRequestTypeEntity makeBSFRequestTypeEntity() =>

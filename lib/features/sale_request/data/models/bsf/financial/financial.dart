@@ -1,4 +1,5 @@
 export 'bsf_financial_model.dart';
+export 'bsf_payment_action_model.dart';
 export 'bsf_payment_finalization_model.dart';
 export 'bsf_payment_finalization_wrapper_model.dart';
 export 'bsf_payment_form_model.dart';

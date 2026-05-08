@@ -1,5 +1,6 @@
 export 'action_check_type.dart';
 export 'bsf_financial_entity.dart';
+export 'bsf_payment_action_entity.dart';
 export 'bsf_payment_finalization_entity.dart';
 export 'bsf_payment_finalization_wrapper_entity.dart';
 export 'bsf_payment_form_entity.dart';

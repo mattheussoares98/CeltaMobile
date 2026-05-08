@@ -14,6 +14,7 @@ class BSFPaymentFinalizationEntity extends Equatable {
   final double? financialTax;
   final String? identificationCode;
   final String? identificationTefFlagCode;
+  final BSFPaymentActionEntity? action;
 
   const BSFPaymentFinalizationEntity({
     required this.paymentForm,
@@ -27,22 +28,24 @@ class BSFPaymentFinalizationEntity extends Equatable {
     required this.financialTax,
     required this.identificationCode,
     required this.identificationTefFlagCode,
+    required this.action,
   });
 
   @override
   List<Object?> get props => [
-    paymentForm,
-    Description,
-    code,
-    isDeactivate,
-    isDeactivateString,
-    actionCheckType,
-    cardTerminalType,
-    planCode,
-    financialTax,
-    identificationCode,
-    identificationTefFlagCode,
-  ];
+        paymentForm,
+        Description,
+        code,
+        isDeactivate,
+        isDeactivateString,
+        actionCheckType,
+        cardTerminalType,
+        planCode,
+        financialTax,
+        identificationCode,
+        identificationTefFlagCode,
+        action,
+      ];
 
   BSFPaymentFinalizationEntity copyWith({
     BSFPaymentFormEntity? paymentForm,
@@ -56,6 +59,7 @@ class BSFPaymentFinalizationEntity extends Equatable {
     double? financialTax,
     String? identificationCode,
     String? identificationTefFlagCode,
+    BSFPaymentActionEntity? action,
   }) {
     return BSFPaymentFinalizationEntity(
       paymentForm: paymentForm ?? this.paymentForm,
@@ -70,6 +74,7 @@ class BSFPaymentFinalizationEntity extends Equatable {
       identificationCode: identificationCode ?? this.identificationCode,
       identificationTefFlagCode:
           identificationTefFlagCode ?? this.identificationTefFlagCode,
+      action: action ?? this.action,
     );
   }
 }
