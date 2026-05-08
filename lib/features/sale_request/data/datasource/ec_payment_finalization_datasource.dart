@@ -29,4 +29,22 @@ class EcPaymentFinalizationDatasource implements IEcPaymentFinalizationDatasourc
         )
         .toList();
   }
+  @override
+  Future<List<BSFPaymentConditionModel>> getPaymentConditions({
+    required EcRequestParams params,
+  }) async {
+    final response = await httpClient.request(
+      url:
+          '${params.workingUrl}/api/PaymentFinalization/SearchPaymentConditions',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: params.toMap(),
+    );
+
+    return (json.decode(response) as List)
+        .map(
+          (e) => BSFPaymentConditionModel.fromJson(e as Map<String, dynamic>),
+        )
+        .toList();
+  }
 }

@@ -1658,4 +1658,43 @@ class EntityFactory {
         identificationCode: faker.lorem.word(),
         identificationTefFlagCode: faker.lorem.word(),
       );
+
+  static UtilizationParametersEntity makeUtilizationParametersEntity() =>
+      UtilizationParametersEntity(
+        isShielded: faker.randomGenerator.boolean(),
+        baseDate: faker.date.dateTime(),
+        valueParcel: faker.randomGenerator.decimal(),
+      );
+
+  static PaymentConditionEntity makePaymentConditionEntity() =>
+      PaymentConditionEntity(
+        isShielded: faker.randomGenerator.boolean(),
+        composition: faker.lorem.word(),
+        symbolType: PaymentConditionSymbolType.values[faker.randomGenerator
+            .integer(PaymentConditionSymbolType.values.length)],
+        fillType: PaymentConditionFillType.values[faker.randomGenerator
+            .integer(PaymentConditionFillType.values.length)],
+      );
+
+  static BSFPaymentConditionEntity makeBSFPaymentConditionEntity() =>
+      BSFPaymentConditionEntity(
+        isShielded: faker.randomGenerator.boolean(),
+        code: faker.randomGenerator.integer(100),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        isFixed: faker.randomGenerator.boolean(),
+        fillType: PaymentConditionFillType.values[faker.randomGenerator
+            .integer(PaymentConditionFillType.values.length)],
+        useType: PaymentConditionUseType.values[faker.randomGenerator
+            .integer(PaymentConditionUseType.values.length)],
+        maximumNumberPortions: faker.randomGenerator.integer(12),
+        minimumValueInPortions: faker.randomGenerator.decimal(),
+        intervalMinimumBetweenPortions: faker.randomGenerator.integer(30),
+        intervalMaximumBetweenPortions: faker.randomGenerator.integer(60),
+        internalPaymentCondition: faker.randomGenerator.boolean(),
+        minimumPercentageOfFirstPortion: faker.randomGenerator.decimal(),
+        description: faker.lorem.sentence(),
+        condition: makePaymentConditionEntity(),
+        utilizeParameters: makeUtilizationParametersEntity(),
+      );
 }
+

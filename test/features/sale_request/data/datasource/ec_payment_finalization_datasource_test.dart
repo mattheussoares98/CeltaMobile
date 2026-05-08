@@ -68,4 +68,35 @@ void main() {
       ).called(1);
     });
   });
+
+  group('GetPaymentConditions', () {
+    test('should behave correctly on success', () async {
+      final paymentConditions = [
+        BSFPaymentConditionModel.fromEntity(
+          EntityFactory.makeBSFPaymentConditionEntity(),
+        ),
+        BSFPaymentConditionModel.fromEntity(
+          EntityFactory.makeBSFPaymentConditionEntity(),
+        ),
+      ];
+      httpClient.mockRequest(
+        json.encode(paymentConditions.map((e) => e.toJson()).toList()),
+      );
+
+      final response = await sut.getPaymentConditions(params: params);
+
+      expect(response, paymentConditions);
+
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/PaymentFinalization/SearchPaymentConditions',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: params.toMap(),
+        ),
+      ).called(1);
+    });
+  });
 }
+

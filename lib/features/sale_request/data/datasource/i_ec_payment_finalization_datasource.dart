@@ -6,4 +6,9 @@ abstract class IEcPaymentFinalizationDatasource {
     required int enterpriseCode,
     required EcRequestParams params,
   });
+
+  Future<List<BSFPaymentConditionModel>> getPaymentConditions({
+    required EcRequestParams params,
+  });
 }
+
