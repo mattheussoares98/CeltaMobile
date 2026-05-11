@@ -6,6 +6,7 @@ import '../../../../../../../constants/constants.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
+import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
@@ -13,7 +14,9 @@ class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
   final int customerCode;
   final int saleRequestId;
   final GlobalKey<FormState> formKey;
-  final VoidCallback onConfirm;
+  final TextEditingController creditCardController;
+  final TextEditingController portionsController;
+  final TextEditingController validityController;
 
   const ValueFieldAndConfirmButton({
     super.key,
@@ -21,7 +24,9 @@ class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
     required this.customerCode,
     required this.saleRequestId,
     required this.formKey,
-    required this.onConfirm,
+    required this.creditCardController,
+    required this.portionsController,
+    required this.validityController,
   });
 
   @override
@@ -62,9 +67,20 @@ class _ValueFieldAndConfirmButtonState
               saleRequestId: widget.saleRequestId,
             ).notifier,
           )
-          .addPayment(payment: selectedPayment, value: value);
+          .addPayment(
+            payment: selectedPayment,
+            value: value,
+            creditCardProperties: CreditCardPropertiesEntity(
+              creditCardNumber: widget.creditCardController.text,
+              creditCardValidate: widget.validityController.text.toDateTime(),
+              quantityOfPortions:
+                  int.tryParse(widget.portionsController.text) ?? 1,
+            ),
+          );
       valueController.clear();
-      widget.onConfirm.call();
+      widget.creditCardController.clear();
+      widget.portionsController.clear();
+      widget.validityController.clear();
     }
   }
 

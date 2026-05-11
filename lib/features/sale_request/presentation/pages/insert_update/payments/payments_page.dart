@@ -82,11 +82,9 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
                 customerCode: widget.customerCode,
                 saleRequestId: widget.saleRequestId,
                 formKey: formKey,
-                onConfirm: () {
-                  creditCardController.clear();
-                  portionsController.clear();
-                  validityController.clear();
-                },
+                creditCardController: creditCardController,
+                portionsController: portionsController,
+                validityController: validityController,
               ),
             ),
             const SliverToBoxAdapter(child: Divider()),
