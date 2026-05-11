@@ -57,6 +57,12 @@ class PaymentMethodDropdown extends ConsumerWidget {
               selectedItem: selectedPayment,
               label: 'Forma de Pagamento'.hardcoded,
               hint: Text('Selecionar'.hardcoded),
+              validator: (_) {
+                if (selectedPayment == null) {
+                  return 'Selecione uma forma de pagamento'.hardcoded;
+                }
+                return null;
+              },
               items: paymentFinalizations
                   .map(
                     (e) => DropdownMenuItem(

@@ -34,6 +34,10 @@ class PaymentConditionDropdown extends ConsumerWidget {
 
         final theme = Theme.of(context);
 
+        final selectedItem = ref.watch(
+          selectedPaymentConditionStateControllerProvider,
+          //TODO use the same provider for condition and payment method
+        );
         return SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
@@ -47,9 +51,13 @@ class PaymentConditionDropdown extends ConsumerWidget {
                       )
                       .select,
                   hint: Text('Condição de pagamento'.hardcoded),
-                  selectedItem: ref.watch(
-                    selectedPaymentConditionStateControllerProvider,
-                  ),
+                  selectedItem: selectedItem,
+                  validator: (_) {
+                    if (selectedItem == null) {
+                      return 'Selecione uma forma de pagamento'.hardcoded;
+                    }
+                    return null;
+                  },
                   label: 'Condição de pagamento'.hardcoded,
                   items: data
                       .map(

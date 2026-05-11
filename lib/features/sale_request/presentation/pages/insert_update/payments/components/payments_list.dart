@@ -47,7 +47,9 @@ class PaymentsList extends ConsumerWidget {
             <BSFPaymentFinalizationWrapperEntity>[];
 
         if (payments.isEmpty) {
-          return Center(child: Text('Nenhum pagamento adicionado'.hardcoded));
+          return SliverToBoxAdapter(
+            child: Center(child: Text('Nenhum pagamento adicionado'.hardcoded)),
+          );
         }
 
         return SliverList.separated(

@@ -24,6 +24,7 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
   final creditCardController = TextEditingController();
   final portionsController = TextEditingController();
   final validityController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -37,57 +38,60 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
   Widget build(BuildContext context) {
     return ResponsiveCenter(
       padding: const EdgeInsets.all(Sizes.p8),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: PaymentMethodDropdown(
-              enterpriseCode: widget.enterpriseCode,
-              customerCode: widget.customerCode,
-              saleRequestCode: widget.saleRequestId,
+      child: Form(
+        key: formKey,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: PaymentMethodDropdown(
+                enterpriseCode: widget.enterpriseCode,
+                customerCode: widget.customerCode,
+                saleRequestCode: widget.saleRequestId,
+              ),
             ),
-          ),
-          // SliverToBoxAdapter(
-          //   child: PrimaryButton(
-          //     onPressed: () => ref.invalidate(
-          //       paymentFinalizationsStateControllerProvider(
-          //         enterpriseCode: widget.enterpriseCode,
-          //         customerCode: widget.customerCode,
-          //         saleRequestCode: widget.saleRequestId,
-          //       ),
-          //     ),
-          //     text: 'Recarregar formas de pagamento',
-          //   ),
-          // ),
-          gapSliverH8,
-          CreditCardFields(
-            creditCardController: creditCardController,
-            portionsController: portionsController,
-            validityController: validityController,
-            saleRequestId: widget.saleRequestId,
-          ),
-          PaymentConditionDropdown(saleRequestId: widget.saleRequestId),
-
-          // SliverToBoxAdapter(
-          //   child: PrimaryButton(
-          //     onPressed: () =>
-          //         ref.invalidate(paymentConditionsStateControllerProvider),
-          //     text: 'Recarregar condições de pagamento',
-          //   ),
-          // ),
-          SliverToBoxAdapter(
-            child: ValueFieldAndConfirmButton(
+            // SliverToBoxAdapter(
+            //   child: PrimaryButton(
+            //     onPressed: () => ref.invalidate(
+            //       paymentFinalizationsStateControllerProvider(
+            //         enterpriseCode: widget.enterpriseCode,
+            //         customerCode: widget.customerCode,
+            //         saleRequestCode: widget.saleRequestId,
+            //       ),
+            //     ),
+            //     text: 'Recarregar formas de pagamento',
+            //   ),
+            // ),
+            gapSliverH8,
+            CreditCardFields(
+              creditCardController: creditCardController,
+              portionsController: portionsController,
+              validityController: validityController,
+              saleRequestId: widget.saleRequestId,
+            ),
+            PaymentConditionDropdown(saleRequestId: widget.saleRequestId),
+            // SliverToBoxAdapter(
+            //   child: PrimaryButton(
+            //     onPressed: () =>
+            //         ref.invalidate(paymentConditionsStateControllerProvider),
+            //     text: 'Recarregar condições de pagamento',
+            //   ),
+            // ),
+            SliverToBoxAdapter(
+              child: ValueFieldAndConfirmButton(
+                enterpriseCode: widget.enterpriseCode,
+                customerCode: widget.customerCode,
+                saleRequestId: widget.saleRequestId,
+                formKey: formKey,
+              ),
+            ),
+            const SliverToBoxAdapter(child: Divider()),
+            PaymentsList(
               enterpriseCode: widget.enterpriseCode,
               customerCode: widget.customerCode,
               saleRequestId: widget.saleRequestId,
             ),
-          ),
-          const SliverToBoxAdapter(child: Divider()),
-          PaymentsList(
-            enterpriseCode: widget.enterpriseCode,
-            customerCode: widget.customerCode,
-            saleRequestId: widget.saleRequestId,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

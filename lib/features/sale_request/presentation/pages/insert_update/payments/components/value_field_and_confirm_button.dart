@@ -3,20 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
-import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controllers.dart';
 
 class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
   final int enterpriseCode;
   final int customerCode;
   final int saleRequestId;
+  final GlobalKey<FormState> formKey;
   const ValueFieldAndConfirmButton({
     super.key,
     required this.enterpriseCode,
     required this.customerCode,
     required this.saleRequestId,
+    required this.formKey,
   });
 
   @override
@@ -27,12 +29,39 @@ class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
 class _ValueFieldAndConfirmButtonState
     extends ConsumerState<ValueFieldAndConfirmButton> {
   final valueController = TextEditingController();
-  BSFPaymentFinalizationEntity? selectedPayment;
 
   @override
   void dispose() {
     valueController.dispose();
     super.dispose();
+  }
+
+  void onTap() {
+    if (widget.formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final selectedPayment = ref.read(
+      selectedPaymentTypeStateControllerProvider(widget.saleRequestId),
+    );
+
+    if (selectedPayment == null) {
+      return;
+    }
+
+    final value = valueController.text.toDouble();
+    if (value != null && value > 0) {
+      ref
+          .read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: widget.enterpriseCode,
+              customerCode: widget.customerCode,
+              saleRequestId: widget.saleRequestId,
+            ).notifier,
+          )
+          .addPayment(payment: selectedPayment, value: value);
+      valueController.clear();
+    }
   }
 
   @override
@@ -44,6 +73,10 @@ class _ValueFieldAndConfirmButtonState
             controller: valueController,
             labelText: 'Valor'.hardcoded,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            validator: FormValidators.compose([
+              NonEmptyValidator(),
+              NumberValidator(allowDecimal: true),
+            ]),
           ),
         ),
         gapW16,
@@ -51,21 +84,7 @@ class _ValueFieldAndConfirmButtonState
           child: Consumer(
             builder: (context, ref, _) {
               return PrimaryButton(
-                onPressed: () {
-                  final value = valueController.text.toDouble();
-                  if (selectedPayment != null && value != null && value > 0) {
-                    ref
-                        .read(
-                          insertUpdateStateControllerProvider(
-                            enterpriseCode: widget.enterpriseCode,
-                            customerCode: widget.customerCode,
-                            saleRequestId: widget.saleRequestId,
-                          ).notifier,
-                        )
-                        .addPayment(payment: selectedPayment!, value: value);
-                    valueController.clear();
-                  }
-                },
+                onPressed: onTap,
                 text: 'ADICIONAR'.hardcoded,
               );
             },
