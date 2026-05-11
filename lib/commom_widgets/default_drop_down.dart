@@ -27,9 +27,9 @@ class DefaultDropDown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final double screenWidth = MediaQuery.sizeOf(context).width;
 
     if (theme.platform == TargetPlatform.iOS) {
+      final double screenWidth = MediaQuery.sizeOf(context).width;
       return FormField(
         validator: validator,
         initialValue: selectedItem,
