@@ -10,5 +10,5 @@ class SelectedPaymentConditionStateController
   @override
   BSFPaymentConditionEntity? build() => null;
 
-  void select(BSFPaymentConditionEntity payment) => state = payment;
+  void select(BSFPaymentConditionEntity? payment) => state = payment;
 }
