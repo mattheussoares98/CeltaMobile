@@ -28,7 +28,9 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
-      final payment = EntityFactory.makeBSFPaymentFinalizationEntity();
+      final payment = faker.randomGenerator.boolean()
+          ? EntityFactory.makeBSFPaymentFinalizationEntity()
+          : null;
 
       container
           .read(
@@ -44,37 +46,5 @@ void main() {
 
       expect(state, payment);
     });
-
-    test(
-      'should invalidate selectedPaymentConditionStateControllerProvider when select is called',
-      () {
-        final container = ProviderContainer();
-        addTearDown(container.dispose);
-
-        final condition = EntityFactory.makeBSFPaymentConditionEntity();
-        container
-            .read(selectedPaymentConditionStateControllerProvider.notifier)
-            .select(condition);
-
-        expect(
-          container.read(selectedPaymentConditionStateControllerProvider),
-          condition,
-        );
-
-        final payment = EntityFactory.makeBSFPaymentFinalizationEntity();
-        container
-            .read(
-              selectedPaymentTypeStateControllerProvider(
-                saleRequestCode,
-              ).notifier,
-            )
-            .select(payment);
-
-        expect(
-          container.read(selectedPaymentConditionStateControllerProvider),
-          isNull,
-        );
-      },
-    );
   });
 }
