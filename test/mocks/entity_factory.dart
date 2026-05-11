@@ -1245,8 +1245,10 @@ class EntityFactory {
         allowsCardTerminalType: faker.randomGenerator.boolean(),
         name: faker.lorem.word(),
         description: faker.lorem.word(),
-        type: PaymentFinalizationActionType.values[faker.randomGenerator
-            .integer(PaymentFinalizationActionType.values.length)],
+        type:
+            PaymentFinalizationActionType.values[faker.randomGenerator.integer(
+              PaymentFinalizationActionType.values.length,
+            )],
         allowsSaleWithEntrance: faker.randomGenerator.boolean(),
         allowsPaymentConditions: faker.randomGenerator.boolean(),
         allowsEletronicCheckPredated: faker.randomGenerator.boolean(),
@@ -1670,10 +1672,14 @@ class EntityFactory {
       PaymentConditionEntity(
         isShielded: faker.randomGenerator.boolean(),
         composition: faker.lorem.word(),
-        symbolType: PaymentConditionSymbolType.values[faker.randomGenerator
-            .integer(PaymentConditionSymbolType.values.length)],
-        fillType: PaymentConditionFillType.values[faker.randomGenerator
-            .integer(PaymentConditionFillType.values.length)],
+        symbolType:
+            PaymentConditionSymbolType.values[faker.randomGenerator.integer(
+              PaymentConditionSymbolType.values.length,
+            )],
+        fillType:
+            PaymentConditionFillType.values[faker.randomGenerator.integer(
+              PaymentConditionFillType.values.length,
+            )],
         portionCount: faker.randomGenerator.integer(10),
       );
 
@@ -1683,10 +1689,14 @@ class EntityFactory {
         code: faker.randomGenerator.integer(100),
         personalizedCode: faker.randomGenerator.integer(100).toString(),
         isFixed: faker.randomGenerator.boolean(),
-        fillType: PaymentConditionFillType.values[faker.randomGenerator
-            .integer(PaymentConditionFillType.values.length)],
-        useType: PaymentConditionUseType.values[faker.randomGenerator
-            .integer(PaymentConditionUseType.values.length)],
+        fillType:
+            PaymentConditionFillType.values[faker.randomGenerator.integer(
+              PaymentConditionFillType.values.length,
+            )],
+        useType:
+            PaymentConditionUseType.values[faker.randomGenerator.integer(
+              PaymentConditionUseType.values.length,
+            )],
         maximumNumberPortions: faker.randomGenerator.integer(12),
         minimumValueInPortions: faker.randomGenerator.decimal(),
         intervalMinimumBetweenPortions: faker.randomGenerator.integer(30),
@@ -1704,5 +1714,11 @@ class EntityFactory {
         isReadSale: faker.randomGenerator.boolean(),
         jumpHolidays: faker.randomGenerator.boolean(),
       );
-}
 
+  static CreditCardPropertiesEntity makeCreditCardPropertiesEntity() =>
+      CreditCardPropertiesEntity(
+        creditCardNumber: faker.randomGenerator.numberOfLength(16),
+        creditCardValidate: faker.date.dateTime(),
+        quantityOfPortions: faker.randomGenerator.integer(10),
+      );
+}

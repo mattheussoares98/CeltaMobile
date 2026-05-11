@@ -162,15 +162,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   }) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
 
-    ref
-        .read(
-          selectedPaymentTypeStateControllerProvider(saleRequestId).notifier,
-        )
-        .select(null);
-    ref
-        .read(selectedPaymentConditionStateControllerProvider.notifier)
-        .select(null);
-
     final current = state.value!;
     final financials = List<BSFFinancialEntity>.from(current.financials ?? []);
 
@@ -198,7 +189,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         tefAutorizationCreditCode: null,
         devolutionCreditCode: null,
         identificationCode: null,
-        paymentCondition: null,
+        paymentCondition: ref.read(
+          selectedPaymentConditionStateControllerProvider,
+        ),
         portions: null,
         userAuthorization: null,
       ),
@@ -209,6 +202,15 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     state = AsyncData(current.copyWith(financials: financials));
+
+    ref
+        .read(
+          selectedPaymentTypeStateControllerProvider(saleRequestId).notifier,
+        )
+        .select(null);
+    ref
+        .read(selectedPaymentConditionStateControllerProvider.notifier)
+        .select(null);
   }
 
   void removePayment(int index) {

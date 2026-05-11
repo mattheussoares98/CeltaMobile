@@ -658,11 +658,8 @@ void main() {
 
           final payment = fakePayments.first;
           final value = faker.randomGenerator.decimal() * 100;
-          final creditCardProperties = CreditCardPropertiesEntity(
-            creditCardNumber: faker.randomGenerator.numberOfLength(16),
-            creditCardValidate: faker.date.dateTime(),
-            quantityOfPortions: faker.randomGenerator.integer(12, min: 1),
-          );
+          final creditCardProperties =
+              EntityFactory.makeCreditCardPropertiesEntity();
 
           controller.addPayment(
             payment: payment,
@@ -694,6 +691,52 @@ void main() {
           );
         },
       );
+
+      test('Should add finalization with correct condition payment', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ).notifier,
+        );
+
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ).future,
+        );
+
+        //select the payment condition
+        final paymentCondition = EntityFactory.makeBSFPaymentConditionEntity();
+        container
+            .read(selectedPaymentConditionStateControllerProvider.notifier)
+            .select(paymentCondition);
+
+        expect(
+          container.read(selectedPaymentConditionStateControllerProvider),
+          paymentCondition,
+        );
+
+        // Call addPayment
+        controller.addPayment(payment: fakePayments.first, value: 100.0);
+
+        final state = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ),
+        );
+
+        final addedPayment =
+            state.value!.financials!.first.paymentFinalizations!.first;
+        expect(addedPayment.paymentCondition, paymentCondition);
+      });
 
       test(
         'addPayment should invalidate selectedPaymentType and selectedPaymentCondition providers',
