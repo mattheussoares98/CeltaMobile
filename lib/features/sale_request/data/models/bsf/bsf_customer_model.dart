@@ -1,4 +1,5 @@
 import '../../../domain/entities/entities.dart';
+import 'bsf.dart';
 
 class BSFCustomerModel extends BSFCustomerEntity {
   const BSFCustomerModel({
@@ -10,6 +11,8 @@ class BSFCustomerModel extends BSFCustomerEntity {
     required super.suframaCode,
     required super.limitOfPurchase,
     required super.inscriptionRgNumber,
+    required super.paymentFinalizations,
+    required super.paymentConditions,
   });
 
   @override
@@ -21,6 +24,8 @@ class BSFCustomerModel extends BSFCustomerEntity {
     suframaCode,
     limitOfPurchase,
     inscriptionRgNumber,
+    paymentFinalizations,
+    paymentConditions,
   ];
 
   factory BSFCustomerModel.fromJson(Map<String, dynamic> json) =>
@@ -33,6 +38,16 @@ class BSFCustomerModel extends BSFCustomerEntity {
         suframaCode: json['SuframaCode'],
         limitOfPurchase: (json['LimitOfPurchase'] as num?)?.toDouble(),
         inscriptionRgNumber: json['InscriptionRgNumber'],
+        paymentFinalizations: json['PaymentFinalizations'] != null
+            ? (json['PaymentFinalizations'] as List)
+                  .map((x) => BSFPaymentFinalizationModel.fromJson(x))
+                  .toList()
+            : null,
+        paymentConditions: json['PaymentConditions'] != null
+            ? (json['PaymentConditions'] as List)
+                  .map((x) => BSFPaymentConditionModel.fromJson(x))
+                  .toList()
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,6 +59,12 @@ class BSFCustomerModel extends BSFCustomerEntity {
     'SuframaCode': suframaCode,
     'LimitOfPurchase': limitOfPurchase,
     'InscriptionRgNumber': inscriptionRgNumber,
+    'PaymentFinalizations': paymentFinalizations
+        ?.map((x) => BSFPaymentFinalizationModel.fromEntity(x).toJson())
+        .toList(),
+    'PaymentConditions': paymentConditions
+        ?.map((x) => BSFPaymentConditionModel.fromEntity(x).toJson())
+        .toList(),
   };
 
   factory BSFCustomerModel.fromEntity(BSFCustomerEntity entity) =>
@@ -56,6 +77,12 @@ class BSFCustomerModel extends BSFCustomerEntity {
         suframaCode: entity.suframaCode,
         limitOfPurchase: entity.limitOfPurchase,
         inscriptionRgNumber: entity.inscriptionRgNumber,
+        paymentFinalizations: entity.paymentFinalizations
+            ?.map((x) => BSFPaymentFinalizationModel.fromEntity(x))
+            .toList(),
+        paymentConditions: entity.paymentConditions
+            ?.map((x) => BSFPaymentConditionModel.fromEntity(x))
+            .toList(),
       );
 
   BSFCustomerEntity toEntity() => BSFCustomerEntity(
@@ -67,5 +94,11 @@ class BSFCustomerModel extends BSFCustomerEntity {
     suframaCode: suframaCode,
     limitOfPurchase: limitOfPurchase,
     inscriptionRgNumber: inscriptionRgNumber,
+    paymentFinalizations: paymentFinalizations
+        ?.map((x) => BSFPaymentFinalizationModel.fromEntity(x))
+        .toList(),
+    paymentConditions: paymentConditions
+        ?.map((x) => BSFPaymentConditionModel.fromEntity(x))
+        .toList(),
   );
 }

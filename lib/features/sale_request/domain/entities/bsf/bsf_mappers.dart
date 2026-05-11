@@ -233,6 +233,8 @@ extension CustomerEntityToBSFCustomerEntity on CustomerEntity {
       suframaCode: null,
       limitOfPurchase: null,
       inscriptionRgNumber: RegistrationNumber,
+      paymentFinalizations: null,
+      paymentConditions: null,
     );
   }
 }

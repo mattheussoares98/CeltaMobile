@@ -1124,6 +1124,14 @@ class EntityFactory {
           suframaCode: faker.guid.guid(),
           limitOfPurchase: faker.randomGenerator.decimal(),
           inscriptionRgNumber: faker.guid.guid(),
+          paymentFinalizations: List<BSFPaymentFinalizationEntity>.generate(
+            3,
+            (_) => makeBSFPaymentFinalizationEntity(),
+          ),
+          paymentConditions: List<BSFPaymentConditionEntity>.generate(
+            3,
+            (_) => makeBSFPaymentConditionEntity(),
+          ),
         ),
         deliveryAddress: BSFDeliveryAddressEntity(
           code: faker.randomGenerator.integer(100),
