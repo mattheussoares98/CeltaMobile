@@ -1,6 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/validators/validators.dart';
@@ -9,12 +9,7 @@ import '../../controllers/controllers.dart';
 
 class EnterpriseField extends ConsumerWidget {
   final TextEditingController enterpriseController;
-  final FocusNode userFocusNode;
-  const EnterpriseField({
-    super.key,
-    required this.enterpriseController,
-    required this.userFocusNode,
-  });
+  const EnterpriseField({super.key, required this.enterpriseController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,7 +29,7 @@ class EnterpriseField extends ConsumerWidget {
             : Icons.business,
         color: isLoading ? theme.disabledColor : null,
       ),
-      onFieldSubmitted: (_) => userFocusNode.requestFocus(),
+      textInputAction: TextInputAction.next,
       validator: FormValidators.compose([NonEmptyValidator()]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
     );

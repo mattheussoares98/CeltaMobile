@@ -1,6 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/validators/validators.dart';
@@ -9,12 +9,10 @@ import '../../controllers/controllers.dart';
 
 class PasswordField extends ConsumerStatefulWidget {
   final TextEditingController passwordController;
-  final FocusNode passwordFocusNode;
   final VoidCallback onSubmit;
   const PasswordField({
     super.key,
     required this.passwordController,
-    required this.passwordFocusNode,
     required this.onSubmit,
   });
 
@@ -41,7 +39,6 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
     return DefaultTextFormField(
       enabled: !isLoading,
       controller: widget.passwordController,
-      focusNode: widget.passwordFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: isLoading ? null : (_) => widget.onSubmit.call(),
       validator: FormValidators.compose([NonEmptyValidator()]),

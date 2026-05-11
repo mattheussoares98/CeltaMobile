@@ -22,8 +22,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   final enterpriseController = TextEditingController();
   final userController = TextEditingController();
   final passwordController = TextEditingController();
-  final userFocusNode = FocusNode();
-  final passwordFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -32,8 +30,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     enterpriseController.dispose();
     userController.dispose();
     passwordController.dispose();
-    userFocusNode.dispose();
-    passwordFocusNode.dispose();
   }
 
   void onSubmit() {
@@ -87,20 +83,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const CeltaImage(),
-                  EnterpriseField(
-                    enterpriseController: enterpriseController,
-                    userFocusNode: userFocusNode,
-                  ),
+                  //TODO if the focus is changing correctly on real device after removing the focus nodes
+                  EnterpriseField(enterpriseController: enterpriseController),
                   gapH8,
-                  UserField(
-                    userController: userController,
-                    userFocusNode: userFocusNode,
-                    passwordFocusNode: passwordFocusNode,
-                  ),
+                  UserField(userController: userController),
                   gapH8,
                   PasswordField(
                     passwordController: passwordController,
-                    passwordFocusNode: passwordFocusNode,
                     onSubmit: onSubmit,
                   ),
                   gapH32,
