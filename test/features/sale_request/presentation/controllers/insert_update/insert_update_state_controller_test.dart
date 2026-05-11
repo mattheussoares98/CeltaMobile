@@ -694,6 +694,63 @@ void main() {
           );
         },
       );
+
+      test(
+        'addPayment should invalidate selectedPaymentType and selectedPaymentCondition providers',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).notifier,
+          );
+
+          await container.read(
+            insertUpdateStateControllerProvider(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: 0,
+            ).future,
+          );
+
+          // Set initial values in selection providers
+          final paymentType = EntityFactory.makeBSFPaymentFinalizationEntity();
+          final paymentCondition =
+              EntityFactory.makeBSFPaymentConditionEntity();
+
+          container
+              .read(selectedPaymentTypeStateControllerProvider(0).notifier)
+              .select(paymentType);
+          container
+              .read(selectedPaymentConditionStateControllerProvider.notifier)
+              .select(paymentCondition);
+
+          expect(
+            container.read(selectedPaymentTypeStateControllerProvider(0)),
+            paymentType,
+          );
+          expect(
+            container.read(selectedPaymentConditionStateControllerProvider),
+            paymentCondition,
+          );
+
+          // Call addPayment
+          controller.addPayment(payment: fakePayments.first, value: 100.0);
+
+          // Verify they are now null
+          expect(
+            container.read(selectedPaymentTypeStateControllerProvider(0)),
+            isNull,
+          );
+          expect(
+            container.read(selectedPaymentConditionStateControllerProvider),
+            isNull,
+          );
+        },
+      );
     });
 
     group('Remove Payment', () {

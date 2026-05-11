@@ -162,6 +162,15 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   }) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
 
+    ref
+        .read(
+          selectedPaymentTypeStateControllerProvider(saleRequestId).notifier,
+        )
+        .select(null);
+    ref
+        .read(selectedPaymentConditionStateControllerProvider.notifier)
+        .select(null);
+
     final current = state.value!;
     final financials = List<BSFFinancialEntity>.from(current.financials ?? []);
 
