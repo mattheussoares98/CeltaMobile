@@ -13,12 +13,15 @@ class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
   final int customerCode;
   final int saleRequestId;
   final GlobalKey<FormState> formKey;
+  final VoidCallback onConfirm;
+
   const ValueFieldAndConfirmButton({
     super.key,
     required this.enterpriseCode,
     required this.customerCode,
     required this.saleRequestId,
     required this.formKey,
+    required this.onConfirm,
   });
 
   @override
@@ -61,6 +64,7 @@ class _ValueFieldAndConfirmButtonState
           )
           .addPayment(payment: selectedPayment, value: value);
       valueController.clear();
+      widget.onConfirm.call();
     }
   }
 

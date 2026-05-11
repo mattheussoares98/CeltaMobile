@@ -30,15 +30,6 @@ class CreditCardFields extends ConsumerWidget {
       ),
     );
 
-    ref.listen(selectedPaymentTypeStateControllerProvider(saleRequestId), (
-      previous,
-      next,
-    ) {
-      creditCardController.clear();
-      portionsController.clear();
-      validityController.clear();
-    });
-
     if (!selectedCreditCardType) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
