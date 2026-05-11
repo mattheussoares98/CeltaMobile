@@ -77,6 +77,7 @@ class _ValueFieldAndConfirmButtonState
             controller: valueController,
             labelText: 'Valor'.hardcoded,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            onFieldSubmitted: (_) => onTap(),
             validator: FormValidators.compose([
               NonEmptyValidator(),
               NumberValidator(allowDecimal: true),

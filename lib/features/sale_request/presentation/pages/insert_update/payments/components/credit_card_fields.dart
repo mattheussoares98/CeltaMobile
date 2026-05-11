@@ -40,6 +40,7 @@ class CreditCardFields extends ConsumerWidget {
         controller: creditCardController,
         labelText: 'Número do cartão'.hardcoded,
         autovalidateMode: AutovalidateMode.onUserInteraction,
+        textInputAction: TextInputAction.next,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(16),
@@ -50,6 +51,7 @@ class CreditCardFields extends ConsumerWidget {
         controller: portionsController,
         labelText: 'Qtd parcelas'.hardcoded,
         autovalidateMode: AutovalidateMode.onUserInteraction,
+        textInputAction: TextInputAction.next,
         validator: FormValidators.compose([
           NonEmptyValidator(),
           NumberValidator(allowDecimal: false),
@@ -59,6 +61,7 @@ class CreditCardFields extends ConsumerWidget {
         controller: validityController,
         labelText: 'Validade'.hardcoded,
         autovalidateMode: AutovalidateMode.onUserInteraction,
+        textInputAction: TextInputAction.next,
         inputFormatters: [DateInputFormatter(includeDay: false)],
         validator: FormValidators.compose([
           DateValidator(
