@@ -30,6 +30,15 @@ class CreditCardFields extends ConsumerWidget {
       ),
     );
 
+    ref.listen(selectedPaymentTypeStateControllerProvider(saleRequestId), (
+      previous,
+      next,
+    ) {
+      creditCardController.clear();
+      portionsController.clear();
+      validityController.clear();
+    });
+
     if (!selectedCreditCardType) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
@@ -65,6 +74,7 @@ class CreditCardFields extends ConsumerWidget {
             minimumDate: now,
             maximumDate: now.add(const Duration(days: 365 * 10)),
             includeDay: false,
+            allowEmptyDate: true,
           ),
         ]),
       ),
