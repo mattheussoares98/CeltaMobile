@@ -17,3 +17,17 @@ class FakeSaleRequestDetailsController
     return entity;
   }
 }
+
+class FakeInsertUpdateStateController extends InsertUpdateStateController {
+  final BSFSaleRequestEntity entity;
+  FakeInsertUpdateStateController(this.entity);
+
+  @override
+  FutureOr<BSFSaleRequestEntity> build({
+    required int enterpriseCode,
+    required int customerCode,
+    required int saleRequestId,
+  }) {
+    return entity;
+  }
+}

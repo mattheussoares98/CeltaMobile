@@ -40,4 +40,30 @@ class BSFCustomerEntity extends Equatable {
     paymentFinalizations,
     paymentConditions,
   ];
+
+  BSFCustomerEntity copyWith({
+    String? personalizedCode,
+    int? code,
+    String? name,
+    String? nameReduced,
+    String? cnpjCpfNumber,
+    String? suframaCode,
+    double? limitOfPurchase,
+    String? inscriptionRgNumber,
+    List<BSFPaymentFinalizationEntity>? paymentFinalizations,
+    List<BSFPaymentConditionEntity>? paymentConditions,
+  }) {
+    return BSFCustomerEntity(
+      personalizedCode: personalizedCode ?? this.personalizedCode,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      nameReduced: nameReduced ?? this.nameReduced,
+      cnpjCpfNumber: cnpjCpfNumber ?? this.cnpjCpfNumber,
+      suframaCode: suframaCode ?? this.suframaCode,
+      limitOfPurchase: limitOfPurchase ?? this.limitOfPurchase,
+      inscriptionRgNumber: inscriptionRgNumber ?? this.inscriptionRgNumber,
+      paymentFinalizations: paymentFinalizations ?? this.paymentFinalizations,
+      paymentConditions: paymentConditions ?? this.paymentConditions,
+    );
+  }
 }

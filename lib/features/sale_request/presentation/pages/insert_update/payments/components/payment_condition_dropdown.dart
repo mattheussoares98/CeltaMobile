@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
-import '../../../../../../../localization/string_hardcoded.dart';
-import '../../../../../domain/entities/entities.dart';
-import '../../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class PaymentConditionDropdown extends ConsumerWidget {
+  final int enterpriseCode;
+  final int customerCode;
   final int saleRequestId;
-  const PaymentConditionDropdown({super.key, required this.saleRequestId});
+  const PaymentConditionDropdown({
+    super.key,
+    required this.enterpriseCode,
+    required this.customerCode,
+    required this.saleRequestId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,11 +32,27 @@ class PaymentConditionDropdown extends ConsumerWidget {
 
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(paymentConditionsStateControllerProvider),
-      tryAgain: () => ref.invalidate(paymentConditionsStateControllerProvider),
+      value: ref.watch(
+        paymentConditionsStateControllerProvider(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
+        ),
+      ),
+      tryAgain: () => ref.invalidate(
+        paymentConditionsStateControllerProvider(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
+        ),
+      ),
       data: (data) {
         if (data.isEmpty) {
-          return const _NotFoundPaymentConditions();
+          return _NotFoundPaymentConditions(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+          );
         }
 
         final theme = Theme.of(context);
@@ -98,7 +121,14 @@ class PaymentConditionDropdown extends ConsumerWidget {
 }
 
 class _NotFoundPaymentConditions extends ConsumerWidget {
-  const _NotFoundPaymentConditions();
+  final int enterpriseCode;
+  final int customerCode;
+  final int saleRequestId;
+  const _NotFoundPaymentConditions({
+    required this.enterpriseCode,
+    required this.customerCode,
+    required this.saleRequestId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -118,8 +148,13 @@ class _NotFoundPaymentConditions extends ConsumerWidget {
           gapH8,
           PrimaryButton(
             text: 'Carregar novamente'.hardcoded,
-            onPressed: () =>
-                ref.invalidate(paymentConditionsStateControllerProvider),
+            onPressed: () => ref.invalidate(
+              paymentConditionsStateControllerProvider(
+                enterpriseCode: enterpriseCode,
+                customerCode: customerCode,
+                saleRequestId: saleRequestId,
+              ),
+            ),
           ),
         ],
       ),

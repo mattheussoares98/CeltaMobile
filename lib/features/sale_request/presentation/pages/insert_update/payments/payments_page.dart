@@ -68,7 +68,11 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
               validityController: validityController,
               saleRequestId: widget.saleRequestId,
             ),
-            PaymentConditionDropdown(saleRequestId: widget.saleRequestId),
+            PaymentConditionDropdown(
+              enterpriseCode: widget.enterpriseCode,
+              customerCode: widget.customerCode,
+              saleRequestId: widget.saleRequestId,
+            ),
             // SliverToBoxAdapter(
             //   child: PrimaryButton(
             //     onPressed: () =>

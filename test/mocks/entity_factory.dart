@@ -1115,24 +1115,7 @@ class EntityFactory {
           fantasizesName: faker.company.name(),
           contactName: faker.person.name(),
         ),
-        customer: BSFCustomerEntity(
-          code: faker.randomGenerator.integer(100),
-          personalizedCode: faker.randomGenerator.integer(100).toString(),
-          name: faker.person.name(),
-          nameReduced: faker.person.name(),
-          cnpjCpfNumber: faker.randomGenerator.numberOfLength(14),
-          suframaCode: faker.guid.guid(),
-          limitOfPurchase: faker.randomGenerator.decimal(),
-          inscriptionRgNumber: faker.guid.guid(),
-          paymentFinalizations: List<BSFPaymentFinalizationEntity>.generate(
-            3,
-            (_) => makeBSFPaymentFinalizationEntity(),
-          ),
-          paymentConditions: List<BSFPaymentConditionEntity>.generate(
-            3,
-            (_) => makeBSFPaymentConditionEntity(),
-          ),
-        ),
+        customer: makeBSFCustomerEntity(),
         deliveryAddress: BSFDeliveryAddressEntity(
           code: faker.randomGenerator.integer(100),
           zip: faker.randomGenerator.numberOfLength(8),
@@ -1196,6 +1179,25 @@ class EntityFactory {
         ],
         discounts: const [],
       );
+
+  static BSFCustomerEntity makeBSFCustomerEntity() => BSFCustomerEntity(
+    code: faker.randomGenerator.integer(100),
+    personalizedCode: faker.randomGenerator.integer(100).toString(),
+    name: faker.person.name(),
+    nameReduced: faker.person.name(),
+    cnpjCpfNumber: faker.randomGenerator.numberOfLength(14),
+    suframaCode: faker.guid.guid(),
+    limitOfPurchase: faker.randomGenerator.decimal(),
+    inscriptionRgNumber: faker.guid.guid(),
+    paymentFinalizations: List<BSFPaymentFinalizationEntity>.generate(
+      3,
+      (_) => makeBSFPaymentFinalizationEntity(),
+    ),
+    paymentConditions: List<BSFPaymentConditionEntity>.generate(
+      3,
+      (_) => makeBSFPaymentConditionEntity(),
+    ),
+  );
 
   static BSFFinancialEntity _makeBSFFinancialEntity() => BSFFinancialEntity(
     paymentFinalizations: [
