@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension StringModifier on String {
   String toBrazilianNumber([
     int decimalHouses = 2,
@@ -115,15 +117,27 @@ extension StringModifier on String {
       final List<String> sections = includeTime ? split(' ') : [this];
       final List<String> dateParts = sections[0].split('/');
 
-      if (dateParts.length != 3) return null;
+      if (dateParts.length == 3) {
+        String isoString = '${dateParts[2]}-${dateParts[1]}-${dateParts[0]}';
 
-      String isoString = '${dateParts[2]}-${dateParts[1]}-${dateParts[0]}';
+        if (includeTime && sections.length > 1) {
+          isoString += ' ${sections[1]}';
+        }
 
-      if (includeTime && sections.length > 1) {
-        isoString += ' ${sections[1]}';
+        return DateTime.parse(isoString);
+      } else if (dateParts.length == 2) {
+        final formats = [DateFormat('MM/yyyy'), DateFormat('MM/yy')];
+
+        for (final format in formats) {
+          try {
+            return format.parseStrict(sections[0]);
+          } catch (_) {
+            continue;
+          }
+        }
       }
 
-      return DateTime.parse(isoString);
+      return null;
     } catch (_) {
       return null;
     }
