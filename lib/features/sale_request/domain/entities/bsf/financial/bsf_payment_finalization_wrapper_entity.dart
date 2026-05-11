@@ -12,7 +12,7 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
   final String? tefAutorizationCreditCode;
   final String? devolutionCreditCode;
   final String? identificationCode;
-  final Map<String, dynamic>? paymentCondition;
+  final BSFPaymentConditionEntity? paymentCondition;
   final String? creditCardNumber;
   final DateTime? creditCardValidate;
   final List<dynamic>? portions;
@@ -63,7 +63,7 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
     String? tefAutorizationCreditCode,
     String? devolutionCreditCode,
     String? identificationCode,
-    Map<String, dynamic>? paymentCondition,
+    BSFPaymentConditionEntity? paymentCondition,
     String? creditCardNumber,
     DateTime? creditCardValidate,
     List<dynamic>? portions,

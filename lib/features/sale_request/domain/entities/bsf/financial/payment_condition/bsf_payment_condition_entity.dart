@@ -10,6 +10,7 @@ class BSFPaymentConditionEntity extends Equatable {
   final int code;
   final String personalizedCode;
   final bool isFixed;
+  final bool isTemporal;
   final PaymentConditionFillType fillType;
   final PaymentConditionUseType useType;
   final int maximumNumberPortions;
@@ -19,14 +20,21 @@ class BSFPaymentConditionEntity extends Equatable {
   final bool internalPaymentCondition;
   final double minimumPercentageOfFirstPortion;
   final String description;
+  final String smartDescription;
   final PaymentConditionEntity? condition;
   final UtilizationParametersEntity utilizeParameters;
+  final bool allowDifferentValues;
+  final bool isAtSight;
+  final bool isSaleDevolution;
+  final bool isReadSale;
+  final bool jumpHolidays;
 
   const BSFPaymentConditionEntity({
     required this.isShielded,
     required this.code,
     required this.personalizedCode,
     required this.isFixed,
+    required this.isTemporal,
     required this.fillType,
     required this.useType,
     required this.maximumNumberPortions,
@@ -36,8 +44,14 @@ class BSFPaymentConditionEntity extends Equatable {
     required this.internalPaymentCondition,
     required this.minimumPercentageOfFirstPortion,
     required this.description,
+    required this.smartDescription,
     required this.condition,
     required this.utilizeParameters,
+    required this.allowDifferentValues,
+    required this.isAtSight,
+    required this.isSaleDevolution,
+    required this.isReadSale,
+    required this.jumpHolidays,
   });
 
   @override
@@ -46,6 +60,7 @@ class BSFPaymentConditionEntity extends Equatable {
     code,
     personalizedCode,
     isFixed,
+    isTemporal,
     fillType,
     useType,
     maximumNumberPortions,
@@ -55,8 +70,14 @@ class BSFPaymentConditionEntity extends Equatable {
     internalPaymentCondition,
     minimumPercentageOfFirstPortion,
     description,
+    smartDescription,
     condition,
     utilizeParameters,
+    allowDifferentValues,
+    isAtSight,
+    isSaleDevolution,
+    isReadSale,
+    jumpHolidays,
   ];
 
   BSFPaymentConditionEntity copyWith({
@@ -64,6 +85,7 @@ class BSFPaymentConditionEntity extends Equatable {
     int? code,
     String? personalizedCode,
     bool? isFixed,
+    bool? isTemporal,
     PaymentConditionFillType? fillType,
     PaymentConditionUseType? useType,
     int? maximumNumberPortions,
@@ -73,14 +95,21 @@ class BSFPaymentConditionEntity extends Equatable {
     bool? internalPaymentCondition,
     double? minimumPercentageOfFirstPortion,
     String? description,
+    String? smartDescription,
     PaymentConditionEntity? condition,
     UtilizationParametersEntity? utilizeParameters,
+    bool? allowDifferentValues,
+    bool? isAtSight,
+    bool? isSaleDevolution,
+    bool? isReadSale,
+    bool? jumpHolidays,
   }) {
     return BSFPaymentConditionEntity(
       isShielded: isShielded ?? this.isShielded,
       code: code ?? this.code,
       personalizedCode: personalizedCode ?? this.personalizedCode,
       isFixed: isFixed ?? this.isFixed,
+      isTemporal: isTemporal ?? this.isTemporal,
       fillType: fillType ?? this.fillType,
       useType: useType ?? this.useType,
       maximumNumberPortions:
@@ -97,8 +126,14 @@ class BSFPaymentConditionEntity extends Equatable {
           minimumPercentageOfFirstPortion ??
           this.minimumPercentageOfFirstPortion,
       description: description ?? this.description,
+      smartDescription: smartDescription ?? this.smartDescription,
       condition: condition ?? this.condition,
       utilizeParameters: utilizeParameters ?? this.utilizeParameters,
+      allowDifferentValues: allowDifferentValues ?? this.allowDifferentValues,
+      isAtSight: isAtSight ?? this.isAtSight,
+      isSaleDevolution: isSaleDevolution ?? this.isSaleDevolution,
+      isReadSale: isReadSale ?? this.isReadSale,
+      jumpHolidays: jumpHolidays ?? this.jumpHolidays,
     );
   }
 }

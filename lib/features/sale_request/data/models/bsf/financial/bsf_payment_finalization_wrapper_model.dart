@@ -13,7 +13,7 @@ class BSFPaymentFinalizationWrapperModel extends Equatable {
   final String? tefAutorizationCreditCode;
   final String? devolutionCreditCode;
   final String? identificationCode;
-  final Map<String, dynamic>? paymentCondition;
+  final BSFPaymentConditionModel? paymentCondition;
   final String? creditCardNumber;
   final DateTime? creditCardValidate;
   final List<dynamic>? portions;
@@ -67,7 +67,9 @@ class BSFPaymentFinalizationWrapperModel extends Equatable {
     tefAutorizationCreditCode: json['TefAutorizationCreditCode'],
     devolutionCreditCode: json['DevolutionCreditCode'],
     identificationCode: json['IdentificationCode'],
-    paymentCondition: json['PaymentCondition'],
+    paymentCondition: json['PaymentCondition'] != null
+        ? BSFPaymentConditionModel.fromJson(json['PaymentCondition'])
+        : null,
     creditCardNumber: json['CreditCardNumber'],
     creditCardValidate: json['CreditCardValidate'] != null
         ? DateTime.parse(json['CreditCardValidate'])
@@ -88,7 +90,7 @@ class BSFPaymentFinalizationWrapperModel extends Equatable {
     'TefAutorizationCreditCode': tefAutorizationCreditCode,
     'DevolutionCreditCode': devolutionCreditCode,
     'IdentificationCode': identificationCode,
-    'PaymentCondition': paymentCondition,
+    'PaymentCondition': paymentCondition?.toJson(),
     'CreditCardNumber': creditCardNumber,
     'CreditCardValidate': creditCardValidate?.toIso8601String(),
     'Portions': portions,
@@ -109,7 +111,9 @@ class BSFPaymentFinalizationWrapperModel extends Equatable {
     tefAutorizationCreditCode: entity.tefAutorizationCreditCode,
     devolutionCreditCode: entity.devolutionCreditCode,
     identificationCode: entity.identificationCode,
-    paymentCondition: entity.paymentCondition,
+    paymentCondition: entity.paymentCondition == null
+        ? null
+        : BSFPaymentConditionModel.fromEntity(entity.paymentCondition!),
     creditCardNumber: entity.creditCardNumber,
     creditCardValidate: entity.creditCardValidate,
     portions: entity.portions,
@@ -129,7 +133,7 @@ class BSFPaymentFinalizationWrapperModel extends Equatable {
         tefAutorizationCreditCode: tefAutorizationCreditCode,
         devolutionCreditCode: devolutionCreditCode,
         identificationCode: identificationCode,
-        paymentCondition: paymentCondition,
+        paymentCondition: paymentCondition?.toEntity(),
         creditCardNumber: creditCardNumber,
         creditCardValidate: creditCardValidate,
         portions: portions,

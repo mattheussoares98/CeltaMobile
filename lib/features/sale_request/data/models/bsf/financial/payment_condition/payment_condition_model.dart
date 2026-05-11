@@ -6,14 +6,16 @@ class PaymentConditionModel extends PaymentConditionEntity {
     required super.composition,
     required super.symbolType,
     required super.fillType,
+    required super.portionCount,
   });
 
   factory PaymentConditionModel.fromJson(Map<String, dynamic> json) =>
       PaymentConditionModel(
         isShielded: json['IsShielded'] ?? false,
-        composition: json['Composition'] ?? '',
+        composition: json['Composition'],
         symbolType: PaymentConditionSymbolType.fromValue(json['SymbolType']),
         fillType: PaymentConditionFillType.fromValue(json['FillType']),
+        portionCount: json['PortionCount'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -21,6 +23,7 @@ class PaymentConditionModel extends PaymentConditionEntity {
     'Composition': composition,
     'SymbolType': symbolType.value,
     'FillType': fillType.value,
+    'PortionCount': portionCount,
   };
 
   factory PaymentConditionModel.fromEntity(PaymentConditionEntity entity) =>
@@ -29,6 +32,7 @@ class PaymentConditionModel extends PaymentConditionEntity {
         composition: entity.composition,
         symbolType: entity.symbolType,
         fillType: entity.fillType,
+        portionCount: entity.portionCount,
       );
 
   PaymentConditionEntity toEntity() => PaymentConditionEntity(
@@ -36,5 +40,6 @@ class PaymentConditionModel extends PaymentConditionEntity {
     composition: composition,
     symbolType: symbolType,
     fillType: fillType,
+    portionCount: portionCount,
   );
 }

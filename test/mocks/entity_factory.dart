@@ -1210,7 +1210,7 @@ class EntityFactory {
         tefAutorizationCreditCode: faker.guid.guid(),
         devolutionCreditCode: faker.randomGenerator.numberOfLength(4),
         identificationCode: faker.randomGenerator.numberOfLength(4),
-        paymentCondition: const {},
+        paymentCondition: makeBSFPaymentConditionEntity(),
         creditCardNumber: faker.randomGenerator.numberOfLength(16),
         creditCardValidate: faker.date.dateTime(),
         portions: const [],
@@ -1674,6 +1674,7 @@ class EntityFactory {
             .integer(PaymentConditionSymbolType.values.length)],
         fillType: PaymentConditionFillType.values[faker.randomGenerator
             .integer(PaymentConditionFillType.values.length)],
+        portionCount: faker.randomGenerator.integer(10),
       );
 
   static BSFPaymentConditionEntity makeBSFPaymentConditionEntity() =>
@@ -1693,8 +1694,15 @@ class EntityFactory {
         internalPaymentCondition: faker.randomGenerator.boolean(),
         minimumPercentageOfFirstPortion: faker.randomGenerator.decimal(),
         description: faker.lorem.sentence(),
+        smartDescription: faker.lorem.sentence(),
         condition: makePaymentConditionEntity(),
         utilizeParameters: makeUtilizationParametersEntity(),
+        isTemporal: faker.randomGenerator.boolean(),
+        allowDifferentValues: faker.randomGenerator.boolean(),
+        isAtSight: faker.randomGenerator.boolean(),
+        isSaleDevolution: faker.randomGenerator.boolean(),
+        isReadSale: faker.randomGenerator.boolean(),
+        jumpHolidays: faker.randomGenerator.boolean(),
       );
 }
 
