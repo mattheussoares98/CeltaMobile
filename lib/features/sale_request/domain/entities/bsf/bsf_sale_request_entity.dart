@@ -219,4 +219,21 @@ class BSFSaleRequestEntity extends Equatable {
 
     return totalProductsDiscount + totalSaleRequestDiscount;
   }
+
+  double get totalPayments {
+    if (financials == null || financials!.isEmpty) return 0;
+    return financials!.fold(0.0, (total, financial) {
+      return total +
+          (financial.paymentFinalizations?.fold(
+                0.0,
+                (p, n) => (p ?? 0) + (n.value ?? 0),
+              ) ??
+              0);
+    });
+  }
+
+  int get totalProductsCount => products?.length ?? 0;
+
+  int get totalPaymentsCount =>
+      financials?.firstOrNull?.paymentFinalizations?.length ?? 0;
 }
