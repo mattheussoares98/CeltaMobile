@@ -84,6 +84,7 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
                   cupertinoIcon: CupertinoIcons.creditcard,
                 ),
                 isSelected: pageIndex == 2,
+                showSuccessBadge: false,
               );
             },
           ),

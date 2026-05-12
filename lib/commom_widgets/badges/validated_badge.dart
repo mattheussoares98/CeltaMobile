@@ -7,11 +7,13 @@ class ValidatedBadge extends StatelessWidget {
   final bool isValid;
   final PlatformIcon platformIcon;
   final bool isSelected;
+  final bool showSuccessBadge;
   const ValidatedBadge({
     super.key,
     required this.isValid,
     required this.platformIcon,
     this.isSelected = false,
+    this.showSuccessBadge = true,
   });
 
   @override
@@ -21,14 +23,16 @@ class ValidatedBadge extends StatelessWidget {
     return Badge(
       offset: const Offset(8, -6),
       backgroundColor: Colors.transparent,
-      label: PlatformIcon(
-        cupertinoIcon: isValid
-            ? CupertinoIcons.checkmark
-            : CupertinoIcons.clear,
-        materialIcon: isValid ? Icons.check : Icons.close,
-        color: isValid ? Colors.green : Colors.red,
-        size: 17,
-      ),
+      label: isValid && !showSuccessBadge
+          ? null
+          : PlatformIcon(
+              cupertinoIcon: isValid
+                  ? CupertinoIcons.checkmark
+                  : CupertinoIcons.clear,
+              materialIcon: isValid ? Icons.check : Icons.close,
+              color: isValid ? Colors.green : Colors.red,
+              size: 17,
+            ),
       child: PlatformIcon(
         cupertinoIcon: platformIcon.cupertinoIcon,
         materialIcon: platformIcon.materialIcon,
