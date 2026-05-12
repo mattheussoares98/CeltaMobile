@@ -60,17 +60,19 @@ void main() {
             EntityFactory.makeBSFSaleRequestEntity().copyWith(
               requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
                 paymentFinalizations: [
-                  EntityFactory.makeBSFRequestTypePaymentFinalizationEntity()
-                      .copyWith(code: enabled1.code),
-                  EntityFactory.makeBSFRequestTypePaymentFinalizationEntity()
-                      .copyWith(code: enabled2.code),
-                  EntityFactory.makeBSFRequestTypePaymentFinalizationEntity()
-                      .copyWith(code: disabled.code),
-                  EntityFactory.makeBSFRequestTypePaymentFinalizationEntity()
-                      .copyWith(
-                        code: faker.randomGenerator.integer(999, min: 500),
-                        //not existent in fakePaymentOptions
-                      ),
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: enabled1.code,
+                  ),
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: enabled2.code,
+                  ),
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: disabled.code,
+                  ),
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: faker.randomGenerator.integer(999, min: 500),
+                    //not existent in fakePaymentOptions
+                  ),
                 ],
               ),
               customer: EntityFactory.makeBSFCustomerEntity().copyWith(

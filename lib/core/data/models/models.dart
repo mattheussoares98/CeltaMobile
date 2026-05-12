@@ -5,6 +5,7 @@ export 'app_usage/app_usage.dart';
 export 'buyer/buyer.dart';
 export 'customer/customer.dart';
 export 'enterprise/enterprise.dart';
+export 'financial/financial.dart';
 export 'request_type/request_type.dart';
 export 'stock/stock.dart';
 export 'supplier/supplier.dart';

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import '../../../../core/data/models/models.dart';
 import '../../../../core/domain/contracts/contracts.dart';
 import '../../../../core/domain/entities/entities.dart';
-import '../models/models.dart';
 import 'datasource.dart';
 
 class EcPaymentFinalizationDatasource

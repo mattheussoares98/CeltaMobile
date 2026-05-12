@@ -1,5 +1,5 @@
 import '../../../../../core/domain/entities/entities.dart';
-import 'bsf.dart';
+import '../../models.dart';
 
 class BSFCustomerModel extends BSFCustomerEntity {
   const BSFCustomerModel({

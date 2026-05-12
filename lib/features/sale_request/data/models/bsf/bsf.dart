@@ -1,6 +1,5 @@
 export './bsf_discount_model.dart';
 export 'bsf_country_model.dart';
-export 'bsf_customer_model.dart';
 export 'bsf_delivery_address_model.dart';
 export 'bsf_delivery_tax_wrapper_model.dart';
 export 'bsf_enterprise_model.dart';
@@ -8,6 +7,4 @@ export 'bsf_freight_model.dart';
 export 'bsf_sale_request_model.dart';
 export 'bsf_state_model.dart';
 export 'bsf_value_type_model.dart';
-export 'financial/bsf_user_authorization_model.dart';
-export 'financial/financial.dart';
 export 'product/product.dart';

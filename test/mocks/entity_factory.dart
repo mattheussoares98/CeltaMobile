@@ -1657,20 +1657,6 @@ class EntityFactory {
     discount: discount ?? _makeBSFValueTypeEntity(),
   );
 
-  static BSFRequestTypePaymentFinalizationEntity
-  makeBSFRequestTypePaymentFinalizationEntity() =>
-      BSFRequestTypePaymentFinalizationEntity(
-        code: faker.randomGenerator.integer(100),
-        description: faker.lorem.word(),
-        isDeactivated: faker.randomGenerator.boolean(),
-        actionCheckType: faker.randomGenerator.integer(100),
-        cardTerminalType: faker.randomGenerator.integer(100),
-        planCode: faker.lorem.word(),
-        financialTax: faker.randomGenerator.decimal(),
-        identificationCode: faker.lorem.word(),
-        identificationTefFlagCode: faker.lorem.word(),
-      );
-
   static UtilizationParametersEntity makeUtilizationParametersEntity() =>
       UtilizationParametersEntity(
         isShielded: faker.randomGenerator.boolean(),

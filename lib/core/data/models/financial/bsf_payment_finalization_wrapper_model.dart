@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../../../core/domain/entities/entities.dart';
-import '../bsf.dart';
+import 'financial.dart';
 
 class BSFPaymentFinalizationWrapperModel extends Equatable {
   final BSFPaymentFinalizationModel? paymentFinalization;
