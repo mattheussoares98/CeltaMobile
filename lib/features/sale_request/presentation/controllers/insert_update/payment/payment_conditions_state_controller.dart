@@ -1,8 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'payment_conditions_state_controller.g.dart';
@@ -16,8 +13,6 @@ class PaymentConditionsStateController
     required int customerCode,
     required int saleRequestId,
   }) async {
-    final validatedUser = await ref.watch(validatedUserSessionProvider.future);
-
     // Watch the current sale request to get the customer's restrictions
     final customerPaymentConditions = await ref.watch(
       insertUpdateStateControllerProvider(
@@ -28,15 +23,11 @@ class PaymentConditionsStateController
     );
 
     // Fetch all available conditions for the enterprise
-    final allConditions = await ref
-        .read(ecPaymentFinalizationRepositoryProvider)
-        .getPaymentConditions(
-          params: EcRequestParams(
-            workingUrl: validatedUser!.enterprise!.workingUrl!,
-            user: validatedUser.user.name!,
-            accessKey: validatedUser.user.AccessKey!,
-          ),
-        );
+    final allConditions = await ref.watch(
+      allPaymentConditionsControllerProvider(
+        enterpriseCode: enterpriseCode,
+      ).future,
+    );
 
     // Filter by restricted payment conditions if the customer has any defined
     List<BSFPaymentConditionEntity> filteredConditions = allConditions;

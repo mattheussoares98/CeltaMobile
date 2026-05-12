@@ -44,3 +44,14 @@ class FakeAllPaymentFinalizationsController
     return entities;
   }
 }
+class FakeAllPaymentConditionsController extends AllPaymentConditionsController {
+  final List<BSFPaymentConditionEntity> entities;
+  FakeAllPaymentConditionsController(this.entities);
+
+  @override
+  FutureOr<List<BSFPaymentConditionEntity>> build({
+    required int enterpriseCode,
+  }) {
+    return entities;
+  }
+}

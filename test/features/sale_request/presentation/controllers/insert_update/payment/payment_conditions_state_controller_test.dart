@@ -42,6 +42,7 @@ void main() {
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
     required BSFSaleRequestEntity saleRequestEntity,
+    required List<BSFPaymentConditionEntity> allConditions,
   }) {
     return ProviderContainer(
       overrides: [
@@ -54,6 +55,10 @@ void main() {
           saleRequestId: saleRequestId,
         ).overrideWith(
           () => FakeInsertUpdateStateController(saleRequestEntity),
+        ),
+        allPaymentConditionsControllerProvider(enterpriseCode: enterpriseCode)
+            .overrideWith(
+          () => FakeAllPaymentConditionsController(allConditions),
         ),
         ecPaymentFinalizationRepositoryProvider.overrideWith(
           (_) => mockRepository,
@@ -71,23 +76,18 @@ void main() {
           EntityFactory.makeBSFPaymentConditionEntity().copyWith(code: 2),
         ];
 
-        // ARRANGE
-        when(
-          () =>
-              mockRepository.getPaymentConditions(params: any(named: 'params')),
-        ).thenAnswer((_) async => fakePaymentConditions);
-
-        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
-            .copyWith(
-              customer: EntityFactory.makeBSFCustomerEntity().copyWith(
-                paymentConditions: [], // No restrictions
-              ),
-            );
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+          customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentConditions: [], // No restrictions
+          ),
+        );
 
         final container = makeProviderContainer(
           session: fakeSession,
           saleRequestEntity: saleRequestEntity,
+          allConditions: fakePaymentConditions,
         );
+
         addTearDown(container.dispose);
 
         // ACT
@@ -101,15 +101,6 @@ void main() {
 
         // ASSERT
         expect(result, fakePaymentConditions);
-        verify(
-          () => mockRepository.getPaymentConditions(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
-            ),
-          ),
-        ).called(1);
       },
     );
 
@@ -128,29 +119,23 @@ void main() {
 
         final fakePaymentConditions = [cond1, cond2, cond3];
 
-        // ARRANGE
-        when(
-          () =>
-              mockRepository.getPaymentConditions(params: any(named: 'params')),
-        ).thenAnswer((_) async => fakePaymentConditions);
-
-        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
-            .copyWith(
-              customer: EntityFactory.makeBSFCustomerEntity().copyWith(
-                paymentConditions: [
-                  EntityFactory.makeBSFPaymentConditionEntity().copyWith(
-                    code: 10,
-                  ),
-                  EntityFactory.makeBSFPaymentConditionEntity().copyWith(
-                    code: 30,
-                  ),
-                ],
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+          customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentConditions: [
+              EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+                code: 10,
               ),
-            );
+              EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+                code: 30,
+              ),
+            ],
+          ),
+        );
 
         final container = makeProviderContainer(
           session: fakeSession,
           saleRequestEntity: saleRequestEntity,
+          allConditions: fakePaymentConditions,
         );
         addTearDown(container.dispose);
 
@@ -178,26 +163,20 @@ void main() {
 
         final fakePaymentConditions = [cond1];
 
-        // ARRANGE
-        when(
-          () =>
-              mockRepository.getPaymentConditions(params: any(named: 'params')),
-        ).thenAnswer((_) async => fakePaymentConditions);
-
-        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
-            .copyWith(
-              customer: EntityFactory.makeBSFCustomerEntity().copyWith(
-                paymentConditions: [
-                  EntityFactory.makeBSFPaymentConditionEntity().copyWith(
-                    code: 999,
-                  ),
-                ],
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+          customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentConditions: [
+              EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+                code: 999,
               ),
-            );
+            ],
+          ),
+        );
 
         final container = makeProviderContainer(
           session: fakeSession,
           saleRequestEntity: saleRequestEntity,
+          allConditions: fakePaymentConditions,
         );
         addTearDown(container.dispose);
 
