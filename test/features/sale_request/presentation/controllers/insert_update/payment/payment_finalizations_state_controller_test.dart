@@ -1,53 +1,29 @@
-import 'package:celta_inventario/core/data/models/models.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
-import '../../../../../mocks/mocks.dart';
-import '../fakers.dart';
-
-class MockIEcPaymentFinalizationDatasource extends Mock
-    implements IEcPaymentFinalizationRepository {}
+import '../../../../../../mocks/mocks.dart';
+import '../../fakers.dart';
 
 void main() {
-  late MockIEcPaymentFinalizationDatasource mockRepository;
-  late UserSessionModel fakeSession;
   late int enterpriseCode;
   late int customerCode;
   late int saleRequestId;
-
-  setUpAll(() {
-    registerFallbackValue(
-      const EcRequestParams(workingUrl: '', user: '', accessKey: ''),
-    );
-  });
 
   setUp(() {
     enterpriseCode = faker.randomGenerator.integer(100);
     customerCode = faker.randomGenerator.integer(100);
     saleRequestId = faker.randomGenerator.integer(100);
-    mockRepository = MockIEcPaymentFinalizationDatasource();
-    fakeSession = UserSessionModel.fromEntity(
-      EntityFactory.makeUserSessionEntity(),
-    );
   });
 
   ProviderContainer makeProviderContainer({
-    UserSessionModel? session,
+    required List<BSFPaymentFinalizationEntity> allFinalizations,
     required BSFSaleRequestEntity saleRequestEntity,
   }) {
     return ProviderContainer(
       overrides: [
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(session),
-        ),
         insertUpdateStateControllerProvider(
           enterpriseCode: enterpriseCode,
           customerCode: customerCode,
@@ -55,8 +31,10 @@ void main() {
         ).overrideWith(
           () => FakeInsertUpdateStateController(saleRequestEntity),
         ),
-        ecPaymentFinalizationRepositoryProvider.overrideWith(
-          (_) => mockRepository,
+        allPaymentFinalizationsControllerProvider(
+          enterpriseCode: enterpriseCode,
+        ).overrideWith(
+          () => FakeAllPaymentFinalizationsController(allFinalizations),
         ),
       ],
     );
@@ -76,12 +54,6 @@ void main() {
         final fakePaymentOptions = [enabled1, enabled2, disabled];
 
         // ARRANGE
-        when(
-          () => mockRepository.getPaymentFinalizations(
-            enterpriseCode: any(named: 'enterpriseCode'),
-            params: any(named: 'params'),
-          ),
-        ).thenAnswer((_) async => fakePaymentOptions);
 
         final saleRequestDetailsEntity =
             EntityFactory.makeBSFSaleRequestEntity().copyWith(
@@ -100,10 +72,15 @@ void main() {
                       ),
                 ],
               ),
+              customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                paymentFinalizations: [
+                  //can't add this filter here because is testing the request type
+                ],
+              ),
             );
 
         final container = makeProviderContainer(
-          session: fakeSession,
+          allFinalizations: fakePaymentOptions,
           saleRequestEntity: saleRequestDetailsEntity,
         );
         addTearDown(container.dispose);
@@ -119,16 +96,6 @@ void main() {
 
         // ASSERT
         expect(result, [enabled1, enabled2]);
-        verify(
-          () => mockRepository.getPaymentFinalizations(
-            enterpriseCode: enterpriseCode,
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
-            ),
-          ),
-        ).called(1);
       },
     );
     test(
@@ -150,12 +117,6 @@ void main() {
         final fakePaymentOptions = [fin1, fin2, fin3];
 
         // ARRANGE
-        when(
-          () => mockRepository.getPaymentFinalizations(
-            enterpriseCode: any(named: 'enterpriseCode'),
-            params: any(named: 'params'),
-          ),
-        ).thenAnswer((_) async => fakePaymentOptions);
 
         final saleRequestDetailsEntity =
             EntityFactory.makeBSFSaleRequestEntity().copyWith(
@@ -177,7 +138,7 @@ void main() {
             );
 
         final container = makeProviderContainer(
-          session: fakeSession,
+          allFinalizations: fakePaymentOptions,
           saleRequestEntity: saleRequestDetailsEntity,
         );
         addTearDown(container.dispose);

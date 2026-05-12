@@ -3,7 +3,7 @@ import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../../mocks/mocks.dart';
+import '../../../../../../mocks/mocks.dart';
 
 void main() {
   ProviderContainer makeProviderContainer() {

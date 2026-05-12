@@ -10,8 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../../mocks/mocks.dart';
-import '../fakers.dart';
+import '../../../../../../mocks/mocks.dart';
+import '../../fakers.dart';
 
 class MockIEcPaymentFinalizationRepository extends Mock
     implements IEcPaymentFinalizationRepository {}
@@ -77,8 +77,8 @@ void main() {
               mockRepository.getPaymentConditions(params: any(named: 'params')),
         ).thenAnswer((_) async => fakePaymentConditions);
 
-        final saleRequestEntity =
-            EntityFactory.makeBSFSaleRequestEntity().copyWith(
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(
               customer: EntityFactory.makeBSFCustomerEntity().copyWith(
                 paymentConditions: [], // No restrictions
               ),
@@ -116,12 +116,15 @@ void main() {
     test(
       'should filter repository conditions based on customer restrictions',
       () async {
-        final cond1 =
-            EntityFactory.makeBSFPaymentConditionEntity().copyWith(code: 10);
-        final cond2 =
-            EntityFactory.makeBSFPaymentConditionEntity().copyWith(code: 20);
-        final cond3 =
-            EntityFactory.makeBSFPaymentConditionEntity().copyWith(code: 30);
+        final cond1 = EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+          code: 10,
+        );
+        final cond2 = EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+          code: 20,
+        );
+        final cond3 = EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+          code: 30,
+        );
 
         final fakePaymentConditions = [cond1, cond2, cond3];
 
@@ -131,8 +134,8 @@ void main() {
               mockRepository.getPaymentConditions(params: any(named: 'params')),
         ).thenAnswer((_) async => fakePaymentConditions);
 
-        final saleRequestEntity =
-            EntityFactory.makeBSFSaleRequestEntity().copyWith(
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(
               customer: EntityFactory.makeBSFCustomerEntity().copyWith(
                 paymentConditions: [
                   EntityFactory.makeBSFPaymentConditionEntity().copyWith(
@@ -169,8 +172,9 @@ void main() {
     test(
       'should return empty list if none of the repository conditions match customer restrictions',
       () async {
-        final cond1 =
-            EntityFactory.makeBSFPaymentConditionEntity().copyWith(code: 10);
+        final cond1 = EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+          code: 10,
+        );
 
         final fakePaymentConditions = [cond1];
 
@@ -180,8 +184,8 @@ void main() {
               mockRepository.getPaymentConditions(params: any(named: 'params')),
         ).thenAnswer((_) async => fakePaymentConditions);
 
-        final saleRequestEntity =
-            EntityFactory.makeBSFSaleRequestEntity().copyWith(
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(
               customer: EntityFactory.makeBSFCustomerEntity().copyWith(
                 paymentConditions: [
                   EntityFactory.makeBSFPaymentConditionEntity().copyWith(

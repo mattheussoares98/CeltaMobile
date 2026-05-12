@@ -31,3 +31,16 @@ class FakeInsertUpdateStateController extends InsertUpdateStateController {
     return entity;
   }
 }
+
+class FakeAllPaymentFinalizationsController
+    extends AllPaymentFinalizationsController {
+  final List<BSFPaymentFinalizationEntity> entities;
+  FakeAllPaymentFinalizationsController(this.entities);
+
+  @override
+  FutureOr<List<BSFPaymentFinalizationEntity>> build({
+    required int enterpriseCode,
+  }) {
+    return entities;
+  }
+}

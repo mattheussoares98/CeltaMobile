@@ -1,11 +1,8 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'payment_finalizations_state_controller.g.dart';
+part '../payment_finalizations_state_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class PaymentFinalizationsStateController
@@ -16,8 +13,6 @@ class PaymentFinalizationsStateController
     required int customerCode,
     required int saleRequestCode,
   }) async {
-    final validatedUser = await ref.watch(validatedUserSessionProvider.future);
-
     // Watch the current sale request to get the customer and request type
     final (requestType, customerPaymentCodes) = await ref.watch(
       insertUpdateStateControllerProvider(
@@ -32,17 +27,12 @@ class PaymentFinalizationsStateController
       ),
     );
 
-    // Fetch all available finalizations for the enterprise
-    final paymentFinalizations = await ref
-        .read(ecPaymentFinalizationRepositoryProvider)
-        .getPaymentFinalizations(
-          enterpriseCode: enterpriseCode,
-          params: EcRequestParams(
-            workingUrl: validatedUser!.enterprise!.workingUrl!,
-            user: validatedUser.user.name!,
-            accessKey: validatedUser.user.AccessKey!,
-          ),
-        );
+    // Fetch all available finalizations for the enterprise (Cached)
+    final paymentFinalizations = await ref.watch(
+      allPaymentFinalizationsControllerProvider(
+        enterpriseCode: enterpriseCode,
+      ).future,
+    );
 
     // Start with all active finalizations
     List<BSFPaymentFinalizationEntity> activePayments = paymentFinalizations

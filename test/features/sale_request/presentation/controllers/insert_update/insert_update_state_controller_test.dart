@@ -10,7 +10,7 @@ import '../../../../../mocks/mocks.dart';
 import '../fakers.dart';
 
 class FakePaymentFinalizationsController
-    extends PaymentFinalizationsStateController {
+    extends FilteredPaymentFinalizationsStateController {
   final List<BSFPaymentFinalizationEntity> entities;
   bool wasCalled = false;
   FakePaymentFinalizationsController(this.entities);
@@ -37,7 +37,7 @@ void main() {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        paymentFinalizationsStateControllerProvider(
+        filteredPaymentFinalizationsStateControllerProvider(
           enterpriseCode: enterpriseCode,
           customerCode: customerCode,
           saleRequestCode: saleRequestId,

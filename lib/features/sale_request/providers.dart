@@ -4,8 +4,8 @@ import '../../core/providers/hive/hive.dart';
 import '../../core/providers/http/http.dart';
 import '../../core/providers/soap/soap.dart';
 import 'data/datasource/datasource.dart';
-import 'domain/repository/repository.dart';
 import 'data/repository/repository.dart';
+import 'domain/repository/repository.dart';
 
 part 'providers.g.dart';
 
