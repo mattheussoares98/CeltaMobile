@@ -7,7 +7,7 @@ import 'insert_update.dart';
 
 part 'insert_update_state_controller.g.dart';
 
-@riverpod //is invalidating when closing the page
+@Riverpod(keepAlive: true) //It is invalidating when close the page
 class InsertUpdateStateController extends _$InsertUpdateStateController {
   @override
   FutureOr<BSFSaleRequestEntity> build({
