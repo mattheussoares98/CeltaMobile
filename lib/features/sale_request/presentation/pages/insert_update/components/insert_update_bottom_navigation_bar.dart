@@ -59,9 +59,31 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
           label: 'Itens'.hardcoded,
         ),
         BottomNavigationBarItem(
-          icon: const PlatformIcon(
-            cupertinoIcon: CupertinoIcons.creditcard,
-            materialIcon: Icons.payment,
+          icon: Consumer(
+            builder: (context, ref, child) {
+              final totalsMatch = ref.watch(
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: saleRequestId,
+                ).select((s) {
+                  final value = s.value;
+                  if (value == null) return true;
+
+                  // Use a small epsilon for double comparison to avoid precision issues
+                  return value.totalPayments == 0 ||
+                      (value.totalProductsLiquid - value.totalPayments).abs() <
+                          0.001;
+                }),
+              );
+
+              return ValidatedBadge(
+                isValid: totalsMatch,
+                materialIcon: Icons.payment, //TODO use platformIcon instead
+                cupertinoIcon: CupertinoIcons.creditcard,
+                isSelected: pageIndex == 2,
+              );
+            },
           ),
           label: 'Pagamento'.hardcoded,
         ),
