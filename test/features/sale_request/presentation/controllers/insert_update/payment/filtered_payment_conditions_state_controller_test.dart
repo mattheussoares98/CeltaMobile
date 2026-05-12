@@ -56,10 +56,9 @@ void main() {
         ).overrideWith(
           () => FakeInsertUpdateStateController(saleRequestEntity),
         ),
-        allPaymentConditionsControllerProvider(enterpriseCode: enterpriseCode)
-            .overrideWith(
-          () => FakeAllPaymentConditionsController(allConditions),
-        ),
+        allPaymentConditionsControllerProvider(
+          enterpriseCode: enterpriseCode,
+        ).overrideWith(() => FakeAllPaymentConditionsController(allConditions)),
         ecPaymentFinalizationRepositoryProvider.overrideWith(
           (_) => mockRepository,
         ),
@@ -76,11 +75,12 @@ void main() {
           EntityFactory.makeBSFPaymentConditionEntity().copyWith(code: 2),
         ];
 
-        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity().copyWith(
-          customer: EntityFactory.makeBSFCustomerEntity().copyWith(
-            paymentConditions: [], // No restrictions
-          ),
-        );
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(
+              customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                paymentConditions: [], // No restrictions
+              ),
+            );
 
         final container = makeProviderContainer(
           session: fakeSession,
@@ -92,7 +92,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          paymentConditionsStateControllerProvider(
+          filteredPaymentConditionsStateControllerProvider(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestId: saleRequestId,
@@ -119,18 +119,19 @@ void main() {
 
         final fakePaymentConditions = [cond1, cond2, cond3];
 
-        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity().copyWith(
-          customer: EntityFactory.makeBSFCustomerEntity().copyWith(
-            paymentConditions: [
-              EntityFactory.makeBSFPaymentConditionEntity().copyWith(
-                code: 10,
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(
+              customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                paymentConditions: [
+                  EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+                    code: 10,
+                  ),
+                  EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+                    code: 30,
+                  ),
+                ],
               ),
-              EntityFactory.makeBSFPaymentConditionEntity().copyWith(
-                code: 30,
-              ),
-            ],
-          ),
-        );
+            );
 
         final container = makeProviderContainer(
           session: fakeSession,
@@ -141,7 +142,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          paymentConditionsStateControllerProvider(
+          filteredPaymentConditionsStateControllerProvider(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestId: saleRequestId,
@@ -163,15 +164,16 @@ void main() {
 
         final fakePaymentConditions = [cond1];
 
-        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity().copyWith(
-          customer: EntityFactory.makeBSFCustomerEntity().copyWith(
-            paymentConditions: [
-              EntityFactory.makeBSFPaymentConditionEntity().copyWith(
-                code: 999,
+        final saleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(
+              customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                paymentConditions: [
+                  EntityFactory.makeBSFPaymentConditionEntity().copyWith(
+                    code: 999,
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
+            );
 
         final container = makeProviderContainer(
           session: fakeSession,
@@ -182,7 +184,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          paymentConditionsStateControllerProvider(
+          filteredPaymentConditionsStateControllerProvider(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestId: saleRequestId,

@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PaymentConditionDropdown extends ConsumerWidget {
   final int enterpriseCode;
@@ -33,14 +32,14 @@ class PaymentConditionDropdown extends ConsumerWidget {
     return AsyncValueWidget(
       isSliver: true,
       value: ref.watch(
-        paymentConditionsStateControllerProvider(
+        filteredPaymentConditionsStateControllerProvider(
           enterpriseCode: enterpriseCode,
           customerCode: customerCode,
           saleRequestId: saleRequestId,
         ),
       ),
       tryAgain: () => ref.invalidate(
-        paymentConditionsStateControllerProvider(
+        filteredPaymentConditionsStateControllerProvider(
           enterpriseCode: enterpriseCode,
           customerCode: customerCode,
           saleRequestId: saleRequestId,
@@ -149,7 +148,7 @@ class _NotFoundPaymentConditions extends ConsumerWidget {
           PrimaryButton(
             text: 'Carregar novamente'.hardcoded,
             onPressed: () => ref.invalidate(
-              paymentConditionsStateControllerProvider(
+              filteredPaymentConditionsStateControllerProvider(
                 enterpriseCode: enterpriseCode,
                 customerCode: customerCode,
                 saleRequestId: saleRequestId,
