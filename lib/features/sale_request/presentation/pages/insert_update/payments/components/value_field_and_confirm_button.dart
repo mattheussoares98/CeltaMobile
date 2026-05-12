@@ -59,7 +59,7 @@ class _ValueFieldAndConfirmButtonState
 
     final value = valueController.text.toDouble();
     if (value != null && value > 0) {
-      ref
+      final (succeeds, error) = ref
           .read(
             insertUpdateStateControllerProvider(
               enterpriseCode: widget.enterpriseCode,
@@ -77,10 +77,18 @@ class _ValueFieldAndConfirmButtonState
                   int.tryParse(widget.portionsController.text) ?? 1,
             ),
           );
-      valueController.clear();
-      widget.creditCardController.clear();
-      widget.portionsController.clear();
-      widget.validityController.clear();
+      if (succeeds) {
+        valueController.clear();
+        widget.creditCardController.clear();
+        widget.portionsController.clear();
+        widget.validityController.clear();
+      } else {
+        showSnackBarMessage(
+          context,
+          error ?? 'Erro ao adicionar pagamento'.hardcoded,
+          backgroundColor: Colors.red,
+        );
+      }
     }
   }
 
