@@ -107,7 +107,22 @@ class InsertUpdatePage extends ConsumerWidget {
           canPop: !hasChanges,
           child: child!,
           onPopInvokedWithResult: (didPop, _) async {
-            if (didPop) return;
+            void dispose() {
+              ref
+                  .read(
+                    insertUpdateStateControllerProvider(
+                      customerCode: customerCode,
+                      enterpriseCode: enterpriseCode,
+                      saleRequestId: saleRequestId,
+                    ).notifier,
+                  )
+                  .disposeFlow();
+            }
+
+            if (didPop) {
+              dispose();
+              return;
+            }
 
             final shouldPop = await showAlertDialog(
               context: context,
@@ -120,6 +135,7 @@ class InsertUpdatePage extends ConsumerWidget {
             );
 
             if (shouldPop == true && context.mounted) {
+              dispose();
               context.pop();
             }
           },

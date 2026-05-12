@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/domain/entities/entities.dart';
@@ -9,7 +7,7 @@ import 'insert_update.dart';
 
 part 'insert_update_state_controller.g.dart';
 
-@riverpod
+@riverpod //is invalidating when closing the page
 class InsertUpdateStateController extends _$InsertUpdateStateController {
   @override
   FutureOr<BSFSaleRequestEntity> build({
@@ -17,21 +15,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     required int customerCode,
     required int saleRequestId,
   }) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(
-        Duration(seconds: saleRequestId == 0 ? 9999 : 0),
-        () => link.close(),
-      );
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
-
     if (saleRequestId == 0) {
       //!inserting
       return BSFSaleRequestEntity.empty();
@@ -230,5 +213,12 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     state = AsyncData(current.copyWith(financials: financials));
+  }
+
+  void disposeFlow() {
+    ref.invalidate(selectedPaymentConditionStateControllerProvider);
+    ref.invalidate(selectedPaymentTypeStateControllerProvider(saleRequestId));
+
+    ref.invalidateSelf();
   }
 }
