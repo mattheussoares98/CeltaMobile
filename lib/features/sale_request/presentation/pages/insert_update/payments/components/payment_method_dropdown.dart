@@ -47,6 +47,26 @@ class PaymentMethodDropdown extends ConsumerWidget {
           );
         }
 
+        final items = paymentFinalizations
+            .map(
+              (e) => DropdownMenuItem(
+                value: e,
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(color: Colors.black),
+                      text: e.Description,
+                      children: [
+                        if (e.paymentForm?.name != null)
+                          TextSpan(text: ' - ${e.paymentForm!.name}'),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
+            .toList();
+
         return Consumer(
           builder: (context, ref, _) {
             final selectedPayment = ref.watch(
@@ -63,25 +83,7 @@ class PaymentMethodDropdown extends ConsumerWidget {
                 }
                 return null;
               },
-              items: paymentFinalizations
-                  .map(
-                    (e) => DropdownMenuItem(
-                      value: e,
-                      child: Center(
-                        child: RichText(
-                          text: TextSpan(
-                            style: const TextStyle(color: Colors.black),
-                            text: e.Description,
-                            children: [
-                              if (e.paymentForm?.name != null)
-                                TextSpan(text: ' - ${e.paymentForm!.name}'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
+              items: items,
               onChanged: (value) {
                 ref
                     .read(

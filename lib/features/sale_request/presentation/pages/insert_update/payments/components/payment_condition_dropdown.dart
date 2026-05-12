@@ -29,22 +29,16 @@ class PaymentConditionDropdown extends ConsumerWidget {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
+    final provider = filteredPaymentConditionsStateControllerProvider(
+      enterpriseCode: enterpriseCode,
+      customerCode: customerCode,
+      saleRequestId: saleRequestId,
+    );
+
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(
-        filteredPaymentConditionsStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
-        ),
-      ),
-      tryAgain: () => ref.invalidate(
-        filteredPaymentConditionsStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
-        ),
-      ),
+      value: ref.watch(provider),
+      tryAgain: () => ref.invalidate(provider),
       data: (data) {
         if (data.isEmpty) {
           return _NotFoundPaymentConditions(
@@ -55,6 +49,35 @@ class PaymentConditionDropdown extends ConsumerWidget {
         }
 
         final theme = Theme.of(context);
+
+        final items = data
+            .map(
+              (e) => DropdownMenuItem<BSFPaymentConditionEntity>(
+                value: e,
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: theme.textTheme.bodyMedium,
+                      children: [
+                        if (e.personalizedCode.isNotEmpty)
+                          TextSpan(
+                            text: '${e.personalizedCode} - ',
+                            style: theme.textTheme.titleSmall,
+                          ),
+                        TextSpan(text: e.description),
+                        if ((e.condition?.composition ?? "0") != "0")
+                          TextSpan(
+                            text: ' ${e.condition?.composition}',
+                            style: theme.textTheme.titleSmall
+                                ?.copyWith(color: theme.primaryColor),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
+            .toList();
 
         return SliverToBoxAdapter(
           child: Padding(
@@ -80,34 +103,7 @@ class PaymentConditionDropdown extends ConsumerWidget {
                     return null;
                   },
                   label: 'Condição de pagamento'.hardcoded,
-                  items: data
-                      .map(
-                        (e) => DropdownMenuItem<BSFPaymentConditionEntity>(
-                          value: e,
-                          child: Center(
-                            child: RichText(
-                              text: TextSpan(
-                                style: theme.textTheme.bodyMedium,
-                                children: [
-                                  if (e.personalizedCode.isNotEmpty)
-                                    TextSpan(
-                                      text: '${e.personalizedCode} - ',
-                                      style: theme.textTheme.titleSmall,
-                                    ),
-                                  TextSpan(text: e.description),
-                                  if ((e.condition?.composition ?? "0") != "0")
-                                    TextSpan(
-                                      text: ' ${e.condition?.composition}',
-                                      style: theme.textTheme.titleSmall
-                                          ?.copyWith(color: theme.primaryColor),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                  items: items,
                 );
               },
             ),
