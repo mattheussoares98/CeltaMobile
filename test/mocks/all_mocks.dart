@@ -1103,3 +1103,53 @@ class FakeAppUsageStateController extends AppUsageStateController {
     _lastUsageType = usageType;
   }
 }
+
+class EcBSFCustomersDatasourceSpy extends Mock
+    implements IEcBSFCustomersDatasource {
+  void mockSearchForMobileApp(List<BSFCustomerModel> response) {
+    when(
+      () => this.searchForMobileApp(
+        params: any(named: 'params'),
+        searchValue: any(named: 'searchValue'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        searchByPersonalizedCode: any(named: 'searchByPersonalizedCode'),
+      ),
+    ).thenAnswer((_) async => response);
+  }
+
+  void mockSearchForMobileAppError() {
+    when(
+      () => this.searchForMobileApp(
+        params: any(named: 'params'),
+        searchValue: any(named: 'searchValue'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        searchByPersonalizedCode: any(named: 'searchByPersonalizedCode'),
+      ),
+    ).thenThrow(Exception());
+  }
+}
+
+class EcBSFCustomersRepositorySpy extends Mock
+    implements IEcBSFCustomersRepository {
+  void mockSearchForMobileApp(List<BSFCustomerEntity> response) {
+    when(
+      () => this.searchForMobileApp(
+        params: any(named: 'params'),
+        searchValue: any(named: 'searchValue'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        searchByPersonalizedCode: any(named: 'searchByPersonalizedCode'),
+      ),
+    ).thenAnswer((_) async => response);
+  }
+
+  void mockSearchForMobileAppError() {
+    when(
+      () => this.searchForMobileApp(
+        params: any(named: 'params'),
+        searchValue: any(named: 'searchValue'),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        searchByPersonalizedCode: any(named: 'searchByPersonalizedCode'),
+      ),
+    ).thenThrow(Exception());
+  }
+}

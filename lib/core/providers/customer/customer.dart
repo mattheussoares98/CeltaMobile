@@ -22,3 +22,10 @@ ISoapCustomerRepository soapCustomerRepository(Ref ref) {
 IEcBSFCustomersDatasource ecBSFCustomersDatasource(Ref ref) {
   return EcBSFCustomersDatasource(ref.watch(httpClientProvider));
 }
+
+@riverpod
+IEcBSFCustomersRepository ecBSFCustomersRepository(Ref ref) {
+  return EcBSFCustomersRepositoryImpl(
+    ref.watch(ecBSFCustomersDatasourceProvider),
+  );
+}
