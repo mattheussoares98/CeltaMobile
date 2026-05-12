@@ -42,91 +42,124 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
       padding: const EdgeInsets.all(Sizes.p8),
       child: Form(
         key: formKey,
-        child: Consumer(
-          builder: (_, ref, _) {
-            final alreadyPaidEverything = ref.watch(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: widget.enterpriseCode,
-                customerCode: widget.customerCode,
-                saleRequestId: widget.saleRequestId,
-              ).select(
-                (s) => s.value?.totalProductsLiquid == s.value?.totalPayments,
-              ),
-            );
-
-            return CustomScrollView(
-              slivers: [
-                if (!alreadyPaidEverything) ...[
-                  SliverToBoxAdapter(
-                    child: Text(
-                      'Nova forma de pagamento'.hardcoded,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                  gapSliverH8,
-                  SliverToBoxAdapter(
-                    child: PaymentMethodDropdown(
-                      enterpriseCode: widget.enterpriseCode,
-                      customerCode: widget.customerCode,
-                      saleRequestCode: widget.saleRequestId,
-                    ),
-                  ),
-                  // SliverToBoxAdapter(
-                  //   child: PrimaryButton(
-                  //     onPressed: () => ref.invalidate(
-                  //       paymentFinalizationsStateControllerProvider(
-                  //         enterpriseCode: widget.enterpriseCode,
-                  //         customerCode: widget.customerCode,
-                  //         saleRequestCode: widget.saleRequestId,
-                  //       ),
-                  //     ),
-                  //     text: 'Recarregar formas de pagamento',
-                  //   ),
-                  // ),
-                  gapSliverH8,
-                  CreditCardFields(
-                    creditCardController: creditCardController,
-                    portionsController: portionsController,
-                    validityController: validityController,
-                    saleRequestId: widget.saleRequestId,
-                  ),
-                  PaymentConditionDropdown(
-                    enterpriseCode: widget.enterpriseCode,
-                    customerCode: widget.customerCode,
-                    saleRequestId: widget.saleRequestId,
-                  ),
-                  // SliverToBoxAdapter(
-                  //   child: PrimaryButton(
-                  //     onPressed: () =>
-                  //         ref.invalidate(paymentConditionsStateControllerProvider),
-                  //     text: 'Recarregar condições de pagamento',
-                  //   ),
-                  // ),
-                  SliverToBoxAdapter(
-                    child: ValueFieldAndConfirmButton(
-                      enterpriseCode: widget.enterpriseCode,
-                      customerCode: widget.customerCode,
-                      saleRequestId: widget.saleRequestId,
-                      formKey: formKey,
-                      creditCardController: creditCardController,
-                      portionsController: portionsController,
-                      validityController: validityController,
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: Divider()),
-                ],
-                PaymentsList(
-                  enterpriseCode: widget.enterpriseCode,
-                  customerCode: widget.customerCode,
-                  saleRequestId: widget.saleRequestId,
-                ),
-              ],
-            );
-          },
+        child: CustomScrollView(
+          slivers: [
+            _NewPaymentSection(
+              enterpriseCode: widget.enterpriseCode,
+              customerCode: widget.customerCode,
+              saleRequestId: widget.saleRequestId,
+              creditCardController: creditCardController,
+              portionsController: portionsController,
+              validityController: validityController,
+              formKey: formKey,
+            ),
+            PaymentsList(
+              enterpriseCode: widget.enterpriseCode,
+              customerCode: widget.customerCode,
+              saleRequestId: widget.saleRequestId,
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class _NewPaymentSection extends ConsumerWidget {
+  final int enterpriseCode;
+  final int customerCode;
+  final int saleRequestId;
+  final TextEditingController creditCardController;
+  final TextEditingController portionsController;
+  final TextEditingController validityController;
+  final GlobalKey<FormState> formKey;
+
+  const _NewPaymentSection({
+    required this.enterpriseCode,
+    required this.customerCode,
+    required this.saleRequestId,
+    required this.creditCardController,
+    required this.portionsController,
+    required this.validityController,
+    required this.formKey,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final alreadyPaidEverything = ref.watch(
+      insertUpdateStateControllerProvider(
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        saleRequestId: saleRequestId,
+      ).select((s) => s.value?.totalProductsLiquid == s.value?.totalPayments),
+    );
+
+    if (alreadyPaidEverything) {
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
+    }
+
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Text(
+            'Nova forma de pagamento'.hardcoded,
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontStyle: FontStyle.italic),
+          ),
+        ),
+        gapSliverH8,
+        SliverToBoxAdapter(
+          child: PaymentMethodDropdown(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestCode: saleRequestId,
+          ),
+        ),
+        // SliverToBoxAdapter(
+        //   child: PrimaryButton(
+        //     onPressed: () => ref.invalidate(
+        //       paymentFinalizationsStateControllerProvider(
+        //         enterpriseCode: widget.enterpriseCode,
+        //         customerCode: widget.customerCode,
+        //         saleRequestCode: widget.saleRequestId,
+        //       ),
+        //     ),
+        //     text: 'Recarregar formas de pagamento',
+        //   ),
+        // ),
+        gapSliverH8,
+        CreditCardFields(
+          creditCardController: creditCardController,
+          portionsController: portionsController,
+          validityController: validityController,
+          saleRequestId: saleRequestId,
+        ),
+        PaymentConditionDropdown(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
+        ),
+        // SliverToBoxAdapter(
+        //   child: PrimaryButton(
+        //     onPressed: () =>
+        //         ref.invalidate(paymentConditionsStateControllerProvider),
+        //     text: 'Recarregar condições de pagamento',
+        //   ),
+        // ),
+        SliverToBoxAdapter(
+          child: ValueFieldAndConfirmButton(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+            formKey: formKey,
+            creditCardController: creditCardController,
+            portionsController: portionsController,
+            validityController: validityController,
+          ),
+        ),
+        const SliverToBoxAdapter(child: Divider()),
+      ],
     );
   }
 }
