@@ -42,23 +42,54 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
       padding: const EdgeInsets.all(Sizes.p8),
       child: Form(
         key: formKey,
-        child: CustomScrollView(
-          slivers: [
-            _NewPaymentSection(
-              enterpriseCode: widget.enterpriseCode,
-              customerCode: widget.customerCode,
-              saleRequestId: widget.saleRequestId,
-              creditCardController: creditCardController,
-              portionsController: portionsController,
-              validityController: validityController,
-              formKey: formKey,
-            ),
-            PaymentsList(
-              enterpriseCode: widget.enterpriseCode,
-              customerCode: widget.customerCode,
-              saleRequestId: widget.saleRequestId,
-            ),
-          ],
+        child: Consumer(
+          builder: (_, ref, _) {
+            String? errorMessage = ref.watch(
+              insertUpdateStateControllerProvider(
+                enterpriseCode: widget.enterpriseCode,
+                customerCode: widget.customerCode,
+                saleRequestId: widget.saleRequestId,
+              ).select((s) {
+                if (s.value?.customer == null) {
+                  return 'Informe o cliente'.hardcoded;
+                } else if (s.value?.products?.isEmpty == true) {
+                  return 'Informe pelo menos um produto'.hardcoded;
+                }
+                return null;
+              }),
+            );
+
+            if (errorMessage != null) {
+              return Center(
+                child: Text(
+                  errorMessage,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: Colors.red,
+                  ),
+                ),
+              );
+            }
+
+            return CustomScrollView(
+              slivers: [
+                _NewPaymentSection(
+                  enterpriseCode: widget.enterpriseCode,
+                  customerCode: widget.customerCode,
+                  saleRequestId: widget.saleRequestId,
+                  creditCardController: creditCardController,
+                  portionsController: portionsController,
+                  validityController: validityController,
+                  formKey: formKey,
+                ),
+                PaymentsList(
+                  enterpriseCode: widget.enterpriseCode,
+                  customerCode: widget.customerCode,
+                  saleRequestId: widget.saleRequestId,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -101,21 +132,28 @@ class _NewPaymentSection extends ConsumerWidget {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
+    final theme = Theme.of(context);
     return SliverMainAxisGroup(
       slivers: [
         SliverToBoxAdapter(
           child: Text(
             'Nova forma de pagamento'.hardcoded,
-            style: Theme.of(
-              context,
-            ).textTheme.titleSmall?.copyWith(fontStyle: FontStyle.italic),
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontStyle: FontStyle.italic,
+            ),
           ),
         ),
         SliverToBoxAdapter(
           child: TitleAndSubTitle(
-            title: 'Faltando'.hardcoded,
-            subTitle: totalLiquidAndPaidDifference,
+            title: totalLiquidAndPaidDifference > 0
+                ? 'Faltando'.hardcoded
+                : 'Sobrando'.hardcoded,
+            subTitle: totalLiquidAndPaidDifference.abs(),
             subTitleIsPrice: true,
+            removeColon: true,
+            subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+              color: Colors.red,
+            ),
           ),
         ),
         gapSliverH8,
