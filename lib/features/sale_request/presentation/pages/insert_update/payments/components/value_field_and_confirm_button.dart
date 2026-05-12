@@ -110,13 +110,9 @@ class _ValueFieldAndConfirmButtonState
         ),
         gapW16,
         Expanded(
-          child: Consumer(
-            builder: (context, ref, _) {
-              return PrimaryButton(
-                onPressed: onTap,
-                text: 'ADICIONAR'.hardcoded,
-              );
-            },
+          child: PrimaryButton(
+            onPressed: onTap,
+            text: 'ADICIONAR'.hardcoded,
           ),
         ),
       ],

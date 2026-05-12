@@ -56,15 +56,14 @@ class PaymentConditionDropdown extends ConsumerWidget {
 
         final theme = Theme.of(context);
 
-        final selectedItem = ref.watch(
-          selectedPaymentConditionStateControllerProvider,
-          //TODO use the same provider for condition and payment method
-        );
         return SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
             child: Consumer(
               builder: (_, ref, _) {
+                final selectedItem = ref.watch(
+                  selectedPaymentConditionStateControllerProvider,
+                );
                 return DefaultDropDown<BSFPaymentConditionEntity>(
                   onChanged: ref
                       .read(
