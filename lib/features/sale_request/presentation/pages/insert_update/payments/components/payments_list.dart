@@ -60,7 +60,10 @@ class PaymentsList extends ConsumerWidget {
             return ListTile(
               title: TitleAndSubTitle(
                 title: payment.paymentFinalization?.Description ?? '',
-                subTitle: (payment.quantityOfPortions ?? 0) > 1
+                subTitle:
+                    (payment.quantityOfPortions ?? 0) > 1 ||
+                        payment.paymentFinalization?.action?.type ==
+                            PaymentFinalizationActionType.creditCard
                     ? "(${payment.quantityOfPortions ?? ''}x)"
                     : "",
                 removeColon: true,
