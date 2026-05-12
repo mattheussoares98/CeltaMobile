@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'bsf.dart';
+import '../entities.dart';
 
 class BSFCustomerEntity extends Equatable {
   final String? personalizedCode;

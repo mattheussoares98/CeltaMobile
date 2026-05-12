@@ -127,7 +127,7 @@ class SoapCustomerModel extends Equatable {
         : SoapCustomerSaleBlockadeModel.fromJson(json['SaleBlockade']),
   );
 
-  factory SoapCustomerModel.fromEntity(CustomerEntity entity) =>
+  factory SoapCustomerModel.fromEntity(SoapCustomerEntity entity) =>
       SoapCustomerModel(
         Code: entity.Code,
         PersonalizedCode: entity.PersonalizedCode,
@@ -160,7 +160,7 @@ class SoapCustomerModel extends Equatable {
             : SoapCustomerSaleBlockadeModel.fromEntity(entity.saleBlockade!),
       );
 
-  CustomerEntity toEntity() => CustomerEntity(
+  SoapCustomerEntity toEntity() => SoapCustomerEntity(
     Code: Code,
     PersonalizedCode: PersonalizedCode,
     Name: Name,

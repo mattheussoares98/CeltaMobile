@@ -100,7 +100,7 @@ void main() {
         requestTypeCode: requestTypeCode,
         saleRequest: SoapSaleRequestModel.fromEntity(
           saleRequest.toEntity().copyWith(
-            customer: CustomerEntity.empty(),
+            customer: SoapCustomerEntity.empty(),
             covenant: CustomerCovenantEntity.empty(),
           ),
         ),

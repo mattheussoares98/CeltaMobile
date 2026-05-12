@@ -1,7 +1,7 @@
 import 'package:celta_inventario/core/data/models/customer/customer.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/features/customer_register/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/customer_register/data/repositories/repositories.dart';
+import 'package:celta_inventario/features/customer_register/domain/repositories/repositories.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -15,7 +15,7 @@ void main() {
 
   late String crossIdentity;
   late String workingUrl;
-  late CustomerEntity customer;
+  late SoapCustomerEntity customer;
 
   void initSut() {
     sut = SoapInsertUpdateCustomerRepositoryImpl(datasource);

@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../../features/sale_request/domain/entities/entities.dart';
 import '../../../../domain/entities/entities.dart';
 
 class EcCustomerModel extends Equatable {
@@ -68,19 +67,20 @@ class EcCustomerModel extends Equatable {
     'phoneNumber': PhoneNumber,
   };
 
-  factory EcCustomerModel.fromEntity(CustomerEntity entity) => EcCustomerModel(
-    Id: entity.Code,
-    Name: entity.Name,
-    DateOfBirth: entity.DateOfBirth,
-    PersonType: CustomerPersonType.values.firstWhereOrNull(
-      (e) => e == entity.PersonType,
-    ),
-    CpfCnpjNumber: entity.CpfCnpjNumber,
-    ContactName: entity.Name,
-    Email: entity.Emails?.firstOrNull,
-    PhoneArea: entity.Telephones?.firstOrNull?.AreaCode,
-    PhoneNumber: entity.Telephones?.firstOrNull?.PhoneNumber,
-  );
+  factory EcCustomerModel.fromEntity(SoapCustomerEntity entity) =>
+      EcCustomerModel(
+        Id: entity.Code,
+        Name: entity.Name,
+        DateOfBirth: entity.DateOfBirth,
+        PersonType: CustomerPersonType.values.firstWhereOrNull(
+          (e) => e == entity.PersonType,
+        ),
+        CpfCnpjNumber: entity.CpfCnpjNumber,
+        ContactName: entity.Name,
+        Email: entity.Emails?.firstOrNull,
+        PhoneArea: entity.Telephones?.firstOrNull?.AreaCode,
+        PhoneNumber: entity.Telephones?.firstOrNull?.PhoneNumber,
+      );
 
   factory EcCustomerModel.fromBSFEntity(BSFCustomerEntity entity) =>
       EcCustomerModel(
@@ -95,7 +95,7 @@ class EcCustomerModel extends Equatable {
         PhoneNumber: null,
       );
 
-  CustomerEntity toEntity() => CustomerEntity.empty().copyWith(
+  SoapCustomerEntity toEntity() => SoapCustomerEntity.empty().copyWith(
     Code: Id,
     Name: Name,
     DateOfBirth: DateOfBirth,

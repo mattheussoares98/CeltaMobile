@@ -226,7 +226,7 @@ extension BSFPriceCostEntityToPriceCostEntity on BSFPriceCostEntity {
   }
 }
 
-extension CustomerEntityToBSFCustomerEntity on CustomerEntity {
+extension CustomerEntityToBSFCustomerEntity on SoapCustomerEntity {
   BSFCustomerEntity toBSFCustomerEntity() {
     return BSFCustomerEntity(
       code: Code,

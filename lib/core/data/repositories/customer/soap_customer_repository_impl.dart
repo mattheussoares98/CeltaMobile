@@ -1,6 +1,6 @@
-import 'package:celta_inventario/core/domain/entities/customer/customer_entity.dart';
+import 'package:celta_inventario/core/domain/entities/customer/soap/soap_customer_entity.dart';
 
-import 'package:celta_inventario/core/domain/entities/customer/search_customer_type.dart';
+import 'package:celta_inventario/core/domain/entities/customer/soap/search_customer_type.dart';
 
 import '../../../data/datasource/customer/customer.dart';
 import 'package:celta_inventario/core/domain/repositories/customer/customer.dart';
@@ -10,7 +10,7 @@ class SoapCustomerRepositoryImpl implements ISoapCustomerRepository {
   SoapCustomerRepositoryImpl(this.datasource);
 
   @override
-  Future<List<CustomerEntity>> loadCustomer({
+  Future<List<SoapCustomerEntity>> loadCustomer({
     required SearchCustomerType searchType,
     required String searchValue,
     required String crossIdentity,

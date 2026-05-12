@@ -1,6 +1,4 @@
-// lib/features/sale_request/data/models/bsf/financial/bsf_payment_action_model.dart
-
-import '../../../../domain/entities/entities.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 
 class BSFPaymentActionModel extends BSFPaymentActionEntity {
   const BSFPaymentActionModel({

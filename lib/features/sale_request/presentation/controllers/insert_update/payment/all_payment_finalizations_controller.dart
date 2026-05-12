@@ -1,6 +1,5 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

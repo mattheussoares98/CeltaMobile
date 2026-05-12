@@ -786,7 +786,7 @@ class SoapCustomerRepositorySpy extends Mock
     ),
   );
 
-  void mockLoad(List<CustomerEntity> response) =>
+  void mockLoad(List<SoapCustomerEntity> response) =>
       _mockLoadCall().thenAnswer((_) async => response);
 
   void mockLoadError() => _mockLoadCall().thenThrow(Exception());

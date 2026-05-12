@@ -16,7 +16,7 @@ void main() {
 
   late String workingUrl;
   late String crossIdentity;
-  late CustomerEntity customer;
+  late SoapCustomerEntity customer;
 
   void initSut() {
     sut = SoapInsertUpdateCustomerDatasource(soapAdapter);

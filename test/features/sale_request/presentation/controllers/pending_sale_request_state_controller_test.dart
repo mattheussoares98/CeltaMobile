@@ -22,7 +22,7 @@ void main() {
   late UserSessionModel fakeSession;
   late SaleRequestEntity fakeDraft;
   late SaleRequestCartProductEntity fakeProduct;
-  late CustomerEntity fakeCustomer;
+  late SoapCustomerEntity fakeCustomer;
   late EnterpriseEntity enterpriseEntity;
   late String fakeObservations;
   late String fakeInstructions;

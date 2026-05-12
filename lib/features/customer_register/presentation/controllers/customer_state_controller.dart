@@ -12,10 +12,10 @@ part 'customer_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class CustomerStateController extends _$CustomerStateController {
   @override
-  FutureOr<CustomerEntity?> build() => null;
+  FutureOr<SoapCustomerEntity?> build() => null;
 
   Future<void> loadCustomer(String cpfCnpj) async {
-    final emptyCustomer = CustomerEntity.empty();
+    final emptyCustomer = SoapCustomerEntity.empty();
     try {
       state = const AsyncValue.loading();
       final validatedUserSession = await ref.watch(
@@ -57,7 +57,7 @@ class CustomerStateController extends _$CustomerStateController {
     String? RegistrationNumber,
   }) {
     state = AsyncValue.data(
-      (state.value ?? CustomerEntity.empty()).copyWith(
+      (state.value ?? SoapCustomerEntity.empty()).copyWith(
         Name: Name,
         ReducedName: ReducedName,
         CpfCnpjNumber: CpfCnpjNumber,
@@ -72,19 +72,19 @@ class CustomerStateController extends _$CustomerStateController {
 
   void updateEmails(List<String> value) {
     state = AsyncData(
-      (state.value ?? CustomerEntity.empty()).copyWith(Emails: value),
+      (state.value ?? SoapCustomerEntity.empty()).copyWith(Emails: value),
     );
   }
 
   void updateTelephones(List<CustomerTelephoneEntity> value) {
     state = AsyncData(
-      (state.value ?? CustomerEntity.empty()).copyWith(Telephones: value),
+      (state.value ?? SoapCustomerEntity.empty()).copyWith(Telephones: value),
     );
   }
 
   void updateCustomerCovenants(List<CustomerCovenantEntity> value) {
     state = AsyncData(
-      (state.value ?? CustomerEntity.empty()).copyWith(
+      (state.value ?? SoapCustomerEntity.empty()).copyWith(
         CustomerCovenants: value,
       ),
     );
@@ -92,7 +92,7 @@ class CustomerStateController extends _$CustomerStateController {
 
   void updateAddresses(List<AddressEntity> value) {
     state = AsyncData(
-      (state.value ?? CustomerEntity.empty()).copyWith(Addresses: value),
+      (state.value ?? SoapCustomerEntity.empty()).copyWith(Addresses: value),
     );
   }
 }

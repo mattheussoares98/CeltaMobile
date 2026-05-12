@@ -12,7 +12,7 @@ void main() {
 
   late SoapCustomerDatasourceSpy soapCustomerDatasource;
 
-  late List<CustomerEntity> customersEntities;
+  late List<SoapCustomerEntity> customersEntities;
   late SearchCustomerType searchType;
   late String searchValue;
   late String crossIdentity;

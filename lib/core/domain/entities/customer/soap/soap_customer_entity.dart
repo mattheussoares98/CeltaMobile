@@ -1,9 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
-import '../entities.dart';
+import '../../entities.dart';
 
-class CustomerEntity extends Equatable {
+class SoapCustomerEntity extends Equatable {
+  //TODO change to SoapCustomerEntity
   final int? Code;
   final String? PersonalizedCode;
   final String? Name;
@@ -22,7 +22,7 @@ class CustomerEntity extends Equatable {
   final CustomerSaleBlockadeInstructionEntity? saleBlockadeInstruction;
   final CustomerSaleBlockadeEntity? saleBlockade;
 
-  const CustomerEntity({
+  const SoapCustomerEntity({
     required this.Name,
     required this.Code,
     required this.PersonalizedCode,
@@ -63,7 +63,7 @@ class CustomerEntity extends Equatable {
     saleBlockade,
   ];
 
-  CustomerEntity copyWith({
+  SoapCustomerEntity copyWith({
     int? Code,
     String? PersonalizedCode,
     String? Name,
@@ -82,7 +82,7 @@ class CustomerEntity extends Equatable {
     CustomerSaleBlockadeInstructionEntity? saleBlockadeInstruction,
     CustomerSaleBlockadeEntity? saleBlockade,
   }) {
-    return CustomerEntity(
+    return SoapCustomerEntity(
       Code: Code ?? this.Code,
       PersonalizedCode: PersonalizedCode ?? this.PersonalizedCode,
       Name: Name ?? this.Name,
@@ -104,7 +104,7 @@ class CustomerEntity extends Equatable {
     );
   }
 
-  factory CustomerEntity.empty() => const CustomerEntity(
+  factory SoapCustomerEntity.empty() => const SoapCustomerEntity(
     Code: null,
     PersonalizedCode: null,
     Name: null,

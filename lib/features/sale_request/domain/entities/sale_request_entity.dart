@@ -7,7 +7,7 @@ typedef ProductPackingCode = int;
 
 class SaleRequestEntity extends Equatable {
   final Map<ProductPackingCode, SaleRequestCartProductEntity> cart;
-  final CustomerEntity? customer;
+  final SoapCustomerEntity? customer;
   final CustomerCovenantEntity? covenant;
   final String? observations;
   final String? instructions;
@@ -88,7 +88,7 @@ class SaleRequestEntity extends Equatable {
 
   SaleRequestEntity copyWith({
     Map<ProductPackingCode, SaleRequestCartProductEntity>? cart,
-    CustomerEntity? customer,
+    SoapCustomerEntity? customer,
     CustomerCovenantEntity? covenant,
     String? observations,
     String? instructions,

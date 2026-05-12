@@ -62,7 +62,7 @@ class CustomerInfoAndRadio extends ConsumerWidget {
                   ).select((s) => s.value?.customer),
                 );
 
-                return RadioGroup<CustomerEntity>(
+                return RadioGroup<SoapCustomerEntity>(
                   groupValue: selectedCustomer,
                   onChanged: (_) => changeSelectedCustomer(),
                   child: Radio(value: customerItem.customer, toggleable: true),

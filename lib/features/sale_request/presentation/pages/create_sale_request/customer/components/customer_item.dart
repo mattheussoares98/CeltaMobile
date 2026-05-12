@@ -9,7 +9,7 @@ import '../../../../controllers/controllers.dart';
 import 'components.dart';
 
 class CustomerItem extends ConsumerWidget {
-  final CustomerEntity customer;
+  final SoapCustomerEntity customer;
   final bool isConsumerCustomer;
   final int enterpriseCode;
   const CustomerItem({

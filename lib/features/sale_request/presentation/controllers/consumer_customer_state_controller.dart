@@ -10,7 +10,7 @@ part 'consumer_customer_state_controller.g.dart';
 class ConsumerCustomerStasteController
     extends _$ConsumerCustomerStasteController {
   @override
-  Future<CustomerEntity?> build(int enterpriseCode) async {
+  Future<SoapCustomerEntity?> build(int enterpriseCode) async {
     final validatedUserSession = await ref.watch(
       validatedUserSessionProvider.future,
     );

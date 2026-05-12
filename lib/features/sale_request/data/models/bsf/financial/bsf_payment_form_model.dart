@@ -1,4 +1,4 @@
-import '../../../../domain/entities/entities.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 
 class BSFPaymentFormModel extends BSFPaymentFormEntity {
   const BSFPaymentFormModel({super.type, super.reducedName, super.name});

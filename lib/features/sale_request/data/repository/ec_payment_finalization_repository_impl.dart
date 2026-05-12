@@ -1,5 +1,4 @@
 import '../../../../core/domain/entities/entities.dart';
-import '../../domain/entities/entities.dart';
 import '../../domain/repository/repository.dart';
 import '../datasource/datasource.dart';
 

@@ -1,5 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
@@ -11,18 +11,18 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 class FakeCustomerStateController extends CustomerStateController {
-  final CustomerEntity? customerToReturn;
+  final SoapCustomerEntity? customerToReturn;
   FakeCustomerStateController(this.customerToReturn);
   @override
-  Future<CustomerEntity> build() async =>
-      customerToReturn ?? CustomerEntity.empty();
+  Future<SoapCustomerEntity> build() async =>
+      customerToReturn ?? SoapCustomerEntity.empty();
 }
 
 void main() {
   late SoapInsertUpdateCustomerRepositorySpy mockRepository;
   late FakeAppUsageStateController fakeUsageController;
   late UserSessionModel fakeSession;
-  late CustomerEntity fakeCustomer;
+  late SoapCustomerEntity fakeCustomer;
 
   setUpAll(() {
     // Register the entity as a fallback value for mocktail's `any()`
@@ -43,7 +43,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
-    CustomerEntity? customer,
+    SoapCustomerEntity? customer,
   }) {
     return ProviderContainer(
       retry: (retryCount, error) => null,

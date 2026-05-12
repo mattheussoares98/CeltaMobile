@@ -1,5 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
@@ -15,7 +15,7 @@ void main() {
   late SoapCustomerRepositorySpy mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
-  late CustomerEntity fakeCustomer;
+  late SoapCustomerEntity fakeCustomer;
   late String fakeCpfCnpj;
 
   late String? name;
@@ -109,7 +109,7 @@ void main() {
         addTearDown(container.dispose);
 
         await container.read(customerStateControllerProvider.future);
-        final states = <AsyncValue<CustomerEntity?>>[];
+        final states = <AsyncValue<SoapCustomerEntity?>>[];
         container.listen(
           customerStateControllerProvider,
           (_, next) => states.add(next),
@@ -145,7 +145,7 @@ void main() {
         addTearDown(container.dispose);
 
         await container.read(customerStateControllerProvider.future);
-        final states = <AsyncValue<CustomerEntity?>>[];
+        final states = <AsyncValue<SoapCustomerEntity?>>[];
         container.listen(
           customerStateControllerProvider,
           (_, next) => states.add(next),
@@ -156,7 +156,7 @@ void main() {
             .loadCustomer(fakeCpfCnpj);
 
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-        expect(states.last.value, CustomerEntity.empty());
+        expect(states.last.value, SoapCustomerEntity.empty());
       },
     );
     test('should return entity with empty values when throws', () async {
@@ -167,7 +167,7 @@ void main() {
       addTearDown(container.dispose);
 
       await container.read(customerStateControllerProvider.future);
-      final states = <AsyncValue<CustomerEntity?>>[];
+      final states = <AsyncValue<SoapCustomerEntity?>>[];
       container.listen(
         customerStateControllerProvider,
         (_, next) => states.add(next),
@@ -178,7 +178,7 @@ void main() {
           .loadCustomer(fakeCpfCnpj);
 
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
-      expect(states.last.value, CustomerEntity.empty());
+      expect(states.last.value, SoapCustomerEntity.empty());
     });
   });
 
@@ -191,7 +191,7 @@ void main() {
       addTearDown(container.dispose);
 
       await container.read(customerStateControllerProvider.future);
-      final states = <AsyncValue<CustomerEntity?>>[];
+      final states = <AsyncValue<SoapCustomerEntity?>>[];
       container.listen(
         customerStateControllerProvider,
         (_, next) => states.add(next),
@@ -228,7 +228,7 @@ void main() {
       addTearDown(container.dispose);
 
       await container.read(customerStateControllerProvider.future);
-      final states = <AsyncValue<CustomerEntity?>>[];
+      final states = <AsyncValue<SoapCustomerEntity?>>[];
       container.listen(
         customerStateControllerProvider,
         (_, next) => states.add(next),
@@ -255,7 +255,7 @@ void main() {
       addTearDown(container.dispose);
 
       await container.read(customerStateControllerProvider.future);
-      final states = <AsyncValue<CustomerEntity?>>[];
+      final states = <AsyncValue<SoapCustomerEntity?>>[];
       container.listen(
         customerStateControllerProvider,
         (_, next) => states.add(next),
@@ -282,7 +282,7 @@ void main() {
       addTearDown(container.dispose);
 
       await container.read(customerStateControllerProvider.future);
-      final states = <AsyncValue<CustomerEntity?>>[];
+      final states = <AsyncValue<SoapCustomerEntity?>>[];
       container.listen(
         customerStateControllerProvider,
         (_, next) => states.add(next),
@@ -309,7 +309,7 @@ void main() {
       addTearDown(container.dispose);
 
       await container.read(customerStateControllerProvider.future);
-      final states = <AsyncValue<CustomerEntity?>>[];
+      final states = <AsyncValue<SoapCustomerEntity?>>[];
       container.listen(
         customerStateControllerProvider,
         (_, next) => states.add(next),

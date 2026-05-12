@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:celta_inventario/core/domain/entities/customer/search_customer_type.dart';
+import 'package:celta_inventario/core/domain/entities/customer/soap/search_customer_type.dart';
 
 import '../../../domain/contracts/contracts.dart';
 import '../../models/customer/customer.dart';

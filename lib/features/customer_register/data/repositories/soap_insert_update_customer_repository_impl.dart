@@ -1,4 +1,4 @@
-import 'package:celta_inventario/core/domain/entities/customer/customer_entity.dart';
+import 'package:celta_inventario/core/domain/entities/customer/soap/soap_customer_entity.dart';
 
 import '../../../../core/data/models/customer/customer.dart';
 import '../datasource/datasource.dart';
@@ -11,7 +11,7 @@ class SoapInsertUpdateCustomerRepositoryImpl
 
   @override
   Future<void> insertOrUpdateCustomer({
-    required CustomerEntity customer,
+    required SoapCustomerEntity customer,
     required String workingUrl,
     required String crossIdentity,
   }) async {

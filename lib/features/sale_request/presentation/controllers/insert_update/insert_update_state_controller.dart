@@ -127,7 +127,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(state.value!.copyWith(products: items));
   }
 
-  void updateCustomer(CustomerEntity customer) {
+  void updateCustomer(SoapCustomerEntity customer) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     state = AsyncData(
       state.value!.copyWith(customer: customer.toBSFCustomerEntity()),

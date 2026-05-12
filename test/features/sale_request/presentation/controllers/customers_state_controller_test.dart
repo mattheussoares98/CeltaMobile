@@ -36,7 +36,7 @@ void main() {
   late MockSoapCustomerRepository mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
-  late List<CustomerEntity> fakeCustomers;
+  late List<SoapCustomerEntity> fakeCustomers;
 
   setUpAll(() {
     // Register fallback values for mocktail's `any()` matcher
@@ -99,7 +99,7 @@ void main() {
       final container = makeProviderContainer(enterprise: fakeEnterprise);
       addTearDown(container.dispose);
 
-      final states = <AsyncValue<List<CustomerEntity>>>[];
+      final states = <AsyncValue<List<SoapCustomerEntity>>>[];
       container.listen(
         customersStateControllerProvider(fakeEnterprise.Code!),
         (_, next) => states.add(next),
@@ -255,7 +255,7 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      final states = <AsyncValue<List<CustomerEntity>>>[];
+      final states = <AsyncValue<List<SoapCustomerEntity>>>[];
       container.listen(
         customersStateControllerProvider(fakeEnterprise.Code!),
         (_, next) => states.add(next),
@@ -281,7 +281,7 @@ void main() {
         );
         addTearDown(container.dispose);
 
-        final states = <AsyncValue<List<CustomerEntity>>>[];
+        final states = <AsyncValue<List<SoapCustomerEntity>>>[];
         container.listen(
           customersStateControllerProvider(fakeEnterprise.Code!),
           (_, next) => states.add(next),
@@ -310,7 +310,7 @@ void main() {
         );
         addTearDown(container.dispose);
 
-        final states = <AsyncValue<List<CustomerEntity>>>[];
+        final states = <AsyncValue<List<SoapCustomerEntity>>>[];
         container.listen(
           customersStateControllerProvider(fakeEnterprise.Code!),
           (_, next) => states.add(next),

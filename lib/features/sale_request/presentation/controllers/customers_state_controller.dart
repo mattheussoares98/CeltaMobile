@@ -14,7 +14,7 @@ part 'customers_state_controller.g.dart';
 @riverpod
 class CustomersStateController extends _$CustomersStateController {
   @override
-  FutureOr<List<CustomerEntity>> build(int enterpriseCode) async {
+  FutureOr<List<SoapCustomerEntity>> build(int enterpriseCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -78,7 +78,7 @@ class CustomersStateController extends _$CustomersStateController {
         return customers;
       }
 
-      final List<CustomerEntity> result = [pendingSelectedCustomer];
+      final List<SoapCustomerEntity> result = [pendingSelectedCustomer];
       // Using a for-in loop is O(n) and faster than .any() followed by .where()
       for (final customer in customers) {
         if (customer.Code != pendingSelectedCustomer.Code) {

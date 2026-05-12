@@ -368,7 +368,7 @@ class EntityFactory {
         enabledModules: Modules.values,
       );
 
-  static CustomerEntity makeCustomerEntity() => CustomerEntity(
+  static SoapCustomerEntity makeCustomerEntity() => SoapCustomerEntity(
     Name: faker.person.name(),
     Code: faker.randomGenerator.integer(100),
     PersonalizedCode: faker.randomGenerator.integer(100).toString(),
@@ -677,7 +677,7 @@ class EntityFactory {
   );
 
   static SaleRequestEntity makeSaleRequestEntity({
-    CustomerEntity? customer,
+    SoapCustomerEntity? customer,
   }) => SaleRequestEntity(
     cart: {
       faker.randomGenerator.integer(100): EntityFactory.makeCartProductEntity(),

@@ -1,4 +1,4 @@
-import '../../../../../domain/entities/entities.dart';
+import '../../../../../../../core/domain/entities/entities.dart';
 
 class PaymentConditionModel extends PaymentConditionEntity {
   const PaymentConditionModel({

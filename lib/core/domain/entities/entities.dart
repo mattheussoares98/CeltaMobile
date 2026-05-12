@@ -1,6 +1,8 @@
 export './bs_resource.dart';
 export './crashlytics_custom_key_entity.dart';
+export './customer/customer.dart';
 export './device_type.dart';
+export './financial/financial.dart';
 export './modules.dart';
 export './practiced_price.dart';
 export './product/product.dart';
@@ -13,7 +15,6 @@ export 'address/address.dart';
 export 'app_usage/app_usage.dart';
 export 'bs_routine.dart';
 export 'buyer/buyer.dart';
-export 'customer/customer.dart';
 export 'ec/ec.dart';
 export 'enterprise/enterprise.dart';
 export 'operation_type.dart';

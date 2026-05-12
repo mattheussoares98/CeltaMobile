@@ -81,7 +81,7 @@ class PendingSaleRequestStateController
     );
   }
 
-  Future<void> changeCustomer(CustomerEntity newCustomer) async {
+  Future<void> changeCustomer(SoapCustomerEntity newCustomer) async {
     if (state.value == null) return;
 
     if (newCustomer.Code == state.value!.customer?.Code) {

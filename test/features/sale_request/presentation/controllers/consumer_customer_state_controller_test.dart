@@ -18,7 +18,7 @@ void main() {
   late MockSoapCustomerRepository mockRepository;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
-  late CustomerEntity fakeCustomer;
+  late SoapCustomerEntity fakeCustomer;
 
   setUpAll(() {
     // Register fallback values for mocktail's `any()` matcher

@@ -1,10 +1,11 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../../../../core/domain/entities/entities.dart';
 
 class PaymentConditionDropdown extends ConsumerWidget {
   final int enterpriseCode;
@@ -68,8 +69,9 @@ class PaymentConditionDropdown extends ConsumerWidget {
                         if ((e.condition?.composition ?? "0") != "0")
                           TextSpan(
                             text: ' ${e.condition?.composition}',
-                            style: theme.textTheme.titleSmall
-                                ?.copyWith(color: theme.primaryColor),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: theme.primaryColor,
+                            ),
                           ),
                       ],
                     ),

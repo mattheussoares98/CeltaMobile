@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../../../../../core/domain/entities/entities.dart';
 
 class BSFUserAuthorizationModel extends Equatable {
   final String? identification;

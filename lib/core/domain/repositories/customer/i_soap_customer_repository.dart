@@ -1,7 +1,7 @@
 import '../../entities/customer/customer.dart';
 
 abstract class ISoapCustomerRepository {
-  Future<List<CustomerEntity>> loadCustomer({
+  Future<List<SoapCustomerEntity>> loadCustomer({
     required SearchCustomerType searchType,
     required String searchValue,
     required String crossIdentity,

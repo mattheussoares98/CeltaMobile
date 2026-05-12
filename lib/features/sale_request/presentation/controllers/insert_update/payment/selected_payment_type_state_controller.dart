@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../domain/entities/entities.dart';
+import '../../../../../../core/domain/entities/entities.dart';
 
 part 'selected_payment_type_state_controller.g.dart';
 

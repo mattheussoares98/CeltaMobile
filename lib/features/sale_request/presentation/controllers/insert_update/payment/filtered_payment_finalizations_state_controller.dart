@@ -1,6 +1,7 @@
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../../../../../core/domain/entities/entities.dart';
 
 part 'filtered_payment_finalizations_state_controller.g.dart';
 
