@@ -35,8 +35,10 @@ class BottomNavigationWidget extends ConsumerWidget {
           icon: ValidatedBadge(
             isValid:
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
-            materialIcon: Icons.location_on,
-            cupertinoIcon: CupertinoIcons.location,
+            platformIcon: const PlatformIcon(
+              materialIcon: Icons.location_on,
+              cupertinoIcon: CupertinoIcons.location,
+            ),
             isSelected: selectedIndex == 1,
           ),
         ),
@@ -44,8 +46,10 @@ class BottomNavigationWidget extends ConsumerWidget {
           label: 'E-mail'.hardcoded,
           icon: ValidatedBadge(
             isValid: customer?.Emails != null && customer!.Emails!.isNotEmpty,
-            materialIcon: Icons.email,
-            cupertinoIcon: CupertinoIcons.mail,
+            platformIcon: const PlatformIcon(
+              materialIcon: Icons.email,
+              cupertinoIcon: CupertinoIcons.mail,
+            ),
             isSelected: selectedIndex == 2,
           ),
         ),
@@ -55,8 +59,10 @@ class BottomNavigationWidget extends ConsumerWidget {
             isValid:
                 customer?.Telephones != null &&
                 customer!.Telephones!.isNotEmpty,
-            materialIcon: Icons.phone,
-            cupertinoIcon: CupertinoIcons.phone,
+            platformIcon: const PlatformIcon(
+              materialIcon: Icons.phone,
+              cupertinoIcon: CupertinoIcons.phone,
+            ),
             isSelected: selectedIndex == 3,
           ),
         ),
@@ -66,8 +72,10 @@ class BottomNavigationWidget extends ConsumerWidget {
             isValid:
                 customer?.CustomerCovenants != null &&
                 customer!.CustomerCovenants!.isNotEmpty,
-            materialIcon: Icons.wallet,
-            cupertinoIcon: CupertinoIcons.creditcard,
+            platformIcon: const PlatformIcon(
+              materialIcon: Icons.wallet,
+              cupertinoIcon: CupertinoIcons.creditcard,
+            ),
             isSelected: selectedIndex == 4,
           ),
         ),

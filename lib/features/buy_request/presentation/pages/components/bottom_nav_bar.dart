@@ -85,8 +85,10 @@ class BottomNavBar extends ConsumerWidget {
               );
               return ValidatedBadge(
                 isValid: isValid,
-                materialIcon: Icons.info,
-                cupertinoIcon: CupertinoIcons.info,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.info,
+                  cupertinoIcon: CupertinoIcons.info,
+                ),
                 isSelected: currentIndex == 0,
               );
             },
@@ -146,8 +148,10 @@ class BottomNavBar extends ConsumerWidget {
 
               return ValidatedBadge(
                 isValid: isValid,
-                materialIcon: Icons.check_box_outlined,
-                cupertinoIcon: CupertinoIcons.checkmark_square,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.check_box_outlined,
+                  cupertinoIcon: CupertinoIcons.checkmark_square,
+                ),
                 isSelected: currentIndex == 3,
               );
             },

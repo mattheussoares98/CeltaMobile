@@ -79,8 +79,10 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
 
               return ValidatedBadge(
                 isValid: totalsMatch,
-                materialIcon: Icons.payment, //TODO use platformIcon instead
-                cupertinoIcon: CupertinoIcons.creditcard,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.payment,
+                  cupertinoIcon: CupertinoIcons.creditcard,
+                ),
                 isSelected: pageIndex == 2,
               );
             },

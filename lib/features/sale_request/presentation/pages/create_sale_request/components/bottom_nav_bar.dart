@@ -37,8 +37,10 @@ class BottomNavBar extends ConsumerWidget {
                       ).select((state) => state.value?.customer),
                     ) !=
                     null,
-                materialIcon: Icons.person,
-                cupertinoIcon: CupertinoIcons.person,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.person,
+                  cupertinoIcon: CupertinoIcons.person,
+                ),
               );
             },
           ),
