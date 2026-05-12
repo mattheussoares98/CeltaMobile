@@ -2,11 +2,11 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part '../payment_finalizations_state_controller.g.dart';
+part 'filtered_payment_finalizations_state_controller.g.dart';
 
 @Riverpod(keepAlive: true)
-class PaymentFinalizationsStateController
-    extends _$PaymentFinalizationsStateController {
+class FilteredPaymentFinalizationsStateController
+    extends _$FilteredPaymentFinalizationsStateController {
   @override
   FutureOr<List<BSFPaymentFinalizationEntity>> build({
     required int enterpriseCode,

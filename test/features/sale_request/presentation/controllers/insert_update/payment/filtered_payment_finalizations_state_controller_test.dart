@@ -87,7 +87,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          paymentFinalizationsStateControllerProvider(
+          filteredPaymentFinalizationsStateControllerProvider(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestCode: saleRequestId,
@@ -145,7 +145,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          paymentFinalizationsStateControllerProvider(
+          filteredPaymentFinalizationsStateControllerProvider(
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestCode: saleRequestId,

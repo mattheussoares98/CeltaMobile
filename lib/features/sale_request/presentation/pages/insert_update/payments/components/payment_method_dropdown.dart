@@ -20,7 +20,7 @@ class PaymentMethodDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final paymentProvider = paymentFinalizationsStateControllerProvider(
+    final paymentProvider = filteredPaymentFinalizationsStateControllerProvider(
       enterpriseCode: enterpriseCode,
       customerCode: customerCode,
       saleRequestCode: saleRequestCode,
