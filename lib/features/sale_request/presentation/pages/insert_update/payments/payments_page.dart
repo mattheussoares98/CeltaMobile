@@ -130,6 +130,18 @@ class _NewPaymentSection extends ConsumerWidget {
 
     if (totalLiquidAndPaidDifference == 0) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
+    } else if (totalLiquidAndPaidDifference < 0) {
+      return SliverToBoxAdapter(
+        child: Text(
+          'O total das formas de pagamento está maior que o total dos produtos!'
+              .hardcoded,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: Colors.red,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      );
     }
 
     final theme = Theme.of(context);
