@@ -86,15 +86,18 @@ class _NewPaymentSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alreadyPaidEverything = ref.watch(
+    final totalLiquidAndPaidDifference = ref.watch(
       insertUpdateStateControllerProvider(
         enterpriseCode: enterpriseCode,
         customerCode: customerCode,
         saleRequestId: saleRequestId,
-      ).select((s) => s.value?.totalProductsLiquid == s.value?.totalPayments),
+      ).select(
+        (s) =>
+            (s.value?.totalProductsLiquid ?? 0) - (s.value?.totalPayments ?? 0),
+      ),
     );
 
-    if (alreadyPaidEverything) {
+    if (totalLiquidAndPaidDifference == 0) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
@@ -106,6 +109,13 @@ class _NewPaymentSection extends ConsumerWidget {
             style: Theme.of(
               context,
             ).textTheme.titleSmall?.copyWith(fontStyle: FontStyle.italic),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: TitleAndSubTitle(
+            title: 'Faltando'.hardcoded,
+            subTitle: totalLiquidAndPaidDifference,
+            subTitleIsPrice: true,
           ),
         ),
         gapSliverH8,
