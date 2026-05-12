@@ -48,12 +48,12 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        saleRequestDetailsStateControllerProvider(
-          customerCode: customerCode,
+        insertUpdateStateControllerProvider(
           enterpriseCode: enterpriseCode,
-          saleRequestCode: saleRequestId,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
         ).overrideWith(
-          () => FakeSaleRequestDetailsController(saleRequestEntity),
+          () => FakeInsertUpdateStateController(saleRequestEntity),
         ),
         ecPaymentFinalizationRepositoryProvider.overrideWith(
           (_) => mockRepository,
@@ -88,23 +88,11 @@ void main() {
               requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
                 paymentFinalizations: [
                   EntityFactory.makeBSFRequestTypePaymentFinalizationEntity()
-                      .copyWith(
-                        code: enabled1.code,
-                        isDeactivated: faker.randomGenerator
-                            .boolean() /* doesn't matter */,
-                      ),
+                      .copyWith(code: enabled1.code),
                   EntityFactory.makeBSFRequestTypePaymentFinalizationEntity()
-                      .copyWith(
-                        code: enabled2.code,
-                        isDeactivated: faker.randomGenerator
-                            .boolean() /* doesn't matter */,
-                      ),
+                      .copyWith(code: enabled2.code),
                   EntityFactory.makeBSFRequestTypePaymentFinalizationEntity()
-                      .copyWith(
-                        code: disabled.code,
-                        isDeactivated: faker.randomGenerator
-                            .boolean() /* doesn't matter */,
-                      ),
+                      .copyWith(code: disabled.code),
                   EntityFactory.makeBSFRequestTypePaymentFinalizationEntity()
                       .copyWith(
                         code: faker.randomGenerator.integer(999, min: 500),
@@ -141,6 +129,71 @@ void main() {
             ),
           ),
         ).called(1);
+      },
+    );
+    test(
+      'should filter repository finalizations based on customer restrictions',
+      () async {
+        final fin1 = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+          code: 10,
+          isDeactivate: false,
+        );
+        final fin2 = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+          code: 20,
+          isDeactivate: false,
+        );
+        final fin3 = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+          code: 30,
+          isDeactivate: false,
+        );
+
+        final fakePaymentOptions = [fin1, fin2, fin3];
+
+        // ARRANGE
+        when(
+          () => mockRepository.getPaymentFinalizations(
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        ).thenAnswer((_) async => fakePaymentOptions);
+
+        final saleRequestDetailsEntity =
+            EntityFactory.makeBSFSaleRequestEntity().copyWith(
+              requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
+                paymentFinalizations: [
+                  //necessary to be sure that there is no filtered sale requests on request type
+                ],
+              ),
+              customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: fin1.code,
+                  ),
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: fin2.code,
+                  ),
+                ],
+              ),
+            );
+
+        final container = makeProviderContainer(
+          session: fakeSession,
+          saleRequestEntity: saleRequestDetailsEntity,
+        );
+        addTearDown(container.dispose);
+
+        // ACT
+        final result = await container.read(
+          paymentFinalizationsStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestCode: saleRequestId,
+          ).future,
+        );
+
+        // ASSERT
+        // Should only return fin1 and fin2 because fin3 is not in customer restrictions
+        expect(result, [fin1, fin2]);
       },
     );
   });
