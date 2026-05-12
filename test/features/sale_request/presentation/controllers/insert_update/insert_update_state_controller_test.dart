@@ -31,6 +31,7 @@ void main() {
   late int enterpriseCode;
   late int customerCode;
   late FakePaymentFinalizationsController fakePaymentsController;
+  late FakeSearchedCustomersStateController searchedCustomersController;
   late List<BSFPaymentFinalizationEntity> fakePayments;
   late BSFSaleRequestEntity fakeSaleRequest;
 
@@ -48,6 +49,11 @@ void main() {
           enterpriseCode: enterpriseCode,
           saleRequestCode: saleRequestId,
         ).overrideWith(() => FakeSaleRequestDetailsController(fakeSaleRequest)),
+        searchedCustomersStateControllerProvider(
+          enterpriseCode: enterpriseCode,
+          saleRequestId: saleRequestId,
+          customerCode: customerCode,
+        ).overrideWith(() => searchedCustomersController),
       ],
     );
     addTearDown(container.dispose);
@@ -65,6 +71,10 @@ void main() {
     ];
 
     fakePaymentsController = FakePaymentFinalizationsController(fakePayments);
+    searchedCustomersController = FakeSearchedCustomersStateController([
+      EntityFactory.makeBSFCustomerEntity(),
+      EntityFactory.makeBSFCustomerEntity(),
+    ]);
   });
 
   group('InsertUpdateStateController', () {
@@ -947,90 +957,113 @@ void main() {
 
         expect(state3.value!.financials!.first.paymentFinalizations, isEmpty);
       });
-      group('disposeFlow', () {
-        test('should invalidate selection providers and itself', () async {
-          const saleRequestId = 0; // Test with a new request
-          final container = makeProviderContainer(saleRequestId: saleRequestId);
+    });
+    group('disposeFlow', () {
+      test('should invalidate selection providers and itself', () async {
+        const saleRequestId = 0; // Test with a new request
+        final container = makeProviderContainer(saleRequestId: saleRequestId);
 
-          final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: saleRequestId,
-            ).notifier,
-          );
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+          ).notifier,
+        );
 
-          //load the initial state
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: saleRequestId,
-            ).future,
-          );
+        //load the initial state
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+          ).future,
+        );
 
-          // 1. Set some initial state in related providers
-          final paymentType = EntityFactory.makeBSFPaymentFinalizationEntity();
-          final paymentCondition =
-              EntityFactory.makeBSFPaymentConditionEntity();
+        // 1. Set some initial state in related providers
+        final paymentType = EntityFactory.makeBSFPaymentFinalizationEntity();
+        final paymentCondition = EntityFactory.makeBSFPaymentConditionEntity();
 
+        container
+            .read(
+              selectedPaymentTypeStateControllerProvider(
+                saleRequestId,
+              ).notifier,
+            )
+            .select(paymentType);
+        container
+            .read(selectedPaymentConditionStateControllerProvider.notifier)
+            .select(paymentCondition);
+
+        // 2. Add a product to the main controller so it's not "empty"
+        final product = EntityFactory.makeProductEntity(
+          enterpriseCode: enterpriseCode,
+        );
+        controller.addItem(product);
+
+        expect(
           container
               .read(
-                selectedPaymentTypeStateControllerProvider(
-                  saleRequestId,
-                ).notifier,
+                insertUpdateStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  customerCode: customerCode,
+                  saleRequestId: saleRequestId,
+                ),
               )
-              .select(paymentType);
+              .value
+              ?.products
+              ?.length,
+          1,
+        );
+
+        expect(
           container
-              .read(selectedPaymentConditionStateControllerProvider.notifier)
-              .select(paymentCondition);
+              .read(
+                searchedCustomersStateControllerProvider(
+                  enterpriseCode: enterpriseCode,
+                  saleRequestId: saleRequestId,
+                  customerCode: customerCode,
+                ),
+              )
+              .value,
+          isNotEmpty,
+        );
 
-          // 2. Add a product to the main controller so it's not "empty"
-          final product = EntityFactory.makeProductEntity(
+        // 3. Call disposeFlow
+        controller.disposeFlow();
+
+        // 4. Verify selection providers are reset
+        expect(
+          container.read(
+            selectedPaymentTypeStateControllerProvider(saleRequestId),
+          ),
+          isNull,
+        );
+        expect(
+          container.read(selectedPaymentConditionStateControllerProvider),
+          isNull,
+        );
+        
+        // Trigger rebuild to confirm invalidation
+        container.read(
+          searchedCustomersStateControllerProvider(
             enterpriseCode: enterpriseCode,
-          );
-          controller.addItem(product);
+            saleRequestId: saleRequestId,
+            customerCode: customerCode,
+          ),
+        );
 
-          expect(
-            container
-                .read(
-                  insertUpdateStateControllerProvider(
-                    enterpriseCode: enterpriseCode,
-                    customerCode: customerCode,
-                    saleRequestId: saleRequestId,
-                  ),
-                )
-                .value
-                ?.products
-                ?.length,
-            1,
-          );
+        expect(searchedCustomersController.rebuildCount, 2);
 
-          // 3. Call disposeFlow
-          controller.disposeFlow();
-
-          // 4. Verify selection providers are reset
-          expect(
-            container.read(
-              selectedPaymentTypeStateControllerProvider(saleRequestId),
-            ),
-            isNull,
-          );
-          expect(
-            container.read(selectedPaymentConditionStateControllerProvider),
-            isNull,
-          );
-
-          // 5. Verify main controller was reset to initial state (empty)
-          final stateAfterDispose = await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: saleRequestId,
-            ).future,
-          );
-          expect(stateAfterDispose.products ?? [], isEmpty);
-        });
+        // 5. Verify main controller was reset to initial state (empty)
+        final stateAfterDispose = await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+          ).future,
+        );
+        expect(stateAfterDispose.products ?? [], isEmpty);
       });
     });
   });

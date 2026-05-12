@@ -58,3 +58,23 @@ class FakeAllPaymentConditionsController
     return entities;
   }
 }
+
+class FakeSearchedCustomersStateController
+    extends SearchedCustomersStateController {
+  final List<BSFCustomerEntity> entities;
+
+  int _rebuildCount = 0;
+  int get rebuildCount => _rebuildCount;
+
+  FakeSearchedCustomersStateController(this.entities);
+
+  @override
+  FutureOr<List<BSFCustomerEntity>> build({
+    required int enterpriseCode,
+    required int saleRequestId,
+    required int customerCode,
+  }) {
+    ++_rebuildCount;
+    return entities;
+  }
+}
