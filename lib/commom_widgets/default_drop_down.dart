@@ -121,7 +121,7 @@ class DefaultDropDown<T> extends StatelessWidget {
         ),
         color: theme.disabledColor.withAlpha(50),
         child: DropdownButtonFormField<T>(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: AutovalidateMode.onUserInteractionIfError,
           decoration: const InputDecoration(border: InputBorder.none),
           isDense: true,
           padding: const EdgeInsets.only(left: Sizes.p8),
