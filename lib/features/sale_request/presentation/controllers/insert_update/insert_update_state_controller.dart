@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/domain/entities/entities.dart';
+import '../../../../../localization/string_hardcoded.dart';
 import '../../../domain/entities/bsf/bsf.dart';
 import '../../../domain/entities/entities.dart';
 import 'insert_update.dart';
@@ -138,12 +139,21 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(state.value!.copyWith(requestType: requestType));
   }
 
-  void addPayment({
+  (bool, String?) addPayment({
     required BSFPaymentFinalizationEntity payment,
     required double value,
     CreditCardPropertiesEntity? creditCardProperties,
   }) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    if (state is! AsyncData<BSFSaleRequestEntity>) {
+      return (false, 'Erro não esperado'.hardcoded);
+    }
+
+    final totalProducts = state.value!.totalProductsLiquid;
+    final totalPayments = state.value!.totalPayments;
+
+    if (value > totalProducts - totalPayments) {
+      return (false, 'Valor excede o disponível'.hardcoded);
+    }
 
     final current = state.value!;
     final financials = List<BSFFinancialEntity>.from(current.financials ?? []);
@@ -194,6 +204,8 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
+
+    return (true, null);
   }
 
   void removePayment(int index) {

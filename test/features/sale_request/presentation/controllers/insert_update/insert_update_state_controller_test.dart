@@ -609,9 +609,22 @@ void main() {
           );
 
           final payment = fakePayments.first;
-          final value = faker.randomGenerator.decimal() * 100;
+          const value = 100.0;
 
-          controller.addPayment(payment: payment, value: value);
+          // Add a product first so there is available balance
+          controller.addItem(
+            EntityFactory.makeProductEntity(
+              enterpriseCode: enterpriseCode,
+            ).copyWith(RetailPracticedPrice: 200, Value: 200),
+          );
+
+          final (success, error) = controller.addPayment(
+            payment: payment,
+            value: value,
+          );
+
+          expect(success, isTrue);
+          expect(error, isNull);
 
           final state = container.read(
             insertUpdateStateControllerProvider(
@@ -657,15 +670,25 @@ void main() {
           );
 
           final payment = fakePayments.first;
-          final value = faker.randomGenerator.decimal() * 100;
+          const value = 100.0;
           final creditCardProperties =
               EntityFactory.makeCreditCardPropertiesEntity();
 
-          controller.addPayment(
+          // Add a product first so there is available balance
+          controller.addItem(
+            EntityFactory.makeProductEntity(
+              enterpriseCode: enterpriseCode,
+            ).copyWith(RetailPracticedPrice: 200, Value: 200),
+          );
+
+          final (success, error) = controller.addPayment(
             payment: payment,
             value: value,
             creditCardProperties: creditCardProperties,
           );
+
+          expect(success, isTrue);
+          expect(error, isNull);
 
           final state = container.read(
             insertUpdateStateControllerProvider(
@@ -722,8 +745,21 @@ void main() {
           paymentCondition,
         );
 
+        // Add a product first so there is available balance
+        controller.addItem(
+          EntityFactory.makeProductEntity(
+            enterpriseCode: enterpriseCode,
+          ).copyWith(RetailPracticedPrice: 200, Value: 200),
+        );
+
         // Call addPayment
-        controller.addPayment(payment: fakePayments.first, value: 100.0);
+        final (success, error) = controller.addPayment(
+          payment: fakePayments.first,
+          value: 100.0,
+        );
+
+        expect(success, isTrue);
+        expect(error, isNull);
 
         final state = container.read(
           insertUpdateStateControllerProvider(
@@ -780,8 +816,21 @@ void main() {
             paymentCondition,
           );
 
+          // Add a product first so there is available balance
+          controller.addItem(
+            EntityFactory.makeProductEntity(
+              enterpriseCode: enterpriseCode,
+            ).copyWith(RetailPracticedPrice: 200, Value: 200),
+          );
+
           // Call addPayment
-          controller.addPayment(payment: fakePayments.first, value: 100.0);
+          final (success, error) = controller.addPayment(
+            payment: fakePayments.first,
+            value: 100.0,
+          );
+
+          expect(success, isTrue);
+          expect(error, isNull);
 
           // Verify they are now null
           expect(
@@ -794,6 +843,43 @@ void main() {
           );
         },
       );
+
+      test('Should return error when value exceeds available', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ).notifier,
+        );
+
+        await container.read(
+          insertUpdateStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: 0,
+          ).future,
+        );
+
+        // Add a product with price 50
+        controller.addItem(
+          EntityFactory.makeProductEntity(
+            enterpriseCode: enterpriseCode,
+          ).copyWith(RetailPracticedPrice: 50, Value: 50),
+        );
+
+        // Try to add a payment of 100
+        final (success, error) = controller.addPayment(
+          payment: fakePayments.first,
+          value: 100.0,
+        );
+
+        expect(success, isFalse);
+        expect(error, isNotEmpty);
+        expect(error, isNotNull);
+      });
     });
 
     group('Remove Payment', () {
@@ -816,6 +902,11 @@ void main() {
           ).future,
         );
 
+        controller.addItem(
+          EntityFactory.makeProductEntity(
+            enterpriseCode: enterpriseCode,
+          ).copyWith(RetailPracticedPrice: 200, Value: 200),
+        );
         final value = faker.randomGenerator.decimal() * 100;
 
         controller.addPayment(payment: fakePayments[0], value: value);
