@@ -118,6 +118,18 @@ extension PriceCostEntityToBSFPriceCostEntity on PriceCostEntity {
 
 extension BSFProductItemEntityToProductEntity on BSFProductItemEntity {
   ProductEntity toProductEntity(int? enterpriseCode) {
+    final retailPracticedPrice = (priceCost?.saleRetailOfferPractice ?? 0) > 0
+        ? (priceCost?.saleRetailOfferPractice ?? 0)
+        : priceCost?.saleRetailPricePractice ?? 0;
+
+    final wholePracticedPrice = (priceCost?.wholeSaleOfferPractice ?? 0) > 0
+        ? (priceCost?.wholeSaleOfferPractice ?? 0)
+        : priceCost?.wholeSalePricePractice ?? 0;
+
+    final eCommercePracticedPrice = (priceCost?.eCommerceOfferPractice ?? 0) > 0
+        ? (priceCost?.eCommerceOfferPractice ?? 0)
+        : priceCost?.eCommercePricePractice ?? 0;
+
     return ProductEntity(
       EnterpriseCode: enterpriseCode,
       ProductCode: product?.code,
@@ -126,23 +138,15 @@ extension BSFProductItemEntityToProductEntity on BSFProductItemEntity {
       Name: product?.name,
       PackingQuantity: product?.productPackingQuantity?.toString(),
       PackingAbbreviation: product?.productPackingTypeString,
-      Value:
-          priceCost?.saleRetailOfferPractice ??
-          priceCost?.saleRetailPricePractice,
-      RetailPracticedPrice:
-          priceCost?.saleRetailOfferPractice ??
-          priceCost?.saleRetailPricePractice,
+      Value: retailPracticedPrice,
+      RetailPracticedPrice: retailPracticedPrice,
       RetailSalePrice: priceCost?.saleRetailPricePractice,
       RetailOfferPrice: priceCost?.saleRetailOfferPractice,
-      WholePracticedPrice:
-          priceCost?.wholeSaleOfferPractice ??
-          priceCost?.wholeSalePricePractice,
+      WholePracticedPrice: wholePracticedPrice,
       WholeSalePrice: priceCost?.wholeSalePricePractice,
       WholeOfferPrice: priceCost?.wholeSaleOfferPractice,
       MinimumWholeQuantity: priceCost?.mininumQuantityForWholeSale,
-      ECommercePracticedPrice:
-          priceCost?.eCommerceOfferPractice ??
-          priceCost?.eCommercePricePractice,
+      ECommercePracticedPrice: eCommercePracticedPrice,
       ECommerceSalePrice: priceCost?.eCommercePricePractice,
       ECommerceOfferPrice: priceCost?.eCommerceOfferPractice,
       OperationalCost: priceCost?.operationCost,
