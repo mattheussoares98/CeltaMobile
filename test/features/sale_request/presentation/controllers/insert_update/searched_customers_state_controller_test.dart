@@ -66,23 +66,20 @@ void main() {
   }
 
   group('CustomersStateController', () {
-    test(
-      'build should initialize with current customer from sale request details',
-      () async {
-        final container = makeProviderContainer(session: fakeSession);
-        addTearDown(container.dispose);
+    test('build should return empty list', () async {
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
 
-        final state = await container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ).future,
-        );
+      final state = await container.read(
+        searchedCustomersStateControllerProvider(
+          enterpriseCode: enterpriseCode,
+          saleRequestId: saleRequestId,
+          customerCode: customerCode,
+        ).future,
+      );
 
-        expect(state, [fakeCustomer]);
-      },
-    );
+      expect(state, []);
+    });
 
     test('Should behave correctly on load', () async {
       final container = makeProviderContainer(session: fakeSession);
@@ -115,7 +112,7 @@ void main() {
         ),
       );
 
-      expect(state.value, [fakeCustomer, ...searchResults]);
+      expect(state.value, searchResults);
       verify(
         () => mockRepository.searchForMobileApp(
           params: EcRequestParams(
@@ -131,7 +128,7 @@ void main() {
     });
 
     test(
-      'Should put the customer with same code from insertUpdateController at first position and updated',
+      'Should not return the customer with same code from insertUpdateController',
       () async {
         final container = makeProviderContainer(session: fakeSession);
         addTearDown(container.dispose);
@@ -164,46 +161,7 @@ void main() {
           ),
         );
 
-        expect(state.value!.first, updatedFakeCustomer);
-        expect(state.value!.length, 2);
-        expect(state.value![1], otherCustomer);
-      },
-    );
-
-    test(
-      'loadCustomer should prepend selected customer even if repository does NOT return it',
-      () async {
-        final container = makeProviderContainer(session: fakeSession);
-        addTearDown(container.dispose);
-
-        final otherCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
-          code: 2,
-        );
-        final searchResults = [otherCustomer];
-
-        mockRepository.mockSearchForMobileApp(searchResults);
-
-        final controller = container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ).notifier,
-        );
-
-        await controller.loadCustomer('search query', false);
-
-        final state = container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ),
-        );
-
-        expect(state.value!.first, fakeCustomer);
-        expect(state.value!.length, 2);
-        expect(state.value![1], otherCustomer);
+        expect(state.value, [otherCustomer]);
       },
     );
 

@@ -1,9 +1,10 @@
-import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../../core/providers/customer/customer.dart';
+import '../../../../../exceptions/exceptions.dart';
+import '../../../../../localization/string_hardcoded.dart';
 import 'insert_update.dart';
 
 part 'searched_customers_state_controller.g.dart';
@@ -16,17 +17,7 @@ class SearchedCustomersStateController
     required int enterpriseCode,
     required int saleRequestId,
     required int customerCode,
-  }) async {
-    final currentCustomer = await ref.read(
-      saleRequestDetailsStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestCode: saleRequestId,
-      ).selectAsync((s) => s.customer),
-    ); //TODO invalidate when close the page
-
-    return [?currentCustomer];
-  }
+  }) async => [];
 
   Future<bool> loadCustomer(String value, bool searchByPersonalizedCode) async {
     state = const AsyncValue.loading();
@@ -50,6 +41,10 @@ class SearchedCustomersStateController
             searchByPersonalizedCode: searchByPersonalizedCode,
           );
 
+      if (customers.isEmpty) {
+        throw AppException('Nenhum cliente foi encontrado'.hardcoded);
+      }
+
       final selectedCustomer = await ref.read(
         insertUpdateStateControllerProvider(
           customerCode: customerCode,
@@ -60,14 +55,7 @@ class SearchedCustomersStateController
 
       succeeds = true;
 
-      final updatedSelectedCustomer =
-          customers.firstWhereOrNull((c) => c.code == selectedCustomer?.code) ??
-          selectedCustomer;
-
-      return [
-        ?updatedSelectedCustomer,
-        ...customers.where((c) => c.code != selectedCustomer?.code),
-      ];
+      return [...customers.where((c) => c.code != selectedCustomer?.code)];
     });
     return succeeds;
   }
