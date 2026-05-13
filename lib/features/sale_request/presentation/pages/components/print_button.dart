@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/validators/validators.dart';
-import '../../../../../utils/utils.dart';
 import '../../controllers/controllers.dart';
 
 class PrintButton extends ConsumerStatefulWidget {
@@ -81,86 +80,86 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(printSaleRequestControllerProvider, (p, n) {
-      n.showAlertDialogOnError(context);
-    });
-
     final ProviderBase<AsyncValue<dynamic>> provider =
         widget.customerCode != null && widget.saleRequestId != null
         ? saleRequestDetailsStateControllerProvider
         : lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode);
 
-    final canPrint = ref.watch(
-      provider.select((s) => s.value != null && !s.isLoading),
-    );
+    return Consumer(
+      builder: (_, ref, _) {
+        final canPrint = ref.watch(
+          provider.select((s) => s.value != null && !s.isLoading),
+        );
 
-    return IconButton(
-      icon: const PlatformIcon(
-        cupertinoIcon: CupertinoIcons.printer,
-        materialIcon: Icons.print,
-      ),
-      onPressed: canPrint
-          ? () {
-              showModalPage(
-                Consumer(
-                  builder: (_, ref, _) {
-                    final isLoading = ref.watch(
-                      printSaleRequestControllerProvider.select(
-                        (s) => s.isLoading,
-                      ),
-                    );
+        return IconButton(
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.printer,
+            materialIcon: Icons.print,
+          ),
+          onPressed: canPrint
+              ? () {
+                  showModalPage(
+                    Consumer(
+                      builder: (_, ref, _) {
+                        final isLoading = ref.watch(
+                          printSaleRequestControllerProvider.select(
+                            (s) => s.isLoading,
+                          ),
+                        );
 
-                    return Form(
-                      key: formKey,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                'Imprimir último pedido salvo na empresa'
-                                    .hardcoded,
-                              ),
-                              gapH16,
-                              DefaultTextFormField(
-                                labelText: 'IP da impressora'.hardcoded,
-                                hintText: '192.168.0.1',
-                                maxLength: 15,
-                                controller: ipController,
-                                enabled: !isLoading,
-                                onFieldSubmitted: (_) => print(),
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                inputFormatters: [
-                                  // This allows *only* digits and dots
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(r'[\d.]'),
+                        return Form(
+                          key: formKey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    'Imprimir último pedido salvo na empresa'
+                                        .hardcoded,
+                                  ),
+                                  gapH16,
+                                  DefaultTextFormField(
+                                    labelText: 'IP da impressora'.hardcoded,
+                                    hintText: '192.168.0.1',
+                                    maxLength: 15,
+                                    controller: ipController,
+                                    enabled: !isLoading,
+                                    onFieldSubmitted: (_) => print(),
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    inputFormatters: [
+                                      // This allows *only* digits and dots
+                                      FilteringTextInputFormatter.allow(
+                                        RegExp(r'[\d.]'),
+                                      ),
+                                    ],
+                                    validator: FormValidators.compose([
+                                      NonEmptyValidator(),
+                                      IpValidator(),
+                                    ]),
+                                    keyboardType: TextInputType.datetime,
+                                  ),
+                                  gapH32,
+                                  PrimaryButton(
+                                    text: 'Imprimir'.hardcoded,
+                                    isLoading: isLoading,
+                                    onPressed: print,
                                   ),
                                 ],
-                                validator: FormValidators.compose([
-                                  NonEmptyValidator(),
-                                  IpValidator(),
-                                ]),
-                                keyboardType: TextInputType.datetime,
                               ),
-                              gapH32,
-                              PrimaryButton(
-                                text: 'Imprimir'.hardcoded,
-                                isLoading: isLoading,
-                                onPressed: print,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                context,
-              );
-            }
-          : null,
+                        );
+                      },
+                    ),
+                    context,
+                  );
+                }
+              : null,
+        );
+      },
     );
   }
 }
