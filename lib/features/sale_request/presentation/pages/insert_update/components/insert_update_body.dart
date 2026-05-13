@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/controllers.dart';
-import '../items/items.dart';
-import '../payments/payments.dart';
-import '../products/products.dart';
-import '../summary/summary.dart';
+import '../insert_update.dart';
 
 class InsertUpdateBody extends ConsumerWidget {
   final int enterpriseCode;
@@ -27,6 +24,11 @@ class InsertUpdateBody extends ConsumerWidget {
       index: pageIndex,
       children: [
         ProductsPage(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
+        ),
+        CustomersPage(
           enterpriseCode: enterpriseCode,
           customerCode: customerCode,
           saleRequestId: saleRequestId,
