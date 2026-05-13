@@ -1,2 +1,2 @@
-export './bsf_customer_entity.dart';
+export 'bsf/bsf.dart';
 export 'soap/soap.dart';
