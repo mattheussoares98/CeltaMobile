@@ -226,19 +226,3 @@ extension BSFPriceCostEntityToPriceCostEntity on BSFPriceCostEntity {
   }
 }
 
-extension CustomerEntityToBSFCustomerEntity on SoapCustomerEntity {
-  BSFCustomerEntity toBSFCustomerEntity() {
-    return BSFCustomerEntity(
-      code: Code,
-      personalizedCode: PersonalizedCode,
-      name: Name,
-      nameReduced: ReducedName,
-      cnpjCpfNumber: CpfCnpjNumber,
-      suframaCode: null,
-      limitOfPurchase: null,
-      inscriptionRgNumber: RegistrationNumber,
-      paymentFinalizations: null,
-      paymentConditions: null,
-    );
-  }
-}

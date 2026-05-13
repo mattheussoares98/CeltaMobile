@@ -13,6 +13,9 @@ class BSFCustomerEntity extends Equatable {
   final String? inscriptionRgNumber;
   final List<BSFPaymentFinalizationEntity>? paymentFinalizations;
   final List<BSFPaymentConditionEntity>? paymentConditions;
+  final BsfSaleBlockadeEntity? saleBlockade;
+  final BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction;
+  final List<BsfCovenantEntity>? covenants;
 
   const BSFCustomerEntity({
     required this.personalizedCode,
@@ -25,21 +28,27 @@ class BSFCustomerEntity extends Equatable {
     required this.inscriptionRgNumber,
     required this.paymentFinalizations,
     required this.paymentConditions,
+    required this.saleBlockade,
+    required this.saleBlockadeInstruction,
+    required this.covenants,
   });
 
   @override
   List<Object?> get props => [
-    cnpjCpfNumber,
-    name,
-    code,
-    personalizedCode,
-    nameReduced,
-    suframaCode,
-    limitOfPurchase,
-    inscriptionRgNumber,
-    paymentFinalizations,
-    paymentConditions,
-  ];
+        cnpjCpfNumber,
+        name,
+        code,
+        personalizedCode,
+        nameReduced,
+        suframaCode,
+        limitOfPurchase,
+        inscriptionRgNumber,
+        paymentFinalizations,
+        paymentConditions,
+        saleBlockade,
+        saleBlockadeInstruction,
+        covenants,
+      ];
 
   BSFCustomerEntity copyWith({
     String? personalizedCode,
@@ -52,6 +61,9 @@ class BSFCustomerEntity extends Equatable {
     String? inscriptionRgNumber,
     List<BSFPaymentFinalizationEntity>? paymentFinalizations,
     List<BSFPaymentConditionEntity>? paymentConditions,
+    BsfSaleBlockadeEntity? saleBlockade,
+    BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction,
+    List<BsfCovenantEntity>? covenants,
   }) {
     return BSFCustomerEntity(
       personalizedCode: personalizedCode ?? this.personalizedCode,
@@ -64,6 +76,10 @@ class BSFCustomerEntity extends Equatable {
       inscriptionRgNumber: inscriptionRgNumber ?? this.inscriptionRgNumber,
       paymentFinalizations: paymentFinalizations ?? this.paymentFinalizations,
       paymentConditions: paymentConditions ?? this.paymentConditions,
+      saleBlockade: saleBlockade ?? this.saleBlockade,
+      saleBlockadeInstruction:
+          saleBlockadeInstruction ?? this.saleBlockadeInstruction,
+      covenants: covenants ?? this.covenants,
     );
   }
 }

@@ -13,6 +13,9 @@ class BSFCustomerModel extends BSFCustomerEntity {
     required super.inscriptionRgNumber,
     required super.paymentFinalizations,
     required super.paymentConditions,
+    required super.saleBlockade,
+    required super.saleBlockadeInstruction,
+    required super.covenants,
   });
 
   @override
@@ -26,6 +29,9 @@ class BSFCustomerModel extends BSFCustomerEntity {
     inscriptionRgNumber,
     paymentFinalizations,
     paymentConditions,
+    saleBlockade,
+    saleBlockadeInstruction,
+    covenants,
   ];
 
   factory BSFCustomerModel.fromJson(Map<String, dynamic> json) =>
@@ -48,6 +54,21 @@ class BSFCustomerModel extends BSFCustomerEntity {
                   .map((x) => BSFPaymentConditionModel.fromJson(x))
                   .toList()
             : null,
+        saleBlockade: json['SaleBlockade'] != null
+            ? BsfSaleBlockadeModel.fromJson(json['SaleBlockade'])
+            : null,
+        saleBlockadeInstruction: json['SaleBlockadeInstruction'] != null
+            ? BsfSaleBlockadeInstructionModel.fromJson(
+                json['SaleBlockadeInstruction'],
+              )
+            : null,
+        covenants: (json['Extensions']?['Covenants'] as List?)
+            ?.map(
+              (e) => BsfCovenantModel.fromJson(
+                e['Covenant'] as Map<String, dynamic>,
+              ),
+            )
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,6 +86,19 @@ class BSFCustomerModel extends BSFCustomerEntity {
     'PaymentConditions': paymentConditions
         ?.map((x) => BSFPaymentConditionModel.fromEntity(x).toJson())
         .toList(),
+    'SaleBlockade': saleBlockade != null
+        ? BsfSaleBlockadeModel.fromEntity(saleBlockade!).toJson()
+        : null,
+    'SaleBlockadeInstruction': saleBlockadeInstruction != null
+        ? BsfSaleBlockadeInstructionModel.fromEntity(
+            saleBlockadeInstruction!,
+          ).toJson()
+        : null,
+    'Extensions': {
+      'Covenants': covenants
+          ?.map((e) => {'Covenant': BsfCovenantModel.fromEntity(e).toJson()})
+          .toList(),
+    },
   };
 
   factory BSFCustomerModel.fromEntity(BSFCustomerEntity entity) =>
@@ -83,6 +117,9 @@ class BSFCustomerModel extends BSFCustomerEntity {
         paymentConditions: entity.paymentConditions
             ?.map((x) => BSFPaymentConditionModel.fromEntity(x))
             .toList(),
+        saleBlockade: entity.saleBlockade,
+        saleBlockadeInstruction: entity.saleBlockadeInstruction,
+        covenants: entity.covenants,
       );
 
   BSFCustomerEntity toEntity() => BSFCustomerEntity(
@@ -100,5 +137,8 @@ class BSFCustomerModel extends BSFCustomerEntity {
     paymentConditions: paymentConditions
         ?.map((x) => BSFPaymentConditionModel.fromEntity(x))
         .toList(),
+    saleBlockade: saleBlockade,
+    saleBlockadeInstruction: saleBlockadeInstruction,
+    covenants: covenants,
   );
 }

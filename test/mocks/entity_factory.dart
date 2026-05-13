@@ -1181,22 +1181,76 @@ class EntityFactory {
       );
 
   static BSFCustomerEntity makeBSFCustomerEntity() => BSFCustomerEntity(
+        code: faker.randomGenerator.integer(100),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        name: faker.person.name(),
+        nameReduced: faker.person.name(),
+        cnpjCpfNumber: faker.randomGenerator.numberOfLength(14),
+        suframaCode: faker.guid.guid(),
+        limitOfPurchase: faker.randomGenerator.decimal(),
+        inscriptionRgNumber: faker.guid.guid(),
+        paymentFinalizations: List<BSFPaymentFinalizationEntity>.generate(
+          3,
+          (_) => makeBSFPaymentFinalizationEntity(),
+        ),
+        paymentConditions: List<BSFPaymentConditionEntity>.generate(
+          3,
+          (_) => makeBSFPaymentConditionEntity(),
+        ),
+        saleBlockade: makeBsfSaleBlockadeEntity(),
+        saleBlockadeInstruction: makeBsfSaleBlockadeInstructionEntity(),
+        covenants: [
+          makeBsfCovenantEntity(),
+          makeBsfCovenantEntity(),
+        ],
+      );
+
+  static BsfSaleBlockadeEntity makeBsfSaleBlockadeEntity() =>
+      BsfSaleBlockadeEntity(
+        code: faker.randomGenerator.integer(100),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        legacyCode: faker.lorem.word(),
+        description: faker.lorem.sentence(),
+        allowSale: faker.randomGenerator.boolean(),
+        allowSaleRequest: faker.randomGenerator.boolean(),
+        allowSaleWithPaymentFinalizationTypeCheckOrPortion:
+            faker.randomGenerator.boolean(),
+        stringAllowSale: faker.lorem.word(),
+        stringAllowSaleRequest: faker.lorem.word(),
+        stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion:
+            faker.lorem.word(),
+      );
+
+  static BsfSaleBlockadeInstructionEntity
+  makeBsfSaleBlockadeInstructionEntity() => BsfSaleBlockadeInstructionEntity(
     code: faker.randomGenerator.integer(100),
     personalizedCode: faker.randomGenerator.integer(100).toString(),
-    name: faker.person.name(),
-    nameReduced: faker.person.name(),
-    cnpjCpfNumber: faker.randomGenerator.numberOfLength(14),
-    suframaCode: faker.guid.guid(),
-    limitOfPurchase: faker.randomGenerator.decimal(),
-    inscriptionRgNumber: faker.guid.guid(),
-    paymentFinalizations: List<BSFPaymentFinalizationEntity>.generate(
-      3,
-      (_) => makeBSFPaymentFinalizationEntity(),
-    ),
-    paymentConditions: List<BSFPaymentConditionEntity>.generate(
-      3,
-      (_) => makeBSFPaymentConditionEntity(),
-    ),
+    legacyCode: faker.lorem.word(),
+    description: faker.lorem.sentence(),
+  );
+
+  static BsfCovenantEntity makeBsfCovenantEntity() => BsfCovenantEntity(
+    code: faker.randomGenerator.integer(100),
+    personalizedCode: faker.randomGenerator.integer(100).toString(),
+    legacyCode: faker.lorem.word(),
+    name: faker.company.name(),
+    fantasyName: faker.company.name(),
+    cnpjNumber: faker.randomGenerator.numberOfLength(14),
+    formatedCnpjNumber: faker.randomGenerator.numberOfLength(14),
+    stateRegistration: faker.randomGenerator.numberOfLength(14),
+    formatedStateRegistration: faker.randomGenerator.numberOfLength(14),
+    dateOfCadaster: faker.date.dateTime(),
+    email: faker.internet.email(),
+    dateOfBirthContact: faker.date.dateTime(),
+    nameOfContact: faker.person.name(),
+    haveObservations: faker.randomGenerator.boolean(),
+    requiredConveneMatriculate: faker.randomGenerator.boolean(),
+    allowSaleAdditional: faker.randomGenerator.boolean(),
+    address: null,
+    deliveryAddress: null,
+    collectAddress: null,
+    saleBlockade: makeBsfSaleBlockadeEntity(),
+    saleBlockadeInstruction: makeBsfSaleBlockadeInstructionEntity(),
   );
 
   static BSFFinancialEntity _makeBSFFinancialEntity() => BSFFinancialEntity(
