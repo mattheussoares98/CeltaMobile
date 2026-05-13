@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../../../../domain/entities/entities.dart';
 
 class EcAddressModel extends Equatable {
   final String ZipCode;

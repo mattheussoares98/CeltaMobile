@@ -1,15 +1,7 @@
-import 'package:equatable/equatable.dart';
+import '../../../../domain/entities/entities.dart';
 
-import '../../../../../core/domain/entities/entities.dart';
-
-class BSFStateModel extends Equatable {
-  final String? acronym;
-  final String? description;
-
-  const BSFStateModel({required this.acronym, required this.description});
-
-  @override
-  List<Object?> get props => [acronym, description];
+class BSFStateModel extends BSFStateEntity {
+  const BSFStateModel({required super.acronym, required super.description});
 
   factory BSFStateModel.fromJson(Map<String, dynamic> json) =>
       BSFStateModel(acronym: json['Acronym'], description: json['Description']);

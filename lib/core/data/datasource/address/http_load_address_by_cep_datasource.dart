@@ -2,7 +2,7 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 import '../../../../exceptions/exceptions.dart';
 import '../../../domain/contracts/contracts.dart';
-import '../../models/address/soap_address_model.dart';
+import '../../models/address/soap/soap_address_model.dart';
 import 'address.dart';
 
 class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {

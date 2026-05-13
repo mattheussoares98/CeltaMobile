@@ -17,7 +17,7 @@ class BSFSaleRequestModel extends Equatable {
   final BSFRequestTypeModel? requestType;
   final BSFEnterpriseModel? enterprise;
   final BSFCustomerModel? customer;
-  final BSFDeliveryAddressModel? deliveryAddress;
+  final BSFAddressModel? deliveryAddress;
   final BSFDeliveryTaxWrapperModel? deliveryTax;
   final BSFValueTypeModel? increment;
   final BSFValueTypeModel? financialIncrement;
@@ -115,7 +115,7 @@ class BSFSaleRequestModel extends Equatable {
           ? BSFCustomerModel.fromJson(json['Customer'])
           : null,
       deliveryAddress: json['DeliveryAddress'] != null
-          ? BSFDeliveryAddressModel.fromJson(json['DeliveryAddress'])
+          ? BSFAddressModel.fromJson(json['DeliveryAddress'])
           : null,
       deliveryTax: json['DeliveryTax'] != null
           ? BSFDeliveryTaxWrapperModel.fromJson(json['DeliveryTax'])
@@ -198,7 +198,7 @@ class BSFSaleRequestModel extends Equatable {
           : BSFCustomerModel.fromEntity(entity.customer!),
       deliveryAddress: entity.deliveryAddress == null
           ? null
-          : BSFDeliveryAddressModel.fromEntity(entity.deliveryAddress!),
+          : BSFAddressModel.fromEntity(entity.deliveryAddress!),
       deliveryTax: entity.deliveryTax == null
           ? null
           : BSFDeliveryTaxWrapperModel.fromEntity(entity.deliveryTax!),

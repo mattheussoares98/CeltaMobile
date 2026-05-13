@@ -1,5 +1,4 @@
 import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../features/sale_request/data/models/models.dart';
 import '../../models.dart';
 
 class BsfCovenantModel extends BsfCovenantEntity {
@@ -50,17 +49,17 @@ class BsfCovenantModel extends BsfCovenantEntity {
         requiredConveneMatriculate: json['RequiredConveneMatriculate'] as bool?,
         allowSaleAdditional: json['AllowSaleAdditional'] as bool?,
         address: json['Address'] != null
-            ? BSFDeliveryAddressModel.fromJson(
+            ? BSFAddressModel.fromJson(
                 json['Address'] as Map<String, dynamic>,
               ).toEntity()
             : null,
         deliveryAddress: json['DeliveryAddress'] != null
-            ? BSFDeliveryAddressModel.fromJson(
+            ? BSFAddressModel.fromJson(
                 json['DeliveryAddress'] as Map<String, dynamic>,
               ).toEntity()
             : null,
         collectAddress: json['CollectAddress'] != null
-            ? BSFDeliveryAddressModel.fromJson(
+            ? BSFAddressModel.fromJson(
                 json['CollectAddress'] as Map<String, dynamic>,
               ).toEntity()
             : null,
@@ -94,13 +93,13 @@ class BsfCovenantModel extends BsfCovenantEntity {
     'RequiredConveneMatriculate': requiredConveneMatriculate,
     'AllowSaleAdditional': allowSaleAdditional,
     'Address': address != null
-        ? BSFDeliveryAddressModel.fromEntity(address!).toJson()
+        ? BSFAddressModel.fromEntity(address!).toJson()
         : null,
     'DeliveryAddress': deliveryAddress != null
-        ? BSFDeliveryAddressModel.fromEntity(deliveryAddress!).toJson()
+        ? BSFAddressModel.fromEntity(deliveryAddress!).toJson()
         : null,
     'CollectAddress': collectAddress != null
-        ? BSFDeliveryAddressModel.fromEntity(collectAddress!).toJson()
+        ? BSFAddressModel.fromEntity(collectAddress!).toJson()
         : null,
     'SaleBlockade': saleBlockade != null
         ? BsfSaleBlockadeModel.fromEntity(saleBlockade!).toJson()

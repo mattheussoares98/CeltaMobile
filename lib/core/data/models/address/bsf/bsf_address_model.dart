@@ -1,71 +1,29 @@
-import 'package:equatable/equatable.dart';
-
-import '../../../../../core/domain/entities/entities.dart';
+import '../../../../domain/entities/entities.dart';
 import 'bsf.dart';
 
-class BSFDeliveryAddressModel extends Equatable {
-  //TODO move to core path
-  final int? code;
-  final String? zip;
-  final String? sash;
-  final String? address;
-  final String? number;
-  final String? complement;
-  final String? district;
-  final String? reference;
-  final bool? mainAddress;
-  final bool? defaultDeliveryAddress;
-  final bool? defaultCollectAddress;
-  final bool? addressContainsNumber;
-  final bool? addressIsInAreaOfDeliveryRestriction;
-  final String? inscriptionNumber;
-  final BSFCountryModel? country;
-  final BSFStateModel? state;
-  final int? addressType;
-
-  const BSFDeliveryAddressModel({
-    required this.code,
-    required this.zip,
-    required this.sash,
-    required this.address,
-    required this.number,
-    required this.complement,
-    required this.district,
-    required this.reference,
-    required this.mainAddress,
-    required this.defaultDeliveryAddress,
-    required this.defaultCollectAddress,
-    required this.addressContainsNumber,
-    required this.addressIsInAreaOfDeliveryRestriction,
-    required this.inscriptionNumber,
-    required this.country,
-    required this.state,
-    required this.addressType,
+class BSFAddressModel extends BSFAddressEntity {
+  const BSFAddressModel({
+    required super.code,
+    required super.zip,
+    required super.sash,
+    required super.address,
+    required super.number,
+    required super.complement,
+    required super.district,
+    required super.reference,
+    required super.mainAddress,
+    required super.defaultDeliveryAddress,
+    required super.defaultCollectAddress,
+    required super.addressContainsNumber,
+    required super.addressIsInAreaOfDeliveryRestriction,
+    required super.inscriptionNumber,
+    required super.country,
+    required super.state,
+    required super.addressType,
   });
 
-  @override
-  List<Object?> get props => [
-    code,
-    zip,
-    sash,
-    address,
-    number,
-    complement,
-    district,
-    reference,
-    mainAddress,
-    defaultDeliveryAddress,
-    defaultCollectAddress,
-    addressContainsNumber,
-    addressIsInAreaOfDeliveryRestriction,
-    inscriptionNumber,
-    country,
-    state,
-    addressType,
-  ];
-
-  factory BSFDeliveryAddressModel.fromJson(Map<String, dynamic> json) =>
-      BSFDeliveryAddressModel(
+  factory BSFAddressModel.fromJson(Map<String, dynamic> json) =>
+      BSFAddressModel(
         code: json['Code'],
         zip: json['Zip'],
         sash: json['Sash'],
@@ -82,10 +40,10 @@ class BSFDeliveryAddressModel extends Equatable {
             json['AddressIsInAreaOfDeliveryRestriction'],
         inscriptionNumber: json['InscriptionNumber'],
         country: json['Country'] != null
-            ? BSFCountryModel.fromJson(json['Country'])
+            ? BSFCountryModel.fromJson(json['Country']).toEntity()
             : null,
         state: json['State'] != null
-            ? BSFStateModel.fromJson(json['State'])
+            ? BSFStateModel.fromJson(json['State']).toEntity()
             : null,
         addressType: json['AddressType'],
       );
@@ -106,13 +64,15 @@ class BSFDeliveryAddressModel extends Equatable {
     'AddressIsInAreaOfDeliveryRestriction':
         addressIsInAreaOfDeliveryRestriction,
     'InscriptionNumber': inscriptionNumber,
-    'Country': country?.toJson(),
-    'State': state?.toJson(),
+    'Country': country != null
+        ? BSFCountryModel.fromEntity(country!).toJson()
+        : null,
+    'State': state != null ? BSFStateModel.fromEntity(state!).toJson() : null,
     'AddressType': addressType,
   };
 
-  factory BSFDeliveryAddressModel.fromEntity(BSFAddressEntity entity) =>
-      BSFDeliveryAddressModel(
+  factory BSFAddressModel.fromEntity(BSFAddressEntity entity) =>
+      BSFAddressModel(
         code: entity.code,
         zip: entity.zip,
         sash: entity.sash,
@@ -128,12 +88,8 @@ class BSFDeliveryAddressModel extends Equatable {
         addressIsInAreaOfDeliveryRestriction:
             entity.addressIsInAreaOfDeliveryRestriction,
         inscriptionNumber: entity.inscriptionNumber,
-        country: entity.country == null
-            ? null
-            : BSFCountryModel.fromEntity(entity.country!),
-        state: entity.state == null
-            ? null
-            : BSFStateModel.fromEntity(entity.state!),
+        country: entity.country,
+        state: entity.state,
         addressType: entity.addressType,
       );
 
@@ -152,8 +108,8 @@ class BSFDeliveryAddressModel extends Equatable {
     addressContainsNumber: addressContainsNumber,
     addressIsInAreaOfDeliveryRestriction: addressIsInAreaOfDeliveryRestriction,
     inscriptionNumber: inscriptionNumber,
-    country: country?.toEntity(),
-    state: state?.toEntity(),
+    country: country,
+    state: state,
     addressType: addressType,
   );
 }
