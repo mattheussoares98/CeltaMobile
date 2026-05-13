@@ -7,30 +7,32 @@ import 'package:intl/intl.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
-import '../../../providers.dart';
 import '../../controllers/controllers.dart';
 
 class RequestSummary extends ConsumerWidget {
   final VoidCallback? onTap;
   final bool showCustomer;
   final bool showDetails;
+  final int enterpriseCode;
+  final int saleRequestId;
   const RequestSummary({
     super.key,
     this.onTap,
     this.showCustomer = true,
     this.showDetails = false,
+    required this.enterpriseCode,
+    required this.saleRequestId,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
     final theme = Theme.of(context);
-    final args = ref.watch(saleRequestArgsProvider);
 
     final saleRequest = ref.watch(
-      saleRequestsStateControllerProvider.select(
+      saleRequestsStateControllerProvider(enterpriseCode).select(
         (s) => s.value?.collection.firstWhereOrNull(
-          (sr) => sr.Id == args.saleRequestId,
+          (sr) => sr.Id == saleRequestId,
         ),
       ),
     );

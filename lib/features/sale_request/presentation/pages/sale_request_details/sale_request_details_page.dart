@@ -5,12 +5,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
-import '../../../providers.dart';
 import '../components/components.dart';
 import 'components/components.dart';
 
 class SaleRequestDetailsPage extends ConsumerWidget {
-  const SaleRequestDetailsPage({super.key});
+  final int enterpriseCode;
+  final int customerCode;
+  final int saleRequestId;
+  const SaleRequestDetailsPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.customerCode,
+    required this.saleRequestId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,18 +29,16 @@ class SaleRequestDetailsPage extends ConsumerWidget {
           const ShowPdfButton(),
           Consumer(
             builder: (_, ref, _) {
-              final args = ref.watch(saleRequestArgsProvider);
-
               return PrintButton(
-                enterpriseCode: args.enterpriseCode,
-                customerCode: args.customerCode,
-                saleRequestId: args.saleRequestId,
+                enterpriseCode: enterpriseCode,
+                customerCode: customerCode,
+                saleRequestId: saleRequestId,
               );
             },
           ),
         ],
       ),
-      body: const CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Align(
@@ -42,16 +47,19 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                 width: Breakpoint.desktop,
                 child: Column(
                   children: [
-                    _HeroRequestSummary(),
-                    Customer(),
-                    Financial(),
-                    Divider(),
+                    _HeroRequestSummary(
+                      enterpriseCode: enterpriseCode,
+                      saleRequestId: saleRequestId,
+                    ),
+                    Customer(enterpriseCode: enterpriseCode),
+                    const Financial(),
+                    const Divider(),
                   ],
                 ),
               ),
             ),
           ),
-          ProductsItems(),
+          const ProductsItems(),
           gapSliverH48,
         ],
       ),
@@ -60,17 +68,25 @@ class SaleRequestDetailsPage extends ConsumerWidget {
 }
 
 class _HeroRequestSummary extends ConsumerWidget {
-  const _HeroRequestSummary();
+  final int enterpriseCode;
+  final int saleRequestId;
+  const _HeroRequestSummary({
+    required this.enterpriseCode,
+    required this.saleRequestId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args = ref.watch(saleRequestArgsProvider);
-
     return Hero(
-      tag: 'sale_request_${args.saleRequestId}',
-      child: const Material(
+      tag: 'sale_request_$saleRequestId',
+      child: Material(
         type: MaterialType.transparency,
-        child: RequestSummary(showDetails: true, showCustomer: false),
+        child: RequestSummary(
+          showDetails: true,
+          showCustomer: false,
+          enterpriseCode: enterpriseCode,
+          saleRequestId: saleRequestId,
+        ),
       ),
     );
   }

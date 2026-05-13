@@ -11,11 +11,13 @@ import 'filters.dart';
 class SaleRequestFilters extends ConsumerStatefulWidget {
   final TextEditingController startController;
   final GlobalKey<FormState> filtersFormKey;
+  final int enterpriseCode;
 
   const SaleRequestFilters({
     super.key,
     required this.startController,
     required this.filtersFormKey,
+    required this.enterpriseCode,
   });
 
   @override
@@ -49,7 +51,9 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
     expansibleController.collapse();
 
     ref
-        .read(saleRequestsStateControllerProvider.notifier)
+        .read(
+          saleRequestsStateControllerProvider(widget.enterpriseCode).notifier,
+        )
         .load(
           startDateHourOfCreation:
               widget.startController.text.toDateTime() ?? now,
@@ -64,7 +68,10 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    ref.listen(saleRequestsStateControllerProvider, (p, n) {
+    ref.listen(saleRequestsStateControllerProvider(widget.enterpriseCode), (
+      p,
+      n,
+    ) {
       n.doOnSuccess(p, () {
         if (n.value != null) {
           expansibleController.collapse();
@@ -144,9 +151,9 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
                             text: 'Pesquisar'.hardcoded,
                             onPressed: _onSearch,
                             isLoading: ref.watch(
-                              saleRequestsStateControllerProvider.select(
-                                (s) => s.isLoading,
-                              ),
+                              saleRequestsStateControllerProvider(
+                                widget.enterpriseCode,
+                              ).select((s) => s.isLoading),
                             ),
                           );
                         },

@@ -14,7 +14,9 @@ part 'sale_requests_state_controller.g.dart';
 @riverpod
 class SaleRequestsStateController extends _$SaleRequestsStateController {
   @override
-  FutureOr<EcPaginationResults<SaleRequestEntity>?> build() async {
+  FutureOr<EcPaginationResults<SaleRequestEntity>?> build(
+    int enterpriseCode,
+  ) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -43,7 +45,6 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
       final validatedUser = await ref.watch(
         validatedUserSessionProvider.future,
       );
-      final args = ref.watch(saleRequestArgsProvider);
 
       ref
           .read(appUsageStateControllerProvider.notifier)
@@ -61,7 +62,7 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
               actualPage: actualPage,
               recordsByPage: recordsByPage,
             ),
-            enterpriseIds: [args.enterpriseCode],
+            enterpriseIds: [enterpriseCode],
             endDateHourOfCreation: endDateHourOfCreation,
             startDateHourOfCreation: startDateHourOfCreation,
             personalizedCodes: personalizedCodes,

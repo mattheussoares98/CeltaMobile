@@ -102,7 +102,7 @@ void main() {
       addTearDown(container.dispose);
 
       final state = await container.read(
-        saleRequestsStateControllerProvider.future,
+        saleRequestsStateControllerProvider(enterpriseCode).future,
       );
 
       expect(state, isNull);
@@ -127,17 +127,19 @@ void main() {
 
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
-      await container.read(saleRequestsStateControllerProvider.future);
+      await container.read(
+        saleRequestsStateControllerProvider(enterpriseCode).future,
+      );
 
       final states = <AsyncValue<EcPaginationResults<SaleRequestEntity>?>>[];
       container.listen(
-        saleRequestsStateControllerProvider,
+        saleRequestsStateControllerProvider(enterpriseCode),
         (_, next) => states.add(next),
       );
 
       // ACT
       await container
-          .read(saleRequestsStateControllerProvider.notifier)
+          .read(saleRequestsStateControllerProvider(enterpriseCode).notifier)
           .load(
             endDateHourOfCreation: endDateHourOfCreation,
             startDateHourOfCreation: startDateHourOfCreation,
@@ -190,14 +192,16 @@ void main() {
 
       // ACT
       await container
-          .read(saleRequestsStateControllerProvider.notifier)
+          .read(saleRequestsStateControllerProvider(enterpriseCode).notifier)
           .load(
             startDateHourOfCreation: DateTime.now(),
             endDateHourOfCreation: DateTime.now(),
           );
 
       // ASSERT
-      final state = container.read(saleRequestsStateControllerProvider);
+      final state = container.read(
+        saleRequestsStateControllerProvider(enterpriseCode),
+      );
       expect(state, isA<AsyncError>());
       expect(state.error, exception);
     });

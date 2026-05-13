@@ -11,18 +11,22 @@ import '../localization/string_hardcoded.dart';
 
 class DefaultPaginationButtons<T> extends ConsumerWidget {
   final void Function(int page) onChangePage;
+  final int enterpriseCode;
   final ProviderListenable<AsyncValue<dynamic>> provider;
 
   const DefaultPaginationButtons({
     super.key,
     required this.onChangePage,
+    required this.enterpriseCode,
     required this.provider,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final results = ref.watch(
-      saleRequestsStateControllerProvider.select((s) => s.value),
+      saleRequestsStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value),
     );
     //TODO test
 

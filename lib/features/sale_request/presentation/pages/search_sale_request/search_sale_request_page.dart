@@ -36,7 +36,9 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
     }
 
     ref
-        .read(saleRequestsStateControllerProvider.notifier)
+        .read(
+          saleRequestsStateControllerProvider(widget.enterpriseCode).notifier,
+        )
         .load(
           startDateHourOfCreation: _startController.text.toDateTime() ?? now,
           actualPage: page,
@@ -54,12 +56,16 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
           SaleRequestFilters(
             filtersFormKey: filtersFormKey,
             startController: _startController,
+            enterpriseCode: widget.enterpriseCode,
           ),
           DefaultPaginationButtons(
+            enterpriseCode: widget.enterpriseCode,
             onChangePage: onChangePage,
-            provider: saleRequestsStateControllerProvider,
+            provider: saleRequestsStateControllerProvider(
+              widget.enterpriseCode,
+            ),
           ),
-          const RequestsItems(),
+          RequestsItems(enterpriseCode: widget.enterpriseCode),
         ],
       ),
     );
