@@ -1116,7 +1116,7 @@ class EntityFactory {
           contactName: faker.person.name(),
         ),
         customer: makeBSFCustomerEntity(),
-        deliveryAddress: BSFDeliveryAddressEntity(
+        deliveryAddress: BSFAddressEntity(
           code: faker.randomGenerator.integer(100),
           zip: faker.randomGenerator.numberOfLength(8),
           sash: faker.lorem.word(),
@@ -1181,29 +1181,26 @@ class EntityFactory {
       );
 
   static BSFCustomerEntity makeBSFCustomerEntity() => BSFCustomerEntity(
-        code: faker.randomGenerator.integer(100),
-        personalizedCode: faker.randomGenerator.integer(100).toString(),
-        name: faker.person.name(),
-        nameReduced: faker.person.name(),
-        cnpjCpfNumber: faker.randomGenerator.numberOfLength(14),
-        suframaCode: faker.guid.guid(),
-        limitOfPurchase: faker.randomGenerator.decimal(),
-        inscriptionRgNumber: faker.guid.guid(),
-        paymentFinalizations: List<BSFPaymentFinalizationEntity>.generate(
-          3,
-          (_) => makeBSFPaymentFinalizationEntity(),
-        ),
-        paymentConditions: List<BSFPaymentConditionEntity>.generate(
-          3,
-          (_) => makeBSFPaymentConditionEntity(),
-        ),
-        saleBlockade: makeBsfSaleBlockadeEntity(),
-        saleBlockadeInstruction: makeBsfSaleBlockadeInstructionEntity(),
-        covenants: [
-          makeBsfCovenantEntity(),
-          makeBsfCovenantEntity(),
-        ],
-      );
+    code: faker.randomGenerator.integer(100),
+    personalizedCode: faker.randomGenerator.integer(100).toString(),
+    name: faker.person.name(),
+    nameReduced: faker.person.name(),
+    cnpjCpfNumber: faker.randomGenerator.numberOfLength(14),
+    suframaCode: faker.guid.guid(),
+    limitOfPurchase: faker.randomGenerator.decimal(),
+    inscriptionRgNumber: faker.guid.guid(),
+    paymentFinalizations: List<BSFPaymentFinalizationEntity>.generate(
+      3,
+      (_) => makeBSFPaymentFinalizationEntity(),
+    ),
+    paymentConditions: List<BSFPaymentConditionEntity>.generate(
+      3,
+      (_) => makeBSFPaymentConditionEntity(),
+    ),
+    saleBlockade: makeBsfSaleBlockadeEntity(),
+    saleBlockadeInstruction: makeBsfSaleBlockadeInstructionEntity(),
+    covenants: [makeBsfCovenantEntity(), makeBsfCovenantEntity()],
+  );
 
   static BsfSaleBlockadeEntity makeBsfSaleBlockadeEntity() =>
       BsfSaleBlockadeEntity(
@@ -1213,12 +1210,13 @@ class EntityFactory {
         description: faker.lorem.sentence(),
         allowSale: faker.randomGenerator.boolean(),
         allowSaleRequest: faker.randomGenerator.boolean(),
-        allowSaleWithPaymentFinalizationTypeCheckOrPortion:
-            faker.randomGenerator.boolean(),
+        allowSaleWithPaymentFinalizationTypeCheckOrPortion: faker
+            .randomGenerator
+            .boolean(),
         stringAllowSale: faker.lorem.word(),
         stringAllowSaleRequest: faker.lorem.word(),
-        stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion:
-            faker.lorem.word(),
+        stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion: faker.lorem
+            .word(),
       );
 
   static BsfSaleBlockadeInstructionEntity

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../features/sale_request/domain/entities/entities.dart';
 import '../../entities.dart';
 
 class BsfCovenantEntity extends Equatable {
@@ -20,9 +19,9 @@ class BsfCovenantEntity extends Equatable {
   final bool? haveObservations;
   final bool? requiredConveneMatriculate;
   final bool? allowSaleAdditional;
-  final BSFDeliveryAddressEntity? address;
-  final BSFDeliveryAddressEntity? deliveryAddress;
-  final BSFDeliveryAddressEntity? collectAddress;
+  final BSFAddressEntity? address;
+  final BSFAddressEntity? deliveryAddress;
+  final BSFAddressEntity? collectAddress;
   final BsfSaleBlockadeEntity? saleBlockade;
   final BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction;
 
@@ -92,9 +91,9 @@ class BsfCovenantEntity extends Equatable {
     bool? haveObservations,
     bool? requiredConveneMatriculate,
     bool? allowSaleAdditional,
-    BSFDeliveryAddressEntity? address,
-    BSFDeliveryAddressEntity? deliveryAddress,
-    BSFDeliveryAddressEntity? collectAddress,
+    BSFAddressEntity? address,
+    BSFAddressEntity? deliveryAddress,
+    BSFAddressEntity? collectAddress,
     BsfSaleBlockadeEntity? saleBlockade,
     BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction,
   }) {

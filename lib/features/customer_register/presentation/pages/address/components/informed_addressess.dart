@@ -1,4 +1,4 @@
-import 'package:celta_inventario/core/domain/entities/address/address_entity.dart';
+import 'package:celta_inventario/core/domain/entities/address/soap/address_entity.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,6 @@ class _AddressItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return RepaintBoundary(
       child: Card(
         child: Padding(

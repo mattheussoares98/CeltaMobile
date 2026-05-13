@@ -16,7 +16,7 @@ class BSFSaleRequestEntity extends Equatable {
   final BSFRequestTypeEntity? requestType;
   final BSFEnterpriseEntity? enterprise;
   final BSFCustomerEntity? customer;
-  final BSFDeliveryAddressEntity? deliveryAddress;
+  final BSFAddressEntity? deliveryAddress;
   final BSFDeliveryTaxWrapperEntity? deliveryTax;
   final BSFValueTypeEntity? increment;
   final BSFValueTypeEntity? financialIncrement;
@@ -120,7 +120,7 @@ class BSFSaleRequestEntity extends Equatable {
     BSFRequestTypeEntity? requestType,
     BSFEnterpriseEntity? enterprise,
     BSFCustomerEntity? customer,
-    BSFDeliveryAddressEntity? deliveryAddress,
+    BSFAddressEntity? deliveryAddress,
     BSFDeliveryTaxWrapperEntity? deliveryTax,
     BSFValueTypeEntity? increment,
     BSFValueTypeEntity? financialIncrement,

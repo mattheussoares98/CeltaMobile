@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../../../../../core/domain/entities/entities.dart';
 import 'bsf.dart';
 
 class BSFDeliveryAddressModel extends Equatable {
@@ -111,7 +111,7 @@ class BSFDeliveryAddressModel extends Equatable {
     'AddressType': addressType,
   };
 
-  factory BSFDeliveryAddressModel.fromEntity(BSFDeliveryAddressEntity entity) =>
+  factory BSFDeliveryAddressModel.fromEntity(BSFAddressEntity entity) =>
       BSFDeliveryAddressModel(
         code: entity.code,
         zip: entity.zip,
@@ -137,7 +137,7 @@ class BSFDeliveryAddressModel extends Equatable {
         addressType: entity.addressType,
       );
 
-  BSFDeliveryAddressEntity toEntity() => BSFDeliveryAddressEntity(
+  BSFAddressEntity toEntity() => BSFAddressEntity(
     code: code,
     zip: zip,
     sash: sash,

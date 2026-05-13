@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'bsf.dart';
 
-class BSFDeliveryAddressEntity extends Equatable {
+class BSFAddressEntity extends Equatable {
   final int? code;
   final String? zip;
   final String? sash;
@@ -21,7 +21,7 @@ class BSFDeliveryAddressEntity extends Equatable {
   final BSFStateEntity? state;
   final int? addressType;
 
-  const BSFDeliveryAddressEntity({
+  const BSFAddressEntity({
     required this.code,
     required this.zip,
     required this.sash,
