@@ -78,9 +78,7 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
   );
 
   BSFPaymentFinalizationEntity toEntity() => BSFPaymentFinalizationEntity(
-    paymentForm: paymentForm == null
-        ? null
-        : BSFPaymentFormModel.fromEntity(paymentForm!),
+    paymentForm: (paymentForm as BSFPaymentFormModel?)?.toEntity(),
     Description: Description,
     code: code,
     isDeactivate: isDeactivate,
@@ -91,6 +89,6 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
     financialTax: financialTax,
     identificationCode: identificationCode,
     identificationTefFlagCode: identificationTefFlagCode,
-    action: action == null ? null : BSFPaymentActionModel.fromEntity(action!),
+    action: (action as BSFPaymentActionModel?)?.toEntity(),
   );
 }

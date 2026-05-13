@@ -51,27 +51,27 @@ class BsfCovenantModel extends BsfCovenantEntity {
         address: json['Address'] != null
             ? BSFAddressModel.fromJson(
                 json['Address'] as Map<String, dynamic>,
-              ).toEntity()
+              )
             : null,
         deliveryAddress: json['DeliveryAddress'] != null
             ? BSFAddressModel.fromJson(
                 json['DeliveryAddress'] as Map<String, dynamic>,
-              ).toEntity()
+              )
             : null,
         collectAddress: json['CollectAddress'] != null
             ? BSFAddressModel.fromJson(
                 json['CollectAddress'] as Map<String, dynamic>,
-              ).toEntity()
+              )
             : null,
         saleBlockade: json['SaleBlockade'] != null
             ? BsfSaleBlockadeModel.fromJson(
                 json['SaleBlockade'] as Map<String, dynamic>,
-              ).toEntity()
+              )
             : null,
         saleBlockadeInstruction: json['SaleBlockadeInstruction'] != null
             ? BsfSaleBlockadeInstructionModel.fromJson(
                 json['SaleBlockadeInstruction'] as Map<String, dynamic>,
-              ).toEntity()
+              )
             : null,
       );
 
@@ -129,34 +129,46 @@ class BsfCovenantModel extends BsfCovenantEntity {
         haveObservations: entity.haveObservations,
         requiredConveneMatriculate: entity.requiredConveneMatriculate,
         allowSaleAdditional: entity.allowSaleAdditional,
-        address: entity.address,
-        deliveryAddress: entity.deliveryAddress,
-        collectAddress: entity.collectAddress,
-        saleBlockade: entity.saleBlockade,
-        saleBlockadeInstruction: entity.saleBlockadeInstruction,
+        address: entity.address != null
+            ? BSFAddressModel.fromEntity(entity.address!)
+            : null,
+        deliveryAddress: entity.deliveryAddress != null
+            ? BSFAddressModel.fromEntity(entity.deliveryAddress!)
+            : null,
+        collectAddress: entity.collectAddress != null
+            ? BSFAddressModel.fromEntity(entity.collectAddress!)
+            : null,
+        saleBlockade: entity.saleBlockade != null
+            ? BsfSaleBlockadeModel.fromEntity(entity.saleBlockade!)
+            : null,
+        saleBlockadeInstruction: entity.saleBlockadeInstruction != null
+            ? BsfSaleBlockadeInstructionModel.fromEntity(
+                entity.saleBlockadeInstruction!,
+              )
+            : null,
       );
 
   BsfCovenantEntity toEntity() => BsfCovenantEntity(
-    code: code,
-    personalizedCode: personalizedCode,
-    legacyCode: legacyCode,
-    name: name,
-    fantasyName: fantasyName,
-    cnpjNumber: cnpjNumber,
-    formatedCnpjNumber: formatedCnpjNumber,
-    stateRegistration: stateRegistration,
-    formatedStateRegistration: formatedStateRegistration,
-    dateOfCadaster: dateOfCadaster,
-    email: email,
-    dateOfBirthContact: dateOfBirthContact,
-    nameOfContact: nameOfContact,
-    haveObservations: haveObservations,
-    requiredConveneMatriculate: requiredConveneMatriculate,
-    allowSaleAdditional: allowSaleAdditional,
-    address: address,
-    deliveryAddress: deliveryAddress,
-    collectAddress: collectAddress,
-    saleBlockade: saleBlockade,
-    saleBlockadeInstruction: saleBlockadeInstruction,
-  );
+        code: code,
+        personalizedCode: personalizedCode,
+        legacyCode: legacyCode,
+        name: name,
+        fantasyName: fantasyName,
+        cnpjNumber: cnpjNumber,
+        formatedCnpjNumber: formatedCnpjNumber,
+        stateRegistration: stateRegistration,
+        formatedStateRegistration: formatedStateRegistration,
+        dateOfCadaster: dateOfCadaster,
+        email: email,
+        dateOfBirthContact: dateOfBirthContact,
+        nameOfContact: nameOfContact,
+        haveObservations: haveObservations,
+        requiredConveneMatriculate: requiredConveneMatriculate,
+        allowSaleAdditional: allowSaleAdditional,
+        address: address,
+        deliveryAddress: deliveryAddress,
+        collectAddress: collectAddress,
+        saleBlockade: saleBlockade,
+        saleBlockadeInstruction: saleBlockadeInstruction,
+      );
 }

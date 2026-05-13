@@ -40,10 +40,10 @@ class BSFAddressModel extends BSFAddressEntity {
             json['AddressIsInAreaOfDeliveryRestriction'],
         inscriptionNumber: json['InscriptionNumber'],
         country: json['Country'] != null
-            ? BSFCountryModel.fromJson(json['Country']).toEntity()
+            ? BSFCountryModel.fromJson(json['Country'])
             : null,
         state: json['State'] != null
-            ? BSFStateModel.fromJson(json['State']).toEntity()
+            ? BSFStateModel.fromJson(json['State'])
             : null,
         addressType: json['AddressType'],
       );
@@ -88,8 +88,12 @@ class BSFAddressModel extends BSFAddressEntity {
         addressIsInAreaOfDeliveryRestriction:
             entity.addressIsInAreaOfDeliveryRestriction,
         inscriptionNumber: entity.inscriptionNumber,
-        country: entity.country,
-        state: entity.state,
+        country: entity.country != null
+            ? BSFCountryModel.fromEntity(entity.country!)
+            : null,
+        state: entity.state != null
+            ? BSFStateModel.fromEntity(entity.state!)
+            : null,
         addressType: entity.addressType,
       );
 
@@ -108,8 +112,8 @@ class BSFAddressModel extends BSFAddressEntity {
     addressContainsNumber: addressContainsNumber,
     addressIsInAreaOfDeliveryRestriction: addressIsInAreaOfDeliveryRestriction,
     inscriptionNumber: inscriptionNumber,
-    country: country,
-    state: state,
+    country: (country as BSFCountryModel?)?.toEntity(),
+    state: (state as BSFStateModel?)?.toEntity(),
     addressType: addressType,
   );
 }

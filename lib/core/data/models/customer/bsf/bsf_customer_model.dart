@@ -117,28 +117,32 @@ class BSFCustomerModel extends BSFCustomerEntity {
         paymentConditions: entity.paymentConditions
             ?.map((x) => BSFPaymentConditionModel.fromEntity(x))
             .toList(),
-        saleBlockade: entity.saleBlockade,
-        saleBlockadeInstruction: entity.saleBlockadeInstruction,
-        covenants: entity.covenants,
+        saleBlockade: entity.saleBlockade != null
+            ? BsfSaleBlockadeModel.fromEntity(entity.saleBlockade!)
+            : null,
+        saleBlockadeInstruction: entity.saleBlockadeInstruction != null
+            ? BsfSaleBlockadeInstructionModel.fromEntity(
+                entity.saleBlockadeInstruction!,
+              )
+            : null,
+        covenants: entity.covenants
+            ?.map((e) => BsfCovenantModel.fromEntity(e))
+            .toList(),
       );
 
   BSFCustomerEntity toEntity() => BSFCustomerEntity(
-    code: code,
-    personalizedCode: personalizedCode,
-    name: name,
-    nameReduced: nameReduced,
-    cnpjCpfNumber: cnpjCpfNumber,
-    suframaCode: suframaCode,
-    limitOfPurchase: limitOfPurchase,
-    inscriptionRgNumber: inscriptionRgNumber,
-    paymentFinalizations: paymentFinalizations
-        ?.map((x) => BSFPaymentFinalizationModel.fromEntity(x))
-        .toList(),
-    paymentConditions: paymentConditions
-        ?.map((x) => BSFPaymentConditionModel.fromEntity(x))
-        .toList(),
-    saleBlockade: saleBlockade,
-    saleBlockadeInstruction: saleBlockadeInstruction,
-    covenants: covenants,
-  );
+        code: code,
+        personalizedCode: personalizedCode,
+        name: name,
+        nameReduced: nameReduced,
+        cnpjCpfNumber: cnpjCpfNumber,
+        suframaCode: suframaCode,
+        limitOfPurchase: limitOfPurchase,
+        inscriptionRgNumber: inscriptionRgNumber,
+        paymentFinalizations: paymentFinalizations,
+        paymentConditions: paymentConditions,
+        saleBlockade: saleBlockade,
+        saleBlockadeInstruction: saleBlockadeInstruction,
+        covenants: covenants,
+      );
 }

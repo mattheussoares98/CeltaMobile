@@ -40,8 +40,8 @@ class BSFProductFreightModel extends BSFProductFreightEntity {
       );
 
   BSFProductFreightEntity toEntity() => BSFProductFreightEntity(
-    discount: discount,
-    increment: increment,
+    discount: (discount as BSFValueTypeModel?)?.toEntity(),
+    increment: (increment as BSFValueTypeModel?)?.toEntity(),
     value: value,
   );
 }

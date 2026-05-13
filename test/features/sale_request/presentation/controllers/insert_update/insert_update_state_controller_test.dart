@@ -35,7 +35,9 @@ void main() {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        saleRequestArgsProvider.overrideWithValue(fakeArgs),
+        saleRequestArgsProvider.overrideWithValue(
+          fakeArgs.copyWith(saleRequestId: saleRequestId),
+        ),
         filteredPaymentFinalizationsStateControllerProvider.overrideWith(
           () => fakePaymentsController,
         ),

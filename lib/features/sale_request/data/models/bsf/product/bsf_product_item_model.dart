@@ -165,20 +165,28 @@ class BSFProductItemModel extends BSFProductItemEntity {
   BSFProductItemEntity toEntity() => BSFProductItemEntity(
     productPackingCode: productPackingCode,
     code: code,
-    icms: icms,
-    ipi: ipi,
-    priceCost: priceCost,
-    product: product,
-    fiscalCode: fiscalCode,
+    icms: icms is BSFIcmsModel ? (icms as BSFIcmsModel).toEntity() : icms,
+    ipi: ipi is BSFIpiModel ? (ipi as BSFIpiModel).toEntity() : ipi,
+    priceCost: priceCost is BSFPriceCostModel
+        ? (priceCost as BSFPriceCostModel).toEntity()
+        : priceCost,
+    product: product is BSFProductDetailsModel
+        ? (product as BSFProductDetailsModel).toEntity()
+        : product,
+    fiscalCode: fiscalCode is BSFFiscalCodeModel
+        ? (fiscalCode as BSFFiscalCodeModel).toEntity()
+        : fiscalCode,
     compositionChilds: compositionChilds,
     eanCode: eanCode,
-    freight: freight,
-    discounts: discounts,
+    freight: (freight as BSFProductFreightModel).toEntity(),
+    discounts: discounts
+        ?.map((e) => (e as BSFDiscountModel).toEntity())
+        .toList(),
     expectedDeliveryDate: expectedDeliveryDate,
-    deliveryTax: deliveryTax,
-    increment: increment,
-    creditOnOrigin: creditOnOrigin,
-    compensation: compensation,
+    deliveryTax: (deliveryTax as BSFValueTypeModel).toEntity(),
+    increment: (increment as BSFValueTypeModel).toEntity(),
+    creditOnOrigin: (creditOnOrigin as BSFValueTypeModel).toEntity(),
+    compensation: (compensation as BSFValueTypeModel).toEntity(),
     quantity: quantity,
     value: value,
   );

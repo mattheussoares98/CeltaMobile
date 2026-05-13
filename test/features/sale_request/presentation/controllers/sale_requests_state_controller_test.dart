@@ -80,6 +80,13 @@ void main() {
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
       overrides: [
+        saleRequestArgsProvider.overrideWithValue(
+          SaleRequestArgs(
+            customerCode: 1,
+            enterpriseCode: enterpriseCode,
+            saleRequestId: 0,
+          ),
+        ),
         ecSaleRequestsRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),

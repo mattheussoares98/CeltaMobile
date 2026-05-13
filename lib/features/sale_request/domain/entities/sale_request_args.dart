@@ -15,4 +15,16 @@ class SaleRequestArgs extends Equatable {
   List<Object?> get props => [enterpriseCode, customerCode, saleRequestId];
 
   bool get isInserting => saleRequestId == 0 || customerCode == 0;
+
+  SaleRequestArgs copyWith({
+    int? enterpriseCode,
+    int? customerCode,
+    int? saleRequestId,
+  }) {
+    return SaleRequestArgs(
+      enterpriseCode: enterpriseCode ?? this.enterpriseCode,
+      customerCode: customerCode ?? this.customerCode,
+      saleRequestId: saleRequestId ?? this.saleRequestId,
+    );
+  }
 }

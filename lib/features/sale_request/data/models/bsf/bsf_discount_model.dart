@@ -35,9 +35,9 @@ class BSFDiscountModel extends BSFDiscountEntity {
         discountOrigin: entity.discountOrigin,
         user: entity.user,
         justification: entity.justification,
-        discount: entity.discount == null
-            ? null
-            : BSFValueTypeModel.fromEntity(entity.discount!),
+        discount: entity.discount != null
+            ? BSFValueTypeModel.fromEntity(entity.discount!)
+            : null,
       );
 
   BSFDiscountEntity toEntity() => BSFDiscountEntity(

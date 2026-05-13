@@ -135,8 +135,9 @@ class BSFPaymentConditionModel extends BSFPaymentConditionEntity {
     minimumPercentageOfFirstPortion: minimumPercentageOfFirstPortion,
     description: description,
     smartDescription: smartDescription,
-    condition: condition,
-    utilizeParameters: utilizeParameters,
+    condition: (condition as PaymentConditionModel?)?.toEntity(),
+    utilizeParameters: (utilizeParameters as UtilizationParametersModel)
+        .toEntity(),
     allowDifferentValues: allowDifferentValues,
     isAtSight: isAtSight,
     isSaleDevolution: isSaleDevolution,

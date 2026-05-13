@@ -271,10 +271,9 @@ class BSFFiscalCodeModel extends BSFFiscalCodeEntity {
       );
 
   BSFFiscalCodeEntity toEntity() => BSFFiscalCodeEntity(
-    code: (code as BSFFiscalCodeValueModel?)?.toEntity() ?? code,
-    codeCompensation:
-        (codeCompensation as BSFFiscalCodeValueModel?)?.toEntity() ??
-        codeCompensation,
+    code: (code as BSFFiscalCodeValueModel?)?.toEntity(),
+    codeCompensation: (codeCompensation as BSFFiscalCodeValueModel?)
+        ?.toEntity(),
     description: description,
     fiscalObservation: fiscalObservation,
     codeString: codeString,

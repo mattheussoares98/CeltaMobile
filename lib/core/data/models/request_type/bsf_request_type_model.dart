@@ -186,7 +186,9 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
         allowFinancialIncrement: entity.allowFinancialIncrement,
         allowFinancialDiscount: entity.allowFinancialDiscount,
         userGroups: entity.userGroups,
-        paymentFinalizations: entity.paymentFinalizations,
+        paymentFinalizations: entity.paymentFinalizations
+            ?.map((e) => BSFPaymentFinalizationModel.fromEntity(e))
+            .toList(),
         requestPrintEditionHeaderImage: entity.requestPrintEditionHeaderImage,
         useWholePrice: entity.useWholePrice,
         useECommercePrice: entity.useECommercePrice,
@@ -221,7 +223,9 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     allowFinancialIncrement: allowFinancialIncrement,
     allowFinancialDiscount: allowFinancialDiscount,
     userGroups: userGroups,
-    paymentFinalizations: paymentFinalizations,
+    paymentFinalizations: paymentFinalizations
+        ?.map((e) => (e as BSFPaymentFinalizationModel).toEntity())
+        .toList(),
     requestPrintEditionHeaderImage: requestPrintEditionHeaderImage,
     useWholePrice: useWholePrice,
     useECommercePrice: useECommercePrice,
