@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
+import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
 
@@ -39,6 +40,17 @@ class CustomersPage extends ConsumerWidget {
           tryAgain: () => ref.invalidate(provider),
           isSliver: true,
           data: (customers) {
+            if (customers.isEmpty) {
+              return SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: Sizes.p16),
+                  child: Text(
+                    'Nenhum cliente foi encontrado'.hardcoded,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
             return ResponsiveListFlow(
               itemCount: customers.length,
               isSliver: true,
