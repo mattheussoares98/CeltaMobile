@@ -10,9 +10,6 @@ import '../../../../../../../utils/utils.dart';
 import '../../../../controllers/controllers.dart';
 
 class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
   final GlobalKey<FormState> formKey;
   final TextEditingController creditCardController;
   final TextEditingController portionsController;
@@ -20,9 +17,6 @@ class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
 
   const ValueFieldAndConfirmButton({
     super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
     required this.formKey,
     required this.creditCardController,
     required this.portionsController,
@@ -50,7 +44,7 @@ class _ValueFieldAndConfirmButtonState
     }
 
     final selectedPayment = ref.read(
-      selectedPaymentTypeStateControllerProvider(widget.saleRequestId),
+      selectedPaymentTypeStateControllerProvider,
     );
 
     if (selectedPayment == null) {
@@ -60,13 +54,7 @@ class _ValueFieldAndConfirmButtonState
     final value = valueController.text.toDouble();
     if (value != null && value > 0) {
       final (succeeds, error) = ref
-          .read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: widget.enterpriseCode,
-              customerCode: widget.customerCode,
-              saleRequestId: widget.saleRequestId,
-            ).notifier,
-          )
+          .read(insertUpdateStateControllerProvider.notifier)
           .addPayment(
             payment: selectedPayment,
             value: value,

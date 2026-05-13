@@ -8,27 +8,14 @@ import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../controllers/controllers.dart';
 
 class PaymentMethodDropdown extends ConsumerWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestCode;
-  const PaymentMethodDropdown({
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestCode,
-    super.key,
-  });
+  const PaymentMethodDropdown({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final paymentProvider = filteredPaymentFinalizationsStateControllerProvider(
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-      saleRequestCode: saleRequestCode,
-    );
-
     return AsyncValueWidget(
-      value: ref.watch(paymentProvider),
-      tryAgain: () => ref.invalidate(paymentProvider),
+      value: ref.watch(filteredPaymentFinalizationsStateControllerProvider),
+      tryAgain: () =>
+          ref.invalidate(filteredPaymentFinalizationsStateControllerProvider),
       data: (paymentFinalizations) {
         if (paymentFinalizations.isEmpty) {
           return Column(
@@ -40,7 +27,9 @@ class PaymentMethodDropdown extends ConsumerWidget {
               ),
               gapH16,
               PrimaryButton(
-                onPressed: () => ref.invalidate(paymentProvider),
+                onPressed: () => ref.invalidate(
+                  filteredPaymentFinalizationsStateControllerProvider,
+                ),
                 text: 'Carregar novamente'.hardcoded,
               ),
             ],
@@ -70,7 +59,7 @@ class PaymentMethodDropdown extends ConsumerWidget {
         return Consumer(
           builder: (context, ref, _) {
             final selectedPayment = ref.watch(
-              selectedPaymentTypeStateControllerProvider(saleRequestCode),
+              selectedPaymentTypeStateControllerProvider,
             );
 
             return DefaultDropDown<BSFPaymentFinalizationEntity>(
@@ -86,11 +75,7 @@ class PaymentMethodDropdown extends ConsumerWidget {
               items: items,
               onChanged: (value) {
                 ref
-                    .read(
-                      selectedPaymentTypeStateControllerProvider(
-                        saleRequestCode,
-                      ).notifier,
-                    )
+                    .read(selectedPaymentTypeStateControllerProvider.notifier)
                     .select(value);
               },
             );

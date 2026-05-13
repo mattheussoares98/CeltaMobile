@@ -6,15 +6,7 @@ import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../controllers/controllers.dart';
 
 class SearchCustomerField extends ConsumerStatefulWidget {
-  final int customerCode;
-  final int enterpriseCode;
-  final int saleRequestId;
-  const SearchCustomerField({
-    super.key,
-    required this.customerCode,
-    required this.enterpriseCode,
-    required this.saleRequestId,
-  });
+  const SearchCustomerField({super.key});
 
   @override
   ConsumerState<SearchCustomerField> createState() =>
@@ -37,13 +29,7 @@ class _SearchCustomerFieldState extends ConsumerState<SearchCustomerField> {
       labelText: 'Pesquisar'.hardcoded,
       onFieldSubmitted: (value) async {
         final succeeds = await ref
-            .read(
-              searchedCustomersStateControllerProvider(
-                customerCode: widget.customerCode,
-                enterpriseCode: widget.enterpriseCode,
-                saleRequestId: widget.saleRequestId,
-              ).notifier,
-            )
+            .read(searchedCustomersStateControllerProvider.notifier)
             .loadCustomer(value, false);
         if (succeeds) {
           searchController.clear();

@@ -5,19 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../providers.dart';
 import '../components/components.dart';
 import 'components/components.dart';
 
 class SaleRequestDetailsPage extends ConsumerWidget {
-  final int saleRequestId;
-  final int enterpriseCode;
-  final int customerCode;
-  const SaleRequestDetailsPage({
-    super.key,
-    required this.saleRequestId,
-    required this.enterpriseCode,
-    required this.customerCode,
-  });
+  const SaleRequestDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,25 +18,22 @@ class SaleRequestDetailsPage extends ConsumerWidget {
       appBar: AppBar(
         title: DefaultAppBarTitle(title: 'Detalhes do pedido'.hardcoded),
         actions: [
-          if (kDebugMode)
-            EditButton(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: saleRequestId,
-            ),
-          ShowPdfButton(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestCode: saleRequestId,
-          ),
-          PrintButton(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
+          if (kDebugMode) const EditButton(),
+          const ShowPdfButton(),
+          Consumer(
+            builder: (_, ref, _) {
+              final args = ref.watch(saleRequestArgsProvider);
+
+              return PrintButton(
+                enterpriseCode: args.enterpriseCode,
+                customerCode: args.customerCode,
+                saleRequestId: args.saleRequestId,
+              );
+            },
           ),
         ],
       ),
-      body: CustomScrollView(
+      body: const CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Align(
@@ -52,32 +42,16 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                 width: Breakpoint.desktop,
                 child: Column(
                   children: [
-                    _HeroRequestSummary(
-                      saleRequestId: saleRequestId,
-                      enterpriseCode: enterpriseCode,
-                      customerCode: customerCode,
-                    ),
-                    Customer(
-                      saleRequestId: saleRequestId,
-                      customerCode: customerCode,
-                      enterpriseCode: enterpriseCode,
-                    ),
-                    Financial(
-                      saleRequestId: saleRequestId,
-                      customerCode: customerCode,
-                      enterpriseCode: enterpriseCode,
-                    ),
-                    const Divider(),
+                    _HeroRequestSummary(),
+                    Customer(),
+                    Financial(),
+                    Divider(),
                   ],
                 ),
               ),
             ),
           ),
-          ProductsItems(
-            saleRequestId: saleRequestId,
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-          ),
+          ProductsItems(),
           gapSliverH48,
         ],
       ),
@@ -85,30 +59,18 @@ class SaleRequestDetailsPage extends ConsumerWidget {
   }
 }
 
-class _HeroRequestSummary extends StatelessWidget {
-  const _HeroRequestSummary({
-    required this.saleRequestId,
-    required this.enterpriseCode,
-    required this.customerCode,
-  });
-
-  final int saleRequestId;
-  final int enterpriseCode;
-  final int customerCode;
+class _HeroRequestSummary extends ConsumerWidget {
+  const _HeroRequestSummary();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final args = ref.watch(saleRequestArgsProvider);
+
     return Hero(
-      tag: 'sale_request_$saleRequestId',
-      child: Material(
+      tag: 'sale_request_${args.saleRequestId}',
+      child: const Material(
         type: MaterialType.transparency,
-        child: RequestSummary(
-          saleRequestId: saleRequestId,
-          enterpriseCode: enterpriseCode,
-          showDetails: true,
-          showCustomer: false,
-          customerCode: customerCode,
-        ),
+        child: RequestSummary(showDetails: true, showCustomer: false),
       ),
     );
   }

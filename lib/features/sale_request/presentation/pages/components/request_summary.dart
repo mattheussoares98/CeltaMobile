@@ -7,21 +7,16 @@ import 'package:intl/intl.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../providers.dart';
 import '../../controllers/controllers.dart';
 
 class RequestSummary extends ConsumerWidget {
-  final int saleRequestId;
-  final int enterpriseCode;
-  final int customerCode;
   final VoidCallback? onTap;
   final bool showCustomer;
   final bool showDetails;
   const RequestSummary({
     super.key,
     this.onTap,
-    required this.saleRequestId,
-    required this.enterpriseCode,
-    required this.customerCode,
     this.showCustomer = true,
     this.showDetails = false,
   });
@@ -30,11 +25,12 @@ class RequestSummary extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
     final theme = Theme.of(context);
+    final args = ref.watch(saleRequestArgsProvider);
 
     final saleRequest = ref.watch(
-      saleRequestsStateControllerProvider(enterpriseCode).select(
+      saleRequestsStateControllerProvider.select(
         (s) => s.value?.collection.firstWhereOrNull(
-          (sr) => sr.Id == saleRequestId,
+          (sr) => sr.Id == args.saleRequestId,
         ),
       ),
     );
@@ -109,11 +105,9 @@ class RequestSummary extends ConsumerWidget {
                       Consumer(
                         builder: (context, ref, child) {
                           final requestDetails = ref.watch(
-                            saleRequestDetailsStateControllerProvider(
-                              customerCode: customerCode,
-                              enterpriseCode: enterpriseCode,
-                              saleRequestCode: saleRequest.Id!,
-                            ).select((s) => s.value),
+                            saleRequestDetailsStateControllerProvider.select(
+                              (s) => s.value,
+                            ),
                           );
 
                           return Column(

@@ -81,18 +81,13 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
 
   @override
   Widget build(BuildContext context) {
-
     ref.listen(printSaleRequestControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
 
     final ProviderBase<AsyncValue<dynamic>> provider =
         widget.customerCode != null && widget.saleRequestId != null
-        ? saleRequestDetailsStateControllerProvider(
-            enterpriseCode: widget.enterpriseCode,
-            customerCode: widget.customerCode!,
-            saleRequestCode: widget.saleRequestId!,
-          )
+        ? saleRequestDetailsStateControllerProvider
         : lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode);
 
     final canPrint = ref.watch(

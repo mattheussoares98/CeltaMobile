@@ -8,15 +8,7 @@ import '../../../controllers/controllers.dart';
 import 'components/components.dart';
 
 class PaymentsPage extends ConsumerStatefulWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
-  const PaymentsPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
-  });
+  const PaymentsPage({super.key});
 
   @override
   ConsumerState<PaymentsPage> createState() => _PaymentsPageState();
@@ -45,11 +37,7 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
         child: Consumer(
           builder: (_, ref, _) {
             String? errorMessage = ref.watch(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: widget.enterpriseCode,
-                customerCode: widget.customerCode,
-                saleRequestId: widget.saleRequestId,
-              ).select((s) {
+              insertUpdateStateControllerProvider.select((s) {
                 if (s.value?.customer == null) {
                   return 'Informe o cliente'.hardcoded;
                 } else if (s.value?.products?.isEmpty == true) {
@@ -74,19 +62,12 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
             return CustomScrollView(
               slivers: [
                 _NewPaymentSection(
-                  enterpriseCode: widget.enterpriseCode,
-                  customerCode: widget.customerCode,
-                  saleRequestId: widget.saleRequestId,
                   creditCardController: creditCardController,
                   portionsController: portionsController,
                   validityController: validityController,
                   formKey: formKey,
                 ),
-                PaymentsList(
-                  enterpriseCode: widget.enterpriseCode,
-                  customerCode: widget.customerCode,
-                  saleRequestId: widget.saleRequestId,
-                ),
+                const PaymentsList(),
               ],
             );
           },
@@ -97,18 +78,12 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
 }
 
 class _NewPaymentSection extends ConsumerWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
   final TextEditingController creditCardController;
   final TextEditingController portionsController;
   final TextEditingController validityController;
   final GlobalKey<FormState> formKey;
 
   const _NewPaymentSection({
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
     required this.creditCardController,
     required this.portionsController,
     required this.validityController,
@@ -118,11 +93,7 @@ class _NewPaymentSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final totalLiquidAndPaidDifference = ref.watch(
-      insertUpdateStateControllerProvider(
-        enterpriseCode: enterpriseCode,
-        customerCode: customerCode,
-        saleRequestId: saleRequestId,
-      ).select(
+      insertUpdateStateControllerProvider.select(
         (s) =>
             (s.value?.totalProductsLiquid ?? 0) - (s.value?.totalPayments ?? 0),
       ),
@@ -169,13 +140,7 @@ class _NewPaymentSection extends ConsumerWidget {
           ),
         ),
         gapSliverH8,
-        SliverToBoxAdapter(
-          child: PaymentMethodDropdown(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestCode: saleRequestId,
-          ),
-        ),
+        const SliverToBoxAdapter(child: PaymentMethodDropdown()),
         // SliverToBoxAdapter(
         //   child: PrimaryButton(
         //     onPressed: () => ref.invalidate(
@@ -193,13 +158,8 @@ class _NewPaymentSection extends ConsumerWidget {
           creditCardController: creditCardController,
           portionsController: portionsController,
           validityController: validityController,
-          saleRequestId: saleRequestId,
         ),
-        PaymentConditionDropdown(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
-        ),
+        const PaymentConditionDropdown(),
         // SliverToBoxAdapter(
         //   child: PrimaryButton(
         //     onPressed: () =>
@@ -209,9 +169,6 @@ class _NewPaymentSection extends ConsumerWidget {
         // ),
         SliverToBoxAdapter(
           child: ValueFieldAndConfirmButton(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
             formKey: formKey,
             creditCardController: creditCardController,
             portionsController: portionsController,

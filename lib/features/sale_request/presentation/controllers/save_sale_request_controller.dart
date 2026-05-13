@@ -83,11 +83,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
     state = await AsyncValue.guard(() async {
       final userSession = await ref.read(validatedUserSessionProvider.future);
       final saleRequest = await ref.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
-        ).future,
+        insertUpdateStateControllerProvider.future,
       );
 
       final params = EcRequestParams(

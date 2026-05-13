@@ -6,39 +6,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
+import '../../../../providers.dart';
 import '../../../controllers/controllers.dart';
 
 class Customer extends ConsumerWidget {
-  final int saleRequestId;
-  final int customerCode;
-  final int enterpriseCode;
-  const Customer({
-    super.key,
-    required this.saleRequestId,
-    required this.customerCode,
-    required this.enterpriseCode,
-  });
+  const Customer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final args = ref.watch(saleRequestArgsProvider);
+
     final requestCustomer = ref.watch(
-      saleRequestsStateControllerProvider(enterpriseCode).select(
+      saleRequestsStateControllerProvider.select(
         (s) => s.value?.collection
-            .firstWhereOrNull((e) => e.Id == saleRequestId)
+            .firstWhereOrNull((e) => e.Id == args.saleRequestId)
             ?.customer,
       ),
     );
     final detailsCustomer = ref.watch(
-      saleRequestDetailsStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestCode: saleRequestId,
-      ).select((s) => s.value?.customer),
+      saleRequestDetailsStateControllerProvider.select(
+        (s) => s.value?.customer,
+      ),
     );
     if (requestCustomer == null || detailsCustomer == null) {
       return const SizedBox.shrink();
     }
-
 
     final customerName = requestCustomer.Name ?? detailsCustomer.name;
     bool isInternalCustomer = customerName?.toLowerCase() == 'consumidor';

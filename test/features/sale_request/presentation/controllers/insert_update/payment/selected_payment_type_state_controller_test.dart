@@ -7,19 +7,13 @@ import '../../../../../../mocks/mocks.dart';
 
 void main() {
   group('SelectedPaymentTypeStateController', () {
-    late int saleRequestCode;
-
-    setUp(() {
-      saleRequestCode = faker.randomGenerator.integer(1000);
-    });
+    setUp(() {});
 
     test('should have null as initial state', () {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
-      final state = container.read(
-        selectedPaymentTypeStateControllerProvider(saleRequestCode),
-      );
+      final state = container.read(selectedPaymentTypeStateControllerProvider);
 
       expect(state, isNull);
     });
@@ -33,16 +27,10 @@ void main() {
           : null;
 
       container
-          .read(
-            selectedPaymentTypeStateControllerProvider(
-              saleRequestCode,
-            ).notifier,
-          )
+          .read(selectedPaymentTypeStateControllerProvider.notifier)
           .select(payment);
 
-      final state = container.read(
-        selectedPaymentTypeStateControllerProvider(saleRequestCode),
-      );
+      final state = container.read(selectedPaymentTypeStateControllerProvider);
 
       expect(state, payment);
     });

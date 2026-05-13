@@ -5,30 +5,21 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../providers.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class ItemsPage extends ConsumerWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
-  const ItemsPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
-  });
+  const ItemsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = insertUpdateStateControllerProvider(
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-      saleRequestId: saleRequestId,
-    );
+    final args = ref.watch(saleRequestArgsProvider);
 
     final productsAsync = ref.watch(
-      provider.select((v) => v.whenData((data) => data.products)),
+      insertUpdateStateControllerProvider.select(
+        (v) => v.whenData((data) => data.products),
+      ),
     );
 
     return AsyncValueWidget(
@@ -45,17 +36,17 @@ class ItemsPage extends ConsumerWidget {
             final item = items[index];
             return BSFProductItemSummary(
               key: ValueKey(item.productPackingCode ?? item.code),
-              product: item.toProductEntity(enterpriseCode),
+              product: item.toProductEntity(args.enterpriseCode),
               item: item,
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: saleRequestId,
+              enterpriseCode: args.enterpriseCode,
+              customerCode: args.customerCode,
+              saleRequestId: args.saleRequestId,
               heroPrefix: 'items',
             );
           },
         );
       },
-      tryAgain: () => ref.invalidate(provider),
+      tryAgain: () => ref.invalidate(insertUpdateStateControllerProvider),
     );
   }
 }

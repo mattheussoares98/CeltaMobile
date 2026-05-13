@@ -19,9 +19,7 @@ class MockIEcPaymentFinalizationRepository extends Mock
 void main() {
   late MockIEcPaymentFinalizationRepository mockRepository;
   late UserSessionModel fakeSession;
-  late int enterpriseCode;
-  late int customerCode;
-  late int saleRequestId;
+  late SaleRequestArgs fakeArgs;
 
   setUpAll(() {
     registerFallbackValue(
@@ -30,9 +28,11 @@ void main() {
   });
 
   setUp(() {
-    enterpriseCode = faker.randomGenerator.integer(100);
-    customerCode = faker.randomGenerator.integer(100);
-    saleRequestId = faker.randomGenerator.integer(100);
+    fakeArgs = SaleRequestArgs(
+      customerCode: faker.randomGenerator.integer(100),
+      saleRequestId: faker.randomGenerator.integer(100),
+      enterpriseCode: faker.randomGenerator.integer(100),
+    );
     mockRepository = MockIEcPaymentFinalizationRepository();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
@@ -49,15 +49,12 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        insertUpdateStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        saleRequestArgsProvider.overrideWithValue(fakeArgs),
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(saleRequestEntity),
         ),
         allPaymentConditionsControllerProvider(
-          enterpriseCode: enterpriseCode,
+          enterpriseCode: fakeArgs.enterpriseCode,
         ).overrideWith(() => FakeAllPaymentConditionsController(allConditions)),
         ecPaymentFinalizationRepositoryProvider.overrideWith(
           (_) => mockRepository,
@@ -92,11 +89,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          filteredPaymentConditionsStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ).future,
+          filteredPaymentConditionsStateControllerProvider.future,
         );
 
         // ASSERT
@@ -142,11 +135,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          filteredPaymentConditionsStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ).future,
+          filteredPaymentConditionsStateControllerProvider.future,
         );
 
         // ASSERT
@@ -184,11 +173,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          filteredPaymentConditionsStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ).future,
+          filteredPaymentConditionsStateControllerProvider.future,
         );
 
         // ASSERT

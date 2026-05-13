@@ -4,6 +4,7 @@ import 'package:celta_inventario/core/presentation/controllers/user_session/user
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,9 +16,7 @@ import '../fakers.dart';
 void main() {
   late EcBSFCustomersRepositorySpy mockRepository;
   late UserSessionModel fakeSession;
-  late int enterpriseCode;
-  late int saleRequestId;
-  late int customerCode;
+  late SaleRequestArgs fakeArgs;
   late BSFCustomerEntity fakeCustomer;
 
   setUpAll(() {
@@ -26,11 +25,13 @@ void main() {
 
   setUp(() {
     mockRepository = EcBSFCustomersRepositorySpy();
-    enterpriseCode = faker.randomGenerator.integer(999);
-    saleRequestId = faker.randomGenerator.integer(9999);
-    customerCode = faker.randomGenerator.integer(9999);
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
+    );
+    fakeArgs = SaleRequestArgs(
+      customerCode: faker.randomGenerator.integer(100),
+      saleRequestId: faker.randomGenerator.integer(100),
+      enterpriseCode: faker.randomGenerator.integer(100),
     );
     // User requested to use a high number for code to avoid repetitions
     fakeCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 999999);
@@ -39,24 +40,17 @@ void main() {
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
     return ProviderContainer(
       overrides: [
+        saleRequestArgsProvider.overrideWithValue(fakeArgs),
         ecBSFCustomersRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        saleRequestDetailsStateControllerProvider(
-          customerCode: customerCode,
-          enterpriseCode: enterpriseCode,
-          saleRequestCode: saleRequestId,
-        ).overrideWith(
+        saleRequestDetailsStateControllerProvider.overrideWith(
           () => FakeSaleRequestDetailsController(
             BSFSaleRequestEntity.empty().copyWith(customer: fakeCustomer),
           ),
         ),
-        insertUpdateStateControllerProvider(
-          customerCode: customerCode,
-          enterpriseCode: enterpriseCode,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
             BSFSaleRequestEntity.empty().copyWith(customer: fakeCustomer),
           ),
@@ -71,11 +65,7 @@ void main() {
       addTearDown(container.dispose);
 
       final state = await container.read(
-        searchedCustomersStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          saleRequestId: saleRequestId,
-          customerCode: customerCode,
-        ).future,
+        searchedCustomersStateControllerProvider.future,
       );
 
       expect(state, []);
@@ -93,24 +83,14 @@ void main() {
       mockRepository.mockSearchForMobileApp(searchResults);
 
       final controller = container.read(
-        searchedCustomersStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          saleRequestId: saleRequestId,
-          customerCode: customerCode,
-        ).notifier,
+        searchedCustomersStateControllerProvider.notifier,
       );
 
       final succeeds = await controller.loadCustomer('search query', false);
 
       expect(succeeds, isTrue);
 
-      final state = container.read(
-        searchedCustomersStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          saleRequestId: saleRequestId,
-          customerCode: customerCode,
-        ),
-      );
+      final state = container.read(searchedCustomersStateControllerProvider);
 
       expect(state.value, searchResults);
       verify(
@@ -121,7 +101,7 @@ void main() {
             accessKey: fakeSession.user.AccessKey!,
           ),
           searchValue: 'search query',
-          enterpriseCode: enterpriseCode,
+          enterpriseCode: fakeArgs.enterpriseCode,
           searchByPersonalizedCode: false,
         ),
       ).called(1);
@@ -144,22 +124,12 @@ void main() {
         mockRepository.mockSearchForMobileApp(searchResults);
 
         final controller = container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ).notifier,
+          searchedCustomersStateControllerProvider.notifier,
         );
 
         await controller.loadCustomer('search query', false);
 
-        final state = container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ),
-        );
+        final state = container.read(searchedCustomersStateControllerProvider);
 
         expect(state.value, [otherCustomer]);
       },
@@ -174,24 +144,14 @@ void main() {
         mockRepository.mockSearchForMobileAppError();
 
         final controller = container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ).notifier,
+          searchedCustomersStateControllerProvider.notifier,
         );
 
         final succeeds = await controller.loadCustomer('search query', false);
 
         expect(succeeds, false);
 
-        final state = container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ),
-        );
+        final state = container.read(searchedCustomersStateControllerProvider);
 
         expect(state.hasError, true);
       },

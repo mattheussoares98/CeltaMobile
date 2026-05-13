@@ -8,7 +8,7 @@ part 'selected_payment_type_state_controller.g.dart';
 class SelectedPaymentTypeStateController
     extends _$SelectedPaymentTypeStateController {
   @override
-  BSFPaymentFinalizationEntity? build(int saleRequestCode) => null;
+  BSFPaymentFinalizationEntity? build() => null;
 
   void select(BSFPaymentFinalizationEntity? payment) => state = payment;
 }

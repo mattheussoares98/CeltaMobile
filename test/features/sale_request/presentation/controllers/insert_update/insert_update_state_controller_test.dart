@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,43 +18,33 @@ class FakePaymentFinalizationsController
   FakePaymentFinalizationsController(this.entities);
 
   @override
-  FutureOr<List<BSFPaymentFinalizationEntity>> build({
-    required int customerCode,
-    required int enterpriseCode,
-    required int saleRequestCode,
-  }) {
+  FutureOr<List<BSFPaymentFinalizationEntity>> build() {
     wasCalled = true;
     return entities;
   }
 }
 
 void main() {
-  late int enterpriseCode;
-  late int customerCode;
   late FakePaymentFinalizationsController fakePaymentsController;
   late FakeSearchedCustomersStateController searchedCustomersController;
   late List<BSFPaymentFinalizationEntity> fakePayments;
   late BSFSaleRequestEntity fakeSaleRequest;
+  late SaleRequestArgs fakeArgs;
 
   ProviderContainer makeProviderContainer({required int saleRequestId}) {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        filteredPaymentFinalizationsStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestCode: saleRequestId,
-        ).overrideWith(() => fakePaymentsController),
-        saleRequestDetailsStateControllerProvider(
-          customerCode: customerCode,
-          enterpriseCode: enterpriseCode,
-          saleRequestCode: saleRequestId,
-        ).overrideWith(() => FakeSaleRequestDetailsController(fakeSaleRequest)),
-        searchedCustomersStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          saleRequestId: saleRequestId,
-          customerCode: customerCode,
-        ).overrideWith(() => searchedCustomersController),
+        saleRequestArgsProvider.overrideWithValue(fakeArgs),
+        filteredPaymentFinalizationsStateControllerProvider.overrideWith(
+          () => fakePaymentsController,
+        ),
+        saleRequestDetailsStateControllerProvider.overrideWith(
+          () => FakeSaleRequestDetailsController(fakeSaleRequest),
+        ),
+        searchedCustomersStateControllerProvider.overrideWith(
+          () => searchedCustomersController,
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -61,8 +52,6 @@ void main() {
   }
 
   setUp(() {
-    enterpriseCode = faker.randomGenerator.integer(100);
-    customerCode = faker.randomGenerator.integer(100);
     fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
     fakePayments = [
       EntityFactory.makeBSFPaymentFinalizationEntity(),
@@ -75,6 +64,11 @@ void main() {
       EntityFactory.makeBSFCustomerEntity(),
       EntityFactory.makeBSFCustomerEntity(),
     ]);
+    fakeArgs = SaleRequestArgs(
+      customerCode: faker.randomGenerator.integer(100),
+      enterpriseCode: faker.randomGenerator.integer(100),
+      saleRequestId: 0,
+    );
   });
 
   group('InsertUpdateStateController', () {
@@ -85,11 +79,7 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final result = await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
+            insertUpdateStateControllerProvider.future,
           );
 
           expect(result, BSFSaleRequestEntity.empty());
@@ -103,11 +93,7 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 1);
 
           final result = await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 1,
-            ).future,
+            insertUpdateStateControllerProvider.future,
           );
 
           expect(result, fakeSaleRequest);
@@ -121,35 +107,19 @@ void main() {
         final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).notifier,
+          insertUpdateStateControllerProvider.notifier,
         );
 
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).future,
-        );
+        await container.read(insertUpdateStateControllerProvider.future);
 
         final product = EntityFactory.makeProductEntity(
           productPackingCode: faker.randomGenerator.integer(100),
-          enterpriseCode: enterpriseCode,
+          enterpriseCode: fakeArgs.enterpriseCode,
         );
 
         controller.addItem(product);
 
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ),
-        );
+        final state = container.read(insertUpdateStateControllerProvider);
 
         expect(state.value!.products!.length, 1);
         expect(
@@ -165,36 +135,20 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).notifier,
+            insertUpdateStateControllerProvider.notifier,
           );
 
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
-          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
           final product = EntityFactory.makeProductEntity(
             plu: faker.guid.guid(),
-            enterpriseCode: enterpriseCode,
+            enterpriseCode: fakeArgs.enterpriseCode,
           );
 
           controller.addItem(product);
           controller.addItem(product);
 
-          final state = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ),
-          );
+          final state = container.read(insertUpdateStateControllerProvider);
 
           expect(state.value!.products!.length, 1);
           expect(state.value!.products!.first.quantity, 2);
@@ -205,36 +159,20 @@ void main() {
         final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).notifier,
+          insertUpdateStateControllerProvider.notifier,
         );
 
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).future,
-        );
+        await container.read(insertUpdateStateControllerProvider.future);
 
         final productWithZeroPrice = EntityFactory.makeProductEntity(
           plu: faker.guid.guid().toString(),
-          enterpriseCode: enterpriseCode,
+          enterpriseCode: fakeArgs.enterpriseCode,
           RetailPracticedPrice: 0,
         ).copyWith(Value: 0);
 
         controller.addItem(productWithZeroPrice);
 
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ),
-        );
+        final state = container.read(insertUpdateStateControllerProvider);
 
         expect(state.value!.products ?? [], isEmpty);
       });
@@ -243,35 +181,19 @@ void main() {
     group("Increase or decrease unit", () {
       AsyncValue<BSFSaleRequestEntity> getCurrentState(
         ProviderContainer container,
-      ) => container.read(
-        insertUpdateStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: 0,
-        ),
-      );
+      ) => container.read(insertUpdateStateControllerProvider);
       test('increaseOrDecreaseUnit should behave correctly', () async {
         final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).notifier,
+          insertUpdateStateControllerProvider.notifier,
         );
 
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).future,
-        );
+        await container.read(insertUpdateStateControllerProvider.future);
 
         final product = EntityFactory.makeProductEntity(
           plu: faker.guid.guid().toString(),
-          enterpriseCode: enterpriseCode,
+          enterpriseCode: fakeArgs.enterpriseCode,
         );
 
         controller.addItem(product);
@@ -301,20 +223,10 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).notifier,
+            insertUpdateStateControllerProvider.notifier,
           );
 
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
-          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
           final retailPrice = faker.randomGenerator.decimal();
           final wholePrice = faker.randomGenerator.decimal();
@@ -322,7 +234,7 @@ void main() {
           final product =
               EntityFactory.makeProductEntity(
                 plu: faker.guid.guid().toString(),
-                enterpriseCode: enterpriseCode,
+                enterpriseCode: fakeArgs.enterpriseCode,
               ).copyWith(
                 RetailPracticedPrice: retailPrice,
                 WholePracticedPrice: wholePrice,
@@ -337,13 +249,7 @@ void main() {
 
           controller.addItem(product);
           final item = container
-              .read(
-                insertUpdateStateControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: 0,
-                ),
-              )
+              .read(insertUpdateStateControllerProvider)
               .value!
               .products!
               .first;
@@ -365,27 +271,17 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).notifier,
+            insertUpdateStateControllerProvider.notifier,
           );
 
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
-          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
           final retailPrice = faker.randomGenerator.decimal();
 
           final product =
               EntityFactory.makeProductEntity(
                 plu: faker.guid.guid().toString(),
-                enterpriseCode: enterpriseCode,
+                enterpriseCode: fakeArgs.enterpriseCode,
               ).copyWith(
                 RetailPracticedPrice: retailPrice,
                 WholePracticedPrice: 0,
@@ -400,13 +296,7 @@ void main() {
 
           controller.addItem(product);
           final item = container
-              .read(
-                insertUpdateStateControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: 0,
-                ),
-              )
+              .read(insertUpdateStateControllerProvider)
               .value!
               .products!
               .first;
@@ -427,20 +317,10 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).notifier,
+            insertUpdateStateControllerProvider.notifier,
           );
 
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
-          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
           final retailPrice = faker.randomGenerator.decimal();
           final wholePrice = faker.randomGenerator.decimal();
@@ -448,7 +328,7 @@ void main() {
           final product =
               EntityFactory.makeProductEntity(
                 plu: faker.guid.guid().toString(),
-                enterpriseCode: enterpriseCode,
+                enterpriseCode: fakeArgs.enterpriseCode,
               ).copyWith(
                 RetailPracticedPrice: retailPrice,
                 WholePracticedPrice: wholePrice,
@@ -463,13 +343,7 @@ void main() {
 
           controller.addItem(product);
           final item = container
-              .read(
-                insertUpdateStateControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: 0,
-                ),
-              )
+              .read(insertUpdateStateControllerProvider)
               .value!
               .products!
               .first;
@@ -493,36 +367,20 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).notifier,
+            insertUpdateStateControllerProvider.notifier,
           );
 
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
-          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
           final product = EntityFactory.makeProductEntity(
             plu: faker.guid.guid().toString(),
-            enterpriseCode: enterpriseCode,
+            enterpriseCode: fakeArgs.enterpriseCode,
           );
           controller.addItem(product);
 
           // Get the added item
           final addedItem = container
-              .read(
-                insertUpdateStateControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: 0,
-                ),
-              )
+              .read(insertUpdateStateControllerProvider)
               .value!
               .products!
               .first;
@@ -532,13 +390,7 @@ void main() {
 
           controller.removeItem(sameItemDifferentInstance);
 
-          final state = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ),
-          );
+          final state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.products, isEmpty);
         },
       );
@@ -549,35 +401,19 @@ void main() {
         final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).notifier,
+          insertUpdateStateControllerProvider.notifier,
         );
 
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).future,
-        );
+        await container.read(insertUpdateStateControllerProvider.future);
 
         final product = EntityFactory.makeProductEntity(
           plu: faker.guid.guid().toString(),
-          enterpriseCode: enterpriseCode,
+          enterpriseCode: fakeArgs.enterpriseCode,
         );
         controller.addItem(product);
 
         final addedItem = container
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: enterpriseCode,
-                customerCode: customerCode,
-                saleRequestId: 0,
-              ),
-            )
+            .read(insertUpdateStateControllerProvider)
             .value!
             .products!
             .first;
@@ -587,13 +423,7 @@ void main() {
 
         controller.updateItem(addedItem, updatedItem);
 
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ),
-        );
+        final state = container.read(insertUpdateStateControllerProvider);
         expect(state.value!.products!.first.quantity, newQuantity);
       });
     });
@@ -604,20 +434,10 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).notifier,
+            insertUpdateStateControllerProvider.notifier,
           );
 
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
-          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
           final payment = fakePayments.first;
           const value = 100.0;
@@ -625,7 +445,7 @@ void main() {
           // Add a product first so there is available balance
           controller.addItem(
             EntityFactory.makeProductEntity(
-              enterpriseCode: enterpriseCode,
+              enterpriseCode: fakeArgs.enterpriseCode,
             ).copyWith(RetailPracticedPrice: 200, Value: 200),
           );
 
@@ -637,13 +457,7 @@ void main() {
           expect(success, isTrue);
           expect(error, isNull);
 
-          final state = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ),
-          );
+          final state = container.read(insertUpdateStateControllerProvider);
 
           expect(state.value!.financials!.length, 1);
           expect(
@@ -665,20 +479,10 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).notifier,
+            insertUpdateStateControllerProvider.notifier,
           );
 
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
-          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
           final payment = fakePayments.first;
           const value = 100.0;
@@ -688,7 +492,7 @@ void main() {
           // Add a product first so there is available balance
           controller.addItem(
             EntityFactory.makeProductEntity(
-              enterpriseCode: enterpriseCode,
+              enterpriseCode: fakeArgs.enterpriseCode,
             ).copyWith(RetailPracticedPrice: 200, Value: 200),
           );
 
@@ -701,13 +505,7 @@ void main() {
           expect(success, isTrue);
           expect(error, isNull);
 
-          final state = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ),
-          );
+          final state = container.read(insertUpdateStateControllerProvider);
 
           final addedPayment =
               state.value!.financials!.first.paymentFinalizations!.first;
@@ -730,20 +528,10 @@ void main() {
         final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).notifier,
+          insertUpdateStateControllerProvider.notifier,
         );
 
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).future,
-        );
+        await container.read(insertUpdateStateControllerProvider.future);
 
         //select the payment condition
         final paymentCondition = EntityFactory.makeBSFPaymentConditionEntity();
@@ -759,7 +547,7 @@ void main() {
         // Add a product first so there is available balance
         controller.addItem(
           EntityFactory.makeProductEntity(
-            enterpriseCode: enterpriseCode,
+            enterpriseCode: fakeArgs.enterpriseCode,
           ).copyWith(RetailPracticedPrice: 200, Value: 200),
         );
 
@@ -772,13 +560,7 @@ void main() {
         expect(success, isTrue);
         expect(error, isNull);
 
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ),
-        );
+        final state = container.read(insertUpdateStateControllerProvider);
 
         final addedPayment =
             state.value!.financials!.first.paymentFinalizations!.first;
@@ -791,20 +573,10 @@ void main() {
           final container = makeProviderContainer(saleRequestId: 0);
 
           final controller = container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).notifier,
+            insertUpdateStateControllerProvider.notifier,
           );
 
-          await container.read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: 0,
-            ).future,
-          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
           // Set initial values in selection providers
           final paymentType = EntityFactory.makeBSFPaymentFinalizationEntity();
@@ -812,14 +584,14 @@ void main() {
               EntityFactory.makeBSFPaymentConditionEntity();
 
           container
-              .read(selectedPaymentTypeStateControllerProvider(0).notifier)
+              .read(selectedPaymentTypeStateControllerProvider.notifier)
               .select(paymentType);
           container
               .read(selectedPaymentConditionStateControllerProvider.notifier)
               .select(paymentCondition);
 
           expect(
-            container.read(selectedPaymentTypeStateControllerProvider(0)),
+            container.read(selectedPaymentTypeStateControllerProvider),
             paymentType,
           );
           expect(
@@ -830,7 +602,7 @@ void main() {
           // Add a product first so there is available balance
           controller.addItem(
             EntityFactory.makeProductEntity(
-              enterpriseCode: enterpriseCode,
+              enterpriseCode: fakeArgs.enterpriseCode,
             ).copyWith(RetailPracticedPrice: 200, Value: 200),
           );
 
@@ -845,7 +617,7 @@ void main() {
 
           // Verify they are now null
           expect(
-            container.read(selectedPaymentTypeStateControllerProvider(0)),
+            container.read(selectedPaymentTypeStateControllerProvider),
             isNull,
           );
           expect(
@@ -859,25 +631,15 @@ void main() {
         final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).notifier,
+          insertUpdateStateControllerProvider.notifier,
         );
 
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).future,
-        );
+        await container.read(insertUpdateStateControllerProvider.future);
 
         // Add a product with price 50
         controller.addItem(
           EntityFactory.makeProductEntity(
-            enterpriseCode: enterpriseCode,
+            enterpriseCode: fakeArgs.enterpriseCode,
           ).copyWith(RetailPracticedPrice: 50, Value: 50),
         );
 
@@ -898,24 +660,14 @@ void main() {
         final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).notifier,
+          insertUpdateStateControllerProvider.notifier,
         );
 
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ).future,
-        );
+        await container.read(insertUpdateStateControllerProvider.future);
 
         controller.addItem(
           EntityFactory.makeProductEntity(
-            enterpriseCode: enterpriseCode,
+            enterpriseCode: fakeArgs.enterpriseCode,
           ).copyWith(RetailPracticedPrice: 200, Value: 200),
         );
         final value = faker.randomGenerator.decimal() * 100;
@@ -923,37 +675,19 @@ void main() {
         controller.addPayment(payment: fakePayments[0], value: value);
         controller.addPayment(payment: fakePayments[1], value: value);
 
-        final state = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ),
-        );
+        final state = container.read(insertUpdateStateControllerProvider);
 
         expect(state.value!.financials!.first.paymentFinalizations!.length, 2);
 
         controller.removePayment(1);
 
-        final state2 = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ),
-        );
+        final state2 = container.read(insertUpdateStateControllerProvider);
 
         expect(state2.value!.financials!.first.paymentFinalizations!.length, 1);
 
         controller.removePayment(0);
 
-        final state3 = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: 0,
-          ),
-        );
+        final state3 = container.read(insertUpdateStateControllerProvider);
 
         expect(state3.value!.financials!.first.paymentFinalizations, isEmpty);
       });
@@ -964,32 +698,18 @@ void main() {
         final container = makeProviderContainer(saleRequestId: saleRequestId);
 
         final controller = container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ).notifier,
+          insertUpdateStateControllerProvider.notifier,
         );
 
         //load the initial state
-        await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ).future,
-        );
+        await container.read(insertUpdateStateControllerProvider.future);
 
         // 1. Set some initial state in related providers
         final paymentType = EntityFactory.makeBSFPaymentFinalizationEntity();
         final paymentCondition = EntityFactory.makeBSFPaymentConditionEntity();
 
         container
-            .read(
-              selectedPaymentTypeStateControllerProvider(
-                saleRequestId,
-              ).notifier,
-            )
+            .read(selectedPaymentTypeStateControllerProvider.notifier)
             .select(paymentType);
         container
             .read(selectedPaymentConditionStateControllerProvider.notifier)
@@ -997,19 +717,13 @@ void main() {
 
         // 2. Add a product to the main controller so it's not "empty"
         final product = EntityFactory.makeProductEntity(
-          enterpriseCode: enterpriseCode,
+          enterpriseCode: fakeArgs.enterpriseCode,
         );
         controller.addItem(product);
 
         expect(
           container
-              .read(
-                insertUpdateStateControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
-                ),
-              )
+              .read(insertUpdateStateControllerProvider)
               .value
               ?.products
               ?.length,
@@ -1017,15 +731,7 @@ void main() {
         );
 
         expect(
-          container
-              .read(
-                searchedCustomersStateControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  saleRequestId: saleRequestId,
-                  customerCode: customerCode,
-                ),
-              )
-              .value,
+          container.read(searchedCustomersStateControllerProvider).value,
           isNotEmpty,
         );
 
@@ -1034,34 +740,22 @@ void main() {
 
         // 4. Verify selection providers are reset
         expect(
-          container.read(
-            selectedPaymentTypeStateControllerProvider(saleRequestId),
-          ),
+          container.read(selectedPaymentTypeStateControllerProvider),
           isNull,
         );
         expect(
           container.read(selectedPaymentConditionStateControllerProvider),
           isNull,
         );
-        
+
         // Trigger rebuild to confirm invalidation
-        container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ),
-        );
+        container.read(searchedCustomersStateControllerProvider);
 
         expect(searchedCustomersController.rebuildCount, 2);
 
         // 5. Verify main controller was reset to initial state (empty)
         final stateAfterDispose = await container.read(
-          insertUpdateStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ).future,
+          insertUpdateStateControllerProvider.future,
         );
         expect(stateAfterDispose.products ?? [], isEmpty);
       });

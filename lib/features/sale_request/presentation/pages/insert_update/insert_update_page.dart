@@ -7,10 +7,12 @@ import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../../../utils/utils.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../providers.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class InsertUpdatePage extends ConsumerWidget {
+class InsertUpdatePage extends StatelessWidget {
   final int enterpriseCode;
   final int customerCode;
   final int saleRequestId;
@@ -22,8 +24,30 @@ class InsertUpdatePage extends ConsumerWidget {
   });
 
   @override
+  Widget build(BuildContext context) {
+    return ProviderScope(
+      overrides: [
+        saleRequestArgsProvider.overrideWithValue(
+          SaleRequestArgs(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+          ),
+        ),
+      ],
+      child: const _InsertUpdateContent(),
+    );
+  }
+}
+
+class _InsertUpdateContent extends ConsumerWidget {
+  const _InsertUpdateContent();
+
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(saveSaleRequestControllerProvider(enterpriseCode), (p, n) {
+    final args = ref.watch(saleRequestArgsProvider);
+
+    ref.listen(saveSaleRequestControllerProvider(args.enterpriseCode), (p, n) {
       n.showAlertDialogOnError(context);
       n.showSnackbarOnSuccess(
         context,
@@ -34,13 +58,15 @@ class InsertUpdatePage extends ConsumerWidget {
         context.pop();
       });
     });
-    ref.observeLoading([saveSaleRequestControllerProvider(enterpriseCode)]);
+    ref.observeLoading([
+      saveSaleRequestControllerProvider(args.enterpriseCode),
+    ]);
 
     return Consumer(
       child: Scaffold(
         appBar: AppBar(
           title: DefaultAppBarTitle(
-            title: saleRequestId == 0
+            title: args.saleRequestId == 0
                 ? 'Inserir pedido'.hardcoded
                 : 'Atualizar pedido'.hardcoded,
           ),
@@ -50,18 +76,14 @@ class InsertUpdatePage extends ConsumerWidget {
               builder: (_, ref, _) {
                 return QuantityBadge(
                   quantity: ref.watch(
-                    insertUpdateStateControllerProvider(
-                      enterpriseCode: enterpriseCode,
-                      customerCode: customerCode,
-                      saleRequestId: saleRequestId,
-                    ).select((s) => s.value?.products?.length),
+                    insertUpdateStateControllerProvider.select(
+                      (s) => s.value?.products?.length,
+                    ),
                   ),
                   totalPrice: ref.watch(
-                    insertUpdateStateControllerProvider(
-                      enterpriseCode: enterpriseCode,
-                      customerCode: customerCode,
-                      saleRequestId: saleRequestId,
-                    ).select((s) => s.value?.totalProductsLiquid),
+                    insertUpdateStateControllerProvider.select(
+                      (s) => s.value?.totalProductsLiquid,
+                    ),
                   ),
                   platformIcon: const PlatformIcon(
                     cupertinoIcon: CupertinoIcons.cart,
@@ -73,33 +95,19 @@ class InsertUpdatePage extends ConsumerWidget {
             ),
           ],
         ),
-        body: InsertUpdateBody(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
-        ),
-        bottomNavigationBar: InsertUpdateBottomNavigationBar(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
-        ),
+        body: const InsertUpdateBody(),
+        bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
       ),
       builder: (context, ref, child) {
         final hasChanges =
-            saleRequestId != 0 &&
+            args.saleRequestId != 0 &&
             ref.watch(
-                  saleRequestDetailsStateControllerProvider(
-                    enterpriseCode: enterpriseCode,
-                    customerCode: customerCode,
-                    saleRequestCode: saleRequestId,
-                  ).select((s) => s.value),
+                  saleRequestDetailsStateControllerProvider.select(
+                    (s) => s.value,
+                  ),
                 ) !=
                 ref.watch(
-                  insertUpdateStateControllerProvider(
-                    enterpriseCode: enterpriseCode,
-                    customerCode: customerCode,
-                    saleRequestId: saleRequestId,
-                  ).select((s) => s.value),
+                  insertUpdateStateControllerProvider.select((s) => s.value),
                 );
 
         return PopScope(
@@ -108,13 +116,7 @@ class InsertUpdatePage extends ConsumerWidget {
           onPopInvokedWithResult: (didPop, _) async {
             void dispose() {
               ref
-                  .read(
-                    insertUpdateStateControllerProvider(
-                      customerCode: customerCode,
-                      enterpriseCode: enterpriseCode,
-                      saleRequestId: saleRequestId,
-                    ).notifier,
-                  )
+                  .read(insertUpdateStateControllerProvider.notifier)
                   .disposeFlow();
             }
 

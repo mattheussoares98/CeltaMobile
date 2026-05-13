@@ -46,11 +46,7 @@ class FakeInsertUpdateStateController extends InsertUpdateStateController {
   FakeInsertUpdateStateController({required this.saleRequestEntity});
 
   @override
-  FutureOr<BSFSaleRequestEntity> build({
-    required int enterpriseCode,
-    required int customerCode,
-    required int saleRequestId,
-  }) async {
+  FutureOr<BSFSaleRequestEntity> build() async {
     return saleRequestEntity;
   }
 }
@@ -140,11 +136,7 @@ void main() {
         ecSaleRequestsRepositoryProvider.overrideWithValue(
           mockEcSaleRequestsRepository,
         ),
-        insertUpdateStateControllerProvider(
-          enterpriseCode: fakeEnterprise.Code!,
-          customerCode: fakePendingRequest.customer!.Code!,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
             saleRequestEntity: fakeBSFSaleRequestEntity,
           ),
@@ -195,11 +187,7 @@ void main() {
         ecSaleRequestsRepositoryProvider.overrideWithValue(
           mockEcSaleRequestsRepository,
         ),
-        insertUpdateStateControllerProvider(
-          enterpriseCode: fakeEnterprise.Code!,
-          customerCode: fakePendingRequest.customer!.Code!,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
             saleRequestEntity: fakeBSFSaleRequestEntity,
           ),
@@ -305,11 +293,7 @@ void main() {
         ecSaleRequestsRepositoryProvider.overrideWithValue(
           mockEcSaleRequestsRepository,
         ),
-        insertUpdateStateControllerProvider(
-          enterpriseCode: fakeEnterprise.Code!,
-          customerCode: fakePendingRequest.customer!.Code!,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
             saleRequestEntity: fakeBSFSaleRequestEntity,
           ),
@@ -385,11 +369,7 @@ void main() {
         ecSaleRequestsRepositoryProvider.overrideWithValue(
           mockEcSaleRequestsRepository,
         ),
-        insertUpdateStateControllerProvider(
-          enterpriseCode: fakeEnterprise.Code!,
-          customerCode: fakePendingRequest.customer!.Code!,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
             saleRequestEntity: fakeBSFSaleRequestEntity,
           ),
@@ -449,11 +429,7 @@ void main() {
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
 
-        insertUpdateStateControllerProvider(
-          enterpriseCode: fakeEnterprise.Code!,
-          customerCode: fakePendingRequest.customer!.Code!,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
             saleRequestEntity: fakeBSFSaleRequestEntity,
           ),
@@ -506,11 +482,7 @@ void main() {
 
       // Update ALL overrides
       container.updateOverrides([
-        insertUpdateStateControllerProvider(
-          enterpriseCode: fakeEnterprise.Code!,
-          customerCode: fakePendingRequest.customer!.Code!,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
             saleRequestEntity: fakeBSFSaleRequestEntity,
           ),

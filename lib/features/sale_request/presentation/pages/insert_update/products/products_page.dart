@@ -3,27 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../providers.dart';
 import '../../create_sale_request/insert_products/components/search_products.dart';
 import 'components/components.dart';
 
 class ProductsPage extends ConsumerWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
-  const ProductsPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
-  });
+  const ProductsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final args = ref.watch(saleRequestArgsProvider);
+
     final searchProductKey = SearchProductKey(
-      enterpriseCode,
+      args.enterpriseCode,
       BsRoutine.saleRequest,
       Modules.saleRequest,
-      anotherKey: saleRequestId.toString(),
+      anotherKey: args.saleRequestId.toString(),
     );
 
     return Column(
@@ -35,7 +30,7 @@ class ProductsPage extends ConsumerWidget {
         Expanded(
           child: ProductsList(
             searchProductKey: searchProductKey,
-            customerCode: customerCode,
+            customerCode: args.customerCode,
           ),
         ),
       ],

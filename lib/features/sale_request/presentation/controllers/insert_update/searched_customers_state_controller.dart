@@ -5,6 +5,7 @@ import '../../../../../core/presentation/controllers/user_session/user_session.d
 import '../../../../../core/providers/customer/customer.dart';
 import '../../../../../exceptions/exceptions.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../providers.dart';
 import 'insert_update.dart';
 
 part 'searched_customers_state_controller.g.dart';
@@ -13,17 +14,15 @@ part 'searched_customers_state_controller.g.dart';
 class SearchedCustomersStateController
     extends _$SearchedCustomersStateController {
   @override
-  FutureOr<List<BSFCustomerEntity>> build({
-    required int enterpriseCode,
-    required int saleRequestId,
-    required int customerCode,
-  }) async => [];
+  FutureOr<List<BSFCustomerEntity>> build() async => [];
 
   Future<bool> loadCustomer(String value, bool searchByPersonalizedCode) async {
     state = const AsyncValue.loading();
     bool succeeds = false;
 
     state = await AsyncValue.guard(() async {
+      final args = ref.watch(saleRequestArgsProvider);
+
       final validatedUserSession = await ref.read(
         validatedUserSessionProvider.future,
       );
@@ -37,7 +36,7 @@ class SearchedCustomersStateController
               accessKey: validatedUserSession.user.AccessKey!,
             ),
             searchValue: value,
-            enterpriseCode: enterpriseCode,
+            enterpriseCode: args.enterpriseCode,
             searchByPersonalizedCode: searchByPersonalizedCode,
           );
 
@@ -46,11 +45,7 @@ class SearchedCustomersStateController
       }
 
       final selectedCustomer = await ref.read(
-        insertUpdateStateControllerProvider(
-          customerCode: customerCode,
-          enterpriseCode: enterpriseCode,
-          saleRequestId: saleRequestId,
-        ).selectAsync((s) => s.customer),
+        insertUpdateStateControllerProvider.selectAsync((s) => s.customer),
       );
 
       succeeds = true;

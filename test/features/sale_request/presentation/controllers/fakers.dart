@@ -10,11 +10,7 @@ class FakeSaleRequestDetailsController
   FakeSaleRequestDetailsController(this.entity);
 
   @override
-  FutureOr<BSFSaleRequestEntity> build({
-    required int customerCode,
-    required int enterpriseCode,
-    required int saleRequestCode,
-  }) {
+  FutureOr<BSFSaleRequestEntity> build() {
     return entity;
   }
 }
@@ -24,11 +20,7 @@ class FakeInsertUpdateStateController extends InsertUpdateStateController {
   FakeInsertUpdateStateController(this.entity);
 
   @override
-  FutureOr<BSFSaleRequestEntity> build({
-    required int enterpriseCode,
-    required int customerCode,
-    required int saleRequestId,
-  }) {
+  FutureOr<BSFSaleRequestEntity> build() {
     return entity;
   }
 }
@@ -69,11 +61,7 @@ class FakeSearchedCustomersStateController
   FakeSearchedCustomersStateController(this.entities);
 
   @override
-  FutureOr<List<BSFCustomerEntity>> build({
-    required int enterpriseCode,
-    required int saleRequestId,
-    required int customerCode,
-  }) {
+  FutureOr<List<BSFCustomerEntity>> build() {
     ++_rebuildCount;
     return entities;
   }

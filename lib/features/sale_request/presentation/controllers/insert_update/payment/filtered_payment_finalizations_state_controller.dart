@@ -2,6 +2,7 @@ import 'package:celta_inventario/features/sale_request/presentation/controllers/
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../providers.dart';
 
 part 'filtered_payment_finalizations_state_controller.g.dart';
 
@@ -9,18 +10,12 @@ part 'filtered_payment_finalizations_state_controller.g.dart';
 class FilteredPaymentFinalizationsStateController
     extends _$FilteredPaymentFinalizationsStateController {
   @override
-  FutureOr<List<BSFPaymentFinalizationEntity>> build({
-    required int enterpriseCode,
-    required int customerCode,
-    required int saleRequestCode,
-  }) async {
+  FutureOr<List<BSFPaymentFinalizationEntity>> build() async {
+    final args = ref.watch(saleRequestArgsProvider);
+
     // Watch the current sale request to get the customer and request type
     final (requestType, customerPaymentCodes) = await ref.watch(
-      insertUpdateStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestId: saleRequestCode,
-      ).selectAsync(
+      insertUpdateStateControllerProvider.selectAsync(
         (s) => (
           s.requestType,
           s.customer?.paymentFinalizations?.map((e) => e.code).toSet(),
@@ -31,7 +26,7 @@ class FilteredPaymentFinalizationsStateController
     // Fetch all available finalizations for the enterprise (Cached)
     final paymentFinalizations = await ref.watch(
       allPaymentFinalizationsControllerProvider(
-        enterpriseCode: enterpriseCode,
+        enterpriseCode: args.enterpriseCode,
       ).future,
     );
 

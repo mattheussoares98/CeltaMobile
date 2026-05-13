@@ -5,27 +5,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../routing/routing.dart';
+import '../../../../providers.dart';
 import '../../../controllers/controllers.dart';
 
 class EditButton extends ConsumerWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
-  const EditButton({
-    super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
-  });
+  const EditButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final args = ref.watch(saleRequestArgsProvider);
+
     final saleRequestLoadedCorrectly = ref.watch(
-      saleRequestDetailsStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestCode: saleRequestId,
-      ).select((value) => value.hasValue && !value.isLoading),
+      saleRequestDetailsStateControllerProvider.select(
+        (value) => value.hasValue && !value.isLoading,
+      ),
     );
 
     return IconButton(
@@ -36,13 +29,13 @@ class EditButton extends ConsumerWidget {
                   .tryAccess(
                     context: context,
                     route: Routes.insertUpdateSaleRequest,
-                    enterpriseCode: enterpriseCode,
+                    enterpriseCode: args.enterpriseCode,
                     module: Modules.saleRequest,
                     replace: true,
                     pathParameters: {
-                      'enterpriseCode': enterpriseCode.toString(),
-                      'customerCode': customerCode.toString(),
-                      'saleRequestId': saleRequestId.toString(),
+                      'enterpriseCode': args.enterpriseCode.toString(),
+                      'customerCode': args.customerCode.toString(),
+                      'saleRequestId': args.saleRequestId.toString(),
                     },
                   );
             }

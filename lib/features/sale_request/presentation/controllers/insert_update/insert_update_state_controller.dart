@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../core/domain/entities/entities.dart';
 import '../../../../../localization/string_hardcoded.dart';
 import '../../../domain/entities/bsf/bsf.dart';
-import '../../../domain/entities/entities.dart';
+import '../../../providers.dart';
 import 'insert_update.dart';
 
 part 'insert_update_state_controller.g.dart';
@@ -11,23 +11,15 @@ part 'insert_update_state_controller.g.dart';
 @Riverpod(keepAlive: true) //It is invalidating when close the page
 class InsertUpdateStateController extends _$InsertUpdateStateController {
   @override
-  FutureOr<BSFSaleRequestEntity> build({
-    required int enterpriseCode,
-    required int customerCode,
-    required int saleRequestId,
-  }) async {
-    if (saleRequestId == 0) {
+  FutureOr<BSFSaleRequestEntity> build() async {
+    final args = ref.watch(saleRequestArgsProvider);
+
+    if (args.saleRequestId == 0) {
       //!inserting
       return BSFSaleRequestEntity.empty();
     }
 
-    return await ref.read(
-      saleRequestDetailsStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestCode: saleRequestId,
-      ).future,
-    );
+    return await ref.read(saleRequestDetailsStateControllerProvider.future);
   }
 
   (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {
@@ -88,7 +80,8 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     if (index == -1) {
-      addItem(item.toProductEntity(enterpriseCode));
+      final args = ref.read(saleRequestArgsProvider);
+      addItem(item.toProductEntity(args.enterpriseCode));
       return;
     } else {
       final pc = item.priceCost;
@@ -196,11 +189,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     state = AsyncData(current.copyWith(financials: financials));
 
-    ref
-        .read(
-          selectedPaymentTypeStateControllerProvider(saleRequestId).notifier,
-        )
-        .select(null);
+    ref.read(selectedPaymentTypeStateControllerProvider.notifier).select(null);
     ref
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
@@ -230,7 +219,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   void disposeFlow() {
     ref.invalidate(selectedPaymentConditionStateControllerProvider);
     ref.invalidate(searchedCustomersStateControllerProvider);
-    ref.invalidate(selectedPaymentTypeStateControllerProvider(saleRequestId));
+    ref.invalidate(selectedPaymentTypeStateControllerProvider);
 
     ref.invalidateSelf();
   }

@@ -8,14 +8,6 @@ RouteBase saleRequestDetailsRoute(List<RouteBase> routes) => GoRoute(
   name: Routes.saleRequestDetails.name,
   routes: routes,
   builder: (context, state) {
-    final saleRequestId = int.parse(state.pathParameters['saleRequestId']!);
-    final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
-    final customerCode = int.parse(state.pathParameters['customerCode']!);
-
-    return SaleRequestDetailsPage(
-      saleRequestId: saleRequestId,
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-    );
+    return const SaleRequestDetailsPage();
   },
 );

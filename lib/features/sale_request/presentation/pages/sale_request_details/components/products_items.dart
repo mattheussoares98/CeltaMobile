@@ -8,29 +8,14 @@ import '../../../controllers/controllers.dart';
 import 'components.dart';
 
 class ProductsItems extends ConsumerWidget {
-  final int saleRequestId;
-  final int enterpriseCode;
-  final int customerCode;
-
-  const ProductsItems({
-    super.key,
-    required this.saleRequestId,
-    required this.enterpriseCode,
-    required this.customerCode,
-  });
+  const ProductsItems({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = saleRequestDetailsStateControllerProvider(
-      saleRequestCode: saleRequestId,
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-    );
-
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(provider),
-      tryAgain: () => ref.invalidate(provider),
+      value: ref.watch(saleRequestDetailsStateControllerProvider),
+      tryAgain: () => ref.invalidate(saleRequestDetailsStateControllerProvider),
       data: (requestDetails) {
         final products = requestDetails.products;
 

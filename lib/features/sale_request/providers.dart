@@ -5,6 +5,7 @@ import '../../core/providers/http/http.dart';
 import '../../core/providers/soap/soap.dart';
 import 'data/datasource/datasource.dart';
 import 'data/repository/repository.dart';
+import 'domain/entities/entities.dart';
 import 'domain/repository/repository.dart';
 
 part 'providers.g.dart';
@@ -136,4 +137,9 @@ IEcPaymentFinalizationRepository ecPaymentFinalizationRepository(Ref ref) {
   return EcPaymentFinalizationRepositoryImpl(
     ref.watch(ecPaymentFinalizationDatasourceProvider),
   );
+}
+
+@riverpod
+SaleRequestArgs saleRequestArgs(Ref ref) {
+  throw UnimplementedError();
 }

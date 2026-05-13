@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,14 +10,14 @@ import '../../../../../../mocks/mocks.dart';
 import '../../fakers.dart';
 
 void main() {
-  late int enterpriseCode;
-  late int customerCode;
-  late int saleRequestId;
+  late SaleRequestArgs fakeArgs;
 
   setUp(() {
-    enterpriseCode = faker.randomGenerator.integer(100);
-    customerCode = faker.randomGenerator.integer(100);
-    saleRequestId = faker.randomGenerator.integer(100);
+    fakeArgs = SaleRequestArgs(
+      customerCode: faker.randomGenerator.integer(100),
+      saleRequestId: faker.randomGenerator.integer(100),
+      enterpriseCode: faker.randomGenerator.integer(100),
+    );
   });
 
   ProviderContainer makeProviderContainer({
@@ -25,15 +26,12 @@ void main() {
   }) {
     return ProviderContainer(
       overrides: [
-        insertUpdateStateControllerProvider(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
-        ).overrideWith(
+        insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(saleRequestEntity),
         ),
+        saleRequestArgsProvider.overrideWithValue(fakeArgs),
         allPaymentFinalizationsControllerProvider(
-          enterpriseCode: enterpriseCode,
+          enterpriseCode: fakeArgs.enterpriseCode,
         ).overrideWith(
           () => FakeAllPaymentFinalizationsController(allFinalizations),
         ),
@@ -90,11 +88,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          filteredPaymentFinalizationsStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestCode: saleRequestId,
-          ).future,
+          filteredPaymentFinalizationsStateControllerProvider.future,
         );
 
         // ASSERT
@@ -148,11 +142,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          filteredPaymentFinalizationsStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestCode: saleRequestId,
-          ).future,
+          filteredPaymentFinalizationsStateControllerProvider.future,
         );
 
         // ASSERT

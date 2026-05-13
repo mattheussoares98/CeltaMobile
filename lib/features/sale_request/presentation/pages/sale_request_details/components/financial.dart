@@ -9,24 +9,14 @@ import '../../../../../../utils/utils.dart';
 import '../../../controllers/controllers.dart';
 
 class Financial extends ConsumerWidget {
-  final int saleRequestId;
-  final int customerCode;
-  final int enterpriseCode;
-  const Financial({
-    super.key,
-    required this.saleRequestId,
-    required this.customerCode,
-    required this.enterpriseCode,
-  });
+  const Financial({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final financials = ref.watch(
-      saleRequestDetailsStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestCode: saleRequestId,
-      ).select((s) => s.value?.financials),
+      saleRequestDetailsStateControllerProvider.select(
+        (s) => s.value?.financials,
+      ),
     );
 
     if (financials?.isEmpty ?? true) {

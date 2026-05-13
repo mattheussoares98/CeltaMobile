@@ -25,13 +25,7 @@ class DeleteSummaryButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
       onPressed: () => ref
-          .read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: saleRequestId,
-            ).notifier,
-          )
+          .read(insertUpdateStateControllerProvider.notifier)
           .removeItem(item),
       icon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,

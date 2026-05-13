@@ -21,10 +21,9 @@ void main() {
   late MockecSaleRequestsRepository mockRepository;
   late UserSessionModel fakeSession;
   late EcRequestParams params;
-  late int saleRequestCode;
-  late int customerCode;
   late FakeAppUsageStateController fakeAppUsage;
   late BSFSaleRequestModel fakeBSFSaleRequestModel;
+  late SaleRequestArgs fakeArgs;
 
   setUpAll(() {
     registerFallbackValue(DateTime.now());
@@ -33,8 +32,6 @@ void main() {
 
   setUp(() {
     mockRepository = MockecSaleRequestsRepository();
-    saleRequestCode = faker.randomGenerator.integer(9999);
-    customerCode = faker.randomGenerator.integer(9999);
 
     // Generating a dynamic session via factory
     fakeSession = UserSessionModel.fromEntity(
@@ -51,6 +48,11 @@ void main() {
       accessKey: fakeSession.user.AccessKey!,
     );
     fakeAppUsage = FakeAppUsageStateController();
+    fakeArgs = SaleRequestArgs(
+      customerCode: faker.randomGenerator.integer(100),
+      saleRequestId: faker.randomGenerator.integer(100),
+      enterpriseCode: faker.randomGenerator.integer(100),
+    );
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -58,6 +60,7 @@ void main() {
       retry: (retryCount, error) => null,
       overrides: [
         ecSaleRequestsRepositoryProvider.overrideWithValue(mockRepository),
+        saleRequestArgsProvider.overrideWithValue(fakeArgs),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
@@ -84,30 +87,14 @@ void main() {
 
       final states = <AsyncValue<BSFSaleRequestEntity>>[];
       container.listen(
-        saleRequestDetailsStateControllerProvider(
-          customerCode: customerCode,
-          saleRequestCode: saleRequestCode,
-          enterpriseCode: fakeSession.enterprise!.id!,
-        ),
+        saleRequestDetailsStateControllerProvider,
         (_, next) => states.add(next),
       );
 
       // ACT
-      await container.read(
-        saleRequestDetailsStateControllerProvider(
-          customerCode: customerCode,
-          saleRequestCode: saleRequestCode,
-          enterpriseCode: fakeSession.enterprise!.id!,
-        ).future,
-      );
+      await container.read(saleRequestDetailsStateControllerProvider.future);
 
-      final state = container.read(
-        saleRequestDetailsStateControllerProvider(
-          customerCode: customerCode,
-          saleRequestCode: saleRequestCode,
-          enterpriseCode: fakeSession.enterprise!.id!,
-        ),
-      );
+      final state = container.read(saleRequestDetailsStateControllerProvider);
       expect(
         state,
         AsyncData<BSFSaleRequestEntity>(fakeBSFSaleRequestModel.toEntity()),
@@ -115,9 +102,9 @@ void main() {
 
       verify(
         () => mockRepository.getComplete(
-          saleRequestCode: saleRequestCode,
-          enterpriseCode: fakeSession.enterprise!.id!,
-          customerCode: customerCode,
+          saleRequestCode: fakeArgs.saleRequestId,
+          enterpriseCode: fakeArgs.enterpriseCode,
+          customerCode: fakeArgs.customerCode,
           params: params,
         ),
       ).called(1);
@@ -142,13 +129,7 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(
-          saleRequestDetailsStateControllerProvider(
-            customerCode: customerCode,
-            saleRequestCode: saleRequestCode,
-            enterpriseCode: fakeSession.enterprise!.id!,
-          ).future,
-        ),
+        container.read(saleRequestDetailsStateControllerProvider.future),
         throwsA(equals(exception)),
       );
     });

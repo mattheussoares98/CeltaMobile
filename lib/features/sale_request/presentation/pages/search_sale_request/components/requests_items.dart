@@ -4,17 +4,17 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../routing/routing.dart';
+import '../../../../providers.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
 class RequestsItems extends ConsumerWidget {
-  final int enterpriseCode;
-  const RequestsItems({super.key, required this.enterpriseCode});
+  const RequestsItems({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-      value: ref.watch(saleRequestsStateControllerProvider(enterpriseCode)),
+      value: ref.watch(saleRequestsStateControllerProvider),
       tryAgain: null,
       data: (saleRequests) {
         if (saleRequests?.collection.isEmpty == true) {
@@ -26,12 +26,7 @@ class RequestsItems extends ConsumerWidget {
             itemCount: saleRequests?.collection.length ?? 0,
             itemBuilder: (context, index) {
               final saleRequest = saleRequests!.collection[index];
-              return _SaleRequestItem(
-                key: ValueKey(saleRequest.Id),
-                saleRequestId: saleRequest.Id!,
-                enterpriseCode: enterpriseCode,
-                customerCode: saleRequest.customer?.Code ?? 0,
-              );
+              return _SaleRequestItem(key: ValueKey(saleRequest.Id));
             },
           ),
         );
@@ -40,33 +35,23 @@ class RequestsItems extends ConsumerWidget {
   }
 }
 
-class _SaleRequestItem extends StatelessWidget {
-  const _SaleRequestItem({
-    super.key,
-    required this.saleRequestId,
-    required this.customerCode,
-    required this.enterpriseCode,
-  });
-
-  final int saleRequestId;
-  final int customerCode;
-  final int enterpriseCode;
+class _SaleRequestItem extends ConsumerWidget {
+  const _SaleRequestItem({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final args = ref.watch(saleRequestArgsProvider);
+
     return Hero(
-      tag: 'sale_request_$saleRequestId',
+      tag: 'sale_request_${args.saleRequestId}',
       child: RequestSummary(
-        saleRequestId: saleRequestId,
-        enterpriseCode: enterpriseCode,
-        customerCode: customerCode,
         onTap: () {
           context.goNamed(
             Routes.saleRequestDetails.name,
             pathParameters: {
-              'saleRequestId': saleRequestId.toString(),
-              'enterpriseCode': enterpriseCode.toString(),
-              'customerCode': customerCode.toString(),
+              'saleRequestId': args.saleRequestId.toString(),
+              'enterpriseCode': args.enterpriseCode.toString(),
+              'customerCode': args.customerCode.toString(),
             },
           );
         },

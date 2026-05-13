@@ -6,24 +6,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../constants/constants.dart';
-import '../core/domain/entities/entities.dart';
+import '../features/sale_request/presentation/controllers/controllers.dart';
 import '../localization/string_hardcoded.dart';
 
 class DefaultPaginationButtons<T> extends ConsumerWidget {
-  final EcPaginationResults<T>? paginationResults;
   final void Function(int page) onChangePage;
   final ProviderListenable<AsyncValue<dynamic>> provider;
 
   const DefaultPaginationButtons({
     super.key,
-    required this.paginationResults,
     required this.onChangePage,
     required this.provider,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final results = paginationResults;
+    final results = ref.watch(
+      saleRequestsStateControllerProvider.select((s) => s.value),
+    );
+    //TODO test
+
     if (results == null || results.totalPages <= 1) {
       return const SizedBox.shrink();
     }

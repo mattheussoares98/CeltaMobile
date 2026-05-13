@@ -21,11 +21,7 @@ class FakeSaleRequestDetails extends SaleRequestDetailsStateController {
   FakeSaleRequestDetails(this.requestToReturn);
 
   @override
-  FutureOr<BSFSaleRequestEntity> build({
-    required int customerCode,
-    required int enterpriseCode,
-    required int saleRequestCode,
-  }) => requestToReturn;
+  FutureOr<BSFSaleRequestEntity> build() => requestToReturn;
 }
 
 class MockGeneratePdfRepository extends Mock
@@ -36,9 +32,7 @@ void main() {
   late EnterpriseEntity fakeEnterprise;
   late BSFSaleRequestEntity saleRequest;
   late Uint8List fakePdfBytes;
-  late int customerCode;
-  late int enterpriseCode;
-  late int saleRequestCode;
+  late SaleRequestArgs fakeArgs;
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeBSFSaleRequestEntity());
@@ -50,9 +44,11 @@ void main() {
     saleRequest = EntityFactory.makeBSFSaleRequestEntity();
     fakePdfBytes = Uint8List.fromList([1, 2, 3]);
 
-    customerCode = faker.randomGenerator.integer(100);
-    enterpriseCode = faker.randomGenerator.integer(100);
-    saleRequestCode = faker.randomGenerator.integer(100);
+    fakeArgs = SaleRequestArgs(
+      customerCode: faker.randomGenerator.integer(100),
+      saleRequestId: faker.randomGenerator.integer(100),
+      enterpriseCode: faker.randomGenerator.integer(100),
+    );
   });
 
   ProviderContainer makeProviderContainer({
@@ -63,17 +59,16 @@ void main() {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
+        saleRequestArgsProvider.overrideWithValue(fakeArgs),
         generatePdfRepositoryProvider.overrideWithValue(mockRepository),
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(enterprise),
         ),
         // We override the family provider instance we expect to be called
         if (enterprise != null)
-          saleRequestDetailsStateControllerProvider(
-            customerCode: customerCode,
-            enterpriseCode: enterpriseCode,
-            saleRequestCode: saleRequestCode,
-          ).overrideWith(() => FakeSaleRequestDetails(lastSaved)),
+          saleRequestDetailsStateControllerProvider.overrideWith(
+            () => FakeSaleRequestDetails(lastSaved),
+          ),
       ],
     );
     addTearDown(container.dispose);
@@ -94,11 +89,7 @@ void main() {
 
       // ACT
       final result = await container.read(
-        pdfFromSaleRequestDetailsStateControllerProvider(
-          customerCode: customerCode,
-          enterpriseCode: enterpriseCode,
-          saleRequestCode: saleRequestCode,
-        ).future,
+        pdfFromSaleRequestDetailsStateControllerProvider.future,
       );
 
       // ASSERT
@@ -119,13 +110,7 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(
-          pdfFromSaleRequestDetailsStateControllerProvider(
-            customerCode: customerCode,
-            enterpriseCode: enterpriseCode,
-            saleRequestCode: saleRequestCode,
-          ).future,
-        ),
+        container.read(pdfFromSaleRequestDetailsStateControllerProvider.future),
         throwsA(isA<Exception>()),
       );
     });

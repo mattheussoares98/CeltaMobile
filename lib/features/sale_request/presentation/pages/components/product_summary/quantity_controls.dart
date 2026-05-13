@@ -34,13 +34,7 @@ class QuantityControlButton extends ConsumerWidget {
     return IconButton(
       onPressed: () {
         ref
-            .read(
-              insertUpdateStateControllerProvider(
-                enterpriseCode: enterpriseCode,
-                customerCode: customerCode,
-                saleRequestId: saleRequestId,
-              ).notifier,
-            )
+            .read(insertUpdateStateControllerProvider.notifier)
             .increaseOrDecreaseUnit(item, isAdding);
       },
       icon: PlatformIcon(

@@ -14,11 +14,8 @@ part 'sale_request_details_state_controller.g.dart';
 class SaleRequestDetailsStateController
     extends _$SaleRequestDetailsStateController {
   @override
-  FutureOr<BSFSaleRequestEntity> build({
-    required int customerCode,
-    required int enterpriseCode,
-    required int saleRequestCode,
-  }) async {
+  FutureOr<BSFSaleRequestEntity> build() async {
+    final args = ref.watch(saleRequestArgsProvider);
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -46,9 +43,9 @@ class SaleRequestDetailsStateController
             user: validatedUser.user.name!,
             accessKey: validatedUser.user.AccessKey!,
           ),
-          customerCode: customerCode,
-          enterpriseCode: enterpriseCode,
-          saleRequestCode: saleRequestCode,
+          customerCode: args.customerCode,
+          enterpriseCode: args.enterpriseCode,
+          saleRequestCode: args.saleRequestId,
         );
   }
 }

@@ -31,11 +31,7 @@ class FakeSaleRequestDetails extends SaleRequestDetailsStateController {
   final BSFSaleRequestEntity requestToReturn;
   FakeSaleRequestDetails(this.requestToReturn);
   @override
-  FutureOr<BSFSaleRequestEntity> build({
-    required int customerCode,
-    required int enterpriseCode,
-    required int saleRequestCode,
-  }) => requestToReturn;
+  FutureOr<BSFSaleRequestEntity> build() => requestToReturn;
 }
 
 // "Spy" for the IP controller
@@ -111,11 +107,9 @@ void main() {
         ipPrintSaleRequestControllerProvider.overrideWith(
           () => spyIpPrint ?? SpyIpPrintSaleRequest(),
         ),
-        saleRequestDetailsStateControllerProvider(
-          customerCode: customerCode,
-          enterpriseCode: enterpriseCode,
-          saleRequestCode: saleRequestCode,
-        ).overrideWith(() => FakeSaleRequestDetails(fakeBSFSaleRequest)),
+        saleRequestDetailsStateControllerProvider.overrideWith(
+          () => FakeSaleRequestDetails(fakeBSFSaleRequest),
+        ),
       ],
     );
   }

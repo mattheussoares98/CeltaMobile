@@ -5,29 +5,18 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../utils/utils.dart';
+import '../../../../providers.dart';
 import '../../../controllers/controllers.dart';
 
 class SummaryPage extends ConsumerWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
-  const SummaryPage({
-    super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
-  });
+  const SummaryPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = insertUpdateStateControllerProvider(
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-      saleRequestId: saleRequestId,
-    );
+    final args = ref.watch(saleRequestArgsProvider);
 
     final summaryDataAsync = ref.watch(
-      provider.select(
+      insertUpdateStateControllerProvider.select(
         (v) => v.whenData(
           (data) => (customer: data.customer, totalLiquid: data.totalLiquid),
         ),
@@ -58,12 +47,12 @@ class SummaryPage extends ConsumerWidget {
                   await ref
                       .read(
                         saveSaleRequestControllerProvider(
-                          enterpriseCode,
+                          args.enterpriseCode,
                         ).notifier,
                       )
                       .saveBsfSaleRequest(
-                        customerCode: customerCode,
-                        saleRequestId: saleRequestId,
+                        customerCode: args.customerCode,
+                        saleRequestId: args.saleRequestId,
                       );
                 },
                 text: 'SALVAR'.hardcoded,
@@ -72,7 +61,7 @@ class SummaryPage extends ConsumerWidget {
           ),
         );
       },
-      tryAgain: () => ref.invalidate(provider),
+      tryAgain: () => ref.invalidate(insertUpdateStateControllerProvider),
     );
   }
 }

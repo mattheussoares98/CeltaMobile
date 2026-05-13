@@ -7,15 +7,7 @@ import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
 
 class InsertUpdateBottomNavigationBar extends ConsumerWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
-  const InsertUpdateBottomNavigationBar({
-    super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
-  });
+  const InsertUpdateBottomNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,11 +34,9 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
               return ValidatedBadge(
                 isSelected: pageIndex == 1,
                 isValid: ref.watch(
-                  insertUpdateStateControllerProvider(
-                    enterpriseCode: enterpriseCode,
-                    customerCode: customerCode,
-                    saleRequestId: saleRequestId,
-                  ).select((state) => state.value?.customer != null),
+                  insertUpdateStateControllerProvider.select(
+                    (state) => state.value?.customer != null,
+                  ),
                 ),
                 platformIcon: const PlatformIcon(
                   materialIcon: Icons.person,
@@ -60,11 +50,9 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
           icon: Consumer(
             builder: (context, ref, child) {
               final quantity = ref.watch(
-                insertUpdateStateControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
-                ).select((s) => s.value?.products?.length ?? 0),
+                insertUpdateStateControllerProvider.select(
+                  (s) => s.value?.products?.length ?? 0,
+                ),
               );
 
               return QuantityBadge(
@@ -83,11 +71,7 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
           icon: Consumer(
             builder: (context, ref, child) {
               final totalsMatch = ref.watch(
-                insertUpdateStateControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
-                ).select((s) {
+                insertUpdateStateControllerProvider.select((s) {
                   final value = s.value;
                   if (value == null) return true;
 

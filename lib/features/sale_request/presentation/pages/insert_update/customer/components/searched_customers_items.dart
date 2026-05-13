@@ -8,39 +8,21 @@ import '../../../../controllers/controllers.dart';
 import 'components.dart';
 
 class SearchedCustomersItems extends ConsumerWidget {
-  final int customerCode;
-  final int enterpriseCode;
-  final int saleRequestId;
-  const SearchedCustomersItems({
-    super.key,
-    required this.customerCode,
-    required this.enterpriseCode,
-    required this.saleRequestId,
-  });
+  const SearchedCustomersItems({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = searchedCustomersStateControllerProvider(
-      customerCode: customerCode,
-      enterpriseCode: enterpriseCode,
-      saleRequestId: saleRequestId,
-    );
-
     final selectedCustomerCode = ref.watch(
-      saleRequestDetailsStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestCode: saleRequestId,
-      ).select((s) => s.value?.customer?.code),
+      saleRequestDetailsStateControllerProvider.select((s) => s.value?.customer?.code),
     );
 
     final filteredCustomers = ref.watch(
-      provider.select(
+      searchedCustomersStateControllerProvider.select(
         (s) => s.value?.where((c) => c.code != selectedCustomerCode),
       ),
     );
     return AsyncValueWidget(
-      value: ref.watch(provider),
+      value: ref.watch(searchedCustomersStateControllerProvider),
       tryAgain: null,
       isSliver: true,
       data: (customers) {

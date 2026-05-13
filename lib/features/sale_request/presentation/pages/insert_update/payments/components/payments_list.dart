@@ -9,27 +9,14 @@ import '../../../../../../../utils/utils.dart';
 import '../../../../controllers/controllers.dart';
 
 class PaymentsList extends ConsumerWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
-
-  const PaymentsList({
-    super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
-  });
+  const PaymentsList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = insertUpdateStateControllerProvider(
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-      saleRequestId: saleRequestId,
-    );
-
     final financialsAsync = ref.watch(
-      provider.select((v) => v.whenData((data) => data.financials)),
+      insertUpdateStateControllerProvider.select(
+        (v) => v.whenData((data) => data.financials),
+      ),
     );
 
     return AsyncValueWidget(
@@ -81,14 +68,15 @@ class PaymentsList extends ConsumerWidget {
                   materialIcon: Icons.delete,
                   color: Colors.red,
                 ),
-                onPressed: () =>
-                    ref.read(provider.notifier).removePayment(index),
+                onPressed: () => ref
+                    .read(insertUpdateStateControllerProvider.notifier)
+                    .removePayment(index),
               ),
             );
           },
         );
       },
-      tryAgain: () => ref.invalidate(provider),
+      tryAgain: () => ref.invalidate(insertUpdateStateControllerProvider),
     );
   }
 }

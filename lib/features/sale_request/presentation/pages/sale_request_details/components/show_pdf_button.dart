@@ -9,16 +9,7 @@ import '../../../../../../routing/routing.dart';
 import '../../../controllers/controllers.dart';
 
 class ShowPdfButton extends ConsumerStatefulWidget {
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestCode;
-
-  const ShowPdfButton({
-    super.key,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestCode,
-  });
+  const ShowPdfButton({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ShowPdfButtonState();
@@ -32,15 +23,9 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    final saleRequestDetails = ref
-        .watch(
-          saleRequestDetailsStateControllerProvider(
-            enterpriseCode: widget.enterpriseCode,
-            customerCode: widget.customerCode,
-            saleRequestCode: widget.saleRequestCode,
-          ),
-        )
-        .value;
+    final saleRequestDetails = ref.watch(
+      saleRequestDetailsStateControllerProvider.select((s) => s.value),
+    );
 
     return IconButton(
       onPressed: isLoading || saleRequestDetails == null
@@ -50,11 +35,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
                 isLoading = true;
               });
               final bytes = await ref.read(
-                pdfFromSaleRequestDetailsStateControllerProvider(
-                  enterpriseCode: widget.enterpriseCode,
-                  customerCode: widget.customerCode,
-                  saleRequestCode: widget.saleRequestCode,
-                ).future,
+                pdfFromSaleRequestDetailsStateControllerProvider.future,
               );
 
               if (bytes == null) {

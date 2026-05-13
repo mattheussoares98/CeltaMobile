@@ -15,17 +15,11 @@ class InsertProductPage extends ConsumerWidget {
   final String? heroTag;
   final BSFProductItemEntity product;
   final ProductEntity originalProduct;
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
 
   const InsertProductPage({
     super.key,
     required this.product,
     required this.originalProduct,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
     this.heroTag,
   });
 
@@ -36,23 +30,11 @@ class InsertProductPage extends ConsumerWidget {
       final updatedItem = uiState.applyTo(product);
 
       ref
-          .read(
-            insertUpdateStateControllerProvider(
-              enterpriseCode: enterpriseCode,
-              customerCode: customerCode,
-              saleRequestId: saleRequestId,
-            ).notifier,
-          )
+          .read(insertUpdateStateControllerProvider.notifier)
           .updateItem(product, updatedItem);
 
       context.pop();
     }
-
-    final provider = insertUpdateStateControllerProvider(
-      enterpriseCode: enterpriseCode,
-      customerCode: customerCode,
-      saleRequestId: saleRequestId,
-    );
 
     final (
       allowPriceChange,
@@ -60,7 +42,7 @@ class InsertProductPage extends ConsumerWidget {
       allowDeliveryTax,
       allowIncrement,
     ) = ref.watch(
-      provider.select(
+      insertUpdateStateControllerProvider.select(
         (s) => (
           s.value?.requestType?.allowAlterCostOrSalePrice == true,
           s.value?.requestType?.allowUseDiscount == true,

@@ -2,6 +2,7 @@ import 'package:celta_inventario/features/sale_request/presentation/controllers/
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../providers.dart';
 
 part 'filtered_payment_conditions_state_controller.g.dart';
 
@@ -9,24 +10,20 @@ part 'filtered_payment_conditions_state_controller.g.dart';
 class FilteredPaymentConditionsStateController
     extends _$FilteredPaymentConditionsStateController {
   @override
-  FutureOr<List<BSFPaymentConditionEntity>> build({
-    required int enterpriseCode,
-    required int customerCode,
-    required int saleRequestId,
-  }) async {
+  FutureOr<List<BSFPaymentConditionEntity>> build() async {
+    final args = ref.watch(saleRequestArgsProvider);
+
     // Watch the current sale request to get the customer's restrictions
     final customerPaymentConditions = await ref.watch(
-      insertUpdateStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestId: saleRequestId,
-      ).selectAsync((value) => value.customer?.paymentConditions),
+      insertUpdateStateControllerProvider.selectAsync(
+        (value) => value.customer?.paymentConditions,
+      ),
     );
 
     // Fetch all available conditions for the enterprise
     final allConditions = await ref.watch(
       allPaymentConditionsControllerProvider(
-        enterpriseCode: enterpriseCode,
+        enterpriseCode: args.enterpriseCode,
       ).future,
     );
 

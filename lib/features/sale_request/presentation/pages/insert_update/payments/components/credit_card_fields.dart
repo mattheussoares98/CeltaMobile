@@ -12,20 +12,18 @@ class CreditCardFields extends ConsumerWidget {
   final TextEditingController creditCardController;
   final TextEditingController portionsController;
   final TextEditingController validityController;
-  final int saleRequestId;
 
   const CreditCardFields({
     super.key,
     required this.creditCardController,
     required this.portionsController,
     required this.validityController,
-    required this.saleRequestId,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCreditCardType = ref.watch(
-      selectedPaymentTypeStateControllerProvider(saleRequestId).select(
+      selectedPaymentTypeStateControllerProvider.select(
         (s) => s?.action?.type == PaymentFinalizationActionType.creditCard,
       ),
     );

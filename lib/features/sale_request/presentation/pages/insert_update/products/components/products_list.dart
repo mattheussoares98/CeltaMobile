@@ -43,11 +43,7 @@ class ProductsList extends ConsumerWidget {
             return Consumer(
               builder: (context, ref, child) {
                 final existingItem = ref.watch(
-                  insertUpdateStateControllerProvider(
-                    enterpriseCode: searchProductKey.enterpriseCode,
-                    customerCode: customerCode,
-                    saleRequestId: saleRequestId,
-                  ).select((state) {
+                  insertUpdateStateControllerProvider.select((state) {
                     return state.value?.products
                         ?.cast<BSFProductItemEntity?>()
                         .firstWhereOrNull(

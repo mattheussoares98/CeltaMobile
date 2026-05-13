@@ -12,11 +12,7 @@ part 'pdf_from_sale_request_details_state_controller.g.dart';
 class PdfFromSaleRequestDetailsStateController
     extends _$PdfFromSaleRequestDetailsStateController {
   @override
-  FutureOr<Uint8List?> build({
-    required int customerCode,
-    required int enterpriseCode,
-    required int saleRequestCode,
-  }) async {
+  FutureOr<Uint8List?> build() async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -32,11 +28,7 @@ class PdfFromSaleRequestDetailsStateController
     });
 
     final saleRequest = await ref.watch(
-      saleRequestDetailsStateControllerProvider(
-        customerCode: customerCode,
-        enterpriseCode: enterpriseCode,
-        saleRequestCode: saleRequestCode,
-      ).future,
+      saleRequestDetailsStateControllerProvider.future,
     );
 
     return await ref
