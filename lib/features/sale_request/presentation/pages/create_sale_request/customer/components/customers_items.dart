@@ -11,16 +11,26 @@ class CustomersItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final consumerCode = ref.watch(
+      consumerCustomerStasteControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.Code),
+    );
+
     return AsyncValueWidget(
       isSliver: true,
       value: ref.watch(customersStateControllerProvider(enterpriseCode)),
       tryAgain: null,
       data: (customers) {
+        final filteredCustomers = customers
+            .where((x) => x.Code != consumerCode)
+            .toList();
+
         return ResponsiveListFlow(
           isSliver: true,
-          itemCount: customers.length,
+          itemCount: filteredCustomers.length,
           itemBuilder: (_, index) {
-            final customer = customers[index];
+            final customer = filteredCustomers[index];
             return CustomerItem(
               key: ValueKey(customer.Code),
               customer: customer,
