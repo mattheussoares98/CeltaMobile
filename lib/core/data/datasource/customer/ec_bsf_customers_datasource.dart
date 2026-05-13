@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../domain/contracts/contracts.dart';
 import '../../../domain/entities/entities.dart';
 import '../../models/models.dart';
@@ -16,7 +18,7 @@ class EcBSFCustomersDatasource implements IEcBSFCustomersDatasource {
     required bool searchByPersonalizedCode,
   }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/Customers/SearchForMobileApp',
+      url: '${params.workingUrl}/api/Customers/SearchForMobileApp',
       method: 'post',
       headers: params.toHeaders(),
       body: {
@@ -27,9 +29,9 @@ class EcBSFCustomersDatasource implements IEcBSFCustomersDatasource {
       },
     );
 
-    if (response == null) return [];
+    if (response?.isEmpty ?? true) return [];
 
-    return (response as List)
+    return (json.decode(response) as List)
         .map((e) => BSFCustomerModel.fromJson(e as Map<String, dynamic>))
         .toList();
   }

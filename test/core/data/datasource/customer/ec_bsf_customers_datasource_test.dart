@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_inventario/core/data/datasource/customer/customer.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -38,9 +40,11 @@ void main() {
 
   void mockSuccess() {
     httpClient.mockRequest(
-      customerEntities
-          .map((e) => BSFCustomerModel.fromEntity(e).toJson())
-          .toList(),
+      json.encode(
+        customerEntities
+            .map((e) => BSFCustomerModel.fromEntity(e).toJson())
+            .toList(),
+      ),
     );
   }
 
@@ -61,7 +65,7 @@ void main() {
 
     verify(
       () => httpClient.request(
-        url: '${params.workingUrl}/Customers/SearchForMobileApp',
+        url: '${params.workingUrl}/api/Customers/SearchForMobileApp',
         method: 'post',
         headers: params.toHeaders(),
         body: {
@@ -74,8 +78,8 @@ void main() {
     ).called(1);
   });
 
-  test('should return empty list when api return null', () async {
-    httpClient.mockRequest(null);
+  test('should return empty list when api return empty or null', () async {
+    httpClient.mockRequest(faker.randomGenerator.boolean() ? null : '');
 
     final result = await sut.searchForMobileApp(
       params: params,
