@@ -40,7 +40,7 @@ class SearchedCustomersStateController
           .searchForMobileApp(
             params: EcRequestParams(
               workingUrl: validatedUserSession!.enterprise!.workingUrl!,
-              user: validatedUserSession.user.CrossIdentity_Usuario!,
+              user: validatedUserSession.user.name!,
               accessKey: validatedUserSession.user.AccessKey!,
             ),
             searchValue: value,

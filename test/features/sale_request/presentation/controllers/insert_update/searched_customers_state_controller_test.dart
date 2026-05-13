@@ -74,48 +74,49 @@ void main() {
       },
     );
 
-    test(
-      'loadCustomer should update state with results from repository',
-      () async {
-        final container = makeProviderContainer(session: fakeSession);
-        addTearDown(container.dispose);
+    test('Should behave correctly on load', () async {
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
 
-        final searchResults = [
-          EntityFactory.makeBSFCustomerEntity(),
-          EntityFactory.makeBSFCustomerEntity(),
-        ];
+      final searchResults = [
+        EntityFactory.makeBSFCustomerEntity(),
+        EntityFactory.makeBSFCustomerEntity(),
+      ];
 
-        mockRepository.mockSearchForMobileApp(searchResults);
+      mockRepository.mockSearchForMobileApp(searchResults);
 
-        final controller = container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
-          ).notifier,
-        );
+      final controller = container.read(
+        searchedCustomersStateControllerProvider(
+          enterpriseCode: enterpriseCode,
+          saleRequestId: saleRequestId,
+          customerCode: customerCode,
+        ).notifier,
+      );
 
-        await controller.loadCustomer('search query', false);
+      await controller.loadCustomer('search query', false);
 
-        final state = container.read(
-          searchedCustomersStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            saleRequestId: saleRequestId,
-            customerCode: customerCode,
+      final state = container.read(
+        searchedCustomersStateControllerProvider(
+          enterpriseCode: enterpriseCode,
+          saleRequestId: saleRequestId,
+          customerCode: customerCode,
+        ),
+      );
+
+      expect(state.value, searchResults);
+      verify(
+        () => mockRepository.searchForMobileApp(
+          params: EcRequestParams(
+            workingUrl: fakeSession.enterprise!.workingUrl!,
+            user: fakeSession.user.name!,
+            accessKey: fakeSession.user.AccessKey!,
           ),
-        );
-
-        expect(state.value, searchResults);
-        verify(
-          () => mockRepository.searchForMobileApp(
-            params: any(named: 'params'),
-            searchValue: 'search query',
-            enterpriseCode: enterpriseCode,
-            searchByPersonalizedCode: false,
-          ),
-        ).called(1);
-      },
-    );
+          searchValue: 'search query',
+          enterpriseCode: enterpriseCode,
+          searchByPersonalizedCode: false,
+        ),
+      ).called(1);
+    });
 
     test(
       'loadCustomer should set state to error if repository fails',
