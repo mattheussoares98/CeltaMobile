@@ -4,6 +4,7 @@ import '../../../domain/entities/entities.dart';
 import 'bsf.dart';
 
 class BSFDeliveryAddressModel extends Equatable {
+  //TODO move to core path
   final int? code;
   final String? zip;
   final String? sash;
