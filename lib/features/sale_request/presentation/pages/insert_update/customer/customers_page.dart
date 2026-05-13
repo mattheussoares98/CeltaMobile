@@ -5,6 +5,7 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../controllers/controllers.dart';
+import 'components/components.dart';
 
 class CustomersPage extends ConsumerWidget {
   final int saleRequestId;
@@ -19,48 +20,50 @@ class CustomersPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = searchedCustomersStateControllerProvider(
-      customerCode: customerCode,
-      enterpriseCode: enterpriseCode,
-      saleRequestId: saleRequestId,
-    );
-
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: DefaultTextFormField(
-            labelText: 'Pesquisar'.hardcoded,
-            onFieldSubmitted: (value) {
-              ref.read(provider.notifier).loadCustomer(value, false);
-            },
+          child: SearchCustomerField(
+            customerCode: customerCode,
+            enterpriseCode: enterpriseCode,
+            saleRequestId: saleRequestId,
           ),
         ),
-        AsyncValueWidget(
-          value: ref.watch(provider),
-          tryAgain: () => ref.invalidate(provider),
-          isSliver: true,
-          data: (customers) {
-            if (customers.isEmpty) {
-              return SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: Sizes.p16),
-                  child: Text(
-                    'Nenhum cliente foi encontrado'.hardcoded,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }
-            return ResponsiveListFlow(
-              itemCount: customers.length,
+        Consumer(
+          builder: (context, ref, _) {
+            final provider = searchedCustomersStateControllerProvider(
+              customerCode: customerCode,
+              enterpriseCode: enterpriseCode,
+              saleRequestId: saleRequestId,
+            );
+            return AsyncValueWidget(
+              value: ref.watch(provider),
+              tryAgain: () => ref.invalidate(provider),
               isSliver: true,
-              itemBuilder: (context, index) {
-                final customer = customers[index];
-                return ListTile(
-                  title: Text(customer.name ?? ''),
-                  subtitle: Text(customer.cnpjCpfNumber ?? ''),
-                  trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+              data: (customers) {
+                if (customers.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: Sizes.p16),
+                      child: Text(
+                        'Nenhum cliente foi encontrado'.hardcoded,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                }
+                return ResponsiveListFlow(
+                  itemCount: customers.length,
+                  isSliver: true,
+                  itemBuilder: (context, index) {
+                    final customer = customers[index];
+                    return ListTile(
+                      title: Text(customer.name ?? ''),
+                      subtitle: Text(customer.cnpjCpfNumber ?? ''),
+                      trailing: const Icon(Icons.arrow_forward),
+                      onTap: () {},
+                    );
+                  },
                 );
               },
             );
