@@ -6,11 +6,11 @@ import '../../providers.dart';
 
 part 'ip_print_sale_request_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class IpPrintSaleRequestController extends _$IpPrintSaleRequestController {
   @override
   FutureOr<String?> build() async {
-    return await ref.watch(localIpPrintSaleRequestRepositoryProvider).load();
+    return await ref.read(localIpPrintSaleRequestRepositoryProvider).load();
   }
 
   Future<void> updateIp(String ip) async {
