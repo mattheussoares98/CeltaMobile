@@ -32,7 +32,8 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
-    fakeCustomer = EntityFactory.makeBSFCustomerEntity();
+    // User requested to use a high number for code to avoid repetitions
+    fakeCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 999999);
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -48,6 +49,15 @@ void main() {
           saleRequestCode: saleRequestId,
         ).overrideWith(
           () => FakeSaleRequestDetailsController(
+            BSFSaleRequestEntity.empty().copyWith(customer: fakeCustomer),
+          ),
+        ),
+        insertUpdateStateControllerProvider(
+          customerCode: customerCode,
+          enterpriseCode: enterpriseCode,
+          saleRequestId: saleRequestId,
+        ).overrideWith(
+          () => FakeInsertUpdateStateController(
             BSFSaleRequestEntity.empty().copyWith(customer: fakeCustomer),
           ),
         ),
@@ -93,7 +103,9 @@ void main() {
         ).notifier,
       );
 
-      await controller.loadCustomer('search query', false);
+      final succeeds = await controller.loadCustomer('search query', false);
+
+      expect(succeeds, isTrue);
 
       final state = container.read(
         searchedCustomersStateControllerProvider(
@@ -103,7 +115,7 @@ void main() {
         ),
       );
 
-      expect(state.value, searchResults);
+      expect(state.value, [fakeCustomer, ...searchResults]);
       verify(
         () => mockRepository.searchForMobileApp(
           params: EcRequestParams(
@@ -117,6 +129,83 @@ void main() {
         ),
       ).called(1);
     });
+
+    test(
+      'Should put the customer with same code from insertUpdateController at first position and updated',
+      () async {
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        final updatedFakeCustomer = EntityFactory.makeBSFCustomerEntity()
+            .copyWith(code: fakeCustomer.code);
+
+        final otherCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+          code: 1,
+        );
+        final searchResults = [otherCustomer, updatedFakeCustomer];
+
+        mockRepository.mockSearchForMobileApp(searchResults);
+
+        final controller = container.read(
+          searchedCustomersStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            saleRequestId: saleRequestId,
+            customerCode: customerCode,
+          ).notifier,
+        );
+
+        await controller.loadCustomer('search query', false);
+
+        final state = container.read(
+          searchedCustomersStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            saleRequestId: saleRequestId,
+            customerCode: customerCode,
+          ),
+        );
+
+        expect(state.value!.first, updatedFakeCustomer);
+        expect(state.value!.length, 2);
+        expect(state.value![1], otherCustomer);
+      },
+    );
+
+    test(
+      'loadCustomer should prepend selected customer even if repository does NOT return it',
+      () async {
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        final otherCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+          code: 2,
+        );
+        final searchResults = [otherCustomer];
+
+        mockRepository.mockSearchForMobileApp(searchResults);
+
+        final controller = container.read(
+          searchedCustomersStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            saleRequestId: saleRequestId,
+            customerCode: customerCode,
+          ).notifier,
+        );
+
+        await controller.loadCustomer('search query', false);
+
+        final state = container.read(
+          searchedCustomersStateControllerProvider(
+            enterpriseCode: enterpriseCode,
+            saleRequestId: saleRequestId,
+            customerCode: customerCode,
+          ),
+        );
+
+        expect(state.value!.first, fakeCustomer);
+        expect(state.value!.length, 2);
+        expect(state.value![1], otherCustomer);
+      },
+    );
 
     test(
       'loadCustomer should set state to error if repository fails',
@@ -134,7 +223,9 @@ void main() {
           ).notifier,
         );
 
-        await controller.loadCustomer('search query', false);
+        final succeeds = await controller.loadCustomer('search query', false);
+
+        expect(succeeds, false);
 
         final state = container.read(
           searchedCustomersStateControllerProvider(

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/domain/entities/entities.dart';
@@ -27,15 +28,16 @@ class SearchedCustomersStateController
     return [?currentCustomer];
   }
 
-  Future<void> loadCustomer(String value, bool searchByPersonalizedCode) async {
+  Future<bool> loadCustomer(String value, bool searchByPersonalizedCode) async {
     state = const AsyncValue.loading();
+    bool succeeds = false;
 
     state = await AsyncValue.guard(() async {
       final validatedUserSession = await ref.read(
         validatedUserSessionProvider.future,
       );
 
-      return await ref
+      final customers = await ref
           .read(ecBSFCustomersRepositoryProvider)
           .searchForMobileApp(
             params: EcRequestParams(
@@ -47,6 +49,26 @@ class SearchedCustomersStateController
             enterpriseCode: enterpriseCode,
             searchByPersonalizedCode: searchByPersonalizedCode,
           );
+
+      final selectedCustomer = await ref.read(
+        insertUpdateStateControllerProvider(
+          customerCode: customerCode,
+          enterpriseCode: enterpriseCode,
+          saleRequestId: saleRequestId,
+        ).selectAsync((s) => s.customer),
+      );
+
+      succeeds = true;
+
+      final updatedSelectedCustomer =
+          customers.firstWhereOrNull((c) => c.code == selectedCustomer?.code) ??
+          selectedCustomer;
+
+      return [
+        ?updatedSelectedCustomer,
+        ...customers.where((c) => c.code != selectedCustomer?.code),
+      ];
     });
+    return succeeds;
   }
 }
