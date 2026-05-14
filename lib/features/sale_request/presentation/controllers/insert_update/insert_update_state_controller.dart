@@ -127,6 +127,12 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
   void updateCustomer(BSFCustomerEntity? customer) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    ref.read(selectedPaymentTypeStateControllerProvider.notifier).select(null);
+    ref
+        .read(selectedPaymentConditionStateControllerProvider.notifier)
+        .select(null);
+    //TODO test
+
     state = AsyncData(
       state.value!.copyWith(
         annulCustomer: customer?.code == state.value?.customer?.code,

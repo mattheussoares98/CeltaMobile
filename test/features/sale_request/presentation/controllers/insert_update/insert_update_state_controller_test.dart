@@ -780,6 +780,49 @@ void main() {
         final state3 = container.read(insertUpdateStateControllerProvider);
         expect(state3.value!.customer, null);
       });
+      test(
+        'Should reset payment type and condition when a customer is selected',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          //select paymentType and condition
+          container
+              .read(selectedPaymentTypeStateControllerProvider.notifier)
+              .select(EntityFactory.makeBSFPaymentFinalizationEntity());
+          container
+              .read(selectedPaymentConditionStateControllerProvider.notifier)
+              .select(EntityFactory.makeBSFPaymentConditionEntity());
+
+          //confirm is selected
+          expect(
+            container.read(selectedPaymentConditionStateControllerProvider),
+            isNotNull,
+          );
+          expect(
+            container.read(selectedPaymentTypeStateControllerProvider),
+            isNotNull,
+          );
+
+          //update customer
+          controller.updateCustomer(EntityFactory.makeBSFCustomerEntity());
+
+          //confirm is updated to null value
+          expect(
+            container.read(selectedPaymentConditionStateControllerProvider),
+            isNull,
+          );
+          expect(
+            container.read(selectedPaymentTypeStateControllerProvider),
+            isNull,
+          );
+        },
+      );
     });
   });
 }
