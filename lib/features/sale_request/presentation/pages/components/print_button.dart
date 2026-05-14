@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
@@ -56,10 +55,8 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
       return;
     }
 
-    late bool printed;
-
     if (widget.customerCode != null && widget.saleRequestId != null) {
-      printed = await ref
+      await ref
           .read(printSaleRequestControllerProvider.notifier)
           .bsfPrint(
             saleRequestCode: widget.saleRequestId!,
@@ -68,14 +65,9 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
             ip: ipController.text,
           );
     } else {
-      printed = await ref
+      await ref
           .read(printSaleRequestControllerProvider.notifier)
           .soapPrint(ipController.text);
-    }
-
-    if (printed) {
-      context.pop();
-      showSnackBarMessage(context, 'Impressão eviada com sucesso'.hardcoded);
     }
   }
 
@@ -131,7 +123,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
                         PrimaryButton(
                           text: 'Imprimir'.hardcoded,
                           isLoading: isLoading,
-                          onPressed: print,
+                          onPressed: () => print(),
                         ),
                       ],
                     );

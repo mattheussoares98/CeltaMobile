@@ -5,8 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../../../utils/utils.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../providers.dart';
+import '../../controllers/controllers.dart';
 import '../components/components.dart';
 import 'components/components.dart';
 
@@ -23,6 +25,14 @@ class SaleRequestDetailsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(printSaleRequestControllerProvider, (p, n) {
+      n.showSnackbarOnError(context, p);
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'Impressão enviada com sucesso'.hardcoded,
+      );
+    });
     return ProviderScope(
       overrides: [
         saleRequestArgsProvider.overrideWithValue(
@@ -40,14 +50,10 @@ class SaleRequestDetailsPage extends ConsumerWidget {
           actions: [
             if (kDebugMode) const EditButton(),
             const ShowPdfButton(),
-            Consumer(
-              builder: (_, ref, _) {
-                return PrintButton(
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
-                );
-              },
+            PrintButton(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: saleRequestId,
             ),
           ],
         ),
