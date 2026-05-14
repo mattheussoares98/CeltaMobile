@@ -752,5 +752,34 @@ void main() {
         expect(stateAfterDispose.products ?? [], isEmpty);
       });
     });
+    group('updateCustomer', () {
+      test('Should toggle the selected customer correctly', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        final customer1 = EntityFactory.makeBSFCustomerEntity();
+        controller.updateCustomer(customer1);
+        final state = container.read(insertUpdateStateControllerProvider);
+        expect(state.value!.customer, customer1);
+
+        final customer2 = EntityFactory.makeBSFCustomerEntity();
+        controller.updateCustomer(customer2);
+        final state2 = container.read(insertUpdateStateControllerProvider);
+        expect(state2.value!.customer, customer2);
+
+        final customer3 = EntityFactory.makeBSFCustomerEntity().copyWith(
+          code: customer2.code,
+        );
+        //annul when is the same customer code from the previous
+        controller.updateCustomer(customer3);
+        final state3 = container.read(insertUpdateStateControllerProvider);
+        expect(state3.value!.customer, null);
+      });
+    });
   });
 }
