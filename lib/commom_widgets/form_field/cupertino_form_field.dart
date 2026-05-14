@@ -145,50 +145,54 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
                   ),
                 ),
               ),
-            CupertinoTextField(
-              scrollPadding: const EdgeInsets.only(bottom: Sizes.p80),
-              onTap: dtf.onTap,
-              onEditingComplete: dtf.onEditingComplete,
-              inputFormatters: dtf.inputFormatters,
-              controller: dtf.controller,
-              textInputAction: dtf.textInputAction,
-              minLines: 1,
-              maxLines: dtf.maxLines ?? 1,
-              placeholder: dtf.hintText,
-              autofocus: dtf.autofocus == true,
-              style: TextStyle(
-                color: isEnabled ? null : colorScheme.onSurface.withAlpha(100),
+            ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: Sizes.p48),
+              child: CupertinoTextField(
+                scrollPadding: const EdgeInsets.only(bottom: Sizes.p80),
+                onTap: dtf.onTap,
+                onEditingComplete: dtf.onEditingComplete,
+                inputFormatters: dtf.inputFormatters,
+                controller: dtf.controller,
+                textInputAction: dtf.textInputAction,
+                minLines: 1,
+                maxLines: dtf.maxLines ?? 1,
+                placeholder: dtf.hintText,
+                autofocus: dtf.autofocus == true,
+                style: TextStyle(
+                  color: isEnabled
+                      ? null
+                      : colorScheme.onSurface.withAlpha(100),
+                ),
+                placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
+                  color: isEnabled
+                      ? colorScheme.onSurface.withAlpha(125)
+                      : colorScheme.onSurface.withAlpha(100),
+                  fontSize: 12,
+                ),
+                textAlignVertical: TextAlignVertical.center,
+                obscureText: dtf.obscureText,
+                onSubmitted: dtf.onFieldSubmitted,
+                enabled: isEnabled,
+                focusNode: dtf.focusNode,
+                enableSuggestions: true,
+                maxLength: dtf.maxLength,
+                onChanged: (value) {
+                  dtf.onChanged?.call(value);
+                  state.didChange(value);
+                },
+                decoration: BoxDecoration(
+                  color: fillColor,
+                  borderRadius: BorderRadius.circular(Sizes.p8),
+                  border: border,
+                ),
+                keyboardType: dtf.keyboardType,
+                prefix: dtf.prefixIcon == null
+                    ? null
+                    : _BuildIcon(widget: dtf.prefixIcon!),
+                suffix: dtf.suffixIcon == null
+                    ? null
+                    : _BuildIcon(widget: dtf.suffixIcon!),
               ),
-              placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: isEnabled
-                    ? colorScheme.onSurface.withAlpha(125)
-                    : colorScheme.onSurface.withAlpha(100),
-                fontSize: 12,
-              ),
-              textAlignVertical: TextAlignVertical.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              obscureText: dtf.obscureText,
-              onSubmitted: dtf.onFieldSubmitted,
-              enabled: isEnabled,
-              focusNode: dtf.focusNode,
-              enableSuggestions: true,
-              maxLength: dtf.maxLength,
-              onChanged: (value) {
-                dtf.onChanged?.call(value);
-                state.didChange(value);
-              },
-              decoration: BoxDecoration(
-                color: fillColor,
-                borderRadius: BorderRadius.circular(Sizes.p8),
-                border: border,
-              ),
-              keyboardType: dtf.keyboardType,
-              prefix: dtf.prefixIcon == null
-                  ? null
-                  : _BuildIcon(widget: dtf.prefixIcon!),
-              suffix: dtf.suffixIcon == null
-                  ? null
-                  : _BuildIcon(widget: dtf.suffixIcon!),
             ),
             if (state.hasError)
               Padding(
