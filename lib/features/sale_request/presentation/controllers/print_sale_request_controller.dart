@@ -17,8 +17,7 @@ class PrintSaleRequestController extends _$PrintSaleRequestController {
   @override
   FutureOr<void> build() {}
 
-  Future<bool> soapPrint(String ip) async {
-    bool printed = false;
+  Future<void> soapPrint(String ip) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validateduser = await ref.read(validatedUserSessionProvider.future);
@@ -48,30 +47,27 @@ class PrintSaleRequestController extends _$PrintSaleRequestController {
             ip: ip,
             userName: validateduser!.user.name!,
           );
-
-      printed = true;
     });
-
-    return printed;
   }
 
-  Future<bool> bsfPrint({
+  Future<void> bsfPrint({
     required int saleRequestCode,
     required int customerCode,
     required int enterpriseCode,
     required String ip,
   }) async {
-    bool printed = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final validateduser = await ref.read(validatedUserSessionProvider.future);
 
       final saleRequest = await ref.read(
-        saleRequestDetailsStateControllerProvider(SaleRequestArgs(
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestCode,
-        )).future,
+        saleRequestDetailsStateControllerProvider(
+          SaleRequestArgs(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestCode,
+          ),
+        ).future,
       );
 
       await ref
@@ -85,10 +81,6 @@ class PrintSaleRequestController extends _$PrintSaleRequestController {
             ip: ip,
             userName: validateduser!.user.name!,
           );
-
-      printed = true;
     });
-
-    return printed;
   }
 }

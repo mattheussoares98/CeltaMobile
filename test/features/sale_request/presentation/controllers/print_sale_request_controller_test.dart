@@ -151,12 +151,11 @@ void main() {
         );
 
         // ACT
-        final printed = await container
+        await container
             .read(printSaleRequestControllerProvider.notifier)
             .soapPrint(ip);
 
         // ASSERT
-        expect(printed, isTrue);
         expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
 
         // 1. Verify repository was called
@@ -192,12 +191,11 @@ void main() {
         );
 
         // ACT
-        final printed = await container
+        await container
             .read(printSaleRequestControllerProvider.notifier)
             .soapPrint(ip);
 
         // ASSERT
-        expect(printed, isFalse);
         expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
         expect(states.last.error, isA<AppException>());
         expect(
@@ -227,12 +225,11 @@ void main() {
       );
 
       // ACT
-      final printed = await container
+      await container
           .read(printSaleRequestControllerProvider.notifier)
           .soapPrint(ip);
 
       // ASSERT
-      expect(printed, isFalse);
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
     test('should emit [loading, error] if print fails', () async {
@@ -253,12 +250,11 @@ void main() {
       );
 
       // ACT
-      final printed = await container
+      await container
           .read(printSaleRequestControllerProvider.notifier)
           .soapPrint(ip);
 
       // ASSERT
-      expect(printed, isFalse);
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
   });
@@ -289,7 +285,7 @@ void main() {
       );
 
       // ACT
-      final printed = await container
+      await container
           .read(printSaleRequestControllerProvider.notifier)
           .bsfPrint(
             saleRequestCode: saleRequestCode,
@@ -299,7 +295,6 @@ void main() {
           );
 
       // ASSERT
-      expect(printed, isTrue);
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
 
       // 1. Verify repository was called
@@ -327,7 +322,7 @@ void main() {
       );
 
       // ACT
-      final printed = await container
+      await container
           .read(printSaleRequestControllerProvider.notifier)
           .bsfPrint(
             saleRequestCode: saleRequestCode,
@@ -337,7 +332,6 @@ void main() {
           );
 
       // ASSERT
-      expect(printed, isFalse);
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
     test('should emit [loading, error] if print fails', () async {
@@ -359,7 +353,7 @@ void main() {
       );
 
       // ACT
-      final printed = await container
+      await container
           .read(printSaleRequestControllerProvider.notifier)
           .bsfPrint(
             saleRequestCode: saleRequestCode,
@@ -369,7 +363,6 @@ void main() {
           );
 
       // ASSERT
-      expect(printed, isFalse);
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
     });
   });
