@@ -9,10 +9,12 @@ import '../../controllers/controllers.dart';
 
 class PasswordField extends ConsumerStatefulWidget {
   final TextEditingController passwordController;
+  final FocusNode passwordFocusNode;
   final VoidCallback onSubmit;
   const PasswordField({
     super.key,
     required this.passwordController,
+    required this.passwordFocusNode,
     required this.onSubmit,
   });
 
@@ -38,9 +40,11 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
 
     return DefaultTextFormField(
       enabled: !isLoading,
+      focusNode: widget.passwordFocusNode,
       controller: widget.passwordController,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: isLoading ? null : (_) => widget.onSubmit.call(),
+      textInputAction: TextInputAction.done,
       validator: FormValidators.compose([NonEmptyValidator()]),
       maxLength: 30,
       labelText: 'Senha'.hardcoded,

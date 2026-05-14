@@ -9,7 +9,12 @@ import '../../controllers/controllers.dart';
 
 class EnterpriseField extends ConsumerWidget {
   final TextEditingController enterpriseController;
-  const EnterpriseField({super.key, required this.enterpriseController});
+  final FocusNode userFocusNode;
+  const EnterpriseField({
+    super.key,
+    required this.enterpriseController,
+    required this.userFocusNode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,6 +37,7 @@ class EnterpriseField extends ConsumerWidget {
       textInputAction: TextInputAction.next,
       validator: FormValidators.compose([NonEmptyValidator()]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      onFieldSubmitted: (_) => userFocusNode.requestFocus(),
     );
   }
 }

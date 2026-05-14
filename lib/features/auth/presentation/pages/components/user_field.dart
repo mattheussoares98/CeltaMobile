@@ -9,7 +9,14 @@ import '../../controllers/controllers.dart';
 
 class UserField extends ConsumerWidget {
   final TextEditingController userController;
-  const UserField({super.key, required this.userController});
+  final FocusNode userFocusNode;
+  final FocusNode passwordFocusNode;
+  const UserField({
+    super.key,
+    required this.userController,
+    required this.userFocusNode,
+    required this.passwordFocusNode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,8 +28,10 @@ class UserField extends ConsumerWidget {
     return DefaultTextFormField(
       enabled: !isLoading,
       controller: userController,
+      focusNode: userFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textInputAction: TextInputAction.next,
+      onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
       validator: FormValidators.compose([NonEmptyValidator()]),
       maxLength: 40,
       labelText: 'Usuário'.hardcoded,
